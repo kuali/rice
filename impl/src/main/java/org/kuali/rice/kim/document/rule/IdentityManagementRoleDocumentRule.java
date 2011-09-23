@@ -43,6 +43,7 @@ import org.kuali.rice.kim.impl.responsibility.AddResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
@@ -167,7 +168,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     @SuppressWarnings("unchecked")
 	protected boolean validDuplicateRoleName(IdentityManagementRoleDocument roleDoc){
-        Role role = KimApiServiceLocator.getRoleService().getRoleByName(roleDoc.getRoleNamespace(), roleDoc.getRoleName());
+        Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(roleDoc.getRoleNamespace(),
+                roleDoc.getRoleName());
     	boolean rulePassed = true;
     	if(role!=null){
     		if(role.getId().equals(roleDoc.getRoleId())) {
@@ -746,7 +748,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
     public ResponsibilityInternalService getResponsibilityInternalService() {
     	if ( responsibilityInternalService == null ) {
-    		responsibilityInternalService = org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal.getResponsibilityInternalService();
+    		responsibilityInternalService = KimImplServiceLocator.getResponsibilityInternalService();
     	}
 		return responsibilityInternalService;
 	}

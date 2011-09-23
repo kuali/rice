@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 import static org.junit.Assert.*;
 
 /**
- * Tests the {@link org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal} class.
+ * Tests the {@link org.kuali.rice.kim.impl.services.KimImplServiceLocator} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

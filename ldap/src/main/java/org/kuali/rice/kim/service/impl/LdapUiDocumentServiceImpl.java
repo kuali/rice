@@ -50,6 +50,7 @@ import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleMemberAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -150,7 +151,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 		}
 		if ( inactivatingPrincipal ) {
 			//when a person is inactivated, inactivate their group, role, and delegation memberships
-			KimApiServiceLocator.getRoleService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
+			KimImplServiceLocator.getRoleInternalService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
 		}
 	}
 

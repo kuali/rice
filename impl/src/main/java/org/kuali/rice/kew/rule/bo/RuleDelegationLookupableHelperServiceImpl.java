@@ -407,7 +407,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!org.apache.commons.lang.StringUtils.isEmpty(personId)) {
-            //Person person = KIMServiceLocatorInternal.getPersonService().getPerson(personId);
+            //Person person = KimImplServiceLocator.getPersonService().getPerson(personId);
             Person person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(personId);/** IU fix EN-1552 */
             if (person == null) {
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);

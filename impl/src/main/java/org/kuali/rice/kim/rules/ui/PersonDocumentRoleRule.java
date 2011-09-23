@@ -37,7 +37,7 @@ public class PersonDocumentRoleRule extends DocumentRuleBase implements AddRoleR
 		PersonDocumentRole newRole = addRoleEvent.getRole();
 		IdentityManagementPersonDocument document = (IdentityManagementPersonDocument)addRoleEvent.getDocument();
 		boolean rulePassed = true;
-//    	List<String> roleIds = KIMServiceLocatorInternal.getUiDocumentService().getAssignableRoleIds();
+//    	List<String> roleIds = KimImplServiceLocator.getUiDocumentService().getAssignableRoleIds();
 
         if (newRole == null || StringUtils.isBlank(newRole.getRoleId())) {
             rulePassed = false;

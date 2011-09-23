@@ -51,6 +51,7 @@ import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -595,7 +596,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
     public ResponsibilityInternalService getResponsibilityInternalService() {
     	if ( responsibilityInternalService == null ) {
-    		responsibilityInternalService = org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal.getResponsibilityInternalService();
+    		responsibilityInternalService = KimImplServiceLocator.getResponsibilityInternalService();
     	}
 		return responsibilityInternalService;
 	}

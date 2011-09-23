@@ -108,7 +108,7 @@ public class DocumentAuthorizerBaseTest extends KRADTestCase {
 //    }
 //
 //    protected Person getWorkflowPessimisticLockOwnerUser() {
-//        Person person = KIMServiceLocatorInternal.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
+//        Person person = KimImplServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
 //        if (person == null) {
 //            throw new RuntimeException("Cannot find user with network id '" + KNSConstants.SYSTEM_USER);
 //        }

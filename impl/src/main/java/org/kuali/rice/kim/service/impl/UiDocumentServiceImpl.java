@@ -112,7 +112,7 @@ import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RolePermissionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
-import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -255,7 +255,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		if ( inactivatingPrincipal ) {
 			//when a person is inactivated, inactivate their group, role, and delegation memberships
-			KimApiServiceLocator.getRoleService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
+			KimImplServiceLocator.getRoleInternalService().principalInactivated(
+                    identityManagementPersonDocument.getPrincipalId());
 		}
 	}
 
@@ -1819,7 +1820,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
             }
 
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	memberId = getRoleService().getRoleIdByName(memberNamespaceCode, memberName);
+        	memberId = getRoleService().getRoleIdByNameAndNamespaceCode(memberNamespaceCode, memberName);
         }
         return memberId;
     }
@@ -2059,11 +2060,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
         bos.add(roleBo);
 		getBusinessObjectService().save(bos);
-		org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
+		KimImplServiceLocator.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 		if(!roleBo.isActive()){
 			// when a role is inactivated, inactivate the memberships of principals, groups, and roles in
 			// that role, delegations, and delegation members, and that roles memberships in other roles
-			KimApiServiceLocator.getRoleService().roleInactivated(identityManagementRoleDocument.getRoleId());
+			KimImplServiceLocator.getRoleInternalService().roleInactivated(identityManagementRoleDocument.getRoleId());
 		}
 	}
 
@@ -2372,7 +2373,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected KimAttributeField getAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimType type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
-			final KimTypeService typeService = (KimTypeService) KIMServiceLocatorInternal.getBean(type.getServiceName());
+			final KimTypeService typeService = (KimTypeService) KimImplServiceLocator.getBean(type.getServiceName());
 			if (typeService != null) {
 				final KimTypeAttribute attributeInfo = type.getAttributeDefinitionById(attrDefnId);
 				if (attributeInfo != null) {
@@ -2664,7 +2665,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(!kimGroup.isActive()){
 			// when a group is inactivated, inactivate the memberships of principals in that group
 			// and the memberships of that group in roles
-			KimApiServiceLocator.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
+			KimImplServiceLocator.getRoleInternalService().groupInactivated(identityManagementGroupDocument.getGroupId());
 		}
 
 	}
@@ -2850,7 +2851,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     
 	public ResponsibilityInternalService getResponsibilityInternalService() {
 		if ( responsibilityInternalService == null ) {
-				responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+				responsibilityInternalService = KimImplServiceLocator.getResponsibilityInternalService();
 		}
 		return responsibilityInternalService;
 	}

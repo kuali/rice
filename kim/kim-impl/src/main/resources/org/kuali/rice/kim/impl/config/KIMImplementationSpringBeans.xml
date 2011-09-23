@@ -177,6 +177,9 @@
   <bean id="kimRoleService" class="org.kuali.rice.kim.impl.role.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao" />
 
+  <bean id="kimRoleInternalService" class="org.kuali.rice.kim.impl.role.RoleInternalServiceImpl"
+  	p:roleDao-ref="kimRoleDao" />
+
   <!--
         Group Services
   -->

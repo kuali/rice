@@ -13,6 +13,8 @@ import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
+import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
@@ -37,7 +39,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-public class RoleServiceImpl extends RoleServiceBase {
+public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private static final Logger LOG = Logger.getLogger(RoleServiceImpl.class);
 
     private static final Map<String, RoleDaoAction> memberTypeToRoleDaoActionMap = populateMemberTypeToRoleDaoActionMap();
@@ -49,7 +51,139 @@ public class RoleServiceImpl extends RoleServiceBase {
         map.put(Role.ROLE_MEMBER_TYPE, RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS);     
         return Collections.unmodifiableMap(map);
     }
-    
+
+    /**
+     * This method tests to see if assigning a roleBo to another roleBo will create a circular reference.
+     * The Role is checked to see if it is a member (direct or nested) of the roleBo to be assigned as a member.
+     *
+     * @param newMemberId
+     * @param roleBo
+     * @return true  - assignment is allowed, no circular reference will be created.
+     *         false - illegal assignment, it will create a circular membership
+     */
+    protected boolean checkForCircularRoleMembership(String newMemberId, RoleBo roleBo) {
+        // get all nested roleBo members that are of type roleBo
+        Set<String> newRoleMemberIds = getRoleTypeRoleMemberIds(newMemberId);
+        return !newRoleMemberIds.contains(roleBo.getId());
+    }
+
+    protected RoleMember findRoleMember(String roleMemberId) {
+        Map<String, String> fieldValues = new HashMap<String, String>();
+        fieldValues.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+        List<RoleMember> roleMembers = findRoleMembers(fieldValues);
+        if (roleMembers != null && !roleMembers.isEmpty()) {
+            return roleMembers.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public List<RoleMember> findRoleMembers(Map<String, String> fieldValues) {
+        if (fieldValues == null) {
+            throw new RiceIllegalArgumentException("fieldValues is null");
+        }
+
+        List<RoleMember> roleMembers = new ArrayList<RoleMember>();
+        List<RoleMemberBo> roleMemberBos = (List<RoleMemberBo>) getLookupService().findCollectionBySearchHelper(
+                RoleMemberBo.class, fieldValues, true);
+
+        for (RoleMemberBo bo : roleMemberBos) {
+            RoleMember roleMember = RoleMemberBo.to(bo);
+            roleMembers.add(roleMember);
+        }
+        return roleMembers;
+    }
+
+    @Override
+    public Set<String> getRoleTypeRoleMemberIds(String roleId) {
+        if (StringUtils.isBlank(roleId)) {
+            throw new RiceIllegalArgumentException("roleId is null or blank");
+        }
+
+        Set<String> results = new HashSet<String>();
+        getNestedRoleTypeMemberIds(roleId, results);
+        return Collections.unmodifiableSet(results);
+    }
+
+    @Override
+    public List<String> getMemberParentRoleIds(String memberType, String memberId) {
+        if (StringUtils.isBlank(memberType)) {
+            throw new RiceIllegalArgumentException("memberType is null or blank");
+        }
+
+        if (StringUtils.isBlank(memberId)) {
+            throw new RiceIllegalArgumentException("memberId is null or blank");
+        }
+
+        List<RoleMemberBo> parentRoleMembers = getRoleDao().getRoleMembershipsForMemberId(memberType, memberId, Collections.<String, String>emptyMap());
+
+        List<String> parentRoleIds = new ArrayList<String>(parentRoleMembers.size());
+        for (RoleMemberBo parentRoleMember : parentRoleMembers) {
+            parentRoleIds.add(parentRoleMember.getRoleId());
+        }
+
+        return parentRoleIds;
+    }
+
+    @Override
+    public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(String roleMemberId) {
+        if (StringUtils.isBlank(roleMemberId)) {
+            throw new RiceIllegalArgumentException("roleMemberId is null or blank");
+        }
+
+        Map<String, String> criteria = new HashMap<String, String>(1);
+        criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
+
+        List<RoleResponsibilityActionBo> responsibilityActionBoList = (List<RoleResponsibilityActionBo>)
+                getBusinessObjectService().findMatching(RoleResponsibilityActionBo.class, criteria);
+
+        List<RoleResponsibilityAction> roleResponsibilityActionsList = new ArrayList<RoleResponsibilityAction>();
+        for (RoleResponsibilityActionBo roleResponsibilityActionBo : responsibilityActionBoList) {
+            RoleResponsibilityAction roleResponsibility = RoleResponsibilityActionBo.to(roleResponsibilityActionBo);
+            roleResponsibilityActionsList.add(roleResponsibility);
+        }
+        return roleResponsibilityActionsList;
+    }
+
+    @Override
+    public List<DelegateMember> findDelegateMembers(final Map<String, String> fieldValues) {
+        if (fieldValues == null) {
+            throw new RiceIllegalArgumentException("fieldValues is null or blank");
+        }
+
+        List<DelegateMember> delegateMembers = new ArrayList<DelegateMember>();
+        List<DelegateTypeBo> delegateBoList = (List<DelegateTypeBo>) getLookupService().findCollectionBySearchHelper(
+                DelegateTypeBo.class, fieldValues, true);
+
+        if (delegateBoList != null && !delegateBoList.isEmpty()) {
+            Map<String, String> delegationMemberFieldValues = new HashMap<String, String>();
+            for (Map.Entry<String, String> entry : fieldValues.entrySet()) {
+                if (entry.getKey().startsWith(KimConstants.KimUIConstants.MEMBER_ID_PREFIX)) {
+                    delegationMemberFieldValues.put(
+                            entry.getKey().substring(entry.getKey().indexOf(
+                                    KimConstants.KimUIConstants.MEMBER_ID_PREFIX) + KimConstants.KimUIConstants.MEMBER_ID_PREFIX.length()),
+                            entry.getValue());
+                }
+            }
+
+            StringBuilder memberQueryString = new StringBuilder();
+            for (DelegateTypeBo delegate : delegateBoList) {
+                memberQueryString.append(delegate.getDelegationId()).append(KimConstants.KimUIConstants.OR_OPERATOR);
+            }
+            delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID,
+                    StringUtils.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
+            List<DelegateMemberBo> delegateMemberBoList = (List<DelegateMemberBo>) getLookupService().findCollectionBySearchHelper(
+                    DelegateMemberBo.class, delegationMemberFieldValues, true);
+
+
+            for (DelegateMemberBo delegateMemberBo : delegateMemberBoList) {
+                DelegateMember delegateMember = DelegateMemberBo.to(delegateMemberBo);
+                delegateMembers.add(delegateMember);
+            }
+        }
+        return delegateMembers;
+    }
+
     @Override
     public Role getRole(String roleId) {
         if (StringUtils.isBlank(roleId)) {
@@ -97,7 +231,7 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public Role getRoleByName(String namespaceCode, String roleName) {
+    public Role getRoleByNameAndNamespaceCode(String namespaceCode, String roleName) {
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode is blank or null");
         }
@@ -114,7 +248,7 @@ public class RoleServiceImpl extends RoleServiceBase {
     }
 
     @Override
-    public String getRoleIdByName( String namespaceCode, String roleName) {
+    public String getRoleIdByNameAndNamespaceCode(String namespaceCode, String roleName) {
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode is blank or null");
         }
@@ -123,7 +257,7 @@ public class RoleServiceImpl extends RoleServiceBase {
             throw new RiceIllegalArgumentException("roleName is blank or null");
         }
 
-        Role role = getRoleByName(namespaceCode, roleName);
+        Role role = getRoleByNameAndNamespaceCode(namespaceCode, roleName);
         if (role != null) {
             return role.getId();
         } else {
@@ -219,7 +353,7 @@ public class RoleServiceImpl extends RoleServiceBase {
             throw new RiceIllegalArgumentException("qualification is null");
         }
 
-        String roleId = getRoleIdByName(namespaceCode, roleName);
+        String roleId = getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
         if (roleId == null) {
             return Collections.emptyList();
         }
@@ -244,7 +378,7 @@ public class RoleServiceImpl extends RoleServiceBase {
             throw new RiceIllegalArgumentException("qualification is null");
         }
 
-        String roleId = getRoleIdByName(namespaceCode, roleName);
+        String roleId = getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
         if (roleId == null) {
             return new ArrayList<Map<String, String>>(0);
         }
@@ -370,7 +504,7 @@ public class RoleServiceImpl extends RoleServiceBase {
 
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
-        List<String> roleIds = Collections.singletonList(getRoleIdByName(namespaceCode, roleName));
+        List<String> roleIds = Collections.singletonList(getRoleIdByNameAndNamespaceCode(namespaceCode, roleName));
         for (RoleMembership roleMembership : getRoleMembers(roleIds, qualification, false, foundRoleTypeMembers)) {
             if (Role.GROUP_MEMBER_TYPE.equals(roleMembership.getMemberTypeCode())) {
                 principalIds.addAll(getGroupService().getMemberPrincipalIds(roleMembership.getMemberId()));
@@ -438,52 +572,6 @@ public class RoleServiceImpl extends RoleServiceBase {
             roles.add(RoleBo.to(roleBo));
         }
         return Collections.unmodifiableList(roles);
-    }
-
-    @Override
-    public void principalInactivated(String principalId) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
-
-        long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
-        Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
-
-        inactivatePrincipalRoleMemberships(principalId, yesterday);
-        inactivatePrincipalGroupMemberships(principalId, yesterday);
-        inactivatePrincipalDelegations(principalId, yesterday);
-        inactivateApplicationRoleMemberships(principalId, yesterday);
-    }
-
-    @Override
-    public void roleInactivated(String roleId) {
-        if (StringUtils.isBlank(roleId)) {
-            throw new RiceIllegalArgumentException("roleId is null or blank");
-        }
-
-        long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
-        Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
-
-        List<String> roleIds = new ArrayList<String>();
-        roleIds.add(roleId);
-        inactivateRoleMemberships(roleIds, yesterday);
-        inactivateRoleDelegations(roleIds, yesterday);
-        inactivateMembershipsForRoleAsMember(roleIds, yesterday);
-    }
-
-    @Override
-    public void groupInactivated(String groupId) {
-        if (StringUtils.isBlank(groupId)) {
-            throw new RiceIllegalArgumentException("groupId is null or blank");
-        }
-
-        long oneDayInMillis = TimeUnit.DAYS.toMillis(1);
-        Timestamp yesterday = new Timestamp(System.currentTimeMillis() - oneDayInMillis);
-
-        List<String> groupIds = new ArrayList<String>();
-        groupIds.add(groupId);
-        inactivatePrincipalGroupMemberships(groupIds, yesterday);
-        inactivateGroupRoleMemberships(groupIds, yesterday);
     }
 
     @Override
@@ -624,61 +712,6 @@ public class RoleServiceImpl extends RoleServiceBase {
         }
         return Collections.unmodifiableList(roleList);
     }
-
-    protected void inactivateApplicationRoleMemberships(String principalId, Timestamp yesterday) {
-
-    }
-
-
-    protected void inactivatePrincipalRoleMemberships(String principalId, Timestamp yesterday) {
-        // go through all roles and post-date them
-        List<RoleMemberBo> roleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(null, principalId, null);
-        Set<String> roleIds = new HashSet<String>(roleMembers.size());
-        for (RoleMemberBo roleMemberBo : roleMembers) {
-            roleMemberBo.setActiveToDateValue(yesterday);
-            roleIds.add(roleMemberBo.getRoleId()); // add to the set of IDs
-        }
-        getBusinessObjectService().save(roleMembers);
-    }
-
-    protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday) {
-        List<RoleMemberBo> roleMemberBosOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds, null);
-        for (RoleMemberBo roleMemberbo : roleMemberBosOfGroupType) {
-            roleMemberbo.setActiveToDateValue(yesterday);
-        }
-        getBusinessObjectService().save(roleMemberBosOfGroupType);
-    }
-
-    protected void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday) {
-        List<GroupMember> groupMembers = getRoleDao().getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
-        List<GroupMemberBo> groupMemberBoList = new ArrayList<GroupMemberBo>(groupMembers.size());
-        for (GroupMember gm : groupMembers) {
-            GroupMember.Builder builder = GroupMember.Builder.create(gm);
-            builder.setActiveToDate(new DateTime(yesterday.getTime()));
-            groupMemberBoList.add(GroupMemberBo.from(builder.build()));
-        }
-        getBusinessObjectService().save(groupMemberBoList);
-    }
-
-    protected void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday) {
-        List<GroupMember> groupMembers = getRoleDao().getGroupMembers(groupIds);
-        List<GroupMemberBo> groupMemberBoList = new ArrayList<GroupMemberBo>(groupMembers.size());
-        for (GroupMember groupMember : groupMembers) {
-            GroupMember.Builder builder = GroupMember.Builder.create(groupMember);
-            builder.setActiveToDate(new DateTime(yesterday.getTime()));
-            groupMemberBoList.add(GroupMemberBo.from(builder.build()));
-        }
-        getBusinessObjectService().save(groupMemberBoList);
-    }
-
-    protected void inactivatePrincipalDelegations(String principalId, Timestamp yesterday) {
-        List<DelegateMemberBo> delegationMembers = getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
-        for (DelegateMemberBo delegateMemberBo : delegationMembers) {
-            delegateMemberBo.setActiveToDateValue(yesterday);
-        }
-        getBusinessObjectService().save(delegationMembers);
-    }
-
 
     protected List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification, boolean followDelegations, Set<String> foundRoleTypeMembers) {
         List<RoleMembership> results = new ArrayList<RoleMembership>();
@@ -1231,33 +1264,6 @@ public class RoleServiceImpl extends RoleServiceBase {
             roleMemberBos.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(copyRoleIds, groupIds, null));
         }
         return roleMemberBos;
-    }
-
-    private void inactivateRoleMemberships(List<String> roleIds, Timestamp yesterday) {
-        List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersForRoleIds(roleIds, null, null);
-        for (RoleMemberBo roleMemberBo : roleMemberBoList) {
-            roleMemberBo.setActiveToDateValue(yesterday);
-        }
-        getBusinessObjectService().save(roleMemberBoList);
-    }
-
-    private void inactivateRoleDelegations(List<String> roleIds, Timestamp yesterday) {
-        List<DelegateTypeBo> delegations = getStoredDelegationImplsForRoleIds(roleIds);
-        for (DelegateTypeBo delegation : delegations) {
-            delegation.setActive(false);
-            for (DelegateMemberBo delegationMember : delegation.getMembers()) {
-                delegationMember.setActiveToDateValue(yesterday);
-            }
-        }
-        getBusinessObjectService().save(delegations);
-    }
-
-    private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday) {
-        List<RoleMemberBo> roleMemberBoList = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds, null);
-        for (RoleMemberBo roleMemberBo : roleMemberBoList) {
-            roleMemberBo.setActiveToDateValue(yesterday);
-        }
-        getBusinessObjectService().save(roleMemberBoList);
     }
 
     private List<DelegateMember> getDelegateMembersForDelegation(DelegateTypeBo delegateBo) {

@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.w3c.dom.Element;
 
@@ -366,5 +367,9 @@ public final class Permission extends AbstractDataTransferObject implements Perm
         static final String TEMPLATE = "template";
         static final String ATTRIBUTES = "attributes";
         static final String ACTIVE = "active";
+    }
+
+    public static class Cache {
+        public static final String NAME = KimConstants.Namespaces.KIM_NAMESPACE_2_0 + "/" + Permission.Constants.TYPE_NAME;
     }
 }

@@ -179,7 +179,7 @@ public class ActionItemServiceTest extends KEWTestCase {
          //workgroup1Bo.getMembersOfGroup().add(GroupMemberBo.from(groupMember));
          //workgroup1Impl.getMembersOfGroup().add(groupMember);
 
-         //KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(workgroup1Bo);
+         //KimImplServiceLocator.getGroupInternalService().saveWorkgroup(workgroup1Bo);
 
          assertEquals("Workgroup should have 7 members.", 7, KimApiServiceLocator.getGroupService().getMemberPrincipalIds(workgroup1.getId()).size());
          assertEquals("User should have 1 action item", 1, KEWServiceLocator.getActionListService().findByPrincipalId(dewey.getPrincipalId()).size());

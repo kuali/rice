@@ -22,6 +22,9 @@ import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.responsibility.Responsibility;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -71,7 +74,8 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "getRole")
     @WebResult(name = "role")
-    Role getRole(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
+    @Cacheable(value= Role.Cache.NAME, key="'id=' + #id")
+    Role getRole(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
 	/**
 	 * Get the KIM Role objects for the role IDs in the given List.
@@ -80,35 +84,39 @@ public interface RoleService {
     @XmlElementWrapper(name = "roles", required = true)
     @XmlElement(name = "role", required = false)
     @WebResult(name = "roles")
-	List<Role> getRoles( @WebParam(name="roleIds") List<String> roleIds ) throws RiceIllegalArgumentException;
+    @Cacheable(value= Role.Cache.NAME, key="'ids=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#ids)")
+	List<Role> getRoles( @WebParam(name="ids") List<String> ids ) throws RiceIllegalArgumentException;
 
 	/** Get the KIM Role object with the unique combination of namespace, component,
 	 * and role name.
 	 *
 	 */
-    @WebMethod(operationName = "getRoleByName")
+    @WebMethod(operationName = "getRoleByNameAndNamespaceCode")
     @WebResult(name = "role")
-    Role getRoleByName(@WebParam(name = "namespaceCode") String namespaceCode,
-                       @WebParam(name = "roleName") String roleName) throws RiceIllegalArgumentException;
+    @Cacheable(value=Role.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+    Role getRoleByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
 	/**
 	 * Return the Role ID for the given unique combination of namespace,
 	 * component and role name.
 	 */
-    @WebMethod(operationName = "getRoleIdByName")
+    @WebMethod(operationName = "getRoleIdByNameAndNamespaceCode")
     @WebResult(name = "roleId")
-	String getRoleIdByName( @WebParam(name="namespaceCode") String namespaceCode,
-                            @WebParam(name="roleName") String roleName ) throws RiceIllegalArgumentException;
+    @Cacheable(value=Role.Cache.NAME, key="'{getRoleIdByNameAndNamespaceCode}' + 'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+	String getRoleIdByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
 	/**
 	 * Checks whether the role with the given role ID is active.
 	 *
-	 * @param roleId
+	 * @param id
 	 * @return
 	 */
     @WebMethod(operationName = "isRoleActive")
     @WebResult(name = "isRoleActive")
-    boolean isRoleActive( @WebParam(name="roleId") String roleId ) throws RiceIllegalArgumentException;
+    @Cacheable(value=Role.Cache.NAME, key="'{isRoleActive}' + 'id=' + #id")
+    boolean isRoleActive( @WebParam(name="id") String id ) throws RiceIllegalArgumentException;
 
     /**
      * Returns a list of role qualifiers that the given principal has without taking into consideration
@@ -231,23 +239,7 @@ public interface RoleService {
 	List<Role> getRolesSearchResults(
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") Map<String,String> fieldValues) throws RiceIllegalArgumentException;
 
-	/**
-	 * Notifies all of a principal's roles and role types that the principal has been inactivated.
-	 */
-    @WebMethod(operationName = "principalInactivated")
-	void principalInactivated( @WebParam(name="principalId") String principalId ) throws RiceIllegalArgumentException;
 
-	/**
-	 * Notifies the role service that the role with the given id has been inactivated.
-	 */
-    @WebMethod(operationName = "roleInactivated")
-	void roleInactivated(@WebParam(name="roleId") String roleId) throws RiceIllegalArgumentException;
-
-	/**
-	 * Notifies the role service that the group with the given id has been inactivated.
-	 */
-    @WebMethod(operationName = "groupInactivated")
-    void groupInactivated(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
      * Gets all direct members of the roles that have ids within the given list

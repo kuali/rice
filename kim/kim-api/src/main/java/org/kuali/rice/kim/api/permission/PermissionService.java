@@ -23,6 +23,8 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.common.template.TemplateQueryResults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -73,7 +75,8 @@ public interface PermissionService {
      * @throws IllegalStateException if the permission is already existing in the system
      */
     @WebMethod(operationName="createPermission")
-    @WebResult(name = "id")
+    @WebResult(name = "permission")
+    @CacheEvict(value={Permission.Cache.NAME, Template.Cache.NAME + "{Permission}"}, allEntries = true)
     Permission createPermission(@WebParam(name = "permission") Permission permission)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -85,6 +88,8 @@ public interface PermissionService {
      * @throws IllegalStateException if the permission does not exist in the system
      */
     @WebMethod(operationName="updatePermission")
+    @WebResult(name = "permission")
+    @CacheEvict(value={Permission.Cache.NAME, Template.Cache.NAME + "{Permission}"}, allEntries = true)
     Permission updatePermission(@WebParam(name = "permission") Permission permission)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -318,7 +323,8 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermission")
     @WebResult(name = "permission")
-    Permission getPermission( @WebParam(name="permissionId") String permissionId );
+    @Cacheable(value=Permission.Cache.NAME, key="'id=' + #id")
+    Permission getPermission( @WebParam(name="id") String id );
 	
 	/** Get the Permission object with the unique combination of namespace and permission name.
      *
@@ -326,8 +332,9 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "findPermByNamespaceCodeAndName")
     @WebResult(name = "permission")
+    @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
     Permission findPermByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionName") String permissionName);
+            @WebParam(name = "name") String name);
    
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
@@ -335,8 +342,9 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "findPermsByNamespaceCodeTemplateName")
     @WebResult(name = "permission")
+    @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'templateName=' + #templateName")
     List<Permission> findPermsByNamespaceCodeTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName);
+            @WebParam(name = "templateName") String templateName);
 
 	/**
 	 * 
@@ -347,6 +355,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionTemplate")
     @WebResult(name = "id")
+    @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'id=' + #id")
     Template getPermissionTemplate( @WebParam(name="id") String id );
 
 	/**
@@ -358,8 +367,9 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "findPermTemplateByNamespaceCodeAndName")
     @WebResult(name = "permissionTemplate")
+    @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
     Template findPermTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "permissionTemplateName") String permissionTemplateName);
+            @WebParam(name = "name") String name);
 
 	/**
 	 * 
@@ -371,6 +381,7 @@ public interface PermissionService {
     @XmlElementWrapper(name = "templates", required = true)
     @XmlElement(name = "template", required = false)
     @WebResult(name = "templates")
+    @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'all'")
     List<Template> getAllTemplates();
     
     /**

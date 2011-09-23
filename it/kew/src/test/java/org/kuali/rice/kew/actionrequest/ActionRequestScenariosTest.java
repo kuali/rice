@@ -351,6 +351,6 @@ public class ActionRequestScenariosTest extends KEWTestCase {
     }
 
     private String getRoleIdFromRoleName(String namespaceCode, String roleName) {
-        return KimApiServiceLocator.getRoleService().getRoleIdByName(namespaceCode, roleName);
+        return KimApiServiceLocator.getRoleService().getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
     }
 }

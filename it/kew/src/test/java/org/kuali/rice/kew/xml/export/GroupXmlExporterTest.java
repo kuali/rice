@@ -66,7 +66,7 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
         //clearLifeCycle.getTablesToClear().add("EN_DOC_TYP_T");
         //clearLifeCycle.start();
         //new ClearCacheLifecycle().stop();
-        //KIMServiceLocatorInternal.getGroupService().
+        //KimImplServiceLocator.getGroupService().
 
         // import the exported xml
         //loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));

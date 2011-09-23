@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.IdentityManagementTypeAttributeTransactionalDocument;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
@@ -553,7 +554,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 
     public ResponsibilityInternalService getResponsibilityInternalService() {
     	if ( responsibilityInternalService == null ) {
-    		responsibilityInternalService = org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal.getResponsibilityInternalService();
+    		responsibilityInternalService = KimImplServiceLocator.getResponsibilityInternalService();
     	}
 		return responsibilityInternalService;
 	}

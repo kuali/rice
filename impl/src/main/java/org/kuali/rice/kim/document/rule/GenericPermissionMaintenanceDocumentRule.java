@@ -140,7 +140,7 @@ public class GenericPermissionMaintenanceDocumentRule extends MaintenanceDocumen
 	    	}
 	    	return (PermissionTypeService)service;
     	} catch( Exception ex ) {
-    		LOG.error( "Error retrieving service: " + serviceName + " from the KIMServiceLocatorInternal.", ex );
+    		LOG.error( "Error retrieving service: " + serviceName + " from the KimImplServiceLocator.", ex );
     	}
     	return null;
     }

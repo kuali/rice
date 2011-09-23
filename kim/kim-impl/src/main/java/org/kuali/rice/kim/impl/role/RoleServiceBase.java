@@ -3,18 +3,13 @@ package org.kuali.rice.kim.impl.role;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.role.RoleMember;
-import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
-import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
@@ -24,25 +19,23 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
-import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LookupService;
-import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-abstract class RoleServiceBase implements RoleService {
+abstract class RoleServiceBase {
     private static final Logger LOG = Logger.getLogger( RoleServiceBase.class );
 
     private BusinessObjectService businessObjectService;
@@ -86,17 +79,6 @@ abstract class RoleServiceBase implements RoleService {
         return convertedQualification;
     }
 
-    @Override
-    public Set<String> getRoleTypeRoleMemberIds(String roleId) {
-        if (StringUtils.isBlank(roleId)) {
-            throw new RiceIllegalArgumentException("roleId is null or blank");
-        }
-
-        Set<String> results = new HashSet<String>();
-        getNestedRoleTypeMemberIds(roleId, results);
-        return Collections.unmodifiableSet(results);
-    }
-
     protected void getNestedRoleTypeMemberIds(String roleId, Set<String> members) {
         ArrayList<String> roleList = new ArrayList<String>(1);
         roleList.add(roleId);
@@ -109,26 +91,6 @@ abstract class RoleServiceBase implements RoleService {
                 }
             }
         }
-    }
-
-    @Override
-    public List<String> getMemberParentRoleIds(String memberType, String memberId) {
-        if (StringUtils.isBlank(memberType)) {
-            throw new RiceIllegalArgumentException("memberType is null or blank");
-        }
-
-        if (StringUtils.isBlank(memberId)) {
-            throw new RiceIllegalArgumentException("memberId is null or blank");
-        }
-
-        List<RoleMemberBo> parentRoleMembers = roleDao.getRoleMembershipsForMemberId(memberType, memberId, Collections.<String, String>emptyMap());
-
-        List<String> parentRoleIds = new ArrayList<String>(parentRoleMembers.size());
-        for (RoleMemberBo parentRoleMember : parentRoleMembers) {
-            parentRoleIds.add(parentRoleMember.getRoleId());
-        }
-
-        return parentRoleIds;
     }
 
     /**
@@ -299,92 +261,6 @@ abstract class RoleServiceBase implements RoleService {
         searchCriteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
         searchCriteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
         return new ArrayList<DelegateMemberBo>(getBusinessObjectService().findMatching(DelegateMemberBo.class, searchCriteria));
-    }
-
-    protected RoleMember findRoleMember(String roleMemberId) {
-        Map<String, String> fieldValues = new HashMap<String, String>();
-        fieldValues.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-        List<RoleMember> roleMembers = findRoleMembers(fieldValues);
-        if (roleMembers != null && !roleMembers.isEmpty()) {
-            return roleMembers.get(0);
-        }
-        return null;
-    }
-
-    @Override
-    public List<RoleMember> findRoleMembers(Map<String, String> fieldValues) {
-        if (fieldValues == null) {
-            throw new RiceIllegalArgumentException("fieldValues is null");
-        }
-
-        List<RoleMember> roleMembers = new ArrayList<RoleMember>();
-        List<RoleMemberBo> roleMemberBos = (List<RoleMemberBo>) getLookupService().findCollectionBySearchHelper(
-                RoleMemberBo.class, fieldValues, true);
-
-        for (RoleMemberBo bo : roleMemberBos) {
-            RoleMember roleMember = RoleMemberBo.to(bo);
-            roleMembers.add(roleMember);
-        }
-        return roleMembers;
-    }
-
-    @Override
-    public List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(String roleMemberId) {
-        if (StringUtils.isBlank(roleMemberId)) {
-            throw new RiceIllegalArgumentException("roleMemberId is null or blank");
-        }
-
-        Map<String, String> criteria = new HashMap<String, String>(1);
-        criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-
-        List<RoleResponsibilityActionBo> responsibilityActionBoList = (List<RoleResponsibilityActionBo>)
-                getBusinessObjectService().findMatching(RoleResponsibilityActionBo.class, criteria);
-
-        List<RoleResponsibilityAction> roleResponsibilityActionsList = new ArrayList<RoleResponsibilityAction>();
-        for (RoleResponsibilityActionBo roleResponsibilityActionBo : responsibilityActionBoList) {
-            RoleResponsibilityAction roleResponsibility = RoleResponsibilityActionBo.to(roleResponsibilityActionBo);
-            roleResponsibilityActionsList.add(roleResponsibility);
-        }
-        return roleResponsibilityActionsList;
-    }
-
-    @Override
-    public List<DelegateMember> findDelegateMembers(final Map<String, String> fieldValues) {
-        if (fieldValues == null) {
-            throw new RiceIllegalArgumentException("fieldValues is null or blank");
-        }
-
-        List<DelegateMember> delegateMembers = new ArrayList<DelegateMember>();
-        List<DelegateTypeBo> delegateBoList = (List<DelegateTypeBo>) getLookupService().findCollectionBySearchHelper(
-                DelegateTypeBo.class, fieldValues, true);
-
-        if (delegateBoList != null && !delegateBoList.isEmpty()) {
-            Map<String, String> delegationMemberFieldValues = new HashMap<String, String>();
-            for (Map.Entry<String, String> entry : fieldValues.entrySet()) {
-                if (entry.getKey().startsWith(KimConstants.KimUIConstants.MEMBER_ID_PREFIX)) {
-                    delegationMemberFieldValues.put(
-                            entry.getKey().substring(entry.getKey().indexOf(
-                                    KimConstants.KimUIConstants.MEMBER_ID_PREFIX) + KimConstants.KimUIConstants.MEMBER_ID_PREFIX.length()),
-                            entry.getValue());
-                }
-            }
-
-            StringBuilder memberQueryString = new StringBuilder();
-            for (DelegateTypeBo delegate : delegateBoList) {
-                memberQueryString.append(delegate.getDelegationId()).append(KimConstants.KimUIConstants.OR_OPERATOR);
-            }
-            delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID,
-                    StringUtils.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
-            List<DelegateMemberBo> delegateMemberBoList = (List<DelegateMemberBo>) getLookupService().findCollectionBySearchHelper(
-                    DelegateMemberBo.class, delegationMemberFieldValues, true);
-
-
-            for (DelegateMemberBo delegateMemberBo : delegateMemberBoList) {
-                DelegateMember delegateMember = DelegateMemberBo.to(delegateMemberBo);
-                delegateMembers.add(delegateMember);
-            }
-        }
-        return delegateMembers;
     }
 
     protected Object getMember(String memberTypeCode, String memberId) {
@@ -588,14 +464,14 @@ abstract class RoleServiceBase implements RoleService {
         String serviceName = typeInfo.getServiceName();
         if (serviceName != null) {
             try {
-                KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
+                KimTypeService service = (KimTypeService) KimImplServiceLocator.getService(serviceName);
                 if (service != null && service instanceof RoleTypeService) {
                     return (RoleTypeService) service;
                 }
-                return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
+                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
             } catch (Exception ex) {
                 LOG.error("Unable to find role type service with name: " + serviceName, ex);
-                return (RoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
+                return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
             }
         }
         return null;
@@ -611,21 +487,6 @@ abstract class RoleServiceBase implements RoleService {
             }
         }
         return qualifiersForExactMatch;
-    }
-
-    /**
-     * This method tests to see if assigning a roleBo to another roleBo will create a circular reference.
-     * The Role is checked to see if it is a member (direct or nested) of the roleBo to be assigned as a member.
-     *
-     * @param newMemberId
-     * @param roleBo
-     * @return true  - assignment is allowed, no circular reference will be created.
-     *         false - illegal assignment, it will create a circular membership
-     */
-    protected boolean checkForCircularRoleMembership(String newMemberId, RoleBo roleBo) {
-        // get all nested roleBo members that are of type roleBo
-        Set<String> newRoleMemberIds = getRoleTypeRoleMemberIds(newMemberId);
-        return !newRoleMemberIds.contains(roleBo.getId());
     }
 
     // TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
@@ -676,7 +537,7 @@ abstract class RoleServiceBase implements RoleService {
 
     protected ResponsibilityInternalService getResponsibilityInternalService() {
         if (responsibilityInternalService == null) {
-            responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
+            responsibilityInternalService = KimImplServiceLocator.getResponsibilityInternalService();
         }
         return responsibilityInternalService;
     }

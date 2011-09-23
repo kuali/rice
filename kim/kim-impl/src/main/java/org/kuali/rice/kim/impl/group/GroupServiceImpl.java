@@ -37,7 +37,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.common.attribute.AttributeTransform;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
-import org.kuali.rice.kim.impl.services.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
 import java.sql.Timestamp;
@@ -656,7 +656,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         groupMember.setMemberId(principalId);
 
         groupMember = this.businessObjectService.save(groupMember);
-        KIMServiceLocatorInternal.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(),
+        KimImplServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(),
                 groupMember.getGroupId());
         return true;
     }
@@ -765,7 +765,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
        }
 
        // do updates
-       KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(groupId, memberPrincipalsBefore,
+       KimImplServiceLocator.getGroupInternalService().updateForWorkgroupChange(groupId, memberPrincipalsBefore,
                memberPrincipalsAfter);
    }
 
@@ -811,7 +811,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         	GroupMemberBo member = groupMembers.iterator().next();
         	member.setActiveToDateValue(new java.sql.Timestamp(System.currentTimeMillis()));
         	this.businessObjectService.save(member);
-            KIMServiceLocatorInternal.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(),
+            KimImplServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(),
                     member.getGroupId());
             return true;
         }
@@ -857,7 +857,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			}
 		}
 
-		return KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(group);
+		return KimImplServiceLocator.getGroupInternalService().saveWorkgroup(group);
 	}
 
 

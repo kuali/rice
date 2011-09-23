@@ -91,7 +91,7 @@ public class PermissionServiceImpl implements PermissionService {
 	    	return (PermissionTypeService)service;
     	} catch( Exception ex ) {
     		// sometimes service locators throw exceptions rather than returning null, handle that
-    		throw new RuntimeException( "Error retrieving service: " + serviceName + " from the KIMServiceLocatorInternal.", ex );
+    		throw new RuntimeException( "Error retrieving service: " + serviceName + " from the KimImplServiceLocator.", ex );
     	}
     }
 

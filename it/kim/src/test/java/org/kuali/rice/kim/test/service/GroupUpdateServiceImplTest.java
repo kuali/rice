@@ -21,6 +21,7 @@ import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
+import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.group.GroupMemberBo;
 import org.kuali.rice.kim.impl.group.GroupServiceImpl;
@@ -46,12 +47,12 @@ import static org.junit.Assert.*;
  */
 public class GroupUpdateServiceImplTest extends KIMTestCase {
 
-	private GroupServiceImpl groupService;
+	private GroupService groupService;
 	private BusinessObjectService businessObjectService;
 
 	public void setUp() throws Exception {
 		super.setUp();
-		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(
+		groupService = (GroupService)GlobalResourceLoader.getService(
                 new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.GROUP_SERVICE_SOAP));
 		businessObjectService = KRADServiceLocator.getBusinessObjectService();
 	}
@@ -81,6 +82,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		assertFalse( "g1 must not contain group g2", postGroupIds.contains( "g2" ) );
 
 		// add it back in, and the two lists should contain the same elements
+        postGroupIds = new ArrayList<String>(postGroupIds);
 		postGroupIds.add("g2");
 		assertTrue(postGroupIds.containsAll(preGroupIds) && preGroupIds.containsAll(postGroupIds));
 
@@ -110,6 +112,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 		assertFalse( "p1 must no longer be a direct member of g2", postDirectPrincipalMemberIds.contains("p1") );
 
 		// add p1 back to the list, and pre & post should contain the same elements
+        postDirectPrincipalMemberIds = new ArrayList<String>(postDirectPrincipalMemberIds);
 		postDirectPrincipalMemberIds.add("p1");
 		assertTrue(preDirectPrincipalMemberIds.containsAll(postDirectPrincipalMemberIds) &&
 				postDirectPrincipalMemberIds.containsAll(preDirectPrincipalMemberIds));

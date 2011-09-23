@@ -19,7 +19,8 @@ package org.kuali.rice.kew.actionitem;
 import java.util.Comparator;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-
+import org.kuali.rice.kew.api.action.ActionItemContract;
+import org.kuali.rice.kew.api.action.RecipientType;
 
 /**
  * Compares an action item to another action item.
@@ -29,17 +30,29 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 public class ActionItemComparator implements Comparator {
 
 	public int compare(Object object1, Object object2) throws ClassCastException {
-		ActionItem actionItem1 = (ActionItem)object1;
-		ActionItem actionItem2 = (ActionItem)object2;
+		ActionItemContract actionItem1 = (ActionItemContract)object1;
+		ActionItemContract actionItem2 = (ActionItemContract)object2;
 		int actionCodeValue = ActionRequestValue.compareActionCode(actionItem1.getActionRequestCd(), actionItem2.getActionRequestCd(), true);
 		if (actionCodeValue != 0) {
 			return actionCodeValue;
 		}
-		int recipientTypeValue = ActionRequestValue.compareRecipientType(actionItem1.getRecipientTypeCode(), actionItem2.getRecipientTypeCode());
+		int recipientTypeValue = ActionRequestValue.compareRecipientType(getRecipientTypeCode(actionItem1), getRecipientTypeCode(actionItem1));
 		if (recipientTypeValue != 0) {
 			return recipientTypeValue;
 		}
 		return ActionRequestValue.compareDelegationType(actionItem1.getDelegationType(), actionItem2.getDelegationType());
 	}
+
+    private String getRecipientTypeCode(Object object) {
+        ActionItemContract actionItem = (ActionItemContract)object;
+        String recipientTypeCode = RecipientType.PRINCIPAL.getCode();
+        if (actionItem.getRoleName() != null) {
+            recipientTypeCode = RecipientType.ROLE.getCode();
+        }
+        if (actionItem.getGroupId() != null) {
+            recipientTypeCode = RecipientType.GROUP.getCode();
+        }
+        return recipientTypeCode;
+    }
 
 }

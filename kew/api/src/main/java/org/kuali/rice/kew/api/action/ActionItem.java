@@ -55,7 +55,7 @@ public final class ActionItem
     private final String actionRequestId;
     @XmlElement(name = Elements.DOCUMENT_ID, required = true)
     private final String documentId;
-    @XmlElement(name = Elements.DOC_TITLE, required = true)
+    @XmlElement(name = Elements.DOC_TITLE, required = false)
     private final String docTitle;
     @XmlElement(name = Elements.DOC_LABEL, required = true)
     private final String docLabel;
@@ -436,9 +436,6 @@ public final class ActionItem
         }
 
         public void setDocTitle(String docTitle) {
-            if (StringUtils.isBlank(docTitle)) {
-                throw new IllegalArgumentException("docTitle is blank");
-            }
             this.docTitle = docTitle;
         }
 

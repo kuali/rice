@@ -203,7 +203,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		assertTrue( "p2 must belong to role (assigned via group)", memberPrincipalIds.contains(principal2Id) );
 		assertTrue( "p1 must belong to r2 (via r1)", memberPrincipalIds.contains(principal1Id) );
 		
-		Collection<RoleMembership> members = roleService.getRoleMembers( roleList, null );
+		Collection<RoleMembership> members = roleService.getRoleMembers( roleList, Collections.<String, String>emptyMap() );
 		assertNotNull( "returned list may not be null", members );
 		assertFalse( "list must not be empty", members.isEmpty() );
 		assertEquals("Returned list must have 4 members.", 4, members.size());

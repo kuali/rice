@@ -16,6 +16,8 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.KimApiConstants
+import java.sql.Timestamp
+import org.joda.time.DateTime
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -77,6 +79,19 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Column(name = "ADDR_FMT")
     String addressFormat;
 
+    @Column(name = "MOD_DT")
+    Timestamp modifiedDate;
+
+    @Column(name = "VALID_DT")
+    Timestamp validatedDate;
+
+    @Type(type="yes_no")
+	@Column(name="VALID_IND")
+    boolean validated;
+
+    @Column(name = "NOTE_MSG")
+	String noteMessage;
+
 	@Transient
     boolean suppressAddress;
 
@@ -115,6 +130,14 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
         bo.countryCode = immutable.countryCodeUnmasked
         bo.postalCode = immutable.postalCodeUnmasked
         bo.addressFormat = immutable.addressFormat
+        if (immutable.modifiedDate != null) {
+            bo.modifiedDate = new Timestamp(immutable.modifiedDate.millis);
+        }
+        if (immutable.validatedDate != null) {
+            bo.validatedDate = new Timestamp(immutable.validatedDate.millis);
+        }
+        bo.validated = immutable.validated
+        bo.noteMessage = immutable.noteMessage
         bo.id = immutable.id
         bo.entityId = immutable.entityId
         bo.active = immutable.active
@@ -242,5 +265,15 @@ public class EntityAddressBo extends PersistableBusinessObjectBase implements En
     @Override
     String getCountryCodeUnmasked() {
         return countryCode
+    }
+
+    @Override
+    DateTime getModifiedDate() {
+        return modifiedDate ? new DateTime(modifiedDate.time) : null
+    }
+
+    @Override
+    DateTime getValidatedDate() {
+        return validatedDate ? new DateTime(validatedDate.time) : null
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.api.identity.address;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.mo.common.Defaultable;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
@@ -98,7 +99,13 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
      * @return the country code for this {@link EntityAddressContract}, or null if none has been assigned.
      */
 	String getCountryCode();
-	
+
+    /**
+     * Returns the unmasked attention line for this {@link EntityAddressContract}
+     * @return the unmasked attention line
+     */
+    String getAttentionLineUnmasked();
+
 	/**
      * Gets this {@link EntityAddressContract}'s unmasked first line.
      * @return the unmasked first line for this {@link EntityAddressContract}, or null if none has been assigned.
@@ -142,16 +149,39 @@ public interface EntityAddressContract extends Versioned, GloballyUnique, Defaul
     String getCountryCodeUnmasked();
 
     /**
-     * Returns the unmasked attention line for this {@link EntityAddressContract}
-     * @return the unmasked attention line
-     */
-    String getAttentionLineUnmasked();
-
-    /**
      * Returns the {@link EntityAddressContract}'s address format
+     * Corresponds to PESC AddressFormat
      * @return the address format or null if none is set
      */
     String getAddressFormat();
+
+    /**
+     * Returns the {@link EntityAddressContract}'s modification date
+     * Corresponds to PESC ModifiedDate
+     * @return the modification date
+     */
+    DateTime getModifiedDate();
+
+    /**
+     * Returns the {@link EntityAddressContract}'s validation date
+     * Corresponds to PESC ValidatedDate
+     * @return the validation date or null if none is set
+     */
+    DateTime getValidatedDate();
+
+    /**
+     * Returns whether the {@link EntityAddressContract} is validated
+     * Corresponds to PESC Validated
+     * @return whether the address is validated
+     */
+    boolean isValidated();
+
+    /**
+     * Returns the {@link EntityAddressContract}'s note/message
+     * Corresponds to PESC NoteMessage
+     * @return the note/message or null if none is set
+     */
+    String getNoteMessage();
 
     /**
      * Returns a boolean value that determines if address fields should be suppressed.

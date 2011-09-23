@@ -73,7 +73,17 @@ class EntityFactory extends Factory {
 
     def EntityAddressBo(Map fields) {
         def values = [
-           entityTypeCode: KimConstants.EntityTypes.PERSON, addressType: new EntityAddressTypeBo(code: KimConstants.AddressTypes.HOME), id: Factory.makeId(), addressTypeCode: KimConstants.AddressTypes.HOME, addressFormat: "address format", active: true
+           entityTypeCode: KimConstants.EntityTypes.PERSON,
+           addressType: new EntityAddressTypeBo(code: KimConstants.AddressTypes.HOME),
+           id: Factory.makeId(),
+           addressTypeCode: KimConstants.AddressTypes.HOME,
+           attentionLine: "attn line",
+           modifiedDate: new Timestamp(new Date().time),
+           validatedDate: new Timestamp(new Date().time),
+           validated: true,
+           noteMessage: "note message",
+           addressFormat: "address format",
+           active: true
         ]
         new EntityAddressBo(Factory.mergeAndLink('entity', fields, values))
     }
@@ -127,7 +137,17 @@ class EntityFactory extends Factory {
 
     def EntityNameBo(Map fields) {
         def values = [
-            id: Factory.makeId(), active: true, nameTitle: "DVM", namePrefix: "Mr.", firstName: "John", lastName: "Smith", nameSuffix: "Jr.", noteMessage: "note message", nameChangedDate: new Timestamp(new Date().time), nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY), nameCode: KimConstants.NameTypes.PRIMARY
+            id: Factory.makeId(),
+            active: true,
+            nameTitle: "DVM",
+            namePrefix: "Mr.",
+            firstName: "John",
+            lastName: "Smith",
+            nameSuffix: "Jr.",
+            noteMessage: "note message",
+            nameChangedDate: new Timestamp(new Date().time),
+            nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY),
+            nameCode: KimConstants.NameTypes.PRIMARY
         ]
         new EntityNameBo(mergeAndLink('entity', fields, values))
     };

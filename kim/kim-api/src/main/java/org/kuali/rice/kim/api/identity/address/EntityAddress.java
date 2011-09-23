@@ -8,11 +8,14 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.w3c.dom.Element;
@@ -41,6 +44,10 @@ import org.w3c.dom.Element;
     EntityAddress.Elements.POSTAL_CODE_UNMASKED,
     EntityAddress.Elements.COUNTRY_CODE_UNMASKED,
     EntityAddress.Elements.ADDRESS_FORMAT,
+    EntityAddress.Elements.MODIFIED_DATE,
+    EntityAddress.Elements.VALIDATED_DATE,
+    EntityAddress.Elements.VALIDATED,
+    EntityAddress.Elements.NOTE_MESSAGE,
     EntityAddress.Elements.SUPPRESS_ADDRESS,
     EntityAddress.Elements.DEFAULT_VALUE,
     EntityAddress.Elements.ACTIVE,
@@ -93,6 +100,16 @@ public final class EntityAddress extends AbstractDataTransferObject
     private final String countryCodeUnmasked;
     @XmlElement(name = Elements.ADDRESS_FORMAT, required = false)
     private final String addressFormat;
+    @XmlElement(name = Elements.MODIFIED_DATE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime modifiedDate;
+    @XmlElement(name = Elements.VALIDATED_DATE, required = false)
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private final DateTime validatedDate;
+    @XmlElement(name = Elements.VALIDATED, required = false)
+    private final boolean validated;
+    @XmlElement(name = Elements.NOTE_MESSAGE, required = false)
+    private final String noteMessage;
     @XmlElement(name = Elements.SUPPRESS_ADDRESS, required = false)
     private final boolean suppressAddress;
     @XmlElement(name = Elements.DEFAULT_VALUE, required = false)
@@ -132,6 +149,10 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.postalCodeUnmasked = null;
         this.countryCodeUnmasked = null;
         this.addressFormat = null;
+        this.modifiedDate = null;
+        this.validatedDate = null;
+        this.validated = true; // assume it's valid?
+        this.noteMessage = null;
         this.suppressAddress = false;
         this.defaultValue = false;
         this.versionNumber = null;
@@ -162,6 +183,10 @@ public final class EntityAddress extends AbstractDataTransferObject
         this.postalCodeUnmasked = builder.getPostalCodeUnmasked();
         this.countryCodeUnmasked = builder.getCountryCodeUnmasked();
         this.addressFormat = builder.getAddressFormat();
+        this.modifiedDate = builder.getModifiedDate();
+        this.validatedDate = builder.getValidatedDate();
+        this.validated = builder.isValidated();
+        this.noteMessage = builder.getNoteMessage();
         this.suppressAddress = builder.isSuppressAddress();
         this.defaultValue = builder.isDefaultValue();
         this.versionNumber = builder.getVersionNumber();
@@ -271,6 +296,26 @@ public final class EntityAddress extends AbstractDataTransferObject
     }
 
     @Override
+    public DateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    @Override
+    public DateTime getValidatedDate() {
+        return validatedDate;
+    }
+
+    @Override
+    public boolean isValidated() {
+        return validated;
+    }
+
+    @Override
+    public String getNoteMessage() {
+        return noteMessage;
+    }
+
+    @Override
     public boolean isSuppressAddress() {
         return this.suppressAddress;
     }
@@ -320,6 +365,10 @@ public final class EntityAddress extends AbstractDataTransferObject
         private String postalCodeUnmasked;
         private String countryCodeUnmasked;
         private String addressFormat;
+        private DateTime modifiedDate;
+        private DateTime validatedDate;
+        private boolean validated;
+        private String noteMessage;
         private boolean suppressAddress;
         private boolean defaultValue;
         private Long versionNumber;
@@ -353,6 +402,10 @@ public final class EntityAddress extends AbstractDataTransferObject
             builder.setPostalCode(contract.getPostalCodeUnmasked());
             builder.setCountryCode(contract.getCountryCodeUnmasked());
             builder.setAddressFormat(contract.getAddressFormat());
+            builder.setModifiedDate(contract.getModifiedDate());
+            builder.setValidatedDate(contract.getValidatedDate());
+            builder.setValidated(contract.isValidated());
+            builder.setNoteMessage(contract.getNoteMessage());
             builder.setDefaultValue(contract.isDefaultValue());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -492,6 +545,26 @@ public final class EntityAddress extends AbstractDataTransferObject
         }
 
         @Override
+        public DateTime getModifiedDate() {
+            return modifiedDate;
+        }
+
+        @Override
+        public DateTime getValidatedDate() {
+            return validatedDate;
+        }
+
+        @Override
+        public boolean isValidated() {
+            return validated;
+        }
+
+        @Override
+        public String getNoteMessage() {
+            return noteMessage;
+        }
+
+        @Override
         public boolean isSuppressAddress() {
             return this.suppressAddress;
         }
@@ -569,6 +642,22 @@ public final class EntityAddress extends AbstractDataTransferObject
             this.addressFormat = addressFormat;
         }
 
+        public void setModifiedDate(DateTime modifiedDate) {
+            this.modifiedDate = modifiedDate;
+        }
+
+        public void setValidatedDate(DateTime validatedDate) {
+            this.validatedDate = validatedDate;
+        }
+
+        public void setValidated(boolean validated) {
+            this.validated = validated;
+        }
+
+        public void setNoteMessage(String noteMessage) {
+            this.noteMessage = noteMessage;
+        }
+
         private void setSuppressAddress(boolean suppressAddress) {
             this.suppressAddress = suppressAddress;
         }
@@ -636,6 +725,10 @@ public final class EntityAddress extends AbstractDataTransferObject
         final static String POSTAL_CODE_UNMASKED = "postalCodeUnmasked";
         final static String COUNTRY_CODE_UNMASKED = "countryCodeUnmasked";
         final static String ADDRESS_FORMAT= "addressFormat";
+        final static String MODIFIED_DATE = "modifiedDate";
+        final static String VALIDATED_DATE = "validatedDate";
+        final static String VALIDATED = "validated";
+        final static String NOTE_MESSAGE = "noteMessage";
         final static String SUPPRESS_ADDRESS = "suppressAddress";
         final static String DEFAULT_VALUE = "defaultValue";
         final static String ACTIVE = "active";

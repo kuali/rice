@@ -11,6 +11,7 @@ import org.kuali.rice.kim.api.identity.email.EntityEmail
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract
 import org.kuali.rice.kim.api.identity.phone.EntityPhone
 import org.kuali.rice.kim.api.identity.email.EntityEmailContract
+import org.joda.time.DateTime
 
 class EntityTypeContactInfoTest {
 
@@ -45,6 +46,10 @@ class EntityTypeContactInfoTest {
     private static final String ADDR_DEFAULT = "true"
     private static final String ADDR_ACTIVE = "true"
     private static final String ADDR_FMT = "address format"
+    private static final DateTime MODIFIED_DATE = new DateTime()
+    private static final DateTime VALIDATED_DATE = new DateTime()
+    private static final boolean VALIDATED = true
+    private static final String NOTE_MESSAGE = "note message"
     private static final Long ADDR_VERSION_NUMBER = new Integer(1);
 	private static final String ADDR_OBJECT_ID = UUID.randomUUID();
 
@@ -119,6 +124,11 @@ class EntityTypeContactInfoTest {
             <stateProvinceCodeUnmasked>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCodeUnmasked>
             <postalCodeUnmasked>${ADDR_POSTAL_CODE}</postalCodeUnmasked>
             <countryCodeUnmasked>${ADDR_COUNTRY_CODE}</countryCodeUnmasked>
+            <addressFormat>${ADDR_FMT}</addressFormat>
+            <modifiedDate>${MODIFIED_DATE}</modifiedDate>
+            <validatedDate>${VALIDATED_DATE}</validatedDate>
+            <validated>${VALIDATED}</validated>
+            <noteMessage>${NOTE_MESSAGE}</noteMessage>
             <defaultValue>${ADDR_DEFAULT}</defaultValue>
             <active>${ADDR_ACTIVE}</active>
             <versionNumber>${ADDR_VERSION_NUMBER}</versionNumber>
@@ -203,6 +213,11 @@ class EntityTypeContactInfoTest {
             <stateProvinceCodeUnmasked>${ADDR_STATE_PROVINCE_CODE}</stateProvinceCodeUnmasked>
             <postalCodeUnmasked>${ADDR_POSTAL_CODE}</postalCodeUnmasked>
             <countryCodeUnmasked>${ADDR_COUNTRY_CODE}</countryCodeUnmasked>
+            <addressFormat>${ADDR_FMT}</addressFormat>
+            <modifiedDate>${MODIFIED_DATE}</modifiedDate>
+            <validatedDate>${VALIDATED_DATE}</validatedDate>
+            <validated>${VALIDATED}</validated>
+            <noteMessage>${NOTE_MESSAGE}</noteMessage>
             <defaultValue>${ADDR_DEFAULT}</defaultValue>
             <active>${ADDR_ACTIVE}</active>
             <versionNumber>${ADDR_VERSION_NUMBER}</versionNumber>
@@ -330,6 +345,10 @@ class EntityTypeContactInfoTest {
                     def String postalCodeUnmasked = EntityTypeContactInfoTest.ADDR_POSTAL_CODE
                     def String countryCodeUnmasked = EntityTypeContactInfoTest.ADDR_COUNTRY_CODE
                     def String addressFormat = EntityTypeContactInfoTest.ADDR_FMT
+                    def DateTime modifiedDate = EntityTypeContactInfoTest.MODIFIED_DATE
+                    def DateTime validatedDate = EntityTypeContactInfoTest.VALIDATED_DATE
+                    def boolean validated = EntityTypeContactInfoTest.VALIDATED
+                    def String noteMessage = EntityTypeContactInfoTest.NOTE_MESSAGE
                     def boolean suppressAddress = EntityTypeContactInfoTest.ADDR_SUPPRESS.toBoolean()
                     def boolean defaultValue = EntityTypeContactInfoTest.ADDR_DEFAULT.toBoolean()
                     def boolean active = EntityTypeContactInfoTest.ADDR_ACTIVE.toBoolean()

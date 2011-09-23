@@ -116,6 +116,10 @@ class EntityTest {
                                 <postalCodeUnmasked>${ENTITY_TYPE.addresses.get(0).postalCodeUnmasked}</postalCodeUnmasked>
                                 <countryCodeUnmasked>${ENTITY_TYPE.addresses.get(0).countryCodeUnmasked}</countryCodeUnmasked>
                                 <addressFormat>${ENTITY_TYPE.addresses.get(0).addressFormat}</addressFormat>
+                                <modifiedDate>${ENTITY_TYPE.addresses.get(0).modifiedDate}</modifiedDate>
+                                <validatedDate>${ENTITY_TYPE.addresses.get(0).validatedDate}</validatedDate>
+                                <valid>${ENTITY_TYPE.addresses.get(0).validated}</valid>
+                                <noteMessage>${ENTITY_TYPE.addresses.get(0).noteMessage}</noteMessage>
                                 <suppressAddress>${ENTITY_TYPE.addresses.get(0).suppressAddress}</suppressAddress>
                                 <defaultValue>${ENTITY_TYPE.addresses.get(0).defaultValue}</defaultValue>
                                 <active>${ENTITY_TYPE.addresses.get(0).active}</active>
@@ -202,6 +206,10 @@ class EntityTest {
                             <postalCodeUnmasked>${ENTITY_TYPE.addresses.get(0).postalCodeUnmasked}</postalCodeUnmasked>
                             <countryCodeUnmasked>${ENTITY_TYPE.addresses.get(0).countryCodeUnmasked}</countryCodeUnmasked>
                             <addressFormat>${ENTITY_TYPE.addresses.get(0).addressFormat}</addressFormat>
+                            <modifiedDate>${ENTITY_TYPE.addresses.get(0).modifiedDate}</modifiedDate>
+                            <validatedDate>${ENTITY_TYPE.addresses.get(0).validatedDate}</validatedDate>
+                            <valid>${ENTITY_TYPE.addresses.get(0).validated}</valid>
+                            <noteMessage>${ENTITY_TYPE.addresses.get(0).noteMessage}</noteMessage>
                             <suppressAddress>${ENTITY_TYPE.addresses.get(0).suppressAddress}</suppressAddress>
                             <defaultValue>${ENTITY_TYPE.addresses.get(0).defaultValue}</defaultValue>
                             <active>${ENTITY_TYPE.addresses.get(0).active}</active>

@@ -414,6 +414,12 @@
     <field-descriptor name="line2" column="ADDR_LINE_2" jdbc-type="VARCHAR"  />
     <field-descriptor name="line3" column="ADDR_LINE_3" jdbc-type="VARCHAR"  />
     <field-descriptor name="addressFormat" column="ADDR_FMT" jdbc-type="VARCHAR"  />
+
+    <field-descriptor name="modifiedDate" column="MOD_DT" jdbc-type="DATE"  />
+    <field-descriptor name="validatedDate" column="VALID_DT" jdbc-type="DATE"  />
+    <field-descriptor name="validated" column="VALID_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
+    <field-descriptor name="noteMessage" column="NOTE_MSG" jdbc-type="VARCHAR"  />
+
     <field-descriptor name="defaultValue" column="DFLT_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />

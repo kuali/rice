@@ -5,6 +5,9 @@ import junit.framework.Assert
 import org.kuali.rice.kim.api.test.JAXBAssert
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
+import org.kuali.rice.kim.api.identity.Type
+import org.kuali.rice.kim.api.identity.TypeContract
+import org.joda.time.DateTime
 
 
 class EntityAddressTest {
@@ -26,6 +29,10 @@ class EntityAddressTest {
 	private static final String POSTAL_CODE = "55555"
     private static final String COUNTRY_CODE = "USA"
     private static final String ADDR_FMT = "address format"
+    private static final DateTime MODIFIED_DATE = new DateTime()
+    private static final DateTime VALIDATED_DATE = new DateTime()
+    private static final boolean VALIDATED = true
+    private static final String NOTE_MESSAGE = "note message"
     private static final String SUPPRESS = "false"
     private static final String DEFAULT = "true"
     private static final String ACTIVE = "true"
@@ -62,6 +69,10 @@ class EntityAddressTest {
         <postalCodeUnmasked>${POSTAL_CODE}</postalCodeUnmasked>
         <countryCodeUnmasked>${COUNTRY_CODE}</countryCodeUnmasked>
         <addressFormat>${ADDR_FMT}</addressFormat>
+        <modifiedDate>${MODIFIED_DATE}</modifiedDate>
+        <validatedDate>${VALIDATED_DATE}</validatedDate>
+        <validated>${VALIDATED}</validated>
+        <noteMessage>${NOTE_MESSAGE}</noteMessage>
         <defaultValue>${DEFAULT}</defaultValue>
         <active>${ACTIVE}</active>
         <versionNumber>${VERSION_NUMBER}</versionNumber>
@@ -120,6 +131,10 @@ class EntityAddressTest {
             def String line2Unmasked = EntityAddressTest.LINE2
             def String line3Unmasked = EntityAddressTest.LINE3
             def String cityUnmasked = EntityAddressTest.CITY
+            def DateTime modifiedDate = EntityAddressTest.MODIFIED_DATE
+            def DateTime validatedDate = EntityAddressTest.VALIDATED_DATE
+            def boolean validated = EntityAddressTest.VALIDATED
+            def String noteMessage = EntityAddressTest.NOTE_MESSAGE
             def String stateProvinceCodeUnmasked = EntityAddressTest.STATE_PROVINCE_CODE
             def String postalCodeUnmasked = EntityAddressTest.POSTAL_CODE
             def String countryCodeUnmasked = EntityAddressTest.COUNTRY_CODE

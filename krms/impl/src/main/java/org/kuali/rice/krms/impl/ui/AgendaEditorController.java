@@ -30,6 +30,7 @@ import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
+import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
@@ -48,6 +49,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Controller for the Test UI Page
@@ -1233,10 +1235,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         // Get the selected proposition id and find the node in the tree
         String selectedPropId = agendaEditor.getSelectedPropositionId();
-        Node propNode = findPropositionTreeNode(agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
+        Node propNode = findPropositionTreeNode(
+                agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
 
         // Swap out display node for edit node
         replaceWithEditNode(propNode);
+
+        // values for validTerm select
+        String contextId = agendaEditor.getAgenda().getContextId();
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contextId", contextId);
+		List<ContextValidTermBo> bos = (List<ContextValidTermBo>) getBusinessObjectService().findMatchingOrderBy(ContextValidTermBo.class, map, "termSpecificationId", true);
 
         return super.refresh(form, result, request, response);
     }

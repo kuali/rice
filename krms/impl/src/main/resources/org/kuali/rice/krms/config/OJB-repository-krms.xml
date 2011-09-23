@@ -416,4 +416,14 @@
       </reference-descriptor>
   </class-descriptor>
 
+  <class-descriptor class="org.kuali.rice.krms.impl.repository.ContextValidTermBo" table="KRMS_CNTXT_VLD_TERM_SPEC_T">
+      <field-descriptor name="id" column="CNTXT_TERM_SPEC_PREREQ_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_CNTXT_VLD_ACTN_S"/>
+      <field-descriptor name="contextId" column="CNTXT_ID" jdbc-type="VARCHAR" />
+      <field-descriptor name="termSpecificationId" column="TERM_SPEC_ID" jdbc-type="VARCHAR" />
+<!--      <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" /> -->
+      <reference-descriptor name="termSpecification" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+          <foreignkey field-ref="termSpecificationId" />
+      </reference-descriptor>
+  </class-descriptor>
+
 </descriptor-repository>

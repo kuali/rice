@@ -31,16 +31,19 @@ import java.util.List;
  *
  */
 public class ValidTermsValuesFinder extends KeyValuesBase {
+    // TODO: STATIC List is NOT going to work.
 
-    private static final List<KeyValue> LABELS;
+    private static List<KeyValue> LABELS;
     static {
         final List<KeyValue> labels = new ArrayList<KeyValue>( 2 );
 
         //TODO: get the list of valid terms for this context.
         labels.add(new ConcreteKeyValue("001", "campusCodeTermSpec"));  // stub
 
+
         LABELS = Collections.unmodifiableList(labels);
     }
+
     
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
@@ -48,5 +51,9 @@ public class ValidTermsValuesFinder extends KeyValuesBase {
     @Override
     public List<KeyValue> getKeyValues() {
         return LABELS;
-    }    
+    }
+
+    public static void setLabels(List<KeyValue> labels){
+        LABELS = Collections.unmodifiableList(labels);
+    }
 }

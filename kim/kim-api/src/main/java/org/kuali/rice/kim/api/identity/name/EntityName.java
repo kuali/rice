@@ -21,8 +21,6 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
-import org.kuali.rice.kim.api.identity.Type;
-import org.kuali.rice.kim.api.identity.TypeContract;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;

@@ -5,8 +5,6 @@ import junit.framework.Assert
 import org.kuali.rice.kim.api.test.JAXBAssert
 import org.kuali.rice.kim.api.identity.CodedAttribute
 import org.kuali.rice.kim.api.identity.CodedAttributeContract
-import org.kuali.rice.kim.api.identity.Type
-import org.kuali.rice.kim.api.identity.TypeContract
 import org.joda.time.DateTime
 
 

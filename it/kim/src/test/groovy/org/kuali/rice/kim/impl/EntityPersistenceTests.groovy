@@ -20,23 +20,23 @@ class EntityPersistenceTests extends BoPersistenceTest {
         assertRow(standard_fields(entity) + [ ENTITY_ID: entity.id ], "KRIM_ENTITY_T", "ENTITY_ID")
 
         def bio = entity.bioDemographics
-        def born = bio.birthDateValue
-        born.clearTime()
-        def died = bio.deceasedDateValue
-        died.clearTime()
+        //def born = bio.birthDateValue
+        //born.clearTime()
+        //def died = bio.deceasedDateValue
+        //died.clearTime()
 
         // assert entity bio demographics row
         assertRow(basic_fields(bio) + [
             ENTITY_ID: entity.id,
             SEC_LANG_CD: bio.secondaryLanguageCode,
             MARITAL_STATUS: bio.maritalStatusCode,
-            DECEASED_DT: new java.sql.Timestamp(died.time),
+            DECEASED_DT: toDbTimestamp(bio.deceasedDateValue.time),
             BIRTH_CITY: bio.birthCity,
             GEO_ORIGIN: bio.geographicOrigin,
             PRIM_LANG_CD: bio.primaryLanguageCode,
             GNDR_CD: bio.genderCode,
             GNDR_CHG_CD: bio.genderChangeCode,
-            BIRTH_DT: new java.sql.Timestamp(born.time),
+            BIRTH_DT: toDbTimestamp(bio.birthDateValue.time),
             BIRTH_STATE_PVC_CD: bio.birthStateProvinceCode,
             BIRTH_CNTRY_CD: bio.birthCountry,
             NOTE_MSG: bio.noteMessage

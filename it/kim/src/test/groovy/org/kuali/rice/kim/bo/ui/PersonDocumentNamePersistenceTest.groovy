@@ -29,7 +29,7 @@ class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
             lastName: name.lastNameUnmasked,
             nameSuffix: name.nameSuffixUnmasked,
             entityNameType: name.nameType,
-            nameChangedDate: new java.sql.Timestamp(new Date().time),
+            nameChangedDate: genDbTimestamp(),
             nameCode: name.nameType.code
         ])
 
@@ -44,7 +44,7 @@ class PersonDocumentNamePersistenceTest extends BoPersistenceTest {
             LAST_NM: pdn.lastName,
             SUFFIX_NM: pdn.nameSuffix,
             NOTE_MSG: pdn.noteMessage,
-            NM_CHNG_DT: toDbTimestamp(pdn.nameChangedDate.time),
+            NM_CHNG_DT: toDbTimestamp(pdn.nameChangedDate),
             NM_TYP_CD: pdn.entityNameType.code
         ],
         "KRIM_PND_NM_MT", "ENTITY_NM_ID")

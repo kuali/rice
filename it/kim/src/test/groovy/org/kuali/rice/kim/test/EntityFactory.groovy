@@ -43,10 +43,10 @@ class EntityFactory extends Factory {
     def EntityBioDemographicsBo(Map fields) {
         def now = new java.sql.Date(new Date().time)
         def values = [
-            birthDateValue: now,
+            birthDateValue: new java.sql.Date(genDbTimestamp().time),
             genderCode: "M",
             genderChangeCode: "...",
-            deceasedDateValue: new java.sql.Date((long) (now.time + (1000L * 60 * 60 * 24 * 365 * 80))),
+            deceasedDateValue: new java.sql.Date((long) (genDbTimestamp().time + (1000L * 60 * 60 * 24 * 365 * 80))),
             maritalStatusCode: "S",
             primaryLanguageCode: "EN",
             secondaryLanguageCode: "FR",
@@ -78,8 +78,8 @@ class EntityFactory extends Factory {
            id: Factory.makeId(),
            addressTypeCode: KimConstants.AddressTypes.HOME,
            attentionLine: "attn line",
-           modifiedDate: new Timestamp(new Date().time),
-           validatedDate: new Timestamp(new Date().time),
+           modifiedDate: genDbTimestamp(),
+           validatedDate: genDbTimestamp(),
            validated: true,
            noteMessage: "note message",
            addressFormat: "address format",
@@ -145,10 +145,12 @@ class EntityFactory extends Factory {
             lastName: "Smith",
             nameSuffix: "Jr.",
             noteMessage: "note message",
-            nameChangedDate: new Timestamp(new Date().time),
+            nameChangedDate: genDbTimestamp(),
             nameType: new EntityNameTypeBo(code: KimConstants.NameTypes.PRIMARY),
             nameCode: KimConstants.NameTypes.PRIMARY
         ]
+        println "FACTORY NAME CHANGE DATE:"
+        println values['nameChangedDate']
         new EntityNameBo(mergeAndLink('entity', fields, values))
     };
 
@@ -171,5 +173,12 @@ class EntityFactory extends Factory {
         ]
         fields.putAll(values)
         new EntityBo(fields)
+    }
+
+    protected def genDbTimestamp() {
+        // this should not be rocket science but we have to deal
+        // but it appears mysql (driver?) is truncating time component of datetimes
+        // so we can only portably test timestamps without times...
+        new Timestamp(new Date().clearTime().time)
     }
 }

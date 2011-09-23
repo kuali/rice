@@ -43,6 +43,9 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject
 import org.kuali.rice.kim.bo.ui.KimDocumentBoActivatableEditableBase
 import org.joda.time.DateTime
 import java.sql.Timestamp
+import org.springframework.jdbc.support.rowset.SqlRowSet
+import org.springframework.jdbc.core.RowCallbackHandler
+import java.sql.ResultSet
 
 /**
  * Tests persisting Entity objects in order to verify ORM mappings
@@ -51,7 +54,7 @@ abstract class BoPersistenceTest extends KIMTestCase {
 
     protected BusinessObjectService boService;
     protected factory = new EntityFactory()
-    protected def datasource;
+    protected DataSource datasource;
 
     @Before
     void init() {
@@ -85,6 +88,13 @@ abstract class BoPersistenceTest extends KIMTestCase {
 
     protected def standard_fields(PersistableBusinessObject bo) {
         active_field(bo) + basic_fields(bo)
+    }
+
+    protected def genDbTimestamp() {
+        // this should not be rocket science but we have to deal
+        // but it appears mysql (driver?) is truncating time component of datetimes
+        // so we can only portably test timestamps without times...
+        new Timestamp(new Date().clearTime().time)
     }
 
     protected def toDbTimestamp(DateTime datetime) {

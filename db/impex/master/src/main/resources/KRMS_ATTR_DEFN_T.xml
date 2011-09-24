@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q1001" LBL="PeopleFlow ID"
+        NM="peopleFlowId" NMSPC_CD="KRMS" VER_NBR="1"/>
+    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q33001" LBL="Event Name"
+        NM="Event" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
+    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q44001"
+        LBL="Context 1 Qualifier" NM="Context1Qualifier"
+        NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
+</dataset>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRMS_AGENDA_ATTR_T AGENDA_ATTR_ID="AGENDA_ATTR1"
+        AGENDA_ID="AGENDA301" ATTR_DEFN_ID="Q33001"
+        ATTR_VAL="EARTHQUAKE" VER_NBR="1"/>
+</dataset>

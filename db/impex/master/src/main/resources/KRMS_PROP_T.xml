@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE dataset SYSTEM "data.dtd">
+<dataset>
+    <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
+        PROP_ID="P101" RULE_ID="R201" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
+        PROP_ID="P2" RULE_ID="R2" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
+        PROP_ID="P3" RULE_ID="R3" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
+        PROP_ID="P4" RULE_ID="R4" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_OP_CD="a" DESC_TXT="a compound prop"
+        DSCRM_TYP_CD="C" PROP_ID="P421A" RULE_ID="R421" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="a simple child to a compound prop"
+        DSCRM_TYP_CD="S" PROP_ID="P421B" RULE_ID="R421" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="2nd simple child to a compound prop "
+        DSCRM_TYP_CD="S" PROP_ID="P421C" RULE_ID="R421" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="3nd simple child to a compound prop "
+        DSCRM_TYP_CD="S" PROP_ID="P421D" RULE_ID="R421" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
+        PROP_ID="P5" RULE_ID="R5" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
+        PROP_ID="P6" RULE_ID="R6" VER_NBR="1"/>
+    <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
+        PROP_ID="P7" RULE_ID="R7" VER_NBR="1"/>
+</dataset>

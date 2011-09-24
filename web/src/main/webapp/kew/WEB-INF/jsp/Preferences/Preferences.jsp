@@ -42,7 +42,7 @@
           <th width="50%"><div align="right">Action List Page Size</div></th>
           <td class="datacell">
             <html-el:text property="preferences.pageSize" size="3" />
-            <kul:checkErrors keyMatch="preferences.refreshRate" />
+            <kul:checkErrors keyMatch="preferences.pageSize" />
             <c:if test="${hasErrors}">
               <kul:fieldShowErrorIcon />
             </c:if>

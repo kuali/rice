@@ -59,7 +59,7 @@ public final class ActionItem
     private final String docTitle;
     @XmlElement(name = Elements.DOC_LABEL, required = true)
     private final String docLabel;
-    @XmlElement(name = Elements.DOC_HANDLER_U_R_L, required = false)
+    @XmlElement(name = Elements.DOC_HANDLER_U_R_L, required = true)
     private final String docHandlerURL;
     @XmlElement(name = Elements.DOC_NAME, required = true)
     private final String docName;
@@ -447,6 +447,9 @@ public final class ActionItem
         }
 
         public void setDocHandlerURL(String docHandlerURL) {
+            if (StringUtils.isBlank(docHandlerURL)) {
+                throw new IllegalArgumentException("docHandlerURL is blank");
+            }
             this.docHandlerURL = docHandlerURL;
         }
 

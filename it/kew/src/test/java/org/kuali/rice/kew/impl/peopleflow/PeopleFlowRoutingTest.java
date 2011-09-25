@@ -257,8 +257,34 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         assertApproveRequested(document, user1, user2);
         assertApproveNotRequested(document, testuser1, testuser2, testuser3, ewestfal);
 
-        // TODO...
+        // approve as user1 and user2
+        document.switchPrincipal(user1);
+        document.approve("");
+        assertApproveRequested(document, user2);
+        assertApproveNotRequested(document, user1);
+        document.switchPrincipal(user2);
+        document.approve("");
+        assertTrue(document.isEnroute());
 
+        assertApproveRequested(document, testuser1, testuser2);
+        assertApproveNotRequested(document, user1, user2, testuser3, ewestfal);
+
+        // approve as testuser1 and testuser2
+        document.switchPrincipal(testuser1);
+        document.approve("");
+        document.switchPrincipal(testuser2);
+        document.approve("");
+        assertTrue(document.isEnroute());
+
+        assertApproveRequested(document, testuser3, ewestfal);
+        assertApproveNotRequested(document, user1, user2, testuser1, testuser2);
+
+        // now approve as ewestfal and testuser3, then doc should be final
+        document.switchPrincipal(testuser3);
+        document.approve("");
+        document.switchPrincipal(ewestfal);
+        document.approve("");
+        assertTrue(document.isFinal());
     }
 
     private void assertApproveRequested(WorkflowDocument document, String... principalIds) {
@@ -274,7 +300,5 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
             assertFalse("Approve should *NOT* have been requested for '" + principalId + "'", document.isApprovalRequested());
         }
     }
-
-
 
 }

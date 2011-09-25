@@ -466,6 +466,11 @@ public final class KEWConstants {
     public static final String ROUTE_LEVEL_PARALLEL_NAME = "Parallel";
     public static final String ROUTE_LEVEL_PARALLEL_LABEL = "PARALLEL";
 
+    /** Routing should process the associated ActionRequests in parallel accoring to priority */
+    public static final String ROUTE_LEVEL_PRIORITY_PARALLEL = "R";
+    public static final String ROUTE_LEVEL_PRIORITY_PARALLEL_NAME = "Priority-Parallel";
+    public static final String ROUTE_LEVEL_PRIORITY_PARALLEL_LABEL = "PRIORITY-PARALLEL";
+
     public static final boolean ACTION_REQUEST_FORCE_ACTION = true;
     public static final boolean ACTION_REQUEST_PREV_ACTION_AWARE = false;
         

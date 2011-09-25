@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -76,17 +78,18 @@ public class RequestActivationNode extends RequestActivationNodeBase {
     }
 
     /**
-     * Activates the action requests that are pending at this routelevel of the document. The requests are processed by priority and then request ID. It is implicit in the access that the requests are activated according to the route level above all.
-     * <p>
-     * FYI and acknowledement requests do not cause the processing to stop. Only action requests for approval or completion cause the processing to stop and then only for route level with a serialized activation policy. Only requests at the current document's current route level are activated. Inactive requests at a lower level cause a routing exception.
-     * <p>
-     * Exception routing and adhoc routing are processed slightly differently.
+     * Activates the action requests that are pending at this routelevel of the document. The requests are processed by
+     * priority and then request ID. It is implicit in the access that the requests are activated according to the route
+     * level above all.
+     *
+     * <p>FYI and acknowledement requests do not cause the processing to stop. Only action requests for approval or
+     * completion cause the processing to stop and then only for route level with a serialized or priority-parallel
+     * activation policy. Only requests at the current document's current route level are activated. Inactive requests
+     * at a lower level cause a routing exception.</p>
+     *
+     * <p>Exception routing and adhoc routing are processed slightly differently.</p>
      * 
-     * @param rh
-     *            RouteHeaderBean object for which requests are activated
-     * @return True if the any approval actions were activated.
-     * @throws ResourceUnavailableException
-     * @throws WorkflowException
+     * @return true if the any approval actions were activated.
      */
     public boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
         MDC.put("docId", document.getDocumentId());
@@ -124,26 +127,40 @@ public class RequestActivationNode extends RequestActivationNodeBase {
     		DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
         Collections.sort(requests, new Utilities.PrioritySorter());
         String activationType = nodeInstance.getRouteNode().getActivationType();
+        if (StringUtils.isBlank(activationType)) {
+            // not sure if this is really necessary, but preserves behavior prior to introduction of priority-parallel activation
+            activationType = KEWConstants.ROUTE_LEVEL_SEQUENCE;
+        }
         boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
+        boolean isPriorityParallel = KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL.equals(activationType);
+        boolean isSequential = KEWConstants.ROUTE_LEVEL_SEQUENCE.equals(activationType);
+
         boolean activatedApproveRequest = false;
-        for (ActionRequestValue request : requests ) {
-            if (activatedApproveRequest && !isParallel && (!context.isSimulation() || !context.getActivationContext().isActivateRequests() )) {
-                break;
+        if (CollectionUtils.isNotEmpty(requests)) {
+            // if doing priority-parallel
+            int currentPriority = requests.get(0).getPriority();
+            for (ActionRequestValue request : requests ) {
+                if (request.getParentActionRequest() != null || request.getNodeInstance() == null) {
+                    // 1. disregard request if it's not a top-level request
+                    // 2. disregard request if it's a "future" request and hasn't been attached to a node instance yet
+                    continue;
+                }
+                if (activatedApproveRequest && (!context.isSimulation() || !context.getActivationContext().isActivateRequests())) {
+                    if (isSequential || (isPriorityParallel && request.getPriority() != currentPriority)) {
+                        break;
+                    }
+                }
+                currentPriority = request.getPriority();
+                if (request.isActive()) {
+                    activatedApproveRequest = activatedApproveRequest || request.isApproveOrCompleteRequest();
+                    continue;
+                }
+                logProcessingMessage(request);
+                if ( LOG.isDebugEnabled() ) {
+            	    LOG.debug("Activating request: " + request);
+                }
+                activatedApproveRequest = activateRequest(context, request, nodeInstance, generatedActionItems) || activatedApproveRequest;
             }
-            if (request.getParentActionRequest() != null || request.getNodeInstance() == null) {
-                // 1. disregard request if it's not a top-level request
-                // 2. disregard request if it's a "future" request and hasn't been attached to a node instance yet
-                continue; 
-            }
-            if (request.isActive()) {
-                activatedApproveRequest = activatedApproveRequest || request.isApproveOrCompleteRequest();
-                continue;
-            }
-            logProcessingMessage(request);   
-            if ( LOG.isDebugEnabled() ) {
-            	LOG.debug("Activating request: " + request);
-            }
-            activatedApproveRequest = activateRequest(context, request, nodeInstance, generatedActionItems) || activatedApproveRequest;
         }
         return activatedApproveRequest;
     }

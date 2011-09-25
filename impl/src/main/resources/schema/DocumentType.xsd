@@ -976,12 +976,16 @@ Definitions are applied to the names in the routeNodes section.
       <enumeration value="s"/>
       <enumeration value="P"/>
       <enumeration value="p"/>
+      <enumeration value="R"/>
+      <enumeration value="r"/>
       <enumeration value="SEQUENTIAL"/>
       <enumeration value="sequential"/>
       <enumeration value="SEQUENCE"/>
       <enumeration value="sequence"/>
       <enumeration value="PARALLEL"/>
       <enumeration value="parallel"/>
+      <enumeration value="PRIORITY-PARALLEL"/>
+      <enumeration value="priority-parallel"/>
     </restriction>
   </simpleType>
 

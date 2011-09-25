@@ -31,6 +31,8 @@ public final class ActivationTypeEnum implements Coded {
     public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_SEQUENCE, KEWConstants.ROUTE_LEVEL_SEQUENTIAL_NAME, KEWConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
     /** Routing should process the associated ActionRequests in parallel */
     public static final ActivationTypeEnum PARALLEL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_PARALLEL, KEWConstants.ROUTE_LEVEL_PARALLEL_NAME, KEWConstants.ROUTE_LEVEL_PARALLEL_LABEL);
+    /** Routing should process the associated ActionRequests in parallel according to priority */
+    public static final ActivationTypeEnum PRIORITY_PARALLEL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL, KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_NAME, KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_LABEL);
 
     private final String code;
     private final String name;
@@ -72,6 +74,8 @@ public final class ActivationTypeEnum implements Coded {
             return SEQUENTIAL;
         } else if (PARALLEL.code.equals(code)) {
             return PARALLEL;
+        } else if (PRIORITY_PARALLEL.code.equals(code)) {
+            return PRIORITY_PARALLEL;
         } else {
             throw new IllegalArgumentException("Invalid activation code: '" + code + "'");
         }
@@ -96,6 +100,10 @@ public final class ActivationTypeEnum implements Coded {
             PARALLEL.name.equalsIgnoreCase(string) ||
             PARALLEL.label.equalsIgnoreCase(string)) {
             return PARALLEL;
+        } else if (PRIORITY_PARALLEL.code.equalsIgnoreCase(string) ||
+            PRIORITY_PARALLEL.name.equalsIgnoreCase(string) ||
+            PRIORITY_PARALLEL.label.equalsIgnoreCase(string)) {
+            return PRIORITY_PARALLEL;
         } else {
             throw new IllegalArgumentException("Invalid activation type: '" + string + "'");
         }

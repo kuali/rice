@@ -117,6 +117,7 @@ public class CodeTranslator {
     	Map<String, String> newActivationPolicyLabels = new HashMap<String, String>();
         newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_PARALLEL, KEWConstants.ROUTE_LEVEL_PARALLEL_LABEL);
         newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_SEQUENCE, KEWConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
+        newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL, KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_LABEL);
         return newActivationPolicyLabels;
     }
 

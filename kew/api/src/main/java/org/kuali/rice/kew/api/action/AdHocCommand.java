@@ -34,6 +34,7 @@ import org.w3c.dom.Element;
 @XmlType(name = AdHocCommand.Constants.TYPE_NAME, propOrder = {
 		AdHocCommand.Elements.ACTION_REQUESTED_CODE,
 		AdHocCommand.Elements.NODE_NAME,
+        AdHocCommand.Elements.PRIORITY,
 		AdHocCommand.Elements.RESPONSIBILITY_DESCRIPTION,
 		AdHocCommand.Elements.FORCE_ACTION,
 		AdHocCommand.Elements.REQUEST_LABEL,
@@ -48,7 +49,10 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
 	
 	@XmlElement(name = Elements.NODE_NAME, required = false)
 	private final String nodeName;
-	
+
+    @XmlElement(name = Elements.PRIORITY, required = false)
+	private final Integer priority;
+
 	@XmlElement(name = Elements.RESPONSIBILITY_DESCRIPTION, required = false)
 	private final String responsibilityDescription;
 	
@@ -65,6 +69,7 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
     protected AdHocCommand() {
     	this.actionRequestedCode = null;
     	this.nodeName = null;
+        this.priority = null;
     	this.responsibilityDescription = null;
     	this.forceAction = false;
     	this.requestLabel = null;
@@ -73,6 +78,7 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
     protected AdHocCommand(Builder<?> builder) {
     	this.actionRequestedCode = builder.getActionRequested().getCode();
     	this.nodeName = builder.getNodeName();
+        this.priority = builder.getPriority();
     	this.responsibilityDescription = builder.getResponsibilityDescription();
     	this.forceAction = builder.isForceAction();
     	this.requestLabel = builder.getRequestLabel();
@@ -86,7 +92,11 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
 		return nodeName;
 	}
 
-	public String getResponsibilityDescription() {
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public String getResponsibilityDescription() {
 		return responsibilityDescription;
 	}
 
@@ -104,6 +114,7 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
 
 		private ActionRequestType actionRequested;
     	private String nodeName;
+        private Integer priority;
     	private String responsibilityDescription;
     	private boolean forceAction;
     	private String requestLabel;
@@ -124,7 +135,11 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
 			return nodeName;
 		}
 
-		public String getResponsibilityDescription() {
+        public Integer getPriority() {
+            return priority;
+        }
+
+        public String getResponsibilityDescription() {
 			return responsibilityDescription;
 		}
 
@@ -147,7 +162,11 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
 			this.nodeName = nodeName;
 		}
 
-		public void setResponsibilityDescription(String responsibilityDescription) {
+        public void setPriority(Integer priority) {
+            this.priority = priority;
+        }
+
+        public void setResponsibilityDescription(String responsibilityDescription) {
 			this.responsibilityDescription = responsibilityDescription;
 		}
 
@@ -175,6 +194,7 @@ abstract class AdHocCommand extends AbstractDataTransferObject {
     static class Elements {
         final static String ACTION_REQUESTED_CODE = "actionRequestedCode";
         final static String NODE_NAME = "nodeName";
+        final static String PRIORITY = "priority";
         final static String RESPONSIBILITY_DESCRIPTION = "responsibilityDescription";
         final static String FORCE_ACTION = "forceAction";
         final static String REQUEST_LABEL = "requestLabel";

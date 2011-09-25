@@ -43,6 +43,7 @@ public class AdHocAction extends ActionTakenEvent {
 
 	private String actionRequested;
 	private String nodeName;
+    private Integer priority;
 	private String responsibilityDesc;
 	private Boolean forceAction;
 	private Recipient recipient;
@@ -53,10 +54,11 @@ public class AdHocAction extends ActionTakenEvent {
         super(NO_ACTION_TAKEN_CODE, routeHeader, principal);
     }
 
-	public AdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String actionRequested, String nodeName, Recipient recipient, String responsibilityDesc, Boolean forceAction, String requestLabel) {
+	public AdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String actionRequested, String nodeName, Integer priority, Recipient recipient, String responsibilityDesc, Boolean forceAction, String requestLabel) {
 		super(NO_ACTION_TAKEN_CODE, routeHeader, principal, annotation);
 		this.actionRequested = actionRequested;
 		this.nodeName = nodeName;
+        this.priority = priority;
 		this.responsibilityDesc = responsibilityDesc;
 		this.forceAction = forceAction;
 		this.recipient = recipient;
@@ -154,6 +156,9 @@ public class AdHocAction extends ActionTakenEvent {
                     adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, forceAction, annotation);
                     adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
                     adhocRequest.setRequestLabel(requestLabel);
+                    if (priority != null) {
+                        adhocRequest.setPriority(priority);
+                    }
                 } else {
                     adhocRequest.setActionRequested(actionRequested);
                 }

@@ -39,7 +39,7 @@ import java.util.Iterator;
 /**
  * A node which will generate an FYI request to a university ID specified in the document content.
  *
- * @deprecated Use {@link UniversityIdRoleAttribute} instead
+ * @deprecated Use {@link org.kuali.rice.kew.rule.UniversityIdRoleAttribute} instead
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -68,7 +68,7 @@ public class FYIByUniversityId extends RequestActivationNode {
                				throw new WorkflowRuntimeException("Failed to locate a Person with the given employee ID: " + employeeId);
                			}
                			if (!context.isSimulation()) {
-               				KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(person.getPrincipalId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, "Notification Request", person.getPrincipalId(), "Notification Request", true, null);
+               				KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(person.getPrincipalId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, null, "Notification Request", person.getPrincipalId(), "Notification Request", true, null);
                			}
                			//wfDoc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new EmplIdVO(field.getChildText("value")), "Notification Request", true);
                 		LOG.debug("Sent FYI using the adHocRouteDocumentToPrincipal function to UniversityID:  " + person.getEmployeeId());

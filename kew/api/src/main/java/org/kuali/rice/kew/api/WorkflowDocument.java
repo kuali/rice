@@ -24,6 +24,8 @@ import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
+import org.kuali.rice.kew.api.action.AdHocToGroup;
+import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.action.ReturnPoint;
@@ -151,6 +153,8 @@ public interface WorkflowDocument extends DocumentContract {
 			String responsibilityDescription, boolean forceAction,
 			String requestLabel);
 
+    void adHocToPrincipal(AdHocToPrincipal adHocToPrincipal, String annotation);
+
 	void adHocToGroup(ActionRequestType actionRequested, String annotation,
 			String targetGroupId, String responsibilityDescription,
 			boolean forceAction);
@@ -163,6 +167,8 @@ public interface WorkflowDocument extends DocumentContract {
 			String annotation, String targetGroupId,
 			String responsibilityDescription, boolean forceAction,
 			String requestLabel);
+
+    void adHocToGroup(AdHocToGroup adHocToGroup, String annotation);
 
 	void revokeAdHocRequestById(String actionRequestId, String annotation);
 

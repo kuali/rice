@@ -143,20 +143,20 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 	return finish(routeHeader);
  	 }
 
-	public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String targetPrincipalId,
+	public DocumentRouteHeaderValue adHocRouteDocumentToPrincipal(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, Integer priority, String annotation, String targetPrincipalId,
 			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		Principal principal = loadPrincipal(principalId);
 		Recipient recipient = KEWServiceLocator.getIdentityHelperService().getPrincipalRecipient(targetPrincipalId);
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, priority, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);
 	}
 
-	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, String annotation, String groupId,
+	public DocumentRouteHeaderValue adHocRouteDocumentToGroup(String principalId, DocumentRouteHeaderValue document, String actionRequested, String nodeName, Integer priority, String annotation, String groupId,
 			String responsibilityDesc, Boolean forceAction, String requestLabel) throws WorkflowException {
 		Principal principal = loadPrincipal(principalId);
 		final Recipient recipient = new KimGroupRecipient(KimApiServiceLocator.getGroupService().getGroup(groupId));
-		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, recipient, responsibilityDesc, forceAction, requestLabel);
+		AdHocAction action = new AdHocAction(document, principal, annotation, actionRequested, nodeName, priority, recipient, responsibilityDesc, forceAction, requestLabel);
 		action.performAction();
 		return finish(document);
 	}

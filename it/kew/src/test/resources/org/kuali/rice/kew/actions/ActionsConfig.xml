@@ -709,6 +709,24 @@
 			</routeNodes>
 		</documentType>
 
+    <!-- Document for testing Parallel-Priority activation in conjuction with adhoc requests -->
+    <documentType>
+      <name>AdhocRouteTest-PriorityParallel</name>
+      <docHandler>_blank</docHandler>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <!-- This is the Priority-Parallel activation type, new in Rice 2.0 -->
+          <activationType>R</activationType>
+        </start>
+      </routeNodes>
+    </documentType>
+
+
 		<!--  preapproval test document type -->
 
 		<documentType>

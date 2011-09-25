@@ -434,6 +434,13 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
+    public void adHocToPrincipal(AdHocToPrincipal adHocToPrincipal, String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().adHocToPrincipal(
+                constructDocumentActionParameters(annotation), adHocToPrincipal);
+        resetStateAfterAction(result);
+    }
+
+    @Override
     public void adHocToGroup(ActionRequestType actionRequested, String annotation, String targetGroupId,
             String responsibilityDescription, boolean forceAction) {
         adHocToGroup(actionRequested, null, annotation, targetGroupId, responsibilityDescription, forceAction);
@@ -454,6 +461,13 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         builder.setRequestLabel(requestLabel);
         DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(
                 constructDocumentActionParameters(annotation), builder.build());
+        resetStateAfterAction(result);
+    }
+
+    @Override
+    public void adHocToGroup(AdHocToGroup adHocToGroup, String annotation) {
+        DocumentActionResult result = getWorkflowDocumentActionsService().adHocToGroup(
+                constructDocumentActionParameters(annotation), adHocToGroup);
         resetStateAfterAction(result);
     }
 

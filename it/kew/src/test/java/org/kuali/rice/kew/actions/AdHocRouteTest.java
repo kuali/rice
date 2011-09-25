@@ -23,6 +23,8 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.AdHocToPrincipal;
+import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -45,6 +47,7 @@ public class AdHocRouteTest extends KEWTestCase {
 
 	private static final String ADHOC_DOC = "AdhocRouteTest";
 	private static final String ADHOC_NO_NODE_DOC = "AdHocNoNodeTest";
+    private static final String ADHOC_PRIORITY_PARALLEL_DOC = "AdhocRouteTest-PriorityParallel";
 	private String docId;
 
     protected void loadTestData() throws Exception {
@@ -544,6 +547,124 @@ public class AdHocRouteTest extends KEWTestCase {
 	        //assertEquals("ActionItem should be constructed from request.", actionRequest.getActionRequestId(), actionItem.getActionRequestId());
 	        //assertEquals("ActionItem should have same label", label, actionItem.getRequestLabel());
 	    }
+
+    /**
+     * This test allows us to ensure that Priority-Parallel activation is working as expected.
+     */
+    @Test
+    public void testAdHocWithPriorityParallelActivation() throws Exception {
+        String user1 = getPrincipalIdForName("user1");
+        String user2 = getPrincipalIdForName("user2");
+        String user3 = getPrincipalIdForName("user3");
+        String testuser1 = getPrincipalIdForName("testuser1");
+        String testuser2 = getPrincipalIdForName("testuser2");
+        String testuser3 = getPrincipalIdForName("testuser3");
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1, ADHOC_PRIORITY_PARALLEL_DOC);
+
+        // create adhoc requests as follows:
+        // @Priority 1:
+        //      * ACK to user2
+        // @Priority 2:
+        //      * APPROVE to user3
+        //      * APPROVE to testuser1
+        //      * ACK to testuser2
+        // @Priority 3:
+        //      * FYI to testuser3
+        AdHocToPrincipal.Builder adHocToPrincipal = AdHocToPrincipal.Builder.create(ActionRequestType.ACKNOWLEDGE, null, user2);
+        adHocToPrincipal.setPriority(1);
+        document.adHocToPrincipal(adHocToPrincipal.build(), "");
+
+        adHocToPrincipal.setPriority(2);
+        adHocToPrincipal.setActionRequested(ActionRequestType.APPROVE);
+        adHocToPrincipal.setTargetPrincipalId(user3);
+        document.adHocToPrincipal(adHocToPrincipal.build(), "");
+
+        adHocToPrincipal.setTargetPrincipalId(testuser1);
+        document.adHocToPrincipal(adHocToPrincipal.build(), "");
+
+        adHocToPrincipal.setActionRequested(ActionRequestType.ACKNOWLEDGE);
+        adHocToPrincipal.setTargetPrincipalId(testuser2);
+        document.adHocToPrincipal(adHocToPrincipal.build(), "");
+
+        adHocToPrincipal.setPriority(3);
+        adHocToPrincipal.setActionRequested(ActionRequestType.FYI);
+        adHocToPrincipal.setTargetPrincipalId(testuser3);
+        document.adHocToPrincipal(adHocToPrincipal.build(), "");
+
+        // now let's route the document
+        document.route("");
+        assertTrue(document.isEnroute());
+
+        // check that our action requests are correct
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 5 root action requests", 5, rootActionRequests.size());
+        ActionRequest user2Request = null;
+        ActionRequest user3Request = null;
+        ActionRequest testuser1Request = null;
+        ActionRequest testuser2Request = null;
+        ActionRequest testuser3Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            if (user2.equals(actionRequest.getPrincipalId())) {
+                user2Request = actionRequest;
+            } else if (user3.equals(actionRequest.getPrincipalId())) {
+                user3Request = actionRequest;
+            } else if (testuser1.equals(actionRequest.getPrincipalId())) {
+                testuser1Request = actionRequest;
+            } else if (testuser2.equals(actionRequest.getPrincipalId())) {
+                testuser2Request = actionRequest;
+            } else if (testuser3.equals(actionRequest.getPrincipalId())) {
+                testuser3Request = actionRequest;
+            }
+        }
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user2Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user2Request.getStatus());
+        assertNotNull(user3Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user3Request.getStatus());
+        assertNotNull(testuser1Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, testuser1Request.getStatus());
+        assertNotNull(testuser2Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, testuser2Request.getStatus());
+        assertNotNull(testuser3Request);
+        assertEquals(ActionRequestStatus.INITIALIZED, testuser3Request.getStatus());
+
+        // now let's approve for user3
+        document.switchPrincipal(user3);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+        assertTrue(document.isEnroute());
+
+        // make sure the fyi to testuser3 still hasn't been activated yet
+        document.switchPrincipal(testuser3);
+        assertFalse(document.isFYIRequested());
+
+        // approve for testuser1
+        document.switchPrincipal(testuser1);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+
+        // document should now be in processed status
+        assertTrue(document.isProcessed());
+
+        // ...and fyi to testuser3 should be activated now, go ahead and clear that fyi
+        document.switchPrincipal(testuser3);
+        assertTrue(document.isFYIRequested());
+        document.fyi();
+
+        // clear out the remaning ack requests
+        assertTrue(document.isProcessed());
+        document.switchPrincipal(user2);
+        assertTrue(document.isAcknowledgeRequested());
+        document.acknowledge("");
+        assertTrue(document.isProcessed());
+        document.switchPrincipal(testuser2);
+        assertTrue(document.isAcknowledgeRequested());
+        document.acknowledge("");
+
+        // document should now be final
+        assertTrue(document.isFinal());
+    }
 
 	
     private WorkflowDocument getDocument(String netid) throws WorkflowException {

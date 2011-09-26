@@ -78,23 +78,25 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         return peopleFlowService;
     }
 
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> user1
+     * Priority 2:
+     *   -> user2
+     * Priority 3:
+     *   -> TestWorkgroup
+     *
+     * </pre>
+     */
     private void createSimplePeopleFlow() {
         PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_1);
         peopleFlow.addPrincipal(user1).setPriority(1);
         peopleFlow.addPrincipal(user2).setPriority(2);
         peopleFlow.addGroup(testWorkgroup).setPriority(3);
-        peopleFlowService.createPeopleFlow(peopleFlow.build());
-    }
-
-    private void createPriorityParallelPeopleFlow() {
-        PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
-        peopleFlow.addPrincipal(user1).setPriority(1);
-        peopleFlow.addPrincipal(user2).setPriority(1);
-        peopleFlow.addPrincipal(testuser1).setPriority(2);
-        peopleFlow.addPrincipal(testuser2).setPriority(2);
-        // add the last two at a priority which is not contiguous, should still work as expected
-        peopleFlow.addGroup(testWorkgroup).setPriority(10);
-        peopleFlow.addPrincipal(testuser3).setPriority(10);
         peopleFlowService.createPeopleFlow(peopleFlow.build());
     }
 
@@ -200,6 +202,35 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
 
         // now document should be final!
         assertTrue(document.isFinal());
+    }
+
+    /**
+     * Defines a PeopleFlow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> user1
+     *   -> user2
+     * Priority 2:
+     *   -> testuser1
+     *   -> testuser2
+     * Priority 10:
+     *   -> TestWorkgroup
+     *   -> testuser3
+     *
+     * </pre>
+     */
+    private void createPriorityParallelPeopleFlow() {
+        PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
+        peopleFlow.addPrincipal(user1).setPriority(1);
+        peopleFlow.addPrincipal(user2).setPriority(1);
+        peopleFlow.addPrincipal(testuser1).setPriority(2);
+        peopleFlow.addPrincipal(testuser2).setPriority(2);
+        // add the last two at a priority which is not contiguous, should still work as expected
+        peopleFlow.addGroup(testWorkgroup).setPriority(10);
+        peopleFlow.addPrincipal(testuser3).setPriority(10);
+        peopleFlowService.createPeopleFlow(peopleFlow.build());
     }
 
     @Test
@@ -431,7 +462,6 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
      *   -> user3
      *
      * </pre>
-     *
      */
     private void createDelegatePeopleFlow() {
         PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_1);
@@ -461,16 +491,6 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     @Test
     public void test_DelegatePeopleFlow_PriorityParallel_Approve() throws Exception {
         createDelegatePeopleFlow();
-
-        // Priority 1:
-        //   -> user1
-        //   -> user2
-        //   ----> testuser2 - primary delegate
-        // Priority 2:
-        //   -> testuser1
-        //   ----> TestWorkgroup - secondary delegate
-        //   ----> testuser3 - primary delegate
-        //   -> user3
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, DELEGATE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE);
         document.route("");

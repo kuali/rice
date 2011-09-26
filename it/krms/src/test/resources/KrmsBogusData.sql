@@ -14,6 +14,27 @@
 -- limitations under the License.
 -- 
 
+-- peopleFlowId attribute definition
+
+insert into krms_attr_defn_t
+(attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
+values('Q1001', 'peopleFlowId', 'KRMS', 'PeopleFlow ID', 'Y', 1)
+;
+
+-- Notification PeopleFlowActionType
+
+insert into krms_typ_t
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T1001', 'notificationPeopleFlowActionType', 'KRMS', 'notificationPeopleFlowActionTypeService', 'Y', 1)
+;
+
+-- Approval PeopleFlowActionType
+
+insert into krms_typ_t
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T1002', 'approvalPeopleFlowActionType', 'KRMS_TEST', 'approvalPeopleFlowActionTypeService', 'Y', 1)
+;
+
 insert into krms_attr_defn_t
 (attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
 values('Q44001', 'Context1Qualifier', 'KRMS_TEST', 'Context 1 Qualifier', 'Y', 1)
@@ -23,6 +44,7 @@ insert into krms_attr_defn_t
 (attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
 values('Q33001', 'Event', 'KRMS_TEST', 'Event Name', 'Y', 1)
 ;
+
 insert into krms_typ_t
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
 values ('T2', 'CAMPUS', 'KRMS_TEST', 'myCampusService', 'Y', 1)
@@ -31,11 +53,6 @@ values ('T2', 'CAMPUS', 'KRMS_TEST', 'myCampusService', 'Y', 1)
 insert into krms_typ_t
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
 values ('T3', 'KrmsActionResolverType', 'KRMS_TEST', 'testActionTypeService', 'Y', 1)
-;
-
-insert into krms_cntxt_vld_actn_t
-(cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr)
-values ('CONTEXT1T3', 'CONTEXT1', 'T3', 1)
 ;
 
 insert into krms_typ_t
@@ -68,6 +85,20 @@ insert into krms_cntxt_attr_t
 values('C1ATTR1', 'CONTEXT1', 'BLAH', 'Q44001', 1)
 ;
 
+insert into krms_cntxt_vld_actn_t
+(cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr)
+values ('CONTEXT1T3', 'CONTEXT1', 'T3', 1)
+;
+
+insert into krms_cntxt_vld_actn_t
+(cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr)
+values ('CONTEXT1T1001', 'CONTEXT1', 'T1001', 1)
+;
+
+insert into krms_cntxt_vld_actn_t
+(cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr)
+values ('CONTEXT1T1002', 'CONTEXT1', 'T1002', 1)
+;
 
 insert into krms_rule_t
 (rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)

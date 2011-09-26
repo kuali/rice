@@ -341,13 +341,62 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         assertNotNull(user2Request);
         assertEquals(ActionRequestStatus.INITIALIZED, user2Request.getStatus());
 
-        // TODO...
+        // now approve as user1
+        document.switchPrincipal(user1);
+        document.approve("");
+        document.switchPrincipal(user2);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+
+        // at this point, it should transition to the next people flow and generate Acknowledge requests to testuser1 and testuser2,
+        // and then generate an activated approve request to TestWorkgroup (of which "ewestfal" is a member) and then an
+        // initialized approve request to testuser3
+        assertTrue(document.isEnroute());
+        assertApproveRequested(document, ewestfal);
+        assertApproveNotRequested(document, user1, user2, testuser1, testuser2, testuser3);
+        assertAcknowledgeRequested(document, testuser1, testuser2);
+
+        // now load as ewestfal (member of TestWorkgroup) and approve
+        document.switchPrincipal(ewestfal);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+        assertTrue(document.isEnroute());
+
+        // now the only remaining approval request should be to testuser3
+        assertApproveRequested(document, testuser3);
+        // just for fun, let's take testuser2's acknowledge action
+        document.switchPrincipal(testuser2);
+        assertTrue(document.isAcknowledgeRequested());
+        document.acknowledge("");
+        assertTrue(document.isEnroute());
+
+        // testuser3 should still have an approve request, let's take it
+        assertApproveRequested(document, testuser3);
+        document.switchPrincipal(testuser3);
+        document.approve("");
+
+        // document should now be in the processed state
+        assertTrue(document.isProcessed());
+        // load the last ack to testuser1 and take it
+        document.switchPrincipal(testuser1);
+        assertTrue(document.isAcknowledgeRequested());
+        document.acknowledge("");
+
+        // now the document should be final!
+        assertTrue(document.isFinal());
     }
 
     private void assertApproveRequested(WorkflowDocument document, String... principalIds) {
         for (String principalId : principalIds) {
             document.switchPrincipal(principalId);
             assertTrue("Approve should have been requested for '" + principalId + "'", document.isApprovalRequested());
+        }
+    }
+
+    private void assertAcknowledgeRequested(WorkflowDocument document, String... principalIds) {
+        for (String principalId : principalIds) {
+            document.switchPrincipal(principalId);
+            assertTrue("Acknowledge should have been requested for '" + principalId + "'", document.isAcknowledgeRequested());
         }
     }
 

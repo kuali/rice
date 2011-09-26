@@ -48,11 +48,11 @@ public class PeopleFlowRouteModule implements RouteModule {
         List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
         int index = 0;
         for (PeopleFlowConfig configuration : configurations) {
-            if (index++ != iteration) {
-                continue;
+            if (index++ == iteration) {
+                PeopleFlowDefinition peopleFlow = loadPeopleFlow(configuration);
+                actionRequests.addAll(getPeopleFlowRequestGenerator().generateRequests(context, peopleFlow, configuration.actionRequested));
+                break;
             }
-            PeopleFlowDefinition peopleFlow = loadPeopleFlow(configuration);
-            actionRequests.addAll(getPeopleFlowRequestGenerator().generateRequests(context, peopleFlow, configuration.actionRequestType));
         }
         return actionRequests;
     }
@@ -79,9 +79,9 @@ public class PeopleFlowRouteModule implements RouteModule {
         for (Element peopleFlowElement : peopleFlowElements) {
             try {
                 PeopleFlowConfig config = (PeopleFlowConfig)jaxbContext.createUnmarshaller().unmarshal(peopleFlowElement);
-                if (config.actionRequestType == null) {
+                if (config.actionRequested == null) {
                     // default action request type to approve
-                    config.actionRequestType = ActionRequestType.APPROVE;
+                    config.actionRequested = ActionRequestType.APPROVE;
                 }
                 if (config == null) {
                     throw new IllegalStateException("People flow configuration element did not properly unmarshall from XML: " + XmlJotter.jotNode(peopleFlowElement));
@@ -148,8 +148,8 @@ public class PeopleFlowRouteModule implements RouteModule {
     @XmlRootElement(name = "peopleFlow")
     private static class PeopleFlowConfig {
 
-        @XmlElement(name = "actionRequestType")
-        ActionRequestType actionRequestType;
+        @XmlElement(name = "actionRequested")
+        ActionRequestType actionRequested;
 
         @XmlElement(name = "name") NameConfig name;
         

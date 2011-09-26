@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
 
 /**
  * This class keeps track of the KRMS Repository Services
@@ -34,11 +35,13 @@ public final class KrmsRepositoryServiceLocator {
     public static final String KRMS_CONTEXT_BO_SERVICE = "contextBoService";
     public static final String KRMS_AGENDA_BO_SERVICE = "agendaBoService";
     public static final String KRMS_RULE_BO_SERVICE = "ruleBoService";
+    public static final String KRMS_AGENDA_AUTHORIZATION_SERVICE = "agendaAuthorizationService";
 
 	private static KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private static ContextBoService contextBoService;
     private static AgendaBoService agendaBoService;
     private static RuleBoService ruleBoService;
+    private static AgendaAuthorizationService agendaAuthorizationService;
 
     public static <T extends Object> T getService(String serviceName) {
 		return KrmsRepositoryServiceLocator.<T>getBean(serviceName);
@@ -85,5 +88,12 @@ public final class KrmsRepositoryServiceLocator {
             ruleBoService = getService(KRMS_RULE_BO_SERVICE);
         }
         return ruleBoService;
+    }
+
+    public static AgendaAuthorizationService getAgendaAuthorizationService() {
+        if (agendaAuthorizationService == null) {
+            agendaAuthorizationService = getService(KRMS_AGENDA_AUTHORIZATION_SERVICE);
+        }
+        return agendaAuthorizationService;
     }
 }

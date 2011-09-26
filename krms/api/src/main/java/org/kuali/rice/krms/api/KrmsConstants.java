@@ -18,6 +18,10 @@ package org.kuali.rice.krms.api;
 import org.kuali.rice.core.api.CoreConstants;
 
 public final class KrmsConstants {
+
+    public static final String KRMS_NAMESPACE = "KR-RULE";
+    public static final String MAINTAIN_KRMS_AGENDA = "Maintain KRMS Agenda";
+
 	public final static class Namespaces {
 		
         public static final String KRMS_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/krms";

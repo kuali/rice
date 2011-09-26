@@ -120,6 +120,9 @@
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
+  <bean id="agendaAuthorizationService" class="org.kuali.rice.krms.impl.authorization.AgendaAuthorizationServiceImpl">
+  </bean>
+
   <!-- wire up services needed for execution -->
 
   <bean id="ruleRepositoryService" class="org.kuali.rice.krms.impl.repository.RuleRepositoryServiceImpl">

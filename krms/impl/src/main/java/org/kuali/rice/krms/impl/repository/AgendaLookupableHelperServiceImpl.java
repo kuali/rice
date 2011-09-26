@@ -24,6 +24,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.krad.web.form.LookupForm;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.List;
@@ -31,6 +32,34 @@ import java.util.Map;
 import java.util.Properties;
 
 public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
+
+    @Override
+    public boolean allowsMaintenanceNewOrCopyAction() {
+        boolean allowsEdit = false;
+
+        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+
+        return allowsEdit;
+    }
+
+    @Override
+    public boolean allowsMaintenanceEditAction(Object dataObject) {
+        boolean allowsEdit = false;
+
+        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+
+        return allowsEdit;
+    }
+
+    @Override
+    public boolean allowsMaintenanceDeleteAction(Object dataObject) {
+        boolean allowsMaintain = false;
+        boolean allowsDelete = false;
+
+        allowsMaintain = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+
+        return allowsDelete && allowsMaintain;
+    }
 
     @Override
     protected String getActionUrlHref(LookupForm lookupForm, Object dataObject, String methodToCall, List<String> pkNames) {

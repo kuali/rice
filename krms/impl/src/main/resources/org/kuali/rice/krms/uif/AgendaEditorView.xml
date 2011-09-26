@@ -28,8 +28,7 @@
     <property name="dataObjectClass" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
     <property name="maintainableClass" value="org.kuali.rice.krms.impl.ui.AgendaEditorMaintainable"/>
     <property name="documentTypeName" value="AgendaEditorMaintenanceDocument"/>
-    <property name="documentAuthorizerClass"
-              value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.krms.impl.authorization.AgendaEditorAuthorizer"/>
     <property name="businessRulesClass" value="org.kuali.rice.krms.impl.rule.AgendaEditorBusRule" />
     <property name="lockingKeys">
       <list>

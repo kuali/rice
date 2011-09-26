@@ -157,6 +157,24 @@
     <property name="repositoryToEngineTranslator" ref="repositoryToEngineTranslator"/>
   </bean>
 
+  <!-- PeopleFlow action type services -->
+
+  <bean id="notificationPeopleFlowActionTypeService"
+        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService" factory-method="getInstance">
+      <constructor-arg>
+          <value>NOTIFICATION</value>
+      </constructor-arg>
+  </bean>
+
+  <bean id="approvalPeopleFlowActionTypeService"
+        class="org.kuali.rice.krms.impl.peopleflow.PeopleFlowActionTypeService" factory-method="getInstance">
+      <constructor-arg>
+          <value>APPROVAL</value>
+      </constructor-arg>
+  </bean>
+
+  <!-- result logger -->
+
   <bean id="resultLogger" class="org.kuali.rice.krms.framework.engine.ResultLogger" factory-method="getInstance"/>
 
   <!-- register result loggers -->

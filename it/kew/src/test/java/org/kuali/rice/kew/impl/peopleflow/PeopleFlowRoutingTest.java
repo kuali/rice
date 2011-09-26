@@ -297,6 +297,8 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     /**
      * Defines PeopleFlow as follows:
      *
+     * <pre>
+     *
      * 1 - PeopleFlow - TEST:PeopleFlow1
      *   -> Priority 1
      *   ----> user1
@@ -312,6 +314,8 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
      *   ----> TestWorkgroup
      *   -> Priority 10
      *   ----> testuser3
+     *
+     * </pre>
      */
     private void createMultiplePeopleFlows() {
         PeopleFlowDefinition.Builder peopleFlow1 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_1);

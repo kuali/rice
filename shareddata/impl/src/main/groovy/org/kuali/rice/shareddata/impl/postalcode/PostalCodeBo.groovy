@@ -69,7 +69,7 @@ class PostalCodeBo extends PersistableBusinessObjectBase implements PostalCodeCo
     def StateBo state;
 
 
-    @ManyToOne(targetEntity = CountryBo.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = CountyBo.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "COUNTY_NM", insertable = false, updatable = false)
     def CountyBo county;
 

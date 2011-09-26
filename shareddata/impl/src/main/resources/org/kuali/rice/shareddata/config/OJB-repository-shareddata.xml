@@ -93,16 +93,16 @@
 	<field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
 	<field-descriptor name="countyCode" column="COUNTY_CD" jdbc-type="VARCHAR" />
 
-	<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
+	<reference-descriptor name="country" class-ref="org.kuali.rice.shareddata.impl.country.CountryBo" auto-retrieve="true" auto-update="none" auto-delete="none">
         <foreignkey field-ref="countryCode" target-field-ref="code" />
     </reference-descriptor>
 
-    <reference-descriptor name="state" class-ref="org.kuali.rice.shareddata.impl.state.StateBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
+    <reference-descriptor name="state" class-ref="org.kuali.rice.shareddata.impl.state.StateBo" auto-retrieve="true" auto-update="none" auto-delete="none">
         <foreignkey field-ref="countryCode" target-field-ref="countryCode" />
         <foreignkey field-ref="stateCode" target-field-ref="code"/>
     </reference-descriptor>
 
-	<reference-descriptor name="county" class-ref="org.kuali.rice.shareddata.impl.county.CountyBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true" >
+	<reference-descriptor name="county" class-ref="org.kuali.rice.shareddata.impl.county.CountyBo" auto-retrieve="true" auto-update="none" auto-delete="none">
         <foreignkey field-ref="countryCode" target-field-ref="countryCode" />
         <foreignkey field-ref="countyCode" target-field-ref="code" />
         <foreignkey field-ref="stateCode" target-field-ref="stateCode" />

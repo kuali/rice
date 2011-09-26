@@ -18,15 +18,12 @@ package org.kuali.rice.krad.datadictionary.validation.constraint;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 
-
 /**
  * Pattern for matching any printable character
- * 
- * 
  */
 public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;
-
+    protected boolean omitNewline = false;
 
     /**
      * @return allowWhitespace
@@ -42,47 +39,52 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
         this.allowWhitespace = allowWhitespace;
     }
 
-
     /**
      * @see org.kuali.rice.krad.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
         StringBuffer regexString = new StringBuffer("[");
 
-
         regexString.append("\\x21-\\x7E");
         if (allowWhitespace) {
-            regexString.append("\\t\\r\\n\\v\\f\\s");
+            regexString.append("\\t\\v\\040");
+            if (!omitNewline) {
+                regexString.append("\\f\\r\\n");
+            }
         }
+
         regexString.append("]");
 
         return regexString.toString();
     }
 
-	/**
-	 * 
-	 * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
-	 */
-	@Override
-	public String getLabelKey() {
-		String labelKey = super.getLabelKey();
-		if (StringUtils.isNotEmpty(labelKey)) {
-			return labelKey;
-		}
-		if (getAllowWhitespace()) {
-			return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "noWhitespace";
-		}
-		else{
-		    return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "anyCharacterPattern";
-		}
-	}
+    /**
+     * @see org.kuali.rice.krad.datadictionary.validation.constraint.BaseConstraint#getLabelKey()
+     */
+    @Override
+    public String getLabelKey() {
+        String labelKey = super.getLabelKey();
+        if (StringUtils.isNotEmpty(labelKey)) {
+            return labelKey;
+        }
+        if (!allowWhitespace) {
+            return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "noWhitespace";
+        } else {
+            return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "anyCharacterPattern";
+        }
+    }
 
-//	@Override
-//	protected String getValidationErrorMessageKeyOptions() {
-//		if (getAllowWhitespace()) {
-//			return ".allowWhitespace";
-//		}
-//		return KRADConstants.EMPTY_STRING;
-//	}
+    public boolean isOmitNewline() {
+        return omitNewline;
+    }
 
+    /**
+     * When set to true, omit new line characters from the set of valid characters.  This flag
+     * will only have an effect if the allowWhitespace flag is true, otherwise all whitespace
+     * including new lines characters are omitted.
+     * @param omitNewline
+     */
+    public void setOmitNewline(boolean omitNewline) {
+        this.omitNewline = omitNewline;
+    }
 }

@@ -112,6 +112,6 @@
 </c:if>
 
 <%-- render error container for field --%>
-<c:if test="${!field.errorsField.alternateContainer}">
+<c:if test="${(empty field.errorsField.alternateContainer) || (!field.errorsField.alternateContainer)}">
   <krad:template component="${field.errorsField}"/>
 </c:if>

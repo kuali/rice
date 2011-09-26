@@ -96,6 +96,7 @@ public class ErrorsField extends FieldBase {
 
 	public ErrorsField() {
 		super();
+        alternateContainer = false;
 	}
 
 	/**

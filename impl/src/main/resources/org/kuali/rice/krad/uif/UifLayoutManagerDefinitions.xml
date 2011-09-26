@@ -66,7 +66,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>  
  
   <bean id="StackedLayoutManager" parent="StackedLayoutManager-parentBean"/> 
-  <bean id="StackedLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager" parent="BoxLayoutManager">
+  <bean id="StackedLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
       <property name="addLineGroup">
         <bean parent="StackedGroupPrototype"/>

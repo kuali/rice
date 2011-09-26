@@ -53,7 +53,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StackedLayoutManager extends BoxLayoutManager implements CollectionLayoutManager {
+public class StackedLayoutManager extends LayoutManagerBase implements CollectionLayoutManager {
     private static final long serialVersionUID = 4602368505430238846L;
 
     @KeepExpression
@@ -69,8 +69,6 @@ public class StackedLayoutManager extends BoxLayoutManager implements Collection
 
     public StackedLayoutManager() {
         super();
-
-        setOrientation(Orientation.VERTICAL);
 
         summaryFields = new ArrayList<String>();
         stackedGroups = new ArrayList<Group>();

@@ -15,12 +15,26 @@
  */
 
 var bodyHeight;
-function publishHeight(id) {
-    var parentUrl = window.location;
-    parentUrl = decodeURIComponent(parentUrl);
+function publishHeight(){
+    var parentUrl = "";
+    if(navigator.cookieEnabled){
+        parentUrl = jQuery.cookie('parentUrl');
+        var passedUrl = decodeURIComponent( document.location.hash.replace( /^#/, '' ) );
+        if(passedUrl){
+            jQuery.cookie('parentUrl', passedUrl, {path: '/'});
+            parentUrl = passedUrl;
+        }
+    }
+
+    if(parentUrl === ""){
+        //make the assumption for not cross-domain, will have no effect if cross domain (message wont be
+        //received)
+        parentUrl = window.location;
+        parentUrl = decodeURIComponent(parentUrl);
+    }
 
     var height = jQuery('#view_div:first').outerHeight();
-    if (!isNaN(height) && height > 0 && height !== bodyHeight) {
+    if (parentUrl && !isNaN(height) && height > 0 && height !== bodyHeight) {
         jQuery.postMessage({ if_height: height}, parentUrl, parent);
         bodyHeight = height;
     }

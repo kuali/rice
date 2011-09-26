@@ -21,13 +21,31 @@
 
 <%--
     Stacked Layout Manager:
-    
-      Uses a box manager for rendering the collection groups
+
  --%>
- 
-<%-- just pass through for now using the items built in the manager --%>
-<tiles:insertTemplate template="box.jsp">
-   <tiles:putAttribute name="items" value="${manager.stackedGroups}"/>
-   <tiles:putAttribute name="manager" value="${manager}"/>
-   <tiles:putAttribute name="container" value="${container}"/>
-</tiles:insertTemplate>  
+
+<c:if test="${!empty manager.styleClassesAsString}">
+  <c:set var="styleClass" value="class=\"${manager.styleClassesAsString}\""/>
+</c:if>
+
+<c:if test="${!empty manager.style}">
+  <c:set var="style" value="style=\"${manager.style}\""/>
+</c:if>
+
+<c:set var="itemSpanClasses" value="class=\"fieldLine boxLayoutVerticalItem clearfix\""/>
+
+<c:if test="${container.fieldContainer}">
+  <c:set var="fieldItemsStyle" value="style=\"float:left;\""/>
+  <c:set var="itemSpanClasses" value="class=\"fieldContainerVerticalItem clearfix\""/>
+</c:if>
+
+<%-- render items --%>
+<div id="${manager.id}" ${style} ${styleClass}>
+<span ${fieldItemsStyle}>
+   <c:forEach items="${manager.stackedGroups}" var="item" varStatus="itemVarStatus">
+        <span ${itemSpanClasses}>
+          <krad:template component="${item}"/>
+        </span>
+   </c:forEach>
+</span>
+</div>

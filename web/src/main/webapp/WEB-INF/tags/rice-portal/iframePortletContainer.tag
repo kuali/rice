@@ -20,7 +20,7 @@
 <%@ attribute name="frameHeight" required="false" %>
 
 <c:if test="${empty frameHeight || frameHeight == 0}">
-  <c:set var="frameHeight" value="500"/>
+  <c:set var="frameHeight" value="750"/>
 </c:if>
 
 <iframe src="${channelUrl}"
@@ -30,16 +30,34 @@
 
 <script type="text/javascript">
   jQuery(function(){
-  var if_height = ${frameHeight};
-  var iframe = jQuery("#iframeportlet");
+  var if_height = 0;
+  var thisIframe = jQuery("iframe[src='${channelUrl}']");
+  if(navigator.cookieEnabled){
+    //add parent url to hash of iframe to pass it in, it will be stored in the cookie of that
+    //frame for its future page navigations so it can communicate back with postMessage
+    var newUrl =  '${channelUrl}' + '#' + encodeURIComponent(document.location.href);
+    jQuery(thisIframe).attr("src", newUrl);
+  }
+  else{
+    var iframeSrc = '${channelUrl}';
+    var regex = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
+    iframeSrc = iframeSrc.match(regex)[1].toString();
+    if(iframeSrc !== window.location.host){
+      jQuery(thisIframe).attr("scrolling", "yes");
+      jQuery(thisIframe).height(${frameHeight});
+    }
+  }
+
   jQuery.receiveMessage(function(e) {
     // Get the height from the passsed data.
     var h = Number(e.data.replace(/.*if_height=(\d+)(?:&|$)/, '$1'));
 
-    if (!isNaN(h) && h > 0 && h !== if_height) {
+    if (!isNaN(h) && h > 0 && h + 40 !== if_height) {
+      //disable scrolling because we got a valid height report from the iFrame
+      jQuery(thisIframe).attr("scrolling", "no");
       // Height has changed, update the iframe.
       if_height = h + 40;
-      iframe.height(if_height);
+      thisIframe.height(if_height);
     }
 
   });

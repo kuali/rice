@@ -15,12 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**
@@ -30,6 +25,7 @@ import org.kuali.rice.krad.uif.UifConstants;
  */
 public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     protected boolean lowerCase = false;
+    protected boolean upperCase = false;
 
     /**
      * A label key is auto generated for this bean if none is set. This generated message can be
@@ -42,7 +38,10 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
         if (StringUtils.isEmpty(labelKey)) {
             StringBuilder key = new StringBuilder("");
             if (lowerCase) {
-                return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPatternLowerCase");
+               return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPatternLowerCase");
+            }
+            else if(upperCase){
+               return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPatternUpperCase");
             } else {
                 return (UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "alphanumericPattern");
             }
@@ -72,6 +71,9 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
         if (lowerCase) {
             regexString = new StringBuilder("[a-z0-9");
         }
+        else if(upperCase){
+            regexString = new StringBuilder("[A-Z0-9");
+        }
 
         regexString.append(this.getAllowedCharacterRegex());
 
@@ -88,10 +90,24 @@ public class AlphaNumericPatternConstraint extends AllowCharacterConstraint {
     }
 
     /**
+     * Only allow lowerCase characters. DO NOT use with upperCase option, no flags set for case
+     * means both upper and lower case are allowed.
      * @param lowerCase the lowerCase to set
      */
     public void setLowerCase(boolean lowerCase) {
         this.lowerCase = lowerCase;
     }
 
+    public boolean isUpperCase() {
+        return upperCase;
+    }
+
+    /**
+     * Only allow upperCase characters.  DO NOT use with lowerCase option, no flags set for case
+     * means both upper and lower case are allowed.
+     * @param lowerCase the lowerCase to set
+     */
+    public void setUpperCase(boolean upperCase) {
+        this.upperCase = upperCase;
+    }
 }

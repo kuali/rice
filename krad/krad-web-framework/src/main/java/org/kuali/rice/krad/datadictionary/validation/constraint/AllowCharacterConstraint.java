@@ -15,24 +15,25 @@
  */
 package org.kuali.rice.krad.datadictionary.validation.constraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Parent abstract class that allows additional characters to be allowed in child constraint
  * character sets, see AlphaNumericPatternConstraint, among others for example.
- * 
+ *
  * By setting an allow flag to true you are allowing that character as a valid character in the set.
  * AllowAll set to true will allow all characters which have a flag to be allowed in the set.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class AllowCharacterConstraint extends ValidCharactersPatternConstraint {
     protected boolean allowWhitespace = false;
+    protected boolean omitNewline = false;
     protected boolean allowUnderscore = false;
     protected boolean allowPeriod = false;
     protected boolean allowParenthesis = false;
@@ -337,6 +338,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * If true, this constraint will allow all symbols that have flags for them. Equivalent to
      * setting each flag to true separately.
+     *
      * @return the allowAll
      */
     public boolean isAllowAll() {
@@ -350,17 +352,35 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowAll = allowAll;
     }
 
+    public boolean isOmitNewline() {
+        return omitNewline;
+    }
+
+    /**
+     * When set to true, omit new line characters from the set of valid characters.  This flag
+     * will only have an effect if the allowWhitespace flag is true, otherwise all whitespace
+     * including new lines characters are omitted.
+     *
+     * @param omitNewline
+     */
+    public void setOmitNewline(boolean omitNewline) {
+        this.omitNewline = omitNewline;
+    }
+
     /**
      * This method returns the allowed set of characters allowed by this constraint, based on the
      * flags set. This string is intended to be placed within the or set of a regex, ie between the
      * [ ] symbols
-     * 
+     *
      * @return
      */
     protected String getAllowedCharacterRegex() {
         StringBuilder regexString = new StringBuilder("");
         if (allowWhitespace || allowAll) {
-            regexString.append("\\s");
+            regexString.append("\\t\\v\\040");
+            if (!omitNewline) {
+                regexString.append("\\f\\r\\n");
+            }
         }
         if (allowUnderscore || allowAll) {
             regexString.append("_");
@@ -427,6 +447,7 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     /**
      * Generates a comma separated string of the allowed set of characters, for the {0} parameter to
      * be used within its validation message
+     *
      * @return the validationMessageParams
      */
     public List<String> getValidationMessageParams() {
@@ -436,88 +457,93 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
             StringBuilder paramString = new StringBuilder("");
 
             if (allowWhitespace || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "whitespace"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "whitespace"));
+                if (!omitNewline) {
+                    paramString.append(", " + configService.getPropertyValueAsString(
+                            UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "newline"));
+                }
             }
             if (allowUnderscore || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "underscore"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "underscore"));
             }
             if (allowPeriod || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "period"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "period"));
             }
             if (allowParenthesis || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "parenthesis"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "parenthesis"));
             }
             if (allowDollar || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "dollar"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "dollar"));
             }
             if (allowForwardSlash || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "forwardSlash"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "forwardSlash"));
             }
             if (allowDoubleQuote || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "doubleQuote"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "doubleQuote"));
             }
             if (allowApostrophe || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "apostrophe"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "apostrophe"));
             }
             if (allowComma || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "comma"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "comma"));
             }
             if (allowColon || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "colon"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "colon"));
             }
             if (allowSemiColon || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "semiColon"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "semiColon"));
             }
             if (allowQuestionMark || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "questionMark"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "questionMark"));
             }
             if (allowExclaimation || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "exclaimation"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "exclaimation"));
             }
             if (allowDash || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "dash"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "dash"));
             }
             if (allowPlus || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "plus"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "plus"));
             }
             if (allowEquals || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "equals"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "equals"));
             }
             if (allowAsterisk || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "asterisk"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "asterisk"));
             }
             if (allowAtSign || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "atSign"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "atSign"));
             }
             if (allowPercent || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "percent"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "percent"));
             }
             if (allowPound || allowAll) {
-                paramString.append(", " + configService
-                        .getPropertyValueAsString(UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "pound"));
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "pound"));
             }
 
             validationMessageParams.add(paramString.toString());
         }
         return this.validationMessageParams;
     }
+
 }

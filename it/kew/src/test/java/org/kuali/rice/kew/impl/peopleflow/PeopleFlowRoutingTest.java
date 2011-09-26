@@ -7,8 +7,12 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.RecipientType;
+import org.kuali.rice.kew.api.peopleflow.MemberType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.test.BaselineTestCase;
@@ -33,7 +37,8 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     private static final String SINGLE_PEOPLE_FLOW_PARALLEL_APPROVE = "SinglePeopleFlow-Parallel-Approve";
     private static final String SINGLE_PEOPLE_FLOW_SEQUENTIAL_APPROVE = "SinglePeopleFlow-Sequential-Approve";
     private static final String SINGLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "SinglePeopleFlow-PriorityParallel-Approve";
-    private static final String MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "MultiplePeopleFlow-PriorityParallel-Approve";
+    private static final String MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL = "MultiplePeopleFlow-PriorityParallel";
+    private static final String DELEGATE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "DelegatePeopleFlow-PriorityParallel-Approve";
 
     private PeopleFlowService peopleFlowService;
 
@@ -307,11 +312,11 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     }
 
     @Test
-    public void test_MultiplePeopleFlow_PriorityParallel_Approve() throws Exception {
+    public void test_MultiplePeopleFlow_PriorityParallel() throws Exception {
         createMultiplePeopleFlows();
 
         // now route a document to it
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE);
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL);
         document.route("");
         assertTrue("Document should be enroute.", document.isEnroute());
 
@@ -384,6 +389,165 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
 
         // now the document should be final!
         assertTrue(document.isFinal());
+    }
+
+    /**
+     * Defines a people flow as follows:
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> user1
+     *   -> user2
+     *   ----> testuser2 - primary delegate
+     * Priority 2:
+     *   -> testuser1
+     *   ----> TestWorkgroup - secondary delegate
+     *   ----> testuser3 - primary delegate
+     *   -> user3
+     *
+     * </pre>
+     *
+     */
+    private void createDelegatePeopleFlow() {
+        PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_1);
+        peopleFlow.addPrincipal(user1).setPriority(1);
+
+        PeopleFlowMember.Builder user2Builder = peopleFlow.addPrincipal(user2);
+        user2Builder.setPriority(1);
+        PeopleFlowDelegate.Builder user2PrimaryDelegateBuilder = PeopleFlowDelegate.Builder.create(testuser2,
+                MemberType.PRINCIPAL);
+        user2PrimaryDelegateBuilder.setDelegationType(DelegationType.PRIMARY);
+        user2Builder.getDelegates().add(user2PrimaryDelegateBuilder);
+
+        PeopleFlowMember.Builder testuser1Builder = peopleFlow.addPrincipal(testuser1);
+        testuser1Builder.setPriority(2);
+        PeopleFlowDelegate.Builder testWorkgroupSecondaryDelegateBuilder = PeopleFlowDelegate.Builder.create(testWorkgroup, MemberType.GROUP);
+        testWorkgroupSecondaryDelegateBuilder.setDelegationType(DelegationType.SECONDARY);
+        testuser1Builder.getDelegates().add(testWorkgroupSecondaryDelegateBuilder);
+        PeopleFlowDelegate.Builder testuser3PrimaryDelegateBuilder = PeopleFlowDelegate.Builder.create(testuser3, MemberType.PRINCIPAL);
+        testuser3PrimaryDelegateBuilder.setDelegationType(DelegationType.PRIMARY);
+        testuser1Builder.getDelegates().add(testuser3PrimaryDelegateBuilder);
+
+        peopleFlow.addPrincipal(user3).setPriority(2);
+
+        peopleFlowService.createPeopleFlow(peopleFlow.build());
+    }
+
+    @Test
+    public void test_DelegatePeopleFlow_PriorityParallel_Approve() throws Exception {
+        createDelegatePeopleFlow();
+
+
+        // Priority 1:
+        //   -> user1
+        //   -> user2
+        //   ----> testuser2 - primary delegate
+        // Priority 2:
+        //   -> testuser1
+        //   ----> TestWorkgroup - secondary delegate
+        //   ----> testuser3 - primary delegate
+        //   -> user3
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, DELEGATE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // user3 should not have an approval request since they initiated the document
+        document.switchPrincipal(user3);
+
+        // user1, user2, and testuser2 (as user2's primary delegate) should all have activated requests, make sure the requests look correct
+        // user3 and testuser1 should have root requests as well, TestWorkgroup and testuser3 should be delegates of testuser1
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 4 root action requests", 4, rootActionRequests.size());
+        ActionRequest user1Request = null;
+        ActionRequest user2Request = null;
+        ActionRequest user3Request = null;
+        ActionRequest testuser1Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (user1.equals(actionRequest.getPrincipalId())) {
+                    user1Request = actionRequest;
+                } else if (user2.equals(actionRequest.getPrincipalId())) {
+                    user2Request = actionRequest;
+                } else if (user3.equals(actionRequest.getPrincipalId())) {
+                    user3Request = actionRequest;
+                } else if (testuser1.equals(actionRequest.getPrincipalId())) {
+                    testuser1Request = actionRequest;
+                }
+            }
+        }
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user1Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user1Request.getStatus());
+        assertNotNull(user2Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user2Request.getStatus());
+        assertNotNull(user3Request);
+        assertEquals(ActionRequestStatus.INITIALIZED, user3Request.getStatus());
+        assertNotNull(testuser1Request);
+        assertEquals(ActionRequestStatus.INITIALIZED, testuser1Request.getStatus());
+
+        // check delegate requests on user2Request now
+        assertEquals(1, user2Request.getChildRequests().size());
+        ActionRequest testuser2DelegateRequest = user2Request.getChildRequests().get(0);
+        assertEquals(testuser2, testuser2DelegateRequest.getPrincipalId());
+        assertEquals(DelegationType.PRIMARY, testuser2DelegateRequest.getDelegationType());
+        assertEquals(ActionRequestStatus.ACTIVATED, testuser2DelegateRequest.getStatus());
+
+        // check delegate requests on testuser1Request now
+        assertEquals(2, testuser1Request.getChildRequests().size());
+        ActionRequest testWorkgroupRequest = null;
+        ActionRequest testuser3Request = null;
+        for (ActionRequest childActionRequest : testuser1Request.getChildRequests()) {
+            RecipientType recipientType = childActionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (testuser3.equals(childActionRequest.getPrincipalId())) {
+                    testuser3Request = childActionRequest;
+                }
+            } else if (recipientType == RecipientType.GROUP) {
+                if (testWorkgroup.equals(childActionRequest.getGroupId())) {
+                    testWorkgroupRequest = childActionRequest;
+                }
+            }
+        }
+        assertNotNull(testWorkgroupRequest);
+        assertEquals(ActionRequestStatus.INITIALIZED, testWorkgroupRequest.getStatus());
+        assertEquals(DelegationType.SECONDARY, testWorkgroupRequest.getDelegationType());
+        assertNotNull(testuser3Request);
+        assertEquals(ActionRequestStatus.INITIALIZED, testuser3Request.getStatus());
+        assertEquals(DelegationType.PRIMARY, testuser3Request.getDelegationType());
+
+        // whew! now that that's done, let's run through the approvals for this peopleflow
+        assertApproveRequested(document, user1, user2, testuser2);
+        assertApproveNotRequested(document, testuser1, user3, ewestfal, testuser3);
+        // approve as testuser2 who is user2's primary delegate
+        document.switchPrincipal(testuser2);
+        document.approve("");
+
+        // now approve as user1, this should push it to priority 2 in the peopleflow
+        assertApproveRequested(document, user1);
+        assertApproveNotRequested(document, user2, testuser2, testuser1, user3, ewestfal, testuser3);
+        document.switchPrincipal(user1);
+        document.approve("");
+
+        // at this point all priorty2 folks should have approvals
+        assertApproveRequested(document, testuser1, user3, ewestfal, testuser3);
+        assertApproveNotRequested(document, user1, user2, testuser2);
+        // approve as ewestfal, a member of TestWorkgroup which is a delegate of testuser1
+        document.switchPrincipal(ewestfal);
+        document.approve("");
+
+        // the only remaining approval at this point should be to user3, note that user3 initiated the document, but forceAction should = true by default on peopleflows
+        assertApproveRequested(document, user3);
+        assertApproveNotRequested(document, user1, user2, testuser2, testuser1, ewestfal, testuser3);
+        document.switchPrincipal(user3);
+        document.approve("");
+
+        // document should now be FINAL!
+        assertTrue(document.isFinal());
+
     }
 
     private void assertApproveRequested(WorkflowDocument document, String... principalIds) {

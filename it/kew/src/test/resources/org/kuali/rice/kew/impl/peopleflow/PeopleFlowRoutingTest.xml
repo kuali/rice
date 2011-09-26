@@ -79,7 +79,7 @@
     </documentType>
 
     <documentType>
-      <name>MultiplePeopleFlow-PriorityParallel-Approve</name>
+      <name>MultiplePeopleFlow-PriorityParallel</name>
       <description>Routes to three different people flows using priority-parallel activation.</description>
       <docHandler>none</docHandler>
       <routePaths>
@@ -104,6 +104,31 @@
             </peopleFlow>
             <peopleFlow>
               <name namespace="TEST">PeopleFlow3</name>
+            </peopleFlow>
+          </peopleFlows>
+        </requests>
+      </routeNodes>
+    </documentType>
+
+    <documentType>
+      <name>DelegatePeopleFlow-PriorityParallel-Approve</name>
+      <description>Routes to a simple people flow with delegates using priority-parallel activation.</description>
+      <docHandler>none</docHandler>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" nextNode="PeopleFlows" />
+          <requests name="PeopleFlows" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+        <requests name="PeopleFlows">
+          <activationType>R</activationType>
+          <peopleFlows>
+            <peopleFlow>
+              <name namespace="TEST">PeopleFlow1</name>
             </peopleFlow>
           </peopleFlows>
         </requests>

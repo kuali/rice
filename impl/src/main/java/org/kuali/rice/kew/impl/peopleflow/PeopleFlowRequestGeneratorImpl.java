@@ -1,5 +1,6 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -9,6 +10,7 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.peopleflow.MemberType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.engine.RouteContext;
 
@@ -38,7 +40,13 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
     protected void generateRequestForMember(ActionRequestFactory factory, String responsibilityId, PeopleFlowMember member, ActionRequestType actionRequested) {
         // TODO - description, responsibilityId, forceAction, approvePolicy, ruleId, annotation, request label
         // defaulting all of these at the moment as per below
-        factory.addRootActionRequest(actionRequested.getCode(), member.getPriority(), toRecipient(member), null, responsibilityId, Boolean.TRUE, null, null);
+        ActionRequestValue actionRequest = factory.addRootActionRequest(actionRequested.getCode(), member.getPriority(), toRecipient(member), "", responsibilityId, Boolean.TRUE, null, null);
+        if (CollectionUtils.isNotEmpty(member.getDelegates())) {
+            for (PeopleFlowDelegate delegate : member.getDelegates()) {
+                // TODO - need to figure out how best to handle responsibility id for this
+                factory.addDelegationRequest(actionRequest, toRecipient(delegate), delegate.getMemberId(), Boolean.TRUE, delegate.getDelegationType().getCode(), "", null);
+            }
+        }
     }
 
     private Recipient toRecipient(PeopleFlowMember member) {
@@ -47,6 +55,19 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             recipient = new KimPrincipalRecipient(member.getMemberId());
         } else if (MemberType.GROUP == member.getMemberType()) {
             recipient = new KimGroupRecipient(member.getMemberId());
+        } else {
+            // TODO - what about roles!
+            throw new UnsupportedOperationException("implement me!!!");
+        }
+        return recipient;
+    }
+
+    private Recipient toRecipient(PeopleFlowDelegate delegate) {
+        Recipient recipient;
+        if (MemberType.PRINCIPAL == delegate.getMemberType()) {
+            recipient = new KimPrincipalRecipient(delegate.getMemberId());
+        } else if (MemberType.GROUP == delegate.getMemberType()) {
+            recipient = new KimGroupRecipient(delegate.getMemberId());
         } else {
             // TODO - what about roles!
             throw new UnsupportedOperationException("implement me!!!");

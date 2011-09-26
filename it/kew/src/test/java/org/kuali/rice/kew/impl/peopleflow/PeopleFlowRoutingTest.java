@@ -98,23 +98,6 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         peopleFlowService.createPeopleFlow(peopleFlow.build());
     }
 
-    private void createMultiplePeopleFlows() {
-        PeopleFlowDefinition.Builder peopleFlow1 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_1);
-        peopleFlow1.addPrincipal(user1).setPriority(1);
-        peopleFlow1.addPrincipal(user2).setPriority(2);
-        peopleFlowService.createPeopleFlow(peopleFlow1.build());
-
-        PeopleFlowDefinition.Builder peopleFlow2 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
-        peopleFlow2.addPrincipal(testuser1).setPriority(1);
-        peopleFlow2.addPrincipal(testuser2).setPriority(2);
-        peopleFlowService.createPeopleFlow(peopleFlow2.build());
-
-        PeopleFlowDefinition.Builder peopleFlow3 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_3);
-        peopleFlow3.addGroup(testWorkgroup).setPriority(1);
-        peopleFlow3.addPrincipal(testuser3).setPriority(10);
-        peopleFlowService.createPeopleFlow(peopleFlow3.build());
-    }
-
     @Test
     public void test_SinglePeopleFlow_Parallel_Approve() throws Exception {
         createSimplePeopleFlow();
@@ -311,6 +294,43 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         assertTrue(document.isFinal());
     }
 
+    /**
+     * Defines PeopleFlow as follows:
+     *
+     * 1 - PeopleFlow - TEST:PeopleFlow1
+     *   -> Priority 1
+     *   ----> user1
+     *   -> Priority 2
+     *   ----> user2
+     * 2 - PeopleFlow - TEST:PeopleFlow2
+     *   -> Priority 1
+     *   ----> testuser1
+     *   -> Priority 2
+     *   ----> testuser2
+     * 3 - PeopleFlow - TEST:PeopleFlow3
+     *   -> Priority 1
+     *   ----> TestWorkgroup
+     *   -> Priority 10
+     *   ----> testuser3
+     */
+    private void createMultiplePeopleFlows() {
+        PeopleFlowDefinition.Builder peopleFlow1 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_1);
+        peopleFlow1.addPrincipal(user1).setPriority(1);
+        peopleFlow1.addPrincipal(user2).setPriority(2);
+        peopleFlowService.createPeopleFlow(peopleFlow1.build());
+
+        PeopleFlowDefinition.Builder peopleFlow2 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
+        peopleFlow2.addPrincipal(testuser1).setPriority(1);
+        peopleFlow2.addPrincipal(testuser2).setPriority(2);
+        peopleFlowService.createPeopleFlow(peopleFlow2.build());
+
+        PeopleFlowDefinition.Builder peopleFlow3 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_3);
+        peopleFlow3.addGroup(testWorkgroup).setPriority(1);
+        peopleFlow3.addPrincipal(testuser3).setPriority(10);
+        peopleFlowService.createPeopleFlow(peopleFlow3.build());
+    }
+
+
     @Test
     public void test_MultiplePeopleFlow_PriorityParallel() throws Exception {
         createMultiplePeopleFlows();
@@ -392,7 +412,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     }
 
     /**
-     * Defines a people flow as follows:
+     * Defines a PeopleFlow as follows:
      *
      * <pre>
      *
@@ -437,7 +457,6 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     @Test
     public void test_DelegatePeopleFlow_PriorityParallel_Approve() throws Exception {
         createDelegatePeopleFlow();
-
 
         // Priority 1:
         //   -> user1

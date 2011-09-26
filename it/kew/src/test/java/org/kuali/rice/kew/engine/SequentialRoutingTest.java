@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.engine;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -35,7 +27,11 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class SequentialRoutingTest extends KEWTestCase {
     
@@ -90,13 +86,13 @@ public class SequentialRoutingTest extends KEWTestCase {
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
                 assertEquals(ActionRequestType.ACKNOWLEDGE, requestVO.getActionRequested());
-                TestUtilities.assertAtNode(document, ACKNOWLEDGE_1_NODE);
-                assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
+                assertEquals(ACKNOWLEDGE_1_NODE, requestVO.getNodeName());
+                assertEquals(ActionRequestStatus.ACTIVATED, requestVO.getStatus());
             } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
                 assertEquals(ActionRequestType.ACKNOWLEDGE, requestVO.getActionRequested());
-                TestUtilities.assertAtNode(document, ACKNOWLEDGE_2_NODE);
-                assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
+                assertEquals(ACKNOWLEDGE_2_NODE, requestVO.getNodeName());
+                assertEquals(ActionRequestStatus.ACTIVATED, requestVO.getStatus());
             }
         }
         assertTrue("Should be an acknowledge to temay", toTemay);
@@ -114,13 +110,13 @@ public class SequentialRoutingTest extends KEWTestCase {
             ActionRequest requestVO = requests.get(i);
             if (requestVO.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 toTemay = true;
-                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                assertEquals(ActionRequestStatus.DONE.getCode(), requestVO.getStatus());
+                assertEquals(ActionRequestType.ACKNOWLEDGE, requestVO.getActionRequested());
+                assertEquals(ActionRequestStatus.DONE, requestVO.getStatus());
             } else if (requestVO.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 toJhopf = true;
-                assertEquals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, requestVO.getActionRequested());
-                TestUtilities.assertAtNode(document, ACKNOWLEDGE_2_NODE);
-                assertEquals(ActionRequestStatus.ACTIVATED.getCode(), requestVO.getStatus());
+                assertEquals(ActionRequestType.ACKNOWLEDGE, requestVO.getActionRequested());
+                assertEquals(ACKNOWLEDGE_2_NODE, requestVO.getNodeName());
+                assertEquals(ActionRequestStatus.ACTIVATED, requestVO.getStatus());
             }
         }
         assertTrue("Should be a DONE acknowledge to temay", toTemay);

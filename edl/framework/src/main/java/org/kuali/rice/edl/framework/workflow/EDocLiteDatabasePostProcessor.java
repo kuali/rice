@@ -99,7 +99,8 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
     private String[] getNodeNames(String documentId) {
         List<RouteNodeInstance> activeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getActiveRouteNodeInstances(documentId);
         if (activeNodeInstances == null || activeNodeInstances.size() == 0) {
-            activeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getTerminalNodeInstances(documentId);
+            activeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getTerminalRouteNodeInstances(
+                    documentId);
         }
         String[] nodeNames = new String[(activeNodeInstances == null ? 0 : activeNodeInstances.size())];
         for (int index = 0; index < activeNodeInstances.size(); index++) {

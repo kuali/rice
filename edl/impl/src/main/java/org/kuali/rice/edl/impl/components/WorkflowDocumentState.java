@@ -112,7 +112,8 @@ public class WorkflowDocumentState implements EDLModelComponent {
 					EDLXmlUtils.createTextElementOnParent(previousNodes, "node", nodeNames.get(i));
 				    }
 				}
-                List<RouteNodeInstance> routeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getCurrentNodeInstances(document.getDocumentId());
+                List<RouteNodeInstance> routeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getCurrentRouteNodeInstances(
+                        document.getDocumentId());
 
 				for (RouteNodeInstance currentNode : routeNodeInstances) {
 				    EDLXmlUtils.createTextElementOnParent(documentState, "currentNodeName", currentNode.getName());

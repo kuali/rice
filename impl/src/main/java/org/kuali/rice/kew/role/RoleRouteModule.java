@@ -63,7 +63,12 @@ public class RoleRouteModule implements RouteModule {
 	private String qualifierResolverClassName;
 	private String responsibilityTemplateName;
 	private String namespace;
-		
+
+    @Override
+    public boolean isMoreRequestsAvailable(RouteContext context) {
+        return false;
+    }
+
 	@SuppressWarnings("unchecked")
 	public List<ActionRequestValue> findActionRequests(RouteContext context)
 			throws Exception {

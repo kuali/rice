@@ -51,4 +51,10 @@ public class FlexRMAdapter extends FlexRM implements RouteModule {
     public String toString() {
         return "FlexRMAdapter";
     }
+
+    @Override
+    public boolean isMoreRequestsAvailable(RouteContext context) {
+        return false;
+    }
+    
 }

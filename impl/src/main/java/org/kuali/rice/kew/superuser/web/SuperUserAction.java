@@ -519,7 +519,7 @@ public class SuperUserAction extends KewKualiAction {
         WorkflowDocumentService workflowDocumentService = KewApiServiceLocator.getWorkflowDocumentService();
         List<RouteNodeInstance> nodeInstances = workflowDocumentService.getActiveRouteNodeInstances(documentId);
         if (nodeInstances == null || nodeInstances.isEmpty()) {
-            nodeInstances = workflowDocumentService.getTerminalNodeInstances(documentId);
+            nodeInstances = workflowDocumentService.getTerminalRouteNodeInstances(documentId);
         }
         if (nodeInstances == null || nodeInstances.isEmpty()) {
             throw new WorkflowException("Could not locate a node on the document to send the ad hoc request to.");

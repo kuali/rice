@@ -105,4 +105,8 @@ public class TestRouteModule implements RouteModule {
         return responsibleParty;
     }
 
+    @Override
+    public boolean isMoreRequestsAvailable(RouteContext context) {
+        return false;
+    }
 }

@@ -22,7 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.engine.EngineState;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -32,6 +37,8 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.ClassDumper;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * A node which generates {@link ActionRequestValue} objects from a
@@ -49,39 +56,35 @@ public class RequestsNode extends RequestActivationNode {
 	public final SimpleResult process(RouteContext routeContext, RouteHelper routeHelper)
 			throws Exception {
 		try {
-			if ( !processCustom( routeContext, routeHelper ) ) {
-				DocumentRouteHeaderValue document = routeContext.getDocument();
-				RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
-				RouteNode node = nodeInstance.getRouteNode();
-				// refreshSearchableAttributes(routeContext);
-				// while no routable actions are activated and there are more
-				// routeLevels to process
-				if ( nodeInstance.isInitial() ) {
-					if ( LOG.isDebugEnabled() ) {
-						LOG.debug( "RouteHeader info inside routing loop\n"
-								+ ClassDumper.dumpFields( document ) );
-						LOG.debug( "Looking for new actionRequests - routeLevel: "
-								+ node.getRouteNodeName() );
-					}
-					boolean suppressPolicyErrors = isSupressingPolicyErrors( routeContext );
-					List<ActionRequestValue> requests = getNewActionRequests( routeContext );
-					// for mandatory routes, requests must be generated
-					if ( (requests.isEmpty()) && node.getMandatoryRouteInd().booleanValue()
-							&& !suppressPolicyErrors ) {
-						LOG.warn( "no requests generated for mandatory route - "
-								+ node.getRouteNodeName() );
-						throw new RouteManagerException( "No requests generated for mandatory route "
-								+ node.getRouteNodeName() + ":" + node.getRouteMethodName(),
-								routeContext );
-					}
-					// determine if we have any approve requests for FinalApprover
-					// checks
-					if ( !suppressPolicyErrors ) {				
-						verifyFinalApprovalRequest( document, requests, nodeInstance, routeContext );
-					}
-				}
-			}
-			return super.process( routeContext, routeHelper );
+            if (processCustom(routeContext, routeHelper)) {
+                return super.process(routeContext, routeHelper);
+            }
+            RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
+            boolean isInitial = nodeInstance.isInitial();
+            int currentIteration = 0;
+            List<ActionRequestValue> requestsGenerated = new ArrayList<ActionRequestValue>();
+            while (true) {
+                detectRunawayProcess(routeContext, currentIteration++);
+                if (isInitial) {
+                    requestsGenerated = generateRequests(routeContext);
+                    // need to set to false because we could iterate more than once here when the node is still in
+                    // "initial" state
+                    isInitial = false;
+                }
+                SimpleResult simpleResult = super.process(routeContext, routeHelper);
+                if (simpleResult.isComplete()) {
+                    RouteModule routeModule = getRouteModule(routeContext);
+                    boolean moreRequestsAvailable = routeModule.isMoreRequestsAvailable(routeContext);
+                    if (!moreRequestsAvailable) {
+                        applyPoliciesOnExit(requestsGenerated, routeContext);
+                        return simpleResult;
+                    } else {
+                        requestsGenerated = generateRequests(routeContext);
+                    }
+                } else {
+                    return simpleResult;
+                }
+            }
 		} catch ( RouteManagerException ex ) {
 			// just re-throw - no need to wrap
 			throw ex;
@@ -91,7 +94,47 @@ public class RequestsNode extends RequestActivationNode {
 		}
 	}
 
-	/** Used by subclasses to replace the functioning of the process method.
+    protected List<ActionRequestValue> generateRequests(RouteContext routeContext) throws Exception {
+        DocumentRouteHeaderValue document = routeContext.getDocument();
+		RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
+		RouteNode node = nodeInstance.getRouteNode();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("RouteHeader info inside routing loop\n" + ClassDumper.dumpFields(document));
+            LOG.debug("Looking for new actionRequests - routeLevel: " + node.getRouteNodeName());
+        }
+        boolean suppressPolicyErrors = isSupressingPolicyErrors(routeContext);
+        List<ActionRequestValue> requests = getNewActionRequests(routeContext);
+        // determine if we have any approve requests for FinalApprover checks
+        if (!suppressPolicyErrors) {
+            verifyFinalApprovalRequest(document, requests, nodeInstance, routeContext);
+        }
+        return requests;
+    }
+
+    /**
+     * Applies policies that should get checked prior to transitioning out of this node.  The default implementation of
+     * this method checks the "mandatory" policy.
+     *
+     * @param requestsGenerated the requests generated on the current iteration of the route module
+     * @param routeContext the current route context
+     */
+    protected void applyPoliciesOnExit(List<ActionRequestValue> requestsGenerated, RouteContext routeContext) {
+        DocumentRouteHeaderValue document = routeContext.getDocument();
+        RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
+        RouteNode node = nodeInstance.getRouteNode();
+        // for mandatory routes, requests must be generated
+        if (node.isMandatory() && !isSupressingPolicyErrors(routeContext) && CollectionUtils.isEmpty(requestsGenerated)) {
+            List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findRootRequestsByDocIdAtRouteNode(document.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
+            if (actionRequests.isEmpty()) {
+                LOG.warn("no requests generated for mandatory route - " + node.getRouteNodeName());
+                throw new RouteManagerException(
+                    "No requests generated for mandatory route " + node.getRouteNodeName() + ":" + node
+                            .getRouteMethodName(), routeContext);
+            }
+        }
+    }
+
+    /** Used by subclasses to replace the functioning of the process method.
 	 * 
 	 * @return <b>true</b> if custom processing was performed and the base implementation
 	 * in {@link #process(RouteContext, RouteHelper)} should be skipped.
@@ -133,20 +176,6 @@ public class RequestsNode extends RequestActivationNode {
 		}
 	}
 
-
-	/**
-	 * @param routeLevel
-	 *            Route level for which the action requests will be generated
-	 * @param routeHeader
-	 *            route header for which the action requests are generated
-	 * @param saveFlag
-	 *            if true the new action requests will be saved, if false they
-	 *            are not written to the db
-	 * @return List of ActionRequests - NOTE they are only written to DB if
-	 *         saveFlag is set
-	 * @throws WorkflowException
-	 * @throws ResourceUnavailableException
-	 */
 	public List<ActionRequestValue> getNewActionRequests(RouteContext context) throws Exception {
 		RouteNodeInstance nodeInstance = context.getNodeInstance();
 		String routeMethodName = nodeInstance.getRouteNode().getRouteMethodName();
@@ -247,6 +276,14 @@ public class RequestsNode extends RequestActivationNode {
 		return (id != null ? (Object)id : (Object)nodeInstance);
 	}
 
+    protected void detectRunawayProcess(RouteContext routeContext, int currentIteration) throws NumberFormatException {
+	    String maxNodesConstant = getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
+	    int maxNodes = (org.apache.commons.lang.StringUtils.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
+	    if (currentIteration > maxNodes) {
+            throw new RouteManagerException("Detected a runaway process within RequestsNode for document with id '" + routeContext.getDocument().getDocumentId() + "' after " + currentIteration + " iterations.");
+        }
+	}
+
 	protected class FinalApproverContext {
 		public Set inspected = new HashSet();
 
@@ -265,5 +302,9 @@ public class RequestsNode extends RequestActivationNode {
 	@SuppressWarnings("unchecked")
 	public static void setSupressPolicyErrors(RouteContext routeContext) {
 		routeContext.getParameters().put( SUPPRESS_POLICY_ERRORS_KEY, Boolean.TRUE );
+	}
+
+    protected ParameterService getParameterService() {
+		return CoreFrameworkServiceLocator.getParameterService();
 	}
 }

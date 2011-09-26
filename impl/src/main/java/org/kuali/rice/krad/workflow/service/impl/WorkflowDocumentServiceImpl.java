@@ -296,7 +296,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             String currentNode = null;
             Set<String> currentNodes = workflowDocument.getNodeNames();
             if (currentNodes.isEmpty()) {
-                List<RouteNodeInstance> nodes = KewApiServiceLocator.getWorkflowDocumentService().getTerminalNodeInstances(workflowDocument.getDocumentId());
+                List<RouteNodeInstance> nodes = KewApiServiceLocator.getWorkflowDocumentService().getTerminalRouteNodeInstances(
+                        workflowDocument.getDocumentId());
                 currentNodes = new HashSet<String>();
                 for (RouteNodeInstance node : nodes) {
                     currentNodes.add(node.getName());

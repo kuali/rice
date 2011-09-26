@@ -28,10 +28,12 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     private static final String NAMESPACE_CODE = "TEST";
     private static final String PEOPLE_FLOW_1 = "PeopleFlow1";
     private static final String PEOPLE_FLOW_2 = "PeopleFlow2";
+    private static final String PEOPLE_FLOW_3 = "PeopleFlow3";
 
     private static final String SINGLE_PEOPLE_FLOW_PARALLEL_APPROVE = "SinglePeopleFlow-Parallel-Approve";
     private static final String SINGLE_PEOPLE_FLOW_SEQUENTIAL_APPROVE = "SinglePeopleFlow-Sequential-Approve";
     private static final String SINGLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "SinglePeopleFlow-PriorityParallel-Approve";
+    private static final String MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "MultiplePeopleFlow-PriorityParallel-Approve";
 
     private PeopleFlowService peopleFlowService;
 
@@ -89,6 +91,23 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         peopleFlow.addGroup(testWorkgroup).setPriority(10);
         peopleFlow.addPrincipal(testuser3).setPriority(10);
         peopleFlowService.createPeopleFlow(peopleFlow.build());
+    }
+
+    private void createMultiplePeopleFlows() {
+        PeopleFlowDefinition.Builder peopleFlow1 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_1);
+        peopleFlow1.addPrincipal(user1).setPriority(1);
+        peopleFlow1.addPrincipal(user2).setPriority(2);
+        peopleFlowService.createPeopleFlow(peopleFlow1.build());
+
+        PeopleFlowDefinition.Builder peopleFlow2 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
+        peopleFlow2.addPrincipal(testuser1).setPriority(1);
+        peopleFlow2.addPrincipal(testuser2).setPriority(2);
+        peopleFlowService.createPeopleFlow(peopleFlow2.build());
+
+        PeopleFlowDefinition.Builder peopleFlow3 = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_3);
+        peopleFlow3.addGroup(testWorkgroup).setPriority(1);
+        peopleFlow3.addPrincipal(testuser3).setPriority(10);
+        peopleFlowService.createPeopleFlow(peopleFlow3.build());
     }
 
     @Test
@@ -285,6 +304,44 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         document.switchPrincipal(ewestfal);
         document.approve("");
         assertTrue(document.isFinal());
+    }
+
+    @Test
+    public void test_MultiplePeopleFlow_PriorityParallel_Approve() throws Exception {
+        createMultiplePeopleFlows();
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // user3 should not have an approval request since they initiated the document
+        document.switchPrincipal(user3);
+
+        // document should only send requests to the first people flow which should be user1 and user2
+        // But only user1 request should be activated
+
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals("Should have 2 root action requests", 2, rootActionRequests.size());
+        ActionRequest user1Request = null;
+        ActionRequest user2Request = null;
+        for (ActionRequest actionRequest : rootActionRequests) {
+            RecipientType recipientType = actionRequest.getRecipientType();
+            if (recipientType == RecipientType.PRINCIPAL) {
+                if (user1.equals(actionRequest.getPrincipalId())) {
+                    user1Request = actionRequest;
+                } else if (user2.equals(actionRequest.getPrincipalId())) {
+                    user2Request = actionRequest;
+                }
+            }
+        }
+        // now let's ensure we got the requests we wanted
+        assertNotNull(user1Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, user1Request.getStatus());
+        assertNotNull(user2Request);
+        assertEquals(ActionRequestStatus.INITIALIZED, user2Request.getStatus());
+
+        // TODO...
     }
 
     private void assertApproveRequested(WorkflowDocument document, String... principalIds) {

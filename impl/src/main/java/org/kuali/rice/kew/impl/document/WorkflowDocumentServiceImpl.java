@@ -100,7 +100,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return getDocumentDetail((String)documentIds.iterator().next());
 	}
 
-    public RouteNodeInstance getNodeInstance(String nodeInstanceId)  {
+    public RouteNodeInstance getRouteNodeInstance(String nodeInstanceId)  {
         if (StringUtils.isEmpty(nodeInstanceId)) {
             throw new RiceIllegalArgumentException("nodeInstanceId was blank or null");
         }
@@ -347,14 +347,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	}
 
     @Override
-    public List<RouteNodeInstance> getTerminalNodeInstances(String documentId) {
+    public List<RouteNodeInstance> getTerminalRouteNodeInstances(String documentId) {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Fetching terminal RouteNodeInstanceVOs [docId=" + documentId + "]");
     	}
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(documentId));
     }
 
-    public List<RouteNodeInstance> getCurrentNodeInstances(String documentId) {
+    public List<RouteNodeInstance> getCurrentRouteNodeInstances(String documentId) {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Fetching current RouteNodeInstanceVOs [docId=" + documentId + "]");
     	}

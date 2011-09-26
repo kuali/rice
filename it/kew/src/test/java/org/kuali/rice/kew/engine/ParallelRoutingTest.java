@@ -244,7 +244,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         List actionRequests = TestUtilities.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertEquals("Incorrect pending action requests.", 1, actionRequests.size());
         ActionRequestValue bRequest = (ActionRequestValue)actionRequests.get(0);
-        assertNotNull("Should have been routed through node instance.", bRequest.getNodeInstance());
+        assertNotNull("Should have been routed through node instance.", bRequest.getRouteNodeInstance());
         assertTrue(document.isApprovalRequested());
         
         document.approve("");

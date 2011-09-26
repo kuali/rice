@@ -317,7 +317,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	/*
 	 * private List invokeTransition(RouteContext context, RouteNodeInstance
 	 * process, ProcessResult processResult) throws Exception {
-	 * RouteNodeInstance nodeInstance = (context.getNodeInstance() ; List
+	 * RouteNodeInstance nodeInstance = (context.getRouteNodeInstance() ; List
 	 * nextNodeInstances = nodeInstance.getNextNodeInstances(); if
 	 * (nextNodeInstances.isEmpty()) { TransitionEngine transitionEngine =
 	 * TransitionEngineFactory.createTransitionEngine(nodeInstance); Transition

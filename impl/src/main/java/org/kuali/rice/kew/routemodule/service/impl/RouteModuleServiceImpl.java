@@ -18,7 +18,6 @@ package org.kuali.rice.kew.routemodule.service.impl;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -27,8 +26,6 @@ import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.routemodule.FlexRMAdapter;
 import org.kuali.rice.kew.routemodule.RouteModule;
-import org.kuali.rice.kew.routemodule.RouteModuleRemote;
-import org.kuali.rice.kew.routemodule.RouteModuleRemoteAdapter;
 import org.kuali.rice.kew.routemodule.service.RouteModuleService;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -76,8 +73,6 @@ public class RouteModuleServiceImpl implements RouteModuleService {
         Object routeModule = GlobalResourceLoader.getObject(new ObjectDefinition(routeMethodName));//SpringServiceLocator.getExtensionService().getRouteModule(routeMethodName);
         if (routeModule instanceof RouteModule) {
             return (RouteModule)routeModule;
-        } else if (routeModule instanceof RouteModuleRemote) {
-            return new RouteModuleRemoteAdapter((RouteModuleRemote)routeModule);
         }
         throw new WorkflowRuntimeException("Could not locate the Route Module with the given name: " + routeMethodName);
     }

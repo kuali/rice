@@ -38,7 +38,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
     protected void generateRequestForMember(ActionRequestFactory factory, String responsibilityId, PeopleFlowMember member, ActionRequestType actionRequested) {
         // TODO - description, responsibilityId, forceAction, approvePolicy, ruleId, annotation, request label
         // defaulting all of these at the moment as per below
-        factory.addRootActionRequest(actionRequested.getCode(), member.getPriority(), toRecipient(member), null, responsibilityId, Boolean.FALSE, null, null);
+        factory.addRootActionRequest(actionRequested.getCode(), member.getPriority(), toRecipient(member), null, responsibilityId, Boolean.TRUE, null, null);
     }
 
     private Recipient toRecipient(PeopleFlowMember member) {

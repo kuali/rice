@@ -187,9 +187,9 @@ public interface WorkflowDocumentService {
      *
      * @throws RiceIllegalArgumentException if {@code nodeInstanceId} is null
      */
-    @WebMethod(operationName = "getNodeInstance")
+    @WebMethod(operationName = "getRouteNodeInstance")
     @WebResult(name = "routeNodeInstance")
-	RouteNodeInstance getNodeInstance(@WebParam(name = "nodeInstanceId") String nodeInstanceId)
+	RouteNodeInstance getRouteNodeInstance(@WebParam(name = "routeNodeInstanceId") String routeNodeInstanceId)
             throws RiceIllegalArgumentException;
 
     /**
@@ -267,11 +267,11 @@ public interface WorkflowDocumentService {
      *
      * @throws RiceIllegalArgumentException if {@code documentId} is null
      */
-    @WebMethod(operationName = "getTerminalNodeInstances")
+    @WebMethod(operationName = "getTerminalRouteNodeInstances")
     @XmlElementWrapper(name = "routeNodeInstances", required = true)
     @XmlElement(name = "routeNodeInstance", required = false)
     @WebResult(name = "routeNodeInstances")
-	List<RouteNodeInstance> getTerminalNodeInstances(@WebParam(name = "documentId") String documentId)
+	List<RouteNodeInstance> getTerminalRouteNodeInstances(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
 
     /**
@@ -283,11 +283,11 @@ public interface WorkflowDocumentService {
      *
      * @throws RiceIllegalArgumentException if {@code documentId} is null
      */
-    @WebMethod(operationName = "getCurrentNodeInstances")
+    @WebMethod(operationName = "getCurrentRouteNodeInstances")
     @XmlElementWrapper(name = "routeNodeInstances", required = true)
     @XmlElement(name = "routeNodeInstance", required = false)
     @WebResult(name = "routeNodeInstances")
-	List<RouteNodeInstance> getCurrentNodeInstances(@WebParam(name = "documentId") String documentId)
+	List<RouteNodeInstance> getCurrentRouteNodeInstances(@WebParam(name = "documentId") String documentId)
             throws RiceIllegalArgumentException;
 
     /**

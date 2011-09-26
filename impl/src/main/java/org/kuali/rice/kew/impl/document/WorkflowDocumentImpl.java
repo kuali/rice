@@ -748,6 +748,15 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         return Collections.unmodifiableSet(nodeNames);
     }
 
+    public Set<String> getCurrentNodeNames() {
+        List<RouteNodeInstance> currentNodeInstances = getCurrentRouteNodeInstances();
+        Set<String> nodeNames = new HashSet<String>(currentNodeInstances.size());
+        for (RouteNodeInstance routeNodeInstance : currentNodeInstances) {
+            nodeNames.add(routeNodeInstance.getName());
+        }
+        return Collections.unmodifiableSet(nodeNames);
+    }
+
     @Override
     public void returnToPreviousNode(String nodeName, String annotation) {
         if (nodeName == null) {
@@ -779,6 +788,11 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     @Override
     public List<RouteNodeInstance> getActiveRouteNodeInstances() {
         return getWorkflowDocumentService().getActiveRouteNodeInstances(getDocumentId());
+    }
+
+    @Override
+    public List<RouteNodeInstance> getCurrentRouteNodeInstances() {
+        return getWorkflowDocumentService().getCurrentRouteNodeInstances(getDocumentId());
     }
 
     @Override

@@ -37,7 +37,7 @@ public interface RouteModule {
      *
      * @return A List of the generated ActionRequestValue objects.
      */
-    public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception;
+    List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception;
 
     /**
      * The route module will resolve the given responsibilityId and return an object that contains the key to
@@ -45,6 +45,17 @@ public interface RouteModule {
      * @param rId ResponsibiliyId that we need resolved.
      * @return The ResponsibleParty containing a key to a user or workgroup.
      */
-    public ResponsibleParty resolveResponsibilityId(String responsibilityId) throws WorkflowException;
+    ResponsibleParty resolveResponsibilityId(String responsibilityId) throws WorkflowException;
+
+    /**
+     * Returns true if this RouteModule has more requests available which it can generate.  This method will only be
+     * called after the first set of action requests returned by the first invocation of findActionRequests have been
+     * fully activated.  If this method returns true, findActionRequests will be invoked again and those requests will
+     * all be activated before the cycle continues until this method returns false;
+     *
+     * @param context the route context
+     * @return true if this route module has more requests it can generate, false otherwise
+     */
+    boolean isMoreRequestsAvailable(RouteContext context);
 
 }

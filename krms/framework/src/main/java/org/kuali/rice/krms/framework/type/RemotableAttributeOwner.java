@@ -19,7 +19,10 @@ import java.util.Map;
  * Interface to be extended by type services that have remotable attributes that will need to be rendered and
  * validated
  */
-@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
+
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL,
+        parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
+
 public interface RemotableAttributeOwner {
 
     /**
@@ -31,7 +34,8 @@ public interface RemotableAttributeOwner {
      */
     @WebMethod(operationName="getAttributeFields")
     @WebResult(name = "attributeFields")
-    List<RemotableAttributeField> getAttributeFields( @WebParam(name = "krmsTypeId") String krmsTypeId );
+    List<RemotableAttributeField> getAttributeFields( @WebParam(name = "krmsTypeId") String krmsTypeId )
+            throws RiceIllegalArgumentException;
 
     /**
      * <p>This method validates the passed in attributes for a krmsTypeId generating a List of

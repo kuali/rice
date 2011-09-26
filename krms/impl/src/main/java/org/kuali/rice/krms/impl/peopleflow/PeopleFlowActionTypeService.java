@@ -12,10 +12,12 @@ import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
+import org.springframework.orm.ObjectRetrievalFailureException;
 
 import javax.jws.WebParam;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -32,29 +34,55 @@ import java.util.Map;
  *
  * <p>An example value with two people flow actions specified would be:</p>
  *
- * <pre>    "approval:1000,notification:10001"</pre>
+ * <pre>    "approval:1000,notification:1001"</pre>
  *
  */
 public class PeopleFlowActionTypeService implements ActionTypeService {
 
     /**
-     * enum used to specify the action type to be specified in the vended actions
+     * enum used to specify the action type to be specified in the vended actions.
      */
     public enum Type {
 
-        NOTIFICATION, APPROVAL;
+        /**
+         * use this flag with the static factory to get a {@link PeopleFlowActionTypeService} that creates
+         * notification actions.
+         */
+        NOTIFICATION,
+
+        /**
+         * use this flag with the static factory to get a {@link PeopleFlowActionTypeService} that creates
+         * approval actions.
+         */
+        APPROVAL;
 
         @Override
         public String toString() {
             return this.name().toLowerCase();
         }
+
+        /**
+         * for each type, check the input with the lowercase version of the type name, and returns any match.
+         * @param s the type to retrieve
+         * @return the type, or null if a match is not found.
+         */
+        public static Type fromString(String s) {
+            for (Type type : Type.values()) {
+                if (type.toString().equals(s.toLowerCase())) {
+                    return type;
+                }
+            }
+            return null;
+        }
     }
 
     // String constants
-    private final String PEOPLE_FLOWS_SELECTED_ATTRIBUTE = "peopleFlowsSelected";
-    private static final String ATTRIBUTE_FIELD_NAME = "peopleFlowId";
+    static final String PEOPLE_FLOWS_SELECTED_ATTRIBUTE = "peopleFlowsSelected";
+    static final String ATTRIBUTE_FIELD_NAME = "peopleFlowId";
 
     private final Type type;
+
+    private PeopleFlowService peopleFlowService;
 
     /**
      * Factory method for getting a {@link PeopleFlowActionTypeService}
@@ -76,19 +104,19 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
 
     @Override
     public Action loadAction(ActionDefinition actionDefinition) {
-        if (actionDefinition == null) throw new IllegalArgumentException("actionDefinition must not be null");
+        if (actionDefinition == null) { throw new RiceIllegalArgumentException("actionDefinition must not be null"); }
 
         if (actionDefinition.getAttributes() == null ||
                 !actionDefinition.getAttributes().containsKey(ATTRIBUTE_FIELD_NAME)) {
 
-            throw new IllegalStateException("actionDefinition does not contain an " +
+            throw new RiceIllegalArgumentException("actionDefinition does not contain an " +
                     ATTRIBUTE_FIELD_NAME + " attribute");
         }
 
         String peopleFlowId = actionDefinition.getAttributes().get(ATTRIBUTE_FIELD_NAME);
 
         if (StringUtils.isBlank(peopleFlowId)) {
-            throw new IllegalArgumentException(ATTRIBUTE_FIELD_NAME + " attribute must not be null or blank");
+            throw new RiceIllegalArgumentException(ATTRIBUTE_FIELD_NAME + " attribute must not be null or blank");
         }
 
         // if the ActionDefinition is valid, constructing the PeopleFlowAction is cake
@@ -99,6 +127,8 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
     @Override
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId) {
 
+        validateNonBlankKrmsTypeId(krmsTypeId);
+
         // TODO: real params here.  At the time this was written, lookups didn't exist for PeopleFlows yet.
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create("http://TODO.kuali.org/TODO/",
@@ -107,10 +137,10 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
 //        quickFinderBuilder.setFieldConversions();
 
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
-        controlBuilder.setSize(40);
+        controlBuilder.setSize(Integer.valueOf(40));
 
         RemotableAttributeLookupSettings.Builder lookupSettingsBuilder = RemotableAttributeLookupSettings.Builder.create();
-        lookupSettingsBuilder.setCaseSensitive(true);
+        lookupSettingsBuilder.setCaseSensitive(Boolean.TRUE);
         lookupSettingsBuilder.setInCriteria(true);
         lookupSettingsBuilder.setInResults(true);
         lookupSettingsBuilder.setRanged(false);
@@ -122,11 +152,17 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
         builder.setControl(controlBuilder);
         builder.setLongLabel("PeopleFlow ID");
         builder.setShortLabel("PeopleFlow ID");
-        builder.setMinLength(1);
-        builder.setMaxLength(40);
+        builder.setMinLength(Integer.valueOf(1));
+        builder.setMaxLength(Integer.valueOf(40));
         builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
 
         return Collections.singletonList(builder.build());
+    }
+
+    private void validateNonBlankKrmsTypeId(String krmsTypeId) {
+        if (StringUtils.isEmpty(krmsTypeId)) {
+            throw new RiceIllegalArgumentException("krmsTypeId may not be null or blank");
+        }
     }
 
     @Override
@@ -140,12 +176,27 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
 
     ) throws RiceIllegalArgumentException {
 
+        List<RemotableAttributeError> results = null;
+
+        validateNonBlankKrmsTypeId(krmsTypeId);
+        if (attributes == null) { throw new RiceIllegalArgumentException("attributes must not be null"); }
+
         RemotableAttributeError.Builder errorBuilder =
                 RemotableAttributeError.Builder.create(ATTRIBUTE_FIELD_NAME);
 
         if (attributes != null && attributes.containsKey(ATTRIBUTE_FIELD_NAME)) {
-            PeopleFlowDefinition peopleFlowDefinition =
-                    KewApiServiceLocator.getPeopleFlowService().getPeopleFlow(attributes.get(ATTRIBUTE_FIELD_NAME));
+            PeopleFlowDefinition peopleFlowDefinition = null;
+
+            try {
+                peopleFlowDefinition = getPeopleFlowService().getPeopleFlow(attributes.get(ATTRIBUTE_FIELD_NAME));
+            } catch (ObjectRetrievalFailureException e) {
+                // that means the key was invalid to OJB/Spring.
+                // That's not cause for general panic, so we'll swallow it.
+            } catch (IllegalArgumentException e) {
+                // that means the key was invalid to our JPA provider.
+                // That's not cause for general panic, so we'll swallow it.
+            }
+
             if (peopleFlowDefinition == null) {
 
                 errorBuilder.addErrors("The " + ATTRIBUTE_FIELD_NAME +
@@ -156,7 +207,13 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
             errorBuilder.addErrors(ATTRIBUTE_FIELD_NAME + " is required");
         }
 
-        return Collections.singletonList(errorBuilder.build());
+        if (errorBuilder.getErrors().size() > 0) {
+            results = Collections.singletonList(errorBuilder.build());
+        } else {
+            results = Collections.emptyList();
+        }
+
+        return results;
     }
 
 
@@ -166,10 +223,31 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
             value = MapStringStringAdapter.class) Map<String, String> newAttributes,
             @WebParam(name = "oldAttributes") @XmlJavaTypeAdapter(
                     value = MapStringStringAdapter.class) Map<String, String> oldAttributes) throws RiceIllegalArgumentException {
+
+        if (oldAttributes == null) { throw new RiceIllegalArgumentException("oldAttributes must not be null"); }
+
         return validateAttributes(krmsTypeId, newAttributes);
     }
 
-    private class PeopleFlowAction implements Action {
+    /**
+     * @return the configured {@link PeopleFlowService}      */
+    public PeopleFlowService getPeopleFlowService() {
+        if (peopleFlowService == null) {
+            peopleFlowService = KewApiServiceLocator.getPeopleFlowService();
+        }
+
+        return peopleFlowService;
+    }
+
+    /**
+     * inject the {@link PeopleFlowService} to use internally.
+     * @param peopleFlowService
+     */
+    public void setPeopleFlowService(PeopleFlowService peopleFlowService) {
+        this.peopleFlowService = peopleFlowService;
+    }
+
+    private static class PeopleFlowAction implements Action {
 
         private final Type type;
         private final String peopleFlowId;

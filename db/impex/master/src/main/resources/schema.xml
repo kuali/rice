@@ -1463,6 +1463,12 @@
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
+        <column name="ATTN_LINE" size="45" type="VARCHAR"/>
+        <column name="ADDR_FMT" size="256" type="VARCHAR"/>
+        <column default="SYSDATE" name="MOD_DT" type="DATE"/>
+        <column name="VALID_DT" type="DATE"/>
+        <column name="VALID_IND" size="1" type="VARCHAR"/>
+        <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
         <foreign-key foreignTable="KRIM_ENTITY_ENT_TYP_T"
             name="KRIM_ENTITY_ADDR_TR1" onDelete="cascade">
             <reference foreign="ENT_TYP_CD" local="ENT_TYP_CD"/>
@@ -1517,6 +1523,8 @@
         <column name="BIRTH_STATE_PVC_CD" size="2" type="VARCHAR"/>
         <column name="BIRTH_CITY" size="30" type="VARCHAR"/>
         <column name="GEO_ORIGIN" size="100" type="VARCHAR"/>
+        <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
+        <column name="GNDR_CHG_CD" size="20" type="VARCHAR"/>
         <unique name="KRIM_ENTITY_BIO_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1696,6 +1704,9 @@
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
+        <column name="TITLE_NM" size="20" type="VARCHAR"/>
+        <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
+        <column name="NM_CHNG_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENTITY_T"
             name="KRIM_ENTITY_NM_TR1" onDelete="cascade">
             <reference foreign="ENTITY_ID" local="ENTITY_ID"/>
@@ -2017,6 +2028,12 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column default="N" name="EDIT_FLAG" size="1" type="VARCHAR"/>
+        <column name="ATTN_LINE" size="45" type="VARCHAR"/>
+        <column name="ADDR_FMT" size="256" type="VARCHAR"/>
+        <column default="SYSDATE" name="MOD_DT" type="DATE"/>
+        <column name="VALID_DT" type="DATE"/>
+        <column name="VALID_IND" size="1" type="VARCHAR"/>
+        <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
     </table>
     <table name="KRIM_PND_AFLTN_MT">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
@@ -2163,6 +2180,9 @@
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="N" name="EDIT_FLAG" size="1" type="VARCHAR"/>
+        <column name="TITLE_NM" size="20" type="VARCHAR"/>
+        <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
+        <column name="NM_CHNG_DT" type="DATE"/>
     </table>
     <table name="KRIM_PND_PHONE_MT">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>

@@ -206,8 +206,8 @@ public final class CodedAttribute extends AbstractDataTransferObject
      */
     static class Constants {
 
-        final static String ROOT_ELEMENT_NAME = "type";
-        final static String TYPE_NAME = "typeType";
+        final static String ROOT_ELEMENT_NAME = "codedAttribute";
+        final static String TYPE_NAME = "CodedAttributeType";
 
     }
 

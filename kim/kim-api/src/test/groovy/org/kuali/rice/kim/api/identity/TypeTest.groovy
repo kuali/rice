@@ -8,14 +8,14 @@ class TypeTest {
     private static final Long VERSION_NUMBER = new Integer(1);
 	private static final String OBJECT_ID = UUID.randomUUID();
     private static final String XML = """
-        <type xmlns="http://rice.kuali.org/kim/v2_0">
+        <codedAttribute xmlns="http://rice.kuali.org/kim/v2_0">
             <code>HOME</code>
             <name>Home</name>
             <active>true</active>
             <sortCode>1</sortCode>
             <versionNumber>${VERSION_NUMBER}</versionNumber>
             <objectId>${OBJECT_ID}</objectId>
-        </type>
+        </codedAttribute>
     """
 
     private static final String TYPE_CODE = "HOME"

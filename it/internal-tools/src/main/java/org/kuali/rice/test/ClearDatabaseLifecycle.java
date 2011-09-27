@@ -106,7 +106,12 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
     }
 
     protected void verifyTestEnvironment(final DataSource dataSource) {
-        Assert.assertTrue("No table named '" + TEST_TABLE_NAME + "' was found in the configured database.  " + "You are attempting to run tests against a non-test database!!!", isTestTableInSchema(dataSource));
+        String dbUrl = "";
+        try {
+            dbUrl = dataSource.getConnection().getMetaData().getURL();
+        } catch (Throwable t) {}
+        Assert.assertTrue("No table named '" + TEST_TABLE_NAME + "' was found in the configured database.  " +
+                 dbUrl + "  You are attempting to run tests against a non-test database!!!", isTestTableInSchema(dataSource));
     }
 
     protected void clearTables(final PlatformTransactionManager transactionManager, final DataSource dataSource) {

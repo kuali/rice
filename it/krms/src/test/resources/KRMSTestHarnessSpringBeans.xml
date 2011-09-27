@@ -54,10 +54,7 @@
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-  <!--
-  <import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
--->
+    
     <bean id="config" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
         <property name="configLocations">
             <list>
@@ -93,6 +90,7 @@
     </bean>
     
     <!-- attempt to get our beans to be visible by the GRL -->
+    
     <bean class="org.kuali.rice.core.framework.resourceloader.RiceSpringResourceLoaderConfigurer">
       <property name="localServiceName" value="KRMSContext" />
     </bean>
@@ -133,12 +131,9 @@
             <ref bean="matchAllWithPropReq" />
         </property>
     </bean>
-    
 
     <!-- Wire up services for our tests -->
-    
     <bean id="genericTestDao" class="org.rice.krms.test.GenericTestDao" p:jcdAlias="krmsDataSource"/>
-    
     <bean id="testBoService" class="org.rice.krms.test.TestBoService">
         <constructor-arg><ref local="genericTestDao" /></constructor-arg>
     </bean>
@@ -154,9 +149,6 @@
     <bean id="testActionTypeService" class="org.rice.krms.test.TestActionTypeService">
         <constructor-arg><value>testAction</value></constructor-arg>
     </bean>
-    
-    
     <!-- Import core beans -->
     <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-    
 </beans>

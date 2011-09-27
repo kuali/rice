@@ -60,7 +60,7 @@
     </bean>
     
     <!-- Bitronix transaction manager -->
-    <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices">
+    <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true">
         <!-- <property name="serverId" value="spring-btm" /> -->
         <property name="disableJmx" value="true" />
     </bean>

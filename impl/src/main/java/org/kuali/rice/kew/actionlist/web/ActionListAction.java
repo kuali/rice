@@ -181,7 +181,7 @@ public class ActionListAction extends KualiAction {
 
         boolean freshActionList = true;
         // retrieve cached action list
-        List actionList = (List)request.getSession().getAttribute(ACTION_LIST_KEY);
+        List<ActionItem> actionList = (List<ActionItem>)request.getSession().getAttribute(ACTION_LIST_KEY);
         plog.log("Time to initialize");
         try {
             //UserSession uSession = getUserSession(request);
@@ -259,21 +259,21 @@ public class ActionListAction extends KualiAction {
             }
 
             if (isOutboxMode(form, request, preferences)) {
-        	    actionList = new ArrayList(actionListSrv.getOutbox(principalId, filter));
+        	    actionList = new ArrayList<ActionItem>(actionListSrv.getOutbox(principalId, filter));
         	    form.setOutBoxEmpty(actionList.isEmpty());
             } else {
                 if (actionList == null) {
                 	//clear out old User Option records if they exist
                 	actionListSrv.refreshActionList(getUserSession().getPerson().getPrincipalId());
                 	// fetch the action list
-                    actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else if (forceListRefresh) {
                 	// force a refresh... usually based on filter change or parameter specifying refresh needed
-                    actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else if (actionListSrv.refreshActionList(getUserSession().getPerson().getPrincipalId())) {
-                    actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else {
                 	Boolean update = (Boolean) uSession.retrieveObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME);
@@ -404,7 +404,7 @@ public class ActionListAction extends KualiAction {
 	return outBoxView;
     }
 
-    private void sortActionList(List actionList, String sortName, SortOrderEnum sortOrder) {
+    private void sortActionList(List<ActionItem> actionList, String sortName, SortOrderEnum sortOrder) {
     	if (StringUtils.isEmpty(sortName)) {
     		return;
     	}
@@ -415,15 +415,14 @@ public class ActionListAction extends KualiAction {
     	Collections.sort(actionList, comparator);
     	// re-index the action items
     	int index = 0;
-    	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
-			ActionItemActionListExtension actionItem = (ActionItemActionListExtension) iterator.next();
+    	for (ActionItem actionItem : actionList) {
 			actionItem.setActionItemIndex(Integer.valueOf(index++));
 		}
     }
 
     private void initializeActionList(List actionList, Preferences preferences) throws WorkflowException {
     	List actionItemProblemIds = new ArrayList();
-    	Map<String,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionList);
+    	Map<String,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(org.kuali.rice.kew.actionitem.ActionItem.to(actionList));
 
     	int index = 0;
     	generateActionItemErrors(actionList);
@@ -526,7 +525,7 @@ public class ActionListAction extends KualiAction {
     	int startIndex = (page.intValue() - 1) * pageSize;
     	int endIndex = startIndex + pageSize;
     	generateActionItemErrors(actionList);
-    	Map<String,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionList);
+    	Map<String,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(org.kuali.rice.kew.actionitem.ActionItem.to(actionList));
     	for (int index = startIndex; index < endIndex && index < actionList.size(); index++) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)actionList.get(index);
     		// evaluate custom action list component for mass actions

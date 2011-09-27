@@ -40,16 +40,16 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
         StringBuffer regex = new StringBuffer();
 
         if (isAllowNegative() && !onlyNegative) {
-            regex.append("(-?");
+            regex.append("((-?");
         }
         else if(onlyNegative){
-            regex.append("(-");
+            regex.append("((-");
         }
         if(omitZero){
-            regex.append("[1-9][0-9]*)");
+            regex.append("[1-9][0-9]*))");
         }
         else{
-            regex.append("[1-9][0-9]*)|(0*)");
+            regex.append("[1-9][0-9]*)|[0]*)");
         }
 
         return regex.toString();

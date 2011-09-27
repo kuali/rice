@@ -53,6 +53,12 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
     protected boolean allowAtSign = false;
     protected boolean allowPercent = false;
     protected boolean allowPound = false;
+    protected boolean allowGreaterThan = false;
+    protected boolean allowLessThan = false;
+    protected boolean allowBrackets = false;
+    protected boolean allowAmpersand = false;
+    protected boolean allowCurlyBraces = false;
+    protected boolean allowBackslash = false;
     protected boolean allowAll = false;
 
     /**
@@ -335,6 +341,54 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         this.allowPound = allowPound;
     }
 
+    public boolean isAllowGreaterThan() {
+        return allowGreaterThan;
+    }
+
+    public void setAllowGreaterThan(boolean allowGreaterThan) {
+        this.allowGreaterThan = allowGreaterThan;
+    }
+
+    public boolean isAllowLessThan() {
+        return allowLessThan;
+    }
+
+    public void setAllowLessThan(boolean allowLessThan) {
+        this.allowLessThan = allowLessThan;
+    }
+
+    public boolean isAllowBrackets() {
+        return allowBrackets;
+    }
+
+    public void setAllowBrackets(boolean allowBrackets) {
+        this.allowBrackets = allowBrackets;
+    }
+
+    public boolean isAllowAmpersand() {
+        return allowAmpersand;
+    }
+
+    public void setAllowAmpersand(boolean allowAmpersand) {
+        this.allowAmpersand = allowAmpersand;
+    }
+
+    public boolean isAllowCurlyBraces() {
+        return allowCurlyBraces;
+    }
+
+    public void setAllowCurlyBraces(boolean allowCurlyBraces) {
+        this.allowCurlyBraces = allowCurlyBraces;
+    }
+
+    public boolean isAllowBackslash() {
+        return allowBackslash;
+    }
+
+    public void setAllowBackslash(boolean allowBackslash) {
+        this.allowBackslash = allowBackslash;
+    }
+
     /**
      * If true, this constraint will allow all symbols that have flags for them. Equivalent to
      * setting each flag to true separately.
@@ -440,7 +494,24 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
         if (allowPound || allowAll) {
             regexString.append("#");
         }
-
+        if (allowLessThan || allowAll) {
+            regexString.append("\\074");
+        }
+        if (allowGreaterThan || allowAll) {
+            regexString.append("\\076");
+        }
+        if (allowAmpersand || allowAll) {
+            regexString.append("\\046");
+        }
+        if (allowBackslash || allowAll) {
+            regexString.append("\\134");
+        }
+        if (allowCurlyBraces || allowAll) {
+            regexString.append("\\173\\175");
+        }
+        if (allowBrackets || allowAll) {
+            regexString.append("\\133\\135");
+        }
         return regexString.toString();
     }
 
@@ -539,6 +610,30 @@ public abstract class AllowCharacterConstraint extends ValidCharactersPatternCon
             if (allowPound || allowAll) {
                 paramString.append(", " + configService.getPropertyValueAsString(
                         UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "pound"));
+            }
+            if (allowLessThan || allowAll) {
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "lessThan"));
+            }
+            if (allowGreaterThan || allowAll) {
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "greaterThan"));
+            }
+            if (allowAmpersand || allowAll) {
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "ampersand"));
+            }
+            if (allowBackslash || allowAll) {
+               paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "backslash"));
+            }
+            if (allowCurlyBraces || allowAll) {
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "curlyBraces"));
+            }
+            if (allowBrackets || allowAll) {
+                paramString.append(", " + configService.getPropertyValueAsString(
+                        UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "brackets"));
             }
 
             validationMessageParams.add(paramString.toString());

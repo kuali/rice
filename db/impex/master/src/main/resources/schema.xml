@@ -737,9 +737,6 @@
         <column name="JNDI_URL" size="255" type="VARCHAR"/>
         <column name="BLNKT_APPR_PLCY" size="10" type="VARCHAR"/>
         <column name="ADV_DOC_SRCH_URL" size="255" type="VARCHAR"/>
-        <column name="CSTM_ACTN_LIST_ATTRIB_CLS_NM" size="255" type="VARCHAR"/>
-        <column name="CSTM_ACTN_EMAIL_ATTRIB_CLS_NM" size="255" type="VARCHAR"/>
-        <column name="CSTM_DOC_NTE_ATTRIB_CLS_NM" size="255" type="VARCHAR"/>
         <column default="1" name="RTE_VER_NBR" size="2" type="VARCHAR"/>
         <column name="NOTIFY_ADDR" size="255" type="VARCHAR"/>
         <column name="APPL_ID" size="255" type="VARCHAR"/>

@@ -501,6 +501,197 @@ values ('P421A', 'P421D', 1);
 
 
 --
+-- start of new agendas (AGENDA002, AGENDA003) and their associated items
+--
+
+
+
+/***  AGENDA 002 **/
+insert into krms_agenda_t (agenda_id, nm, cntxt_id, init_agenda_itm_id, typ_id, actv, ver_nbr)
+values ('AGENDA002', 'SimpleAgendaCompoundProp', 'CONTEXT1', null, 'T5', 'Y', 1);
+
+insert into krms_agenda_itm_t (AGENDA_ITM_ID, RULE_ID, AGENDA_ID, VER_NBR)
+values ('AGENDA002ITEM1', 'R421', 'AGENDA002', 1);
+
+update krms_agenda_t set INIT_AGENDA_ITM_ID = 'AGENDA002ITEM1' where AGENDA_ID = 'AGENDA002';
+
+/***  AGENDA 003 **/
+insert into krms_agenda_t (agenda_id, nm, cntxt_id, init_agenda_itm_id, typ_id, actv, ver_nbr)
+values ('AGENDA003', 'One Big Rule', 'CONTEXT1', null, 'T5', 'Y', 1);
+
+insert into krms_agenda_itm_t (AGENDA_ITM_ID, RULE_ID, AGENDA_ID, VER_NBR)
+values ('AGENDA003ITEM1', 'R500', 'AGENDA003', 1);
+
+update krms_agenda_t set INIT_AGENDA_ITM_ID = 'AGENDA003ITEM1' where AGENDA_ID = 'AGENDA003';
+
+/**** AGENDA 003 stuff ***************/
+
+insert into krms_term_spec_t (TERM_SPEC_ID, NM, TYP, ACTV, VER_NBR, DESC_TXT, nmspc_cd)
+values ('TERMSPEC_003', 'PO Value', 'T6', 'Y', 1, 'Purchase Order Value', 'KRMS_TEST');
+
+insert into krms_term_spec_t (TERM_SPEC_ID, NM, TYP, ACTV, VER_NBR, DESC_TXT, nmspc_cd)
+values ('TERMSPEC_004', 'PO Item Type', 'T1', 'Y', 1, 'Purchased Item Type', 'KRMS_TEST');
+
+insert into krms_term_spec_t (TERM_SPEC_ID, NM, TYP, ACTV, VER_NBR, DESC_TXT, nmspc_cd)
+values ('TERMSPEC_005', 'Account', 'T1', 'Y', 1, 'Charged To Account', 'KRMS_TEST');
+
+insert into krms_term_spec_t (TERM_SPEC_ID, NM, TYP, ACTV, VER_NBR, DESC_TXT, nmspc_cd)
+values ('TERMSPEC_006', 'Occasion', 'T1', 'Y', 1, 'Special Event', 'KRMS_TEST');
+
+insert into krms_cntxt_vld_term_spec_t(cntxt_term_spec_prereq_id, cntxt_id, term_spec_id, prereq)
+values ('CTSPID001', 'CONTEXT1', 'TERMSPEC_001', 'N');
+
+insert into krms_cntxt_vld_term_spec_t(cntxt_term_spec_prereq_id, cntxt_id, term_spec_id, prereq)
+values ('CTSPID002', 'CONTEXT1', 'TERMSPEC_002', 'N');
+
+insert into krms_cntxt_vld_term_spec_t(cntxt_term_spec_prereq_id, cntxt_id, term_spec_id, prereq)
+values ('CTSPID003', 'CONTEXT1', 'TERMSPEC_003', 'N');
+
+insert into krms_cntxt_vld_term_spec_t(cntxt_term_spec_prereq_id, cntxt_id, term_spec_id, prereq)
+values ('CTSPID004', 'CONTEXT1', 'TERMSPEC_004', 'N');
+
+insert into krms_cntxt_vld_term_spec_t(cntxt_term_spec_prereq_id, cntxt_id, term_spec_id, prereq)
+values ('CTSPID005', 'CONTEXT1', 'TERMSPEC_005', 'N');
+
+insert into krms_cntxt_vld_term_spec_t(cntxt_term_spec_prereq_id, cntxt_id, term_spec_id, prereq)
+values ('CTSPID006', 'CONTEXT1', 'TERMSPEC_006', 'N');
+
+
+insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_003', 'TERMSPEC_003', 1);
+insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_004', 'TERMSPEC_004', 1);
+insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_005', 'TERMSPEC_005', 1);
+insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_006', 'TERMSPEC_006', 1);
+
+--
+-- big fin rule
+--
+insert into krms_rule_t(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
+values ('R500', 'KRMS_TEST', 'SpecialPurchase', 'T2', null, 'Y', 1, 'Does PO require my approval');
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, cmpnd_op_cd, ver_nbr)
+values ('P500', 'is purchase special', null, 'C','R500', '&', 1);
+
+update krms_rule_t set prop_id = 'P500' where rule_id = 'R500';
+
+
+/* 2nd level prop s */
+// is it expensive
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P501A', 'is purchase order value large', null, 'S','R500', 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('501A1', 'P501A', 'TERM_003', 'T', 1, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('501A2', 'P501A', '5500.00', 'C', 2, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('501A3', 'P501A', '>', 'O', 3, 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P500', 'P501A', 1);
+
+// is it controlled
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, cmpnd_op_cd, ver_nbr)
+values ('P502', 'is purchased item controlled', null, 'C','R500', '|', 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P500', 'P502', 2);
+
+// is it special
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P503', 'is it for a special event', null, 'C','R500', 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P500', 'P503', 3);
+
+//---- controlled 3rd level props -----
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P502A', 'is item purchased animal', null, 'S','R500', 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P502', 'P502A', 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502A1', 'P502A', 'TERM_004', 'T', 1, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502A2', 'P502A', 'ANIMAL', 'C', 2, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502A3', 'P502A', '=', 'O', 3, 1);
+
+
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P502B', 'is purchased item radioactive', null, 'S','R500', 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P502', 'P502B', 2);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502B1', 'P502B', 'TERM_004', 'T', 1, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502B2', 'P502B', 'RADIOACTIVE', 'C', 2, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502B3', 'P502B', '=', 'O', 3, 1);
+
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P502C', 'is it medicinal', null, 'S','R500', 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P502', 'P502C', 2);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502C1', 'P502C', 'TERM_004', 'T', 1, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502C2', 'P502C', 'MEDICAL CANNIBIS', 'C', 2, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('502C3', 'P502C', '=', 'O', 3, 1);
+
+
+// is it special 3rd level props
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P503A', 'charged to Kuali', null, 'S','R500', 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P503', 'P503A', 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('503A1', 'P503A', 'TERM_005', 'T', 1, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('503A2', 'P503A', 'KUALI SLUSH FUND', 'C', 2, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('503A3', 'P503A', '=', 'O', 3, 1);
+
+
+
+insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
+values ('P503B', 'Party at Travis House', null, 'S','R500', 1);
+
+insert into krms_cmpnd_prop_props_t(cmpnd_prop_id, prop_id, seq_no)
+values ('P503', 'P503B', 2);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('503B1', 'P503B', 'TERM_006', 'T', 1, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('503B2', 'P503B', 'Christmas Party', 'C', 2, 1);
+
+insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
+values ('503B3', 'P503B', '=', 'O', 3, 1);
+
+
+--
 -- additional agenda item template:
 --
 

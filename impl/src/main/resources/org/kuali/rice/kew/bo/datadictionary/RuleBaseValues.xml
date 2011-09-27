@@ -437,6 +437,7 @@
   <bean id="RuleBaseValues-inquiryDefinition" parent="RuleBaseValues-inquiryDefinition-parentBean"/>
 
   <bean id="RuleBaseValues-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="title" value="Rule Inquiry"/>
     <property name="inquirableClass" value="org.kuali.rice.kew.rule.bo.RuleBaseValuesInquirableImpl"/>
     <property name="inquirySections">
       <list>

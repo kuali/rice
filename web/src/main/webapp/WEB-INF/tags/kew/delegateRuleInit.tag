@@ -14,6 +14,7 @@
  limitations under the License.
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<c:set var="ruleAttributes" value="${DataDictionary.RuleBaseValues.attributes}" />
 
 <kul:tabTop tabTitle="Choose Parent Rule" defaultOpen="true">
 
@@ -23,7 +24,7 @@
 			<tr>
 				<th align=right valign=middle class="bord-l-b">Select parent rule: </th>
 				<td align=left valign=middle class="datacell">
-				    <kul:htmlControlAttribute attributeEntry="${ruleAttributes.ruleBaseValuesId}" property="parentRuleId" readOnly="true" readOnlyAlternateDisplay="${fn:escapeXml(KualiForm.ruleDescription)}"/>
+				    <kul:htmlControlAttribute attributeEntry="${ruleAttributes.id}" property="parentRuleId" readOnly="true" readOnlyAlternateDisplay="${fn:escapeXml(KualiForm.ruleDescription)}"/>
 				    <kul:lookup boClassName="org.kuali.rice.kew.rule.RuleBaseValues" fieldConversions="id:parentRuleId"/>
 				</td>
 			</tr>
@@ -41,7 +42,7 @@
 				<th align=middle valign=middle class="bord-l-b">Type</th>
 				<th align=middle valign=middle class="bord-l-b">Action Request Code</th>
 			</tr>
-			<c:forEach items="${KualiForm.parentRule.responsibilities}" varStatus="status" var="responsibility">
+			<c:forEach items="${KualiForm.parentRule.ruleResponsibilities}" varStatus="status" var="responsibility">
 			  <tr>
 			    <td align=middle valign=middle class="datacell">
 			      <html:radio property="parentResponsibilityId" title="Responsibility ${status.index}" value="${responsibility.responsibilityId}"/>

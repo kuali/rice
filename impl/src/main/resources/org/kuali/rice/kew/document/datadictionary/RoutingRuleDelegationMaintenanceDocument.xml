@@ -51,12 +51,12 @@
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableSubSectionHeaderDefinition" p:name="Parent Rule"/>
-        <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleBaseValues.id" p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleBaseValuesId" p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleBaseValues.description" p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableSubSectionHeaderDefinition" p:name="Parent Rule Responsibility"/>
         <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleResponsibilityName" p:unconditionallyReadOnly="true"/>
-		<bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleResponsibilityTypeDisplayValue" p:unconditionallyReadOnly="true"/>
-		<bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.actionRequestedDisplayValue" p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.ruleResponsibilityTypeDisplayValue" p:unconditionallyReadOnly="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="ruleResponsibility.actionRequestedDisplayValue" p:unconditionallyReadOnly="true"/>
       </list>
     </property>
   </bean>

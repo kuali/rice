@@ -56,9 +56,6 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-
     <bean id="config" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
         <property name="configLocations">
             <list>
@@ -78,6 +75,34 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="properties" value="#{config.getProperties()}"/>
+    </bean>
+
+    <bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+        <property name="defaultTimeout" value="${transaction.timeout}"/>
+    </bean>
+
+    <bean id="dataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+        <property name="transactionManager" ref="jotm"/>
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxSize" value="${datasource.pool.maxSize}"/>
+        <property name="minSize" value="${datasource.pool.minSize}"/>
+        <property name="maxWait" value="${datasource.pool.maxWait}"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}"/>
+        <property name="password" value="${datasource.password}"/>
+    </bean>
+
+    <bean id="nonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${datasource.driver.name}"/>
+        <property name="url" value="${datasource.url}"/>
+        <property name="maxActive" value="${datasource.pool.maxActive}"/>
+        <property name="minIdle" value="${datasource.minIdle}"/>
+        <property name="initialSize" value="${datasource.initialSize}"/>
+        <property name="validationQuery" value="${datasource.pool.validationQuery}"/>
+        <property name="username" value="${datasource.username}"/>
+        <property name="password" value="${datasource.password}"/>
+        <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
     <bean id="coreConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
@@ -114,8 +139,8 @@
         </property>
         <property name="dataSource" ref="dataSource"/>
         <property name="nonTransactionalDataSource" ref="nonTransactionalDataSource"/>
-        <property name="transactionManager" ref="transactionManagerXAPool"/>
-        <property name="userTransaction" ref="transactionManagerXAPool"/>
+        <property name="transactionManager" ref="jotm"/>
+        <property name="userTransaction" ref="jotm"/>
     </bean>
 
     <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>
@@ -227,10 +252,10 @@
 
     <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
         <property name="userTransaction">
-            <ref local="transactionManagerXAPool"/>
+            <ref local="jotm"/>
         </property>
         <property name="transactionManager">
-            <ref local="transactionManagerXAPool"/>
+            <ref local="jotm"/>
         </property>
     </bean>
     <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">

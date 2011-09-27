@@ -42,7 +42,7 @@
     </property>
   </bean>
 
-  <bean id="ruleEditorBody-parent" parent="GroupGridLayout">
+  <bean id="ruleEditorBody-parent" parent="GroupGridLayout" p:renderHeader="false">
     <property name="title" value="Rule Editor" />
     <property name="layoutManager">
       <bean parent="GridLayoutManager" p:numberOfColumns="3" />
@@ -50,18 +50,16 @@
     <property name="items">
       <list>
         <ref bean="ruleInfoSection" />
-        <ref bean="propositionSection" />
-        <ref bean="ruleActionsSection" />
       </list>
     </property>
   </bean>
 
   <bean id="ruleInfoSection" parent="ruleInfoSection-parent"/>
   <bean id="ruleInfoSection-parent" parent="GroupSection">
-    <property name="title" value="Rule Information" />
+    <property name="title" value="Rule" />
     <property name="renderHeader" value="true" />
     <property name="accordion.render" value="true" />
-    <property name="accordion.defaultOpen" value="false" />
+    <property name="accordion.defaultOpen" value="true" />
     <property name="layoutManager">
       <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
         p:styleClasses="datatable display" />
@@ -71,12 +69,14 @@
         <ref bean="loadRuleGroup"/>
         <ref bean="ruleInfoGrid"/>
         <ref bean="ruleAttributesSection"/>
+        <ref bean="propositionSection" />
+        <ref bean="ruleActionsSection" />
       </list>
     </property>
   </bean>
   
   <bean id="loadRuleGroup" parent="loadRuleGroup-parent" />
-  <bean id="loadRuleGroup-parent" parent="Group">
+  <bean id="loadRuleGroup-parent" parent="Group" p:style="padding-bottom: 1em;">
     <property name="title" value="Source" />
     <property name="renderHeader" value="false" />
     <property name="accordion.render" value="false" />
@@ -109,13 +109,10 @@
 
   
   
-  <bean id="ruleInfoGrid" parent="GroupSectionGridLayout">
+  <bean id="ruleInfoGrid" parent="GroupGridLayout"  p:style="padding-bottom: 1em;">
     <property name="title" value="Rule Information" />
-    <property name="renderHeader" value="true" />
+    <property name="renderHeader" value="false" />
     <property name="accordion.render" value="false" />
-    <property name="layoutManager">
-      <bean parent="GridLayoutManager" p:numberOfColumns="6" />
-    </property>
     <property name="items">
       <list>
         <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.name" />
@@ -132,30 +129,32 @@
   
 
   <bean name="propositionSection" parent="propositionSection-parent" />
-  <bean name="propositionSection-parent" parent="GroupSection">
-    <property name="title" value="Proposition" />
+  <bean name="propositionSection-parent" parent="GroupBodyOnly"  p:style="padding-bottom: 1em;">
+    <property name="title" value="Proposition Tree" />
     <property name="accordion.render" value="true" />
     <property name="items">
       <list>
-        <bean parent="GroupGridLayout">
+
+        <bean parent="GroupGridLayout" p:renderHeader="false" p:style="margin-bottom: 0em;">
           <property name="accordion.render" value="false" />
           <property name="layoutManager.numberOfColumns" value="8" />
           <property name="items">
             <list>
               <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.propositionSummary"
                 p:colSpan="8">
-                <property name="label" value="Summary" />
+                <property name="label" value="Proposition Summary" />
                 <property name="control">
-                  <bean parent="TextControl" p:size="100" p:readOnly="true" p:style="border: 0px"/>
+                  <bean parent="TextControl" p:size="90" p:readOnly="true" p:style="border: 0px"/>
                 </property>
               </bean>
             </list>
           </property>
         </bean>
-        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; " >
+
+        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; margin-top: " >
           <property name="items">
             <list>
-              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;">
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt; margin-top: 0em;">
                 <property name="items">
                   <list>
                     <ref bean="RuleEditorView-RuleTreeControls" />
@@ -203,12 +202,12 @@
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
         <bean parent="ActionField" p:methodToCall="moveLeft"
           p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
-        <bean parent="ActionField" p:methodToCall="moveUp" p:actionLabel="Up ^"
-          p:styleClasses-ref="buttonClasses" />
-        <bean parent="ActionField" p:methodToCall="moveDown"
-          p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
         <bean parent="ActionField" p:methodToCall="moveRight"
           p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses" />
+        <bean parent="ActionField" p:methodToCall="moveUp" p:actionLabel="Up ^"
+          p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
+        <bean parent="ActionField" p:methodToCall="moveDown"
+          p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
         <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
         
         <bean parent="ActionField" p:methodToCall="cut" p:actionLabel="Cut" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
@@ -376,7 +375,11 @@
         
 
   <bean name="ruleAttributesSection" parent="ruleAttributesSection-parent" />
-  <bean name="ruleAttributesSection-parent" parent="GroupSection">
+  <bean name="ruleAttributesSection-parent" parent="Group"  p:style="padding-bottom: 1em;">
+
+    <!-- TODO: temporarily disabling attribute group rendering: -->
+    <property name="render"><value>false</value></property>
+
     <property name="title" value="Rule Attributes" />
     <property name="accordion.render" value="true" />
     <property name="accordion.defaultOpen" value="false" />
@@ -417,9 +420,9 @@
   </bean>
  
   <bean name="ruleActionsSection" parent="ruleActionsSection-parent"/>
-    <bean name="ruleActionsSection-parent" parent="GroupSection">
-      <property name="title" value="Rule Actions"/>
-      <property name="accordion.defaultOpen" value="false"/>
+    <bean name="ruleActionsSection-parent" parent="Group">
+      <property name="title" value="Actions"/>
+      <property name="accordion.defaultOpen" value="true"/>
       <property name="items">
         <list>
           <bean name="ruleActiontable" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">

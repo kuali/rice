@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.ksb.messaging.service;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+
 /**
  * A service which can be invoked with a String message that contains
  * XML content.
@@ -23,7 +25,6 @@ package org.kuali.rice.ksb.messaging.service;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KSBXMLService {
-
-	public void invoke(String message) throws Exception;
+	void invoke(String message) throws RiceIllegalArgumentException;
 	
 }

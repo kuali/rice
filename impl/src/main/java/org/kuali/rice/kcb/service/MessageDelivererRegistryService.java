@@ -17,6 +17,7 @@ package org.kuali.rice.kcb.service;
 
 import java.util.Collection;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 
@@ -29,25 +30,25 @@ public interface MessageDelivererRegistryService extends MessageDelivererRegistr
      * This service method is responsible for retrieving all MessageDeliverer Types.  
      * @return Collection of MessageDeliverer objects
      */
-    public Collection<MessageDeliverer> getAllDeliverers();
+    Collection<MessageDeliverer> getAllDeliverers();
 
     /**
      * This service method is responsible for retrieving all MessageDeliverer Types names.  
      * @return Collection of deliverer type names
      */
-    public Collection<String> getAllDelivererTypes();
+    Collection<String> getAllDelivererTypes();
 
     /**
      * This method returns the associated deliverer class instance for the given MessageDelivery instance.
      * @param messageDelivery
      * @return MessageDeliverer or null if not found
      */
-    public MessageDeliverer getDeliverer(MessageDelivery messageDelivery);
+    MessageDeliverer getDeliverer(MessageDelivery messageDelivery) throws RiceIllegalArgumentException;
     
     /**
      * This method returns the associated deliverer class instance for the given deliverer name.
      * @param messageDelivererName
      * @return MessageDeliverer or null if not found
      */
-    public MessageDeliverer getDelivererByName(String messageDelivererName);
+    MessageDeliverer getDelivererByName(String messageDelivererName) throws RiceIllegalArgumentException;
 }

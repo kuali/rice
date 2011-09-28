@@ -16,7 +16,9 @@
  */
 package org.kuali.rice.kew.messaging;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
@@ -35,9 +37,14 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 public class RouteDocumentMessageService implements KSBXMLService {
 
 	private static final Logger LOG = Logger.getLogger(RouteDocumentMessageService.class);
-	
+
+    @Override
 	public void invoke(String xml) {
-		try {
+		if (StringUtils.isBlank(xml)) {
+            throw new RiceIllegalArgumentException("xml is null or blank");
+        }
+
+        try {
 			RouteMessageXmlElement newElement = RouteMessageXmlElement.construct(xml);
 			OrchestrationConfig config = new OrchestrationConfig(EngineCapability.STANDARD, newElement.runPostProcessor);
 			WorkflowEngine engine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);

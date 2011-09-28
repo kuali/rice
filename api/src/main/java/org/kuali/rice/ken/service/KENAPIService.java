@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.ken.service;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+
 import java.util.Collection;
 
 /**
@@ -33,7 +35,7 @@ public interface KENAPIService {
      * Returns the names of all deliverers the recipient has configured for a given channel
      * @return the names of all deliverers the recipient has configured for a given channel
      */
-    Collection<String> getDeliverersForRecipientAndChannel(String recipient, String channel);
+    Collection<String> getDeliverersForRecipientAndChannel(String recipient, String channel) throws RiceIllegalArgumentException;
 
     /**
      * Returns the specified recipient preference for the user
@@ -41,5 +43,5 @@ public interface KENAPIService {
      * @param prefKey the preference key
      * @return the specified recipient preference for the user
      */
-    String getRecipientPreference(String recipient, String prefKey);
+    String getRecipientPreference(String recipient, String prefKey) throws RiceIllegalArgumentException;
 }

@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.kew.engine;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for the WorkflowEngineFactoryImpl class. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WorkflowEngineFactoryImplTest extends Assert {
+public class WorkflowEngineFactoryImplTest {
 
     private WorkflowEngineFactory factory;
     

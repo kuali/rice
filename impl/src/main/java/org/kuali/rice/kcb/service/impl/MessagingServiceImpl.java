@@ -19,7 +19,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
@@ -115,11 +117,16 @@ public class MessagingServiceImpl implements MessagingService {
     /**
      * @see org.kuali.rice.kcb.service.MessagingService#deliver(org.kuali.rice.kcb.dto.MessageDTO)
      */
+    @Override
     public Long deliver(MessageDTO message) throws MessageDeliveryException {
+        if (message == null) {
+            throw new RiceIllegalArgumentException("message is null");
+        }
+
         Collection<String> delivererTypes = getDelivererTypesForUserAndChannel(message.getRecipient(), message.getChannel());
         LOG.debug("Deliverer types for " + message.getRecipient() + "/" + message.getChannel() + ": " + delivererTypes.size());
 
-        if (delivererTypes.size() == 0) {
+        if (delivererTypes.isEmpty()) {
             // no deliverers configured? just skipp it
             LOG.debug("No deliverers are configured for " + message.getRecipient() + "/" + message.getChannel());
             return null;
@@ -163,7 +170,20 @@ public class MessagingServiceImpl implements MessagingService {
     /**
      * @see org.kuali.rice.kcb.service.MessagingService#remove(long, java.lang.String, java.lang.String)
      */
+    @Override
     public void remove(long messageId, String user, String cause) throws MessageDismissalException {
+        /*if (StringUtils.isBlank(messageId)) {
+            throw new RiceIllegalArgumentException("message is null");
+        } if we switch to String id*/
+
+        if (StringUtils.isBlank(user)) {
+            throw new RiceIllegalArgumentException("user is null");
+        }
+
+        if (StringUtils.isBlank(cause)) {
+            throw new RiceIllegalArgumentException("cause is null");
+        }
+
         Message m = messageService.getMessage(Long.valueOf(messageId));
         if (m == null) {
             throw new MessageDismissalException("No such message: " + messageId);
@@ -175,7 +195,21 @@ public class MessagingServiceImpl implements MessagingService {
     /**
      * @see org.kuali.rice.kcb.service.MessagingService#removeByOriginId(java.lang.String, java.lang.String, java.lang.String)
      */
+    @Override
     public Long removeByOriginId(String originId, String user, String cause) throws MessageDismissalException {
+        if (StringUtils.isBlank(originId)) {
+            throw new RiceIllegalArgumentException("originId is null");
+        }
+
+        if (StringUtils.isBlank(user)) {
+            throw new RiceIllegalArgumentException("user is null");
+        }
+
+        if (StringUtils.isBlank(cause)) {
+            throw new RiceIllegalArgumentException("cause is null");
+        }
+
+
         Message m = messageService.getMessageByOriginId(originId);
         if (m == null) {
             return null; 

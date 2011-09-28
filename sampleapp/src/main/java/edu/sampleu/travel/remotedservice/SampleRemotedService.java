@@ -15,6 +15,8 @@
  */
 package edu.sampleu.travel.remotedservice;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 /**
@@ -25,8 +27,12 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  */
 public class SampleRemotedService implements KSBXMLService {
 
-    public void invoke(String message) throws Exception {
-	System.out.println("A MESSAGE WAS RECIEVED!!!");
+    public void invoke(String message) {
+	    if (StringUtils.isBlank(message)) {
+            throw new RiceIllegalArgumentException("message is null or blank");
+        }
+
+    System.out.println("A MESSAGE WAS RECIEVED!!!");
 	System.out.println("");
 	System.out.println("");
 	System.out.println("");

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.ken.service.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -30,14 +32,14 @@ public class SendNotificationServiceKewXmlImpl implements KSBXMLService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	.getLogger(SendNotificationServiceKewXmlImpl.class);
     
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     /**
      * Constructs a SendNotificationServiceKewXmlImpl instance.
      * @param notificationService
      */
     public SendNotificationServiceKewXmlImpl(NotificationService notificationService) {
-	this.notificationService = notificationService;
+	    this.notificationService = notificationService;
     }
 
     /**
@@ -45,8 +47,13 @@ public class SendNotificationServiceKewXmlImpl implements KSBXMLService {
      * this.
      * @see org.kuali.rice.ksb.messaging.service.KSBXMLService#invoke(java.lang.String)
      */
+    @Override
     public void invoke(String xml) {
-    	try {
+    	if (StringUtils.isBlank(xml)) {
+            throw new RiceIllegalArgumentException("xml is null or blank");
+        }
+
+        try {
     	   NotificationResponse response = notificationService.sendNotification(xml);
     	   LOG.info(response.getMessage());
     	} catch (Exception e) {

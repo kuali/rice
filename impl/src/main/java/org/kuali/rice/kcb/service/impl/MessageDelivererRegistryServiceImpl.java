@@ -22,7 +22,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.deliverer.impl.AOLInstantMessageDeliverer;
@@ -104,6 +106,10 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
      * @see MessageDelivererRegistryService#getDeliverer(MessageDelivery)
      */
     public MessageDeliverer getDeliverer(MessageDelivery messageDelivery) {
+        if (messageDelivery == null) {
+            throw new RiceIllegalArgumentException("messageDelivery is null");
+        }
+
         MessageDeliverer nmd = getDelivererByName(messageDelivery.getDelivererTypeName());
         if (nmd == null) {
             LOG.error("The message deliverer type ('" + messageDelivery.getDelivererTypeName() + "') " +
@@ -119,6 +125,10 @@ public class MessageDelivererRegistryServiceImpl implements MessageDelivererRegi
      * @see MessageDelivererRegistryService#getDelivererByName(String)
      */
     public MessageDeliverer getDelivererByName(String messageDelivererName) {
+        if (StringUtils.isBlank(messageDelivererName)) {
+            throw new RiceIllegalArgumentException("messageDelivererName is null or blank");
+        }
+
         Class<? extends MessageDeliverer> clazz = messageDelivererTypes.get(messageDelivererName.toLowerCase());
 
         if(clazz == null) {

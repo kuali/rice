@@ -15,14 +15,20 @@
  */
 package org.kuali.rice.ksb.testclient1;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 public class XmlAsyncTestServiceImpl implements KSBXMLService {
 
     private static final Logger LOG = Logger.getLogger(XmlAsyncTestServiceImpl.class);
     
-	public void invoke(String message) throws Exception {
+	public void invoke(String message) {
+        if (StringUtils.isBlank(message)) {
+            throw new RiceIllegalArgumentException("message is null or blank");
+        }
+
 	    LOG.info("invoked with message: " + message);
 	}
 

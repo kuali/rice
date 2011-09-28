@@ -18,6 +18,8 @@ package org.kuali.rice.ken.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationChannelService;
@@ -41,7 +43,7 @@ public class KENAPIServiceImpl implements KENAPIService {
     public void setNotificationChannelService(NotificationChannelService ncs) {
         this.channelService = ncs;
     }
-    
+
     /**
      * Sets the UserPreferenceService
      * @param ups the UserPreferenceService
@@ -67,9 +69,17 @@ public class KENAPIServiceImpl implements KENAPIService {
      * @see org.kuali.rice.ken.service.KENAPIService#getDeliverersForRecipientAndChannel(java.lang.String, java.lang.String)
      */
     public Collection<String> getDeliverersForRecipientAndChannel(String recipient, String channel) {
+        if (StringUtils.isBlank(recipient)) {
+            throw new RiceIllegalArgumentException("recipient is null or blank");
+        }
+
+        if (StringUtils.isBlank(channel)) {
+            throw new RiceIllegalArgumentException("channel is null or blank");
+        }
+
         /*NotificationChannel nc = channelService.getNotificationChannelByName(channel);
         if (nc == null) {
-            throw new RuntimeException("Invalid channel: '" + channel + "'");
+            throw new RiceIllegalArgumentException("Invalid channel: '" + channel + "'");
         }
         Collection<UserDelivererConfig> configs = prefsService.getMessageDelivererConfigurationsForUserAndChannel(recipient, nc);
         Collection<String> deliverers = new ArrayList<String>(configs.size());
@@ -84,6 +94,14 @@ public class KENAPIServiceImpl implements KENAPIService {
      * @see org.kuali.rice.ken.service.KENAPIService#getRecipientPreference(java.lang.String, java.lang.String)
      */
     public String getRecipientPreference(String recipient, String prefKey) {
+        if (StringUtils.isBlank(recipient)) {
+            throw new RiceIllegalArgumentException("recipient is null or blank");
+        }
+
+        if (StringUtils.isBlank(prefKey)) {
+            throw new RiceIllegalArgumentException("prefKey is null or blank");
+        }
+
         /*RecipientPreference rp = prefsService.getUserRecipientPreferences(recipient, prefKey);
         if (rp == null) return null;
         return rp.getValue();

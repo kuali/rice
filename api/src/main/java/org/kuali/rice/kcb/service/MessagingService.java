@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kcb.service;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kcb.dto.MessageDTO;
 import org.kuali.rice.kcb.exception.MessageDeliveryException;
 import org.kuali.rice.kcb.exception.MessageDismissalException;
@@ -32,7 +33,7 @@ public interface MessagingService {
      * @param message message to deliver
      * @return identifier for the message
      */
-    public Long deliver(MessageDTO message) throws MessageDeliveryException;
+    public Long deliver(MessageDTO message) throws MessageDeliveryException, RiceIllegalArgumentException;
     /**
      * Removes a specific message and all deliveries
      * 
@@ -40,7 +41,7 @@ public interface MessagingService {
      * @param user the user under which the action was taken
      * @param cause the cause or action taken to remove the message 
      */
-    public void remove(long messageId, String user, String cause) throws MessageDismissalException;
+    public void remove(long messageId, String user, String cause) throws MessageDismissalException, RiceIllegalArgumentException;
     
     /**
      * Removes a specific message and all deliveries.  Does not throw an exception if no message with the origin
@@ -51,5 +52,5 @@ public interface MessagingService {
      * @param cause the cause or action taken to remove the message
      * @return Long the message id of the message removed, if any 
      */
-    public Long removeByOriginId(String originId, String user, String cause) throws MessageDismissalException;
+    public Long removeByOriginId(String originId, String user, String cause) throws MessageDismissalException, RiceIllegalArgumentException;
 }

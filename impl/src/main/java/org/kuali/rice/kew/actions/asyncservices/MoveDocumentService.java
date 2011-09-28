@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
@@ -30,6 +31,6 @@ import java.util.Set;
  */
 public interface MoveDocumentService {
 
-	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set<String> nodeNames);
+	void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set<String> nodeNames) throws RiceIllegalArgumentException;
 	
 }

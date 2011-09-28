@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actions.MoveDocumentAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -36,8 +38,25 @@ public class MoveDocumentProcessor implements MoveDocumentService {
     
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MoveDocumentProcessor.class);
 
+    @Override
 	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set<String> nodeNames) {
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getDocumentId(), true);
+		if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (document == null) {
+            throw new RiceIllegalArgumentException("document is null");
+        }
+
+        if (actionTaken == null) {
+            throw new RiceIllegalArgumentException("actionTaken is null");
+        }
+
+        if (nodeNames == null) {
+            throw new RiceIllegalArgumentException("nodeNames is null");
+        }
+
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getDocumentId(), true);
 		Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 		MoveDocumentAction moveAction = new MoveDocumentAction(document, principal, "", null);
         LOG.debug("Doing move document work " + document.getDocumentId());

@@ -54,10 +54,7 @@ public class OrchestrationConfig {
     
     public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause, boolean sendNotifications, boolean doRunPostProcessorLogic) {
         this.capability = capability;
-        if (destinationNodeNames != null)
-            this.destinationNodeNames = Collections.unmodifiableSet(destinationNodeNames);
-        else 
-            this.destinationNodeNames = Collections.unmodifiableSet(new HashSet<String>());
+        this.destinationNodeNames = Collections.unmodifiableSet(new HashSet<String>(destinationNodeNames));
         this.cause = cause;
         this.sendNotifications = sendNotifications;
         this.runPostProcessorLogic = doRunPostProcessorLogic;

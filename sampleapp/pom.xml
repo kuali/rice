@@ -84,7 +84,7 @@
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.failsafe.includes>**/*IT.java</maven.failsafe.includes>
-      </properties>
+     </properties>
       <build>
         <plugins>
           <plugin>

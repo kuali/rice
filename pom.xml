@@ -642,6 +642,9 @@
             </execution>
           </executions>
           <configuration>
+            <systemPropertyVariables>
+              <remote.public.url>http://localhost:8080/kr-dev/</remote.public.url>
+            </systemPropertyVariables> 
             <skip>${maven.failsafe.skip}</skip>
             <additionalClasspathElements>
               <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>

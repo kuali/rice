@@ -26,10 +26,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.view.MaintenanceView;
-import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
+import org.springframework.beans.PropertyValues;
 
 /**
  * Type service implementation for maintenance views
@@ -48,24 +48,25 @@ public class MaintenanceViewTypeServiceImpl implements ViewTypeService {
 	/**
 	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getViewTypeName()
 	 */
-	public String getViewTypeName() {
+	public ViewType getViewTypeName() {
 		return ViewType.MAINTENANCE;
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromView(org.kuali.rice.krad.uif.view.View)
-	 */
-	public Map<String, String> getParametersFromView(View view) {
-		Map<String, String> parameters = new HashMap<String, String>();
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewTypeService#getParametersFromViewConfiguration(org.springframework.beans.PropertyValues)
+     */
+    public Map<String, String> getParametersFromViewConfiguration(PropertyValues propertyValues) {
+        Map<String, String> parameters = new HashMap<String, String>();
 
-		MaintenanceView maintenanceView = (MaintenanceView) view;
+        String viewName = ViewModelUtils.getStringValFromPVs(propertyValues, UifParameters.VIEW_NAME);
+        String dataObjectClassName = ViewModelUtils.getStringValFromPVs(propertyValues,
+                UifParameters.DATA_OBJECT_CLASS_NAME);
 
-		parameters.put(UifParameters.VIEW_NAME, maintenanceView.getViewName());
-		parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, maintenanceView.getDataObjectClassName()
-				.getName());
+        parameters.put(UifParameters.VIEW_NAME, viewName);
+        parameters.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
-		return parameters;
-	}
+        return parameters;
+    }
 
 	/**
 	 * Check for document id in request parameters, if given retrieve document

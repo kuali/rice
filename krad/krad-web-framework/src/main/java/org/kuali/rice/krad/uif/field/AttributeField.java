@@ -30,6 +30,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
@@ -41,6 +42,7 @@ import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.DirectInquiry;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -218,11 +220,19 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         setupFieldQuery();
 
-        // TODO: remove later, this should be done within the service lifecycle
+        // invoke options finder if options not configured on the control
         if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
             MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
             if ((multiValueControl.getOptions() == null) || multiValueControl.getOptions().isEmpty()) {
-                multiValueControl.setOptions(optionsFinder.getKeyValues());
+                List<KeyValue> options = new ArrayList<KeyValue>();
+                if (optionsFinder instanceof UifKeyValuesFinder) {
+                    options = ((UifKeyValuesFinder) optionsFinder).getKeyValues((ViewModel) model);
+                }
+                else {
+                    options = optionsFinder.getKeyValues();
+                }
+
+                multiValueControl.setOptions(options);
             }
         }
 

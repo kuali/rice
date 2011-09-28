@@ -25,7 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstract base implementation of {@link KeyValuesFinder}
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public abstract class KeyValuesBase implements KeyValuesFinder, Serializable {
+
     public Collection<String> getOptionLabels() {
     	Collection<String> optionLabels = new ArrayList<String>();
 

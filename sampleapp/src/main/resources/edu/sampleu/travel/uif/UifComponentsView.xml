@@ -1238,6 +1238,32 @@
 				<bean parent="GenericTextField" p:label="Field 2"
 					p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="field44"
 					p:readOnly="@{field44 eq 'show2'}" p:propertyName="field46" />
+        <bean parent="GenericHorizontalFieldGroup" p:label="Conditonal Options"
+              p:group.instructionalText="Choose an option from the first select control which will change the options available in the second select control">
+          <property name="items">
+            <list>
+              <bean parent="GenericTextField" p:propertyName="field88" p:label="Field 1">
+                <property name="control">
+                  <bean parent="SelectControl">
+                    <property name="options">
+                      <list>
+                        <bean parent="KeyLabelPair" p:key="Fruits" p:value="Fruits"/>
+                        <bean parent="KeyLabelPair" p:key="Vegetables" p:value="Vegetables"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="GenericTextField" p:propertyName="field89" p:label="Field 2"
+                    p:optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder"
+                    p:refreshWhenChanged="field88">
+                <property name="control">
+                  <bean parent="SelectControl"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
 			</list>
 		</property>
 	</bean>

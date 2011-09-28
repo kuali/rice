@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Defines basic methods value finders.
+ * Defines basic methods value finders
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -30,7 +30,7 @@ public interface KeyValuesFinder {
     /**
      * Builds a list of key values representations for valid value selections.
      *
-     * @return List of KeyValue objects.
+     * @return List of KeyValue objects
      */
     public List<KeyValue> getKeyValues();
 

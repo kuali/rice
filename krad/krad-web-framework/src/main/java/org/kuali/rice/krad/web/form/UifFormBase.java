@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.web.multipart.MultipartFile;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
@@ -44,7 +45,7 @@ import java.util.UUID;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifFormBase implements Serializable {
+public class UifFormBase implements ViewModel {
     private static final long serialVersionUID = 8432543267099454434L;
 
     // current view
@@ -131,88 +132,71 @@ public class UifFormBase implements Serializable {
     }
 
     /**
-     * Unique Id for the <code>View</code> instance. This is specified for a
-     * view in its definition by setting the 'id' property.
-     *
-     * @return String view id
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewId()
      */
     public String getViewId() {
         return this.viewId;
     }
 
     /**
-     * Setter for the unique view id
-     *
-     * @param viewId
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewId(java.lang.String)
      */
     public void setViewId(String viewId) {
         this.viewId = viewId;
     }
 
     /**
-     * Name for the <code>View</code> instance. This is specified for a view in
-     * its definition by setting the 'id' property. The name is not necessary
-     * unique and cannot be used by itself to retrieve a view. Typically it is
-     * used with other parameters to identify a view with a certain type (view
-     * type)
-     *
-     * @return String view name
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewName()
      */
     public String getViewName() {
         return this.viewName;
     }
 
     /**
-     * Setter for the view name
-     *
-     * @param viewName
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewName(java.lang.String)
      */
     public void setViewName(String viewName) {
         this.viewName = viewName;
     }
 
     /**
-     * Name for the type of view being requested. This can be used to find
-     * <code>View</code> instances by request parameters (not necessary the
-     * unique id)
-     *
-     * @return String view type name
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewTypeName()
      */
     public ViewType getViewTypeName() {
         return this.viewTypeName;
     }
 
     /**
-     * Setter for the view type name
-     *
-     * @param viewTypeName
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewTypeName(org.kuali.rice.krad.uif.UifConstants.ViewType)
      */
     public void setViewTypeName(ViewType viewTypeName) {
         this.viewTypeName = viewTypeName;
     }
 
     /**
-     * Id for the current page being displayed within the view
-     *
-     * @return String page id
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getPageId()
      */
     public String getPageId() {
         return this.pageId;
     }
 
     /**
-     * Setter for the current page id
-     *
-     * @param pageId
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setPageId(java.lang.String)
      */
     public void setPageId(String pageId) {
         this.pageId = pageId;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getFormPostUrl()
+     */
     public String getFormPostUrl() {
         return this.formPostUrl;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setFormPostUrl(java.lang.String)
+     */
     public void setFormPostUrl(String formPostUrl) {
         this.formPostUrl = formPostUrl;
     }
@@ -254,60 +238,35 @@ public class UifFormBase implements Serializable {
     }
 
     /**
-     * Map of parameters that was used to configured the <code>View</code>.
-     * Maintained on the form to rebuild the view on posts and session timeout
-     *
-     * @return Map<String, String> view parameters
-     * @see org.kuali.rice.krad.uif.view.View.getViewRequestParameters()
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getViewRequestParameters()
      */
     public Map<String, String> getViewRequestParameters() {
         return this.viewRequestParameters;
     }
 
     /**
-     * Setter for the view's request parameter map
-     *
-     * @param viewRequestParameters
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setViewRequestParameters(java.util.Map<java.lang.String,java.lang.String>)
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
         this.viewRequestParameters = viewRequestParameters;
     }
 
     /**
-     * Holds instances for collection add lines. The key of the Map gives the
-     * collection name the line instance applies to, the Map value is an
-     * instance of the collection object class that holds the new line data
-     *
-     * @return Map<String, Object> new collection lines
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getNewCollectionLines()
      */
     public Map<String, Object> getNewCollectionLines() {
         return this.newCollectionLines;
     }
 
     /**
-     * Setter for the new collection lines Map
-     *
-     * @param newCollectionLines
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setNewCollectionLines(java.util.Map<java.lang.String,java.lang.Object>)
      */
     public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
         this.newCollectionLines = newCollectionLines;
     }
 
     /**
-     * Map of parameters sent for the invoked action
-     *
-     * <p>
-     * Many times besides just setting the method to call actions need to send
-     * additional parameters. For instance the method being called might do a
-     * redirect, in which case the action needs to send parameters for the
-     * redirect URL. An example of this is redirecting to a <code>Lookup</code>
-     * view. In some cases the parameters that need to be sent conflict with
-     * properties already on the form, and putting all the action parameters as
-     * form properties would grow massive (in addition to adds an additional
-     * step from the XML config). So this general map solves those issues.
-     * </p>
-     *
-     * @return Map<String, String> action parameters
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getActionParameters()
      */
     public Map<String, String> getActionParameters() {
         return this.actionParameters;
@@ -331,9 +290,7 @@ public class UifFormBase implements Serializable {
     }
 
     /**
-     * Setter for the action parameters map
-     *
-     * @param actionParameters
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setActionParameters(java.util.Map<java.lang.String,java.lang.String>)
      */
     public void setActionParameters(Map<String, String> actionParameters) {
         this.actionParameters = actionParameters;
@@ -355,42 +312,21 @@ public class UifFormBase implements Serializable {
     }
 
     /**
-     * Map that is populated from the component state maintained on the client
-     *
-     * <p>
-     * Used when a request is made that refreshes part of the view. The current state for components (which
-     * have state that can be changed on the client), is populated into this map which is then used by the
-     * <code>ViewHelperService</code> to update the components so that the state is maintained when they render.
-     * </p>
-     *
-     * @return Map<String, Object> map where key is name of property or component id, and value is the property
-     * value or another map of component key/value pairs
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getClientStateForSyncing()
      */
     public Map<String, Object> getClientStateForSyncing() {
         return clientStateForSyncing;
     }
 
     /**
-     * Holds Set of String identifiers for lines that were selected in a collection
-     *
-     * <p>
-     * When the select field is enabled for a <code>CollectionGroup</code>, the framework will be
-     * default bind the selected identifier strings to this property. The key of the map uniquely identifies the
-     * collection by the full binding path to the collection, and the value is a set of Strings for the checked
-     * lines.
-     * </p>
-     *
-     * @return Map<String, Set<String>> map of collections and their selected lines
-     * @see org.kuali.rice.krad.service.DataObjectMetaDataService#getDataObjectIdentifierString(java.lang.Object)
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getSelectedCollectionLines()
      */
     public Map<String, Set<String>> getSelectedCollectionLines() {
         return selectedCollectionLines;
     }
 
     /**
-     * Setter for the map that holds selected collection lines
-     *
-     * @param selectedCollectionLines
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setSelectedCollectionLines(java.util.Map<java.lang.String,java.util.Set<java.lang.String>>)
      */
     public void setSelectedCollectionLines(Map<String, Set<String>> selectedCollectionLines) {
         this.selectedCollectionLines = selectedCollectionLines;
@@ -421,19 +357,14 @@ public class UifFormBase implements Serializable {
     }
 
     /**
-     * Indicates whether the form has had default values from the configured
-     * <code>View</code> applied. This happens only once for each form instance
-     *
-     * @return boolean true if default values have been applied, false if not
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isDefaultsApplied()
      */
     public boolean isDefaultsApplied() {
         return this.defaultsApplied;
     }
 
     /**
-     * Setter for the defaults applied indicator
-     *
-     * @param defaultsApplied
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setDefaultsApplied(boolean)
      */
     public void setDefaultsApplied(boolean defaultsApplied) {
         this.defaultsApplied = defaultsApplied;

@@ -120,6 +120,8 @@ public class UILayoutTestForm extends UifFormBase {
     private String field85;
     private String field86;
     private String field87;
+    private String field88;
+    private String field89;
     
     private String gField1;
     private String gField2;
@@ -216,6 +218,8 @@ public class UILayoutTestForm extends UifFormBase {
         remoteFieldValuesMap.put("remoteField2", "Banana");
         remoteFieldValuesMap.put("remoteField3", true);
         remoteFieldValuesMap.put("remoteField4", "Fruit");
+
+        field88 = "Fruits";
     }
 
     @Override
@@ -1631,6 +1635,22 @@ public class UILayoutTestForm extends UifFormBase {
 
     public void setField87(String field87) {
         this.field87 = field87;
+    }
+
+    public String getField88() {
+        return field88;
+    }
+
+    public void setField88(String field88) {
+        this.field88 = field88;
+    }
+
+    public String getField89() {
+        return field89;
+    }
+
+    public void setField89(String field89) {
+        this.field89 = field89;
     }
 
     public Map<String, Object> getRemoteFieldValuesMap() {

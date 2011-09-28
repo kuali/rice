@@ -10,18 +10,27 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
+import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.MaintenanceView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.util.ObjectUtils;
+import org.springframework.beans.PropertyValues;
 
 /**
  * Implementation of <code>ViewDictionaryService</code>
@@ -42,18 +51,27 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
      *      java.lang.String)
      */
     public Inquirable getInquirable(Class<?> dataObjectClass, String viewName) {
-        List<View> inquiryViews = getDataDictionary().getViewsForType(UifConstants.ViewType.INQUIRY);
-
         Inquirable inquirable = null;
-        for (View view : inquiryViews) {
-            InquiryView inquiryView = (InquiryView) view;
 
-            if (StringUtils.equals(inquiryView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
-                if (StringUtils.equals(inquiryView.getViewName(), viewName) || (StringUtils.isBlank(viewName) &&
-                        StringUtils.equals(inquiryView.getViewName(), UifConstants.DEFAULT_VIEW_NAME))) {
-                    inquirable = (Inquirable) inquiryView.getViewHelperService();
-                    break;
-                }
+        if (StringUtils.isBlank(viewName)) {
+            viewName = UifConstants.DEFAULT_VIEW_NAME;
+        }
+
+        Map<String, String> indexKey = new HashMap<String, String>();
+        indexKey.put(UifParameters.VIEW_NAME, viewName);
+        indexKey.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClass.getName());
+
+        // get view properties
+        PropertyValues propertyValues = getDataDictionary().getViewPropertiesByType(ViewType.INQUIRY, indexKey);
+
+        String viewHelperServiceClassName = ViewModelUtils.getStringValFromPVs(propertyValues,
+                "viewHelperServiceClassName");
+        if (StringUtils.isNotBlank(viewHelperServiceClassName)) {
+            try {
+                inquirable = (Inquirable) ObjectUtils.newInstance(Class.forName(viewHelperServiceClassName));
+            } catch (ClassNotFoundException e) {
+                throw new RiceRuntimeException(
+                        "Unable to find class for inquirable classname: " + viewHelperServiceClassName, e);
             }
         }
 
@@ -64,57 +82,39 @@ public class ViewDictionaryServiceImpl implements ViewDictionaryService {
      * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#isInquirable(java.lang.Class)
      */
     public boolean isInquirable(Class<?> dataObjectClass) {
-        boolean inquirable = false;
+        Map<String, String> indexKey = new HashMap<String, String>();
+        indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
+        indexKey.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClass.getName());
 
-        List<View> inquiryViews = getDataDictionary().getViewsForType(UifConstants.ViewType.INQUIRY);
-        for (View view : inquiryViews) {
-            InquiryView inquiryView = (InquiryView) view;
+        boolean isInquirable = getDataDictionary().viewByTypeExist(ViewType.INQUIRY, indexKey);
 
-            if (StringUtils.equals(inquiryView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
-                inquirable = true;
-                break;
-            }
-        }
-
-        return inquirable;
+        return isInquirable;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#isLookupable(java.lang.Class)
      */
     public boolean isLookupable(Class<?> dataObjectClass) {
-        boolean lookupable = false;
+        Map<String, String> indexKey = new HashMap<String, String>();
+        indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
+        indexKey.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClass.getName());
 
-        List<View> lookupViews = getDataDictionary().getViewsForType(UifConstants.ViewType.LOOKUP);
-        for (View view : lookupViews) {
-            LookupView lookupView = (LookupView) view;
+        boolean isLookupable = getDataDictionary().viewByTypeExist(ViewType.LOOKUP, indexKey);
 
-            if (StringUtils.equals(lookupView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
-                lookupable = true;
-                break;
-            }
-        }
-
-        return lookupable;
+        return isLookupable;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.service.ViewDictionaryService#isMaintainable(java.lang.Class)
      */
     public boolean isMaintainable(Class<?> dataObjectClass) {
-        boolean maintainable = false;
+        Map<String, String> indexKey = new HashMap<String, String>();
+        indexKey.put(UifParameters.VIEW_NAME, UifConstants.DEFAULT_VIEW_NAME);
+        indexKey.put(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClass.getName());
 
-        List<View> maintenanceViews = getDataDictionary().getViewsForType(UifConstants.ViewType.MAINTENANCE);
-        for (View view : maintenanceViews) {
-            MaintenanceView maintenanceView = (MaintenanceView) view;
+        boolean isMaintainable = getDataDictionary().viewByTypeExist(ViewType.MAINTENANCE, indexKey);
 
-            if (StringUtils.equals(maintenanceView.getDataObjectClassName().getName(), dataObjectClass.getName())) {
-                maintainable = true;
-                break;
-            }
-        }
-
-        return maintainable;
+        return isMaintainable;
     }
 
     /**

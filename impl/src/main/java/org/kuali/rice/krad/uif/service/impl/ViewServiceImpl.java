@@ -19,208 +19,183 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * Implementation of <code>ViewService</code>
- * 
+ *
  * <p>
  * Provides methods for retrieving View instances and carrying out the View
  * lifecycle methods. Interacts with the configured <code>ViewHelperService</code>
  * during the view lifecycle
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewServiceImpl implements ViewService {
-	private static final Logger LOG = Logger.getLogger(ViewServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(ViewServiceImpl.class);
 
-	private DataDictionaryService dataDictionaryService;
+    private DataDictionaryService dataDictionaryService;
 
-	// TODO: remove once we can get beans by type from spring
-	private List<ViewTypeService> viewTypeServices;
+    // TODO: remove once we can get beans by type from spring
+    private List<ViewTypeService> viewTypeServices;
 
-	/**
-	 * @see org.kuali.rice.krad.uif.service.ViewService#getViewById(java.lang.String)
-	 */
-	public View getViewById(String viewId) {
-		return getView(viewId, new HashMap<String, String>());
-	}
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewService#getViewById(java.lang.String)
+     */
+    public View getViewById(String viewId) {
+        LOG.debug("retrieving view instance for id: " + viewId);
 
-	/**
-	 * Retrieves the view from the data dictionary and its corresponding
-	 * <code>ViewHelperService</code>. The first phase of the view lifecycle
-	 * Initialize is then performed
-	 * 
-	 * @see org.kuali.rice.krad.uif.service.ViewService#getView(java.lang.String,
-	 *      java.util.Map)
-	 */
-	public View getView(String viewId, Map<String, String> parameters) {
-		LOG.debug("retrieving view instance for id: " + viewId);
+        View view = dataDictionaryService.getViewById(viewId);
+        if (view == null) {
+            LOG.error("View not found for id: " + viewId);
+            throw new RuntimeException("View not found for id: " + viewId);
+        }
 
-		View view = dataDictionaryService.getViewById(viewId);
-		if (view == null) {
-			LOG.error("View not found for id: " + viewId);
-			throw new RuntimeException("View not found for id: " + viewId);
-		}
+        // do initial indexing
+        LOG.debug("processing indexing for view: " + view.getId());
+        view.index();
 
-		// populate view from request parameters
-		view.getViewHelperService().populateViewFromRequestParameters(view, parameters);
+        LOG.debug("Updating view status to CREATED for view: " + view.getId());
+        view.setViewStatus(ViewStatus.CREATED);
 
-		// Initialize Phase
-		LOG.info("performing initialize phase for view: " + viewId);
-		performInitialization(view, parameters);
+        return view;
+    }
 
-		return view;
-	}
+    /**
+     * Retrieves the <code>ViewTypeService</code> for the given view type, then builds up the index based
+     * on the supported view type parameters and queries the dictionary service to retrieve the view
+     * based on its type and index
+     *
+     * @see org.kuali.rice.krad.uif.service.ViewService#getViewByType(org.kuali.rice.krad.uif.UifConstants.ViewType,
+     *      java.util.Map<java.lang.String,java.lang.String>)
+     */
+    public View getViewByType(ViewType viewType, Map<String, String> parameters) {
+        ViewTypeService typeService = getViewTypeService(viewType);
+        if (typeService == null) {
+            throw new RuntimeException("Unable to find view type service for view type name: " + viewType);
+        }
 
-	/**
-	 * Initializes a newly created <code>View</code> instance. Each component of
-	 * the tree is invoked to perform setup based on its configuration. In
-	 * addition helper service methods are invoked to perform custom
-	 * initialization
-	 * 
-	 * @param view
-	 *            - view instance to initialize
-	 * @param parameters
-	 *            - Map of key values pairs that provide configuration for the
-	 *            <code>View</code>, this is generally comes from the request
-	 *            and can be the request parameter Map itself. Any parameters
-	 *            not valid for the View will be filtered out
-	 */
-	protected void performInitialization(View view, Map<String, String> parameters) {
-		// get the configured helper service for the view
-		ViewHelperService helperService = view.getViewHelperService();
+        Map<String, String> typeParameters = typeService.getParametersFromRequest(parameters);
 
-		// invoke initialize phase on the views helper service
-		helperService.performInitialization(view);
+        Map<String, String> indexKey = new HashMap<String, String>();
+        for (Map.Entry<String, String> parameter : typeParameters.entrySet()) {
+            indexKey.put(parameter.getKey(), parameter.getValue());
+        }
 
-		// do indexing
-		LOG.info("processing indexing for view: " + view.getId());
-		view.index();
+        View view = dataDictionaryService.getViewByTypeIndex(viewType, indexKey);
+        if (view == null) {
+            LOG.error("View not found for type: " + viewType);
+            throw new RuntimeException("View not found for type: " + viewType);
+        }
 
-		// update status on view
-		LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
-		view.setViewStatus(ViewStatus.INITIALIZED);
-	}
+        // do initial indexing
+        LOG.debug("processing indexing for view: " + view.getId());
+        view.index();
 
-	/**
-	 * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View,
-	 *      java.lang.Object)
-	 */
-	public void buildView(View view, Object model) {
-		// get the configured helper service for the view
-		ViewHelperService helperService = view.getViewHelperService();
+        LOG.debug("Updating view status to CREATED for view: " + view.getId());
+        view.setViewStatus(ViewStatus.CREATED);
 
-		// Apply Model Phase
-		LOG.info("performing apply model phase for view: " + view.getId());
-		helperService.performApplyModel(view, model);
+        return view;
+    }
 
-		// Update State Phase
-		LOG.info("performing finalize phase for view: " + view.getId());
-		helperService.performFinalize(view, model);
+    /**
+     * @see org.kuali.rice.krad.uif.service.ViewService#buildView(org.kuali.rice.krad.uif.view.View, java.lang.Object,
+     * java.util.Map<java.lang.String,java.lang.String>)
+     */
+    public void buildView(View view, Object model, Map<String, String> parameters) {
+        // get the configured helper service for the view
+        ViewHelperService helperService = view.getViewHelperService();
 
-		// do indexing
-		LOG.info("processing indexing for view: " + view.getId());
-		view.index();
+        // populate view from request parameters
+        helperService.populateViewFromRequestParameters(view, parameters);
 
-		// update status on view
-		LOG.debug("Updating view status to UPDATED for view: " + view.getId());
-		view.setViewStatus(ViewStatus.FINAL);
-	}
+        // backup view request parameters on form for recreating lost views (session timeout)
+        ((UifFormBase) model).setViewRequestParameters(view.getViewRequestParameters());
 
-	/**
-	 * @see org.kuali.rice.krad.uif.service.ViewService#rebuildView(java.lang.String,
-	 *      java.lang.Object, java.util.Map)
-	 */
-	public View rebuildView(String viewId, Object model, Map<String, String> parameters) {
-		View view = getView(viewId, parameters);
-		buildView(view, model);
+        // run view lifecycle
+        performViewLifecycle(view, model, parameters);
+    }
 
-		return view;
-	}
+    /**
+     * Initializes a newly created <code>View</code> instance. Each component of the tree is invoked
+     * to perform setup based on its configuration. In addition helper service methods are invoked to
+     * perform custom initialization
+     *
+     * @param view - view instance to initialize
+     * @param model - object instance containing the view data
+     * @param parameters - Map of key values pairs that provide configuration for the <code>View</code>, this
+     * is generally comes from the request and can be the request parameter Map itself. Any parameters
+     * not valid for the View will be filtered out
+     */
+    protected void performViewLifecycle(View view, Object model, Map<String, String> parameters) {
+        // get the configured helper service for the view
+        ViewHelperService helperService = view.getViewHelperService();
 
-	/**
-	 * @see org.kuali.rice.krad.uif.service.ViewService#getViewByType(java.lang.String,
-	 *      java.util.Map)
-	 */
-	public View getViewByType(String viewType, Map<String, String> parameters) {
-		View view = getViewForType(viewType, parameters);
+        // invoke initialize phase on the views helper service
+        LOG.info("performing initialize phase for view: " + view.getId());
+        helperService.performInitialization(view, model);
 
-		if (view != null) {
-			// populate view from request parameters
-			view.getViewHelperService().populateViewFromRequestParameters(view, parameters);
+        // do indexing
+        LOG.debug("processing indexing for view: " + view.getId());
+        view.index();
 
-			LOG.debug("performing initialize phase for view: " + view.getId());
-			performInitialization(view, parameters);
-		}
+        // update status on view
+        LOG.debug("Updating view status to INITIALIZED for view: " + view.getId());
+        view.setViewStatus(ViewStatus.INITIALIZED);
 
-		return view;
-	}
+        // Apply Model Phase
+        LOG.info("performing apply model phase for view: " + view.getId());
+        helperService.performApplyModel(view, model);
 
-	/**
-	 * Retrieves the <code>ViewTypeService</code> for the given view type, then
-	 * builds up the index based on the supported view type parameters and
-	 * queries the dictionary service to retrieve the view based on its type and
-	 * index
-	 * 
-	 * @param viewTypeName
-	 *            - name of the view type
-	 * @param parameters
-	 *            - Map of parameters that were given on request
-	 * @return View instance or Null if a matching view was not found
-	 */
-	protected View getViewForType(String viewTypeName, Map<String, String> parameters) {
-		ViewTypeService typeService = getViewTypeService(viewTypeName);
-		if (typeService == null) {
-			throw new RuntimeException("Unable to find view type service for view type name: " + viewTypeName);
-		}
+        // Update State Phase
+        LOG.info("performing finalize phase for view: " + view.getId());
+        helperService.performFinalize(view, model);
 
-		Map<String, String> typeParameters = typeService.getParametersFromRequest(parameters);
+        // do indexing
+        LOG.info("processing final indexing for view: " + view.getId());
+        view.index();
 
-		Map<String, String> indexKey = new HashMap<String, String>();
-		for (Map.Entry<String, String> parameter : typeParameters.entrySet()) {
-			indexKey.put(parameter.getKey(), parameter.getValue());
-		}
+        // update status on view
+        LOG.debug("Updating view status to FINAL for view: " + view.getId());
+        view.setViewStatus(ViewStatus.FINAL);
+    }
 
-		View view = dataDictionaryService.getViewByTypeIndex(viewTypeName, indexKey);
+    public ViewTypeService getViewTypeService(UifConstants.ViewType viewType) {
+        if (viewTypeServices != null) {
+            for (ViewTypeService typeService : viewTypeServices) {
+                if (viewType.equals(typeService.getViewTypeName())) {
+                    return typeService;
+                }
+            }
+        }
 
-		return view;
-	}
+        return null;
+    }
 
-	public ViewTypeService getViewTypeService(String viewType) {
-		if (viewTypeServices != null) {
-			for (ViewTypeService typeService : viewTypeServices) {
-				if (StringUtils.equals(viewType, typeService.getViewTypeName())) {
-					return typeService;
-				}
-			}
-		}
+    public List<ViewTypeService> getViewTypeServices() {
+        return this.viewTypeServices;
+    }
 
-		return null;
-	}
+    public void setViewTypeServices(List<ViewTypeService> viewTypeServices) {
+        this.viewTypeServices = viewTypeServices;
+    }
 
-	public List<ViewTypeService> getViewTypeServices() {
-		return this.viewTypeServices;
-	}
+    protected DataDictionaryService getDataDictionaryService() {
+        return this.dataDictionaryService;
+    }
 
-	public void setViewTypeServices(List<ViewTypeService> viewTypeServices) {
-		this.viewTypeServices = viewTypeServices;
-	}
-
-	protected DataDictionaryService getDataDictionaryService() {
-		return this.dataDictionaryService;
-	}
-
-	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-		this.dataDictionaryService = dataDictionaryService;
-	}
+    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
 
 }

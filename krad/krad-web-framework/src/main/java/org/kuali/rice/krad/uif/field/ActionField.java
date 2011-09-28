@@ -42,7 +42,7 @@ public class ActionField extends FieldBase {
     private String focusOnAfterSubmit;
 
     private String actionLabel;
-    private ImageField actionImageField;
+    private ImageField actionImage;
     private String actionImageLocation = "LEFT";
 
     private Map<String, String> actionParameters;
@@ -60,15 +60,16 @@ public class ActionField extends FieldBase {
 
     /**
      * The following initialization is performed:
+     *
      * <ul>
      * <li>Set the actionLabel if blank to the Field label</li>
      * </ul>
      * 
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
-        super.performInitialization(view);
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
 
         if (StringUtils.isBlank(actionLabel)) {
             actionLabel = this.getLabel();
@@ -89,8 +90,8 @@ public class ActionField extends FieldBase {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
         //clear alt text to avoid screen reader confusion when using image in button with text
-        if(actionImageField != null && StringUtils.isNotBlank(actionImageLocation) && StringUtils.isNotBlank(actionLabel)){
-            actionImageField.setAltText("");
+        if(actionImage != null && StringUtils.isNotBlank(actionImageLocation) && StringUtils.isNotBlank(actionLabel)){
+            actionImage.setAltText("");
         }
 
         actionParameters.put(UifConstants.UrlParams.SHOW_HOME, "false");
@@ -160,7 +161,7 @@ public class ActionField extends FieldBase {
                 // if this is blank focus this actionField by default
                 focusOnAfterSubmit = this.getId();
                 writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + this.getId() + "'); ";
-            } else if (!focusOnAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST)) {
+            } else if (!focusOnAfterSubmit.equalsIgnoreCase(UifConstants.Order.FIRST.toString())) {
                 // Use the id passed in
                 writeParamsScript = writeParamsScript + "writeHiddenToForm('focusId' , '" + focusOnAfterSubmit + "'); ";
             } else {
@@ -226,7 +227,7 @@ public class ActionField extends FieldBase {
     public List<Component> getNestedComponents() {
         List<Component> components = super.getNestedComponents();
 
-        components.add(actionImageField);
+        components.add(actionImage);
         components.add(lightBoxLookup);
         components.add(lightBoxDirectInquiry);
 
@@ -291,17 +292,17 @@ public class ActionField extends FieldBase {
      * 
      * @return ImageField action image
      */
-    public ImageField getActionImageField() {
-        return this.actionImageField;
+    public ImageField getActionImage() {
+        return this.actionImage;
     }
 
     /**
      * Setter for the action image field
      * 
-     * @param actionImageField
+     * @param actionImage
      */
-    public void setActionImageField(ImageField actionImageField) {
-        this.actionImageField = actionImageField;
+    public void setActionImage(ImageField actionImage) {
+        this.actionImage = actionImage;
     }
 
     /**

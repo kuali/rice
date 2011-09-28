@@ -188,7 +188,7 @@ public class CollectionGroupBuilder implements Serializable {
     		        //custom addLineToCollection js call will validate these fields manually on an add
     		    	Control control = ((AttributeField) f).getControl();
     		    	if (control != null) {
-    		    	    control.addStyleClass(collectionGroup.getBaseId() + "-addField");
+    		    	    control.addStyleClass(collectionGroup.getFactoryId() + "-addField");
     		    		control.addStyleClass("ignoreValid");
     		    	}
     		    }
@@ -403,7 +403,7 @@ public class CollectionGroupBuilder implements Serializable {
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
 			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 
-            actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getBaseId() +"');");
+            actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getFactoryId() +"');");
 		}
 
 		// get add line for context

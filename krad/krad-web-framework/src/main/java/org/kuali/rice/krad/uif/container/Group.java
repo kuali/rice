@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Accordion;
+import sun.rmi.transport.ObjectTable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -73,11 +74,11 @@ public class Group extends ContainerBase {
 	 * FieldGroup instances within the items List</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
     @Override
-    public void performInitialization(View view) {
-        super.performInitialization(view);
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
 
         for (Component component : getItems()) {
             // append group's field bind by name prefix (if set) to each

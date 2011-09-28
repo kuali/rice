@@ -17,6 +17,7 @@
 	<bean id="View" abstract="true" parent="View-parentBean" />
 	<bean id="View-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.view.View" scope="prototype">
+    <property name="viewTypeName" value="DEFAULT"/>
     <property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl" />
@@ -67,6 +68,7 @@
 	<bean id="InquiryView" abstract="true" parent="InquiryView-parentBean" />
 	<bean id="InquiryView-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.view.InquiryView" parent="KNSFormView">
+    <property name="viewTypeName" value="INQUIRY"/>
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.inquiry.InquirableImpl" />
 		<property name="presentationControllerClass"
@@ -89,6 +91,7 @@
   <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
   <bean id="LookupView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.LookupView" parent="KNSFormView">
+    <property name="viewTypeName" value="LOOKUP"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.lookup.LookupableImpl"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.LookupForm"/>
     <property name="singlePageView" value="true"/>
@@ -157,6 +160,7 @@
   <bean id="DocumentView" abstract="true" parent="DocumentView-parentBean"/>
   <bean id="DocumentView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.DocumentView" parent="KNSFormView">
+    <property name="viewTypeName" value="DOCUMENT"/>
     <property name="formClass"
               value="org.kuali.rice.krad.web.form.DocumentFormBase"/>
     <property name="defaultBindingObjectPath" value="document"/>
@@ -190,6 +194,7 @@
 	<bean id="MaintenanceView" abstract="true" parent="MaintenanceView-parentBean" />
 	<bean id="MaintenanceView-parentBean" abstract="true"
 		class="org.kuali.rice.krad.uif.view.MaintenanceView" parent="DocumentView">
+    <property name="viewTypeName" value="MAINTENANCE"/>
 		<property name="viewName" value="default" />
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.maintenance.MaintainableImpl" />
@@ -227,7 +232,7 @@
 		<property name="footer">
 			<bean parent="Footer" />
 		</property>
-		<property name="summary"
+		<property name="instructionalText"
 			value="Please use the Incident Report form below to report the problems" />
 	</bean>
 
@@ -268,7 +273,7 @@
 				</bean>
 			</list>
 		</property>
-		<property name="summary"
+		<property name="instructionalText"
 			value="This information will be forwarded to our support team. Please describe what action you were taking when the problem occurred" />
 	</bean>
 

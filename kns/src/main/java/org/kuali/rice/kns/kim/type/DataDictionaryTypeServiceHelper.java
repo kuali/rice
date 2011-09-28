@@ -141,7 +141,7 @@ public final class DataDictionaryTypeServiceHelper {
         ad.setShortLabel(attr.getShortLabel());
         ad.setLabel(attr.getLongLabel());
         ad.setSummary(attr.getHelpSummary());
-        ad.setConstraint(attr.getHelpConstraint());
+        ad.setConstraintText(attr.getHelpConstraint());
         ad.setDescription(attr.getHelpDescription());
         ad.setForceUppercase(attr.isForceUpperCase());
         ad.setMinLength(attr.getMinLength());

@@ -21,48 +21,38 @@ package org.kuali.rice.krad.uif;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifConstants {
-    private static final long serialVersionUID = 3935664282036793486L;
-
     public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
-
     public static final String DEFAULT_MODEL_NAME = "KualiForm";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String SPRING_VIEW_ID = "ApplicationView";
 
-    public static class Position {
-        public static final String BOTTOM = "BOTTOM";
-        public static final String LEFT = "LEFT";
-        public static final String RIGHT = "RIGHT";
-        public static final String TOP = "TOP";
+    public static enum Position {
+        BOTTOM, LEFT, RIGHT, TOP
     }
 
-    public static class Order {
-        public static final String FIRST = "FIRST";
+    public static enum Order {
+        FIRST
     }
 
-    public static class NavigationType {
-        public static final String VERTICAL_MENU = "VERTICAL_MENU";
-        public static final String HORIZONTAL_TABS = "HORIZONTAL_TABS";
+    public static enum NavigationType {
+        VERTICAL_MENU, HORIZONTAL_TABS
     }
 
-    public static class Orientation {
-        public static final String HORIZONTAL = "HORIZONTAL";
-        public static final String VERTICAL = "VERTICAL";
+    public static enum Orientation {
+        HORIZONTAL, VERTICAL
     }
 
-    public static class MessageType {
-        public static final String NORMAL = "NORMAL";
-        public static final String SUMMARY = "SUMMARY";
-        public static final String CONSTRAINT = "CONSTRAINT";
-        public static final String REQUIRED = "REQUIRED";
+    public static enum MessageType {
+        NORMAL, INSTRUCTIONAL, CONSTRAINT, REQUIRED, HELP_SUMMARY, HELP_DESCRIPTION
     }
 
-    public static class ViewType {
-        public static final String DEFAULT = "DEFAULT";
-        public static final String INQUIRY = "INQUIRY";
-        public static final String LOOKUP = "LOOKUP";
-        public static final String MAINTENANCE = "MAINTENANCE";
-        public static final String TRANSACTIONAL = "TRANSACTIONAL";
+    public static enum ViewType {
+        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT
+    }
+
+    public static enum ControlType {
+        CHECKBOX, CHECKBOXGROUP, FILE, GROUP, HIDDEN, RADIOGROUP, SELECT,
+        TEXTAREA, TEXT, USER
     }
 
     public static class MethodToCallNames {
@@ -91,9 +81,9 @@ public class UifConstants {
         public static final String DIRECT_INQUIRY = "_directinquiry";
         public static final String DIV = "_div";
         public static final String ERRORS = "_errors";
+        public static final String INSTRUCTIONAL = "_instructional";
         public static final String LABEL = "_label";
         public static final String SUGGEST = "_suggest";
-        public static final String SUMMARY = "_summary";
         public static final String QUICK_FINDER = "_quickfinder";
     }
 

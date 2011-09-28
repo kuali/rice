@@ -49,10 +49,10 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 
 	/**
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-	 *      org.kuali.rice.krad.uif.component.Component)
+	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
-	public void performModification(View view, Component component) {
+	public void performModification(View view, Object model, Component component) {
 		if (component == null) {
 			return;
 		}

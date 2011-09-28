@@ -21,7 +21,9 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Form for Test UI Page
@@ -140,6 +142,8 @@ public class UILayoutTestForm extends UifFormBase {
     private boolean bField2;
     private boolean bField3;
 
+    private Map<String, Object> remoteFieldValuesMap;
+
     public UILayoutTestForm() {
         super();
         list1.add(new UITestListObject("A","B","C","D"));
@@ -206,6 +210,12 @@ public class UILayoutTestForm extends UifFormBase {
         root.addChild(item3);
         
         tree1.setRootElement(root);
+
+        remoteFieldValuesMap = new HashMap<String, Object>();
+        remoteFieldValuesMap.put("remoteField1", "Apple");
+        remoteFieldValuesMap.put("remoteField2", "Banana");
+        remoteFieldValuesMap.put("remoteField3", true);
+        remoteFieldValuesMap.put("remoteField4", "Fruit");
     }
 
     @Override
@@ -1621,5 +1631,13 @@ public class UILayoutTestForm extends UifFormBase {
 
     public void setField87(String field87) {
         this.field87 = field87;
+    }
+
+    public Map<String, Object> getRemoteFieldValuesMap() {
+        return remoteFieldValuesMap;
+    }
+
+    public void setRemoteFieldValuesMap(Map<String, Object> remoteFieldValuesMap) {
+        this.remoteFieldValuesMap = remoteFieldValuesMap;
     }
 }

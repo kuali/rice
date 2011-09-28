@@ -57,14 +57,14 @@ public class UIComponentsTestController extends UifControllerBase {
 	public ModelAndView save(@ModelAttribute("KualiForm") UILayoutTestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page2");
+		return getUIFModelAndView(uiTestForm, "page2");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
 	public ModelAndView close(@ModelAttribute("KualiForm") UILayoutTestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
+		return getUIFModelAndView(uiTestForm, "page1");
 	}
 
     /**
@@ -88,6 +88,6 @@ public class UIComponentsTestController extends UifControllerBase {
         // only refreshing page
         form.setRenderFullView(false);
 
-        return getUIFModelAndView(form, form.getViewId(), pageId);
+        return getUIFModelAndView(form, pageId);
     }
 }

@@ -389,7 +389,7 @@ public abstract class UifControllerBase {
         // only refreshing page
         form.setRenderFullView(false);
 
-        return getUIFModelAndView(form, form.getViewId(), pageId);
+        return getUIFModelAndView(form, pageId);
     }
 
     @RequestMapping(params = "methodToCall=refresh")
@@ -419,7 +419,7 @@ public abstract class UifControllerBase {
             }
 
             // invoked view helper to populate the collection from lookup results
-            form.getView().getViewHelperService().processMultipleValueLookupResults(form.getView(), form,
+            form.getPreviousView().getViewHelperService().processMultipleValueLookupResults(form.getPreviousView(), form,
                     lookupCollectionName, selectedLineValues);
         }
 
@@ -481,8 +481,6 @@ public abstract class UifControllerBase {
         }
 
         // TODO: lookup anchors and doc number?
-
-        // TODO: multi-value lookup requests
 
         String baseLookupUrl = (String) lookupParameters.get(UifParameters.BASE_LOOKUP_URL);
         lookupParameters.remove(UifParameters.BASE_LOOKUP_URL);
@@ -623,15 +621,12 @@ public abstract class UifControllerBase {
      * @return ModelAndView configured to redirect to the given URL
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
-        // On post redirects we need to make sure we are sending the history
-        // forward:
+        // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
-
-        // since view will not be built, set previous view back as main view
-        form.setView(form.getPreviousView());
 
         // If this is an Light Box call only return the redirectURL view with the URL
         // set this is to avoid automatic redirect when using light boxes
+        // TODO: add constant to UifParameters
         if (urlParameters.get("lightBoxCall") != null && urlParameters.get("lightBoxCall").equals("true")) {
             urlParameters.remove("lightBoxCall");
             String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
@@ -648,11 +643,7 @@ public abstract class UifControllerBase {
     }
 
     protected ModelAndView getUIFModelAndView(UifFormBase form) {
-        return getUIFModelAndView(form, form.getViewId(), form.getPageId());
-    }
-
-    protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId) {
-        return getUIFModelAndView(form, viewId, "");
+        return getUIFModelAndView(form, form.getPageId());
     }
 
     /**
@@ -660,13 +651,12 @@ public abstract class UifControllerBase {
      * data and pointing to the UIF generic spring view
      *
      * @param form - Form instance containing the model data
-     * @param viewId - Id of the View to return
      * @param pageId - Id of the page within the view that should be rendered, can
      * be left blank in which the current or default page is rendered
      * @return ModelAndView object with the contained form
      */
-    protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
-        return UifWebUtils.getUIFModelAndView(form, viewId, pageId);
+    protected ModelAndView getUIFModelAndView(UifFormBase form, String pageId) {
+        return UifWebUtils.getUIFModelAndView(form, pageId);
     }
 
     protected ViewService getViewService() {

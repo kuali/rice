@@ -22,14 +22,12 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
-import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.web.multipart.MultipartFile;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -52,7 +50,7 @@ public class UifFormBase implements Serializable {
     // current view
     protected String viewId;
     protected String viewName;
-    protected String viewTypeName;
+    protected ViewType viewTypeName;
     protected String pageId;
     protected String methodToCall;
     protected String formKey;
@@ -180,7 +178,7 @@ public class UifFormBase implements Serializable {
      *
      * @return String view type name
      */
-    public String getViewTypeName() {
+    public ViewType getViewTypeName() {
         return this.viewTypeName;
     }
 
@@ -189,7 +187,7 @@ public class UifFormBase implements Serializable {
      *
      * @param viewTypeName
      */
-    public void setViewTypeName(String viewTypeName) {
+    public void setViewTypeName(ViewType viewTypeName) {
         this.viewTypeName = viewTypeName;
     }
 

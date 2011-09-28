@@ -29,13 +29,10 @@
           <property name="items">
             <list>
               <ref bean="testSection1"/>
-              <ref bean="testSection1-cgrid"/>
               <ref bean="testSection6"/>
               <ref bean="testSection5"/>
-              <ref bean="testSection5-cgrid"/>
               <ref bean="testSection2"/>
               <ref bean="testSection4"/>
-              <ref bean="testSection4-cgrid"/>
             </list>
           </property>
         </bean>
@@ -85,7 +82,7 @@
     <property name="items">
       <list>
         <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Bank Id" p:maxLength="4" p:minLength="2"
-              p:summary="Please provide the established federal Id" p:constraint="Must be 4 chars" p:readOnly="false"
+              p:instructionalText="Please provide the established federal Id" p:constraintText="Must be 4 chars" p:readOnly="false"
               p:alternateDisplayPropertyName="field2">
           <property name="control">
             <bean id="myField" parent="TextControl" p:size="15" p:watermarkText="####"/>
@@ -119,7 +116,7 @@
         </bean>
       </list>
     </property>
-    <property name="summary" value="Provide basic information for the ACH Bank"/>
+    <property name="instructionalText" value="Provide basic information for the ACH Bank"/>
   </bean>
 
   <bean id="testGroup2-cgrid" parent="testGroup2">
@@ -182,7 +179,7 @@
               p:condition="#view.id eq 'Travel-testView1'" p:replacement="Subs Test Group"/>
       </list>
     </property>
-    <property name="summary" value="Group with grid layout, @{2+2} columns, 50% centered"/>
+    <property name="instructionalText" value="Group with grid layout, @{2+2} columns, 50% centered"/>
   </bean>
 
   <bean id="testSection6" parent="GroupSection">
@@ -233,7 +230,7 @@
         </bean>
       </list>
     </property>
-    <property name="summary" value="Group with collection and table layout"/>
+    <property name="instructionalText" value="Group with collection and table layout"/>
   </bean>
 
   <bean id="testGroup5" parent="CollectionGroup">
@@ -256,7 +253,7 @@
         <value>name</value>
       </list>
     </property>
-    <property name="summary" value="Group with collection and stacked layout"/>
+    <property name="instructionalText" value="Group with collection and stacked layout"/>
   </bean>
 
   <bean id="testGroup10" parent="CollectionGroup">
@@ -284,11 +281,11 @@
         <bean parent="testGroup5">
           <property name="title" value="Sub Collection 1"/>
           <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
-          <property name="summary" value="Sub collection stacked layout"/>
+          <property name="instructionalText" value="Sub collection stacked layout"/>
         </bean>
       </list>
     </property>
-    <property name="summary" value="Group with sub-collections and stacked layout"/>
+    <property name="instructionalText" value="Group with sub-collections and stacked layout"/>
   </bean>
 
   <!--    <bean id="testGroup11" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="6">
@@ -314,7 +311,7 @@
            <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
          </list>
        </property>
-       <property name="summary" value="Group with sub-collection and table layout"/>
+       <property name="instructionalText" value="Group with sub-collection and table layout"/>
     </bean>
   -->
   <bean id="testGroup3-cgrid" parent="testGroup3">
@@ -381,7 +378,7 @@
         </bean>
       </list>
     </property>
-    <property name="summary" value="Group with grid layout and various col/row spans"/>
+    <property name="instructionalText" value="Group with grid layout and various col/row spans"/>
   </bean>
 
   <bean id="testSection5-cgrid" parent="testSection5">
@@ -424,7 +421,7 @@
               p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
       </list>
     </property>
-    <property name="summary" value="Section without nested group, labels top"/>
+    <property name="instructionalText" value="Section without nested group, labels top"/>
   </bean>
 
   <bean id="testSection4-cgrid" parent="testSection4">
@@ -537,7 +534,7 @@
         </bean>
       </list>
     </property>
-    <property name="summary" value="Section with some field groups"/>
+    <property name="instructionalText" value="Section with some field groups"/>
   </bean>
 
   <bean id="testSection3" parent="GroupSectionGridLayout">
@@ -560,7 +557,7 @@
         </bean>
       </list>
     </property>
-    <property name="summary" value="Section without nested group, grid layout"/>
+    <property name="instructionalText" value="Section without nested group, grid layout"/>
   </bean>
 
 </beans>

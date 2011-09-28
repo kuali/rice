@@ -42,7 +42,7 @@ import org.kuali.rice.krad.uif.field.AttributeField;
 public class BoxLayoutManager extends LayoutManagerBase {
 	private static final long serialVersionUID = 4467342272983290044L;
 
-	private String orientation;
+	private Orientation orientation;
 	private String padding;
 
 	private String itemStyle;
@@ -61,18 +61,19 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 * <li>Set the itemSpanStyle</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,org.kuali.rice.krad.uif.container.Container)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     * java.lang.Object,org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
-	public void performInitialization(View view, Container container) {
-		super.performInitialization(view, container);
+	public void performInitialization(View view, Object model, Container container) {
+		super.performInitialization(view, model, container);
 
 		if(StringUtils.isBlank(itemStyle)){
 			itemStyle = "";
 		}
 		
 		if(StringUtils.isNotEmpty(padding)) {
-			if (StringUtils.equals(orientation, Orientation.VERTICAL)) {
+			if (orientation.equals(Orientation.VERTICAL)) {
 				// set item to block which will cause a line break and margin
 				// bottom for padding
 				itemStyle += CssConstants.getCssStyle(Padding.PADDING_BOTTOM, padding);
@@ -89,7 +90,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
         
         for (Component c : container.getItems()) {
             if (c != null) {
-                if (StringUtils.equals(orientation, Orientation.HORIZONTAL)) {
+                if (orientation.equals(Orientation.HORIZONTAL)) {
                     // horizontal items get a special class
                     c.addStyleClass("boxLayoutHorizontalItem");
                     c.appendToStyle(itemStyle);
@@ -127,19 +128,18 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 * Indicates whether the components should be rendered in a horizontal or
 	 * vertical column
 	 * 
-	 * @return String orientation
-	 * @see org.kuali.rice.krad.uif.UifConstants.Orientation
+	 * @return Orientation orientation configured for layout
 	 */
-	public String getOrientation() {
+	public Orientation getOrientation() {
 		return this.orientation;
 	}
 
 	/**
-	 * Setter for the orientation
+	 * Setter for the orientation for layout
 	 * 
 	 * @param orientation
 	 */
-	public void setOrientation(String orientation) {
+	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
 

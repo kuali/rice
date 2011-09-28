@@ -32,7 +32,7 @@
   <krad:template component="${group.header}"/>
 
   <div id="${group.id}${groupBodyIdSuffix}">
-    <krad:template component="${group.summaryMessageField}"/>
+    <krad:template component="${group.instructionalMessageField}"/>
     <krad:template component="${group.errorsField}"/>
 
     <jsp:doBody/>

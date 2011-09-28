@@ -11,6 +11,7 @@
 package org.kuali.rice.krad.uif.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -31,6 +32,7 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
@@ -72,6 +74,8 @@ import java.util.Set;
  */
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
+
+    private Set<String> initializedComponentIds;
 
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluatorService expressionEvaluatorService;
@@ -149,19 +153,23 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
-        performComponentInitialization(view, view);
+    public void performInitialization(View view, Object model) {
+        initializedComponentIds = new HashSet<String>();
+        performComponentInitialization(view, model, view);
     }
 
     /**
      * Performs the complete component lifecycle on the component passed in, in this order:
      * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
      *
-     * @see {@link ViewHelperService#performComponentLifecycle(org.kuali.rice.krad.web.form.UifFormBase, org.kuali.rice.krad.uif.component.Component, String)}
-     * @see {@link #performComponentInitialization(View, Component)}
+     * @see {@link ViewHelperService#performComponentLifecycle(org.kuali.rice.krad.web.form.UifFormBase,
+     *      org.kuali.rice.krad.uif.component.Component, String)}
+     * @see {@link #performComponentInitialization(org.kuali.rice.krad.uif.view.View, Object,
+     *      org.kuali.rice.krad.uif.component.Component)}
      * @see {@link #performComponentApplyModel(View, Component, Object)}
      * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
      */
@@ -174,7 +182,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         origId = ComponentUtils.getIdWithoutSuffixes(origId);
         component.setId(origId);
 
-        performComponentInitialization(form.getView(), component);
+        initializedComponentIds = new HashSet<String>();
+
+        performComponentInitialization(form.getView(), form, component);
         performComponentApplyModel(form.getView(), component, form);
 
         // TODO: need to handle updating client state for component refresh
@@ -188,7 +198,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             clientStateScript = onLoadScript + clientStateScript;
         }
         component.setOnLoadScript(clientStateScript);
-
     }
 
     /**
@@ -214,9 +223,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * </p>
      *
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performComponentInitialization(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.component.Component)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
-    public void performComponentInitialization(View view, Component component) {
+    public void performComponentInitialization(View view, Object model, Component component) {
         if (component == null) {
             return;
         }
@@ -226,18 +235,44 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             component.setId(view.getNextId());
         }
 
+        // check if component has already been initialized to prevent cyclic references
+        if (initializedComponentIds.contains(component.getId())) {
+            throw new RiceRuntimeException(
+                    "Circular reference or duplicate id found for component with id: " + component.getId());
+        }
+        initializedComponentIds.add(component.getId());
+
+        // determine if we need to hold the state for doing refreshes, if factory id already set, we can
+        // get the initial component state from spring
+        if (StringUtils.isBlank(component.getFactoryId())) {
+            // only need to hold state if a refresh can occur
+            if (component.isRefresh()
+                    || StringUtils.isNotBlank(component.getConditionalRefresh())
+                    || StringUtils.isNotBlank(component.getProgressiveRender())
+                    || StringUtils.isNotBlank(component.getRefreshWhenChanged())) {
+                component.setFactoryId(component.getId());
+                view.getViewIndex().addInitialComponentState(component);
+            }
+        }
+
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
 
             if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
                 layoutManager.setId(view.getNextId());
             }
+
+            // invoke hook point for adding components through code
+            addCustomContainerComponents(view, model, (Container) component);
+
+            // process any remote fields holder that might be in the containers items
+            processAnyRemoteFieldsHolder(view, model, (Container) component);
         }
 
         LOG.debug("Initializing component: " + component.getId() + " with type: " + component.getClass());
 
         // invoke component to initialize itself after properties have been set
-        component.performInitialization(view);
+        component.performInitialization(view, model);
 
         // for attribute fields, set defaults from dictionary entry
         if (component instanceof AttributeField) {
@@ -249,23 +284,51 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: initialize from dictionary
         }
 
-        // invoke component initializers setup to run in the initialize phase
+        // invoke component modifiers setup to run in the initialize phase
         runComponentModifiers(view, component, null, UifConstants.ViewPhases.INITIALIZE);
 
         // initialize nested components
         for (Component nestedComponent : component.getNestedComponents()) {
-            performComponentInitialization(view, nestedComponent);
+            performComponentInitialization(view, model, nestedComponent);
         }
 
         // initialize nested components in property replacements
         for (PropertyReplacer replacer : component.getPropertyReplacers()) {
             for (Component replacerComponent : replacer.getNestedComponents()) {
-                performComponentInitialization(view, replacerComponent);
+                performComponentInitialization(view, model, replacerComponent);
             }
         }
 
         // invoke initialize service hook
         performCustomInitialization(view, component);
+    }
+
+    /**
+     * Iterates through the containers configured items checking for <code>RemotableFieldsHolder</code>, if found
+     * the holder is invoked to retrieved the remotable fields and translate to attribute fields. The translated list
+     * is then inserted into the container item list at the position of the holder
+     *
+     * @param view - view instance containing the container
+     * @param model - object instance containing the view data
+     * @param container - container instance to check for any remotable fields holder
+     */
+    protected void processAnyRemoteFieldsHolder(View view, Object model, Container container) {
+        List<Component> processedItems = new ArrayList<Component>();
+
+        // check for holders and invoke to retrieve the remotable fields and translate
+        // translated fields are placed into the container item list at the position of the holder
+        for (Component item : container.getItems()) {
+            if (item instanceof RemoteFieldsHolder) {
+                List<AttributeField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(view,
+                        model, container);
+                processedItems.addAll(translatedFields);
+            } else {
+                processedItems.add(item);
+            }
+        }
+
+        // updated container items
+        container.setItems(processedItems);
     }
 
     /**
@@ -314,6 +377,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         if (field.getControl() == null) {
             field.setControl(ComponentFactory.getTextControl());
+            field.getControl().setId(view.getNextId());
         }
     }
 
@@ -578,7 +642,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         for (ComponentModifier modifier : component.getComponentModifiers()) {
             // if run phase is initialize, invoke initialize method on modifier first
             if (StringUtils.equals(runPhase, UifConstants.ViewPhases.INITIALIZE)) {
-                modifier.performInitialization(view, component);
+                modifier.performInitialization(view, model, component);
             }
 
             // check run phase matches
@@ -596,12 +660,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 }
 
                 if (runModifier) {
-                    if (StringUtils.equals(runPhase, UifConstants.ViewPhases.APPLY_MODEL) || StringUtils.equals(
-                            runPhase, UifConstants.ViewPhases.FINALIZE)) {
-                        modifier.performModification(view, model, component);
-                    } else {
-                        modifier.performModification(view, component);
-                    }
+                    modifier.performModification(view, model, component);
                 }
             }
         }
@@ -691,8 +750,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (!updateOnly) {
             String kradImageLocation = KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                     "krad.externalizable.images.url");
-            clientStateScript += "setConfigParam('" + UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION
-                    + "','" + kradImageLocation + "');";
+            clientStateScript += "setConfigParam('"
+                    + UifConstants.ClientSideVariables.KRAD_IMAGE_LOCATION
+                    + "','"
+                    + kradImageLocation
+                    + "');";
         }
 
         return clientStateScript;
@@ -1146,7 +1208,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * </p>
      *
      * @param view - view instance the field belongs to
-     * @param model - object that should be populated
+     * @param object - object that should be populated
      * @param attributeField - field to check for configured default value
      * @param bindingPath - path to the property on the object that should be populated
      */
@@ -1169,6 +1231,27 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: this should go through our formatters
             ObjectPropertyUtils.setPropertyValue(object, bindingPath, defaultValue);
         }
+    }
+
+    /**
+     * Hook for creating new components with code and adding them to a container
+     *
+     * <p>
+     * Subclasses can override this method to check for one or more containers by id and then adding components
+     * created in code. This is invoked before the initialize method on the container component, so the full
+     * lifecycle will be run on the components returned.
+     * </p>
+     *
+     * <p>
+     * New components instances can be retrieved using {@link ComponentFactory}
+     * </p>
+     *
+     * @param view - view instance the container belongs to
+     * @param model - object containing the view data
+     * @param container - container instance to add components to
+     */
+    protected void addCustomContainerComponents(View view, Object model, Container container) {
+
     }
 
     /**
@@ -1238,15 +1321,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Hook for service overrides to process the collection line after it
-     * has been deleted
+     * Hook for service overrides to process the collection line after it has been deleted
      *
-     * @param view - view instance that is being presented (the action was taken
-     * on)
+     * @param view - view instance that is being presented (the action was taken on)
      * @param collectionGroup - collection group component for the collection the line that
      * was added
-     * @param model - object instance that contain's the views data
-     * @param addLine - the new line that was added
+     * @param model - object instance that contains the views data
+     * @param lineIndex - index of the line that was deleted
      */
     protected void processAfterDeleteLine(View view, CollectionGroup collectionGroup, Object model, int lineIndex) {
 

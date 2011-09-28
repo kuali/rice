@@ -66,9 +66,9 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
-	 *      org.kuali.rice.krad.uif.container.Container)
+	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
-	public void performInitialization(View view, Container container) {
+	public void performInitialization(View view, Object model, Container container) {
 		// set id of layout manager from container
 		if (StringUtils.isBlank(id)) {
 			id = container.getId() + "_layout";

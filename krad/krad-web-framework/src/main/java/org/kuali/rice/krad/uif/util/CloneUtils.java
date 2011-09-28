@@ -10,6 +10,7 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 
 import java.lang.annotation.Annotation;
@@ -38,8 +39,12 @@ public class CloneUtils {
     private static final Map<String, Field[]> fieldCache = new HashMap<String, Field[]>();
     private static final Map<String, Field> internalFields = new HashMap<String, Field>();
 
-    public static final <O> O deepClone(O original) throws Exception {
-        return deepCloneReflection(original);
+    public static final <O> O deepClone(O original) {
+        try {
+            return deepCloneReflection(original);
+        } catch (Exception e) {
+            throw new RiceRuntimeException(e);
+        }
     }
 
     @SuppressWarnings("unchecked")

@@ -60,7 +60,6 @@ public interface ViewHelperService {
 	 * 
 	 * <p>
 	 * The initialize phase is only called once per <code>View</code> lifecycle
-	 * (when first requested)
 	 * </p>
 	 * 
 	 * <p>
@@ -70,8 +69,9 @@ public interface ViewHelperService {
 	 * 
 	 * @param view
 	 *            - View instance that should be initialized
+     * @param model - object instance containing the view data
 	 */
-	public void performInitialization(View view);
+	public void performInitialization(View view, Object model);
 
 	/**
 	 * Performs the Initialization phase for the given <code>Component</code>
@@ -83,10 +83,11 @@ public interface ViewHelperService {
 	 * 
 	 * @param view
 	 *            - view instance the component belongs to
+     * @param model - object instance containing the view data
 	 * @param component
 	 *            - component instance that should be initialized
 	 */
-	public void performComponentInitialization(View view, Component component);
+	public void performComponentInitialization(View view, Object model, Component component);
 
 	/**
 	 * Executes the ApplyModel phase. During this phase each component of the

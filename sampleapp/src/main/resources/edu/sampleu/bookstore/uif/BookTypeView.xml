@@ -45,7 +45,7 @@
   <bean id="BookType-InquiryView-Section1" parent="GroupSectionGridLayout">
     <property name="id" value="BookType-InquiryView-Section1" />
     <property name="title" value="Book Type" />
-    <property name="summary" value="A Book Type." />
+    <property name="instructionalText" value="A Book Type." />
     <property name="fieldBindByNamePrefix" value="dataObject" />
     <property name="items">
       <list>

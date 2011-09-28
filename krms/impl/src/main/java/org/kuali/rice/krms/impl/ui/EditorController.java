@@ -68,7 +68,7 @@ public class EditorController extends UifControllerBase {
 		editorForm.setContext(context);
 		editorForm.setAgenda(agenda);
 
-		return getUIFModelAndView(editorForm, editorForm.getViewId());
+		return getUIFModelAndView(editorForm);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
@@ -84,14 +84,14 @@ public class EditorController extends UifControllerBase {
 //			//GlobalVariables.getMessageMap().clearErrorMessages();
 //			return getUIFModelAndView(editorForm, editorForm.getViewId(), editorForm.getPageId());
 //		}
-		return getUIFModelAndView(editorForm, editorForm.getViewId());
+		return getUIFModelAndView(editorForm);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
 	public ModelAndView close(@ModelAttribute("KualiForm") EditorForm editorForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(editorForm, editorForm.getViewId());
+		return getUIFModelAndView(editorForm);
 	}
 	
 	private BusinessObjectService getBoService() {

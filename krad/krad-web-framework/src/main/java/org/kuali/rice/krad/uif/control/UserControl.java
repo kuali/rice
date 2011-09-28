@@ -33,8 +33,8 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserControl extends TextControl {
-
     private static final long serialVersionUID = 7468340793076585869L;
+
     private String principalIdPropertyName;
     private String personNamePropertyName;
     private String personObjectPropertyName;

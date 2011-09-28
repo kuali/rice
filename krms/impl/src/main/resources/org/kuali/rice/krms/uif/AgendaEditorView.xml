@@ -194,11 +194,11 @@
       <list>                            
         <bean parent="ActionLinkField" p:clientSideJs="jq('.jstree').jstree('open_all');" 
           p:actionLabel="[+] expand all" p:style="font-size: smaller; margin-left: 2em;">
-          <property name="actionImageField"><null/></property>
+          <property name="actionImage"><null/></property>
         </bean>
         <bean parent="ActionLinkField" p:clientSideJs="jq('.jstree').jstree('close_all');" 
           p:actionLabel="[-] collapse all" p:style="font-size: smaller; margin-right: 15pt;">
-          <property name="actionImageField"><null/></property>
+          <property name="actionImage"><null/></property>
         </bean>
         <bean id="agenda_item_selected" parent="AttributeField" p:propertyName="selectedAgendaItemId" p:showLabel="false">
           <property name="control">

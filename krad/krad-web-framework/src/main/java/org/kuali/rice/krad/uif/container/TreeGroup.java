@@ -11,6 +11,7 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.TreeWidget;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +54,10 @@ public class TreeGroup extends Group implements DataBinding{
      *
      */
     @Override
-    public void performInitialization(View view) {
+    public void performInitialization(View view, Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
 
-        super.performInitialization(view);
+        super.performInitialization(view, model);
 
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
@@ -64,12 +65,12 @@ public class TreeGroup extends Group implements DataBinding{
 
         // TODO: set object path for prototypes equal to the tree group object path?
 
-        initializeNodePrototypeComponents(view);
+        initializeNodePrototypeComponents(view, model);
     }
 
-    private void initializeNodePrototypeComponents(View view) {
-        view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getLabelPrototype());
-        view.getViewHelperService().performComponentInitialization(view, defaultNodePrototype.getDataGroupPrototype());
+    private void initializeNodePrototypeComponents(View view, Object model) {
+        view.getViewHelperService().performComponentInitialization(view, model, defaultNodePrototype.getLabelPrototype());
+        view.getViewHelperService().performComponentInitialization(view, model, defaultNodePrototype.getDataGroupPrototype());
 
         if (nodePrototypeMap != null)
             for (Map.Entry<Class<?>, NodePrototype> prototypeEntry : nodePrototypeMap.entrySet()) {
@@ -77,14 +78,14 @@ public class TreeGroup extends Group implements DataBinding{
                 if (prototype != null) {
 
                     if (prototype.getLabelPrototype() != null) {
-                        view.getViewHelperService().performComponentInitialization(view, prototype.getLabelPrototype());
+                        view.getViewHelperService().performComponentInitialization(view, model, prototype.getLabelPrototype());
                     } else {
                         throw new IllegalStateException("encountered null NodePrototype.labelPrototype");
                     }
 
                     if (prototype.getDataGroupPrototype() != null) {
                         view.getViewHelperService()
-                                .performComponentInitialization(view, prototype.getDataGroupPrototype());
+                                .performComponentInitialization(view, model, prototype.getDataGroupPrototype());
                     } else {
                         throw new IllegalStateException("encountered null NodePrototype.dataGroupPrototype");
                     }

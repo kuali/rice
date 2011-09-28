@@ -69,6 +69,30 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setId(String id);
 
     /**
+     * Holds the id for the component that can be used to request new instances of that component from the
+     * {@link org.kuali.rice.krad.uif.util.ComponentFactory}
+     *
+     * <p>
+     * During component refreshes the component is reinitialized and the lifecycle is performed again to
+     * reflect the component state based on the latest updates (data, other component state). Since the lifecycle
+     * is only performed on the component, a new instance with configured initial state needs to be retrieved. Some
+     * component instances, such as those that are nested or created in code, cannot be obtained from the spring
+     * factory. For those the initial state is captured during the perform initialize phase and the factory id
+     * generated for referencing retrieving that configuration during a refresh
+     * </p>
+     *
+     * @return String bean id for component
+     */
+    public String getFactoryId();
+
+    /**
+     * Sets the factory id that backs the component instance
+     *
+     * @param factoryId
+     */
+    public void setFactoryId(String factoryId);
+
+    /**
      * The name for the component type
      *
      * <p>
@@ -134,9 +158,10 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * </p>
      *
      * @param view - view instance in which the component belongs
+     * @param model - object instance containing the view data
      * @see ViewHelperService#initializeComponent
      */
-    public void performInitialization(View view);
+    public void performInitialization(View view, Object model);
 
     /**
      * Called after the initialize phase to perform conditional logic based on
@@ -757,19 +782,5 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      * @return the refreshWhenChangedControlNames
      */
     public List<String> getRefreshWhenChangedControlNames();
-
-    /**
-     * The original generated id assigned for the underlying Spring bean. During the component lifecycle
-     * the id may get manipulated and changed based on the type of component it is. This id represents the original id
-     * assigned before any additional suffixes were appended.
-     *
-     * @return the baseId
-     */
-    public String getBaseId();
-
-    /**
-     * @param baseId the baseId to set
-     */
-    public void setBaseId(String baseId);
 
 }

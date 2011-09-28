@@ -44,29 +44,29 @@
   <krad:fieldLabel field="${field}">
 
     <c:choose>
-      <c:when test="${(field.actionImageField != null) && field.actionImageField.render}">
-        <c:if test="${not empty field.actionImageField.height}">
-          <c:set var="height" value="height='${field.actionImageField.height}'"/>
+      <c:when test="${(field.actionImage != null) && field.actionImage.render}">
+        <c:if test="${not empty field.actionImage.height}">
+          <c:set var="height" value="height='${field.actionImage.height}'"/>
         </c:if>
-        <c:if test="${not empty field.actionImageField.width}">
-          <c:set var="width" value="width='${field.actionImageField.width}'"/>
+        <c:if test="${not empty field.actionImage.width}">
+          <c:set var="width" value="width='${field.actionImage.width}'"/>
         </c:if>
         <c:choose>
           <c:when test="${field.actionImageLocation != null && (field.actionImageLocation eq 'RIGHT')}">
             <a id="${field.id}" ${href}
                onclick="return false;"${name} ${style} ${styleClass} ${tabindex}>${field.actionLabel}
               <img ${imageRole}
-                      class="actionImage rightActionImage ${field.actionImageField.styleClassesAsString}" ${height} ${width}
-                      style="${field.actionImageField.style}" src="${field.actionImageField.source}"
-                      alt="${field.actionImageField.altText}"/>
+                      class="actionImage rightActionImage ${field.actionImage.styleClassesAsString}" ${height} ${width}
+                      style="${field.actionImage.style}" src="${field.actionImage.source}"
+                      alt="${field.actionImage.altText}"/>
             </a>
           </c:when>
           <c:otherwise>
             <a id="${field.id}" ${href}
                onclick="return false;"${name} ${style} ${styleClass} ${tabindex}><img ${imageRole}
-                    class="actionImage leftActionImage ${field.actionImageField.styleClassesAsString}" ${height} ${width}
-                    style="${field.actionImageField.style}" src="${field.actionImageField.source}"
-                    alt="${field.actionImageField.altText}"/>${field.actionLabel}
+                    class="actionImage leftActionImage ${field.actionImage.styleClassesAsString}" ${height} ${width}
+                    style="${field.actionImage.style}" src="${field.actionImage.source}"
+                    alt="${field.actionImage.altText}"/>${field.actionLabel}
             </a>
           </c:otherwise>
         </c:choose>

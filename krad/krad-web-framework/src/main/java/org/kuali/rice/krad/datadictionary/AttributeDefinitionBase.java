@@ -32,13 +32,9 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
 	protected String shortLabel;
 	protected String displayLabelAttribute;
 
-	protected String messageKey;	
+	protected String messageKey;
+    protected String constraintText;
 	protected String summary;
-	
-	//Note: This is the actual constraint text that appears below field
-    // TODO: is this used on definition
-	protected String constraint;
-	
 	protected String description;
 	
 	protected Boolean required = Boolean.FALSE;
@@ -112,6 +108,30 @@ public abstract class AttributeDefinitionBase extends DataDictionaryDefinitionBa
 	public Boolean isRequired() {
 		return this.required;
 	}
+
+    /**
+     * Text that display a restriction on the value a field can hold
+     *
+     * <p>
+     * For example when the value must be a valid format (phone number, email), certain length, min/max value and
+     * so on this text can be used to indicate the constraint to the user. Generally displays with the control so
+     * it is visible when the user tabs to the field
+     * </p>
+     *
+     * @return String text to display for the constraint message
+     */
+    public String getConstraintText() {
+        return this.constraintText;
+    }
+
+    /**
+     * Setter for the constraint message text
+     *
+     * @param constraintText
+     */
+    public void setConstraintText(String constraintText) {
+        this.constraintText = constraintText;
+    }
 	
 	public String getSummary() {
 		return summary;

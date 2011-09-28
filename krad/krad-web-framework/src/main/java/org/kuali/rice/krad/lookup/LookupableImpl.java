@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.HiddenControl;
@@ -108,10 +109,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * Initialization of Lookupable requires that the business object class be set for the {@link
      * #initializeAttributeFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.AttributeField)} method
      *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
+    public void performInitialization(View view, Object model) {
         if (!LookupView.class.isAssignableFrom(view.getClass())) {
             throw new IllegalArgumentException(
                     "View class '" + view.getClass() + " is not assignable from the '" + LookupView.class + "'");
@@ -120,7 +121,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         LookupView lookupView = (LookupView) view;
         initializeLookupViewHelperService(lookupView);
 
-        super.performInitialization(view);
+        super.performInitialization(view, model);
     }
 
     /**
@@ -213,13 +214,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     protected Map<String, String> processSearchCriteria(LookupForm lookupForm, Map<String, String> searchCriteria) {
+        Map<String, AttributeField> criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(),
+                lookupForm);
+
         Map<String, String> nonBlankSearchCriteria = new HashMap<String, String>();
         for (String fieldName : searchCriteria.keySet()) {
             String fieldValue = searchCriteria.get(fieldName);
 
             // don't add hidden criteria
             LookupView lookupView = (LookupView) lookupForm.getView();
-            AttributeField attributeField = lookupView.getViewIndex().getAttributeFieldByPropertyName(fieldName);
+            AttributeField attributeField = criteriaFields.get(fieldName);
             if (attributeField.getControl() instanceof HiddenControl) {
                 continue;
             }
@@ -433,6 +437,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             throw new RuntimeException("Lookup not defined for data object " + getDataObjectClass());
         }
 
+        Map<String, AttributeField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
+
         // validate required
         // TODO: this will be done by the uif validation service at some point
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
@@ -440,8 +446,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             String searchPropertyValue = searchKeyValue.getValue();
 
             LookupView lookupView = (LookupView) form.getView();
-            AttributeField attributeField =
-                    lookupView.getViewIndex().getAttributeFieldByPropertyName(searchPropertyName);
+            AttributeField attributeField = criteriaFields.get(searchPropertyName);
             if (attributeField != null) {
                 if (StringUtils.isBlank(searchPropertyValue) && BooleanUtils.isTrue(attributeField.getRequired())) {
                     GlobalVariables.getMessageMap()
@@ -460,6 +465,20 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         return valid;
+    }
+
+    protected Map<String, AttributeField> getCriteriaFieldsForValidation(LookupView lookupView, LookupForm form) {
+        Map<String, AttributeField> criteriaFieldMap = new HashMap<String, AttributeField>();
+
+        // TODO; need hooks for code generated components and also this doesn't have lifecycle which
+        // could change fields
+        List<AttributeField> fields = ComponentUtils.getComponentsOfTypeDeep(lookupView.getCriteriaFields(),
+                AttributeField.class);
+        for (AttributeField field : fields) {
+            criteriaFieldMap.put(field.getPropertyName(), field);
+        }
+
+        return criteriaFieldMap;
     }
 
     /**
@@ -753,7 +772,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         props.put(UifParameters.DATA_OBJECT_CLASS_NAME, lookupForm.getDataObjectClassName());
-        props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
+        props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE.name());
 
         return UrlFactory.parameterizeUrl(KRADConstants.Maintenance.REQUEST_MAPPING_MAINTENANCE, props);
     }

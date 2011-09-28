@@ -12,6 +12,7 @@ package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SessionDocumentService;
@@ -22,13 +23,16 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Provides helper methods that will be used during the request lifecycle
@@ -40,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifWebUtils {
-
     private static final Logger LOG = Logger.getLogger(UifWebUtils.class);
 
     /**
@@ -58,15 +61,19 @@ public class UifWebUtils {
         UifFormBase form = null;
 
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
+        if (StringUtils.isBlank(formKeyParam)) {
+            formKeyParam = (String) request.getAttribute(UifParameters.FORM_KEY);
+        }
+
         String docId = request.getParameter(KRADConstants.DOCUMENT_DOCUMENT_NUMBER);
         if (StringUtils.isNotBlank(formKeyParam)) {
             form = (UifFormBase) request.getSession().getAttribute(formKeyParam);
-            // retreive from db if form not in session
+            // retrieve from db if form not in session
             if (form == null) {
-                UserSession userSession =
-                        (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
-                form = KRADServiceLocatorWeb.getSessionDocumentService()
-                        .getDocumentForm(docId, formKeyParam, userSession, request.getRemoteAddr());
+                UserSession userSession = (UserSession) request.getSession().getAttribute(
+                        KRADConstants.USER_SESSION_KEY);
+                form = KRADServiceLocatorWeb.getSessionDocumentService().getDocumentForm(docId, formKeyParam,
+                        userSession, request.getRemoteAddr());
             }
         }
 
@@ -78,14 +85,11 @@ public class UifWebUtils {
      * data and pointing to the UIF generic spring view
      *
      * @param form - Form instance containing the model data
-     * @param viewId - Id of the View to return
      * @param pageId - Id of the page within the view that should be rendered, can
      * be left blank in which the current or default page is rendered
      * @return ModelAndView object with the contained form
      */
-    public static ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
-        // update form with the requested view id and page
-        form.setViewId(viewId);
+    public static ModelAndView getUIFModelAndView(UifFormBase form, String pageId) {
         if (StringUtils.isNotBlank(pageId)) {
             form.setPageId(pageId);
         }
@@ -125,20 +129,19 @@ public class UifWebUtils {
 
                     form.setPreviousView(null);
 
-                    // store form to session and persist document form to db as well
-                    request.getSession().setAttribute(form.getFormKey(), form);
+                    // persist document form to db
                     if (form instanceof DocumentFormBase) {
-                        UserSession userSession =
-                                (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
-                        getSessionDocumentService()
-                                .setDocumentForm((DocumentFormBase) form, userSession, request.getRemoteAddr());
+                        UserSession userSession = (UserSession) request.getSession().getAttribute(
+                                KRADConstants.USER_SESSION_KEY);
+                        getSessionDocumentService().setDocumentForm((DocumentFormBase) form, userSession,
+                                request.getRemoteAddr());
                     }
 
                     // perform authorization of controller method
                     checkMethodToCallAuthorization(request, controller, form);
 
-                    // prepare view contained in form
-                    prepareViewForRendering(form);
+                    // prepare view instance
+                    prepareViewForRendering(request, form);
 
                     // update history for view
                     prepareHistory(request, form);
@@ -165,8 +168,8 @@ public class UifWebUtils {
 
         if (!controller.getMethodToCallsToNotCheckAuthorization().contains(methodToCall)) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("'" + methodToCall + "' not in set of excempt methods: " +
-                        controller.getMethodToCallsToNotCheckAuthorization());
+                LOG.debug("'" + methodToCall + "' not in set of excempt methods: " + controller
+                        .getMethodToCallsToNotCheckAuthorization());
             }
 
             controller.checkAuthorization(form, methodToCall);
@@ -197,13 +200,13 @@ public class UifWebUtils {
 
             // passed settings ALWAYS override the defaults
             if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HOME))) {
-                history.setAppendHomewardPath(
-                        Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HOME)));
+                history.setAppendHomewardPath(Boolean.parseBoolean(request.getParameter(
+                        UifConstants.UrlParams.SHOW_HOME)));
             }
 
             if (StringUtils.isNotBlank(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY))) {
-                history.setAppendPassedHistory(
-                        Boolean.parseBoolean(request.getParameter(UifConstants.UrlParams.SHOW_HISTORY)));
+                history.setAppendPassedHistory(Boolean.parseBoolean(request.getParameter(
+                        UifConstants.UrlParams.SHOW_HISTORY)));
             }
 
             history.setCurrent(form, request);
@@ -217,46 +220,19 @@ public class UifWebUtils {
      * rendering
      *
      * <p>
-     * First a check is made to verify the view instance contained on the form
-     * has the same id as the view id on the form (id that was requested), if
-     * not a new view instance is retrieved for that view id. Then a check on
-     * the view status is made to determine if we need to run the full view
-     * life-cycle (in the case of a finalized view), or just the build steps
-     * (apply model and finalize). Finally the page is set on the view to
-     * reflect the page that was requested
+     * First
      * </p>
      *
      * @param form - form instance containing the data and view instance
      */
-    public static void prepareViewForRendering(UifFormBase form) {
-        // if we don't have the view instance or a different view was
-        // requested get new instance from the view service
+    public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
         View view = form.getView();
-        String viewId = form.getViewId();
-        if ((view == null) || !StringUtils.equals(viewId, view.getId())) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Getting new view instance for view id: " + viewId);
-            }
 
-            view = getViewService().getView(viewId, form.getViewRequestParameters());
-            form.setView(view);
+        Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+        parameterMap.putAll(form.getViewRequestParameters());
 
-            // view changed so force full render
-            form.setRenderFullView(true);
-        }
-
-        // if view status is final we need to rebuild (build fresh)
-        if (StringUtils.equals(UifConstants.ViewStatus.FINAL, view.getViewStatus())) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Rebuilding view due to final status, view id: " + viewId);
-            }
-
-            view = getViewService().rebuildView(viewId, form, form.getViewRequestParameters());
-            form.setView(view);
-        } else {
-            // update the view with the model data
-            getViewService().buildView(view, form);
-        }
+        // build view which will prepare for rendering
+        getViewService().buildView(view, form, parameterMap);
 
         // set dirty flag
         form.setValidateDirty(view.isValidateDirty());

@@ -144,7 +144,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                     <bean parent="AttributeField" p:propertyName="alwaysId" />
                   </list>
                 </property>
-                <property name="summary"
+                <property name="instructionalText"
                   value="Agenda Items" />  
               </bean>
 

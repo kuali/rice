@@ -26,7 +26,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
   
-  <bean id="AttributeField" abstract="true" parent="AttributeField-parentBean"/>
+  <bean id="AttributeField" parent="AttributeField-parentBean"/>
   <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/attributeField.jsp"/>
       <property name="styleClasses" value="kr-field-attribute"/>
@@ -51,8 +51,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="fieldSuggest">
         <bean parent="Suggest" p:render="false"/>
       </property>
-      <property name="summaryMessageField">
-        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
+      <property name="instructionalMessageField">
+        <bean parent="MessageField" p:messageType="INSTRUCTIONAL" p:styleClasses="summary"/>
       </property>
       <property name="constraintMessageField">
         <bean parent="MessageField" p:messageType="CONSTRAINT" p:styleClasses="constraint"/>
@@ -64,7 +64,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo.bindToForm" value="true"/>
   </bean>
   
-  <bean id="LookupCriteriaAttributeField" abstract="true" parent="LookupCriteriaAttributeField-parentBean"/>
+  <bean id="LookupCriteriaAttributeField" parent="LookupCriteriaAttributeField-parentBean"/>
   <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupAttributeField" parent="AttributeField">
       <property name="bindingInfo.bindToMap" value="true"/>
   </bean>
@@ -208,21 +208,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 <!-- RECOMMENDED: Use the navigation action fields to scroll to the top of the page when a navigation completes
   rather than to the element that initiated the navigation, for general use in Navigation menus and actions which 
   perform page navigation-->
-  <bean id="NavigationActionLinkField" abstract="true" parent="NavigationActionLinkField-parentBean"/>
+  <bean id="NavigationActionLinkField" parent="NavigationActionLinkField-parentBean"/>
   <bean id="NavigationActionLinkField-parentBean" abstract="true" parent="ActionLinkField" scope="prototype">
       <property name="jumpToIdAfterSubmit" value="TOP" />
       <property name="focusOnAfterSubmit" value="FIRST" />
       <property name="clientSideJs" value="submitForm();"/>
   </bean>
   
-  <bean id="NavigationActionField" abstract="true" parent="NavigationActionField-parentBean"/>
+  <bean id="NavigationActionField" parent="NavigationActionField-parentBean"/>
   <bean id="NavigationActionField-parentBean" abstract="true" parent="ActionField" scope="prototype">
       <property name="jumpToIdAfterSubmit" value="TOP" />
       <property name="focusOnAfterSubmit" value="FIRST" />
       <property name="clientSideJs" value="submitForm();"/>
   </bean>
   
-  <bean id="NavigationActionField_Secondary" abstract="true" parent="NavigationActionField_Secondary-parentBean"/>
+  <bean id="NavigationActionField_Secondary" parent="NavigationActionField_Secondary-parentBean"/>
   <bean id="NavigationActionField_Secondary-parentBean" abstract="true" parent="ActionField_Secondary" scope="prototype">
       <property name="jumpToIdAfterSubmit" value="TOP" />
       <property name="focusOnAfterSubmit" value="FIRST" />

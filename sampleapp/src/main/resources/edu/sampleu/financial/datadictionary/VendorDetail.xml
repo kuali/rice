@@ -128,7 +128,7 @@
       <ref bean="NumericValidation" />
     </property>
     <property name="controlField">
-      <ref bean="HiddenControl" />
+      <bean parent="HiddenControl" />
     </property>
   </bean>
   <bean id="VendorDetail-vendorDetailAssignedIdentifier" parent="VendorDetail-vendorDetailAssignedIdentifier-parentBean"/>
@@ -143,7 +143,7 @@
       <ref bean="NumericValidation" />
     </property>
     <property name="controlField">
-      <ref bean="HiddenControl" />
+      <bean parent="HiddenControl" />
     </property>
   </bean>
   <bean id="VendorDetail-vendorNumber" parent="VendorDetail-vendorNumber-parentBean"/>

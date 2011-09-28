@@ -50,7 +50,7 @@
       <ref bean="NumericValidation" />
     </property>
     <property name="controlField">
-      <ref bean="HiddenControl" />
+      <bean parent="HiddenControl" />
     </property>
   </bean>
   <bean id="VendorDefaultAddress-vendorCampusCode" parent="VendorDefaultAddress-vendorCampusCode-parentBean"/>

@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.web.form;
 
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -48,7 +50,7 @@ public class IncidentReportForm extends UifFormBase {
     public IncidentReportForm() {
         super();
         this.setRenderFullView(true);
-        setViewTypeName("INCIDENT");
+        setViewTypeName(ViewType.INCIDENT);
     }
 
     /**

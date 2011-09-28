@@ -19,7 +19,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
+import org.springframework.beans.PropertyValues;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -246,8 +248,8 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewByTypeIndex(UifDictionaryIndex,
 	 *      java.lang.String, java.util.Map)
 	 */
-	public View getViewByTypeIndex(UifDictionaryIndex index, String viewTypeName, Map<String, String> indexKey) {
-		if (StringUtils.isBlank(viewTypeName)) {
+	public View getViewByTypeIndex(UifDictionaryIndex index, UifConstants.ViewType viewTypeName, Map<String, String> indexKey) {
+		if (viewTypeName == null) {
 			throw new IllegalArgumentException("invalid (blank) view type name");
 		}
 		if ((indexKey == null) || indexKey.isEmpty()) {
@@ -257,12 +259,56 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		return index.getViewByTypeIndex(viewTypeName, indexKey);
 	}
 
-	/**
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryIndexMapper#viewByTypeExist(UifDictionaryIndex,
+     *      java.lang.String, java.util.Map)
+     */
+    public boolean viewByTypeExist(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
+            Map<String, String> indexKey) {
+        if (viewTypeName == null) {
+            throw new IllegalArgumentException("invalid (blank) view type name");
+        }
+        if ((indexKey == null) || indexKey.isEmpty()) {
+            throw new IllegalArgumentException("index key must have at least one entry");
+        }
+
+        return index.viewByTypeExist(viewTypeName, indexKey);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewPropertiesById(org.kuali.rice.krad.datadictionary.view.ViewDictionaryIndex,
+     *      java.lang.String)
+     */
+    public PropertyValues getViewPropertiesById(UifDictionaryIndex index, String viewId) {
+        if (StringUtils.isBlank(viewId)) {
+            throw new IllegalArgumentException("invalid (blank) view id");
+        }
+
+        return index.getViewPropertiesById(viewId);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.DataDictionaryIndexMapper#getViewPropertiesByType(UifDictionaryIndex,
+     *      java.lang.String, java.util.Map)
+     */
+    public PropertyValues getViewPropertiesByType(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
+            Map<String, String> indexKey) {
+        if (viewTypeName == null) {
+            throw new IllegalArgumentException("invalid (blank) view type name");
+        }
+        if ((indexKey == null) || indexKey.isEmpty()) {
+            throw new IllegalArgumentException("index key must have at least one entry");
+        }
+
+        return index.getViewPropertiesByType(viewTypeName, indexKey);
+    }
+
+    /**
 	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewsForType(UifDictionaryIndex,
 	 *      java.lang.String)
 	 */
-	public List<View> getViewsForType(UifDictionaryIndex index, String viewTypeName) {
-		if (StringUtils.isBlank(viewTypeName)) {
+	public List<View> getViewsForType(UifDictionaryIndex index, UifConstants.ViewType viewTypeName) {
+		if (viewTypeName == null) {
 			throw new IllegalArgumentException("invalid (blank) view type name");
 		}
 

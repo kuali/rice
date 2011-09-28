@@ -26,7 +26,7 @@ public class HiddenControl extends ControlBase {
 	private static final long serialVersionUID = -8428898303430923425L;
 
 	public HiddenControl() {
-
+       super();
 	}
 
 }

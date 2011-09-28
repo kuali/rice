@@ -133,17 +133,17 @@ public class UITestController extends UifControllerBase {
 			GlobalVariables.getMessageMap().putError("vField5", "serverTestError");
 			GlobalVariables.getMessageMap().putError("vField6", "serverTestError");
 			//GlobalVariables.getMessageMap().clearErrorMessages();
-			return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), uiTestForm.getPageId());
+			return getUIFModelAndView(uiTestForm, uiTestForm.getPageId());
 		}
 		
-		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
+		return getUIFModelAndView(uiTestForm, "page1");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
 	public ModelAndView close(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, uiTestForm.getViewId(), "page1");
+		return getUIFModelAndView(uiTestForm, "page1");
 	}
 
 }

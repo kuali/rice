@@ -336,7 +336,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         private Integer maxLength;
 
         private Double minValue;
-         private Double maxValue;
+        private Double maxValue;
         private String regexConstraint;
         private String regexContraintMsg;
 

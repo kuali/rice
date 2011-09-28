@@ -67,14 +67,14 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
      * Calls <code>ViewHelperService</code> to initialize the header field prototype
      *
      * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.component.Component)
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     @Override
-    public void performInitialization(View view, Component component) {
-        super.performInitialization(view, component);
+    public void performInitialization(View view, Object model, Component component) {
+        super.performInitialization(view, model, component);
 
         if (headerFieldPrototype != null) {
-            view.getViewHelperService().performComponentInitialization(view, headerFieldPrototype);
+            view.getViewHelperService().performComponentInitialization(view, model, headerFieldPrototype);
         }
     }
 

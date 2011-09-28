@@ -183,6 +183,19 @@ public class BindingInfo extends ConfigurableBase implements Serializable {
     }
 
     /**
+     * Helper method for adding a path to the binding prefix
+     *
+     * @param bindPrefix - path to add
+     */
+    public void addToBindByNamePrefix(String bindPrefix) {
+        if (StringUtils.isNotBlank(bindByNamePrefix)) {
+            bindByNamePrefix += "." + bindPrefix;
+        } else {
+            bindByNamePrefix = bindPrefix;
+        }
+    }
+
+    /**
      * Setter for the binding path. Can be left blank in which the path will be
      * determined from the binding configuration
      * 

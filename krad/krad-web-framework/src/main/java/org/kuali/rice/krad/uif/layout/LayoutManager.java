@@ -92,11 +92,12 @@ public interface LayoutManager extends Configurable, Serializable {
 	 * 
 	 * @param view
 	 *            - View instance the layout manager is a part of
+     * @param model - the object instance containing the view data
 	 * @param container
 	 *            - Container the layout manager applies to
 	 * @see ViewHelperService#performInitialization
 	 */
-	public void performInitialization(View view, Container container);
+	public void performInitialization(View view, Object model, Container container);
 
 	/**
 	 * Called after the initialize phase to perform conditional logic based on

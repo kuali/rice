@@ -44,7 +44,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
-    private String baseId;
+    private String factoryId;
     private String template;
     private String title;
 
@@ -138,14 +138,15 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * The following initialization is performed: progressiveRender and
-     * conditionalRefresh variables are processed if set.
+     * The following initialization is performed:
+     *
      * <ul>
+     *     <li>progressiveRender and conditionalRefresh variables are processed if set</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
-    public void performInitialization(View view) {
+    public void performInitialization(View view, Object model) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
             // progressive anded with conditional render, will not render at
             // least one of the two are false
@@ -158,14 +159,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             getPropertyExpressions().put("render", conditionalRender);
 
             progressiveDisclosureControlNames = new ArrayList<String>();
-            progressiveDisclosureConditionJs =
-                    ExpressionUtils.parseExpression(progressiveRender, progressiveDisclosureControlNames);
+            progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
+                    progressiveDisclosureControlNames);
         }
 
         if (StringUtils.isNotEmpty(conditionalRefresh)) {
             conditionalRefreshControlNames = new ArrayList<String>();
-            conditionalRefreshConditionJs =
-                    ExpressionUtils.parseExpression(conditionalRefresh, conditionalRefreshControlNames);
+            conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
+                    conditionalRefreshControlNames);
         }
 
         if (StringUtils.isNotEmpty(refreshWhenChanged)) {
@@ -183,7 +184,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * <ul>
      * <li></li>
      * </ul>
-     *
      */
     public void performApplyModel(View view, Object model, Component parent) {
 
@@ -232,16 +232,16 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
         // replace the #line? collections place holder with the correct binding
         // path
-        CollectionGroup collectionGroup =
-                (CollectionGroup) (this.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
+        CollectionGroup collectionGroup = (CollectionGroup) (this.getContext().get(
+                UifConstants.ContextVariableNames.COLLECTION_GROUP));
         String linePath = "";
         if (collectionGroup != null) {
             linePath = ComponentUtils.getLinePathValue(this);
 
             //ProgressiveRender conditions
             if (StringUtils.isNotEmpty(progressiveRender) && StringUtils.isNotEmpty(linePath)) {
-                progressiveDisclosureConditionJs =
-                        ComponentUtils.replaceLineAttr(progressiveDisclosureConditionJs, linePath);
+                progressiveDisclosureConditionJs = ComponentUtils.replaceLineAttr(progressiveDisclosureConditionJs,
+                        linePath);
                 ListIterator<String> listIterator = progressiveDisclosureControlNames.listIterator();
                 while (listIterator.hasNext()) {
                     String name = listIterator.next();
@@ -250,7 +250,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
                 }
             }
 
-            //Refresh conditions
+            // refresh conditions
+            String conditionalRefresh = getPropertyExpression("refresh");
             if (StringUtils.isNotEmpty(conditionalRefresh) && StringUtils.isNotEmpty(linePath)) {
                 conditionalRefreshConditionJs = ComponentUtils.replaceLineAttr(conditionalRefreshConditionJs, linePath);
                 ListIterator<String> listIterator = conditionalRefreshControlNames.listIterator();
@@ -280,7 +281,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         List<Component> components = new ArrayList<Component>();
 
         return components;
-    }        
+    }
 
     @Override
     public List<Component> getPropertyReplacerComponents() {
@@ -289,9 +290,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             components.addAll(((PropertyReplacer) replacer).getNestedComponents());
         }
         return components;
-        
-    }    
-    
+
+    }
 
     /**
      * @see org.kuali.rice.krad.uif.component.Component#getId()
@@ -305,6 +305,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getFactoryId()
+     */
+    public String getFactoryId() {
+        return this.factoryId;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#setFactoryId(java.lang.String)
+     */
+    public void setFactoryId(String factoryId) {
+        this.factoryId = factoryId;
     }
 
     /**
@@ -1164,7 +1178,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             return componentOptionsJSString;
         }
 
-
         if (componentOptions == null) {
             componentOptions = new HashMap<String, String>();
         }
@@ -1183,8 +1196,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             sb.append(":");
 
             boolean isNumber = false;
-            if (StringUtils.isNotBlank(optionValue) && (StringUtils.isNumeric(optionValue.trim().substring(0, 1)) ||
-                    optionValue.trim().substring(0, 1).equals("-"))) {
+            if (StringUtils.isNotBlank(optionValue) && (StringUtils.isNumeric(optionValue.trim().substring(0, 1))
+                    || optionValue.trim().substring(0, 1).equals("-"))) {
                 try {
                     Double.parseDouble(optionValue.trim());
                     isNumber = true;
@@ -1231,21 +1244,24 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * When set if the condition is satisfied, the component will be displayed.
-     * The component MUST BE a container or field type. progressiveRender is
-     * defined in a limited Spring EL syntax. Only valid form property names,
-     * and, or, logical comparison operators (non-arithmetic), and the matches
-     * clause are allowed. String and regex values must use single quotes ('),
-     * booleans must be either true or false, numbers must be a valid double,
-     * either negative or positive. <br>
-     * DO NOT use progressiveRender and conditionalRefresh on the same component
-     * unless it is known that the component will always be visible in all cases
-     * when a conditionalRefresh happens (ie conditionalRefresh has
-     * progressiveRender's condition anded with its own condition). <b>If a
-     * component should be refreshed every time it is shown, use the
-     * progressiveRenderAndRefresh option with this property instead.</b>
+     * When set if the condition is satisfied, the component will be displayed. The component MUST BE a
+     * container or field type. progressiveRender is defined in a limited Spring EL syntax. Only valid
+     * form property names, and, or, logical comparison operators (non-arithmetic), and the matches
+     * clause are allowed. String and regex values must use single quotes ('), booleans must be either true or false,
+     * numbers must be a valid double, either negative or positive.
      *
-     * @return the progressiveRender
+     * <p>
+     * DO NOT use progressiveRender and a conditional refresh statement on the same component
+     * unless it is known that the component will always be visible in all cases when a conditional refresh happens
+     * (ie conditional refresh has progressiveRender's condition anded with its own condition).
+     * </p>
+     *
+     * <p>
+     * <b>If a component should be refreshed every time it is shown, use the progressiveRenderAndRefresh option
+     * with this property instead.</b>
+     * </p>
+     *
+     * @return String progressiveRender expression
      */
     public String getProgressiveRender() {
         return this.progressiveRender;
@@ -1430,21 +1446,4 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         return skipInTabOrder;
     }
 
-    /**
-     * The original generated id.  During the component lifecycle the id may get manipulated
-     * and changed based on the type of component it is.  This id represents the original id
-     * assigned before any additional suffixes were appended.
-     *
-     * @return the baseId
-     */
-    public String getBaseId() {
-        return this.baseId;
-    }
-
-    /**
-     * @param baseId the baseId to set
-     */
-    public void setBaseId(String baseId) {
-        this.baseId = baseId;
-    }
 }

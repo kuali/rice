@@ -129,7 +129,10 @@
       <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/spring/lookup"/>
       <property name="multipleValuesSelect" value="false"/>
       <property name="quickfinderActionField">
-        <bean parent="ActionImageField" p:methodToCall="performLookup" p:actionImageField-ref="QuickFinderImageField">
+        <bean parent="ActionImageField" p:methodToCall="performLookup">
+          <property name="actionImage">
+            <bean parent="QuickFinderImageField"/>
+          </property>
         	<property name="lightBoxLookup">
         		<bean parent="LightBoxPost" p:lookupReturnByScript="true"/>
       		</property>
@@ -145,7 +148,7 @@
       <property name="inquiryLinkField">
         <bean parent="LinkField" p:styleClasses="action">
         	<property name="lightBox">
-        		<ref bean="LightBox"/>
+            <bean parent="LightBox"/>
       		</property>
       	</bean>
       </property>    
@@ -158,9 +161,12 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
     <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
     <property name="directInquiryActionField">
-      <bean parent="ActionImageField" p:actionImageField-ref="DirectInquiryImageField">
+      <bean parent="ActionImageField">
+        <property name="actionImage">
+          <bean parent="DirectInquiryImageField"/>
+        </property>
         <property name="lightBoxDirectInquiry">
-          <ref bean="LightBox"/>
+          <bean parent="LightBox"/>
         </property>
       </bean>
     </property>
@@ -285,5 +291,11 @@
   <bean id="AttributeQuery" class="org.kuali.rice.krad.uif.field.AttributeQuery" scope="prototype"/>
 
   <bean id="FieldAttributeQuery" parent="AttributeQuery" p:returnMessageStyleClasses="info-message-error"/>
+
+  <bean id="RemoteFieldsHolder" class="org.kuali.rice.krad.uif.field.RemoteFieldsHolder" scope="prototype">
+    <property name="bindingInfo">
+      <bean parent="BindingInfo"/>
+    </property>
+  </bean>
   
 </beans>

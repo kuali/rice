@@ -573,19 +573,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		this.childEntryName = childEntryName;
 	}
 
-	/**
-	 * @return the constraintMessage
-	 */
-	public String getConstraint() {
-		return this.constraint;
-	}
 
-	/**
-	 * @param constraintMessage the constraintMessage to set
-	 */
-	public void setConstraint(String constraint) {
-		this.constraint = constraint;
-	}
 	
     /**
      * Instance of <code>KeyValluesFinder</code> that should be invoked to

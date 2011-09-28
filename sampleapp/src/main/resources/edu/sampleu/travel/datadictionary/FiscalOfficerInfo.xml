@@ -117,7 +117,7 @@
       <property name="title" value="Travel Accounts"/>
       <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
       <property name="propertyName" value="accounts"/>
-      <property name="summary" value="Travel Accounts for Fiscal Officer"/>
+      <property name="instructionalText" value="Travel Accounts for Fiscal Officer"/>
       <property name="layoutManager.sequencePropertyName" value="number"/>
       <property name="items">
         <list>
@@ -253,7 +253,7 @@
           <property name="title" value="Travel Accounts"/>
           <property name="collectionObjectClass" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
           <property name="propertyName" value="accounts"/>
-          <property name="summary" value="Travel Accounts for Fiscal Officer"/>
+          <property name="instructionalText" value="Travel Accounts for Fiscal Officer"/>
           <property name="layoutManager.sequencePropertyName" value="number"/>
           <property name="items">
             <list>

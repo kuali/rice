@@ -41,19 +41,18 @@ public class FieldGroup extends FieldBase {
 	}
 
 	/**
-	 * <p>
 	 * The following initialization is performed:
+     *
 	 * <ul>
 	 * <li>Set the align on group if empty and the align has been set on the
 	 * field</li>
 	 * </ul>
-	 * </p>
-	 * 
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+	 *
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
 	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
+	public void performInitialization(View view, Object model) {
+		super.performInitialization(view, model);
 
 		if (StringUtils.isNotBlank(getAlign()) && group != null) {
 			group.setAlign(getAlign());

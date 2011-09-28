@@ -43,7 +43,9 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -857,10 +859,17 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#getDictionaryObject(java.lang.String)
+     */
+    public Object getDictionaryObject(String id) {
+        return dataDictionary.getDictionaryObject(id);
+    }
+
+    /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getViewByTypeIndex(java.lang.String,
      *      java.util.Map)
      */
-    public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
+    public View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey) {
         return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
     }
 

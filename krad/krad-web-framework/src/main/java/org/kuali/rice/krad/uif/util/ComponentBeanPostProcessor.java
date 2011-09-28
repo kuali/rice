@@ -41,8 +41,8 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
     }
 
     /**
-     * Sets the unique Id for a <code>Component</code> if bean name given (not generated) and adds the definition
-     * to the <code>ComponentFactory</code>
+     * Sets the unique Id for a <code>Component</code> if bean name given (not generated) and the id property was
+     * not set for the view
      *
      * <p>
      * The ID will only be set here if an id is given for the Spring bean. For inner beans, the ID will be generated
@@ -60,13 +60,9 @@ public class ComponentBeanPostProcessor implements BeanPostProcessor {
             if (StringUtils.isBlank(component.getId())) {
                 if (!StringUtils.contains(beanName, "$") && !StringUtils.contains(beanName, "#")) {
                     component.setId(beanName);
+                    component.setFactoryId(beanName);
                 }
             }
-     
-            component.setBaseId(beanName);
-
-            // hold definition in component factory
-            ComponentFactory.addComponentDefinition(beanName, component);
         }
 
         return bean;

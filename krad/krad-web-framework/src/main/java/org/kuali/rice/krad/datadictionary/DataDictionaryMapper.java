@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.springframework.beans.PropertyValues;
 
 import java.util.List;
 import java.util.Map;
@@ -152,7 +155,19 @@ public interface DataDictionaryMapper {
 	 *            an unique view instance
 	 * @return View instance that matches the given index
 	 */
-	public View getViewByTypeIndex(UifDictionaryIndex index, String viewTypeName, Map<String, String> indexKey);
+	public View getViewByTypeIndex(UifDictionaryIndex index, ViewType viewTypeName, Map<String, String> indexKey);
+
+    /**
+     * Indicates whether a <code>View</code> exists for the given view type and index information
+     *
+     * @param index - the view dictionary index
+     * @param viewTypeName - type name for the view
+     * @param indexKey - Map of index key parameters, these are the parameters the
+     * indexer used to index the view initially and needs to identify
+     * an unique view instance
+     * @return boolean true if view exists, false if not
+     */
+    public boolean viewByTypeExist(UifDictionaryIndex index, ViewType viewTypeName, Map<String, String> indexKey);
 	
 	/**
 	 * Gets all <code>View</code> prototypes configured for the given view type
@@ -164,5 +179,38 @@ public interface DataDictionaryMapper {
 	 * @return List<View> view prototypes with the given type name, or empty
 	 *         list
 	 */
-	public List<View> getViewsForType(UifDictionaryIndex index, String viewTypeName);
+	public List<View> getViewsForType(UifDictionaryIndex index, UifConstants.ViewType viewTypeName);
+
+    /**
+     * Retrieves the configured property values for the view bean definition associated with the given id
+     *
+     * <p>
+     * Since constructing the View object can be expensive, when metadata only is needed this method can be used
+     * to retrieve the configured property values. Note this looks at the merged bean definition
+     * </p>
+     *
+     * @param index - the view dictionary index
+     * @param viewId - id for the view to retrieve
+     * @return PropertyValues configured on the view bean definition, or null if view is not found
+     */
+    public PropertyValues getViewPropertiesById(UifDictionaryIndex index, String viewId);
+
+    /**
+     * Retrieves the configured property values for the view bean definition associated with the given type and
+     * index
+     *
+     * <p>
+     * Since constructing the View object can be expensive, when metadata only is needed this method can be used
+     * to retrieve the configured property values. Note this looks at the merged bean definition
+     * </p>
+     *
+     * @param index - the view dictionary index
+     * @param viewTypeName - type name for the view
+     * @param indexKey - Map of index key parameters, these are the parameters the indexer used to index
+     * the view initially and needs to identify an unique view instance
+     * @return PropertyValues configured on the view bean definition, or null if view is not found
+     */
+    public PropertyValues getViewPropertiesByType(UifDictionaryIndex index, UifConstants.ViewType viewTypeName,
+            Map<String, String> indexKey);
+
 }

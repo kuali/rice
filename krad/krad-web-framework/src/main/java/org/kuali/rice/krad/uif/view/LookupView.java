@@ -96,15 +96,15 @@ public class LookupView extends FormView {
      * <li>Set the abstractTypeClasses map for the lookup object path</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
+    public void performInitialization(View view, Object model) {
         initializeGroups();
         if (getItems().isEmpty()) {
             setItems(Arrays.asList(getCriteriaGroup(), getResultsGroup()));
         }
-        super.performInitialization(view);
+        super.performInitialization(view, model);
 
         getAbstractTypeClasses().put(UifPropertyPaths.CRITERIA_FIELDS, getDataObjectClassName());
         if (StringUtils.isNotBlank(getDefaultBindingObjectPath())) {

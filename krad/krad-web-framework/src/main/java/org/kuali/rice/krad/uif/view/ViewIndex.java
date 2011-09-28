@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -36,13 +37,13 @@ public class ViewIndex implements Serializable {
     private Map<String, AttributeField> attributeFieldIndex;
     private Map<String, CollectionGroup> collectionsIndex;
 
+    private Map<String, Component> initialComponentStates;
+
     /**
-     * Constructs new instance and performs indexing on View instance
-     *
-     * @param view - view instance to index
+     * Constructs new instance
      */
-    public ViewIndex(View view) {
-        index(view);
+    public ViewIndex() {
+        initialComponentStates = new HashMap<String, Component>();
     }
 
     /**
@@ -172,5 +173,46 @@ public class ViewIndex implements Serializable {
      */
     public CollectionGroup getCollectionGroupByPath(String collectionPath) {
         return collectionsIndex.get(collectionPath);
+    }
+
+    /**
+     * Preserves initial state of components needed for doing component refreshes
+     *
+     * <p>
+     * Some components, such as those that are nested or created in code cannot be requested from the
+     * spring factory to get new instances. For these a copy of the component in its initial state is
+     * set in this map which will be used when doing component refreshes (which requires running just that
+     * component's lifecycle)
+     * </p>
+     *
+     * <p>
+     * Map entries are added during the perform initialize phase from {@link org.kuali.rice.krad.uif.service.ViewHelperService}
+     * </p>
+     *
+     * @return Map<String, Component> - map with key giving the factory id for the component and the value the
+     *         component
+     *         instance
+     */
+    public Map<String, Component> getInitialComponentStates() {
+        return initialComponentStates;
+    }
+
+    /**
+     * Adds a copy of the given component instance to the map of initial component states keyed by the component
+     * factory id
+     *
+     * @param component - component instance to add
+     */
+    public void addInitialComponentState(Component component) {
+        initialComponentStates.put(component.getFactoryId(), ComponentUtils.copy(component));
+    }
+
+    /**
+     * Setter for the map holding initial component states
+     *
+     * @param initialComponentStates
+     */
+    public void setInitialComponentStates(Map<String, Component> initialComponentStates) {
+        this.initialComponentStates = initialComponentStates;
     }
 }

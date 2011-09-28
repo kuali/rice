@@ -44,7 +44,7 @@
 					</property>
 				</bean>
 				<bean parent="Page" p:id="uifpage2" p:title="Validation"
-					p:summary="Take note of the constraint text underneath field inputs, they describe the validation constraint for that field.  Validation constraints are evaluated by default when a user leaves a field, if the user has not satisfied the requirement, the ui will alert them of their error.  When they return to a field the ui will dynamically remove the error as they correct it and note any additional errors they may have caused.">
+					p:instructionalText="Take note of the constraintText text underneath field inputs, they describe the validation constraint for that field.  Validation constraints are evaluated by default when a user leaves a field, if the user has not satisfied the requirement, the ui will alert them of their error.  When they return to a field the ui will dynamically remove the error as they correct it and note any additional errors they may have caused.">
 					<property name="items">
 						<list>
 							<ref bean="minMaxSection" />
@@ -65,7 +65,7 @@
 				</bean>
 				<bean parent="Page" p:id="uifpage4"
 					p:title="Progressive Disclosure and Conditional Refresh"
-					p:summary="Fields and Groups (ONLY!) can have conditions in which they show themselves on the page or in which they refresh themselves.  Refreshing is defined as requesting an new component from the server (which may or may not be the same element ui wise).">
+					p:instructionalText="Fields and Groups (ONLY!) can have conditions in which they show themselves on the page or in which they refresh themselves.  Refreshing is defined as requesting an new component from the server (which may or may not be the same element ui wise).">
 					<property name="items">
 						<list>
 							<ref bean="prog1" />
@@ -76,7 +76,7 @@
 				</bean>
 				<bean parent="Page" p:id="uifpage5"
 					p:title="Lookups, Inquiry, and SuggestBoxes inline"
-					p:summary="Lookups and Inquiries backed by BO searches can be used on fields to fill in their values, as well as SuggestBoxes backed by a query">
+					p:instructionalText="Lookups and Inquiries backed by BO searches can be used on fields to fill in their values, as well as SuggestBoxes backed by a query">
 					<property name="items">
 						<list>
 							<ref bean="lookups1" />
@@ -84,7 +84,7 @@
 					</property>
 				</bean>
 				<bean parent="Page" p:id="uifpage6" p:title="Collections"
-					p:summary="Lists of Data Objects">
+					p:instructionalText="Lists of Data Objects">
 					<property name="items">
 						<list>
 							<ref bean="collection1" />
@@ -97,7 +97,7 @@
 					</property>
 				</bean>
 				<bean parent="Page" p:id="uifpage7" p:title="Errors"
-					p:summary="ErrorsField options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  ErrorsField options are also available on AttributeFields.">
+					p:instructionalText="ErrorsField options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  ErrorsField options are also available on AttributeFields.">
 					<property name="items">
 						<list>
 							<ref bean="errors1" />
@@ -107,11 +107,20 @@
 						</list>
 					</property>
 				</bean>
+				<bean parent="Page" p:id="uifpage8" p:title="Other Examples"
+					p:instructionalText="Other examples for developer reference">
+					<property name="items">
+						<list>
+							<ref bean="remotableFieldsGroup" />
+						</list>
+					</property>
+				</bean>
 			</list>
 		</property>
-		<property name="additionalCssFiles" ref="ks-css" />
-		<property name="formClass"
-			value="edu.sampleu.travel.krad.form.UILayoutTestForm" />
+    <property name="additionalCssFiles" ref="ks-css"/>
+    <property name="viewHelperServiceClassName"
+              value="edu.sampleu.travel.krad.controller.UIfComponentsViewHelperServiceImpl"/>
+    <property name="formClass" value="edu.sampleu.travel.krad.form.UILayoutTestForm"/>
 	</bean>
 
 	<bean id="UifComponentsViewMenu" parent="NavigationGroupMenu">
@@ -132,6 +141,8 @@
 					p:actionLabel="Collections" />
 				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage7"
 					p:actionLabel="Error Layout" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="uifpage8"
+					p:actionLabel="Other Examples" />
 			</list>
 		</property>
 		<property name="componentOptions">
@@ -150,8 +161,8 @@
 			<list>
 				<ref bean="textControls1" />
 				<ref bean="textControls2" />
-				<ref bean="textControls3" />
-				<ref bean="textAreas" />
+				<bean parent="textControls3" />
+				<bean parent="textAreas" />
 			</list>
 		</property>
 	</bean>
@@ -163,7 +174,7 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
-					p:labelPlacement="TOP" p:summary="Label top, no colon"
+					p:labelPlacement="TOP" p:instructionalText="Label top, no colon"
 					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 					p:propertyName="field1">
 					<property name="control">
@@ -171,7 +182,7 @@
 					</property>
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
-					p:labelPlacement="TOP" p:summary="Label top, with colon"
+					p:labelPlacement="TOP" p:instructionalText="Label top, with colon"
 					p:labelField.styleClasses="labelTop" p:labelField.renderColon="true"
 					p:propertyName="field1">
 					<property name="control">
@@ -179,7 +190,7 @@
 					</property>
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
-					p:summary="Label left, with colon" p:labelField.renderColon="true"
+					p:instructionalText="Label left, with colon" p:labelField.renderColon="true"
 					p:propertyName="field1">
 					<property name="control">
 						<bean parent="TextControl" p:size="30" />
@@ -197,21 +208,21 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
-					p:labelPlacement="RIGHT" p:summary="Label right" p:propertyName="field1">
+					p:labelPlacement="RIGHT" p:instructionalText="Label right" p:propertyName="field1">
 					<property name="control">
 						<bean parent="TextControl" p:size="30" />
 					</property>
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
-					p:labelPlacement="TOP" p:summary="With constraint text"
-					p:constraint="Constraint text" p:labelField.styleClasses="labelTop"
+					p:labelPlacement="TOP" p:instructionalText="With constraintText text"
+					p:constraintText="Constraint text" p:labelField.styleClasses="labelTop"
 					p:labelField.renderColon="false" p:propertyName="field1">
 					<property name="control">
 						<bean parent="TextControl" p:size="30" />
 					</property>
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true"
-					p:labelPlacement="TOP" p:summary="No label"
+					p:labelPlacement="TOP" p:instructionalText="No label"
 					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 					p:propertyName="field1">
 					<property name="control">
@@ -236,7 +247,7 @@
 			<list>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
 					p:labelPlacement="TOP" p:labelField.renderColon="false"
-					p:summary="With watermark text, and size=&quot;30&quot;"
+					p:instructionalText="With watermark text, and size=&quot;30&quot;"
 					p:propertyName="field1">
 					<property name="control">
 						<bean parent="TextControl" p:size="30" p:watermarkText="Watermark..." />
@@ -244,14 +255,14 @@
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
 					p:labelPlacement="TOP" p:labelField.renderColon="false"
-					p:summary="Size=&quot;60&quot;" p:propertyName="field79">
+					p:instructionalText="Size=&quot;60&quot;" p:propertyName="field79">
 					<property name="control">
 						<bean parent="TextControl" p:size="60" />
 					</property>
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
 					p:labelPlacement="TOP" p:labelField.renderColon="false"
-					p:summary="Text expand option" p:propertyName="field1">
+					p:instructionalText="Text expand option" p:propertyName="field1">
 					<property name="control">
 						<bean parent="TextControl" p:size="30" p:textExpand="true" />
 					</property>
@@ -263,13 +274,13 @@
 	<bean id="textAreas" parent="Group" p:layoutManager.orientation="HORIZONTAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="TextAreaControl options" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="TextAreas have basically the same options as text controls, so only a couple examples" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
 					p:labelPlacement="TOP"
-					p:summary="With watermark, rows=&quot;5&quot;, cols=&quot;40&quot;"
+					p:instructionalText="With watermark, rows=&quot;5&quot;, cols=&quot;40&quot;"
 					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 					p:propertyName="field1">
 					<property name="control">
@@ -279,7 +290,7 @@
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
 					p:labelPlacement="TOP"
-					p:summary="No watermark, textExpand option, rows=&quot;10&quot;, cols=&quot;50&quot;"
+					p:instructionalText="No watermark, textExpand option, rows=&quot;10&quot;, cols=&quot;50&quot;"
 					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 					p:propertyName="field1">
 					<property name="control">
@@ -294,14 +305,14 @@
 	<bean id="dateFields-Section2" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Date Control" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" id="Test123" abstract="true"
-					p:label="Date1" p:labelPlacement="TOP" p:summary="Default DateControl options"
+					p:label="Date1" p:labelPlacement="TOP" p:instructionalText="Default DateControl options"
 					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 					p:propertyName="field1">
 					<property name="control">
@@ -310,7 +321,7 @@
 				</bean>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Date2"
 					p:labelPlacement="TOP"
-					p:summary="Custom options: show on focus, different animation, and show 2 months at once"
+					p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once"
 					p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 					p:propertyName="field1">
 					<property name="control">
@@ -338,7 +349,7 @@
 	<bean id="selectionFields-Section3" parent="Group"
 		p:layoutManager.orientation="VERTICAL">
 		<property name="title" value="Selection Controls" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="Controls used for selection of 1 or multiple items" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
@@ -357,14 +368,14 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Checkbox"
-					p:summary="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default"
+					p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default"
 					p:defaultValue="true" p:propertyName="bField1">
 					<property name="control">
 						<bean parent="CheckboxControl" />
 					</property>
 				</bean>
 				<bean parent="AttributeField" p:label="Checkboxes 1"
-					p:summary="CheckboxGroupControl using an optionsFinder" p:width="auto"
+					p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto"
 					p:propertyName="field1">
 					<property name="control">
 						<bean parent="CheckboxGroupControl" />
@@ -374,7 +385,7 @@
 					</property>
 				</bean>
 				<bean parent="AttributeField" p:label="Checkboxes 2"
-					p:summary="CheckboxGroupControl using explicitly defined key-value pairs from the DD"
+					p:instructionalText="CheckboxGroupControl using explicitly defined key-value pairs from the DD"
 					p:width="auto" p:propertyName="field1">
 					<property name="control">
 						<bean parent="CheckboxGroupControl">
@@ -399,7 +410,7 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Radio 1"
-					p:summary="RadioGroupControl using an optionsFinder" p:width="auto"
+					p:instructionalText="RadioGroupControl using an optionsFinder" p:width="auto"
 					p:propertyName="field1">
 					<property name="control">
 						<bean parent="RadioGroupControl" />
@@ -409,7 +420,7 @@
 					</property>
 				</bean>
 				<bean parent="AttributeField" p:label="Radio 2"
-					p:summary="RadioGroupControl using explicitly defined key-value pairs from the DD"
+					p:instructionalText="RadioGroupControl using explicitly defined key-value pairs from the DD"
 					p:width="auto" p:propertyName="field1">
 					<property name="control">
 						<bean parent="RadioGroupControl">
@@ -433,7 +444,7 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Select Control"
-					p:summary="SelectControl using an optionsFinder" p:width="auto"
+					p:instructionalText="SelectControl using an optionsFinder" p:width="auto"
 					p:propertyName="field1">
 					<property name="control">
 						<bean parent="SelectControl" />
@@ -443,7 +454,7 @@
 					</property>
 				</bean>
 				<bean parent="AttributeField" p:label="Multi Select Control"
-					p:summary="SelectControl with multiple=&quot;true&quot;, size=&quot;3&quot;, using explicitly defined key-value pairs from the DD"
+					p:instructionalText="SelectControl with multiple=&quot;true&quot;, size=&quot;3&quot;, using explicitly defined key-value pairs from the DD"
 					p:width="auto" p:propertyName="field1">
 					<property name="control">
 						<bean parent="SelectControl" p:multiple="true" p:size="3">
@@ -467,7 +478,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="GroupFields" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="GroupFields(ie FieldGroups) can have multiple controls but appear to the user as one logical field grouping.
 			 The first grouping has fields with no labels with its group label on top.  The second grouping has labels on the group as well as the fields" />
 		<property name="styleClasses" value="group_header" />
@@ -517,12 +528,12 @@
 
 	<bean id="tabsSection-Section5" parent="TabGroup">
 		<property name="title" value="Tabs" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="TabGroup holds a list of groups that can be switched between, titles are based on the groups title property" />
 		<property name="items">
 			<list>
-				<ref bean="textControls3" />
-				<ref bean="textAreas" />
+				<bean parent="textControls3" />
+				<bean parent="textAreas" />
 			</list>
 		</property>
 	</bean>
@@ -531,7 +542,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="Trees" />
-		<property name="summary" value="Trees of data" />
+		<property name="instructionalText" value="Trees of data" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -547,7 +558,7 @@
 		p:layoutManager.orientation="VERTICAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="Miscellaneous widgets" />
-		<property name="summary" value="A variety of other widgets" />
+		<property name="instructionalText" value="A variety of other widgets" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -569,7 +580,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Partial Masked Field"
-					p:summary="maskLength 5" p:propertyName="mField2">
+					p:instructionalText="maskLength 5" p:propertyName="mField2">
 					<property name="attributeSecurity">
 						<bean parent="AttributeSecurity">
 							<property name="partialMask" value="true" />
@@ -588,19 +599,19 @@
 					p:clientSideJs="alert('You clicked the link');" p:actionLabel="ActionLinkField" />
         <bean parent="ActionLinkField" p:actionLabel="ActionLinkField image right" p:actionImageLocation="RIGHT"
               p:clientSideJs="alert('You clicked a button');">
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif" p:altText="Search"/>
           </property>
         </bean>
         <bean parent="ActionLinkField" p:actionLabel="ActionLinkField image left(default)"
               p:clientSideJs="alert('You clicked a button');">
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif" p:altText="Search"/>
           </property>
         </bean>
         <bean parent="ActionImageField"
               p:clientSideJs="alert('You clicked a button');">
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}down.png" p:altText="ActionImageField demonstration"/>
           </property>
         </bean>
@@ -608,38 +619,38 @@
 					p:clientSideJs="alert('You clicked a button');" />
         <bean parent="ActionField" p:actionLabel="Image BOTTOM" p:actionImageLocation="BOTTOM"
               p:clientSideJs="alert('You clicked a button');">
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
         <bean parent="ActionField" p:actionLabel="Image TOP" p:actionImageLocation="TOP"
 					p:clientSideJs="alert('You clicked a button');" >
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
         <bean parent="ActionField" p:actionLabel="Image LEFT" p:actionImageLocation="LEFT"
 					p:clientSideJs="alert('You clicked a button');" >
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
         <bean parent="ActionField" p:actionLabel="Image RIGHT" p:actionImageLocation="RIGHT"
 					p:clientSideJs="alert('You clicked a button');" >
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"/>
           </property>
         </bean>
         <bean parent="ActionField"
 					p:clientSideJs="alert('You clicked a button');" >
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
                     p:altText="Image Only button"/>
           </property>
         </bean>
 				<bean parent="LinkField" p:linkLabel="Kuali Website"
 					p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links" />
-        <bean parent="LinkGroup" p:title="LinkGroup" p:summary="LinkGroup with | delimiter and [] begin and end delimiter"
+        <bean parent="LinkGroup" p:title="LinkGroup" p:instructionalText="LinkGroup with | delimiter and [] begin and end delimiter"
               p:groupBeginDelimiter="[" p:groupEndDelimiter="]" p:linkSeparator="|">
           <property name="items">
             <list>
@@ -663,7 +674,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="Required constraint" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="An attribute field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk." />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -671,11 +682,11 @@
 				<bean parent="GenericTextField" p:required="true"
 					p:propertyName="field2" />
 				<bean parent="GenericTextArea" p:required="true" p:labelField.requiredMessageField.messageText="Required"
-              p:summary="different text for required indicator"
+              p:instructionalText="different text for required indicator"
 					p:propertyName="field3" />
 				<bean parent="GenericRadio" p:required="true" p:propertyName="field4"
-					p:summary="Interesting note is that radios and checkboxes will not check requiredness until a submit event, other constraints dealing with non-null values will still apply as normal" />
-				<bean parent="GenericSelection" p:required="true" p:summary="different required indicator location" p:labelField.requiredMessagePlacement="RIGHT"
+					p:instructionalText="Interesting note is that radios and checkboxes will not check requiredness until a submit event, other constraints dealing with non-null values will still apply as normal" />
+				<bean parent="GenericSelection" p:required="true" p:instructionalText="different required indicator location" p:labelField.requiredMessagePlacement="RIGHT"
 					p:propertyName="field5" />
 			</list>
 		</property>
@@ -685,7 +696,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="PreRequisite constraint" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="When a field is filled out, it can require another field to be filled out as a result.  This is called a PrerequisiteConstraint.
 		Whether that field comes after or before that field is irrelevant, as the ui will only notify the user when appropriate.  For example, if you havent yet 
 		visited a field that is now required, the user will only be notified of an error after they have first visited this now required field 
@@ -698,7 +709,7 @@
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:label="Field A"
-					p:propertyName="field6" p:constraint="Field A requires Field B and Field C">
+					p:propertyName="field6" p:constraintText="Field A requires Field B and Field C">
 					<property name="dependencyConstraints">
 						<list>
 							<bean parent="PrerequisiteConstraint" p:attributePath="field7" />
@@ -707,11 +718,11 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Field B"
-					p:propertyName="field7" p:constraint="Required when Field A has a value" />
+					p:propertyName="field7" p:constraintText="Required when Field A has a value" />
 				<bean parent="GenericTextField" p:label="Field C"
-					p:summary="try filling out this field first, and see differences in interaction"
+					p:instructionalText="try filling out this field first, and see differences in interaction"
 					p:propertyName="field8"
-					p:constraint="Required when Field A has a value, BUT also requires Field A to be filled out">
+					p:constraintText="Required when Field A has a value, BUT also requires Field A to be filled out">
 					<property name="dependencyConstraints">
 						<list>
 							<bean parent="PrerequisiteConstraint" p:attributePath="field6" />
@@ -726,7 +737,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="MinMax length and value" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="You can set the min and max length of a field and the min and max value of a field.  Min and
 			Max value will only work properly on numeric value fields so it is also a good idea to require those types of
 			characters only through a ValidCharactersConstraint on the field. 
@@ -737,10 +748,10 @@
 			<list>
 				<bean parent="GenericTextField" p:label="MinMax Length test"
 					p:minLength="2" p:maxLength="5" p:propertyName="field9"
-					p:constraint="MinLength 2 and MaxLength 5" />
+					p:constraintText="MinLength 2 and MaxLength 5" />
 				<bean parent="GenericTextField" p:label="MinMax Value test"
 					p:exclusiveMin="2" p:inclusiveMax="50" p:propertyName="field10"
-					p:constraint="Must be greater than 2 and no more than 50">
+					p:constraintText="Must be greater than 2 and no more than 50">
 					<property name="validCharactersConstraint">
 						<bean parent="NumericPatternConstraint" />
 					</property>
@@ -753,7 +764,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="MustOccursConstraint" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="Must Occurs constraint is used to identify fields that are required before this field can be filled out.
 				This is different from prerequisite constraints because the number of fields required from a set of fields can be set, as
 				well as alternative groups of fields that will satisfy the must occurs constraint.  See examples below:" />
@@ -780,7 +791,7 @@
 					p:propertyName="field13" />
 				<bean parent="GenericTextField" p:label="Field With MustOccurs"
 					p:propertyName="field14"
-					p:constraint="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
+					p:constraintText="Field 1A; OR Field 2A with Field 2B must occur when this field has a value">
 					<property name="mustOccurConstraints">
 						<list>
 							<bean parent="MustOccurConstraint">
@@ -832,7 +843,7 @@
 					p:propertyName="field17" />
 				<bean parent="GenericTextField" p:label="Field With MustOccurs"
 					p:propertyName="field18"
-					p:constraint="Field 3A; OR Field 4A with Field 4B BUT NOT BOTH (ie all 3 fields filled in) must occur when this field has a value">
+					p:constraintText="Field 3A; OR Field 4A with Field 4B BUT NOT BOTH (ie all 3 fields filled in) must occur when this field has a value">
 					<property name="mustOccurConstraints">
 						<list>
 							<bean parent="MustOccurConstraint">
@@ -880,7 +891,7 @@
 					p:propertyName="field22" />
 				<bean parent="GenericTextField" p:label="Field With MustOccurs"
 					p:propertyName="field23"
-					p:constraint="More complexity:(5A OR 5B) OR (6A AND 6B) is required by this field">
+					p:constraintText="More complexity:(5A OR 5B) OR (6A AND 6B) is required by this field">
 					<property name="mustOccurConstraints">
 						<list>
 							<bean parent="MustOccurConstraint">
@@ -919,16 +930,16 @@
 	</bean>
 
 	<bean id="caseConstraintSection" parent="Group"
-		p:layoutManager.orientation="Vertical">
+		p:layoutManager.orientation="VERTICAL">
 		<property name="accordion.render" value="false" />
 		<property name="title" value="CaseConstraint" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="A case constraint can make a constraint applicable only when a certain case is satisfied." />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" p:label="Case Radio"
-					p:summary="Chose an option to apply that constraint to the field, this is controlled by that field's CaseConstraint"
+					p:instructionalText="Chose an option to apply that constraint to the field, this is controlled by that field's CaseConstraint"
 					p:width="auto" p:propertyName="field24">
 					<property name="control">
 						<bean parent="RadioGroupControl">
@@ -954,7 +965,7 @@
 		</property>
 	</bean>
 
-	<bean id="ccSection1" parent="Group" p:layoutManager.orientation="Vertical">
+	<bean id="ccSection1" parent="Group" p:layoutManager.orientation="VERTICAL">
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -993,7 +1004,7 @@
 		</property>
 	</bean>
 
-	<bean id="ccSection2" parent="Group" p:layoutManager.orientation="Vertical">
+	<bean id="ccSection2" parent="Group" p:layoutManager.orientation="VERTICAL">
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -1066,7 +1077,7 @@
 					p:propertyName="field32">
 				</bean>
 				<bean parent="GenericTextField" p:label="Field 3"
-					p:summary="When Field 1 has a value AND when Field 2 does not have the value A, this field is required"
+					p:instructionalText="When Field 1 has a value AND when Field 2 does not have the value A, this field is required"
 					p:propertyName="field33">
 					<property name="caseConstraint">
 						<bean parent="CaseConstraint">
@@ -1109,7 +1120,7 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" p:label="Progressive Disclose options"
-					p:summary="Chose an option to display the corresponding fields"
+					p:instructionalText="Chose an option to display the corresponding fields"
 					p:width="auto" p:propertyName="field34">
 					<property name="control">
 						<bean parent="RadioGroupControl">
@@ -1136,7 +1147,7 @@
 					p:propertyName="field37" />
 				<bean parent="GenericTextField" p:label="Show Field through matching"
 					p:progressiveRenderAndRefresh="true" p:maxLength="1"
-					p:summary="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
+					p:instructionalText="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
 					p:propertyName="field47" />
 				<bean parent="GenericTextField" p:label="Field A"
 					p:progressiveRenderAndRefresh="true" p:progressiveRender="field47 matches '^[aA]$'"
@@ -1155,7 +1166,7 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" p:label="Progressive Disclose options"
-					p:summary="Progressive Disclosure also works on displaying entire groups"
+					p:instructionalText="Progressive Disclosure also works on displaying entire groups"
 					p:width="auto" p:propertyName="field38">
 					<property name="control">
 						<bean parent="RadioGroupControl">
@@ -1207,7 +1218,7 @@
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" p:label="Conditional Refresh"
-					p:summary="Chose an option cause a conditional refresh on a field"
+					p:instructionalText="Chose an option cause a conditional refresh on a field"
 					p:width="auto" p:propertyName="field44">
 					<property name="control">
 						<bean parent="RadioGroupControl">
@@ -1237,7 +1248,7 @@
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:label="FixedPointPatternConstraint"
-					p:summary="Fixed point pattern constraint with precision 5(max numbers total) and scale 2 (max numbers after decimal)"
+					p:instructionalText="Fixed point pattern constraint with precision 5(max numbers total) and scale 2 (max numbers after decimal)"
 					p:propertyName="field50">
 					<property name="validCharactersConstraint">
 						<bean parent="FixedPointPatternConstraint" p:precision="5"
@@ -1245,7 +1256,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="FloatingPointPatternConstraint"
-					p:summary="Floating point number, allow negative on"
+					p:instructionalText="Floating point number, allow negative on"
 					p:propertyName="field51">
 					<property name="validCharactersConstraint">
 						<bean parent="FloatingPointPatternConstraint"
@@ -1253,97 +1264,97 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="IntegerPatternConstraint"
-					p:summary="Floating point number, allow negative on"
+					p:instructionalText="Floating point number, allow negative on"
 					p:propertyName="field77">
 					<property name="validCharactersConstraint">
 						<bean parent="IntegerPatternConstraint" p:allowNegative="true" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="PhoneNumberPatternConstraint"
-					p:summary="###-###-####" p:propertyName="field52">
+					p:instructionalText="###-###-####" p:propertyName="field52">
 					<property name="validCharactersConstraint">
 						<bean parent="PhoneNumberPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="JavaClassPatternConstraint"
-					p:summary="valid java class names accepted" p:propertyName="field53">
+					p:instructionalText="valid java class names accepted" p:propertyName="field53">
 					<property name="validCharactersConstraint">
 						<bean parent="JavaClassPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="EmailAddressPatternConstraint"
-					p:summary="email address" p:propertyName="field54">
+					p:instructionalText="email address" p:propertyName="field54">
 					<property name="validCharactersConstraint">
 						<bean parent="EmailAddressPatternConstraint" />
 					</property>
 				</bean>
         <bean parent="GenericTextField" p:label="UrlPatternConstraint"
-					p:summary="Url in http format" p:propertyName="field84">
+					p:instructionalText="Url in http format" p:propertyName="field84">
 					<property name="validCharactersConstraint">
 						<bean parent="UrlPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="DatePatternConstraint"
-					p:summary="Accepts EVERY DateFormat set up in the system configuration, use allowedFormats property to limit (this must be a subset of allowed formats), see next field"
+					p:instructionalText="Accepts EVERY DateFormat set up in the system configuration, use allowedFormats property to limit (this must be a subset of allowed formats), see next field"
 					p:propertyName="field55">
 					<property name="validCharactersConstraint">
 						<bean parent="DatePatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="BasicDatePatternConstraint"
-					p:summary="Accepts some basic date formats (by setting allowedFormats property on DatePatternConstraint): MM/dd/yy, MM/dd/yyyy, MM-dd-yy"
+					p:instructionalText="Accepts some basic date formats (by setting allowedFormats property on DatePatternConstraint): MM/dd/yy, MM/dd/yyyy, MM-dd-yy"
 					p:propertyName="field75">
 					<property name="validCharactersConstraint">
 						<bean parent="BasicDatePatternConstraint" />
 					</property>
 				</bean>
         <bean parent="GenericTextField" p:label="TimePatternConstraint"
-					p:summary="Accepts some basic 12 hour time format"
+					p:instructionalText="Accepts some basic 12 hour time format"
 					p:propertyName="field82">
 					<property name="validCharactersConstraint">
 						<bean parent="TimePatternConstraint" />
 					</property>
 				</bean>
         <bean parent="GenericTextField" p:label="Time24HPatternConstraint"
-					p:summary="Accepts some basic 24(0-23) hour time format"
+					p:instructionalText="Accepts some basic 24(0-23) hour time format"
 					p:propertyName="field83">
 					<property name="validCharactersConstraint">
 						<bean parent="Time24HPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="TimestampPatternConstraint"
-					p:summary="Timestamp - under revamp" p:propertyName="field56">
+					p:instructionalText="Timestamp - under revamp" p:propertyName="field56">
 					<property name="validCharactersConstraint">
 						<bean parent="TimestampPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="YearPatternConstraint"
-					p:summary="Valid years 1600s to 2000s only" p:propertyName="field57">
+					p:instructionalText="Valid years 1600s to 2000s only" p:propertyName="field57">
 					<property name="validCharactersConstraint">
 						<bean parent="YearPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="MonthPatternConstraint"
-					p:summary="any valid month number" p:propertyName="field58">
+					p:instructionalText="any valid month number" p:propertyName="field58">
 					<property name="validCharactersConstraint">
 						<bean parent="MonthPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="ZipcodePatternConstraint"
-					p:summary="any valid zipcode with or without -" p:propertyName="field61">
+					p:instructionalText="any valid zipcode with or without -" p:propertyName="field61">
 					<property name="validCharactersConstraint">
 						<bean parent="ZipcodePatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="AlphaNumericPatternConstraint"
-					p:summary="alpha numeric characters only - no options on"
+					p:instructionalText="alpha numeric characters only - no options on"
 					p:propertyName="field62">
 					<property name="validCharactersConstraint">
 						<bean parent="AlphaNumericPatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="AlphaNumericPatternConstraint with Options"
-					p:summary="alpha numeric characters with flags for whitespace, underscore, and forward slash on"
+					p:instructionalText="alpha numeric characters with flags for whitespace, underscore, and forward slash on"
 					p:propertyName="field63">
 					<property name="validCharactersConstraint">
 						<bean parent="AlphaNumericPatternConstraint"
@@ -1352,7 +1363,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="AlphaPatternConstraint"
-					p:summary="alpha characters with flags for whitespace and commas on"
+					p:instructionalText="alpha characters with flags for whitespace and commas on"
 					p:propertyName="field64">
 					<property name="validCharactersConstraint">
 						<bean parent="AlphaPatternConstraint" p:allowWhitespace="true"
@@ -1360,27 +1371,27 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="AlphaPatternConstraint"
-					p:summary="alpha characters with flag for all &quot;allowable&quot; symbols turned on - | and ~ are not in this set, for example"
+					p:instructionalText="alpha characters with flag for all &quot;allowable&quot; symbols turned on - | and ~ are not in this set, for example"
 					p:propertyName="field76">
 					<property name="validCharactersConstraint">
 						<bean parent="AlphaPatternConstraint" p:allowAll="true" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="NoWhitespacePatternConstraint"
-					p:summary="anything with no whitespace allowed" p:propertyName="field65">
+					p:instructionalText="anything with no whitespace allowed" p:propertyName="field65">
 					<property name="validCharactersConstraint">
 						<bean parent="NoWhitespacePatternConstraint" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="CharsetPatternConstraint"
-					p:summary="only allow a set of characters - example allows a, b, c, A, B, or C"
+					p:instructionalText="only allow a set of characters - example allows a, b, c, A, B, or C"
 					p:propertyName="field66">
 					<property name="validCharactersConstraint">
 						<bean parent="CharsetPatternConstraint" p:validChars="abcABC" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="NumericPatternConstraint"
-					p:summary="allows only numeric characters, allowParenthesis and allowDash on"
+					p:instructionalText="allows only numeric characters, allowParenthesis and allowDash on"
 					p:propertyName="field67">
 					<property name="validCharactersConstraint">
 						<bean parent="NumericPatternConstraint" p:allowParenthesis="true"
@@ -1388,7 +1399,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="ValidCharactersConstraint - custom"
-					p:summary="custom valid characters constraint - this one accepts only 1 alpha character followed by a period  and then followed by a number (a.8, b.0, etc)"
+					p:instructionalText="custom valid characters constraint - this one accepts only 1 alpha character followed by a period  and then followed by a number (a.8, b.0, etc)"
 					p:propertyName="field68">
 					<property name="validCharactersConstraint">
 						<bean parent="ValidCharactersConstraint" p:value="^[a-zA-Z]\.[0-9]$"
@@ -1405,7 +1416,7 @@
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:label="Inquiry" p:readOnly="true"
-					p:summary="Click the link to perform an inquiry on this TravelAccount number"
+					p:instructionalText="Click the link to perform an inquiry on this TravelAccount number"
 					p:propertyName="field59" p:defaultValue="a2">
 					<property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
 					<property name="fieldInquiry.inquiryParameters">
@@ -1415,7 +1426,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Direct Inquiry"
-					p:summary="Click the button to perform an inquiry on this TravelAccount number"
+					p:instructionalText="Click the button to perform an inquiry on this TravelAccount number"
 					p:propertyName="field71" p:defaultValue="a1">
 					<property name="fieldDirectInquiry.dataObjectClassName"
 						value="edu.sampleu.travel.bo.TravelAccount" />
@@ -1426,7 +1437,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Ajax Field Query"
-					p:summary="Displays additional information retrieved from an ajax data retrieval"
+					p:instructionalText="Displays additional information retrieved from an ajax data retrieval"
 					p:propertyName="field72" p:defaultValue="a3">
 					<property name="informationalDisplayPropertyNames" value="field73,field74" />
 					<property name="fieldAttributeQuery">
@@ -1435,7 +1446,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Lookup"
-					p:summary="click the button to perform a lookup on TravelAccounts"
+					p:instructionalText="click the button to perform a lookup on TravelAccounts"
 					p:propertyName="field60">
 					<property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
 					<property name="fieldLookup.fieldConversions">
@@ -1445,7 +1456,7 @@
 					</property>
 				</bean>
         <bean parent="GenericTextField" p:label="Lookup"
-					p:summary="overriden link to display different text - Search Now"
+					p:instructionalText="overriden link to display different text - Search Now"
 					p:propertyName="field87">
 					<property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
 					<property name="fieldLookup.fieldConversions">
@@ -1456,7 +1467,7 @@
           <property name="fieldLookup.quickfinderActionField.actionLabel" value="Search Now"/>
 				</bean>
 				<bean parent="GenericTextField" p:label="Suggest"
-					p:summary="for example, type ea or ca to see a suggestion"
+					p:instructionalText="for example, type ea or ca to see a suggestion"
 					p:propertyName="field61">
 					<property name="fieldSuggest.render" value="true" />
 					<property name="fieldSuggest.sourcePropertyName" value="accountTypeCode" />
@@ -1471,7 +1482,7 @@
 		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 1 - CollectionGroupTableLayout" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="This is a table based layout of a collection - CollectionGroupTableLayout" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
@@ -1496,7 +1507,7 @@
 		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery tableTools" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
@@ -1523,7 +1534,7 @@
 	<bean id="collection3" parent="CollectionGroup">
 		<property name="title" value="Collection Group 3 - Stacked" />
 		<property name="accordion.render" value="false" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
@@ -1545,7 +1556,7 @@
 	<bean id="collection4" parent="CollectionGroup">
 		<property name="title"
 			value="Collection Group 4 - Stacked Collection with a Table subcollection" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
 		<property name="accordion.render" value="false" />
 		<property name="collectionObjectClass"
@@ -1573,7 +1584,7 @@
 	<bean id="subCollection1" parent="CollectionGroupTableLayout"
 		p:layoutManager.numberOfColumns="4">
 		<property name="title" value="SubCollection" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="A table collection within an item of a stacked collection" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
@@ -1597,7 +1608,7 @@
 	<bean id="collection5" parent="CollectionGroup">
 		<property name="title"
 			value="Collection Group 5 - Stacked Collection with a Stacked subcollection" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
 		<property name="accordion.render" value="false" />
 		<property name="collectionObjectClass"
@@ -1624,7 +1635,7 @@
 
 	<bean id="subCollection2" parent="CollectionGroup">
 		<property name="title" value="SubCollection" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
 		<property name="accordion.render" value="false" />
 		<property name="collectionObjectClass"
@@ -1649,7 +1660,7 @@
 		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />
-		<property name="summary" value="No sequence column rendering on" />
+		<property name="instructionalText" value="No sequence column rendering on" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list6" />
@@ -1673,7 +1684,7 @@
 
 	<bean id="errors1" parent="genericTextGroup">
 		<property name="title" value="Group Errors" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="Group with displayMessages turned on (off by default because messages are displayed at page level and at field level normally)" />
 		<property name="errorsField">
 			<bean parent="ErrorsField_Group">
@@ -1684,7 +1695,7 @@
 
 	<bean id="errors2" parent="genericTextGroup">
 		<property name="title" value="Group Errors" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="Group with displayMessages turned on, highlight on, and allowMessageRepeat off (don't allow same messages to show up below this level, ie at the field level)" />
 		<property name="errorsField">
 			<bean parent="ErrorsField_Group">
@@ -1697,7 +1708,7 @@
 
 	<bean id="errors3" parent="genericTextGroup">
 		<property name="title" value="Group Errors" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="Group with combineMessages off(messages for the same field will be multiple lines instead of one) and displayErrorTitle, displayWarningTitle, displayInfoTitle on" />
 		<property name="errorsField">
 			<bean parent="ErrorsField_Group">
@@ -1713,7 +1724,7 @@
 
 	<bean id="errors4" parent="genericTextGroup">
 		<property name="title" value="Group Errors" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="Group with ErrorsField's displayCounts off, displayFieldErrorIcon on and highlightOnError off for its AttributeFields, and displayInfoMessages on (off by default because info messages only appear in growls)" />
 		<property name="errorsField">
 			<bean parent="ErrorsField_Group">
@@ -1753,6 +1764,22 @@
 				</bean>
 			</list>
 		</property>
-	</bean>
+  </bean>
+
+  <bean id="remotableFieldsGroup" parent="Group" p:accordion.render="false">
+    <property name="title" value="Fields created by Fetching Remotable Fields"/>
+    <property name="items">
+      <list>
+        <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
+              p:fetchingMethodToCall="retrieveRemoteFields"/>
+        <bean parent="HorizontalFieldGroup" p:group.instructionalText="Remote fields pulled into a Field Group">
+          <property name="items">
+            <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
+                  p:fetchingMethodToCall="retrieveRemoteFields"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 
 </beans>

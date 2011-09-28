@@ -90,7 +90,7 @@
 
 	<bean id="TextAreaTestField" parent="AttributeField_Form"
 		abstract="true" p:label="Field Label" p:labelPlacement="TOP"
-		p:summary="Instructions Instructions Instructions" p:constraint="Constraint text"
+		p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
 		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 		p:required="true">
 		<property name="control">
@@ -101,7 +101,7 @@
 
 	<bean id="TextTestField" parent="AttributeField_Form" abstract="true"
 		p:label="Field Label" p:labelPlacement="TOP"
-		p:summary="Instructions Instructions Instructions" p:constraint="Constraint text"
+		p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
 		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
 		p:required="true">
 		<property name="control">
@@ -112,7 +112,7 @@
 	<bean id="vertical-Section1" parent="Group"
 		p:layoutManager.orientation="VERTICAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Vertical Layout test" />
+		<property name="instructionalText" value="Vertical Layout test" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -128,7 +128,7 @@
 	<bean id="horizontal-Section2" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Horizontal Layout test - 3 across" />
+		<property name="instructionalText" value="Horizontal Layout test - 3 across" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -144,7 +144,7 @@
 	<bean id="horizontal-Section3" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Horizontal Layout test - 5 across" />
+		<property name="instructionalText" value="Horizontal Layout test - 5 across" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -162,7 +162,7 @@
 	<bean id="horizontal-Section4" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Horizontal Layout test - 8 across" />
+		<property name="instructionalText" value="Horizontal Layout test - 8 across" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -194,7 +194,7 @@
 	<bean id="accordion-Section6" parent="Group"
 		p:layoutManager.orientation="VERTICAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Accordion test" />
+		<property name="instructionalText" value="Accordion test" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -209,7 +209,7 @@
 	<bean id="horizontalWithVerticalGroups-1" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Horizontal layout with 2 vertical groupings" />
+		<property name="instructionalText" value="Horizontal layout with 2 vertical groupings" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -222,7 +222,7 @@
 	<bean id="horizontalWithVerticalGroups-2" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Horizontal layout with 3 vertical groupings" />
+		<property name="instructionalText" value="Horizontal layout with 3 vertical groupings" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -236,7 +236,7 @@
 	<bean id="verticalWithHorizontalGroups-1" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="Vertical layout with 2 horizontal groupings" />
+		<property name="instructionalText" value="Vertical layout with 2 horizontal groupings" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -248,7 +248,7 @@
 
 	<bean id="gridGroup-1" parent="GroupGridLayout">
 		<property name="title" value="Section Title" />
-		<property name="summary" value="GroupGridLayout default settings" />
+		<property name="instructionalText" value="GroupGridLayout default settings" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -264,7 +264,7 @@
 	<bean id="gridGroup-2" parent="GroupGridLayout">
 		<property name="title" value="Section Title" />
 		<property name="layoutManager.numberOfColumns" value="4" />
-		<property name="summary" value="GroupGridLayout number of columns = 4" />
+		<property name="instructionalText" value="GroupGridLayout number of columns = 4" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
@@ -282,7 +282,7 @@
 	<bean id="gridGroup-3" parent="GroupGridLayout">
 		<property name="title" value="Section Title" />
 		<property name="layoutManager.numberOfColumns" value="4" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="GroupGridLayout number of columns = 4, fields have colspan settings" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
@@ -290,13 +290,13 @@
 			<list>
 				<bean parent="TextTestField" p:propertyName="field34" />
 				<bean parent="TextAreaTestField" p:propertyName="field35" />
-				<bean parent="TextTestField" p:summary="Colspan 2"
+				<bean parent="TextTestField" p:instructionalText="Colspan 2"
 					p:propertyName="field36" p:colSpan="2" p:labelField.colSpan="2" />
-				<bean parent="TextAreaTestField" p:summary="Colspan 3"
+				<bean parent="TextAreaTestField" p:instructionalText="Colspan 3"
 					p:propertyName="field37" p:colSpan="3" p:labelField.colSpan="1" />
-				<bean parent="TextTestField" p:summary="Colspan 2"
+				<bean parent="TextTestField" p:instructionalText="Colspan 2"
 					p:propertyName="field38" p:colSpan="2" p:labelField.colSpan="2" />
-				<bean parent="TextAreaTestField" p:summary="Rowspan 2"
+				<bean parent="TextAreaTestField" p:instructionalText="Rowspan 2"
 					p:propertyName="field39" p:rowSpan="2" p:labelField.rowSpan="2" />
 				<bean parent="TextTestField" p:propertyName="field40" />
 				<bean parent="TextTestField" p:propertyName="field41" />
@@ -307,7 +307,7 @@
 	<bean id="gridGroupNested-1" parent="GroupGridLayout">
 		<property name="title" value="Section Title" />
 		<property name="layoutManager.numberOfColumns" value="2" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="GroupGridLayout 2 columns with two nested groups" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
@@ -321,7 +321,7 @@
 
 	<bean id="gridGroupNested-2" parent="GroupGridLayout">
 		<property name="title" value="Section Title" />
-		<property name="summary"
+		<property name="instructionalText"
 			value="GroupGridLayout default settings, 2 nested groups" />
 		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />

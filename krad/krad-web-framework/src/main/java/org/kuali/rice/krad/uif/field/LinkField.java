@@ -37,18 +37,17 @@ public class LinkField extends FieldBase {
 	}
 
 	/**
-	 * <p>
 	 * The following initialization is performed:
+     *
 	 * <ul>
 	 * <li>Set the linkLabel if blank to the Field label</li>
 	 * </ul>
-	 * </p>
-	 * 
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+	 *
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
 	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
+	public void performInitialization(View view, Object model) {
+		super.performInitialization(view, model);
 
 		if (StringUtils.isBlank(linkLabel)) {
 			linkLabel = this.getLabel();

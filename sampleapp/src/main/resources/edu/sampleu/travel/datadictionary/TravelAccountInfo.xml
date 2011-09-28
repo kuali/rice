@@ -44,7 +44,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Travel Account Number"/>
     <property name="maxLength" value="10"/>
-    <property name="constraint" value="Must be 10 digits"/>
+    <property name="constraintText" value="Must be 10 digits"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
     </property>

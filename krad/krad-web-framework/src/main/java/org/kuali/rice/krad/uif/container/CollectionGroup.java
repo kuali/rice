@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -106,13 +107,13 @@ public class CollectionGroup extends Group implements DataBinding {
      * collection class</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
+    public void performInitialization(View view, Object model) {
         setFieldBindingObjectPath(getBindingInfo().getBindingObjectPath());
 
-        super.performInitialization(view);
+        super.performInitialization(view, model);
 
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
@@ -162,12 +163,7 @@ public class CollectionGroup extends Group implements DataBinding {
         for (AttributeField collectionField : collectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
-        
-        for (CollectionGroup collectionGroup : getSubCollections()) {
-            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
-            view.getViewHelperService().performComponentInitialization(view, collectionGroup);
-        }
-        
+
         // add collection entry to abstract classes
         if (!view.getAbstractTypeClasses().containsKey(collectionPath)) {
             view.getAbstractTypeClasses().put(collectionPath, getCollectionObjectClass());
@@ -176,7 +172,12 @@ public class CollectionGroup extends Group implements DataBinding {
         // initialize container items and sub-collections (since they are not in
         // child list)
         for (Component item : getItems()) {
-            view.getViewHelperService().performComponentInitialization(view, item);
+            view.getViewHelperService().performComponentInitialization(view, model, item);
+        }
+
+        for (CollectionGroup collectionGroup : getSubCollections()) {
+            collectionGroup.getBindingInfo().setCollectionPath(collectionPath);
+            view.getViewHelperService().performComponentInitialization(view, model, collectionGroup);
         }
     }
 
@@ -269,7 +270,6 @@ public class CollectionGroup extends Group implements DataBinding {
         // remove the containers items because we don't want them as children
         // (they will become children of the layout manager as the rows are
         // created)
-        // TODO: is this necessary?
         for (Component item : getItems()) {
             if (components.contains(item)) {
                 components.remove(item);

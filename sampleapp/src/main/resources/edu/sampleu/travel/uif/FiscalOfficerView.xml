@@ -45,7 +45,7 @@
   <bean id="FiscalOfficer-InquiryView-Section1" parent="GroupSectionGridLayout">
     <property name="id" value="FiscalOfficer-InquiryView-Section1" />
     <property name="title" value="Fiscal Officer" />
-    <property name="summary" value="A Fiscal Officer." />
+    <property name="instructionalText" value="A Fiscal Officer." />
     <property name="fieldBindByNamePrefix" value="dataObject" />
     <property name="items">
       <list>

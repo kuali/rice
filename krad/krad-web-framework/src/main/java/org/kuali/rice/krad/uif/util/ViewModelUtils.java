@@ -13,6 +13,9 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.field.AttributeField;
+import org.springframework.beans.PropertyValue;
+import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.config.TypedStringValue;
 
 import java.util.Collection;
 import java.util.Map;
@@ -165,5 +168,28 @@ public class ViewModelUtils {
         }
 
         return parentObject;
+    }
+
+    /**
+     * Helper method for getting the string value of a property from a {@link PropertyValues}
+     *
+     * @param propertyValues - property values instance to pull from
+     * @param propertyName - name of property whose value should be retrieved
+     * @return String value for property or null if property was not found
+     */
+    public static String getStringValFromPVs(PropertyValues propertyValues, String propertyName) {
+        String propertyValue = null;
+
+        if ((propertyValues != null) && propertyValues.contains(propertyName)) {
+            Object pvValue = propertyValues.getPropertyValue(propertyName).getValue();
+            if (pvValue instanceof TypedStringValue) {
+                TypedStringValue typedStringValue = (TypedStringValue) pvValue;
+                propertyValue = typedStringValue.getValue();
+            } else if (pvValue instanceof String) {
+                propertyValue = (String) pvValue;
+            }
+        }
+
+        return propertyValue;
     }
 }

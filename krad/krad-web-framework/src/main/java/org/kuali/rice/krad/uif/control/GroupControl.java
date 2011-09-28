@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.field.AttributeField;
  */
 public class GroupControl extends TextControl {
     private static final long serialVersionUID = 5598459655735440981L;
+
     private String namespaceCodePropertyName;
     private String groupIdPropertyName;
 

@@ -37,7 +37,7 @@ public class LabelField extends FieldBase {
 
     private boolean renderColon;
 
-    private String requiredMessagePlacement;
+    private Position requiredMessagePlacement;
     private MessageField requiredMessageField;
 
     public LabelField() {
@@ -167,9 +167,9 @@ public class LabelField extends FieldBase {
      * Indicates where the required message field should be placed in relation
      * to the label field, valid options are 'LEFT' and 'RIGHT'
      * 
-     * @return the requiredMessagePlacement
+     * @return Position the requiredMessage placement
      */
-    public String getRequiredMessagePlacement() {
+    public Position getRequiredMessagePlacement() {
         return this.requiredMessagePlacement;
     }
 
@@ -178,7 +178,7 @@ public class LabelField extends FieldBase {
      * 
      * @param requiredMessagePlacement
      */
-    public void setRequiredMessagePlacement(String requiredMessagePlacement) {
+    public void setRequiredMessagePlacement(Position requiredMessagePlacement) {
         this.requiredMessagePlacement = requiredMessagePlacement;
     }
 

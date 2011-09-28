@@ -94,21 +94,21 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * </ul>
 	 * 
 	 * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
-	 *      org.kuali.rice.krad.uif.container.Container)
+	 *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
 	 */
 	@Override
-	public void performInitialization(View view, Container container) {
-		super.performInitialization(view, container);
+	public void performInitialization(View view, Object model, Container container) {
+		super.performInitialization(view, model, container);
 		
         if (generateAutoSequence && !(sequenceFieldPrototype instanceof MessageField)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
         }
 
-		view.getViewHelperService().performComponentInitialization(view, headerFieldPrototype);
-		view.getViewHelperService().performComponentInitialization(view, sequenceFieldPrototype);
-		view.getViewHelperService().performComponentInitialization(view, actionFieldPrototype);
-		view.getViewHelperService().performComponentInitialization(view, subCollectionFieldGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, selectFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, model, headerFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, model, sequenceFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, model, actionFieldPrototype);
+		view.getViewHelperService().performComponentInitialization(view, model, subCollectionFieldGroupPrototype);
+        view.getViewHelperService().performComponentInitialization(view, model, selectFieldPrototype);
 	}
 
 	/**

@@ -66,18 +66,9 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
      * A list that can be used to define classes that are superclasses or
      * superinterfaces of kuali objects where those objects' inquiry URLs need
      * to use the name of the superclass or superinterface as the business
-     * object class attribute (see
-     * {@link RiceConstants#BUSINESS_OBJECT_CLASS_ATTRIBUTE)
+     * object class attribute
      */
     public static List<Class<?>> SUPER_CLASS_TRANSLATOR_LIST = new ArrayList<Class<?>>();
-
-    private ConfigurationService configurationService;
-    private DataObjectMetaDataService dataObjectMetaDataService;
-    private KualiModuleService kualiModuleService;
-    private DataDictionaryService dataDictionaryService;
-    private DataObjectAuthorizationService dataObjectAuthorizationService;
-    private EncryptionService encryptionService;
-    private BusinessObjectService businessObjectService;
 
     /**
      * Finds primary and alternate key sets configured for the configured data object class and
@@ -122,12 +113,16 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
             // uppercase value if needed
             Boolean forceUppercase = Boolean.FALSE;
             try {
-                forceUppercase = dataDictionaryService.getAttributeForceUppercase(dataObjectClass, keyPropertyName);
+                forceUppercase = getDataDictionaryService().getAttributeForceUppercase(dataObjectClass,
+                        keyPropertyName);
             } catch (UnknownBusinessClassAttributeException ex) {
                 // swallowing exception because this check for ForceUppercase would
                 // require a DD entry for the attribute, and we will just set force uppercase to false
-                LOG.warn("Data object class " + dataObjectClass + " property " + keyPropertyName +
-                        " should probably have a DD definition.", ex);
+                LOG.warn("Data object class "
+                        + dataObjectClass
+                        + " property "
+                        + keyPropertyName
+                        + " should probably have a DD definition.", ex);
             }
 
             if (forceUppercase.booleanValue()) {
@@ -135,15 +130,21 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
             }
 
             // check security on key field
-            if (getDataObjectAuthorizationService()
-                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass, keyPropertyName)) {
+            if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass,
+                    keyPropertyName)) {
                 try {
-                    keyPropertyValue = encryptionService.decrypt(keyPropertyValue);
+                    keyPropertyValue = getEncryptionService().decrypt(keyPropertyValue);
                 } catch (GeneralSecurityException e) {
-                    LOG.error("Data object class " + dataObjectClass + " property " + keyPropertyName +
-                            " should have been encrypted, but there was a problem decrypting it.", e);
-                    throw new RuntimeException("Data object class " + dataObjectClass + " property " + keyPropertyName +
-                            " should have been encrypted, but there was a problem decrypting it.", e);
+                    LOG.error("Data object class "
+                            + dataObjectClass
+                            + " property "
+                            + keyPropertyName
+                            + " should have been encrypted, but there was a problem decrypting it.", e);
+                    throw new RuntimeException("Data object class "
+                            + dataObjectClass
+                            + " property "
+                            + keyPropertyName
+                            + " should have been encrypted, but there was a problem decrypting it.", e);
                 }
             }
 
@@ -153,14 +154,14 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         // now retrieve the object based on the key set
         Object dataObject = null;
 
-        ModuleService moduleService =
-                KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(getDataObjectClass());
+        ModuleService moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(
+                getDataObjectClass());
         if (moduleService != null && moduleService.isExternalizable(getDataObjectClass())) {
-            dataObject = moduleService.getExternalizableBusinessObject(
-                    getDataObjectClass().asSubclass(ExternalizableBusinessObject.class), keyPropertyValues);
+            dataObject = moduleService.getExternalizableBusinessObject(getDataObjectClass().asSubclass(
+                    ExternalizableBusinessObject.class), keyPropertyValues);
         } else if (BusinessObject.class.isAssignableFrom(getDataObjectClass())) {
-            dataObject = getBusinessObjectService()
-                    .findByPrimaryKey(getDataObjectClass().asSubclass(BusinessObject.class), keyPropertyValues);
+            dataObject = getBusinessObjectService().findByPrimaryKey(getDataObjectClass().asSubclass(
+                    BusinessObject.class), keyPropertyValues);
         }
 
         return dataObject;
@@ -233,8 +234,8 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
                 String nestedPropertyPrimitive = ObjectUtils.getNestedAttributePrimitive(propertyName);
                 Class<?> nestedPropertyObjectClass = ObjectUtils.materializeClassForProxiedObject(nestedPropertyObject);
 
-                if (nestedPropertyPrimitive
-                        .equals(getDataObjectMetaDataService().getTitleAttribute(nestedPropertyObjectClass))) {
+                if (nestedPropertyPrimitive.equals(getDataObjectMetaDataService().getTitleAttribute(
+                        nestedPropertyObjectClass))) {
                     inquiryObjectClass = nestedPropertyObjectClass;
                 }
             }
@@ -243,8 +244,8 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         // if not title, then get primary relationship
         DataObjectRelationship relationship = null;
         if (inquiryObjectClass == null) {
-            relationship = getDataObjectMetaDataService()
-                    .getDataObjectRelationship(dataObject, objectClass, propertyName, "", true, false, true);
+            relationship = getDataObjectMetaDataService().getDataObjectRelationship(dataObject, objectClass,
+                    propertyName, "", true, false, true);
             if (relationship != null) {
                 inquiryObjectClass = relationship.getRelatedClass();
             }
@@ -260,9 +261,11 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         if (DocumentHeader.class.isAssignableFrom(inquiryObjectClass)) {
             String documentNumber = (String) ObjectUtils.getPropertyValue(dataObject, propertyName);
             if (StringUtils.isNotBlank(documentNumber)) {
-                inquiry.getInquiryLinkField().setHrefText(
-                        getConfigurationService().getPropertyValueAsString(KRADConstants.WORKFLOW_URL_KEY) +
-                                KRADConstants.DOCHANDLER_DO_URL + documentNumber + KRADConstants.DOCHANDLER_URL_CHUNK);
+                inquiry.getInquiryLinkField().setHrefText(getConfigurationService().getPropertyValueAsString(
+                        KRADConstants.WORKFLOW_URL_KEY)
+                        + KRADConstants.DOCHANDLER_DO_URL
+                        + documentNumber
+                        + KRADConstants.DOCHANDLER_URL_CHUNK);
                 inquiry.getInquiryLinkField().setLinkLabel(documentNumber);
                 inquiry.setRender(true);
             }
@@ -279,16 +282,16 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
             }
         }
 
-        if (!inquiryObjectClass.isInterface() &&
-                ExternalizableBusinessObject.class.isAssignableFrom(inquiryObjectClass)) {
-            inquiryObjectClass = ExternalizableBusinessObjectUtils
-                    .determineExternalizableBusinessObjectSubInterface(inquiryObjectClass);
+        if (!inquiryObjectClass.isInterface() && ExternalizableBusinessObject.class.isAssignableFrom(
+                inquiryObjectClass)) {
+            inquiryObjectClass = ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(
+                    inquiryObjectClass);
         }
 
         // listPrimaryKeyFieldNames returns an unmodifiable list. So a copy is
         // necessary.
-        List<String> keys =
-                new ArrayList<String>(getDataObjectMetaDataService().listPrimaryKeyFieldNames(inquiryObjectClass));
+        List<String> keys = new ArrayList<String>(getDataObjectMetaDataService().listPrimaryKeyFieldNames(
+                inquiryObjectClass));
 
         if (keys == null) {
             keys = Collections.emptyList();
@@ -329,79 +332,31 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
     }
 
     protected ConfigurationService getConfigurationService() {
-        if (configurationService == null) {
-            configurationService = KRADServiceLocator.getKualiConfigurationService();
-        }
-        return this.configurationService;
-    }
-
-    public void setConfigurationService(ConfigurationService configurationService) {
-        this.configurationService = configurationService;
+        return KRADServiceLocator.getKualiConfigurationService();
     }
 
     protected DataObjectMetaDataService getDataObjectMetaDataService() {
-        if (dataObjectMetaDataService == null) {
-            this.dataObjectMetaDataService = KRADServiceLocatorWeb.getDataObjectMetaDataService();
-        }
-        return dataObjectMetaDataService;
-    }
-
-    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
-        this.dataObjectMetaDataService = dataObjectMetaDataService;
+        return KRADServiceLocatorWeb.getDataObjectMetaDataService();
     }
 
     protected KualiModuleService getKualiModuleService() {
-        if (kualiModuleService == null) {
-            this.kualiModuleService = KRADServiceLocatorWeb.getKualiModuleService();
-        }
-        return kualiModuleService;
-    }
-
-    public void setKualiModuleService(KualiModuleService kualiModuleService) {
-        this.kualiModuleService = kualiModuleService;
+        return KRADServiceLocatorWeb.getKualiModuleService();
     }
 
     protected DataDictionaryService getDataDictionaryService() {
-        if (dataDictionaryService == null) {
-            this.dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-        }
-        return dataDictionaryService;
-    }
-
-    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-        this.dataDictionaryService = dataDictionaryService;
+        return KRADServiceLocatorWeb.getDataDictionaryService();
     }
 
     protected DataObjectAuthorizationService getDataObjectAuthorizationService() {
-        if (dataObjectAuthorizationService == null) {
-            this.dataObjectAuthorizationService = KRADServiceLocatorWeb.getDataObjectAuthorizationService();
-        }
-        return dataObjectAuthorizationService;
-    }
-
-    public void setDataObjectAuthorizationService(DataObjectAuthorizationService dataObjectAuthorizationService) {
-        this.dataObjectAuthorizationService = dataObjectAuthorizationService;
+        return KRADServiceLocatorWeb.getDataObjectAuthorizationService();
     }
 
     protected EncryptionService getEncryptionService() {
-        if (encryptionService == null) {
-            this.encryptionService = CoreApiServiceLocator.getEncryptionService();
-        }
-        return encryptionService;
-    }
-
-    public void setEncryptionService(EncryptionService encryptionService) {
-        this.encryptionService = encryptionService;
+        return CoreApiServiceLocator.getEncryptionService();
     }
 
     protected BusinessObjectService getBusinessObjectService() {
-        if (businessObjectService == null) {
-            this.businessObjectService = KRADServiceLocator.getBusinessObjectService();
-        }
-        return businessObjectService;
+        return KRADServiceLocator.getBusinessObjectService();
     }
 
-    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
 }

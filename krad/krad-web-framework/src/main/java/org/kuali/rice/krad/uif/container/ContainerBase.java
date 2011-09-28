@@ -56,8 +56,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private HeaderField header;
 	private Group footer;
 
-	private String summary;
-	private MessageField summaryMessageField;
+	private String instructionalText;
+	private MessageField instructionalMessageField;
 
 	private boolean fieldContainer;
 
@@ -76,12 +76,12 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <li>Initializes LayoutManager</li>
 	 * </ul>
 	 * 
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
+	public void performInitialization(View view, Object model) {
+		super.performInitialization(view, model);
 
 		// sort items list by the order property
 		List<? extends Component> sortedItems = (List<? extends Component>) ComponentUtils.sort(getItems(),
@@ -89,7 +89,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		setItems(sortedItems);
 
 		if (layoutManager != null) {
-			layoutManager.performInitialization(view, this);
+			layoutManager.performInitialization(view, model, this);
 		}
 	}
 
@@ -128,8 +128,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		}
 
 		// setup summary message field if necessary
-		if (summaryMessageField != null && StringUtils.isBlank(summaryMessageField.getMessageText())) {
-			summaryMessageField.setMessageText(summary);
+		if (instructionalMessageField != null && StringUtils.isBlank(instructionalMessageField.getMessageText())) {
+			instructionalMessageField.setMessageText(instructionalText);
 		}
 
 		if (layoutManager != null) {
@@ -148,7 +148,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		components.add(footer);
 		components.add(errorsField);
 		components.add(help);
-		components.add(summaryMessageField);
+		components.add(instructionalMessageField);
 
 		for (Component component : getItems()) {
 			components.add(component);
@@ -346,40 +346,51 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		}
 	}
 
-	/**
-	 * Summary text for the container which will be used to set the summary
-	 * message field
-	 * 
-	 * @return String summary text
-	 * @see org.kuali.rice.krad.uif.container.Container#getSummaryMessageField()
-	 */
-	public String getSummary() {
-		return this.summary;
+    /**
+     * Text explaining how complete the group inputs, including things like what values should be selected
+     * in certain cases, what fields should be completed and so on (instructions)
+     *
+     * @return String instructional message
+     */
+	public String getInstructionalText() {
+		return this.instructionalText;
 	}
 
-	/**
-	 * Setter for the containers summary text
-	 * 
-	 * @param summary
-	 */
-	public void setSummary(String summary) {
-		this.summary = summary;
+    /**
+     * Setter for the instructional message
+     *
+     * @param instructionalText
+     */
+	public void setInstructionalText(String instructionalText) {
+		this.instructionalText = instructionalText;
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#getSummaryMessageField()
-	 */
-	@Override
-	public MessageField getSummaryMessageField() {
-		return this.summaryMessageField;
+    /**
+     * Message field that displays instructional text
+     *
+     * <p>
+     * This message field can be configured to for adjusting how the instructional text will display. Generally
+     * the styleClasses property will be of most interest
+     * </p>
+     *
+     * @return MessageField instructional message field
+     */
+	public MessageField getInstructionalMessageField() {
+		return this.instructionalMessageField;
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.uif.container.Container#setSummaryMessageField(org.kuali.rice.krad.uif.field.MessageField)
-	 */
-	@Override
-	public void setSummaryMessageField(MessageField summaryMessageField) {
-		this.summaryMessageField = summaryMessageField;
+    /**
+     * Setter for the instructional text message field
+     *
+     * <p>
+     * Note this is the setter for the field that will render the instructional text. The actual text can be
+     * set on the field but can also be set using {@link #setInstructionalText(String)}
+     * </p>
+     *
+     * @param instructionalMessageField
+     */
+	public void setInstructionalMessageField(MessageField instructionalMessageField) {
+		this.instructionalMessageField = instructionalMessageField;
 	}
 
 	/**

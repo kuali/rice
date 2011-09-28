@@ -26,6 +26,7 @@ import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import java.io.IOException;
 import java.util.List;
@@ -442,6 +443,14 @@ public interface DataDictionaryService {
     public View getViewById(String viewId);
 
     /**
+     * Returns an object from the dictionary by its spring bean name or id
+     *
+     * @param id - id or name for the bean definition
+     * @return Object object instance created or the singleton being maintained
+     */
+    public Object getDictionaryObject(String id);
+
+    /**
      * Returns View instance identified by the view type name and index
      *
      * @param viewTypeName - type name for the view
@@ -450,5 +459,5 @@ public interface DataDictionaryService {
      * an unique view instance
      * @return View instance that matches the given index
      */
-    public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey);
+    public View getViewByTypeIndex(ViewType viewTypeName, Map<String, String> indexKey);
 }

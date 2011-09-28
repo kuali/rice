@@ -147,7 +147,9 @@
     <property name="validationPattern">
       <ref bean="AnyCharacterWithWhitespaceValidation" />
     </property>
-    <property name="controlField" ref="AddressLineTextControl" />
+    <property name="controlField">
+      <bean parent="AddressLineTextControl"/>
+    </property>
   </bean>
 
   <bean id="VendorGenericAttributes-line2Address" parent="VendorGenericAttributes-line2Address-parentBean"/>
@@ -211,7 +213,9 @@
     <property name="validationPattern">
       <ref bean="AnyCharacterValidation" />
     </property>
-    <property name="controlField" ref="AddressLineTextControl" />
+    <property name="controlField">
+      <bean parent="AddressLineTextControl"/>
+    </property>
   </bean>
 
   <bean id="VendorGenericAttributes-vendorHeaderGeneratedIdentifier" parent="VendorGenericAttributes-vendorHeaderGeneratedIdentifier-parentBean"/>

@@ -560,10 +560,6 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 		return getConfigurationService();
 	}
 
-	public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
-		setConfigurationService(kualiConfigurationService);
-	}
-
 	protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
 		if (businessObjectMetaDataService == null) {
 			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();

@@ -46,10 +46,10 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 	 * Finally the new list of components is set on the group
 	 * 
 	 * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-	 *      org.kuali.rice.krad.uif.component.Component)
+	 *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
 	 */
 	@Override
-	public void performModification(View view, Component component) {
+	public void performModification(View view, Object model, Component component) {
 		if ((component != null) && !(component instanceof Group)) {
 			throw new IllegalArgumentException("Compare field initializer only support Group components, found type: "
 					+ component.getClass());
@@ -69,7 +69,7 @@ public class LabelFieldSeparateModifier extends ComponentModifierBase {
 
 				// pull out label field
 				if (field.getLabelField() != null && field.getLabelField().isRender()) {
-				    field.getLabelField().addStyleClass("displayWith-" + field.getBaseId());
+				    field.getLabelField().addStyleClass("displayWith-" + field.getFactoryId());
                     if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
                        field.getLabelField().setRender(false);
                     }

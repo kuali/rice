@@ -78,15 +78,15 @@
           <property name="items">
             <list>
               <bean parent="GenericSelection" p:propertyName="criteriaFields['programId']"
-                    p:summary="By Programs/Departments:"
+                    p:instructionalText="By Programs/Departments:"
                     p:control.options-ref="program-options" p:label=""/>
               <bean parent="GenericSelection" p:propertyName="criteriaFields['requirementId']" p:label=""
-                    p:summary="By General Education Requirement:" p:control.options-ref="requirement-options"/>
+                    p:instructionalText="By General Education Requirement:" p:control.options-ref="requirement-options"/>
             </list>
           </property>
         </bean>
         <bean parent="GenericHorizontalFieldGroup" p:label="Fast Find"
-              p:group.summary="Enter the Course Name or Number:">
+              p:group.instructionalText="Enter the Course Name or Number:">
           <property name="items">
             <list>
               <bean parent="GenericTextFieldMedium" p:propertyName="criteriaFields['courseNameNumber']" p:label=""
@@ -111,8 +111,8 @@
   ********************************************************************************************************************
   -->
   <bean id="Registration-CourseListing" parent="ListGroup" p:readOnly="true"
-        p:summaryMessageField.styleClasses="summary-bold" p:accordion.render="false">
-    <property name="summary" value="Click a class to view details"/>
+        p:instructionalMessageField.styleClasses="instructionalText-bold" p:accordion.render="false">
+    <property name="instructionalText" value="Click a class to view details"/>
     <property name="collectionObjectClass" value="edu.sampleu.student.dataobject.Course"/>
     <property name="propertyName" value="courseListing"/>
     <property name="layoutManager.summaryTitle"

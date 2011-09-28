@@ -27,26 +27,26 @@
   <c:set var="tabindex" value="tabindex=-1"/>
 </c:if>
 
-<c:if test="${field.actionImageField != null}">
-  <c:if test="${not empty field.actionImageField.height}">
-    <c:set var="height" value="height='${field.actionImageField.height}'"/>
+<c:if test="${field.actionImage != null}">
+  <c:if test="${not empty field.actionImage.height}">
+    <c:set var="height" value="height='${field.actionImage.height}'"/>
   </c:if>
-  <c:if test="${not empty field.actionImageField.width}">
-    <c:set var="width" value="width='${field.actionImageField.width}'"/>
+  <c:if test="${not empty field.actionImage.width}">
+    <c:set var="width" value="width='${field.actionImage.width}'"/>
   </c:if>
 </c:if>
 
 <c:choose>
 
-  <c:when test="${(field.actionImageField != null) && field.actionImageField.render && (empty field.actionImageLocation)}">
-    <krad:attributeBuilder component="${field.actionImageField}"/>
+  <c:when test="${(field.actionImage != null) && field.actionImage.render && (empty field.actionImageLocation)}">
+    <krad:attributeBuilder component="${field.actionImage}"/>
 
     <span id="${field.id}_span">
       <krad:fieldLabel field="${field}">
 
         <input type="image" id="${field.id}"
-               src="${field.actionImageField.source}"
-               alt="${field.actionImageField.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex} />
+               src="${field.actionImage.source}"
+               alt="${field.actionImage.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex} />
 
       </krad:fieldLabel>
     </span>
@@ -55,38 +55,38 @@
     <krad:attributeBuilder component="${field}"/>
 
     <c:choose>
-      <c:when test="${not empty field.actionImageLocation && (field.actionImageField != null) && field.actionImageField.render}">
+      <c:when test="${not empty field.actionImageLocation && (field.actionImage != null) && field.actionImage.render}">
 
         <c:choose>
           <c:when test="${(field.actionImageLocation eq 'TOP')}">
             <button id="${field.id}" ${style} ${styleClass} ${title}><span
                     class="topBottomSpan"><img ${height} ${width}
-                    class="actionImage topActionImage ${field.actionImageField.styleClassesAsString}"
-                    style="${field.actionImageField.style}"
-                    src="${field.actionImageField.source}"
-                    alt="${field.actionImageField.altText}"/></span>${field.actionLabel}
+                    class="actionImage topActionImage ${field.actionImage.styleClassesAsString}"
+                    style="${field.actionImage.style}"
+                    src="${field.actionImage.source}"
+                    alt="${field.actionImage.altText}"/></span>${field.actionLabel}
             </button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'BOTTOM')}">
             <button id="${field.id}" ${style} ${styleClass} ${title}>${field.actionLabel}<span
                     class="topBottomSpan"><img ${height} ${width}
-                    style="${field.actionImageField.style}"
-                    class="actionImage bottomActionImage ${field.actionImageField.styleClassesAsString}"
-                    src="${field.actionImageField.source}"
-                    alt="${field.actionImageField.altText}"/></span></button>
+                    style="${field.actionImage.style}"
+                    class="actionImage bottomActionImage ${field.actionImage.styleClassesAsString}"
+                    src="${field.actionImage.source}"
+                    alt="${field.actionImage.altText}"/></span></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'RIGHT')}">
             <button id="${field.id}" ${style} ${styleClass} ${title}>${field.actionLabel}<img ${height} ${width}
-                    style="${field.actionImageField.style}"
-                    class="actionImage rightActionImage ${field.actionImageField.styleClassesAsString}"
-                    src="${field.actionImageField.source}" alt="${field.actionImageField.altText}"/></button>
+                    style="${field.actionImage.style}"
+                    class="actionImage rightActionImage ${field.actionImage.styleClassesAsString}"
+                    src="${field.actionImage.source}" alt="${field.actionImage.altText}"/></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'LEFT')}">
             <button id="${field.id}" ${style} ${styleClass} ${title}><img ${height} ${width}
-                    style="${field.actionImageField.style}"
-                    class="actionImage leftActionImage ${field.actionImageField.styleClassesAsString}"
-                    src="${field.actionImageField.source}"
-                    alt="${field.actionImageField.altText}"/>${field.actionLabel}
+                    style="${field.actionImage.style}"
+                    class="actionImage leftActionImage ${field.actionImage.styleClassesAsString}"
+                    src="${field.actionImage.source}"
+                    alt="${field.actionImage.altText}"/>${field.actionLabel}
             </button>
           </c:when>
           <c:otherwise>

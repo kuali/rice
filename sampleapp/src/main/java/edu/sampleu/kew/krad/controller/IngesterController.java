@@ -184,7 +184,7 @@ public class IngesterController extends UifControllerBase {
 	    }
 		
 //	    request.setAttribute("messages", messages);
-	    return getUIFModelAndView(ingesterForm, ingesterForm.getViewId());
+	    return getUIFModelAndView(ingesterForm);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")

@@ -53,8 +53,8 @@
       </c:when>
 
       <c:otherwise>
-        <%-- render field summary --%>
-        <krad:template component="${field.summaryMessageField}"/>
+        <%-- render field instructional text --%>
+        <krad:template component="${field.instructionalMessageField}"/>
 
         <%-- render control for input --%>
         <krad:template component="${field.control}" field="${field}"/>

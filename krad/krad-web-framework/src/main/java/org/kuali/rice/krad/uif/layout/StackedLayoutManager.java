@@ -30,6 +30,7 @@ import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,18 +83,18 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      * </ul>
      *
      * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performInitialization(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.container.Container)
+     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
      */
     @Override
-    public void performInitialization(View view, Container container) {
-        super.performInitialization(view, container);
+    public void performInitialization(View view, Object model, Container container) {
+        super.performInitialization(view, model, container);
 
         if (addLineGroup != null) {
-            view.getViewHelperService().performComponentInitialization(view, addLineGroup);
+            view.getViewHelperService().performComponentInitialization(view, model, addLineGroup);
         }
-        view.getViewHelperService().performComponentInitialization(view, lineGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, subCollectionFieldGroupPrototype);
-        view.getViewHelperService().performComponentInitialization(view, selectFieldPrototype);
+        view.getViewHelperService().performComponentInitialization(view, model, lineGroupPrototype);
+        view.getViewHelperService().performComponentInitialization(view, model, subCollectionFieldGroupPrototype);
+        view.getViewHelperService().performComponentInitialization(view, model, selectFieldPrototype);
     }
 
     /**

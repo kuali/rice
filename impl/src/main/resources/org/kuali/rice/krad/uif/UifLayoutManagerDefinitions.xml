@@ -1,108 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xmlns:p="http://www.springframework.org/schema/p" 
-xsi:schemaLocation="http://www.springframework.org/schema/beans         
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-<!--
- Copyright 2007-2009 The Kuali Foundation
- 
- Licensed under the Educational Community License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl2.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
+  <!--
+   Copyright 2007-2009 The Kuali Foundation
+
+   Licensed under the Educational Community License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.opensource.org/licenses/ecl2.php
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+  -->
 
   <!-- Layout Managers -->
-  
-  <bean id="BoxLayoutManager" parent="BoxLayoutManager-parentBean"/> 
-  <bean id="BoxLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/layout/box.jsp"/>
-      <property name="orientation" value="HORIZONTAL"/>
-  </bean>  
-  
-  <bean id="GridLayoutManager" parent="GridLayoutManager-parentBean"/> 
-  <bean id="GridLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
-      <property name="numberOfColumns" value="2"/>
-      <property name="styleClasses" value="datatable"/>
-      <property name="suppressLineWrapping" value="false"/>
-      <property name="applyAlternatingRowStyles" value="false"/>
-      <property name="applyDefaultCellWidths" value="true"/>
-      <property name="renderAlternatingHeaderColumns" value="true"/>
-  </bean>  
-  
-  <bean id="TableLayoutManager" parent="TableLayoutManager-parentBean"/> 
-  <bean id="TableLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.TableLayoutManager" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/layout/table.jsp"/>
-      <property name="styleClasses" value="datatable display"/>
-      <property name="applyAlternatingRowStyles" value="true"/>
-      <property name="applyDefaultCellWidths" value="true"/>
-      <property name="renderAlternatingHeaderColumns" value="false"/>
-      <property name="headerFieldPrototype">
-        <bean parent="LabelField" p:renderColon="false" p:styleClasses="infoline"/>
-      </property>      
-      <property name="sequenceFieldPrototype">
-        <bean parent="AttributeField" p:readOnly="true" p:label=" " p:shortLabel=" "/>
-      </property>
-      <property name="actionFieldPrototype">
-        <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
-      </property>  
-      <property name="subCollectionFieldGroupPrototype">
-        <bean parent="FieldGroup" p:labelField.render="false"/>
-      </property>
-      <property name="selectFieldPrototype">
-        <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?" p:control-ref="CheckboxControl"/>
-      </property>
-      <property name="tableTools">
-        <ref bean="TableTools-Paging"/>
-      </property>   
-  </bean>  
- 
-  <bean id="StackedLayoutManager" parent="StackedLayoutManager-parentBean"/> 
-  <bean id="StackedLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
-      <property name="addLineGroup">
-        <bean parent="StackedGroupPrototype"/>
-      </property>
-      <property name="lineGroupPrototype">
-        <bean parent="StackedGroupPrototype"/>
-      </property> 
-      <property name="subCollectionFieldGroupPrototype">
-        <bean parent="FieldGroup" p:labelField.render="false" p:group.header.render="false"
-              p:colSpan="@{#parent.layoutManager.numberOfColumns}" />
-      </property>
-      <property name="selectFieldPrototype">
-        <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?" p:control-ref="CheckboxControl"/>
-      </property>
-  </bean>  
-  
-  <bean id="StackedGroupPrototype" parent="StackedGroupPrototype-parentBean"/> 
+
+  <bean id="BoxLayoutManager" parent="BoxLayoutManager-parentBean"/>
+  <bean id="BoxLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/box.jsp"/>
+    <property name="orientation" value="HORIZONTAL"/>
+  </bean>
+
+  <bean id="GridLayoutManager" parent="GridLayoutManager-parentBean"/>
+  <bean id="GridLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
+    <property name="numberOfColumns" value="2"/>
+    <property name="styleClasses" value="datatable"/>
+    <property name="suppressLineWrapping" value="false"/>
+    <property name="applyAlternatingRowStyles" value="false"/>
+    <property name="applyDefaultCellWidths" value="true"/>
+    <property name="renderAlternatingHeaderColumns" value="true"/>
+  </bean>
+
+  <bean id="TableLayoutManager" parent="TableLayoutManager-parentBean"/>
+  <bean id="TableLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.TableLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/table.jsp"/>
+    <property name="styleClasses" value="datatable display"/>
+    <property name="applyAlternatingRowStyles" value="true"/>
+    <property name="applyDefaultCellWidths" value="true"/>
+    <property name="renderAlternatingHeaderColumns" value="false"/>
+    <property name="headerFieldPrototype">
+      <bean parent="LabelField" p:renderColon="false" p:styleClasses="infoline"/>
+    </property>
+    <property name="sequenceFieldPrototype">
+      <bean parent="AttributeField" p:readOnly="true" p:label=" " p:shortLabel=" "/>
+    </property>
+    <property name="actionFieldPrototype">
+      <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
+    </property>
+    <property name="subCollectionFieldGroupPrototype">
+      <bean parent="FieldGroup" p:labelField.render="false"/>
+    </property>
+    <property name="selectFieldPrototype">
+      <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?">
+        <property name="control">
+          <bean parent="CheckboxControl"/>
+        </property>
+      </bean>
+    </property>
+    <property name="tableTools">
+      <bean parent="TableTools-Paging"/>
+    </property>
+  </bean>
+
+  <bean id="StackedLayoutManager" parent="StackedLayoutManager-parentBean"/>
+  <bean id="StackedLayoutManager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
+    <property name="addLineGroup">
+      <bean parent="StackedGroupPrototype"/>
+    </property>
+    <property name="lineGroupPrototype">
+      <bean parent="StackedGroupPrototype"/>
+    </property>
+    <property name="subCollectionFieldGroupPrototype">
+      <bean parent="FieldGroup" p:labelField.render="false" p:group.header.render="false"
+            p:colSpan="@{#parent.layoutManager.numberOfColumns}"/>
+    </property>
+    <property name="selectFieldPrototype">
+      <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?">
+        <property name="control">
+          <bean parent="CheckboxControl"/>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="StackedGroupPrototype" parent="StackedGroupPrototype-parentBean"/>
   <bean id="StackedGroupPrototype-parentBean" abstract="true" parent="GroupGridLayout">
-      <property name="header">
-         <bean parent="HeaderThree" p:styleClasses="kr-collection-header"/>
-      </property>
-      <property name="footer">
-         <bean parent="Footer"/>
-      </property>
+    <property name="header">
+      <bean parent="HeaderThree" p:styleClasses="kr-collection-header"/>
+    </property>
+    <property name="footer">
+      <bean parent="Footer"/>
+    </property>
   </bean>
 
   <bean id="StackedLayoutManagerBox" parent="StackedLayoutManagerBox-parentBean"/>
   <bean id="StackedLayoutManagerBox-parentBean" abstract="true" parent="StackedLayoutManager">
-      <property name="addLineGroup">
-        <bean parent="Group" p:header.render="false" p:layoutManager.orientation="HORIZONTAL"
-              p:styleClasses="kr-collectionLine-cntr" p:footer-ref="Footer"/>
-      </property>
-      <property name="lineGroupPrototype">
-        <bean parent="Group" p:header.render="false" p:layoutManager.orientation="HORIZONTAL"
-              p:styleClasses="kr-collectionLine-cntr" p:footer-ref="Footer"/>
-      </property>
+    <property name="addLineGroup">
+      <bean parent="Group" p:header.render="false" p:layoutManager.orientation="HORIZONTAL"
+            p:styleClasses="kr-collectionLine-cntr">
+        <property name="footer">
+          <bean parent="Footer"/>
+        </property>
+      </bean>
+    </property>
+    <property name="lineGroupPrototype">
+      <bean parent="Group" p:header.render="false" p:layoutManager.orientation="HORIZONTAL"
+            p:styleClasses="kr-collectionLine-cntr">
+        <property name="footer">
+          <bean parent="Footer"/>
+        </property>
+      </bean>
+    </property>
   </bean>
-  
+
 </beans>  

@@ -22,7 +22,7 @@
        <list>
          <bean parent="GroupSectionGridLayout">
            <property name="layoutManager.numberOfColumns" value="2"/>
-           <property name="summary" value="Style"/> 
+           <property name="instructionalText" value="Style"/>
            <property name="items">
              <list>
               <bean parent="AttributeField" p:propertyName="styleId"/>

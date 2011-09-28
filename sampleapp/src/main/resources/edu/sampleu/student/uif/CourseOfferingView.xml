@@ -262,7 +262,7 @@
   -->
   <bean id="CourseOffering-FinalExam" parent="GenericGroup" p:title="Final Exam"
         p:progressiveRender="courseSection.finalExam"
-        p:summary="These are all system generated values, based on the course &lt;br&gt; information and meeting days and times, and cannot be overridden."
+        p:instructionalText="These are all system generated values, based on the course &lt;br&gt; information and meeting days and times, and cannot be overridden."
         p:styleClasses="group-border">
     <property name="items">
       <list>

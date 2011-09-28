@@ -102,7 +102,7 @@ public class View extends ContainerBase {
     private List<String> additionalScriptFiles;
     private List<String> additionalCssFiles;
 
-    private String viewTypeName;
+    private ViewType viewTypeName;
     private Class<? extends ViewHelperService> viewHelperServiceClassName;
 
     private String viewStatus;
@@ -163,18 +163,17 @@ public class View extends ContainerBase {
      * the items list</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(View)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(View, java.lang.Object)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void performInitialization(View view) {
-        super.performInitialization(view);
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
 
         // populate items on page for single paged view
         if (singlePageView) {
             if (page != null) {
                 page.setItems(new ArrayList<Group>(items));
-                view.getViewHelperService().performComponentInitialization(view, page);
 
                 // reset the items list to include the one page
                 items = new ArrayList<Group>();
@@ -562,7 +561,8 @@ public class View extends ContainerBase {
     }
 
     /**
-     * View type name the view is associated with
+     * View type name the view is associated with the view instance
+     *
      * <p>
      * Views that share common features and functionality can be grouped by the
      * view type. Usually view types extend the <code>View</code> class to
@@ -573,7 +573,7 @@ public class View extends ContainerBase {
      *
      * @return String view type name for the view
      */
-    public String getViewTypeName() {
+    public ViewType getViewTypeName() {
         return this.viewTypeName;
     }
 
@@ -582,7 +582,7 @@ public class View extends ContainerBase {
      *
      * @param viewTypeName
      */
-    public void setViewTypeName(String viewTypeName) {
+    public void setViewTypeName(ViewType viewTypeName) {
         this.viewTypeName = viewTypeName;
     }
 
@@ -623,8 +623,10 @@ public class View extends ContainerBase {
      * Invoked to produce a ViewIndex of the current view's components
      */
     public void index() {
-        ViewIndex viewIndex = new ViewIndex(this);
-        this.viewIndex = viewIndex;
+        if (this.viewIndex == null) {
+            this.viewIndex = new ViewIndex();
+        }
+        this.viewIndex.index(this);
     }
 
     /**

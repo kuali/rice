@@ -36,8 +36,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>
-      <property name="summaryMessageField">
-        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
+      <property name="instructionalMessageField">
+        <bean parent="MessageField" p:messageType="INSTRUCTIONAL" p:styleClasses="summary"/>
       </property>
       <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
@@ -57,8 +57,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>
-      <property name="summaryMessageField">
-        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClasses="summary"/>
+      <property name="instructionalMessageField">
+        <bean parent="MessageField" p:messageType="INSTRUCTIONAL" p:styleClasses="summary"/>
       </property>
       <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>

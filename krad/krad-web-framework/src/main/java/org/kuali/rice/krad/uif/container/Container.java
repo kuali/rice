@@ -28,8 +28,9 @@ import java.util.Set;
 /**
  * Type of component that contains a collection of other components. All
  * templates for <code> Container</code> components must use a
- * <code>LayoutManager</code> to render the contained components. Each container
- * has the following parts in addition to the contained components:
+ * <code>LayoutManager</code> to render the contained components.
+ *
+ * Each container has the following parts in addition to the contained components:
  * <ul>
  * <li><code>HeaderField</code></li>
  * <li>Summary <code>MessageField</code></li>
@@ -57,6 +58,13 @@ public interface Container extends Component {
 	 * @return List component instances
 	 */
 	public List<? extends Component> getItems();
+
+    /**
+     * Setter for the containers list of components
+     *
+     * @param items - list of components to set in container
+     */
+    public void setItems(List<? extends Component> items);
 
 	/**
 	 * <code>Set</code> of <code>Component</code> classes that may be placed
@@ -157,14 +165,14 @@ public interface Container extends Component {
 	 * 
 	 * @return MessageField instance or Null
 	 */
-	public MessageField getSummaryMessageField();
+	public MessageField getInstructionalMessageField();
 
 	/**
 	 * Setter for the containers summary message field
 	 * 
 	 * @param summaryMessageField
 	 */
-	public void setSummaryMessageField(MessageField summaryMessageField);
+	public void setInstructionalMessageField(MessageField summaryMessageField);
 
 	/**
 	 * Field that contains the error messages for the container

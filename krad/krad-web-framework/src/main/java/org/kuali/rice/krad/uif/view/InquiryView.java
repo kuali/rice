@@ -51,18 +51,17 @@ public class InquiryView extends FormView {
     }
 
     /**
-     * <p>
      * The following initialization is performed:
+     *
      * <ul>
      * <li>Set the abstractTypeClasses map for the inquiry object path</li>
      * </ul>
-     * </p>
-     * 
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+     *
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
-        super.performInitialization(view);
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
 
         getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
     }

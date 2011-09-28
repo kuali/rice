@@ -68,11 +68,11 @@ public class MaintenanceView extends DocumentView {
      * <li>Set the abstractTypeClasses map for the maintenance object path</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
-        super.performInitialization(view);
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
 
         // get maintenance document entry
         MaintenanceDocumentEntry documentEntry = null;

@@ -31,7 +31,11 @@
 
   <bean id="GenericDateField" parent="GenericTextField">
     <property name="control">
-      <bean parent="TextControl" p:size="10" p:datePicker-ref="DatePicker"/>
+      <bean parent="TextControl" p:size="10">
+        <property name="datePicker">
+          <bean parent="DatePicker"/>
+        </property>
+      </bean>
     </property>
   </bean>
 
@@ -73,11 +77,14 @@
   </bean>
 
   <bean id="GenericCollectionGroup" parent="CollectionGroup" p:accordion.render="false"
-        p:layoutManager-ref="StackedLayoutManagerBox" p:header.styleClasses="group_header">
+        p:header.styleClasses="group_header">
+    <property name="layoutManager">
+      <bean parent="StackedLayoutManagerBox"/>
+    </property>
     <property name="addLineActionFields">
       <list>
         <bean parent="ActionField_Small" p:methodToCall="addLine" p:actionLabel="add">
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField"
                   p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_add.png"/>
           </property>
@@ -87,7 +94,7 @@
     <property name="actionFields">
       <list>
         <bean parent="ActionField_SmallSecondary" p:methodToCall="deleteLine" p:actionLabel="delete">
-          <property name="actionImageField">
+          <property name="actionImage">
             <bean parent="ImageField"
                   p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/icon_btn_minus.png"/>
           </property>

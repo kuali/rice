@@ -36,6 +36,6 @@
 <krad:template component="${control.datePicker}" componentId="${control.id}"/>
 
 <c:if test="${control.textExpand}">
-	<krad:script value="setupTextPopout('${control.id}', '${field.labelField.labelText}', '${field.summaryMessageField.messageText}', '${field.constraintMessageField.messageText}');" />
+	<krad:script value="setupTextPopout('${control.id}', '${field.labelField.labelText}', '${field.instructionalMessageField.messageText}', '${field.constraintMessageField.messageText}');" />
 </c:if>           
  

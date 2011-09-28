@@ -16,6 +16,9 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Configurable;
@@ -55,6 +58,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
+    private static final Log LOG = LogFactory.getLog(UifBeanFactoryPostProcessor.class);
 
     /**
      * Iterates through all beans in the factory and invokes processing for expressions
@@ -66,6 +70,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         Set<String> processedBeanNames = new HashSet<String>();
 
+        LOG.info("Beginning post processing of bean factory for UIF expressions");
+
         String[] beanNames = beanFactory.getBeanDefinitionNames();
         for (int i = 0; i < beanNames.length; i++) {
             String beanName = beanNames[i];
@@ -73,6 +79,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
             processBeanDefinition(beanName, beanDefinition, beanFactory, processedBeanNames);
         }
+
+        LOG.info("Finished post processing of bean factory for UIF expressions");
     }
 
     /**
@@ -98,6 +106,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
         if (processedBeanNames.contains(beanName)) {
             return;
         }
+
+        LOG.debug("Processing bean name '" + beanName + "'");
 
         MutablePropertyValues pvs = beanDefinition.getPropertyValues();
 
@@ -135,7 +145,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
             // if property is nested, need to override any parent expressions set on nested beans
             if (StringUtils.contains(pv.getName(), ".")) {
-                removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
+                //   removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
             }
         }
 

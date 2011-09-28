@@ -56,7 +56,7 @@ import java.util.List;
  * Field that encapsulates data input/output captured by an attribute within the
  * application
  *
- * <p>
+ * <p>                                                                                                                                    R
  * The <code>AttributField</code> provides the majority of the data input/output
  * for the screen. Through these fields the model can be displayed and updated.
  * For data input, the field contains a <code>Control</code> instance will
@@ -77,7 +77,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     private String defaultValue;
     private Class<? extends ValueFinder> defaultValueFinderClass;
 
-    // Constraint variables
+    // constraint variables
     private String customValidatorClass;
     private ValidCharactersConstraint validCharactersConstraint;
     private CaseConstraint caseConstraint;
@@ -102,13 +102,16 @@ public class AttributeField extends FieldBase implements DataBinding {
     private ErrorsField errorsField;
 
     // messages
-    private String summary;
-    private String constraint;
-    private String description;
+    private String constraintText;
+    private String instructionalText;
+
+    private MessageField instructionalMessageField;
+    private MessageField constraintMessageField;
+
+    private String helpSummary;
+    private String helpDescription;
 
     private AttributeSecurity attributeSecurity;
-    private MessageField summaryMessageField;
-    private MessageField constraintMessageField;
 
     // Alternate and additional display properties
     protected String alternateDisplayPropertyName;
@@ -148,11 +151,11 @@ public class AttributeField extends FieldBase implements DataBinding {
      * <li>Default the model path if not set</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     @Override
-    public void performInitialization(View view) {
-        super.performInitialization(view);
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
 
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
@@ -178,13 +181,13 @@ public class AttributeField extends FieldBase implements DataBinding {
         setupIds();
 
         // Sets message
-        if (StringUtils.isNotBlank(summary)) {
-            summaryMessageField.setMessageText(summary);
+        if (StringUtils.isNotBlank(instructionalText)) {
+            instructionalMessageField.setMessageText(instructionalText);
         }
 
         // Sets constraints
-        if (StringUtils.isNotBlank(constraint)) {
-            constraintMessageField.setMessageText(constraint);
+        if (StringUtils.isNotBlank(constraintText)) {
+            constraintMessageField.setMessageText(constraintText);
         }
 
         // Additional and Alternate display value
@@ -385,7 +388,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         setNestedComponentIdAndSuffix(getErrorsField(), UifConstants.IdSuffixes.ERRORS);
         setNestedComponentIdAndSuffix(getLabelField(), UifConstants.IdSuffixes.LABEL);
-        setNestedComponentIdAndSuffix(getSummaryMessageField(), UifConstants.IdSuffixes.SUMMARY);
+        setNestedComponentIdAndSuffix(getInstructionalMessageField(), UifConstants.IdSuffixes.INSTRUCTIONAL);
         setNestedComponentIdAndSuffix(getConstraintMessageField(), UifConstants.IdSuffixes.CONSTRAINT);
         setNestedComponentIdAndSuffix(getFieldLookup(), UifConstants.IdSuffixes.QUICK_FINDER);
         setNestedComponentIdAndSuffix(getFieldDirectInquiry(), UifConstants.IdSuffixes.DIRECT_INQUIRY);
@@ -473,14 +476,13 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
 
         // summary
-        if (StringUtils.isEmpty(getSummary())) {
-            setSummary(attributeDefinition.getSummary());
-            getSummaryMessageField().setMessageText(attributeDefinition.getSummary());
+        if (StringUtils.isEmpty(getHelpSummary())) {
+            setHelpSummary(attributeDefinition.getSummary());
         }
 
         // description
-        if (StringUtils.isEmpty(getDescription())) {
-            setDescription(attributeDefinition.getDescription());
+        if (StringUtils.isEmpty(getHelpDescription())) {
+            setHelpDescription(attributeDefinition.getDescription());
         }
 
         // security
@@ -489,9 +491,9 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
 
         // constraint
-        if (StringUtils.isEmpty(getConstraint())) {
-            setConstraint(attributeDefinition.getConstraint());
-            getConstraintMessageField().setMessageText(attributeDefinition.getConstraint());
+        if (StringUtils.isEmpty(getConstraintText())) {
+            setConstraintText(attributeDefinition.getConstraintText());
+            getConstraintMessageField().setMessageText(attributeDefinition.getConstraintText());
         }
 
         // options
@@ -611,7 +613,7 @@ public class AttributeField extends FieldBase implements DataBinding {
      * </p>
      *
      * @return Formatter instance
-     * @see org.kuali.rice.krad.web.format.Formatter
+     * @see org.kuali.rice.core.web.format.Formatter
      */
     public Formatter getFormatter() {
         return this.formatter;
@@ -793,40 +795,58 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * Brief statement of the field (attribute) purpose. Used to display helpful
-     * information to the user on the form
+     * Text explaining how to use the field, including things like what values should be selected
+     * in certain cases and so on (instructions)
      *
-     * @return String summary message
+     * @return String instructional message
      */
-    public String getSummary() {
-        return this.summary;
+    public String getInstructionalText() {
+        return this.instructionalText;
     }
 
     /**
-     * Setter for the summary message
+     * Setter for the instructional message
      *
-     * @param summary
+     * @param instructionalText
      */
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setInstructionalText(String instructionalText) {
+        this.instructionalText = instructionalText;
     }
 
     /**
-     * Full explanation of the field (attribute). Used in help contents
+     * Summary help text for the field
      *
-     * @return String description message
+     * @return String summary help text
      */
-    public String getDescription() {
-        return this.description;
+    public String getHelpSummary() {
+        return helpSummary;
     }
 
     /**
-     * Setter for the description message
+     * Setter for the summary help text
      *
-     * @param description
+     * @param helpSummary
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setHelpSummary(String helpSummary) {
+        this.helpSummary = helpSummary;
+    }
+
+    /**
+     * Full help information text for the field
+     *
+     * @return String help description text
+     */
+    public String getHelpDescription() {
+        return this.helpDescription;
+    }
+
+    /**
+     * Setter for the help description text
+     *
+     * @param helpDescription
+     */
+    public void setHelpDescription(String helpDescription) {
+        this.helpDescription = helpDescription;
     }
 
     /**
@@ -941,60 +961,83 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @return the summaryField
+     * Message field that displays instructional text
+     *
+     * <p>
+     * This message field can be configured to for adjusting how the instructional text will display. Generally
+     * the styleClasses property will be of most interest
+     * </p>
+     *
+     * @return MessageField instructional message field
      */
-    public MessageField getSummaryMessageField() {
-        return this.summaryMessageField;
+    public MessageField getInstructionalMessageField() {
+        return this.instructionalMessageField;
     }
 
     /**
-     * Sets the summary message field. Developers can use the setSummary method
-     * which would set the summary text.
+     * Setter for the instructional text message field
      *
-     * @param summary field to set
-     * @see setSummary
+     * <p>
+     * Note this is the setter for the field that will render the instructional text. The actual text can be
+     * set on the field but can also be set using {@link #setInstructionalText(String)}
+     * </p>
+     *
+     * @param instructionalMessageField
      */
-    public void setSummaryMessageField(MessageField summaryField) {
-        this.summaryMessageField = summaryField;
+    public void setInstructionalMessageField(MessageField instructionalMessageField) {
+        this.instructionalMessageField = instructionalMessageField;
     }
 
     /**
-     * Returns the contraint set on the field
+     * Text that display a restriction on the value a field can hold
      *
-     * @return the constraint
+     * <p>
+     * For example when the value must be a valid format (phone number, email), certain length, min/max value and
+     * so on this text can be used to indicate the constraint to the user. Generally displays with the control so
+     * it is visible when the user tabs to the field
+     * </p>
+     *
+     * @return String text to display for the constraint message
      */
-    public String getConstraint() {
-        return this.constraint;
+    public String getConstraintText() {
+        return this.constraintText;
     }
 
     /**
-     * Sets the constraint text. This text will be displayed below the
-     * component.
+     * Setter for the constraint message text
      *
-     * @param constraint for this field
+     * @param constraintText
      */
-    public void setConstraint(String constraint) {
-        this.constraint = constraint;
+    public void setConstraintText(String constraintText) {
+        this.constraintText = constraintText;
     }
 
     /**
-     * Sets the constraint message field. Developers can use the setContraint
-     * method which would set the constraint text.
+     * Message field that displays constraint text
      *
-     * @param constraint field to set
-     * @see setContraint
-     */
-    public void setConstraintMessageField(MessageField constraintMessageField) {
-        this.constraintMessageField = constraintMessageField;
-    }
-
-    /**
-     * Returns the contraint message field.
+     * <p>
+     * This message field can be configured to for adjusting how the constrain text will display. Generally
+     * the styleClasses property will be of most interest
+     * </p>
      *
-     * @return constraint Message Field
+     * @return MessageField constraint message field
      */
     public MessageField getConstraintMessageField() {
         return this.constraintMessageField;
+    }
+
+    /**
+     * Setter for the constraint text message field
+     *
+     * <p>
+     * Note this is the setter for the field that will render the constraint text. The actual text can be
+     * set on the field but can also be set using {@link #setConstraintText(String)}
+     * </p>
+     *
+     * @param constraintMessageField
+     */
+    public void setConstraintMessageField(MessageField constraintMessageField) {
+        this.constraintMessageField = constraintMessageField;
     }
 
     /**
@@ -1137,7 +1180,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @param minValue the minValue to set
+     * @param exclusiveMin the minValue to set
      */
     public void setExclusiveMin(String exclusiveMin) {
         simpleConstraint.setExclusiveMin(exclusiveMin);
@@ -1147,15 +1190,13 @@ public class AttributeField extends FieldBase implements DataBinding {
      * The inclusiveMax element determines the maximum allowable value for data
      * entry editing purposes. Value can be an integer or decimal value such as
      * -.001 or 99.
-     *
-     * JSTL: This field is mapped into the field named "exclusiveMax".
      */
     public String getInclusiveMax() {
         return simpleConstraint.getInclusiveMax();
     }
 
     /**
-     * @param maxValue the maxValue to set
+     * @param inclusiveMax the maxValue to set
      */
     public void setInclusiveMax(String inclusiveMax) {
         simpleConstraint.setInclusiveMax(inclusiveMax);
@@ -1220,7 +1261,7 @@ public class AttributeField extends FieldBase implements DataBinding {
     /**
      * Setter for the direct inquiry widget
      *
-     * @param the <code>DirectInquiry</code> field DirectInquiry to set
+     * @param fieldDirectInquiry - field DirectInquiry to set
      */
     public void setFieldDirectInquiry(DirectInquiry fieldDirectInquiry) {
         this.fieldDirectInquiry = fieldDirectInquiry;

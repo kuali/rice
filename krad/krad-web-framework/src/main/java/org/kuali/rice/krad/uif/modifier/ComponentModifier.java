@@ -65,25 +65,16 @@ public interface ComponentModifier extends Configurable, Serializable, Ordered {
      * </p>
      *
      * @param view - View instance the component modifier is a part of
+     * @parma model - object instance containing the view data
      * @param component - Component the modifier is configured on
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performInitialization
      */
-    public void performInitialization(View view, Component component);
+    public void performInitialization(View view, Object model, Component component);
 
     /**
      * Invoked within the configured phase of the component lifecycle. This is
      * where the <code>ComponentModifier</code> should perform its work against
      * the given <code>Component</code> instance
-     *
-     * @param view - the view instance to which the component belongs
-     * @param component - the component instance to modify
-     */
-    public void performModification(View view, Component component);
-
-    /**
-     * Special version of the performModification method that takes in the model
-     * as an argument. This version will be invoked if the component modifier is
-     * configured to run in the applyModel or finalize phase.
      *
      * @param view - the view instance to which the component belongs
      * @param model - top level object containing the view data

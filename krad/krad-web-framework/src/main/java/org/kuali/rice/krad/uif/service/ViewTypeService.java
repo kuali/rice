@@ -15,7 +15,10 @@
  */
 package org.kuali.rice.krad.uif.service;
 
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.springframework.beans.PropertyValues;
 
 import java.util.Map;
 
@@ -47,26 +50,23 @@ public interface ViewTypeService {
 	 * among all view types implemented
 	 * </p>
 	 * 
-	 * @return String view type name
+	 * @return ViewType view type name
 	 */
-	public String getViewTypeName();
+	public ViewType getViewTypeName();
 
 	/**
-	 * Pulls values for the supported parameters from the <code>View</code>
-	 * instance. These name/value pairs are used to index the view for later
-	 * retrieval
+	 * Pulls values for the supported parameters from the views configured property values. These
+     * name/value pairs are used to index the view for later retrieval
 	 * 
-	 * @param view
-	 *            - view instance to pull parameter values from
+	 * @param propertyValues - property values configured on the view bean definition
 	 * @return Map<String, String> of parameters where map key is the parameter
 	 *         name, and the map value is the parameter value
 	 */
-	public Map<String, String> getParametersFromView(View view);
+	public Map<String, String> getParametersFromViewConfiguration(PropertyValues propertyValues);
 
 	/**
-	 * Pulls entries from the given map that are supported parameters for the
-	 * view type. In addition, defaults can be set or additional parameters set
-	 * as needed. Used by the <code>ViewService</code> to retrieve a
+	 * Pulls entries from the given map that are supported parameters for the view type. In addition,
+     * defaults can be set or additional parameters set as needed. Used by the <code>ViewService</code> to retrieve a
 	 * <code>View</code> instance based on the incoming request parameters
 	 * 
 	 * @param requestParameters

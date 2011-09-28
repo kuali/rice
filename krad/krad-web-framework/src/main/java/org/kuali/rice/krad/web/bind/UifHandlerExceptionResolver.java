@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * Spring Exception intercepter
@@ -40,20 +41,18 @@ import javax.servlet.http.HttpServletResponse;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifHandlerExceptionResolver implements org.springframework.web.servlet.HandlerExceptionResolver {
-
     private static final Logger LOG = Logger.getLogger(UifHandlerExceptionResolver.class);
 
     /**
-     * Builds the incident report model and view from the
-     * request that threw the exception.
+     * Builds the incident report model and view from the request that threw the exception.
      * 
-     * @param request
+     * @param request -
      *            the request
-     * @param response
+     * @param response -
      *            the response
-     * @param handler
+     * @param handler -
      *            the current handler when the exception occurred
-     * @param ex
+     * @param ex -
      *            the exception
      * @return the incident report model and view
      * @see org.springframework.web.servlet.HandlerExceptionResolver#resolveException(javax.servlet.http.HttpServletRequest,
@@ -78,6 +77,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
         IncidentReportForm incidentReportForm = new IncidentReportForm();
+
         // Set the post url map to the incident report controller and not 
         // the one the exception occurred on
         String postUrl = request.getRequestURL().toString();        
@@ -93,8 +93,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
 
         // Set the view object
-        incidentReportForm.setView(getViewService().getView("Incident-Report",
-                incidentReportForm.getViewRequestParameters()));
+        incidentReportForm.setView(getViewService().getViewById("Incident-Report"));
 
         // Add a new History entry to avoid errors in the postHandle
         History history = new History();
@@ -105,7 +104,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         // Set render full view to force full render
         incidentReportForm.setRenderFullView(true);
 
-        ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "Incident-Report", "");
+        ModelAndView modelAndView = UifWebUtils.getUIFModelAndView(incidentReportForm, "");
         try {
             UifWebUtils.postControllerHandle(request, response, handler, modelAndView);
         } catch (Exception e) {

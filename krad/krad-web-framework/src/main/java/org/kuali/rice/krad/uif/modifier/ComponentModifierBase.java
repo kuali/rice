@@ -51,30 +51,8 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
      * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#performInitialization
      */
     @Override
-    public void performInitialization(View view, Component component) {
+    public void performInitialization(View view, Object model, Component component) {
 
-    }
-
-    /**
-     * Default implementation of the overloaded performModification method that
-     * calls the version that does not take the model (more commonly
-     * implemented)
-     * 
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performModification(View view, Object model, Component component) {
-        performModification(view, component);
-    }
-    
-    /**
-     * @see org.kuali.rice.krad.uif.modifier.ComponentModifier#performModification(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.uif.component.Component)
-     */
-    @Override
-    public void performModification(View view, Component component) {
-        // do nothing
     }
 
     /**

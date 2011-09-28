@@ -29,7 +29,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TextControl extends ControlBase {
+public class TextControl extends ControlBase implements SizedControl {
 	private static final long serialVersionUID = -8267606288443759880L;
 
 	private int size;
@@ -83,18 +83,14 @@ public class TextControl extends ControlBase {
     }
 
     /**
-	 * Horizontal display size of the control (in number of characters)
-	 * 
-	 * @return int size
+	 * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
 	 */
 	public int getSize() {
 		return this.size;
 	}
 
     /**
-     * Setter for the horizontal display size
-     *
-     * @param size
+     * @see org.kuali.rice.krad.uif.control.SizedControl#setSize(int)
      */
     public void setSize(int size) {
         this.size = size;

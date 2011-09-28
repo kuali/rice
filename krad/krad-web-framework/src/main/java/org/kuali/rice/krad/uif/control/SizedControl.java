@@ -16,32 +16,24 @@
 package org.kuali.rice.krad.uif.control;
 
 /**
- * Represents a HTML File control, generally rendered as an input control with
- * type 'file'. Allows user to upload a file to the application
+ * Indicates <code>Control</code> types that have a size property
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FileControl extends ControlBase implements SizedControl {
-    private static final long serialVersionUID = -5919326390841646189L;
-
-    private int size;
-
-    public FileControl() {
-        super();
-    }
+public interface SizedControl {
 
     /**
-     * @see org.kuali.rice.krad.uif.control.SizedControl#getSize()
+     * Retrieves the configured size for the control, which reflects the display width in characters for
+     * the control within the UI
+     *
+     * @return int control size
      */
-    public int getSize() {
-        return this.size;
-    }
+    public int getSize();
 
     /**
-     * @see org.kuali.rice.krad.uif.control.SizedControl#setSize(int)
+     * Sets the size for the control
+     *
+     * @param size
      */
-    public void setSize(int size) {
-        this.size = size;
-    }
-
+    public void setSize(int size);
 }

@@ -93,7 +93,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="DateControl-parentBean" abstract="true" parent="TextControl">
       <property name="size" value="10"/>
       <property name="datePicker">
-        <ref bean="DatePicker"/>
+        <bean parent="DatePicker"/>
       </property>
   </bean>
 

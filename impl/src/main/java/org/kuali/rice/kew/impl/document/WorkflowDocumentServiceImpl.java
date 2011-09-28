@@ -111,14 +111,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return org.kuali.rice.kew.engine.node.RouteNodeInstance.to(nodeInstance);
     }
 
-    public String getNewResponsibilityId() {
-        String rid = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("returning responsibility Id " + rid);
-        }
-        return rid;
-    }
-
     @Override
     public String getDocumentStatus(String documentId) {
         if (StringUtils.isEmpty(documentId)) {
@@ -133,7 +125,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     @Override
     public String getApplicationDocumentId(String documentId) {
-        if (documentId == null) {
+        if (StringUtils.isEmpty(documentId)) {
             throw new RiceIllegalArgumentException("documentId was blank or null");
         }
  	 	return KEWServiceLocator.getRouteHeaderService().getAppDocId(documentId);
@@ -141,6 +133,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     @Override
     public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria) {
+        if (StringUtils.isEmpty(principalId)) {
+            throw new RiceIllegalArgumentException("principalId was blank or null");
+        }
+
         if (criteria == null) {
             throw new RiceIllegalArgumentException("criteria was null");
         }
@@ -229,6 +225,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         if (StringUtils.isBlank(documentId)) {
         	throw new RiceIllegalArgumentException("documentId was null or blank");
         }
+
+        if (StringUtils.isEmpty(nodeName)) {
+            throw new RiceIllegalArgumentException("nodeName was blank or null");
+        }
+
+        if (StringUtils.isEmpty(principalId)) {
+            throw new RiceIllegalArgumentException("principalId was blank or null");
+        }
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Fetching ActionRequests [docId="+documentId+", nodeName="+nodeName+", principalId="+principalId+"]");
         }
@@ -248,10 +252,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	
     public Map<String, String> getActionsRequested(String principalId, String documentId) {
         if (StringUtils.isEmpty(documentId)) {
-            throw new IllegalArgumentException("documentId is null or empty.");
+            throw new RiceIllegalArgumentException("documentId is null or empty.");
         }
         if (StringUtils.isEmpty(principalId)) {
-            throw new IllegalArgumentException("principalId is null or empty.");
+            throw new RiceIllegalArgumentException("principalId is null or empty.");
         }
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("Fetching DocumentRouteHeaderValue [id="+documentId+", user="+principalId+"]");
@@ -276,7 +280,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	@Override
 	public List<ActionTaken> getActionsTaken(String documentId) {
         if (StringUtils.isEmpty(documentId)) {
-            throw new IllegalArgumentException("documentId is null or empty.");
+            throw new RiceIllegalArgumentException("documentId is null or empty.");
         }
 		List<ActionTaken> actionTakens = new ArrayList<ActionTaken>();
 		Collection<ActionTakenValue> actionTakenBos = KEWServiceLocator.getActionTakenService().findByDocumentId(documentId);
@@ -289,7 +293,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	@Override
 	public DocumentDetail getDocumentDetail(@WebParam(name = "documentId") String documentId) {
 		if (StringUtils.isBlank(documentId)) {
-            throw new IllegalArgumentException("documentId was null or blank");
+            throw new RiceIllegalArgumentException("documentId was null or blank");
         }
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Fetching DocumentDetail [id="+documentId+"]");
@@ -307,9 +311,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     @Override
     public List<org.kuali.rice.kew.api.document.DocumentStatusTransition> getDocumentStatusTransitionHistory(String documentId) {
-        if (documentId == null) {
-            LOG.error("null documentId passed in.");
-            throw new RuntimeException("null documentId passed in");
+		if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
         }
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("Fetching document status transition history [id="+documentId+"]");
@@ -328,7 +331,11 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	
 	@Override
 	public List<RouteNodeInstance> getRouteNodeInstances(String documentId) {
-    	if ( LOG.isDebugEnabled() ) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+
+        if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Fetching RouteNodeInstances [documentId=" + documentId + "]");
     	}
     	DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
@@ -340,7 +347,11 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	
 	@Override
 	public List<RouteNodeInstance> getActiveRouteNodeInstances(String documentId) {
-		if ( LOG.isDebugEnabled() ) {
+		if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+
+        if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Fetching active RouteNodeInstances [documentId=" + documentId + "]");
     	}
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(documentId));
@@ -348,14 +359,22 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     @Override
     public List<RouteNodeInstance> getTerminalRouteNodeInstances(String documentId) {
-    	if ( LOG.isDebugEnabled() ) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+
+        if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Fetching terminal RouteNodeInstanceVOs [docId=" + documentId + "]");
     	}
         return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(documentId));
     }
 
     public List<RouteNodeInstance> getCurrentRouteNodeInstances(String documentId) {
-    	if ( LOG.isDebugEnabled() ) {
+    	if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+
+        if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Fetching current RouteNodeInstanceVOs [docId=" + documentId + "]");
     	}
     	return convertRouteNodeInstances(KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId));
@@ -371,7 +390,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	
 	@Override
 	public List<String> getPreviousRouteNodeNames(String documentId) {
-		if ( LOG.isDebugEnabled() ) {
+		if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId was null or blank");
+        }
+        if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching previous node names [documentId=" + documentId + "]");
 		}
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);

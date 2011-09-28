@@ -32,7 +32,7 @@ public class RuleValidationAttributeExporterServiceImpl implements RuleValidatio
     }
 
     @Override
-    public ValidationResults validate(String attributeName, RuleValidationContext validationContext) throws Exception {
+    public ValidationResults validate(String attributeName, RuleValidationContext validationContext) {
         if (StringUtils.isBlank(attributeName)) {
             throw new RiceIllegalArgumentException("attribute name was null or blank");
         }

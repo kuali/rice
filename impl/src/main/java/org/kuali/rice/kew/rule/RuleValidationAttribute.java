@@ -35,6 +35,6 @@ public interface RuleValidationAttribute {
 	 * @return a ValidationResults object representing the results of the validation, if this is
 	 * empty or <code>null</code> this signifies that validation was successful.
 	 */
-	public ValidationResults validate(RuleValidationContext validationContext) throws Exception;
+	public ValidationResults validate(RuleValidationContext validationContext);
 
 }

@@ -22,11 +22,23 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 
     @Override
     public PeopleFlowDefinition getPeopleFlow(String peopleFlowId) {
+        if (StringUtils.isBlank(peopleFlowId)) {
+            throw new RiceIllegalArgumentException("peopleFlowId is null or blank");
+        }
+
         return PeopleFlowBo.to(getPeopleFlowBo(peopleFlowId));
     }
 
     @Override
     public PeopleFlowDefinition getPeopleFlowByName(String namespaceCode, String name) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
+        }
+
+        if (StringUtils.isBlank(name)) {
+            throw new RiceIllegalArgumentException("name is null or blank");
+        }
+
         return PeopleFlowBo.to(getPeopleFlowBoByName(namespaceCode, name));
     }
 

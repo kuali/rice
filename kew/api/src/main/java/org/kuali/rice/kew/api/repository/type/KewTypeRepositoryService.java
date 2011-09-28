@@ -24,6 +24,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.repository.RepositoryConstants;
 
 @WebService(name = "KEWTypeService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
@@ -38,7 +40,7 @@ public interface KewTypeRepositoryService {
      * @throws IllegalStateException if the kewType already exists in the system
      */
     @WebMethod(operationName="createKewType")
-    KewTypeDefinition createKewType(@WebParam(name = "kewType") KewTypeDefinition kewType);
+    KewTypeDefinition createKewType(@WebParam(name = "kewType") KewTypeDefinition kewType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * This will update an existing {@link KewTypeDefinition}
@@ -48,7 +50,7 @@ public interface KewTypeRepositoryService {
      * @throws IllegalStateException if the KewType does not exist in the system
      */
     @WebMethod(operationName="updateKewType")
-    void updateKewType(@WebParam(name = "kewType") KewTypeDefinition kewType);
+    void updateKewType(@WebParam(name = "kewType") KewTypeDefinition kewType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Lookup a kew type based on the given id.
@@ -59,7 +61,7 @@ public interface KewTypeRepositoryService {
      */
     @WebMethod(operationName = "getTypeById")
     @WebResult(name = "type")
-    KewTypeDefinition getTypeById(@WebParam(name = "id") String id);
+    KewTypeDefinition getTypeById(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
      * Get a kew type object based on name and namespace
@@ -74,7 +76,7 @@ public interface KewTypeRepositoryService {
     @WebResult(name = "type")
     KewTypeDefinition getTypeByNameAndNamespace(
             @WebParam(name = "name") String name,
-            @WebParam(name = "namespace") String namespace);
+            @WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
    /**
      * Returns all KEW types that for a given namespace.
@@ -84,7 +86,7 @@ public interface KewTypeRepositoryService {
     @WebMethod(operationName = "findAllTypesByNamespace")
     @WebResult(name = "namespaceTypes")
     List<KewTypeDefinition> findAllTypesByNamespace(
-    		@WebParam(name = "namespace") String namespace);
+    		@WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException;
 
     /**
      * Returns all KEW types
@@ -103,17 +105,17 @@ public interface KewTypeRepositoryService {
      * @throws IllegalStateException if the KewTypeAttribute already exists in the system
      */
     @WebMethod(operationName="createKewTypeAttribute")
-    void createKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute);
+    void createKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * This will update an existing {@link KewTypeAttribute}
      *
-     * @param kewType - KewTypeAttribute
+     * @param kewTypeAttribute - KewTypeAttribute
      * @throws IllegalArgumentException if the kewTypeAttribute is null
      * @throws IllegalStateException if the KewTypeAttribute does not exist in the system
      */
     @WebMethod(operationName="updateKewTypeAttribute")
-    void updateKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute);
+    void updateKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
 
 }

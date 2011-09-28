@@ -1,5 +1,7 @@
 package org.kuali.rice.kew.mail.service.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
@@ -18,6 +20,14 @@ public class ImmediateEmailReminderServiceImpl implements ImmediateEmailReminder
     private ActionListEmailService actionListEmailService;
 
     public void sendReminder(ActionItem actionItem, Boolean skipOnApprovals) {
+        if (actionItem == null) {
+			throw new RiceIllegalArgumentException("actionItem was null");
+		}
+
+        if (skipOnApprovals == null) {
+			throw new RiceIllegalArgumentException("skipOnApprovals was null");
+		}
+
         getActionListEmailService().sendImmediateReminder(actionItem, skipOnApprovals);
     }
 

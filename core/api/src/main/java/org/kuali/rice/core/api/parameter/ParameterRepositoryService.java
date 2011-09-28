@@ -113,7 +113,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getPropertyValueAsString")
     @WebResult(name = "value")
-    String getParameterValueAsString(@WebParam(name = "key") ParameterKey key);
+    String getParameterValueAsString(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link ParameterContract#getValue()} as a Boolean from a {@link ParameterKey}.
@@ -155,7 +155,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getParameterValueAsBoolean")
     @WebResult(name = "value")
-    Boolean getParameterValueAsBoolean(@WebParam(name = "key") ParameterKey key);
+    Boolean getParameterValueAsBoolean(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link ParameterContract#getValue()} from a {@link ParameterKey}
@@ -186,7 +186,7 @@ public interface ParameterRepositoryService {
     @XmlElementWrapper(name = "values", required = true)
     @XmlElement(name = "value", required = false)
     @WebResult(name = "values")
-    Collection<String> getParameterValuesAsString(@WebParam(name = "key") ParameterKey key);
+    Collection<String> getParameterValuesAsString(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
      * Gets a {@link ParameterContract#getValue()} from a {@link ParameterKey}
@@ -283,5 +283,5 @@ public interface ParameterRepositoryService {
     
     @WebMethod(operationName="findParameters")
     @WebResult(name = "results")
-    ParameterQueryResults findParameters(@WebParam(name = "query") QueryByCriteria queryByCriteria);
+    ParameterQueryResults findParameters(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
 }

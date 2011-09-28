@@ -1,5 +1,6 @@
 package org.kuali.rice.kew.framework.validation;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.validation.RuleValidationContext;
 import org.kuali.rice.kew.api.validation.ValidationResults;
@@ -30,7 +31,7 @@ public interface RuleValidationAttributeExporterService {
     @WebMethod(operationName = "validate")
     @WebResult(name = "validationResults")
     @XmlElement(name = "validationResults", required = false)
-    public ValidationResults validate(
+    ValidationResults validate(
                                 @WebParam(name = "attributeName") String attributeName,
-                                @WebParam(name = "validationContext") RuleValidationContext validationContext) throws Exception;
+                                @WebParam(name = "validationContext") RuleValidationContext validationContext) throws RiceIllegalArgumentException;
 }

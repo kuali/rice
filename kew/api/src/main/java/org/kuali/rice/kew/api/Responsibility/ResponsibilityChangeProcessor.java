@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.api.Responsibility;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.jws.WebMethod;
@@ -27,5 +28,5 @@ import java.util.Set;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityChangeProcessor {
     @WebMethod(operationName = "responsibilityChangeContents")
-    void ResponsibilityChangeContents(@WebParam(name="responsibilities") Set<String> responsibilities);
+    void ResponsibilityChangeContents(@WebParam(name="responsibilities") Set<String> responsibilities) throws RiceIllegalArgumentException;
 }

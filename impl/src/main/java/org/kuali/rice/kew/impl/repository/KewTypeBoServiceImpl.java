@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
@@ -44,13 +46,13 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
 	@Override
 	public KewTypeDefinition createKewType(KewTypeDefinition kewType) {
 		if (kewType == null){
-	        throw new IllegalArgumentException("kewType is null");
+	        throw new RiceIllegalArgumentException("kewType is null");
 		}
 		final String nameKey = kewType.getName();
 		final String namespaceKey = kewType.getNamespace();
 		final KewTypeDefinition existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
 		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
-            throw new IllegalStateException("The KEW Type to create already exists: " + kewType);			
+            throw new RiceIllegalStateException("The KEW Type to create already exists: " + kewType);
 		}
 		
 		KewTypeBo bo = (KewTypeBo)businessObjectService.save(KewTypeBo.from(kewType));
@@ -66,12 +68,12 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
 	@Override
 	public void updateKewType(KewTypeDefinition kewType) {
         if (kewType == null) {
-            throw new IllegalArgumentException("kewType is null");
+            throw new RiceIllegalArgumentException("kewType is null");
         }
 		final String idKey = kewType.getId();
 		final KewTypeBo existing = businessObjectService.findBySinglePrimaryKey(KewTypeBo.class, idKey);
         if (existing == null) {
-            throw new IllegalStateException("The KEW type does not exist: " + kewType);
+            throw new RiceIllegalStateException("The KEW type does not exist: " + kewType);
         }
         final KewTypeDefinition toUpdate;
         if (!existing.getId().equals(kewType.getId())){
@@ -88,7 +90,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
     @Override
     public KewTypeDefinition getTypeById(final String id) {
         if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException("id is blank");
+            throw new RiceIllegalArgumentException("id is blank");
         }
 
         KewTypeBo kewTypeBo = businessObjectService.findBySinglePrimaryKey(KewTypeBo.class, id);
@@ -99,10 +101,10 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
     @Override
     public KewTypeDefinition getTypeByNameAndNamespace(final String name, final String namespace) {
         if (StringUtils.isBlank(name)) {
-            throw new IllegalArgumentException("name is blank");
+            throw new RiceIllegalArgumentException("name is blank");
         }
         if (StringUtils.isBlank(namespace)) {
-            throw new IllegalArgumentException("namespace is blank");
+            throw new RiceIllegalArgumentException("namespace is blank");
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();
@@ -116,7 +118,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
     @Override
     public List<KewTypeDefinition> findAllTypesByNamespace(final String namespace) {
         if (StringUtils.isBlank(namespace)) {
-            throw new IllegalArgumentException("namespace is blank");
+            throw new RiceIllegalArgumentException("namespace is blank");
         }
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespace);
@@ -148,7 +150,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
     /**
      * Converts a List<KewTypeBo> to an Unmodifiable List<KewType>
      *
-     * @param KewTypeBos a mutable List<KewTypeBo> to made completely immutable.
+     * @param kewTypeBos a mutable List<KewTypeBo> to made completely immutable.
      * @return An unmodifiable List<KewType>
      */
     List<KewTypeDefinition> convertListOfBosToImmutables(final Collection<KewTypeBo> kewTypeBos) {
@@ -168,7 +170,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
 	@Override
 	public void createKewTypeAttribute(KewTypeAttribute kewTypeAttribute) {
         if (kewTypeAttribute == null){
-            throw new IllegalArgumentException("kewTypeAttribute is null");
+            throw new RiceIllegalArgumentException("kewTypeAttribute is null");
         }
         
         final String typeIdKey = kewTypeAttribute.getTypeId();
@@ -181,7 +183,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
         KewTypeAttributeBo existing = businessObjectService.findByPrimaryKey(KewTypeAttributeBo.class, Collections.unmodifiableMap(map));
 
         if (existing != null && existing.getTypeId().equals(typeIdKey) && existing.getAttributeDefinitionId().equals(attrDefIdKey)){
-            throw new IllegalStateException("The KEW Type Attribute to create already exists: " + kewTypeAttribute);           
+            throw new RiceIllegalStateException("The KEW Type Attribute to create already exists: " + kewTypeAttribute);
         }
         
         KewTypeAttributeBo bo = (KewTypeAttributeBo)businessObjectService.save(KewTypeAttributeBo.from(kewTypeAttribute));
@@ -195,12 +197,12 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
     @Override
     public void updateKewTypeAttribute(KewTypeAttribute kewTypeAttribute) {
         if (kewTypeAttribute == null) {
-            throw new IllegalArgumentException("kewTypeAttribute is null");
+            throw new RiceIllegalArgumentException("kewTypeAttribute is null");
         }
         final String idKey = kewTypeAttribute.getId();
         final KewTypeAttributeBo existing = businessObjectService.findBySinglePrimaryKey(KewTypeAttributeBo.class, idKey);
         if (existing == null) {
-            throw new IllegalStateException("The KEW type Attribute does not exist: " + kewTypeAttribute);
+            throw new RiceIllegalStateException("The KEW type Attribute does not exist: " + kewTypeAttribute);
         }
         final KewTypeAttribute toUpdate;
         if (!existing.getId().equals(kewTypeAttribute.getId())){

@@ -20,6 +20,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
@@ -32,6 +33,6 @@ import org.kuali.rice.kew.api.KewApiConstants;
 public interface GroupMembershipChangeQueue {
 
     @WebMethod(operationName = "notifyMembershipChange")
-    void notifyMembershipChange(@WebParam(name="operation") String operation, @WebParam(name="groupId") String groupId, @WebParam(name="principalId") String principalId);
+    void notifyMembershipChange(@WebParam(name="operation") String operation, @WebParam(name="groupId") String groupId, @WebParam(name="principalId") String principalId) throws RiceIllegalArgumentException;
     
 }

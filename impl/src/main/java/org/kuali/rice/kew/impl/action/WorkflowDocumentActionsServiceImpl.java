@@ -371,17 +371,21 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public DocumentActionResult acknowledge(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, ACKNOWLEDGE_CALLBACK);
     }
 
     @Override
     public DocumentActionResult approve(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, APPROVE_CALLBACK);
     }
 
     @Override
     public DocumentActionResult adHocToPrincipal(DocumentActionParameters parameters,
             final AdHocToPrincipal adHocToPrincipal) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(adHocToPrincipal, "adHocToPrincipal");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     @Override
@@ -417,6 +421,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult adHocToGroup(DocumentActionParameters parameters,
             final AdHocToGroup adHocToGroup) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(adHocToGroup, "adHocToGroup");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     @Override
@@ -451,6 +457,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult revokeAdHocRequestById(DocumentActionParameters parameters,
             final String actionRequestId) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(actionRequestId, "actionRequestId");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     @Override
@@ -473,6 +481,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult revokeAdHocRequests(DocumentActionParameters parameters,
             final AdHocRevoke revoke) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(revoke, "revoke");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     @Override
@@ -494,6 +504,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public DocumentActionResult revokeAllAdHocRequests(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     @Override
@@ -514,36 +525,45 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public DocumentActionResult cancel(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, CANCEL_CALLBACK);
     }
 
+    @Override
     public DocumentActionResult clearFyi(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, FYI_CALLBACK);
     }
 
     @Override
     public DocumentActionResult complete(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, COMPLETE_CALLBACK);
     }
 
     @Override
     public DocumentActionResult disapprove(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, DISAPPROVE_CALLBACK);
     }
 
     @Override
     public DocumentActionResult route(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, ROUTE_CALLBACK);
     }
 
     @Override
     public DocumentActionResult blanketApprove(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, BLANKET_APPROVE_CALLBACK);
     }
 
     @Override
     public DocumentActionResult blanketApproveToNodes(DocumentActionParameters parameters,
             final Set<String> nodeNames) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(nodeNames, "nodeNames");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -562,6 +582,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult returnToPreviousNode(DocumentActionParameters parameters,
             final ReturnPoint returnPoint) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(returnPoint, "returnPoint");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -580,6 +602,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult move(DocumentActionParameters parameters,
             final MovePoint movePoint) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(movePoint, "movePoint");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -598,6 +622,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult takeGroupAuthority(DocumentActionParameters parameters,
             final String groupId) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(groupId, "groupId");
         return executeActionInternal(parameters,
                 new StandardDocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -615,6 +641,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult releaseGroupAuthority(DocumentActionParameters parameters,
             final String groupId) {
+        incomingParamCheck(parameters, "parameters");
+        incomingParamCheck(groupId, "groupId");
         return executeActionInternal(parameters,
                 new StandardDocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -632,11 +660,13 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public DocumentActionResult save(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, SAVE_CALLBACK);
     }
 
     @Override
     public DocumentActionResult saveDocumentData(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, new DocumentActionCallback() {
 
             @Override
@@ -655,6 +685,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public Document delete(String documentId, String principalId) {
+        incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(principalId, "principalId");
         DocumentRouteHeaderValue documentBo = init(DocumentActionParameters.create(documentId, principalId, null));
         if (LOG.isDebugEnabled()) {
             LOG.debug("Delete [principalId=" + principalId + ", documentId=" + documentId + "]");
@@ -685,6 +717,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public void initiateIndexing(String documentId) {
+        incomingParamCheck(documentId, "documentId");
         // TODO ewestfal - THIS METHOD NEEDS JAVADOCS
         throw new UnsupportedOperationException("implement me!!!");
     }
@@ -692,6 +725,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult superUserBlanketApprove(DocumentActionParameters parameters,
             final boolean executePostProcessor) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -710,6 +744,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult superUserNodeApprove(DocumentActionParameters parameters,
             final boolean executePostProcessor, final String nodeName) {
+                incomingParamCheck(parameters, "parameters");
+                incomingParamCheck(nodeName, "nodeName");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -729,6 +765,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult superUserTakeRequestedAction(DocumentActionParameters parameters,
             final boolean executePostProcessor, final String actionRequestId) {
+                incomingParamCheck(parameters, "parameters");
+                incomingParamCheck(actionRequestId, "actionRequestId");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -748,6 +786,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult superUserDisapprove(DocumentActionParameters parameters,
             final boolean executePostProcessor) {
+                        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -765,6 +804,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public DocumentActionResult superUserCancel(DocumentActionParameters parameters, final boolean executePostProcessor) {
+                        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -783,6 +823,8 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public DocumentActionResult superUserReturnToPreviousNode(DocumentActionParameters parameters,
             final boolean executePostProcessor, final ReturnPoint returnPoint) {
+            incomingParamCheck(parameters, "parameters");
+            incomingParamCheck(returnPoint, "returnPoint");
         return executeActionInternal(parameters,
                 new DocumentActionCallback() {
                     public DocumentRouteHeaderValue doInDocumentBo(DocumentRouteHeaderValue documentBo,
@@ -801,11 +843,14 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public DocumentActionResult placeInExceptionRouting(DocumentActionParameters parameters) {
+        incomingParamCheck(parameters, "parameters");
         return executeActionInternal(parameters, PLACE_IN_EXCEPTION_CALLBACK);
     }
 
     @Override
     public boolean documentWillHaveAtLeastOneActionRequest(RoutingReportCriteria reportCriteria, List<String> actionRequestedCodes, boolean ignoreCurrentActionRequests) {
+        incomingParamCheck(reportCriteria, "reportCriteria");
+        incomingParamCheck(actionRequestedCodes, "actionRequestedCodes");
         try {
 	        SimulationWorkflowEngine simulationEngine = KEWServiceLocator.getSimulationEngine();
 	        SimulationCriteria criteria = SimulationCriteria.from(reportCriteria);
@@ -985,6 +1030,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     @Override
     public boolean routeNodeHasApproverActionRequest(String documentTypeName, String docContent, String nodeName) {
         incomingParamCheck(documentTypeName, "documentTypeName");
+        incomingParamCheck(docContent, "docContent");
         incomingParamCheck(nodeName, "nodeName");
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Evaluating routeNodeHasApproverActionRequest [docTypeName=" + documentTypeName + ", nodeName=" + nodeName + "]");
@@ -1002,6 +1048,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         incomingParamCheck(documentType, "documentType");
         incomingParamCheck(docContent, "docContent");
         incomingParamCheck(node, "node");
+        incomingParamCheck(routeLevel, "routeLevel");
 
 /*        DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
         routeHeader.setDocumentId("");
@@ -1098,7 +1145,9 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
 
     @Override
     public boolean isUserInRouteLog(String documentId, String principalId, boolean lookFuture) {
-    	return isUserInRouteLogWithOptionalFlattening(documentId, principalId, lookFuture, false);
+    	incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(principalId, "principalId");
+        return isUserInRouteLogWithOptionalFlattening(documentId, principalId, lookFuture, false);
     }
 
     @Override

@@ -181,7 +181,7 @@ public interface WorkflowDocumentService {
     /**
      * Gets a {@link RouteNodeInstance} with the given nodeInstanceId
      *
-     * @param nodeInstanceId the unique id of the {@link RouteNodeInstance}
+     * @param routeNodeInstanceId the unique id of the {@link RouteNodeInstance}
      *
      * @return a {@link DocumentDetail} for with the given documentId
      *

@@ -60,7 +60,7 @@ public interface DocumentSecurityHandlerService {
      */
     @WebMethod(operationName = "getAuthorizedDocumentIds")
     @WebResult(name = "authorizedDocumentIds")
-    @XmlElementWrapper(name = "authorizedDocumentIds", required = false)
+    @XmlElementWrapper(name = "authorizedDocumentIds", required = true)
     @XmlElement(name = "documentId", required = false)
     List<String> getAuthorizedDocumentIds(
             @WebParam(name = "principalId") String principalId,

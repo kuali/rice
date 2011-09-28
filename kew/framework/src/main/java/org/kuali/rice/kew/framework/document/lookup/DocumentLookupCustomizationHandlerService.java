@@ -82,7 +82,7 @@ public interface DocumentLookupCustomizationHandlerService {
      */
     @WebMethod(operationName = "validateCriteria")
     @WebResult(name = "errors")
-    @XmlElementWrapper(name = "errors", required = false)
+    @XmlElementWrapper(name = "errors", required = true)
     @XmlElement(name = "errors", required = false)
     List<RemotableAttributeError> validateCriteria(@WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria,
             @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
@@ -212,7 +212,7 @@ public interface DocumentLookupCustomizationHandlerService {
      */
     @WebMethod(operationName = "getEnabledCustomizations")
     @WebResult(name = "enabledCustomizations")
-    @XmlElementWrapper(name = "enabledCustomizations", required = false)
+    @XmlElementWrapper(name = "enabledCustomizations", required = true)
     @XmlElement(name = "enabledCustomization", required = false)
     Set<DocumentLookupCustomization> getEnabledCustomizations(
             @WebParam(name = "documentTypeName") String documentTypeName,

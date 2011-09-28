@@ -165,7 +165,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     @Override
 	public ParameterQueryResults findParameters(QueryByCriteria queryByCriteria) {
         if (queryByCriteria == null) {
-            throw new IllegalArgumentException("queryByCriteria is null");
+            throw new RiceIllegalArgumentException("queryByCriteria is null");
         }
 
         GenericQueryResults<ParameterBo> results = criteriaLookupService.lookup(ParameterBo.class, queryByCriteria);

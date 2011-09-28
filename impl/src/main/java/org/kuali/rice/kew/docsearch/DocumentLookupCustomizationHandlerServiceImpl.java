@@ -44,6 +44,10 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
         }
+
+        if (searchableAttributeNames == null) {
+            throw new RiceIllegalArgumentException("searchableAttributeNames was null");
+        }
         DocumentLookupCriteriaConfiguration.Builder configBuilder = DocumentLookupCriteriaConfiguration.Builder.create();
         if (CollectionUtils.isNotEmpty(searchableAttributeNames)) {
             try {
@@ -73,8 +77,8 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (documentLookupCriteria == null) {
             throw new RiceIllegalArgumentException("documentLookupCriteria was null or blank");
         }
-        if (CollectionUtils.isEmpty(searchableAttributeNames)) {
-            return Collections.emptyList();
+        if (searchableAttributeNames == null) {
+            throw new RiceIllegalArgumentException("searchableAttributeNames was null");
         }
         try {
             List<RemotableAttributeError> searchFieldErrors = new ArrayList<RemotableAttributeError>();

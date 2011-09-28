@@ -129,7 +129,7 @@ public interface RuleService {
     @WebMethod(operationName = "getRuleTemplate")
     @WebResult(name = "ruleTemplate")
     @Cacheable(value=RuleTemplate.Cache.NAME, key="'id=' + #id")
-    RuleTemplate getRuleTemplate(@WebParam(name = "id") String id);
+    RuleTemplate getRuleTemplate(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
      * gets a RuleTemplate identified by the passed in name
@@ -144,7 +144,7 @@ public interface RuleService {
     @WebMethod(operationName = "getRuleTemplateByName")
     @WebResult(name = "ruleTemplate")
     @Cacheable(value=RuleTemplate.Cache.NAME, key="'name=' + #name")
-    RuleTemplate getRuleTemplateByName(@WebParam(name = "name") String name);
+    RuleTemplate getRuleTemplateByName(@WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
     /**
      * Query for rules based on the given search criteria which is a Map of ruleTemplate field names to values.
@@ -175,7 +175,7 @@ public interface RuleService {
     @WebMethod(operationName = "getRuleResponsibility")
     @WebResult(name = "ruleResponsibility")
     @Cacheable(value=RuleResponsibility.Cache.NAME, key="'responsibilityId=' + #responsibilityId")
-    RuleResponsibility getRuleResponsibility(@WebParam(name = "responsibilityId") String responsibilityId);
+    RuleResponsibility getRuleResponsibility(@WebParam(name = "responsibilityId") String responsibilityId) throws RiceIllegalArgumentException;
 
     /**
      * gets a RuleDelegations identified by the passed in id for responsibility

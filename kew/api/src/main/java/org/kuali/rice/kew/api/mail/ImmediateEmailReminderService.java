@@ -1,9 +1,11 @@
 package org.kuali.rice.kew.api.mail;
  
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionItem;
 
@@ -18,6 +20,5 @@ import org.kuali.rice.kew.api.action.ActionItem;
 public interface ImmediateEmailReminderService {
  
 	@WebMethod(operationName = "sendReminder")
-	public void sendReminder(ActionItem actionItem, Boolean skipOnApprovals);
- 	
+	void sendReminder(@WebParam(name="actionItem") ActionItem actionItem, @WebParam(name="skipOnApprovals") Boolean skipOnApprovals) throws RiceIllegalArgumentException;
  }

@@ -44,7 +44,7 @@ import org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl
  */
 public class RuleValidationAttributeServicesTest {
     public static class TestRuleValidationAttribute implements RuleValidationAttribute {
-        public ValidationResults validate(RuleValidationContext validationContext) throws Exception {
+        public ValidationResults validate(RuleValidationContext validationContext) {
             return ValidationResults.Builder.create().build();
         }
     }

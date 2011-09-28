@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -52,6 +54,18 @@ public class GroupMembershipChangeQueueImpl implements GroupMembershipChangeQueu
      */
     @Override
     public void notifyMembershipChange(String operation, String groupId, String principalId) {
+        if (StringUtils.isBlank(operation)) {
+			throw new RiceIllegalArgumentException("operation was blank or null");
+		}
+
+        if (StringUtils.isBlank(groupId)) {
+			throw new RiceIllegalArgumentException("groupId was blank or null");
+		}
+
+        if (StringUtils.isBlank(principalId)) {
+			throw new RiceIllegalArgumentException("principalId was blank or null");
+		}
+
         Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
         if (principal == null) {
             throw new RiceRuntimeException("Could not locate the user for the given principal id '" + principalId + "'");
@@ -108,10 +122,10 @@ public class GroupMembershipChangeQueueImpl implements GroupMembershipChangeQueu
     } 
     
     public ActionRequestService getActionRequestService() {
-        return (ActionRequestService) KEWServiceLocator.getActionRequestService();
+        return KEWServiceLocator.getActionRequestService();
     }
     
     public ActionListService getActionListService() {
-        return (ActionListService) KEWServiceLocator.getActionListService();
+        return KEWServiceLocator.getActionListService();
     }
 }

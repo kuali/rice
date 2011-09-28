@@ -24,6 +24,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -53,7 +55,7 @@ public interface StyleRepositoryService {
 	 */
 	@WebMethod(operationName = "getStyle")
 	@WebResult(name = "style")
-	public Style getStyle(@WebParam(name = "styleName") String styleName) throws RiceIllegalArgumentException;
+	Style getStyle(@WebParam(name = "styleName") String styleName) throws RiceIllegalArgumentException;
 
 	/**
 	 * Creates or updates the Style represented by the given record.  If the
@@ -73,7 +75,7 @@ public interface StyleRepositoryService {
 	 * @throws IllegalArgumentException if the given style is null
 	 */
 	@WebMethod(operationName = "saveStyle")
-	public void saveStyle(@WebParam(name = "style") Style style) throws RiceIllegalArgumentException;
+	void saveStyle(@WebParam(name = "style") Style style) throws RiceIllegalArgumentException;
 	
 	/**
 	 * Returns a list of the names for all active styles in the repository. If
@@ -83,7 +85,9 @@ public interface StyleRepositoryService {
 	 * @return the list of names for all active styles
 	 */
 	@WebMethod(operationName="getStyleNames")
+    @XmlElementWrapper(name = "names", required = true)
+    @XmlElement(name = "name", required = false)
     @WebResult(name = "styleNames")
-    public List<String> getAllStyleNames();
+    List<String> getAllStyleNames();
 
 }

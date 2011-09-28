@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.impl.Responsibility;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.Responsibility.ResponsibilityChangeProcessor;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -25,6 +26,10 @@ public class ResponsibilityChangeProcessorImpl implements ResponsibilityChangePr
 
     @Override
     public void ResponsibilityChangeContents(@WebParam(name = "responsibilities") Set<String> responsibilities) {
+        if (responsibilities == null) {
+            throw new RiceIllegalArgumentException("responsibilities is null");
+        }
+
         KEWServiceLocator.getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilities);
     }
 }

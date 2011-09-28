@@ -115,7 +115,7 @@ public interface PermissionService {
     					   @WebParam(name="namespaceCode") String namespaceCode,
     					   @WebParam(name="permissionName") String permissionName,
     					   @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                           @WebParam(name="permissionDetails") Map<String, String> permissionDetails );
+                           @WebParam(name="permissionDetails") Map<String, String> permissionDetails ) throws RiceIllegalArgumentException;
 
 
     /**
@@ -140,7 +140,7 @@ public interface PermissionService {
                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     					  @WebParam(name="permissionDetails") Map<String, String> permissionDetails,
                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    					  @WebParam(name="qualification") Map<String, String> qualification  );
+    					  @WebParam(name="qualification") Map<String, String> qualification  ) throws RiceIllegalArgumentException;
 
     /**
      * Checks whether the principal has been granted a permission matching the given details
@@ -160,7 +160,7 @@ public interface PermissionService {
     									 @WebParam(name="namespaceCode") String namespaceCode,
     									 @WebParam(name="permissionTemplateName") String permissionTemplateName,
                                          @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    									 @WebParam(name="permissionDetails") Map<String, String> permissionDetails );
+    									 @WebParam(name="permissionDetails") Map<String, String> permissionDetails ) throws RiceIllegalArgumentException;
     
     /**
      * Checks whether the given qualified permission is granted to the principal given
@@ -184,7 +184,7 @@ public interface PermissionService {
                                         @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     									@WebParam(name="permissionDetails") Map<String, String> permissionDetails,
                                         @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    									@WebParam(name="qualification") Map<String, String> qualification  );
+    									@WebParam(name="qualification") Map<String, String> qualification  ) throws RiceIllegalArgumentException;
     
     
     /**
@@ -207,7 +207,7 @@ public interface PermissionService {
                                                          @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     													 @WebParam(name="permissionDetails") Map<String, String> permissionDetails,
                                                          @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    													 @WebParam(name="qualification") Map<String, String> qualification );
+    													 @WebParam(name="qualification") Map<String, String> qualification ) throws RiceIllegalArgumentException;
 
     /**
      * Get the list of principals/groups who have a given permission that match the given 
@@ -230,7 +230,7 @@ public interface PermissionService {
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
                     name = "permissionDetails") Map<String, String> permissionDetails,
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
-                    name = "qualification") Map<String, String> qualification);
+                    name = "qualification") Map<String, String> qualification) throws RiceIllegalArgumentException;
     
     /**
      * Returns true if the given permission is defined on any Roles.
@@ -240,7 +240,7 @@ public interface PermissionService {
     boolean isPermissionDefined( @WebParam(name="namespaceCode") String namespaceCode,
     							 @WebParam(name="permissionName") String permissionName,
                                  @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    							 @WebParam(name="permissionDetails") Map<String, String> permissionDetails );
+    							 @WebParam(name="permissionDetails") Map<String, String> permissionDetails ) throws RiceIllegalArgumentException;
     
     /**
      * Returns true if the given permission template is defined on any Roles.
@@ -250,7 +250,7 @@ public interface PermissionService {
     boolean isPermissionDefinedByTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "permissionTemplateName") String permissionTemplateName,
             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(
-                    name = "permissionDetails") Map<String, String> permissionDetails);
+                    name = "permissionDetails") Map<String, String> permissionDetails) throws RiceIllegalArgumentException;
     
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -281,7 +281,7 @@ public interface PermissionService {
                                                       @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     												  @WebParam(name="permissionDetails") Map<String, String> permissionDetails,
                                                       @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    												  @WebParam(name="qualification") Map<String, String> qualification );
+    												  @WebParam(name="qualification") Map<String, String> qualification ) throws RiceIllegalArgumentException;
 
     /**
      * Returns permissions (with their details) that are granted to the principal given
@@ -312,7 +312,7 @@ public interface PermissionService {
                                                                     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     																@WebParam(name="permissionDetails") Map<String, String> permissionDetails,
                                                                     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    																@WebParam(name="qualification") Map<String, String> qualification );
+    																@WebParam(name="qualification") Map<String, String> qualification ) throws RiceIllegalArgumentException;
 
     // --------------------
     // Permission Data
@@ -334,7 +334,7 @@ public interface PermissionService {
     @WebResult(name = "permission")
     @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
     Permission findPermByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "name") String name);
+            @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
    
 	/** 
 	 * Return the permission object for the given unique combination of namespace,
@@ -344,7 +344,7 @@ public interface PermissionService {
     @WebResult(name = "permission")
     @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'templateName=' + #templateName")
     List<Permission> findPermsByNamespaceCodeTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "templateName") String templateName);
+            @WebParam(name = "templateName") String templateName) throws RiceIllegalArgumentException;
 
 	/**
 	 * 
@@ -356,7 +356,7 @@ public interface PermissionService {
 	@WebMethod(operationName = "getPermissionTemplate")
     @WebResult(name = "id")
     @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'id=' + #id")
-    Template getPermissionTemplate( @WebParam(name="id") String id );
+    Template getPermissionTemplate( @WebParam(name="id") String id ) throws RiceIllegalArgumentException;
 
 	/**
 	 * 
@@ -369,7 +369,7 @@ public interface PermissionService {
     @WebResult(name = "permissionTemplate")
     @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
     Template findPermTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "name") String name);
+            @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
 	/**
 	 * 
@@ -394,7 +394,7 @@ public interface PermissionService {
     List<String> getRoleIdsForPermission( @WebParam(name="namespaceCode") String namespaceCode,
     									  @WebParam(name="permissionName") String permissionName,
                                           @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    									  @WebParam(name="permissionDetails") Map<String, String> permissionDetails);
+    									  @WebParam(name="permissionDetails") Map<String, String> permissionDetails) throws RiceIllegalArgumentException;
 
     /**
      * This method find Permissions based on a query criteria.  The criteria cannot be null.

@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.framework.responsibility;
 
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -61,5 +62,5 @@ public interface ResponsibilityTypeService extends KimTypeService {
                                             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                             Map<String, String> requestedDetails,
                                             @WebParam(name = "responsibilities")
-                                            List<Responsibility> responsibilities);
+                                            List<Responsibility> responsibilities) throws RiceIllegalArgumentException;
 }

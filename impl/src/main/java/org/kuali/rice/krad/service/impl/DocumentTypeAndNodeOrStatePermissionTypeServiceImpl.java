@@ -31,11 +31,6 @@ import java.util.Map;
  */
 public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 
-	{
-//		requiredAttributes.add(KimAttributes.ROUTE_NODE_NAME);
-//		requiredAttributes.add(KimAttributes.ROUTE_STATUS_CODE);
-	}
-
 	/**
      *  Permission type service which can check the route node and status as well as the document hierarchy.
      *  

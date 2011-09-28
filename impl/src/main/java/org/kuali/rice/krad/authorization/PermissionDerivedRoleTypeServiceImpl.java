@@ -72,6 +72,13 @@ public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeService
 
     @Override
     public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+        if (roleName == null) {
+            throw new RiceIllegalArgumentException("roleName was null");
+        }
         List<Assignee> permissionAssignees = getPermissionAssignees(qualification);
         List<RoleMembership> members = new ArrayList<RoleMembership>();
         for (Assignee permissionAssigneeInfo : permissionAssignees) {

@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.kns.kim.role;
 
-
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.role.RoleMembership;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,15 @@ public class DerivedRoleTypeServiceBase extends RoleTypeServiceBase {
 
 	@Override
 	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
-        return new ArrayList<RoleMembership>();
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+        if (roleName == null) {
+            throw new RiceIllegalArgumentException("roleName was null");
+        }
+
+        return Collections.emptyList();
 	}
 
 	/**

@@ -30,10 +30,10 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 		DocumentTypePermissionTypeServiceImpl {
 
 	@Override
-	public List<Permission> performPermissionMatches(
+	protected List<Permission> performPermissionMatches(
 			Map<String, String> requestedDetails,
 			List<Permission> permissionsList) {
-		
+
 		List<Permission> matchingPermissions = new ArrayList<Permission>();
 		if (requestedDetails == null) {
 			return matchingPermissions; // empty list

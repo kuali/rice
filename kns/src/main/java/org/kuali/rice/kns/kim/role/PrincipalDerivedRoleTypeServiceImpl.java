@@ -58,7 +58,15 @@ public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceB
 
 	@Override
 	public boolean performMatch(Map<String, String> inputAttributes, Map<String, String> storedAttributes) {
-		return true;
+		if (inputAttributes == null) {
+            throw new RiceIllegalArgumentException("inputAttributes was null");
+        }
+
+		if (storedAttributes == null) {
+            throw new RiceIllegalArgumentException("storedAttributes was null");
+        }
+
+        return true;
 	}
 
 	/**
@@ -66,10 +74,18 @@ public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceB
 	 */
 	@Override
     public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
-		ArrayList<RoleMembership> tempIdList = new ArrayList<RoleMembership>();
+		if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+        if (roleName == null) {
+            throw new RiceIllegalArgumentException("roleName was null");
+        }
+
 		if ( qualification == null || qualification.isEmpty() ) {
-			return tempIdList;
+			return Collections.emptyList();
 		}
+        ArrayList<RoleMembership> tempIdList = new ArrayList<RoleMembership>();
 		qualification = translateInputAttributes(qualification);
 		// check that the principal ID is not null
 		String principalId = qualification.get( KimConstants.AttributeConstants.PRINCIPAL_ID );

@@ -48,7 +48,8 @@ public class DocumentTypeAndNodeAndFieldsPermissionTypeServiceImpl extends Docum
 	@Override
 	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails,
 			List<Permission> permissionsList) {
-		List<Permission> matchingPermissions = new ArrayList<Permission>();
+
+        List<Permission> matchingPermissions = new ArrayList<Permission>();
 		// loop over the permissions, checking the non-document-related ones
 		for ( Permission kpi : permissionsList ) {
             PermissionBo bo = PermissionBo.from(kpi);

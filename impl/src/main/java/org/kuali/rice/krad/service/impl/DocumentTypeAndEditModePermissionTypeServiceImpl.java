@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
@@ -40,7 +39,8 @@ public class DocumentTypeAndEditModePermissionTypeServiceImpl extends DocumentTy
 	protected List<Permission> performPermissionMatches(
 			Map<String, String> requestedDetails,
 			List<Permission> permissionsList) {
-		List<Permission> matchingPermissions = new ArrayList<Permission>();
+
+        List<Permission> matchingPermissions = new ArrayList<Permission>();
 		for (Permission permission : permissionsList) {
             PermissionBo bo = PermissionBo.from(permission);
 			if (requestedDetails.get(KimConstants.AttributeConstants.EDIT_MODE).equals(bo.getDetails().get(KimConstants.AttributeConstants.EDIT_MODE))) {

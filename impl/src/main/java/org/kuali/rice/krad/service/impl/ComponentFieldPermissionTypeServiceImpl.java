@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
@@ -39,7 +40,8 @@ public class ComponentFieldPermissionTypeServiceImpl extends PermissionTypeServi
 	@Override
 	protected List<Permission> performPermissionMatches(Map<String, String> requestedDetails,
 			List<Permission> permissionsList) {
-		List<Permission> propertyMatches = new ArrayList<Permission>();
+
+        List<Permission> propertyMatches = new ArrayList<Permission>();
 		List<Permission> prefixPropertyMatches = new ArrayList<Permission>();
 		List<Permission> blankPropertyMatches = new ArrayList<Permission>();
 		String propertyName = requestedDetails.get(KimConstants.AttributeConstants.PROPERTY_NAME);

@@ -215,8 +215,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public List<Role> getRoles(List<String> roleIds) {
-        if (roleIds == null) {
-            throw new RiceIllegalArgumentException("roleIds is null");
+        if (CollectionUtils.isEmpty(roleIds)) {
+            throw new RiceIllegalArgumentException("roleIds is null or empty");
         }
 
         Collection<RoleBo> roleBos = getRoleBoMap(roleIds).values();
@@ -581,8 +581,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     @Override
     public List<RoleMembership> getFirstLevelRoleMembers(List<String> roleIds) {
-        if (roleIds == null) {
-            throw new RiceIllegalArgumentException("roleIds is null");
+        if (CollectionUtils.isEmpty(roleIds)) {
+            throw new RiceIllegalArgumentException("roleIds is null or empty");
         }
 
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersForRoleIds(roleIds, null, null);

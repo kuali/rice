@@ -120,10 +120,18 @@ public abstract class PassThruRoleTypeServiceBase implements RoleTypeService {
     }
 
     public boolean supportsAttributes(List<String> attributeNames) {
+        if (attributeNames == null) {
+            throw new RiceIllegalArgumentException("attributeNames was null");
+        }
+
         return true;
     }
 
     public Map<String, String> translateInputAttributes(Map<String, String> inputAttributes) {
+        if (inputAttributes == null) {
+            throw new RiceIllegalArgumentException("inputAttributes was null");
+        }
+
         return inputAttributes;
     }
 

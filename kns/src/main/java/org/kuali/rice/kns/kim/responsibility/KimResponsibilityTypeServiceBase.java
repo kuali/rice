@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.kim.responsibility;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.framework.responsibility.ResponsibilityTypeService;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceBase;
@@ -33,7 +34,15 @@ public class KimResponsibilityTypeServiceBase extends DataDictionaryTypeServiceB
 
 	@Override
 	public final List<Responsibility> getMatchingResponsibilities( Map<String, String> requestedDetails, List<Responsibility> responsibilitiesList ) {
-		requestedDetails = translateInputAttributes(requestedDetails);
+		if (requestedDetails == null) {
+            throw new RiceIllegalArgumentException("requestedDetails is null");
+        }
+
+        if (responsibilitiesList == null) {
+            throw new RiceIllegalArgumentException("responsibilitiesList is null");
+        }
+
+        requestedDetails = translateInputAttributes(requestedDetails);
 		validateRequiredAttributesAgainstReceived(requestedDetails);
 		return Collections.unmodifiableList(performResponsibilityMatches(requestedDetails, responsibilitiesList));
 	}

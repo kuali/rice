@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
@@ -47,10 +48,16 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 	public List<Permission> performPermissionMatches(
 			Map<String, String> requestedDetails,
 			List<Permission> permissionsList) {
+
+        if (permissionsList == null) {
+            throw new RiceIllegalArgumentException("permissionsList was null or blank");
+        }
+
+        if (requestedDetails == null) {
+            throw new RiceIllegalArgumentException("requestedDetails was null");
+        }
+
         List<Permission> matchingPermissions = new ArrayList<Permission>();
-		if (requestedDetails == null) {
-			return matchingPermissions; // empty list
-		}
 		// loop over the permissions, checking the non-document-related ones
 		for (Permission kpi : permissionsList) {
             PermissionBo bo = PermissionBo.from(kpi);

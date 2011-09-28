@@ -955,7 +955,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getEntityType")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EntityType}", key="'code=' + #code")
-	CodedAttribute getEntityType( @WebParam(name="code") String code );
+	CodedAttribute getEntityType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
 
     /**
@@ -972,7 +972,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getAddressType")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{AddressType}", key="'code=' + #code")
-	CodedAttribute getAddressType( @WebParam(name="code") String code );
+	CodedAttribute getAddressType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType} for a given EntityAffiliationType code.
@@ -1004,7 +1004,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getCitizenshipStatus")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{CitizenshipStatus}", key="'code=' + #code")
-	CodedAttribute getCitizenshipStatus( @WebParam(name="code") String code );
+	CodedAttribute getCitizenshipStatus( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmployment type code.
@@ -1020,7 +1020,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getEmploymentType")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentType}", key="'code=' + #code")
-	CodedAttribute getEmploymentType( @WebParam(name="code") String code );
+	CodedAttribute getEmploymentType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmployment status code.
@@ -1036,7 +1036,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getEmploymentStatus")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentStatus}", key="'code=' + #code")
-	CodedAttribute getEmploymentStatus( @WebParam(name="code") String code );
+	CodedAttribute getEmploymentStatus( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType} for a given type code.
@@ -1068,7 +1068,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getNameType")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{NameType}", key="'code=' + #code")
-	CodedAttribute getNameType(@WebParam(name = "code") String code);
+	CodedAttribute getNameType(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityPhone type code.
@@ -1084,7 +1084,7 @@ public interface IdentityService {
     @WebMethod(operationName = "getPhoneType")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{PhoneType}", key="'code=' + #code")
-	CodedAttribute getPhoneType( @WebParam(name="code") String code );
+	CodedAttribute getPhoneType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
     
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmail type code.
@@ -1100,6 +1100,6 @@ public interface IdentityService {
     @WebMethod(operationName = "getEmailType")
     @WebResult(name = "type")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{EmailType}", key="'code=' + #code")
-	CodedAttribute getEmailType( @WebParam(name="code") String code );
+	CodedAttribute getEmailType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
 }

@@ -25,10 +25,7 @@ import java.util.Map;
 public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends PermissionTypeServiceBase {
 	protected boolean performMatch(Map<String, String> inputMap,
 			Map<String, String> storedMap) {
-		// this type doesn't work without attributes passed in 
-		if ( inputMap == null || storedMap == null ) {
-			return false;
-		}
+
 		String requestedDocumentType = inputMap.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
 		String permissionDocumentType = storedMap.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
 		if ( requestedDocumentType == null || permissionDocumentType == null ) {

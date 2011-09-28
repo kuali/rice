@@ -57,7 +57,15 @@ public class RouteLogDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBa
 	 */
 	@Override
     public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
-		validateRequiredAttributesAgainstReceived(qualification);
+	    if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was null or blank");
+        }
+
+        if (roleName == null) {
+            throw new RiceIllegalArgumentException("roleName was null");
+        }
+
+        validateRequiredAttributesAgainstReceived(qualification);
 		List<RoleMembership> members = new ArrayList<RoleMembership>();
 		if(qualification!=null && !qualification.isEmpty()){
 			String documentId = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);

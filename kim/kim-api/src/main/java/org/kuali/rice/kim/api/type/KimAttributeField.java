@@ -22,6 +22,7 @@ import org.w3c.dom.Element;
 @XmlType(name = KimAttributeField.Constants.TYPE_NAME, propOrder = {
     KimAttributeField.Elements.ATTRIBUTE_FIELD,
     KimAttributeField.Elements.ID,
+    KimAttributeField.Elements.UNIQUE,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class KimAttributeField
@@ -33,7 +34,7 @@ public final class KimAttributeField
     private final RemotableAttributeField attributeField;
     @XmlElement(name = Elements.ID, required = true)
     private final String id;
-    @XmlElement(name = Elements.ID, required = false)
+    @XmlElement(name = Elements.UNIQUE, required = false)
     private final boolean unique;
 
     @SuppressWarnings("unused")
@@ -188,7 +189,7 @@ public final class KimAttributeField
 
         final static String ATTRIBUTE_FIELD = "attributeField";
         final static String ID = "id";
-
+        final static String UNIQUE = "unique";
     }
 
 }

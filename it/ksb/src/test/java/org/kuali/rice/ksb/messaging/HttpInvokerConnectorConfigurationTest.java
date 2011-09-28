@@ -32,7 +32,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.impl.config.property.SimpleConfig;
+import org.kuali.rice.core.framework.config.property.SimpleConfig;
 import org.kuali.rice.ksb.api.bus.support.JavaServiceConfiguration;
 import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;

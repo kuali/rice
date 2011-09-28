@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.impl.config.property;
+package org.kuali.rice.core.framework.config.property;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.log4j.Logger;
@@ -31,9 +31,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Abstract base hierarchical config implementation. Loads a hierarchy configs,
- * resolving placeholders at parse-time of each config, using the current and
- * ancestor configs for resolution.
+ * Base config implementation that does not support file parsing.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -50,7 +48,7 @@ public class SimpleConfig extends AbstractBaseConfig {
     private Map<String, Object> objects = new LinkedHashMap<String, Object>();
 
     private Properties baseProperties = new Properties();
-    
+
     private Map<String, Object> baseObjects = new HashMap<String, Object>();
 
     public SimpleConfig() {
@@ -65,18 +63,18 @@ public class SimpleConfig extends AbstractBaseConfig {
         this.fileLocs = fileLocs;
     }
 
-	public SimpleConfig(Properties properties) {
-		this(new ArrayList<String>(), properties);
-	}
+    public SimpleConfig(Properties properties) {
+        this(new ArrayList<String>(), properties);
+    }
 
     public SimpleConfig(String fileLoc, Properties baseProperties) {
         this(Collections.singletonList(fileLoc), baseProperties);
     }
 
-	public SimpleConfig(List<String> fileLocs, Properties baseProperties) {
-		this(fileLocs);
-		this.baseProperties = baseProperties;
-	}
+    public SimpleConfig(List<String> fileLocs, Properties baseProperties) {
+        this(fileLocs);
+        this.baseProperties = baseProperties;
+    }
 
 
     public void parseConfig() throws IOException {
@@ -91,18 +89,18 @@ public class SimpleConfig extends AbstractBaseConfig {
         properties.put("host.name", RiceUtilities.getHostName());
     }
 
-	public Map<String, Object> getBaseObjects() {
-		return this.baseObjects;
-	}
+    public Map<String, Object> getBaseObjects() {
+        return this.baseObjects;
+    }
 
-	public Properties getBaseProperties() {
-		return this.baseProperties;
-	}
+    public Properties getBaseProperties() {
+        return this.baseProperties;
+    }
 
     public Properties getProperties() {
         return this.propertiesUsed;
     }
-    
+
     public String getProperty(String key) {
         return getProperties().getProperty(key);
     }
@@ -115,38 +113,38 @@ public class SimpleConfig extends AbstractBaseConfig {
         return getObjects().get(key);
     }
 
-	public void putProperties(Properties properties) {
-		if (properties != null) {
+    public void putProperties(Properties properties) {
+        if (properties != null) {
             getProperties().putAll(properties);
-		}
-	}
+        }
+    }
 
-	public void putProperty(String key, String value) {
-		this.getProperties().put(key, value);
-	}
+    public void putProperty(String key, String value) {
+        this.getProperties().put(key, value);
+    }
 
-	public void putObject(String key, Object value) {
-		this.getObjects().put(key, value);
-	}
+    public void putObject(String key, Object value) {
+        this.getObjects().put(key, value);
+    }
 
-	public void putObjects(Map<String, Object> objects) {
-		if(objects != null){
-			this.getObjects().putAll(objects);
-		}
-	}
+    public void putObjects(Map<String, Object> objects) {
+        if(objects != null){
+            this.getObjects().putAll(objects);
+        }
+    }
 
-	public void removeObject(String key){
-		this.getObjects().remove(key);
-	}
+    public void removeObject(String key){
+        this.getObjects().remove(key);
+    }
 
-	public void removeProperty(String key){
-		this.getProperties().remove(key);
-	}
+    public void removeProperty(String key){
+        this.getProperties().remove(key);
+    }
 
-	public void putConfig(Config config) {
-		putProperties(config.getProperties());
-		putObjects(config.getObjects());
-	}
+    public void putConfig(Config config) {
+        putProperties(config.getProperties());
+        putObjects(config.getObjects());
+    }
 
     public String toString() {
         return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();

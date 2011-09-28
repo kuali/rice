@@ -32,8 +32,7 @@ import org.kuali.rice.ksb.impl.bus.LocalService
 import org.kuali.rice.ksb.impl.bus.RemoteService
 import org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl
 import org.junit.Ignore
-import org.kuali.rice.core.impl.config.property.SimpleConfig
-
+import org.kuali.rice.core.framework.config.property.SimpleConfig
 
 class ServiceRegistryDiffCalculatorImplTest {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ServiceRegistryDiffCalculatorImplTest.class)

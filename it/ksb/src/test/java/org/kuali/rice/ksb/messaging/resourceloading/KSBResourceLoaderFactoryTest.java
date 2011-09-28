@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.impl.config.property.ConfigParserImplConfig;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.impl.config.property.SimpleConfig;
+import org.kuali.rice.core.framework.config.property.SimpleConfig;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
 import static org.junit.Assert.*;

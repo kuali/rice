@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.core.impl.config.property;
+package org.kuali.rice.core.framework.config.property;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

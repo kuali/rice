@@ -2,6 +2,7 @@ package org.kuali.rice.core.impl.config.property;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.framework.config.property.SimpleConfig;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -22,8 +23,8 @@ public class ConfigParserImplConfig extends SimpleConfig {
     private static final Logger LOG = Logger.getLogger(ConfigParserImplConfig.class);
 
     public ConfigParserImplConfig(String fileLoc) {
-		super(fileLoc);
-	}
+        super(fileLoc);
+    }
 
     public ConfigParserImplConfig(Properties properties) {
         super(properties);
@@ -41,7 +42,7 @@ public class ConfigParserImplConfig extends SimpleConfig {
         // Properties configProperties = (Properties)config.getValue();
         Map<String, String> safeConfig = ConfigLogger.getDisplaySafeConfig(properties);
         if ( LOG.isInfoEnabled() ) {
-        	LOG.info("Loading properties for config " + fileName);
+            LOG.info("Loading properties for config " + fileName);
         }
         for (Iterator iterator2 = properties.entrySet().iterator(); iterator2.hasNext();) {
             Map.Entry configProp = (Map.Entry) iterator2.next();
@@ -49,55 +50,55 @@ public class ConfigParserImplConfig extends SimpleConfig {
             String value = (String) configProp.getValue();
             String safeValue = safeConfig.get(key);
             if ( LOG.isDebugEnabled() ) {
-            	LOG.debug("---->Putting config Prop " + key + "=[" + safeValue + "]");
+                LOG.debug("---->Putting config Prop " + key + "=[" + safeValue + "]");
             }
             this.propertiesUsed.put(key, value);
         }
     }
 
     public void parseConfig() throws IOException {
-    	if ( LOG.isInfoEnabled() ) {
-    		LOG.info("Loading Rice configs: " + StringUtils.join(fileLocs, ", "));
-    	}
-    	Map<String, Object> baseObjects = getBaseObjects();
-    	if (baseObjects != null) {
-    		this.getObjects().putAll(baseObjects);
-    	}
-    	configureBuiltIns(getProperties());
-    	Properties baseProperties = getBaseProperties();
-    	if (baseProperties != null) {
-    		this.getProperties().putAll(baseProperties);
-    	}
+        if ( LOG.isInfoEnabled() ) {
+            LOG.info("Loading Rice configs: " + StringUtils.join(fileLocs, ", "));
+        }
+        Map<String, Object> baseObjects = getBaseObjects();
+        if (baseObjects != null) {
+            this.getObjects().putAll(baseObjects);
+        }
+        configureBuiltIns(getProperties());
+        Properties baseProperties = getBaseProperties();
+        if (baseProperties != null) {
+            this.getProperties().putAll(baseProperties);
+        }
 
-    	parseWithConfigParserImpl();
-    	//parseWithHierarchicalConfigParser();
+        parseWithConfigParserImpl();
+        //parseWithHierarchicalConfigParser();
 
-    	//if (!fileLocs.isEmpty()) {
-    	if ( LOG.isInfoEnabled() ) {
-	    	LOG.info("");
-	    	LOG.info("####################################");
-	    	LOG.info("#");
-	    	LOG.info("# Properties used after config override/replacement");
-	    	LOG.info("# " + StringUtils.join(fileLocs, ", "));
-	    	LOG.info("#");
-	    	LOG.info("####################################");
-	    	LOG.info("");
-    	}
-    	Map<String, String> safePropsUsed = ConfigLogger.getDisplaySafeConfig(this.propertiesUsed);
-    	Set<Map.Entry<String,String>> entrySet = safePropsUsed.entrySet();
-    	// sort it for display
-    	SortedSet<Map.Entry<String,String>>
+        //if (!fileLocs.isEmpty()) {
+        if ( LOG.isInfoEnabled() ) {
+            LOG.info("");
+            LOG.info("####################################");
+            LOG.info("#");
+            LOG.info("# Properties used after config override/replacement");
+            LOG.info("# " + StringUtils.join(fileLocs, ", "));
+            LOG.info("#");
+            LOG.info("####################################");
+            LOG.info("");
+        }
+        Map<String, String> safePropsUsed = ConfigLogger.getDisplaySafeConfig(this.propertiesUsed);
+        Set<Map.Entry<String,String>> entrySet = safePropsUsed.entrySet();
+        // sort it for display
+        SortedSet<Map.Entry<String,String>>
                 sorted = new TreeSet<Map.Entry<String,String>>(new Comparator<Map.Entry<String,String>>() {
-    		public int compare(Map.Entry<String,String> a, Map.Entry<String,String> b) {
-    			return a.getKey().compareTo(b.getKey());
-    		}
-    	});
-    	sorted.addAll(entrySet);
-    	//}
-    	if ( LOG.isInfoEnabled() ) {
-	    	for (Map.Entry<String, String> propUsed: sorted) {
-	    		LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
-	    	}
-    	}
+            public int compare(Map.Entry<String,String> a, Map.Entry<String,String> b) {
+                return a.getKey().compareTo(b.getKey());
+            }
+        });
+        sorted.addAll(entrySet);
+        //}
+        if ( LOG.isInfoEnabled() ) {
+            for (Map.Entry<String, String> propUsed: sorted) {
+                LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
+            }
+        }
     }
 }

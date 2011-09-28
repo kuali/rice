@@ -1,13 +1,13 @@
 package org.kuali.rice.core.cxf.interceptors
 
 import org.junit.Test
-import org.kuali.rice.core.impl.config.property.SimpleConfig
 import org.kuali.rice.core.api.config.property.Config
 import org.junit.Before
 import org.kuali.rice.core.api.config.property.ConfigContext
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
+import org.kuali.rice.core.framework.config.property.SimpleConfig
 
 /**
  * Ensures ServiceCallVersioningHelper is populating headers correctly

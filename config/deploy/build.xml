@@ -1,0 +1,108 @@
+<project name="Application Deployer">
+  <description>Deploy applications packaged by Maven to a server on EC2</description>
+  <property name="auth" value="/home/ubuntu/kr-key.pem" />
+  <property name="mvn" value="/opt/java/apache-maven-3.0.3/bin/mvn" />
+
+  <target name="reset" depends="stop,clean,copy,resetdb,start" />
+
+  <target name="stop" depends="check-properties">
+    <echo>Stopping ${tomcat.instance} on ${deploy.server}</echo>
+    <exec executable="ssh">
+      <arg value="-i" />
+      <arg value="${auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="su" />
+      <arg value="-" />
+      <arg value="${tomcat.instance}" />
+      <arg value="/usr/local/tomcat/bin/forced-shutdown.sh" />
+    </exec>
+  </target>
+  <target name="clean" depends="check-properties">
+    <property name="old.root.dir" value="/usr/local/${tomcat.instance}/webapps/ROOT" />
+    <echo>Removing ${old.root.dir}</echo>
+    <exec executable="ssh" failonerror="true">
+      <arg value="-i" />
+      <arg value="${auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="rm" />
+      <arg value="-rf" />
+      <arg value="${old.root.dir}" />
+    </exec>
+    <exec executable="ssh" failonerror="true">
+      <arg value="-i" />
+      <arg value="${auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="su" />
+      <arg value="-" />
+      <arg value="${tomcat.instance}" />
+      <arg value="/usr/local/tomcat/bin/cleanup.sh" />
+    </exec>
+  </target>
+  <target name="copy" depends="check-properties">
+    <property name="remote.config.file" value="/usr/local/${tomcat.instance}/conf/app-config.xml" />
+    <echo>Copy ${config.file} to ${deploy.server}:${remote.config.file}</echo>
+    <exec executable="scp" failonerror="true">
+      <arg value="-i" />
+      <arg value="${auth}" />
+      <arg value="${config.file}" />
+      <arg value="root@${deploy.server}:${remote.config.file}" />
+    </exec>
+    <property name="remote.war.file" value="/usr/local/${tomcat.instance}/webapps/ROOT.war" />
+    <echo>Copy ${war.file} to ${deploy.server}:${remote.war.file}</echo>
+    <exec executable="scp" failonerror="true">
+      <arg value="-i" />
+      <arg value="${auth}" />
+      <arg value="${war.file}" />
+      <arg value="root@${deploy.server}:${remote.war.file}" />
+    </exec>
+  </target>
+  <target name="resetdb" depends="check-properties">
+    <echo>Resetting ${db.instance} on ${impex.url}</echo>
+    <exec executable="${mvn}" dir="${impex.dir}" failonerror="true">
+      <arg value="clean" />
+      <arg value="install" />
+      <arg value="-Pdb,${db.vendor}" />
+      <arg value="-Dimpex.username=${impex.username}" />
+      <arg value="-Dimpex.password=${impex.password}" />
+      <arg value="-Dimpex.dba.username=${impex.dba.username}" />
+      <arg value="-Dimpex.dba.password=${impex.dba.password}" />
+      <arg value="-Dimpex.url=${impex.url}" />
+      <arg value="-Dimpex.dba.url=${impex.dba.url}" />
+    </exec>
+  </target>
+  <target name="start" depends="check-properties">
+    <echo>Start ${tomcat.instance} on ${deploy.server}</echo>
+    <exec executable="ssh" failonerror="true">
+      <arg value="-i" />
+      <arg value="${auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="su" />
+      <arg value="-" />
+      <arg value="${tomcat.instance}" />
+      <arg value="/usr/local/tomcat/bin/startup.sh" />
+    </exec>
+  </target>
+  <target name="check-properties">
+    <condition property="properties.set">
+      <and>
+        <isset property="public.url" />
+        <isset property="deploy.server" />
+        <isset property="tomcat.instance" />
+        <isset property="db.instance" />
+        <isset property="db.vendor" />
+        <isset property="war.file" />
+        <isset property="config.file" />
+        <isset property="impex.dir" />
+        <isset property="impex.url" />
+        <isset property="impex.username" />
+        <isset property="impex.password" />
+        <isset property="impex.dba.url" />
+        <isset property="impex.dba.username" />
+        <isset property="impex.dba.password" />
+      </and>
+    </condition>
+    <fail unless="properties.set">
+      Properties not set correctly
+    </fail>
+  </target>
+</project>

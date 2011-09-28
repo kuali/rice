@@ -41,11 +41,11 @@ public class OrchestrationConfig {
     private final boolean runPostProcessorLogic;
     
     public OrchestrationConfig(EngineCapability capability) {
-        this(capability, null, null, true, true);
+        this(capability, Collections.<String>emptySet(), null, true, true);
     }
     
     public OrchestrationConfig(EngineCapability capability, boolean isRunPostProcessorLogic) {
-        this(capability, null, null, true, isRunPostProcessorLogic);
+        this(capability, Collections.<String>emptySet(), null, true, isRunPostProcessorLogic);
     }
     
     public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause) {

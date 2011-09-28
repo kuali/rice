@@ -23,9 +23,9 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.test.config.SimpleConfig;
 
 import javax.xml.namespace.QName;
 import java.io.File;
@@ -91,7 +91,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 	Config config = ConfigContext.getCurrentContextConfig();
 	if (config == null) {
 	    // because of previously running tests, the config might already be initialized
-	    config = new SimpleConfig();
+	    config = new JAXBConfigImpl();
 	    config.putProperty(CoreConstants.Config.APPLICATION_ID, "KEW");
 	    ConfigContext.init(config);
 	}

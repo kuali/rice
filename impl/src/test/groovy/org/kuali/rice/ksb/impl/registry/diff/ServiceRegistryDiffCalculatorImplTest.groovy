@@ -31,8 +31,8 @@ import org.kuali.rice.ksb.api.registry.ServiceInfo
 import org.kuali.rice.ksb.impl.bus.LocalService
 import org.kuali.rice.ksb.impl.bus.RemoteService
 import org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl
-import org.kuali.rice.ksb.impl.test.util.SimpleConfig
 import org.junit.Ignore
+import org.kuali.rice.core.impl.config.property.SimpleConfig
 
 
 class ServiceRegistryDiffCalculatorImplTest {

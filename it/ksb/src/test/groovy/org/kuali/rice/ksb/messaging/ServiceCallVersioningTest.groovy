@@ -81,10 +81,11 @@ class ServiceCallVersioningTest extends KSBTestCase {
         assertHeadersCaptured()
 	}
 
-	/*@Test void testJaxWsSOAPService(){
+	@Test void testJaxWsSOAPService(){
 		JaxWsEchoService jaxwsEchoService = (JaxWsEchoService) GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"))
 		jaxwsEchoService.captureHeaders();
-	}*/
+        assertHeadersCaptured();
+	}
 
     def void assertHeadersCaptured() {
         Map<String, List<String>> headers = ServiceCallInformationHolder.stuff.get("capturedHeaders")

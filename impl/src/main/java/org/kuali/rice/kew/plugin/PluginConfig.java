@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.plugin;
 
 import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.impl.config.property.BaseConfig;
+import org.kuali.rice.core.impl.config.property.ConfigParserImplConfig;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -36,7 +36,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PluginConfig extends BaseConfig {
+public class PluginConfig extends ConfigParserImplConfig {
 
 	private String resourceLoaderClassname;
 	private List listeners = new ArrayList();
@@ -54,7 +54,6 @@ public class PluginConfig extends BaseConfig {
 	public PluginConfig(File configFile, Config parentConfig) throws MalformedURLException {
 		this(configFile.toURI().toURL(), parentConfig);
 	}
-	
 
 	public Properties getBaseProperties() {
 		return this.parentProperties;
@@ -108,6 +107,4 @@ public class PluginConfig extends BaseConfig {
 		
 		return finalObjects;
 	}
-	
-
 }

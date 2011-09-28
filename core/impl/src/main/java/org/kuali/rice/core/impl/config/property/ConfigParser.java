@@ -22,9 +22,11 @@ import java.util.Map;
 /**
  * ConfigParser interface, establishes the contract between the parser and consumers
  * of config properties. 
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated only used by ConfigParserImplConfig which is deprecated
  */
+@Deprecated
 public interface ConfigParser {
     /**
      * Parses config file resources

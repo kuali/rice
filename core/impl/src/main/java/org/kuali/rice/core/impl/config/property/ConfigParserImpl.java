@@ -44,7 +44,10 @@ import java.util.Random;
  * loading and Apache Commons Lang for variable replacement.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @deprecated This is an old hand-rolled Rice configuration parser which has since been replaced by the superior JAXBConfigImpl.
+ *             This old implementation only exists to support PluginConfig which supports ancient KEW plugin configs
  */
+@Deprecated
 public class ConfigParserImpl implements ConfigParser {
     // keep the same random
     private static final Random RANDOM = new Random();

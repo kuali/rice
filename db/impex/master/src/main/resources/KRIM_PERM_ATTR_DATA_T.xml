@@ -1,6 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE dataset SYSTEM "data.dtd">
 <dataset>
+    <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="10000"
+        ATTR_VAL="AgendaEditorMaintenanceDocument" KIM_ATTR_DEFN_ID="13"
+        KIM_TYP_ID="3" OBJ_ID="ADF171C967C7668FE0404F8189D873C0"
+        PERM_ID="10000" VER_NBR="1"/>
+    <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="10001"
+        ATTR_VAL="AgendaEditorMaintenanceDocument" KIM_ATTR_DEFN_ID="13"
+        KIM_TYP_ID="3" OBJ_ID="ADF171C967C9668FE0404F8189D873C0"
+        PERM_ID="10001" VER_NBR="1"/>
     <KRIM_PERM_ATTR_DATA_T ATTR_DATA_ID="181"
         ATTR_VAL="org.kuali.rice.kew.documentoperation.web.DocumentOperationAction"
         KIM_ATTR_DEFN_ID="2" KIM_TYP_ID="12"

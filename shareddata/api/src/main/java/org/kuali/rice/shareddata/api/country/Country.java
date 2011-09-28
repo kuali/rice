@@ -284,6 +284,6 @@ public final class Country extends AbstractDataTransferObject implements Country
     }
 
     public static class Cache {
-        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + Country.Constants.TYPE_NAME;
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE_2_0 + "/" + Country.Constants.TYPE_NAME;
     }
 }

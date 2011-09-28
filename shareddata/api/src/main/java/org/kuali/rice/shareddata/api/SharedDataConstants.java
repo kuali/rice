@@ -24,7 +24,16 @@ import org.kuali.rice.core.api.CoreConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class SharedDataConstants {
-	public final static class Namespaces {
-        public static final String SHAREDDATA_NAMESPACE = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/shareddata";
+    public static final class Namespaces {
+    	public static final String SHAREDDATA_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/shareddata";
+
+    	/**
+    	 * Namespace for the core module which is compatible with Kuali Rice 2.0.x.
+    	 */
+    	public static final String SHAREDDATA_NAMESPACE_2_0 = SHAREDDATA_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
+
+        private Namespaces() {
+		    throw new UnsupportedOperationException("do not call");
+	    }
     }
 }

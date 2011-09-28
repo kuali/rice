@@ -315,6 +315,6 @@ public final class Campus extends AbstractDataTransferObject implements CampusCo
     }
 
     public static class Cache {
-        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + Campus.Constants.TYPE_NAME;
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE_2_0 + "/" + Campus.Constants.TYPE_NAME;
     }
 }

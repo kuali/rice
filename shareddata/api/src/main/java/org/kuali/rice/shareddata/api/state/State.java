@@ -265,6 +265,6 @@ public final class State extends AbstractDataTransferObject implements StateCont
     }
 
     public static class Cache {
-        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + State.Constants.TYPE_NAME;
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE_2_0 + "/" + State.Constants.TYPE_NAME;
     }
 }

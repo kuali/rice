@@ -299,6 +299,6 @@ public final class County extends AbstractDataTransferObject implements CountyCo
     }
 
     public static class Cache {
-        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + County.Constants.TYPE_NAME;
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE_2_0 + "/" + County.Constants.TYPE_NAME;
     }
 }

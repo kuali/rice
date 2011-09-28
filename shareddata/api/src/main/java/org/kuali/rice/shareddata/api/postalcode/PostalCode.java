@@ -342,6 +342,6 @@ public final class PostalCode extends AbstractDataTransferObject implements Post
     }
 
     public static class Cache {
-        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE + "/" + PostalCode.Constants.TYPE_NAME;
+        public static final String NAME = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE_2_0 + "/" + PostalCode.Constants.TYPE_NAME;
     }
 }

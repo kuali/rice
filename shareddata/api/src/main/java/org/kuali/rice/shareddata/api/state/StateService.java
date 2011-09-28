@@ -35,7 +35,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "StateService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE)
+@WebService(name = "StateService", targetNamespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface StateService {
 

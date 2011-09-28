@@ -3,18 +3,18 @@
          updateCheck="true" monitoring="autodetect"
          dynamicConfig="true">
 
-  <cache name="http://rice.kuali.org/shareddata/CampusType" eternal="false" overflowToDisk="false" copyOnRead="false"
+  <cache name="http://rice.kuali.org/shareddata/v2_0/CampusType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/shareddata/CampusTypeType" eternal="false" overflowToDisk="false"
+  <cache name="http://rice.kuali.org/shareddata/v2_0/CampusTypeType" eternal="false" overflowToDisk="false"
          copyOnRead="false"
          copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/shareddata/CountryType" eternal="false" overflowToDisk="false" copyOnRead="false"
+  <cache name="http://rice.kuali.org/shareddata/v2_0/CountryType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/shareddata/CountyType" eternal="false" overflowToDisk="false" copyOnRead="false"
+  <cache name="http://rice.kuali.org/shareddata/v2_0/CountyType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/shareddata/PostalCodeType" eternal="false" overflowToDisk="false"
+  <cache name="http://rice.kuali.org/shareddata/v2_0/PostalCodeType" eternal="false" overflowToDisk="false"
          copyOnRead="false" copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/shareddata/StateType" eternal="false" overflowToDisk="false" copyOnRead="false"
+  <cache name="http://rice.kuali.org/shareddata/v2_0/StateType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
 
 </ehcache>

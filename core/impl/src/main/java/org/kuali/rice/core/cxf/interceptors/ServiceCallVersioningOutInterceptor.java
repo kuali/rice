@@ -27,7 +27,7 @@ public class ServiceCallVersioningOutInterceptor extends AbstractPhaseIntercepto
     public ServiceCallVersioningOutInterceptor() {
         super(Phase.USER_PROTOCOL);
     }
-
+    
     /**
      * Publishes the Kuali Rice Environment, Rice Version, Application Name and Application Version
      * in outbound protocol headers

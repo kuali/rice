@@ -225,14 +225,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         if (StringUtils.isBlank(documentId)) {
         	throw new RiceIllegalArgumentException("documentId was null or blank");
         }
-
-        if (StringUtils.isEmpty(nodeName)) {
-            throw new RiceIllegalArgumentException("nodeName was blank or null");
-        }
-
-        if (StringUtils.isEmpty(principalId)) {
-            throw new RiceIllegalArgumentException("principalId was blank or null");
-        }
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Fetching ActionRequests [docId="+documentId+", nodeName="+nodeName+", principalId="+principalId+"]");
         }

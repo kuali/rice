@@ -37,6 +37,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -139,15 +140,19 @@ public class ActionListFilterAction extends KualiAction {
     private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {
     	List<String> userWorkgroups =
             KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
+
+        //note that userWorkgroups is unmodifiable so we need to create a new list that we can sort
+        List<String> userGroupsToSort = new ArrayList<String>(userWorkgroups);
+
         List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
     	KeyValue keyValue = null;
     	keyValue = new ConcreteKeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
     	sortedUserWorkgroups.add(keyValue);
-    	if (userWorkgroups != null && userWorkgroups.size() > 0) {
-    		Collections.sort(userWorkgroups);
+    	if (userGroupsToSort != null && userGroupsToSort.size() > 0) {
+    		Collections.sort(userGroupsToSort);
 
     		Group group;
-            for (String groupId : userWorkgroups)
+            for (String groupId : userGroupsToSort)
             {
                 group = KimApiServiceLocator.getGroupService().getGroup(groupId);
                 keyValue = new ConcreteKeyValue(groupId, group.getName());

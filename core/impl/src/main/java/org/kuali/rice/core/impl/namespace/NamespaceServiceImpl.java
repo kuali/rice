@@ -16,6 +16,7 @@
 package org.kuali.rice.core.impl.namespace;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -29,7 +30,7 @@ public class NamespaceServiceImpl implements NamespaceService {
     @Override
 	public Namespace getNamespace(String code) {
         if (StringUtils.isBlank(code)) {
-            throw new IllegalArgumentException("the code is blank");
+            throw new RiceIllegalArgumentException("the code is blank");
         } 
 
         return NamespaceBo.to(boService.findByPrimaryKey(NamespaceBo.class, singletonMap("code", code)));

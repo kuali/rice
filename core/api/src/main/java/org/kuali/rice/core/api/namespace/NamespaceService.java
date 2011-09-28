@@ -16,6 +16,7 @@
 package org.kuali.rice.core.api.namespace;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -40,5 +41,5 @@ public interface NamespaceService {
      */
     @WebMethod(operationName="getNamespace")
     @WebResult(name = "namespace")
-	Namespace getNamespace(@WebParam(name = "code") String code);
+	Namespace getNamespace(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
 }

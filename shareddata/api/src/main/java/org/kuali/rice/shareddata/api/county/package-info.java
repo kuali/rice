@@ -15,7 +15,7 @@
  */
 
 @javax.xml.bind.annotation.XmlSchema(
-                namespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE,
+                namespace = SharedDataConstants.Namespaces.SHAREDDATA_NAMESPACE_2_0,
                 elementFormDefault=XmlNsForm.QUALIFIED)
 package org.kuali.rice.shareddata.api.county;
 

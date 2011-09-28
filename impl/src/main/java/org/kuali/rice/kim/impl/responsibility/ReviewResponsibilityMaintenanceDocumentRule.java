@@ -46,9 +46,11 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
 		boolean rulesPassed = true;
 		GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 		try {
-			ReviewResponsibilityBo resp = (ReviewResponsibilityBo)document.getNewMaintainableObject().getBusinessObject();
+			ReviewResponsibilityBo resp = (ReviewResponsibilityBo)document.getNewMaintainableObject().getDataObject();
 			// check for creation of a duplicate node
-			if ( !checkForDuplicateResponsibility( resp ) ) {
+			if ( resp.getDocumentTypeName() != null
+                    && resp.getRouteNodeName() != null
+                    && !checkForDuplicateResponsibility( resp ) ) {
 				GlobalVariables.getMessageMap().putError( "documentTypeName", ERROR_DUPLICATE_RESPONSIBILITY );
 				rulesPassed = false;
 			}

@@ -64,7 +64,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
 	 */
 	@Override
-	public void saveBusinessObject() {
+	public void saveDataObject() {
         if ( LOG.isInfoEnabled() ) {
             LOG.info( "Attempting to save ReviewResponsibilityBo BO via ResponsibilityService:" + getBusinessObject() );
         }

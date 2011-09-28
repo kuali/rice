@@ -15,7 +15,7 @@
 -->
 <plugin>
 
-  <resourceLoader class="org.kuali.rice.core.api.resourceloader.BaseResourceLoader"/>
+  <resourceLoader class="org.kuali.rice.core.framework.resourceloader.BaseResourceLoader"/>
 
   <listener>
   	<listener-class>org.kuali.rice.kew.plugin.TestPluginListener</listener-class>

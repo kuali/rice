@@ -24,6 +24,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService;
 
+import javax.annotation.Resource;
+import javax.ws.rs.core.HttpHeaders;
+
 /**
  * Implementation for {@link BaseballCardCollectionService}
  * 
@@ -31,7 +34,8 @@ import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionServic
  *
  */
 public class BaseballCardCollectionServiceImpl implements BaseballCardCollectionService {
-    
+    @Resource HttpHeaders headers;
+
     private Map<Integer, BaseballCard> cards = new ConcurrentHashMap<Integer, BaseballCard>();
     private AtomicInteger nextId = new AtomicInteger(1);
     

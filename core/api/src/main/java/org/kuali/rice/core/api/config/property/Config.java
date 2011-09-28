@@ -204,7 +204,13 @@ public interface Config {
 
 	public String getEmailConfigurationPath();
 
-	public String getEnvironment();
+    public String getRiceVersion();
+
+	//public String getApplicationName();
+
+    //public String getApplicationVersion();
+
+    public String getEnvironment();
 
 	public String getEDLConfigLocation();
 

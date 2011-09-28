@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.test.config;
-
-import org.kuali.rice.core.impl.config.property.BaseConfig;
+package org.kuali.rice.core.impl.config.property;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,11 +30,12 @@ import java.util.Properties;
  */
 public class SimpleConfig extends BaseConfig {
 
-	private Properties baseProperties;
-	private Map<String, Object> baseObjects;
+	private final Properties baseProperties;
+	private final Map<String, Object> baseObjects = new HashMap<String, Object>();
 
 	public SimpleConfig() {
 		super(new ArrayList<String>());
+        this.baseProperties = new Properties();
 	}
 
 	public SimpleConfig(Properties properties) {
@@ -50,11 +49,11 @@ public class SimpleConfig extends BaseConfig {
 	}
 
 	public SimpleConfig(List<String> fileLocs) {
-		super(fileLocs);
+		this(fileLocs, new Properties());
 	}
 
 	public SimpleConfig(String fileLoc) {
-		this(fileLoc, null);
+		this(fileLoc, new Properties());
 	}
 
 	public SimpleConfig(String fileLoc, Properties baseProperties) {
@@ -64,18 +63,11 @@ public class SimpleConfig extends BaseConfig {
 
 	@Override
 	public Map<String, Object> getBaseObjects() {
-		if (this.baseObjects == null) {
-		    this.baseObjects = new HashMap<String, Object>();
-		}
 		return this.baseObjects;
 	}
 
 	@Override
 	public Properties getBaseProperties() {
-		if (this.baseProperties == null) {
-			return new Properties();
-		}
 		return this.baseProperties;
 	}
-	
 }

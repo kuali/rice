@@ -15,9 +15,20 @@
  */
 package org.kuali.rice.ksb.testclient2;
 
+import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
+import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
+
+import javax.annotation.Resource;
+import javax.ws.rs.core.HttpHeaders;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
+import java.util.List;
+import java.util.Map;
 
 public class EchoService2Impl implements EchoService {
+    @Resource WebServiceContext requestContext;
 
 	public String echo(String string) {	
 		return string;
@@ -26,5 +37,9 @@ public class EchoService2Impl implements EchoService {
 	public String trueEcho(String string) {
 		return string;
 	}
+
+    public void captureHeaders() {
+        ServiceCallInformationHolder.stuff.put("capturedHeaders", PhaseInterceptorChain.getCurrentMessage().get(Message.PROTOCOL_HEADERS));
+    }
 
 }

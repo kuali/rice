@@ -15,9 +15,18 @@
  */
 package org.kuali.rice.ksb.testclient1;
 
+import javax.annotation.Resource;
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
+import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
+import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is the JaxWsEchoService implementation 
@@ -30,7 +39,8 @@ import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
 		portName="jaxWsEchoService",
 		targetNamespace="http://rice.kuali.org/")
 public class JaxWsEchoServiceImpl implements JaxWsEchoService {
-
+    @Resource WebServiceContext requestContext;
+    
 	/**
 	 * This overridden method ...
 	 * 
@@ -40,5 +50,10 @@ public class JaxWsEchoServiceImpl implements JaxWsEchoService {
 		// TODO Will Gomes - THIS METHOD NEEDS JAVADOCS
 		return inMsg;
 	}
-	
+
+
+    public void captureHeaders() {
+        MessageContext mc = (MessageContext) requestContext.getMessageContext();
+        ServiceCallInformationHolder.stuff.put("capturedHeaders", mc.get(MessageContext.HTTP_REQUEST_HEADERS));
+    }
 }

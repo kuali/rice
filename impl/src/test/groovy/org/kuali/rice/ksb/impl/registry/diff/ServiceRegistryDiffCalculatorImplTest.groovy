@@ -388,7 +388,9 @@ class ServiceRegistryDiffCalculatorImplTest {
         // ensure that it's destroyed first and we don't have anything left over from previous tests
         ConfigContext.destroy();
         try {
-		    SimpleConfig simpleConfig = new SimpleConfig(configProperties)
+            Properties p = new Properties();
+            p.putAll(configProperties);
+		    SimpleConfig simpleConfig = new SimpleConfig(p)
 		    simpleConfig.parseConfig()
 			ConfigContext.init(simpleConfig)
 			closure.call()

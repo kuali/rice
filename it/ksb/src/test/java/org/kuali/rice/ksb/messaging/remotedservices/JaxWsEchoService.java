@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.ksb.messaging.remotedservices;
 
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a jaxws annotated web service, used for testing web services on the ksb. 
@@ -37,5 +43,11 @@ public interface JaxWsEchoService {
     @WebMethod
     public String doEcho(
         @WebParam(name = "inMsg") String inMsg
-    );	
+    );
+
+    @WebResult(name = "headers")
+    @RequestWrapper(localName = "EchoHeaders")
+    @ResponseWrapper(localName = "EchoHeaderResponse")
+    @WebMethod
+    public void captureHeaders();
 }

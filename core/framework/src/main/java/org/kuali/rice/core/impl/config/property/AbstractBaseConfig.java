@@ -124,6 +124,16 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         return getProperty(org.kuali.rice.core.api.config.property.Config.SERVICE_SERVLET_URL);
     }
 
+    public String getRiceVersion() {
+        Properties mvn = new Properties();
+        try {
+            mvn.load(this.getClass().getClassLoader().getResourceAsStream("META-INF/maven/org.kuali.rice/rice-impl/pom.properties"));
+        } catch (IOException ioe) {
+            LOG.error("Error loading Maven metadata", ioe);
+        }
+        return mvn.getProperty("version", "2.0-SNAPSHOT");
+    }
+
     public String getEnvironment() {
         return getProperty(Config.ENVIRONMENT);
     }
@@ -165,6 +175,7 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
     }
 
     public Boolean getOutBoxOn() {
+        // subtle difference with BaseConfig - BaseConfig returned true on missing property
         return Boolean.valueOf(getProperty(org.kuali.rice.core.api.config.property.Config.OUT_BOX_MODE));
     }
 
@@ -197,5 +208,4 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
     public Boolean getXmlPipelineLifeCycleEnabled() {
         return Boolean.valueOf(getProperty(Config.ENABLE_XML_PIPELINE_LIFECYCLE));
     }
-
 }

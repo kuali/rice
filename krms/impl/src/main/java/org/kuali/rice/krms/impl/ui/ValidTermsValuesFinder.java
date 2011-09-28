@@ -19,9 +19,11 @@ package org.kuali.rice.krms.impl.ui;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
-import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,29 +33,17 @@ import java.util.List;
  *
  */
 public class ValidTermsValuesFinder extends KeyValuesBase {
-    // TODO: STATIC List is NOT going to work.
 
-    private static List<KeyValue> LABELS;
-    static {
-        final List<KeyValue> labels = new ArrayList<KeyValue>( 2 );
-
-        //TODO: get the list of valid terms for this context.
-        labels.add(new ConcreteKeyValue("001", "campusCodeTermSpec"));  // stub
-
-
-        LABELS = Collections.unmodifiableList(labels);
-    }
-
-    
-    /*
-     * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
-     */
     @Override
-    public List<KeyValue> getKeyValues() {
-        return LABELS;
+	public List<KeyValue> getKeyValues() {
+        List<KeyValue> keyValues = new ArrayList<KeyValue>();
+        //TODO: get the list of valid terms for this context.
+
+        Collection<ContextValidTermBo> contextValidTerms = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidTermBo.class);
+        for (ContextValidTermBo validTerm : contextValidTerms) {
+            keyValues.add(new ConcreteKeyValue(validTerm.getTermSpecification().getId(), validTerm.getTermSpecification().getName()));
+        }
+        return keyValues;
     }
 
-    public static void setLabels(List<KeyValue> labels){
-        LABELS = Collections.unmodifiableList(labels);
-    }
 }

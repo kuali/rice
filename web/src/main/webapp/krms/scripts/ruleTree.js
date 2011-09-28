@@ -2,6 +2,40 @@ function getSelectedPropositionInput() {
     return jq('input[id="proposition_selected_attribute"]');
 }
 
+function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
+
+    var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
+
+    var elementToBlock = jq(collectionGroupDivLocator);
+    var selectedItemInput = getSelectedPropositionInput();
+    var selectedItemId = selectedItemInput.val();
+    var selectedItemInputName = selectedItemInput.attr('name');
+
+    if (selectedItemId) {
+        var updateCollectionCallback = function(htmlContent){
+            var component = jq(collectionGroupDivLocator, htmlContent);
+
+            elementToBlock.unblock({onUnblock: function(){
+                //replace component
+                if(jq(collectionGroupDivLocator).length){
+                    jq(collectionGroupDivLocator).replaceWith(component);
+                }
+                runHiddenScripts(collectionGroupId + '_div');
+            }
+            });
+
+        };
+
+        ajaxSubmitForm(controllerMethod, updateCollectionCallback,
+                {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
+                elementToBlock);
+    } else {
+        // TODO: refactor to disabled buttons, or externalize
+        alert('Please select an rule proposition first.');
+    }
+}
+
+
 // binding to tree loaded event
 function initRuleTree(componentId){
 jq('#' + componentId).bind('loaded.jstree', function (event, data) {

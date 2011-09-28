@@ -1247,7 +1247,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         map.put("contextId", contextId);
 		List<ContextValidTermBo> bos = (List<ContextValidTermBo>) getBusinessObjectService().findMatchingOrderBy(ContextValidTermBo.class, map, "termSpecificationId", true);
 
-        return super.refresh(form, result, request, response);
+        return super.updateComponent(form, result, request, response);
     }
 
     private Node<RuleTreeNode, String> findPropositionTreeNode(Node<RuleTreeNode, String> currentNode, String selectedPropId){

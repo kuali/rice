@@ -17,13 +17,18 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 
+import java.io.Serializable;
+
 /**
  * abstract data class for the rule tree {@link Node}s
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RuleTreeNode {
+public class RuleTreeNode implements Serializable {
+
+    private static final long serialVersionUID = 8038174553531544943L;
+
     protected PropositionBo proposition;
     
     public RuleTreeNode(){}

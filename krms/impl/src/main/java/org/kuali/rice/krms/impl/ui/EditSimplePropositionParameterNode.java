@@ -32,6 +32,9 @@ import java.util.List;
  *
  */
 public class EditSimplePropositionParameterNode extends RuleTreeNode {
+
+    private static final long serialVersionUID = -5650654824214437325L;
+
     protected String parameterDisplayString;
 
     public EditSimplePropositionParameterNode(PropositionBo proposition){

@@ -34,6 +34,9 @@ import org.kuali.rice.krms.impl.repository.TermBo;
  *
  */
 public class CompoundOpCodeNode extends RuleTreeNode {
+
+    private static final long serialVersionUID = -6069336457169968200L;
+
     public CompoundOpCodeNode(PropositionBo proposition){
         super(proposition);
    }

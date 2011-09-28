@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
 import org.kuali.rice.krms.impl.repository.TermBo;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * abstract data class for the rule tree {@link Node}s
@@ -34,6 +33,9 @@ import org.kuali.rice.krms.impl.repository.TermBo;
  *
  */
 public class RuleTreeSimplePropositionParameterNode extends RuleTreeNode {
+
+    private static final long serialVersionUID = -629088492909384804L;
+
     protected String parameterDisplayString;
     
     public RuleTreeSimplePropositionParameterNode(PropositionBo proposition){
@@ -61,8 +63,7 @@ public class RuleTreeSimplePropositionParameterNode extends RuleTreeNode {
             //TODO: use termBoService
             String termId = prop.getValue();
             TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
-            String termName = term.getSpecification().getName();
-            return termName;
+            return term.getSpecification().getName();
         } else {
             return prop.getValue();
         }

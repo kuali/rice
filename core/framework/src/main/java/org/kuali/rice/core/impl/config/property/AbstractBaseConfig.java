@@ -124,18 +124,39 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         return getProperty(org.kuali.rice.core.api.config.property.Config.SERVICE_SERVLET_URL);
     }
 
-    public String getRiceVersion() {
-        Properties mvn = new Properties();
-        try {
-            mvn.load(this.getClass().getClassLoader().getResourceAsStream("META-INF/maven/org.kuali.rice/rice-impl/pom.properties"));
-        } catch (IOException ioe) {
-            LOG.error("Error loading Maven metadata", ioe);
-        }
-        return mvn.getProperty("version", "2.0-SNAPSHOT");
-    }
-
     public String getEnvironment() {
         return getProperty(Config.ENVIRONMENT);
+    }
+
+    /**
+     * @return the {@link RICE_VERSION} property
+     */
+    public String getRiceVersion() {
+        return getProperty(Config.RICE_VERSION);
+    }
+
+    /**
+     * @return {@link APPLICATION_NAME} or {@link MODULE_NAME} property
+     */
+    public String getApplicationName() {
+        // first try APPLICATION_NAME
+        String val = getProperty(APPLICATION_NAME);
+        if (val == null) {
+            val = getProperty(MODULE_NAME);
+        }
+        return val;
+    }
+
+    /**
+     * @return {@link APPLICATION_VERSION} or {@link VERSION} property
+     */
+    public String getApplicationVersion() {
+        // first try APPLICATION_VERSION
+        String val = getProperty(APPLICATION_VERSION);
+        if (val == null) {
+            val = getProperty(VERSION);
+        }
+        return val;
     }
 
     public String getKENBaseURL() {

@@ -67,9 +67,44 @@ public interface Config {
 
 	public static final String EMAIL_SECURITY_PATH = "email.security.path";
 
+    /**
+     * The application "environment".  This parameter is by convention used in many places, and
+     * is also reported on outbound service calls.
+     */
 	public static final String ENVIRONMENT = "environment";
 
-	public static final String PLUGIN_DIR = "plugin.dir";
+    /**
+     * The Rice version is by default determined automatically by inspecting the classloader
+     * (@see {@ServiceCallVersioningHelper}.  However, this property is available for special
+     * cases such as testing or workarounds, in order to override the reported Rice version.
+     */
+    public static final String RICE_VERSION = "rice.version";
+
+    /**
+     * "module.name" is the historical de-facto parameter used to configure "module" names.
+     * This convention was adopted by client applications (e.g. sample-app) and is now
+     * consulted to determine client application name for service call version reporting.
+     */
+    public static final String MODULE_NAME = "module.name";
+    /**
+     * Property a client can set to specify Rice client application name.  This value is
+     * reported in outbound Rice service calls.
+     */
+    public static final String APPLICATION_NAME = "application.name";
+
+    /**
+     * These properties are consulted to determine application version explicitly set by
+     * the client application.  "version" is available as a convenience fallback for existing
+     * configurations (e.g. sample-app).
+     */
+    public static final String VERSION = "version";
+    /**
+     * Property consulted to determine application version explicitly set by the client application
+     */
+    public static final String APPLICATION_VERSION = "application.version";
+
+    
+    public static final String PLUGIN_DIR = "plugin.dir";
 
 	public static final String EXTRA_CLASSES_DIR = "extra.classes.dir";
 
@@ -206,9 +241,9 @@ public interface Config {
 
     public String getRiceVersion();
 
-	//public String getApplicationName();
+	public String getApplicationName();
 
-    //public String getApplicationVersion();
+    public String getApplicationVersion();
 
     public String getEnvironment();
 

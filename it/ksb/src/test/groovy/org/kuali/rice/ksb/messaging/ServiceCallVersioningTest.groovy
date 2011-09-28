@@ -50,12 +50,22 @@ import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase
 import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningOutInterceptor
-import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
+import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder
+import org.kuali.rice.core.api.config.property.Config
+import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningHelper;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class ServiceCallVersioningTest extends KSBTestCase {
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        Config c = ConfigContext.getCurrentContextConfig();
+        c.putProperty(Config.APPLICATION_NAME, "ServiceCallVersioningTest");
+        c.putProperty(Config.APPLICATION_VERSION, "99.99-SNAPSHOT");
+    }
 
 	public boolean startClient1() {
 		return true;
@@ -80,9 +90,9 @@ class ServiceCallVersioningTest extends KSBTestCase {
         Map<String, List<String>> headers = ServiceCallInformationHolder.stuff.get("capturedHeaders")
         System.out.println("HEADERS");
         System.out.println(headers);
-		assertTrue(headers.get(ServiceCallVersioningOutInterceptor.KUALI_RICE_ENVIRONMENT_HEADER).contains("dev"))
-        assertTrue(headers.get(ServiceCallVersioningOutInterceptor.KUALI_RICE_VERSION_HEADER).any { it =~ /2\.0.*/ })
-        assertTrue(headers.get(ServiceCallVersioningOutInterceptor.KUALI_APP_NAME_HEADER).contains("ServiceCallVersioningTest"))
-        assertTrue(headers.get(ServiceCallVersioningOutInterceptor.KUALI_APP_VERSION_HEADER).contains("1.0.0"))
+		assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_RICE_ENVIRONMENT_HEADER).contains("dev"))
+        assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_RICE_VERSION_HEADER).contains(ConfigContext.getCurrentContextConfig().getRiceVersion())) //any { it =~ /2\.0.*/ })
+        assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_APP_NAME_HEADER).contains("ServiceCallVersioningTest"))
+        assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_APP_VERSION_HEADER).contains("99.99-SNAPSHOT"))
     }
 }

@@ -21,13 +21,6 @@ import java.util.Map;
  * @see <a href="http://cxf.apache.org/docs/interceptors.html">CXF interceptors</a>
  */
 public class ServiceCallVersioningOutInterceptor extends AbstractPhaseInterceptor<Message> {
-    private static final Logger LOG = Logger.getLogger(ServiceCallVersioningOutInterceptor.class);
-
-    public static final String KUALI_RICE_ENVIRONMENT_HEADER = "X-Kuali-Env";
-    public static final String KUALI_RICE_VERSION_HEADER = "X-Kuali-Rice-Ver";
-    public static final String KUALI_APP_NAME_HEADER = "X-Kuali-App-Name";
-    public static final String KUALI_APP_VERSION_HEADER = "X-Kuali-App-Ver";
-
     /**
      * Instantiates an ServiceCallVersioningOutInterceptor and adds it to the USER_PROTOCOL phase.
      */
@@ -43,28 +36,7 @@ public class ServiceCallVersioningOutInterceptor extends AbstractPhaseIntercepto
     public void handleMessage(final Message message) throws Fault {
         Map<String, List<String>> headers = (Map<String, List<String>>) message.get(Message.PROTOCOL_HEADERS);
         if (headers != null) {
-            Config config = ConfigContext.getCurrentContextConfig();
-            if (config == null) {
-                LOG.error("No configuration context found when handling outbound message");
-                throw new RuntimeException("No configuration context found when handling outbound message");
-                //return;
-            }
-            String riceEnvironment = config.getEnvironment();
-            if (StringUtils.isNotBlank(riceEnvironment)) {
-                headers.put(KUALI_RICE_ENVIRONMENT_HEADER, Collections.singletonList(riceEnvironment));
-            }
-            String riceVersion = config.getRiceVersion();
-            if (StringUtils.isNotBlank(riceVersion)) {
-                headers.put(KUALI_RICE_VERSION_HEADER, Collections.singletonList(riceVersion));
-            }
-            String appName = ""; //config.getApplicationName();
-             if (StringUtils.isNotBlank(appName)) {
-                headers.put(KUALI_APP_NAME_HEADER, Collections.singletonList(appName));
-            }
-            String appVersion = ""; //config.getApplicationVersion();
-             if (StringUtils.isNotBlank(appVersion)) {
-                headers.put(KUALI_APP_VERSION_HEADER, Collections.singletonList(appVersion));
-            }
+            ServiceCallVersioningHelper.populateVersionHeaders(headers);
         }
     }
 }

@@ -63,11 +63,6 @@
 		<property name="serviceName" value="riceApplicationConfigurationService" />
 	</bean>
 
-    <bean id="kradService" class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition" abstract="true">
-      <property name="serviceNameSpaceURI" value="KRAD" />
-      <property name="retryAttempts" value="0" />
-    </bean>
-
 	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />

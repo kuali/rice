@@ -74,12 +74,17 @@ public class SoapServiceDefinition extends AbstractServiceDefinition {
 		super.validate();
 		// if interface is null grab the first one and use it
 		if (getServiceInterface() == null) {
-			if (getService().getClass().getInterfaces().length == 0) {
-				throw new ConfigurationException(
-						"Service needs to implement interface to be exported as SOAP service");
+			//gets the basic cases - not all
+            Class<?> cur = getService().getClass();
+            while(cur.getInterfaces().length == 0 && (cur.getSuperclass() != Object.class || cur.getSuperclass() != null)) {
+                cur = cur.getSuperclass();
+            }
+
+            if (cur.getInterfaces().length == 0) {
+				throw new ConfigurationException(getService().getClass().getName() +
+						" Service needs to implement interface to be exported as SOAP service");
 			}
-			setServiceInterface(getService().getClass().getInterfaces()[0]
-					.getName());
+			setServiceInterface(cur.getInterfaces()[0].getName());
 		} else {
 			// Validate that the service interface set is an actual interface
 			// that exists

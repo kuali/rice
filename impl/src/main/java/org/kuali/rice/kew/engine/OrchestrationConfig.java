@@ -31,7 +31,7 @@ import java.util.Set;
  */
 public class OrchestrationConfig {
 
-    public enum EngineCapability { STANDARD, BLANKET_APPROVAL, SIMULATION };
+    public enum EngineCapability { STANDARD, BLANKET_APPROVAL, SIMULATION }
     
     private final EngineCapability capability;
     private final boolean sendNotifications;
@@ -60,7 +60,7 @@ public class OrchestrationConfig {
         this.runPostProcessorLogic = doRunPostProcessorLogic;
     }
     
-    public Set<? extends String> getDestinationNodeNames() {
+    public Set<String> getDestinationNodeNames() {
         return destinationNodeNames;
     }
 

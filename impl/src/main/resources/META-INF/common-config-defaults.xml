@@ -413,6 +413,8 @@
   <!-- rice.kew.workflowDocumentActionsServiceSoap.secure KRMS -->
   <param name="krms.mode" override="false">LOCAL</param>
   <param name="rice.krms.ruleRepositoryServiceSoap.secure" override="false">true</param>
+  <param name="rice.krms.notificationPeopleFlowActionTypeServiceSoap.secure" override="false">true</param>
+  <param name="rice.krms.approvalPeopleFlowActionTypeServiceSoap.secure" override="false">true</param>
   <param name="rice.krms.expose.services.on.bus" override="false">true</param>
 
   <!-- SHAREDDATA -->

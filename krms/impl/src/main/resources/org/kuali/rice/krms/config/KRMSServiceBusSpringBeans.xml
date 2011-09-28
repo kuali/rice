@@ -85,4 +85,30 @@
 		</property>
 	</bean>
 
+  <bean id="rice.krms.notificationPeopleFlowActionTypeService.exporter" parent="krmsEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="krmsJaxWsSoapService">
+				<property name="service">
+					<ref bean="notificationPeopleFlowActionTypeService" />
+				</property>
+				<property name="localServiceName" value="notificationPeopleFlowActionTypeServiceSoap" />
+				<property name="busSecurity" value="${rice.krms.notificationPeopleFlowActionTypeServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
+  <bean id="rice.krms.approvalPeopleFlowActionTypeService.exporter" parent="krmsEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="krmsJaxWsSoapService">
+				<property name="service">
+					<ref bean="approvalPeopleFlowActionTypeService" />
+				</property>
+				<property name="localServiceName" value="approvalPeopleFlowActionTypeServiceSoap" />
+				<property name="busSecurity" value="${rice.krms.approvalPeopleFlowActionTypeServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

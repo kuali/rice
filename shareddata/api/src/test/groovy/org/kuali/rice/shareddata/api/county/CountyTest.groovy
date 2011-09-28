@@ -36,7 +36,7 @@ class CountyTest {
     private static final Long VERSION_NUMBER = new Long(1);
 
     private static final String XML = """
-    <county xmlns="http://rice.kuali.org/shareddata">
+    <county xmlns="http://rice.kuali.org/shareddata/v2_0">
         <code>${CODE}</code>
         <name>${NAME}</name>
         <countryCode>${COUNTRY_CODE}</countryCode>

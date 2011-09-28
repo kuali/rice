@@ -36,7 +36,7 @@ class PostalCodeTest {
     private static final Long VERSION_NUMBER = new Long(1);
 
     private static final String XML = """
-    <postalCode xmlns="http://rice.kuali.org/shareddata">
+    <postalCode xmlns="http://rice.kuali.org/shareddata/v2_0">
         <code>${CODE}</code>
         <cityName>${CITY_NAME}</cityName>
         <countryCode>${COUNTRY_CODE}</countryCode>

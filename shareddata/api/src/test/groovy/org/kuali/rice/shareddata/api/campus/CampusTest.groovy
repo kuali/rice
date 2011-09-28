@@ -38,7 +38,7 @@ class CampusTest {
 	private static final String OBJECT_ID = UUID.randomUUID();
 
     private static final String XML = """
-    <campus xmlns="http://rice.kuali.org/shareddata">
+    <campus xmlns="http://rice.kuali.org/shareddata/v2_0">
 		<code>${CODE}</code>
 		<name>${NAME}</name>
 		<shortName>${SHORT_NAME}</shortName>

@@ -36,7 +36,7 @@ class CountryTest {
   private static final String NAME = "United States"
 
   private static final String XML = """
-      <country xmlns="http://rice.kuali.org/shareddata">
+      <country xmlns="http://rice.kuali.org/shareddata/v2_0">
         <code>${CODE}</code>
         <name>${NAME}</name>
         <alternateCode>${ALT_CODE}</alternateCode>

@@ -31,7 +31,7 @@ class StateTest {
     private static final Long VERSION_NUMBER = new Long(1);
 
     private static final String XML = """
-    <state xmlns="http://rice.kuali.org/shareddata">
+    <state xmlns="http://rice.kuali.org/shareddata/v2_0">
         <code>${CODE}</code>
         <name>${NAME}</name>
         <countryCode>${COUNTRY_CODE}</countryCode>

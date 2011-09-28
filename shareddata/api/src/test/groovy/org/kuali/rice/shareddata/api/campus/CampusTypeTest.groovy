@@ -29,7 +29,7 @@ class CampusTypeTest {
     private static Long VERSION_NUMBER = new Long(1);
 	private static final String OBJECT_ID = UUID.randomUUID();
 	def static final String XML = """
-	  <campusType xmlns="http://rice.kuali.org/shareddata">
+	  <campusType xmlns="http://rice.kuali.org/shareddata/v2_0">
 			<code>${CODE}</code>
 			<name>${NAME}</name>
 			<active>${ACTIVE}</active>

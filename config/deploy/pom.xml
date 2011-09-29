@@ -67,7 +67,7 @@
       <properties>
         <deploy.env>env1</deploy.env>
         <deploy.server>deploy1.rice.kuali.org</deploy.server>
-        <public.url>http://env1.rice.kuali.org</public.url>
+        <public.url>http://dev1.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
         <db.instance>RICEENV1</db.instance>
         <db.vendor>oracle</db.vendor>
@@ -82,7 +82,7 @@
       <properties>
         <deploy.env>env2</deploy.env>
         <deploy.server>deploy1.rice.kuali.org</deploy.server>
-        <public.url>http://env2.rice.kuali.org</public.url>
+        <public.url>http://dev2.rice.kuali.org</public.url>
         <tomcat.instance>tomcat2</tomcat.instance>
         <db.instance>RICEENV2</db.instance>
         <db.vendor>mysql</db.vendor>

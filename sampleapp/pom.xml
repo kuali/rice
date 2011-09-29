@@ -85,7 +85,7 @@
         <maven.failsafe.includes>**/LoginLogoutIT.java</maven.failsafe.includes>
         <reset.phase>none</reset.phase>
         <deploy.server>deploy1.rice.kuali.org</deploy.server>
-        <public.url>http://env3.rice.kuali.org</public.url>
+        <public.url>http://it.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
         <db.instance>RICEENV3</db.instance>
         <db.vendor>oracle</db.vendor>

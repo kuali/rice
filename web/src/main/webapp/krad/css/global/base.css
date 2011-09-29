@@ -61,7 +61,7 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 .kr-page-action h2 {			/* was .page-action h2 */ /* renamed in xml and/or jsp */
 	clear:left;
 }
-.kr-field_attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
+.kr-field-attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
     float:left;
 }
 .kr-field-attribute img {
@@ -80,8 +80,6 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	line-height: 1.125em;
 	/* begin styles brought over from kuali-stacked.css  */
 	margin-bottom: auto;
-	display: block;
-	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 }
 .kr-labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
@@ -95,10 +93,11 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 .kr-errorsField .kr-errorMessages { /* was .errorsField .errorMessages */
 	color: #DF0000;
 	font-weight: bold;
+    background-position: 3px 1px;         /* adjusting the error icon position for this 1 scenario */
 }
 .kr-errorMessages {
-    padding-left: 20px;
-	background: url("../../images/exclamation-red.png") no-repeat scroll 3px 2px transparent;
+    padding-left: 25px;
+	background: url("../../images/exclamation-red.png") no-repeat scroll 3px 4px transparent;
 }
 .kr-clientError img {
 	margin-left:10px;   /* adds spacing between tab label and the icon */
@@ -107,6 +106,10 @@ span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError,
 	background-color: #FFE0E9 !important;
 }
 span.kr-information, div.kr-information, td.kr-information {
+    background-color:#AFDCED;
+}
+.kr-warningMessages, .kr-infoMessages {
+    color:#000000;
 }
 span.kr-warning, div.kr-warning, td.kr-warning {	/* was span.warning, div.arning, td.warning */
 	background-color: #F4E271;
@@ -121,51 +124,46 @@ li label.kr-error {
 .kr-errorsField {					/* was .errorsField */  /* renamed in xml and/or jsp */
 	overflow: hidden;
     *zoom: 1;
-    font-weight:bold;
     color: #DF0000;
 }
 .kr-errorsFieldForContainer {		/* was .errorsFieldForContainer */ /* renamed in xml and/or jsp */
 	float: none;
-	display:inline-block;
 	zoom:1;
  *display:inline;
 }
 
 .kr-warningMessages {		/* was .warningMessages */ /* renamed in xml and/or jsp */
-	padding-left: 20px;
-	background: url("../../images/exclamation-diamond-frame.png") no-repeat scroll 3px 2px transparent;
+	padding-left: 25px;
+	background: url("../../images/exclamation-diamond-frame.png") no-repeat scroll 3px 4px transparent;
+}
+.kr-warningMessages span {
+    display:inline-block;
+    margin-bottom: 5px;
+}
+.kr-errorsField>.kr-errorsField .kr-warningMessages, .kr-errorsField>.kr-errorsField .kr-infoMessages, .kr-errorsField>.kr-errorsField .kr-errorMessages {          /* this is for the special case of listed icons in one message, so the icon doesn't cut off */
+    background-position: 3px 0px;
 }
 .kr-infoMessages {			/* was .infoMessages*/ /* renamed in xml and/or jsp */
-	padding-left: 20px;
-	background: url("../../images/information-frame.png") no-repeat scroll 3px 2px transparent;
+	padding-left: 25px;
+    background: url("../../images/information-frame.png") no-repeat scroll 3px 4px transparent;
+	}
+.kr-errorsFieldForContainer .kr-errorMessages, .kr-errorsFieldForContainer .kr-warningMessages, .kr-errorsFieldForContainer .kr-infoMessages{
+    margin: 3px 0;
+    padding: 5px 10px 5px 25px;
+    width:50%;
+    background-position: 3px 4px;
 }
-
 .kr-errorsFieldForContainer .kr-errorMessages {		/* was .errorsFieldForContainer .errorMessages */ /* .errorsFieldForContainer renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
 	border: 1px solid red;
 	background-color: #FFE0E9;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	padding-right: 10px;
 }
 .kr-errorsFieldForContainer .kr-warningMessages {	/* was .errorsFieldForContainer .warningMessages *//* renamed in xml and/or jsp */
 	border: 1px solid goldenrod;
 	background-color: #F4E271;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	padding-right: 10px;
 }
 .kr-errorsFieldForContainer .kr-infoMessages {	/* was .errorsFieldForContainer .infoMessages*/ /* renamed in xml and/or jsp */
 	border: 1px solid #82CAFA;
 	background-color: #AFDCEC;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
-	padding-right: 10px;
 }
 .kr-errorsField ul {		/* was .errorsField ul*/ /* renamed in xml and/or jsp */
 	list-style: none outside none;
@@ -174,10 +172,17 @@ li label.kr-error {
 .kr-errorsField li {		/* was .errorsField li */ /* renamed in xml and/or jsp */
 	list-style: none outside none;
 	margin-left: 0;
+    margin-bottom:5px;
 	padding: 1px 0;
 	line-height: 1.3em;
-    font-weight:normal;
     display:block;
+}
+.errorLines label {
+    font-weight:normal;
+}
+.errorLines li {
+    font-weight:normal;
+    margin-bottom:5px;
 }
 
 /* breadcrumbs */

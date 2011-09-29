@@ -28,9 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EchoService2Impl implements EchoService {
-    @Resource WebServiceContext requestContext;
-
-	public String echo(String string) {	
+	public String echo(String string) {
 		return string;
 	}
 

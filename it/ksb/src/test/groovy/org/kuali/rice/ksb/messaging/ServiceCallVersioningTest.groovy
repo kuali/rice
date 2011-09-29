@@ -52,13 +52,15 @@ import org.kuali.rice.ksb.test.KSBTestCase
 import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningOutInterceptor
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder
 import org.kuali.rice.core.api.config.property.Config
-import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningHelper;
+import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningHelper
+import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService
+import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard
+import org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 class ServiceCallVersioningTest extends KSBTestCase {
-
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -67,31 +69,39 @@ class ServiceCallVersioningTest extends KSBTestCase {
         c.putProperty(Config.APPLICATION_VERSION, "99.99-SNAPSHOT");
     }
 
-	public boolean startClient1() {
-		return true;
-	}
+    public boolean startClient1() {
+        return true;
+    }
 
-	private String getClient1Port() {
-		return ConfigContext.getCurrentContextConfig().getProperty("ksb.client1.port")
-	}
+    private String getClient1Port() {
+        return ConfigContext.getCurrentContextConfig().getProperty("ksb.client1.port")
+    }
 
-	@Test void testSimpleSOAPService() throws Exception{
-		EchoService echoService = (EchoService)GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"))
+    /*@Test void testSimpleSOAPService() throws Exception{
+        EchoService echoService = (EchoService)GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"))
         echoService.captureHeaders()
         assertHeadersCaptured()
-	}
+    }*/
 
-	@Test void testJaxWsSOAPService(){
-		JaxWsEchoService jaxwsEchoService = (JaxWsEchoService) GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"))
-		jaxwsEchoService.captureHeaders();
+    @Test void testJaxWsSOAPService(){
+        JaxWsEchoService jaxwsEchoService = (JaxWsEchoService) GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"))
+        jaxwsEchoService.captureHeaders();
         assertHeadersCaptured();
-	}
+    }
+
+    @Test void testJaxRsService(){
+        BaseballCardCollectionService service = (BaseballCardCollectionService) GlobalResourceLoader.getService(new QName("test", "baseballCardCollectionService"))
+        // invoke a method that stores the headers
+        List<BaseballCard> allCards = service.getAll();
+        assertNotNull(allCards);
+        assertHeadersCaptured();
+    }
 
     def void assertHeadersCaptured() {
         Map<String, List<String>> headers = ServiceCallInformationHolder.stuff.get("capturedHeaders")
         System.out.println("HEADERS");
         System.out.println(headers);
-		assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_RICE_ENVIRONMENT_HEADER).contains("dev"))
+        assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_RICE_ENVIRONMENT_HEADER).contains("dev"))
         assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_RICE_VERSION_HEADER).contains(ConfigContext.getCurrentContextConfig().getRiceVersion())) //any { it =~ /2\.0.*/ })
         assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_APP_NAME_HEADER).contains("ServiceCallVersioningTest"))
         assertTrue(headers.get(ServiceCallVersioningHelper.KUALI_APP_VERSION_HEADER).contains("99.99-SNAPSHOT"))

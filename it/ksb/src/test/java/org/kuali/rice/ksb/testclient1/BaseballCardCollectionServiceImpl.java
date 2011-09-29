@@ -21,11 +21,16 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService;
+import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
 
 import javax.annotation.Resource;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.xml.ws.WebServiceContext;
 
 /**
  * Implementation for {@link BaseballCardCollectionService}
@@ -34,7 +39,8 @@ import javax.ws.rs.core.HttpHeaders;
  *
  */
 public class BaseballCardCollectionServiceImpl implements BaseballCardCollectionService {
-    @Resource HttpHeaders headers;
+    // annotations on impl not supported by RESTServiceExporter/RestServiceDefinition
+    // @Context HttpHeaders headers;
 
     private Map<Integer, BaseballCard> cards = new ConcurrentHashMap<Integer, BaseballCard>();
     private AtomicInteger nextId = new AtomicInteger(1);
@@ -81,6 +87,10 @@ public class BaseballCardCollectionServiceImpl implements BaseballCardCollection
      * @see org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService#getAll()
      */
     public List<BaseballCard> getAll() {
+        // excuse me while we exploit this service to test service call version headers
+        // annotations on impl not supported by RESTServiceExporter/RestServiceDefinition
+        //ServiceCallInformationHolder.stuff.put("capturedHeaders", headers.getRequestHeaders());
+        ServiceCallInformationHolder.stuff.put("capturedHeaders", PhaseInterceptorChain.getCurrentMessage().get(Message.PROTOCOL_HEADERS));
         return new ArrayList<BaseballCard>(cards.values());
     }
 

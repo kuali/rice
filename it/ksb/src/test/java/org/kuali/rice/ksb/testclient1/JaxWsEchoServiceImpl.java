@@ -17,6 +17,8 @@ package org.kuali.rice.ksb.testclient1;
 
 import javax.annotation.Resource;
 import javax.jws.WebService;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
@@ -40,7 +42,7 @@ import java.util.Map;
 		targetNamespace="http://rice.kuali.org/")
 public class JaxWsEchoServiceImpl implements JaxWsEchoService {
     @Resource WebServiceContext requestContext;
-    
+
 	/**
 	 * This overridden method ...
 	 * 

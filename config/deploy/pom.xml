@@ -22,7 +22,7 @@
     <maven.test.skip>true</maven.test.skip>
     <war.file>../../sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
     <impex.dir>../../db/impex/master</impex.dir>
-    <config.resource>${deploy.env}-sample-app-config.xml</config.resource>
+    <config.resource>${deploy.env}-app-config.xml</config.resource>
     <config.file>${project.build.directory}/classes/${config.resource}</config.file>
     <impex.database>${db.instance}</impex.database>
     <impex.username>${db.instance}</impex.username>
@@ -135,7 +135,6 @@
         <impex.url>${impex.oracle.url}</impex.url>
         <impex.dba.url>${impex.oracle.url}</impex.dba.url>
         <war.file>../../standalone/target/rice-standalone-${project.version}.war</war.file>
-        <config.resource>standalone-config-${deploy.env}.xml</config.resource>
       </properties>
     </profile>
     <profile>

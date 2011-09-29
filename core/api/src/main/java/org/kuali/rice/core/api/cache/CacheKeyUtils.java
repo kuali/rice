@@ -52,7 +52,7 @@ public final class CacheKeyUtils {
      * @param <K> the col type
      * @return the collection as a string value
      */
-    public <K extends Comparable<K>> String key(Collection<K> col) {
+    public static <K extends Comparable<K>> String key(Collection<K> col) {
         if (col == null) {
             return "";
         }

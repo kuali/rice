@@ -18,12 +18,12 @@ package org.kuali.rice.core.impl.config.module;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
@@ -86,17 +86,20 @@ public class CoreConfigurer extends ModuleConfigurer {
         }
 	}
 
-	@Override
+    @Override
 	public List<String> getPrimarySpringFiles() {
 		final List<String> springFileLocations = new ArrayList<String>();
-		
-		springFileLocations.add("classpath:org/kuali/rice/core/config/CORESpringBeans.xml");
-		if (OrmUtils.isJpaEnabled("rice.core")) {
-        	springFileLocations.add("classpath:org/kuali/rice/core/config/CoreJpaSpringBeans.xml");
-        }
-        else {
-        	//springFileLocations.add("classpath:org/kuali/rice/core/config/CoreOjbSpringBeans.xml");
-        }
+		springFileLocations.add( "classpath:org/kuali/rice/core/config/CORESpringBeans.xml" );
+		if ( getRunMode().equals( RunMode.LOCAL ) || getRunMode().equals( RunMode.EMBEDDED ) ) {
+			//FIXME: need to move the ParameterRepositoryService & NamespaceServiceImpl and load it here
+		}
+		if ( isExposeServicesOnBus() ) {
+            //in krad for now as a hack
+		    //springFileLocations.add("classpath:org/kuali/rice/core/config/COREServiceBusSpringBeans.xml");
+		}
+		if ( isIncludeUserInterfaceComponents() ) {
+			//FIXME: should only load the DD maintenance docs here
+		}
 		return springFileLocations;
 	}
 	

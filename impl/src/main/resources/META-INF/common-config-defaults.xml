@@ -442,6 +442,8 @@
 	
 	<!-- CORE -->
 	<param name="core.mode" override="false">LOCAL</param>
+  <param name="rice.core.expose.services.on.bus" override="false">true</param>
+  <param name="core.soapExposedService.jaxws.security" override="false">true</param>
 	
 	<!-- from kew-config-defaults -->
 	

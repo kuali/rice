@@ -92,6 +92,7 @@
         <war.file>${project.build.directory}/${project.artifactId}-${project.version}.war</war.file>
         <config.file>${project.build.directory}/test-classes/sample-app-config.xml</config.file>
         <impex.dir>${project.basedir}/../db/impex/master</impex.dir>
+        <impex.database>${db.instance}</impex.database>
         <impex.username>${db.instance}</impex.username>
         <impex.password>${db.instance}</impex.password>
         <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
@@ -122,16 +123,16 @@
               <execution>
                 <id>reset-remote-server</id>
                 <phase>${reset.phase}</phase>
-                <configuration>
-                  <target>
-                    <ant antfile="../config/deploy/build.xml" target="reset" />
-                  </target>
-                </configuration>
                 <goals>
                   <goal>run</goal>
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <target>
+                <ant antfile="../config/deploy/build.xml" target="reset" />
+              </target>
+            </configuration>
           </plugin>
           <plugin>
             <groupId>org.kuali.maven.plugins</groupId>

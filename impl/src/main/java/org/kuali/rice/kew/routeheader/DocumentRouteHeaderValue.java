@@ -317,7 +317,12 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             nodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getDocumentId());
         }
         for (RouteNodeInstance nodeInstance : nodeInstances) {
-            currentNodeNames.add(nodeInstance.getRouteNode().getRouteNodeName());
+            if (nodeInstance.getRouteNode() != null) {
+                currentNodeNames.add(nodeInstance.getRouteNode().getRouteNodeName());
+            }
+            else {
+                currentNodeNames.add("");
+            }
         }
         return currentNodeNames;
     }

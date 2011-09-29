@@ -59,7 +59,7 @@
     <property name="serviceName" value="rice.ksb.serviceBus"/>
   </bean>
 
-  <bean id="sharedDataJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
+  <bean id="sharedDataService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
     <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.shareddata.api.SharedDataConstants$Namespaces).SHAREDDATA_NAMESPACE_2_0 }"/>
     <property name="jaxWsService" value="true"/>
     <property name="priority" value="3"/>
@@ -69,15 +69,75 @@
     <property name="cacheManager" value="sharedDataLocalCacheManager"/>
   </bean>
 
+  <bean id="sharedDataLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
+		<property name="runModePropertyName" value="shareddata.mode" />
+		<property name="validRunMode" value="LOCAL" />
+	</bean>
+
   <bean id="sharedDataRemoteServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
 		<property name="runModePropertyName" value="shareddata.mode" />
 		<property name="validRunMode" value="REMOTE" />
 	</bean>
 
+  <bean parent="sharedDataLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="sharedDataService"
+            p:service-ref="postalCodeService"
+            p:localServiceName="postalCodeServiceSoap"
+            p:serviceInterface="org.kuali.rice.shareddata.api.postalcode.PostalCodeService"/>
+    </property>
+    <property name="exportIf" value="postalCodeServiceSOAP.expose"/>
+  </bean>
+
+  <bean parent="sharedDataLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="sharedDataService"
+            p:service-ref="countyService"
+            p:localServiceName="countyServiceSoap"
+            p:serviceInterface="org.kuali.rice.shareddata.api.county.CountyService"/>
+    </property>
+    <property name="exportIf" value="countyServiceSOAP.expose"/>
+  </bean>
+
+    <bean parent="sharedDataLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="sharedDataService"
+            p:service-ref="stateService"
+            p:localServiceName="stateServiceSoap"
+            p:serviceInterface="org.kuali.rice.shareddata.api.state.StateService"/>
+    </property>
+    <property name="exportIf" value="stateServiceSOAP.expose"/>
+  </bean>
+
+  <bean parent="sharedDataLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="sharedDataService"
+            p:service-ref="countryService"
+            p:localServiceName="countryServiceSoap"
+            p:serviceInterface="org.kuali.rice.shareddata.api.country.CountryService"/>
+    </property>
+    <property name="exportIf" value="countryServiceSOAP.expose"/>
+  </bean>
+
+    <bean parent="sharedDataLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="sharedDataService"
+            p:service-ref="campusService"
+            p:localServiceName="campusServiceSoap"
+            p:serviceInterface="org.kuali.rice.shareddata.api.campus.CampusService"/>
+    </property>
+    <property name="exportIf" value="campusServiceSOAP.expose"/>
+  </bean>
+
   <bean parent="sharedDataRemoteServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
-      <bean parent="sharedDataJaxWsSoapService"
+      <bean parent="sharedDataService"
             p:service-ref="sharedDataCacheService"
             p:localServiceName="sharedDataCacheServiceSoap"/>
     </property>

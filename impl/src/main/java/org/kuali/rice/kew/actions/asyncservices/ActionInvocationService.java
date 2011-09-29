@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 /**
  * Interface for defining the contract for the remoting of ActionInvocationProcessor.  
@@ -25,7 +26,5 @@ package org.kuali.rice.kew.actions.asyncservices;
  */
 public interface ActionInvocationService {
 
-	public void invokeAction(String principalId, String documentId, ActionInvocation invocation);
-	
-	
+	void invokeAction(String principalId, String documentId, ActionInvocation invocation) throws RiceIllegalArgumentException;
 }

@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 /**
  * Defines a service for "poking" a role for a specified document.  When a role is 
@@ -27,7 +28,7 @@ package org.kuali.rice.kew.rule;
  */
 public interface RolePoker {
 	
-	public void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel);
-	public void reResolveRole(String documentId, String roleName);
+	void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) throws RiceIllegalArgumentException;
+	void reResolveRole(String documentId, String roleName) throws RiceIllegalArgumentException;
 
 }

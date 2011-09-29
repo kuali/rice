@@ -20,6 +20,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ksb.api.KsbApiConstants;
 
 /**
@@ -33,16 +34,16 @@ import org.kuali.rice.ksb.api.KsbApiConstants;
 public interface BusAdminService {
 
 	@WebMethod(operationName="ping")
-    public void ping();
+    void ping();
 
 	@WebMethod(operationName="setCorePoolSize")
-    public void setCorePoolSize(@WebParam(name = "corePoolSize") int corePoolSize);
+    void setCorePoolSize(@WebParam(name = "corePoolSize") int corePoolSize) throws RiceIllegalArgumentException;
 
 	@WebMethod(operationName="setMaximumPoolSize")
-    public void setMaximumPoolSize(@WebParam(name = "maxPoolSize") int maxPoolSize);
+    void setMaximumPoolSize(@WebParam(name = "maxPoolSize") int maxPoolSize) throws RiceIllegalArgumentException;
 
 	@WebMethod(operationName="setConfigProperty")
-    public void setConfigProperty(@WebParam(name = "propertyName") String propertyName,
-    		@WebParam(name = "propertyValue") String propertyValue);
+    void setConfigProperty(@WebParam(name = "propertyName") String propertyName,
+    		@WebParam(name = "propertyValue") String propertyValue) throws RiceIllegalArgumentException;
 
 }

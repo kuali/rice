@@ -16,18 +16,21 @@ package org.kuali.rice.kew.actions.asyncservices;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
-
-
 /**
- * Service for doing the actual work of a mass action in the action list. Represents a single action on a single document.
+ * Service for doing the actual work of a mass action in the action list. Represents a single action on a single
+ * document.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -35,30 +38,58 @@ public class ActionInvocationProcessor implements ActionInvocationService { // i
 
     private static final Logger LOG = Logger.getLogger(ActionInvocationProcessor.class);
 
+    @Override
     public void invokeAction(String principalId, String documentId, ActionInvocation invocation) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
 
-	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+        if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId is null");
+        }
 
-	Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-	List<DataDefinition> parameters = new ArrayList<DataDefinition>();
-	parameters.add(new DataDefinition(document));
-	parameters.add(new DataDefinition(principal));
-	parameters.add(new DataDefinition(""));
-	ActionTakenEvent action;
-	try {
-	    action = KEWServiceLocator.getActionRegistry().createAction(invocation.getActionCode(), parameters);
-	    if (!document.isValidActionToTake(invocation.getActionCode())) {
-		LOG.warn("Action " + invocation.getActionCode() + " is not a valid action to take against document " + document.getDocumentId() + " by principal with name '" + principal.getPrincipalName() + "'");
-		return;
-	    } else if (!KEWServiceLocator.getActionRegistry().getValidActions(principal, document).getActionTakenCodes().contains(action.getActionTakenCode())) {
-		LOG.warn("Action " + action.getActionTakenCode() + " is not valid for document " + document.getDocumentId() + " by principal with name '" + principal.getPrincipalName() + "'");
-		return;
-	    }
-	    action.performAction();
-	} catch (Exception e) {
-	    throw new WorkflowRuntimeException(e);
-	}
+        if (invocation == null) {
+            throw new RiceIllegalArgumentException("invocation is null");
+        }
+
+
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+
+        Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        List<DataDefinition> parameters = new ArrayList<DataDefinition>();
+        parameters.add(new DataDefinition(document));
+        parameters.add(new DataDefinition(principal));
+        parameters.add(new DataDefinition(""));
+
+        try {
+            final ActionTakenEvent action = KEWServiceLocator.getActionRegistry().createAction(invocation.getActionCode(), parameters);
+            if (!document.isValidActionToTake(invocation.getActionCode())) {
+                LOG.warn("Action "
+                        + invocation.getActionCode()
+                        + " is not a valid action to take against document "
+                        + document.getDocumentId()
+                        + " by principal with name '"
+                        + principal.getPrincipalName()
+                        + "'");
+                return;
+            } else if (!KEWServiceLocator.getActionRegistry().getValidActions(principal, document).getActionTakenCodes()
+                    .contains(action.getActionTakenCode())) {
+                LOG.warn("Action "
+                        + action.getActionTakenCode()
+                        + " is not valid for document "
+                        + document.getDocumentId()
+                        + " by principal with name '"
+                        + principal.getPrincipalName()
+                        + "'");
+                return;
+            }
+            action.performAction();
+        } catch (ResourceUnavailableException e) {
+            throw new WorkflowRuntimeException(e);
+        } catch (InvalidActionTakenException e) {
+            throw new WorkflowRuntimeException(e);
+        }
 
     }
 

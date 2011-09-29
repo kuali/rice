@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.actionrequest.service;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+
 /**
  * Interface for the DocumentRequeuerImpl service.
  *
@@ -23,6 +25,6 @@ package org.kuali.rice.kew.actionrequest.service;
  */
 public interface DocumentRequeuerService {
 
-	public void requeueDocument(String documentId);
+	void requeueDocument(String documentId) throws RiceIllegalArgumentException;
 	
 }

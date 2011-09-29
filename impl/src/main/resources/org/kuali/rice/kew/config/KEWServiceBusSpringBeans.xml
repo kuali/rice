@@ -38,6 +38,12 @@
 		<property name="validRunMode" value="LOCAL" />
 	</bean>
 
+  <bean id="kewRemoteServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter"
+		abstract="true">
+		<property name="runModePropertyName" value="kew.mode" />
+		<property name="validRunMode" value="REMOTE" />
+	</bean>
+
 	<bean id="kewEmbeddedServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter"
 		abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
@@ -371,7 +377,7 @@
   </bean>
 
 
-  <bean parent="kewLocalServiceExporter">
+  <bean parent="kewRemoteServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="kewJaxWsSoapService"

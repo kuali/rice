@@ -16,7 +16,9 @@
 
 package org.kuali.rice.ksb.messaging.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.ksb.messaging.service.BusAdminService;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
@@ -40,16 +42,27 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
     protected KSBThreadPool getThreadPool() {
     	return this.threadPool;
     }
-    
+
+    @Override
     public void ping() {
+        LOG.info("ping called");
     }
 
+    @Override
     public void setCorePoolSize(int corePoolSize) {
-    	LOG.info("Setting core pool size to " + corePoolSize);
+    	if (corePoolSize < 0) {
+            throw new RiceIllegalArgumentException("corePoolSize < 0");
+        }
+
+        LOG.info("Setting core pool size to " + corePoolSize);
     	getThreadPool().setCorePoolSize(corePoolSize);
     }
 
+    @Override
     public void setMaximumPoolSize(int maxPoolSize) {
+    	if (maxPoolSize < 0) {
+            throw new RiceIllegalArgumentException("maxPoolSize < 0");
+        }
     	LOG.info("Setting max pool size to " + maxPoolSize);
     	if (maxPoolSize < getThreadPool().getCorePoolSize()) {
     		maxPoolSize = getThreadPool().getCorePoolSize();
@@ -57,8 +70,13 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
     	getThreadPool().setMaximumPoolSize(maxPoolSize);
     }
 
+    @Override
     public void setConfigProperty(String propertyName, String propertyValue) {
-    	String originalValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+    	if (StringUtils.isBlank(propertyName)) {
+            throw new RiceIllegalArgumentException("propertyName is null or blank");
+        }
+
+        String originalValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
     	LOG.info("Changing config property '" + propertyName + "' from " + originalValue + " to " + propertyValue);
     	if (propertyValue == null) {
     		ConfigContext.getCurrentContextConfig().removeProperty(propertyName);
@@ -67,6 +85,7 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
     	}
     }
 
+    @Override
     public void start() throws Exception {
     	if (getThreadPool() == null) {
     		throw new IllegalStateException("The threadPool has not been set on the busAdminService");
@@ -74,6 +93,7 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
     	setStarted(true);
     }
 
+    @Override
     public void stop() throws Exception {
     	setStarted(false);
     }

@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+
 import java.util.Set;
 
 
@@ -26,8 +28,8 @@ import java.util.Set;
  */
 public interface BlanketApproveProcessorService {
 	
-	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames);
+	void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames) throws RiceIllegalArgumentException;
 	
-	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex);
+	void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) throws RiceIllegalArgumentException;
 
 }

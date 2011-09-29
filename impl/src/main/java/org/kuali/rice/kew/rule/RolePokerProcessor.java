@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -32,11 +34,16 @@ import java.util.List;
  */
 public class RolePokerProcessor implements RolePoker {
 
+    @Override
 	public void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) {
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-		if (org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
-			throw new IllegalArgumentException("Can't poke a role without a role name!");
+        if (StringUtils.isBlank(documentId)) {
+			throw new RiceIllegalArgumentException("documentId is null or blank");
 		}
+        if (StringUtils.isBlank(roleName)) {
+			throw new RiceIllegalArgumentException("roleName is null or blank");
+		}
+
+		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		if (qualifiedRoleNameLabel == null) {
 			KEWServiceLocator.getRoleService().reResolveRole(document, roleName);
@@ -45,33 +52,8 @@ public class RolePokerProcessor implements RolePoker {
 		}
 	}
 
+    @Override
 	public void reResolveRole(String documentId, String roleName) {
 		reResolveRole(documentId, roleName, null);
 	}
-		
-	private String[] parseParameters(String parameters) {
-		List strings = new ArrayList();
-		boolean isEscaped = false;
-		StringBuffer buffer = new StringBuffer();
-		for (int index = 0; index < parameters.length(); index++) {
-			char character = parameters.charAt(index);
-			if (isEscaped) {
-				isEscaped = false;
-				buffer.append(character);
-			} else {
-				if (character == '\\') {
-					isEscaped = true;
-				} else if (character == ',') {
-					strings.add(buffer.toString());
-					buffer = new StringBuffer();
-				} else {
-					buffer.append(character);
-				}
-			}
-		}
-		return (String[])strings.toArray(new String[0]);
-	}
-
-
-
 }

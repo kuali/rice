@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
@@ -50,11 +52,15 @@ public class DocumentRequeuerImpl implements DocumentRequeuerService {
 	/**
 	 * Requeues a document, and sets notification suppression data
 	 * 
-	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService#requeueDocument(java.lang.Long)
+	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService#requeueDocument(java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public void requeueDocument(String documentId) {
-		PerformanceLogger performanceLogger = new PerformanceLogger();
+		if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId is null or blank");
+        }
+
+        PerformanceLogger performanceLogger = new PerformanceLogger();
         KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
         Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(documentId);
         List<ActionRequestValue> requestsToDelete = new ArrayList<ActionRequestValue>();

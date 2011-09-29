@@ -18,6 +18,8 @@ package org.kuali.rice.kew.actions.asyncservices;
 
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actions.BlanketApproveAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -38,13 +40,30 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 public class BlanketApproveProcessor implements BlanketApproveProcessorService {
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
-	
+
+    @Override
 	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames) {
-		doBlanketApproveWork(documentId, principalId, actionTakenId, nodeNames, false);
+        doBlanketApproveWork(documentId, principalId, actionTakenId, nodeNames, false);
 	}
 
+    @Override
 	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) {
-		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
+		if (StringUtils.isBlank(principalId)) {
+            throw new RiceIllegalArgumentException("principalId is null or blank");
+        }
+
+        if (StringUtils.isBlank(documentId)) {
+            throw new RiceIllegalArgumentException("documentId is null");
+        }
+
+        if (StringUtils.isBlank(actionTakenId)) {
+            throw new RiceIllegalArgumentException("actionTakenId is null");
+        }
+        if (nodeNames == null) {
+            throw new RiceIllegalArgumentException("nodeNames is null");
+        }
+
+        KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
 		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
 		Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);

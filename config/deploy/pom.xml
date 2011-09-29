@@ -19,6 +19,7 @@
   <packaging>jar</packaging>
   <name>Rice Deploy</name>
   <properties>
+    <maven.test.skip>true</maven.test.skip>
     <war.file>../../sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
     <impex.dir>../../db/impex/master</impex.dir>
     <config.resource>sample-app-config-${deploy.env}.xml</config.resource>
@@ -37,6 +38,28 @@
         </includes>
       </resource>
     </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>gmaven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>gmaven-generate-stubs</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-banned-dependencies</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
   <profiles>
     <profile>

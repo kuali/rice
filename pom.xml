@@ -16,7 +16,8 @@
   ~ limitations under the License.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
@@ -483,9 +484,9 @@
                 <goal>compile</goal>
               </goals>
             </execution>
-                <!-- test stubs aren't needed now since we are not creating
-                  groovy test code for reference in java test code -->
-                <!--<goal>generateTestStubs</goal> -->
+            <!-- test stubs aren't needed now since we are not creating
+              groovy test code for reference in java test code -->
+            <!--<goal>generateTestStubs</goal> -->
             <execution>
               <id>gmaven-test-compile-stubs</id>
               <phase>${gmaven.test.compile.phase}</phase>
@@ -645,7 +646,7 @@
             <encoding>${project.build.sourceEncoding}</encoding>
             <systemPropertyVariables>
               <remote.public.url>http://localhost:8080/kr-dev/</remote.public.url>
-            </systemPropertyVariables> 
+            </systemPropertyVariables>
             <skip>${maven.failsafe.skip}</skip>
             <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
             <useFile>false</useFile>
@@ -875,6 +876,7 @@
     <module>it</module>
     <module>client-contrib</module>
     <module>dist</module>
+    <module>config</module>
   </modules>
 
   <repositories>

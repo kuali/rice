@@ -68,6 +68,7 @@
       <arg value="-Dimpex.dba.password=${impex.dba.password}" />
       <arg value="-Dimpex.url=${impex.url}" />
       <arg value="-Dimpex.dba.url=${impex.dba.url}" />
+      <arg value="-Dimpex.database=${impex.database}" />
     </exec>
   </target>
   <target name="start" depends="check-properties">
@@ -99,6 +100,7 @@
         <isset property="impex.dba.url" />
         <isset property="impex.dba.username" />
         <isset property="impex.dba.password" />
+        <isset property="impex.database" />
       </and>
     </condition>
     <fail unless="properties.set">

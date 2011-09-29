@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational
+  Community License, Version 2.0 (the "License"); you may not use this file
+  except in compliance with the License. You may obtain a copy of the License
+  at http://www.opensource.org/licenses/ecl2.php Unless required by applicable
+  law or agreed to in writing, software distributed under the License is distributed
+  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  express or implied. See the License for the specific language governing permissions
+  and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kuali.rice</groupId>
+    <artifactId>rice-config</artifactId>
+    <version>2.0.0-m9-SNAPSHOT</version>
+  </parent>
+  <artifactId>rice-deploy</artifactId>
+  <packaging>jar</packaging>
+  <name>Rice Deploy</name>
+  <properties>
+    <checkout.dir>${project.basedir}/../..</checkout.dir>
+    <war.file>${checkout.dir}/sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
+    <impex.dir>${checkout.dir}/db/impex/master</impex.dir>
+    <config.resource>sample-app-config-${deploy.env}.xml</config.resource>
+    <config.file>${project.build.directory}/classes/${config.resource}</config.file>
+    <impex.dba.username>master</impex.dba.username>
+    <impex.dba.password>gw570229</impex.dba.password>
+    <impex.database>${db.instance}</impex.database>
+    <impex.username>${db.instance}</impex.username>
+    <impex.password>${db.instance}</impex.password>
+  </properties>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <includes>
+          <include>${config.resource}</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+  <profiles>
+    <profile>
+      <id>env1</id>
+      <properties>
+        <deploy.env>env1</deploy.env>
+        <deploy.server>deploy1.rice.kuali.org</deploy.server>
+        <public.url>http://env1.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat1</tomcat.instance>
+        <db.instance>RICEENV1</db.instance>
+        <db.vendor>oracle</db.vendor>
+        <impex.username>${db.instance}</impex.username>
+        <impex.password>${db.instance}</impex.password>
+        <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
+        <impex.dba.url>${impex.url}</impex.dba.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>env2</id>
+      <properties>
+        <deploy.env>env2</deploy.env>
+        <deploy.server>deploy1.rice.kuali.org</deploy.server>
+        <public.url>http://env2.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat2</tomcat.instance>
+        <db.instance>RICEENV2</db.instance>
+        <db.vendor>mysql</db.vendor>
+        <impex.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.dba.url>
+        <impex.url>${impex.dba.url}/${impex.database}</impex.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>reset</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>reset</id>
+                <phase>install</phase>
+                <configuration>
+                  <target>
+                    <ant antfile="build.xml" target="reset" />
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>maven-http-plugin</artifactId>
+            <version>1.0.1</version>
+            <executions>
+              <execution>
+                <id>wait-for-tomcat-startup</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>wait</goal>
+                </goals>
+                <configuration>
+                  <url>${public.url}</url>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

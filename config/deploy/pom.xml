@@ -27,6 +27,11 @@
     <impex.database>${db.instance}</impex.database>
     <impex.username>${db.instance}</impex.username>
     <impex.password>${db.instance}</impex.password>
+    <deploy.server.1>deploy1.rice.kuali.org</deploy.server.1>
+    <deploy.server.2>deploy2.rice.kuali.org</deploy.server.2>
+    <impex.oracle.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.oracle.url>
+    <impex.mysql.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.mysql.dba.url>
+    <impex.mysql.url>${impex.mysql.dba.url}/${impex.database}</impex.mysql.url>
   </properties>
   <build>
     <resources>
@@ -66,28 +71,78 @@
       <id>env1</id>
       <properties>
         <deploy.env>env1</deploy.env>
-        <deploy.server>deploy1.rice.kuali.org</deploy.server>
+        <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://dev1.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
         <db.instance>RICEENV1</db.instance>
         <db.vendor>oracle</db.vendor>
-        <impex.username>${db.instance}</impex.username>
-        <impex.password>${db.instance}</impex.password>
-        <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
-        <impex.dba.url>${impex.url}</impex.dba.url>
+        <impex.url>${impex.oracle.url}</impex.url>
+        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
       </properties>
     </profile>
     <profile>
       <id>env2</id>
       <properties>
         <deploy.env>env2</deploy.env>
-        <deploy.server>deploy1.rice.kuali.org</deploy.server>
+        <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://dev2.rice.kuali.org</public.url>
         <tomcat.instance>tomcat2</tomcat.instance>
         <db.instance>RICEENV2</db.instance>
         <db.vendor>mysql</db.vendor>
-        <impex.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.dba.url>
-        <impex.url>${impex.dba.url}/${impex.database}</impex.url>
+        <impex.dba.url>${impex.mysql.dba.url}</impex.dba.url>
+        <impex.url>${impex.mysql.url}</impex.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>env3</id>
+      <properties>
+        <deploy.env>env3</deploy.env>
+        <deploy.server>${deploy.server.1}</deploy.server>
+        <public.url>http://env3.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat3</tomcat.instance>
+        <db.instance>RICEENV3</db.instance>
+        <db.vendor>oracle</db.vendor>
+        <impex.url>${impex.oracle.url}</impex.url>
+        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>env4</id>
+      <properties>
+        <deploy.env>env4</deploy.env>
+        <deploy.server>${deploy.server.2}</deploy.server>
+        <public.url>http://env4.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat1</tomcat.instance>
+        <db.instance>RICEENV4</db.instance>
+        <db.vendor>oracle</db.vendor>
+        <impex.url>${impex.oracle.url}</impex.url>
+        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>env5</id>
+      <properties>
+        <deploy.env>env5</deploy.env>
+        <deploy.server>${deploy.server.2}</deploy.server>
+        <public.url>http://env5.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat2</tomcat.instance>
+        <db.instance>RICEENV5</db.instance>
+        <db.vendor>oracle</db.vendor>
+        <impex.url>${impex.oracle.url}</impex.url>
+        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>env6</id>
+      <properties>
+        <deploy.env>env6</deploy.env>
+        <deploy.server>${deploy.server.2}</deploy.server>
+        <public.url>http://env6.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat3</tomcat.instance>
+        <db.instance>RICEENV6</db.instance>
+        <db.vendor>oracle</db.vendor>
+        <impex.url>${impex.oracle.url}</impex.url>
+        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
       </properties>
     </profile>
     <profile>

@@ -6,6 +6,18 @@
   <property name="impex.dba.password" value="gw570229" />
 
   <target name="reset" depends="stop,clean,copy,resetdb,start" />
+  <target name="reset-nightly-envs">
+    <exec executable="${mvn}" failonerror="true">
+      <arg value="clean" />
+      <arg value="install" />
+      <arg value="-Preset,env1" />
+    </exec>
+    <exec executable="${mvn}" failonerror="true">
+      <arg value="clean" />
+      <arg value="install" />
+      <arg value="-Preset,env2" />
+    </exec>
+  </target>
 
   <target name="stop" depends="check-properties">
     <echo>Stopping ${tomcat.instance} on ${deploy.server}</echo>

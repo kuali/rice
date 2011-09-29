@@ -77,11 +77,11 @@ class ServiceCallVersioningTest extends KSBTestCase {
         return ConfigContext.getCurrentContextConfig().getProperty("ksb.client1.port")
     }
 
-    /*@Test void testSimpleSOAPService() throws Exception{
+    @Test void testSimpleSOAPService() throws Exception{
         EchoService echoService = (EchoService)GlobalResourceLoader.getService(new QName("TestCl1", "soap-echoService"))
         echoService.captureHeaders()
         assertHeadersCaptured()
-    }*/
+    }
 
     @Test void testJaxWsSOAPService(){
         JaxWsEchoService jaxwsEchoService = (JaxWsEchoService) GlobalResourceLoader.getService(new QName("TestCl1", "jaxwsEchoService"))

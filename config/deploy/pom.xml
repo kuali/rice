@@ -130,6 +130,8 @@
         <db.vendor>oracle</db.vendor>
         <impex.url>${impex.oracle.url}</impex.url>
         <impex.dba.url>${impex.oracle.url}</impex.dba.url>
+        <war.file>../../standalone/target/rice-standalone-${project.version}.war</war.file>
+        <config.resource>standalone-config-${deploy.env}.xml</config.resource>
       </properties>
     </profile>
     <profile>

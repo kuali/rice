@@ -19,13 +19,10 @@
   <packaging>jar</packaging>
   <name>Rice Deploy</name>
   <properties>
-    <checkout.dir>${project.basedir}/../..</checkout.dir>
-    <war.file>${checkout.dir}/sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
-    <impex.dir>${checkout.dir}/db/impex/master</impex.dir>
+    <war.file>../../sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
+    <impex.dir>../../db/impex/master</impex.dir>
     <config.resource>sample-app-config-${deploy.env}.xml</config.resource>
     <config.file>${project.build.directory}/classes/${config.resource}</config.file>
-    <impex.dba.username>master</impex.dba.username>
-    <impex.dba.password>gw570229</impex.dba.password>
     <impex.database>${db.instance}</impex.database>
     <impex.username>${db.instance}</impex.username>
     <impex.password>${db.instance}</impex.password>

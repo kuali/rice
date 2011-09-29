@@ -94,8 +94,6 @@
         <impex.dir>${project.basedir}/../db/impex/master</impex.dir>
         <impex.username>${db.instance}</impex.username>
         <impex.password>${db.instance}</impex.password>
-        <impex.dba.username>master</impex.dba.username>
-        <impex.dba.password>gw570229</impex.dba.password>
         <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
         <impex.dba.url>${impex.url}</impex.dba.url>
       </properties>

@@ -2,6 +2,8 @@
   <description>Deploy applications packaged by Maven to a server on EC2</description>
   <property name="auth" value="/home/ubuntu/kr-key.pem" />
   <property name="mvn" value="/opt/java/apache-maven-3.0.3/bin/mvn" />
+  <property name="impex.dba.username" value="master" />
+  <property name="impex.dba.password" value="gw570229" />
 
   <target name="reset" depends="stop,clean,copy,resetdb,start" />
 

@@ -19,6 +19,8 @@ import java.net.URL;
 import java.util.Map;
 import java.lang.SuppressWarnings;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
@@ -147,7 +149,7 @@ public class ResourceFacadeImpl implements ResourceFacade {
 	}
 	
 	public boolean isSingleResourceService() {
-		return serviceConfiguration.getResourceToClassNameMap() == null;
+		return MapUtils.isEmpty(serviceConfiguration.getResourceToClassNameMap());
 	}
 
 	public void setCredentialsSource(final CredentialsSource credentialsSource) {

@@ -79,7 +79,7 @@ public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
         }
 
         props.put(UifParameters.DATA_OBJECT_CLASS_NAME, AgendaEditor.class.getName());
-        props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE);
+        props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE.name());
 
         return UrlFactory.parameterizeUrl(org.kuali.rice.krms.impl.util.KrmsImplConstants.WebPaths.AGENDA_EDITOR_PATH, props);
     }

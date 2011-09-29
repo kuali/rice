@@ -17,11 +17,13 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.kuali.rice.core.api.util.tree.Node;
 
+import java.io.Serializable;
+
 /**
  * abstract data class for the agenda tree {@link Node}s
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class AgendaTreeNode {
+public abstract class AgendaTreeNode implements Serializable {
 }

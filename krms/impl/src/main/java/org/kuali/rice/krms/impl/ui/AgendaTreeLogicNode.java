@@ -24,5 +24,6 @@ import org.kuali.rice.core.api.util.tree.Node;
  *
  */
 public class AgendaTreeLogicNode extends AgendaTreeNode {
-    
+
+    private static final long serialVersionUID = -7447887887521885531L;
 }

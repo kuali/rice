@@ -25,7 +25,9 @@ import org.kuali.rice.krms.impl.repository.AgendaItemBo;
  *
  */
 public class AgendaTreeRuleNode extends AgendaTreeNode {
-    
+
+    private static final long serialVersionUID = 8348548494907941273L;
+
     private AgendaItemBo agendaItem;
     
     public AgendaTreeRuleNode(AgendaItemBo agendaItem) {

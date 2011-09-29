@@ -43,6 +43,7 @@ public class RemoteTestHarness {
                 jaxWsAnnotatedInterface.isInstance(serviceImplementation)) {
 
             String endpointUrl = getAvailableEndpointUrl();
+            LOG.info("Publishing service to: " + endpointUrl);
             endpoint = Endpoint.publish(endpointUrl, serviceImplementation);
 
             JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();

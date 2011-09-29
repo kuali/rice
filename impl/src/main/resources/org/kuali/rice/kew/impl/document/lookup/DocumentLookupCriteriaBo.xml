@@ -33,9 +33,10 @@
         <ref bean="DocumentLookupCriteria-dateLastModified"/>
         <ref bean="DocumentLookupCriteria-dateFinalized"/>
         <ref bean="DocumentLookupCriteria-title"/>
-        <ref bean="DocumentLookupCriteria-saveName" />
+        <ref bean="DocumentLookupCriteria-saveName"/>
         <!-- Additional Attributes used for display purposes -->
         <ref bean="DocumentLookupCriteria-statusLabel"/>
+        <ref bean="DocumentLookupCriteria-initiatorPerson-name"/>
         <ref bean="DocumentLookupCriteria-documentTypeLabel"/>
         <ref bean="DocumentLookupCriteria-routeLog"/>
       </list>
@@ -282,6 +283,17 @@
     <property name="label" value="Name this lookup (optional)"/>
   </bean>
 
+  <bean id="DocumentLookupCriteria-initiatorPerson-name" parent="DocumentLookupCriteria-initiatorPerson-name-parentBean"/>
+
+  <bean id="DocumentLookupCriteria-initiatorPerson-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="initiatorPerson.name"/>
+    <property name="label" value="Initiator"/>
+    <property name="shortLabel" value="Initiator"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="20"/>
+    </property>
+  </bean>
+
   <bean id="DocumentLookupCriteria-statusLabel" parent="DocumentLookupCriteria-statusLabel-parentBean"/>
 
   <bean id="DocumentLookupCriteria-statusLabel-parentBean" abstract="true" parent="AttributeDefinition">
@@ -349,7 +361,7 @@
         <bean parent="FieldDefinition" p:attributeName="documentTypeLabel"/>
         <bean parent="FieldDefinition" p:attributeName="title"/>
         <bean parent="FieldDefinition" p:attributeName="statusLabel"/>
-        <bean parent="FieldDefinition" p:attributeName="initiatorPerson.name"/>
+        <bean parent="FieldDefinition" p:attributeName="initiatorPerson.name" />
         <bean parent="FieldDefinition" p:attributeName="dateCreated"/>
         <bean parent="FieldDefinition" p:attributeName="routeLog"/>
       </list>

@@ -313,7 +313,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         if(this.getParameters().containsKey(SUPER_USER_SEARCH_PARAM)) {
             String[] superUserSearchParams = (String[])this.getParameters().get(SUPER_USER_SEARCH_PARAM);
             if (ArrayUtils.isNotEmpty(superUserSearchParams)) {
-                return Boolean.TRUE.toString().equalsIgnoreCase(superUserSearchParams[0]);
+                return "YES".equalsIgnoreCase(superUserSearchParams[0]);
             }
         }
         return false;
@@ -325,7 +325,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     protected boolean isAdvancedSearch() {
         if(this.getParameters().containsKey(ADVANCED_SEARCH_PARAM)) {
             String[] advancedSearchParams = (String[])this.getParameters().get(ADVANCED_SEARCH_PARAM);
-	        return Boolean.TRUE.toString().equalsIgnoreCase(advancedSearchParams[0]);
+	        return "YES".equalsIgnoreCase(advancedSearchParams[0]);
         }
         return false;
     }
@@ -403,28 +403,17 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 		boolean superUserSearch = isSuperUserSearch();
 		StringBuilder suppMenuBar = new StringBuilder();
 
-        String jqueryInclude = "<script type=\"text/javascript\" src=\"../krad/scripts/jquery/jquery-1.5.2.js\"></script>\n";
-        suppMenuBar.append(jqueryInclude);
-
-        String advancedToggleValue = isAdvancedSearch() ? "'NO'" : "'YES'";
-        String advancedToggleScript = "$('input[name=" + ADVANCED_SEARCH_PARAM + "]').val(" + advancedToggleValue + ");customLookupChanged();return false";
-
         // Add the detailed-search-toggling button.
-        suppMenuBar.append("<input type=\"image\" onclick=\"").
-                append(advancedToggleScript).
-                append("\" name=\"toggleAdvancedSearch\" class=\"tinybutton\" src=\"..").
+        suppMenuBar.append("<input type=\"image\" ").
+                append(" name=\"toggleAdvancedSearch\" id=\"toggleAdvancedSearch\" class=\"tinybutton\" src=\"..").
                 append(KEWConstants.WEBAPP_DIRECTORY).
                 append(advancedSearch ?
                         "/images/tinybutton-basicsearch.gif\" alt=\"basic search\" title=\"basic search\" />" :
                         "/images/tinybutton-detailedsearch.gif\" alt=\"detailed search\" title=\"detailed search\" />");
 
-        String superUserToggleValue = isSuperUserSearch() ? "'NO'" : "'YES'";
-        String superUserToggleScript = "$('input[name=" + SUPER_USER_SEARCH_PARAM + "]').val(" + superUserToggleValue + ");customLookupChanged();return false";
-
 		// Add the superuser-search-toggling button.
-        suppMenuBar.append("&nbsp;").append("<input type=\"image\" onclick=\"").
-                append(superUserToggleScript).
-                append("\" name=\"toggleSuperUserSearch\" class=\"tinybutton\" src=\"..").
+        suppMenuBar.append("&nbsp;").append("<input type=\"image\" ").
+                append(" name=\"toggleSuperUserSearch\" id=\"toggleSuperUserSearch\" class=\"tinybutton\" src=\"..").
                 append(KEWConstants.WEBAPP_DIRECTORY).
                 append(superUserSearch ?
                         "/images/tinybutton-nonsupusearch.gif\" alt=\"non-superuser search\" title=\"non-superuser search\" />" :
@@ -432,6 +421,14 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 
 		// Add the "clear saved searches" button.
 		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
+
+        String advancedToggleValue = isAdvancedSearch() ? "'NO'" : "'YES'";
+        String detailedSearchScript = "<script type=\"text/javascript\">jQuery(\"#toggleAdvancedSearch\").click(function() { jQuery('input[name=" + ADVANCED_SEARCH_PARAM + "]').val(" + advancedToggleValue + "); customLookupChanged() } )</script>";
+        suppMenuBar.append(detailedSearchScript);
+
+        String superUserToggleValue = isSuperUserSearch() ? "'NO'" : "'YES'";
+        String superUserSearchScript = "<script type=\"text/javascript\">jQuery(\"#toggleSuerUserSearch\").click(function() { jQuery('input[name=" + SUPER_USER_SEARCH_PARAM + "]').val(" + superUserToggleValue + "); customLookupChanged() } )</script>";
+        suppMenuBar.append(superUserSearchScript);
 
 		return suppMenuBar.toString();
 	}

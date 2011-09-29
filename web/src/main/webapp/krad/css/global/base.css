@@ -240,6 +240,9 @@ li label.kr-error {
 }
 
 /* LAYOUTS - e.g.: kr-box-horizontal, ks-left, ks-right *****************/
+#viewpage_div {
+    float:left;
+}
 .clearfix {
 	clear:both;
 }
@@ -433,7 +436,6 @@ button img.rightActionImage, a img.rightActionImage{
 }
 
 .navigation-div{
-	float: left;
 	margin-left: -225px;
 }
 

@@ -2,7 +2,7 @@ function getSelectedItemInput() {
     return jq('input[id="agenda_item_selected_attribute"]');
 }
 
-function ajaxCall(controllerMethod, collectionGroupId) {
+function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
 
     var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
 
@@ -11,7 +11,7 @@ function ajaxCall(controllerMethod, collectionGroupId) {
     var selectedItemId = selectedItemInput.val();
     var selectedItemInputName = selectedItemInput.attr('name');
 
-    if (selectedItemId) {
+    if (!requireSelected || selectedItemId) {
         var updateCollectionCallback = function(htmlContent){
             var component = jq(collectionGroupDivLocator, htmlContent);
 

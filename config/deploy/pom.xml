@@ -49,6 +49,10 @@
         <artifactId>gmaven-plugin</artifactId>
         <executions>
           <execution>
+            <id>gmaven-compile-stubs</id>
+            <phase>none</phase>
+          </execution>
+          <execution>
             <id>gmaven-generate-stubs</id>
             <phase>none</phase>
           </execution>

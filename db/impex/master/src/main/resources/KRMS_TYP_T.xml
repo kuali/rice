@@ -3,10 +3,10 @@
 <dataset>
     <KRMS_TYP_T ACTV="Y" NM="notificationPeopleFlowActionType"
         NMSPC_CD="KRMS"
-        SRVC_NM="notificationPeopleFlowActionTypeService" TYP_ID="T1001" VER_NBR="1"/>
+        SRVC_NM="notificationPeopleFlowActionTypeService" TYP_ID="1000" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="approvalPeopleFlowActionType"
         NMSPC_CD="KRMS_TEST"
-        SRVC_NM="approvalPeopleFlowActionTypeService" TYP_ID="T1002" VER_NBR="1"/>
+        SRVC_NM="approvalPeopleFlowActionTypeService" TYP_ID="1001" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="CAMPUS" NMSPC_CD="KRMS_TEST"
         SRVC_NM="myCampusService" TYP_ID="T2" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="KrmsActionResolverType"

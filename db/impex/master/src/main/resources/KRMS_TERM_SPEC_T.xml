@@ -9,4 +9,15 @@
     <KRMS_TERM_SPEC_T ACTV="Y" NM="bogusFundTermSpec"
         NMSPC_CD="KRMS_TEST" TERM_SPEC_ID="TERMSPEC_002"
         TYP="java.lang.String" VER_NBR="1"/>
+    <KRMS_TERM_SPEC_T ACTV="Y" DESC_TXT="Purchase Order Value"
+        NM="PO Value" NMSPC_CD="KRMS_TEST" TERM_SPEC_ID="TERMSPEC_003"
+        TYP="T6" VER_NBR="1"/>
+    <KRMS_TERM_SPEC_T ACTV="Y" DESC_TXT="Purchased Item Type"
+        NM="PO Item Type" NMSPC_CD="KRMS_TEST"
+        TERM_SPEC_ID="TERMSPEC_004" TYP="T1" VER_NBR="1"/>
+    <KRMS_TERM_SPEC_T ACTV="Y" DESC_TXT="Charged To Account"
+        NM="Account" NMSPC_CD="KRMS_TEST" TERM_SPEC_ID="TERMSPEC_005"
+        TYP="T1" VER_NBR="1"/>
+    <KRMS_TERM_SPEC_T ACTV="Y" DESC_TXT="Special Event" NM="Occasion"
+        NMSPC_CD="KRMS_TEST" TERM_SPEC_ID="TERMSPEC_006" TYP="T1" VER_NBR="1"/>
 </dataset>

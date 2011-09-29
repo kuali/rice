@@ -22,7 +22,7 @@
     <maven.test.skip>true</maven.test.skip>
     <war.file>../../sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
     <impex.dir>../../db/impex/master</impex.dir>
-    <config.resource>sample-app-config-${deploy.env}.xml</config.resource>
+    <config.resource>${deploy.env}-sample-app-config.xml</config.resource>
     <config.file>${project.build.directory}/classes/${config.resource}</config.file>
     <impex.database>${db.instance}</impex.database>
     <impex.username>${db.instance}</impex.username>

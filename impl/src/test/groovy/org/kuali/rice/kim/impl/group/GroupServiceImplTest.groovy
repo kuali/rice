@@ -569,6 +569,21 @@ class GroupServiceImplTest {
     }
 
     @Test
+    void test_getMembers_null() {
+        shouldFail(IllegalArgumentException.class) {
+            groupService.getMembers(null)
+        }
+    }
+
+    @Test
+    void test_getMembers_empty() {
+        shouldFail(IllegalArgumentException.class) {
+            groupService.getMembers([])
+        }
+    }
+
+
+    @Test
     void test_createGroupNullGroup(){
         injectBusinessObjectServiceIntoGroupService()
 

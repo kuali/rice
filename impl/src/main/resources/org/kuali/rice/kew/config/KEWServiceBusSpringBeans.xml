@@ -108,7 +108,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="rice.kew.documentTypeService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
@@ -121,7 +121,7 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 	<bean id="rice.kew.noteService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
@@ -320,69 +320,6 @@
 				<property name="priority" value="10" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-			</bean>
-		</property>
-	</bean>
-	
-	<bean parent="kewLocalServiceExporter" name="routeLogDerivedRoleTypeServiceBean">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-		<property name="serviceDefinition">
-	       <bean parent="kewSoapService">
-	         <property name="service">
-	           <ref bean="routeLogDerivedRoleTypeService" />
-	         </property>
-	         <property name="localServiceName" value="routeLogDerivedRoleTypeService" />			
-	       </bean>
-		</property>
-    </bean>
-
-	<bean parent="kewLocalServiceExporter" name="actionRequestDerivedRoleTypeServiceBean">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<ref bean="actionRequestDerivedRoleTypeService" />
-				</property>
-				<property name="localServiceName" value="actionRequestDerivedRoleTypeService" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean parent="kewLocalServiceExporter" name="adhocReviewPermissionTypeServiceBean">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<ref bean="adhocReviewPermissionTypeService" />
-				</property>
-				<property name="localServiceName" value="adhocReviewPermissionTypeService" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="reviewResponsibilityTypeService"
-		class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
-		
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<ref bean="reviewResponsibilityTypeService" />
-				</property>
-				<property name="localServiceName" value="reviewResponsibilityTypeService" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean parent="kewLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<ref bean="documentTypeResponsibilityTypeService" />
-				</property>
-				<property name="localServiceName" value="documentTypeResponsibilityTypeService" />
 			</bean>
 		</property>
 	</bean>

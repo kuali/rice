@@ -684,10 +684,9 @@
 
   <bean id="adhocReviewPermissionTypeService" class="org.kuali.rice.kew.service.impl.AdhocReviewPermissionTypeServiceImpl" />
 
-  <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
-
   <bean id="documentTypeResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.DocumentTypeResponsibilityTypeServiceImpl" />
 
+  <bean id="reviewResponsibilityTypeService" class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl" />
 
   <bean class="org.kuali.rice.krad.util.spring.NamedOrderedListBean">
 		<property name="name" value="scriptConfigurationFilePaths" />

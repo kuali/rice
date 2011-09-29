@@ -600,7 +600,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 			}
 		}
 		// pull all the group information for the matching members
-		List<Group> groups = getGroups(groupIds);
+		List<Group> groups = CollectionUtils.isEmpty(groupIds) ? Collections.<Group>emptyList() : getGroups(groupIds);
 		List<Group> result = new ArrayList<Group>( groups.size() );
 		// filter by namespace if necessary
 		for ( Group group : groups ) {

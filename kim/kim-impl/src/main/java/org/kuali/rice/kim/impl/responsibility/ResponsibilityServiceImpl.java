@@ -62,7 +62,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         if (StringUtils.isNotBlank(responsibility.getId()) && getResponsibility(responsibility.getId()) != null) {
             throw new RiceIllegalStateException("the responsibility to create already exists: " + responsibility);
         }
-        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
+        List<ResponsibilityAttributeBo> attrBos = Collections.emptyList();
+        if (responsibility.getTemplate() != null) {
+            attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
+        }
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
         bo.setAttributeDetails(attrBos);
         return ResponsibilityBo.to(businessObjectService.save(bo));
@@ -78,7 +81,10 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             throw new RiceIllegalStateException("the responsibility does not exist: " + responsibility);
         }
 
-        List<ResponsibilityAttributeBo> attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
+       List<ResponsibilityAttributeBo> attrBos = Collections.emptyList();
+        if (responsibility.getTemplate() != null) {
+            attrBos = KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, responsibility.getAttributes(), responsibility.getTemplate().getKimTypeId());
+        }
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
 
         if (bo.getAttributeDetails() != null) {

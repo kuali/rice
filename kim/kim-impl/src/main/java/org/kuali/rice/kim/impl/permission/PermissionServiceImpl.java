@@ -588,7 +588,10 @@ public class PermissionServiceImpl implements PermissionService {
         if (StringUtils.isNotBlank(permission.getId()) && getPermission(permission.getId()) != null) {
             throw new RiceIllegalStateException("the permission to create already exists: " + permission);
         }
-        List<PermissionAttributeBo> attrBos = KimAttributeDataBo.createFrom(PermissionAttributeBo.class, permission.getAttributes(), permission.getTemplate().getKimTypeId());
+        List<PermissionAttributeBo> attrBos = Collections.emptyList();
+        if (permission.getTemplate() != null) {
+            attrBos = KimAttributeDataBo.createFrom(PermissionAttributeBo.class, permission.getAttributes(), permission.getTemplate().getKimTypeId());
+        }
         PermissionBo bo = PermissionBo.from(permission);
         if (bo.getTemplate() == null && bo.getTemplateId() != null) {
             bo.setTemplate(PermissionTemplateBo.from(getPermissionTemplate(bo.getTemplateId())));

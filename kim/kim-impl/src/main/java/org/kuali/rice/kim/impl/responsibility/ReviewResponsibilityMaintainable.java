@@ -22,6 +22,8 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -61,7 +63,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	/**
 	 * Saves the responsibility via the responsibility service
 	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveDataObject()
 	 */
 	@Override
 	public void saveDataObject() {
@@ -70,7 +72,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         }
         populateReviewTemplateInfo();
 
-        ReviewResponsibilityBo resp = (ReviewResponsibilityBo)getBusinessObject();
+        ReviewResponsibilityBo resp = (ReviewResponsibilityBo)getDataObject();
         // build the Map<String, String> with the details
         Map<String, String> details = new HashMap<String, String>();
         details.put( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
@@ -81,12 +83,30 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
             details.put( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
         }
 
-        Responsibility.Builder b = Responsibility.Builder.create(resp.getNamespaceCode(), resp.getName(), Template.Builder.create(REVIEW_TEMPLATE));
-        b.setDescription(resp.getDescription());
-        b.setAttributes(details);
-        b.setActive(resp.isActive());
+        //ResponsibilityBo bo = ReviewResponsibilityBo.toResponsibilityBo(resp);
+        if (resp.getTemplateId() == null) {
+            resp.setTemplateId(REVIEW_TEMPLATE.getId());
+            resp.setTemplate(ResponsibilityTemplateBo.from(REVIEW_TEMPLATE));
+        }
+        if (resp.getTemplateId() != null && resp.getTemplate() == null) {
+                resp.setTemplate(
+                        ResponsibilityTemplateBo.from(KimApiServiceLocator.getResponsibilityService().getResponsibilityTemplate(
+                                resp.getTemplateId())));
+        }
+        //set attributes
+        resp.setAttributes(details);
+        //resp.setAttributeDetails(KimAttributeDataBo.createFrom(ResponsibilityAttributeBo.class, details, resp.getTemplate().getKimTypeId()));
 
-        KimApiServiceLocator.getResponsibilityService().createResponsibility(b.build());
+        boolean responsibilityExists = false;
+        if (resp.getId() != null) {
+            responsibilityExists = KimApiServiceLocator.getResponsibilityService().getResponsibility(resp.getId()) != null;
+        }
+
+        if (responsibilityExists) {
+            KimApiServiceLocator.getResponsibilityService().updateResponsibility(ResponsibilityBo.to(resp));
+        } else {
+            KimApiServiceLocator.getResponsibilityService().createResponsibility(ResponsibilityBo.to(resp));
+        }
 	}
 	
 	private static synchronized void populateReviewTemplateInfo() {
@@ -114,5 +134,15 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         }
         super.prepareBusinessObject(businessObject);
 	}
-	
+
+    /**
+	 * This overridden method ...
+	 *
+	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
+	 */
+	@Override
+	public boolean isExternalBusinessObject() {
+		return true;
+	}
+
 }

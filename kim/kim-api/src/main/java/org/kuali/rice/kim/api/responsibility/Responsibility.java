@@ -74,7 +74,7 @@ public final class Responsibility extends AbstractDataTransferObject implements 
     @XmlElement(name = Responsibility.Elements.DESCRIPTION, required = false)
     private final String description;
 
-    @XmlElement(name = Responsibility.Elements.TEMPLATE, required = true)
+    @XmlElement(name = Responsibility.Elements.TEMPLATE, required = false)
     private final Template template;
 
     @XmlElement(name = Responsibility.Elements.ATTRIBUTES, required = false)
@@ -120,7 +120,7 @@ public final class Responsibility extends AbstractDataTransferObject implements 
         this.namespaceCode = builder.getNamespaceCode();
         this.name = builder.getName();
         this.description = builder.getDescription();
-        this.template = builder.getTemplate().build();
+        this.template = builder.getTemplate() != null ? builder.getTemplate().build() : null;
         this.attributes = builder.getAttributes() != null ? builder.getAttributes() : Collections.<String, String>emptyMap();
         this.active = builder.isActive();
         this.versionNumber = builder.getVersionNumber();
@@ -214,24 +214,23 @@ public final class Responsibility extends AbstractDataTransferObject implements 
         private String objectId;
         private boolean active;
 
-        private Builder(String namespaceCode, String name, Template.Builder template) {
+        private Builder(String namespaceCode, String name) {
             setNamespaceCode(namespaceCode);
             setName(name);
-            setTemplate(template);
         }
 
         /**
          * Creates a Responsibility with the required fields.
          */
-        public static Builder create(String namespaceCode, String name, Template.Builder template) {
-            return new Builder(namespaceCode, name, template);
+        public static Builder create(String namespaceCode, String name) {
+            return new Builder(namespaceCode, name);
         }
 
         /**
          * Creates a Responsibility from an existing {@link ResponsibilityContract}.
          */
         public static Builder create(ResponsibilityContract contract) {
-            Builder builder = new Builder(contract.getNamespaceCode(), contract.getName(), Template.Builder.create(contract.getTemplate()));
+            Builder builder = new Builder(contract.getNamespaceCode(), contract.getName());
             builder.setId(contract.getId());
             builder.setDescription(contract.getDescription());
             if (contract.getAttributes() != null) {
@@ -240,6 +239,9 @@ public final class Responsibility extends AbstractDataTransferObject implements 
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
+            if (contract.getTemplate() != null) {
+                builder.setTemplate(Template.Builder.create(contract.getTemplate()));
+            }
 
             return builder;
         }
@@ -313,7 +315,7 @@ public final class Responsibility extends AbstractDataTransferObject implements 
 		}
 
 		public void setVersionNumber(final Long versionNumber) {
-			if (versionNumber == null || versionNumber <= 0) {
+			if (versionNumber != null && versionNumber <= 0) {
 	            throw new IllegalArgumentException("versionNumber is invalid");
 	        }
 			this.versionNumber = versionNumber;

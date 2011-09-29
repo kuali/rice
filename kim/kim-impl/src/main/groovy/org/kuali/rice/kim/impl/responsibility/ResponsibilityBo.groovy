@@ -114,7 +114,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
         bo.name = im.name
         bo.description = im.description
         bo.active = im.active
-        bo.templateId = im.template.getId()
+        bo.templateId = im.template != null ? im.template.getId() : null;
         bo.template = ResponsibilityTemplateBo.from(im.template)
         bo.attributes = im.attributes
         bo.versionNumber = im.versionNumber

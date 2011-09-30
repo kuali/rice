@@ -268,11 +268,12 @@
                 <configuration>
                   <target>
                     <property name="manifest.svn.url" value="https://test.kuali.org/svn/rice/trunk/db@${manifest.SVN-Revision}" />
+                    <property name="checkout.dir" value="${project.build.directory}/checkout/db" />
                     <echo>Checking out ${manifest.svn.url}</echo>
                     <exec executable="svn">
                       <arg value="checkout" />
                       <arg value="${manifest.svn.url}" />
-                      <arg value="${project.build.directory}/checkout/db" />
+                      <arg value="${checkout.dir" />
                     </exec>
                   </target>
                 </configuration>

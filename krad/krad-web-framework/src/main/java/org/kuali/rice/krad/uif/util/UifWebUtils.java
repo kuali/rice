@@ -228,6 +228,11 @@ public class UifWebUtils {
     public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {
         View view = form.getView();
 
+        // set view page to page requested on form
+        if (StringUtils.isNotBlank(form.getPageId())) {
+            view.setCurrentPageId(form.getPageId());
+        }
+
         Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
         parameterMap.putAll(form.getViewRequestParameters());
 
@@ -236,11 +241,6 @@ public class UifWebUtils {
 
         // set dirty flag
         form.setValidateDirty(view.isValidateDirty());
-
-        // set view page to page requested on form
-        if (StringUtils.isNotBlank(form.getPageId())) {
-            view.setCurrentPageId(form.getPageId());
-        }
     }
 
     protected static SessionDocumentService getSessionDocumentService() {

@@ -36,11 +36,11 @@ still render, but render in a hidden container --%>
 
 	<c:choose>
 		<c:when	test="${!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender}">
-			<span style="display: none;" id="${component.id}_refreshWrapper" class="refreshWrapper">
+			<div style="display: none;" id="${component.id}_refreshWrapper" class="refreshWrapper">
 		</c:when>
 		<c:otherwise>
 			<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
-				<span id="${component.id}_refreshWrapper" class="refreshWrapper">
+				<div id="${component.id}_refreshWrapper" class="refreshWrapper">
 			</c:if>
 		</c:otherwise>
 	</c:choose>
@@ -67,15 +67,15 @@ still render, but render in a hidden container --%>
 	<krad:eventScript component="${component}" />
 	
 	<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged}">
-		</span>
+		</div>
 	</c:if>
 </c:if>
 
 <c:if test="${(!empty component) && (!empty component.progressiveRender)}">
 	<%-- For progressive rendering requiring an ajax call, put in place holder span --%>
 	<c:if test="${!component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)}">
-		<span id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"
-			style="display: none;"></span>
+		<div id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"
+			style="display: none;"></div>
 	</c:if>
 
 	<%-- setup progressive handlers for each control which may satisfy a disclosure condition --%>

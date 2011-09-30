@@ -159,6 +159,8 @@ public class View extends ContainerBase {
      * The following initialization is performed:
      *
      * <ul>
+     * <li>If current page id is not set, it is set to the configured entry page
+     * or first item in list id</li>
      * <li>If a single paged view, set items in page group and put the page in
      * the items list</li>
      * </ul>
@@ -182,14 +184,30 @@ public class View extends ContainerBase {
                 throw new RuntimeException("For single paged views the page Group must be set.");
             }
         }
+
+        // make sure all the pages have ids before selecting the current page
+        for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext(); ) {
+            Group group = iterator.next();
+            if (StringUtils.isBlank(group.getId())) {
+                group.setId(view.getNextId());
+            }
+        }
+
+        // default current page if not set
+        if (StringUtils.isBlank(currentPageId)) {
+            if (StringUtils.isNotBlank(entryPageId)) {
+                currentPageId = entryPageId;
+            } else {
+                Group firstPageGroup = getItems().get(0);
+                currentPageId = firstPageGroup.getId();
+            }
+        }
     }
 
     /**
      * The following is performed:
      *
      * <ul>
-     * <li>If current page id is not set, it is set to the configured entry page
-     * or first item in list id</li>
      * <li>Adds to its document ready script the setupValidator js function for setting
      * up the validator for this view</li>
      * </ul>
@@ -200,14 +218,6 @@ public class View extends ContainerBase {
     @Override
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
-
-        // set the entry page
-        if (StringUtils.isNotBlank(entryPageId)) {
-            currentPageId = entryPageId;
-        } else {
-            Group firstPageGroup = getItems().get(0);
-            currentPageId = firstPageGroup.getId();
-        }
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {
@@ -230,6 +240,17 @@ public class View extends ContainerBase {
         components.add(breadcrumbs);
         components.add(growlsWidget);
         components.add(viewMenuLink);
+
+        // remove all pages that are not the current page
+        if (!singlePageView) {
+            for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext(); ) {
+                Group group = iterator.next();
+                if ((group instanceof PageGroup) && !group.getId().equals(getCurrentPageId()) && components.contains(
+                        group)) {
+                    components.remove(group);
+                }
+            }
+        }
 
         return components;
     }

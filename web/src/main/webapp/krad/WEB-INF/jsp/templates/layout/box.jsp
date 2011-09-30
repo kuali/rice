@@ -37,11 +37,13 @@
   <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
-<c:set var="itemSpanClasses" value="class=\"fieldLine boxLayoutVerticalItem clearfix\""/>
+<c:set var="itemSpanClassesHorizontal" value="class=\"fieldLine boxLayoutHorizontalItem\""/>
+<c:set var="itemSpanClassesVertical" value="class=\"fieldLine boxLayoutVerticalItem\""/>
 
 <c:if test="${container.fieldContainer}">
   <c:set var="fieldItemsStyle" value="style=\"float:left;\""/>
-  <c:set var="itemSpanClasses" value="class=\"fieldContainerVerticalItem clearfix\""/>
+  <c:set var="itemSpanClassesHorizontal" value="class=\"boxLayoutHorizontalItem\""/>
+  <c:set var="itemSpanClassesVertical" value="class=\"fieldContainerVerticalItem\""/>
 </c:if>
 
 <%-- render items --%>
@@ -50,12 +52,14 @@
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
      <c:choose>
        <c:when test="${manager.orientation=='HORIZONTAL'}">
-         <krad:template component="${item}"/>
+         <span ${itemSpanClassesHorizontal} style="${manager.itemStyle}">
+            <krad:template component="${item}"/>
+         </span>
        </c:when>
        <c:otherwise>
-	       		<span ${itemSpanClasses} style="${manager.itemStyle}">
-	       			<krad:template component="${item}"/>
-	       		</span>
+	       <span ${itemSpanClassesVertical} style="${manager.itemStyle}">
+	        	<krad:template component="${item}"/>
+	       </span>
        </c:otherwise>
      </c:choose>
    </c:forEach>

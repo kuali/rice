@@ -144,7 +144,7 @@
       <properties>
         <deploy.env>env6</deploy.env>
         <deploy.server>${deploy.server.2}</deploy.server>
-        <public.url>http://env6.rice.kuali.org</public.url>
+        <public.url>http://demo.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
         <db.instance>RICEENV6</db.instance>
         <db.vendor>oracle</db.vendor>

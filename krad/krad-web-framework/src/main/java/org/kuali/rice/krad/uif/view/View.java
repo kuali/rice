@@ -36,7 +36,6 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -186,8 +185,7 @@ public class View extends ContainerBase {
         }
 
         // make sure all the pages have ids before selecting the current page
-        for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext(); ) {
-            Group group = iterator.next();
+        for (Group group : this.getItems()) {
             if (StringUtils.isBlank(group.getId())) {
                 group.setId(view.getNextId());
             }
@@ -243,9 +241,8 @@ public class View extends ContainerBase {
 
         // remove all pages that are not the current page
         if (!singlePageView) {
-            for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext(); ) {
-                Group group = iterator.next();
-                if ((group instanceof PageGroup) && !group.getId().equals(getCurrentPageId()) && components.contains(
+            for (Group group : this.getItems()) {
+                if ((group instanceof PageGroup) && !StringUtils.equals(group.getId(), getCurrentPageId()) && components.contains(
                         group)) {
                     components.remove(group);
                 }
@@ -281,9 +278,8 @@ public class View extends ContainerBase {
      * @return Page instance
      */
     public PageGroup getCurrentPage() {
-        for (Iterator<? extends Group> iterator = this.getItems().iterator(); iterator.hasNext(); ) {
-            Group pageGroup = iterator.next();
-            if (pageGroup.getId().equals(getCurrentPageId())) {
+        for (Group pageGroup : this.getItems()) {
+            if (StringUtils.equals(pageGroup.getId(), getCurrentPageId())) {
                 return (PageGroup) pageGroup;
             }
         }

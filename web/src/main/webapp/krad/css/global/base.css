@@ -62,7 +62,7 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	clear:left;
 }
 .kr-field-attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
-    float:left;
+    /* float:left;       Removing to fix collections tables. look into reason for adding it */
 }
 .kr-field-attribute img {
     margin-left:7px;

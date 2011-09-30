@@ -203,6 +203,8 @@
         <deploy.artifactId>rice-sampleapp</deploy.artifactId>
         <deploy.version>${project.version}</deploy.version>
         <deploy.type>war</deploy.type>
+        <war.file>${project.build.directory}/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</war.file>
+        <impex.dir>${project.build.directory}/checkout/db/impex/master</impex.dir>
       </properties>
       <build>
         <plugins>
@@ -272,32 +274,6 @@
                 </configuration>
                 <goals>
                   <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>maven-sysprops-plugin</artifactId>
-            <version>1.0.0</version>
-            <configuration>
-              <systemProperties>
-                <property>
-                  <name>war.file</name>
-                  <value>${project.build.directory}/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</value>
-                </property>
-                <property>
-                  <name>impex.dir</name>
-                  <value>${project.build.directory}/checkout/db/impex/master</value>
-                </property>
-              </systemProperties>
-            </configuration>
-            <executions>
-              <execution>
-                <id>set-system-properties</id>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>set</goal>
                 </goals>
               </execution>
             </executions>

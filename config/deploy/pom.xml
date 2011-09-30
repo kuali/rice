@@ -54,6 +54,10 @@
             <id>gmaven-generate-stubs</id>
             <phase>none</phase>
           </execution>
+          <execution>
+            <id>gmaven-test-compile-stubs</id>
+            <phase>none</phase>
+          </execution>
         </executions>
       </plugin>
       <plugin>

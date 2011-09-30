@@ -697,6 +697,11 @@
           <version>${assembly.plugin.version}</version>
         </plugin>
       </plugins>
+      <plugin>
+        <groupId>org.kuali.maven.plugins</groupId>
+        <artifactId>maven-http-plugin</artifactId>
+        <version>1.0.2</version>
+      </plugin>
     </pluginManagement>
 
     <plugins>

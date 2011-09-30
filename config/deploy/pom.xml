@@ -175,7 +175,6 @@
           <plugin>
             <groupId>org.kuali.maven.plugins</groupId>
             <artifactId>maven-http-plugin</artifactId>
-            <version>1.0.2</version>
             <executions>
               <execution>
                 <id>wait-for-tomcat-startup</id>

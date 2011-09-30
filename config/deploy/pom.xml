@@ -196,12 +196,9 @@
       <id>getwar</id>
       <properties>
         <deploy.groupId>org.kuali.rice</deploy.groupId>
-        <deploy.artifactId>rice-core-api</deploy.artifactId>
-        <!--
-          <deploy.version>2.0.0-m9-20110929.153209-25</deploy.version>
-        -->
-        <deploy.version>2.0.0-m9-20110929.070450-24</deploy.version>
-        <deploy.type>jar</deploy.type>
+        <deploy.artifactId>rice-sampleapp</deploy.artifactId>
+        <deploy.version>${project.version}</deploy.version>
+        <deploy.type>war</deploy.type>
       </properties>
       <build>
         <plugins>

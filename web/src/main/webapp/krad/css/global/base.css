@@ -61,8 +61,8 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 .kr-page-action h2 {			/* was .page-action h2 */ /* renamed in xml and/or jsp */
 	clear:left;
 }
-.kr-field-attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
-    /* float:left;       Removing to fix collections tables. look into reason for adding it */
+.kr-clientError>.kr-field-attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
+    float:left;
 }
 .kr-field-attribute img {
     margin-left:7px;
@@ -185,6 +185,11 @@ li label.kr-error {
     margin-bottom:5px;
 }
 
+#Footer_SaveCloseCancel_group .boxLayoutHorizontalItem {     /* fixing the vertical alignment of action buttons */
+    display:inline;
+    float:none;
+    margin: 0 0.75em 0 0;
+}
 /* breadcrumbs */
 
 .kr-breadcrumbs { 					/* was .breadcrumbs */ /* renamed in xml and/or jsp */

@@ -273,7 +273,7 @@
                     <exec executable="svn">
                       <arg value="checkout" />
                       <arg value="${manifest.svn.url}" />
-                      <arg value="${checkout.dir" />
+                      <arg value="${checkout.dir}" />
                     </exec>
                   </target>
                 </configuration>

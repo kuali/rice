@@ -175,7 +175,7 @@
           <plugin>
             <groupId>org.kuali.maven.plugins</groupId>
             <artifactId>maven-http-plugin</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2-SNAPSHOT</version>
             <executions>
               <execution>
                 <id>wait-for-tomcat-startup</id>
@@ -221,7 +221,7 @@
             <executions>
               <execution>
                 <id>copy</id>
-                <phase>generate-resources</phase>
+                <phase>initialize</phase>
                 <goals>
                   <goal>copy</goal>
                   <goal>unpack</goal>
@@ -241,7 +241,7 @@
             <executions>
               <execution>
                 <id>svnrevision</id>
-                <phase>process-resources</phase>
+                <phase>initialize</phase>
                 <goals>
                   <goal>svnrevision</goal>
                 </goals>
@@ -254,7 +254,7 @@
             <executions>
               <execution>
                 <id>checkout</id>
-                <phase>install</phase>
+                <phase>initialize</phase>
                 <configuration>
                   <target>
                     <property name="manifest.svn.url" value="https://test.kuali.org/svn/rice/trunk/db@${manifest.SVN-Revision}" />
@@ -291,7 +291,7 @@
             <executions>
               <execution>
                 <id>set-system-properties</id>
-                <phase>install</phase>
+                <phase>initialize</phase>
                 <goals>
                   <goal>set</goal>
                 </goals>

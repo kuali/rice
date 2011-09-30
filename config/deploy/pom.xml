@@ -20,8 +20,6 @@
   <name>Rice Deploy</name>
   <properties>
     <maven.test.skip>true</maven.test.skip>
-    <war.file>../../sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
-    <impex.dir>../../db/impex/master</impex.dir>
     <config.resource>${deploy.env}-app-config.xml</config.resource>
     <config.file>${project.build.directory}/classes/${config.resource}</config.file>
     <impex.database>${db.instance}</impex.database>
@@ -190,6 +188,13 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <id>localwar</id>
+      <properties>
+        <war.file>../../sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
+        <impex.dir>../../db/impex/master</impex.dir>
+      </properties>
     </profile>
     <profile>
       <id>getwar</id>

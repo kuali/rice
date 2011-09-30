@@ -52,6 +52,7 @@
 
 	<bean id="kewJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
 		abstract="true">
+    <property name="namespace" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).MODULE_NAME }" />
 		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
 		<property name="jaxWsService" value="true" />
 		<property name="priority" value="3" />
@@ -61,7 +62,8 @@
 
 	<bean id="kewSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
 		abstract="true">
-		<property name="serviceNameSpaceURI" value="KEW" />
+    <property name="namespace" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).MODULE_NAME }" />
+		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
 		<property name="jaxWsService" value="false" />
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />
@@ -70,6 +72,8 @@
 	
 	<bean id="kewServiceNamespaceSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
 		abstract="true">
+    <property name="namespace" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).MODULE_NAME }" />
+		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
 		<property name="jaxWsService" value="false" />
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />

@@ -36,7 +36,7 @@ public final class CoreConstants {
     
     public static final class Versions {
     	    	
-    	public static final String UNSPECIFIED = "unspecified";
+    	public static final String UNSPECIFIED = "unspecifiedVersion";
     	
     	/**
     	 * Name for major version 2.0 of Kuali Rice which should be used in XML namespaces for data elements compatible with Kuali Rice 2.0.x.
@@ -48,7 +48,10 @@ public final class CoreConstants {
     
     public static final class Namespaces {
     	public static final String ROOT_NAMESPACE_PREFIX = "http://rice.kuali.org";
-    	public static final String CORE_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/core";
+        public static final String MODULE_NAME = "core";
+        public static final String CORE_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
+
+        public static final String UNSPECIFIED = "unspecifiedNamespace";
 
     	/**
     	 * Namespace for the core module which is compatible with Kuali Rice 2.0.x.

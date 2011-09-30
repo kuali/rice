@@ -41,11 +41,11 @@ public final class KsbApiConstants {
 	 * Defines various namespace-related constants for the KSB.
 	 */
 	public static final class Namespaces {
-		
+		 public static final String MODULE_NAME = "ksb";
 		/**
 		 * The KSB namespace for version 2.x of Kuali Rice
 		 */
-        public static final String KSB_NAMESPACE_2_0 = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/ksb/" + CoreConstants.Versions.VERSION_2_0;
+        public static final String KSB_NAMESPACE_2_0 = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
         
 	}
 	

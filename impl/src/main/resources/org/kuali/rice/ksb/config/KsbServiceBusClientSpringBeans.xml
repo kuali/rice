@@ -103,6 +103,7 @@
   		p:threadPool-ref="rice.ksb.threadPool" />
   		  
     <bean id="ksbService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
+    <property name="namespace" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).MODULE_NAME }" />
     <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"/>
     <property name="jaxWsService" value="true"/>
     <property name="priority" value="3"/>

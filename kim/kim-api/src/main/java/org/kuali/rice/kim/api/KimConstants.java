@@ -359,7 +359,8 @@ public final class KimConstants {
 	}
 
     public final static class Namespaces {
-        public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/kim";
+        public static final String MODULE_NAME = "kim";
+        public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
 
         public static final String KIM_NAMESPACE_2_0 = KIM_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
     }

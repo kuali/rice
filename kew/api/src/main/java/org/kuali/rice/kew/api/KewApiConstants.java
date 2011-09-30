@@ -52,8 +52,8 @@ public final class KewApiConstants {
     }
 
     public static final class Namespaces {
-
-        public static final String KEW_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/kew";
+        public static final String MODULE_NAME = "kew";
+        public static final String KEW_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
 
         /**
          * Namespace for the kew module which is compatible with Kuali Rice 2.0.x.

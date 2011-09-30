@@ -23,8 +23,8 @@ public final class KrmsConstants {
     public static final String MAINTAIN_KRMS_AGENDA = "Maintain KRMS Agenda";
 
 	public final static class Namespaces {
-		
-        public static final String KRMS_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/krms";
+		public static final String MODULE_NAME = "krms";
+        public static final String KRMS_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
 
         /**
          * Namespace for the kew module which is compatible with Kuali Rice 2.0.x.

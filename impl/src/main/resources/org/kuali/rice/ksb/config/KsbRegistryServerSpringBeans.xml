@@ -76,6 +76,7 @@
 		p:serviceRegistryDao-ref="rice.ksb.serviceRegistryDao" />
                       		
 	<bean id="rice.ksb.serviceRegistrySoap.serviceDefinition" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+    p:namespace="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).MODULE_NAME }"
 		p:serviceNameSpaceURI="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"
 		p:localServiceName="serviceRegistrySoap"
 		p:jaxWsService="true"

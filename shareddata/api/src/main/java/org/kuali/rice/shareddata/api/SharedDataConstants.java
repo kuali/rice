@@ -25,8 +25,8 @@ import org.kuali.rice.core.api.CoreConstants;
  */
 public final class SharedDataConstants {
     public static final class Namespaces {
-    	public static final String SHAREDDATA_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/shareddata";
-
+    	public static final String MODULE_NAME = "shareddata";
+        public static final String SHAREDDATA_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
     	/**
     	 * Namespace for the core module which is compatible with Kuali Rice 2.0.x.
     	 */

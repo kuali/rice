@@ -4,13 +4,16 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/rice.iml" filepath="$PROJECT_DIR$/rice.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-api.iml" filepath="$PROJECT_DIR$/rice-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-checkstyle.iml" filepath="$PROJECT_DIR$/rice-checkstyle.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-client-contrib.iml" filepath="$PROJECT_DIR$/rice-client-contrib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-config.iml" filepath="$PROJECT_DIR$/rice-config.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-core.iml" filepath="$PROJECT_DIR$/rice-core.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-api.iml" filepath="$PROJECT_DIR$/rice-core-api.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-framework.iml" filepath="$PROJECT_DIR$/rice-core-framework.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-impl.iml" filepath="$PROJECT_DIR$/rice-core-impl.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-core-web.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-db.iml" filepath="$PROJECT_DIR$/rice-db.iml" group="rice-db and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-deploy.iml" filepath="$PROJECT_DIR$/rice-deploy.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-development-tools.iml" filepath="$PROJECT_DIR$/rice-development-tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-dist.iml" filepath="$PROJECT_DIR$/rice-dist.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-edl.iml" filepath="$PROJECT_DIR$/rice-edl.iml" group="rice-edl and modules" />

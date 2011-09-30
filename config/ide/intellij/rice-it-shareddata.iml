@@ -67,7 +67,7 @@
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.5" level="project" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-core-framework" />
@@ -86,6 +86,7 @@
     <orderEntry type="library" name="Maven: org.jacorb:jacorb-idl:2.2.3-jonas-patch-20071018" level="project" />
     <orderEntry type="library" name="Maven: logkit:logkit:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
@@ -166,13 +167,13 @@
     <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.0.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-cas-client:3.0.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.0.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.5.0.v20110901" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.5.0.v20110901" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-cas-client:3.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.5.1.v20110908" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.5.1.v20110908" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:7.4.5.v20110725" level="project" />
     <orderEntry type="library" name="Maven: org.mortbay.jetty:jsp-2.1-glassfish:2.1.v20100127" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jdt.core.compiler:ecj:3.5.1" level="project" />

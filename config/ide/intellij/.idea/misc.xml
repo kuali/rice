@@ -209,11 +209,13 @@
           </module>
           <module name="rice-core-impl">
             <files>
+              <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/COREServiceBusSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/CommonOJBSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/CommonSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/COREConfigSpringBeans.xml" />
+              <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/COREServiceBusSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/CORESpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/CoreOjbSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/impl/target/classes/org/kuali/rice/core/CommonOJBSpringBeans.xml" />
@@ -227,6 +229,7 @@
           </module>
           <module name="rice-core-web">
             <files>
+              <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/cache/CacheAdmin.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/component/Component.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/component/ComponentMaintenanceDocument.xml" />
               <file url="file://$PROJECT_DIR$/../../../core/web/src/main/resources/org/kuali/rice/core/web/namespace/Namespace.xml" />
@@ -296,6 +299,7 @@
               <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml" />
               <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml" />
               <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml" />
+              <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/impl/document/lookup/DocumentLookupCriteriaBo.xml" />
               <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/rule/document/datadictionary/RuleDocument.xml" />
               <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/AffiliationType.xml" />
               <file url="file://$PROJECT_DIR$/../../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/CitizenshipStatus.xml" />
@@ -612,6 +616,12 @@
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/common/attribute/KimAttribute.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/common/attribute/KimAttributeData.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/common/delegate/DelegateBo.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KIMConfigSpringBeans.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KIMImplementationSpringBeans.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KIMInterfaceSpringBeans.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KIMServiceBusSpringBeans.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KIMThinClientSpringBeans.xml" />
+              <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/config/KIMUserInterfaceSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/permission/PermissionAttribute.xml" />
               <file url="file://$PROJECT_DIR$/../../../kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/permission/PermissionBo.xml" />
@@ -645,6 +655,7 @@
           </module>
           <module name="rice-krms-impl">
             <files>
+              <file url="file://$PROJECT_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/config/KRMSServiceBusSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/config/KRMSSpringBeans.xml" />
               <file url="file://$PROJECT_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ActionBo.xml" />
               <file url="file://$PROJECT_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaBo.xml" />
@@ -681,6 +692,11 @@
               <file url="file://$PROJECT_DIR$/../../../krms/impl/target/classes/org/kuali/rice/krms/datadictionary/TermSpecificationBo.xml" />
               <file url="file://$PROJECT_DIR$/../../../krms/impl/target/classes/org/kuali/rice/krms/uif/AgendaEditorView.xml" />
               <file url="file://$PROJECT_DIR$/../../../krms/impl/target/classes/org/kuali/rice/krms/uif/EditorView.xml" />
+            </files>
+          </module>
+          <module name="rice-ldap">
+            <files>
+              <file url="file://$PROJECT_DIR$/../../../ldap/src/main/resources/org/kuali/rice/kim/config/KIMLdapSpringBeans.xml" />
             </files>
           </module>
           <module name="rice-sampleapp">
@@ -731,6 +747,9 @@
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/kew/uif/StatsView.xml" />
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/kew/uif/StyleInquiry.xml" />
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/kew/uif/StyleLookup.xml" />
+              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/student/uif/CourseOfferingView.xml" />
+              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/student/uif/RegistrationView.xml" />
+              <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/student/uif/UifStudentDefinitions.xml" />
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml" />
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/FiscalOfficer.xml" />
               <file url="file://$PROJECT_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/FiscalOfficerInfo.xml" />
@@ -1136,7 +1155,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">
@@ -1449,57 +1468,6 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../../../db">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchMap">
-                <map>
-                  <entry key="https://test.kuali.org/svn/rice/branches">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/inactive">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/sandbox">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tags">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                  <entry key="https://test.kuali.org/svn/rice/tools">
-                    <value>
-                      <list />
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://test.kuali.org/svn/rice/branches" />
-                  <option value="https://test.kuali.org/svn/rice/inactive" />
-                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
-                  <option value="https://test.kuali.org/svn/rice/sandbox" />
-                  <option value="https://test.kuali.org/svn/rice/tags" />
-                  <option value="https://test.kuali.org/svn/rice/tools" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../../db/clover">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">
@@ -2877,6 +2845,57 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../../../shareddata/api">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://test.kuali.org/svn/rice/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://test.kuali.org/svn/rice/inactive">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://test.kuali.org/svn/rice/rice-functional-tests">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://test.kuali.org/svn/rice/sandbox">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://test.kuali.org/svn/rice/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://test.kuali.org/svn/rice/tools">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://test.kuali.org/svn/rice/branches" />
+                  <option value="https://test.kuali.org/svn/rice/inactive" />
+                  <option value="https://test.kuali.org/svn/rice/rice-functional-tests" />
+                  <option value="https://test.kuali.org/svn/rice/sandbox" />
+                  <option value="https://test.kuali.org/svn/rice/tags" />
+                  <option value="https://test.kuali.org/svn/rice/tools" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://test.kuali.org/svn/rice/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../../standalone">
           <value>
             <SvnBranchConfiguration>
               <option name="branchMap">

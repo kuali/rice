@@ -33,10 +33,10 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.0.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.6.8" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-ldap:3.0.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-ldap:3.0.7.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
@@ -69,7 +69,7 @@
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.5" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.M2" level="project" />
@@ -85,6 +85,7 @@
     <orderEntry type="library" name="Maven: org.jacorb:jacorb-idl:2.2.3-jonas-patch-20071018" level="project" />
     <orderEntry type="library" name="Maven: logkit:logkit:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.M2" level="project" />
@@ -163,8 +164,8 @@
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-kew-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-cas-client:3.0.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.0.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-cas-client:3.0.7.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.0.7.RELEASE" level="project" />
   </component>
 </module>
 

@@ -55,19 +55,19 @@
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
-    <orderEntry type="module" module-name="rice-krad-app-framework" />
-    <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.M2" level="project" />
+    <orderEntry type="module" module-name="rice-krad-app-framework" />
+    <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-shareddata-api" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.4" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.5" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.M2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.M2" level="project" />
@@ -84,6 +84,7 @@
     <orderEntry type="library" name="Maven: org.jacorb:jacorb-idl:2.2.3-jonas-patch-20071018" level="project" />
     <orderEntry type="library" name="Maven: logkit:logkit:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
   </component>

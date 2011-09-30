@@ -37,7 +37,7 @@ public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
     public boolean allowsMaintenanceNewOrCopyAction() {
         boolean allowsEdit = false;
 
-        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, null);
 
         return allowsEdit;
     }
@@ -46,7 +46,8 @@ public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
     public boolean allowsMaintenanceEditAction(Object dataObject) {
         boolean allowsEdit = false;
 
-        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+        AgendaBo agenda = (AgendaBo) dataObject;
+        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agenda.getContextId());
 
         return allowsEdit;
     }
@@ -56,7 +57,8 @@ public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
         boolean allowsMaintain = false;
         boolean allowsDelete = false;
 
-        allowsMaintain = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+        AgendaBo agenda = (AgendaBo) dataObject;
+        allowsMaintain = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agenda.getContextId());
 
         return allowsDelete && allowsMaintain;
     }

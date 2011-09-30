@@ -91,6 +91,11 @@ insert into krms_cntxt_t
 values ('CONTEXT1','KRMS_TEST', 'Context1', 'T4', 'Y', 1)
 ;
 
+insert into krms_cntxt_t
+(cntxt_id, nmspc_cd, nm, typ_id, actv, ver_nbr)
+values ('CONTEXT_NO_PERMISSION','KRMS_TEST_VOID', 'Context with no premissions', 'T4', 'Y', 1)
+;
+
 insert into krms_cntxt_attr_t
 (cntxt_attr_id, cntxt_id, attr_val, attr_defn_id, ver_nbr)
 values('C1ATTR1', 'CONTEXT1', 'BLAH', 'Q44001', 1)

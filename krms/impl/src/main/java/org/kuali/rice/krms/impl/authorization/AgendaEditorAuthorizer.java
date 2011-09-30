@@ -5,7 +5,9 @@ import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.krms.api.KrmsConstants;
+import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,17 +16,19 @@ public class AgendaEditorAuthorizer extends DocumentAuthorizerBase implements Ma
 
     @Override
     public boolean canCreate(Class boClass, Person user) {
-        return getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+        return getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, null);
     }
 
     @Override
     public boolean canMaintain(Object dataObject, Person user) {
-        return getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+        AgendaBo agenda = (AgendaBo) dataObject;
+        return getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agenda.getContextId());
     }
 
     @Override
     public boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument, Person user) {
-        return getAgendaAuthorizationService().hasPermission(KrmsConstants.MAINTAIN_KRMS_AGENDA);
+        AgendaEditor agendaEditor = (AgendaEditor) maintenanceDocument.getOldMaintainableObject().getDataObject();
+        return getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agendaEditor.getAgenda().getContextId());
     }
 
     @Override

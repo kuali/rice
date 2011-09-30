@@ -22,8 +22,10 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaBoService;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
@@ -117,23 +119,31 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     }
 
     /**
-     * Check if the context exists.
+     * Check if the context exists and if user has authorization to edit agendas under this context.
      * @param agenda
-     * @return true if the context exist, false otherwise
+     * @return true if the context exist and has authorization, false otherwise
      */
     private boolean validContext(AgendaEditor agenda) {
+        boolean isValid = true;
+
         try {
             if (getContextBoService().getContextByContextId(agenda.getAgenda().getContextId()) == null) {
                 this.putFieldError(KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.invalidContext");
-                return false;
+                isValid = false;
+            } else {
+                if (!getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA,
+                        agenda.getAgenda().getContextId())) {
+                    this.putFieldError(KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.unauthorizedContext");
+                    isValid = false;
+                }
             }
         }
         catch (IllegalArgumentException e) {
             this.putFieldError(KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.invalidContext");
-            return false;
+            isValid = false;
         }
 
-        return true;
+        return isValid;
     }
 
     /**
@@ -207,5 +217,10 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     public RuleBoService getRuleBoService() {
         return KrmsRepositoryServiceLocator.getRuleBoService();
     }
+
+    private AgendaAuthorizationService getAgendaAuthorizationService() {
+        return KrmsRepositoryServiceLocator.getAgendaAuthorizationService();
+    }
+
 }
 

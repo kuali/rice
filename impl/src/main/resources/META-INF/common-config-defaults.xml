@@ -439,6 +439,8 @@
 	<param name="rice.ksb.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.ksb.expose.services.on.bus" override="false">true</param>
 	<param name="rice.ksb.include.user.interface.components" override="false">true</param>
+    <param name="rice.ksb.expose.services.on.bus" override="false">true</param>
+    <param name="ksb.soapExposedService.jaxws.security" override="false">true</param>
 	
 	<!-- CORE -->
 	<param name="core.mode" override="false">LOCAL</param>

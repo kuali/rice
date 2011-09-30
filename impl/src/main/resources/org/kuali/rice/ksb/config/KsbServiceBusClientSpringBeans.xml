@@ -102,12 +102,20 @@
   	<bean id="rice.ksb.busAdminService" class="org.kuali.rice.ksb.messaging.service.impl.BusAdminServiceImpl"
   		p:threadPool-ref="rice.ksb.threadPool" />
   		  
-  	<bean id="rice.ksb.busAdminServiceDefinition" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+    <bean id="ksbService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
+    <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"/>
+    <property name="jaxWsService" value="true"/>
+    <property name="priority" value="3"/>
+    <property name="retryAttempts" value="0"/>
+    <property name="busSecurity" value="${ksb.soapExposedService.jaxws.security}"/>
+    <property name="serviceVersion" value="${rice.version}"/>
+    <property name="cacheManager" value="ksbLocalCacheManager"/>
+  </bean>
+
+
+  <bean id="rice.ksb.busAdminServiceDefinition" parent="ksbService"
   		p:service-ref="rice.ksb.busAdminService"
-    	p:localServiceName="busAdminService"
-    	p:priority="3"
-    	p:retryAttempts="0"
-    	p:serviceVersion="${rice.version}" />
+    	p:localServiceName="busAdminService" />
     	
     <bean id="rice.ksb.busAdminServiceExporter" class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter"
     	p:serviceDefinition-ref="rice.ksb.busAdminServiceDefinition"

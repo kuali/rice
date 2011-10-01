@@ -87,7 +87,7 @@
 		</property>
 	</bean>
 
-  <bean id="dataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+  <bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
     <property name="transactionManager"><ref local="jtaTransactionManager"/></property>
     <property name="driverClassName" value="${datasource.driver.name}"/>
     <property name="url" value="${datasource.url}"/>
@@ -98,7 +98,10 @@
     <property name="username" value="${datasource.username}" />
     <property name="password" value="${datasource.password}" />
   </bean>
-  
+
+  <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
+  <alias name="riceDataSource${connection.pool.impl}" alias="dataSource"/>
+
   <bean id="nonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="${datasource.driver.name}"/>
     <property name="url" value="${datasource.url}"/>

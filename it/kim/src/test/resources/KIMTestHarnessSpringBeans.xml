@@ -73,14 +73,15 @@
 		<property name="properties" value="#{config.getProperties()}" />
 	</bean>
 
-	<bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JotmFactoryBean">
-      <property name="defaultTimeout" value="${transaction.timeout}"/>
-    </bean>
+  <bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
+    <property name="defaultTimeout" value="${transaction.timeout}"/>
+  </bean>
     
-    <alias alias="jtaUserTransaction"  name="jtaTransactionManager"/>
+  <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
+  <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/> 
 
-	<bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
-		<property name="transactionManager" ref="jtaTransactionManager" />
+	<bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+		<property name="transactionManager" ref="transactionManagerXAPool" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />
 		<property name="maxSize" value="${datasource.pool.maxSize}" />

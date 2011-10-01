@@ -82,6 +82,16 @@
     <param name="datasource.ojb.sequenceManager.className" override="false">${datasource.ojb.sequenceManager.className.${datasource.ojb.platform}}</param>
     <param name="datasource.pool.validationQuery" override="false">${datasource.pool.validationQuery.${datasource.ojb.platform}}</param>
 
+    <!-- datasource.btm.journal can be "null", "disk", or a class name -->
+    <param name="datasource.btm.journal" override="false">null</param>
+    <param name="datasource.btm.transactionTimeout" override="false">120</param>
+
+    <param name="datasource.pool.class">oracle.jdbc.xa.client.OracleXADataSource</param>
+    <param name="datasource.pool.class.non.xa">bitronix.tm.resource.jdbc.lrc.LrcXADataSource</param>
+
+    <!--<param name="connection.pool.impl">Bitronix</param>-->
+    <param name="connection.pool.impl">XAPool</param>
+
     <!-- Action List Outbox -->
     <param name="actionlist.outbox.default.preference.on" override="false">true</param>
     <param name="actionlist.outbox" override="false">true</param>

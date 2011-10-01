@@ -1,4 +1,4 @@
-<!-- Configuration common to both standalone and sampleapp -->
+<!-- Configuration common to all Kuali Rice applications -->
 <config>
   <param name="appserver.url">${public.url}</param>
   <param name="application.url">${appserver.url}</param>

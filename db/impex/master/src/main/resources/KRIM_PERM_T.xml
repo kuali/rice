@@ -4,13 +4,8 @@
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Allows creation and modification of agendas via the agenda editor"
         NM="Maintain KRMS Agenda" NMSPC_CD="KR-RULE"
-        OBJ_ID="ADF171C967C6668FE0404F8189D873C0" PERM_ID="10000"
-        PERM_TMPL_ID="10000" VER_NBR="1"/>
-    <KRIM_PERM_T ACTV_IND="Y"
-        DESC_TXT="Allows viewing of agendas via the agenda editor"
-        NM="View KRMS Agenda" NMSPC_CD="KR-RULE"
-        OBJ_ID="ADF171C967C8668FE0404F8189D873C0" PERM_ID="10001"
-        PERM_TMPL_ID="10000" VER_NBR="1"/>
+        OBJ_ID="AE3195EDFF2500E2E0404F8189D822AE" PERM_ID="10002"
+        PERM_TMPL_ID="10001" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Allows users to access the Document Operation screen."
         NM="Use Document Operation Screen" NMSPC_CD="KR-WKFLW"

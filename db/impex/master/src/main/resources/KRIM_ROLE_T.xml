@@ -8,14 +8,9 @@
         ROLE_NM="User" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y"
         DESC_TXT="This role maintains KRMS agendas and rules."
-        KIM_TYP_ID="1" LAST_UPDT_DT="20110927112907" NMSPC_CD="KR-RULE"
-        OBJ_ID="ADF171C967CA668FE0404F8189D873C0" ROLE_ID="10000"
+        KIM_TYP_ID="1" LAST_UPDT_DT="20110930160005" NMSPC_CD="KR-RULE"
+        OBJ_ID="AE3195EDFF2700E2E0404F8189D822AE" ROLE_ID="10002"
         ROLE_NM="Kuali Rules Management System Administrator" VER_NBR="1"/>
-    <KRIM_ROLE_T ACTV_IND="Y"
-        DESC_TXT="This role views KRMS agendas and rules."
-        KIM_TYP_ID="1" LAST_UPDT_DT="20110927112913" NMSPC_CD="KR-RULE"
-        OBJ_ID="ADF171C967CD668FE0404F8189D873C0" ROLE_ID="10001"
-        ROLE_NM="Kuali Rules Management System Viewer" VER_NBR="1"/>
     <KRIM_ROLE_T ACTV_IND="Y"
         DESC_TXT="This role derives its members from users with that have received an action request for a given document."
         KIM_TYP_ID="42" LAST_UPDT_DT="20081114141017"

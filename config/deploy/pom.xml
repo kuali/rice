@@ -19,9 +19,12 @@
   <packaging>jar</packaging>
   <name>Rice Deploy</name>
   <properties>
+    <private.key>kr-key.pem</private.key>
     <maven.test.skip>true</maven.test.skip>
-    <config.resource>${deploy.env}-app-config.xml</config.resource>
-    <config.file>${project.build.directory}/classes/${config.resource}</config.file>
+    <deploy.environment>ec2</deploy.environment>
+    <deploy.config.common>${project.build.directory}/classes/common-config.xml</deploy.config.common>
+    <deploy.config.app>${project.build.directory}/classes/${deploy.app.configfile}</deploy.config.app>
+    <deploy.config.env>${project.build.directory}/classes/${deploy.env}-config.xml</deploy.config.env>
     <impex.database>${db.instance}</impex.database>
     <impex.username>${db.instance}</impex.username>
     <impex.password>${db.instance}</impex.password>
@@ -30,15 +33,17 @@
     <impex.oracle.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.oracle.url>
     <impex.mysql.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.mysql.dba.url>
     <impex.mysql.url>${impex.mysql.dba.url}/${impex.database}</impex.mysql.url>
+    <deploy.app>sampleapp</deploy.app>
+    <deploy.operation>reset</deploy.operation>
+    <db.vendor>oracle</db.vendor>
+    <impex.url>${impex.oracle.url}</impex.url>
+    <impex.dba.url>${impex.oracle.url}</impex.dba.url>
   </properties>
   <build>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
-        <includes>
-          <include>${config.resource}</include>
-        </includes>
       </resource>
     </resources>
     <plugins>
@@ -74,6 +79,24 @@
   </build>
   <profiles>
     <profile>
+      <id>sampleapp</id>
+      <properties>
+        <local.app.dir>../../sampleapp</local.app.dir>
+        <deploy.app>sample-app</deploy.app>
+        <deploy.artifactId>rice-sampleapp</deploy.artifactId>
+        <deploy.app.configfile>sample-app-config.xml</deploy.app.configfile>
+      </properties>
+    </profile>
+    <profile>
+      <id>standalone</id>
+      <properties>
+        <local.app.dir>../../standalone</local.app.dir>
+        <deploy.app>standalone</deploy.app>
+        <deploy.artifactId>rice-standalone</deploy.artifactId>
+        <deploy.app.configfile>standalone-config.xml</deploy.app.configfile>
+      </properties>
+    </profile>
+    <profile>
       <id>env1</id>
       <properties>
         <deploy.env>env1</deploy.env>
@@ -81,9 +104,6 @@
         <public.url>http://dev1.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
         <db.instance>RICEENV1</db.instance>
-        <db.vendor>oracle</db.vendor>
-        <impex.url>${impex.oracle.url}</impex.url>
-        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
       </properties>
     </profile>
     <profile>
@@ -107,9 +127,6 @@
         <public.url>http://env3.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
         <db.instance>RICEENV3</db.instance>
-        <db.vendor>oracle</db.vendor>
-        <impex.url>${impex.oracle.url}</impex.url>
-        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
       </properties>
     </profile>
     <profile>
@@ -120,9 +137,6 @@
         <public.url>http://env4.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
         <db.instance>RICEENV4</db.instance>
-        <db.vendor>oracle</db.vendor>
-        <impex.url>${impex.oracle.url}</impex.url>
-        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
       </properties>
     </profile>
     <profile>
@@ -133,10 +147,7 @@
         <public.url>http://env5.rice.kuali.org</public.url>
         <tomcat.instance>tomcat2</tomcat.instance>
         <db.instance>RICEENV5</db.instance>
-        <db.vendor>oracle</db.vendor>
-        <impex.url>${impex.oracle.url}</impex.url>
-        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
-        <war.file>../../standalone/target/rice-standalone-${project.version}.war</war.file>
+        <deploy.app>standalone</deploy.app>
       </properties>
     </profile>
     <profile>
@@ -147,13 +158,10 @@
         <public.url>http://demo.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
         <db.instance>RICEENV6</db.instance>
-        <db.vendor>oracle</db.vendor>
-        <impex.url>${impex.oracle.url}</impex.url>
-        <impex.dba.url>${impex.oracle.url}</impex.dba.url>
       </properties>
     </profile>
     <profile>
-      <id>reset</id>
+      <id>deploy</id>
       <build>
         <plugins>
           <plugin>
@@ -161,11 +169,11 @@
             <version>1.6</version>
             <executions>
               <execution>
-                <id>reset</id>
+                <id>antrun</id>
                 <phase>install</phase>
                 <configuration>
                   <target>
-                    <ant antfile="build.xml" target="reset" />
+                    <ant antfile="build.xml" target="${deploy.operation}" />
                   </target>
                 </configuration>
                 <goals>
@@ -194,20 +202,20 @@
       </build>
     </profile>
     <profile>
-      <id>localwar</id>
+      <id>local</id>
       <properties>
-        <war.file>../../sampleapp/target/rice-sampleapp-${project.version}.war</war.file>
+        <deploy.war>${local.app.dir}/target/${deploy.artifactId}-${project.version}.war</deploy.war>
         <impex.dir>../../db/impex/master</impex.dir>
       </properties>
     </profile>
     <profile>
-      <id>getwar</id>
+      <id>download</id>
       <properties>
         <deploy.groupId>org.kuali.rice</deploy.groupId>
         <deploy.artifactId>rice-sampleapp</deploy.artifactId>
-        <deploy.version>${project.version}</deploy.version>
+        <deploy.version>2.0.0-m8</deploy.version>
         <deploy.type>war</deploy.type>
-        <war.file>${project.build.directory}/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</war.file>
+        <deploy.war>${project.build.directory}/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</deploy.war>
         <impex.dir>${project.build.directory}/checkout/db/impex/master</impex.dir>
       </properties>
       <build>

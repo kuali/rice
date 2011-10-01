@@ -1,16 +1,22 @@
 <project name="Application Deployer">
   <description>Deploy applications packaged by Maven to a server on EC2</description>
-  <property name="auth" value="${user.home}/kr-key.pem" />
-  <property name="mvn" value="mvn" />
+  <property name="deploy.auth" value="${user.home}/${private.key}" />
   <property name="impex.dba.username" value="master" />
-  <property name="impex.dba.password" value="gw570229" />
 
   <target name="reset" depends="stop,clean,copy,resetdb,start" />
-  <target name="stop" depends="check-properties">
+  <target name="restart" depends="stop,clean,start" />
+  <target name="waronly" depends="stop,clean,copywar,start" />
+  <target name="configonly" depends="stop,clean,copy-appconfig,copy-envconfig,start" />
+  <target name="copy" depends="copyconfig,copywar" />
+  <target name="copyconfig" depends="copy-commonconfig,copy-appconfig,copy-envconfig" />
+
+  <property name="config.home" value="/home/${tomcat.instance}/kuali/main/${deploy.environment}" />
+
+  <target name="stop" depends="check-basic-properties">
     <echo>Stopping ${tomcat.instance} on ${deploy.server}</echo>
-    <exec executable="ssh">
+    <exec executable="ssh" failonerror="false">
       <arg value="-i" />
-      <arg value="${auth}" />
+      <arg value="${deploy.auth}" />
       <arg value="root@${deploy.server}" />
       <arg value="su" />
       <arg value="-" />
@@ -18,48 +24,84 @@
       <arg value="/usr/local/tomcat/bin/forced-shutdown.sh" />
     </exec>
   </target>
-  <target name="clean" depends="check-properties">
+  <target name="clean" depends="check-basic-properties">
     <property name="old.root.dir" value="/usr/local/${tomcat.instance}/webapps/ROOT" />
     <echo>Removing ${old.root.dir}</echo>
     <exec executable="ssh" failonerror="true">
       <arg value="-i" />
-      <arg value="${auth}" />
+      <arg value="${deploy.auth}" />
       <arg value="root@${deploy.server}" />
       <arg value="rm" />
       <arg value="-rf" />
       <arg value="${old.root.dir}" />
     </exec>
-    <exec executable="ssh" failonerror="true">
-      <arg value="-i" />
-      <arg value="${auth}" />
-      <arg value="root@${deploy.server}" />
-      <arg value="su" />
-      <arg value="-" />
-      <arg value="${tomcat.instance}" />
-      <arg value="/usr/local/tomcat/bin/cleanup.sh" />
-    </exec>
+    <antcall target="runscript">
+      <param name="message" value="Cleaning up ${tomcat.instance} on ${deploy.server}" />
+      <param name="script" value="/usr/local/tomcat/bin/cleanup.sh" />
+    </antcall>
   </target>
-  <target name="copy" depends="check-properties">
-    <property name="remote.config.file" value="/usr/local/${tomcat.instance}/conf/app-config.xml" />
-    <echo>Copy ${config.file} to ${deploy.server}:${remote.config.file}</echo>
-    <exec executable="scp" failonerror="true">
-      <arg value="-i" />
-      <arg value="${auth}" />
-      <arg value="${config.file}" />
-      <arg value="root@${deploy.server}:${remote.config.file}" />
-    </exec>
+  <target name="copy-commonconfig" depends="check-basic-properties">
+    <condition property="copy-commonconfig.properties">
+      <and>
+        <isset property="deploy.config.common" />
+      </and>
+    </condition>
+    <fail unless="copy-commonconfig.properties">Missing deploy.config.common</fail>
+    <antcall target="copyfile">
+      <param name="local.file" value="${deploy.config.common}" />
+      <param name="remote.file" value="${config.home}/common-config.xml" />
+    </antcall>
+  </target>
+
+  <target name="copy-appconfig" depends="check-basic-properties">
+    <condition property="copy-appconfig.properties">
+      <and>
+        <isset property="deploy.config.app" />
+      </and>
+    </condition>
+    <fail unless="copy-appconfig.properties">Missing deploy.config.app</fail>
+    <antcall target="copyfile">
+      <param name="local.file" value="${deploy.config.app}" />
+      <param name="remote.file" value="${config.home}/${deploy.app.configfile}" />
+    </antcall>
+  </target>
+  <target name="copy-envconfig" depends="check-basic-properties,check-env-config" if="env.config.present">
+    <antcall target="copyfile">
+      <param name="local.file" value="${deploy.config.env}" />
+      <param name="remote.file" value="${config.home}/env-config.xml" />
+    </antcall>
+  </target>
+  <target name="copywar" depends="check-basic-properties">
+    <condition property="copywar.properties">
+      <and>
+        <isset property="deploy.war" />
+      </and>
+    </condition>
+    <fail unless="copywar.properties">Missing deploy.war</fail>
     <property name="remote.war.file" value="/usr/local/${tomcat.instance}/webapps/ROOT.war" />
-    <echo>Copy ${war.file} to ${deploy.server}:${remote.war.file}</echo>
-    <exec executable="scp" failonerror="true">
-      <arg value="-i" />
-      <arg value="${auth}" />
-      <arg value="${war.file}" />
-      <arg value="root@${deploy.server}:${remote.war.file}" />
-    </exec>
+    <antcall target="copyfile">
+      <param name="local.file" value="${deploy.war}" />
+      <param name="remote.file" value="${remote.war.file}" />
+    </antcall>
   </target>
-  <target name="resetdb" depends="check-properties">
+  <target name="resetdb">
+    <condition property="resetdb.properties">
+      <and>
+        <isset property="db.vendor" />
+        <isset property="impex.dir" />
+        <isset property="impex.database" />
+        <isset property="impex.url" />
+        <isset property="impex.username" />
+        <isset property="impex.password" />
+        <isset property="impex.dba.url" />
+        <isset property="impex.dba.username" />
+        <isset property="impex.dba.password" />
+      </and>
+    </condition>
+    <fail unless="resetdb.properties">Missing one or more database properties</fail>
     <echo>Resetting ${db.instance} on ${impex.url}</echo>
-    <exec executable="${mvn}" dir="${impex.dir}" failonerror="true">
+    <echo>Impex directory ${impex.dir}</echo>
+    <exec executable="mvn" dir="${impex.dir}" failonerror="true">
       <arg value="clean" />
       <arg value="install" />
       <arg value="-Pdb,${db.vendor}" />
@@ -72,40 +114,57 @@
       <arg value="-Dimpex.database=${impex.database}" />
     </exec>
   </target>
-  <target name="start" depends="check-properties">
-    <echo>Start ${tomcat.instance} on ${deploy.server}</echo>
+  <target name="start" depends="check-basic-properties">
+    <antcall target="runscript">
+      <param name="message" value="Start ${tomcat.instance} on ${deploy.server}" />
+      <param name="script" value="/usr/local/tomcat/bin/startup.sh" />
+    </antcall>
+  </target>
+  <target name="copyfile">
+    <echo>Copy ${local.file} to ${deploy.server}:${remote.file}</echo>
+    <exec executable="scp" failonerror="true">
+      <arg value="-i" />
+      <arg value="${deploy.auth}" />
+      <arg value="${local.file}" />
+      <arg value="root@${deploy.server}:${remote.file}" />
+    </exec>
     <exec executable="ssh" failonerror="true">
       <arg value="-i" />
-      <arg value="${auth}" />
+      <arg value="${deploy.auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="chown" />
+      <arg value="${tomcat.instance}:tomcat" />
+      <arg value="${remote.file}" />
+    </exec>
+  </target>
+  <target name="check-env-config">
+    <condition property="check-env-config.properties">
+      <and>
+        <isset property="deploy.config.env" />
+      </and>
+    </condition>
+    <fail unless="check-env-config.properties">Missing deploy.config.env</fail>
+    <available file="${deploy.config.env}" property="env.config.present" />
+  </target>
+  <target name="check-basic-properties">
+    <condition property="basic.properties">
+      <and>
+        <isset property="deploy.server" />
+        <isset property="tomcat.instance" />
+      </and>
+    </condition>
+    <fail unless="basic.properties">Missing either deploy.server or tomcat.instance property</fail>
+  </target>
+  <target name="runscript">
+    <echo>${message}</echo>
+    <exec executable="ssh" failonerror="true">
+      <arg value="-i" />
+      <arg value="${deploy.auth}" />
       <arg value="root@${deploy.server}" />
       <arg value="su" />
       <arg value="-" />
       <arg value="${tomcat.instance}" />
-      <arg value="/usr/local/tomcat/bin/startup.sh" />
+      <arg value="${script}" />
     </exec>
-  </target>
-  <target name="check-properties">
-    <condition property="properties.set">
-      <and>
-        <isset property="public.url" />
-        <isset property="deploy.server" />
-        <isset property="tomcat.instance" />
-        <isset property="db.instance" />
-        <isset property="db.vendor" />
-        <isset property="war.file" />
-        <isset property="config.file" />
-        <isset property="impex.dir" />
-        <isset property="impex.url" />
-        <isset property="impex.username" />
-        <isset property="impex.password" />
-        <isset property="impex.dba.url" />
-        <isset property="impex.dba.username" />
-        <isset property="impex.dba.password" />
-        <isset property="impex.database" />
-      </and>
-    </condition>
-    <fail unless="properties.set">
-      Properties not set correctly
-    </fail>
   </target>
 </project>

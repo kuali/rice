@@ -77,13 +77,12 @@
       <property name="defaultTimeout" value="${transaction.timeout}"/>
     </bean>
     
-    <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
-    <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
-    <alias name="riceDataSource${connection.pool.impl}" alias="krmsDataSource" />
-    <!-- alias alias="transactionManager"  name="jtaTransactionManager"/ -->
+    <alias alias="jtaUserTransaction"  name="jtaTransactionManager"/>
+    <alias alias="jtaTransactionManager"  name="transactionManagerXAPool"/>
 
-    <bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
-        <property name="transactionManager" ref="transactionManagerXAPool" />
+
+    <bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+        <property name="transactionManager" ref="jtaTransactionManager" />
         <property name="driverClassName" value="${datasource.driver.name}" />
         <property name="url" value="${datasource.url}" />
         <property name="maxSize" value="${datasource.pool.maxSize}" />
@@ -93,6 +92,8 @@
         <property name="username" value="${datasource.username}" />
         <property name="password" value="${datasource.password}" />
     </bean>
+
+    <alias alias="krmsDataSource"  name="riceDataSource"/>
 
     <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
@@ -107,7 +108,7 @@
     </bean>
     
     <bean id="ojbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.JtaOjbConfigurer">
-        <property name="transactionManager" ref="jtaTransactionManager${connection.pool.impl}" />
+        <property name="transactionManager" ref="jtaTransactionManager" />
     </bean>
     
     <bean id="krmsOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
@@ -140,10 +141,10 @@
 
     <bean id="springJtaTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
         <property name="userTransaction">
-            <ref local="jtaTransactionManager" />
+            <ref local="transactionManagerXAPool" />
         </property>
         <property name="transactionManager">
-            <ref local="jtaTransactionManager" />
+            <ref local="transactionManagerXAPool" />
         </property>
     </bean>
     

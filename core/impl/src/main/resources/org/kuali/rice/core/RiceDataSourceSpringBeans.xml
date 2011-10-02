@@ -72,7 +72,8 @@
     <property name="arguments"><list><value>20</value></list></property>
   </bean>
 
-  <bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init" destroy-method="close">
+  <bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+        destroy-method="close" lazy-init="true">
     <property name="className" value="${datasource.pool.class}" />
     <property name="uniqueName" ref="ds-random-string" />
     <property name="minPoolSize" value="${datasource.pool.minSize}" />

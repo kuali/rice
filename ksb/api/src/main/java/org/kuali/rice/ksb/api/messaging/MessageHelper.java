@@ -34,6 +34,7 @@ public interface MessageHelper {
 	<T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback);
 	<T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context);
 	<T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2);
+    <T> T getServiceAsynchronously(QName qname, String applicationId, AsynchronousCallback callback, Serializable context, String value1, String value2);
 	<T> T getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds);
     <T> T getServiceAsynchronously(QName qname, String applicationId, Serializable context, String value1, String value2, long delayMilliseconds);
     <T> List<T> getAllRemoteServicesAsynchronously(QName qname);

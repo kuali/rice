@@ -171,7 +171,7 @@
         <idref local="enExceptionRoutingService" />
         <idref local="enStatsService" />
         <idref local="enNoteService" />
-        <idref local="enDocumentRoutingService" />
+        <idref local="rice.kew.documentProcessingQueue" />
         <idref local="enBlanketApproveProcessor" />
         <idref local="rice.kew.documentAttributeIndexingQueue" />
         <idref local="rice.kew.groupMembershipChangeQueue" />
@@ -525,13 +525,17 @@
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
 
-  <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
   <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
   <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
   <bean id="enActionInvocationService" class="org.kuali.rice.kew.actions.asyncservices.ActionInvocationProcessor" />
   <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
 
   <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
+
+  <bean id="rice.kew.documentProcessingQueue" class="org.kuali.rice.kew.impl.document.DocumentProcessingQueueImpl">
+    <property name="workflowEngineFactory" ref="workflowEngineFactory"/>
+    <property name="documentAttributeIndexingQueue" ref="rice.kew.documentAttributeIndexingQueue"/>
+  </bean>
 
 	<bean id="rice.kew.groupMembershipChangeQueue" class="org.kuali.rice.kew.impl.group.GroupMembershipChangeQueueImpl" />
 

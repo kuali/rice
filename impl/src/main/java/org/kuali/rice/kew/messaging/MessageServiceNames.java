@@ -36,7 +36,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  */
 public class MessageServiceNames {
 
-	public static final String DOCUMENT_ROUTING_SERVICE = "DocumentRoutingService";
+	public static final String DOCUMENT_ROUTING_SERVICE = "documentProcessingQueueSoap";
 
 	public static final String ACTION_LIST_IMMEDIATE_REMINDER_SERVICE = "ImmediateEmailService";
 

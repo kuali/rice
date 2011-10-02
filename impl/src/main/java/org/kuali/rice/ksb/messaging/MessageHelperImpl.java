@@ -35,27 +35,34 @@ import java.util.List;
 
 public class MessageHelperImpl implements MessageHelper {
 
+    @Override
     public <T> T getServiceAsynchronously(QName qname) {
-        return (T) getAsynchronousServiceCallProxy(qname, null, null, null, null, null);
+        return (T) getServiceAsynchronously(qname, null, null, null, null, null);
     }
 
+    @Override
     public <T> T getServiceAsynchronously(QName qname, String applicationId) {
-        return (T) getAsynchronousServiceCallProxy(qname, applicationId, null, null, null, null);
+        return (T) getServiceAsynchronously(qname, applicationId, null, null, null, null);
     }
 
+    @Override
     public <T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback) {
-        return (T) getAsynchronousServiceCallProxy(qname, null, callback, null, null, null);
+        return (T) getServiceAsynchronously(qname, null, callback, null, null, null);
     }
 
+    @Override
     public <T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context) {
-        return (T) getAsynchronousServiceCallProxy(qname, null, callback, context, null, null);
+        return (T) getServiceAsynchronously(qname, null, callback, context, null, null);
     }
 
+    @Override
     public <T> T getServiceAsynchronously(QName qname, AsynchronousCallback callback, Serializable context, String value1, String value2) {
-        return (T) getAsynchronousServiceCallProxy(qname, null, callback, context, value1, value2);
+        return (T) getServiceAsynchronously(qname, null, callback, context, value1, value2);
     }
 
-    public <T> T getAsynchronousServiceCallProxy(QName qname, String applicationId, AsynchronousCallback callback, Serializable context, String value1, String value2) {
+    @Override
+    public <T> T getServiceAsynchronously(QName qname, String applicationId, AsynchronousCallback callback,
+            Serializable context, String value1, String value2) {
 
     	List<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(qname);
         endpoints = filterEndpointsByApplicationId(endpoints, applicationId);
@@ -74,6 +81,7 @@ public class MessageHelperImpl implements MessageHelper {
         return (T) createProxyDelayed(syncMode(), endpoints, context, value1, value2, delayMilliseconds);
     }
 
+    @Override
     public <T> T getServiceAsynchronously(QName qname, Serializable context, String value1, String value2, long delayMilliseconds) {
         return (T) getDelayedAsynchronousServiceCallProxy(qname, null, context, value1, value2, delayMilliseconds);
     }

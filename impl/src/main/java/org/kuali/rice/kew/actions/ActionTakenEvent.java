@@ -23,8 +23,11 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
+import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -218,16 +221,10 @@ public abstract class ActionTakenEvent {
 	 * Asynchronously queues the documented to be processed by the workflow engine.
 	 */
 	protected void queueDocumentProcessing() {
-		QName documentServiceName = new QName(getRouteHeader().getDocumentType().getApplicationId(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-		KSBXMLService documentRoutingService = (KSBXMLService) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
-		try {
-//			String content = String.valueOf(getDocumentId());
-			RouteDocumentMessageService.RouteMessageXmlElement element = new RouteDocumentMessageService.RouteMessageXmlElement(getDocumentId(),isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
-			String content = element.translate();
-			documentRoutingService.invoke(content);
-		} catch (Exception e) {
-		    processPostProcessorException(e);
-		}
+		QName documentServiceName = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
+		DocumentProcessingQueue documentProcessingQueue = (DocumentProcessingQueue) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
+        DocumentProcessingOptions options = new DocumentProcessingOptions(isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
+        documentProcessingQueue.processWithOptions(getDocumentId(), options);
 	}
 
 	protected ActionTakenValue saveActionTaken() {

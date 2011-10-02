@@ -522,7 +522,7 @@
       enXmlDigesterService,
       enStatsService,
       enNoteService,
-      enDocumentRoutingService,
+      rice.kew.documentProcessingQueue,
       enBlanketApproveProcessor,
       enMoveDocumentService,
       enActionInvocationService,

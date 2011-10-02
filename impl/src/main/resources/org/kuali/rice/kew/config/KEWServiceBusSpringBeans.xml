@@ -206,14 +206,14 @@
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 
-	<bean parent="kewEmbeddedServiceExporter">
+	<bean id="rice.kew.documentProcessingQueueSoap.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
+			<bean parent="kewJaxWsSoapService">
 				<property name="service">
-					<ref bean="enDocumentRoutingService" />
+					<ref bean="rice.kew.documentProcessingQueue" />
 				</property>
-				<property name="localServiceName" value="DocumentRoutingService" />
+				<property name="localServiceName" value="documentProcessingQueueSoap" />
 				<property name="priority" value="5" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />

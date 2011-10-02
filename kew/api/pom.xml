@@ -144,6 +144,18 @@
 						</goals>
 					</execution>
           <execution>
+						<id>documentProcessingQueue-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.document.DocumentProcessingQueue</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentProcessingQueue.wsdl</outputFile>
+							<serviceName>DocumentProcessingQueue</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
 						<id>groupMembershipChangeQueue-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>

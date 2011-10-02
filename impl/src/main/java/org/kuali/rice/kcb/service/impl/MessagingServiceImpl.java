@@ -201,15 +201,6 @@ public class MessagingServiceImpl implements MessagingService {
             throw new RiceIllegalArgumentException("originId is null");
         }
 
-        if (StringUtils.isBlank(user)) {
-            throw new RiceIllegalArgumentException("user is null");
-        }
-
-        if (StringUtils.isBlank(cause)) {
-            throw new RiceIllegalArgumentException("cause is null");
-        }
-
-
         Message m = messageService.getMessageByOriginId(originId);
         if (m == null) {
             return null; 

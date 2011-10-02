@@ -1273,6 +1273,8 @@ public class DocumentTypeXmlParser {
             routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_ROUTE_MODULE);
         } else if (((Boolean) getXPath().evaluate("./peopleFlows", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_PEOPLE_FLOW);
+        } else if (((Boolean) getXPath().evaluate("./rulesEngine", node, XPathConstants.BOOLEAN)).booleanValue()) {
+            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_RULES_ENGINE);
         }
 
         String nodeType = null;

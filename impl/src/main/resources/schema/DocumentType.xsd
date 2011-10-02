@@ -939,6 +939,12 @@ Definitions are applied to the names in the routeNodes section.
               </annotation>
             </element>
 
+            <element name="rulesEngine" type="dt:RulesEngineType" minOccurs="0" maxOccurs="1">
+              <annotation>
+                <documentation>Provides integration with the KRMS engine.</documentation>
+              </annotation>
+            </element>
+
           </choice>
           <element name="mandatoryRoute" type="boolean" default="false" minOccurs="0" maxOccurs="1">
           	<annotation>
@@ -1089,5 +1095,18 @@ Definitions are applied to the names in the routeNodes section.
       <element name="name" type="c:NamedType" minOccurs="1" maxOccurs="1"/>
     </sequence>
   </complexType>
+
+  <complexType name="RulesEngineType">
+    <simpleContent>
+      <extension base="c:ShortStringType">
+	      <attribute name="executor" type="c:ShortStringType" use="required">
+		    <annotation>
+		      <documentation>The name of the RulesEngineExecutor to use at this node.</documentation>
+		    </annotation>
+		  </attribute>
+	 </extension>
+	</simpleContent>
+  </complexType>
+
 
 </schema>

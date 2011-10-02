@@ -32,7 +32,6 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.messaging.RouteDocumentMessageService;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
@@ -40,7 +39,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 import javax.xml.namespace.QName;
 import java.util.List;
@@ -221,8 +219,7 @@ public abstract class ActionTakenEvent {
 	 * Asynchronously queues the documented to be processed by the workflow engine.
 	 */
 	protected void queueDocumentProcessing() {
-		QName documentServiceName = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-		DocumentProcessingQueue documentProcessingQueue = (DocumentProcessingQueue) MessageServiceNames.getServiceAsynchronously(documentServiceName, getRouteHeader());
+		DocumentProcessingQueue documentProcessingQueue = (DocumentProcessingQueue) MessageServiceNames.getDocumentProcessingQueue(getRouteHeader());
         DocumentProcessingOptions options = new DocumentProcessingOptions(isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
         documentProcessingQueue.processWithOptions(getDocumentId(), options);
 	}

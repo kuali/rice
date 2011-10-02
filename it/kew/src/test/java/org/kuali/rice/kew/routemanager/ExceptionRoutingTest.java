@@ -21,6 +21,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
+import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -258,11 +259,8 @@ public class ExceptionRoutingTest extends KEWTestCase {
     	assertFalse("Should not have transitioned out of exception routing yet.", ExceptionRoutingTestPostProcessor.TRANSITIONED_OUT_OF_EXCEPTION_ROUTING);
     	// the requeue here should happen synchronously because we are using the SynchronousRouteQueue
     	DocumentRouteHeaderValue routeHeaderValue = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
-    	QName documentServiceName = new QName(routeHeaderValue.getDocumentType().getApplicationId(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-    	KSBXMLService routeDocumentMessageService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, routeHeaderValue);
-    	routeDocumentMessageService.invoke(String.valueOf(document.getDocumentId()));
-
-//    	SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.DOCUMENT_ROUTING_SERVICE, String.valueOf(document.getDocumentId()), routeHeaderValue);
+        DocumentProcessingQueue documentProcessingQueue = MessageServiceNames.getDocumentProcessingQueue(routeHeaderValue);
+    	documentProcessingQueue.process(String.valueOf(document.getDocumentId()));
 
     	// the document should still be in exception routing
     	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());

@@ -23,6 +23,9 @@ import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
@@ -36,7 +39,7 @@ import org.kuali.rice.ksb.messaging.service.KSBXMLService;
  */
 public class MessageServiceNames {
 
-	public static final String DOCUMENT_ROUTING_SERVICE = "documentProcessingQueueSoap";
+	public static final QName DOCUMENT_PROCESSING_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentProcessingQueueSoap");
 
 	public static final String ACTION_LIST_IMMEDIATE_REMINDER_SERVICE = "ImmediateEmailService";
 
@@ -64,9 +67,9 @@ public class MessageServiceNames {
 		return new QName(baseServiceName);
 	}
 
-	public static KSBXMLService getRouteDocumentMessageService(DocumentRouteHeaderValue document) {
-		return (KSBXMLService) getServiceAsynchronously(getQName(DOCUMENT_ROUTING_SERVICE, document), document);
-	}
+    public static DocumentProcessingQueue getDocumentProcessingQueue(DocumentRouteHeaderValue document) {
+        return (DocumentProcessingQueue)getServiceAsynchronously(DOCUMENT_PROCESSING_QUEUE, document);
+    }
 
 	public static MoveDocumentService getMoveDocumentProcessorService(DocumentRouteHeaderValue document) {
 		return (MoveDocumentService) getServiceAsynchronously(getQName(MOVE_DOCUMENT_PROCESSOR, document), document);
@@ -85,15 +88,16 @@ public class MessageServiceNames {
 		if (waitTime > 0) {
 			return (DocumentRequeuerService) getDelayedServiceAsynchronously(serviceName, documentId, waitTime);
 		}
-		return (DocumentRequeuerService) getServiceAsynchronously(serviceName, documentId);
+		return (DocumentRequeuerService) getServiceAsynchronously(serviceName, documentId, applicationId);
 	}
 
 	public static Object getServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document) {
-		return getServiceAsynchronously(serviceName, getDocId(document));
+        String applicationId = document.getDocumentType().getApplicationId();
+		return getServiceAsynchronously(serviceName, getDocId(document), applicationId);
 	}
 
-	public static Object getServiceAsynchronously(QName serviceName, String documentId) {
-		return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, (documentId == null ? null : documentId.toString()), null);
+	public static Object getServiceAsynchronously(QName serviceName, String documentId, String applicationId) {
+		return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, applicationId, null, null, (documentId == null ? null : documentId.toString()), null);
 	}
 
 	public static Object getDelayedServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document, long waitTime) {

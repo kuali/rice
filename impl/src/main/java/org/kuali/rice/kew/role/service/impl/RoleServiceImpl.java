@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -243,13 +244,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     protected void requeueDocument(DocumentRouteHeaderValue document) {
-    	QName documentServiceName = new QName(document.getDocumentType().getApplicationId(), MessageServiceNames.DOCUMENT_ROUTING_SERVICE);
-    	KSBXMLService documentRoutingService = (KSBXMLService)MessageServiceNames.getServiceAsynchronously(documentServiceName, document);
-    	try {
-			documentRoutingService.invoke(document.getDocumentId());
-		} catch (Exception e) {
-			throw new WorkflowRuntimeException(e);
-		}
+        DocumentProcessingQueue documentProcessingQueue = MessageServiceNames.getDocumentProcessingQueue(document);
+        documentProcessingQueue.process(document.getDocumentId());
     }
 
 }

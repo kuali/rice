@@ -79,7 +79,7 @@
 		</property>
 		<property name="dataSource" ref="riceDataSource${connection.pool.impl}" />
 		<property name="nonTransactionalDataSource" ref="riceNonTransactionalDataSource" />
-		<property name="transactionManager" ref="jtaTransactionManager${connection.pool.impl}" />
+		<property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
 		<property name="userTransaction" ref="jtaUserTransaction" />
 	</bean>	
 </beans>

@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
@@ -89,29 +90,28 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
         super.start();
     }
 
-    protected Boolean isTestTableInSchema(final DataSource dataSource) {
-        Assert.assertNotNull("DataSource could not be located.", dataSource);
+    protected Boolean isTestTableInSchema(final Connection connection) throws SQLException {
+        Assert.assertNotNull("Connection could not be located.", connection);
+        ResultSet resultSet = null;
         try {
-            Connection connection = dataSource.getConnection();
-            connection.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return (Boolean) new JdbcTemplate(dataSource).execute(new ConnectionCallback() {
-            public Object doInConnection(final Connection connection) throws SQLException {
-                final ResultSet resultSet = connection.getMetaData().getTables(null, connection.getMetaData().getUserName().toUpperCase(), TEST_TABLE_NAME, null);
-                return new Boolean(resultSet.next());
+            resultSet = connection.getMetaData().getTables(null, connection.getMetaData().getUserName().toUpperCase(), TEST_TABLE_NAME, null);
+            return new Boolean(resultSet.next());
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
             }
-        });
+        }
     }
 
     protected void verifyTestEnvironment(final DataSource dataSource) {
-        String dbUrl = "";
-        try {
-            dbUrl = dataSource.getConnection().getMetaData().getURL();
-        } catch (Throwable t) {}
-        Assert.assertTrue("No table named '" + TEST_TABLE_NAME + "' was found in the configured database.  " +
-                 dbUrl + "  You are attempting to run tests against a non-test database!!!", isTestTableInSchema(dataSource));
+        new JdbcTemplate(dataSource).execute(new ConnectionCallback<Object>() {
+            public Object doInConnection(final Connection connection) throws SQLException {
+                String dbUrl = connection.getMetaData().getURL();
+                Assert.assertTrue("No table named '" + TEST_TABLE_NAME + "' was found in the configured database.  " +
+                        dbUrl + "  You are attempting to run tests against a non-test database!!!", isTestTableInSchema(connection));
+                return null;
+            }
+        });
     }
 
     protected void clearTables(final PlatformTransactionManager transactionManager, final DataSource dataSource) {

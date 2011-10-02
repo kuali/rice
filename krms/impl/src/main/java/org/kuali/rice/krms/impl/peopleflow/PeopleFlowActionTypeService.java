@@ -11,6 +11,7 @@ import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
@@ -48,17 +49,27 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
          * use this flag with the static factory to get a {@link PeopleFlowActionTypeService} that creates
          * notification actions.
          */
-        NOTIFICATION,
+        NOTIFICATION(ActionRequestType.FYI),
 
         /**
          * use this flag with the static factory to get a {@link PeopleFlowActionTypeService} that creates
          * approval actions.
          */
-        APPROVAL;
+        APPROVAL(ActionRequestType.APPROVE);
+
+        private final ActionRequestType actionRequestType;
+
+        private Type(ActionRequestType actionRequestType) {
+            this.actionRequestType = actionRequestType;
+        }
 
         @Override
         public String toString() {
             return this.name().toLowerCase();
+        }
+
+        public ActionRequestType getActionRequestType() {
+            return this.actionRequestType;
         }
 
         /**
@@ -277,7 +288,7 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
             }
 
             // add our people flow action to the string using our convention
-            selectedAttributesStringBuilder.append(type.toString());
+            selectedAttributesStringBuilder.append(type.getActionRequestType().getCode());
             selectedAttributesStringBuilder.append(":");
             selectedAttributesStringBuilder.append(peopleFlowId);
 

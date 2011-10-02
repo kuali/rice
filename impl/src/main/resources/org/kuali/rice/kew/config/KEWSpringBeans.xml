@@ -219,8 +219,16 @@
     <property name="peopleFlowRequestGenerator" ref="peopleFlowRequestGenerator" />
   </bean>
 
+  <!-- Important that this remain lazy-init because we don't want to introduce runtime dependency on KRMS if it isn't being used -->
+  <bean id="rulesEngineRouteModule" class="org.kuali.rice.kew.impl.support.krms.RulesEngineRouteModule" lazy-init="true">
+    <property name="peopleFlowRouteModule" ref="peopleFlowRouteModule"/>
+    <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
+    <property name="routeNodeService" ref="enRouteNodeService"/>
+  </bean>
+
   <bean id="enRouteModuleService" class="org.kuali.rice.kew.routemodule.service.impl.RouteModuleServiceImpl" lazy-init="true">
     <property name="peopleFlowRouteModule" ref="peopleFlowRouteModule"/>
+    <property name="rulesEngineRouteModuleId"><idref local="rulesEngineRouteModule"/></property>
   </bean>
 
 	<!-- 2.1 Workflow Engine -->

@@ -28,17 +28,22 @@ import org.kuali.rice.kew.routemodule.FlexRMAdapter;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.routemodule.service.RouteModuleService;
 import org.kuali.rice.kew.util.KEWConstants;
-
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RouteModuleServiceImpl implements RouteModuleService {
+public class RouteModuleServiceImpl implements RouteModuleService, BeanFactoryAware {
 
     private static final Logger LOG = Logger.getLogger(RouteModuleServiceImpl.class);
 
-    private RouteModule rulesEngineRouteModule;
+    private BeanFactory beanFactory;
+    private String rulesEngineRouteModuleId;
+
     private RouteModule peopleFlowRouteModule;
+    private volatile RouteModule rulesEngineRouteModule;
 
     public RouteModule findRouteModule(RouteNode node) throws ResourceUnavailableException {
         String routeMethodName = node.getRouteMethodName();
@@ -92,12 +97,28 @@ public class RouteModuleServiceImpl implements RouteModuleService {
         return peopleFlowRouteModule;
     }
 
-    public RouteModule getRulesEngineRouteModule() {
-        return rulesEngineRouteModule;
+    public String getRulesEngineRouteModuleId() {
+        return rulesEngineRouteModuleId;
     }
 
-    public void setRulesEngineRouteModule(RouteModule rulesEngineRouteModule) {
-        this.rulesEngineRouteModule = rulesEngineRouteModule;
+    public void setRulesEngineRouteModuleId(String rulesEngineRouteModuleId) {
+        this.rulesEngineRouteModuleId = rulesEngineRouteModuleId;
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
+    }
+
+    /**
+     * Loaded lazily by id so as not to introduce a runtime dependency on KRMS when it is not in use.
+     */
+    protected RouteModule getRulesEngineRouteModule() {
+        if (rulesEngineRouteModule == null) {
+            // this should initialize the route module in spring
+            rulesEngineRouteModule = (RouteModule)beanFactory.getBean(getRulesEngineRouteModuleId());
+        }
+        return rulesEngineRouteModule;
     }
 
 }

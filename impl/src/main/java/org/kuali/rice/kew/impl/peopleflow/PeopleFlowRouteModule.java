@@ -1,5 +1,6 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
@@ -20,6 +21,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 import java.util.ArrayList;
@@ -27,8 +29,11 @@ import java.util.List;
 
 public class PeopleFlowRouteModule implements RouteModule {
 
-    private static final String PEOPLE_FLOW_ITERATION_KEY = "peopleFlowIteration";
     private static final String PEOPLE_FLOW_PROPERTY = "peopleFlow";
+
+    private static final String PEOPLE_FLOW_ITERATION_KEY = "peopleFlowIteration";
+    public static final String PEOPLE_FLOW_SEQUENCE = "peopleFlowSequence";
+
     private static final JAXBContext jaxbContext;
     static {
         try {
@@ -73,35 +78,59 @@ public class PeopleFlowRouteModule implements RouteModule {
     }
 
     protected List<PeopleFlowConfig> parsePeopleFlowConfiguration(RouteContext context) {
-        List<Element> peopleFlowElements = RouteNodeUtils.getCustomRouteNodeElements(
-                context.getNodeInstance().getRouteNode(), PEOPLE_FLOW_PROPERTY);
         List<PeopleFlowConfig> configs = new ArrayList<PeopleFlowConfig>();
-        for (Element peopleFlowElement : peopleFlowElements) {
-            try {
-                PeopleFlowConfig config = (PeopleFlowConfig)jaxbContext.createUnmarshaller().unmarshal(peopleFlowElement);
-                if (config.actionRequested == null) {
-                    // default action request type to approve
-                    config.actionRequested = ActionRequestType.APPROVE;
+        NodeState peopleFlowSequenceNodeState = context.getNodeInstance().getNodeState(PEOPLE_FLOW_SEQUENCE);
+        if (peopleFlowSequenceNodeState != null) {
+            String peopleFlowSequence = peopleFlowSequenceNodeState.getValue();
+            if (StringUtils.isNotBlank(peopleFlowSequence)) {
+                String[] peopleFlowValues = peopleFlowSequence.split(",");
+                for (String peopleFlowValue : peopleFlowValues) {
+                    String[] peopleFlowProperties = peopleFlowValue.split(":");
+                    PeopleFlowConfig config = new PeopleFlowConfig();
+                    config.actionRequested = ActionRequestType.fromCode(peopleFlowProperties[0]);
+                    config.peopleFlowIdentifier = peopleFlowProperties[1];
+                    configs.add(config);
                 }
-                if (config == null) {
-                    throw new IllegalStateException("People flow configuration element did not properly unmarshall from XML: " + XmlJotter.jotNode(peopleFlowElement));
+            }
+        } else {
+            List<Element> peopleFlowElements = RouteNodeUtils.getCustomRouteNodeElements(
+                    context.getNodeInstance().getRouteNode(), PEOPLE_FLOW_PROPERTY);
+
+            for (Element peopleFlowElement : peopleFlowElements) {
+                try {
+                    PeopleFlowConfig config = (PeopleFlowConfig)jaxbContext.createUnmarshaller().unmarshal(peopleFlowElement);
+                    if (config.actionRequested == null) {
+                        // default action request type to approve
+                        config.actionRequested = ActionRequestType.APPROVE;
+                    }
+                    if (config == null) {
+                        throw new IllegalStateException("People flow configuration element did not properly unmarshall from XML: " + XmlJotter.jotNode(peopleFlowElement));
+                    }
+                    configs.add(config);
+                } catch (JAXBException e) {
+                    throw new RiceRuntimeException("Failed to unmarshall people flow configuration from route node.", e);
                 }
-                configs.add(config);
-            } catch (JAXBException e) {
-                throw new RiceRuntimeException("Failed to unmarshall people flow configuration from route node.", e);
             }
         }
         return configs;
     }
 
     protected PeopleFlowDefinition loadPeopleFlow(PeopleFlowConfig configuration) {
-        String namespaceCode = configuration.name.namespaceCode;
-        String name = configuration.name.name;
-        PeopleFlowDefinition peopleFlow = getPeopleFlowService().getPeopleFlowByName(configuration.name.namespaceCode, configuration.name.name);
-        if (peopleFlow == null) {
-            throw new ConfigurationException("Failed to locate a people flow with the given namespaceCode of '" + namespaceCode + "' and name of '" + name + "'");
+        if (configuration.isId()) {
+            PeopleFlowDefinition peopleFlow = getPeopleFlowService().getPeopleFlow(configuration.getId());
+            if (peopleFlow == null) {
+                throw new ConfigurationException("Failed to locate a people flow with the given id of '" + configuration.getId() + "'");
+            }
+            return peopleFlow;
+        } else {
+            String namespaceCode = configuration.getName().namespaceCode;
+            String name = configuration.getName().name;
+            PeopleFlowDefinition peopleFlow = getPeopleFlowService().getPeopleFlowByName(namespaceCode, name);
+            if (peopleFlow == null) {
+                throw new ConfigurationException("Failed to locate a people flow with the given namespaceCode of '" + namespaceCode + "' and name of '" + name + "'");
+            }
+            return peopleFlow;
         }
-        return peopleFlow;
     }
 
     protected int incrementIteration(RouteContext context) {
@@ -117,7 +146,9 @@ public class PeopleFlowRouteModule implements RouteModule {
             nextIteration = currentIteration + 1;
         }
         nodeState.setValue(Integer.toString(nextIteration));
-        KEWServiceLocator.getRouteNodeService().save(nodeState);
+        if (!context.isSimulation()) {
+            KEWServiceLocator.getRouteNodeService().save(nodeState);
+        }
         return nextIteration;
     }
 
@@ -151,7 +182,26 @@ public class PeopleFlowRouteModule implements RouteModule {
         @XmlElement(name = "actionRequested")
         ActionRequestType actionRequested;
 
-        @XmlElement(name = "name") NameConfig name;
+        @XmlElements(value = {
+            @XmlElement(name = "name", type = NameConfig.class),
+            @XmlElement(name = "id", type = String.class)
+        })
+        Object peopleFlowIdentifier;
+
+        boolean isId() {
+            return peopleFlowIdentifier instanceof String;
+        }
+        boolean isName() {
+            return peopleFlowIdentifier instanceof NameConfig;
+        }
+
+        NameConfig getName() {
+            return (NameConfig)peopleFlowIdentifier;
+        }
+
+        String getId() {
+            return (String)peopleFlowIdentifier;
+        }
         
     }
 

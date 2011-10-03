@@ -30,13 +30,7 @@ table td, table th {
 th, td {
     padding: 0;  /* overriding reset.css - shouldn't be specifying this */
 }
-input {
-    padding: 3px 3px;
-    border:  1px solid #aaaaaa;
-    font-size: 1em;
-    font-family: arial, helvetica, sans-serif;
 
-}
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
 
@@ -269,9 +263,7 @@ li label.kr-error {
 }
 
 /* LAYOUTS - e.g.: kr-box-horizontal, ks-left, ks-right *****************/
-#viewpage_div {
-    float:left;
-}
+
 .clearfix {
 	clear:both;
 }

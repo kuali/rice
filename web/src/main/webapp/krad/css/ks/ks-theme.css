@@ -5,8 +5,11 @@
 a {
 	color:#3F7826;
 }
-input {
+input[type="text"], textarea {
     border:  1px solid #aaaaaa;
+    padding: 3px 3px;
+    font-size: 1em;
+    font-family: arial, helvetica, sans-serif;
 
 }
 input[type="radio"], input[type="checkbox"] {
@@ -64,6 +67,9 @@ h7 {
 
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
+#viewpage_div {
+    float:left;
+}
 .group_expandclose{
     float:right;
 }
@@ -120,7 +126,9 @@ h7 {
 .kr-field-attribute .kr-labelTop {
     font-weight:bold;
 }
-
+th.labelTop {
+    display:inline;
+}
 
 h1.kr-header-object-title {			/* was h1.header-object-title*/  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
@@ -839,4 +847,16 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 	font-size:0.92307692em;     /* 12px divided by 13px */
     display:block;
     margin-bottom:10px;
+}
+
+/* Messing with Tables */
+table.datatable th[scope="row"] {
+    padding: .5em;
+    text-align:right;
+    vertical-align:middle;
+
+}
+table.datataable th {
+    padding-left: 1em;
+    padding-right: 1em;
 }

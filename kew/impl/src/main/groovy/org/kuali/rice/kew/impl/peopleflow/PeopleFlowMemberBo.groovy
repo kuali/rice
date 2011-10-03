@@ -9,7 +9,8 @@ import org.springframework.util.MultiValueMap
 import org.springframework.util.LinkedMultiValueMap
 import org.apache.commons.collections.CollectionUtils
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate
-import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.action.DelegationType
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 
 /**
  * mapped entity for PeopleFlow members
@@ -20,6 +21,8 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
     String peopleFlowId
     String memberId
     String memberTypeCode
+    String actionRequestPolicyCode
+    String responsibilityId
     int priority
 
     List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
@@ -27,6 +30,11 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
     @Override
     MemberType getMemberType() {
         return MemberType.fromCode(memberTypeCode);
+    }
+
+    @Override
+    ActionRequestPolicy getActionRequestPolicy() {
+        return ActionRequestPolicy.fromCode(actionRequestPolicyCode)
     }
 
     public static PeopleFlowMember to(PeopleFlowMemberBo memberBo) {
@@ -44,6 +52,10 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
         PeopleFlowMemberBo memberBo = new PeopleFlowMemberBo();
         memberBo.setMemberId(member.getMemberId());
         memberBo.setMemberTypeCode(member.getMemberType().getCode());
+        if (member.getActionRequestPolicy() != null) {
+            memberBo.setActionRequestPolicyCode(member.getActionRequestPolicy().getCode());
+        }
+        memberBo.setResponsibilityId(member.getResponsibilityId());
         memberBo.setPriority(member.getPriority());
         memberBo.setDelegates(new ArrayList<PeopleFlowDelegateBo>());
         for (PeopleFlowDelegate delegate : member.getDelegates()) {

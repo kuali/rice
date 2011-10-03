@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.w3c.dom.Element;
 
@@ -19,10 +21,12 @@ import java.util.Collection;
 @XmlRootElement(name = PeopleFlowDelegate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = PeopleFlowDelegate.Constants.TYPE_NAME, propOrder = {
-    PeopleFlowDelegate.Elements.MEMBER_ID,
-    PeopleFlowDelegate.Elements.MEMBER_TYPE,
-    PeopleFlowDelegate.Elements.DELEGATION_TYPE,
-    CoreConstants.CommonElements.FUTURE_ELEMENTS
+        PeopleFlowDelegate.Elements.MEMBER_ID,
+        PeopleFlowDelegate.Elements.MEMBER_TYPE,
+        PeopleFlowDelegate.Elements.ACTION_REQUEST_POLICY,
+        PeopleFlowDelegate.Elements.DELEGATION_TYPE,
+        PeopleFlowDelegate.Elements.RESPONSIBILITY_ID,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PeopleFlowDelegate extends AbstractDataTransferObject implements PeopleFlowDelegateContract {
 
@@ -32,8 +36,14 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
     @XmlElement(name = Elements.MEMBER_TYPE, required = true)
     private final MemberType memberType;
 
+    @XmlElement(name = Elements.ACTION_REQUEST_POLICY, required = false)
+    private final ActionRequestPolicy actionRequestPolicy;
+
     @XmlElement(name = Elements.DELEGATION_TYPE, required = true)
     private final DelegationType delegationType;
+
+    @XmlElement(name = Elements.RESPONSIBILITY_ID, required = false)
+    private final String responsibilityId;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -46,13 +56,17 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
     private PeopleFlowDelegate() {
         this.memberId = null;
         this.memberType = null;
+        this.actionRequestPolicy = null;
         this.delegationType = null;
+        this.responsibilityId = null;
     }
 
     private PeopleFlowDelegate(Builder builder) {
         this.memberId = builder.getMemberId();
         this.memberType = builder.getMemberType();
+        this.actionRequestPolicy = builder.getActionRequestPolicy();
         this.delegationType = builder.getDelegationType();
+        this.responsibilityId = builder.getResponsibilityId();
     }
 
     @Override
@@ -66,8 +80,18 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
     }
 
     @Override
+    public ActionRequestPolicy getActionRequestPolicy() {
+        return actionRequestPolicy;
+    }
+
+    @Override
     public DelegationType getDelegationType() {
         return this.delegationType;
+    }
+
+    @Override
+    public String getResponsibilityId() {
+        return responsibilityId;
     }
 
     /**
@@ -79,7 +103,9 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
 
         private String memberId;
         private MemberType memberType;
+        private ActionRequestPolicy actionRequestPolicy;
         private DelegationType delegationType;
+        private String responsibilityId;
 
         private Builder(String memberId, MemberType memberType) {
             setMemberId(memberId);
@@ -96,7 +122,9 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create(contract.getMemberId(), contract.getMemberType());
+            builder.setActionRequestPolicy(contract.getActionRequestPolicy());
             builder.setDelegationType(contract.getDelegationType());
+            builder.setResponsibilityId(contract.getResponsibilityId());
             return builder;
         }
 
@@ -115,8 +143,18 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
         }
 
         @Override
+        public ActionRequestPolicy getActionRequestPolicy() {
+            return actionRequestPolicy;
+        }
+
+        @Override
         public DelegationType getDelegationType() {
             return this.delegationType;
+        }
+
+        @Override
+        public String getResponsibilityId() {
+            return responsibilityId;
         }
 
         public void setMemberId(String memberId) {
@@ -133,6 +171,10 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
             this.memberType = memberType;
         }
 
+        public void setActionRequestPolicy(ActionRequestPolicy actionRequestPolicy) {
+            this.actionRequestPolicy = actionRequestPolicy;
+        }
+
         public void setDelegationType(DelegationType delegationType) {
             if (delegationType == null) {
                 throw new IllegalArgumentException("delegationType was null");
@@ -140,6 +182,10 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
             this.delegationType = delegationType;
         }
 
+        public void setResponsibilityId(String responsibilityId) {
+            this.responsibilityId = responsibilityId;
+        }
+        
     }
 
     /**
@@ -156,7 +202,9 @@ public final class PeopleFlowDelegate extends AbstractDataTransferObject impleme
     static class Elements {
         final static String MEMBER_ID = "memberId";
         final static String MEMBER_TYPE = "memberType";
+        final static String ACTION_REQUEST_POLICY = "actionRequestPolicy";
         final static String DELEGATION_TYPE = "delegationType";
+        final static String RESPONSIBILITY_ID = "responsibilityId";
     }
 
 }

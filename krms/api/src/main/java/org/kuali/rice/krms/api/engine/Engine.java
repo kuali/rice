@@ -13,6 +13,6 @@ public interface Engine {
 	 * 
 	 * @return the results of engine execution
 	 */
-	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions);
-		
+	EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions);
+
 }

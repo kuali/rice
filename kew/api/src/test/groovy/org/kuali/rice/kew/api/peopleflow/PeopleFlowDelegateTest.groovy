@@ -20,6 +20,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 import org.kuali.rice.kew.api.action.DelegationType
+import org.kuali.rice.kew.api.action.ActionRequestPolicy
 
 /**
  * Unit test for PeopleFlowDelegate
@@ -41,6 +42,17 @@ class PeopleFlowDelegateTest {
         <memberId>admin</memberId>
         <memberType>P</memberType>
         <delegationType>P</delegationType>
+        <responsibilityId>500</responsibilityId>
+    </peopleFlowDelegate>
+    """
+
+    private static final String MAXIMAL_ROLE_XML = """
+    <peopleFlowDelegate xmlns="http://rice.kuali.org/kew/v2_0">
+        <memberId>1234</memberId>
+        <memberType>R</memberType>
+        <actionRequestPolicy>F</actionRequestPolicy>
+        <delegationType>P</delegationType>
+        <responsibilityId>501</responsibilityId>
     </peopleFlowDelegate>
     """
 
@@ -101,6 +113,19 @@ class PeopleFlowDelegateTest {
         assert "admin" == delegate.getMemberId()
         assert MemberType.PRINCIPAL == delegate.getMemberType()
         assert DelegationType.PRIMARY == delegate.getDelegationType()
+        assert "500" == delegate.getResponsibilityId()
+    }
+
+    @Test
+    void test_Builder_maximal_role() {
+        PeopleFlowDelegate.Builder builder = createMaximal_role()
+        PeopleFlowDelegate delegate = builder.build()
+        Assert.assertNotNull(delegate)
+        assert "1234" == delegate.getMemberId()
+        assert MemberType.ROLE == delegate.getMemberType()
+        assert ActionRequestPolicy.FIRST == delegate.getActionRequestPolicy()
+        assert DelegationType.PRIMARY == delegate.getDelegationType()
+        assert "501" == delegate.getResponsibilityId()
     }
 
     @Test
@@ -125,7 +150,16 @@ class PeopleFlowDelegateTest {
 
     private PeopleFlowDelegate.Builder createMaximal() {
         PeopleFlowDelegate.Builder builder = PeopleFlowDelegate.Builder.create("admin", MemberType.PRINCIPAL)
-        builder.setDelegationType(DelegationType.PRIMARY);
+        builder.setDelegationType(DelegationType.PRIMARY)
+        builder.setResponsibilityId("500")
+        return builder
+    }
+
+    private PeopleFlowDelegate.Builder createMaximal_role() {
+        PeopleFlowDelegate.Builder builder = PeopleFlowDelegate.Builder.create("1234", MemberType.ROLE)
+        builder.setActionRequestPolicy(ActionRequestPolicy.FIRST)
+        builder.setDelegationType(DelegationType.PRIMARY)
+        builder.setResponsibilityId("501")
         return builder
     }
 

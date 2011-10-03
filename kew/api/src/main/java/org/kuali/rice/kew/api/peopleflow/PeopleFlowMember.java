@@ -6,6 +6,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -25,6 +27,8 @@ import java.util.List;
 @XmlType(name = PeopleFlowMember.Constants.TYPE_NAME, propOrder = {
         PeopleFlowMember.Elements.MEMBER_ID,
         PeopleFlowMember.Elements.MEMBER_TYPE,
+        PeopleFlowMember.Elements.ACTION_REQUEST_POLICY,
+        PeopleFlowMember.Elements.RESPONSIBILITY_ID,
         PeopleFlowMember.Elements.PRIORITY,
         PeopleFlowMember.Elements.DELEGATES,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -38,6 +42,12 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
 
     @XmlElement(name = Elements.MEMBER_TYPE, required = true)
     private final MemberType memberType;
+
+    @XmlElement(name = Elements.ACTION_REQUEST_POLICY, required = false)
+    private final ActionRequestPolicy actionRequestPolicy;
+
+    @XmlElement(name = Elements.RESPONSIBILITY_ID, required = false)
+    private final String responsibilityId;
 
     @XmlElement(name = Elements.PRIORITY, required = true)
     private final int priority;
@@ -56,6 +66,8 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     private PeopleFlowMember() {
         this.memberId = null;
         this.memberType = null;
+        this.actionRequestPolicy = null;
+        this.responsibilityId = null;
         this.priority = STARTING_PRIORITY;
         this.delegates = null;
     }
@@ -63,6 +75,8 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     private PeopleFlowMember(Builder builder) {
         this.memberId = builder.getMemberId();
         this.memberType = builder.getMemberType();
+        this.actionRequestPolicy = builder.getActionRequestPolicy();
+        this.responsibilityId = builder.getResponsibilityId();
         this.priority = builder.getPriority();
         this.delegates = ModelObjectUtils.buildImmutableCopy(builder.getDelegates());
     }
@@ -75,6 +89,16 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     @Override
     public MemberType getMemberType() {
         return this.memberType;
+    }
+
+    @Override
+    public ActionRequestPolicy getActionRequestPolicy() {
+        return this.actionRequestPolicy;
+    }
+
+    @Override
+    public String getResponsibilityId() {
+        return this.responsibilityId;
     }
 
     @Override
@@ -95,6 +119,8 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
 
         private String memberId;
         private MemberType memberType;
+        private ActionRequestPolicy actionRequestPolicy;
+        private String responsibilityId;
         private int priority;
         private List<PeopleFlowDelegate.Builder> delegates;
 
@@ -114,6 +140,8 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create(contract.getMemberId(), contract.getMemberType());
+            builder.setActionRequestPolicy(contract.getActionRequestPolicy());
+            builder.setResponsibilityId(contract.getResponsibilityId());
             builder.setPriority(contract.getPriority());
             if (CollectionUtils.isNotEmpty(contract.getDelegates())) {
                 for (PeopleFlowDelegateContract delegate : contract.getDelegates()) {
@@ -138,6 +166,16 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         }
 
         @Override
+        public ActionRequestPolicy getActionRequestPolicy() {
+            return this.actionRequestPolicy;
+        }
+
+        @Override
+        public String getResponsibilityId() {
+            return this.responsibilityId;
+        }
+
+        @Override
         public int getPriority() {
             return this.priority;
         }
@@ -159,6 +197,14 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
                 throw new IllegalArgumentException("memberType was null");
             }
             this.memberType = memberType;
+        }
+
+        public void setActionRequestPolicy(ActionRequestPolicy actionRequestPolicy) {
+            this.actionRequestPolicy = actionRequestPolicy;
+        }
+
+        public void setResponsibilityId(String responsibilityId) {
+            this.responsibilityId = responsibilityId;
         }
 
         public void setPriority(int priority) {
@@ -187,6 +233,8 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     static class Elements {
         final static String MEMBER_ID = "memberId";
         final static String MEMBER_TYPE = "memberType";
+        final static String ACTION_REQUEST_POLICY = "actionRequestPolicy";
+        final static String RESPONSIBILITY_ID = "responsibilityId";
         final static String PRIORITY = "priority";
         final static String DELEGATES = "delegates";
         final static String DELEGATE = "delegate";

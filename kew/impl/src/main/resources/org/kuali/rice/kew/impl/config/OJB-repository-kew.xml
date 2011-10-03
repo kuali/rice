@@ -925,6 +925,8 @@
     <field-descriptor name="peopleFlowId" column="PPL_FLW_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="actionRequestPolicyCode" column="ACTN_RQST_PLCY_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="priority" column="PRIO" jdbc-type="INTEGER" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <collection-descriptor name="delegates" element-class-ref="org.kuali.rice.kew.impl.peopleflow.PeopleFlowDelegateBo"
@@ -938,7 +940,9 @@
     <field-descriptor name="peopleFlowMemberId" column="PPL_FLW_MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="actionRequestPolicyCode" column="ACTN_RQST_PLCY_CD" jdbc-type="VARCHAR" />
     <field-descriptor name="delegationTypeCode" column="DLGN_TYP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="responsibilityId" column="RSP_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
   </class-descriptor>
 

@@ -20,6 +20,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 import org.kuali.rice.kew.api.action.DelegationType
+import org.kuali.rice.kew.api.action.ActionRequestPolicy
 
 /**
  * Unit test for PeopleFlowMember
@@ -50,6 +51,37 @@ class PeopleFlowMemberTest {
                 <memberId>1</memberId>
                 <memberType>G</memberType>
                 <delegationType>P</delegationType>
+            </delegate>
+        </delegates>
+    </peopleFlowMember>
+    """
+
+    private static final String MAXIMAL_WITH_ROLES_XML = """
+    <peopleFlowMember xmlns="http://rice.kuali.org/kew/v2_0">
+        <memberId>5</memberId>
+        <memberType>R</memberType>
+        <actionRequestPolicy>F</actionRequestPolicy>
+        <responsibilityId>123</responsibilityId>
+        <priority>5</priority>
+        <delegates>
+            <delegate>
+                <memberId>ewestfal</memberId>
+                <memberType>P</memberType>
+                <delegationType>S</delegationType>
+                <responsibilityId>1</responsibilityId>
+            </delegate>
+            <delegate>
+                <memberId>1</memberId>
+                <memberType>G</memberType>
+                <delegationType>P</delegationType>
+                <responsibilityId>2</responsibilityId>
+            </delegate>
+            <delegate>
+                <memberId>2</memberId>
+                <memberType>R</memberType>
+                <actionRequestPolicy>A</actionRequestPolicy>
+                <delegationType>P</delegationType>
+                <responsibilityId>3</responsibilityId>
             </delegate>
         </delegates>
     </peopleFlowMember>
@@ -116,6 +148,41 @@ class PeopleFlowMemberTest {
     }
 
     @Test
+    void test_Builder_maximal_withRoles() {
+        PeopleFlowMember.Builder builder = createMaximal_withRoles()
+        PeopleFlowMember member = builder.build()
+        Assert.assertNotNull(member)
+        assert "5" == member.getMemberId()
+        assert MemberType.ROLE == member.getMemberType()
+        assert 5 == member.getPriority()
+        assert ActionRequestPolicy.FIRST == member.getActionRequestPolicy()
+        assert "123" == member.getResponsibilityId()
+        assert 3 == member.getDelegates().size()
+
+        def delegates = member.getDelegates().findAll { it.memberType == MemberType.PRINCIPAL }
+        assert 1 == delegates.size()
+        assert DelegationType.SECONDARY == delegates[0].delegationType
+        assert "ewestfal" == delegates[0].memberId
+        assert "1" == delegates[0].responsibilityId
+        Assert.assertNull(delegates[0].actionRequestPolicy)
+
+        delegates = member.getDelegates().findAll { it.memberType == MemberType.GROUP }
+        assert 1 == delegates.size()
+        assert DelegationType.PRIMARY == delegates[0].delegationType
+        assert "1" == delegates[0].memberId
+        assert "2" == delegates[0].responsibilityId
+        Assert.assertNull(delegates[0].actionRequestPolicy)
+
+        delegates = member.getDelegates().findAll { it.memberType == MemberType.ROLE }
+        assert 1 == delegates.size()
+        assert DelegationType.PRIMARY == delegates[0].delegationType
+        assert "2" == delegates[0].memberId
+        assert "3" == delegates[0].responsibilityId
+        assert ActionRequestPolicy.ALL == delegates[0].actionRequestPolicy
+
+    }
+
+    @Test
     void test_Builder_contract() {
         PeopleFlowMember member = createMaximal().build()
         assert member == PeopleFlowMember.Builder.create(member).build()
@@ -131,6 +198,11 @@ class PeopleFlowMemberTest {
         JAXBAssert.assertEqualXmlMarshalUnmarshal(createMaximal().build(), MAXIMAL_XML, PeopleFlowMember.class)
 	}
 
+    @Test
+	void test_Xml_Marshal_Unmarshal_maximal_withRoles() {
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(createMaximal_withRoles().build(), MAXIMAL_WITH_ROLES_XML, PeopleFlowMember.class)
+	}
+
     private PeopleFlowMember.Builder createMinimal() {
         return PeopleFlowMember.Builder.create("admin", MemberType.PRINCIPAL)
     }
@@ -143,6 +215,26 @@ class PeopleFlowMemberTest {
         delegate2.setDelegationType(DelegationType.PRIMARY)
         builder.getDelegates().add(delegate1)
         builder.getDelegates().add(delegate2)
+        return builder
+    }
+
+    private PeopleFlowMember.Builder createMaximal_withRoles() {
+        PeopleFlowMember.Builder builder = PeopleFlowMember.Builder.create("5", MemberType.ROLE)
+        builder.setActionRequestPolicy(ActionRequestPolicy.FIRST)
+        builder.setResponsibilityId("123")
+        builder.setPriority(5)
+        PeopleFlowDelegate.Builder delegate1 = PeopleFlowDelegate.Builder.create("ewestfal", MemberType.PRINCIPAL)
+        delegate1.setResponsibilityId("1")
+        PeopleFlowDelegate.Builder delegate2 = PeopleFlowDelegate.Builder.create("1", MemberType.GROUP)
+        delegate2.setResponsibilityId("2")
+        delegate2.setDelegationType(DelegationType.PRIMARY)
+        PeopleFlowDelegate.Builder delegate3 = PeopleFlowDelegate.Builder.create("2", MemberType.ROLE)
+        delegate3.setActionRequestPolicy(ActionRequestPolicy.ALL)
+        delegate3.setDelegationType(DelegationType.PRIMARY)
+        delegate3.setResponsibilityId("3")
+        builder.getDelegates().add(delegate1)
+        builder.getDelegates().add(delegate2)
+        builder.getDelegates().add(delegate3)
         return builder
     }
 

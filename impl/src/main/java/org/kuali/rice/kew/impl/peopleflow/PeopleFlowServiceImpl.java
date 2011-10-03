@@ -5,11 +5,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
 import org.kuali.rice.kew.impl.KewImplConstants;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,6 +22,7 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 
     private BusinessObjectService businessObjectService;
     private KewTypeRepositoryService kewTypeRepositoryService;
+    private ResponsibilityIdService responsibilityIdService;
 
     @Override
     public PeopleFlowDefinition getPeopleFlow(String peopleFlowId) {
@@ -75,7 +79,7 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
         if (peopleFlow == null) {
             throw new RiceIllegalArgumentException("peopleFlow is null");
         }
-        if (peopleFlow.getId() != null) {
+        if (StringUtils.isNotBlank(peopleFlow.getId())) {
             throw new RiceIllegalArgumentException("Attempted to create a new PeopleFlow definition with a specified peopleFlowId of '"
                     + peopleFlow.getId() + "'.  This is not allowed, when creating a new PeopleFlow definition, id must be null.");
         }
@@ -83,9 +87,25 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
             throw new RiceIllegalArgumentException("The version number on the given PeopleFlow definition was not null, value was " + peopleFlow.getVersionNumber() +
                     "  When creating a new PeopleFlow, the given version number must be null.");
         }
+        validatePeopleFlowMembersForCreate(peopleFlow);
         if (getPeopleFlowBoByName(peopleFlow.getNamespaceCode(), peopleFlow.getName()) != null) {
             throw new RiceIllegalStateException("A PeopleFlow definition with the namespace code '" + peopleFlow.getNamespaceCode() +
             "' and name '" + peopleFlow.getName() + "' already exists.");
+        }
+    }
+
+    protected void validatePeopleFlowMembersForCreate(PeopleFlowDefinition peopleFlowDefinition) {
+        for (PeopleFlowMember member : peopleFlowDefinition.getMembers()) {
+            if (StringUtils.isNotBlank(member.getResponsibilityId())) {
+                throw new RiceIllegalArgumentException("Attempted to create a new PeopleFlow with a member that already had a responsibility id of '" +
+                        member.getResponsibilityId() + "' specified.  All members must have a null responsibility id upon creation.");
+            }
+            for (PeopleFlowDelegate delegate : member.getDelegates()) {
+                if (StringUtils.isNotBlank(delegate.getResponsibilityId())) {
+                    throw new RiceIllegalArgumentException("Attempted to create a new PeopleFlow with a delegate that already had a responsibility id of '" +
+                            delegate.getResponsibilityId() + "' specified.  All delegates must have a null responsibility id upon creation.");
+                }
+            }
         }
     }
 
@@ -136,7 +156,25 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
 		if ( peopleFlowBo == null ) {
 			return null;
 		}
+        assignResponsibilityIds(peopleFlowBo);
         return businessObjectService.save(peopleFlowBo);
+    }
+
+    protected void assignResponsibilityIds(PeopleFlowBo peopleFlowBo) {
+        if (CollectionUtils.isNotEmpty(peopleFlowBo.getMembers())) {
+            for (PeopleFlowMemberBo memberBo : peopleFlowBo.getMembers()) {
+                if (StringUtils.isBlank(memberBo.getResponsibilityId())) {
+                    memberBo.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
+                }
+                if (CollectionUtils.isNotEmpty(memberBo.getDelegates())) {
+                    for (PeopleFlowDelegateBo delegateBo : memberBo.getDelegates()) {
+                        if (StringUtils.isBlank(delegateBo.getResponsibilityId())) {
+                            delegateBo.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public BusinessObjectService getBusinessObjectService() {
@@ -155,4 +193,12 @@ public class PeopleFlowServiceImpl implements PeopleFlowService {
         this.kewTypeRepositoryService = kewTypeRepositoryService;
     }
 
+    public ResponsibilityIdService getResponsibilityIdService() {
+        return responsibilityIdService;
+    }
+
+    public void setResponsibilityIdService(ResponsibilityIdService responsibilityIdService) {
+        this.responsibilityIdService = responsibilityIdService;
+    }
+    
 }

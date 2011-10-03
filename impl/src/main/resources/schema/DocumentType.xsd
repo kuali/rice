@@ -1097,6 +1097,11 @@ Definitions are applied to the names in the routeNodes section.
   </complexType>
 
   <complexType name="RulesEngineType">
+    <annotation>
+      <documentation>Defines how to integrate with the KRMS rules engine. One of either the 'executorName' or
+        'executorClass' attributes must be specified.
+      </documentation>
+    </annotation>
     <simpleContent>
       <extension base="c:ShortStringType">
         <!-- One or the other of the following attributes is required -->
@@ -1113,10 +1118,6 @@ Definitions are applied to the names in the routeNodes section.
         </attribute>
       </extension>
     </simpleContent>
-    <annotation>
-      <documentation>Defines how to integrate with the KRMS rules engine.  One of either the 'executorName' or 'executorClass' attributes must be specified.</documentation>
-    </annotation>
   </complexType>
-
 
 </schema>

@@ -853,6 +853,7 @@
   <bean id="rice.kew.peopleFlowService" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
     <property name="kewTypeRepositoryService" ref="rice.kew.kewTypeRepositoryService"/>
+    <property name="responsibilityIdService" ref="enResponsibilityIdService"/>
   </bean>
 
   <bean id="criteriaLookupService"

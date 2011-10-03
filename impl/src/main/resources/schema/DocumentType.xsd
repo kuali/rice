@@ -1099,13 +1099,23 @@ Definitions are applied to the names in the routeNodes section.
   <complexType name="RulesEngineType">
     <simpleContent>
       <extension base="c:ShortStringType">
-	      <attribute name="executor" type="c:ShortStringType" use="required">
-		    <annotation>
-		      <documentation>The name of the RulesEngineExecutor to use at this node.</documentation>
-		    </annotation>
-		  </attribute>
-	 </extension>
-	</simpleContent>
+        <!-- One or the other of the following attributes is required -->
+        <attribute name="executorName" type="c:ShortStringType" use="optional">
+          <annotation>
+            <documentation>The name of the RulesEngineExecutor to use at this node.</documentation>
+          </annotation>
+        </attribute>
+        <attribute name="executorClass" type="c:ShortStringType" use="optional">
+          <annotation>
+            <documentation>The fully-qualified class name of the RulesEngineExecutor to use at this node.
+            </documentation>
+          </annotation>
+        </attribute>
+      </extension>
+    </simpleContent>
+    <annotation>
+      <documentation>Defines how to integrate with the KRMS rules engine.  One of either the 'executorName' or 'executorClass' attributes must be specified.</documentation>
+    </annotation>
   </complexType>
 
 

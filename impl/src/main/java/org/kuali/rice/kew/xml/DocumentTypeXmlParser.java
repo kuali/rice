@@ -1274,6 +1274,13 @@ public class DocumentTypeXmlParser {
         } else if (((Boolean) getXPath().evaluate("./peopleFlows", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_PEOPLE_FLOW);
         } else if (((Boolean) getXPath().evaluate("./rulesEngine", node, XPathConstants.BOOLEAN)).booleanValue()) {
+            // validate that the element has at least one of the two required attributes, XML schema does not provide a way for us to
+            // check this so we must do so programatically
+            Element rulesEngineElement = (Element)getXPath().evaluate("./rulesEngine", node, XPathConstants.NODE);
+            if (StringUtils.isBlank(rulesEngineElement.getAttribute("executorName")) &&
+                    StringUtils.isBlank(rulesEngineElement.getAttribute("executorClass"))) {
+                throw new XmlException("The rulesEngine declaration must have at least one of 'executorName' or 'executorClass' attributes.");
+            }
             routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_RULES_ENGINE);
         }
 

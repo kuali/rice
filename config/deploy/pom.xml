@@ -137,7 +137,7 @@
       <properties>
         <deploy.env.id>env3</deploy.env.id>
         <deploy.server>${deploy.server.1}</deploy.server>
-        <public.url>http://env3.rice.kuali.org</public.url>
+        <public.url>http://it.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
         <db.instance>RICEENV3</db.instance>
       </properties>

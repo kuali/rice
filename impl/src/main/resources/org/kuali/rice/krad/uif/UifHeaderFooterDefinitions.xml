@@ -25,7 +25,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Header-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.HeaderField" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/headerField.jsp"/>
     <property name="headerLevel" value="h1"/>
-    <property name="headerStyleClasses" value="fl-font-serif fl-font-size-150 kr-page-title-header"/>
+    <property name="headerStyleClasses" value="kr-page-title-header"/>
     <property name="group">
       <bean class="org.kuali.rice.krad.uif.container.Group">
         <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>

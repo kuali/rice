@@ -1,4 +1,4 @@
-<!-- Configuration specific to the application deployed to environment #2 -->
+<!-- Configuration specific to the application deployed in environment #2 -->
 <config>
   <param name="datasource.ojb.platform">MySQL</param>
 </config>

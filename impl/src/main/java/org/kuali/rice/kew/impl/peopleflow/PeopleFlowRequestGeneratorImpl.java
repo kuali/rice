@@ -31,20 +31,22 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         }
         ActionRequestFactory factory = new ActionRequestFactory(routeContext);
         for (PeopleFlowMember member : peopleFlow.getMembers()) {
-            // TODO - need to figure out how best to handle responsibility id for this
-            generateRequestForMember(factory, peopleFlow.getId(), member, actionRequested);
+            generateRequestForMember(factory, member.getResponsibilityId(), member, actionRequested);
         }
         return factory.getRequestGraphs();
     }
 
     protected void generateRequestForMember(ActionRequestFactory factory, String responsibilityId, PeopleFlowMember member, ActionRequestType actionRequested) {
-        // TODO - description, responsibilityId, forceAction, approvePolicy, ruleId, annotation, request label
+        // TODO - description, ruleId, annotation, request label
         // defaulting all of these at the moment as per below
-        ActionRequestValue actionRequest = factory.addRootActionRequest(actionRequested.getCode(), member.getPriority(), toRecipient(member), "", responsibilityId, Boolean.TRUE, null, null);
+        String actionRequestPolicyCode = null;
+        if (member.getActionRequestPolicy() != null) {
+            member.getActionRequestPolicy().getCode();
+        }
+        ActionRequestValue actionRequest = factory.addRootActionRequest(actionRequested.getCode(), member.getPriority(), toRecipient(member), "", responsibilityId, Boolean.TRUE, actionRequestPolicyCode, null);
         if (CollectionUtils.isNotEmpty(member.getDelegates())) {
             for (PeopleFlowDelegate delegate : member.getDelegates()) {
-                // TODO - need to figure out how best to handle responsibility id for this
-                factory.addDelegationRequest(actionRequest, toRecipient(delegate), delegate.getMemberId(), Boolean.TRUE, delegate.getDelegationType().getCode(), "", null);
+                factory.addDelegationRequest(actionRequest, toRecipient(delegate), delegate.getResponsibilityId(), Boolean.TRUE, delegate.getDelegationType().getCode(), "", null);
             }
         }
     }

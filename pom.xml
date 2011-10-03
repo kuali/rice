@@ -49,7 +49,8 @@
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <kuali.cm.tools.version>1.5</kuali.cm.tools.version>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
-    <oracle.ojdbc.version>10.2.0.3.0</oracle.ojdbc.version>
+    <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
+    <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
     <mysql.connector.version>5.1.13</mysql.connector.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
@@ -116,7 +117,6 @@
     <junit.version>4.9</junit.version>
     <log4j.version>1.2.16</log4j.version>
     <mysql-connector-java.version>5.1.17</mysql-connector-java.version>
-    <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!--
       http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
@@ -145,7 +145,7 @@
     <!-- database drivers location -->
     <jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
     <mysql-connector-java.jar.location>${jdbc.drivers.location}/mysql-connector-java-${mysql-connector-java.version}.jar</mysql-connector-java.jar.location>
-    <ojdbc14.jar.location>${jdbc.drivers.location}/ojdbc14-${ojdbc14.version}.jar</ojdbc14.jar.location>
+    <ojdbc14.jar.location>${jdbc.drivers.location}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar</ojdbc14.jar.location>
 
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <javadoc.plugin.version>2.7</javadoc.plugin.version>
@@ -545,8 +545,8 @@
           <dependencies>
             <dependency>
               <groupId>com.oracle</groupId>
-              <artifactId>ojdbc14</artifactId>
-              <version>${ojdbc14.version}</version>
+              <artifactId>${oracle.jdbc.artifactId}</artifactId>
+              <version>${oracle.jdbc.version}</version>
               <scope>runtime</scope>
             </dependency>
             <dependency>
@@ -570,8 +570,8 @@
           <dependencies>
             <dependency>
               <groupId>com.oracle</groupId>
-              <artifactId>ojdbc14</artifactId>
-              <version>${ojdbc14.version}</version>
+              <artifactId>${oracle.jdbc.artifactId}</artifactId>
+              <version>${oracle.jdbc.version}</version>
               <scope>runtime</scope>
             </dependency>
             <dependency>
@@ -663,8 +663,8 @@
           <dependencies>
             <dependency>
               <groupId>com.oracle</groupId>
-              <artifactId>ojdbc14</artifactId>
-              <version>${ojdbc14.version}</version>
+              <artifactId>${oracle.jdbc.artifactId}</artifactId>
+              <version>${oracle.jdbc.version}</version>
             </dependency>
             <dependency>
               <groupId>mysql</groupId>
@@ -1012,8 +1012,8 @@
 
       <dependency>
         <groupId>com.oracle</groupId>
-        <artifactId>ojdbc14</artifactId>
-        <version>${ojdbc14.version}</version>
+        <artifactId>${oracle.jdbc.artifactId}</artifactId>
+        <version>${oracle.jdbc.version}</version>
         <!--<scope>provided</scope> -->
       </dependency>
 

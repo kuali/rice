@@ -66,7 +66,7 @@
     </dependency>
     <dependency>
       <groupId>com.oracle</groupId>
-      <artifactId>ojdbc14</artifactId>
+      <artifactId>${oracle.jdbc.artifactId}</artifactId>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>

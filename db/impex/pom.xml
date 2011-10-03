@@ -251,8 +251,8 @@
             </dependency>
             <dependency>
               <groupId>com.oracle</groupId>
-              <artifactId>ojdbc14</artifactId>
-              <version>${oracle.ojdbc.version}</version>
+              <artifactId>${oracle.jdbc.artifactId}</artifactId>
+              <version>${oracle.jdbc.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -268,8 +268,8 @@
             </dependency>
             <dependency>
               <groupId>com.oracle</groupId>
-              <artifactId>ojdbc14</artifactId>
-              <version>${oracle.ojdbc.version}</version>
+              <artifactId>${oracle.jdbc.artifactId}</artifactId>
+              <version>${oracle.jdbc.version}</version>
             </dependency>
           </dependencies>
           <configuration>

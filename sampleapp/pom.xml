@@ -23,7 +23,7 @@
     <bootstrap.spring.file>classpath:SampleAppBeans.xml</bootstrap.spring.file>
     <maven.surefire.skip>true</maven.surefire.skip>
     <war.overlay.exclude.1>WEB-INF/web.xml</war.overlay.exclude.1>
-    <war.overlay.exclude.2>WEB-INF/lib/ojdbc*.jar</war.overlay.exclude.2>
+    <war.overlay.exclude.2></war.overlay.exclude.2>
   </properties>
 
   <build>

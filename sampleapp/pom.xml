@@ -130,11 +130,6 @@
                 </goals>
               </execution>
             </executions>
-            <configuration>
-              <systemPropertyVariables>
-                <remote.public.url>${public.url}</remote.public.url>
-              </systemPropertyVariables>
-            </configuration>
           </plugin>
         </plugins>
       </build>

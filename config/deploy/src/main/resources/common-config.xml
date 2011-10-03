@@ -12,7 +12,7 @@
   <param name="datasource.password">${impex.password}</param>
   <param name="datasource.url">${impex.url}</param>
   <param name="encryption.key">foobarbaz123456789</param>
-  <param name="keystore.file">/home/${tomcat.instance}/kuali/main/${deploy.environment}/rice.keystore</param>
+  <param name="keystore.file">/home/${tomcat.instance}/kuali/main/${environment}/rice.keystore</param>
   <param name="keystore.alias">rice</param>
   <param name="keystore.password">r1c3pw</param>
   <param name="travel.externalizable.images.url">${externalizable.images.url}</param>

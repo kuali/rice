@@ -1,4 +1,4 @@
 <!-- Configuration specific to the Kuali Rice Sample Application -->
 <config>
-  <param name="config.location">${user.home}/kuali/main/${environment}/env-config.xml</param>
+  <param name="config.location">/home/${tomcat.instance}/kuali/main/${environment}/env-config.xml</param>
 </config>

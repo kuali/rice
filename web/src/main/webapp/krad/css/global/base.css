@@ -27,7 +27,16 @@ table td, table th {
     font-family: Arial, Helvetica, sans-serif;
     font-size:0.923077em;
 }
+th, td {
+    padding: 0;  /* overriding reset.css - shouldn't be specifying this */
+}
+input {
+    padding: 3px 3px;
+    border:  1px solid #aaaaaa;
+    font-size: 1em;
+    font-family: arial, helvetica, sans-serif;
 
+}
 
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
 
@@ -53,10 +62,20 @@ h3.kr-page-section-title {		/* was h2.page-section-title */ /* renamed in xml an
 	font-weight: bold;
 	margin:0;
 }
+h3 img.expand_collapse-buttons {
+    display: inline;
+    margin-bottom: 5px;
+    vertical-align: middle;        /* still needed to be pushed up a bit */
+}
 h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* renamed in xml and/or jsp */
 	border-bottom:none;
 	padding-bottom: 0.3em;
 	margin:0;
+}
+h4 img.expand_collapse-buttons {
+    display:inline;
+    vertical-align:middle;
+    margin-bottom:5px;   /* still needed to be pushed up a bit */
 }
 .kr-page-action h2 {			/* was .page-action h2 */ /* renamed in xml and/or jsp */
 	clear:left;
@@ -81,6 +100,10 @@ h4.kr-section-subhead-no-border {	/* was h4.kr-section-subhead-no-border */ /* r
 	/* begin styles brought over from kuali-stacked.css  */
 	margin-bottom: auto;
 	padding-bottom: 0.5em;
+}
+.kr-view-header {          /* was .view_header /* remove background image for lightbox headers */ /* renamed in xml and/or jsp */
+	background: none;
+    margin-left:0.384615em;
 }
 .kr-labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
 	float:none;
@@ -185,7 +208,7 @@ li label.kr-error {
     margin-bottom:5px;
 }
 
-#Footer_SaveCloseCancel_group .boxLayoutHorizontalItem {     /* fixing the vertical alignment of action buttons */
+#Footer_SaveCloseCancel_group .boxLayoutHorizontalItem, #viewfooter_div .boxLayoutHorizontalItem {     /* fixing the vertical alignment of action buttons */
     display:inline;
     float:none;
     margin: 0 0.75em 0 0;
@@ -196,6 +219,7 @@ li label.kr-error {
     display: block;
     width: 100%;
     letter-spacing: 0.02em;
+    padding: 3px 0 3px 25px;
  }
 
  .kr-breadcrumbs a {		/*  was .breadcrumbs a*/ /* renamed in xml and/or jsp */

@@ -40,7 +40,7 @@
     <!-- TODO: figure out how to work around this! -->
     <dependency>
       <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <artifactId>${mysql.jdbc.artifactId}</artifactId>
       <scope>test</scope>
     </dependency>
 

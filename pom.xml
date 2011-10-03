@@ -51,7 +51,8 @@
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
-    <mysql.connector.version>5.1.13</mysql.connector.version>
+    <mysql.jdbc.version>5.1.17</mysql.jdbc.version>
+    <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
     <kuali.build.timestamp>${maven.build.timestamp}</kuali.build.timestamp>
@@ -116,7 +117,6 @@
     <jta.version>1.1</jta.version>
     <junit.version>4.9</junit.version>
     <log4j.version>1.2.16</log4j.version>
-    <mysql-connector-java.version>5.1.17</mysql-connector-java.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!--
       http://www.quartz-scheduler.org/docs/2.0/migrationGuide.html
@@ -144,7 +144,7 @@
 
     <!-- database drivers location -->
     <jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
-    <mysql-connector-java.jar.location>${jdbc.drivers.location}/mysql-connector-java-${mysql-connector-java.version}.jar</mysql-connector-java.jar.location>
+    <mysql-connector-java.jar.location>${jdbc.drivers.location}/${mysql.jdbc.artifactId}-${mysql.jdbc.version}.jar</mysql-connector-java.jar.location>
     <ojdbc14.jar.location>${jdbc.drivers.location}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar</ojdbc14.jar.location>
 
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
@@ -551,8 +551,8 @@
             </dependency>
             <dependency>
               <groupId>mysql</groupId>
-              <artifactId>mysql-connector-java</artifactId>
-              <version>${mysql-connector-java.version}</version>
+              <artifactId>${mysql.jdbc.artifactId}</artifactId>
+              <version>${mysql.jdbc.version}</version>
               <scope>runtime</scope>
             </dependency>
           </dependencies>
@@ -576,8 +576,8 @@
             </dependency>
             <dependency>
               <groupId>mysql</groupId>
-              <artifactId>mysql-connector-java</artifactId>
-              <version>${mysql-connector-java.version}</version>
+              <artifactId>${mysql.jdbc.artifactId}</artifactId>
+              <version>${mysql.jdbc.version}</version>
               <scope>runtime</scope>
             </dependency>
           </dependencies>
@@ -668,8 +668,8 @@
             </dependency>
             <dependency>
               <groupId>mysql</groupId>
-              <artifactId>mysql-connector-java</artifactId>
-              <version>${mysql-connector-java.version}</version>
+              <artifactId>${mysql.jdbc.artifactId}</artifactId>
+              <version>${mysql.jdbc.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -1135,8 +1135,8 @@
 
       <dependency>
         <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>${mysql-connector-java.version}</version>
+        <artifactId>${mysql.jdbc.artifactId}</artifactId>
+        <version>${mysql.jdbc.version}</version>
         <scope>provided</scope>
       </dependency>
 

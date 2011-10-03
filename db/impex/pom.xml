@@ -246,8 +246,8 @@
           <dependencies>
             <dependency>
               <groupId>mysql</groupId>
-              <artifactId>mysql-connector-java</artifactId>
-              <version>${mysql.connector.version}</version>
+              <artifactId>${mysql.jdbc.artifactId}</artifactId>
+              <version>${mysql.jdbc.version}</version>
             </dependency>
             <dependency>
               <groupId>com.oracle</groupId>
@@ -263,8 +263,8 @@
           <dependencies>
             <dependency>
               <groupId>mysql</groupId>
-              <artifactId>mysql-connector-java</artifactId>
-              <version>${mysql.connector.version}</version>
+              <artifactId>${mysql.jdbc.artifactId}</artifactId>
+              <version>${mysql.jdbc.version}</version>
             </dependency>
             <dependency>
               <groupId>com.oracle</groupId>

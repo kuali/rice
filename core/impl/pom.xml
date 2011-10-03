@@ -288,7 +288,7 @@
 
         <dependency>
             <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <artifactId>${mysql.jdbc.artifactId}</artifactId>
             <scope>provided</scope>
         </dependency>
 

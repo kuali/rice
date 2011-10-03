@@ -36,7 +36,7 @@
     <deploy.environment>ec2</deploy.environment>
     <deploy.config.common>${project.build.directory}/classes/common-config.xml</deploy.config.common>
     <deploy.config.app>${project.build.directory}/classes/${deploy.app.configfile}</deploy.config.app>
-    <deploy.config.env>${project.build.directory}/classes/${deploy.env}-config.xml</deploy.config.env>
+    <deploy.config.env>${project.build.directory}/classes/${deploy.env.id}-config.xml</deploy.config.env>
     <impex.database>${db.instance}</impex.database>
     <impex.username>${db.instance}</impex.username>
     <impex.password>${db.instance}</impex.password>
@@ -112,7 +112,7 @@
     <profile>
       <id>env1</id>
       <properties>
-        <deploy.env>env1</deploy.env>
+        <deploy.env.id>env1</deploy.env.id>
         <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://dev1.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
@@ -122,7 +122,7 @@
     <profile>
       <id>env2</id>
       <properties>
-        <deploy.env>env2</deploy.env>
+        <deploy.env.id>env2</deploy.env.id>
         <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://dev2.rice.kuali.org</public.url>
         <tomcat.instance>tomcat2</tomcat.instance>
@@ -135,7 +135,7 @@
     <profile>
       <id>env3</id>
       <properties>
-        <deploy.env>env3</deploy.env>
+        <deploy.env.id>env3</deploy.env.id>
         <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://env3.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
@@ -145,7 +145,7 @@
     <profile>
       <id>env4</id>
       <properties>
-        <deploy.env>env4</deploy.env>
+        <deploy.env.id>env4</deploy.env.id>
         <deploy.server>${deploy.server.2}</deploy.server>
         <public.url>http://env4.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
@@ -155,7 +155,7 @@
     <profile>
       <id>env5</id>
       <properties>
-        <deploy.env>env5</deploy.env>
+        <deploy.env.id>env5</deploy.env.id>
         <deploy.server>${deploy.server.2}</deploy.server>
         <public.url>http://env5.rice.kuali.org</public.url>
         <tomcat.instance>tomcat2</tomcat.instance>
@@ -166,7 +166,7 @@
     <profile>
       <id>env6</id>
       <properties>
-        <deploy.env>env6</deploy.env>
+        <deploy.env.id>env6</deploy.env.id>
         <deploy.server>${deploy.server.2}</deploy.server>
         <public.url>http://demo.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>

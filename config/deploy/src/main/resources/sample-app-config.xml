@@ -1,3 +1,4 @@
 <!-- Configuration specific to the Kuali Rice Sample Application -->
 <config>
+  <param name="config.location">${user.home}/kuali/main/${environment}/${deploy.env.id}-config.xml</param>
 </config>

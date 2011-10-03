@@ -83,73 +83,9 @@
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.failsafe.includes>**/LoginLogoutIT.java</maven.failsafe.includes>
-        <reset.phase>none</reset.phase>
-        <deploy.server>deploy1.rice.kuali.org</deploy.server>
-        <public.url>http://it.rice.kuali.org</public.url>
-        <tomcat.instance>tomcat3</tomcat.instance>
-        <db.instance>RICEENV3</db.instance>
-        <db.vendor>oracle</db.vendor>
-        <war.file>${project.build.directory}/${project.artifactId}-${project.version}.war</war.file>
-        <config.file>${project.build.directory}/test-classes/sample-app-config.xml</config.file>
-        <impex.dir>${project.basedir}/../db/impex/master</impex.dir>
-        <impex.database>${db.instance}</impex.database>
-        <impex.username>${db.instance}</impex.username>
-        <impex.password>${db.instance}</impex.password>
-        <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
-        <impex.dba.url>${impex.url}</impex.dba.url>
       </properties>
       <build>
-        <testResources>
-          <testResource>
-            <directory>src/it/resources</directory>
-            <filtering>true</filtering>
-            <includes>
-              <include>**/*.xml</include>
-            </includes>
-          </testResource>
-          <testResource>
-            <directory>src/it/resources</directory>
-            <filtering>false</filtering>
-            <excludes>
-              <exclude>**/*.xml</exclude>
-            </excludes>
-          </testResource>
-        </testResources>
         <plugins>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.6</version>
-            <executions>
-              <execution>
-                <id>reset-remote-server</id>
-                <phase>${reset.phase}</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <target>
-                <ant antfile="../config/deploy/build.xml" target="reset" />
-              </target>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>maven-http-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>wait-for-tomcat-startup</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>wait</goal>
-                </goals>
-                <configuration>
-                  <url>${public.url}</url>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>selenium-maven-plugin</artifactId>

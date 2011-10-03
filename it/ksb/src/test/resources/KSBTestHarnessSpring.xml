@@ -142,8 +142,8 @@
         </property>
         <property name="dataSource" ref="dataSource"/>
         <property name="nonTransactionalDataSource" ref="nonTransactionalDataSource"/>
-        <property name="transactionManager" ref="jotm"/>
-        <property name="userTransaction" ref="jotm"/>
+        <property name="transactionManager" ref="transactionManager${connection.pool.impl}"/>
+        <property name="userTransaction" ref="transactionManager${connection.pool.impl}"/>
     </bean>
 
     <bean id="rice.ksb.instanceId" class="org.kuali.rice.ksb.impl.bus.InstanceIdFactoryBean"/>

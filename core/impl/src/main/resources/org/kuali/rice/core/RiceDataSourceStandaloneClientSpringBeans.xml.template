@@ -21,7 +21,7 @@
                            http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
 	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
-		<property name="transactionManager" ref="jotm" />
+		<property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
 		<property name="driverClassName" value="${rice.datasource.driver.name}" />
 		<property name="url" value="${rice.datasource.url}" />
 		<property name="maxSize" value="${rice.datasource.pool.maxSize}" />
@@ -33,7 +33,7 @@
 	</bean>
 	
 	<bean id="${PROJECT_NAME}DataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
-		<property name="transactionManager" ref="jotm" />
+		<property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
 		<property name="driverClassName" value="${${PROJECT_NAME}.datasource.driver.name}" />
 		<property name="url" value="${${PROJECT_NAME}.datasource.url}" />
 		<property name="maxSize" value="${${PROJECT_NAME}.datasource.pool.maxSize}" />

@@ -52,6 +52,11 @@
     <impex.url>${impex.oracle.url}</impex.url>
     <impex.dba.url>${impex.oracle.url}</impex.dba.url>
     <deploy.impex.location>https://test.kuali.org/svn/rice/trunk/db/impex/master</deploy.impex.location>
+
+    <!-- Override for JDK6 and to match up with Amazon RDS -->
+    <oracle.jdbc.artifactId>ojdbc6_g</oracle.jdbc.artifactId>
+    <oracle.jdbc.version>11.2.0.2</oracle.jdbc.version>
+
     <jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
     <jdbc.driver.artifactId>${oracle.jdbc.artifactId}</jdbc.driver.artifactId>
     <jdbc.driver.version>${oracle.jdbc.version}</jdbc.driver.version>

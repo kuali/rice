@@ -27,7 +27,7 @@ public interface RuleRepositoryService {
 	/**
 	 * Locates a ContextDefinition based on the given map of context qualifiers.
 	 * 
-	 * @param contextQualifiers
+	 * @param contextSelectionCriteria
 	 * @return
 	 */
 	@WebMethod(operationName = "selectContext")

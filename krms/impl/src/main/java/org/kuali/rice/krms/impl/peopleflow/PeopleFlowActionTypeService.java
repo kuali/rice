@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * <p>An example value with two people flow actions specified would be:</p>
  *
- * <pre>    "approval:1000,notification:1001"</pre>
+ * <pre>    "A:1000,F:1001"</pre>
  *
  */
 public class PeopleFlowActionTypeService implements ActionTypeService {

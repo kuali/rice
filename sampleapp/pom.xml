@@ -91,7 +91,6 @@
       <id>stests</id>
       <properties>
         <maven.failsafe.skip>false</maven.failsafe.skip>
-        <maven.failsafe.includes>**/LoginLogoutIT.java</maven.failsafe.includes>
       </properties>
       <build>
         <plugins>

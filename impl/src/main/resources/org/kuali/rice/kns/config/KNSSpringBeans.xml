@@ -81,14 +81,7 @@
 		</property>
 	</bean>
 
-	<bean id="kualiInquirable" class="org.kuali.rice.kns.inquiry.KualiInquirableImpl" scope="prototype">
-		<property name="kualiConfigurationService">
-			<ref bean="kualiConfigurationService" />
-		</property>
-        <property name="dataDictionaryService">
-            <ref bean="dataDictionaryService" />
-        </property>
-	</bean>
+	<bean id="kualiInquirable" class="org.kuali.rice.kns.inquiry.KualiInquirableImpl" scope="prototype"/>
 
     <bean id="kualiMaintainable" class="org.kuali.rice.kns.maintenance.KualiMaintainableImpl" scope="prototype">
         <property name="persistenceStructureService">

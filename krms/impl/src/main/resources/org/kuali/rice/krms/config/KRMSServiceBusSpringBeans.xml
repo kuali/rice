@@ -68,12 +68,12 @@
      <property name="serviceVersion" value="${rice.version}" />
   </bean>
 
-  <bean id="krmsEmbeddedServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
+  <bean id="krmsLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
 		<property name="runModePropertyName" value="krms.mode" />
-		<property name="validRunMode" value="EMBEDDED" />
+		<property name="validRunMode" value="LOCAL" />
 	</bean>
 
-	<bean id="rice.krms.ruleRepositoryService.exporter" parent="krmsEmbeddedServiceExporter">
+	<bean id="rice.krms.ruleRepositoryService.exporter" parent="krmsLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="krmsJaxWsSoapService">
@@ -86,7 +86,20 @@
 		</property>
 	</bean>
 
-  <bean id="rice.krms.notificationPeopleFlowActionTypeService.exporter" parent="krmsEmbeddedServiceExporter">
+  <bean id="rice.krms.krmsTypeRepositoryService.exporter" parent="krmsLocalServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="krmsJaxWsSoapService">
+				<property name="service">
+					<ref bean="krmsTypeRepositoryService" />
+				</property>
+				<property name="localServiceName" value="krmsTypeRepositoryServiceSoap" />
+				<property name="busSecurity" value="${rice.krms.krmsTypeRepositoryServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
+  <bean id="rice.krms.notificationPeopleFlowActionTypeService.exporter" parent="krmsLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="krmsJaxWsSoapService">
@@ -99,7 +112,7 @@
 		</property>
 	</bean>
 
-  <bean id="rice.krms.approvalPeopleFlowActionTypeService.exporter" parent="krmsEmbeddedServiceExporter">
+  <bean id="rice.krms.approvalPeopleFlowActionTypeService.exporter" parent="krmsLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="krmsJaxWsSoapService">

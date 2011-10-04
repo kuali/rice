@@ -96,7 +96,7 @@
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
-  <bean id="krmsTypeRepository" class="org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl">
+  <bean id="krmsTypeRepositoryService" class="org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
@@ -135,7 +135,7 @@
   </bean>
 
   <bean id="krmsTypeResolver" class="org.kuali.rice.krms.impl.type.KrmsTypeResolverImpl">
-    <property name="typeRepositoryService" ref="krmsTypeRepository"/>
+    <property name="typeRepositoryService" ref="krmsTypeRepositoryService"/>
     <property name="defaultCompoundPropositionTypeService" ref="compoundPropositionTypeService"/>
     <property name="defaultSimplePropositionTypeService">
       <bean class="org.kuali.rice.krms.impl.provider.repository.SimplePropositionTypeService">
@@ -151,7 +151,7 @@
   <bean id="repositoryToEngineTranslator" class="org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl">
     <property name="termBoService" ref="termBoService"/>
     <property name="ruleRepositoryService" ref="ruleRepositoryService"/>
-    <property name="typeRepositoryService" ref="krmsTypeRepository"/>
+    <property name="typeRepositoryService" ref="krmsTypeRepositoryService"/>
     <property name="typeResolver" ref="krmsTypeResolver"/>
   </bean>
 

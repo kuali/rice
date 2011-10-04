@@ -2,12 +2,13 @@
   <description>Deploy applications packaged by Maven to a server on EC2</description>
   <property name="deploy.auth" value="${user.home}/${private.key}" />
   <property name="impex.dba.username" value="master" />
+  <property name="tomcat.instance.lib.dir" value="/usr/local/${tomcat.instance}/lib" />
 
-  <target name="reset" depends="stop,clean,copy,resetdb,start" />
+  <target name="reset" depends="stop,clean,cleanjdbc,copy,resetdb,start" />
   <target name="restart" depends="stop,clean,start" />
   <target name="waronly" depends="stop,clean,copywar,start" />
   <target name="configonly" depends="stop,clean,copy-appconfig,copy-envconfig,start" />
-  <target name="copy" depends="copyconfig,copywar" />
+  <target name="copy" depends="copyjdbc,copyconfig,copywar" />
   <target name="copyconfig" depends="copy-commonconfig,copy-appconfig,copy-envconfig" />
 
   <property name="config.home" value="/home/${tomcat.instance}/kuali/main/${deploy.environment}" />
@@ -24,17 +25,15 @@
       <arg value="/usr/local/tomcat/bin/forced-shutdown.sh" />
     </exec>
   </target>
+  <target name="cleanjdbc" depends="check-basic-properties">
+    <antcall target="removedir">
+      <param name="remote.dir" value="${tomcat.instance.lib.dir}" />
+    </antcall>
+  </target>
   <target name="clean" depends="check-basic-properties">
-    <property name="old.root.dir" value="/usr/local/${tomcat.instance}/webapps/ROOT" />
-    <echo>Removing ${old.root.dir}</echo>
-    <exec executable="ssh" failonerror="true">
-      <arg value="-i" />
-      <arg value="${deploy.auth}" />
-      <arg value="root@${deploy.server}" />
-      <arg value="rm" />
-      <arg value="-rf" />
-      <arg value="${old.root.dir}" />
-    </exec>
+    <antcall target="removedir">
+      <param name="remote.dir" value="/usr/local/${tomcat.instance}/webapps/ROOT" />
+    </antcall>
     <antcall target="runscript">
       <param name="message" value="Cleaning up ${tomcat.instance} on ${deploy.server}" />
       <param name="script" value="/usr/local/tomcat/bin/cleanup.sh" />
@@ -69,6 +68,25 @@
     <antcall target="copyfile">
       <param name="local.file" value="${deploy.config.env}" />
       <param name="remote.file" value="${config.home}/env-config.xml" />
+    </antcall>
+  </target>
+  <target name="copyjdbc" depends="check-basic-properties">
+    <condition property="copyjdbc.properties">
+      <and>
+        <isset property="jdbc.driver.filename" />
+        <isset property="jdbc.driver.location" />
+      </and>
+    </condition>
+    <fail unless="copyjdbc.properties">Missing jdbc driver properties</fail>
+    <antcall target="mkdir">
+      <param name="remote.dir" value="${tomcat.instance.lib.dir}" />
+    </antcall>
+    <antcall target="copyfile">
+      <param name="local.file" value="${jdbc.driver.location}" />
+      <param name="remote.file" value="${tomcat.instance.lib.dir}/${jdbc.driver.filename}" />
+    </antcall>
+    <antcall target="chowndir">
+      <param name="remote.dir" value="${tomcat.instance.lib.dir}" />
     </antcall>
   </target>
   <target name="copywar" depends="check-basic-properties">
@@ -120,6 +138,23 @@
       <param name="script" value="/usr/local/tomcat/bin/startup.sh" />
     </antcall>
   </target>
+  <target name="removedir">
+    <condition property="removedir.properties">
+      <and>
+        <isset property="remote.dir" />
+      </and>
+    </condition>
+    <fail unless="removedir.properties">Missing remote.dir</fail>
+    <echo>Removing ${deploy.server}:${remote.dir}</echo>
+    <exec executable="ssh" failonerror="true">
+      <arg value="-i" />
+      <arg value="${deploy.auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="rm" />
+      <arg value="-rf" />
+      <arg value="${remote.dir}" />
+    </exec>
+  </target>
   <target name="copyfile">
     <echo>Copy ${local.file} to ${deploy.server}:${remote.file}</echo>
     <exec executable="scp" failonerror="true">
@@ -154,6 +189,28 @@
       </and>
     </condition>
     <fail unless="basic.properties">Missing either deploy.server or tomcat.instance property</fail>
+  </target>
+  <target name="chowndir">
+    <echo>chown -R ${tomcat.instance}:tomcat ${remote.dir}</echo>
+    <exec executable="ssh" failonerror="true">
+      <arg value="-i" />
+      <arg value="${deploy.auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="chown" />
+      <arg value="-R" />
+      <arg value="${tomcat.instance}:tomcat" />
+      <arg value="${remote.dir}" />
+    </exec>
+  </target>
+  <target name="mkdir">
+    <echo>Creating ${deploy.server}:${remote.dir}</echo>
+    <exec executable="ssh" failonerror="true">
+      <arg value="-i" />
+      <arg value="${deploy.auth}" />
+      <arg value="root@${deploy.server}" />
+      <arg value="mkdir" />
+      <arg value="${remote.dir}" />
+    </exec>
   </target>
   <target name="runscript">
     <echo>${message}</echo>

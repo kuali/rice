@@ -7,7 +7,8 @@
   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
   express or implied. See the License for the specific language governing permissions
   and limitations under the License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.rice</groupId>
@@ -34,9 +35,9 @@
     <private.key>kr-key.pem</private.key>
     <maven.test.skip>true</maven.test.skip>
     <deploy.environment>ec2</deploy.environment>
-    <deploy.config.common>${project.build.directory}/classes/common-config.xml</deploy.config.common>
-    <deploy.config.app>${project.build.directory}/classes/${deploy.app.configfile}</deploy.config.app>
-    <deploy.config.env>${project.build.directory}/classes/${deploy.env.id}-config.xml</deploy.config.env>
+    <deploy.config.common>target/classes/common-config.xml</deploy.config.common>
+    <deploy.config.app>target/classes/${deploy.app.configfile}</deploy.config.app>
+    <deploy.config.env>target/classes/${deploy.env.id}-config.xml</deploy.config.env>
     <impex.database>${db.instance}</impex.database>
     <impex.username>${db.instance}</impex.username>
     <impex.password>${db.instance}</impex.password>
@@ -51,6 +52,11 @@
     <impex.url>${impex.oracle.url}</impex.url>
     <impex.dba.url>${impex.oracle.url}</impex.dba.url>
     <deploy.impex.location>https://test.kuali.org/svn/rice/trunk/db/impex/master</deploy.impex.location>
+    <jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
+    <jdbc.driver.artifactId>${oracle.jdbc.artifactId}</jdbc.driver.artifactId>
+    <jdbc.driver.version>${oracle.jdbc.version}</jdbc.driver.version>
+    <jdbc.driver.filename>${jdbc.driver.artifactId}-${jdbc.driver.version}.jar</jdbc.driver.filename>
+    <jdbc.driver.location>target/dependency/${jdbc.driver.filename}</jdbc.driver.location>
   </properties>
   <build>
     <resources>
@@ -59,6 +65,15 @@
         <filtering>true</filtering>
       </resource>
     </resources>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.3</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmaven</groupId>
@@ -130,6 +145,9 @@
         <db.vendor>mysql</db.vendor>
         <impex.dba.url>${impex.mysql.dba.url}</impex.dba.url>
         <impex.url>${impex.mysql.url}</impex.url>
+        <jdbc.driver.groupId>mysql</jdbc.driver.groupId>
+        <jdbc.driver.artifactId>${mysql.jdbc.artifactId}</jdbc.driver.artifactId>
+        <jdbc.driver.version>${mysql.jdbc.version}</jdbc.driver.version>
       </properties>
     </profile>
     <profile>
@@ -177,6 +195,29 @@
       <id>deploy</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${jdbc.driver.groupId}</groupId>
+                  <artifactId>${jdbc.driver.artifactId}</artifactId>
+                  <version>${jdbc.driver.version}</version>
+                  <type>jar</type>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+            <executions>
+              <execution>
+                <id>get-jdbc-driver</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <version>1.6</version>
@@ -227,8 +268,8 @@
         <deploy.groupId>org.kuali.rice</deploy.groupId>
         <deploy.artifactId>rice-sampleapp</deploy.artifactId>
         <deploy.type>war</deploy.type>
-        <deploy.war>${project.build.directory}/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</deploy.war>
-        <impex.dir>${project.build.directory}/checkout/impex</impex.dir>
+        <deploy.war>target/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</deploy.war>
+        <impex.dir>target/checkout/impex</impex.dir>
       </properties>
       <build>
         <plugins>
@@ -259,9 +300,8 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
-            <version>2.3</version>
             <configuration>
-              <localRepositoryDirectory>${project.build.directory}/repository</localRepositoryDirectory>
+              <localRepositoryDirectory>target/repository</localRepositoryDirectory>
               <artifactItems>
                 <artifactItem>
                   <groupId>${deploy.groupId}</groupId>
@@ -288,7 +328,7 @@
             <artifactId>maven-manifest-plugin</artifactId>
             <version>1.0.0</version>
             <configuration>
-              <filename>${project.build.directory}/dependency/META-INF/MANIFEST.MF</filename>
+              <filename>target/dependency/META-INF/MANIFEST.MF</filename>
               <attribute>SVN-Revision</attribute>
               <prefix>manifest</prefix>
             </configuration>
@@ -312,7 +352,7 @@
                 <configuration>
                   <target>
                     <property name="manifest.svn.url" value="${deploy.impex.location}@${manifest.SVN-Revision}" />
-                    <property name="checkout.dir" value="${project.build.directory}/checkout/impex" />
+                    <property name="checkout.dir" value="target/checkout/impex" />
                     <echo>Checking out ${manifest.svn.url}</echo>
                     <exec executable="svn">
                       <arg value="checkout" />

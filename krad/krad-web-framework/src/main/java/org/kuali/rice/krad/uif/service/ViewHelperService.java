@@ -208,18 +208,7 @@ public interface ViewHelperService {
 	 *            - instance of the inquiry widget being built for the property
 	 */
 	public void buildInquiryLink(Object dataObject, String propertyName, Inquiry inquiry);
-	
-    /**
-     * Applies default values configured for <code>AttributeField</code>
-     * instances within the <code>View</code> to the given model
-     * 
-     * @param view
-     *            - view containing attribute fields
-     * @param model
-     *            - model instance to apply default values to
-     */
-    public void applyDefaultValues(View view, UifFormBase model);
-    
+
     /**
      * Applies configured default values for the line fields to the line
      * instance

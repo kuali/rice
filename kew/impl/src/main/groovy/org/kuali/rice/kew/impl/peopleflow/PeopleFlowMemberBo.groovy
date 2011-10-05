@@ -11,6 +11,13 @@ import org.apache.commons.collections.CollectionUtils
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate
 import org.kuali.rice.kew.api.action.DelegationType
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kim.api.identity.Person
+import org.kuali.rice.kim.api.group.Group
+import org.kuali.rice.kim.api.role.Role
+import org.kuali.rice.kim.api.KimConstants
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.kim.framework.group.GroupEbo
+import org.kuali.rice.kim.framework.role.RoleEbo;
 
 /**
  * mapped entity for PeopleFlow members
@@ -23,9 +30,29 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
     String memberTypeCode
     String actionRequestPolicyCode
     String responsibilityId
-    int priority
+    int priority = 1;
+
+    // non-persisted
+    String memberName;
+    Person person;
+    GroupEbo group;
+    RoleEbo role;
 
     List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
+
+    public Person getPerson() {
+        if (KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+            if ((this.person == null) || !person.getPrincipalId().equals(memberId)) {
+                this.person = KimApiServiceLocator.personService.getPerson(memberId);
+            }
+        }
+
+        if (this.person != null) {
+            return this.person;
+        }
+
+        return KimApiServiceLocator.personService.personImplementationClass.newInstance();
+    }
 
     @Override
     MemberType getMemberType() {

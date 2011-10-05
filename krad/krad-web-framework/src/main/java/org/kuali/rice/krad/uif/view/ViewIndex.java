@@ -43,6 +43,9 @@ public class ViewIndex implements Serializable {
      * Constructs new instance
      */
     public ViewIndex() {
+        index = new HashMap<String, Component>();
+        attributeFieldIndex = new HashMap<String, AttributeField>();
+        collectionsIndex = new HashMap<String, CollectionGroup>();
         initialComponentStates = new HashMap<String, Component>();
     }
 

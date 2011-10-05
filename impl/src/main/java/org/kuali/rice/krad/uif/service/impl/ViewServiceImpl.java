@@ -61,10 +61,6 @@ public class ViewServiceImpl implements ViewService {
             throw new RuntimeException("View not found for id: " + viewId);
         }
 
-        // do initial indexing
-        LOG.debug("processing indexing for view: " + view.getId());
-        view.index();
-
         LOG.debug("Updating view status to CREATED for view: " + view.getId());
         view.setViewStatus(ViewStatus.CREATED);
 
@@ -97,10 +93,6 @@ public class ViewServiceImpl implements ViewService {
             LOG.error("View not found for type: " + viewType);
             throw new RuntimeException("View not found for type: " + viewType);
         }
-
-        // do initial indexing
-        LOG.debug("processing indexing for view: " + view.getId());
-        view.index();
 
         LOG.debug("Updating view status to CREATED for view: " + view.getId());
         view.setViewStatus(ViewStatus.CREATED);

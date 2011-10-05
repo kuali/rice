@@ -172,11 +172,11 @@ public class CollectionGroupBuilder implements Serializable {
         List<Field> lineFields = null;
         String lineSuffix = "";
         if (lineIndex == -1) {
-            lineSuffix = "_add";
+            lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
             lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getAddLineFields(), bindingPath,
                     lineSuffix);
         } else {
-            lineSuffix = "_" + Integer.toString(lineIndex);
+            lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
             lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath,
                     lineSuffix);
         }

@@ -267,7 +267,7 @@ function addLineToCollection(collectionGroupId, collectionBaseId){
 /** Progressive Disclosure */
 
 /**
- * Same as setupRefreshCheck except the condition will alwasy be true (always refresh when
+ * Same as setupRefreshCheck except the condition will always be true (always refresh when
  * value changed on control)
  *
  * @param controlName

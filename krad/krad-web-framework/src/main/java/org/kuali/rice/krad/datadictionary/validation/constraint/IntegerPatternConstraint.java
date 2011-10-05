@@ -45,6 +45,9 @@ public class IntegerPatternConstraint extends ValidDataPatternConstraint{
         else if(onlyNegative){
             regex.append("((-");
         }
+        else {
+            regex.append("((");
+        }
         if(omitZero){
             regex.append("[1-9][0-9]*))");
         }

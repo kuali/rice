@@ -173,6 +173,9 @@ public class BindingInfo extends ConfigurableBase implements Serializable {
 
         BindingInfo bindingInfoCopy = (BindingInfo) ObjectUtils.deepCopy(this);
 
+        // clear the path if explicitly set
+        bindingInfoCopy.setBindingPath("");
+
         if (propertyPath.startsWith(UifConstants.DATA_OBJECT_BIND_ADJUST_PREFIX)) {
             bindingInfoCopy.setBindByNamePrefix("");
             propertyPath = StringUtils.removeStart(propertyPath, UifConstants.DATA_OBJECT_BIND_ADJUST_PREFIX);

@@ -47,7 +47,7 @@ public class UifConstants {
     }
 
     public static enum ViewType {
-        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT
+        DEFAULT, DOCUMENT, INQUIRY, LOOKUP, MAINTENANCE, INCIDENT;
     }
 
     public static enum ControlType {
@@ -75,13 +75,14 @@ public class UifConstants {
     }
 
     public static class IdSuffixes {
-        public static final String ADD_LINE = "_addLine";
+        public static final String ADD_LINE = "_add";
         public static final String ATTRIBUTE = "_attribute";
         public static final String CONSTRAINT = "_constraint";
         public static final String DIRECT_INQUIRY = "_directinquiry";
         public static final String DIV = "_div";
         public static final String ERRORS = "_errors";
         public static final String INSTRUCTIONAL = "_instructional";
+        public static final String LINE = "_line";
         public static final String LABEL = "_label";
         public static final String SUGGEST = "_suggest";
         public static final String QUICK_FINDER = "_quickfinder";

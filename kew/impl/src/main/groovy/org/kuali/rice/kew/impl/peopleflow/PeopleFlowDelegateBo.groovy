@@ -10,6 +10,11 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegateContract
 import org.kuali.rice.kew.api.action.ActionRequestPolicy
+import org.kuali.rice.kim.api.identity.Person
+import org.kuali.rice.kim.framework.group.GroupEbo
+import org.kuali.rice.kim.framework.role.RoleEbo
+import org.kuali.rice.kim.api.services.KimApiServiceLocator
+import org.kuali.rice.kim.api.KimConstants
 
 /**
  * mapped entity for PeopleFlow members
@@ -23,6 +28,27 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
     String actionRequestPolicyCode
     String delegationTypeCode
     String responsibilityId
+
+    // non-persisted
+    String memberName;
+    Person person;
+    GroupEbo group;
+    RoleEbo role;
+
+    public Person getPerson() {
+        if (KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+            if ((this.person == null) || !person.getPrincipalId().equals(memberId)) {
+                this.person = KimApiServiceLocator.personService.getPerson(memberId);
+            }
+        }
+
+        if (this.person != null) {
+            return this.person;
+        }
+
+        return KimApiServiceLocator.personService.personImplementationClass.newInstance();
+    }
+
 
     @Override
     MemberType getMemberType() {

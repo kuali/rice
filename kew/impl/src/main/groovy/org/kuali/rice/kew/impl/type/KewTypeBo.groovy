@@ -18,6 +18,14 @@ public class KewTypeBo extends PersistableBusinessObjectBase implements MutableI
         return attributes;
     }
 
+    public String getQualifiedName() {
+        if ((name != null) && (namespace != null)) {
+            return name + " - " + namespace;
+        }
+
+        return "";
+    }
+
     /**
     * Converts a mutable bo to it's immutable counterpart
     * @param bo the mutable business object

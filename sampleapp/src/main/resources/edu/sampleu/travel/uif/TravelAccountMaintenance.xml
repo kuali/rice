@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xmlns:p="http://www.springframework.org/schema/p" 
-xsi:schemaLocation="http://www.springframework.org/schema/beans  
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-<!--
- Copyright 2007-2009 The Kuali Foundation
- 
- Licensed under the Educational Community License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl2.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
+  <!--
+   Copyright 2007-2009 The Kuali Foundation
+
+   Licensed under the Educational Community License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.opensource.org/licenses/ecl2.php
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+  -->
 
   <bean id="TravelAccount-MaintenanceView" parent="MaintenanceView">
-     <property name="title" value="Travel Account Maintenance"/>
-     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-     <property name="items">
-       <list merge="true">
-          <bean parent="MaintenanceGroupSectionGridLayout">
-             <property name="items">
-               <list>
-                <bean parent="AttributeField" p:propertyName="number"/>
-                <bean parent="AttributeField" p:propertyName="name"/>
-                <bean parent="AttributeField" p:propertyName="extension.accountTypeCode"/>
-                <bean parent="AttributeField" p:propertyName="subAccount">
-                              <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
-            <property name="fieldLookup.fieldConversions">
-              <map>
-                <entry key="number" value="subAccount"/>
-                <entry key="name" value="subAccountName"/>
-              </map>
-            </property>
-                  <property name="fieldLookup.lookupParameters" value="subAccountName:name"/>
-                </bean>
-                <bean parent="AttributeField" p:propertyName="subAccountName"/>
-                <bean parent="AttributeField" p:propertyName="createDate"/>
-                <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
-                <bean parent="AttributeField" p:propertyName="foId"/>
-               </list>
-             </property>
-             <property name="title" value="Account Information"/>
-          </bean> 
-          <bean parent="MaintenanceCollectionGroupSection">
-              <property name="title" value="Fiscal Officer Accounts"/>  
-              <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
-              <property name="propertyName" value="fiscalOfficer.accounts"/>
-              <property name="items">
-                <list>
-                  <bean parent="AttributeField" p:propertyName="number"/>
-                  <bean parent="AttributeField" p:propertyName="name"/>
-                  <bean parent="AttributeField" p:propertyName="foId"/>
-                </list>
-              </property>   
-              <property name="layoutManager.summaryTitle" value="Travel Account"/> 
-              <property name="layoutManager.summaryFields">
-                <list>
-                  <value>number</value>
-                </list>
-              </property>
-           </bean>          
-       </list>
-     </property>
-  </bean>    
+    <property name="title" value="Travel Account Maintenance"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+    <property name="items">
+      <list merge="true">
+        <bean parent="MaintenanceGroupSectionGridLayout">
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="number"/>
+              <bean parent="AttributeField" p:propertyName="name"/>
+              <bean parent="AttributeField" p:propertyName="extension.accountTypeCode"/>
+              <bean parent="AttributeField" p:propertyName="subAccount">
+                <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
+                <property name="fieldLookup.fieldConversions">
+                  <map>
+                    <entry key="number" value="subAccount"/>
+                    <entry key="name" value="subAccountName"/>
+                  </map>
+                </property>
+                <property name="fieldLookup.lookupParameters" value="subAccountName:name"/>
+              </bean>
+              <bean parent="AttributeField" p:propertyName="subAccountName"/>
+              <bean parent="AttributeField" p:propertyName="createDate"/>
+              <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
+              <bean parent="AttributeField" p:propertyName="foId"/>
+            </list>
+          </property>
+          <property name="title" value="Account Information"/>
+        </bean>
+        <bean parent="MaintenanceCollectionGroupSection">
+          <property name="title" value="Fiscal Officer Accounts"/>
+          <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+          <property name="propertyName" value="fiscalOfficer.accounts"/>
+          <property name="items">
+            <list>
+              <bean parent="AttributeField" p:propertyName="number"/>
+              <bean parent="AttributeField" p:propertyName="name"/>
+              <bean parent="AttributeField" p:propertyName="foId"/>
+            </list>
+          </property>
+          <property name="layoutManager.summaryTitle" value="Travel Account"/>
+          <property name="layoutManager.summaryFields">
+            <list>
+              <value>number</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 
 </beans>

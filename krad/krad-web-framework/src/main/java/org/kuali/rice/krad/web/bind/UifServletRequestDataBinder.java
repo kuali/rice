@@ -160,11 +160,6 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                 }
             }
 
-            // apply default values to form if needed
-            if (!form.isDefaultsApplied()) {
-                view.getViewHelperService().applyDefaultValues(view, form);
-            }
-
             form.setViewId(view.getId());
             form.setView(view);
         }

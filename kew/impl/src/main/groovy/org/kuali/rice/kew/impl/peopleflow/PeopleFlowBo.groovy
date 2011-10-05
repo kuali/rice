@@ -12,6 +12,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
 import org.apache.commons.collections.CollectionUtils
+import org.kuali.rice.kew.impl.type.KewTypeBo
 
 /**
  * Mapped entity for PeopleFlows
@@ -24,6 +25,8 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
     String typeId
     String description
     boolean active = true
+
+    KewTypeBo typeBo;
 
     List<PeopleFlowAttributeBo> attributeBos = new ArrayList<PeopleFlowAttributeBo>();
     List<PeopleFlowMemberBo> members = new ArrayList<PeopleFlowMemberBo>();

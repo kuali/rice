@@ -144,6 +144,7 @@ public class View extends ContainerBase {
         breadcrumbsInApplicationHeader = false;
 
         idSequence = 0;
+        this.viewIndex = new ViewIndex();
 
         additionalScriptFiles = new ArrayList<String>();
         additionalCssFiles = new ArrayList<String>();

@@ -150,46 +150,6 @@ public class ComponentUtils {
         return copiedComponentList;
     }
 
-    /**
-     * Removes any known suffix from the id
-     *
-     * @param id
-     * @return id String with suffixes removed
-     */
-    public static String getIdWithoutSuffixes(String id) {
-        for (String suffix : getIdSuffixList()) {
-            id = id.replace(suffix, "");
-        }
-        return id;
-    }
-
-    /**
-     * Returns a list of all known id suffixes
-     *
-     * <p>
-     * Builds a list of all the public String fields of the
-     * <code>UifConstants.IdSuffixes</code> class
-     * </p>
-     *
-     * @return id suffix list
-     */
-    public static ArrayList<String> getIdSuffixList()  {
-        ArrayList<String> suffixList = new ArrayList();
-        for (java.lang.reflect.Field field : UifConstants.IdSuffixes.class.getDeclaredFields()) {
-            field.setAccessible(true);
-            try {
-                Object valueObject = field.get(null);
-                if (valueObject instanceof String) {
-                    suffixList.add((String)valueObject);
-                }
-                // Ignore Access exception - we just need the public fields
-            }catch (IllegalAccessException e) {
-
-            }
-        }
-        return suffixList;
-    }
-
     @SuppressWarnings("unchecked")
     public static <T extends Component> List<T> getComponentsOfType(List<? extends Component> items,
             Class<T> componentType) {
@@ -297,7 +257,6 @@ public class ComponentUtils {
     }
 
     public static void updateIdsWithSuffix(Component component, String idSuffix) {
-        // make sure id has two underscore delimiter so we can pick off original dictionary id
         component.setId(component.getId() + idSuffix);
     }
 

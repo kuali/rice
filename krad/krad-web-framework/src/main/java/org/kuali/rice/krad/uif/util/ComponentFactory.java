@@ -335,7 +335,7 @@ public class ComponentFactory {
         attributeField.setRequired(remotableField.isRequired());
 
         if ((remotableField.getDefaultValues() != null) && !remotableField.getDefaultValues().isEmpty()) {
-           attributeField.setDefaultValue(remotableField.getDefaultValues().iterator().next());
+            attributeField.setDefaultValue(remotableField.getDefaultValues().iterator().next());
         }
 
         if (StringUtils.isNotBlank(remotableField.getRegexConstraint())) {
@@ -603,7 +603,9 @@ public class ComponentFactory {
      */
     public static Component getComponentById(UifFormBase form, String id) {
         Component origComponent = form.getView().getViewIndex().getComponentById(id);
+
         Component component = getNewComponentInstance(form.getView(), origComponent.getFactoryId());
+        component.setId(origComponent.getFactoryId());
 
         return component;
     }
@@ -620,18 +622,20 @@ public class ComponentFactory {
         Component origComponent = form.getView().getViewIndex().getComponentById(id);
         Component component = getComponentById(form, id);
 
-        form.getView().getViewHelperService().performComponentLifecycle(form, component, id);
-
         if (component instanceof Field) {
             ((Field) component).setLabelFieldRendered(((Field) origComponent).isLabelFieldRendered());
         }
 
         if (component instanceof AttributeField) {
             ((AttributeField) component).setBindingInfo(((AttributeField) origComponent).getBindingInfo());
+            ((AttributeField) component).getBindingInfo().setBindingPath(
+                    ((AttributeField) origComponent).getBindingInfo().getBindingPath());
         }
 
         if (component instanceof CollectionGroup) {
             ((CollectionGroup) component).setBindingInfo(((CollectionGroup) origComponent).getBindingInfo());
+            ((CollectionGroup) component).getBindingInfo().setBindingPath(
+                    ((CollectionGroup) origComponent).getBindingInfo().getBindingPath());
         }
 
         if (component instanceof Group || component instanceof FieldGroup) {
@@ -642,6 +646,7 @@ public class ComponentFactory {
                         StringUtils.replaceOnce(field.getId(), field.getFactoryId(), field.getFactoryId() + suffix));
                 if (origField != null) {
                     field.setBindingInfo(origField.getBindingInfo());
+                    field.getBindingInfo().setBindingPath(origField.getBindingInfo().getBindingPath());
                     field.setLabelFieldRendered(origField.isLabelFieldRendered());
                 }
             }
@@ -654,9 +659,12 @@ public class ComponentFactory {
                                 collection.getFactoryId() + suffix));
                 if (origField != null) {
                     collection.setBindingInfo(origField.getBindingInfo());
+                    collection.getBindingInfo().setBindingPath(origField.getBindingInfo().getBindingPath());
                 }
             }
         }
+
+        form.getView().getViewHelperService().performComponentLifecycle(form, component, id);
 
         form.getView().getViewIndex().indexComponent(component);
 

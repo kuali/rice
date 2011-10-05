@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.util.MethodInvoker;
 import org.springframework.util.ReflectionUtils;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
 /**
@@ -27,7 +28,7 @@ import java.lang.reflect.Method;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MethodInvokerConfig extends MethodInvoker {
+public class MethodInvokerConfig extends MethodInvoker implements Serializable {
 
     private String staticMethod;
     private Class[] argumentTypes;

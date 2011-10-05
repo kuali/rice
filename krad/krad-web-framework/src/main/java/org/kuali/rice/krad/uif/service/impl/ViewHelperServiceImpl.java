@@ -47,6 +47,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -179,8 +180,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.pushAllToContext(origComponent.getContext());
 
-        origId = ComponentUtils.getIdWithoutSuffixes(origId);
-        component.setId(origId);
+        // if origid contained collection suffix, need to add back on before doing lifecycle
+        if (StringUtils.contains(origId, UifConstants.IdSuffixes.ADD_LINE)) {
+            ComponentUtils.updateIdsWithSuffix(component, UifConstants.IdSuffixes.ADD_LINE);
+        } else if (StringUtils.contains(origId, UifConstants.IdSuffixes.LINE)) {
+            String index = StringUtils.substringBetween(origId, UifConstants.IdSuffixes.LINE, "_");
+            ComponentUtils.updateIdsWithSuffix(component, UifConstants.IdSuffixes.LINE + index);
+        }
 
         initializedComponentIds = new HashSet<String>();
 
@@ -246,13 +252,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // get the initial component state from spring
         if (StringUtils.isBlank(component.getFactoryId())) {
             // only need to hold state if a refresh can occur
-            if (component.isRefresh()
-                    || StringUtils.isNotBlank(component.getConditionalRefresh())
-                    || StringUtils.isNotBlank(component.getProgressiveRender())
-                    || StringUtils.isNotBlank(component.getRefreshWhenChanged())) {
-                component.setFactoryId(component.getId());
-                view.getViewIndex().addInitialComponentState(component);
-            }
+            component.setFactoryId(component.getId());
+            view.getViewIndex().addInitialComponentState(component);
         }
 
         if (component instanceof Container) {
@@ -697,6 +698,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             clientStateScript = viewPreLoadScript + clientStateScript;
         }
         view.setPreLoadScript(clientStateScript);
+
+        // set apply default indicator to false (since they would have been applied during the component finalize)
+        ((ViewModel) model).setDefaultsApplied(true);
     }
 
     /**
@@ -790,6 +794,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // invoke component modifiers setup to run in the finalize phase
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
+
+        // apply default value if needed
+        if ((component instanceof AttributeField) && !((ViewModel) model).isDefaultsApplied()) {
+            populateDefaultValueForField(view, model, (AttributeField) component,
+                    ((AttributeField) component).getBindingInfo().getBindingPath());
+        }
 
         // get components children and recursively update state
         for (Component nestedComponent : component.getNestedComponents()) {
@@ -1011,7 +1021,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             Object addLine) {
         boolean isValid = true;
 
-        // TODO: this should invoke rules, sublclasses like the document view
+        // TODO: this should invoke rules, subclasses like the document view
         // should create the document add line event
 
         return isValid;
@@ -1154,25 +1164,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // inquirable not found, no inquiry link can be set
             inquiry.setRender(false);
         }
-    }
-
-    /**
-     * @see org.kuali.rice.krad.uif.service.ViewHelperService#applyDefaultValues(org.kuali.rice.krad.uif.view.View,
-     *      org.kuali.rice.krad.web.form.UifFormBase)
-     */
-    public void applyDefaultValues(View view, UifFormBase model) {
-        // retrieve all attribute fields for the view and apply their configured
-        // default value to the model
-        Map<String, AttributeField> attributeFields = view.getViewIndex().getAttributeFieldIndex();
-        for (Entry<String, AttributeField> attributeFieldEntry : attributeFields.entrySet()) {
-            String bindingPath = attributeFieldEntry.getKey();
-            AttributeField attributeField = attributeFieldEntry.getValue();
-
-            populateDefaultValueForField(view, model, attributeField, bindingPath);
-        }
-
-        // update form indicator
-        model.setDefaultsApplied(true);
     }
 
     /**

@@ -11,28 +11,24 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
     var selectedItemId = selectedItemInput.val();
     var selectedItemInputName = selectedItemInput.attr('name');
 
-    if (selectedItemId) {
-        var updateCollectionCallback = function(htmlContent){
-            var component = jq(collectionGroupDivLocator, htmlContent);
+    var updateCollectionCallback = function(htmlContent){
+        var component = jq(collectionGroupDivLocator, htmlContent);
 
-            elementToBlock.unblock({onUnblock: function(){
-                //replace component
-                if(jq(collectionGroupDivLocator).length){
-                    jq(collectionGroupDivLocator).replaceWith(component);
-                }
-                runHiddenScripts(collectionGroupId + '_div');
+        elementToBlock.unblock({onUnblock: function(){
+            //replace component
+            if(jq(collectionGroupDivLocator).length){
+                jq(collectionGroupDivLocator).replaceWith(component);
             }
-            });
+            runHiddenScripts(collectionGroupId + '_div');
+        }
+        });
 
-        };
+    };
 
-        ajaxSubmitForm(controllerMethod, updateCollectionCallback,
-                {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
-                elementToBlock);
-    } else {
-        // TODO: refactor to disabled buttons, or externalize
-        alert('Please select an rule proposition first.');
-    }
+    ajaxSubmitForm(controllerMethod, updateCollectionCallback,
+            {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
+            elementToBlock);
+
 }
 
 

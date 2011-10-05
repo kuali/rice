@@ -254,6 +254,7 @@
             <property name="dataGroupPrototype">
               <!-- float:right is a hack to get the group for this hidden control out of the way -->
               <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
+                <property name="layoutManager.orientation" value="HORIZONTAL"/>
                 <property name="items">
                   <list>
                     <bean parent="AttributeField" p:propertyName="proposition.id"
@@ -280,7 +281,7 @@
             </property>
             <property name="dataGroupPrototype">
               <!-- float:right is a hack to get the group for this hidden control out of the way -->
-              <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
+              <bean parent="GroupBodyOnly" p:hidden="true" >
                 <property name="items">
                   <list>
                     <bean parent="AttributeField" p:propertyName="proposition.id"
@@ -290,9 +291,9 @@
                       </property>
                     </bean>
                     <bean parent="AttributeField" p:propertyName="proposition.parameterDisplayString"
-                            p:showLabel="false" p:label="id" p:maxLength="255">
+                          p:style="margin-left: 15pt" p:showLabel="false" p:label="id" p:maxLength="255">
                       <property name="control">
-                        <bean parent="TextControl"/>
+                        <bean parent="TextControl" p:size="100" p:style="border: 0"/>
                       </property>
                     </bean>
                   </list>
@@ -342,12 +343,12 @@
             </property>
             <property name="dataGroupPrototype">
               <!-- float:right is a hack to get the group for this hidden control out of the way -->
-              <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
+              <bean parent="GroupBodyOnly" p:hidden="true" >
                 <property name="layoutManager.orientation" value="HORIZONTAL"/>
                 <property name="items">
                   <list>
                     <bean parent="AttributeField" p:propertyName="proposition.parameters[0].value"
-                            p:showLabel="false" p:label="operator" p:maxLength="20">
+                            p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="255">
                       <property name="control">
       			            <bean parent="SelectControl"/>
                       </property>

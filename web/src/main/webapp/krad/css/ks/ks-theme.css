@@ -19,6 +19,12 @@ input:focus, textarea:focus {
 	background: none repeat scroll 0 0 #ECFCE8;
     outline: none;
 }
+select[multiple="multiple"] option {
+    padding: .25em 1em;
+}
+select[multiple="multiple"] option:hover {
+    background: none repeat scroll 0 0 #ECFCEB;
+}
 h1 {
     font-size:1.61538462em !important;
     font-weight:bold;
@@ -79,6 +85,11 @@ h7 {
 }
 /* collections styles */
 
+
+th .kr-collection-cntr .summary {
+    font-weight:normal;
+}
+
 .kr-collection-header + div > .fl-theme-ks {
     padding: 5px 0 5px 10px;
     background: url(../../images/pattern_dotted.png);
@@ -121,7 +132,10 @@ h7 {
 	color: #000000;
 	font-weight: bold;
  }
-
+.labelTop label {
+    line-height:2em;
+    font-weight:bold;
+}
 
 .kr-field-attribute .kr-labelTop {
     font-weight:bold;
@@ -179,7 +193,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 /*buttons*/
 
 
-.kr-button-primary {			/* was .button-primary */ /* renamed in xml and/or jsp */
+.kr-button-primary, .button-primary {			/* was .button-primary */ /* renamed in xml and/or jsp */
 	border: 1px solid #62D255;
 	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
@@ -199,7 +213,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
    }
 
 
-.kr-button-secondary1 {				/* was .button-secondary1 */ /* renamed in xml and/or jsp */
+.kr-button-secondary1{				/* was .button-secondary1 */ /* renamed in xml and/or jsp */
 	border: 1px solid #62D255;
 	/*defines gradient background*/
 	background-image: -moz-linear-gradient(top, #99DE80, #62D255);
@@ -217,7 +231,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
     border-radius:4px;
 }
 
-.kr-button-secondary2 {				/* was .button-secondary2 */ /* NOT FOUND in xml and/or jsp */
+.kr-button-secondary2, .fg-button.button-secondary1 {				/* was .button-secondary2 */ /* NOT FOUND in xml and/or jsp */
 	border:1px solid #3F7826;
 	background: rgb(255,255,255);
 	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%);
@@ -239,7 +253,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 }
 
 
-.kr-button-secondary2:hover { /* was .button-secondary2:hover */ /* NOT FOUND in xml and/or jsp */
+.kr-button-secondary2:hover, .fg-button.button-secondary1:hover { /* was .button-secondary2:hover */ /* NOT FOUND in xml and/or jsp */
     background: rgb(153,153,153);
 	background: -moz-linear-gradient(top, rgba(153,153,153,1) 0%, rgba(51,51,51,1) 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(153,153,153,1)), color-stop(100%, rgba(51,51,51,1)));
@@ -486,30 +500,25 @@ background-image:-moz-linear-gradient(top, #99DE80, #62D255);
 h2 img.expand_collapse-buttons[alt="expand"] {		/* was h2 img.expand_collapse-buttons[alt="expand"] */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background: url(../../images/h2_expand-back-ks.png);
 	background-repeat:no-repeat;
+    padding-right: .25em;
 }
 
 h2 img.expand_collapse-buttons[alt="collapse"] {		/* was h2 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	background: url(../../images/h2_collapse-back-ks.png);
 	background-repeat:no-repeat;
+    padding-right: .25em;
 }
 
-h3 img.expand_collapse-buttons[alt="expand"] {		/* was h3 img.expand_collapse-buttons[alt="expand"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h3_expand-back-ks.png);
-	background-repeat:no-repeat;
+
+img.expand_collapse-buttons[alt="collapse"]{
+    background: url(../../images/h3_collapse-back-ks.png);
+    background-repeat:no-repeat;
 }
 
-h3 img.expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h3_collapse-back-ks.png);
-	background-repeat:no-repeat;
-}
-h4 img.expand_collapse-buttons[alt="expand"] {		/* was h3 img.expand_collapse-buttons[alt="expand"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h3_expand-back-ks.png);
-	background-repeat:no-repeat;
-}
-
-h4 img.expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-buttons[alt="collapse"]*/ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	background: url(../../images/h3_collapse-back-ks.png);
-	background-repeat:no-repeat;
+img.expand_collapse-buttons[alt="expand"]{
+    background: url(../../images/h3_expand-back-ks.png);
+    background-repeat:no-repeat;
+    padding-right: .25em;
 }
 #viewpage_div {				/* was #viewpage_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
 	margin-left: 120px;
@@ -520,6 +529,7 @@ h4 img.expand_collapse-buttons[alt="collapse"] {		/* was h3 img.expand_collapse-
 }
 .desc > label {
     font-weight:bold;
+    line-height:2em;
 }
 
 /* autocomplete */
@@ -611,15 +621,26 @@ ul.ui-autocomplete.ui-widget-content {
     cursor:pointer;
 }
 /*datatables*/
+
+
+.dataTables_length {
+    margin:  1em 0;
+}
+
+.dataTables_scrollBody {
+    border-bottom: 1px solid #999;
+}
+.dataTables_info {
+    font-weight:normal;
+}
+
 .dataTables_scrollBody thead tr th.sorting_asc, .dataTables_scrollBody thead tr th.sorting_desc, .dataTables_scrollBody thead tr th.sorting {
     background: none;
 }
 .dataTables_info {
 	margin-top:5px;
 }
-.dataTables_length {
-    margin-bottom:5px;
-}
+
 th.sorting_asc, th.sorting_desc {
 	background-color:transparent;
 }
@@ -849,14 +870,30 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
     margin-bottom:10px;
 }
 
-/* Messing with Tables */
-table.datatable th[scope="row"] {
-    padding: .5em;
-    text-align:right;
-    vertical-align:middle;
 
+/* Messing with disclosure bar */
+.kr-collection-cntr a .kr-section-subhead,
+.kr-collection-header a h3.kr-page-section-title,
+.grouping-header-expandable a h4.kr-section-subhead,
+.group_header a h4.kr-section-subhead,
+.fieldLine.boxLayoutVerticalItem a h4.kr-section-subhead,
+.grouping-header-expandable a h3.kr-page-section-title,
+a.h4.kr-section-subhead {
+    border: 1px solid rgba(255,255,255,0);
+    padding: .25em .25em .25em 0;
+    margin-bottom:.5em;
+    -webkit-transition: all .5s ease-in-out;          /* animations - newer non-ie browsers only will see this */
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
 }
-table.datataable th {
-    padding-left: 1em;
-    padding-right: 1em;
+.kr-collection-cntr a .kr-section-subhead:hover,
+.kr-collection-header a h3.kr-page-section-title:hover,
+.grouping-header-expandable a h4.kr-section-subhead:hover,
+.fieldLine.boxLayoutVerticalItem a h4.kr-section-subhead:hover,
+.group_header a h4.kr-section-subhead:hover,
+.grouping-header-expandable a h3.kr-page-section-title:hover {
+    background-color:#ECFCE8;
+    border: 1px solid #3F7826;
 }
+

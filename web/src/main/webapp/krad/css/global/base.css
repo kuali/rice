@@ -77,6 +77,9 @@ h4 img.expand_collapse-buttons {
 .kr-clientError>.kr-field-attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
     float:left;
 }
+td.kr-clientError {
+    overflow: visible;
+}
 .kr-field-attribute img {
     margin-left:7px;
 }
@@ -86,14 +89,14 @@ h4 img.expand_collapse-buttons {
 .kr-field-attribute span {			/* was .field_attribute span */ /* renamed in xml and/or jsp */
 	clear:left;/*float:left;       removing for non-table display, but may possibly break elsewhere - David */
     }
-.kr-field-attribute input {			/* was .field_attribute input */ /* renamed in xml and/or jsp */
-/*float:left;        removing for non-table display. Not sure why we need to pull input from inline flow */
+.kr-field-attribute input, .kr-field-attribute textarea {			/* was .field_attribute input */ /* renamed in xml and/or jsp */
+    margin:  0.25em 0;
     }
 .kr-field-attribute .summary {		/* was .field_attribute .summary */ /* renamed in xml and/or jsp */
 	line-height: 1.125em;
 	/* begin styles brought over from kuali-stacked.css  */
 	margin-bottom: auto;
-	padding-bottom: 0.5em;
+	padding-bottom: 0.25em;
 }
 .kr-view-header {          /* was .view_header /* remove background image for lightbox headers */ /* renamed in xml and/or jsp */
 	background: none;
@@ -201,7 +204,19 @@ li label.kr-error {
     font-weight:normal;
     margin-bottom:5px;
 }
-
+.boxLayoutHorizontalItem {
+    padding-bottom:1em;
+}
+.kr-button-primary.boxLayoutHorizontalItem {
+    padding-bottom: .6em;
+}
+.kr-button-secondary1.boxLayoutHorizontalItem    {
+    padding-bottom: 0.1em;
+}
+.ui-priority-secondary-sm.boxLayoutHorizontalItem {
+    padding-top:.25em;
+    padding-bottom:.5em;
+}
 #Footer_SaveCloseCancel_group .boxLayoutHorizontalItem, #viewfooter_div .boxLayoutHorizontalItem {     /* fixing the vertical alignment of action buttons */
     display:inline;
     float:none;
@@ -311,7 +326,9 @@ div.kr-addLine, span.kr-addLine{
 
 
 /* date-picker */
-
+.ui-datepicker.ui-helper-clearfix {     /* hiding datepicker at bottom of page, until called */
+    display:none;
+}
 
 .ui-datepicker-trigger {
 	cursor: pointer;
@@ -574,4 +591,5 @@ Navigation Slide Control
     width: 10em;
     overflow: hidden;
 }
+
 

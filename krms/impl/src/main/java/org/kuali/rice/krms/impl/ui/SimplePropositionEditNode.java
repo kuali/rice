@@ -31,13 +31,13 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class EditSimplePropositionParameterNode extends RuleTreeNode {
+public class SimplePropositionEditNode extends RuleTreeNode {
 
     private static final long serialVersionUID = -5650654824214437325L;
 
     protected String parameterDisplayString;
 
-    public EditSimplePropositionParameterNode(PropositionBo proposition){
+    public SimplePropositionEditNode(PropositionBo proposition){
         super(proposition);
         setupParameterDisplayString();
     }

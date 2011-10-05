@@ -145,7 +145,7 @@
                 <property name="label" value="Proposition Summary" />
                 <property name="control">
 <!--                  <bean parent="TextControl" p:size="90" p:readOnly="true" p:style="border: 0px"/> -->
-                  <bean parent="TextAreaControl" p:rows="2" p:cols="250"/>
+                  <bean parent="TextAreaControl" p:rows="2" p:cols="250" p:readOnly="true" />
 
                 </property>
               </bean>
@@ -200,7 +200,7 @@
         <bean parent="ActionField" p:methodToCall="add" p:actionLabel="Add Proposition"  p:clientSideJs="alert('Not Yet Implemented');" 
           p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>        
         <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');" p:actionLabel="Edit Proposition"
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>        
+          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
         <bean parent="ActionField" p:methodToCall="moveLeft"
           p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
@@ -271,7 +271,7 @@
         <entry>
           <key>
             <bean class="java.lang.Class" factory-method="forName">
-              <constructor-arg value="org.kuali.rice.krms.impl.ui.RuleTreeSimplePropositionParameterNode"/>
+              <constructor-arg value="org.kuali.rice.krms.impl.ui.SimplePropositionNode"/>
             </bean>
           </key> 
           <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
@@ -287,6 +287,12 @@
                             p:showLabel="false" p:label="id" p:maxLength="255">
                       <property name="control">
                         <bean parent="HiddenControl"/>
+                      </property>
+                    </bean>
+                    <bean parent="AttributeField" p:propertyName="proposition.parameterDisplayString"
+                            p:showLabel="false" p:label="id" p:maxLength="255">
+                      <property name="control">
+                        <bean parent="TextControl"/>
                       </property>
                     </bean>
                   </list>
@@ -327,7 +333,7 @@
         <entry>
           <key>
             <bean class="java.lang.Class" factory-method="forName">
-              <constructor-arg value="org.kuali.rice.krms.impl.ui.EditSimplePropositionParameterNode"/>
+              <constructor-arg value="org.kuali.rice.krms.impl.ui.SimplePropositionEditNode"/>
             </bean>
           </key>
           <bean class="org.kuali.rice.krad.uif.container.NodePrototype">

@@ -1229,21 +1229,25 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // TODO: for a simple prop add an edit simple proposition node
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
-        // Get the selected proposition id and find the node in the tree
-        String selectedPropId = agendaEditor.getSelectedPropositionId();
-        Node propNode = findPropositionTreeNode(
-                agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
-
-        // Swap out display node for edit node
-        replaceWithEditNode(propNode);
-
-        // values for validTerm select
-        String contextId = agendaEditor.getAgenda().getContextId();
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("contextId", contextId);
-		List<ContextValidTermBo> bos = (List<ContextValidTermBo>) getBusinessObjectService().findMatchingOrderBy(ContextValidTermBo.class, map, "termSpecificationId", true);
-
+        Node<RuleTreeNode, String> root =agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
+        editablePropositionTree(root);
         return super.updateComponent(form, result, request, response);
+    }
+
+    private void editablePropositionTree(Node<RuleTreeNode, String> currentNode){
+        // if child node is a SimpleProposition
+        List<Node<RuleTreeNode,String>> children = currentNode.getChildren();
+        for (Node<RuleTreeNode,String> child : children){
+            RuleTreeNode theNode = child.getData();
+            if ((theNode != null) && (theNode instanceof SimplePropositionNode)){
+                SimplePropositionEditNode eNode = new SimplePropositionEditNode(theNode.getProposition());
+//                child.setNodeLabel("");
+                child.setNodeType("ruleTreeNode simplePropositionEditNode");
+                child.setData(eNode);
+            } else {
+                editablePropositionTree(child);
+            }
+        }
     }
 
     private Node<RuleTreeNode, String> findPropositionTreeNode(Node<RuleTreeNode, String> currentNode, String selectedPropId){
@@ -1270,13 +1274,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (prop != null) {
                 // Simple Proposition
                 // add a node to edit the proposition parameters
-                Node<RuleTreeNode, String> editChild = new Node<RuleTreeNode, String>();
-                EditSimplePropositionParameterNode eNode = new EditSimplePropositionParameterNode(prop);
-                editChild.setNodeLabel("");
-                editChild.setNodeType("ruleTreeNode editSimplePropositionParameterNode");
-                editChild.setData(eNode);
-                node.removeChildAt(0);
-                node.addChild(editChild);
+                SimplePropositionEditNode eNode = new SimplePropositionEditNode(prop);
+                node.setData(eNode);
             }
         }
     }

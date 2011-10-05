@@ -27,7 +27,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition
 import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract
 import org.kuali.rice.krms.impl.ui.CompoundOpCodeNode
 import org.kuali.rice.krms.impl.ui.RuleTreeNode
-import org.kuali.rice.krms.impl.ui.RuleTreeSimplePropositionParameterNode
+import org.kuali.rice.krms.impl.ui.SimplePropositionNode
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
    
@@ -109,16 +109,17 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                // add a node for the description display with a child proposition node
                Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
                child.setNodeLabel(prop.getDescription());
-               child.setNodeType("ruleTreeNode");
-               child.setData(new RuleTreeNode(prop));
+               child.setNodeType("ruleTreeNode simplePropositionNode");
+               SimplePropositionNode pNode = new SimplePropositionNode(prop);
+               child.setData(pNode);
                sprout.getChildren().add(child);
                
-               Node<RuleTreeNode, String> grandChild = new Node<RuleTreeNode, String>();
-               RuleTreeSimplePropositionParameterNode pNode = new RuleTreeSimplePropositionParameterNode(prop);
-               grandChild.setNodeLabel(pNode.getParameterDisplayString());
-               grandChild.setNodeType("ruleTreeNode simplePropositionParameterNode");
-               grandChild.setData(pNode);
-               child.getChildren().add(grandChild);
+//               Node<RuleTreeNode, String> grandChild = new Node<RuleTreeNode, String>();
+//               SimplePropositionNode pNode = new SimplePropositionNode(prop);
+//               grandChild.setNodeLabel(pNode.getParameterDisplayString());
+//               grandChild.setNodeType("ruleTreeNode simplePropositionParameterNode");
+//               grandChild.setData(pNode);
+//               child.getChildren().add(grandChild);
                
                propositionSummaryBuffer.append(pNode.getParameterDisplayString())
            }
@@ -144,7 +145,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
            }
        }
    }
-   
+
    /**
     * 
     * This method adds an opCode Node to separate components in a compound proposition.

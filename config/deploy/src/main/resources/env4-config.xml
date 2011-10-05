@@ -1,4 +1,3 @@
 <!-- Configuration specific to the application deployed to this environment -->
 <config>
-  <param name="datasource.ojb.platform">MySQL</param>
 </config>

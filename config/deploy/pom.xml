@@ -7,7 +7,8 @@
   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
   express or implied. See the License for the specific language governing permissions
   and limitations under the License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.rice</groupId>
@@ -56,6 +57,9 @@
     <jdbc.driver.version>${oracle.jdbc.version}</jdbc.driver.version>
     <jdbc.driver.filename>${jdbc.driver.artifactId}-${jdbc.driver.version}.jar</jdbc.driver.filename>
     <jdbc.driver.location>target/dependency/${jdbc.driver.filename}</jdbc.driver.location>
+    <public.url>http://${deploy.env.id}.rice.kuali.org</public.url>
+    <deploy.env.id>env${deploy.env.number}</deploy.env.id>
+    <db.instance>RICEENV${deploy.env.number}</db.instance>
   </properties>
   <build>
     <resources>
@@ -124,20 +128,18 @@
     <profile>
       <id>env1</id>
       <properties>
-        <deploy.env.id>env1</deploy.env.id>
+        <deploy.env.number>1</deploy.env.number>
         <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://dev1.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
-        <db.instance>RICEENV1</db.instance>
       </properties>
     </profile>
     <profile>
       <id>env2</id>
       <properties>
-        <deploy.env.id>env2</deploy.env.id>
+        <deploy.env.number>2</deploy.env.number>
         <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://dev2.rice.kuali.org</public.url>
-        <tomcat.instance>tomcat2</tomcat.instance>
         <db.instance>RICEENV2</db.instance>
         <db.vendor>mysql</db.vendor>
         <impex.dba.url>${impex.mysql.dba.url}</impex.dba.url>
@@ -150,41 +152,35 @@
     <profile>
       <id>env3</id>
       <properties>
-        <deploy.env.id>env3</deploy.env.id>
+        <deploy.env.number>3</deploy.env.number>
         <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://it.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
-        <db.instance>RICEENV3</db.instance>
       </properties>
     </profile>
     <profile>
       <id>env4</id>
       <properties>
-        <deploy.env.id>env4</deploy.env.id>
+        <deploy.env.number>4</deploy.env.number>
         <deploy.server>${deploy.server.2}</deploy.server>
-        <public.url>http://env4.rice.kuali.org</public.url>
         <tomcat.instance>tomcat1</tomcat.instance>
-        <db.instance>RICEENV4</db.instance>
       </properties>
     </profile>
     <profile>
       <id>env5</id>
       <properties>
-        <deploy.env.id>env5</deploy.env.id>
+        <deploy.env.number>5</deploy.env.number>
         <deploy.server>${deploy.server.2}</deploy.server>
-        <public.url>http://env5.rice.kuali.org</public.url>
         <tomcat.instance>tomcat2</tomcat.instance>
-        <db.instance>RICEENV5</db.instance>
       </properties>
     </profile>
     <profile>
       <id>env6</id>
       <properties>
-        <deploy.env.id>env6</deploy.env.id>
+        <deploy.env.number>6</deploy.env.number>
         <deploy.server>${deploy.server.2}</deploy.server>
         <public.url>http://demo.rice.kuali.org</public.url>
         <tomcat.instance>tomcat3</tomcat.instance>
-        <db.instance>RICEENV6</db.instance>
       </properties>
     </profile>
     <profile>

@@ -33,6 +33,7 @@
   </repositories>
   <properties>
     <private.key>kr-key.pem</private.key>
+    <deploy.auth>${user.home}/${private.key}</deploy.auth>
     <maven.test.skip>true</maven.test.skip>
     <deploy.environment>ec2</deploy.environment>
     <deploy.config.common>target/classes/common-config.xml</deploy.config.common>
@@ -112,6 +113,7 @@
     <profile>
       <id>sampleapp</id>
       <properties>
+        <deploy.groupId>org.kuali.rice</deploy.groupId>
         <local.app.dir>../../sampleapp</local.app.dir>
         <deploy.artifactId>rice-sampleapp</deploy.artifactId>
         <deploy.app.configfile>sample-app-config.xml</deploy.app.configfile>
@@ -120,6 +122,7 @@
     <profile>
       <id>standalone</id>
       <properties>
+        <deploy.groupId>org.kuali.rice</deploy.groupId>
         <local.app.dir>../../standalone</local.app.dir>
         <deploy.artifactId>rice-standalone</deploy.artifactId>
         <deploy.app.configfile>standalone-config.xml</deploy.app.configfile>
@@ -140,7 +143,7 @@
         <deploy.env.number>2</deploy.env.number>
         <deploy.server>${deploy.server.1}</deploy.server>
         <public.url>http://dev2.rice.kuali.org</public.url>
-        <db.instance>RICEENV2</db.instance>
+        <tomcat.instance>tomcat2</tomcat.instance>
         <db.vendor>mysql</db.vendor>
         <impex.dba.url>${impex.mysql.dba.url}</impex.dba.url>
         <impex.url>${impex.mysql.url}</impex.url>
@@ -262,8 +265,7 @@
     <profile>
       <id>download</id>
       <properties>
-        <deploy.groupId>org.kuali.rice</deploy.groupId>
-        <deploy.artifactId>rice-sampleapp</deploy.artifactId>
+        <!-- The dependency plugin assumes .jar, so we need to explicitly set .war -->
         <deploy.type>war</deploy.type>
         <deploy.war>target/dependency/${deploy.artifactId}-${deploy.version}.${deploy.type}</deploy.war>
         <impex.dir>target/checkout/impex</impex.dir>

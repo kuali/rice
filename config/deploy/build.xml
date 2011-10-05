@@ -1,6 +1,5 @@
 <project name="Application Deployer">
   <description>Deploy applications packaged by Maven to a server on EC2</description>
-  <property name="deploy.auth" value="${user.home}/${private.key}" />
   <property name="impex.dba.username" value="master" />
   <property name="tomcat.instance.lib.dir" value="/usr/local/${tomcat.instance}/lib" />
 
@@ -214,6 +213,7 @@
   </target>
   <target name="runscript">
     <echo>${message}</echo>
+    <echo>Running ${deploy.server}/${script} as ${tomcat.instance}</echo>
     <exec executable="ssh" failonerror="true">
       <arg value="-i" />
       <arg value="${deploy.auth}" />

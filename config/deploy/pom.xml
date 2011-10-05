@@ -45,7 +45,6 @@
     <impex.oracle.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.oracle.url>
     <impex.mysql.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.mysql.dba.url>
     <impex.mysql.url>${impex.mysql.dba.url}/${impex.database}</impex.mysql.url>
-    <deploy.app>sampleapp</deploy.app>
     <deploy.operation>reset</deploy.operation>
     <db.vendor>oracle</db.vendor>
     <impex.url>${impex.oracle.url}</impex.url>
@@ -110,7 +109,6 @@
       <id>sampleapp</id>
       <properties>
         <local.app.dir>../../sampleapp</local.app.dir>
-        <deploy.app>sample-app</deploy.app>
         <deploy.artifactId>rice-sampleapp</deploy.artifactId>
         <deploy.app.configfile>sample-app-config.xml</deploy.app.configfile>
       </properties>
@@ -119,7 +117,6 @@
       <id>standalone</id>
       <properties>
         <local.app.dir>../../standalone</local.app.dir>
-        <deploy.app>standalone</deploy.app>
         <deploy.artifactId>rice-standalone</deploy.artifactId>
         <deploy.app.configfile>standalone-config.xml</deploy.app.configfile>
       </properties>
@@ -178,7 +175,6 @@
         <public.url>http://env5.rice.kuali.org</public.url>
         <tomcat.instance>tomcat2</tomcat.instance>
         <db.instance>RICEENV5</db.instance>
-        <deploy.app>standalone</deploy.app>
       </properties>
     </profile>
     <profile>

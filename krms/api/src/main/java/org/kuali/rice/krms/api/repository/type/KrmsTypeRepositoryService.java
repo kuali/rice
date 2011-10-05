@@ -16,22 +16,19 @@
 
 package org.kuali.rice.krms.api.repository.type;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.krms.api.KrmsConstants;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.krms.api.repository.RepositoryConstants;
-import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
-import org.springframework.aop.ThrowsAdvice;
-
 import java.util.List;
 
 
-@WebService(name = "KRMSTypeService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
+@WebService(name = "KRMSTypeService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface KrmsTypeRepositoryService {
 

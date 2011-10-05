@@ -1,5 +1,7 @@
 package org.kuali.rice.krms.api.repository.function;
 
+import org.kuali.rice.krms.api.KrmsConstants;
+
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -8,8 +10,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.kuali.rice.krms.api.repository.RepositoryConstants;
-
 /**
  * The function repository contains information about custom functions which
  * can be used on propositions that are defined when constructing rules.
@@ -17,7 +17,7 @@ import org.kuali.rice.krms.api.repository.RepositoryConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "functionRepositoryService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
+@WebService(name = "functionRepositoryService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface FunctionRepositoryService {
 	

@@ -21,8 +21,8 @@ public class AgendaEditorAuthorizer extends DocumentAuthorizerBase implements Ma
 
     @Override
     public boolean canMaintain(Object dataObject, Person user) {
-        AgendaBo agenda = (AgendaBo) dataObject;
-        return getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agenda.getContextId());
+        AgendaEditor agendaEditor = (AgendaEditor) dataObject;
+        return getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agendaEditor.getAgenda().getContextId());
     }
 
     @Override

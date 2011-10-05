@@ -21,6 +21,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -81,7 +82,16 @@ class TemplateRuleSelector implements RuleSelector {
         QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
         List<Predicate> predicates = new ArrayList<Predicate>();
         predicates.add(equal("ruleTemplate.name", ruleTemplateName));
-        predicates.add(equal("docTypeName", routeHeader.getDocumentType().getName()));
+
+        // Check all document types in ancestry
+        DocumentType dt = routeHeader.getDocumentType();
+        List<Predicate> documentTypeAncestry = new ArrayList<Predicate>();
+        while (dt != null) {
+            documentTypeAncestry.add(equal("docTypeName", dt.getName()));
+            dt = dt.getParentDocType();
+        }
+        predicates.add(and(or(documentTypeAncestry.toArray(new Predicate[documentTypeAncestry.size()]))));
+
         predicates.add(equal("active", new Integer(1)));
         if (effectiveDate != null) {
             predicates.add(

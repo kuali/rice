@@ -53,14 +53,23 @@ class KrmsTypeBoServiceImplTest {
 	private static final Integer SEQUENCE_NUMBER_2 = new Integer(2)
 	
 	// create sample KrmsType builder and build
-	private static KrmsTypeAttribute.Builder chartAttrBuilder = KrmsTypeAttribute.Builder.create(ATTR_ID_1, TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-	private static KrmsTypeAttribute.Builder orgAttrBuilder = KrmsTypeAttribute.Builder.create(ATTR_ID_2, TYPE_ID, ORG_ATTR_DEF_ID, SEQUENCE_NUMBER_2)
+	private static KrmsTypeAttribute.Builder chartAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+	private static KrmsTypeAttribute.Builder orgAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, ORG_ATTR_DEF_ID, SEQUENCE_NUMBER_2)
+    static {
+        chartAttrBuilder.setId(ATTR_ID_1)
+        orgAttrBuilder.setId(ATTR_ID_2)
+    }
 	private static List<KrmsTypeAttribute.Builder> attrs = Arrays.asList(chartAttrBuilder, orgAttrBuilder)
-	private static KrmsTypeDefinition TEST_KRMS_TYPE_DEF = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
+    private static KrmsTypeDefinition TEST_KRMS_TYPE_DEF
+	private static KrmsTypeBo TEST_KRMS_TYPE_BO
+    static {
+	    KrmsTypeDefinition.Builder builder = KrmsTypeDefinition.Builder.create(NAME, NAMESPACE)
 		.serviceName(SERVICE_NAME)
 		.attributes(attrs)
-		.build()
-	private static KrmsTypeBo TEST_KRMS_TYPE_BO = KrmsTypeBo.from(TEST_KRMS_TYPE_DEF)
+        builder.setId(TYPE_ID)
+	    TEST_KRMS_TYPE_DEF = builder.build()
+        TEST_KRMS_TYPE_BO = KrmsTypeBo.from(TEST_KRMS_TYPE_DEF)
+    }
 		
 	@BeforeClass
 	static void createSampleTypeBOs() {

@@ -41,7 +41,7 @@ public class PropositionBoServiceTest extends AbstractBoTest {
 	public void creationTest() {
 
 		// KrmsType for context
-		KrmsTypeDefinition krmsContextTypeDefinition = KrmsTypeDefinition.Builder.create(null, "KrmsTestContextType", "KRMS").build();
+		KrmsTypeDefinition krmsContextTypeDefinition = KrmsTypeDefinition.Builder.create("KrmsTestContextType", "KRMS").build();
 		krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
 
 //		// Context

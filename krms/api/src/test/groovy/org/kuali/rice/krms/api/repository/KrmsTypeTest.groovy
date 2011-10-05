@@ -84,13 +84,13 @@ class KrmsTypeTest {
 
 	@Test
 	public void test_create_only_required() {
-		KrmsTypeDefinition.Builder.create(KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE))
+		KrmsTypeDefinition.Builder.create(KrmsTypeDefinition.Builder.create(NAME, NAMESPACE))
 			.build();
 	}
 
 	@Test	
 	public void test_create_with_service_name() {
-		KrmsTypeDefinition.Builder.create(KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE))
+		KrmsTypeDefinition.Builder.create(KrmsTypeDefinition.Builder.create(NAME, NAMESPACE))
 			.serviceName(SERVICE_NAME)
 			.build();
 	}
@@ -98,7 +98,7 @@ class KrmsTypeTest {
 	@Test
 	public void testKrmsTypeBuilderPassedInParams() {
 		//No assertions, just test whether the Builder gives us a KRMS KrmsType object
-		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(NAME, NAMESPACE)
 			.build()
 	}
 
@@ -106,12 +106,12 @@ class KrmsTypeTest {
 	public void testKrmsTypeBuilderPassedInAttributes() {
 		//No assertions, just test whether the Builder gives us a KRMS KrmsType object
 		// create chart attribute Builder
-		KrmsTypeAttribute.Builder chartAttrBuilder = KrmsTypeAttribute.Builder.create(ATTR_ID_1, TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-		KrmsTypeAttribute.Builder orgAttrBuilder = KrmsTypeAttribute.Builder.create(ATTR_ID_2, TYPE_ID, ORG_ATTR_DEF_ID, SEQUENCE_NUMBER_2)
+		KrmsTypeAttribute.Builder chartAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder orgAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, ORG_ATTR_DEF_ID, SEQUENCE_NUMBER_2)
 		List<KrmsTypeAttribute.Builder> attrs = Arrays.asList(chartAttrBuilder, orgAttrBuilder)
 
 		// create KrmsType builder and build
-		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(NAME, NAMESPACE)
 				.attributes(attrs)
 				.build()
 	}
@@ -133,23 +133,9 @@ class KrmsTypeTest {
 	@Test
 	public void testKrmsTypeBuilderPassedInParamsAndServiceName() {
 		//No assertions, just test whether the Builder gives us a KRMS KrmsType object
-		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(NAME, NAMESPACE)
 			.serviceName("MyFictionalService")
 			.build()
-	}
-
-	@Test
-	public void testTypeBuilderWhitespaceTypeId() {
-		shouldFail(IllegalArgumentException.class) {
-			KrmsTypeDefinition.Builder.create("  ", NAME, NAMESPACE)
-		}
-	}
-
-	@Test
-	public void testTypeBuilderEmptyTypeId() {
-		shouldFail(IllegalArgumentException.class) {
-			KrmsTypeDefinition.Builder.create("", NAME, NAMESPACE)
-		}
 	}
 
 	@Test
@@ -158,7 +144,9 @@ class KrmsTypeTest {
 		Marshaller marshaller = jc.createMarshaller()
 		StringWriter sw = new StringWriter()
 
-		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE).build()
+		KrmsTypeDefinition.Builder myTypeBuilder = KrmsTypeDefinition.Builder.create(NAME, NAMESPACE)
+        myTypeBuilder.setId(TYPE_ID)
+        KrmsTypeDefinition myType = myTypeBuilder.build()
 		marshaller.marshal(myType, sw)
 		String xml = sw.toString()
 
@@ -186,15 +174,18 @@ class KrmsTypeTest {
 		StringWriter sw = new StringWriter()
 
 		// create chart attribute Builder
-		KrmsTypeAttribute.Builder chartAttrBuilder = KrmsTypeAttribute.Builder.create(ATTR_ID_1, TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-		KrmsTypeAttribute.Builder orgAttrBuilder = KrmsTypeAttribute.Builder.create(ATTR_ID_2, TYPE_ID, ORG_ATTR_DEF_ID, SEQUENCE_NUMBER_2)
+		KrmsTypeAttribute.Builder chartAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+        chartAttrBuilder.setId(ATTR_ID_1)
+		KrmsTypeAttribute.Builder orgAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, ORG_ATTR_DEF_ID, SEQUENCE_NUMBER_2)
+        orgAttrBuilder.setId(ATTR_ID_2)
 		List<KrmsTypeAttribute.Builder> attrs = Arrays.asList(chartAttrBuilder, orgAttrBuilder)
 		
 		// create KrmsType builder and build
-		KrmsTypeDefinition myType = KrmsTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)
+		KrmsTypeDefinition.Builder myTypeBuilder = KrmsTypeDefinition.Builder.create(NAME, NAMESPACE)
 			.serviceName(SERVICE_NAME)
 			.attributes(attrs)
-			.build()
+        myTypeBuilder.setId(TYPE_ID)
+        KrmsTypeDefinition myType = myTypeBuilder.build()
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
 		marshaller.marshal(myType, sw)
 		String xml = sw.toString()
@@ -216,7 +207,9 @@ class KrmsTypeTest {
 		Assert.assertEquals(NAMESPACE, myType.namespace)
 		Assert.assertEquals (true, myType.active)
 		
-		KrmsTypeAttribute chartAttr = KrmsTypeAttribute.Builder.create(ATTR_ID_1, TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1).build()
+		KrmsTypeAttribute.Builder chartAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, CHART_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+        chartAttrBuilder.setId(ATTR_ID_1)
+        KrmsTypeAttribute chartAttr = chartAttrBuilder.build()
 		Assert.assertEquals(chartAttr, myType.attributes.get(0))
 	}
 	

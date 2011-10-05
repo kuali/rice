@@ -46,7 +46,6 @@ class KrmsTypeAttributeTest {
 	
 	private static final String EXPECTED_XML = """
 		<KrmsTypeAttribute xmlns="http://rice.kuali.org/krms/repository/v2_0">
-			<id>ORG_ATTR_1</id>
 			<typeId>1234ABCD</typeId>
 			<attributeDefinitionId>1001</attributeDefinitionId>
 			<sequenceNumber>1</sequenceNumber>
@@ -75,73 +74,62 @@ class KrmsTypeAttributeTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_all_null() {
-		KrmsTypeAttribute.Builder.create(null, null, null, null)
+		KrmsTypeAttribute.Builder.create(null, null, null)
 	}
 	
 	@Test
 	void test_Builder_create_null_id() {
         // null ID is neede to create
-		KrmsTypeAttribute.Builder.create(null, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_empty_id() {
-		KrmsTypeAttribute.Builder.create("", TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	void test_Builder_create_fail_whitespace_id() {
-		KrmsTypeAttribute.Builder.create("    ", TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-	}
-	
+
 	@Test
 	void test_Builder_create_null_type_id() {
         // type ID needs to be nullable so that it can be added to types that haven't been persisted yet 
-		KrmsTypeAttribute.Builder.create(null, null, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create(null, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty__type_id() {
-		KrmsTypeAttribute.Builder.create(ID, "", ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create("", ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace__type_id() {
-		KrmsTypeAttribute.Builder.create(ID, "   ",ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create("   ",ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_attr_def_id() {
-		KrmsTypeAttribute.Builder.create(ID, TYPE_ID, null, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create(TYPE_ID, null, SEQUENCE_NUMBER_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_empty_attr_def_id() {
-		KrmsTypeAttribute.Builder.create(ID, TYPE_ID, "", SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create(TYPE_ID, "", SEQUENCE_NUMBER_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_whitespace_attr_def_id() {
-		KrmsTypeAttribute.Builder.create(ID, TYPE_ID, "    ", SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create(TYPE_ID, "    ", SEQUENCE_NUMBER_1)
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_null_sequence_number() {
-		KrmsTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, null)
+		KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, null)
 	}
 	
 
 	@Test
 	void test_create_only_required(){
-		KrmsTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	}
 
 	@Test
 	void test_create_and_build_only_required(){
 		KrmsTypeAttribute myAttr = KrmsTypeAttribute.Builder
-			.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+			.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 			.build()
-		Assert.assertEquals(ID, myAttr.getId())
 		Assert.assertEquals(TYPE_ID, myAttr.getTypeId())
 		Assert.assertEquals(ATTR_DEF_ID, myAttr.getAttributeDefinitionId())
 		Assert.assertEquals(SEQUENCE_NUMBER_1, myAttr.getSequenceNumber())
@@ -150,11 +138,12 @@ class KrmsTypeAttributeTest {
 
 	@Test
 	void test_create_and_build_with_attribute_definition(){
-		KrmsTypeAttribute myAttr = KrmsTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-				.attributeDefinition(
+		KrmsTypeAttribute.Builder myAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+        myAttrBuilder.setId(ID)
+		myAttrBuilder.attributeDefinition(
 					KrmsAttributeDefinition.Builder.create(ATTR_DEF_ID, ORG_NAME, NAMESPACE)
 						.label(ORG_LABEL))
-				.build()
+		KrmsTypeAttribute myAttr = myAttrBuilder.build()
 		Assert.assertTrue(myAttr.isActive())
 		Assert.assertEquals(ID, myAttr.getId())
 		Assert.assertEquals(TYPE_ID, myAttr.getTypeId())
@@ -166,7 +155,7 @@ class KrmsTypeAttributeTest {
 
 	@Test
 	public void testXmlMarshaling() {
-		KrmsTypeAttribute myAttr = KrmsTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+		KrmsTypeAttribute myAttr = KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 				.build()
 		JAXBContext jc = JAXBContext.newInstance(KrmsTypeAttribute.class)
 		Marshaller marshaller = jc.createMarshaller()
@@ -185,7 +174,6 @@ class KrmsTypeAttributeTest {
 		JAXBContext jc = JAXBContext.newInstance(KrmsTypeAttribute.class)
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		KrmsTypeAttribute myAttr = (KrmsTypeAttribute) unmarshaller.unmarshal(new StringReader(EXPECTED_XML))
-		Assert.assertEquals(ID, myAttr.id)
 		Assert.assertEquals(TYPE_ID, myAttr.typeId)
 		Assert.assertEquals(ATTR_DEF_ID, myAttr.attributeDefinitionId)
 		Assert.assertEquals(SEQUENCE_NUMBER_1, myAttr.sequenceNumber)
@@ -194,11 +182,12 @@ class KrmsTypeAttributeTest {
 
 	@Test
 	public void testXmlMarshalingWithDefinition() {
-		KrmsTypeAttribute myAttr = KrmsTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-				.attributeDefinition(
+		KrmsTypeAttribute.Builder myAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
+        myAttrBuilder.setId(ID)
+		myAttrBuilder.attributeDefinition(
 					KrmsAttributeDefinition.Builder.create(ATTR_DEF_ID, ORG_NAME, NAMESPACE)
 						.label(ORG_LABEL))
-				.build()
+		KrmsTypeAttribute myAttr = myAttrBuilder.build()
 		JAXBContext jc = JAXBContext.newInstance(KrmsTypeAttribute.class, KrmsAttributeDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)

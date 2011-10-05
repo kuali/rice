@@ -35,17 +35,17 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 public final class KrmsTypeAttribute extends AbstractDataTransferObject implements KrmsTypeAttributeContract {
 	private static final long serialVersionUID = -304265575559412478L;
 	
-	@XmlElement(name = Elements.ID, required=true)
+	@XmlElement(name = Elements.ID, required = false)
 	private String id;
-	@XmlElement(name = Elements.TYPE_ID, required=true)
+	@XmlElement(name = Elements.TYPE_ID, required = true)
 	private String typeId;
-	@XmlElement(name = Elements.ATTR_DEFN_ID, required=true)
+	@XmlElement(name = Elements.ATTR_DEFN_ID, required = true)
 	private String attributeDefinitionId;
-	@XmlElement(name = Elements.SEQ_NO, required=true)
+	@XmlElement(name = Elements.SEQ_NO, required = true)
 	private Integer sequenceNumber;
-	@XmlElement(name = Elements.ACTIVE, required=false)
+	@XmlElement(name = Elements.ACTIVE, required = false)
 	private boolean active;
-	@XmlElement(name = Elements.ATTR_DEFN, required=false)
+	@XmlElement(name = Elements.ATTR_DEFN, required = false)
 	private KrmsAttributeDefinition attributeDefinition;
 	
 	@SuppressWarnings("unused")
@@ -121,8 +121,7 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String id, String typeId, String attributeDefinitionId, Integer sequenceNumber) {
-            setId(id);
+        private Builder(String typeId, String attributeDefinitionId, Integer sequenceNumber) {
             setTypeId(typeId);
             setAttributeDefinitionId(attributeDefinitionId);
             setSequenceNumber(sequenceNumber);
@@ -137,25 +136,24 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
         /**
          * Creates a builder from the given parameters.
          * 
-         * @param id the KrmsTypeAtribute id
-         * @param typeId the KrmsType Id 
+         * @param typeId the KrmsType Id
          * @param attributeDefinitionId The attributeDefinitionId
          * @param sequenceNumber 
          * @return an instance of the builder with the fields already populated
          * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
          */
-        public static Builder create(String id, String typeId, String attributeDefinitionId, Integer sequenceNumber) {
-            return new Builder(id, typeId, attributeDefinitionId, sequenceNumber);
+        public static Builder create(String typeId, String attributeDefinitionId, Integer sequenceNumber) {
+            return new Builder(typeId, attributeDefinitionId, sequenceNumber);
         }
         
         public static Builder create(KrmsTypeAttributeContract contract){
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-        	Builder builder = new Builder(contract.getId(), 
-        			contract.getTypeId(),
+        	Builder builder = new Builder(contract.getTypeId(),
         			contract.getAttributeDefinitionId(),
         			contract.getSequenceNumber());
+            builder.setId(contract.getId());
         	if (contract.getAttributeDefinition() != null){
         		KrmsAttributeDefinition.Builder attrBuilder = 
         			KrmsAttributeDefinition.Builder.create(contract.getAttributeDefinition());
@@ -167,13 +165,9 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must  be null or non-blank
-		 * @throws IllegalArgumentException if the id is not null and blank
+		 * @param id the id value to set
 		 */
         public void setId(String id) {
-            if (null != id && StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id must be null or non-blank");
-            }
             this.id = id;
         }
 

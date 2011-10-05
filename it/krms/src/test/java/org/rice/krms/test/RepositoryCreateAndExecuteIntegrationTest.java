@@ -172,10 +172,10 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         KrmsAttributeDefinition contextTypeAttributeDefinition = krmsAttributeDefinitionService.createAttributeDefinition(contextTypeAttributeDefnBuilder.build());
 
         // Attr for context;
-        KrmsTypeAttribute.Builder krmsTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, null, contextTypeAttributeDefinition.getId(), 1);
+        KrmsTypeAttribute.Builder krmsTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, contextTypeAttributeDefinition.getId(), 1);
 
         // KrmsType for context
-        KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create(null, "KrmsTestContextType", nameSpace);
+        KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestContextType", nameSpace);
         krmsContextTypeDefnBuilder.setAttributes(Collections.singletonList(krmsTypeAttrBuilder));
         KrmsTypeDefinition krmsContextTypeDefinition = krmsContextTypeDefnBuilder.build();
         krmsContextTypeDefinition = krmsTypeRepository.createKrmsType(krmsContextTypeDefinition);
@@ -219,13 +219,13 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
     private KrmsTypeDefinition createKrmsCampusTypeDefinition(String nameSpace) {
 	    // KrmsType for campus svc
-        KrmsTypeDefinition.Builder krmsCampusTypeDefnBuilder = KrmsTypeDefinition.Builder.create(null, "CAMPUS", nameSpace);
+        KrmsTypeDefinition.Builder krmsCampusTypeDefnBuilder = KrmsTypeDefinition.Builder.create("CAMPUS", nameSpace);
         KrmsTypeDefinition krmsCampusTypeDefinition = krmsTypeRepository.createKrmsType(krmsCampusTypeDefnBuilder.build());
         return krmsCampusTypeDefinition;
     }
 
     private KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
-        KrmsTypeDefinition.Builder krmsActionTypeDefnBuilder = KrmsTypeDefinition.Builder.create(null, "KrmsActionResolverType", nameSpace);
+        KrmsTypeDefinition.Builder krmsActionTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsActionResolverType", nameSpace);
         krmsActionTypeDefnBuilder.setServiceName("testActionTypeService");
         KrmsTypeDefinition krmsActionTypeDefinition = krmsTypeRepository.createKrmsType(krmsActionTypeDefnBuilder.build());
 
@@ -239,10 +239,10 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         KrmsAttributeDefinition genericTypeAttributeDefinition1 = krmsAttributeDefinitionService.createAttributeDefinition(genericTypeAttributeDefnBuilder.build());
 
         // Attr for generic type;
-        KrmsTypeAttribute.Builder genericTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, null, genericTypeAttributeDefinition1.getId(), 1);
+        KrmsTypeAttribute.Builder genericTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, genericTypeAttributeDefinition1.getId(), 1);
 
 		// Can use this generic type for KRMS bits that don't actually rely on services on the bus at this point in time
-	    KrmsTypeDefinition.Builder krmsGenericTypeDefnBuilder = KrmsTypeDefinition.Builder.create(null, "KrmsTestGenericType", nameSpace);
+	    KrmsTypeDefinition.Builder krmsGenericTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestGenericType", nameSpace);
 	    krmsGenericTypeDefnBuilder.setAttributes(Collections.singletonList(genericTypeAttrBuilder));
 	    KrmsTypeDefinition krmsGenericTypeDefinition = krmsTypeRepository.createKrmsType(krmsGenericTypeDefnBuilder.build());
 
@@ -481,7 +481,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         termDefinition2 = termBoService.createTermDefinition(termDefinition2);
 
 		// KrmsType for TermResolver
-		KrmsTypeDefinition.Builder krmsTermResolverTypeDefnBuilder = KrmsTypeDefinition.Builder.create(null, "KrmsTestResolverType", nameSpace);
+		KrmsTypeDefinition.Builder krmsTermResolverTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestResolverType", nameSpace);
 		krmsTermResolverTypeDefnBuilder.setServiceName("testResolverTypeService1");
 
 		KrmsTypeDefinition krmsTermResolverTypeDefinition = krmsTypeRepository.createKrmsType(krmsTermResolverTypeDefnBuilder.build());

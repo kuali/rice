@@ -40,17 +40,17 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 public final class KrmsTypeDefinition extends AbstractDataTransferObject implements KrmsTypeDefinitionContract{
 	private static final long serialVersionUID = -8314397393380856301L;
 
-	@XmlElement(name = Elements.ID, required=true)
+	@XmlElement(name = Elements.ID, required = false)
 	private String id;
-	@XmlElement(name = Elements.NAME, required=true)
+	@XmlElement(name = Elements.NAME, required = true)
 	private String name;
-	@XmlElement(name = Elements.NAMESPACE, required=true)
+	@XmlElement(name = Elements.NAMESPACE, required = true)
 	private String namespace;
-	@XmlElement(name = Elements.SERVICENAME, required=false)
+	@XmlElement(name = Elements.SERVICENAME, required = false)
 	private String serviceName;
-	@XmlElement(name = Elements.ACTIVE, required=false)
+	@XmlElement(name = Elements.ACTIVE, required = false)
 	private boolean active;
-	@XmlElement(name = Elements.ATTRIBUTE, required=false)
+	@XmlElement(name = Elements.ATTRIBUTE, required = false)
 	private List<KrmsTypeAttribute> attributes;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
@@ -146,8 +146,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String id, String name, String namespace) {
-            setId(id);
+        private Builder(String name, String namespace) {
             setName(name);
             setNamespace(namespace);
 			setActive(true);
@@ -166,14 +165,13 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         /**
          * Creates a builder from the given parameters.
          * 
-         * @param id the KRMS type id
          * @param name the KRMS type name
          * @param namespace the KRMS type namespace
          * @return an instance of the builder with the fields already populated
          * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
          */
-        public static Builder create(String id, String name, String namespace) {
-            return new Builder(id, name, namespace);
+        public static Builder create(String name, String namespace) {
+            return new Builder(name, namespace);
         }
 
         /**
@@ -186,7 +184,8 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         	if (contract == null) {
                 throw new IllegalArgumentException("contract is null");
             }
-            Builder builder =  new Builder(contract.getId(), contract.getName(), contract.getNamespace());
+            Builder builder =  new Builder(contract.getName(), contract.getNamespace());
+            builder.setId(contract.getId());
             builder.setNamespace(contract.getNamespace());
             builder.setActive(contract.isActive());
             builder.setServiceName(contract.getServiceName());
@@ -206,13 +205,9 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must not be blank
-		 * @throws IllegalArgumentException if the id is blank
+		 * @param id the id value to set
 		 */
         public void setId(String id) {
-            if (id != null && StringUtils.isBlank(id)) {
-                throw new IllegalArgumentException("id is blank");
-            }
             this.id = id;
         }
 

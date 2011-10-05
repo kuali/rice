@@ -8,6 +8,9 @@ import org.kuali.rice.core.api.util.collect.CollectionUtils;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
 
 /**
  * All model object's that are Jaxb annotated should extend this class.
@@ -17,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
  *     <li>Defines jaxb callback method to ensure that Collection and Map types are unmarshalled into immutable empty forms rather than null values</li>
  *     <li>Defines equals/hashcode/toString</li>
  *
- *     Note: the equals/hashCode implementation excludes {@value CoreConstants.CommonElements.FUTURE_ELEMENTS} field.
+ *     Note: the equals/hashCode implementation excludes {@value CoreConstants.CommonElements#FUTURE_ELEMENTS} field.
  *     This element should be present on all jaxb annotated classes.
  * </ol>
  *
@@ -81,10 +84,41 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
         CollectionUtils.makeUnmodifiableAndNullSafe(this);
     }
 
+    private transient final Object serializationMutex = new Object();
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        synchronized (serializationMutex) {
+            clearFutureElements();
+            out.defaultWriteObject();
+        }
+    }
+
+    /**
+     * Looks for a field named "_futureElements" on the class and clears it's value if it exists.  This allows us to
+     * prevent from storing these values during serialization.
+     */
+    private void clearFutureElements() {
+        try {
+            Field futureElementsField = getClass().getDeclaredField(CoreConstants.CommonElements.FUTURE_ELEMENTS);
+            boolean originalAccessible = futureElementsField.isAccessible();
+            futureElementsField.setAccessible(true);
+            try {
+                futureElementsField.set(this, null);
+            } finally {
+                futureElementsField.setAccessible(originalAccessible);
+            }
+        } catch (NoSuchFieldException e) {
+            // if the field does not exist, don't do anything
+        } catch (IllegalAccessException e) {
+            // can't modify the field, ignore
+        }
+    }
+
+
     /**
      * Defines some internal constants used on this class.
      */
     protected static class Constants {
-        final static String[] HASH_CODE_EQUALS_EXCLUDE = {CoreConstants.CommonElements.FUTURE_ELEMENTS, "_hashCode", "_toString"};
+        final static String[] HASH_CODE_EQUALS_EXCLUDE = { CoreConstants.CommonElements.FUTURE_ELEMENTS, "_hashCode", "_toString" };
     }
 }

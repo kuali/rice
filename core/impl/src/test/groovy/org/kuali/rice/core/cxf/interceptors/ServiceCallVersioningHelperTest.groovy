@@ -22,7 +22,6 @@ class ServiceCallVersioningHelperTest {
 
     @Before
     void initConfig() {
-        System.err.println(Thread.currentThread().getContextClassLoader())
         config = new SimpleConfig()
         config.putProperty(Config.RICE_VERSION, FAKE_RICE_VERSION)
         config.putProperty(Config.ENVIRONMENT, FAKE_ENV)
@@ -36,7 +35,6 @@ class ServiceCallVersioningHelperTest {
     }
 
     @Test void testOmitApplicationInfo() {
-        System.err.println(Thread.currentThread().getContextClassLoader())
         HashMap<String, List<String>> headers = new HashMap<String, List<String>>()
         ServiceCallVersioningHelper.populateVersionHeaders(headers)
 

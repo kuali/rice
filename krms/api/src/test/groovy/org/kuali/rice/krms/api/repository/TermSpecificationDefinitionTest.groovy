@@ -41,7 +41,7 @@ class TermSpecificationDefinitionTest {
 
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
-		<TermSpecification xmlns="http://rice.kuali.org/krms/repository/v2_0">
+		<termSpecification xmlns="http://rice.kuali.org/krms/v2_0">
 			<id>1001</id>
 			<name>total</name>
 			<namespace>KRMS_TEST</namespace>
@@ -49,7 +49,7 @@ class TermSpecificationDefinitionTest {
 			<description>the total number of widgets sold in the last quarter</description>
 			<categories>
 			</categories>
-		</TermSpecification>
+		</termSpecification>
 	"""
 
 	@Test(expected=IllegalArgumentException.class)

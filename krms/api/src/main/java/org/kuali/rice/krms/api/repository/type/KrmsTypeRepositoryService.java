@@ -22,8 +22,11 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krms.api.repository.RepositoryConstants;
 import org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces;
+import org.springframework.aop.ThrowsAdvice;
 
 import java.util.List;
 
@@ -40,7 +43,8 @@ public interface KrmsTypeRepositoryService {
      * @throws IllegalStateException if the KrmsType already exists in the system
      */
     @WebMethod(operationName="createKrmsType")
-    KrmsTypeDefinition createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType);
+    KrmsTypeDefinition createKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
+        throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * This will update an existing {@link KrmsTypeDefinition}
@@ -50,7 +54,8 @@ public interface KrmsTypeRepositoryService {
      * @throws IllegalStateException if the KrmsType does not exist in the system
      */
     @WebMethod(operationName="updateKrmsType")
-    void updateKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType);
+    void updateKrmsType(@WebParam(name = "krmsType") KrmsTypeDefinition krmsType)
+        throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Lookup a krms type based on the given id.
@@ -61,32 +66,39 @@ public interface KrmsTypeRepositoryService {
      */
     @WebMethod(operationName = "getTypeById")
     @WebResult(name = "type")
-    KrmsTypeDefinition getTypeById(@WebParam(name = "id") String id);
+    KrmsTypeDefinition getTypeById(@WebParam(name = "id") String id)
+        throws RiceIllegalArgumentException;
 
     /**
      * Get a krms type object based on name and namespace
      *
+     * @param namespaceCode the given type namespace
      * @param name the given type name
-     * @param namespace the given type namespace
+     * 
      * @return A krms type object with the given namespace and name if one with that name and namespace
      *         exists.  Otherwise, null is returned.
+     *
+     * @throws IllegalArgumentException if the given namespaceCode or name is a null or blank value
      * @throws IllegalStateException if multiple krms types exist with the same name and namespace
      */
-    @WebMethod(operationName = "getTypeByNameAndNamespace")
+    @WebMethod(operationName = "getTypeByName")
     @WebResult(name = "type")
-    KrmsTypeDefinition getTypeByNameAndNamespace(
-            @WebParam(name = "name") String name,
-            @WebParam(name = "namespace") String namespace);
+    KrmsTypeDefinition getTypeByName(
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "name") String name)
+        throws RiceIllegalArgumentException, RiceIllegalStateException;
 
    /**
      * Returns all KRMS types that for a given namespace.
      *
      * @return all KRMS types for a namespace
+     * @throws IllegalArgumentException if the given namespaceCode is a null or blank value
      */
     @WebMethod(operationName = "findAllTypesByNamespace")
     @WebResult(name = "namespaceTypes")
     List<KrmsTypeDefinition> findAllTypesByNamespace(
-    		@WebParam(name = "namespace") String namespace);
+    		@WebParam(name = "namespaceCode") String namespaceCode)
+        throws RiceIllegalArgumentException;
 
     /**
      * Returns all KRMS types
@@ -98,24 +110,32 @@ public interface KrmsTypeRepositoryService {
     List<KrmsTypeDefinition> findAllTypes();
     
     /**
-     * This will create a {@link KrmsTypeAttribute} exactly like the parameter passed in.
+     * Retrieves an attribute definition for the given id.
      *
-     * @param krmsTypeAttribute - KrmsTypeAttribute
-     * @throws IllegalArgumentException if the krmsTypeAttribute is null
-     * @throws IllegalStateException if the KrmsTypeAttribute already exists in the system
+     * @param attributeDefinitionId the id of the attribute definition to retrieve
+     *
+     * @return the attribute definition matching the given id, or null if no corresponding attribute definition could
+     * be found with the given id value
+     * @throws IllegalArgumentException if the given attributeDefinitionId is a null or blank value
      */
-    @WebMethod(operationName="createKrmsTypeAttribute")
-    void createKrmsTypeAttribute(@WebParam(name = "krmsTypeAttribute") KrmsTypeAttribute krmsTypeAttribute);
+    @WebMethod(operationName = "getAttributeDefinitionById")
+    KrmsAttributeDefinition getAttributeDefinitionById(@WebParam(name = "attributeDefinitionId") String attributeDefinitionId)
+            throws RiceIllegalArgumentException;
 
     /**
-     * This will update an existing {@link KrmsTypeAttribute}
+     * Retrieves an attribute definition for the given namespace code and name.
      *
-     * @param krmsType - KrmsTypeAttribute
-     * @throws IllegalArgumentException if the krmsTypeAttribute is null
-     * @throws IllegalStateException if the KrmsTypeAttribute does not exist in the system
+     * @param namespaceCode the namespace under which to locate the attribute definition
+     * @param name the name of the attribute definition to retrieve
+     *
+     * @return the attribute definition matching the give namespace code and name, or null if no corresponding attribute
+     * definition could be located
+     *
+     * @throws RiceIllegalArgumentException if the given namespaceCode or name is a null or blank value
      */
-    @WebMethod(operationName="updateKrmsTypeAttribute")
-    void updateKrmsTypeAttribute(@WebParam(name = "krmsTypeAttribute") KrmsTypeAttribute krmsTypeAttribute);
-
-
+    @WebMethod(operationName = "getAttributeDefinitionByName")
+    KrmsAttributeDefinition getAttributeDefinitionByName(
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "name") String name
+    ) throws RiceIllegalArgumentException;
 }

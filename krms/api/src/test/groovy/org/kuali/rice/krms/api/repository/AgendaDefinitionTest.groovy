@@ -45,7 +45,7 @@ class AgendaDefinitionTest {
 	private static final String ATTR_VALUE_2 = "19900A"
 
 	private static final String SMALL_AGENDA = """
-<agenda xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/repository/v2_0">
+<agenda xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/v2_0">
     <id>AGENDAID001</id>
     <name>Agenda1</name>
     <namespace>KRMS_TEST</namespace>

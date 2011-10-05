@@ -55,7 +55,7 @@ class PropositionTest {
 
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String SIMPLE_PROP_XML = """
-		<proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
+		<proposition xmlns="http://rice.kuali.org/krms/v2_0">
 			<id>202</id>
 			<description>is Campus Bloomington</description>
             <ruleId>1</ruleId>
@@ -92,7 +92,7 @@ class PropositionTest {
 		"""
 
 	private static final String COMPOUND_PROP_XML = """
-		<proposition xmlns="http://rice.kuali.org/krms/repository/v2_0">
+		<proposition xmlns="http://rice.kuali.org/krms/v2_0">
 			<id>111</id>
 			<description>Compound: Campus is Muir or Thurgood Marshall</description>
             <ruleId>1</ruleId>

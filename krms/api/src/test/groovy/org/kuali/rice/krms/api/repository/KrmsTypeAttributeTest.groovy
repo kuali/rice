@@ -45,31 +45,22 @@ class KrmsTypeAttributeTest {
 	private static final String COMPONENT = "someOrgComponent"
 	
 	private static final String EXPECTED_XML = """
-		<KrmsTypeAttribute xmlns="http://rice.kuali.org/krms/repository/v2_0">
+		<krmsTypeAttribute xmlns="http://rice.kuali.org/krms/v2_0">
 			<typeId>1234ABCD</typeId>
 			<attributeDefinitionId>1001</attributeDefinitionId>
 			<sequenceNumber>1</sequenceNumber>
-			<active>1</active>
-		</KrmsTypeAttribute>
+			<active>true</active>
+		</krmsTypeAttribute>
 	"""
 
 	private static final String EXPECTED_XML_2 = """
-		<KrmsTypeAttribute xmlns="http://rice.kuali.org/krms/repository/v2_0">
+		<krmsTypeAttribute xmlns="http://rice.kuali.org/krms/v2_0">
 			<id>ORG_ATTR_1</id>
 			<typeId>1234ABCD</typeId>
 			<attributeDefinitionId>1001</attributeDefinitionId>
 			<sequenceNumber>1</sequenceNumber>
-			<label>Organization</label>
-			<active>1</active>
-			<componentName>someOrgComponent</componentName>
-			<attributeDefinition>
-				<id>1001</id>
-				<name>ORG</name>
-				<namespace>KRMS_UNIT_TEST</namespace>
-				<label>Organization</label>
-				<active>1</active>
-			</attributeDefinition>
-		</KrmsTypeAttribute>
+			<active>true</active>
+		</krmsTypeAttribute>
 	"""
 
 	@Test(expected=IllegalArgumentException.class)
@@ -140,9 +131,6 @@ class KrmsTypeAttributeTest {
 	void test_create_and_build_with_attribute_definition(){
 		KrmsTypeAttribute.Builder myAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
         myAttrBuilder.setId(ID)
-		myAttrBuilder.attributeDefinition(
-					KrmsAttributeDefinition.Builder.create(ATTR_DEF_ID, ORG_NAME, NAMESPACE)
-						.label(ORG_LABEL))
 		KrmsTypeAttribute myAttr = myAttrBuilder.build()
 		Assert.assertTrue(myAttr.isActive())
 		Assert.assertEquals(ID, myAttr.getId())
@@ -150,7 +138,6 @@ class KrmsTypeAttributeTest {
 		Assert.assertEquals(ATTR_DEF_ID, myAttr.getAttributeDefinitionId())
 		Assert.assertEquals(SEQUENCE_NUMBER_1, myAttr.getSequenceNumber())
 		Assert.assertTrue(myAttr.isActive())
-		Assert.assertEquals (ORG_LABEL, myAttr.getAttributeDefinition().getLabel())
 	}
 
 	@Test
@@ -184,9 +171,6 @@ class KrmsTypeAttributeTest {
 	public void testXmlMarshalingWithDefinition() {
 		KrmsTypeAttribute.Builder myAttrBuilder = KrmsTypeAttribute.Builder.create(TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
         myAttrBuilder.setId(ID)
-		myAttrBuilder.attributeDefinition(
-					KrmsAttributeDefinition.Builder.create(ATTR_DEF_ID, ORG_NAME, NAMESPACE)
-						.label(ORG_LABEL))
 		KrmsTypeAttribute myAttr = myAttrBuilder.build()
 		JAXBContext jc = JAXBContext.newInstance(KrmsTypeAttribute.class, KrmsAttributeDefinition.class)
 		Marshaller marshaller = jc.createMarshaller()

@@ -33,8 +33,4 @@ public interface KrmsTypeAttributeContract extends Identifiable, Inactivatable {
 	 */
 	public Integer getSequenceNumber();
 
-	/**
-	 * This is the definition of the attribute
-	 */
-	public KrmsAttributeDefinitionContract getAttributeDefinition();
 }

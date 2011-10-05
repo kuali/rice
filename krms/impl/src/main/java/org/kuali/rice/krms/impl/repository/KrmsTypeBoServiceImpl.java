@@ -17,12 +17,17 @@
 package org.kuali.rice.krms.impl.repository;
 
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 
+import javax.jws.WebParam;
 import java.util.*;
 
 public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
@@ -38,13 +43,13 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
 	@Override
 	public KrmsTypeDefinition createKrmsType(KrmsTypeDefinition krmsType) {
 		if (krmsType == null){
-	        throw new IllegalArgumentException("krmsType is null");
+	        throw new RiceIllegalArgumentException("krmsType is null");
 		}
 		final String nameKey = krmsType.getName();
 		final String namespaceKey = krmsType.getNamespace();
-		final KrmsTypeDefinition existing = getTypeByNameAndNamespace(nameKey, namespaceKey);
+		final KrmsTypeDefinition existing = getTypeByName(namespaceKey, nameKey);
 		if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
-            throw new IllegalStateException("the KRMS Type to create already exists: " + krmsType);			
+            throw new RiceIllegalStateException("the KRMS Type to create already exists: " + krmsType);
 		}
 		
 		KrmsTypeBo bo = (KrmsTypeBo)businessObjectService.save(KrmsTypeBo.from(krmsType));
@@ -60,12 +65,12 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
 	@Override
 	public void updateKrmsType(KrmsTypeDefinition krmsType) {
         if (krmsType == null) {
-            throw new IllegalArgumentException("krmsType is null");
+            throw new RiceIllegalArgumentException("krmsType is null");
         }
 		final String idKey = krmsType.getId();
 		final KrmsTypeBo existing = businessObjectService.findBySinglePrimaryKey(KrmsTypeBo.class, idKey);
         if (existing == null) {
-            throw new IllegalStateException("the KRMS type does not exist: " + krmsType);
+            throw new RiceIllegalStateException("the KRMS type does not exist: " + krmsType);
         }
         final KrmsTypeDefinition toUpdate;
         if (!existing.getId().equals(krmsType.getId())){
@@ -82,7 +87,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
     @Override
     public KrmsTypeDefinition getTypeById(final String id) {
         if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException("id is blank");
+            throw new RiceIllegalArgumentException("id was a null or blank value");
         }
 
         KrmsTypeBo krmsTypeBo = businessObjectService.findBySinglePrimaryKey(KrmsTypeBo.class, id);
@@ -91,29 +96,28 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
     }
 
     @Override
-    public KrmsTypeDefinition getTypeByNameAndNamespace(final String name, final String namespace) {
+    public KrmsTypeDefinition getTypeByName(final String namespaceCode, final String name) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was a null or blank value");
+        }
         if (StringUtils.isBlank(name)) {
-            throw new IllegalArgumentException("name is blank");
+            throw new RiceIllegalArgumentException("name was a null or blank value");
         }
-        if (StringUtils.isBlank(namespace)) {
-            throw new IllegalArgumentException("namespace is blank");
-        }
-
         final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("namespace", namespaceCode);
         map.put("name", name);
-        map.put("namespace", namespace);
-
+        
         KrmsTypeBo myType = businessObjectService.findByPrimaryKey(KrmsTypeBo.class, Collections.unmodifiableMap(map));
         return KrmsTypeBo.to(myType);
     }
 
     @Override
-    public List<KrmsTypeDefinition> findAllTypesByNamespace(final String namespace) {
-        if (StringUtils.isBlank(namespace)) {
-            throw new IllegalArgumentException("namespace is blank");
+    public List<KrmsTypeDefinition> findAllTypesByNamespace(final String namespaceCode) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was a null or blank value");
         }
         final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("namespace", namespace);
+        map.put("namespace", namespaceCode);
         map.put("active", Boolean.TRUE);
 
         Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
@@ -130,6 +134,35 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
         return convertListOfBosToImmutables(krmsTypeBos);
     }
 
+    @Override
+    public KrmsAttributeDefinition getAttributeDefinitionById(String attributeDefinitionId) {
+        if (StringUtils.isBlank(attributeDefinitionId)) {
+            throw new RiceIllegalArgumentException("attributeDefinitionId was a null or blank value");
+        }
+        KrmsAttributeDefinitionBo krmsAttributeDefinitionBo = businessObjectService.findBySinglePrimaryKey(KrmsAttributeDefinitionBo.class, attributeDefinitionId);
+        return KrmsAttributeDefinitionBo.to(krmsAttributeDefinitionBo);
+    }
+
+    @Override
+    public KrmsAttributeDefinition getAttributeDefinitionByName(@WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "name") String name) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was a null or blank value");
+        }
+        if (StringUtils.isBlank(name)) {
+            throw new RiceIllegalArgumentException("name was a null or blank value");
+        }
+        final Map<String, Object> criteria = new HashMap<String, Object>();
+        criteria.put("name", name);
+        criteria.put("namespace", namespaceCode);
+
+        Collection<KrmsAttributeDefinitionBo> attributeDefinitionBos = businessObjectService.findMatching(KrmsAttributeDefinitionBo.class, criteria);
+        if (CollectionUtils.isEmpty(attributeDefinitionBos)) {
+            return null;
+        }
+        return KrmsAttributeDefinitionBo.to(attributeDefinitionBos.iterator().next());
+    }
+
     /**
      * Sets the businessObjectService attribute value.
      *
@@ -142,10 +175,10 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
     /**
      * Converts a List<KrmsTypeBo> to an Unmodifiable List<KrmsType>
      *
-     * @param KrmsTypeBos a mutable List<KrmsTypeBo> to made completely immutable.
+     * @param krmsTypeBos a mutable List<KrmsTypeBo> to made completely immutable.
      * @return An unmodifiable List<KrmsType>
      */
-    List<KrmsTypeDefinition> convertListOfBosToImmutables(final Collection<KrmsTypeBo> krmsTypeBos) {
+    protected List<KrmsTypeDefinition> convertListOfBosToImmutables(final Collection<KrmsTypeBo> krmsTypeBos) {
         ArrayList<KrmsTypeDefinition> krmsTypes = new ArrayList<KrmsTypeDefinition>();
         for (KrmsTypeBo bo : krmsTypeBos) {
             KrmsTypeDefinition krmsType = KrmsTypeBo.to(bo);
@@ -154,25 +187,4 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
         return Collections.unmodifiableList(krmsTypes);
     }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#createKrmsTypeAttribute(org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute)
-	 */
-	@Override
-	public void createKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {
-		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#updateKrmsTypeAttribute(org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute)
-	 */
-	@Override
-	public void updateKrmsTypeAttribute(KrmsTypeAttribute krmsTypeAttribute) {
-		// TODO dseibert - THIS METHOD NEEDS JAVADOCS
-		throw new UnsupportedOperationException();
-	}
 }

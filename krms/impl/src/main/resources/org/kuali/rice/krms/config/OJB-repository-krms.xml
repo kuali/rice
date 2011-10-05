@@ -67,9 +67,6 @@
     	<field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER" />
     	<field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    	<reference-descriptor name="attributeDefinition" class-ref="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
-      		<foreignkey field-ref="id" />
-    	</reference-descriptor>
   	</class-descriptor>
   	
   	<!-- ContextBo fields:

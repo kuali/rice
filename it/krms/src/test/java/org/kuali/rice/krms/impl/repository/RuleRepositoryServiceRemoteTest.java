@@ -14,7 +14,7 @@ public class RuleRepositoryServiceRemoteTest extends RuleRepositoryServiceImplTe
     public void setupServiceUnderTest() {
         super.setupServiceUnderTest();
         RuleRepositoryService remoteProxy =
-                harness.publishEndpointAndReturnProxy(RuleRepositoryServiceImpl.class, this.getRuleRepositoryServiceImpl());
+                harness.publishEndpointAndReturnProxy(RuleRepositoryService.class, this.getRuleRepositoryServiceImpl());
         super.setRuleRepositoryService(remoteProxy);
     }
 

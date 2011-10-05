@@ -15,9 +15,11 @@
  */
 
 @javax.xml.bind.annotation.XmlSchema(
-                namespace = org.kuali.rice.krms.api.repository.RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0,
+                namespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0,
                 elementFormDefault=XmlNsForm.QUALIFIED)
 package org.kuali.rice.krms.api.repository.proposition;
+
+import org.kuali.rice.krms.api.KrmsConstants;
 
 import javax.xml.bind.annotation.XmlNsForm;
 

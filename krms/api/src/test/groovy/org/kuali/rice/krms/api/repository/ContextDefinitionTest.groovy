@@ -46,7 +46,7 @@ class ContextDefinitionTest {
 	private static final String AGENDA_ITEM_ID_1 = "AgendaItem1"
 
 	private static final String SMALL_CONTEXT = """
-<ns2:context xmlns:ns2="http://rice.kuali.org/krms/repository/v2_0">
+<ns2:context xmlns:ns2="http://rice.kuali.org/krms/v2_0">
     <ns2:id>CONTEXTID001</ns2:id>
     <ns2:namespace>Context1</ns2:namespace>
     <ns2:name>KRMS_TEST</ns2:name>
@@ -56,7 +56,7 @@ class ContextDefinitionTest {
 </ns2:context> """
 
 	private static final String SMALL_CONTEXT_2 = """
-<blah:context xmlns:blah="http://rice.kuali.org/krms/repository/v2_0">
+<blah:context xmlns:blah="http://rice.kuali.org/krms/v2_0">
     <blah:id>CONTEXTID001</blah:id>
     <blah:namespace>Context1</blah:namespace>
     <blah:name>KRMS_TEST</blah:name>
@@ -67,7 +67,7 @@ class ContextDefinitionTest {
 </blah:context> """
 
 	private static final String SMALL_CONTEXT_NO_NAMESPACE = """
-<context xmlns:="http://rice.kuali.org/krms/repository/v2_0">
+<context xmlns:="http://rice.kuali.org/krms/v2_0">
     <id>CONTEXTID001</id>
     <namespace>Context1</namespace>
     <name>KRMS_TEST</name>

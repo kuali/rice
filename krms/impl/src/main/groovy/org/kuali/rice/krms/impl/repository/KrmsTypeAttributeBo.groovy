@@ -12,7 +12,6 @@ public class KrmsTypeAttributeBo extends PersistableBusinessObjectBase implement
 	def String attributeDefinitionId
 	def Integer sequenceNumber
 	def boolean active
-	def KrmsAttributeDefinitionBo attributeDefinition
 
 	/**
 	 * Converts a mutable bo to it's immutable counterpart
@@ -31,21 +30,16 @@ public class KrmsTypeAttributeBo extends PersistableBusinessObjectBase implement
 	 * @return the mutable bo
 	 */
 	static KrmsTypeAttributeBo from(KrmsTypeAttribute im) {
-		if (im == null) { return null }
-
+		if (im == null) {
+            return null
+        }
 		KrmsTypeAttributeBo bo = new KrmsTypeAttributeBo()
 		bo.id = im.id
 		bo.typeId = im.typeId
 		bo.attributeDefinitionId = im.attributeDefinitionId
 		bo.sequenceNumber = im.sequenceNumber
 		bo.active = im.active
-		bo.attributeDefinition = KrmsAttributeDefinitionBo.from(im.attributeDefinition)
 		return bo
-	}
-	
-	@Override
-	KrmsAttributeDefinitionBo getAttributeDefinition() {
-		return attributeDefinition
 	}
 	
 }

@@ -132,10 +132,10 @@ class KrmsTypeBoServiceImplTest {
 	}
 
 	@Test
-	public void testGetByNameAndNamespace_null_type_id() {
+	public void testGetByName_null_name() {
 		KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
 		shouldFail(IllegalArgumentException.class) {
-			KrmsTypeDefinition myType = service.getTypeByNameAndNamespace(null,"KRMS_TEST")
+			KrmsTypeDefinition myType = service.getTypeByName("KRMS_TEST", null)
 		}
 	}
 
@@ -143,7 +143,7 @@ class KrmsTypeBoServiceImplTest {
 	public void testGetByNameAndNamespace_null_namespace() {
 		KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
 		shouldFail(IllegalArgumentException.class) {
-			KrmsTypeDefinition myType = service.getTypeByNameAndNamespace("Student",null)
+			KrmsTypeDefinition myType = service.getTypeByName(null, "Student")
 		}
 	}
 
@@ -156,7 +156,7 @@ class KrmsTypeBoServiceImplTest {
 
 		KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
 		service.setBusinessObjectService(bos)
-		KrmsTypeDefinition myType = service.getTypeByNameAndNamespace("Student","KRMS_TEST")
+		KrmsTypeDefinition myType = service.getTypeByName("KRMS_TEST", "Student")
 
 		Assert.assertEquals(KrmsTypeBo.to(sampleTypesKeyedByName.get("Student")), myType)
 		mockBusinessObjectService.verify(bos)

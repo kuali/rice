@@ -42,7 +42,7 @@ class PropositionParameterTest {
 	
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
-		<PropositionParameter xmlns="http://rice.kuali.org/krms/repository/v2_0">
+		<PropositionParameter xmlns="http://rice.kuali.org/krms/v2_0">
 			<id>1001</id>
 			<propId>202</propId>
 			<value>campusCode</value>

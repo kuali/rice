@@ -377,7 +377,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "TermSpecification";
+		final static String ROOT_ELEMENT_NAME = "termSpecification";
 		final static String TYPE_NAME = "TermSpecificationType";
 	}
 	

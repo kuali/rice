@@ -53,26 +53,7 @@ class KewTypeAttributeTest {
 			<active>1</active>
 		</KewTypeAttribute>
 	"""
-
-	private static final String EXPECTED_XML_2 = """
-		<KewTypeAttribute xmlns="http://rice.kuali.org/kew/repository/v2_0">
-			<id>ORG_ATTR_1</id>
-			<typeId>1234ABCD</typeId>
-			<attributeDefinitionId>1001</attributeDefinitionId>
-			<sequenceNumber>1</sequenceNumber>
-			<label>Organization</label>
-			<active>1</active>
-			<componentName>someOrgComponent</componentName>
-			<attributeDefinition>
-				<id>1001</id>
-				<name>ORG</name>
-				<namespace>KEW_UNIT_TEST</namespace>
-				<label>Organization</label>
-				<active>1</active>
-			</attributeDefinition>
-		</KewTypeAttribute>
-	"""
-
+    
 	@Test(expected=IllegalArgumentException.class)
 	void test_Builder_create_fail_all_null() {
 		KewTypeAttribute.Builder.create(null, null, null, null)
@@ -149,22 +130,6 @@ class KewTypeAttributeTest {
 	}
 
 	@Test
-	void test_create_and_build_with_attribute_definition(){
-		KewTypeAttribute myAttr = KewTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-				.attributeDefinition(
-					KewAttributeDefinition.Builder.create(ATTR_DEF_ID, ORG_NAME, NAMESPACE)
-						.label(ORG_LABEL))
-				.build()
-		Assert.assertTrue(myAttr.isActive())
-		Assert.assertEquals(ID, myAttr.getId())
-		Assert.assertEquals(TYPE_ID, myAttr.getTypeId())
-		Assert.assertEquals(ATTR_DEF_ID, myAttr.getAttributeDefinitionId())
-		Assert.assertEquals(SEQUENCE_NUMBER_1, myAttr.getSequenceNumber())
-		Assert.assertTrue(myAttr.isActive())
-		Assert.assertEquals (ORG_LABEL, myAttr.getAttributeDefinition().getLabel())
-	}
-
-	@Test
 	public void testXmlMarshaling() {
 		KewTypeAttribute myAttr = KewTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 				.build()
@@ -190,27 +155,6 @@ class KewTypeAttributeTest {
 		Assert.assertEquals(ATTR_DEF_ID, myAttr.attributeDefinitionId)
 		Assert.assertEquals(SEQUENCE_NUMBER_1, myAttr.sequenceNumber)
 		Assert.assertTrue(myAttr.active)
-	}
-
-	@Test
-	public void testXmlMarshalingWithDefinition() {
-		KewTypeAttribute myAttr = KewTypeAttribute.Builder.create(ID, TYPE_ID, ATTR_DEF_ID, SEQUENCE_NUMBER_1)
-				.attributeDefinition(
-					KewAttributeDefinition.Builder.create(ATTR_DEF_ID, ORG_NAME, NAMESPACE)
-						.label(ORG_LABEL))
-				.build()
-		JAXBContext jc = JAXBContext.newInstance(KewTypeAttribute.class, KewAttributeDefinition.class)
-		Marshaller marshaller = jc.createMarshaller()
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true)
-		StringWriter sw = new StringWriter()
-		marshaller.marshal(myAttr, sw)
-		String xml = sw.toString()
-		print xml
-		
-		Unmarshaller unmarshaller = jc.createUnmarshaller();
-		Object actual = unmarshaller.unmarshal(new StringReader(xml))
-		Object expected = unmarshaller.unmarshal(new StringReader(EXPECTED_XML_2))
-		Assert.assertEquals(expected, actual)
 	}
 
 }

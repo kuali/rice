@@ -64,9 +64,7 @@ class KewTypeBoServiceImplTest {
 	// create sample KewType builder and build
 	private static KewTypeAttribute.Builder unitNumAttrBuilder = KewTypeAttribute.Builder.create(ATTR_ID_1, TYPE_ID, UNIT_NUM_ATTR_DEF_ID, SEQUENCE_NUMBER_1)
 	private static KewTypeAttribute.Builder campusAttrBuilder = KewTypeAttribute.Builder.create(ATTR_ID_2, TYPE_ID, CAMPUS_ATTR_DEF_ID, SEQUENCE_NUMBER_2)  
-    private static KewTypeAttribute newAttr = KewTypeAttribute.Builder.create(ATTR_ID_3, TYPE_ID, NEW_ATTR_DEF_ID, SEQUENCE_NUMBER_3)
-                .attributeDefinition(KewAttributeDefinition.Builder.create(NEW_ATTR_DEF_ID, ORG_NAME, NAMESPACE)
-                        .label(ORG_LABEL)).build()
+    private static KewTypeAttribute newAttr = KewTypeAttribute.Builder.create(ATTR_ID_3, TYPE_ID, NEW_ATTR_DEF_ID, SEQUENCE_NUMBER_3).build()
                         
 	private static List<KewTypeAttribute.Builder> attrs = Arrays.asList(unitNumAttrBuilder, campusAttrBuilder)
 	private static KewTypeDefinition TEST_KEW_TYPE_DEF = KewTypeDefinition.Builder.create(TYPE_ID, NAME, NAMESPACE)

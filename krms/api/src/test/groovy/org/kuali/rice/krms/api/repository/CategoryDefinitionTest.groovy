@@ -17,7 +17,7 @@ class CategoryDefinitionTest {
     private static final Long VERSION_NUMBER = 1;
 
     private static final String EXPECTED_XML = """
-        <category xmlns="http://rice.kuali.org/krms/repository/v2_0">
+        <category xmlns="http://rice.kuali.org/krms/v2_0">
             <id>1</id>
 	        <name>category1</name>
 	        <namespace>namespace</namespace>

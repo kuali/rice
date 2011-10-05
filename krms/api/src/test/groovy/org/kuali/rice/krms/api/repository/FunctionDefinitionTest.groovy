@@ -63,7 +63,7 @@ class FunctionDefinitionTest {
     private static final Long CTGRY2_VERSION_NUMBER = 1;
 
 	private static final String XML = """
-<function xmlns="http://rice.kuali.org/krms/repository/v2_0">
+<function xmlns="http://rice.kuali.org/krms/v2_0">
 	<id>1</id>
 	<namespace>KRMS</namespace>
 	<name>myFunction</name>

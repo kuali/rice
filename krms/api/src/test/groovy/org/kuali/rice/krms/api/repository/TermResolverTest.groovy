@@ -51,7 +51,7 @@ class TermResolverTest {
 	private static final String PARAM_NAME="paramName"
 	
 	private static final String EXPECTED_XML = """
-	<termResolverDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/repository/v2_0">
+	<termResolverDefinition xmlns:ns2="http://rice.kuali.org/core/v2_0" xmlns="http://rice.kuali.org/krms/v2_0">
     <id>123TERMRESOLVER</id>
     <name>termResolver-name</name>
     <namespace>foo-namespace</namespace>

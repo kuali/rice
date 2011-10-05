@@ -29,7 +29,6 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 		KrmsTypeAttribute.Elements.ATTR_DEFN_ID,
 		KrmsTypeAttribute.Elements.SEQ_NO,
 		KrmsTypeAttribute.Elements.ACTIVE,
-		KrmsTypeAttribute.Elements.ATTR_DEFN,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class KrmsTypeAttribute extends AbstractDataTransferObject implements KrmsTypeAttributeContract {
@@ -45,9 +44,7 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 	private Integer sequenceNumber;
 	@XmlElement(name = Elements.ACTIVE, required = false)
 	private boolean active;
-	@XmlElement(name = Elements.ATTR_DEFN, required = false)
-	private KrmsAttributeDefinition attributeDefinition;
-	
+
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
@@ -61,7 +58,6 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
     	this.attributeDefinitionId = null;
     	this.sequenceNumber = null;
     	this.active = false;
-    	this.attributeDefinition = null;
     }
     
     /**
@@ -76,9 +72,6 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
         this.attributeDefinitionId = builder.getAttributeDefinitionId();
         this.sequenceNumber = builder.getSequenceNumber();
         this.active = builder.isActive();
-        if (builder.getAttributeDefinition() != null) {
-        	this.attributeDefinition = builder.getAttributeDefinition().build();
-        }
     }
     
 	public String getId() {
@@ -101,10 +94,6 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 		return this.active; 
 	}
 
-	public KrmsAttributeDefinition getAttributeDefinition() {
-		return this.attributeDefinition;
-	}
-	
 	/**
      * This builder is used to construct instances of KrmsTypeAttribute.  
      */
@@ -116,7 +105,6 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
         private String attributeDefinitionId;
         private Integer sequenceNumber;
         private boolean active;
-        private KrmsAttributeDefinition.Builder attributeDefinition;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
@@ -128,11 +116,6 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 			setActive(true);
         }
 
-        public Builder attributeDefinition(KrmsAttributeDefinition.Builder attributeDefinition){
-        	setAttributeDefinition(attributeDefinition);
-        	return this;
-        }
-        
         /**
          * Creates a builder from the given parameters.
          * 
@@ -154,11 +137,6 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
         			contract.getAttributeDefinitionId(),
         			contract.getSequenceNumber());
             builder.setId(contract.getId());
-        	if (contract.getAttributeDefinition() != null){
-        		KrmsAttributeDefinition.Builder attrBuilder = 
-        			KrmsAttributeDefinition.Builder.create(contract.getAttributeDefinition());
-        		builder.setAttributeDefinition(attrBuilder);
-        	}
         	return builder;
         }
 
@@ -191,12 +169,7 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 			}
 			this.sequenceNumber = sequenceNumber;
 		}
-		
-		public void setAttributeDefinition(KrmsAttributeDefinition.Builder attributeDefinition) {
-			this.attributeDefinition = attributeDefinition;
-			//TODO: verify that the attributeDefinitionID field matches the id field in the builder
-		}
-		
+
 		public void setActive(boolean active) {
 			this.active = active;
 		}
@@ -216,11 +189,6 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 		public Integer getSequenceNumber() {
 			return sequenceNumber;
 		}
-
-		public KrmsAttributeDefinition.Builder getAttributeDefinition() {
-			return attributeDefinition;
-		}
-
 
 		public boolean isActive() {
 			return active;
@@ -242,7 +210,7 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 	 * Defines some internal constants used on this class.
 	 */
 	static class Constants {
-		final static String ROOT_ELEMENT_NAME = "KrmsTypeAttribute";
+		final static String ROOT_ELEMENT_NAME = "krmsTypeAttribute";
 		final static String TYPE_NAME = "KrmsTypeAttributeType";
 	}
 	
@@ -256,6 +224,5 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 		final static String ATTR_DEFN_ID = "attributeDefinitionId";
 		final static String SEQ_NO = "sequenceNumber";
 		final static String ACTIVE = "active";
-		final static String ATTR_DEFN = "attributeDefinition";
 	}
 }

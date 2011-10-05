@@ -1,17 +1,17 @@
 package org.kuali.rice.krms.api.repository;
 
-import java.util.List;
+import org.kuali.rice.krms.api.KrmsConstants;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-
-import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextSelectionCriteria;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import java.util.List;
 
 /**
  * The rule repository contains all of the information about context definitions,
@@ -20,7 +20,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "ruleRepositoryService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
+@WebService(name = "ruleRepositoryService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleRepositoryService {
 

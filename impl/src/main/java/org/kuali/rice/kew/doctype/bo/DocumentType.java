@@ -58,6 +58,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -132,6 +133,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     private String label;
     @Column(name = "PREV_DOC_TYP_VER_NBR")
     private String previousVersionId;
+    /**
+     * The id of the document which caused the last modification of this document type.
+     * Null if this doc type was never modified via a document routing (UI).
+     */
     @Column(name = "DOC_HDR_ID")
     private String documentId;
 
@@ -1027,6 +1032,14 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
+     * Set the immediate super user workgroup id field
+     * @param suWorkgroupId the super user workgroup id
+     */
+    public void setSuperUserWorkgroupIdNoInheritence(String suWorkgroupId) {
+        this.workgroupId = suWorkgroupId;
+    }
+
+    /**
      * Returns true if this DocumentType has a super user group defined.
      */
     public boolean isSuperUserGroupDefined() {
@@ -1657,5 +1670,39 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         builder.setApplicationId(documentTypeBo.getActualApplicationId());
         return builder.build();
     }
-    
+
+    public static DocumentType from(org.kuali.rice.kew.api.doctype.DocumentTypeContract dt) {
+        // DocumentType BO and DTO are not symmetric
+        // set what fields we can
+        DocumentType ebo = new DocumentType();
+        //ebo.setActionsUrl();
+        ebo.setDocumentTypeId(dt.getId());
+        ebo.setActive(dt.isActive());
+        ebo.setActualApplicationId(dt.getApplicationId());
+        //ebo.setActualNotificationFromAddress();
+        ebo.setBlanketApproveWorkgroupId(dt.getBlanketApproveGroupId());
+        ebo.setCurrentInd(dt.isCurrent());
+        ebo.setDescription(dt.getDescription());
+        ebo.setVersionNumber(dt.getVersionNumber());
+        ebo.setVersion(dt.getDocumentTypeVersion());
+        ebo.setUnresolvedDocHandlerUrl(dt.getDocHandlerUrl());
+        ebo.setUnresolvedDocSearchHelpUrl(dt.getDocSearchHelpUrl());
+        ebo.setUnresolvedHelpDefinitionUrl(dt.getHelpDefinitionUrl());
+        ebo.setLabel(dt.getLabel());
+        ebo.setName(dt.getName());
+        ebo.setDocTypeParentId(dt.getParentId());
+        ebo.setPostProcessorName(dt.getPostProcessorName());
+        ebo.setSuperUserWorkgroupIdNoInheritence(dt.getSuperUserGroupId());
+        List<DocumentTypePolicy> policies = new ArrayList<DocumentTypePolicy>();
+        if (dt.getPolicies() != null) {
+            for (Map.Entry<org.kuali.rice.kew.api.doctype.DocumentTypePolicy, String> entry: dt.getPolicies().entrySet()) {
+                // NOTE: The policy value is actually a boolean field stored to a Decimal(1) column (although the db column is named PLCY_NM)
+                // I'm not sure what the string value should be but the BO is simply toString'ing the Boolean value
+                // so I am assuming here that "true"/"false" are the acceptable values
+                policies.add(new DocumentTypePolicy(entry.getKey().getCode(), "true".equals(entry.getValue())));
+            }
+        }
+        ebo.setDocumentTypePolicies(policies);
+        return ebo;
+    }
 }

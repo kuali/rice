@@ -17,20 +17,19 @@ public class AgendaAuthorizationServiceImpl implements AgendaAuthorizationServic
 
     @Override
     public boolean isAuthorized(String permissionName, String contextId) {
-        return true;
-//        ContextDefinition context = getContextBoService().getContextByContextId(contextId);
-//
-//        Map qualification = new HashMap<String, String>();
-//        if (contextId != null) {
-//            qualification.put(NAMESPACE_CODE, context.getNamespace());
-//        }
-//        boolean isAuthorized = getPermissionService().isAuthorized(
-//                GlobalVariables.getUserSession().getPrincipalId(),
-//                KrmsConstants.KRMS_NAMESPACE,
-//                permissionName,
-//                qualification,
-//                new HashMap<String, String>());
-//        return isAuthorized;
+        ContextDefinition context = getContextBoService().getContextByContextId(contextId);
+
+        Map qualification = new HashMap<String, String>();
+        if (contextId != null) {
+            qualification.put(NAMESPACE_CODE, context.getNamespace());
+        }
+        boolean isAuthorized = getPermissionService().isAuthorized(
+                GlobalVariables.getUserSession().getPrincipalId(),
+                KrmsConstants.KRMS_NAMESPACE,
+                permissionName,
+                qualification,
+                new HashMap<String, String>());
+        return isAuthorized;
     }
 
     /**

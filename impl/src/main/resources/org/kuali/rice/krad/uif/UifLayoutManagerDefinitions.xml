@@ -77,14 +77,15 @@
         scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
     <property name="addLineGroup">
-      <bean parent="StackedGroupPrototype"/>
+      <bean parent="StackedGroupPrototype" p:styleClasses="kr-collection-item,kr-addLine"/>
     </property>
     <property name="lineGroupPrototype">
-      <bean parent="StackedGroupPrototype"/>
+      <bean parent="StackedGroupPrototype" p:styleClasses="kr-collection-item"/>
     </property>
     <property name="subCollectionFieldGroupPrototype">
       <bean parent="FieldGroup" p:labelField.render="false" p:group.header.render="false"
-            p:colSpan="@{#parent.layoutManager.numberOfColumns}"/>
+            p:colSpan="@{#parent.layoutManager.numberOfColumns}"
+            p:styleClasses="kr-subCollection"/>
     </property>
     <property name="selectFieldPrototype">
       <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?">
@@ -96,9 +97,9 @@
   </bean>
 
   <bean id="StackedGroupPrototype" parent="StackedGroupPrototype-parentBean"/>
-  <bean id="StackedGroupPrototype-parentBean" abstract="true" parent="GroupGridLayout">
+  <bean id="StackedGroupPrototype-parentBean" abstract="true" parent="GroupGridLayout" p:accordion.render="false">
     <property name="header">
-      <bean parent="HeaderThree" p:styleClasses="kr-collection-header"/>
+      <bean parent="HeaderFour" p:headerStyleClasses="kr-section-subhead kr-collection-item-header"/>
     </property>
     <property name="footer">
       <bean parent="Footer"/>

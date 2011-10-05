@@ -209,12 +209,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="header.group">
          <bean parent="Group_ShowHideInactive" p:styleClasses="group-actions"/>
       </property>
+      <property name="header.headerLevel" value="h3"/>
+      <property name="header.headerStyleClasses" value="kr-page-section-title kr-collectionGroup-header"/>
       <property name="collectionLookup">
         <bean parent="QuickFinder" p:multipleValuesSelect="true" p:quickfinderActionField.styleClasses="kr-mvQuickfinder-cntr"
               p:quickfinderActionField.label="Look Up/Add Multiple Account Lines"/>
       </property>
       <property name="layoutManager">
-        <bean parent="StackedLayoutManager" p:addLineGroup.styleClasses="kr-addLine"/>
+        <bean parent="StackedLayoutManager"/>
       </property>
   </bean>
 
@@ -257,7 +259,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="lineGroupPrototype">
           <bean parent="Group">
             <property name="header">
-              <bean parent="HeaderThree" p:styleClasses="kr-collection-header"/>
+              <bean parent="HeaderFour" p:headerStyleClasses="kr-section-subhead kr-collection-header"/>
             </property>
             <property name="accordion.renderImage" value="false"/>
             <property name="accordion.defaultOpen" value="true"/>

@@ -126,7 +126,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
       </property> 
-      <property name="styleClasses" value="fl-theme-ks"/>
+      <property name="styleClasses" value="kr-footer"/>
   </bean>  
   
   <!-- Common Footers -->

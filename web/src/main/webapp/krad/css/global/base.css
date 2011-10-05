@@ -321,6 +321,10 @@ div.kr-addLine, span.kr-addLine{
     border: 1px solid #D3D3D3 !important;
 }
 
+.kr-footer{
+    text-align: center;
+}
+
 /* JQUERY - e.g.: ui-calendar *******************************************/
 
 

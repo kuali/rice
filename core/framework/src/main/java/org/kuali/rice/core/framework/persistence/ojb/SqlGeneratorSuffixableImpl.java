@@ -49,7 +49,7 @@ public class SqlGeneratorSuffixableImpl extends SqlGeneratorDefaultImpl {
         if (logger.isDebugEnabled()) {
             boolean masochisticSqlLogging = true;
             if ( masochisticSqlLogging ) {
-            	logger.debug("SQL: " + sql.getStatement() + "\n" + query.getCriteria() + "\n" + ExceptionUtils.getStackTrace(new Throwable()) );
+            	logger.debug("SQL: " + sql.getStatement() + "\n" + query.getCriteria() + "\nFor platform: " + getPlatform().getClass().toString() + "\n" + ExceptionUtils.getStackTrace(new Throwable()));
             } else {
                 logger.debug("SQL: " + sql.getStatement() );
             }

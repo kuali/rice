@@ -14,12 +14,12 @@
  *  limitations under the License.
  */
 
-@javax.xml.bind.annotation.XmlSchema(namespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0, elementFormDefault=XmlNsForm.QUALIFIED)
+@javax.xml.bind.annotation.XmlSchema(namespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, elementFormDefault=XmlNsForm.QUALIFIED)
 package org.kuali.rice.kew.api.repository.type;
 
-import javax.xml.bind.annotation.XmlNsForm;
+import org.kuali.rice.kew.api.KewApiConstants;
 
-import org.kuali.rice.kew.api.repository.RepositoryConstants;
+import javax.xml.bind.annotation.XmlNsForm;
 
 
 

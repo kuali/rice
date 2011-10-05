@@ -48,7 +48,7 @@ class KewTypeTest {
     private static final Integer SEQUENCE_NUMBER_2 = new Integer(2)
 	
 	String KC_UNIT_TYPE_XML = """
-			<KEWType xmlns="http://rice.kuali.org/kew/repository/v2_0">
+			<KEWType xmlns="http://rice.kuali.org/kew/v2_0">
 				<id>KC_MAP123</id>
 				<name>KC_UNIT</name>
 				<namespace>KEW_TEST</namespace>
@@ -72,7 +72,7 @@ class KewTypeTest {
 	"""
 	
     String PLAIN_TYPE_XML = """
-    <KEWType xmlns="http://rice.kuali.org/kew/repository/v2_0">
+    <KEWType xmlns="http://rice.kuali.org/kew/v2_0">
       <id>KC_MAP123</id>
       <name>KC_UNIT</name>
       <namespace>KEW_TEST</namespace>

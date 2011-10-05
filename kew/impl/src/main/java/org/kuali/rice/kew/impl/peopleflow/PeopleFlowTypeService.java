@@ -4,9 +4,9 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
-import org.kuali.rice.kew.api.repository.RepositoryConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * <p>Interface for services that implement the type-specific behaviors of people flows.</p>
  */
-@WebService(name = "PeopleFlowTypeService", targetNamespace = RepositoryConstants.Namespaces.REPOSITORY_NAMESPACE_2_0)
+@WebService(name = "PeopleFlowTypeService", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PeopleFlowTypeService {
 

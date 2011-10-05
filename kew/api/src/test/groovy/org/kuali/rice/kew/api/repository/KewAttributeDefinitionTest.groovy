@@ -42,7 +42,7 @@ class KewAttributeDefinitionTest {
 	
 	private static final Integer SEQUENCE_NUMBER_1 = new Integer(1)
 	private static final String EXPECTED_XML = """
-		<KewAttributeDefinition xmlns="http://rice.kuali.org/kew/repository/v2_0">
+		<KewAttributeDefinition xmlns="http://rice.kuali.org/kew/v2_0">
 			<id>1001</id>
 			<name>ORG</name>
 			<namespace>KEW_UNIT_TEST</namespace>

@@ -150,6 +150,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
             setName(name);
             setNamespace(namespace);
 			setActive(true);
+            setAttributes(new ArrayList<KrmsTypeAttribute.Builder>());
         }
 
         public Builder serviceName(String serviceName){

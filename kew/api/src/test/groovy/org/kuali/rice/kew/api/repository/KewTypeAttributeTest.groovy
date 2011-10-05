@@ -45,7 +45,7 @@ class KewTypeAttributeTest {
 	private static final String COMPONENT = "someOrgComponent"
 	
 	private static final String EXPECTED_XML = """
-		<KewTypeAttribute xmlns="http://rice.kuali.org/kew/repository/v2_0">
+		<KewTypeAttribute xmlns="http://rice.kuali.org/kew/v2_0">
 			<id>ORG_ATTR_1</id>
 			<typeId>1234ABCD</typeId>
 			<attributeDefinitionId>1001</attributeDefinitionId>

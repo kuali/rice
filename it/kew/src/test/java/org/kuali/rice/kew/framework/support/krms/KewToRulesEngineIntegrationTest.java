@@ -48,22 +48,26 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
 
     private BusinessObjectService businessObjectService;
 
+    private KrmsAttributeDefinition peopleFlowIdAttributeDefinition;
     private KrmsTypeDefinition approvalPeopleFlowActionType;
+    private RuleBo ruleBo;
+
+
 
     protected void loadTestData() throws Exception {
         loadXmlFile("KewToRulesEngineIntegrationTest.xml");
         businessObjectService = KRADServiceLocator.getBusinessObjectService();
         assertNotNull(businessObjectService);
-        PeopleFlowDefinition peopleFlow = createSimplePeopleFlow();
-        KrmsAttributeDefinition peopleFlowIdAttributeDefinition = createPeopleFlowIdAttributeDefinition();
+        PeopleFlowDefinition peopleFlow = createFirstPeopleFlow();
+        this.peopleFlowIdAttributeDefinition = createPeopleFlowIdAttributeDefinition();
         KrmsAttributeDefinitionBo eventAttributeDefinition = createEventAttributeDefinition();
-        approvalPeopleFlowActionType = createApprovalPeopleFlowActionType(peopleFlowIdAttributeDefinition);
-        RuleBo ruleBo = createRule(approvalPeopleFlowActionType, peopleFlowIdAttributeDefinition, peopleFlow.getId());
+        this.approvalPeopleFlowActionType = createApprovalPeopleFlowActionType(peopleFlowIdAttributeDefinition);
+        this.ruleBo = createRule(approvalPeopleFlowActionType, peopleFlowIdAttributeDefinition, peopleFlow.getId());
         ContextBo contextBo = createContext();
         createAgenda(ruleBo, contextBo, eventAttributeDefinition);
     }
 
-    private PeopleFlowDefinition createSimplePeopleFlow() {
+    private PeopleFlowDefinition createFirstPeopleFlow() {
         String user1 = getPrincipalIdForName("user1");
         String user2 = getPrincipalIdForName("user2");
         String testWorkgroup = getGroupIdForName("KR-WKFLW", "TestWorkgroup");
@@ -258,6 +262,82 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
 
         // all approvals have been taken, document should now be final
         assertTrue(document.isFinal());
+    }
+
+    @Test
+    public void testMultipleKrmsPeopleFlowRules() throws Exception {
+        // first, let's add a second peopleflow to the rule action setup
+        addAnotherPeopleFlow(ruleBo);
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user3"), SIMPLE_DOCUMENT_TYPE);
+        document.route("");
+        assertTrue(document.isEnroute());
+
+        String user1 = getPrincipalIdForName("user1");
+        String user2 = getPrincipalIdForName("user2");
+        String ewestfal = getPrincipalIdForName("ewestfal"); // ewestfal is a member of TestWorkgroup
+        // at this point, the PeopleFlow should have triggered requests to user1, user2, and TestWorkgroup, in that order
+        // but only the request to user1 should be activated
+        document.switchPrincipal(ewestfal);
+        assertFalse(document.isApprovalRequested());
+        document.switchPrincipal(user2);
+        assertFalse(document.isApprovalRequested());
+        document.switchPrincipal(user1);
+        assertTrue(document.isApprovalRequested());
+        // there should also only be 3 action requests, action request to second peopleflow should not yet be generated
+        assertEquals(3, document.getRootActionRequests().size());
+
+        // now approve as user1
+        document.approve("");
+        assertTrue(document.isEnroute());
+
+        // should now be activated to user2
+        document.switchPrincipal(user2);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+        assertTrue(document.isEnroute());
+
+        // should now be activated to TestWorkgroup, of which ewestfal is a member
+        document.switchPrincipal(ewestfal);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+
+        // document should still be enroute, and now we should be routed to second peopleflow
+        assertTrue(document.isEnroute());
+        String testuser1 = getPrincipalIdForName("testuser1");
+        document.switchPrincipal(testuser1);
+        assertTrue(document.isApprovalRequested());
+        // there should be 4 action requests total now
+        assertEquals(4, document.getRootActionRequests().size());
+        document.approve("");
+
+        // all approvals have been taken, document should now be final
+        assertTrue(document.isFinal());
+    }
+
+    private void addAnotherPeopleFlow(RuleBo ruleBo) {
+        String testuser1 = getPrincipalIdForName("testuser1");
+        PeopleFlowDefinition.Builder peopleFlowBuilder = PeopleFlowDefinition.Builder.create("TEST", "PeopleFlow2");
+        peopleFlowBuilder.addPrincipal(testuser1).setPriority(1);
+        PeopleFlowDefinition peopleFlow =  KewApiServiceLocator.getPeopleFlowService().createPeopleFlow(peopleFlowBuilder.build());
+
+        // create the action with an attribute pointing to a peopleflow
+        ActionBo peopleFlowAction = new ActionBo();
+        ruleBo.getActions().add(peopleFlowAction);
+        peopleFlowAction.setNamespace("TEST");
+        peopleFlowAction.setName("PeopleFlowApprovalAction2");
+        peopleFlowAction.setSequenceNumber(2);
+        peopleFlowAction.setTypeId(approvalPeopleFlowActionType.getId());
+        Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
+        peopleFlowAction.setAttributeBos(actionAttributes);
+        ActionAttributeBo actionAttribute = new ActionAttributeBo();
+        actionAttributes.add(actionAttribute);
+        actionAttribute.setAttributeDefinitionId(peopleFlowIdAttributeDefinition.getId());
+        actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowIdAttributeDefinition));
+        actionAttribute.setValue(peopleFlow.getId());
+
+        businessObjectService.save(ruleBo);
+        
     }
 
 }

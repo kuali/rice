@@ -280,7 +280,7 @@ public class View extends ContainerBase {
      */
     public PageGroup getCurrentPage() {
         for (Group pageGroup : this.getItems()) {
-            if (StringUtils.equals(pageGroup.getId(), getCurrentPageId())) {
+            if (StringUtils.equals(pageGroup.getId(), getCurrentPageId()) && pageGroup instanceof PageGroup) {
                 return (PageGroup) pageGroup;
             }
         }

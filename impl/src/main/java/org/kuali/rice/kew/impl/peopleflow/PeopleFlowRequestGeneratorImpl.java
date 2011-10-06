@@ -1,20 +1,38 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.peopleflow.MemberType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
+import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
+import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
+import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 
+import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import javax.xml.namespace.QName;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Reference implementation of the {@code PeopleFlowRequestGenerator} which is responsible for generating Action
@@ -23,6 +41,8 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerator {
+
+    private KewTypeRepositoryService typeRepositoryService;
 
     @Override
     public List<ActionRequestValue> generateRequests(RouteContext routeContext, PeopleFlowDefinition peopleFlow, ActionRequestType actionRequested) {
@@ -39,7 +59,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             member.getActionRequestPolicy().getCode();
         }
         if (MemberType.ROLE == member.getMemberType()) {
-            generateRequestForRoleMember(context, member);
+            generateRequestForRoleMember(context, member, actionRequestPolicyCode);
         } else {
             ActionRequestValue actionRequest = context.getActionRequestFactory().addRootActionRequest(
                     context.getActionRequested().getCode(), member.getPriority(), toRecipient(member), "",
@@ -53,9 +73,28 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         }
     }
 
-    protected void generateRequestForRoleMember(Context context, PeopleFlowMember member) {
-        // TODO...
+    protected void generateRequestForRoleMember(Context context, PeopleFlowMember member, String actionRequestPolicyCode) {
+        Map<String, String> roleQualifiers = loadRoleQualifiers(context, member);
+
+        // TODO... take the role qualifiers, resolve role membership, rock n' roll
+        
         throw new UnsupportedOperationException("implement me!");
+    }
+
+    protected Map<String, String> loadRoleQualifiers(Context context, PeopleFlowMember member) {
+        PeopleFlowTypeService peopleFlowTypeService = context.getPeopleFlowTypeService();
+        if (peopleFlowTypeService != null) {
+            Document document = DocumentRouteHeaderValue.to(context.getRouteContext().getDocument());
+            DocumentRouteHeaderValueContent content = new DocumentRouteHeaderValueContent(document.getDocumentId());
+            content.setDocumentContent(context.getRouteContext().getDocumentContent().getDocContent());
+            DocumentContent documentContent = DocumentRouteHeaderValueContent.to(content);
+            Map<String, String> roleQualifiers = peopleFlowTypeService.resolveRoleQualifiers(
+                    context.getPeopleFlow().getTypeId(), member.getMemberId(), document, documentContent);
+            if (roleQualifiers != null) {
+                return roleQualifiers;
+            }
+        }
+        return Collections.emptyMap();
     }
 
     private Recipient toRecipient(PeopleFlowMember member) {
@@ -82,16 +121,28 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         return recipient;
     }
 
+    public KewTypeRepositoryService getTypeRepositoryService() {
+        return typeRepositoryService;
+    }
+
+    public void setTypeRepositoryService(KewTypeRepositoryService typeRepositoryService) {
+        this.typeRepositoryService = typeRepositoryService;
+    }
+
     /**
      * A simple class used to hold context during the PeopleFlow action request generation process.  Construction of
      * the context will validate that the given values are valid, non-null values where appropriate.
      */
-    static final class Context {
+    final class Context {
 
         private final RouteContext routeContext;
         private final PeopleFlowDefinition peopleFlow;
         private final ActionRequestType actionRequested;
         private final ActionRequestFactory actionRequestFactory;
+
+        // lazily loaded
+        private PeopleFlowTypeService peopleFlowTypeService;
+        private boolean peopleFlowTypeServiceLoaded = false;
 
         Context(RouteContext routeContext, PeopleFlowDefinition peopleFlow, ActionRequestType actionRequested) {
             if (routeContext == null) {
@@ -126,6 +177,29 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
         ActionRequestFactory getActionRequestFactory() {
             return actionRequestFactory;
+        }
+
+        /**
+         * Lazily loads and caches the {@code PeopleFlowTypeService} (if necessary) and returns it.
+         */
+        PeopleFlowTypeService getPeopleFlowTypeService() {
+            if (peopleFlowTypeServiceLoaded) {
+                return this.peopleFlowTypeService;
+            }
+            if (getPeopleFlow().getTypeId() != null) {
+                KewTypeDefinition typeDefinition = getTypeRepositoryService().getTypeById(getPeopleFlow().getTypeId());
+                if (typeDefinition == null) {
+                    throw new IllegalStateException("Failed to locate a PeopleFlow type for the given type id of '" + getPeopleFlow().getTypeId() + "'");
+                }
+                if (StringUtils.isNotBlank(typeDefinition.getServiceName())) {
+                    this.peopleFlowTypeService = GlobalResourceLoader.getService(QName.valueOf(typeDefinition.getServiceName()));
+                    if (this.peopleFlowTypeService == null) {
+                        throw new IllegalStateException("Failed to load the PeopleFlowTypeService with the name '" + typeDefinition.getServiceName() + "'");
+                     }
+                }
+            }
+            peopleFlowTypeServiceLoaded = true;
+            return this.peopleFlowTypeService;
         }
 
     }

@@ -16,6 +16,12 @@ import org.kuali.rice.kew.engine.RouteContext;
 
 import java.util.List;
 
+/**
+ * Reference implementation of the {@code PeopleFlowRequestGenerator} which is responsible for generating Action
+ * Requests from a {@link PeopleFlowDefinition}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerator {
 
     @Override

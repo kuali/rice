@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kew.actionrequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -30,6 +31,7 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.role.KimRoleRecipient;
+import org.kuali.rice.kew.role.KimRoleResponsibilityRecipient;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -47,6 +49,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -282,19 +285,20 @@ public class ActionRequestFactory {
     			}
     			resolveRecipient(actionRequest, role.getTarget());
     		}
-    	} else if (recipient instanceof KimRoleRecipient) {
-    		KimRoleRecipient roleRecipient = (KimRoleRecipient)recipient;
+    	} else if (recipient instanceof KimRoleResponsibilityRecipient) {
+    		KimRoleResponsibilityRecipient roleResponsibilityRecipient = (KimRoleResponsibilityRecipient)recipient;
     		actionRequest.setRecipientTypeCd(RecipientType.ROLE.getCode());
-    		actionRequest.setRoleName(roleRecipient.getResponsibilities().get(0).getRoleId());
-    		actionRequest.setQualifiedRoleName(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
+    		actionRequest.setRoleName(roleResponsibilityRecipient.getResponsibilities().get(0).getRoleId());
+    		actionRequest.setQualifiedRoleName(
+                    roleResponsibilityRecipient.getResponsibilities().get(0).getResponsibilityName());
     		// what about qualified role name label?
 //    		actionRequest.setAnnotation(roleRecipient.getResponsibilities().get(0).getResponsibilityName());
-    		Recipient targetRecipient = roleRecipient.getTarget();
+    		Recipient targetRecipient = roleResponsibilityRecipient.getTarget();
     		if (targetRecipient != null) {
     			if (targetRecipient instanceof RoleRecipient) {
     				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getDocumentId());
     			}
-    			resolveRecipient(actionRequest, roleRecipient.getTarget());
+    			resolveRecipient(actionRequest, roleResponsibilityRecipient.getTarget());
     		}
     	}
     }
@@ -365,7 +369,7 @@ public class ActionRequestFactory {
     	String actionTypeCode = responsibilities.get(0).getActionTypeCode();
     	Integer priority = responsibilities.get(0).getPriorityNumber();
     	boolean forceAction = responsibilities.get(0).isForceAction();
-    	KimRoleRecipient roleRecipient = new KimRoleRecipient(responsibilities);
+    	KimRoleResponsibilityRecipient roleResponsibilityRecipient = new KimRoleResponsibilityRecipient(responsibilities);
 
     	// Creation of a parent graph entry for ????
     	ActionRequestValue requestGraph = null;
@@ -375,8 +379,7 @@ public class ActionRequestFactory {
     	if ( responsibilities.size() > 1 ) {
 	    	requestGraph = createActionRequest(
 	    	        actionTypeCode, 
-	    	        priority, 
-	    	        roleRecipient, 
+	    	        priority, roleResponsibilityRecipient,
 	    	        "", // description 
 	    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
 	    	        forceAction, 
@@ -403,17 +406,16 @@ public class ActionRequestFactory {
 	    		}
     		}
 			if (responsibility.getPrincipalId() != null) {
-				roleRecipient.setTarget(new KimPrincipalRecipient(responsibility.getPrincipalId()));
+				roleResponsibilityRecipient.setTarget(new KimPrincipalRecipient(responsibility.getPrincipalId()));
 			} else if (responsibility.getGroupId() != null) {
-				roleRecipient.setTarget(new KimGroupRecipient(responsibility.getGroupId()));
+				roleResponsibilityRecipient.setTarget(new KimGroupRecipient(responsibility.getGroupId()));
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo:" + responsibility);
 			}
 			String annotationStr = annotation.toString();
 			ActionRequestValue request = createActionRequest(
 			        responsibility.getActionTypeCode(), 
-			        responsibility.getPriorityNumber(), 
-			        roleRecipient, 
+			        responsibility.getPriorityNumber(), roleResponsibilityRecipient,
 			        responsibility.getParallelRoutingGroupingCode(), // description
 			        responsibility.getResponsibilityId(), 
 			        responsibility.isForceAction(), 
@@ -427,36 +429,18 @@ public class ActionRequestFactory {
 			if ( responsibilities.size() > 1 ) {
 				request.setParentActionRequest(requestGraph);
 				requestGraph.getChildrenRequests().add(request);
-				generateRoleResponsibilityDelegationRequests(responsibility, request);
 				if ( !uniqueChildAnnotations.contains(annotationStr) ) {
 					parentAnnotation.append( annotationStr ).append( " -- " );
 					uniqueChildAnnotations.add(annotationStr);
 				}
 			} else {
 				requestGraphs.add(request);
-				generateRoleResponsibilityDelegationRequests(responsibility, request);
 			}
+            generateKimRoleDelegationRequests(responsibility.getDelegates(), request);
+
 	    }
     	if ( responsibilities.size() > 1 ) {
 	    	requestGraph.setAnnotation( StringUtils.chomp( parentAnnotation.toString(), " -- " ) );
-    	}
-    }
-
-    private void generateRoleResponsibilityDelegationRequests(ResponsibilityAction responsibility, ActionRequestValue parentRequest) {
-    	List<DelegateType> delegates = responsibility.getDelegates();
-    	for (DelegateType delegate : delegates) {
-    		Recipient recipient;
-    		boolean isPrincipal = delegate.getDelegationTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
-            boolean isGroup = delegate.getDelegationTypeCode().equals(Role.GROUP_MEMBER_TYPE);
-    		if (isPrincipal) {
-    			recipient = new KimPrincipalRecipient(delegate.getDelegationId());
-    		} else if (isGroup) {
-    			recipient = new KimGroupRecipient(delegate.getDelegationId());
-    		} else {
-    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getDelegationTypeCode() + "'");
-    		}
-    		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
-    		addDelegationRequest(parentRequest, recipient, delegate.getDelegationId(), parentRequest.getForceAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
     	}
     }
 
@@ -548,7 +532,85 @@ public class ActionRequestFactory {
     	return requestGraph;
     }
 
+    /**
+     * Generates an ActionRequest graph for the given KIM Responsibilities.  This graph includes any associated delegations.
+     */
+    public void addKimRoleRequest(String actionRequestedCode, Integer priority, Role role,
+            List<RoleMembership> memberships, String description, String responsibilityId, boolean forceAction,
+            String actionRequestPolicyCode, String requestLabel) {
+    	if (CollectionUtils.isEmpty(memberships)) {
+    		LOG.warn("Didn't create action requests for action request description because no role members were defined for role id " + role.getId());
+    		return;
+    	}
+    	
+        KimRoleRecipient roleRecipient = new KimRoleRecipient(role);
 
+    	// Creation of a parent graph entry for ????
+    	ActionRequestValue requestGraph = null;
+    	if ( memberships.size() > 1 ) {
+	    	requestGraph = createActionRequest(
+	    	        actionRequestedCode,
+	    	        priority,
+                    roleRecipient,
+	    	        "", // description
+	    	        responsibilityId,
+	    	        forceAction,
+	    	        actionRequestPolicyCode,
+	    	        null, // ruleId
+	    	        null );// annotation
+	    	requestGraphs.add(requestGraph);
+    	}
+    	for (RoleMembership membership : memberships) {
+    		if ( LOG.isDebugEnabled() ) {
+    			LOG.debug( "Processing RoleMembership for action request: " + membership );
+    		}
+			if (Role.PRINCIPAL_MEMBER_TYPE.equals(membership.getMemberTypeCode())) {
+				roleRecipient.setTarget(new KimPrincipalRecipient(membership.getMemberId()));
+			} else if (Role.GROUP_MEMBER_TYPE.equals(membership.getMemberTypeCode())) {
+				roleRecipient.setTarget(new KimGroupRecipient(membership.getMemberId()));
+			} else {
+				throw new RiceRuntimeException("Failed to identify a group or principal on the given RoleMembership:" + membership);
+			}
+			ActionRequestValue request = createActionRequest(
+			        actionRequestedCode,
+			        priority,
+                    roleRecipient,
+                    "", // description
+			        responsibilityId,
+			        forceAction,
+			        // If not nested in a parent action request, ensure that the request
+			        // is first approve so delegations of this request do not require
+			        // ALL_APPROVE as well
+			        (memberships.size() == 1) ? ActionRequestPolicy.FIRST.getCode() : actionRequestPolicyCode,
+			        null, // ruleId
+			        null); // annotation
+			// if there is only a single request, don't create the nesting structure
+			if ( memberships.size() > 1 ) {
+				request.setParentActionRequest(requestGraph);
+				requestGraph.getChildrenRequests().add(request);
+			} else {
+				requestGraphs.add(request);
+			}
+            generateKimRoleDelegationRequests(membership.getDelegates(), request);
+	    }
+    }
+
+     private void generateKimRoleDelegationRequests(List<DelegateType> delegates, ActionRequestValue parentRequest) {
+    	for (DelegateType delegate : delegates) {
+    		Recipient recipient;
+    		boolean isPrincipal = delegate.getDelegationTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
+            boolean isGroup = delegate.getDelegationTypeCode().equals(Role.GROUP_MEMBER_TYPE);
+    		if (isPrincipal) {
+    			recipient = new KimPrincipalRecipient(delegate.getDelegationId());
+    		} else if (isGroup) {
+    			recipient = new KimGroupRecipient(delegate.getDelegationId());
+    		} else {
+    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getDelegationTypeCode() + "'");
+    		}
+    		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
+    		addDelegationRequest(parentRequest, recipient, delegate.getDelegationId(), parentRequest.getForceAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
+    	}
+    }
 
     //return true if requestGraph (root) is in this requests' parents
     public boolean relatedToRoot(ActionRequestValue request) {

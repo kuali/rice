@@ -21,17 +21,17 @@ import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
 import java.util.List;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
+ * A request recipient represented by a KIM responsibility.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimRoleRecipient implements Recipient {
+public class KimRoleResponsibilityRecipient implements Recipient {
 
 	private List<ResponsibilityAction> responsibilities;
 	private Recipient target;
 	
-	public KimRoleRecipient(List<ResponsibilityAction> responsibilities) {
+	public KimRoleResponsibilityRecipient(List<ResponsibilityAction> responsibilities) {
 		this.responsibilities = responsibilities;
 	}
 	

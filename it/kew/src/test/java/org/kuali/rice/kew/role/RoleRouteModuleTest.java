@@ -43,6 +43,7 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.type.KimTypeAttributeBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
@@ -60,7 +61,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-//@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class RoleRouteModuleTest extends KEWTestCase {
 
 	private static final String NAMESPACE = KEWConstants.KEW_NAMESPACE;

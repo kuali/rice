@@ -2,12 +2,9 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Priority;
 import org.kuali.rice.core.api.config.ConfigurationException;
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -22,13 +19,13 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
-import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMembership;
+import org.kuali.rice.kim.api.role.RoleService;
 
-import javax.jws.WebParam;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 import java.util.Collections;
 import java.util.List;
@@ -43,6 +40,7 @@ import java.util.Map;
 public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerator {
 
     private KewTypeRepositoryService typeRepositoryService;
+    private RoleService roleService;
 
     @Override
     public List<ActionRequestValue> generateRequests(RouteContext routeContext, PeopleFlowDefinition peopleFlow, ActionRequestType actionRequested) {
@@ -75,10 +73,17 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
     protected void generateRequestForRoleMember(Context context, PeopleFlowMember member, String actionRequestPolicyCode) {
         Map<String, String> roleQualifiers = loadRoleQualifiers(context, member);
-
-        // TODO... take the role qualifiers, resolve role membership, rock n' roll
-        
-        throw new UnsupportedOperationException("implement me!");
+        Role role = getRoleService().getRole(member.getMemberId());
+        if (role == null) {
+            throw new IllegalStateException("Failed to locate a role with the given role id of '" + member.getMemberId() + "'");
+        }
+        List<RoleMembership> memberships = getRoleService().getRoleMembers(Collections.singletonList(
+                member.getMemberId()), roleQualifiers);
+        if (!CollectionUtils.isEmpty(memberships)) {
+            context.getActionRequestFactory().addKimRoleRequest(context.getActionRequested().getCode(), member.getPriority(),
+                    role, memberships, null, member.getResponsibilityId(), true, actionRequestPolicyCode, null);
+        }
+        // TODO - Rice 2.0 - still need to implement support for ignoring built-in kim delegates whenever peopleflow delegate(s) are defined
     }
 
     protected Map<String, String> loadRoleQualifiers(Context context, PeopleFlowMember member) {
@@ -104,7 +109,8 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         } else if (MemberType.GROUP == member.getMemberType()) {
             recipient = new KimGroupRecipient(member.getMemberId());
         } else {
-            throw new IllegalStateException("encountered a member type which I did not understand: " + member.getMemberType());
+            throw new IllegalStateException("encountered a member type which I did not understand: " +
+                    member.getMemberType());
         }
         return recipient;
     }
@@ -116,7 +122,8 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         } else if (MemberType.GROUP == delegate.getMemberType()) {
             recipient = new KimGroupRecipient(delegate.getMemberId());
         } else {
-            throw new IllegalStateException("encountered a delegate member type which I did not understand: " + delegate.getMemberType());
+            throw new IllegalStateException("encountered a delegate member type which I did not understand: " +
+                    delegate.getMemberType());
         }
         return recipient;
     }
@@ -127,6 +134,14 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
     public void setTypeRepositoryService(KewTypeRepositoryService typeRepositoryService) {
         this.typeRepositoryService = typeRepositoryService;
+    }
+
+    public RoleService getRoleService() {
+        return roleService;
+    }
+
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     /**

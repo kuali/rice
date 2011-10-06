@@ -18,6 +18,8 @@ package org.kuali.rice.core.api.mo
 import javax.xml.bind.JAXBContext
 import org.apache.commons.lang.SerializationUtils
 import org.junit.Test
+import org.kuali.rice.core.api.util.io.SerializationUtils
+import org.apache.commons.lang.SerializationUtils
 
 /**
  * This test verifies that AbstractDataTransferObjects work the way they are expected to work in terms of JAXB
@@ -79,6 +81,22 @@ class AbstractDataTransferObjectTest {
         SampleDataTransferObject deserializedDto = SerializationUtils.deserialize(serializedDto)
         assert dto == deserializedDto
         assert deserializedDto._futureElements == null
+    }
+
+    /**
+     * Tests serializing an object, deserializing it, and then reserializing it.  Verifies that the synchronization
+     * mutex inside of the AbstractDataTransferObject is restored successfully on a read.
+     */
+    @Test
+    void test_serialize_deserialize_serialize() {
+        SampleDataTransferObject dto = createDto()
+        byte[] serialized = SerializationUtils.serialize(dto)
+        SampleDataTransferObject deserializedDto = SerializationUtils.deserialize(serialized)
+        assert dto == deserializedDto
+        byte[] serializedAgain = SerializationUtils.serialize(deserializedDto)
+        assert serialized == serializedAgain
+        SampleDataTransferObject deserializedAgainDto = SerializationUtils.deserialize(serializedAgain)
+        assert deserializedDto == deserializedAgainDto
     }
 
     @Test

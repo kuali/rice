@@ -9,6 +9,7 @@ import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
@@ -84,13 +85,19 @@ public abstract class AbstractDataTransferObject implements ModelObjectComplete 
         CollectionUtils.makeUnmodifiableAndNullSafe(this);
     }
 
-    private transient final Object serializationMutex = new Object();
+    private transient Object serializationMutex = new Object();
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         synchronized (serializationMutex) {
             clearFutureElements();
             out.defaultWriteObject();
         }
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException,
+            ClassNotFoundException {
+        ois.defaultReadObject();
+        serializationMutex = new Object();
     }
 
     /**

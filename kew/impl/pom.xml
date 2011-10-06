@@ -28,7 +28,7 @@
     </dependency>
     <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>rice-krad-app-framework</artifactId>
+        <artifactId>rice-krad-web-framework</artifactId>
         <version>${project.version}</version>
     </dependency>
   </dependencies>

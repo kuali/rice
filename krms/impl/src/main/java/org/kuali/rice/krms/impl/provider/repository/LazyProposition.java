@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.PropositionResult;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * TODO... 
@@ -70,8 +69,11 @@ final class LazyProposition implements Proposition {
 	}
 	
 	private Proposition constructProposition() {
-		PropositionTypeService propositionTypeService = resolver.getPropositionTypeService(propositionDefinition);
-		Proposition proposition = propositionTypeService.loadProposition(propositionDefinition);
+        Proposition proposition = null;
+        if (propositionDefinition != null) {
+		    PropositionTypeService propositionTypeService = resolver.getPropositionTypeService(propositionDefinition);
+		    proposition = propositionTypeService.loadProposition(propositionDefinition);
+        }
 		if (proposition == null) {
 			proposition = new Proposition() {
 				@Override

@@ -40,8 +40,12 @@ public final class SelectionCriteria {
 	 */
 	public static SelectionCriteria createCriteria(String eventName, DateTime effectiveExecutionTime, Map<String, String> contextQualifiers, Map<String, String> agendaQualifiers) {
 		SelectionCriteria criteria = new SelectionCriteria(eventName, effectiveExecutionTime);
-		criteria.contextQualifiers.putAll(contextQualifiers);
-		criteria.agendaQualifiers.putAll(agendaQualifiers);
+        if (contextQualifiers != null) {
+		    criteria.contextQualifiers.putAll(contextQualifiers);
+        }
+        if (agendaQualifiers != null) {
+		    criteria.agendaQualifiers.putAll(agendaQualifiers);
+        }
 		return criteria;
 	}
 

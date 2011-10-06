@@ -1277,9 +1277,12 @@ public class DocumentTypeXmlParser {
             // validate that the element has at least one of the two required attributes, XML schema does not provide a way for us to
             // check this so we must do so programatically
             Element rulesEngineElement = (Element)getXPath().evaluate("./rulesEngine", node, XPathConstants.NODE);
-            if (StringUtils.isBlank(rulesEngineElement.getAttribute("executorName")) &&
-                    StringUtils.isBlank(rulesEngineElement.getAttribute("executorClass"))) {
+            String executorName = rulesEngineElement.getAttribute("executorName");
+            String executorClass = rulesEngineElement.getAttribute("executorClass");
+            if (StringUtils.isBlank(executorName) && StringUtils.isBlank(executorClass)) {
                 throw new XmlException("The rulesEngine declaration must have at least one of 'executorName' or 'executorClass' attributes.");
+            } else if (StringUtils.isNotBlank(executorName) && StringUtils.isNotBlank(executorClass)) {
+                throw new XmlException("Only one of 'executorName' or 'executorClass' may be declared on rulesEngine configuration, but both were declared.");
             }
             routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_RULES_ENGINE);
         }
@@ -1326,6 +1329,9 @@ public class DocumentTypeXmlParser {
 
     private static String getTextContent(org.w3c.dom.Element element) {
 		NodeList children = element.getChildNodes();
+        if (children.getLength() == 0) {
+            return "";
+        }
 		Node node = children.item(0);
 		return node.getNodeValue();
 	}

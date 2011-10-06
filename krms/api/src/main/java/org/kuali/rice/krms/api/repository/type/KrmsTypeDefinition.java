@@ -1,10 +1,10 @@
 package org.kuali.rice.krms.api.repository.type;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,15 +12,14 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
- * Concrete model object implementation of KRMS KrmsType. 
- * immutable. 
+ * Concrete model object implementation of KRMS KrmsType.
+ * immutable.
  * Instances of KrmsType can be (un)marshalled to and from XML.
  *
  * @see KrmsTypeDefinitionContract
@@ -54,13 +53,13 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 	private List<KrmsTypeAttribute> attributes;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
-	
+
 	@SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<org.w3c.dom.Element> _futureElements = null;
-	
-	 /** 
-     * This constructor should never be called.  It is only present for use during JAXB unmarshalling. 
+
+	 /**
+     * This constructor should never be called.  It is only present for use during JAXB unmarshalling.
      */
     private KrmsTypeDefinition() {
     	this.id = null;
@@ -71,11 +70,11 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
     	this.attributes = null;
         this.versionNumber = null;
     }
-    
+
     /**
 	 * Constructs a KRMS KrmsType from the given builder.  This constructor is private and should only
 	 * ever be invoked from the builder.
-	 * 
+	 *
 	 * @param builder the Builder from which to construct the KRMS type
 	 */
     private KrmsTypeDefinition(Builder builder) {
@@ -84,21 +83,15 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         this.namespace = builder.getNamespace();
         this.serviceName = builder.getServiceName();
         this.active = builder.isActive();
-        List<KrmsTypeAttribute> attrList = new ArrayList<KrmsTypeAttribute>();
-        if (builder.attributes != null){
-        		for (KrmsTypeAttribute.Builder b : builder.attributes){
-        			attrList.add(b.build());
-        		}
-        }
-        this.attributes = Collections.unmodifiableList(attrList);
+        this.attributes = ModelObjectUtils.buildImmutableCopy(builder.attributes);
         this.versionNumber = builder.getVersionNumber();
     }
-    
+
 	@Override
 	public String getId() {
 		return this.id;
 	}
-	
+
 	@Override
 	public String getName() {
 		return this.name;
@@ -113,28 +106,28 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 	public String getServiceName() {
 		return this.serviceName;
 	}
-	
+
 	@Override
 	public boolean isActive() {
-		return this.active; 
+		return this.active;
 	}
 
 	@Override
 	public List<KrmsTypeAttribute> getAttributes() {
-		return this.attributes; 
+		return this.attributes;
 	}
 
     @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
-        
+
 	/**
      * This builder is used to construct instances of KRMS KrmsType.  It enforces the constraints of the {@link KrmsTypeDefinitionContract}.
      */
-    public static class Builder implements KrmsTypeDefinitionContract, ModelBuilder, Serializable {		
+    public static class Builder implements KrmsTypeDefinitionContract, ModelBuilder, Serializable {
 		private static final long serialVersionUID = -3469525730879441547L;
-		
+
 		private String id;
         private String name;
         private String namespace;
@@ -142,7 +135,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         private boolean active;
         private List<KrmsTypeAttribute.Builder> attributes;
         private Long versionNumber;
-        
+
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
@@ -157,7 +150,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         	this.serviceName = serviceName;
         	return this;
         }
-        
+
         public Builder attributes(List<KrmsTypeAttribute.Builder> attributes){
         	setAttributes(attributes);
         	return this;
@@ -165,7 +158,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 
         /**
          * Creates a builder from the given parameters.
-         * 
+         *
          * @param name the KRMS type name
          * @param namespace the KRMS type namespace
          * @return an instance of the builder with the fields already populated
@@ -177,7 +170,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 
         /**
          * Creates a builder by populating it with data from the given {@link KrmsTypeDefinitionContract}.
-         * 
+         *
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
          */
@@ -193,7 +186,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
             List <KrmsTypeAttribute.Builder> attrBuilderList = new ArrayList<KrmsTypeAttribute.Builder>();
             if (contract.getAttributes() != null) {
             	for(KrmsTypeAttributeContract attr : contract.getAttributes()){
-            		KrmsTypeAttribute.Builder myBuilder = 
+            		KrmsTypeAttribute.Builder myBuilder =
             			KrmsTypeAttribute.Builder.create(attr);
             		attrBuilderList.add(myBuilder);
             	}
@@ -205,7 +198,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 
 		/**
 		 * Sets the value of the id on this builder to the given value.
-		 * 
+		 *
 		 * @param id the id value to set
 		 */
         public void setId(String id) {
@@ -225,19 +218,15 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
             }
 			this.namespace = namespace;
 		}
-		
+
 		public void setServiceName(String serviceName) {
 			this.serviceName = serviceName;
 		}
-		
+
 		public void setAttributes(List<KrmsTypeAttribute.Builder> attributes){
-			if (attributes == null || attributes.isEmpty()){
-				this.attributes = Collections.unmodifiableList(new ArrayList<KrmsTypeAttribute.Builder>());
-				return;
-			}
-			this.attributes = Collections.unmodifiableList(attributes);
+			this.attributes = attributes;
 		}
-		
+
 		public void setActive(boolean active) {
 			this.active = active;
 		}
@@ -245,7 +234,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }
-        
+
 		@Override
 		public String getId() {
 			return id;
@@ -265,7 +254,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		public String getServiceName() {
 			return serviceName;
 		}
-		
+
 		@Override
 		public List<KrmsTypeAttribute.Builder> getAttributes(){
 			return attributes;
@@ -283,14 +272,14 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 
 		/**
 		 * Builds an instance of a KrmsType based on the current state of the builder.
-		 * 
+		 *
 		 * @return the fully-constructed KrmsType
 		 */
         @Override
         public KrmsTypeDefinition build() {
             return new KrmsTypeDefinition(this);
         }
-		
+
     }
 
 	/**
@@ -300,7 +289,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
 		final static String ROOT_ELEMENT_NAME = "KRMSType";
 		final static String TYPE_NAME = "KRMSTypeType";
 	}
-	
+
 	/**
 	 * A private class which exposes constants which define the XML element names to use
 	 * when this object is marshalled to XML.

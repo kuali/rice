@@ -1102,22 +1102,18 @@ Definitions are applied to the names in the routeNodes section.
         'executorClass' attributes must be specified.
       </documentation>
     </annotation>
-    <simpleContent>
-      <extension base="c:ShortStringType">
-        <!-- One or the other of the following attributes is required -->
-        <attribute name="executorName" type="c:ShortStringType" use="optional">
-          <annotation>
-            <documentation>The name of the RulesEngineExecutor to use at this node.</documentation>
-          </annotation>
-        </attribute>
-        <attribute name="executorClass" type="c:ShortStringType" use="optional">
-          <annotation>
-            <documentation>The fully-qualified class name of the RulesEngineExecutor to use at this node.
-            </documentation>
-          </annotation>
-        </attribute>
-      </extension>
-    </simpleContent>
+    <!-- One or the other of the following attributes is required -->
+    <attribute name="executorName" type="c:ShortStringType" use="optional">
+      <annotation>
+        <documentation>The name of the RulesEngineExecutor to use at this node.</documentation>
+      </annotation>
+    </attribute>
+    <attribute name="executorClass" type="c:ShortStringType" use="optional">
+      <annotation>
+        <documentation>The fully-qualified class name of the RulesEngineExecutor to use at this node.
+        </documentation>
+      </annotation>
+    </attribute>
   </complexType>
 
 </schema>

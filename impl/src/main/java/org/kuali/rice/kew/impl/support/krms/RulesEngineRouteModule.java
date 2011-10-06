@@ -51,7 +51,7 @@ public class RulesEngineRouteModule implements RouteModule {
 
     @Override
     public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception {
-        EngineResults engineResults = executeRulesEngine(context, rulesEngine);
+        EngineResults engineResults = executeRulesEngine(context, getRulesEngine());
         processEngineResults(context, engineResults);
         return peopleFlowRouteModule.findActionRequests(context);
     }
@@ -83,6 +83,7 @@ public class RulesEngineRouteModule implements RouteModule {
             nodeState = new NodeState();
             nodeState.setNodeInstance(context.getNodeInstance());
             nodeState.setKey(PeopleFlowRouteModule.PEOPLE_FLOW_SEQUENCE);
+            context.getNodeInstance().addNodeState(nodeState);
         }
         nodeState.setValue(peopleFlowsSelected);
         if (!context.isSimulation()) {

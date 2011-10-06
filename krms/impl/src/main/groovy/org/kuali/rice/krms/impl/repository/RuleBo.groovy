@@ -53,6 +53,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
    public RuleBo() {
        actions = new ArrayList<ActionBo>();
+       attributeBos = new ArrayList<RuleAttributeBo>();
    }
 
    public PropositionBo getProposition(){

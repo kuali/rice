@@ -42,7 +42,7 @@ public class RuleRepositoryServiceImpl implements RuleRepositoryService {
     		throw new IllegalArgumentException("selection criteria is null");
     	}
     	if (StringUtils.isBlank(contextSelectionCriteria.getNamespaceCode())){
-    		throw new IllegalArgumentException("selection criteria namespace code is null or blank");
+    		throw new IllegalArgumentException("selection criteria namespaceCode is null or blank");
     	}
     	QueryByCriteria queryCriteria = buildQuery(contextSelectionCriteria);
         GenericQueryResults<ContextBo> results = getCriteriaLookupService().lookup(ContextBo.class, queryCriteria);

@@ -9,19 +9,19 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
 
 public class ContextBo extends PersistableBusinessObjectBase implements ContextDefinitionContract {
 
-	def String id
-	def String name
-	def String namespace
-	def String typeId
-    def String description
+	String id
+	String name
+	String namespace
+	String typeId
+    String description
 
-	def Set<AgendaBo> agendas
+	Set<AgendaBo> agendas = new HashSet<AgendaBo>()
 
-	def Set<ContextAttributeBo> attributeBos
-	def Set<ContextValidEventBo> validEvents
-	def Set<ContextValidActionBo> validActions
+	Set<ContextAttributeBo> attributeBos = new HashSet<ContextAttributeBo>()
+	Set<ContextValidEventBo> validEvents = new HashSet<ContextValidEventBo>()
+	Set<ContextValidActionBo> validActions = new HashSet<ContextValidActionBo>()
 
-	def Long versionNumber
+	Long versionNumber
 
 
 	@Override

@@ -165,6 +165,7 @@ public abstract class KEWTestCase extends BaselineTestCase {
 		tablesToClear.add("KREW_.*");
 		tablesToClear.add("KRSB_.*");
 		tablesToClear.add("KREN_.*");
+        tablesToClear.add("KRMS_.*");
 		return tablesToClear;
 	}
 

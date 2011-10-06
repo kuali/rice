@@ -73,10 +73,6 @@
 		<property name="properties" value="#{config.getProperties()}" />
 	</bean>
 
-  <bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
-    <property name="defaultTimeout" value="${transaction.timeout}"/>
-  </bean>
-    
   <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
   <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/> 
 
@@ -104,6 +100,7 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
+  <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/krad/config/KRADConfigSpringBeans.xml"/>

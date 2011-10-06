@@ -76,10 +76,6 @@
 		</property>
 	</bean>
 
-  <bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
-    <property name="defaultTimeout" value="${transaction.timeout}"/>
-  </bean>
-    
   <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
   <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
 
@@ -112,6 +108,7 @@
 	<bean id="rootResourceLoader" class="org.kuali.rice.core.impl.resourceloader.SpringBeanFactoryResourceLoader"/>
 
 	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 	
 	<!-- Test services for KIM -->
 	<bean id="testBaseResponsibilityTypeService" class="org.kuali.rice.kns.kim.responsibility.KimResponsibilityTypeServiceBase"/>

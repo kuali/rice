@@ -73,16 +73,8 @@
         <property name="properties" value="#{config.getProperties()}" />
     </bean>
 
-    <bean id="transactionManagerXAPool" class="org.springframework.transaction.jta.JotmFactoryBean">
-      <property name="defaultTimeout" value="${transaction.timeout}"/>
-    </bean>
-    
-    <alias alias="jtaUserTransaction"  name="jtaTransactionManager"/>
-    <alias alias="jtaTransactionManager"  name="transactionManagerXAPool"/>
-
-
-    <bean id="riceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
-        <property name="transactionManager" ref="jtaTransactionManager" />
+    <bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
+        <property name="transactionManager" ref="transactionManagerXAPool" />
         <property name="driverClassName" value="${datasource.driver.name}" />
         <property name="url" value="${datasource.url}" />
         <property name="maxSize" value="${datasource.pool.maxSize}" />
@@ -93,7 +85,7 @@
         <property name="password" value="${datasource.password}" />
     </bean>
 
-    <alias alias="krmsDataSource"  name="riceDataSource"/>
+    <alias alias="krmsDataSource"  name="riceDataSource${connection.pool.impl}"/>
 
     <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
@@ -141,10 +133,10 @@
 
     <bean id="springJtaTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
         <property name="userTransaction">
-            <ref local="transactionManagerXAPool" />
+            <ref bean="transactionManager${connection.pool.impl}" />
         </property>
         <property name="transactionManager">
-            <ref local="transactionManagerXAPool" />
+            <ref bean="transactionManager${connection.pool.impl}" />
         </property>
     </bean>
     
@@ -191,5 +183,6 @@
     
     <!-- Import core beans -->
     <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-    
+  <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
+
 </beans>

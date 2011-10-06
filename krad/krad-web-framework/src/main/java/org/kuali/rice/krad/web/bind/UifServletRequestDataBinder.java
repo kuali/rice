@@ -149,11 +149,11 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                             request.getParameterMap());
                     try {
                         view = getViewService().getViewByType(viewType, parameterMap);
-                    } catch (DataDictionaryException ddex) {
+                    } catch (RuntimeException rtex) {
                         view = getViewFromPreviousModel(form);
                         // if we didn't find one, just re-throw
                         if (view == null) {
-                            throw ddex;
+                            throw rtex;
                         }
                         LOG.warn("Obtained viewId from cached form, this may not be safe!");
                     }

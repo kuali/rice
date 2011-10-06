@@ -20,35 +20,36 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
     @Override
     public List<ActionRequestValue> generateRequests(RouteContext routeContext, PeopleFlowDefinition peopleFlow, ActionRequestType actionRequested) {
-        if (peopleFlow == null) {
-            throw new IllegalArgumentException("peopleFlow was null");
-        }
-        if (!peopleFlow.isActive()) {
-            throw new ConfigurationException("Attempted to route to a PeopleFlow that is not active! " + peopleFlow);
-        }
-        if (actionRequested == null) {
-            actionRequested = ActionRequestType.APPROVE;
-        }
-        ActionRequestFactory factory = new ActionRequestFactory(routeContext);
+        Context context = new Context(routeContext, peopleFlow, actionRequested);
         for (PeopleFlowMember member : peopleFlow.getMembers()) {
-            generateRequestForMember(factory, member.getResponsibilityId(), member, actionRequested);
+            generateRequestForMember(context, member);
         }
-        return factory.getRequestGraphs();
+        return context.getActionRequestFactory().getRequestGraphs();
     }
 
-    protected void generateRequestForMember(ActionRequestFactory factory, String responsibilityId, PeopleFlowMember member, ActionRequestType actionRequested) {
-        // TODO - description, ruleId, annotation, request label
-        // defaulting all of these at the moment as per below
+    protected void generateRequestForMember(Context context, PeopleFlowMember member) {
         String actionRequestPolicyCode = null;
         if (member.getActionRequestPolicy() != null) {
             member.getActionRequestPolicy().getCode();
         }
-        ActionRequestValue actionRequest = factory.addRootActionRequest(actionRequested.getCode(), member.getPriority(), toRecipient(member), "", responsibilityId, Boolean.TRUE, actionRequestPolicyCode, null);
-        if (CollectionUtils.isNotEmpty(member.getDelegates())) {
-            for (PeopleFlowDelegate delegate : member.getDelegates()) {
-                factory.addDelegationRequest(actionRequest, toRecipient(delegate), delegate.getResponsibilityId(), Boolean.TRUE, delegate.getDelegationType().getCode(), "", null);
+        if (MemberType.ROLE == member.getMemberType()) {
+            generateRequestForRoleMember(context, member);
+        } else {
+            ActionRequestValue actionRequest = context.getActionRequestFactory().addRootActionRequest(
+                    context.getActionRequested().getCode(), member.getPriority(), toRecipient(member), "",
+                    member.getResponsibilityId(), Boolean.TRUE, actionRequestPolicyCode, null);
+            if (CollectionUtils.isNotEmpty(member.getDelegates())) {
+                for (PeopleFlowDelegate delegate : member.getDelegates()) {
+                    context.getActionRequestFactory().addDelegationRequest(actionRequest, toRecipient(delegate),
+                            delegate.getResponsibilityId(), Boolean.TRUE, delegate.getDelegationType().getCode(), "", null);
+                }
             }
         }
+    }
+
+    protected void generateRequestForRoleMember(Context context, PeopleFlowMember member) {
+        // TODO...
+        throw new UnsupportedOperationException("implement me!");
     }
 
     private Recipient toRecipient(PeopleFlowMember member) {
@@ -58,8 +59,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         } else if (MemberType.GROUP == member.getMemberType()) {
             recipient = new KimGroupRecipient(member.getMemberId());
         } else {
-            // TODO - what about roles!
-            throw new UnsupportedOperationException("implement me!!!");
+            throw new IllegalStateException("encountered a member type which I did not understand: " + member.getMemberType());
         }
         return recipient;
     }
@@ -71,9 +71,56 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         } else if (MemberType.GROUP == delegate.getMemberType()) {
             recipient = new KimGroupRecipient(delegate.getMemberId());
         } else {
-            // TODO - what about roles!
-            throw new UnsupportedOperationException("implement me!!!");
+            throw new IllegalStateException("encountered a delegate member type which I did not understand: " + delegate.getMemberType());
         }
         return recipient;
+    }
+
+    /**
+     * A simple class used to hold context during the PeopleFlow action request generation process.  Construction of
+     * the context will validate that the given values are valid, non-null values where appropriate.
+     */
+    static final class Context {
+
+        private final RouteContext routeContext;
+        private final PeopleFlowDefinition peopleFlow;
+        private final ActionRequestType actionRequested;
+        private final ActionRequestFactory actionRequestFactory;
+
+        Context(RouteContext routeContext, PeopleFlowDefinition peopleFlow, ActionRequestType actionRequested) {
+            if (routeContext == null) {
+                throw new IllegalArgumentException("routeContext was null");
+            }
+            if (peopleFlow == null) {
+                throw new IllegalArgumentException("peopleFlow was null");
+            }
+            if (!peopleFlow.isActive()) {
+                throw new ConfigurationException("Attempted to route to a PeopleFlow that is not active! " + peopleFlow);
+            }
+            if (actionRequested == null) {
+                actionRequested = ActionRequestType.APPROVE;
+            }
+            this.routeContext = routeContext;
+            this.peopleFlow = peopleFlow;
+            this.actionRequested = actionRequested;
+            this.actionRequestFactory = new ActionRequestFactory(routeContext);
+        }
+
+        RouteContext getRouteContext() {
+            return routeContext;
+        }
+
+        PeopleFlowDefinition getPeopleFlow() {
+            return peopleFlow;
+        }
+
+        ActionRequestType getActionRequested() {
+            return actionRequested;
+        }
+
+        ActionRequestFactory getActionRequestFactory() {
+            return actionRequestFactory;
+        }
+
     }
 }

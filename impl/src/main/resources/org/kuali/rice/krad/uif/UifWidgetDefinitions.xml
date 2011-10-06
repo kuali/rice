@@ -134,13 +134,27 @@
             <bean parent="QuickFinderImageField"/>
           </property>
         	<property name="lightBoxLookup">
-        		<bean parent="LightBoxPost" p:lookupReturnByScript="true"/>
+        		<bean parent="LightBoxPost" p:lookupReturnByScript="false"/>
       		</property>
       	</bean>        
       </property>
       <property name="render" value="@{!#parent.readOnly}"/>
   </bean>  
-  
+
+  <bean id="QuickFinderByScript" parent="QuickFinderByScript-parentBean"/>
+  <bean id="QuickFinderByScript-parentBean" parent="QuickFinder" abstract="true">
+      <property name="quickfinderActionField">
+        <bean parent="ActionImageField" p:methodToCall="performLookup">
+          <property name="actionImage">
+            <bean parent="QuickFinderImageField"/>
+          </property>
+        	<property name="lightBoxLookup">
+        		<bean parent="LightBoxPost" p:lookupReturnByScript="true"/>
+      		</property>
+      	</bean>
+      </property>
+  </bean>
+
   <bean id="Inquiry" parent="Inquiry-parentBean" />
   <bean id="Inquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Inquiry" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/inquiry.jsp"/>

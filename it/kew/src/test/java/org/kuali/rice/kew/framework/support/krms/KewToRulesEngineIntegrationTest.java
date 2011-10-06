@@ -34,7 +34,9 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 /**
- * An integration test which tests KEW integration with KRMS producing PeopleFlows for routing purposes.
+ * An integration test which tests KEW integration with KRMS producing PeopleFlows for routing purposes.  KEW provides
+ * standard integration with KRMS through the use of it's {@code <rulesEngine executorClass="..."/>} element, which is
+ * what this test is testing.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -53,7 +55,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
     private RuleBo ruleBo;
 
 
-
+    @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("KewToRulesEngineIntegrationTest.xml");
         businessObjectService = KRADServiceLocator.getBusinessObjectService();

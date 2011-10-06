@@ -9,6 +9,13 @@ import org.kuali.rice.krms.api.engine.Term;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A simple RulesEngineExecutor used by the integration tests which is hard-coded to select a context with
+ * namespaceCode="KR-RULE" and name="MyContext".  It also is hardcoded to select an agenda from the context with an
+ * event name of "workflow".
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class TestRulesEngineExecutor implements RulesEngineExecutor {
 
     @Override

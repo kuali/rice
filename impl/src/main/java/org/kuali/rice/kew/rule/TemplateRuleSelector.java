@@ -93,8 +93,8 @@ class TemplateRuleSelector implements RuleSelector {
         predicates.add(and(or(documentTypeAncestry.toArray(new Predicate[documentTypeAncestry.size()]))));
         Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         predicates.add(and(
-                           or(isNull("fromDate"), greaterThanOrEqual("fromDate", currentTime)),
-                           or(isNull("toDate"), lessThan("toDate", currentTime))
+                           or(isNull("fromDateValue"), greaterThanOrEqual("fromDateValue", currentTime)),
+                           or(isNull("toDateValue"), lessThan("toDateValue", currentTime))
                       ));
         predicates.add(equal("active", new Integer(1))); //true
         predicates.add(equal("delegateRule", new Integer(0)));  //false

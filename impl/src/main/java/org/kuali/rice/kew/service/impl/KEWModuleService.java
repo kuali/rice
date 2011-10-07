@@ -16,16 +16,16 @@
 package org.kuali.rice.kew.service.impl;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentTypeService;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.docsearch.DocumentEbo;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
-import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -71,17 +71,18 @@ public class KEWModuleService extends ModuleServiceBase {
 			Class<T> businessObjectClass, Map<String, Object> fieldValues) {
 		if(DocumentTypeEBO.class.isAssignableFrom(businessObjectClass)){
 			if ( fieldValues.containsKey( "name" ) ) {
-				return (T)getDocumentTypeService().findByName((String)fieldValues.get( "name" ) );
+				return (T) DocumentType.from(getDocumentTypeService().getDocumentTypeByName((String) fieldValues.get("name")));
 			}else if( fieldValues.containsKey( "documentTypeId" ) ){
-				return (T)getDocumentTypeService().findById(fieldValues.get( "documentTypeId" ).toString());
+				return (T) DocumentType.from(getDocumentTypeService().getDocumentTypeById(fieldValues.get("documentTypeId").toString()));
 			}else if (fieldValues.containsKey( "id" ) ) {
 				// assume it's a string and convert it to a long.
-				return (T)getDocumentTypeService().findById(fieldValues.get( "id" ).toString());
+				return (T) DocumentType.from(getDocumentTypeService().getDocumentTypeById(fieldValues.get("id").toString()));
 			}
 
 		}else if(DocumentEbo.class.isAssignableFrom( businessObjectClass )){
 			if ( fieldValues.containsKey( "documentId" ) ) {
-				return (T)createDocumentSearchEbo(KEWServiceLocator.getRouteHeaderService().getRouteHeader(fieldValues.get( "documentId" ).toString()));
+				return (T)createDocumentSearchEbo(KewApiServiceLocator.getWorkflowDocumentService().getDocument(
+                        fieldValues.get("documentId").toString()));
 			}
 
 		}
@@ -93,10 +94,10 @@ public class KEWModuleService extends ModuleServiceBase {
 	/**
 	 * @return the docTypeService
 	 */
-	protected DocumentTypeService getDocumentTypeService() {
+	protected synchronized DocumentTypeService getDocumentTypeService() {
 		if(this.docTypeService == null){
 			// the default
-			this.docTypeService = KEWServiceLocator.getDocumentTypeService();
+			this.docTypeService = KewApiServiceLocator.getDocumentTypeService();
 		}
 		return this.docTypeService;
 	}
@@ -104,51 +105,51 @@ public class KEWModuleService extends ModuleServiceBase {
 	/**
 	 * @param docTypeService the docTypeService to set
 	 */
-	public void setDocumentTypeService(DocumentTypeService docTypeService) {
+	public synchronized void setDocumentTypeService(DocumentTypeService docTypeService) {
 		this.docTypeService = docTypeService;
 	}
 
-	private DocumentEbo createDocumentSearchEbo(final DocumentRouteHeaderValue routeHeaderValue){
+	private DocumentEbo createDocumentSearchEbo(final Document doc){
 		return new DocumentEbo(){
 
             @Override
             public String getApplicationDocumentId() {
-                return routeHeaderValue.getApplicationDocumentId();
+                return doc.getApplicationDocumentId();
             }
 
             @Override
             public DocumentStatus getStatus() {
-                return routeHeaderValue.getStatus();
+                return doc.getStatus();
             }
 
             @Override
             public String getApplicationDocumentStatus() {
-                return routeHeaderValue.getApplicationDocumentStatus();
+                return doc.getApplicationDocumentStatus();
             }
 
             @Override
             public String getTitle() {
-                return routeHeaderValue.getTitle();
+                return doc.getTitle();
             }
 
             @Override
             public String getDocumentTypeName() {
-                return routeHeaderValue.getDocumentTypeName();
+                return doc.getDocumentTypeName();
             }
 
             @Override
             public String getInitiatorPrincipalId() {
-                return routeHeaderValue.getInitiatorPrincipalId();
+                return doc.getInitiatorPrincipalId();
             }
 
             @Override
             public String getDocumentId() {
-                return routeHeaderValue.getDocumentId();
+                return doc.getDocumentId();
             }
 
             @Override
             public DateTime getDateCreated() {
-                return routeHeaderValue.getDateCreated();
+                return doc.getDateCreated();
             }
 
             @Override
@@ -180,7 +181,7 @@ public class KEWModuleService extends ModuleServiceBase {
 
 			if(nonBlank == 0 && nameFound == true){
 				parameters.clear(); // clear out other parameters, including the name pass in
-				DocumentTypeEBO dte = (DocumentTypeEBO)getDocumentTypeService().findByName(parameters.get( "name" )[0] );
+				DocumentTypeEBO dte = (DocumentTypeEBO) DocumentType.from(getDocumentTypeService().getDocumentTypeByName(parameters.get( "name" )[0] ));
 				String[] strArr = {dte.getDocumentTypeId().toString()};
 				parameters.put("documentTypeId", strArr);
 			}

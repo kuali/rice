@@ -573,7 +573,7 @@ insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_006', 'TERMS
 -- big fin rule
 --
 insert into krms_rule_t(rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
-values ('R500', 'KRMS_TEST', 'SpecialPurchase', 'T2', null, 'Y', 1, 'Does PO require my approval');
+values ('R500', 'KRMS_TEST', 'Going Away Party for Travis', 'T2', null, 'Y', 1, 'Does PO require my approval');
 
 insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, cmpnd_op_cd, ver_nbr)
 values ('P500', 'is purchase special', null, 'C','R500', '&', 1);

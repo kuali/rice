@@ -118,6 +118,7 @@
     <property name="password" value="${datasource.password}" />
     <property name="accessToUnderlyingConnectionAllowed" value="true"/>
   </bean>
-  
+
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 </beans>

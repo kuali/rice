@@ -60,13 +60,13 @@
   </bean>
 
   <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true">
-    <!-- <property name="serverId" value="spring-btm" /> -->
-    <property name="disableJmx" value="true" />
+    <!--<property name="serverId" value="spring-btm" />
+    <property name="disableJmx" value="true" />-->
   </bean>
 
   <bean id="transactionManagerBitronix" class="bitronix.tm.TransactionManagerServices"
         factory-method="getTransactionManager" depends-on="btmConfig" destroy-method="shutdown" lazy-init="true"/>
-
   <alias name="transactionManager${connection.pool.impl}" alias="jtaTransactionManager"/>
   <alias name="transactionManager${connection.pool.impl}" alias="jtaUserTransaction"/>
+
 </beans>

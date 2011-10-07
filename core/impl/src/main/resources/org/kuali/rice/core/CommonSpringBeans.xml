@@ -133,5 +133,10 @@
 
 	<bean id="annotationTransactionAttributeSource" class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
 	
+  <bean id="btmConfig" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean" depends-on="btmConfig">
+   <property name="serviceName" value="btmConfig" />
+  </bean>
 
+  <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 </beans>

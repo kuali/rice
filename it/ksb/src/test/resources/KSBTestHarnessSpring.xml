@@ -281,5 +281,5 @@
           class="org.kuali.rice.ksb.security.admin.MockJavaSecurityManagementServiceImpl"/>
 
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-
+  <import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 </beans>

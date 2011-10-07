@@ -74,7 +74,7 @@
 
   <bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
         destroy-method="close" lazy-init="true">
-    <property name="className" value="${datasource.pool.class}" />
+    <property name="className" value="${datasource.pool.class.non.xa}" />
     <property name="uniqueName" ref="ds-random-string" />
     <property name="minPoolSize" value="${datasource.pool.minSize}" />
     <property name="maxPoolSize" value="${datasource.pool.maxSize}" />
@@ -83,7 +83,8 @@
     <property name="allowLocalTransactions" value="true" />
     <property name="driverProperties">
       <props>
-        <prop key="URL">${datasource.url}</prop>
+        <prop key="Url">${datasource.url}</prop>
+        <prop key="driverClassName">${datasource.driver.name}</prop>
         <prop key="user">${datasource.username}</prop>
         <prop key="password">${datasource.password}</prop>
       </props>

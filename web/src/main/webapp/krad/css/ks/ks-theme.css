@@ -135,6 +135,7 @@ th .kr-collection-cntr .summary {
 .labelTop label {
     line-height:2em;
     font-weight:bold;
+    margin-right:1em;
 }
 
 .kr-field-attribute .kr-labelTop {

@@ -600,6 +600,7 @@ Navigation Slide Control
 /* Messing with table label alignment */
 th.labelTop span.labelTop {
     text-align:right;
+    padding-right:1em;
 }
 th label {
     text-align:right;

@@ -44,6 +44,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -95,7 +96,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
     	String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
         for (ActionRequestValue actionRequest : actionRequests) {
-            if (actionRequest.isRecipientRoutedRequest(principalId) && actionRequest.isActive()) {
+            // we are getting the full list of requests here, so no need to look at role requests, if we did this then
+            // we could get a "false positive" for "all approve" roles where only part of the request graph is marked
+            // as "done"
+            if (!RecipientType.ROLE.getCode().equals(actionRequest.getRecipientTypeCd()) &&
+                    actionRequest.isRecipientRoutedRequest(principalId) && actionRequest.isActive()) {
                 int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested, completeAndApproveTheSame);
                 if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
                     actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "true");

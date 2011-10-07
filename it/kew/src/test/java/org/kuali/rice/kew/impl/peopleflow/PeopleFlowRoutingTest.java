@@ -729,7 +729,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
 
         // document should still be enroute because this is an all approve situation and both the group and admin need to approve
         assertTrue(document.isEnroute());
-        //assertFalse(document.isApprovalRequested());
+        assertFalse(document.isApprovalRequested());
 
         document.switchPrincipal(getPrincipalNameForId("admin"));
         assertTrue(document.isApprovalRequested());

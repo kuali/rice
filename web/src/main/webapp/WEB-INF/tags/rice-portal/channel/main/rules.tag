@@ -29,9 +29,5 @@
     <li><portal:portalLink displayTitle="true" title="Term Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.TermBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
     <li><portal:portalLink displayTitle="true" title="Term Specification Lookup" url="${ConfigProperties.application.url}/spring/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.TermSpecificationBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
   </ul>
-  <strong>Views</strong>
-  <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Agenda Editor View (junk)" url="${ConfigProperties.application.url}/spring/krmsEditor?viewId=EditorView&methodToCall=start"/></li> 
-  </ul>
 </div>
 <channel:portalChannelBottom />

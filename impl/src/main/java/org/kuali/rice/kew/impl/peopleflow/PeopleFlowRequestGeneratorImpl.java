@@ -54,7 +54,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
     protected void generateRequestForMember(Context context, PeopleFlowMember member) {
         String actionRequestPolicyCode = null;
         if (member.getActionRequestPolicy() != null) {
-            member.getActionRequestPolicy().getCode();
+            actionRequestPolicyCode = member.getActionRequestPolicy().getCode();
         }
         if (MemberType.ROLE == member.getMemberType()) {
             generateRequestForRoleMember(context, member, actionRequestPolicyCode);

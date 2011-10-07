@@ -62,7 +62,7 @@
     <property name="items">
       <list> 
         <ref bean="AgendaEditorView-Agenda-Page"/>
-        <!-- ref bean="AgendaEditorView-AddRule-Page"/ -->
+        <ref bean="AgendaEditorView-AddRule-Page"/>
         <ref bean="AgendaEditorView-EditRule-Page"/>
       </list>
     </property>

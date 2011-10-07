@@ -213,7 +213,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
     }
 
     /**
-     * Name of the method to invoke for retrieving the liat of remotable fields
+     * Name of the method to invoke for retrieving the list of remotable fields
      *
      * <p>
      * When only the fetching method to call is configured it is assumed to be a valid method on the view

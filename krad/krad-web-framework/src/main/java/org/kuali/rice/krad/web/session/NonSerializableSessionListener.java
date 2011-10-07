@@ -34,10 +34,13 @@ public class NonSerializableSessionListener implements HttpSessionAttributeListe
 
     private static void logSerializationViolations(HttpSessionBindingEvent se, String action) {
         final Object o = se.getValue();
-        if (!isSerializable(o)) {
-            LOG.error("Attribute of class " + o.getClass().getName() + " with name " + se.getName() + " from source " + se.getSource().getClass().getName() + " was " + action + " to session and does not implement " + Serializable.class.getName());
-        } else if (!canBeSerialized((Serializable) o)){
-            LOG.error("Attribute of class " + o.getClass().getName() + " with name " + se.getName() + " from source " + se.getSource().getClass().getName() + " was " + action + " to session and cannot be Serialized");
+        
+        if(o != null) {
+            if (!isSerializable(o)) {
+                LOG.error("Attribute of class " + o.getClass().getName() + " with name " + se.getName() + " from source " + se.getSource().getClass().getName() + " was " + action + " to session and does not implement " + Serializable.class.getName());
+            } else if (!canBeSerialized((Serializable) o)){
+                LOG.error("Attribute of class " + o.getClass().getName() + " with name " + se.getName() + " from source " + se.getSource().getClass().getName() + " was " + action + " to session and cannot be Serialized");
+            }
         }
     }
 

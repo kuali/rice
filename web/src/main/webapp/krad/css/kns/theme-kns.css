@@ -793,7 +793,7 @@ h4.kr-section-subhead {
 	padding: 5px;
 	font-family: Verdana, Geneva, sans-serif;
 }
-th.Hey.S.displayWith-null {
+th.Hey.S {
 	background: #f7f7f7; /* Old browsers */
 	background: -moz-linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #e5e5e5)); /* Chrome,Safari4+ */

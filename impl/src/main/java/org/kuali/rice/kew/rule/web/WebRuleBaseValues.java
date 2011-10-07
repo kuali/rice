@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.KeyValueId;
 import org.kuali.rice.kew.rule.RoleAttribute;
@@ -30,7 +31,7 @@ import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -95,94 +96,21 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 						continue;
 					}
-					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 					}
 					for (Object element : workflowAttribute.getRuleRows()) {
 						Row row = (Row) element;
 						for (Object element2 : row.getFields()) {
 							Field field = (Field) element2;
-							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-								String fieldValue = "";
-								RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getId(), field.getPropertyName());
-								if (extensionValue != null) {
-									fieldValue = extensionValue.getValue();
-								} else {
-									fieldValue = field.getPropertyValue();
-								}
-								fields.add(new KeyValueId(field.getPropertyName(), fieldValue, ruleTemplateAttribute.getId()+""));
-							//} else if (!org.apache.commons.lang.StringUtils.isEmpty(field.getDefaultLookupableName())) {
-							//	String fieldValue = "";
-							//	RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getId(), (String) field.getDefaultLookupableName());
-							//	if (extensionValue != null) {
-							//		fieldValue = extensionValue.getValue();
-							//	} else {
-							//		fieldValue = field.getPropertyValue();
-							//	}
-							//	fields.add(new KeyValueId(field.getDefaultLookupableName(), fieldValue, ruleTemplateAttribute.getId()+""));
-							} else {
-								String fieldValue = "";
-								RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getId(), field.getPropertyName());
-								if (extensionValue != null) {
-									fieldValue = extensionValue.getValue();
-								} else {
-									fieldValue = field.getPropertyValue();
-								}
-								fields.add(new KeyValueId(field.getPropertyName(), fieldValue, ruleTemplateAttribute.getId()+""));
-							}
+                            String fieldValue = "";
+                            RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getId(), field.getPropertyName());
 
-							// if (workflowAttribute.getFieldConversions() !=
-							// null &&
-							// !workflowAttribute.getFieldConversions().isEmpty())
-							// {
-							// boolean found = false;
-							// for (Iterator iterator4 =
-							// workflowAttribute.getFieldConversions().iterator();
-							// iterator4.hasNext();) {
-							// KeyValue pair = (KeyValue)
-							// iterator4.next();
-							// if
-							// (pair.getLabel().equals(field.getPropertyName()))
-							// {
-							// String fieldValue = "";
-							// RuleExtensionValue extensionValue =
-							// getRuleExtensionValue((String) pair.getKey());
-							// if (extensionValue != null) {
-							// fieldValue = extensionValue.getValue();
-							// }
-							// fields.add(PropertyKeyValue.create(pair.getKey(),
-							// fieldValue));
-							// found = true;
-							// break;
-							// }
-							// }
-							// if (!found) {
-							// String fieldValue = "";
-							// RuleExtensionValue extensionValue =
-							// getRuleExtensionValue((String)
-							// field.getPropertyName());
-							// if (extensionValue != null) {
-							// fieldValue = extensionValue.getValue();
-							// }
-							// fields.add(new
-							// KeyValue(field.getPropertyName(),
-							// fieldValue));
-							// }
-							// } else {
-							// String fieldValue = "";
-							// RuleExtensionValue extensionValue =
-							// getRuleExtensionValue((String)
-							// field.getPropertyName());
-							// if (extensionValue != null) {
-							// fieldValue = extensionValue.getValue();
-							// }
-							// fields.add(new
-							// KeyValue(field.getPropertyName(),
-							// fieldValue));
-							// }
-						}
+                            fieldValue = (extensionValue != null) ? extensionValue.getValue() : field.getPropertyValue();
+                            fields.add(new KeyValueId(field.getPropertyName(), fieldValue, ruleTemplateAttribute.getId()));
+                        }
 					}
 				}
 			}
@@ -201,22 +129,16 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 						continue;
 					}
-					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 					}
 					for (Object element : workflowAttribute.getRuleRows()) {
 						Row row = (Row) element;
 						for (Object element2 : row.getFields()) {
 							Field field = (Field) element2;
-							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-								fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getId() + ""));
-							//} else if (!org.apache.commons.lang.StringUtils.isEmpty(field.getDefaultLookupableName())) {
-							//	fields.add(new KeyValueId(field.getDefaultLookupableName(), field.getPropertyValue(), ruleTemplateAttribute.getId() + ""));
-							} else {
-								fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getId() + ""));
-							}
+							fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getId() + ""));
 						}
 					}
 				}
@@ -236,19 +158,18 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 			if (ruleTemplate != null) {
 				setRuleTemplateName(ruleTemplate.getName());
-				List ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
+				List<RuleTemplateAttributeBo> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 				Collections.sort(ruleTemplateAttributes);
-				List rows = new ArrayList();
-				for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
-					RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) iter.next();
+				List<Row> rows = new ArrayList<Row>();
+				for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
 					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 						continue;
 					}
-					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 					}
 					workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getId()+""));
 					rows.addAll(workflowAttribute.getRuleRows());
@@ -304,15 +225,15 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		this.fromDateString = fromDateString;
 	}
 
-	public List getRoles() {
+	public List<RoleName> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List roles) {
+	public void setRoles(List<RoleName> roles) {
 		this.roles = roles;
 	}
 
-	public List getRows() {
+	public List<RoleName> getRows() {
 		return rows;
 	}
 
@@ -563,11 +484,11 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}
-			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-				((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 
 			List attValidationErrors = workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getId()+""));

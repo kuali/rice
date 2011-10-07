@@ -18,14 +18,13 @@ package org.kuali.rice.kew.rule.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleValidationAttribute;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -103,13 +102,13 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
 
     public Object getAttribute() {
         try {
-            ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getResourceDescriptor(), getRuleAttribute().getApplicationId());
-            Object attribute = GlobalResourceLoader.getObject(objectDefinition);
+            //ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getResourceDescriptor(), getRuleAttribute().getApplicationId());
+            Object attribute = ExtensionUtils.loadExtension(RuleAttribute.to(getRuleAttribute()), getRuleAttribute().getApplicationId());
             if (attribute == null) {
-                throw new WorkflowRuntimeException("Could not find attribute " + objectDefinition);
+                throw new WorkflowRuntimeException("Could not find attribute " + getRuleAttribute().getName());
             }
-            if (attribute instanceof WorkflowAttribute) {
-                ((WorkflowAttribute) attribute).setRequired(required.booleanValue());
+            if (attribute instanceof WorkflowRuleAttribute) {
+                ((WorkflowRuleAttribute) attribute).setRequired(required.booleanValue());
             }
             return attribute;
         } catch (Exception e) {
@@ -124,7 +123,7 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
                 return false;
             }
             Class<?> attributeClass = attributeObject.getClass();
-            return WorkflowAttribute.class.isAssignableFrom(attributeClass);
+            return WorkflowRuleAttribute.class.isAssignableFrom(attributeClass);
         } catch (Exception e) {
             throw new RuntimeException("Caught error attempting to load WorkflowAttribute class: " + getRuleAttribute().getResourceDescriptor(), e);
         }
@@ -140,13 +139,15 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
      * The calling code should be sure to call isWorkflowAttribute first to verify the type of this attribute
      * is that of a WorkflowAttribute.  Otherwise a RuntimeException will be thrown.
      */
-    public WorkflowAttribute getWorkflowAttribute() {
+    public WorkflowRuleAttribute getWorkflowAttribute() {
         try {
-            ObjectDefinition objectDefinition = new ObjectDefinition(getRuleAttribute().getResourceDescriptor(), getRuleAttribute().getApplicationId());
-            WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getResourceLoader().getObject(objectDefinition);
-            if (workflowAttribute == null) {
-                throw new WorkflowRuntimeException("Could not find workflow attribute " + objectDefinition);
+            Object tempAttr = ExtensionUtils.loadExtension(RuleAttribute.to(getRuleAttribute()), getRuleAttribute().getApplicationId());
+
+            if (tempAttr == null
+                    || !WorkflowRuleAttribute.class.isAssignableFrom(tempAttr.getClass())) {
+                throw new WorkflowRuntimeException("Could not find workflow attribute " + getRuleAttribute().getName());
             }
+            WorkflowRuleAttribute workflowAttribute = (WorkflowRuleAttribute)tempAttr;
             workflowAttribute.setRequired(required.booleanValue());
             return workflowAttribute;
         } catch (Exception e) {

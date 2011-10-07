@@ -24,12 +24,12 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
-import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.workgroup.GroupNameId;
@@ -43,11 +43,11 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
  */
 public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     private static final Logger LOG = Logger.getLogger(ChannelReviewerRoleAttribute.class);
-    private static final List<Role> SUPPORTED_ROLES;
+    private static final List<RoleName> SUPPORTED_ROLES;
     
     static {
-        Role reviewerRole = new Role(ChannelReviewerRoleAttribute.class, "reviewers", "Reviewers");
-        List<Role> tmp = new ArrayList<Role>(1);
+        RoleName reviewerRole = new RoleName(ChannelReviewerRoleAttribute.class.getName(), "reviewers", "Reviewers");
+        List<RoleName> tmp = new ArrayList<RoleName>(1);
         tmp.add(reviewerRole);
         SUPPORTED_ROLES = Collections.unmodifiableList(tmp);
     }
@@ -82,7 +82,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
     /**
      * @see org.kuali.rice.kew.rule.RoleAttribute#getRoleNames()
      */
-    public List<Role> getRoleNames() {
+    public List<RoleName> getRoleNames() {
         LOG.info("CHANNEL REVIEWER ROLE ATTRIBUTE CALLED ROLENAMES");
         return SUPPORTED_ROLES;
     }

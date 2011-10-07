@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.PrincipalId;
 
@@ -34,10 +35,10 @@ public class RoutedByUserRoleAttribute extends UnqualifiedRoleAttribute {
 	private static final String ROUTED_BY_USER_ROLE_KEY = "ROUTED_BY_USER";
     private static final String ROUTED_BY_USER_ROLE_LABEL = "Routed By User";
 
-    private static final Role ROLE = new Role(RoutedByUserRoleAttribute.class, ROUTED_BY_USER_ROLE_KEY, ROUTED_BY_USER_ROLE_LABEL);
-    private static final List<Role> ROLES;
+    private static final RoleName ROLE = new RoleName(RoutedByUserRoleAttribute.class.getName(), ROUTED_BY_USER_ROLE_KEY, ROUTED_BY_USER_ROLE_LABEL);
+    private static final List<RoleName> ROLES;
     static {
-        ArrayList<Role> roles = new ArrayList<Role>(1);
+        ArrayList<RoleName> roles = new ArrayList<RoleName>(1);
         roles.add(ROLE);
         ROLES = Collections.unmodifiableList(roles);
     }

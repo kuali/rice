@@ -25,12 +25,15 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
+import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -93,7 +96,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
             throw new RuntimeException("Match xpath expression not specified (should be parse-time exception...)");
         }
 
-        List<WorkflowAttribute> attributes = new ArrayList<WorkflowAttribute>();
+        List<WorkflowRuleAttribute> attributes = new ArrayList<WorkflowRuleAttribute>();
         for (String attributeName : ruleAttributeNames) {
             attributes.add(getRuleAttributeByName(attributeName));
         }
@@ -113,7 +116,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
                 match &= (Boolean) xpath.evaluate(xpathExpression, context.getDocumentContent().getDocument(), XPathConstants.BOOLEAN);
             }
         }
-        for (WorkflowAttribute workflowAttribute : attributes) {
+        for (WorkflowRuleAttribute workflowAttribute : attributes) {
             // no rule extensions to pass in below because we have no rule... simple attribute matching only
             match &= workflowAttribute.isMatch(context.getDocumentContent(), new ArrayList<RuleExtension>());
         }
@@ -158,24 +161,24 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
         return "InlineRequestsRouteModule";
     }
 
-    private WorkflowAttribute getRuleAttributeByName(String ruleAttributeName) {
+    private WorkflowRuleAttribute getRuleAttributeByName(String ruleAttributeName) {
         return materializeRuleAttribute(KEWServiceLocator.getRuleAttributeService().findByName(ruleAttributeName));
     }
     
-    private WorkflowAttribute getRuleAttributeByClassName(String ruleAttributeClassName) {
+    private WorkflowRuleAttribute getRuleAttributeByClassName(String ruleAttributeClassName) {
         return materializeRuleAttribute(KEWServiceLocator.getRuleAttributeService().findByClassName(ruleAttributeClassName));
     }
     
-    private WorkflowAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
+    private WorkflowRuleAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
         if (ruleAttribute != null) {
             if (KEWConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
-                return (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
+                return (WorkflowRuleAttribute) GlobalResourceLoader.getObject(objDef);
             } else if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
-                WorkflowAttribute workflowAttribute = (WorkflowAttribute) GlobalResourceLoader.getObject(objDef);
+                WorkflowRuleAttribute workflowAttribute = (WorkflowRuleAttribute) GlobalResourceLoader.getObject(objDef);
                 //required to make it work because ruleAttribute XML is required to construct custom columns
-                ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+                ((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
                 return workflowAttribute;
             }
         }

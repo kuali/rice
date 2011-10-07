@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.PrincipalId;
 
@@ -34,10 +35,10 @@ public class InitiatorRoleAttribute extends UnqualifiedRoleAttribute {
     private static final String INITIATOR_ROLE_KEY = "INITIATOR";
     private static final String INITIATOR_ROLE_LABEL = "Initiator";
 
-    private static final Role ROLE = new Role(InitiatorRoleAttribute.class, INITIATOR_ROLE_KEY, INITIATOR_ROLE_LABEL);
-    private static final List<Role> ROLES;
+    private static final RoleName ROLE = new RoleName(InitiatorRoleAttribute.class.getName(), INITIATOR_ROLE_KEY, INITIATOR_ROLE_LABEL);
+    private static final List<RoleName> ROLES;
     static {
-        ArrayList<Role> roles = new ArrayList<Role>(1);
+        ArrayList<RoleName> roles = new ArrayList<RoleName>(1);
         roles.add(ROLE);
         ROLES = Collections.unmodifiableList(roles);
     }

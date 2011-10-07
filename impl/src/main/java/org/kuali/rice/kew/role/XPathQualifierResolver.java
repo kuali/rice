@@ -18,6 +18,8 @@ package org.kuali.rice.kew.role;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -124,7 +126,7 @@ import java.util.Map;
 public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredAttribute {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XPathQualifierResolver.class);
 
-	private RuleAttribute ruleAttribute;
+	private ExtensionDefinition extensionDefinition;
 	
 	public List<Map<String, String>> resolve(RouteContext context) {
 			ResolverConfig config = parseResolverConfig();
@@ -185,17 +187,17 @@ public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredA
 		}
 	}
 
-	public void setRuleAttribute(RuleAttribute ruleAttribute) {
-		this.ruleAttribute = ruleAttribute;
+	public void setExtensionDefinition(ExtensionDefinition extensionDefinition) {
+		this.extensionDefinition = extensionDefinition;
 	}
 	
 	protected ResolverConfig parseResolverConfig() {
-		if (ruleAttribute == null) {
+		if (extensionDefinition == null) {
 			throw new RiceRuntimeException("Failed to locate a RuleAttribute for the given XPathQualifierResolver");
 		}
 		try {
 			ResolverConfig resolverConfig = new ResolverConfig();
-			String xmlConfig = ruleAttribute.getXmlConfigData();
+			String xmlConfig = extensionDefinition.getConfiguration().get(KewApiConstants.APPLICATION_CONTENT_ELEMENT);
 			XPath xPath = XPathHelper.newXPath();
 			String baseExpression = xPath.evaluate("//resolverConfig/baseXPathExpression", new InputSource(new StringReader(xmlConfig)));
 			if (!StringUtils.isEmpty(baseExpression)) {

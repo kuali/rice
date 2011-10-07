@@ -19,31 +19,32 @@ package org.kuali.rice.kew.rule;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl;
-
+import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * An interface which can be implemented by a {@link WorkflowAttribute} implementation which allows
+ * An interface which can be implemented by a {@link WorkflowRuleAttribute} implementation which allows
  * a different List of {@link Row} objects to be returned for rendering on the rule lookup screen.
  * 
  * @see RuleBaseValuesLookupableImpl
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface OddSearchAttribute {
+public interface WorkflowRuleSearchAttribute extends WorkflowRuleAttribute{
 
     /**
      * If your attribute is an OddSearchAttribute this method will be used to get search rows instead of the
      * usually called get RuleRows.  Generally this is used for Attributes that want to expose drop downs
-     * for Rule Entry but need special wild card fields for seaches that wouldn't work for rule entry.
+     * for Rule Entry but need special wild card fields for searches that wouldn't work for rule entry.
      */
-    public List getSearchRows();
+    List<Row> getSearchRows();
     
     /** 
      * validate search data and populate attribute with search data
      * @param paramMap
      * @return
      */
-    public List validateSearchData(Map paramMap);
+    List<WorkflowServiceError> validateSearchData(Map<String, String> paramMap);
     
 }

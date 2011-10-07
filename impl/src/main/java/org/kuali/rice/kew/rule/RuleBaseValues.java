@@ -184,28 +184,19 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 
     public Map getRuleExtensionValueLabels() {
         Map extensionLabels = new HashMap();
-        for (Iterator iterator2 = getRuleExtensions().iterator(); iterator2.hasNext();) {
-            RuleExtension ruleExtension = (RuleExtension) iterator2.next();
+        for (RuleExtension ruleExtension : getRuleExtensions()) {
             if (!ruleExtension.getRuleTemplateAttribute().isWorkflowAttribute()) {
                 continue;
             }
-            WorkflowAttribute workflowAttribute = ruleExtension.getRuleTemplateAttribute().getWorkflowAttribute();
+            WorkflowRuleAttribute workflowAttribute = ruleExtension.getRuleTemplateAttribute().getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleExtension.getRuleTemplateAttribute().getRuleAttribute();
-            if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+            /*if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
-            }
-            for (Iterator iterator = workflowAttribute.getRuleRows().iterator(); iterator.hasNext();) {
-                Row row = (Row) iterator.next();
-                for (Iterator iterator3 = row.getFields().iterator(); iterator3.hasNext();) {
-                    Field field = (Field) iterator3.next();
-                    if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                        extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
-                    //} else if (!org.apache.commons.lang.StringUtils.isEmpty(field.getDefaultLookupableName())) {
-                    //    extensionLabels.put(field.getDefaultLookupableName(), field.getFieldLabel());
-                    } else {
-                        extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
-                    }
+            }*/
+            for (Row row : workflowAttribute.getRuleRows()) {
+                for (Field field : row.getFields()) {
+                    extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
                 }
             }
         }
@@ -499,11 +490,11 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
             if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                 continue;
             }
-            WorkflowAttribute routingAttribute = (WorkflowAttribute) ruleTemplateAttribute.getWorkflowAttribute();
+            WorkflowRuleAttribute routingAttribute = (WorkflowRuleAttribute) ruleTemplateAttribute.getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                ((GenericXMLRuleAttribute) routingAttribute).setRuleAttribute(ruleAttribute);
+                ((GenericXMLRuleAttribute) routingAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
             }
             String className = ruleAttribute.getResourceDescriptor();
             List<RuleExtension> editedRuleExtensions = new ArrayList<RuleExtension>();
@@ -696,39 +687,5 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
             return null;
         }
         return org.kuali.rice.kew.api.rule.Rule.Builder.create(bo).build();
-        /*org.kuali.rice.kew.api.rule.Rule.Builder builder = org.kuali.rice.kew.api.rule.Rule.Builder.create(bo.getName());
-        builder.setId(bo.getId());
-        builder.setId(bo.ruleTemplateId);
-        builder.setActive(bo.isActive());
-        builder.setDescription(bo.getDescription());
-        builder.setDocTypeName(bo.getDocTypeName());
-        builder.setFromDate(new DateTime(bo.getFromDateValue()));
-        builder.setToDate(new DateTime(bo.getToDateValue()));
-        builder.setForceAction(bo.isForceAction());
-        if (CollectionUtils.isNotEmpty(bo.getRuleResponsibilities())) {
-            List<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder> respBuilders =
-                    new ArrayList<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder>();
-            for (RuleResponsibility resp : bo.getRuleResponsibilities()) {
-                respBuilders.add(
-                        org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(RuleResponsibility.to(resp)));
-            }
-            builder.setRuleResponsibilities(respBuilders);
-        } else {
-            builder.setRuleResponsibilities(
-                    Collections.<org.kuali.rice.kew.api.rule.RuleResponsibility.Builder>emptyList());
-        }
-
-        Map<String, String> extensions = new HashMap<String, String>();
-        for (RuleExtension ext : bo.getRuleExtensions()) {
-            for (RuleExtensionValue value : ext.getExtensionValues()) {
-                extensions.put(value.getKey(), value.getValue());
-            }
-        }
-        builder.setRuleExtensions(extensions);
-        builder.setRuleTemplateName(bo.getRuleTemplateName());
-        if (bo.getRuleExpressionDef() != null) {
-            builder.setRuleExpressionDef(RuleExpression.Builder.create(bo.getRuleExpressionDef()));
-        }
-        return builder.build();*/
     }
 }

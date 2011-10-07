@@ -92,6 +92,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimAttributeBo chartAttribute = new KimAttributeBo();
         chartAttribute.setId("" + chartAttributeId);
         chartAttribute.setAttributeName("chart");
+        chartAttribute.setComponentName("org.kuali.rice.kim.bo.impl.KimAttributes");
         chartAttribute.setNamespaceCode(NAMESPACE);
         chartAttribute.setAttributeLabel("chart");
         chartAttribute.setActive(true);
@@ -101,6 +102,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         Long orgAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo orgAttribute = new KimAttributeBo();
         orgAttribute.setId("" + orgAttributeId);
+        orgAttribute.setComponentName("org.kuali.rice.kim.bo.impl.KimAttributes");
         orgAttribute.setAttributeName("org");
         orgAttribute.setNamespaceCode(NAMESPACE);
         orgAttribute.setAttributeLabel("org");
@@ -519,7 +521,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
         roleResponsibilityAction1.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
+        roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
         roleResponsibilityAction1 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
 
@@ -529,7 +531,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
         roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
+        roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
         roleResponsibilityAction2 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
 
@@ -539,7 +541,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
         roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
+        roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 	}
@@ -678,7 +680,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		int numRoots = 0;
 		for (ActionRequest actionRequest : actionRequests) {
 			if (actionRequest.getRequestPolicy() != null) {
-				assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getRequestPolicy());
+				assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getRequestPolicy().getCode());
 			}
 			if (actionRequest.getParentActionRequestId() == null) {
 				numRoots++;

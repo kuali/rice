@@ -30,7 +30,7 @@ import java.util.Map;
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
 public final class RemotableQuickFinder extends RemotableAbstractWidget {
 
-    @XmlElement(name = Elements.BASE_LOOKUP_URL, required = true)
+    @XmlElement(name = Elements.BASE_LOOKUP_URL, required = false)
     private final String baseLookupUrl;
 
     @XmlElement(name = Elements.DATA_OBJECT_CLASS, required = true)
@@ -102,9 +102,9 @@ public final class RemotableQuickFinder extends RemotableAbstractWidget {
         }
 
         public void setBaseLookupUrl(String baseLookupUrl) {
-            if (StringUtils.isBlank(baseLookupUrl)) {
+            /*if (StringUtils.isBlank(baseLookupUrl)) {
                 throw new IllegalArgumentException("baseLookupUrl is blank");
-            }
+            }*/
 
             this.baseLookupUrl = baseLookupUrl;
         }

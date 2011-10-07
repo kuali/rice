@@ -18,10 +18,10 @@ package org.kuali.rice.kew.rule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -31,7 +31,7 @@ import org.kuali.rice.kew.user.WorkflowUserId;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, WorkflowAttributeXmlValidator {
+public class TestRuleAttribute implements WorkflowRuleAttribute, RoleAttribute, WorkflowAttributeXmlValidator {
 
 	private static final long serialVersionUID = -220808609566348066L;
 
@@ -47,7 +47,7 @@ public class TestRuleAttribute implements WorkflowAttribute, RoleAttribute, Work
     public List getRoleNames() {
         List roleNames = new ArrayList();
         for (String roleName : roles.keySet()) {
-            roleNames.add(new Role(getClass(), roleName, roleName));
+            roleNames.add(new RoleName(getClass().getName(), roleName, roleName));
         }
     	return roleNames;
     }

@@ -25,11 +25,11 @@ import java.util.Map;
 
 
 /**
- * Abstract base class for {@link WorkflowAttribute}s.
+ * Abstract base class for {@link WorkflowRuleAttribute}s.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class AbstractWorkflowAttribute implements WorkflowAttribute {
+public abstract class AbstractWorkflowAttribute implements WorkflowRuleAttribute {
     protected boolean required;
 
     public List<Row> getRuleRows() {

@@ -38,6 +38,8 @@ public final class KewApiConstants {
     public static final String DEFAULT_DOCUMENT_CONTENT2 = "<" + DOCUMENT_CONTENT_ELEMENT + "></"
             + DOCUMENT_CONTENT_ELEMENT + ">";
 
+    public static final String ATTRIBUTE_XML_CONFIG_DATA = "xmlConfigData";
+
     // receive future action request constants
     public static final String RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_receive_future_requests";
     public static final String DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY = "_deactivated_future_requests";

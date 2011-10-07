@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.identity.EmployeeId;
 import org.kuali.rice.kew.identity.Id;
 
@@ -37,9 +38,9 @@ public class UniversityIdRoleAttribute extends AbstractIdRoleAttribute {
     private static final String ATTRIBUTE_ELEMENT = "UniversityIdRoleAttribute";
     private static final String UNIVERSITY_ID_ELEMENT = "universityId";
     
-    public List<Role> getRoleNames() {
-	List<Role> roleNames = new ArrayList<Role>();
-	roleNames.add(new Role(getClass(), UNIVERSITY_ID_ROLE_NAME, "University ID"));
+    public List<RoleName> getRoleNames() {
+	List<RoleName> roleNames = new ArrayList<RoleName>();
+	roleNames.add(new RoleName(getClass().getName(), UNIVERSITY_ID_ROLE_NAME, "University ID"));
 	return roleNames;
     }
     

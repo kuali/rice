@@ -21,6 +21,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -41,12 +42,12 @@ import java.util.Map;
 
 
 /**
- * A {@link WorkflowAttribute} which is used to route a rule based on the
+ * A {@link WorkflowRuleAttribute} which is used to route a rule based on the
  * {@link DocumentType} of the rule which is created.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleRoutingAttribute implements WorkflowAttribute {
+public class RuleRoutingAttribute implements WorkflowRuleAttribute {
 
 	private static final long serialVersionUID = -8884711461398770563L;
 

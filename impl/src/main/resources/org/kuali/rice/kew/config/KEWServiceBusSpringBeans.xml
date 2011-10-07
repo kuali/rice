@@ -184,6 +184,19 @@
 		</property>
 	</bean>
 
+  <bean id="rice.kew.workflowRuleAttributeHandlerService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewJaxWsSoapService">
+				<property name="service">
+					<ref bean="rice.kew.workflowRuleAttributeHandlerService" />
+				</property>
+				<property name="localServiceName" value="workflowRuleAttributeHandlerServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.workflowRuleAttributeHandlerServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
 
 	<bean id="rice.kew.rice.kew.groupMembershipChangeQueueSoap.exporter"
 		parent="kewEmbeddedServiceExporter">

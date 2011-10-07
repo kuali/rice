@@ -116,7 +116,7 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
     }
 
     public String getRoleAttributeName() {
-	return getRole().substring(0, getRole().indexOf("!"));
+	    return getRole().substring(0, getRole().indexOf("!"));
     }
     
     public RoleAttribute resolveRoleAttribute() {

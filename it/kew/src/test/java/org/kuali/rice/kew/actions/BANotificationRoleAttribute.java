@@ -20,14 +20,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
-
 
 /**
  * Current state of affairs
@@ -39,11 +38,11 @@ import org.kuali.rice.kew.rule.Role;
  */
 public class BANotificationRoleAttribute extends AbstractRoleAttribute {
 
-    public List getRoleNames() {
-        return Arrays.asList(new Role[] { new Role(getClass(), "Notify", "Notify"), new Role(getClass(), "Notify2", "Notify2"), new Role(getClass(), "NotifyDelegate", "NotifyDelegate") });
+    public List<RoleName> getRoleNames() {
+        return Arrays.asList(new RoleName[] { new RoleName(getClass().getName(), "Notify", "Notify"), new RoleName(getClass().getName(), "Notify2", "Notify2"), new RoleName(getClass().getName(), "NotifyDelegate", "NotifyDelegate") });
     }
 
-    public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
+    public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         List<String> qualifiedRoleNames = new ArrayList<String>();
         if (roleName.equals("Notify") || roleName.equals("Notify2")) {
             qualifiedRoleNames.add("jitrue");    

@@ -40,6 +40,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionDefinitionContract;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -63,8 +64,6 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 public class RuleAttribute extends PersistableBusinessObjectBase implements ExtensionDefinitionContract {
 
 	private static final long serialVersionUID = 1027673603158346349L;
-
-    public static final String XML_CONFIG_DATA = "xmlConfigData";
 
 	@Id
 	@GeneratedValue(generator="KREW_RTE_TMPL_S")
@@ -184,7 +183,7 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Exte
     public Map<String, String> getConfiguration() {
         Map<String, String> config = new HashMap<String, String>();
         if (StringUtils.isNotBlank(getXmlConfigData())) {
-            config.put(XML_CONFIG_DATA, getXmlConfigData());
+            config.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, getXmlConfigData());
         }
         return config;
     }
@@ -215,14 +214,13 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Exte
         }
         RuleAttribute bo = new RuleAttribute();
         bo.setApplicationId(im.getApplicationId());
-        bo.setName(im.getName());
         bo.setDescription(im.getDescription());
         bo.setResourceDescriptor(im.getResourceDescriptor());
         bo.setId(im.getId());
         bo.setLabel(im.getLabel());
         bo.setType(im.getType());
         bo.setVersionNumber(im.getVersionNumber());
-        bo.setXmlConfigData(im.getConfiguration().get(XML_CONFIG_DATA));
+        bo.setXmlConfigData(im.getConfiguration().get(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA));
 
         return bo;
     }

@@ -43,11 +43,11 @@ public class MessageServiceNames {
 
 	public static final String ACTION_LIST_IMMEDIATE_REMINDER_SERVICE = "ImmediateEmailService";
 
-	public static final String BLANKET_APPROVE_PROCESSING_SERVICE = "BlanketApproveProcessorService";
+	public static final QName BLANKET_APPROVE_PROCESSING_SERVICE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "BlanketApproveProcessorService");
 
-	public static final String DOCUMENT_REQUEUE_PROCESSING_SERVICE = "DocumentRequeueProcessorService";
+	public static final QName DOCUMENT_REQUEUE_PROCESSING_SERVICE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "DocumentRequeueProcessorService");
 
-	public static final String ROLE_POKER = "RolePokerProcessorService";
+	public static final QName ROLE_POKER = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "RolePokerProcessorService");
 
 	public static final String MOVE_DOCUMENT_PROCESSOR = "MoveDocumentProcessor";
 
@@ -80,15 +80,14 @@ public class MessageServiceNames {
 	}
 
 	public static BlanketApproveProcessorService getBlanketApproveProcessorService(DocumentRouteHeaderValue document) {
-		return (BlanketApproveProcessorService) getServiceAsynchronously(getQName(BLANKET_APPROVE_PROCESSING_SERVICE, document), document);
+		return (BlanketApproveProcessorService) getServiceAsynchronously(BLANKET_APPROVE_PROCESSING_SERVICE, document);
 	}
 	
 	public static DocumentRequeuerService getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
-		QName serviceName = getQName(DOCUMENT_REQUEUE_PROCESSING_SERVICE, applicationId);
 		if (waitTime > 0) {
-			return (DocumentRequeuerService) getDelayedServiceAsynchronously(serviceName, documentId, waitTime);
+			return (DocumentRequeuerService) getDelayedServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, waitTime);
 		}
-		return (DocumentRequeuerService) getServiceAsynchronously(serviceName, documentId, applicationId);
+		return (DocumentRequeuerService) getServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, applicationId);
 	}
 
 	public static Object getServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document) {

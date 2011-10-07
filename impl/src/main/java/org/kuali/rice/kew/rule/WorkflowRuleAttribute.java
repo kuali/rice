@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -56,7 +58,7 @@ import java.util.Map;
  *       then {@link WorkflowAttributeXmlValidator#validateClientRoutingData()} is called to validate any data the client app may have set
  *       on the client-instantiated attribute (the {@link org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition})</li>
  *   <li>Attribute content (content the attribute generates to place in the eDoc document content) is obtained from the attribute
- *       via {@link WorkflowAttribute#getDocContent()} or {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute#generateSearchContent(org.kuali.rice.kew.api.extension.ExtensionDefinition, String, org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition)},
+ *       via {@link WorkflowRuleAttribute#getDocContent()} or {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute#generateSearchContent(org.kuali.rice.kew.api.extension.ExtensionDefinition, String, org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition)},
  *       depending on whether the attribute is a WorkflowAttribute or {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute}</li>
  *   <li>When a Rule is invoked (for instance, when a <code>requests</code> node is fired), all attributes associated with the rule
  *       (those associated with the Rule Template associated with the rule) which are WorkflowAttributes are enumerated and for each:
@@ -66,7 +68,7 @@ import java.util.Map;
  *             and RuleAttribute business object is set on it ({@link GenericXMLRuleAttribute#setRuleAttribute(org.kuali.rice.kew.rule.RuleAttribute)}
  *             before proceeding with isMatch invocation. (what about a RuleAttributeAware interface so this can be done generically for all worklfow attribute
  *             implementations?)</li>
- *         <li>{@link WorkflowAttribute#isMatch(DocumentContent, List)} is called with the Rule's extension values passed</li>
+ *         <li>{@link WorkflowRuleAttribute#isMatch(DocumentContent, List)} is called with the Rule's extension values passed</li>
  *       </ol>
  *    </li>
  *    <li>If all attributes for the rule match, the rule is fired</li>
@@ -74,7 +76,7 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface WorkflowAttribute extends Serializable {
+public interface WorkflowRuleAttribute extends Serializable {
 
     /**
      * Returns true if this Attribute finds a match in the given DocContent.  If true,
@@ -88,7 +90,7 @@ public interface WorkflowAttribute extends Serializable {
      * attribute. The Value is determined when a rule is created and data is entered for the particular key. If a match is found, this method returns true and the eDoc will
      * be routed based on this rule. If no match is found, the method returns false and the eDoc will not be routed based on this rule.
      */
-    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions);
+    boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions);
 
     /**
      * Each Row contains Fields describing the UI-level presentation of a single RuleExtensionValue.
@@ -122,7 +124,7 @@ public interface WorkflowAttribute extends Serializable {
      * these Rows will set the propertyValue directly on the Field objects contained within.  Essentially, this means the Rows and Fields should not be constructed once inside of
      * the attribute and cached statically, but instead be recreated each time this method is called.
      */
-    public List<Row> getRuleRows();
+    List<Row> getRuleRows();
 
     /**
      * RoutingDataRows contain Rows describing the UI-level presentation of the ruleData fields
@@ -136,7 +138,7 @@ public interface WorkflowAttribute extends Serializable {
      * these Rows will set the propertyValue directly on the Field objects contained within.  Essentially, this means the Rows and Fields should not be constructed once inside of
      * the attribute and cached statically, but instead be recreated each time this method is called.
      */
-    public List<Row> getRoutingDataRows();
+    List<Row> getRoutingDataRows();
 
     /**
      * Returns a String containing this Attribute's routingData values, formatted as a series of XML
@@ -147,7 +149,7 @@ public interface WorkflowAttribute extends Serializable {
      * &lt;totalDollarAmount&gt;345&lt;/totalDollarAmount&gt;
      * </pre>
      */
-    public String getDocContent();
+    String getDocContent();
 
     /**
      * Returns the List of RuleExtensionValue objects associated with this Rule, each of which contains
@@ -168,7 +170,7 @@ public interface WorkflowAttribute extends Serializable {
      * (Basically, given a configured/initialized attribute, marshalls out the RuleExtensionValues representing the current state of
      * the attribute - Aaron Hamid FIXME)
      */
-    public List<RuleExtensionValue> getRuleExtensionValues();
+    List<RuleExtensionValue> getRuleExtensionValues();
     
     /**
      * Validates routingData values in the incoming map.  Called by the UI during rule creation.
@@ -179,7 +181,7 @@ public interface WorkflowAttribute extends Serializable {
      * 
      * @param paramMap Map containing the names and values of the routing data for this Attribute
      */
-    public List validateRoutingData(Map<String, String> paramMap); 
+    List<WorkflowServiceError> validateRoutingData(Map<String, String> paramMap);
     
     /**
      * Validates ruleExtension values in the incoming map.  Called by the UI during rule creation.
@@ -190,7 +192,7 @@ public interface WorkflowAttribute extends Serializable {
      * 
      * @param paramMap Map containing the names and values of the rule extensions for this Attribute
      */
-    public List validateRuleData(Map<String, String> paramMap);
+    List<WorkflowServiceError> validateRuleData(Map<String, String> paramMap);
     
     /**
      * Sets the required flag for this Attribute to true.  If required is true, the extensionValues for
@@ -200,12 +202,12 @@ public interface WorkflowAttribute extends Serializable {
      * When a rule template is created, the rule's attribute can be required.
      * This setting is then passed to the attribute by this method and can be used by the validateRuleData or validateRoutingData method as fit.
      */
-    public void setRequired(boolean required);
+    void setRequired(boolean required);
 
     /**
      * Returns true if the extensionValues on this Attribute must be filled in before the associated
      * Rule can be persisted.
      */
-    public boolean isRequired();
+    boolean isRequired();
     
 }

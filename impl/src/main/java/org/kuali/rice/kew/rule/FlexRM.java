@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -32,6 +33,9 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleDelegation;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.rule.RuleService;
@@ -298,15 +302,28 @@ public class FlexRM {
 		//RoleAttribute roleAttribute = resp.resolveRoleAttribute();
         RoleAttribute roleAttribute = null;
         if (resp.isUsingRole()) {
-            roleAttribute = (RoleAttribute)GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(
-                    resp.getRoleAttributeName()));
+            //get correct extension definition
+            ExtensionDefinition roleAttributeDefinition = null;
+            for (RuleTemplateAttribute ruleTemplateAttribute : rule.getRuleTemplate().getRuleTemplateAttributes()) {
+                if (resp.getRoleAttributeName().equals(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor())) {
+                    roleAttributeDefinition = ruleTemplateAttribute.getRuleAttribute();
+                    break;
+                }
+            }
+
+            if (roleAttributeDefinition != null) {
+                roleAttribute = ExtensionUtils.loadExtension(roleAttributeDefinition);
+                if (roleAttribute instanceof XmlConfiguredAttribute) {
+                    ((XmlConfiguredAttribute)roleAttribute).setExtensionDefinition(roleAttributeDefinition);
+                }
+            }
         }
-		setRuleAttribute(roleAttribute, rule, resp.getRoleAttributeName());
+		//setRuleAttribute(roleAttribute, rule, resp.getRoleAttributeName());
 		List<String> qualifiedRoleNames = new ArrayList<String>();
 		if (parentRequest != null && parentRequest.getQualifiedRoleName() != null) {
 			qualifiedRoleNames.add(parentRequest.getQualifiedRoleName());
 		} else {
-			qualifiedRoleNames.addAll(roleAttribute.getQualifiedRoleNames(roleName, context.getDocumentContent()));
+	        qualifiedRoleNames.addAll(roleAttribute.getQualifiedRoleNames(roleName, context.getDocumentContent()));
 		}
         for (String qualifiedRoleName : qualifiedRoleNames) {
             if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, qualifiedRoleName)) {
@@ -316,22 +333,9 @@ public class FlexRM {
             ResolvedQualifiedRole resolvedRole = roleAttribute.resolveQualifiedRole(context, roleName, qualifiedRoleName);
             RoleRecipient recipient = new RoleRecipient(roleName, qualifiedRoleName, resolvedRole);
             if (parentRequest == null) {
-                ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(), resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule
-                        .isForceAction(), rule.getDescription(), rule.getId());
-// Old, pre 1.0 delegate code, commenting out for now
-//
-//				if (resp.isDelegating()) {
-//					// create delegations for all the children
-//					for (Iterator iterator = roleRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
-//						ActionRequestValue request = (ActionRequestValue) iterator.next();
-//						for (Iterator ruleDelegationIterator = resp.getDelegationRules().iterator(); ruleDelegationIterator.hasNext();) {
-//							RuleDelegation childRuleDelegation = (RuleDelegation) ruleDelegationIterator.next();
-//							buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, request, childRuleDelegation);
-//						}
-//					}
-//				}
-
-                // new Rice 1.0 delegate rule code
+                ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(),
+                        resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule.isForceAction(),
+                        rule.getDescription(), rule.getId());
 
                 List<RuleDelegation> ruleDelegations = getRuleService().getRuleDelegationsByResponsibiltityId(resp.getResponsibilityId());
                 if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
@@ -352,11 +356,11 @@ public class FlexRM {
 	/**
 	 * Determines if the attribute has a setRuleAttribute method and then sets the value appropriately if it does.
 	 */
-	private void setRuleAttribute(RoleAttribute roleAttribute, org.kuali.rice.kew.api.rule.Rule rule, String roleAttributeName) {
+	/*private void setRuleAttribute(RoleAttribute roleAttribute, org.kuali.rice.kew.api.rule.Rule rule, String roleAttributeName) {
 		// look for a setRuleAttribute method on the RoleAttribute
 		Method setRuleAttributeMethod = null;
 		try {
-			setRuleAttributeMethod = roleAttribute.getClass().getMethod("setRuleAttribute", RuleAttribute.class);
+			setRuleAttributeMethod = roleAttribute.getClass().getMethod("setExtensionDefinition", RuleAttribute.class);
 		} catch (NoSuchMethodException e) {
             LOG.info("method setRuleAttribute not found on " + RuleAttribute.class.getName());
         }
@@ -368,7 +372,7 @@ public class FlexRM {
 		if (ruleTemplate != null) {
             for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes())
             {
-                RuleAttribute ruleAttribute = RuleAttribute.from(ruleTemplateAttribute.getRuleAttribute());
+                RuleAttribute ruleAttribute = ExtensionUtils.loadExtension(ruleTemplateAttribute.getRuleAttribute());
                 if (ruleAttribute.getResourceDescriptor().equals(roleAttributeName))
                 {
                     // this is our RuleAttribute!
@@ -378,12 +382,12 @@ public class FlexRM {
                         break;
                     } catch (Exception e)
                     {
-                        throw new WorkflowRuntimeException("Failed to set RuleAttribute on our RoleAttribute!", e);
+                        throw new WorkflowRuntimeException("Failed to set ExtensionDefinition on our RoleAttribute!", e);
                     }
                 }
             }
 		}
-	}
+	}*/
 
 	/**
 	 * Generates action requests for a non-role responsibility, either a user or workgroup
@@ -430,10 +434,13 @@ public class FlexRM {
 		List<ActionRequestValue> requests = getActionRequestService().findByStatusAndDocId(ActionRequestStatus.DONE.getCode(), routeHeader.getDocumentId());
         for (ActionRequestValue request : requests)
         {
-            if (((nodeInstance != null && request.getNodeInstance() != null && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) || request
-                    .getRouteLevel().equals(routeHeader.getDocRouteLevel()))
-                    && request.getResponsibilityId().equals(resp.getResponsibilityId()) && ObjectUtils.equals(request.getQualifiedRoleName(), qualifiedRoleName))
-            {
+            if (((nodeInstance != null
+                    && request.getNodeInstance() != null
+                    && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())
+                 ) || request.getRouteLevel().equals(routeHeader.getDocRouteLevel())
+                )
+                    && request.getResponsibilityId().equals(resp.getResponsibilityId())
+                        && ObjectUtils.equals(request.getQualifiedRoleName(), qualifiedRoleName)) {
                 return true;
             }
         }

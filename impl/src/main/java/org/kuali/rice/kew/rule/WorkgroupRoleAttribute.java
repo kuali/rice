@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupNameId;
@@ -38,9 +39,9 @@ public class WorkgroupRoleAttribute extends AbstractIdRoleAttribute {
     private static final String ATTRIBUTE_ELEMENT = "WorkgroupRoleAttribute";
     private static final String WORKGROUP_ELEMENT = "workgroupName";
         
-    public List<Role> getRoleNames() {
-	List<Role> roleNames = new ArrayList<Role>();
-	roleNames.add(new Role(getClass(), WORKGROUP_ROLE_NAME, "Workgroup Name"));
+    public List<RoleName> getRoleNames() {
+	List<RoleName> roleNames = new ArrayList<RoleName>();
+	roleNames.add(new RoleName(getClass().getName(), WORKGROUP_ROLE_NAME, "Workgroup Name"));
 	return roleNames;
     }
     

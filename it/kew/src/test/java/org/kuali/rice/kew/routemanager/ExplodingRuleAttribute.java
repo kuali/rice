@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 
 
-public class ExplodingRuleAttribute implements WorkflowAttribute {
+public class ExplodingRuleAttribute implements WorkflowRuleAttribute {
     
     public static boolean dontExplode = false;
 

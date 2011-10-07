@@ -18,6 +18,7 @@ package edu.sampleu.travel.workflow;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.identity.Id;
@@ -26,7 +27,6 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -44,12 +44,12 @@ import java.util.Map;
  * An attribute implementation that can resolve organizational roles
  */
 public class EmployeeAttribute extends GenericRoleAttribute {
-    private static final Role EMPLOYEE_ROLE = new Role(EmployeeAttribute.class, "employee", "Employee");
-    private static final Role SUPERVISOR_ROLE = new Role(EmployeeAttribute.class, "supervisr", "Supervisor");
-    private static final Role DIRECTOR_ROLE = new Role(EmployeeAttribute.class, "director", "Dean/Director");
-    private static final List<Role> ROLES;
+    private static final RoleName EMPLOYEE_ROLE = new RoleName(EmployeeAttribute.class.getName(), "employee", "Employee");
+    private static final RoleName SUPERVISOR_ROLE = new RoleName(EmployeeAttribute.class.getName(), "supervisr", "Supervisor");
+    private static final RoleName DIRECTOR_ROLE = new RoleName(EmployeeAttribute.class.getName(), "director", "Dean/Director");
+    private static final List<RoleName> ROLES;
     static {
-        List<Role> tmp = new ArrayList<Role>(1);
+        List<RoleName> tmp = new ArrayList<RoleName>(1);
         tmp.add(EMPLOYEE_ROLE);
         tmp.add(SUPERVISOR_ROLE);
         tmp.add(DIRECTOR_ROLE);
@@ -80,12 +80,12 @@ public class EmployeeAttribute extends GenericRoleAttribute {
     }
 
 	/* RoleAttribute methods */
-	public List<Role> getRoleNames() {
+	public List<RoleName> getRoleNames() {
         return ROLES;
 	}
 
     protected boolean isValidRole(String roleName) {
-        for (Role role: ROLES) {
+        for (RoleName role: ROLES) {
             if (role.getBaseName().equals(roleName)) {
                 return true;
             }
@@ -173,7 +173,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 	/**
 	 * Required to support flex routing report
 	 *
-	 * @see org.kuali.rice.kew.rule.WorkflowAttribute#getFieldConversions()
+	 * @see org.kuali.rice.kew.rule.WorkflowRuleAttribute#getFieldConversions()
 	 */
 	public List getFieldConversions() {
 		List conversionFields = new ArrayList();

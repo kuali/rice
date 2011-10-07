@@ -21,7 +21,7 @@ import java.util.List;
 
 
 /**
- * An interface which can be implemented by a {@link WorkflowAttribute} to allow for
+ * An interface which can be implemented by a {@link WorkflowRuleAttribute} to allow for
  * validation of client routing data.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)

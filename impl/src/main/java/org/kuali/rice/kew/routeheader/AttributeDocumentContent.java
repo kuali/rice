@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.routeheader;
 
 import org.kuali.rice.core.api.util.xml.XmlException;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.web.RoutingReportAction;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -30,7 +30,7 @@ import java.util.List;
  * Used by the {@link RoutingReportAction} to aid in generation of 
  * document content when running routing reports.
  * 
- * @see WorkflowAttribute
+ * @see org.kuali.rice.kew.rule.WorkflowRuleAttribute
  * @see RoutingReportAction
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -48,7 +48,7 @@ public class AttributeDocumentContent extends StandardDocumentContent {
         buffer.append("<").append(KEWConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
         buffer.append("<").append(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
         for (Iterator iterator = attributes.iterator(); iterator.hasNext();) {
-            WorkflowAttribute attribute = (WorkflowAttribute) iterator.next();
+            WorkflowRuleAttribute attribute = (WorkflowRuleAttribute) iterator.next();
             buffer.append(attribute.getDocContent());
         }
         buffer.append("</").append(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");

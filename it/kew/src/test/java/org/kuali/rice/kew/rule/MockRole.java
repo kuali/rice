@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.identity.PrincipalName;
@@ -40,10 +41,10 @@ import org.kuali.rice.kew.workgroup.GroupNameId;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class MockRole extends UnqualifiedRoleAttribute {
-    private static final Role ROLE = new Role(MockRole.class, "List of authentication ids", "List of authentication ids");
-    private static final List<Role> ROLES;
+    private static final RoleName ROLE = new RoleName(MockRole.class.getName(), "List of authentication ids", "List of authentication ids");
+    private static final List<RoleName> ROLES;
     static {
-        ArrayList<Role> roles = new ArrayList<Role>(1);
+        ArrayList<RoleName> roles = new ArrayList<RoleName>(1);
         roles.add(ROLE);
         ROLES = Collections.unmodifiableList(roles);
     }

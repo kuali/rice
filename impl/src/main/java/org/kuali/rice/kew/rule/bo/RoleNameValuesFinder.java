@@ -18,7 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.rule.Role;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -57,8 +57,8 @@ public class RoleNameValuesFinder extends KeyValuesBase {
 				throw new RiceRuntimeException("Cannot locate RuleBaseValues business object on maintenance document.  Business Object was " + businessObject);
 			}
 			RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
-			List<Role> roles = ruleTemplate.getRoles();
-			for (Role role : roles) {
+			List<RoleName> roles = ruleTemplate.getRoles();
+			for (RoleName role : roles) {
 				roleNames.add(new ConcreteKeyValue(role.getName(), role.getLabel()));
 			}
 		}

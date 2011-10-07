@@ -19,6 +19,7 @@ package org.kuali.rice.kew.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -36,9 +37,9 @@ public class TestBadWorkgroupRoleAttribute extends AbstractRoleAttribute {
 	private static final long serialVersionUID = -8319714644552979100L;
 
 
-	public List<Role> getRoleNames() {
-		List<Role> roles = new ArrayList<Role>();
-		roles.add(new Role(getClass(), "workgroup", "workgroup label"));
+	public List<RoleName> getRoleNames() {
+		List<RoleName> roles = new ArrayList<RoleName>();
+		roles.add(new RoleName(getClass().getName(), "workgroup", "workgroup label"));
 		return roles;
 	}
 

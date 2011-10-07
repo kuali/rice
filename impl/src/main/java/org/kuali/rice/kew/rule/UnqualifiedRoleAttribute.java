@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 
@@ -33,7 +34,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
 
     private static final long serialVersionUID = -356582375961050905L;
-	protected List<Role> roles;
+	protected List<RoleName> roles;
 
     /**
      * No-arg constructor for subclasses that will override {@link #getRoleNames()} to provide their own roles list
@@ -45,11 +46,11 @@ public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
     /**
      * Constructor for subclasses that can provide a role list at construction time
      */
-    public UnqualifiedRoleAttribute(List<Role> roles) {
+    public UnqualifiedRoleAttribute(List<RoleName> roles) {
         this.roles = roles;
     }
 
-    public List<Role> getRoleNames() {
+    public List<RoleName> getRoleNames() {
         return roles;
     }
 
@@ -79,7 +80,7 @@ public abstract class UnqualifiedRoleAttribute extends AbstractRoleAttribute {
     protected boolean isValidRoleName(String roleName) {
         // this attribute should never be called to resolve any roles other than those it advertised as supporting!
         boolean valid = false;
-        for (Role role: getRoleNames()) {
+        for (RoleName role: getRoleNames()) {
             if (parseRoleNameFromClassAndRole(role.getName()).equals(roleName)) {
                 valid = true;
                 break;

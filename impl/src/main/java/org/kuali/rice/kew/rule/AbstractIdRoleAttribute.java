@@ -16,7 +16,9 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -51,7 +53,7 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 
 	private String idValue;
 	private Map paramMap = new HashMap();
-	private RuleAttribute ruleAttribute;
+	private ExtensionDefinition extensionDefinition;
 
 	protected abstract String getAttributeElementName();
 
@@ -138,8 +140,8 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 		if (getIdValue() != null) {
 			getParamMap().put(getIdName(), getIdValue());
 		}
-		if (ruleAttribute != null) {
-			String xmlConfigData = ruleAttribute.getXmlConfigData();
+		if (extensionDefinition != null) {
+			String xmlConfigData = extensionDefinition.getConfiguration().get(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA);
 			if (!StringUtils.isBlank(xmlConfigData)) {
 				XPath xPath = XPathHelper.newXPath();
 				try {
@@ -187,8 +189,8 @@ public abstract class AbstractIdRoleAttribute extends AbstractRoleAttribute
 		this.paramMap = paramMap;
 	}
 
-	public void setRuleAttribute(RuleAttribute ruleAttribute) {
-		this.ruleAttribute = ruleAttribute;
+	public void setExtensionDefinition(ExtensionDefinition extensionDefinition) {
+		this.extensionDefinition = extensionDefinition;
 	}
 
 }

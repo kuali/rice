@@ -18,19 +18,19 @@ package org.kuali.rice.kew.rule.xmlrouting;
 
 import java.util.Map;
 
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 
 
 /**
- * A {@link WorkflowAttribute} which is configured via an XML definition.
+ * A {@link WorkflowRuleAttribute} which is configured via an XML definition.
  * Since it has no specific getters and setters for it's various
  * properties, it uses a Map of parameters to represent it's
  * attribute properties.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface GenericXMLRuleAttribute extends WorkflowAttribute, XmlConfiguredAttribute {
+public interface GenericXMLRuleAttribute extends WorkflowRuleAttribute, XmlConfiguredAttribute {
 
 	public void setParamMap(Map paramMap);
 	public Map getParamMap();

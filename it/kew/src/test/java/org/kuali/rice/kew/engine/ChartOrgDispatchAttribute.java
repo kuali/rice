@@ -19,11 +19,11 @@ package org.kuali.rice.kew.engine;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class ChartOrgDispatchAttribute extends AbstractRoleAttribute {
     }
 
     public List getRoleNames() {
-        return Arrays.asList(new Role[] { new Role(getClass(), DISPATCH_ROLE, DISPATCH_ROLE) });
+        return Arrays.asList(new RoleName[] { new RoleName(getClass().getName(), DISPATCH_ROLE, DISPATCH_ROLE) });
     }
 
     public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {

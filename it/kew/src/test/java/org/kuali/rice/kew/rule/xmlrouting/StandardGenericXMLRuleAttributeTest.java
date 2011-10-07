@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
+import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
@@ -159,7 +160,9 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(routingConfig);
 		ruleAttribute.setName("MyUniqueRuleAttribute1");
-		attribute.setRuleAttribute(ruleAttribute);
+        ruleAttribute.setType("SearchableXmlAttribute");
+        ruleAttribute.setResourceDescriptor(StandardGenericXMLSearchableAttribute.class.getName());
+		attribute.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 	}
 
 	@Test public void testValidateRoutingData(){
@@ -415,8 +418,10 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(routingConfigWithQuickfinders);
 		ruleAttribute.setName("MyUniqueRuleAttribute3");
+        ruleAttribute.setType("SearchableXmlAttribute");
+        ruleAttribute.setResourceDescriptor(StandardGenericXMLSearchableAttribute.class.getName());
 		StandardGenericXMLRuleAttribute myAttribute = new StandardGenericXMLRuleAttribute();
-		myAttribute.setRuleAttribute(ruleAttribute);
+		myAttribute.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 
 		for (Iterator iter = myAttribute.getRuleRows().iterator(); iter.hasNext();) {
 			Row row = (Row) iter.next();
@@ -539,7 +544,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 			RuleAttribute ruleAttribute = new RuleAttribute();
 			ruleAttribute.setXmlConfigData(routingConfig);
 			ruleAttribute.setName("MyUniqueRuleAttribute2");
-			attribute.setRuleAttribute(ruleAttribute);
+			attribute.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 
 			String docContent = attribute.getDocContent();
 			assertTrue("DocContent was not found.", docContent != null && docContent.length() > 0);

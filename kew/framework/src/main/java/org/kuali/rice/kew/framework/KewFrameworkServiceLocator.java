@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
 import org.kuali.rice.kew.framework.document.security.DocumentSecurityHandlerService;
+import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
@@ -32,6 +33,7 @@ public class KewFrameworkServiceLocator {
     public static final String DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE = "documentLookupCustomizationHandlerServiceSoap";
     public static final String DOCUMENT_SECURITY_HANDLER_SERVICE = "documentSecurityHandlerServiceSoap";
     public static final String RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE = "ruleValidationAttributeExporterServiceSoap";
+    public static final String WORKFLOW_RULE_ATTRIBUTE_HANDLER_SERVICE = "workflowRuleAttributeHandlerServiceSoap";
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -65,5 +67,13 @@ public class KewFrameworkServiceLocator {
 
     public static RuleValidationAttributeExporterService getRuleValidationAttributeExporterService(String applicationId) {
         return getServiceOnBus(RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE, applicationId);
+    }
+
+    public static WorkflowRuleAttributeHandlerService getWorkflowRuleAttributeHandlerService() {
+        return getWorkflowRuleAttributeHandlerService(null);
+    }
+
+    public static WorkflowRuleAttributeHandlerService getWorkflowRuleAttributeHandlerService(String applicationId) {
+        return getServiceOnBus(WORKFLOW_RULE_ATTRIBUTE_HANDLER_SERVICE, applicationId);
     }
 }

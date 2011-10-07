@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -28,7 +29,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * A special type of attribute that is used exclusively for resolving abstract roles
  * to concrete responsibilities (users and groups).  A RoleAttribute provides resolution
  * for a set of abstract "role" names.  These are published via the {@link #getRoleNames()}
- * method, which returns a list of {@link Role}, which is a combination of class name (attribute implementation class),
+ * method, which returns a list of {@link RoleName}, which is a combination of class name (attribute implementation class),
  * abstract role name, and optional label and return url (DOCME: what is return url used for?).
  * 
  * <p>RoleAttribute lifecycle:
@@ -59,21 +60,21 @@ import org.kuali.rice.kew.util.KEWConstants;
  * </ol>
  * Methods of WorkflowAttribute interface not relevant to RoleAttribute:
  * <ol>
- *   <li>{@link WorkflowAttribute#isMatch(DocumentContent, List)}</li>
+ *   <li>{@link WorkflowRuleAttribute#isMatch(DocumentContent, List)}</li>
  *   <li>??</li>
  * </ol>
  * 
- * @see WorkflowAttribute
+ * @see WorkflowRuleAttribute
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface RoleAttribute {
+public interface RoleAttribute extends WorkflowRuleAttribute {
 
     /**
-     * List of {@link Role}s this RoleAttribute supports
-     * @return list of {@link Role}s this RoleAttribute supports
+     * List of {@link RoleName}s this RoleAttribute supports
+     * @return list of {@link RoleName}s this RoleAttribute supports
      */
-    public List<Role> getRoleNames();
+    public List<RoleName> getRoleNames();
     
     /**
      * Returns a String which represent the qualified role name of this role for the given

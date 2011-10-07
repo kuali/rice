@@ -62,7 +62,7 @@ import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
@@ -342,7 +342,7 @@ public class DTOConverter {
 
                 // TODO - Rice 2.0 - Remove this once we have eliminated XmlConfiguredAttribute
                 if (attribute instanceof XmlConfiguredAttribute) {
-                    ((XmlConfiguredAttribute)attribute).setRuleAttribute(definition.getRuleAttribute());
+                    ((XmlConfiguredAttribute)attribute).setExtensionDefinition(RuleAttribute.to(definition.getRuleAttribute()));
                 }
                 boolean propertiesAsMap = false;
                 if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(extensionDefinition.getType())) {
@@ -372,8 +372,8 @@ public class DTOConverter {
                 }
                 // dont add to xml if attribute is in error
                 if (!inError) {
-                    if (attribute instanceof WorkflowAttribute) {
-                        String attributeDocContent = ((WorkflowAttribute) attribute).getDocContent();
+                    if (attribute instanceof WorkflowRuleAttribute) {
+                        String attributeDocContent = ((WorkflowRuleAttribute) attribute).getDocContent();
                         if (!StringUtils.isEmpty(attributeDocContent)) {
                             XmlHelper.appendXml(contentSectionElement, attributeDocContent);
                         }

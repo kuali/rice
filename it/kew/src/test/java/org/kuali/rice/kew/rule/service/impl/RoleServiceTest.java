@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -174,7 +175,7 @@ public class RoleServiceTest extends KEWTestCase {
         try {
             roleService.reResolveRole((DocumentRouteHeaderValue)null, null);
             fail("Exception should have been thrown when null values are passed.");
-        } catch (Exception e) {}
+        } catch (RiceIllegalArgumentException e) {}
 
         DocumentRouteHeaderValue loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
         try {

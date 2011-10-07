@@ -21,16 +21,23 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.uif.Control;
 import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.uif.RemotableAbstractControl;
+import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
+import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotablePasswordInput;
+import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
 import org.kuali.rice.core.api.uif.RemotableSelect;
+import org.kuali.rice.core.api.uif.RemotableTextExpand;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
+import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -83,6 +90,8 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1462,7 +1471,7 @@ public final class FieldUtils {
         for (Field field : fields) {
             applyControlAttributes(remotableAttributeField, field);
             applyLookupAttributes(remotableAttributeField, field);
-
+            applyWidgetAttributes(remotableAttributeField, field);
             // TODO - Rice 2.0 - Figure out the rest of this nasty conversion!
 
         }
@@ -1503,7 +1512,10 @@ public final class FieldUtils {
             upperField.setRangeFieldInclusive(lookupSettings.isUpperBoundInclusive());
             fields.add(upperField);
         } else {
-            fields.add(new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel()));
+            //this ain't right....
+            Field tempField = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
+            tempField.setFieldLabel(remotableAttributeField.getShortLabel());
+            fields.add(tempField);
         }
         return fields;
     }
@@ -1530,29 +1542,109 @@ public final class FieldUtils {
     public static RemotableAttributeField convertFieldToAttributeField(Field field) {
         RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(field.getPropertyName());
 
+        List<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
+        builder.setDataType(DataType.valueOf(field.getFieldDataType().toUpperCase()));
+
+        builder.setShortLabel(field.getFieldLabel());
+        builder.setLongLabel(field.getMainFieldLabel());
+        builder.setHelpSummary(field.getFieldHelpSummary());
+        //builder.setHelpConstraint(field.)
+        //builder.setHelpDescription();
+        builder.setForceUpperCase(field.isUpperCase());
+        //builder.setMinLength()
+        builder.setMaxLength(new Integer(field.getMaxLength()));
+        //builder.setMinValue();
+        //builder.setMaxValue();
+        //builder.setRegexConstraint(field.);
+        //builder.setRegexContraintMsg();
+        builder.setRequired(field.isFieldRequired());
+        builder.setDefaultValues(Collections.singletonList(field.getDefaultValue()));
+        builder.setControl(FieldUtils.constructControl(field.getFieldType(), field.getFieldValidValues()));
+        //builder.setWidgets();
+        if (field.getHasLookupable()) {
+            builder.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create());
+            RemotableQuickFinder.Builder quickfinder =
+                    RemotableQuickFinder.Builder.create(field.getBaseLookupUrl(), field.getQuickFinderClassNameImpl());
+            quickfinder.setFieldConversions(toMap(field.getFieldConversions()));
+            quickfinder.setLookupParameters(toMap(field.getLookupParameters()));
+            widgets.add(quickfinder);
+        }
+        if (field.isDatePicker()) {
+            widgets.add(RemotableDatepicker.Builder.create());
+        }
+        if (field.isExpandedTextArea()) {
+            widgets.add(RemotableTextExpand.Builder.create());
+        }
+        builder.setWidgets(widgets);
         // TODO - Rice 2.0 - Finish this conversion!!!
 
         return builder.build();
     }
 
+    /*private static RemotableAttributeLookupSettings.Builder constructLookup() {
+        RemotableAttributeLookupSettings.Builder lookup = RemotableAttributeLookupSettings.Builder.create();
+        lookup.
+        return lookup;
+    }*/
+
+
+    private static RemotableAbstractControl.Builder constructControl(String type, List<KeyValue> options) {
+
+        RemotableAbstractControl.Builder control = null;
+        Map<String, String> optionMap = new HashMap<String, String>();
+        if (options != null) {
+            for (KeyValue option : options) {
+                optionMap.put(option.getKey(), option.getValue());
+            }
+        }
+        if (Field.TEXT.equals(type) || Field.DATEPICKER.equals(type)) {
+			control = RemotableTextInput.Builder.create();
+        } else if (Field.TEXT_AREA.equals(type)) {
+            control = RemotableTextarea.Builder.create();
+		} else if (Field.DROPDOWN.equals(type)) {
+            control = RemotableSelect.Builder.create(optionMap);
+        } else if (Field.CHECKBOX.equals(type)) {
+            control = RemotableCheckboxGroup.Builder.create(optionMap);
+		} else if (Field.RADIO.equals(type)) {
+            control = RemotableRadioButtonGroup.Builder.create(optionMap);
+		} else if (Field.HIDDEN.equals(type)) {
+            control = RemotableHiddenInput.Builder.create();
+		} else if (Field.MULTIBOX.equals(type)) {
+            RemotableSelect.Builder builder = RemotableSelect.Builder.create(optionMap);
+            builder.setMultiple(true);
+            control = builder;
+        } else {
+		    throw new IllegalArgumentException("Illegal field type found: " + type);
+        }
+        return control;
+
+    }
+
     private static void applyControlAttributes(RemotableAttributeField remotableField, Field field) {
         Control control = remotableField.getControl();
         String fieldType = null;
+
         if (control == null) {
             throw new IllegalStateException("Given attribute field with the following name has a null control: " + remotableField.getName());
         }
         if (control == null || control instanceof RemotableTextInput) {
             fieldType = Field.TEXT;
         } else if (control instanceof RemotableCheckboxGroup) {
+            RemotableCheckboxGroup checkbox = (RemotableCheckboxGroup)control;
             fieldType = Field.CHECKBOX;
+            field.setFieldValidValues(FieldUtils.convertMapToKeyValueList(checkbox.getKeyLabels()));
         } else if (control instanceof RemotableHiddenInput) {
             fieldType = Field.HIDDEN;
         } else if (control instanceof RemotablePasswordInput) {
             throw new IllegalStateException("Password control not currently supported.");
         } else if (control instanceof RemotableRadioButtonGroup) {
             fieldType = Field.RADIO;
+            RemotableRadioButtonGroup radioControl = (RemotableRadioButtonGroup)control;
+            field.setFieldValidValues(FieldUtils.convertMapToKeyValueList(radioControl.getKeyLabels()));
         } else if (control instanceof RemotableSelect) {
             RemotableSelect selectControl = (RemotableSelect)control;
+
+            field.setFieldValidValues(FieldUtils.convertMapToKeyValueList(selectControl.getKeyLabels()));
             if (selectControl.isMultiple()) {
                 fieldType = Field.MULTISELECT;
             } else {
@@ -1566,6 +1658,14 @@ public final class FieldUtils {
         field.setFieldType(fieldType);
     }
 
+    private static List<KeyValue> convertMapToKeyValueList(Map<String, String> values) {
+        ArrayList<KeyValue> validValues = new ArrayList<KeyValue>(values.size());
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+            validValues.add(new ConcreteKeyValue(entry.getKey(), entry.getValue()));
+        }
+        return validValues;
+    }
+
     private static void applyLookupAttributes(RemotableAttributeField remotableField, Field field) {
         RemotableAttributeLookupSettings lookupSettings = remotableField.getAttributeLookupSettings();
         if (lookupSettings != null) {
@@ -1573,6 +1673,25 @@ public final class FieldUtils {
             if (!lookupSettings.isInCriteria()) {
                 field.setFieldType(Field.HIDDEN);
             }
+        }
+    }
+
+    private static void applyWidgetAttributes(RemotableAttributeField remotableField, Field field) {
+        Collection<? extends RemotableAbstractWidget> widgets = remotableField.getWidgets();
+
+        for (RemotableAbstractWidget widget : widgets) {
+            //yuck, do we really have to do this if else if stuff here?
+            if (widget instanceof RemotableQuickFinder) {
+                field.setQuickFinderClassNameImpl(((RemotableQuickFinder)widget).getDataObjectClass());
+                field.setBaseLookupUrl(((RemotableQuickFinder)widget).getBaseLookupUrl());
+                field.setLookupParameters(((RemotableQuickFinder)widget).getLookupParameters());
+                field.setFieldConversions(((RemotableQuickFinder)widget).getFieldConversions());
+            } else if (widget instanceof RemotableDatepicker) {
+                field.setDatePicker(true);
+            } else if (widget instanceof RemotableTextExpand) {
+                field.setExpandedTextArea(true);
+            }
+
         }
     }
 
@@ -1625,6 +1744,18 @@ public final class FieldUtils {
 
     public static Formatter getFormatterForDataType(DataType dataType) {
         return Formatter.getFormatter(dataType.getType());
+    }
+
+    private static Map<String, String> toMap(String s) {
+        if (StringUtils.isBlank(s)) {
+            return Collections.emptyMap();
+        }
+        final Map<String, String> map = new HashMap<String, String>();
+        for (String string : s.split(",")) {
+            String [] keyVal = string.split(":");
+            map.put(keyVal[0], keyVal[1]);
+        }
+        return Collections.unmodifiableMap(map);
     }
 
     private static DataDictionaryService getDataDictionaryService() {

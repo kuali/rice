@@ -111,7 +111,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(SIMPLE_CONFIG_1);
-		resolver.setRuleAttribute(ruleAttribute);
+		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
@@ -127,7 +127,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(SIMPLE_CONFIG_2);
-		resolver.setRuleAttribute(ruleAttribute);
+		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
@@ -162,7 +162,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(COMPOUND_CONFIG_1);
-		resolver.setRuleAttribute(ruleAttribute);
+		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_1);
@@ -191,7 +191,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(COMPOUND_CONFIG_1);
-		resolver.setRuleAttribute(ruleAttribute);
+		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);
@@ -224,7 +224,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setXmlConfigData(COMPOUND_CONFIG_2);
-		resolver.setRuleAttribute(ruleAttribute);
+		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);

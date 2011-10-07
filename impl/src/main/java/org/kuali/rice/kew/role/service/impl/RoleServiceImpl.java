@@ -17,11 +17,11 @@
 package org.kuali.rice.kew.role.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.kuali.rice.core.api.reflect.ObjectDefinition;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
+import org.kuali.rice.kew.api.extension.ExtensionUtils;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -36,7 +36,6 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class RoleServiceImpl implements RoleService {
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		QName rolePokerName = new QName(documentType.getApplicationId(), MessageServiceNames.ROLE_POKER);
+    		QName rolePokerName = MessageServiceNames.ROLE_POKER;
     		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName);
 		}
@@ -86,7 +85,7 @@ public class RoleServiceImpl implements RoleService {
     	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		QName rolePokerName = new QName(documentType.getApplicationId(), MessageServiceNames.ROLE_POKER);
+    		QName rolePokerName = MessageServiceNames.ROLE_POKER;
     		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
     		rolePoker.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
@@ -139,7 +138,7 @@ public class RoleServiceImpl implements RoleService {
     	String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getDocumentId())+", role="+roleName;
         if (routeHeader == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
-            throw new IllegalArgumentException("Cannot pass null arguments to reResolveRole: "+infoString);
+            throw new RiceIllegalArgumentException("Cannot pass null arguments to reResolveRole: "+infoString);
         }
         LOG.debug("Re-resolving role synchronously for "+infoString);
         List nodeInstances = findNodeInstances(routeHeader, roleName);
@@ -225,15 +224,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     private boolean templateHasRole(RuleTemplateBo template, String roleName) {
-        List templateAttributes = template.getRuleTemplateAttributes();
-        for (Iterator iterator = templateAttributes.iterator(); iterator.hasNext();) {
-            RuleTemplateAttributeBo templateAttribute = (RuleTemplateAttributeBo) iterator.next();
+        List<RuleTemplateAttributeBo> templateAttributes = template.getRuleTemplateAttributes();
+        for (RuleTemplateAttributeBo templateAttribute : templateAttributes) {
             RuleAttribute ruleAttribute = templateAttribute.getRuleAttribute();
-            Object workflowAttribute = GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(ruleAttribute.getResourceDescriptor()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleAttribute.getClassName());
+            Object workflowAttribute = ExtensionUtils.loadExtension(ruleAttribute);
+
             if (workflowAttribute instanceof RoleAttribute) {
-                List roleNames = ((RoleAttribute)workflowAttribute).getRoleNames();
-                for (Iterator roleIt = roleNames.iterator(); roleIt.hasNext();) {
-                    org.kuali.rice.kew.rule.Role role = (org.kuali.rice.kew.rule.Role) roleIt.next();
+                List<RoleName> roleNames = ((RoleAttribute)workflowAttribute).getRoleNames();
+                for (RoleName role : roleNames) {
                     if (role.getLabel().equals(roleName)) {
                         return true;
                     }

@@ -37,7 +37,6 @@ import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
-import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -49,9 +48,9 @@ import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -61,7 +60,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -946,14 +944,14 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
             LOG.debug("Validating WorkflowAttributeDefinition [attributeName="+definition.getAttributeName()+"]");
         }
         AttributeDefinition attributeDefinition = DTOConverter.convertWorkflowAttributeDefinition(definition);
-        WorkflowAttribute attribute = null;
+        WorkflowRuleAttribute attribute = null;
         if (attributeDefinition != null) {
-            attribute = (WorkflowAttribute) GlobalResourceLoader.getObject(attributeDefinition.getObjectDefinition());
+            attribute = (WorkflowRuleAttribute) GlobalResourceLoader.getObject(attributeDefinition.getObjectDefinition());
         }
         if (attribute instanceof GenericXMLRuleAttribute) {
             Map<String, String> attributePropMap = new HashMap<String, String>();
             GenericXMLRuleAttribute xmlAttribute = (GenericXMLRuleAttribute)attribute;
-            xmlAttribute.setRuleAttribute(attributeDefinition.getRuleAttribute());
+            xmlAttribute.setExtensionDefinition(RuleAttribute.to(attributeDefinition.getRuleAttribute()));
             for (PropertyDefinition propertyDefinition : definition.getPropertyDefinitions()) {
                 attributePropMap.put(propertyDefinition.getName(), propertyDefinition.getValue());
             }

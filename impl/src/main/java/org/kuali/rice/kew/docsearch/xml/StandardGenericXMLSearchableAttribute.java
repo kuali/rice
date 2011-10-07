@@ -32,6 +32,7 @@ import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
@@ -800,7 +801,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
 	public Element getConfigXML(ExtensionDefinition extensionDefinition) {
 		try {
-            String xmlConfigData = extensionDefinition.getConfiguration().get(RuleAttribute.XML_CONFIG_DATA);
+            String xmlConfigData = extensionDefinition.getConfiguration().get(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA);
 			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(xmlConfigData)))).getDocumentElement();
 		} catch (Exception e) {
 			String ruleAttrStr = (extensionDefinition == null ? null : extensionDefinition.getName());

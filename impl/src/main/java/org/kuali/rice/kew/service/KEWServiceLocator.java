@@ -16,12 +16,6 @@
 
 package org.kuali.rice.kew.service;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -33,6 +27,7 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.ActionRegistry;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.batch.XmlPollerService;
 import org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediator;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
@@ -63,9 +58,14 @@ import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.validation.RuleValidationAttributeResolver;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -231,7 +231,7 @@ public final class KEWServiceLocator {
 		}
 		return GlobalResourceLoader.getResourceLoader().<T>getService(
 				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY)))) ?
-						new QName(KEWConstants.KEW_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
+						new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName) : new QName(serviceName));
 	}
 
 	public static DocumentTypeService getDocumentTypeService() {

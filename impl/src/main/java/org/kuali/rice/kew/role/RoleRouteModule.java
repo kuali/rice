@@ -176,7 +176,7 @@ public class RoleRouteModule implements RouteModule {
 			ObjectDefinition definition = getAttributeObjectDefinition(ruleAttribute);
 			resolver = (QualifierResolver)GlobalResourceLoader.getObject(definition);
 			if (resolver instanceof XmlConfiguredAttribute) {
-				((XmlConfiguredAttribute)resolver).setRuleAttribute(ruleAttribute);
+				((XmlConfiguredAttribute)resolver).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 		}
 		if (resolver == null && !StringUtils.isBlank(qualifierResolverClassName)) {

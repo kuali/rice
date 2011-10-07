@@ -25,8 +25,8 @@ import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExpressionDef;
@@ -485,7 +485,7 @@ public class RuleXmlParser {
         	}
         	roleName = Utilities.substituteConfigParameters(roleName);
         	attributeClassName = Utilities.substituteConfigParameters(attributeClassName);
-        	responsibility.setRuleResponsibilityName(Role.constructRoleValue(attributeClassName, roleName));
+        	responsibility.setRuleResponsibilityName(RoleName.constructRoleValue(attributeClassName, roleName));
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
         } else if (!StringUtils.isBlank(workgroup)) {
         	LOG.warn("Rule XML is using deprecated element 'workgroup', please use 'groupName' instead.");

@@ -44,7 +44,7 @@ public class RuleTemplateAttributeTest extends KEWTestCase {
         int index = 0;
         for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes) {
             boolean runtimeThrown = false;
-            WorkflowAttribute attribute = null;
+            WorkflowRuleAttribute attribute = null;
             try {
                 attribute = ruleTemplateAttribute.getWorkflowAttribute();
             } catch (RuntimeException e) {
@@ -54,7 +54,7 @@ public class RuleTemplateAttributeTest extends KEWTestCase {
                 // should be the TestRuleAttribute
                 assertFalse("RuntimeException should not have been thrown.", runtimeThrown);
                 assertNotNull("Attribute should exist.", attribute);
-                attribute = (WorkflowAttribute) ClassLoaderUtils.unwrapFromProxy(attribute);
+                attribute = (WorkflowRuleAttribute) ClassLoaderUtils.unwrapFromProxy(attribute);
                 assertEquals("Should be TestRuleAttribute", TestRuleAttribute.class, attribute.getClass());
             } else if (index == 1) {
                 // should be the TestRuleDelegationAttribute so should be null

@@ -22,7 +22,7 @@ import org.kuali.rice.krad.util.MessageMap;
 
 
 /**
- * An error returned from the validation of a {@link WorkflowAttribute}.
+ * An error returned from the validation of a {@link WorkflowRuleAttribute}.
  * Returned by a call to {@link WorkflowAttributeXmlValidator#validateClientRoutingData()}
  * and {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute#validateSearchFieldParameters(org.kuali.rice.kew.api.extension.ExtensionDefinition, java.util.Map, String)}
  *

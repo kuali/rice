@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.api.rule.RuleTemplate;
-import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -64,11 +62,11 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
             if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                 continue;
             }
-            WorkflowAttribute routingAttribute = (WorkflowAttribute) ruleTemplateAttribute.getWorkflowAttribute();
+            WorkflowRuleAttribute routingAttribute = (WorkflowRuleAttribute) ruleTemplateAttribute.getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                ((GenericXMLRuleAttribute) routingAttribute).setRuleAttribute(ruleAttribute);
+                ((GenericXMLRuleAttribute) routingAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
             }
             String className = ruleAttribute.getResourceDescriptor();
             List<RuleExtension> editedRuleExtensions = new ArrayList();

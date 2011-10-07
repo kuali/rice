@@ -20,7 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -218,7 +220,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         Object generateMissingFieldError(Node field, String fieldName, String message);
     }
 
-    private RuleAttribute ruleAttribute;
+    private ExtensionDefinition extensionDefinition;
     private Map paramMap = new HashMap();
     private List ruleRows = new ArrayList();
     private List routingDataRows = new ArrayList();
@@ -227,8 +229,8 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
     public StandardGenericXMLRuleAttribute() {
     }
 
-    public void setRuleAttribute(RuleAttribute ruleAttribute) {
-        this.ruleAttribute = ruleAttribute;
+    public void setExtensionDefinition(ExtensionDefinition extensionDefinition) {
+        this.extensionDefinition = extensionDefinition;
     }
 
 //    public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
@@ -336,7 +338,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                     boolean foundExtension = false;
                     outer:for (Iterator iterator = ruleExtensions.iterator(); iterator.hasNext();) {
                         RuleExtension ruleExtension = (RuleExtension) iterator.next();
-                        if (ruleExtension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(ruleAttribute.getName())) {
+                        if (ruleExtension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(extensionDefinition.getName())) {
                             for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
                                 if (fieldName.equals(ruleExtensionValue.getKey())) {
                                     foundExtension = true;
@@ -610,9 +612,11 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 
     public Element getConfigXML() {
         try {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(ruleAttribute.getXmlConfigData())))).getDocumentElement();
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(
+                    new StringReader(extensionDefinition.getConfiguration().get(
+                            KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA))))).getDocumentElement();
         } catch (Exception e) {
-            String str = ruleAttribute == null ? "null" : ruleAttribute.getName();
+            String str = extensionDefinition == null ? "null" : extensionDefinition.getName();
             LOG.error("error parsing xml data from rule attribute: " + str, e);
             throw new RuntimeException("error parsing xml data from rule attribute: " + str, e);
         }

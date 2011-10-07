@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MockWorkflowAttribute implements WorkflowAttribute {
+public class MockWorkflowAttribute implements WorkflowRuleAttribute {
     
     private static final String MOCK_VALUE_ELEMENT = "mockValue";
     //private static final String VALUE_KEY = "value";

@@ -191,6 +191,7 @@
         <idref local="rice.kew.documentLookupCustomizationHandlerService" />
         <idref local="rice.kew.documentSecurityHandlerService" />
         <idref local="rice.kew.ruleValidationAttributeExporterService" />
+        <idref local="rice.kew.workflowRuleAttributeHandlerService" />
         <idref local="rice.kew.extensionRepositoryService" />
         <idref local="rice.kew.kewTypeRepositoryService" />
         <idref local="rice.kew.peopleFlowService" />
@@ -860,7 +861,11 @@
 	</bean>
 
   <bean id="rice.kew.ruleValidationAttributeResolver" class="org.kuali.rice.kew.validation.RuleValidationAttributeResolverImpl"/>
-  
+
+  <bean id="rice.kew.workflowRuleAttributeHandlerService" class="org.kuali.rice.kew.impl.rule.attribute.WorkflowRuleAttributeHandlerServiceImpl">
+		<property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
+	</bean>
+
   <bean id="rice.kew.immediateEmailReminderService" class="org.kuali.rice.kew.mail.service.impl.ImmediateEmailReminderServiceImpl"/>
   
   <bean id="rice.kew.kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">

@@ -53,20 +53,6 @@ class RemotableQuickFinderTest {
     }
 
     @Test(expected=IllegalArgumentException.class)
-    void testNullURL() {
-        RemotableQuickFinder.Builder o = RemotableQuickFinder.Builder.create(null, "FooBo");
-
-        assertNotNull(o.build());
-    }
-
-    @Test(expected=IllegalArgumentException.class)
-    void testBlankURL() {
-        RemotableQuickFinder.Builder o = RemotableQuickFinder.Builder.create(" ", "FooBo");
-
-        assertNotNull(o.build());
-    }
-
-    @Test(expected=IllegalArgumentException.class)
     void testNullDO() {
         RemotableQuickFinder o = RemotableQuickFinder.Builder.create("http://lookup.url/", null).build()
     }

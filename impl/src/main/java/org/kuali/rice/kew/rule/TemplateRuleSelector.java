@@ -19,8 +19,6 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.rule.RuleTemplate;
-import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -33,6 +31,8 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -71,7 +71,7 @@ class TemplateRuleSelector implements RuleSelector {
             if (!templateAttribute.isWorkflowAttribute()) {
             continue;
             }
-            WorkflowAttribute attribute = templateAttribute.getWorkflowAttribute();
+            WorkflowRuleAttribute attribute = templateAttribute.getWorkflowAttribute();
             if (attribute instanceof MassRuleAttribute) {
             massRules.add((MassRuleAttribute) attribute);
             }
@@ -91,17 +91,24 @@ class TemplateRuleSelector implements RuleSelector {
             dt = dt.getParentDocType();
         }
         predicates.add(and(or(documentTypeAncestry.toArray(new Predicate[documentTypeAncestry.size()]))));
-
-        predicates.add(equal("active", new Integer(1)));
+        Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        predicates.add(and(
+                           or(isNull("fromDate"), greaterThanOrEqual("fromDate", currentTime)),
+                           or(isNull("toDate"), lessThan("toDate", currentTime))
+                      ));
+        predicates.add(equal("active", new Integer(1))); //true
+        predicates.add(equal("delegateRule", new Integer(0)));  //false
+        predicates.add(equal("templateRuleInd", new Integer(0))); //false
         if (effectiveDate != null) {
             predicates.add(
                     and(
                         lessThanOrEqual("activationDate", effectiveDate),
                         greaterThan("deactivationDate", effectiveDate)));
             //rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName(), effectiveDate);
-        } /*else {
-            rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName());
-        }*/
+        } else {
+            predicates.add(equal("currentInd", new Integer(1))); //true
+            //rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName());
+        }
         Predicate p = and(predicates.toArray(new Predicate[]{}));
         query.setPredicates(p);
         rules = KewApiServiceLocator.getRuleService().findRules(query.build()).getResults();

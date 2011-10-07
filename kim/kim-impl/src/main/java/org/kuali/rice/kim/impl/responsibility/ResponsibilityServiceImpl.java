@@ -296,7 +296,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
             // only add them to the list if the member ID has been populated
             if (StringUtils.isNotBlank(rm.getMemberId())) {
                 final ResponsibilityAction.Builder rai = ResponsibilityAction.Builder.create();
-                rai.setMemberRoleId(rm.getEmbeddedRoleId());
+                rai.setMemberRoleId((rm.getEmbeddedRoleId() == null) ? rm.getRoleId() : rm.getEmbeddedRoleId());
                 rai.setRoleId(rm.getRoleId());
                 rai.setQualifier(rm.getQualifier());
                 final List<DelegateType.Builder> bs = new ArrayList<DelegateType.Builder>();

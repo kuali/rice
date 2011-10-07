@@ -16,12 +16,12 @@
 package edu.sampleu.travel.workflow;
 
 import edu.sampleu.travel.bo.TravelAccount;
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.workflow.WorkflowUtils;
@@ -44,10 +44,10 @@ import java.util.List;
  * accountNums.item(i); String accuntNumVal = accountNum.getNodeValue(); }
  */
 public class AccountAttribute extends AbstractRoleAttribute {
-    private static final Role FISCAL_OFFICER_ROLE = new Role(AccountAttribute.class, "FO", "Fiscal Officer");
-    private static final List<Role> ROLES;
+    private static final RoleName FISCAL_OFFICER_ROLE = new RoleName(AccountAttribute.class.getName(), "FO", "Fiscal Officer");
+    private static final List<RoleName> ROLES;
     static {
-        List<Role> tmp = new ArrayList<Role>(1);
+        List<RoleName> tmp = new ArrayList<RoleName>(1);
         tmp.add(FISCAL_OFFICER_ROLE);
         ROLES = Collections.unmodifiableList(tmp);
     }
@@ -67,7 +67,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
     }
 
 
-    public List<Role> getRoleNames() {
+    public List<RoleName> getRoleNames() {
         return ROLES;
     }
 

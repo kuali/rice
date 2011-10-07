@@ -22,6 +22,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
@@ -31,7 +32,7 @@ import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -287,10 +288,11 @@ public final class WebRuleUtils {
 					if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 						continue;
 					}
-					WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(
+                                ruleAttribute));
 					}
 					Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
 					workflowAttribute.validateRuleData(parameterMap);
@@ -440,11 +442,11 @@ public final class WebRuleUtils {
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}
-			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-				((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 
 			Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
@@ -493,12 +495,12 @@ public final class WebRuleUtils {
      * Based on original logic implemented in Rule system.  Essentially constructs a Map of field values related
      * to the given RuleTemplateAttribute.
      */
-    public static Map<String, String> getFieldMapForRuleTemplateAttribute(RuleBaseValues rule, RuleTemplateAttributeBo ruleTemplateAttribute) {
+    public static Map<String, String> getFieldMapForRuleTemplateAttribute(RuleBaseValues rule, RuleTemplateAttributeContract ruleTemplateAttribute) {
     	Map<String, String> fieldMap = new HashMap<String, String>();
     	for (String fieldKey : rule.getFieldValues().keySet()) {
     		String ruleTemplateAttributeId = fieldKey.substring(0, fieldKey.indexOf(ID_SEPARATOR));
     		String fieldName = fieldKey.substring(fieldKey.indexOf(ID_SEPARATOR) + 1);
-    		if (ruleTemplateAttribute.getId().toString().equals(ruleTemplateAttributeId)) {
+    		if (ruleTemplateAttribute.getId().equals(ruleTemplateAttributeId)) {
     			fieldMap.put(fieldName, rule.getFieldValues().get(fieldKey));
     		}
     	}

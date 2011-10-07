@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -193,7 +194,7 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
         Result result = new StreamResult(xmlBuffer);
         TransformerFactory.newInstance().newTransformer().transform(source, result);
 
-        extensionDefinition.getConfiguration().put(RuleAttribute.XML_CONFIG_DATA, new String(xmlBuffer.getBuffer()));
+        extensionDefinition.getConfiguration().put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, new String(xmlBuffer.getBuffer()));
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("This is the XML that was added to the attribute");

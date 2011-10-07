@@ -36,7 +36,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routelog.web.RouteLogAction;
 import org.kuali.rice.kew.routelog.web.RouteLogForm;
 import org.kuali.rice.kew.rule.FlexRM;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -174,20 +174,18 @@ public class RoutingReportAction extends KewKualiAction {
 
         String xmlDocumentContent = routingForm.getDocumentContent();
         if (routingForm.getReportType().equals(TEMPLATE_REPORTING)) {
-            List attributes = new ArrayList();
-            for (Object element : ruleTemplateContainers) {
-                RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) element;
+            List<WorkflowRuleAttribute> attributes = new ArrayList<WorkflowRuleAttribute>();
+            for (RouteReportRuleTemplateContainer ruleTemplateContainer : ruleTemplateContainers) {
                 RuleTemplateBo ruleTemplate = ruleTemplateContainer.ruleTemplate;
-                for (Object element2 : ruleTemplate.getActiveRuleTemplateAttributes()) {
-                    RuleTemplateAttributeBo ruleTemplateAttribute = (RuleTemplateAttributeBo) element2;
+                for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes()) {
                     if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                         continue;
                     }
-                    WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+                    WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
                     RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
                     if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                        ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+                        ((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
                     }
                     List attValidationErrors = workflowAttribute.validateRoutingData(routingForm.getFields());
                     if (attValidationErrors != null && !attValidationErrors.isEmpty()) {
@@ -381,14 +379,13 @@ public class RoutingReportAction extends KewKualiAction {
 			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
 				continue;
 			}
-			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
 			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-				((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
+				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
-			for (Object element : workflowAttribute.getRoutingDataRows()) {
-				Row row = (Row) element;
+			for (Row row : workflowAttribute.getRoutingDataRows()) {
 
 				List<Field> fields = new ArrayList<Field>();
 				for (Object element2 : row.getFields()) {

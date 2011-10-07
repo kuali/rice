@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.identity.PrincipalName;
 
@@ -37,9 +38,9 @@ public class NetworkIdRoleAttribute extends AbstractIdRoleAttribute {
     private static final String ATTRIBUTE_ELEMENT = "NetworkIdRoleAttribute";
     private static final String NETWORK_ID_ELEMENT = "networkId";
         
-    public List<Role> getRoleNames() {
-	List<Role> roleNames = new ArrayList<Role>();
-	roleNames.add(new Role(getClass(), NETWORK_ID_ROLE_NAME, "Network ID"));
+    public List<RoleName> getRoleNames() {
+	List<RoleName> roleNames = new ArrayList<RoleName>();
+	roleNames.add(new RoleName(getClass().getName(), NETWORK_ID_ROLE_NAME, "Network ID"));
 	return roleNames;
     }
     

@@ -7,25 +7,24 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.kew.framework.document.lookup.AttributeFields;
-import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
+import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
+import org.kuali.rice.kew.framework.document.lookup.AttributeFields;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomization;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
 import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizer;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
+import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**

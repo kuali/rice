@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 
 /**
  * Represents an attribute which is configured via XML.  In these cases, a reference
@@ -24,5 +24,5 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface XmlConfiguredAttribute {
-	public void setRuleAttribute(RuleAttribute ruleAttribute);
+	public void setExtensionDefinition(ExtensionDefinition ruleAttribute);
 }

@@ -22,13 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.rule.Role;
-
 
 public class RoleToRoleDelegationRole extends AbstractRoleAttribute {
 
@@ -40,9 +39,9 @@ public class RoleToRoleDelegationRole extends AbstractRoleAttribute {
 	
 	private static final List ROLE_NAMES = new ArrayList();
 	static {
-		ROLE_NAMES.add(new Role(RoleToRoleDelegationRole.class, MAIN_ROLE, MAIN_ROLE));
-		ROLE_NAMES.add(new Role(RoleToRoleDelegationRole.class, PRIMARY_DELEGATE_ROLE, PRIMARY_DELEGATE_ROLE));
-		ROLE_NAMES.add(new Role(RoleToRoleDelegationRole.class, SECONDARY_DELEGATE_ROLE, SECONDARY_DELEGATE_ROLE));
+		ROLE_NAMES.add(new RoleName(RoleToRoleDelegationRole.class.getName(), MAIN_ROLE, MAIN_ROLE));
+		ROLE_NAMES.add(new RoleName(RoleToRoleDelegationRole.class.getName(), PRIMARY_DELEGATE_ROLE, PRIMARY_DELEGATE_ROLE));
+		ROLE_NAMES.add(new RoleName(RoleToRoleDelegationRole.class.getName(), SECONDARY_DELEGATE_ROLE, SECONDARY_DELEGATE_ROLE));
 	}
 	
 	public static List MAIN_USERS = new ArrayList();

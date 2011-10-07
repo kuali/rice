@@ -21,21 +21,33 @@ package org.kuali.rice.kew.rule.bo;
  import org.hibernate.annotations.FetchMode;
  import org.hibernate.annotations.GenericGenerator;
  import org.hibernate.annotations.Parameter;
+ import org.kuali.rice.kew.api.rule.RoleName;
  import org.kuali.rice.kew.api.rule.RuleTemplate;
  import org.kuali.rice.kew.api.rule.RuleTemplateContract;
- import org.kuali.rice.kew.rule.Role;
  import org.kuali.rice.kew.rule.RoleAttribute;
  import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
- import org.kuali.rice.kew.rule.WorkflowAttribute;
+ import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
  import org.kuali.rice.kew.util.KEWConstants;
  import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
- import javax.persistence.*;
+ import javax.persistence.CascadeType;
+ import javax.persistence.Column;
+ import javax.persistence.Entity;
+ import javax.persistence.FetchType;
+ import javax.persistence.GeneratedValue;
+ import javax.persistence.Id;
+ import javax.persistence.JoinColumn;
+ import javax.persistence.NamedQueries;
+ import javax.persistence.NamedQuery;
+ import javax.persistence.OneToMany;
+ import javax.persistence.OneToOne;
+ import javax.persistence.Table;
+ import javax.persistence.Transient;
  import java.net.URLEncoder;
  import java.util.ArrayList;
  import java.util.Collections;
  import java.util.Iterator;
-import java.util.List;
+ import java.util.List;
 
 
 /**
@@ -367,8 +379,8 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
      * Returns a List of Roles from all RoleAttributes attached to this template.
      * @return list of roles
      */
-    public List<Role> getRoles() {
-    	List<Role> roles = new ArrayList<Role>();
+    public List<RoleName> getRoles() {
+    	List<RoleName> roles = new ArrayList<RoleName>();
     	List<RuleTemplateAttributeBo> ruleTemplateAttributes = getActiveRuleTemplateAttributes();
 		Collections.sort(ruleTemplateAttributes);
         for (RuleTemplateAttributeBo ruleTemplateAttribute : ruleTemplateAttributes)
@@ -377,7 +389,7 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
             {
                 continue;
             }
-            WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+            WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
             if (workflowAttribute instanceof RoleAttribute)
             {
                 RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;

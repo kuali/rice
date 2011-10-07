@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 
@@ -29,7 +30,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TestRuleAttributeThree implements WorkflowAttribute, RoleAttribute, WorkflowAttributeXmlValidator {
+public class TestRuleAttributeThree implements WorkflowRuleAttribute, RoleAttribute, WorkflowAttributeXmlValidator {
 
 	private static final long serialVersionUID = -3502848534548531114L;
 
@@ -46,7 +47,7 @@ public class TestRuleAttributeThree implements WorkflowAttribute, RoleAttribute,
         List roleNames = new ArrayList();
         for (Iterator iterator = roles.keySet().iterator(); iterator.hasNext();) {
             String roleName = (String) iterator.next();
-            roleNames.add(new Role(getClass(), roleName, roleName));
+            roleNames.add(new RoleName(getClass().getName(), roleName, roleName));
         }
     	return roleNames;
     }

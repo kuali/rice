@@ -38,6 +38,13 @@ public class MaintenanceForm extends DocumentFormBase {
 	public MaintenanceDocument getDocument() {
 		return (MaintenanceDocument) super.getDocument();
 	}
+	
+	// This is to provide a setter with matching type to
+	// public MaintenanceDocument getDocument() so that no
+	// issues occur with spring 3.1-M2 bean wrappers
+	public void setDocument(MaintenanceDocument document) {
+	    super.setDocument(document);
+	}
 
 	public String getDataObjectClassName() {
 		return this.dataObjectClassName;

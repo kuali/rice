@@ -872,6 +872,7 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 
 
 /* Messing with disclosure bar */
+.kr-collection-cntr a h3.kr-collectionGroup-header,
 .kr-collection-cntr a .kr-section-subhead,
 .kr-collection-header a h3.kr-page-section-title,
 .grouping-header-expandable a h4.kr-section-subhead,
@@ -887,6 +888,7 @@ a.h4.kr-section-subhead {
     -o-transition: all .5s ease-in-out;
     -ms-transition: all .5s ease-in-out;
 }
+
 .kr-collection-cntr a .kr-section-subhead:hover,
 .kr-collection-header a h3.kr-page-section-title:hover,
 .grouping-header-expandable a h4.kr-section-subhead:hover,
@@ -897,3 +899,57 @@ a.h4.kr-section-subhead {
     border: 1px solid #3F7826;
 }
 
+/* messing with collections */
+.kr-collection-cntr a h3.kr-collectionGroup-header:hover{
+    background-color:#666;
+}
+.kr-collection-cntr h3.kr-collectionGroup-header {
+    color:#fff;
+    background-color: #000;
+    font-family: Arial, Helvetica, sans-serif ;
+    margin:  0.25em 0;
+    padding: 0.5em;
+}
+.kr-collection-cntr h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+    background: url("../../images/h3_expand-back-white-ks.png") no-repeat scroll 0 0 transparent;
+}
+.kr-collection-cntr h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+    background: url("../../images/h3_collapse-back-white-ks.png") no-repeat scroll 0 0 transparent;
+}
+.kr-collection-cntr{
+    background: url(../../images/pattern_dotted.png) repeat;
+    border: 1px solid #ccc;
+}
+.kr-collection-item.kr-addLine h4.kr-section-subhead.kr-collection-item-header{
+    padding:0.25em 0.5em;
+    background-color:#ccc;
+    border-bottom: 1px solid #ccc;
+}
+.kr-collection-item.kr-addLine>div:nth-child(2) {
+    padding:1em 0.5em 0 0.5em;
+}
+/*.kr-collection-cntr > div {
+    background-color:#fff;
+    margin: 0.5em;
+}          */
+.kr-collection-cntr>div:nth-child(2) {
+  background-color:#fff;
+  margin: 0.5em;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+}
+.kr-subCollection>.kr-collection-cntr {
+    background: #fff;
+    margin-left:1em;
+}
+.kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header, .kr-subCollection>.kr-collection-cntr h3.kr-collectionGroup-header {
+    background-color:#eee;
+    color:#000;
+    border-bottom: 0 solid #000;
+}
+.kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+    background: url("../../images/h3_expand-back-black-ks.png") no-repeat scroll 0 0 transparent;
+}
+.kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+    background: url("../../images/h3_collapse-back-black-ks.png") no-repeat scroll 0 0 transparent;
+}

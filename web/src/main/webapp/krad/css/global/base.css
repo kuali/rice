@@ -46,7 +46,7 @@ th, td {
 
 /* headers */
 h1.kr-page-title-header {		/* was h1.page-title-header */ /* renamed in xml and/or jsp */
-	margin:0;
+	margin:0 0 1em 0;
 }
 h2.kr-page-action {				/* was h2.page-action */ /* renamed in xml and/or jsp */
 	font-weight:normal;
@@ -102,11 +102,11 @@ td.kr-clientError {
 	background: none;
     margin-left:0.384615em;
 }
-.kr-labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
+.kr-labelTop, .labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
 	float:none;
 	display:block;
 }
-.kr-labelTop label {				/* was .labelTop label */ /* renamed in xml and/or jsp */
+.kr-labelTop label, .labelTop label {				/* was .labelTop label */ /* renamed in xml and/or jsp */
 	font-weight:bold;
 }
 

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Years;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
@@ -28,11 +29,14 @@ import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.useroptions.UserOptions;
+import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.api.identity.Person;
@@ -41,13 +45,18 @@ import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentSearchTest extends KEWTestCase {
@@ -55,6 +64,7 @@ public class DocumentSearchTest extends KEWTestCase {
     private static final String INITIATOR_COL = "INITR_PRNCPL_ID";
 
     DocumentSearchService docSearchService;
+    UserOptionsService userOptionsService;
 
     @Override
     protected void loadTestData() throws Exception {
@@ -64,9 +74,11 @@ public class DocumentSearchTest extends KEWTestCase {
 
     @Override
     protected void setUpAfterDataLoad() throws Exception {
-        docSearchService = (DocumentSearchService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
+        docSearchService = (DocumentSearchService)KEWServiceLocator.getDocumentSearchService();
+        userOptionsService = (UserOptionsService)KEWServiceLocator.getUserOptionsService();
     }
 
+    
     @Test public void testDocSearch() throws Exception {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
@@ -92,6 +104,101 @@ public class DocumentSearchTest extends KEWTestCase {
         savedCriteria = docSearchService.getSavedSearchCriteria(user.getPrincipalId(), "for in accounts");
         assertNotNull(savedCriteria);
         assertEquals("for in accounts", savedCriteria.getSaveName());
+    }
+
+    /**
+     * Tests that performing a search automatically saves the last search criteria
+     */
+    @Test public void testUnnamedDocSearchPersistence() throws Exception {
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        Collection<UserOptions> allUserOptions_before = userOptionsService.findByWorkflowUser(user.getPrincipalId());
+        List<UserOptions> namedSearches_before = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
+
+        assertEquals(0, namedSearches_before.size());
+        assertEquals(0, allUserOptions_before.size());
+
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setTitle("*IN");
+        criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
+        DocumentLookupCriteria c1 = criteria.build();
+        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1);
+
+        Collection<UserOptions> allUserOptions_after = userOptionsService.findByWorkflowUser(user.getPrincipalId());
+        List<UserOptions> namedSearches_after = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
+
+        // saves the "last doc search criteria"
+        // and a pointer to the "last doc search criteria"
+        assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size());
+        assertEquals(namedSearches_before.size(), namedSearches_after.size());
+
+        assertEquals("DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order".toString(), user.getPrincipalId()).getOptionVal());
+        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", user.getPrincipalId()).getOptionVal());
+
+        // 2nd search
+
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setTitle("*IN-CFSG*");
+        criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
+        DocumentLookupCriteria c2 = criteria.build();
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), c2);
+
+        // still only 2 more user options
+        assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size());
+        assertEquals(namedSearches_before.size(), namedSearches_after.size());
+
+        assertEquals("DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", user.getPrincipalId()).getOptionVal());
+        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", user.getPrincipalId()).getOptionVal());
+        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", user.getPrincipalId()).getOptionVal());
+    }
+
+     /**
+     * Tests that performing a named search automatically saves the last search criteria as well as named search
+     */
+    @Test public void testNamedDocSearchPersistence() throws Exception {
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
+        Collection<UserOptions> allUserOptions_before = userOptionsService.findByWorkflowUser(user.getPrincipalId());
+        List<UserOptions> namedSearches_before = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
+
+        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setTitle("*IN");
+        criteria.setSaveName("bytitle");
+        criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
+        DocumentLookupCriteria c1 = criteria.build();
+        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1);
+
+        Collection<UserOptions> allUserOptions_after = userOptionsService.findByWorkflowUser(user.getPrincipalId());
+        List<UserOptions> namedSearches_after = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
+
+        assertEquals(allUserOptions_before.size() + 1, allUserOptions_after.size());
+        assertEquals(namedSearches_before.size() + 1, namedSearches_after.size());
+
+        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.NamedSearch." + criteria.getSaveName(), user.getPrincipalId()).getOptionVal());
+
+        // second search
+        criteria = DocumentLookupCriteria.Builder.create();
+        criteria.setTitle("*IN");
+        criteria.setSaveName("bytitle2");
+        criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
+        DocumentLookupCriteria c2 = criteria.build();
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), c2);
+
+        allUserOptions_after = userOptionsService.findByWorkflowUser(user.getPrincipalId());
+        namedSearches_after = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
+
+        // saves a second named search
+        assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size());
+        assertEquals(namedSearches_before.size() + 2, namedSearches_after.size());
+        
+        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.NamedSearch." + criteria.getSaveName(), user.getPrincipalId()).getOptionVal());
+
+    }
+
+    protected static String marshall(DocumentLookupCriteria criteria) throws Exception {
+        StringWriter marshalledCriteriaWriter = new StringWriter();
+        JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class);
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.marshal(criteria, marshalledCriteriaWriter);
+        return marshalledCriteriaWriter.toString();
     }
 
     @Test

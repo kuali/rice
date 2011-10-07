@@ -464,6 +464,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
     }
 
+    /**
+     * Saves a DocumentLookupCriteria into the UserOptions.  This method operates in one of two ways:
+     * 1) The search is named: the criteria is saved under NAMED_SEARCH_ORDER_BASE + <name>
+     * 2) The search is unnamed: the criteria is given a name that indicates its order, which is saved in a second user option
+     *    which contains a list of these names comprising recent searches
+     * @param principalId the user to save the criteria under
+     * @param criteria the doc lookup criteria
+     */
     private void saveSearch(String principalId, DocumentLookupCriteria criteria) {
         if (StringUtils.isBlank(principalId)) {
             throw new IllegalArgumentException("principalId was null or blank");
@@ -483,18 +491,24 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             } else {
                 // first determine the current ordering
                 UserOptions searchOrder = userOptionsService.findByOptionId(LAST_SEARCH_ORDER_OPTION, principalId);
+                // no previous searches, save under first id
                 if (searchOrder == null) {
                     userOptionsService.save(principalId, LAST_SEARCH_BASE_NAME + "0", savedSearchString);
                     userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, LAST_SEARCH_BASE_NAME + "0");
                 } else {
                     String[] currentOrder = searchOrder.getOptionVal().split(",");
+                    // we have reached MAX_SEARCH_ITEMS
                     if (currentOrder.length == MAX_SEARCH_ITEMS) {
+                        // move the last item to the front of the list, and save
+                        // over this key with the new criteria
+                        // [5,4,3,2,1] => [1,5,4,3,2]
                         String searchName = currentOrder[currentOrder.length - 1];
                         String[] newOrder = new String[MAX_SEARCH_ITEMS];
                         newOrder[0] = searchName;
                         for (int i = 0; i < currentOrder.length - 1; i++) {
                             newOrder[i + 1] = currentOrder[i];
                         }
+                        // rejoins items with comma separator...
                         String newSearchOrder = "";
                         for (String aNewOrder : newOrder) {
                             if (!"".equals(newSearchOrder)) {
@@ -502,9 +516,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                             }
                             newSearchOrder += aNewOrder;
                         }
+                        // save the search string under the searchName (which used to be the last name in the list)
                         userOptionsService.save(principalId, searchName, savedSearchString);
                         userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
                     } else {
+                        // saves the search to the front of the list with incremented index
+                        // [3,2,1] => [4,3,2,1]
                         // here we need to do a push to identify the highest used number which is from the
                         // first one in the array, and then add one to it, and push the rest back one
                         int absMax = 0;

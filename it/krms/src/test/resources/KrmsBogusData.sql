@@ -658,7 +658,7 @@ insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_n
 values ('502C1', 'P502C', 'TERM_004', 'T', 1, 1);
 
 insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
-values ('502C2', 'P502C', 'MEDICAL CANNIBIS', 'C', 2, 1);
+values ('502C2', 'P502C', 'ALCOHOL BEVERAGE', 'C', 2, 1);
 
 insert into krms_prop_parm_t(prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 values ('502C3', 'P502C', '=', 'O', 3, 1);

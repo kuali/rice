@@ -34,6 +34,7 @@ import java.util.List;
  */
 public class SimplePropositionNode extends RuleTreeNode {
     private static final long serialVersionUID = -629088492909384804L;
+    public static final String NODE_TYPE = "ruleTreeNode simplePropositionNode";
     protected String parameterDisplayString;
 
     public SimplePropositionNode(PropositionBo proposition){

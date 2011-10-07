@@ -110,7 +110,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                // add a node for the description display with a child proposition node
                Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
                child.setNodeLabel(prop.getDescription());
-               child.setNodeType("ruleTreeNode simplePropositionNode");
+               child.setNodeType(SimplePropositionNode.NODE_TYPE);
                SimplePropositionNode pNode = new SimplePropositionNode(prop);
                child.setData(pNode);
                sprout.getChildren().add(child);
@@ -155,7 +155,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     * @param prop
     * @return
     */
-   private addOpCodeNode(Node currentNode, PropositionBo prop){
+   private void addOpCodeNode(Node currentNode, PropositionBo prop){
        String opCodeLabel = "";
        
        if (LogicalOperator.AND.getCode().equalsIgnoreCase(prop.getCompoundOpCode())){

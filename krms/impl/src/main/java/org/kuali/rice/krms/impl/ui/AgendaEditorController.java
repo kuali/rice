@@ -25,6 +25,8 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
@@ -1225,9 +1227,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView goToEditProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // WARN: WORK IN PROGRESS!! Just a stub at this point really.
-        // TODO: for a simple prop add an edit simple proposition node
-
         AgendaEditor agendaEditor = getAgendaEditor(form);
         Node<RuleTreeNode, String> root =agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
         editablePropositionTree(root);
@@ -1242,12 +1241,105 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if ((theNode != null) && (theNode instanceof SimplePropositionNode)){
                 SimplePropositionEditNode eNode = new SimplePropositionEditNode(theNode.getProposition());
 //                child.setNodeLabel("");
-                child.setNodeType("ruleTreeNode simplePropositionEditNode");
+                child.setNodeType(SimplePropositionEditNode.NODE_TYPE);
                 child.setData(eNode);
             } else {
                 editablePropositionTree(child);
             }
         }
+    }
+
+    private void replaceWithEditNode(Node<RuleTreeNode, String> node){
+        if (node != null) {
+            RuleTreeNode oldChild = node.getData();
+            PropositionBo prop = oldChild.getProposition();
+
+            if (prop != null) {
+                // Simple Proposition
+                // add a node to edit the proposition parameters
+                SimplePropositionEditNode eNode = new SimplePropositionEditNode(prop);
+                node.setData(eNode);
+            }
+        }
+    }
+
+    @RequestMapping(params = "methodToCall=" + "addProposition")
+    public ModelAndView addProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+
+        // get selected id
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+        // find parent
+        Node parent = findParentPropositionNode(
+                agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
+
+        // add new child at appropriate spot
+        // TODO: ??  EDIT the TREE?  or EDIT the Proposition and refresh the Tree?
+        if (parent != null){
+            List<Node<RuleTreeNode,String>> children = parent.getChildren();
+            for( int index=0; index< children.size(); index++){
+                Node<RuleTreeNode,String> child = children.get(index);
+
+                // if our selected node is a simple proposition, add a new one after
+                if (propIdMatches(child, selectedPropId)){
+                    if(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
+                       SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType())){
+
+                        addOpCodeNode(parent, child.getData().getProposition(), index+2);
+
+                        // build new Blank Proposition
+                        PropositionBo blankProp = new PropositionBo();
+                        blankProp.setPropositionTypeCode(PropositionType.SIMPLE.getCode());
+                        blankProp.setRuleId(child.getData().getProposition().getRuleId());
+                        blankProp.setDescription("");
+
+                        Node<RuleTreeNode, String> baby= new Node<RuleTreeNode, String>();
+                        baby.setNodeLabel("");
+                        baby.setNodeType(SimplePropositionEditNode.NODE_TYPE);
+                        SimplePropositionEditNode pNode = new SimplePropositionEditNode(blankProp);
+                        baby.setData(pNode);
+                        parent.insertChildAt(index+2, baby);
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return super.updateComponent(form, result, request, response);
+    }
+    /**
+     *
+     * This method adds an opCode Node to separate components in a compound proposition.
+     *
+     * @param currentNode
+     * @param prop
+     * @return
+     */
+    private void addOpCodeNode(Node currentNode, PropositionBo prop, int index){
+        String opCodeLabel = "";
+
+        if (LogicalOperator.AND.getCode().equalsIgnoreCase(prop.getCompoundOpCode())){
+            opCodeLabel = "AND";
+        } else if (LogicalOperator.OR.getCode().equalsIgnoreCase(prop.getCompoundOpCode())){
+            opCodeLabel = "OR";
+        }
+        Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
+        aNode.setNodeLabel("");
+        aNode.setNodeType("ruleTreeNode compoundOpCodeNode");
+        aNode.setData(new CompoundOpCodeNode(prop));
+        currentNode.insertChildAt(index, aNode);
+    }
+
+
+    private boolean propIdMatches(Node<RuleTreeNode, String> node, String propId){
+        if (propId!=null && node != null && node.getData() != null && propId.equalsIgnoreCase(node.getData().getProposition().getId())) {
+            return true;
+        }
+        return false;
     }
 
     private Node<RuleTreeNode, String> findPropositionTreeNode(Node<RuleTreeNode, String> currentNode, String selectedPropId){
@@ -1266,17 +1358,25 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return bingo;
     }
 
-    private void replaceWithEditNode(Node<RuleTreeNode, String> node){
-        if (node != null) {
-            RuleTreeNode oldChild = node.getData();
-            PropositionBo prop = oldChild.getProposition();
+    private Node<RuleTreeNode, String> findParentPropositionNode(Node<RuleTreeNode, String> currentNode, String selectedPropId){
+        Node<RuleTreeNode,String> bingo = null;
+        if (selectedPropId != null) {
+            // if it's in children, we have the parent
+            List<Node<RuleTreeNode,String>> children = currentNode.getChildren();
+            for( Node<RuleTreeNode,String> child : children){
+                RuleTreeNode dataNode = child.getData();
+                if (selectedPropId.equalsIgnoreCase(dataNode.getProposition().getId()))
+                    return currentNode;
+            }
 
-            if (prop != null) {
-                // Simple Proposition
-                // add a node to edit the proposition parameters
-                SimplePropositionEditNode eNode = new SimplePropositionEditNode(prop);
-                node.setData(eNode);
+            // if not found check grandchildren
+            for( Node<RuleTreeNode,String> kid : children){
+                  bingo = findParentPropositionNode(kid, selectedPropId);
+                  if (bingo != null) break;
             }
         }
+        return bingo;
     }
+
+
 }

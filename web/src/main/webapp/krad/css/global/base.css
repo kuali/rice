@@ -38,6 +38,7 @@ th, td {
 .constraint {                  /* NOT RENAMED - changing this classname will break some javascript functionality  */
 	font-size:0.813em;
 	/* begin styles brought over from kuali-stacked.css  */
+    font-weight:normal;
 	color: gray;
 	margin-bottom: 5px;
 	margin-top: 5px;
@@ -74,8 +75,8 @@ h4 img.expand_collapse-buttons {
 .kr-page-action h2 {			/* was .page-action h2 */ /* renamed in xml and/or jsp */
 	clear:left;
 }
-.kr-clientError>.kr-field-attribute {			/* was .field_attribute */ /* renamed in xml and/or jsp */
-    float:left;
+.kr-clientError > .kr-field-attribute {
+    float: left;
 }
 td.kr-clientError {
     overflow: visible;
@@ -596,4 +597,13 @@ Navigation Slide Control
     overflow: hidden;
 }
 
-
+/* Messing with table label alignment */
+th.labelTop span.labelTop {
+    text-align:right;
+}
+th label {
+    text-align:right;
+}
+th, td {
+    padding-right:1em;
+}

@@ -868,6 +868,7 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 	font-size:0.92307692em;     /* 12px divided by 13px */
     display:block;
     margin-bottom:10px;
+    font-weight:normal;
 }
 
 
@@ -952,4 +953,12 @@ a.h4.kr-section-subhead {
 }
 .kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
     background: url("../../images/h3_collapse-back-black-ks.png") no-repeat scroll 0 0 transparent;
+}
+table[role="presentation"] th {
+    text-align:right;
+    padding-right:1em;
+    padding-bottom:1em;
+}
+table[role="presentation"] th h4, table[role="presentation"] th .summary {
+    text-align:left;
 }

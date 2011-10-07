@@ -14,7 +14,7 @@
 -- limitations under the License.
 -- 
 
----- If you should want to clean out your KRMS tables:
+-- ---- If you should want to clean out your KRMS tables:
 -- delete from  krms_cntxt_vld_rule_t ;
 -- delete from  krms_cntxt_vld_func_t ;
 -- delete from  krms_func_parm_t ;
@@ -31,6 +31,7 @@
 -- delete from  krms_cmpnd_prop_props_t ;
 -- delete from  krms_agenda_attr_t ;
 -- delete from  krms_cntxt_vld_actn_t ;
+-- delete from  krms_cntxt_vld_agenda_t ;
 -- delete from  krms_cntxt_attr_t ;
 -- delete from  krms_rule_attr_t ;
 -- delete from  krms_agenda_itm_t ;
@@ -39,11 +40,11 @@
 -- delete from  krms_typ_attr_t ;
 -- delete from  krms_attr_defn_t ;
 -- delete from  krms_agenda_t ;
--- delete from  krms_cntxt_t ;
 -- update krms_rule_t set prop_id=null;
 -- delete from  krms_prop_t ;
 -- delete from  krms_rule_t ;
--- delete from  krms_typ_t where id not in ('1000','1001');
+-- delete from  krms_typ_t where typ_id not in ('1000','1001');
+-- delete from  krms_cntxt_t ;
 
 
 insert into krms_attr_defn_t
@@ -67,11 +68,6 @@ values ('T3', 'KrmsActionResolverType', 'KRMS_TEST', 'testActionTypeService', 'Y
 ;
 
 insert into krms_typ_t
-(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
-values ('T4', 'CampusAgendaType', 'KRMS_TEST', 'campusAgendaTypeService', 'Y', 1)
-;
-
-insert into krms_typ_t
 (typ_id, nm, nmspc_cd, actv, ver_nbr)
 values ('T4', 'CONTEXT', 'KRMS_TEST',  'Y', 1)
 ;
@@ -90,6 +86,12 @@ insert into krms_typ_attr_t
 (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
 values ('T5A', 1, 'T5', 'Q33001', 'Y', 1)
 ;
+
+insert into krms_typ_t
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T6', 'CampusAgendaType', 'KRMS_TEST', 'campusAgendaTypeService', 'Y', 1)
+;
+
 
 insert into krms_cntxt_t
 (cntxt_id, nmspc_cd, nm, typ_id, actv, ver_nbr)
@@ -122,8 +124,8 @@ values ('CONTEXT1ACTION1001', 'CONTEXT1', '1001', 1)
 ;
 
 insert into krms_cntxt_vld_agenda_t
-(cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr)
-values ('CONTEXT1T3', 'CONTEXT1', 'T4', 1)
+(cntxt_vld_agenda_id, cntxt_id, agenda_typ_id, ver_nbr)
+values ('CONTEXT1T3', 'CONTEXT1', 'T6', 1)
 ;
 
 insert into krms_rule_t
@@ -722,14 +724,9 @@ update krms_agenda_t set INIT_AGENDA_ITM_ID = 'AGENDA003ITEM1' where AGENDA_ID =
 
 -- SQL for test CampusAgendaType:
 
-insert into krms_typ_t
-(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
-values ('T6', 'CampusAgendaType', 'KRMS_TEST', 'campusAgendaTypeService', 'Y', 1)
-;
-
 insert into krms_cntxt_vld_agenda_t
 (cntxt_vld_agenda_id, cntxt_id, agenda_typ_id, ver_nbr)
-values ('CONTEXT1T3', 'CONTEXT1', 'T6', 1)
+values ('CONTEXT1T6', 'CONTEXT1', 'T6', 1)
 ;
 
 -- add a db-only attribute to CampusAgendaType
@@ -786,7 +783,5 @@ insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values (
 -- update krms_agenda_itm_t 
 -- SET when_true = 'AGENDA301ITEM${ID}' WHERE agenda_itm_id = 'AGENDA301ITEM${PARENT_ID}'
 -- ;
-
-
 
 

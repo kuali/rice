@@ -70,6 +70,15 @@ public interface KrmsAttributeDefinitionService {
      */
 	public List<KrmsAttributeDefinition> findAttributeDefinitionsByNamespace(String namespace);
 
+
+    /**
+      * Returns all KrmsAttributeDefinition that for a given type.
+      *
+      * @return all KrmsAttributeDefinition for a type.  May be empty, will not be null;
+      */
+     public List<KrmsAttributeDefinition> findAttributeDefinitionsByType(String typeId);
+
+
     /**
      * Returns all KrmsAttributeDefinitions
      *

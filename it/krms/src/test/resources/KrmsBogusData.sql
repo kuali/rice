@@ -67,6 +67,11 @@ values ('T3', 'KrmsActionResolverType', 'KRMS_TEST', 'testActionTypeService', 'Y
 ;
 
 insert into krms_typ_t
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T4', 'CampusAgendaType', 'KRMS_TEST', 'campusAgendaTypeService', 'Y', 1)
+;
+
+insert into krms_typ_t
 (typ_id, nm, nmspc_cd, actv, ver_nbr)
 values ('T4', 'CONTEXT', 'KRMS_TEST',  'Y', 1)
 ;
@@ -116,6 +121,11 @@ insert into krms_cntxt_vld_actn_t
 values ('CONTEXT1ACTION1001', 'CONTEXT1', '1001', 1)
 ;
 
+insert into krms_cntxt_vld_agenda_t
+(cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr)
+values ('CONTEXT1T3', 'CONTEXT1', 'T4', 1)
+;
+
 insert into krms_rule_t
 (rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
 values ('R201', 'KRMS_TEST', 'Rule1', 'T2', null, 'Y', 1, 'stub rule lorem ipsum')
@@ -159,7 +169,7 @@ values ( 'action2001', 'testAction', 'KRMS_TEST', 'Action Stub for Testing', 'T3
 
 insert into krms_agenda_t
 (agenda_id, nm, cntxt_id, init_agenda_itm_id, typ_id, actv, ver_nbr)
-values ( 'AGENDA301', 'My Fabulous Agenda', 'CONTEXT1', null, 'T2', 'Y', 1)
+values ( 'AGENDA301', 'My Fabulous Agenda', 'CONTEXT1', null, 'T6', 'Y', 1)
 ;
 
 insert into krms_agenda_itm_t
@@ -707,6 +717,33 @@ insert into krms_agenda_itm_t (AGENDA_ITM_ID, RULE_ID, AGENDA_ID, VER_NBR)
 values ('AGENDA003ITEM1', 'R500', 'AGENDA003', 1);
 
 update krms_agenda_t set INIT_AGENDA_ITM_ID = 'AGENDA003ITEM1' where AGENDA_ID = 'AGENDA003';
+
+
+
+-- SQL for test CampusAgendaType:
+
+insert into krms_typ_t
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T6', 'CampusAgendaType', 'KRMS_TEST', 'campusAgendaTypeService', 'Y', 1)
+;
+
+insert into krms_cntxt_vld_agenda_t
+(cntxt_vld_agenda_id, cntxt_id, agenda_typ_id, ver_nbr)
+values ('CONTEXT1T3', 'CONTEXT1', 'T6', 1)
+;
+
+-- add a db-only attribute to CampusAgendaType
+insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL, CMPNT_NM, DESC_TXT)
+values ('Q9900', 'dbOnlyAttribute', 'KRMS_TEST', 'label', 'dbOnlyAttribute component name',
+'dbOnlyAttribute is an (optional) attribute that only resides in the database, so it will have a very simple control')
+;
+insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('T6A', 1, 'T6', 'Q9900');
+
+-- add our campus attribute to CampusAgendaType
+insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL, CMPNT_NM, DESC_TXT)
+values ('Q9901', 'Campus', 'KRMS_TEST', 'campus label', 'campus component name', 'the campus which this agenda is valid for')
+;
+insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('T6B', 1, 'T6', 'Q9901');
 
 
 --

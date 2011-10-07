@@ -27,11 +27,13 @@ import org.junit.Test
 import org.kuali.rice.krad.bo.PersistableBusinessObject
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 
 class AgendaBoServiceImplTest {
 
 	private final shouldFail = new GroovyTestCase().&shouldFail
 	def mockBusinessObjectService
+    def mockAttributeDefinitionService
 
 	private static final String NAMESPACE = "KRMS_TEST"
 	private static final String AGENDA_ID_1 = "AGENDAID001"
@@ -124,6 +126,11 @@ class AgendaBoServiceImplTest {
 	@Before
 	void setupBoServiceMockContext() {
 		mockBusinessObjectService = new MockFor(BusinessObjectService.class)
+	}
+
+    @Before
+	void setupAttributeServiceMockContext() {
+		mockAttributeDefinitionService = new MockFor(KrmsAttributeDefinitionService.class);
 	}
 
 	@Test
@@ -292,12 +299,16 @@ class AgendaBoServiceImplTest {
   void test_createAgenda_success() {
 		mockBusinessObjectService.demand.findByPrimaryKey(1..1) {Class clazz, Map map -> null}
         mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { Class clazz, Object obj -> CONTEXT1 }
-		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB1] }
-		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB2] }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+
+        mockAttributeDefinitionService.demand.findAttributeDefinitionsByType { String typeId ->
+            [KrmsAttributeDefinition.Builder.create(ADB1).build(), KrmsAttributeDefinition.Builder.create(ADB2).build()] };
+        KrmsAttributeDefinitionService attributeDefinitionService = mockAttributeDefinitionService.proxyDelegateInstance();
+
 		AgendaBoService service = new AgendaBoServiceImpl()
 		service.setBusinessObjectService(bos)
+        service.setAttributeDefinitionService(attributeDefinitionService);
 
 		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
 		kads.setBusinessObjectService(bos)
@@ -336,14 +347,17 @@ class AgendaBoServiceImplTest {
   void test_updateAgenda_success() {
 		mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {Class clazz, String id -> TEST_AGENDA_BO}
         mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) { Class clazz, Object obj -> CONTEXT1 }
-		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB1] }
-		mockBusinessObjectService.demand.findMatching(1..1) { Class clazz, Map map -> [ADB2] }
 		mockBusinessObjectService.demand.deleteMatching(1) { Class clazz, Map map -> }
 		mockBusinessObjectService.demand.save { PersistableBusinessObject bo -> }
+
+        mockAttributeDefinitionService.demand.findAttributeDefinitionsByType { String typeId ->
+            [KrmsAttributeDefinition.Builder.create(ADB1).build(), KrmsAttributeDefinition.Builder.create(ADB2).build()] };
+        KrmsAttributeDefinitionService attributeDefinitionService = mockAttributeDefinitionService.proxyDelegateInstance();
 
 		BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
 		AgendaBoService service = new AgendaBoServiceImpl()
 		service.setBusinessObjectService(bos)
+        service.setAttributeDefinitionService(attributeDefinitionService);
 
 		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
 		kads.setBusinessObjectService(bos)

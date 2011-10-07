@@ -176,6 +176,8 @@
       </property>
     </bean>
 
+    <bean id="campusAgendaTypeService" class="edu.sampleu.krms.impl.CampusAgendaTypeService"/>
+
     <bean id="fiscalOfficerInfoMaintainable"
         class="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"
         scope="prototype">

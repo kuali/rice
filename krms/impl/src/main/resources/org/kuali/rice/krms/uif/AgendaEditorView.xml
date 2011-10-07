@@ -158,16 +158,44 @@
                         p:queryFieldMapping="name:name" p:returnFieldMapping="name:name,namespace:namespace,id:id"/>
                 </property> -->
               </bean>
+
+              <bean parent="AttributeField" p:propertyName="agenda.typeId" p:label="Type" p:required="false">
+                <property name="control">
+                  <bean parent="SelectControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krms.impl.repository.AgendaTypeValuesFinder" p:blankOption="true"/>
+                </property>
+              </bean>
+
               <bean parent="AttributeField" p:propertyName="agenda.active" p:label="Active">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
               </bean>
+
+
             </list>
           </property>
         </bean>
 
-        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; " >
+        <!-- custom attributes on agenda -->
+        <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2"
+                p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId">
+
+          <property name="items">
+            <list>
+              <bean parent="RemoteFieldsHolder" p:propertyName="customAttributesMap"
+                    p:fetchingMethodToCall="retrieveCustomAttributes"/>
+            </list>
+          </property>
+        </bean>
+
+
+        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; ">
+<!--  Can't get progressive disclosure to work from the contextId for some reason
+                p:progressiveRenderViaAJAX="true" p:progressiveRender="document.newMaintainableObject.dataObject.agenda.contextId != null">
+-->
           <property name="items">
             <list>
               <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;">

@@ -109,6 +109,7 @@
 
   <bean id="agendaBoService" class="org.kuali.rice.krms.impl.repository.AgendaBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="attributeDefinitionService" ref="krmsAttributeDefinitionService"/>
   </bean>
 
   <bean id="actionBoService" class="org.kuali.rice.krms.impl.repository.ActionBoServiceImpl">
@@ -117,6 +118,7 @@
 
   <bean id="krmsAttributeDefinitionService" class="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="criteriaLookupService" ref="criteriaLookupService"/>
   </bean>
 
   <bean id="agendaAuthorizationService" class="org.kuali.rice.krms.impl.authorization.AgendaAuthorizationServiceImpl">

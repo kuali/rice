@@ -7,7 +7,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinitionContract;
 /**
  * This class contains the common elements of a KRMS attribute.
  * <p>
- * Attributes are used to distinguish KRMS repository entities. 
+ * Attributes provide a way to attach custom data to an entity based on that entity's type.
  * Rules, Actions, Contexts, Agendas and Term Resolvers have their own specific
  * attribute types. This class contains their common fields. 
  * 

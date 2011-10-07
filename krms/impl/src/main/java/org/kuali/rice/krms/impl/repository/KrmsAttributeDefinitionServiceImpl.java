@@ -25,15 +25,23 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDefinitionService {
 
     private BusinessObjectService businessObjectService;
     private final Map<String,KrmsAttributeDefinitionBo> krmsAttributeDefinitionIdCache = Collections.synchronizedMap( new HashMap<String,KrmsAttributeDefinitionBo>() );
+
+    private CriteriaLookupService criteriaLookupService;
 
 	@Override
 	/**
@@ -183,6 +191,36 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 
     @Override
 	/**
+	* @see org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService#findAttributeDefinitionsByType()
+	*/
+    public List<KrmsAttributeDefinition> findAttributeDefinitionsByType(final String typeId) {
+
+        List<KrmsAttributeDefinition> results = Collections.emptyList();
+
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("typeId", typeId);
+        map.put("active", Boolean.TRUE);
+        Collection<KrmsTypeAttributeBo> krmsTypeAttributeBos = getBusinessObjectService().findMatching(KrmsTypeAttributeBo.class, Collections.unmodifiableMap(map));
+
+        if (!CollectionUtils.isEmpty(krmsTypeAttributeBos)) {
+            String [] inList = new String[krmsTypeAttributeBos.size()];
+            int inListIdex = 0;
+            for (KrmsTypeAttributeBo krmsTypeAttributeBo : krmsTypeAttributeBos) {
+                inList[inListIdex] = krmsTypeAttributeBo.getAttributeDefinitionId();
+                ++inListIdex; // don't forget to increment our index
+            }
+
+            QueryByCriteria.Builder qBuilder = QueryByCriteria.Builder.create();
+            qBuilder.setPredicates(in("id", inList));
+            results = convertListOfBosToImmutables(getCriteriaLookupService().lookup(KrmsAttributeDefinitionBo.class, qBuilder.build()).getResults());
+        }
+
+        return results;
+    }
+
+
+    @Override
+	/**
 	* @see org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService#findAllAttributeDefinitions()
 	*/
     public List<KrmsAttributeDefinition> findAllAttributeDefinitions() {
@@ -248,4 +286,18 @@ public final class KrmsAttributeDefinitionServiceImpl implements KrmsAttributeDe
 			krmsAttributeDefinitionIdCache.remove(key);
 		}
     }
+
+        /**
+     * Sets the criteriaLookupService attribute value.
+     *
+     * @param criteriaLookupService The criteriaLookupService to set.
+     */
+    public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
+        this.criteriaLookupService = criteriaLookupService;
+    }
+
+    protected CriteriaLookupService getCriteriaLookupService() {
+        return criteriaLookupService;
+    }
+
 }

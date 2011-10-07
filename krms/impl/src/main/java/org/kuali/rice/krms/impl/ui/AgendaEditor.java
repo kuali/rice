@@ -22,7 +22,9 @@ import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * synthetic (not directly persisted) BO for the KRMS agenda editor
@@ -41,6 +43,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String cutAgendaItemId;
     private String selectedPropositionId;
     private String copyRuleName;
+    private Map<String, String> customAttributesMap = new HashMap<String, String>();
 
     public AgendaEditor() {
         agenda = new AgendaBo();
@@ -175,6 +178,14 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 	public void setAgenda(AgendaBo agenda) {
 		this.agenda = agenda;
 	}
+
+    public Map<String, String> getCustomAttributesMap() {
+        return customAttributesMap;
+    }
+
+    public void setCustomAttributesMap(Map<String, String> customAttributesMap) {
+        this.customAttributesMap = customAttributesMap;
+    }
 
     /**
      * @param copyRuleName the rule name from which to copy

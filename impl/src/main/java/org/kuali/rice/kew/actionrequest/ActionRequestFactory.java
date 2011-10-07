@@ -300,7 +300,20 @@ public class ActionRequestFactory {
     			}
     			resolveRecipient(actionRequest, roleResponsibilityRecipient.getTarget());
     		}
-    	}
+    	} else if (recipient instanceof KimRoleRecipient) {
+            KimRoleRecipient roleRecipient = (KimRoleRecipient)recipient;
+            actionRequest.setRecipientTypeCd(RecipientType.ROLE.getCode());
+            Role role = roleRecipient.getRole();
+            actionRequest.setRoleName(role.getId());
+            actionRequest.setQualifiedRoleNameLabel(role.getName());
+            Recipient targetRecipient = roleRecipient.getTarget();
+    		if (targetRecipient != null) {
+    			if (targetRecipient instanceof RoleRecipient) {
+    				throw new WorkflowRuntimeException("Role Cannot Target a role problem activating request for document " + actionRequest.getDocumentId());
+    			}
+    			resolveRecipient(actionRequest, targetRecipient);
+    		}
+        }
     }
 
     /**

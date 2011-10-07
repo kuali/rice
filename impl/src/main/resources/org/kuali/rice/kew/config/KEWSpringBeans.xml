@@ -212,7 +212,15 @@
 	<!-- WorkflowDocument -->
 	<bean id="enWorkflowDocumentService" class="org.kuali.rice.kew.routeheader.service.impl.WorkflowDocumentServiceImpl" lazy-init="true" />
 
-  <bean id="peopleFlowRequestGenerator" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRequestGeneratorImpl"/>
+  <bean id="roleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kimRoleService" />
+  </bean>
+
+  <bean id="peopleFlowRequestGenerator" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRequestGeneratorImpl">
+    <property name="typeRepositoryService" ref="rice.kew.kewTypeRepositoryService"/>
+    <property name="roleService" ref="roleService" />
+  </bean>
+
 
   <bean id="peopleFlowRouteModule" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRouteModule" lazy-init="true">
     <property name="peopleFlowService" ref="rice.kew.peopleFlowService" />

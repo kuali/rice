@@ -6,6 +6,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.RecipientType;
@@ -15,8 +16,13 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -593,6 +599,68 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
 
     }
 
+    private String roleId = null;
+    /**
+     * Defines a PeopleFlow with a single first approve role, that role has two members, one principal and one group.
+     */
+    private void createFirstApproveRolePeopleFlow() {
+        RoleService roleService = KimApiServiceLocator.getRoleService();
+        Role role = roleService.getRoleByNameAndNamespaceCode("KR-SYS", "Technical Administrator");
+        assertNotNull("Technical Administrator role should exist!", role);
+        assertEquals(2, roleService.getRoleMembers(Collections.singletonList(role.getId()),
+                new HashMap<String, String>()).size());
+        roleId = role.getId();
+
+        PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
+        PeopleFlowMember.Builder memberBuilder = peopleFlow.addRole(role.getId());
+        memberBuilder.setPriority(1);
+        memberBuilder.setActionRequestPolicy(ActionRequestPolicy.FIRST);
+        peopleFlowService.createPeopleFlow(peopleFlow.build());
+    }
+
+    @Test
+    public void test_FirstApproveRolePeopleFlow() throws Exception {
+        createFirstApproveRolePeopleFlow();
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, SINGLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE);
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        // should have 1 root requests which is a role request with 2 children, one a principal request to the "admin"
+        // prinicipal, and one a group request to the WorkflowAdmin group
+        List<ActionRequest> rootActionRequests = document.getRootActionRequests();
+        assertEquals(1, rootActionRequests.size());
+        ActionRequest roleRequest = rootActionRequests.get(0);
+        assertEquals(ActionRequestPolicy.FIRST, roleRequest.getRequestPolicy());
+        assertEquals(roleId, roleRequest.getRoleName());
+        assertEquals(RecipientType.ROLE, roleRequest.getRecipientType());
+        assertEquals(2, roleRequest.getChildRequests().size());
+        for (ActionRequest childRequest : roleRequest.getChildRequests()) {
+            if (RecipientType.PRINCIPAL.equals(childRequest.getRecipientType())) {
+                assertEquals(getPrincipalIdForName("admin"), childRequest.getPrincipalId());
+            } else if (RecipientType.GROUP.equals(childRequest.getRecipientType())) {
+                assertEquals(getGroupIdForName("KR-WKFLW", "WorkflowAdmin"), childRequest.getGroupId());
+            } else {
+                fail("Found a child request i didn't expect with a recipient type of: " + childRequest.getRecipientType());
+            }
+        }
+
+        // should be able to approve as a member of the group on Technical Administrator role (which is WorkflowAdmin) as
+        // well as the 'admin' principal
+        document.switchPrincipal(getPrincipalNameForId("admin"));
+        assertTrue(document.isApprovalRequested());
+        document.switchPrincipal(getPrincipalIdForName("bmcgough"));
+        assertTrue(document.isApprovalRequested());
+
+        // now approve as a member of WorkflowAdmin
+        document.approve("");
+
+        // document should now be final because it's first approve
+        assertTrue(document.isFinal());
+        
+
+    }
+    
     private void assertApproveRequested(WorkflowDocument document, String... principalIds) {
         for (String principalId : principalIds) {
             document.switchPrincipal(principalId);

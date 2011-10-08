@@ -74,6 +74,11 @@ public interface Config {
 	public static final String ENVIRONMENT = "environment";
 
     /**
+     * The code that represents the production environment.
+     */
+    public static final String PROD_ENVIRONMENT_CODE = "production.environment.code";
+
+    /**
      * The Rice version is by default determined automatically by inspecting the classloader
      * (@see {@ServiceCallVersioningHelper}.  However, this property is available for special
      * cases such as testing or workarounds, in order to override the reported Rice version.
@@ -247,6 +252,8 @@ public interface Config {
 
     public String getEnvironment();
 
+    public String getProductionEnvironmentCode();
+
 	public String getEDLConfigLocation();
 
     public String getDefaultKewNoteClass();
@@ -278,7 +285,12 @@ public interface Config {
 	public Boolean getBatchMode();
 	
 	public Boolean getOutBoxOn();
-	
+
+    /**
+     * Returns whether this Config object defines a production environment
+     */
+    public boolean isProductionEnvironment();
+
 	/**
 	 * 
 	 * This method takes a config object and merges it with the current

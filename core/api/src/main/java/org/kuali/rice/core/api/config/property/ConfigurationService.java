@@ -19,8 +19,8 @@ package org.kuali.rice.core.api.config.property;
 import java.util.Map;
 
 /**
- * This interface defines methods that a Configuration Service must provide. Provides methods for getting string
- * resources.
+ * ConfigurationService is an abstraction of system configuration for KNS clients which provides methods for getting string
+ * resources, including Kuali message resource strings.
  */
 public interface ConfigurationService {
     /**

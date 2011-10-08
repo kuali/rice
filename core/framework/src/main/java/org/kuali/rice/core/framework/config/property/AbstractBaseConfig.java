@@ -128,6 +128,18 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         return getProperty(Config.ENVIRONMENT);
     }
 
+    public String getProductionEnvironmentCode() {
+        return getProperty(Config.PROD_ENVIRONMENT_CODE);
+    }
+
+    public boolean isProductionEnvironment() {
+        String env = getEnvironment();
+        String prod = getProductionEnvironmentCode();
+        // test whether the current env is production. assuming undefined env or prod code
+        // is a configuration error ensure that it returns false
+        return env != null && prod != null && StringUtils.equalsIgnoreCase(env, prod);
+    }
+
     /**
      * @return the {@link RICE_VERSION} property
      */

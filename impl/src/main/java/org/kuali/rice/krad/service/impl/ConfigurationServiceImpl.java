@@ -36,6 +36,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * ConfigurationService implementation which is a thin wrapper over the core Config object, and which
+ * merges in Kuali message resource properties.
+ */
 public class ConfigurationServiceImpl implements ConfigurationService {
     private final PropertyHolder propertyHolder = new PropertyHolder();
 

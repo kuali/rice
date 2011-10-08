@@ -103,7 +103,12 @@
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-template</artifactId>
             <version>${tiles.version}</version>  
-        </dependency>                                           
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-ojb</artifactId>

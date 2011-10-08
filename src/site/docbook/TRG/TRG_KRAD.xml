@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<chapter xml:id="TRG_KRAD" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <title>KRAD</title>
+    <sect1>
+        <title>KRAD Overview</title>
+        <sect2>
+            <title>What is KRAD?</title>
+            <para></para>
+        </sect2>
+    </sect1>
+</chapter>

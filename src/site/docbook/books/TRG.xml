@@ -14,6 +14,8 @@
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KEW.xml" />
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KIM.xml" />
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KNS.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KRAD.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KRMS.xml" />
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../TRG/TRG_KSB.xml" />
     
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../common/glossary.xml" />

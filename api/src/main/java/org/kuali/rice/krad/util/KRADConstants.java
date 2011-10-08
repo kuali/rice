@@ -14,6 +14,8 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.kuali.rice.core.api.config.property.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +118,7 @@ public final class KRADConstants {
     public static final String DOCUMENT_HTTP_SESSION_KEY = "documentHttpSessionKey";
 
 //    public static final String CONFIGURATION_FILE_NAME = "configuration";
-    public static final String ENVIRONMENT_KEY = "environment";
+    public static final String ENVIRONMENT_KEY = org.kuali.rice.core.api.config.property.Config.ENVIRONMENT;
     public static final String MESSAGE_RESOURCES = "rice.struts.message.resources";
 //    public static final String VERSION_KEY = "version";
 //    public static final String LOG4J_SETTINGS_FILE_KEY = "log4j.settings.file";
@@ -134,7 +136,7 @@ public final class KRADConstants {
 //    public static final String REPORTS_DIRECTORY_KEY = "reports.directory";
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String KUALI_RICE_URL_KEY = "kr.url";
-    public static final String PROD_ENVIRONMENT_CODE_KEY = "production.environment.code";
+    public static final String PROD_ENVIRONMENT_CODE_KEY = org.kuali.rice.core.api.config.property.Config.PROD_ENVIRONMENT_CODE;
     public static final String DOC_HANDLER_ACTION = "DocHandler.do";
     public static final String DOCHANDLER_DO_URL = "/" + DOC_HANDLER_ACTION + "?docId=";
     public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";

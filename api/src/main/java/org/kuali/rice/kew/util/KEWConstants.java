@@ -116,7 +116,6 @@ public final class KEWConstants {
     public static final String YEARLY_UNIT = "Yearly";
     public static final String SUDS_DATASOURCE = "SUDS";
     public static final String APP_CODE = "en";
-    public static final String PROD_DEPLOYMENT_CODE = "production.environment.code";
 
     public static final String YES_LABEL = "Yes";
     public static final String NO_LABEL = "No";

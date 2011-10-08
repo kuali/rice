@@ -448,8 +448,7 @@ public class NoteConfigComponent implements EDLModelComponent {
     }
     */
     protected boolean isProduction() {
-        return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
-                        ConfigContext.getCurrentContextConfig().getEnvironment());
+        return ConfigContext.getCurrentContextConfig().isProductionEnvironment();
     }
 
     protected boolean isEmailListValid(List<String> emailList) {

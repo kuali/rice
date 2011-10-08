@@ -240,8 +240,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     }
 
     protected boolean isProduction() {
-        return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE)
-                .equalsIgnoreCase(getDeploymentEnvironment());
+        return ConfigContext.getCurrentContextConfig().isProductionEnvironment();
     }
 
     public void sendDailyReminder() {

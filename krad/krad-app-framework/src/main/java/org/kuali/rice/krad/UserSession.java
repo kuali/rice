@@ -135,8 +135,7 @@ public class UserSession implements Serializable {
     }
     
     private boolean isProductionEnvironment() {
-    	return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.PROD_ENVIRONMENT_CODE_KEY).equalsIgnoreCase(
-    			ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.ENVIRONMENT_KEY));
+        return ConfigContext.getCurrentContextConfig().isProductionEnvironment();
     }
 
     /**

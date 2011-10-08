@@ -18,8 +18,8 @@
     <KRMS_RULE_T ACTV="Y" DESC_TXT="remembered to wear socks" NM="Rule5"
         NMSPC_CD="KRMS_TEST" PROP_ID="P5" RULE_ID="R5" TYP_ID="T2" VER_NBR="1"/>
     <KRMS_RULE_T ACTV="Y" DESC_TXT="Does PO require my approval"
-        NM="SpecialPurchase" NMSPC_CD="KRMS_TEST" PROP_ID="P500"
-        RULE_ID="R500" TYP_ID="T2" VER_NBR="1"/>
+        NM="Going Away Party for Travis" NMSPC_CD="KRMS_TEST"
+        PROP_ID="P500" RULE_ID="R500" TYP_ID="T2" VER_NBR="1"/>
     <KRMS_RULE_T ACTV="Y" DESC_TXT="good behavior at carnival"
         NM="Rule6" NMSPC_CD="KRMS_TEST" PROP_ID="P6" RULE_ID="R6"
         TYP_ID="T2" VER_NBR="1"/>

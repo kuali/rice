@@ -9,5 +9,5 @@
         TYP_ID="T5" VER_NBR="1"/>
     <KRMS_AGENDA_T ACTV="Y" AGENDA_ID="AGENDA301" CNTXT_ID="CONTEXT1"
         INIT_AGENDA_ITM_ID="AGENDA301ITEM1" NM="My Fabulous Agenda"
-        TYP_ID="T2" VER_NBR="1"/>
+        TYP_ID="T6" VER_NBR="1"/>
 </dataset>

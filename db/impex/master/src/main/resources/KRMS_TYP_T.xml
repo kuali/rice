@@ -13,4 +13,6 @@
         NMSPC_CD="KRMS_TEST" SRVC_NM="testActionTypeService" TYP_ID="T3" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="CONTEXT" NMSPC_CD="KRMS_TEST" TYP_ID="T4" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="AGENDA" NMSPC_CD="KRMS_TEST" TYP_ID="T5" VER_NBR="1"/>
+    <KRMS_TYP_T ACTV="Y" NM="CampusAgendaType" NMSPC_CD="KRMS_TEST"
+        SRVC_NM="campusAgendaTypeService" TYP_ID="T6" VER_NBR="1"/>
 </dataset>

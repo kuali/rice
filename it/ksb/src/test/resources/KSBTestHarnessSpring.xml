@@ -277,6 +277,22 @@
         </property>
     </bean>
 
+  <import resource="classpath:org/kuali/rice/ksb/config/KsbRegistryServerSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/ksb/config/KsbServiceBusClientSpringBeans.xml"/>
+  <!-- note proxyTargetClass FALSE to avoid cannot subclass final class $Proxy error -->
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" p:proxyTargetClass="false" >
+    <property name="interceptorNames">
+          <list>
+              <idref bean="matchAllTxInterceptor" />
+          </list>
+      </property>
+      <property name="beanNames">
+          <list>
+              <idref bean="rice.ksb.serviceRegistry" />
+          </list>
+      </property>
+  </bean>
+
     <bean id="testJavaSecurityManagementService"
           class="org.kuali.rice.ksb.security.admin.MockJavaSecurityManagementServiceImpl"/>
 

@@ -80,7 +80,7 @@
   	<property name="defaultTransactionManager"><ref bean="transactionManager${connection.pool.impl}"/></property>
   </bean>
 
-  <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" depends-on="transactionManagerXAPool">
+  <bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
     <property name="userTransaction"><ref bean="userTransaction"/></property>
     <property name="transactionManager"><ref bean="jtaTransactionManager"/></property>
     <property name="defaultTimeout" value="${transaction.timeout}"/>

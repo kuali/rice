@@ -16,6 +16,14 @@ import static org.junit.Assert.assertEquals
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
+import org.joda.time.DateTime
+import org.apache.commons.lang.RandomStringUtils
+import org.kuali.rice.kew.api.document.DocumentStatusCategory
+import org.kuali.rice.kew.api.document.DocumentStatus
+import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic
+import org.apache.commons.lang.time.StopWatch
+import javax.xml.bind.Unmarshaller
+import org.apache.commons.lang.SerializationUtils
 
 /**
  * Unit tests DocumentLookupCriteria saving behavior of DocumentSearchServiceImpl
@@ -78,9 +86,7 @@ class DocSearchSavingTest {
 
         assertEquals(0, allUserOptions_before.size())
 
-        def builder = DocumentLookupCriteria.Builder.create()
-        builder.setTitle("*IN")
-        def c1 = builder.build()
+        def c1 = create()
         docSearchService.saveSearch(princ, c1)
 
         def allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
@@ -94,9 +100,7 @@ class DocSearchSavingTest {
 
         // 2nd search
 
-        builder = DocumentLookupCriteria.Builder.create()
-        builder.setTitle("*IN-CFSG*")
-        def c2 = builder.build()
+        def c2 = create()
         docSearchService.saveSearch(princ, c2)
 
         allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
@@ -117,10 +121,7 @@ class DocSearchSavingTest {
 
         assertEquals(0, allUserOptions_before.size())
 
-        def builder = DocumentLookupCriteria.Builder.create()
-        builder.setTitle("*IN")
-        builder.setSaveName("save1")
-        def c1 = builder.build()
+        def c1 = create("save1")
         docSearchService.saveSearch(princ, c1)
 
         def allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
@@ -130,10 +131,7 @@ class DocSearchSavingTest {
 
         // 2nd search
 
-        builder = DocumentLookupCriteria.Builder.create()
-        builder.setTitle("*IN-CFSG*")
-        builder.setSaveName("save2")
-        def c2 = builder.build()
+        def c2 = create("save2")
         docSearchService.saveSearch(princ, c2)
 
         allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
@@ -142,6 +140,50 @@ class DocSearchSavingTest {
         assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size())
         assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c2.getSaveName(), princ).optionVal)
     }
+
+    @Test
+    void testPerformance() {
+        def strats = [
+            jaxb: [
+                marshall: { marshall(it) },
+                unmarshall: { unmarshall(it) }
+            ],
+            serialization: [
+                marshall: { SerializationUtils.serialize(it) },
+                unmarshall: { SerializationUtils.deserialize(it) }
+            ]
+        ]
+
+        for (key in strats.keySet()) {
+            println("Strategy: " + key)
+            def strat = strats[key]
+
+            def sw = new StopWatch()
+            sw.start()
+            def criterias = []
+            for (i in 1..1000) {
+              criterias << create(RandomStringUtils.randomAlphanumeric(100))
+            }
+            println("Build time: " + sw + " " + (sw.getTime() / 1000) + "ms/object")
+            sw.reset()
+            sw.start()
+            def marshalled = []
+            for (c in criterias) {
+                marshalled << strat['marshall'].call(c)
+            }
+            //println marshalled[0]
+            //println marshalled[0].size()
+            println("Marshall time: " + sw + " " + (sw.getTime() / 1000) + "ms/object")
+            sw.reset()
+            criterias.clear()
+            sw.start()
+            for (string in marshalled) {
+                criterias << strat['unmarshall'].call(string)
+            }
+            println("Unmarshall time: " + sw + " " + (sw.getTime() / 1000) + "ms/object")
+        }
+    }
+
     
     protected static String marshall(DocumentLookupCriteria criteria) {
         StringWriter marshalledCriteriaWriter = new StringWriter()
@@ -149,5 +191,51 @@ class DocSearchSavingTest {
         Marshaller marshaller = jaxbContext.createMarshaller()
         marshaller.marshal(criteria, marshalledCriteriaWriter)
         marshalledCriteriaWriter.toString()
+    }
+
+    protected static DocumentLookupCriteria unmarshall(String s) {
+        JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class)
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller()
+        return unmarshaller.unmarshal(new StringReader(s))
+    }
+
+    protected static DocumentLookupCriteria create(String saveName = null) {
+        def builder = DocumentLookupCriteria.Builder.create()
+        builder.applicationDocumentId = RandomStringUtils.randomAlphanumeric(20)
+        builder.applicationDocumentStatus = RandomStringUtils.randomAlphanumeric(10)
+        builder.approverPrincipalName = RandomStringUtils.randomAlphanumeric(20)
+        builder.dateApplicationDocumentStatusChangedFrom = new DateTime()
+        builder.dateApplicationDocumentStatusChangedTo = new DateTime()
+        builder.dateApprovedFrom = new DateTime()
+        builder.dateApprovedTo = new DateTime()
+        builder.dateCreatedFrom = new DateTime()
+        builder.dateCreatedTo = new DateTime()
+        builder.dateFinalizedFrom = new DateTime()
+        builder.dateFinalizedTo = new DateTime()
+        builder.dateLastModifiedFrom = new DateTime()
+        builder.dateLastModifiedTo = new DateTime()
+        Map<String, List<String>> attrs = new HashMap<String, List<String>>()
+        for (i in 1..10) {
+            def list = new ArrayList(10)
+            for (j in 1..10) {
+                list.add(RandomStringUtils.randomAlphanumeric(10))
+            }
+            attrs.put(RandomStringUtils.randomAlphanumeric(10), list)
+        }
+        builder.documentAttributeValues = attrs
+        builder.documentId = RandomStringUtils.randomAlphanumeric(10)
+        builder.documentTypeName = RandomStringUtils.randomAlphanumeric(10)
+        builder.documentStatusCategories = Arrays.asList([ DocumentStatusCategory.PENDING, DocumentStatusCategory.SUCCESSFUL ] as DocumentStatusCategory[])
+        builder.documentStatuses = Arrays.asList([ DocumentStatus.ENROUTE, DocumentStatus.INITIATED, DocumentStatus.SAVED ] as DocumentStatus[])
+        builder.initiatorPrincipalName = RandomStringUtils.randomAlphanumeric(20)
+        builder.maxResults = 1000
+        builder.routeNodeName = RandomStringUtils.randomAlphanumeric(10)
+        builder.saveName = saveName
+        builder.startAtIndex = 1
+        builder.title = RandomStringUtils.randomAlphanumeric(20)
+        builder.viewerGroupId = RandomStringUtils.randomAlphanumeric(10)
+        builder.viewerPrincipalName = RandomStringUtils.randomAlphanumeric(20)
+        builder.routeNodeLookupLogic = RouteNodeLookupLogic.EXACTLY
+        return builder.build()
     }
 }

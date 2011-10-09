@@ -32,6 +32,10 @@
   <c:set var="style" value="style=\"${manager.style}\""/>
 </c:if>
 
+<c:if test="${manager.separateAddLine}">
+  <krad:template component="${manager.addLineGroup}"/>
+</c:if>
+
 <c:if test="${!empty manager.headerFields}">
 	<table id="${manager.id}" ${style} ${styleClass}>
 		

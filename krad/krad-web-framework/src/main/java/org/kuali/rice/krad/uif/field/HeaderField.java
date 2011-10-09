@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.krad.uif.field;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.view.View;
+
 /**
  * Field that contains a header element and optionally a <code>Group</code> to
  * present along with the header text
@@ -38,6 +42,25 @@ public class HeaderField extends FieldGroup {
 
     public HeaderField() {
         super();
+    }
+
+    /**
+     * The following finalization is performed:
+     *
+     * <ul>
+     * <li>Performs check to not render field is text is empty and no items are in the header group</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performFinalize(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     */
+    @Override
+    public void performFinalize(View view, Object model, Component parent) {
+        super.performFinalize(view, model, parent);
+
+        if (StringUtils.isBlank(headerText) && getGroup().getItems().isEmpty()) {
+            setRender(false);
+        }
     }
 
     /**

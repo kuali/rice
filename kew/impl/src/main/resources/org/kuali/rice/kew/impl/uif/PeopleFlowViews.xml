@@ -75,7 +75,7 @@
       </list>
     </property>
     <property name="viewHelperServiceClassName"
-              value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowViewHelperServiceImpl"/>
+              value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMaintainableImpl"/>
   </bean>
 
   <!--
@@ -90,8 +90,14 @@
         <bean parent="AttributeField" p:propertyName="namespaceCode" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="name" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="typeId" p:required="true"/>
-        <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
-              p:fetchingMethodToCall="retrieveTypeAttributes"/>
+        <!--bean parent="FieldGroup" p:refreshWhenChanged="typeId">
+          <property name="items">
+            <list>
+              <bean parent="RemoteFieldsHolder" p:propertyName="attributeValues"
+                    p:fetchingMethodToCall="retrieveTypeAttributes"/>
+            </list>
+          </property>
+        </bean-->
         <bean parent="AttributeField" p:propertyName="description" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="active" p:defaultValue="true"/>
       </list>
@@ -110,6 +116,7 @@
     <property name="collectionObjectClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo"/>
     <property name="propertyName" value="members"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
+    <property name="layoutManager.separateAddLine" value="true"/>
     <property name="items">
       <list>
         <bean parent="AttributeField" p:propertyName="priority" p:required="true"/>

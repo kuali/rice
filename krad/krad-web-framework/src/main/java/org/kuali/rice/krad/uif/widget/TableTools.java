@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.sql.Timestamp;
 
@@ -70,14 +71,12 @@ public class TableTools extends WidgetBase {
     public void performFinalize(View view, Object model, Component component) {
         super.performFinalize(view, model, component);
 
+        UifFormBase formBase = (UifFormBase) model;
+
         if (isRender()) {
             if (StringUtils.isNotBlank(getEmptyTableMessage())) {
                 getComponentOptions().put(UifConstants.TableToolsKeys.LANGUAGE,
                         "{\"" + UifConstants.TableToolsKeys.EMPTY_TABLE + "\" : \"" + getEmptyTableMessage() + "\"}");
-            }
-
-            if (isDisableTableSort()) {
-                getComponentOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
             }
 
             if (!isShowSearchAndExportOptions()) {
@@ -93,8 +92,17 @@ public class TableTools extends WidgetBase {
 
             }
 
+            // for add events, disable initial sorting
+            if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
+                getComponentOptions().put(UifConstants.TableToolsKeys.AASORTING, "[]");
+            }
+
             if (component instanceof CollectionGroup) {
                 buildTableSortOptions((CollectionGroup) component);
+            }
+
+            if (isDisableTableSort()) {
+                getComponentOptions().put(UifConstants.TableToolsKeys.TABLE_SORT, "false");
             }
         }
     }
@@ -114,7 +122,10 @@ public class TableTools extends WidgetBase {
 
         if (!isDisableTableSort()) {
             // if rendering add line, skip that row from col sorting
-            if (collectionGroup.isRenderAddLine() && !collectionGroup.isReadOnly()) {
+            if (collectionGroup.isRenderAddLine()
+                    && !collectionGroup.isReadOnly()
+                    && !((layoutManager instanceof TableLayoutManager) && ((TableLayoutManager) layoutManager)
+                    .isSeparateAddLine())) {
                 getComponentOptions().put(UifConstants.TableToolsKeys.SORT_SKIP_ROWS,
                         "[" + UifConstants.TableToolsValues.ADD_ROW_DEFAULT_INDEX + "]");
             }
@@ -166,7 +177,7 @@ public class TableTools extends WidgetBase {
                 }
             }
 
-            if (collectionGroup.isRenderLineActions()) {
+            if (collectionGroup.isRenderLineActions() && !collectionGroup.isReadOnly()) {
                 String colOptions = constructTableColumnOptions(false, null, null);
                 tableToolsColumnOptions.append(colOptions);
             } else {

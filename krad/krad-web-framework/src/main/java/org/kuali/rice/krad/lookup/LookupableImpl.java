@@ -145,8 +145,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         LookupUtils.preprocessDateFields(searchCriteria);
 
         // TODO: force uppercase will be done in binding at some point
-        displayList =
-                getSearchResults(form, LookupUtils.forceUppercase(getDataObjectClass(), searchCriteria), !bounded);
+        displayList = getSearchResults(form, LookupUtils.forceUppercase(getDataObjectClass(), searchCriteria),
+                !bounded);
 
         // TODO delyea - is this the best way to set that the entire set has a returnable row?
         List<String> pkNames = getDataObjectMetaDataService().listPrimaryKeyFieldNames(getDataObjectClass());

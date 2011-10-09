@@ -996,7 +996,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // TODO: should check to see if there is an add line method on the
             // collection parent and if so call that instead of just adding to
             // the collection (so that sequence can be set)
-            collection.add(addLine);
+            if (collection instanceof List) {
+                ((List) collection).add(0, addLine);
+            } else {
+                collection.add(addLine);
+            }
 
             // make a new instance for the add line
             collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);

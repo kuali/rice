@@ -434,7 +434,7 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
 	background-repeat:no-repeat;
 }
 #viewpage_div {
-	margin-left: 120px;
+	margin-left: 20px;
 	margin-right: 20px;
 }
 .desc > label {
@@ -818,11 +818,7 @@ span.labelTop {
 span .fieldLine.boxLayoutVerticalItem.clearfix a {
 	text-decoration:none;
 }
-#viewpage_div {
-	float:left;
-	margin-left: 20px;
-	margin-right: 20px;
-}
+
 .navigation-block {
 	width: 190px;
 }

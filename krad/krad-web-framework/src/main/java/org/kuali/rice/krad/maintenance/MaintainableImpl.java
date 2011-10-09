@@ -84,8 +84,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             dataObject = getLookupService().findObjectBySearch(getDataObjectClass(), dataObjectKeys);
         } catch (ClassNotPersistenceCapableException ex) {
             if (!document.getOldMaintainableObject().isExternalBusinessObject()) {
-                throw new RuntimeException("Data Object Class: " + getDataObjectClass() +
-                        " is not persistable and is not externalizable - configuration error");
+                throw new RuntimeException("Data Object Class: "
+                        + getDataObjectClass()
+                        + " is not persistable and is not externalizable - configuration error");
             }
             // otherwise, let fall through
         }
@@ -461,7 +462,6 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                     .getPropertyValue(document.getOldMaintainableObject().getDataObject(),
                             collectionGroup.getPropertyName());
             try {
-                
                 // Remove the object at lineIndex from the collection
                 oldCollection.remove(oldCollection.toArray()[lineIndex]);
             } catch (Exception e) {

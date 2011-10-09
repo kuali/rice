@@ -69,6 +69,10 @@ public class UifConstants {
         public static final String TOGGLE_INACTIVE = "toggleInactiveRecordDisplay";
     }
 
+    public static class ActionEvents {
+        public static final String ADD_LINE = "addLine";
+    }
+
     public static class LayoutComponentOptions {
         public static final String COLUMN_SPAN = "colSpan";
         public static final String ROW_SPAN = "rowSpan";
@@ -122,6 +126,7 @@ public class UifConstants {
     }
 
     public static class TableToolsKeys {
+        public static final String AASORTING = "aaSorting";
         public static final String SDOM = "sDom";
         public static final String LANGUAGE = "oLanguage";
         public static final String EMPTY_TABLE = "sEmptyTable";
@@ -155,6 +160,7 @@ public class UifConstants {
     }
 
     public static class UrlParams {
+        public static final String ACTION_EVENT = "actionEvent";
         public static final String SHOW_HISTORY = "showHistory";
         public static final String SHOW_HOME = "showHome";
         public static final String FORM_KEY = "formKey";

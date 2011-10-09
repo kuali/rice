@@ -45,6 +45,7 @@ public class ActionField extends FieldBase {
     private ImageField actionImage;
     private String actionImageLocation = "LEFT";
 
+    private String actionEvent;
     private Map<String, String> actionParameters;
 
     private LightBox lightBoxLookup;
@@ -92,6 +93,10 @@ public class ActionField extends FieldBase {
         //clear alt text to avoid screen reader confusion when using image in button with text
         if(actionImage != null && StringUtils.isNotBlank(actionImageLocation) && StringUtils.isNotBlank(actionLabel)){
             actionImage.setAltText("");
+        }
+
+        if (!actionParameters.containsKey(UifConstants.UrlParams.ACTION_EVENT) && StringUtils.isNotBlank(actionEvent)) {
+            actionParameters.put(UifConstants.UrlParams.ACTION_EVENT, actionEvent);
         }
 
         actionParameters.put(UifConstants.UrlParams.SHOW_HOME, "false");
@@ -331,6 +336,30 @@ public class ActionField extends FieldBase {
         this.navigateToPageId = navigateToPageId;
         actionParameters.put(UifParameters.NAVIGATE_TO_PAGE_ID, navigateToPageId);
         this.methodToCall = UifConstants.MethodToCallNames.NAVIGATE;
+    }
+
+    /**
+     * Name of the event that will be set when the action is invoked
+     *
+     * <p>
+     * Action events can be looked at by the view or components in order to render differently depending on
+     * the action requested.
+     * </p>
+     *
+     * @return String action event name
+     * @see org.kuali.rice.krad.uif.UifConstants.ActionEvents
+     */
+    public String getActionEvent() {
+        return actionEvent;
+    }
+
+    /**
+     * Setter for the action event
+     *
+     * @param actionEvent
+     */
+    public void setActionEvent(String actionEvent) {
+        this.actionEvent = actionEvent;
     }
 
     /**

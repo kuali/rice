@@ -324,6 +324,11 @@ div.kr-addLine, span.kr-addLine{
 
 .kr-footer{
     text-align: center;
+    margin-top: 15px;
+}
+
+.action {
+    margin-bottom: 10px;
 }
 
 /* JQUERY - e.g.: ui-calendar *******************************************/
@@ -607,4 +612,44 @@ th label {
 }
 th, td {
     padding-right:1em;
+}
+
+.datatable tbody tr.even:hover, #example tbody tr.even td.highlighted {
+	background-color: #F1F1F1;
+}
+
+.datatable tbody tr.odd:hover, #example tbody tr.odd td.highlighted {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.even:hover {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.even:hover td.sorting_1 {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.even:hover td.sorting_2 {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.even:hover td.sorting_3 {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.odd:hover {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.odd:hover td.sorting_1 {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.odd:hover td.sorting_2 {
+	background-color: #F1F1F1;
+}
+
+.datatable tr.odd:hover td.sorting_3 {
+	background-color: #F1F1F1;
 }

@@ -157,7 +157,7 @@ function retrieveComponent(id, actualId){
 	
 	var updateRefreshableComponentCallback = function(htmlContent){
 		var component = jq("#" + id + "_refreshWrapper", htmlContent);
-		//special label handling, if any
+		// special label handling, if any
 		var theLabel = jq("#" + actualId + "_label_span", htmlContent);
 		if(jq(".displayWith-" + actualId).length && theLabel.length){
 			theLabel.addClass("displayWith-" + actualId);
@@ -166,12 +166,14 @@ function retrieveComponent(id, actualId){
 		}
 
 		elementToBlock.unblock({onUnblock: function(){
-				//replace component
+				// replace component
 				if(jq("#" + id + "_refreshWrapper").length){
 					jq("#" + id + "_refreshWrapper").replaceWith(component);
 				}
 				runHiddenScripts(id + "_refreshWrapper");
 
+                component.effect("highlight",{}, 6000);
+                jq(".displayWith-" + actualId).effect("highlight",{}, 6000);
 			}
 		});
 
@@ -322,9 +324,12 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 					}
 					else{
 						refreshDisclosure.fadeIn("slow");
+                        refreshDisclosure.effect("highlight",{}, 6000);
+
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
 						jq(".displayWith-" + baseId).show();
+                        jq(".displayWith-" + baseId).effect("highlight",{}, 6000);
 					}
 				}
 				else{

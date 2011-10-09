@@ -31,8 +31,7 @@
 
 <%-- check to see if the component should render, if this has progressiveDisclosure and not getting disclosed via ajax
 still render, but render in a hidden container --%>
-<c:if
-	test="${!empty component && (component.render || (!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender))}">
+<c:if test="${!empty component && (component.render || (!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender))}">
 
 	<c:choose>
 		<c:when	test="${!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender}">
@@ -49,7 +48,7 @@ still render, but render in a hidden container --%>
 		<%-- for self rendered components, write out render output --%>
 		<c:when test="${component.selfRendered}">
 	        ${component.renderOutput}
-	     </c:when>
+	  </c:when>
 
 		<%-- render component through template --%>
 		<c:otherwise>
@@ -72,10 +71,9 @@ still render, but render in a hidden container --%>
 </c:if>
 
 <c:if test="${(!empty component) && (!empty component.progressiveRender)}">
-	<%-- For progressive rendering requiring an ajax call, put in place holder span --%>
+	<%-- For progressive rendering requiring an ajax call, put in place holder div --%>
 	<c:if test="${!component.render && (component.progressiveRenderViaAJAX || component.progressiveRenderAndRefresh)}">
-		<div id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"
-			style="display: none;"></div>
+		<div id="${component.id}_refreshWrapper" class="unrendered refreshWrapper"	style="display: none;"></div>
 	</c:if>
 
 	<%-- setup progressive handlers for each control which may satisfy a disclosure condition --%>
@@ -85,7 +83,6 @@ still render, but render in a hidden container --%>
 			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, ${component.progressiveRenderAndRefresh});" />
 	</c:forEach>
 	<krad:script value="hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
-
 </c:if>
 
 <%-- Conditional Refresh setup --%>

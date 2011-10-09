@@ -198,7 +198,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="addLineActionFields">
         <list>
-          <bean parent="ActionField_Small" p:methodToCall="addLine" p:actionLabel="add"/>
+          <bean parent="ActionField_Small" p:methodToCall="addLine" p:actionLabel="add" p:actionEvent="addLine"/>
         </list>
       </property>
       <property name="actionFields">
@@ -209,8 +209,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="header.group">
          <bean parent="Group_ShowHideInactive" p:styleClasses="group-actions"/>
       </property>
-      <property name="header.headerLevel" value="h3"/>
-      <property name="header.headerStyleClasses" value="kr-page-section-title kr-collectionGroup-header"/>
+      <property name="header.headerStyleClasses" value="kr-section-subhead kr-page-section-title kr-collectionGroup-header"/>
       <property name="collectionLookup">
         <bean parent="QuickFinder" p:multipleValuesSelect="true" p:quickfinderActionField.styleClasses="kr-mvQuickfinder-cntr"
               p:quickfinderActionField.label="Look Up/Add Multiple Account Lines"/>
@@ -223,7 +222,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
   <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
     <property name="styleClasses" value="wrap"/>
-    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="header.headerLevel" value="h3"/>
+    <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
   </bean>
@@ -238,7 +238,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
   <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
     <property name="styleClasses" value="wrap"/>
-    <property name="header.styleClasses" value="grouping-header-expandable"/>
+    <property name="header.headerLevel" value="h3"/>
+    <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
   </bean>

@@ -71,6 +71,7 @@
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/SampleAppAttributes.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TravelAccountInquiry.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TestKNSInquiries.xml</value>
                 <value>classpath:edu/sampleu/travel/uif/TravelAccountLookup.xml</value>

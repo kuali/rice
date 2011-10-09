@@ -4470,26 +4470,24 @@
 					
 					return oSort['numeric-asc']( aiOrig[a], aiOrig[b] );
 				} );
-			}
-			
-			/* Once sorted, populate the sorted rows into aiDisplayMaster */
-			oSettings.aiDisplayMaster = [];
-			
-			for ( i=0, iLen=aiRowIndex.length ; i<iLen ; i++ )
-			{
-				oSettings.aiDisplayMaster[i] = aiRowIndex[i];
-			}
-			
-			/* Insert back the rows skipped in sorting in to the exact pos */ 
-			for ( i=0, iLen=oSettings.aiSortingSkipRows.length ; i<iLen ; i++ )
-			{
-				oSettings.aiDisplayMaster.splice(oSettings.aiSortingSkipRows[i],0,oSettings.aiSortingSkipRows[i]);
-			}
-			
-			/*
-			 * End Kuali Customization
-			 */
-			
+
+                /* Once sorted, populate the sorted rows into aiDisplayMaster */
+                oSettings.aiDisplayMaster = [];
+
+                for (i = 0,iLen = aiRowIndex.length; i < iLen; i++) {
+                    oSettings.aiDisplayMaster[i] = aiRowIndex[i];
+                }
+
+                /* Insert back the rows skipped in sorting in to the exact pos */
+                for (i = 0,iLen = oSettings.aiSortingSkipRows.length; i < iLen; i++) {
+                    oSettings.aiDisplayMaster.splice(oSettings.aiSortingSkipRows[i], 0, oSettings.aiSortingSkipRows[i]);
+                }
+
+                /*
+                 * End Kuali Customization
+                 */
+            }
+
 			/* Alter the sorting classes to take account of the changes */
 			if ( typeof bApplyClasses == 'undefined' || bApplyClasses )
 			{

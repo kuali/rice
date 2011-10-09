@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -32,6 +33,7 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.widget.TableTools;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +68,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private FieldGroup subCollectionFieldGroupPrototype;
     private Field selectFieldPrototype;
 
+    private boolean separateAddLine;
+    private Group addLineGroup;
+
 	// internal counter for the data columns (not including sequence, action)
 	private int numberOfDataColumns;
 
@@ -80,6 +85,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		repeatHeader = false;
 		renderSequenceField = true;
 		generateAutoSequence = false;
+        separateAddLine = false;
 
 		headerFields = new ArrayList<LabelField>();
 		dataFields = new ArrayList<Field>();
@@ -122,6 +128,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	public void performFinalize(View view, Object model, Container container) {
 		super.performFinalize(view, model, container);
 
+        UifFormBase formBase = (UifFormBase) model;
+
 		CollectionGroup collectionGroup = (CollectionGroup) container;
 
 		int totalColumns = getNumberOfDataColumns();
@@ -138,13 +146,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		}
 
         if (collectionGroup.isRenderAddLine()){
-            if(StringUtils.isBlank(this.getFirstLineStyle())){
+            if(StringUtils.isBlank(this.getFirstLineStyle()) && !isSeparateAddLine()){
                 this.setFirstLineStyle("kr-addLine");
             }
         }
 
+        // if add line event, add highlighting for added row
+        if (UifConstants.ActionEvents.ADD_LINE.equals(formBase.getActionEvent())) {
+            String highlightScript =
+                    "jq(\"#" + container.getId() + "_div > tr:first\").effect(\"highlight\",{}, 6000);";
+            String onReadyScript = collectionGroup.getOnDocumentReadyScript();
+            if (StringUtils.isNotBlank(onReadyScript)) {
+                highlightScript = onReadyScript + highlightScript;
+            }
+            collectionGroup.setOnDocumentReadyScript(highlightScript);
+        }
 		setNumberOfColumns(totalColumns);
-
 	}
 
 	/**
@@ -163,9 +180,26 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			List<FieldGroup> subCollectionFields, String bindingPath, List<ActionField> actions, String idSuffix,
 			Object currentLine, int lineIndex) {
 		boolean isAddLine = lineIndex == -1;
+
+        // if separate add line prepare the add line group
+        if (isAddLine && separateAddLine) {
+            if (StringUtils.isBlank(addLineGroup.getTitle()) && StringUtils.isBlank(
+                    addLineGroup.getHeader().getHeaderText())) {
+               addLineGroup.getHeader().setHeaderText(collectionGroup.getAddLineLabel());
+            }
+
+            addLineGroup.setItems(lineFields);
+
+            List<Component> footerItems = new ArrayList<Component>(actions);
+            footerItems.addAll(addLineGroup.getFooter().getItems());
+            addLineGroup.getFooter().setItems(footerItems);
+
+            return;
+        }
 		
         // if add line or first line set number of data columns
-        if (isAddLine || ((!collectionGroup.isRenderAddLine() || collectionGroup.isReadOnly()) && (lineIndex == 0))) {
+        if (isAddLine || ((!collectionGroup.isRenderAddLine() || collectionGroup.isReadOnly() || isSeparateAddLine())
+                && (lineIndex == 0))) {
             if (isSuppressLineWrapping()) {
                 setNumberOfDataColumns(lineFields.size());
             } else {
@@ -173,7 +207,6 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
             }
         }
 
-		// if add line build table header first
 		// TODO: implement repeat header
 		if (!headerAdded) {
 			headerFields = new ArrayList<LabelField>();
@@ -396,6 +429,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		List<Component> components = super.getNestedComponents();
 
 		components.add(tableTools);
+        components.add(addLineGroup);
 		components.addAll(headerFields);
 		components.addAll(dataFields);
 
@@ -628,6 +662,59 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      */
     public void setSelectFieldPrototype(Field selectFieldPrototype) {
         this.selectFieldPrototype = selectFieldPrototype;
+    }
+
+    /**
+     * Indicates whether the add line should be rendered in a separate group, or as part of the table (first line)
+     *
+     * <p>
+     * When separate add line is enabled, the fields for the add line will be placed in the {@link #getAddLineGroup()}.
+     * This group can be used to configure the add line presentation. In addition to the fields, the header on the
+     * group (unless already set) will be set to
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineLabel()} and the add line actions will
+     * be placed into the group's footer.
+     * </p>
+     *
+     * @return boolean true if add line should be separated, false if it should be placed into the table
+     */
+    public boolean isSeparateAddLine() {
+        return separateAddLine;
+    }
+
+    /**
+     * Setter for the separate add line indicator
+     *
+     * @param separateAddLine
+     */
+    public void setSeparateAddLine(boolean separateAddLine) {
+        this.separateAddLine = separateAddLine;
+    }
+
+    /**
+     * When {@link #isSeparateAddLine()} is true, this group will be used to render the add line
+     *
+     * <p>
+     * This group can be used to configure how the add line will be rendered. For example the layout manager configured
+     * on the group will be used to rendered the add line fields. If the header (title) is not set on the group, it
+     * will be set from
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineLabel()}. In addition,
+     * {@link org.kuali.rice.krad.uif.container.CollectionGroup#getAddLineActionFields()} will be added to the group
+     * footer items.
+     * </p>
+     *
+     * @return Group instance for the collection add line
+     */
+    public Group getAddLineGroup() {
+        return addLineGroup;
+    }
+
+    /**
+     * Setter for the add line Group
+     *
+     * @param addLineGroup
+     */
+    public void setAddLineGroup(Group addLineGroup) {
+        this.addLineGroup = addLineGroup;
     }
 
     /**

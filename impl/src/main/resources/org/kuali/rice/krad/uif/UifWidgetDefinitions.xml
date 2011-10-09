@@ -114,7 +114,7 @@
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tableTools.jsp"/>
       <property name="componentOptions">
           <map>
-              <entry key="sDom" value="lfTrtip"/>   
+              <entry key="sDom" value="fTrtip"/>
               <entry key="bRetrieve" value="true"/>   
               <entry key="oTableTools" value="{&quot;aButtons&quot; : [ &quot;csv&quot;, &quot;xls&quot; ] , &quot;sSwfPath&quot; : &quot;@{#ConfigProperties['application.url']}/krad/scripts/jquery/copy_cvs_xls_pdf.swf&quot; }"/>
           </map>      

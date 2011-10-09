@@ -13,6 +13,8 @@ import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
 import org.apache.commons.collections.CollectionUtils
 import org.kuali.rice.kew.impl.type.KewTypeBo
+import org.kuali.rice.kew.api.repository.type.KewTypeAttribute
+import org.kuali.rice.krad.util.BeanPropertyComparator
 
 /**
  * Mapped entity for PeopleFlows
@@ -31,13 +33,17 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
     List<PeopleFlowAttributeBo> attributeBos = new ArrayList<PeopleFlowAttributeBo>();
     List<PeopleFlowMemberBo> members = new ArrayList<PeopleFlowMemberBo>();
 
+    // non-persisted, used for maintenance
+    Map<String, String> attributeValues = new HashMap<String, String>();
+
     @Override
     public Map<String, String> getAttributes() {
         Map<String, String> results = new HashMap<String, String>();
 
-        if (attributeBos != null) for (PeopleFlowAttributeBo attr : attributeBos) {
-            results.put(attr.attributeDefinition.name, attr.value);
-        }
+        if (attributeBos != null)
+            for (PeopleFlowAttributeBo attr: attributeBos) {
+                results.put(attr.attributeDefinition.name, attr.value);
+            }
 
         return results;
     }
@@ -126,4 +132,35 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
         PeopleFlowDefinition.Builder builder = PeopleFlowDefinition.Builder.create(peopleFlowBo);
         return builder.build();
     }
+
+    /**
+     * Invoked to rebuild the type attribute bos and attributes value map based on the type id
+     */
+    public void rebuildTypeAttributes() {
+        attributeBos = new ArrayList<PeopleFlowAttributeBo>();
+        attributeValues = new HashMap<String, String>();
+
+        KewTypeDefinition typeDefinition = KewApiServiceLocator.getKewTypeRepositoryService().getTypeById(this.typeId);
+        if ((typeDefinition.getAttributes() != null) && !typeDefinition.getAttributes().isEmpty()) {
+            List<KewTypeAttribute> typeAttributes = new ArrayList<KewTypeAttribute>(typeDefinition.getAttributes());
+            Collections.sort(typeAttributes, new BeanPropertyComparator(new ArrayList<String>({"sequenceNumber"})));
+            for (KewTypeAttribute typeAttribute : typeAttributes) {
+                PeopleFlowAttributeBo attributeBo = new PeopleFlowAttributeBo();
+                attributeBo.setPeopleFlowId(this.id);
+                attributeBo.setAttributeDefinitionId(typeAttribute.attributeDefinitionId);
+                attributeBos.add(attributeBo);
+
+                attributeValues.put(typeAttribute.getAttributeDefinition().name, "");
+            }
+        }
+    }
+
+    @Override
+    protected void postLoad() {
+        attributeValues = new HashMap<String, String>();
+        for (PeopleFlowAttributeBo attributeBo: attributeBos) {
+            attributeValues.put(attributeBo.attributeDefinition.name, attributeBo.value);
+        }
+    }
+
 }

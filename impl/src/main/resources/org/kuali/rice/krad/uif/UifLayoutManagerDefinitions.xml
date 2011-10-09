@@ -57,6 +57,9 @@
     <property name="actionFieldPrototype">
       <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
     </property>
+    <property name="addLineGroup">
+      <bean parent="StackedGroupPrototype" p:styleClasses="kr-collection-item,kr-addLine"/>
+    </property>
     <property name="subCollectionFieldGroupPrototype">
       <bean parent="FieldGroup" p:labelField.render="false"/>
     </property>

@@ -191,7 +191,7 @@ public class BindingInfo extends ConfigurableBase implements Serializable {
      * @param bindPrefix - path to add
      */
     public void addToBindByNamePrefix(String bindPrefix) {
-        if (StringUtils.isNotBlank(bindByNamePrefix)) {
+        if (StringUtils.isNotBlank(bindByNamePrefix) && StringUtils.isNotBlank(bindPrefix)) {
             bindByNamePrefix += "." + bindPrefix;
         } else {
             bindByNamePrefix = bindPrefix;

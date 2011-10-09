@@ -18,6 +18,7 @@ package org.kuali.rice.krad.web.form;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
@@ -306,6 +307,24 @@ public class UifFormBase implements ViewModel {
     public String getActionParamaterValue(String actionParameterName) {
         if ((actionParameters != null) && actionParameters.containsKey(actionParameterName)) {
             return actionParameters.get(actionParameterName);
+        }
+
+        return "";
+    }
+
+    /**
+     * Returns the action event that was sent in the action parameters (if any)
+     *
+     * <p>
+     * The action event is a special action parameter that can be sent to indicate a type of action being taken. This
+     * can be looked at by the view or components to render differently
+     * </p>
+     *
+     * @return String action event name or blank if action event was not sent
+     */
+    public String getActionEvent() {
+        if ((actionParameters != null) && actionParameters.containsKey(UifConstants.UrlParams.ACTION_EVENT)) {
+            return actionParameters.get(UifConstants.UrlParams.ACTION_EVENT);
         }
 
         return "";

@@ -82,10 +82,6 @@ insert into krms_typ_t
 values ('T5', 'AGENDA', 'KRMS_TEST',  'Y', 1)
 ;
 
-insert into krms_typ_attr_t
-(typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr)
-values ('T5A', 1, 'T5', 'Q33001', 'Y', 1)
-;
 
 insert into krms_typ_t
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
@@ -182,10 +178,6 @@ VALUES('AGENDA301ITEM1', 'R201', 'AGENDA301', 1)
 update krms_agenda_t set INIT_AGENDA_ITM_ID = 'AGENDA301ITEM1' where agenda_id = 'AGENDA301'
 ;
 
-insert into krms_agenda_attr_t
-(agenda_attr_id, agenda_id, attr_val, attr_defn_id, ver_nbr)
-values('AGENDA_ATTR1', 'AGENDA301', 'EARTHQUAKE', 'Q33001', 1)
-;
 
 insert into krms_term_spec_t
 (term_spec_id, nmspc_cd, nm, typ, actv, ver_nbr)

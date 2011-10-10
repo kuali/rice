@@ -399,14 +399,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     @Override
     public Map<String, String> performClear(LookupForm form, Map<String, String> searchCriteria) {
+        Map<String, AttributeField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
         Map<String, String> clearedSearchCriteria = new HashMap<String, String>();
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
             String searchPropertyName = searchKeyValue.getKey();
-            String searchPropertyValue = searchKeyValue.getValue();
 
-            LookupView lookupView = (LookupView) form.getView();
-            AttributeField attributeField =
-                    lookupView.getViewIndex().getAttributeFieldByPropertyName(searchPropertyName);
+            AttributeField attributeField = criteriaFieldMap.get(searchPropertyName);
             if (attributeField != null) {
                 // TODO: check secure fields
 //                                if (field.isSecure()) {

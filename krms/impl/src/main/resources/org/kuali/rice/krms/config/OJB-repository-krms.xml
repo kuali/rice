@@ -154,7 +154,9 @@
           collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
             <inverse-foreignkey field-ref="agendaId" />
         </collection-descriptor>
-        
+        <reference-descriptor name="context" class-ref="org.kuali.rice.krms.impl.repository.ContextBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+            <foreignkey field-ref="contextId" />
+        </reference-descriptor>
     </class-descriptor>
     
     <class-descriptor class="org.kuali.rice.krms.impl.repository.AgendaAttributeBo" table="KRMS_AGENDA_ATTR_T">

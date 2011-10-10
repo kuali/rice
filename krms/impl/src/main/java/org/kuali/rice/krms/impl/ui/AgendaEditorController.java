@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -25,13 +24,12 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
-import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
-import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
@@ -45,9 +43,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Controller for the Test UI Page
@@ -61,47 +57,36 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     private SequenceAccessorService sequenceAccessorService;
 
     /**
-     * This overridden method does extra work on refresh to populate the context and agenda
+     * This overridden method does extra work on refresh to update the namespace when the context has been changed.
      *
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#refresh(org.kuali.rice.krad.web.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     @RequestMapping(params = "methodToCall=" + "refresh")
     @Override
     public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-        
-        MapUtils.verbosePrint(System.out, "actionParameters", form.getActionParameters());
-        MapUtils.verbosePrint(System.out, "requestParameters", request.getParameterMap());
-        
-        String agendaId = null;
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ModelAndView modelAndView = super.refresh(form, result, request, response);
 
+        // handle return from context lookup
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
-        String conversionFields = maintenanceForm.getActionParameters().get("conversionFields");
+        AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         String refreshCaller = request.getParameter("refreshCaller");
+        if (!StringUtils.equals(agendaEditor.getOldContextId(), agendaEditor.getAgenda().getContextId())) {
+            agendaEditor.setOldContextId(agendaEditor.getAgenda().getContextId());
 
-        // handle return from agenda lookup
-        // TODO: this condition is sloppy 
-        if (refreshCaller != null && refreshCaller.contains("Agenda") && refreshCaller.contains("LookupView") &&
-                conversionFields != null &&
-                // TODO: this is sloppy
-                conversionFields.contains("agenda.id")) {
-            AgendaEditor oldAgendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getOldMaintainableObject().getDataObject());
-            AgendaEditor newAgendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+            String namespace = "";
+            if (!StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
+                namespace = getContextBoService().getContextByContextId(agendaEditor.getAgenda().getContextId()).getNamespace();
+            }
 
-            agendaId = newAgendaEditor.getAgenda().getId();
-            AgendaBo agenda = getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId);
-
-            oldAgendaEditor.setAgenda(getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId));
-            newAgendaEditor.setAgenda(getBusinessObjectService().findBySinglePrimaryKey(AgendaBo.class, agendaId));
-
-            if (agenda.getContextId() != null) {
-                ContextBo context = getBusinessObjectService().findBySinglePrimaryKey(ContextBo.class, agenda.getContextId());
-                newAgendaEditor.setContext(context);
+            for (AgendaItemBo agendaItem : agendaEditor.getAgenda().getItems()) {
+                agendaItem.getRule().setNamespace(namespace);
+                for (ActionBo action : agendaItem.getRule().getActions()) {
+                    action.setNamespace(namespace);
+                }
             }
         }
-        
-        return super.refresh(form, result, request, response);
+        return modelAndView;
     }
 
     /**
@@ -138,7 +123,11 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor editorDocument = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            rule.setNamespace(getContextBoService().getContextByContextId(editorDocument.getAgenda().getContextId()).getNamespace());
+            if (StringUtils.isBlank(editorDocument.getAgenda().getContextId())) {
+                rule.setNamespace("");
+            } else {
+                rule.setNamespace(getContextBoService().getContextByContextId(editorDocument.getAgenda().getContextId()).getNamespace());
+            }
             agendaItem = new AgendaItemBo();
             agendaItem.setRule(rule);
             editorDocument.setAgendaItemLine(agendaItem);

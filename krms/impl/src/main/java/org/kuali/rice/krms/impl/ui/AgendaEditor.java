@@ -43,6 +43,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String cutAgendaItemId;
     private String selectedPropositionId;
     private String copyRuleName;
+    private String oldContextId;
     private Map<String, String> customAttributesMap = new HashMap<String, String>();
 
     public AgendaEditor() {
@@ -199,6 +200,20 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
      */
     public String getCopyRuleName() {
         return copyRuleName;
+    }
+
+    /**
+     * @param oldContextId the contextId that the agenda currently has (i.e. before the next context change)
+     */
+    public void setOldContextId(String oldContextId) {
+        this.oldContextId = oldContextId;
+    }
+
+    /**
+     * @return the contextId that the agenda had before the context change
+     */
+    public String getOldContextId() {
+        return oldContextId;
     }
 
     /**

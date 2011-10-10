@@ -18,8 +18,11 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 	
 	def List<AgendaItemBo> items
 
+    def ContextBo context
+
     public AgendaBo() {
         active = true;
+        items = new ArrayList<AgendaItemBo>();
     }
 
     public Map<String, String> getAttributes() {
@@ -71,4 +74,4 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 //   }
    
 
-} 
+}

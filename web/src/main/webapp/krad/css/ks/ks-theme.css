@@ -761,6 +761,9 @@ ul.animated-navigation {
 ul.animated-navigation li {
 	padding: 0;
 }
+li.animated-element span.action, li.animated-element a.action {
+    margin-bottom:0;
+}
 ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animated-element h2 {
 	color: #333333;
 	display: inline-block;
@@ -943,6 +946,7 @@ a.h4.kr-section-subhead {
 .kr-subCollection>.kr-collection-cntr {
     background: #fff;
     margin-left:1em;
+    margin-top:1em;
 }
 .kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header, .kr-subCollection>.kr-collection-cntr h3.kr-collectionGroup-header {
     background-color:#eee;
@@ -960,6 +964,6 @@ table[role="presentation"] th {
     padding-right:1em;
     padding-bottom:1em;
 }
-table[role="presentation"] th h4, table[role="presentation"] th .summary {
+table[role="presentation"] th h4, table[role="presentation"] th .summary, table[role="presentation"] th.kr-subCollection h3.kr-collectionGroup-header {
     text-align:left;
 }

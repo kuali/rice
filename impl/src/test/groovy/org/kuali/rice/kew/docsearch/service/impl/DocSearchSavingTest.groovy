@@ -64,6 +64,17 @@ class DocSearchSavingTest {
         docSearchService.setUserOptionsService(userOptionsService)
     }
 
+    @Test(expected=IllegalArgumentException)
+    void testIllegalArgument() {
+        docSearchService.saveSearch(null, create())
+    }
+
+    @Test
+    void testConsumesExceptions() {
+        // assuming a null criteria will cause an NPE
+        docSearchService.saveSearch("princ", null)
+    }
+
     @Test
     void testUnnamedDocSearch() {
         def princ = "not blank" // mocked...
@@ -72,8 +83,7 @@ class DocSearchSavingTest {
 
         assertEquals(0, allUserOptions_before.size())
 
-        def c1 = create()
-        docSearchService.saveSearch(princ, c1)
+        def c1 = saveSearch(princ)
 
         def allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
 
@@ -86,14 +96,12 @@ class DocSearchSavingTest {
 
         // 2nd search
 
-        def c2 = create()
-        docSearchService.saveSearch(princ, c2)
+        def c2 = saveSearch(princ)
 
         allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
 
         // 1 more user option
         assertEquals(allUserOptions_before.size() + 3, allUserOptions_after.size())
-        
         assertEquals("DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
         assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
         assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
@@ -102,28 +110,69 @@ class DocSearchSavingTest {
     @Test
     void testNamedDocSearch() {
         def princ = "not blank" // mocked...
-
         def allUserOptions_before = userOptionsService.findByWorkflowUser(princ)
 
         assertEquals(0, allUserOptions_before.size())
 
-        def c1 = create("save1")
-        docSearchService.saveSearch(princ, c1)
+        def c1 = saveSearch(princ, "save1")
 
         def allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
-
         assertEquals(allUserOptions_before.size() + 1, allUserOptions_after.size())
         assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c1.getSaveName(), princ).optionVal)
 
         // 2nd search
 
-        def c2 = create("save2")
-        docSearchService.saveSearch(princ, c2)
+        def c2 = saveSearch(princ, "save2")
 
         allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
-
         // saves a second named search
         assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size())
         assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c2.getSaveName(), princ).optionVal)
+    }
+
+    @Test
+    void testSavedSearchOrdering() {
+        def MAX_SEARCH_ITEMS = 5 // searches start wrapping after this...
+        def princ = "not blank"
+
+        def allUserOptions_before = userOptionsService.findByWorkflowUser(princ)
+
+        def c1 = saveSearch(princ)
+        def c2 = saveSearch(princ)
+        def c3 = saveSearch(princ)
+        def c4 = saveSearch(princ)
+        def c5 = saveSearch(princ)
+
+        def allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
+        assertEquals(allUserOptions_before.size() + 5 + 1, allUserOptions_after.size())
+        assertEquals("DocSearch.LastSearch.Holding4,DocSearch.LastSearch.Holding3,DocSearch.LastSearch.Holding2,DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
+        assertEquals(marshall(c5), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding4", princ).optionVal)
+        assertEquals(marshall(c4), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding3", princ).optionVal)
+        assertEquals(marshall(c3), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding2", princ).optionVal)
+        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
+        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
+
+        // now add 1 more
+
+        def c6 = saveSearch(princ)
+
+
+        allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
+
+        // order should have wrapped around, now Holding0 is first, and contains c6 criteria
+        // still 5 entries
+        assertEquals(allUserOptions_before.size() + 5 + 1, allUserOptions_after.size())
+        assertEquals("DocSearch.LastSearch.Holding0,DocSearch.LastSearch.Holding4,DocSearch.LastSearch.Holding3,DocSearch.LastSearch.Holding2,DocSearch.LastSearch.Holding1", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
+        assertEquals(marshall(c6), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
+        assertEquals(marshall(c5), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding4", princ).optionVal)
+        assertEquals(marshall(c4), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding3", princ).optionVal)
+        assertEquals(marshall(c3), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding2", princ).optionVal)
+        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
+    }
+
+    protected DocumentLookupCriteria saveSearch(String princ, String name = null) {
+        def c = create(name)
+        docSearchService.saveSearch(princ, c)
+        return c
     }
 }

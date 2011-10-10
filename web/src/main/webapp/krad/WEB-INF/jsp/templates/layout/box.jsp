@@ -38,12 +38,12 @@
 </c:if>
 
 <c:set var="itemSpanClassesHorizontal" value="class=\"fieldLine boxLayoutHorizontalItem\""/>
-<c:set var="itemSpanClassesVertical" value="class=\"fieldLine boxLayoutVerticalItem\""/>
+<c:set var="itemSpanClassesVertical" value="class=\"fieldLine boxLayoutVerticalItem clearfix\""/>
 
 <c:if test="${container.fieldContainer}">
   <c:set var="fieldItemsStyle" value="style=\"float:left;\""/>
   <c:set var="itemSpanClassesHorizontal" value="class=\"boxLayoutHorizontalItem\""/>
-  <c:set var="itemSpanClassesVertical" value="class=\"fieldContainerVerticalItem\""/>
+  <c:set var="itemSpanClassesVertical" value="class=\"fieldContainerVerticalItem clearfix\""/>
 </c:if>
 
 <%-- render items --%>

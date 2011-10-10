@@ -15,38 +15,29 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Helper class that returns all agenda types that are valid for a given context.
  */
-public class AgendaTypeValuesFinder extends KeyValuesBase {
+public class AgendaTypeValuesFinder extends UifKeyValuesFinderBase {
 
     private boolean blankOption;
-
-    @Override
-	public List<KeyValue> getKeyValues() {
-        List<KeyValue> keyValues = new ArrayList<KeyValue>();
-
-        if(blankOption){
-            keyValues.add(new ConcreteKeyValue("", ""));
-        }
-
-        // TODO: Only select the types for the specific context of the agenda
-
-        Collection<ContextValidAgendaBo> contextValidAgendas = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidAgendaBo.class);
-        for (ContextValidAgendaBo contextValidAgenda : contextValidAgendas) {
-            keyValues.add(new ConcreteKeyValue(contextValidAgenda.getAgendaType().getId(), contextValidAgenda.getAgendaType().getName()));
-        }
-        return keyValues;
-    }
 
     /**
      * @return the blankOption
@@ -62,4 +53,32 @@ public class AgendaTypeValuesFinder extends KeyValuesBase {
         this.blankOption = blankOption;
     }
 
+    @Override
+    public List<KeyValue> getKeyValues(ViewModel model) {
+        List<KeyValue> keyValues = new ArrayList<KeyValue>();
+
+        MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+
+        if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {
+            String contextId = agendaEditor.getAgenda().getContextId();
+
+            if(blankOption){
+                keyValues.add(new ConcreteKeyValue("", ""));
+            }
+
+            Map<String, String> criteria = Collections.singletonMap("contextId", contextId);
+            Collection<ContextValidAgendaBo> contextValidAgendas =
+                    KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(
+                            ContextValidAgendaBo.class, criteria, "agendaType.name", true
+                    );
+
+//            Collection<ContextValidAgendaBo> contextValidAgendas = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidAgendaBo.class);
+            for (ContextValidAgendaBo contextValidAgenda : contextValidAgendas) {
+                keyValues.add(new ConcreteKeyValue(contextValidAgenda.getAgendaType().getId(), contextValidAgenda.getAgendaType().getName()));
+            }
+        }
+
+        return keyValues;
+    }
 }

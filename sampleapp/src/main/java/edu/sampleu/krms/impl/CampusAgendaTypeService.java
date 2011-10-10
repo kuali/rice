@@ -38,8 +38,7 @@ public class CampusAgendaTypeService implements AgendaTypeService {
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create(baseLookupUrl, campusBoClassName);
 
-        // TODO: field conversions, etc ?
-//        quickFinderBuilder.setFieldConversions();
+        quickFinderBuilder.setFieldConversions(Collections.singletonMap("code","Campus"));
 
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(30);

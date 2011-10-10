@@ -224,5 +224,31 @@
            </bean>               
          </list>
      </property>
-  </bean>  
+  </bean>
+
+  <!-- KRAD Lookup Definition -->
+
+  <bean id="Campus-LookupView" parent="LookupView">
+    <property name="title" value="Campus Lookup" />
+    <property name="dataObjectClassName" value="org.kuali.rice.shareddata.impl.campus.CampusBo" />
+    <property name="criteriaFields">
+      <list>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="code" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="shortName" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="campusTypeCode" />
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="code"/>
+        <bean parent="AttributeField" p:propertyName="name"/>
+        <bean parent="AttributeField" p:propertyName="shortName"/>
+        <bean parent="AttributeField" p:propertyName="campusTypeCode"/>
+        <bean parent="AttributeField" p:propertyName="active"/>
+      </list>
+    </property>
+  </bean>
+
 </beans>

@@ -290,8 +290,8 @@ function setupOnChangeRefresh(controlName, refreshId, baseId){
  * @param condition - function which returns true to refresh, false otherwise
  */
 function setupRefreshCheck(controlName, refreshId, baseId, condition){
-	jq("[name='"+ controlName +"']").change(function() {
-		//visible check because a component must logically be visible to refresh
+	jq("[name='"+ controlName +"']").live('change', function() {
+		// visible check because a component must logically be visible to refresh
 		var refreshComp = jq("#" + refreshId + "_refreshWrapper");
 		if(refreshComp.length){
 			if(condition()){

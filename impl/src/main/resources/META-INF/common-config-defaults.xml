@@ -86,8 +86,8 @@
     <param name="datasource.btm.journal" override="false">null</param>
     <param name="datasource.btm.transactionTimeout" override="false">120</param>
 
-    <param name="datasource.pool.class">oracle.jdbc.xa.client.OracleXADataSource</param>
-    <param name="datasource.pool.class.non.xa">bitronix.tm.resource.jdbc.lrc.LrcXADataSource</param>
+    <param name="datasource.pool.class" override="false">oracle.jdbc.xa.client.OracleXADataSource</param>
+    <param name="datasource.pool.class.non.xa" override="false">bitronix.tm.resource.jdbc.lrc.LrcXADataSource</param>
 
     <!--<param name="connection.pool.impl" override="false">Bitronix</param>-->
     <param name="connection.pool.impl" override="false">XAPool</param>

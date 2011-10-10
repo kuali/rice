@@ -159,7 +159,10 @@
                 </property> -->
               </bean>
 
-              <bean parent="AttributeField" p:propertyName="agenda.typeId" p:label="Type" p:required="false">
+              <bean parent="AttributeField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"
+                    p:progressiveRenderViaAJAX="true"
+                    p:progressiveRender="document.newMaintainableObject.dataObject.agenda.contextId != null">
+
                 <property name="control">
                   <bean parent="SelectControl"/>
                 </property>
@@ -181,7 +184,7 @@
 
         <!-- custom attributes on agenda -->
         <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2"
-                p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId">
+               p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId">
 
           <property name="items">
             <list>
@@ -192,7 +195,7 @@
         </bean>
 
 
-        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; ">
+        <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white;">
 <!--  Can't get progressive disclosure to work from the contextId for some reason
                 p:progressiveRenderViaAJAX="true" p:progressiveRender="document.newMaintainableObject.dataObject.agenda.contextId != null">
 -->

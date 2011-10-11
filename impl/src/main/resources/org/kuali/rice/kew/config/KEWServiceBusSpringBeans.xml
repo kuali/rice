@@ -319,7 +319,7 @@
 				<property name="service">
 					<ref bean="enActionInvocationService" />
 				</property>
-				<property name="localServiceName" value="ActionInvocationProcessor" />
+				<property name="localServiceName" value="actionInvocationQueueSoap" />
 				<property name="priority" value="10" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />

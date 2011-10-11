@@ -17,14 +17,27 @@
 package org.kuali.rice.kew.actions.asyncservices;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
- * Interface for defining the contract for the remoting of ActionInvocationProcessor.  
- * Created when the ActionInvocationProcessor went to a service.
+ * Defines the contract for a message queue which can invoke requested workflow actions against a document.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "actionInvocationQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ActionInvocationQueue {
 
-	void invokeAction(String principalId, String documentId, ActionInvocation invocation) throws RiceIllegalArgumentException;
+    @WebMethod(operationName = "invokeAction")
+	void invokeAction(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name="documentId") String documentId,
+            @WebParam(name="invocation") ActionInvocation invocation)
+        throws RiceIllegalArgumentException;
+    
 }

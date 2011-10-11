@@ -47,7 +47,7 @@ public class MessageServiceNames {
 
 	public static final String MOVE_DOCUMENT_PROCESSOR = "MoveDocumentProcessor";
 
-	public static final String ACTION_INVOCATION_PROCESSOR = "ActionInvocationProcessor";
+    public static final QName ACTION_INVOCATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "actionInvocationQueueSoap");
 
 	private static QName getQName(String baseServiceName, DocumentRouteHeaderValue document) {
 		if (document != null) {
@@ -72,7 +72,7 @@ public class MessageServiceNames {
 	}
 
 	public static ActionInvocationQueue getActionInvocationProcessorService(DocumentRouteHeaderValue document) {
-		return (ActionInvocationQueue) getServiceAsynchronously(getQName(ACTION_INVOCATION_PROCESSOR, document), document);
+		return (ActionInvocationQueue) getServiceAsynchronously(ACTION_INVOCATION_QUEUE, document);
 	}
 
 	public static BlanketApproveProcessorService getBlanketApproveProcessorService(DocumentRouteHeaderValue document) {

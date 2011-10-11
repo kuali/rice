@@ -20,17 +20,13 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
+import org.kuali.rice.kew.actions.asyncservices.ActionInvocationQueue;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
-import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-
 
 /**
  * Utility class for accessing names of common asynchronous services.
@@ -75,8 +71,8 @@ public class MessageServiceNames {
 		return (MoveDocumentService) getServiceAsynchronously(getQName(MOVE_DOCUMENT_PROCESSOR, document), document);
 	}
 
-	public static ActionInvocationService getActionInvocationProcessorService(DocumentRouteHeaderValue document) {
-		return (ActionInvocationService) getServiceAsynchronously(getQName(ACTION_INVOCATION_PROCESSOR, document), document);
+	public static ActionInvocationQueue getActionInvocationProcessorService(DocumentRouteHeaderValue document) {
+		return (ActionInvocationQueue) getServiceAsynchronously(getQName(ACTION_INVOCATION_PROCESSOR, document), document);
 	}
 
 	public static BlanketApproveProcessorService getBlanketApproveProcessorService(DocumentRouteHeaderValue document) {

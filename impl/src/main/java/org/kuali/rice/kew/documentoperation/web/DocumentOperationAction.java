@@ -30,7 +30,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
+import org.kuali.rice.kew.actions.asyncservices.ActionInvocationQueue;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -61,7 +61,6 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -806,8 +805,8 @@ public class DocumentOperationAction extends KewKualiAction {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getActionInvocationUser());
 			ActionInvocation invocation = new ActionInvocation(docForm.getActionInvocationActionItemId(), docForm.getActionInvocationActionCode());
-			ActionInvocationService actionInvocationService = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
-			actionInvocationService.invokeAction(principalId, docForm.getRouteHeader().getDocumentId(), invocation);
+			ActionInvocationQueue actionInvocationQueue = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
+			actionInvocationQueue.invokeAction(principalId, docForm.getRouteHeader().getDocumentId(), invocation);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Action Invocation Processor was successfully scheduled"));
 			saveMessages(request, messages);

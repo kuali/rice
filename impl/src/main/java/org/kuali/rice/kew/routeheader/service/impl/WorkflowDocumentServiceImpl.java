@@ -44,7 +44,7 @@ import org.kuali.rice.kew.actions.SuperUserNodeApproveEvent;
 import org.kuali.rice.kew.actions.SuperUserReturnToPreviousNodeAction;
 import org.kuali.rice.kew.actions.TakeWorkgroupAuthority;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
+import org.kuali.rice.kew.actions.asyncservices.ActionInvocationQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -458,9 +458,9 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 				continue;
 			}
 			KEWServiceLocator.getActionListService().deleteActionItem(actionItem, true);
-			ActionInvocationService actionInvocService = MessageServiceNames.getActionInvocationProcessorService(
+			ActionInvocationQueue actionInvocQueue = MessageServiceNames.getActionInvocationProcessorService(
 					KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()));
-			actionInvocService.invokeAction(principalId, actionItem.getDocumentId(), invocation);
+			actionInvocQueue.invokeAction(principalId, actionItem.getDocumentId(), invocation);
 //			ActionInvocationProcessor.queueActionInvocation(user, actionItem.getDocumentId(), invocation);
 		}
 	}

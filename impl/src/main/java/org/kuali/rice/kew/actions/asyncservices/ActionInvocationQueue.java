@@ -24,7 +24,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ActionInvocationService {
+public interface ActionInvocationQueue {
 
 	void invokeAction(String principalId, String documentId, ActionInvocation invocation) throws RiceIllegalArgumentException;
 }

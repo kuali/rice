@@ -33,7 +33,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionInvocationProcessor implements ActionInvocationService {
+public class ActionInvocationProcessor implements ActionInvocationQueue {
 
     private static final Logger LOG = Logger.getLogger(ActionInvocationProcessor.class);
 

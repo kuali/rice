@@ -38,10 +38,10 @@ import org.kuali.rice.kew.test.KEWTestCase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ActionInvocationProcessorTest extends KEWTestCase {
+public class ActionInvocationQueueImplTest extends KEWTestCase {
 
 
-	@Test public void testActionInvocationProcessorWorksWithNoActionItem() throws Exception {
+	@Test public void testActionInvocationQueue_worksWithNoActionItem() throws Exception {
 
 		TestRuleAttribute.setRecipientPrincipalIds("TestRole", "QualRole", getRecipients());
 

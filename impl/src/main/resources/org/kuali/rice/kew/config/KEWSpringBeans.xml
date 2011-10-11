@@ -183,7 +183,6 @@
         <idref local="rice.kew.groupMembershipChangeQueue" />
         <idref local="rice.kew.responsibilityChangeProcessor" />
         <idref local="enMoveDocumentService" />
-        <idref local="enActionInvocationService" />
         <idref local="enActionListEmailService" />
         <idref local="enQuickLinksService" />
         <idref local="enDocumentRequeuerService"/>
@@ -201,6 +200,7 @@
         <idref local="rice.kew.extensionRepositoryService" />
         <idref local="rice.kew.kewTypeRepositoryService" />
         <idref local="rice.kew.peopleFlowService" />
+        <idref local="rice.kew.actionInvocationQueue" />
         <!-- it's important that this service remains non-transactionally proxied for various reasons
           <idref local="enUserOptionsService"/>
         -->
@@ -533,7 +533,7 @@
 
   <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
   <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
-  <bean id="enActionInvocationService" class="org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl" />
+  <bean id="rice.kew.actionInvocationQueue" class="org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl" />
   <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
 
   <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />

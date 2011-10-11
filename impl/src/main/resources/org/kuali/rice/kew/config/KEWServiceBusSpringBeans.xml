@@ -317,7 +317,7 @@
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
-					<ref bean="enActionInvocationService" />
+					<ref bean="rice.kew.actionInvocationQueue" />
 				</property>
 				<property name="localServiceName" value="actionInvocationQueueSoap" />
 				<property name="priority" value="10" />

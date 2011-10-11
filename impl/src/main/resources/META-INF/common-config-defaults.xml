@@ -527,7 +527,7 @@
       rice.kew.documentProcessingQueue,
       enBlanketApproveProcessor,
       enMoveDocumentService,
-      enActionInvocationService,
+      rice.kew.actionInvocationQueue,
       rice.kew.immediateEmailReminderService,
       enActionListEmailService,
       enWorkflowUtilityService,

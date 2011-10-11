@@ -11,7 +11,7 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.kuali.rice.kew.actions.asyncservices;
+package org.kuali.rice.kew.impl.action;
 
 import java.util.ArrayList;
 import java.util.List;

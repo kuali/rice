@@ -17,7 +17,7 @@ input[type="radio"], input[type="checkbox"] {
 	margin:5px 5px 5px 0;
 }
 input:focus, textarea:focus {
-	background: #E7FFF6 url(none) repeat scroll 0 0;
+	background: #E7FFF6 repeat scroll 0 0;
 	outline: none;
 }
 select[multiple="multiple"] option {

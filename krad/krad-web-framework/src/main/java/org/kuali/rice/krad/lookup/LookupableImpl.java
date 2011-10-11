@@ -612,7 +612,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                     returnLinkField.setOnClickScript(script.append("parent.$.fancybox.close();").toString());
                 }  else{
                     // Close the light box if return target is not _self or _parent
-                    returnLinkField.setOnClickScript("parent.$.fancybox.close();");
+                    returnLinkField.setOnClickScript("parent.$.fancybox.close();createLoading(true);");
                 }
             }
         } else {

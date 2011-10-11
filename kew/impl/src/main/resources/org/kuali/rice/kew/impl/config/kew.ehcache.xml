@@ -5,5 +5,15 @@
 
   <cache name="http://rice.kuali.org/kew/v2_0/RuleType" eternal="false" overflowToDisk="false" copyOnRead="false"
          copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleTemplateType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleDelegationType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
 
 </ehcache>

@@ -7,6 +7,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.cache.CacheService;
 import org.kuali.rice.core.api.cache.CacheTarget;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
 import org.kuali.rice.ksb.api.messaging.MessageHelper;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
@@ -70,8 +73,17 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     }
 
     private Collection<CacheService> getCacheServices() {
-        final Collection<CacheService> services = messageHelper.getAllRemoteServicesAsynchronously(QName.valueOf(serviceName));
-        return services != null ? services : Collections.<CacheService>emptyList();
+        try {
+            List<CacheService> services = new ArrayList<CacheService>();
+            final Collection<Endpoint> endpoints = KsbApiServiceLocator.getServiceBus().getEndpoints(QName.valueOf(serviceName));
+            for (Endpoint endpoint : endpoints) {
+                services.add((CacheService)endpoint.getService());
+            }
+            return services != null ? services : Collections.<CacheService>emptyList();
+        } catch (RuntimeException e) {
+            LOG.warn("Failed to find any remote services with name: " + serviceName);
+        }
+        return Collections.emptyList();
     }
 
     private void flushCache(Collection<CacheTarget> cacheTargets) {

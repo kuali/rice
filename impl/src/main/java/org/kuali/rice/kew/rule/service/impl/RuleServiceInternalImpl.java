@@ -20,16 +20,24 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.api.cache.CacheService;
+import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.rule.Rule;
+import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.validation.RuleValidationContext;
 import org.kuali.rice.kew.api.validation.ValidationResults;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -66,6 +74,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import javax.xml.namespace.QName;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -216,8 +225,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
                 }
             }
         }
-        for (Iterator iterator = rulesToSave.values().iterator(); iterator.hasNext();) {
-            RuleBaseValues rule = (RuleBaseValues) iterator.next();
+        for (RuleBaseValues rule : rulesToSave.values()) {
             getRuleDAO().save(rule);
             performanceLogger.log("Saved rule: " + rule.getId());
         }
@@ -235,7 +243,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
      * aren't being added or removed.  This is why it doesn't perform some of the functions like checking
      * for delegation rules that were removed from a parent rule.
      */
-    public void makeCurrent2(List rules) {
+    public void makeCurrent2(List<RuleBaseValues> rules) {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
@@ -247,9 +255,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         Map<String, RuleBaseValues> rulesToSave = new HashMap<String, RuleBaseValues>();
 
         Collections.sort(rules, new RuleDelegationSorter());
-        for (Iterator iter = rules.iterator(); iter.hasNext();) {
-            RuleBaseValues rule = (RuleBaseValues) iter.next();
-
+        for (RuleBaseValues rule : rules) {
             performanceLogger.log("Preparing rule: " + rule.getDescription());
 
             rule.setCurrentInd(Boolean.TRUE);
@@ -288,12 +294,12 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
                 }
             }
         }
-        Map<String, String> notifyMap = new HashMap<String, String>();
         for (RuleBaseValues rule : rulesToSave.values()) {
             getRuleDAO().save(rule);
             performanceLogger.log("Saved rule: " + rule.getId());
 
         }
+
         if (isGenerateRuleArs) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         }
@@ -357,9 +363,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
         boolean isRuleDelegation = ruleDelegation != null;
         
-        Map<String, String> notifyMap = new HashMap<String, String>(); 
-        
-        for (RuleBaseValues ruleToSave : rulesToSave.values()) {        	
+        for (RuleBaseValues ruleToSave : rulesToSave.values()) {
         	getRuleDAO().save(ruleToSave);
         	performanceLogger.log("Saved rule: " + ruleToSave.getId());
         }
@@ -1127,21 +1131,21 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     public String getDuplicateRuleId(RuleBaseValues rule) {
 
     	// TODO: this method is extremely slow, if we could implement a more optimized query here, that would help tremendously
-
-    	List responsibilities = rule.getRuleResponsibilities();
-    	List extensions = rule.getRuleExtensions();
-    	String docTypeName = rule.getDocTypeName();
-    	String ruleTemplateName = rule.getRuleTemplateName();
-        List rules = fetchAllCurrentRulesForTemplateDocCombination(rule.getRuleTemplateName(), rule.getDocTypeName());
-        Iterator it = rules.iterator();
-        while (it.hasNext()) {
-            RuleBaseValues r = (RuleBaseValues) it.next();
+        Rule baseRule = RuleBaseValues.to(rule);
+    	List<RuleResponsibility> responsibilities = baseRule.getRuleResponsibilities();
+    	Map<String, String> extensions = baseRule.getRuleExtensionMap();
+    	String docTypeName = baseRule.getDocTypeName();
+    	String ruleTemplateName = baseRule.getRuleTemplateName();
+        //use api service to take advantage of caching
+        List<Rule> rules = KewApiServiceLocator.getRuleService().getRulesByTemplateNameAndDocumentTypeName(
+                baseRule.getRuleTemplateName(), baseRule.getDocTypeName(), null);
+        for (Rule r : rules) {
             if (ObjectUtils.equals(rule.isActive(), r.isActive()) &&
         	ObjectUtils.equals(docTypeName, r.getDocTypeName()) &&
                     ObjectUtils.equals(ruleTemplateName, r.getRuleTemplateName()) &&
-                    ObjectUtils.equals(rule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
+                    ObjectUtils.equals(baseRule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
                     CollectionUtils.collectionsEquivalent(responsibilities, r.getRuleResponsibilities()) &&
-                    CollectionUtils.collectionsEquivalent(extensions, r.getRuleExtensions())) {
+                    CollectionUtils.collectionsEquivalent(extensions.entrySet(), r.getRuleExtensionMap().entrySet())) {
                 // we have a duplicate
                 return r.getId();
             }
@@ -1201,6 +1205,10 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
     public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType) {
     	return getRuleDAO().findResponsibilityIdForRule(ruleName, ruleResponsibilityName, ruleResponsibilityType);
+    }
+
+    protected String getRuleByTemplateAndDocTypeCacheKey(String ruleTemplateName, String docTypeName) {
+        return "'templateName=' + " + ruleTemplateName +" '|' + 'documentTypeName=' + " + docTypeName;
     }
 
 }

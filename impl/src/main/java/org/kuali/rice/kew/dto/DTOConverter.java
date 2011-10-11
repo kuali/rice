@@ -408,6 +408,7 @@ public class DTOConverter {
         if (definition == null) {
             return null;
         }
+
         ExtensionDefinition extensionDefinition = KewApiServiceLocator.getExtensionRepositoryService().getExtensionByName(definition.getAttributeName());
         if (extensionDefinition == null) {
             throw new WorkflowRuntimeException("Extension " + definition.getAttributeName() + " not found");

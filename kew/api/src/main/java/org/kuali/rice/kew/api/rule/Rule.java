@@ -49,7 +49,7 @@ public final class Rule
 {
     @XmlElement(name = Elements.ID, required = false)
     private final String id;
-    @XmlElement(name = Elements.NAME, required = true)
+    @XmlElement(name = Elements.NAME, required = false)
     private final String name;
     @XmlElement(name = Elements.RULE_TEMPLATE, required = false)
     private final RuleTemplate ruleTemplate;
@@ -219,21 +219,21 @@ public final class Rule
         private String previousVersionId;
         private RuleExpression.Builder ruleExpressionDef;
 
-        private Builder(String name) {
+        private Builder() {
             setActive(true);
-            setName(name);
         }
 
-        public static Builder create(String name) {
-            return new Builder(name);
+        public static Builder create() {
+            return new Builder();
         }
 
         public static Builder create(RuleContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = create(contract.getName());
+            Builder builder = create();
             builder.setId(contract.getId());
+            builder.setName(contract.getName());
             builder.setRuleTemplate(
                     contract.getRuleTemplate() == null ? null : RuleTemplate.Builder.create(contract.getRuleTemplate()));
             builder.setActive(contract.isActive());
@@ -342,9 +342,6 @@ public final class Rule
         }
 
         public void setName(String name) {
-            if (StringUtils.isBlank(name)) {
-                throw new IllegalArgumentException("name is blank");
-            }
             this.name = name;
         }
         public void setRuleTemplate(RuleTemplate.Builder ruleTemplate) {

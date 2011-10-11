@@ -20,6 +20,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
 
 import java.util.List;
@@ -108,10 +109,8 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_simpleMap() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
-		
-		RuleAttribute ruleAttribute = new RuleAttribute();
-		ruleAttribute.setXmlConfigData(SIMPLE_CONFIG_1);
-		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
+
+		resolver.setXmlConfigData(SIMPLE_CONFIG_1);
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
@@ -125,9 +124,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	public void testResolve_simpleMap_noBaseXPath() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
 		
-		RuleAttribute ruleAttribute = new RuleAttribute();
-		ruleAttribute.setXmlConfigData(SIMPLE_CONFIG_2);
-		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
+		resolver.setXmlConfigData(SIMPLE_CONFIG_2);
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
@@ -159,10 +156,8 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_compoundMap1() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
-		
-		RuleAttribute ruleAttribute = new RuleAttribute();
-		ruleAttribute.setXmlConfigData(COMPOUND_CONFIG_1);
-		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
+
+		resolver.setXmlConfigData(COMPOUND_CONFIG_1);
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_1);
@@ -188,10 +183,8 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_compoundMap() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
-		
-		RuleAttribute ruleAttribute = new RuleAttribute();
-		ruleAttribute.setXmlConfigData(COMPOUND_CONFIG_1);
-		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
+
+		resolver.setXmlConfigData(COMPOUND_CONFIG_1);
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);
@@ -222,9 +215,7 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	public void testResolve_compoundMap_noBaseXPath() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
 		
-		RuleAttribute ruleAttribute = new RuleAttribute();
-		ruleAttribute.setXmlConfigData(COMPOUND_CONFIG_2);
-		resolver.setExtensionDefinition(RuleAttribute.to(ruleAttribute));
+		resolver.setXmlConfigData(COMPOUND_CONFIG_2);
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);

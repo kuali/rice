@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.rule.Rule;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * TODO ...
@@ -49,12 +51,14 @@ public interface DocumentTypeService {
     @WebMethod(operationName = "getDocumentTypeById")
     @WebResult(name = "documentType")
     @XmlElement(name = "documentType", required = false)
+    @Cacheable(value= DocumentType.Cache.NAME, key="'documentTypeId=' + #documentTypeId")
     DocumentType getDocumentTypeById(@WebParam(name = "documentTypeId") String documentTypeId)
             throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDocumentTypeByName")
     @WebResult(name = "documentType")
     @XmlElement(name = "documentType", required = false)
+    @Cacheable(value= DocumentType.Cache.NAME, key="'documentTypeName=' + #documentTypeName")
     DocumentType getDocumentTypeByName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
 
@@ -105,12 +109,14 @@ public interface DocumentTypeService {
     @WebMethod(operationName = "getRoutePathForDocumentTypeId")
     @WebResult(name = "routePath")
     @XmlElement(name = "routePath", required = false)
+    @Cacheable(value= RoutePath.Cache.NAME, key="'documentTypeId=' + #documentTypeId")
     RoutePath getRoutePathForDocumentTypeId(@WebParam(name = "documentTypeId") String documentTypeId)
             throws RiceIllegalArgumentException;
     
     @WebMethod(operationName = "getRoutePathForDocumentTypeName")
     @WebResult(name = "routePath")
     @XmlElement(name = "routePath", required = false)
+    @Cacheable(value= RoutePath.Cache.NAME, key="'documentTypeName=' + #documentTypeName")
     RoutePath getRoutePathForDocumentTypeName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
 

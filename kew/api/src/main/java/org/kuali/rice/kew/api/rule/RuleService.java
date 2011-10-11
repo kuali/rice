@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.kew.api.rule;
 
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -28,6 +30,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 @WebService(name = "ruleServiceSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
@@ -72,7 +75,7 @@ public interface RuleService {
      *
      * @return Rules with the passed in templateId, or an empty list if none exist
      *
-     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code templateId} is null
      */
     @WebMethod(operationName = "getRuleByTemplateId")
     @WebResult(name = "rules")
@@ -80,6 +83,28 @@ public interface RuleService {
     @XmlElement(name = "rule", required = true)
     @Cacheable(value=Rule.Cache.NAME, key="'templateId=' + #templateId")
 	List<Rule> getRulesByTemplateId(@WebParam(name="templateId") String templateId)
+        throws RiceIllegalArgumentException;
+
+    /**
+     * Gets a list of Rules with the specified templateId and documentTypeName.  Scales up the hierarchy of
+     * documentTypes
+     *
+     * @param templateName unique name for the Rule Template.  Cannot be null or empty
+     * @param documentTypeName documentTypeName for Rule.  Cannot be null or empty
+     * @param effectiveDate date for rule effectiveness. Can be null.  If null, current time is used.
+     *
+     * @return Rules with the passed in templateId, documentTypeName (or parent document type)or an empty list if none exist
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     */
+    @WebMethod(operationName = "getRulesByTemplateNameAndDocumentTypeName")
+    @WebResult(name = "rules")
+    @XmlElementWrapper(name = "rules", required = true)
+    @XmlElement(name = "rule", required = true)
+    @Cacheable(value=Rule.Cache.NAME, key="'templateName=' + #templateName + '|' + 'documentTypeName=' + #documentTypeName")
+	List<Rule> getRulesByTemplateNameAndDocumentTypeName(@WebParam(name = "templateName") String templateName,
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name = "effectiveDate") DateTime effectiveDate)
         throws RiceIllegalArgumentException;
 
     /**

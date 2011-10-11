@@ -78,7 +78,7 @@ public interface ResponsibilityService {
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
-     * This will update a {@link Responsibility}.
+     * This will up ev a {@link Responsibility}.
      *
      * @param responsibility the responsibility to update
      * @throws IllegalArgumentException if the responsibility is null

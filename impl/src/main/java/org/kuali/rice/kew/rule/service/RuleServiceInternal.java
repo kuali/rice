@@ -23,12 +23,12 @@ import java.util.Map;
 
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
-
-
+import org.springframework.cache.annotation.CacheEvict;
 
 /**
  * A service which provides data access and functions for the KEW Rules engine.
@@ -49,8 +49,10 @@ public interface RuleServiceInternal extends XmlLoader, XmlExporter {
 
     public String routeRuleWithDelegate(String documentId, RuleBaseValues parentRule, RuleBaseValues delegateRule, PrincipalContract principal, String annotation, boolean blanketApprove) throws Exception;
     //public void save(RuleBaseValues ruleBaseValues) throws Exception;
+    @CacheEvict(value={Rule.Cache.NAME}, allEntries = true)
     public void save2(RuleBaseValues ruleBaseValues) throws Exception;
     public void validate2(RuleBaseValues ruleBaseValues, RuleDelegationBo ruleDelegation, List errors) throws Exception;
+    @CacheEvict(value={Rule.Cache.NAME}, allEntries = true)
     public void delete(String ruleBaseValuesId);
     public RuleBaseValues findRuleBaseValuesById(String ruleBaseValuesId);
     public List<RuleBaseValues> search(String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String groupId, String principalId, Boolean delegateRule, Boolean activeInd, Map extensionValues, String workflowIdDirective);
@@ -61,8 +63,11 @@ public interface RuleServiceInternal extends XmlLoader, XmlExporter {
     public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType);
     public List<RuleBaseValues> fetchAllCurrentRulesForTemplateDocCombination(String ruleTemplateName, String documentType, Timestamp effectiveDate);
     public List<RuleBaseValues> findByDocumentId(String documentId);
+    @CacheEvict(value={Rule.Cache.NAME}, allEntries = true)
     public void makeCurrent(String documentId);
+    @CacheEvict(value={Rule.Cache.NAME}, allEntries = true)
     public void makeCurrent(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
+    @CacheEvict(value={Rule.Cache.NAME}, allEntries = true)
     public void makeCurrent(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted);
     public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
@@ -84,13 +89,13 @@ public interface RuleServiceInternal extends XmlLoader, XmlExporter {
      * @return the id of the duplicate rule if one exists, null otherwise
      */
     public String getDuplicateRuleId(RuleBaseValues rule);
-        
+    @CacheEvict(value={Rule.Cache.NAME}, allEntries = true)
     public RuleBaseValues saveRule(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted);
-    
+    @CacheEvict(value={Rule.Cache.NAME}, allEntries = true)
     public List<RuleBaseValues> saveRules(List<RuleBaseValues> rulesToSave, boolean isRetroactiveUpdatePermitted);
-    
+
     public RuleDelegationBo saveRuleDelegation(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted);
-    
+
     public List<RuleDelegationBo> saveRuleDelegations(List<RuleDelegationBo> ruleDelegationsToSave, boolean isRetroactiveUpdatePermitted);
     
     public String findResponsibilityIdForRule(String ruleName, String ruleResponsibilityName, String ruleResponsibilityType);

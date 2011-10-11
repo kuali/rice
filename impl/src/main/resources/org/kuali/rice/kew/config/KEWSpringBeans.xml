@@ -31,6 +31,7 @@
        xmlns:task="http://www.springframework.org/schema/task"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
                            http://www.springframework.org/schema/beans
@@ -54,7 +55,12 @@
                            http://www.springframework.org/schema/tx
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
                            http://www.springframework.org/schema/util
-                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+
+  <!-- caching start -->
+  <cache:annotation-driven cache-manager="kewDistributedCacheManager" />
 
   <!-- DAO's are located in KEWOJBSpringBeans.xml and KEWJPASpringBeans.xml -->
 
@@ -93,7 +99,7 @@
     </property>
   </bean>
 
-  <!-- the distributed cache manager that calls into the sharedDataCacheService on the ksb -->
+  <!-- the distributed cache manager that calls into the kewCacheService on the ksb -->
   <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="kewLocalCacheManager" />
     <property name="messageHelper" ref="rice.ksb.messageHelper" />

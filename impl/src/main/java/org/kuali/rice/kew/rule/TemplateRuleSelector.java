@@ -15,11 +15,9 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.joda.time.DateTime;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -31,14 +29,9 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * Rule selector that selects rules based on configured template name 
@@ -78,40 +71,10 @@ class TemplateRuleSelector implements RuleSelector {
 
         }
 
-        List<org.kuali.rice.kew.api.rule.Rule> rules = null;
-        QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        predicates.add(equal("ruleTemplate.name", ruleTemplateName));
-
-        // Check all document types in ancestry
-        DocumentType dt = routeHeader.getDocumentType();
-        List<Predicate> documentTypeAncestry = new ArrayList<Predicate>();
-        while (dt != null) {
-            documentTypeAncestry.add(equal("docTypeName", dt.getName()));
-            dt = dt.getParentDocType();
-        }
-        predicates.add(and(or(documentTypeAncestry.toArray(new Predicate[documentTypeAncestry.size()]))));
-        Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        predicates.add(and(
-                           or(isNull("fromDateValue"), greaterThanOrEqual("fromDateValue", currentTime)),
-                           or(isNull("toDateValue"), lessThan("toDateValue", currentTime))
-                      ));
-        predicates.add(equal("active", new Integer(1))); //true
-        predicates.add(equal("delegateRule", new Integer(0)));  //false
-        predicates.add(equal("templateRuleInd", new Integer(0))); //false
-        if (effectiveDate != null) {
-            predicates.add(
-                    and(
-                        lessThanOrEqual("activationDate", effectiveDate),
-                        greaterThan("deactivationDate", effectiveDate)));
-            //rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName(), effectiveDate);
-        } else {
-            predicates.add(equal("currentInd", new Integer(1))); //true
-            //rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName());
-        }
-        Predicate p = and(predicates.toArray(new Predicate[]{}));
-        query.setPredicates(p);
-        rules = KewApiServiceLocator.getRuleService().findRules(query.build()).getResults();
+        DateTime effectiveDateTime = effectiveDate == null ? null : new DateTime(effectiveDate.getTime());
+        List<org.kuali.rice.kew.api.rule.Rule> rules = KewApiServiceLocator.getRuleService()
+                .getRulesByTemplateNameAndDocumentTypeName(ruleTemplateName, routeHeader.getDocumentType().getName(),
+                        effectiveDateTime);
         numberOfSelectedRules = rules.size();
 
         // TODO really the route context just needs to be able to support nested create and clears
@@ -125,8 +88,7 @@ class TemplateRuleSelector implements RuleSelector {
         DocumentContent documentContent = context.getDocumentContent();
         PerformanceLogger performanceLogger = new PerformanceLogger();
         // have all mass rule attributes filter the list of non applicable rules
-        for (Iterator iter = massRules.iterator(); iter.hasNext();) {
-            MassRuleAttribute massRuleAttribute = (MassRuleAttribute) iter.next();
+        for (MassRuleAttribute massRuleAttribute : massRules) {
             rules = massRuleAttribute.filterNonMatchingRules(context, rules);
         }
         performanceLogger.log("Time to filter massRules for template " + template.getName());

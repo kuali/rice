@@ -4,6 +4,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -127,6 +128,10 @@ public final class RoutePath extends AbstractDataTransferObject implements Route
     static class Elements {
         final static String PROCESSES = "processDefinitions";
         final static String PROCESS = "processDefinition";
+    }
+
+    public static class Cache {
+        public static final String NAME = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0 + "/" + RoutePath.Constants.TYPE_NAME;
     }
 
 }

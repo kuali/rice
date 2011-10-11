@@ -18,11 +18,8 @@ package org.kuali.rice.kew.role;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -123,10 +120,11 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredAttribute {
+public class XPathQualifierResolver implements QualifierResolver {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XPathQualifierResolver.class);
 
 	private ExtensionDefinition extensionDefinition;
+    String xmlConfigData;
 	
 	public List<Map<String, String>> resolve(RouteContext context) {
 			ResolverConfig config = parseResolverConfig();
@@ -187,17 +185,17 @@ public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredA
 		}
 	}
 
-	public void setExtensionDefinition(ExtensionDefinition extensionDefinition) {
-		this.extensionDefinition = extensionDefinition;
+	public void setXmlConfigData (String xmlConfigData) {
+		this.xmlConfigData = xmlConfigData;
 	}
 	
 	protected ResolverConfig parseResolverConfig() {
-		if (extensionDefinition == null) {
+		if (xmlConfigData == null) {
 			throw new RiceRuntimeException("Failed to locate a RuleAttribute for the given XPathQualifierResolver");
 		}
 		try {
 			ResolverConfig resolverConfig = new ResolverConfig();
-			String xmlConfig = extensionDefinition.getConfiguration().get(KewApiConstants.APPLICATION_CONTENT_ELEMENT);
+			String xmlConfig = xmlConfigData;
 			XPath xPath = XPathHelper.newXPath();
 			String baseExpression = xPath.evaluate("//resolverConfig/baseXPathExpression", new InputSource(new StringReader(xmlConfig)));
 			if (!StringUtils.isEmpty(baseExpression)) {

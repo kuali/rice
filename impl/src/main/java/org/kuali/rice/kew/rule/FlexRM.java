@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -31,15 +30,12 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleDelegation;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.rule.RuleService;
-import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttribute;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
@@ -47,7 +43,6 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -55,7 +50,6 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
 
-import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -303,19 +297,18 @@ public class FlexRM {
         RoleAttribute roleAttribute = null;
         if (resp.isUsingRole()) {
             //get correct extension definition
-            ExtensionDefinition roleAttributeDefinition = null;
-            for (RuleTemplateAttribute ruleTemplateAttribute : rule.getRuleTemplate().getRuleTemplateAttributes()) {
-                if (resp.getRoleAttributeName().equals(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor())) {
-                    roleAttributeDefinition = ruleTemplateAttribute.getRuleAttribute();
-                    break;
-                }
-            }
+            roleAttribute = (RoleAttribute) GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(
+                    resp.getRoleAttributeName()));
 
-            if (roleAttributeDefinition != null) {
-                roleAttribute = ExtensionUtils.loadExtension(roleAttributeDefinition);
-                if (roleAttribute instanceof XmlConfiguredAttribute) {
-                    ((XmlConfiguredAttribute)roleAttribute).setExtensionDefinition(roleAttributeDefinition);
+            if (roleAttribute instanceof XmlConfiguredAttribute) {
+                ExtensionDefinition roleAttributeDefinition = null;
+                for (RuleTemplateAttribute ruleTemplateAttribute : rule.getRuleTemplate().getRuleTemplateAttributes()) {
+                    if (resp.getRoleAttributeName().equals(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor())) {
+                        roleAttributeDefinition = ruleTemplateAttribute.getRuleAttribute();
+                        break;
+                    }
                 }
+                ((XmlConfiguredAttribute)roleAttribute).setExtensionDefinition(roleAttributeDefinition);
             }
         }
 		//setRuleAttribute(roleAttribute, rule, resp.getRoleAttributeName());

@@ -44,7 +44,7 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
     }    
 	
 	@Test public void testClientApplicationValidationImplementsWorkflowAttributeXmlValidator() throws Exception {
-		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create(TestRuleAttributeThree.class.getName()).build();
+		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create("TestRuleAttributeThree").build();
         List<WorkflowAttributeValidationError> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(
                 attDef);
 		assertTrue("Validation errors should not be empty", !validationErrors.isEmpty());
@@ -66,7 +66,7 @@ public class AttributeClientRoutingDataValidationTest extends KEWTestCase {
 	}
 	
 	@Test public void testClientApplicationValidationNoImplementsWorkflowAttributeXmlValidator() throws Exception {
-		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create(TestRuleAttributeDuex.class.getName()).build();
+		WorkflowAttributeDefinition attDef = WorkflowAttributeDefinition.Builder.create("TestRuleAttributeDuex").build();
 		List<WorkflowAttributeValidationError> validationErrors = KewApiServiceLocator.getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(
                 attDef);
 		assertTrue("Validation errors should be empty because WorkflowAttributeXmlValidator interface is not implemented", validationErrors.isEmpty());

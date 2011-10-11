@@ -20,10 +20,14 @@ import java.util.List;
 
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.kew.api.rule.Rule;
+import org.kuali.rice.kew.api.rule.RuleDelegation;
+import org.kuali.rice.kew.api.rule.RuleTemplate;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.springframework.cache.annotation.CacheEvict;
 
 /**
  * A service providing data access for {@link org.kuali.rice.kew.rule.bo.RuleTemplateBo}s and
@@ -32,13 +36,16 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleTemplateService extends XmlLoader, XmlExporter {
-
+    @CacheEvict(value={RuleTemplate.Cache.NAME}, allEntries = true)
     public void save(RuleTemplateBo ruleTemplate);
+    @CacheEvict(value={RuleTemplate.Cache.NAME}, allEntries = true)
     public void save(RuleTemplateAttributeBo ruleTemplateAttribute);
+    @CacheEvict(value={RuleTemplate.Cache.NAME, Rule.Cache.NAME, RuleDelegation.Cache.NAME}, allEntries = true)
     public void saveRuleDefaults(RuleDelegationBo ruleDelegation, RuleBaseValues ruleBaseValues);
     public RuleTemplateBo findByRuleTemplateId(String ruleTemplateId);
     public List<RuleTemplateBo> findAll();
     public List findByRuleTemplate(RuleTemplateBo ruleTemplate);
+    @CacheEvict(value={RuleTemplate.Cache.NAME}, allEntries = true)
     public void delete(String ruleTemplateId);
     
     public void deleteRuleTemplateOption(String ruleTemplateOptionId);

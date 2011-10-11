@@ -131,7 +131,7 @@ public class DTOConverterTest extends KEWTestCase {
 
         // now, add an attribute
         String testAttributeContent = new TestRuleAttribute().getDocContent();
-        WorkflowAttributeDefinition attributeDefinition = WorkflowAttributeDefinition.Builder.create(TestRuleAttribute.class.getName()).build();
+        WorkflowAttributeDefinition attributeDefinition = WorkflowAttributeDefinition.Builder.create("TestRuleAttribute").build();
         contentUpdateBuilder.getAttributeDefinitions().add(attributeDefinition);
         content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdateBuilder.build(), null);
         fullContent = startContent+

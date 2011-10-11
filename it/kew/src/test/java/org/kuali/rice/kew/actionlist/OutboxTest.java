@@ -26,10 +26,11 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
@@ -272,7 +273,8 @@ public class OutboxTest extends KEWTestCase {
         {
             actionToTake.setActionItemId(actinItem.getId());
             actionToTake.setActionTakenCd(actinItem.getActionRequestCd());
-            invocations.add(new ActionInvocation(actinItem.getId(), actionToTake.getActionTakenCd()));
+            invocations.add(ActionInvocation.create(ActionType.fromCode(actionToTake.getActionTakenCd()),
+                    actinItem.getId()));
         }
         KEWServiceLocator.getWorkflowDocumentService().takeMassActions(rkirkendPrincipalId, invocations);
         assertEquals("Wrong number of outbox items found for rkirkendPrincipalId", 2, KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter()).size());

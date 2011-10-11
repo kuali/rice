@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.kuali.rice.kew.actions.ActionTakenEvent;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;

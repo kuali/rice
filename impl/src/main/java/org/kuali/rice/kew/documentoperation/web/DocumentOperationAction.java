@@ -29,8 +29,8 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocationQueue;
+import org.kuali.rice.kew.api.action.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -39,6 +39,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -804,7 +805,7 @@ public class DocumentOperationAction extends KewKualiAction {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getActionInvocationUser());
-			ActionInvocation invocation = new ActionInvocation(docForm.getActionInvocationActionItemId(), docForm.getActionInvocationActionCode());
+			ActionInvocation invocation = ActionInvocation.create(ActionType.fromCode(docForm.getActionInvocationActionCode()), docForm.getActionInvocationActionItemId());
 			ActionInvocationQueue actionInvocationQueue = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
 			actionInvocationQueue.invokeAction(principalId, docForm.getRouteHeader().getDocumentId(), invocation);
 			ActionMessages messages = new ActionMessages();

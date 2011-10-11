@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocationQueue;
+import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.api.KewApiConstants;

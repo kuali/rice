@@ -50,8 +50,9 @@ import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionSet;
+import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -659,7 +660,7 @@ public class ActionListAction extends KualiAction {
         			LOG.warn("Could not locate the ActionItem to take mass action against in the action list: " + actionToTake.getActionItemId());
         			continue;
         		}
-            	invocations.add(new ActionInvocation(actionItem.getId(), actionToTake.getActionTakenCd()));
+            	invocations.add(ActionInvocation.create(ActionType.fromCode(actionToTake.getActionTakenCd()), actionItem.getId()));
             }
         	index++;
 		}

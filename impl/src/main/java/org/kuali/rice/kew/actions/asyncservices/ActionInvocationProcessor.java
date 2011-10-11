@@ -22,6 +22,8 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.kew.actions.ActionTakenEvent;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.action.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -62,10 +64,10 @@ public class ActionInvocationProcessor implements ActionInvocationQueue {
         parameters.add(new DataDefinition(""));
 
         try {
-            final ActionTakenEvent action = KEWServiceLocator.getActionRegistry().createAction(invocation.getActionCode(), parameters);
-            if (!document.isValidActionToTake(invocation.getActionCode())) {
+            final ActionTakenEvent action = KEWServiceLocator.getActionRegistry().createAction(invocation.getAction().getCode(), parameters);
+            if (!document.isValidActionToTake(invocation.getAction().getCode())) {
                 LOG.warn("Action "
-                        + invocation.getActionCode()
+                        + invocation.getAction()
                         + " is not a valid action to take against document "
                         + document.getDocumentId()
                         + " by principal with name '"

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.actions.asyncservices;
+package org.kuali.rice.kew.api.action;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -25,7 +25,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 /**
- * Defines the contract for a message queue which can invoke requested workflow actions against a document.
+ * Defines the contract for a message queue which can invoke requested workflow actions against an action item on a
+ * document.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -36,8 +37,8 @@ public interface ActionInvocationQueue {
     @WebMethod(operationName = "invokeAction")
 	void invokeAction(
             @WebParam(name = "principalId") String principalId,
-            @WebParam(name="documentId") String documentId,
-            @WebParam(name="invocation") ActionInvocation invocation)
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "actionInvocation") ActionInvocation actionInvocation)
         throws RiceIllegalArgumentException;
     
 }

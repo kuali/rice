@@ -1472,8 +1472,6 @@ public final class FieldUtils {
             applyControlAttributes(remotableAttributeField, field);
             applyLookupAttributes(remotableAttributeField, field);
             applyWidgetAttributes(remotableAttributeField, field);
-            // TODO - Rice 2.0 - Figure out the rest of this nasty conversion!
-
         }
         return fields;
     }
@@ -1560,7 +1558,6 @@ public final class FieldUtils {
         builder.setRequired(field.isFieldRequired());
         builder.setDefaultValues(Collections.singletonList(field.getDefaultValue()));
         builder.setControl(FieldUtils.constructControl(field.getFieldType(), field.getFieldValidValues()));
-        //builder.setWidgets();
         if (field.getHasLookupable()) {
             builder.setAttributeLookupSettings(RemotableAttributeLookupSettings.Builder.create());
             RemotableQuickFinder.Builder quickfinder =
@@ -1576,17 +1573,9 @@ public final class FieldUtils {
             widgets.add(RemotableTextExpand.Builder.create());
         }
         builder.setWidgets(widgets);
-        // TODO - Rice 2.0 - Finish this conversion!!!
 
         return builder.build();
     }
-
-    /*private static RemotableAttributeLookupSettings.Builder constructLookup() {
-        RemotableAttributeLookupSettings.Builder lookup = RemotableAttributeLookupSettings.Builder.create();
-        lookup.
-        return lookup;
-    }*/
-
 
     private static RemotableAbstractControl.Builder constructControl(String type, List<KeyValue> options) {
 

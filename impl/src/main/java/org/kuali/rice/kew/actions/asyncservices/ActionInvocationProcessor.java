@@ -29,12 +29,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
 /**
- * Service for doing the actual work of a mass action in the action list. Represents a single action on a single
- * document.
+ * Reference implementation of the ActionInvocationQueue.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionInvocationProcessor implements ActionInvocationService { // implements RouteQueueProcessor {
+public class ActionInvocationProcessor implements ActionInvocationService {
 
     private static final Logger LOG = Logger.getLogger(ActionInvocationProcessor.class);
 

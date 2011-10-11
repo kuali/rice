@@ -15,23 +15,23 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 	String typeId
     String description
 
-	Set<AgendaBo> agendas = new HashSet<AgendaBo>()
+	List<AgendaBo> agendas = new ArrayList<AgendaBo>()
 
-	Set<ContextAttributeBo> attributeBos = new HashSet<ContextAttributeBo>()
-	Set<ContextValidEventBo> validEvents = new HashSet<ContextValidEventBo>()
-	Set<ContextValidActionBo> validActions = new HashSet<ContextValidActionBo>()
+	List<ContextAttributeBo> attributeBos = new ArrayList<ContextAttributeBo>()
+	List<ContextValidEventBo> validEvents = new ArrayList<ContextValidEventBo>()
+	List<ContextValidActionBo> validActions = new ArrayList<ContextValidActionBo>()
 
 	Long versionNumber
 
 
 	@Override
-	public Set<AgendaBo> getAgendas(){
+	public List<AgendaBo> getAgendas(){
 		return agendas
 	}
 
 	@Override
 	public Map<String, String> getAttributes() {
-		HashMap<String, String> attributes = new HashMap<String, String>();
+		Map<String, String> attributes = new HashMap<String, String>();
 		for (attr in attributeBos) {
 			attributes.put( attr.attributeDefinition.name, attr.value )
 		}
@@ -62,14 +62,14 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 		bo.name = im.name
 		bo.typeId = im.typeId
         bo.description = im.description
-		bo.agendas = new HashSet<AgendaBo>()
+		bo.agendas = new ArrayList<AgendaBo>()
 		for (agenda in im.agendas){
 			bo.agendas.add( AgendaBo.from(agenda) )
 		}
-		// build the set of agenda attribute BOs
-		Set<ContextAttributeBo> attrs = new HashSet<ContextAttributeBo>();
+		// build the list of agenda attribute BOs
+		List<ContextAttributeBo> attrs = new ArrayList<ContextAttributeBo>();
 
-		// for each converted pair, build an AgendaAttributeBo and add it to the set
+		// for each converted pair, build an AgendaAttributeBo and add it to the list
 		ContextAttributeBo attributeBo;
 		for (Entry<String,String> entry  : im.getAttributes().entrySet()){
 			KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator

@@ -69,19 +69,6 @@
     	<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
   	</class-descriptor>
   	
-  	<!-- ContextBo fields:
-  	 def String contextId
-    def String name
-    def String namespace
-    def String typeId
-
-    def Set<AgendaDefinitionBo> agendas
-        
-    def Set<ContextAttributeBo> attributes
-    def Set<ContextValidEventBo> validEvents
-    def Set<ContextValidActionBo> validActions
-  	 -->
-  	 
   	<class-descriptor class="org.kuali.rice.krms.impl.repository.ContextBo" table="KRMS_CNTXT_T">
         <field-descriptor name="id" column="CNTXT_ID" jdbc-type="VARCHAR" primarykey="true" 
             autoincrement="true" sequence-name="KRMS_CNTXT_S"/>
@@ -90,17 +77,17 @@
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
-        <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.ContextAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+        <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.ContextAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
             <inverse-foreignkey field-ref="contextId" />
         </collection-descriptor>
         <!-- TODO: add proxy="true" when XmlOBjectSerializerServiceImpl issue is fixed -->
-        <collection-descriptor name="agendas" element-class-ref="org.kuali.rice.krms.impl.repository.AgendaBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object">
+        <collection-descriptor name="agendas" element-class-ref="org.kuali.rice.krms.impl.repository.AgendaBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
             <inverse-foreignkey field-ref="contextId" />
         </collection-descriptor>
-        <!-- collection-descriptor name="validActions" element-class-ref="org.kuali.rice.krms.impl.repository.ContextValidActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="false" auto-update="object" auto-delete="object" proxy="true">
+        <!-- collection-descriptor name="validActions" element-class-ref="org.kuali.rice.krms.impl.repository.ContextValidActionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="false" auto-update="object" auto-delete="object" proxy="true">
             <inverse-foreignkey field-ref="contextId" />
         </collection-descriptor>
-        <collection-descriptor name="validEvents" element-class-ref="org.kuali.rice.krms.impl.repository.ContextValidEventBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="false" auto-update="object" auto-delete="object" proxy="true">
+        <collection-descriptor name="validEvents" element-class-ref="org.kuali.rice.krms.impl.repository.ContextValidEventBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="false" auto-update="object" auto-delete="object" proxy="true">
             <inverse-foreignkey field-ref="contextId" />
         </collection-descriptor -->
     </class-descriptor>

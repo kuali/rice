@@ -17,12 +17,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * An immutable representation of a context definition.  A context definition
@@ -70,7 +70,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     
 	@XmlElementWrapper(name = Elements.AGENDAS)
 	@XmlElement(name = Elements.AGENDA, required = false)
-	private final Set<AgendaDefinition> agendas;
+	private final List<AgendaDefinition> agendas;
 	    
 	@XmlElement(name = Elements.ATTRIBUTES, required = false)
 	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -114,8 +114,8 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         }
     }
     
-    private static Set<AgendaDefinition> constructAgendas(Set<AgendaDefinition.Builder> agendaBuilders) {
-    	Set<AgendaDefinition> agendas = new HashSet<AgendaDefinition>();
+    private static List<AgendaDefinition> constructAgendas(List<AgendaDefinition.Builder> agendaBuilders) {
+    	List<AgendaDefinition> agendas = new ArrayList<AgendaDefinition>();
     	if (agendaBuilders != null) {
     		for (AgendaDefinition.Builder agendaBuilder : agendaBuilders) {
     			agendas.add(agendaBuilder.build());
@@ -150,8 +150,8 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     }
 	
 	@Override
-	public Set<AgendaDefinition> getAgendas() {
-		return Collections.unmodifiableSet(this.agendas);
+	public List<AgendaDefinition> getAgendas() {
+		return Collections.unmodifiableList(this.agendas);
 	}
 	
 	@Override
@@ -181,14 +181,14 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         private String name;
         private String typeId;
         private String description;
-        private Set<AgendaDefinition.Builder> agendas;
+        private List<AgendaDefinition.Builder> agendas;
         private Map<String, String> attributes;
         private Long versionNumber;
         
         private Builder(String namespace, String name) {
         	setNamespace(namespace);
         	setName(name);
-        	setAgendas(new HashSet<AgendaDefinition.Builder>());
+        	setAgendas(new ArrayList<AgendaDefinition.Builder>());
             setAttributes(new HashMap<String, String>());
         }
         
@@ -270,7 +270,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         }
 
         @Override
-		public Set<AgendaDefinition.Builder> getAgendas() {
+		public List<AgendaDefinition.Builder> getAgendas() {
 			return agendas;
 		}
 
@@ -340,16 +340,16 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 		}
 		
         /**
-         * Sets the typeId for the context definition that will be created by this builder.
+         * Sets the description for the context definition that will be created by this builder.
          *
-         * @param typeId the typeId to set
+         * @param description the descripition to set
          */
         public void setDescription(String description) {
             this.description = description;
         }
 
-		public void setAgendas(Set<? extends AgendaDefinitionContract> agendaContracts) {
-			this.agendas = new HashSet<AgendaDefinition.Builder>();
+		public void setAgendas(List<? extends AgendaDefinitionContract> agendaContracts) {
+			this.agendas = new ArrayList<AgendaDefinition.Builder>();
 			if (agendaContracts != null) for (AgendaDefinitionContract agendaContract : agendaContracts) {
 				this.agendas.add(AgendaDefinition.Builder.create(agendaContract));
 			}

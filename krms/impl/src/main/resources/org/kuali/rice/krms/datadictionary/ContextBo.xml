@@ -21,7 +21,7 @@
 -->
 
   <bean id="ContextBo" parent="ContextBo-parentBean"/>
-  <bean id="ContextBo-parentBean" abstract="true" parent="DataObjectEntry">
+  <bean id="ContextBo-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
     <property name="titleAttribute" value="id"/>
     <property name="attributes">
@@ -30,6 +30,7 @@
         <ref bean="ContextBo-name"/>
         <ref bean="ContextBo-namespace"/>
         <ref bean="ContextBo-typeId"/>
+        <ref bean="ContextBo-description"/>
       </list>
     </property>
     <property name="objectLabel" value="Context"/>
@@ -40,6 +41,7 @@
 
   <bean id="ContextBo-id" parent="ContextBo-id-parentBean"/>
   <bean id="ContextBo-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="required" value="true" />
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Context Id"/>
     <property name="controlField">
@@ -51,6 +53,7 @@
   
   <bean id="ContextBo-name" parent="ContextBo-name-parentBean"/>
   <bean id="ContextBo-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="required" value="true" />
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
@@ -62,10 +65,14 @@
   
   <bean id="ContextBo-namespace" parent="ContextBo-namespace-parentBean"/>
   <bean id="ContextBo-namespace-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="required" value="true" />
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="SelectControl"/>
+    </property>
+    <property name="optionsFinder">
+      <bean class="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
     </property>
     <property name="name" value="namespace"/>
     <property name="label" value="Context Namespace"/>
@@ -76,12 +83,27 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Type Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="SelectControl"/>
+    </property>
+    <property name="optionsFinder">
+      <bean class="org.kuali.rice.krms.impl.repository.ContextTypeValuesFinder" p:blankOption="true"/>
     </property>
     <property name="name" value="typeId"/>
     <property name="label" value="Context Type Id"/>
   </bean>
     
+  <bean id="ContextBo-description" parent="ContextBo-description-parentBean"/>
+  <bean id="ContextBo-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="required" value="true" />
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Description"/>
+    <property name="controlField">
+      <bean parent="TextAreaControl" p:rows="4" p:cols="60" />
+    </property>
+    <property name="name" value="description"/>
+    <property name="label" value="Description"/>
+  </bean>
+
   <bean id="ContextBo-LookupView" parent="LookupView">
     <property name="title" value="Context Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
@@ -90,7 +112,7 @@
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
         <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" />        
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" p:label="Context Type" />
       </list>
     </property>
     <property name="resultFields">
@@ -98,7 +120,7 @@
         <bean parent="AttributeField" p:propertyName="id" />
         <bean parent="AttributeField" p:propertyName="name" />
         <bean parent="AttributeField" p:propertyName="namespace" />
-        <bean parent="AttributeField" p:propertyName="typeId" />
+        <bean parent="AttributeField" p:propertyName="typeId" p:label="Context Type" />
       </list>
     </property>
   </bean>
@@ -108,36 +130,41 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
-        <list>
-            <bean parent="Page" p:id="page1">
-                <property name="items">
-                    <list>
-					  <bean parent="GroupSectionGridLayout">
+      <list>
+        <bean parent="Page" p:id="page1">
+          <property name="items">
+            <list>
+      			  <bean parent="GroupSectionGridLayout">
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
 					        <list>
 					          <bean parent="AttributeField" p:propertyName="id"/>
 					          <bean parent="AttributeField" p:propertyName="name"/>
 					          <bean parent="AttributeField" p:propertyName="namespace"/>
+                    <bean parent="AttributeField" p:propertyName="typeId" p:label="Context Type"/>
+                    <bean parent="AttributeField" p:propertyName="description"/>
 					        </list>
 					      </property>
 					      <property name="title" value="Context Attributes"/>
-					  </bean>
-                      <bean parent="GroupSectionGridLayout">
-                          <property name="layoutManager.numberOfColumns" value="2"/>
-                          <property name="items">
-                            <list>
-                              <bean parent="AttributeField" p:propertyName="typeId"/>
-                            </list>
-                          </property>
-                          <property name="title" value="Context Type"/>
-                      </bean>
-                    </list>
+					    </bean>
+              <bean parent="CollectionGroupSectionTableLayout"  p:layoutManager.numberOfColumns="3">
+                <property name="title" value="Agendas"/>
+                <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
+                <property name="propertyName" value="agendas"/>
+                <property name="layoutManager.renderSequenceField" value="false"/>
+                <property name="items">
+                  <list>
+                    <bean parent="AttributeField" p:propertyName="id"/>
+                    <bean parent="AttributeField" p:propertyName="name"/>
+                    <bean parent="AttributeField" p:propertyName="typeId" p:label="Agenda Type"/>
+                   </list>
                 </property>
-            </bean>
-        </list>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
     </property>
   </bean>
-  
 
 </beans>

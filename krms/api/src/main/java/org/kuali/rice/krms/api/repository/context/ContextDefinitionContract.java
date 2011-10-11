@@ -19,8 +19,8 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * An interface which defines the contract for context definition objects.
@@ -66,12 +66,12 @@ public interface ContextDefinitionContract extends Versioned, Identifiable {
 
 	// TODO: this java doc is confusing
 	/**
-	 * Returns the set of agendas contained within the context definition. 
+	 * Returns the list of agendas contained within the context definition.
 	 * This method should never return null but can return null.
 	 * 
 	 * @return the set of agendas on the context definition
 	 */
-	Set<? extends AgendaDefinitionContract> getAgendas();
+	List<? extends AgendaDefinitionContract> getAgendas();
 
 	/**
 	 * This method returns a list of attributes associated with the 

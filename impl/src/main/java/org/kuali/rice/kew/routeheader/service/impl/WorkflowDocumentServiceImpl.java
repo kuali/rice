@@ -461,7 +461,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			ActionInvocationQueue actionInvocQueue = MessageServiceNames.getActionInvocationProcessorService(
 					KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()));
 			actionInvocQueue.invokeAction(principalId, actionItem.getDocumentId(), invocation);
-//			ActionInvocationProcessor.queueActionInvocation(user, actionItem.getDocumentId(), invocation);
+//			ActionInvocationQueueImpl.queueActionInvocation(user, actionItem.getDocumentId(), invocation);
 		}
 	}
 

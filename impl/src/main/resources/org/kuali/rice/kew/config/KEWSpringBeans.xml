@@ -533,7 +533,7 @@
 
   <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
   <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
-  <bean id="enActionInvocationService" class="org.kuali.rice.kew.impl.action.ActionInvocationProcessor" />
+  <bean id="enActionInvocationService" class="org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl" />
   <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl" />
 
   <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />

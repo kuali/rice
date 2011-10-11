@@ -35,9 +35,9 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionInvocationProcessor implements ActionInvocationQueue {
+public class ActionInvocationQueueImpl implements ActionInvocationQueue {
 
-    private static final Logger LOG = Logger.getLogger(ActionInvocationProcessor.class);
+    private static final Logger LOG = Logger.getLogger(ActionInvocationQueueImpl.class);
 
     @Override
     public void invokeAction(String principalId, String documentId, ActionInvocation invocation) {

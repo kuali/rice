@@ -28,7 +28,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.impl.action.ActionInvocationProcessor;
+import org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -66,10 +66,10 @@ public class ActionInvocationProcessorTest extends KEWTestCase {
 		String user1PrincipalId = getPrincipalIdForName("user1");
 		String actionItemID = request.getDocumentId().trim();
 
-		new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getDocumentId(), ActionInvocation.create(
+		new ActionInvocationQueueImpl().invokeAction(user1PrincipalId, request.getDocumentId(), ActionInvocation.create(
                 ActionType.fromCode(request.getActionRequested()), actionItemID));
 		//do it again and make sure we don't have a blow up
-		new ActionInvocationProcessor().invokeAction(user1PrincipalId, request.getDocumentId(), ActionInvocation.create(
+		new ActionInvocationQueueImpl().invokeAction(user1PrincipalId, request.getDocumentId(), ActionInvocation.create(
                 ActionType.fromCode(request.getActionRequested()), actionItemID));
 
 		//verify that user1 doesn't have any AR's

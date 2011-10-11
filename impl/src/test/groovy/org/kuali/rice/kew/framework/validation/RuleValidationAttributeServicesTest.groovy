@@ -97,12 +97,12 @@ public class RuleValidationAttributeServicesTest {
 
     @Test(expected=IllegalArgumentException.class)
  	void test_exporter_validate_no_attribute_name() {
-        exporter.validate(null, RuleValidationContext.Builder.create(Rule.Builder.create("ruleName").build()).build())
+        exporter.validate(null, RuleValidationContext.Builder.create(Rule.Builder.create().build()).build())
  	}
 
     @Test
     void test_exporter_load_attribute() {
-        def result = exporter.validate(MOCK_ATTR_NAME, RuleValidationContext.Builder.create(Rule.Builder.create("ruleName").build()).build())
+        def result = exporter.validate(MOCK_ATTR_NAME, RuleValidationContext.Builder.create(Rule.Builder.create().build()).build())
         Assert.assertNotNull(result)
  	}
 
@@ -110,7 +110,7 @@ public class RuleValidationAttributeServicesTest {
     void test_resolver() {
         def attrib = resolver.resolveRuleValidationAttribute(MOCK_ATTR_NAME, MOCK_APP_ID)
         Assert.assertNotNull(attrib)
-        def result = attrib.validate(RuleValidationContext.Builder.create(Rule.Builder.create("ruleName").build()).build())
+        def result = attrib.validate(RuleValidationContext.Builder.create(Rule.Builder.create().build()).build())
         Assert.assertNotNull(result)
  	}
 }

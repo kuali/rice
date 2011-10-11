@@ -61,7 +61,7 @@ class RuleValidationContextTest {
 
     @Test
     void test_Builder_create_success_optional_properties() {
-        Rule rule = Rule.Builder.create("ruleName").build()
+        Rule rule = Rule.Builder.create().build()
  	    RuleValidationContext ctx = RuleValidationContext.Builder.create(rule, null, null).build()
  	    Assert.assertEquals(rule, ctx.getRule())
         Assert.assertNull(ctx.getRuleDelegation())
@@ -70,7 +70,7 @@ class RuleValidationContextTest {
 
     @Test
     void test_Builder_create_success() {
-        Rule rule = Rule.Builder.create("ruleName").build()
+        Rule rule = Rule.Builder.create().build()
         RuleDelegation ruleDelegation = RuleDelegation.Builder.create().build()
         String principalId = "principalId"
         RuleValidationContext ctx = RuleValidationContext.Builder.create(rule, ruleDelegation, principalId).build()
@@ -81,7 +81,7 @@ class RuleValidationContextTest {
 
     @Test
     void test_Builder_create_copy_success() {
-        Rule rule = Rule.Builder.create("ruleName").build()
+        Rule rule = Rule.Builder.create().build()
         RuleDelegation ruleDelegation = RuleDelegation.Builder.create().build()
         String principalId = "principalId"
         def src = RuleValidationContext.Builder.create(rule, ruleDelegation, principalId).build()

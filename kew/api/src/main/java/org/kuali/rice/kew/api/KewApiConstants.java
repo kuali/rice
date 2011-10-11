@@ -53,6 +53,8 @@ public final class KewApiConstants {
         public static final int CURRENT = NODAL;
     }
 
+    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
+
     public static final class Namespaces {
         public static final String MODULE_NAME = "kew";
         public static final String KEW_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
@@ -63,7 +65,7 @@ public final class KewApiConstants {
         public static final String KEW_NAMESPACE_2_0 = KEW_NAMESPACE_PREFIX + "/" + Versions.VERSION_2_0;
 
     }
-    
+
     public static final class ServiceNames {
         public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE_SOAP = "workflowDocumentActionsServiceSoap";
     }

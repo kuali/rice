@@ -63,7 +63,6 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 	private String serviceVersion;
 	private String applicationId;
     private String instanceId;
-    private String namespace;
 
 	// if the service is exported from a plugin, we need to ensure it's invoked within the proper classloading context!
 	private ClassLoader serviceClassLoader;
@@ -75,14 +74,6 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 		this.serviceClassLoader = ClassLoaderUtils.getDefaultClassLoader();
 	}
 
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-		
 	public Object getService() {
 		return this.service;
 	}
@@ -239,6 +230,7 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 				this.servicePath = "/" + this.servicePath;
 			}
 		} else {
+            // default the serivce path to namespace
 			this.servicePath = "/";
 		}
 		
@@ -247,11 +239,6 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 			setServiceVersion(CoreConstants.Versions.UNSPECIFIED);
 		}
 
-        // default to 'unspecified' service version
-		if (StringUtils.isBlank(namespace)) {
-			setNamespace(CoreConstants.Namespaces.UNSPECIFIED);
-		}
-		
 		LOG.debug("Validating service " + this.serviceName);
 		
 		
@@ -267,11 +254,11 @@ public abstract class AbstractServiceDefinition implements ServiceDefinition {
 			}
 			try {
 				if (servicePath.equals("/")){
-					this.endpointUrl = new URL(endPointURL + this.getNamespace() + "/" + this.getServiceVersion() + "/" + this.getServiceName().getLocalPart());
+					this.endpointUrl = new URL(endPointURL + this.getServiceName().getLocalPart());
 				} else {
-					this.endpointUrl = new URL(endPointURL + "/" + this.getNamespace() + "/" + this.getServiceVersion() + "/" + this.getServiceName().getLocalPart());
+					this.endpointUrl = new URL(endPointURL + "/" + this.getServiceName().getLocalPart());
 				}
-			} catch (Exception e) {
+            } catch (Exception e) {
 				throw new ConfigurationException("Service Endpoint URL creation failed.", e);
 			}
 			

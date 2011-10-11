@@ -76,13 +76,13 @@
 		p:serviceRegistryDao-ref="rice.ksb.serviceRegistryDao" />
                       		
 	<bean id="rice.ksb.serviceRegistrySoap.serviceDefinition" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
-    p:namespace="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).MODULE_NAME }"
 		p:serviceNameSpaceURI="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"
 		p:localServiceName="serviceRegistrySoap"
 		p:jaxWsService="true"
 		p:busSecurity="${rice.ksb.serviceRegistrySoap.security}"
 		p:service-ref="rice.ksb.serviceRegistry"
-		p:serviceVersion="${rice.version}" />	
+		p:serviceVersion="${rice.version}"
+    p:servicePath="#{ T(org.kuali.rice.ksb.api.KsbApiConstants).SERVICE_PATH }" />
 	
 	<bean id="rice.ksb.serviceRegistrySoap.exporter" class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
 		p:serviceBus-ref="rice.ksb.serviceBus"

@@ -14,6 +14,8 @@ public final class KsbApiConstants {
 	 * The name of the KSB module
 	 */
 	public static final String KSB_MODULE_NAME = "KSB";
+
+    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 	
 	/**
 	 * Defines the set of out-of-the-box service types that the KSB understands.

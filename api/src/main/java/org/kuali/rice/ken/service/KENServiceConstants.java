@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.ken.service;
 
+import org.kuali.rice.core.api.CoreConstants;
+
 /**
  * Names of services published on the bus 
  * 
@@ -22,6 +24,8 @@ package org.kuali.rice.ken.service;
  */
 public final class KENServiceConstants {
     public static final String KENAPI_SERVICE = "KEN-KENAPIService";
+
+    public final static String SERVICE_PATH = "ken" + "/" + CoreConstants.Versions.VERSION_2_0;
 
 	private KENServiceConstants() {
 		throw new UnsupportedOperationException("do not call");

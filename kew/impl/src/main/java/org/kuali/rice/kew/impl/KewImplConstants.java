@@ -1,5 +1,7 @@
 package org.kuali.rice.kew.impl;
 
+import org.kuali.rice.kim.api.KimApiConstants;
+
 /**
  * Stores constants values and inner classes with constants values which are used by the KEW implementation.
  *

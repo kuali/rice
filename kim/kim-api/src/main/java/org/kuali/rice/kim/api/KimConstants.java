@@ -358,6 +358,8 @@ public final class KimConstants {
 		throw new UnsupportedOperationException("do not call");
 	}
 
+    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
+
     public final static class Namespaces {
         public static final String MODULE_NAME = "kim";
         public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;

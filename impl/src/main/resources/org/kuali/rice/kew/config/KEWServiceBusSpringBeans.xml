@@ -50,40 +50,20 @@
 		<property name="validRunMode" value="EMBEDDED" />
 	</bean>
 
-	<bean id="kewJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+	<bean id="kewService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
 		abstract="true">
-    <property name="namespace" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).MODULE_NAME }" />
-		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
+    <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
 		<property name="jaxWsService" value="true" />
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />
 		<property name="serviceVersion" value="${rice.version}" />
-	</bean>
-
-	<bean id="kewSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
-		abstract="true">
-    <property name="namespace" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).MODULE_NAME }" />
-		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
-		<property name="jaxWsService" value="false" />
-		<property name="priority" value="3" />
-		<property name="retryAttempts" value="0" />
-		<property name="serviceVersion" value="${rice.version}" />
-	</bean>
-	
-	<bean id="kewServiceNamespaceSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
-		abstract="true">
-    <property name="namespace" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).MODULE_NAME }" />
-		<property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.kew.api.KewApiConstants$Namespaces).KEW_NAMESPACE_2_0 }" />
-		<property name="jaxWsService" value="false" />
-		<property name="priority" value="3" />
-		<property name="retryAttempts" value="0" />
-		<property name="serviceVersion" value="${rice.version}" />
+    <property name="servicePath" value="#{ T(org.kuali.rice.kew.api.KewApiConstants).SERVICE_PATH }" />
 	</bean>
 
 	<bean id="rice.kew.workflowDocumentActionService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.workflowDocumentActionsService" />
 				</property>
@@ -96,7 +76,7 @@
   <bean id="rice.kew.actionListService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.actionListService" />
 				</property>
@@ -109,7 +89,7 @@
     <bean id="rice.kew.ruleService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.ruleService" />
 				</property>
@@ -122,7 +102,7 @@
 	<bean id="rice.kew.documentTypeService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.documentTypeService" />
 				</property>
@@ -135,7 +115,7 @@
 	<bean id="rice.kew.noteService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.noteService" />
 				</property>
@@ -148,7 +128,7 @@
   <bean id="rice.kew.documentLookupCustomizationHandlerService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.documentLookupCustomizationHandlerService" />
 				</property>
@@ -161,7 +141,7 @@
   <bean id="rice.kew.documentSecurityHandlerService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.documentSecurityHandlerService" />
 				</property>
@@ -174,7 +154,7 @@
   <bean id="rice.kew.ruleValidationAttributeExporterService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.ruleValidationAttributeExporterService" />
 				</property>
@@ -187,7 +167,7 @@
   <bean id="rice.kew.workflowRuleAttributeHandlerService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.workflowRuleAttributeHandlerService" />
 				</property>
@@ -202,7 +182,7 @@
 		parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.groupMembershipChangeQueue" />
 				</property>
@@ -222,7 +202,7 @@
 	<bean id="rice.kew.documentProcessingQueueSoap.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.documentProcessingQueue" />
 				</property>
@@ -237,7 +217,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="enBlanketApproveProcessor" />
 				</property>
@@ -252,7 +232,7 @@
   <bean id="rice.kew.documentAttributeIndexingQueueSoap.exporter" parent="kewEmbeddedServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
-      <bean parent="kewJaxWsSoapService">
+      <bean parent="kewService">
         <property name="service">
           <ref bean="rice.kew.documentAttributeIndexingQueue" />
         </property>
@@ -265,7 +245,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="enDocumentRequeuerService" />
 				</property>
@@ -278,7 +258,7 @@
   <bean id="rice.kew.responsibilityChangeProcessorSoap.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
-      <bean parent="kewJaxWsSoapService">
+      <bean parent="kewService">
         <property name="service">
           <ref bean="rice.kew.responsibilityChangeProcessor" />
         </property>
@@ -309,7 +289,7 @@
 	<bean id="rice.kew.immediateEmailReminderServiceSoap.exporter" parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.immediateEmailReminderService" />
 				</property>
@@ -322,7 +302,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<bean class="org.kuali.rice.kew.rule.RolePokerProcessor" />
 				</property>
@@ -335,7 +315,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewServiceNamespaceSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="enActionInvocationService" />
 				</property>
@@ -350,7 +330,7 @@
 	<bean id="rice.kew.kewTypeRepositoryServiceSoap.exporter" parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="kewJaxWsSoapService">
+			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.kewTypeRepositoryService" />
 				</property>
@@ -363,7 +343,7 @@
   <bean id="rice.kew.peopleFlowServiceSoap.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
-      <bean parent="kewJaxWsSoapService">
+      <bean parent="kewService">
         <property name="service">
           <ref bean="rice.kew.peopleFlowService" />
         </property>
@@ -397,7 +377,7 @@
   <bean parent="kewRemoteServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
-      <bean parent="kewJaxWsSoapService"
+      <bean parent="kewService"
             p:service-ref="kewCacheService"
             p:localServiceName="kewCacheServiceSoap"/>
     </property>

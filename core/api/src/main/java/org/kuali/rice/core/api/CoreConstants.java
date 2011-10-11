@@ -33,6 +33,8 @@ public final class CoreConstants {
     		throw new UnsupportedOperationException("do not call");
     	}
 	}
+
+    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + Versions.VERSION_2_0;
     
     public static final class Versions {
     	    	

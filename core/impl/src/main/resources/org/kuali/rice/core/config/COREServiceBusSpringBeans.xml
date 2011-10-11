@@ -60,13 +60,13 @@
   </bean>
 
   <bean id="coreService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
-    <property name="namespace" value="#{ T(org.kuali.rice.core.api.CoreConstants$Namespaces).MODULE_NAME }" />
     <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.core.api.CoreConstants$Namespaces).CORE_NAMESPACE_2_0 }"/>
     <property name="jaxWsService" value="true"/>
     <property name="priority" value="3"/>
     <property name="retryAttempts" value="0"/>
     <property name="busSecurity" value="${core.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
+    <property name="servicePath" value="#{ T(org.kuali.rice.core.api.CoreConstants).SERVICE_PATH }" />
     <property name="cacheManager" value="coreLocalCacheManager"/>
   </bean>
 

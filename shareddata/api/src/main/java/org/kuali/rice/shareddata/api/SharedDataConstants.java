@@ -24,6 +24,9 @@ import org.kuali.rice.core.api.CoreConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class SharedDataConstants {
+
+    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
+
     public static final class Namespaces {
     	public static final String MODULE_NAME = "shareddata";
         public static final String SHAREDDATA_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;

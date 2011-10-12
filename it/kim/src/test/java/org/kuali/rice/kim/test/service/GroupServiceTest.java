@@ -23,8 +23,7 @@ import org.kuali.rice.kim.test.KIMTestCase;
 
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Test the GroupService 
@@ -40,7 +39,24 @@ public class GroupServiceTest extends KIMTestCase {
 		super.setUp();
 		setGroupService(KimApiServiceLocator.getGroupService());
 	}
-	
+
+    @Test
+    public void testGetGroup() {
+        Group g7 = groupService.getGroup("g7");
+        assertNotNull(g7);
+        assertEquals("GroupSeven", g7.getName());
+        assertEquals("KUALI", g7.getNamespaceCode());
+        assertEquals("Group Seven", g7.getDescription());
+
+        // now fetch another group, this will help ensure that the cache is not always returning the same group,
+        // as per the issue reported here: https://jira.springsource.org/browse/SPR-8763
+        Group g8 = groupService.getGroup("g8");
+        assertNotNull(g8);
+        assertEquals("GroupEight", g8.getName());
+        assertEquals("KUALI", g8.getNamespaceCode());
+        assertEquals("Group Eight", g8.getDescription());
+    }
+
 	@Test
 	public void testGetDirectMemberGroupIds() {
 		List<String> groupIds = groupService.getDirectMemberGroupIds("g1");

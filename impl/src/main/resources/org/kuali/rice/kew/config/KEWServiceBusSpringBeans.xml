@@ -221,7 +221,7 @@
 				<property name="service">
 					<ref bean="enBlanketApproveProcessor" />
 				</property>
-				<property name="localServiceName" value="BlanketApproveProcessorService" />
+				<property name="localServiceName" value="blanketApprovalOrchestrationQueueSoap" />
 				<property name="priority" value="4" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />

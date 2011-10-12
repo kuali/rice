@@ -767,7 +767,8 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-			BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
+			BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
+                    docForm.getRouteHeader());
 			blanketApprove.orchestrateDocument(docForm.getRouteHeader().getDocumentId(), principalId,
                     docForm.getBlanketApproveActionTakenId(), nodeNames, true);
 			ActionMessages messages = new ActionMessages();

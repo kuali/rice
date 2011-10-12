@@ -173,23 +173,14 @@ public class BlanketApproveAction extends ActionTakenEvent {
         try {
         	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
-            BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
+            BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
+                    routeHeader);
             blanketApprove.orchestrateDocument(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(),
                     actionTaken.getActionTakenId(), nodeNames, shouldIndex);
-//
-
-//          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(
-//                  MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE, routeHeader);
-//          blanketApproveProcessor.invoke(BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader));
-
-//          SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.BLANKET_APPROVE_PROCESSING_SERVICE,
-//                  BlanketApproveProcessor.getPayLoad(user, action.getActionTaken(), nodeNames, routeHeader), routeHeader);
         } catch (Exception e) {
             LOG.error(e);
             throw new WorkflowRuntimeException(e);
         }
-//      SpringServiceLocator.getRouteQueueService().requeueDocument(routeHeader.getDocumentId(), KEWConstants.ROUTE_QUEUE_BLANKET_APPROVE_PRIORITY, new Long(0),
-//              BlanketApproveProcessor.class.getName(), BlanketApproveProcessor.getBlanketApproveProcessorValue(user, action.getActionTaken(), nodeNames));
     }
     
     public void performDeferredBlanketApproveWork(ActionTakenValue actionTaken) throws Exception {

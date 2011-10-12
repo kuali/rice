@@ -310,7 +310,7 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
 
     @Override
     public String getGroupId() {
-        if (getGroup() == null) {
+        if (!isUsingGroup()) {
             return null;
         }
         return getGroup().getId();

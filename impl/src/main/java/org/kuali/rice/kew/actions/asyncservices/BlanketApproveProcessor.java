@@ -34,7 +34,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 
 
 /**
- * Responsible for invoking the async piece of BlanketApprove
+ * References implementation of the {@code BlanketApprovalOrchestrationQueue}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

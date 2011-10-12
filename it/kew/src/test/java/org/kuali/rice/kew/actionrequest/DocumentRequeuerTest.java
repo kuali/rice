@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
+import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -61,7 +61,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
        }
 
        DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
-       DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);
+       DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);
        documentRequeuer.requeueDocument(document.getDocumentId());
 
        // initiate a requeue of the document

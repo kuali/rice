@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
+import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
@@ -45,14 +45,14 @@ import org.kuali.rice.kew.util.PerformanceLogger;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentRequeuerImpl implements DocumentRequeuerService {
+public class DocumentRequeuerImpl implements DocumentRefreshQueue {
 	
 	private RouteHelper helper = new RouteHelper();
     
 	/**
 	 * Requeues a document, and sets notification suppression data
 	 * 
-	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService#requeueDocument(java.lang.String)
+	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue#requeueDocument(java.lang.String)
 	 */
 	@Override
 	public void requeueDocument(String documentId) {

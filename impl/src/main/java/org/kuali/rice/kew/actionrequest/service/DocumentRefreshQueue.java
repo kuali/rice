@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentRequeuerService {
+public interface DocumentRefreshQueue {
 
 	void requeueDocument(String documentId) throws RiceIllegalArgumentException;
 	

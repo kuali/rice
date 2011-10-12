@@ -19,7 +19,7 @@ package org.kuali.rice.kew.messaging;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
+import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
@@ -80,11 +80,11 @@ public class MessageServiceNames {
 		return (BlanketApprovalOrchestrationQueue) getServiceAsynchronously(BLANKET_APPROVAL_ORCHESTRATION_QUEUE, document);
 	}
 	
-	public static DocumentRequeuerService getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
+	public static DocumentRefreshQueue getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
 		if (waitTime > 0) {
-			return (DocumentRequeuerService) getDelayedServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, waitTime);
+			return (DocumentRefreshQueue) getDelayedServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, waitTime);
 		}
-		return (DocumentRequeuerService) getServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, applicationId);
+		return (DocumentRefreshQueue) getServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, applicationId);
 	}
 
 	public static Object getServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document) {

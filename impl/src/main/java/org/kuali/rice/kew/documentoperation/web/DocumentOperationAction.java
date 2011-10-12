@@ -28,7 +28,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
+import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
@@ -748,7 +748,7 @@ public class DocumentOperationAction extends KewKualiAction {
 
 	public ActionForward queueDocumentRequeuer(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
-		DocumentRequeuerService docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getApplicationId(), docForm.getRouteHeader().getDocumentId(), 0);
+		DocumentRefreshQueue docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getApplicationId(), docForm.getRouteHeader().getDocumentId(), 0);
 		docRequeue.requeueDocument(docForm.getRouteHeader().getDocumentId());
 		ActionMessages messages = new ActionMessages();
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document Requeuer was successfully scheduled"));

@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +38,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
+import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
@@ -598,7 +597,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             {
                 applicationId = CoreConfigHelper.getApplicationId();
             }
-            DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(applicationId,
+            DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(applicationId,
                     documentId, cacheWait);
             documentRequeuer.requeueDocument(documentId);
         }

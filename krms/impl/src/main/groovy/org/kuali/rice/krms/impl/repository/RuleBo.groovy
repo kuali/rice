@@ -28,6 +28,7 @@ import org.kuali.rice.krms.api.repository.rule.RuleDefinitionContract
 import org.kuali.rice.krms.impl.ui.CompoundOpCodeNode
 import org.kuali.rice.krms.impl.ui.RuleTreeNode
 import org.kuali.rice.krms.impl.ui.SimplePropositionNode
+import org.kuali.rice.krms.impl.ui.SimplePropositionEditNode
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
    
@@ -82,13 +83,13 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     */
    public Tree getPropositionTree() {
        if (this.propositionTree == null){
-           this.propositionTree = refreshPropositionTree();
+           this.propositionTree = refreshPropositionTree(false);
        }
 
        return this.propositionTree;
    }
 
-   public Tree refreshPropositionTree(){
+   public Tree refreshPropositionTree(boolean editMode){
        Tree myTree = new Tree<RuleTreeNode, String>();
 
        Node<RuleTreeNode, String> rootNode = new Node<RuleTreeNode, String>();
@@ -96,12 +97,12 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
        propositionSummaryBuffer = new StringBuffer();
        PropositionBo prop = this.getProposition();
-       buildPropTree( rootNode, prop );
+       buildPropTree( rootNode, prop, editMode );
        this.propositionTree = myTree;
        return myTree;
    }
 
-   private void buildPropTree( Node sprout, PropositionBo prop){       
+   private void buildPropTree( Node sprout, PropositionBo prop, boolean editMode){
        // This is a work in progress
        // will need a recursive function to walk the tree in the compound proposition
        if (prop != null) {
@@ -110,9 +111,16 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                // add a node for the description display with a child proposition node
                Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
                child.setNodeLabel(prop.getDescription());
-               child.setNodeType(SimplePropositionNode.NODE_TYPE);
-               SimplePropositionNode pNode = new SimplePropositionNode(prop);
-               child.setData(pNode);
+               if (editMode){
+                   child.setNodeLabel("");
+                   child.setNodeType(SimplePropositionEditNode.NODE_TYPE);
+                   SimplePropositionEditNode pNode = new SimplePropositionEditNode(prop);
+                   child.setData(pNode);
+                } else {
+                  child.setNodeType(SimplePropositionNode.NODE_TYPE);
+                   SimplePropositionNode pNode = new SimplePropositionNode(prop);
+                   child.setData(pNode);
+               }
                sprout.getChildren().add(child);
                
 //               Node<RuleTreeNode, String> grandChild = new Node<RuleTreeNode, String>();
@@ -122,7 +130,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 //               grandChild.setData(pNode);
 //               child.getChildren().add(grandChild);
                
-               propositionSummaryBuffer.append(pNode.getParameterDisplayString())
+               propositionSummaryBuffer.append(prop.getParameterDisplayString())
            }
            else if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
                // Compound Proposition
@@ -140,7 +148,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                        addOpCodeNode(aNode, prop);
                    }
                    first = false;
-                   buildPropTree(aNode, child);
+                   buildPropTree(aNode, child, editMode);
                }
                propositionSummaryBuffer.append(" ) ");
            }

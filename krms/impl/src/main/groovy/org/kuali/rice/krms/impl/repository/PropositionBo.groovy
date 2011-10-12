@@ -45,10 +45,13 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 
     private String getParamValue(PropositionParameterBo prop){
         if (PropositionParameterType.TERM.getCode().equalsIgnoreCase(prop.getParameterType())){
-            //TODO: use termBoService
+            String termName = "";
             String termId = prop.getValue();
-            TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
-            String termName = term.getSpecification().getName();
+            if (termId != null && termId.length()>0){
+                //TODO: use termBoService
+                TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
+                termName = term.getSpecification().getName();
+            }
             return termName;
         } else {
             return prop.getValue();

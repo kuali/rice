@@ -19,16 +19,15 @@ package org.kuali.rice.kew.rule;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 /**
- * Defines a service for "poking" a role for a specified document.  When a role is 
- * "poked" it will attempt to re-resolve the members of a role.
+ * Defines the contract of a message queue for "poking" a role for a specified document.  When a role is "poked" it will
+ * attempt to re-resolve the members of a role and update action requests as appropriate.
  * 
- * @see RoleAttribute
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RolePoker {
 	
 	void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) throws RiceIllegalArgumentException;
+    
 	void reResolveRole(String documentId, String roleName) throws RiceIllegalArgumentException;
 
 }

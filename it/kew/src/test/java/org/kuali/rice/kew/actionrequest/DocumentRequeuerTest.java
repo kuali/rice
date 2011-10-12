@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
+import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;

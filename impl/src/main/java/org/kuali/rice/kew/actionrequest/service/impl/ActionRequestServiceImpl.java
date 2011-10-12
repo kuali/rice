@@ -38,7 +38,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
+import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;

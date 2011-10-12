@@ -28,7 +28,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
+import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;

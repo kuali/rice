@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
+import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
@@ -52,7 +52,7 @@ public class DocumentRequeuerImpl implements DocumentRefreshQueue {
 	/**
 	 * Requeues a document, and sets notification suppression data
 	 * 
-	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue#refreshDocument(java.lang.String)
+	 * @see org.kuali.rice.kew.api.document.DocumentRefreshQueue#refreshDocument(java.lang.String)
 	 */
 	@Override
 	public void refreshDocument(String documentId) {

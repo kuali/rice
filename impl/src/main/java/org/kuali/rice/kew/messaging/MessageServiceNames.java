@@ -19,7 +19,7 @@ package org.kuali.rice.kew.messaging;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue;
+import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;

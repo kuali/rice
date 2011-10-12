@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.actions.asyncservices;
+package org.kuali.rice.kew.impl.action;
 
 import java.util.HashSet;
 import java.util.Set;

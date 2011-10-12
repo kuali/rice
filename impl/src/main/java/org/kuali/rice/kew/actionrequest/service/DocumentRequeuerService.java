@@ -19,7 +19,9 @@ package org.kuali.rice.kew.actionrequest.service;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 /**
- * Interface for the DocumentRequeuerImpl service.
+ * Defines the contract for a message queue which "refreshes" a document at it's current node.  The refresh process will
+ * delete all pending action requests at the current node(s) on the document and then send the document back through at
+ * it's current node(s) so requests can be regenerated.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

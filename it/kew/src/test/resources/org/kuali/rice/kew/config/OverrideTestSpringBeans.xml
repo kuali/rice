@@ -54,7 +54,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
   <bean id="enExceptionRoutingService" class="org.kuali.rice.kew.routemanager.TestExceptionRoutingServiceImpl"/>
-  <bean id="enDocumentRequeuerService" class="mocks.MockDocumentRequeuerImpl" />
+  <bean id="enDocumentRequeuerService" class="mocks.MockDocumentRefreshQueueImpl" />
   <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl">
     <property name="deploymentEnvironment">
       <value>${environment}</value>

@@ -43,7 +43,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
+import org.kuali.rice.test.BaselineTestCase;
 
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class StandardWorkflowEngineTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {

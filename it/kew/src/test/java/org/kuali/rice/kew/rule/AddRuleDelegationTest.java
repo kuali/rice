@@ -16,13 +16,11 @@
  */
 package org.kuali.rice.kew.rule;
 
-import mocks.MockDocumentRequeuerImpl;
-import org.apache.commons.beanutils.PropertyUtils;
+import mocks.MockDocumentRefreshQueueImpl;
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.engine.node.PropertiesUtil;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -66,13 +64,13 @@ public class AddRuleDelegationTest extends KEWTestCase {
     	wd.route("");
 
     	// clear the current set of requeued document ids
-		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
+		MockDocumentRefreshQueueImpl.clearRequeuedDocumentIds();
 
     	// create and save a rule delegation
 		RuleTestUtils.createDelegationToUser(DOCTYPE, RULE_TEMPLATE, DELEGATE_USER);
 
 		assertTrue("our document should have been requeued!",
-				MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(wd.getDocumentId()));
+				MockDocumentRefreshQueueImpl.getRequeuedDocumentIds().contains(wd.getDocumentId()));
     }
 
 

@@ -20,15 +20,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 
-import org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl;
+import org.kuali.rice.kew.actionrequest.service.impl.DocumentRefreshQueueImpl;
 
 /**
- * a DocumentRequeuerImpl extension that keeps track of the ids for docs that were requeued
+ * a DocumentRefreshQueueImpl extension that keeps track of the ids for docs that were requeued
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class MockDocumentRequeuerImpl extends DocumentRequeuerImpl {
+public class MockDocumentRefreshQueueImpl extends DocumentRefreshQueueImpl {
 
 	private static final Set<String> requeuedDocumentIds = new HashSet<String>();
 	private static Lock lock;
@@ -42,7 +42,7 @@ public class MockDocumentRequeuerImpl extends DocumentRequeuerImpl {
 	}
 
 	/**
-	 * @see org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl#requeueDocument(java.lang.Long)
+	 * @see org.kuali.rice.kew.actionrequest.service.impl.DocumentRefreshQueueImpl#requeueDocument(java.lang.Long)
 	 */
 	@Override
 	public void refreshDocument(String documentId) {

@@ -41,11 +41,11 @@ import org.kuali.rice.kew.util.PerformanceLogger;
  * Addionally, it adds duplicate notification suppression state to RouteNodeInstanceS for 
  * which ActionRequestS will be regenerated. 
  * 
- * Intended to be called async and wired that way in server/client spring beans.
+ * <p>Intended to be called async and wired that way in server/client spring beans.</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentRequeuerImpl implements DocumentRefreshQueue {
+public class DocumentRefreshQueueImpl implements DocumentRefreshQueue {
 	
 	private RouteHelper helper = new RouteHelper();
     

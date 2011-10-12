@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import mocks.MockDocumentRequeuerImpl;
+import mocks.MockDocumentRefreshQueueImpl;
 import mocks.MockEmailNotificationService;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -204,13 +204,13 @@ public class NotificationSuppressionTest extends KEWTestCase {
 
         // reset mock service test data
         getMockEmailService().resetReminderCounts();
-        MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
+        MockDocumentRefreshQueueImpl.clearRequeuedDocumentIds();
 
         // this *SHOULD* requeue
         KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 
         assertTrue("document should have been requeued",
-                MockDocumentRequeuerImpl.getRequeuedDocumentIds().contains(document.getDocumentId()));
+                MockDocumentRefreshQueueImpl.getRequeuedDocumentIds().contains(document.getDocumentId()));
 
         assertTrue("should have notified user2",
                 1 == getMockEmailService().immediateReminderEmailsSent("user2", document.getDocumentId(),
@@ -222,7 +222,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
         getMockEmailService().resetReminderCounts();
 
         // now if we requeue, nobody should get notified
-        MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
+        MockDocumentRefreshQueueImpl.clearRequeuedDocumentIds();
         String applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(
                 document.getDocumentId());
         MessageServiceNames.getDocumentRequeuerService(

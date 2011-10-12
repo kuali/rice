@@ -746,10 +746,11 @@ public class DocumentOperationAction extends KewKualiAction {
 		return mapping.findForward("basic");
 	}
 
-	public ActionForward queueDocumentRequeuer(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	public ActionForward queueDocumentRefresh(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
 		DocumentOperationForm docForm = (DocumentOperationForm) form;
 		DocumentRefreshQueue docRequeue = MessageServiceNames.getDocumentRequeuerService(docForm.getRouteHeader().getDocumentType().getApplicationId(), docForm.getRouteHeader().getDocumentId(), 0);
-		docRequeue.requeueDocument(docForm.getRouteHeader().getDocumentId());
+		docRequeue.refreshDocument(docForm.getRouteHeader().getDocumentId());
 		ActionMessages messages = new ActionMessages();
 		messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Document Requeuer was successfully scheduled"));
 		saveMessages(request, messages);

@@ -62,10 +62,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
 
        DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
        DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);
-       documentRequeuer.requeueDocument(document.getDocumentId());
-
-       // initiate a requeue of the document
-//       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(), DocumentRequeuerImpl.class.getName());
+       documentRequeuer.refreshDocument(document.getDocumentId());
 
        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
        assertTrue(document.isEnroute());
@@ -79,8 +76,7 @@ public class DocumentRequeuerTest extends KEWTestCase {
 
        // now there should just be a pending request to ryan, let's requeue again, because of force action = false we should still
        // have only one pending request to ryan
-//       SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(), DocumentRequeuerImpl.class.getName());
-       documentRequeuer.requeueDocument(document.getDocumentId());
+       documentRequeuer.refreshDocument(document.getDocumentId());
        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
        assertTrue(document.isEnroute());
        requests = document.getRootActionRequests();

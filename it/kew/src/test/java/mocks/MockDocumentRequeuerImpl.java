@@ -45,8 +45,8 @@ public class MockDocumentRequeuerImpl extends DocumentRequeuerImpl {
 	 * @see org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl#requeueDocument(java.lang.Long)
 	 */
 	@Override
-	public void requeueDocument(String documentId) {
+	public void refreshDocument(String documentId) {
 		requeuedDocumentIds.add(documentId);
-		super.requeueDocument(documentId);
+		super.refreshDocument(documentId);
 	}
 }

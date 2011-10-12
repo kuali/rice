@@ -31,7 +31,7 @@
 	  	    <td width="66%" class="datacell">&nbsp;</td>
 	  	  </tr>
 	  	  <tr>
-	  	    <td width="33%" align="right" class="thnormal">Queue Document Requeuer<html-el:image property="methodToCall.queueDocumentRequeuer" src="${ConfigProperties.kew.url}/images/buttonsmall_submit.gif" alt="Queue Document Requeuer" /></td>
+	  	    <td width="33%" align="right" class="thnormal">Queue Document Refresh<html-el:image property="methodToCall.queueDocumentRefresh" src="${ConfigProperties.kew.url}/images/buttonsmall_submit.gif" alt="Queue Document Refresh" /></td>
 	  	    <td width="66%" class="datacell">&nbsp;</td>
 	  	  </tr>
 	  	  <tr>

@@ -227,8 +227,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
                 document.getDocumentId());
         MessageServiceNames.getDocumentRequeuerService(
                 (applicationId != null) ? applicationId : CoreConfigHelper.getApplicationId(),
-                document.getDocumentId(), 0).requeueDocument(document.getDocumentId());
-        //new DocumentRequeuerImpl().requeueDocument(document.getDocumentId());
+                document.getDocumentId(), 0).refreshDocument(document.getDocumentId());
 
         assertTrue("nobody should have been notified",
                 0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getDocumentId(),

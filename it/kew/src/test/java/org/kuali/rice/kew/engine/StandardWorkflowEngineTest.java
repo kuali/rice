@@ -104,10 +104,6 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 
 		KSBJavaService exploderAsService = (KSBJavaService) MessageServiceNames.getServiceAsynchronously(new QName("KEW", "exploader"), KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()));
 		exploderAsService.invoke("");
-		// we need to make the exploder a service to get this going again...
-		// SpringServiceLocator.getRouteQueueService().requeueDocument(document.getDocumentId(),
-		// ImTheExploderProcessor.class.getName());
-		// fail("Should have exploded!!!");
 		TestUtilities.waitForExceptionRouting();
 
 		// the document should be in exception routing now

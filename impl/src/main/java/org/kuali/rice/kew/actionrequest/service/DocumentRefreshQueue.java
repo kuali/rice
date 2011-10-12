@@ -17,6 +17,12 @@
 package org.kuali.rice.kew.actionrequest.service;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  * Defines the contract for a message queue which "refreshes" a document at it's current node.  The refresh process will
@@ -25,8 +31,11 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "documentRefreshQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface DocumentRefreshQueue {
 
-	void requeueDocument(String documentId) throws RiceIllegalArgumentException;
+    @WebMethod(operationName = "refreshDocument")
+	void refreshDocument(@WebParam(name = "documentId") String documentId) throws RiceIllegalArgumentException;
 	
 }

@@ -52,10 +52,10 @@ public class DocumentRequeuerImpl implements DocumentRefreshQueue {
 	/**
 	 * Requeues a document, and sets notification suppression data
 	 * 
-	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue#requeueDocument(java.lang.String)
+	 * @see org.kuali.rice.kew.actionrequest.service.DocumentRefreshQueue#refreshDocument(java.lang.String)
 	 */
 	@Override
-	public void requeueDocument(String documentId) {
+	public void refreshDocument(String documentId) {
 		if (StringUtils.isBlank(documentId)) {
             throw new RiceIllegalArgumentException("documentId is null or blank");
         }

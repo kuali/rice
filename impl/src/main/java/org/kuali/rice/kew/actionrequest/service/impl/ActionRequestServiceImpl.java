@@ -599,7 +599,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             }
             DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(applicationId,
                     documentId, cacheWait);
-            documentRequeuer.requeueDocument(documentId);
+            documentRequeuer.refreshDocument(documentId);
         }
         if ( LOG.isInfoEnabled() ) {
         	performanceLogger.log("Time to updateActionRequestsForResponsibilityChange");

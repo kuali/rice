@@ -89,7 +89,7 @@
     <td width="20" height="30">&nbsp;</td>
   </tr>
 
- <c:if test="${DocumentOperationForm.routeHeader.documentId != null && DocumentOperationForm.routeHeader.documentId != 0}">
+ <c:if test="${DocumentOperationForm.routeHeader.documentId != null && DocumentOperationForm.routeHeader.documentId != ''}">
   <tr>
   	<td><img src="images/pixel_clear.gif" alt="" width="20" height="20"></td>
   	<td> &nbsp;</td>

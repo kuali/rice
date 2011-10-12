@@ -311,7 +311,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
                 .getSearchableAttributeValueObjectTypes();
         PerformanceLogger perfLog = new PerformanceLogger(documentId);
         for (SearchableAttributeValue searchAttValue : attributeValues) {
-            String attributeSql = "select KEY_CD, VAL from " + searchAttValue.getAttributeTableName() + " where DOC_HDR_ID = " + documentId;
+            String attributeSql = "select KEY_CD, VAL from " + searchAttValue.getAttributeTableName() + " where DOC_HDR_ID = '" + documentId + "'";
             ResultSet attributeResultSet = null;
             try {
                 attributeResultSet = searchAttributeStatement.executeQuery(attributeSql);
@@ -343,7 +343,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
         String docHeaderTableAlias = "DOC_HDR";
 
         String sqlPrefix = "Select * from (";
-        String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
+        String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.CRTE_DT desc";
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
         StringBuilder selectSQL = new StringBuilder("select DISTINCT("+ docHeaderTableAlias +".DOC_HDR_ID), "+ docHeaderTableAlias +".INITR_PRNCPL_ID, "
                 + docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docHeaderTableAlias +".APP_DOC_STAT, "+ docTypeTableAlias +".DOC_TYP_NM, "

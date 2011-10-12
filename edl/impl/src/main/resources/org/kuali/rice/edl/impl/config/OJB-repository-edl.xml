@@ -40,7 +40,7 @@
   </class-descriptor>
 
     <class-descriptor class="org.kuali.rice.edl.impl.extract.Dump" table="KREW_EDL_DMP_T">
-    <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT" primarykey="true" />
+    <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="VARCHAR" primarykey="true" />
     <field-descriptor column="DOC_TYP_NM" name="docTypeName" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_STAT_CD" name="docRouteStatusCode" jdbc-type="VARCHAR" />
     <field-descriptor column="DOC_HDR_MDFN_DT" name="docModificationDate" jdbc-type="TIMESTAMP" />
@@ -56,7 +56,7 @@
 
   <class-descriptor class="org.kuali.rice.edl.impl.extract.Fields" table="KREW_EDL_FLD_DMP_T">
     <field-descriptor column="EDL_FIELD_DMP_ID" name="fieldId" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="KREW_EDL_FLD_DMP_S" />
-    <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT"/>
+    <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="VARCHAR"/>
     <field-descriptor column="FLD_NM" name="fieldName" jdbc-type="VARCHAR"/>
     <field-descriptor column="FLD_VAL" name="fieldValue" jdbc-type="VARCHAR"/>
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />

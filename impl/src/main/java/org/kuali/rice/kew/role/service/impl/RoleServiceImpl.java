@@ -35,9 +35,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
-import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -63,11 +61,10 @@ public class RoleServiceImpl implements RoleService {
         LOG.debug("Re-resolving role asynchronously for "+infoString);
     	Set documentIds = new HashSet();
     	findAffectedDocuments(documentType, roleName, null, documentIds);
-    	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
+    	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerQueue");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		QName rolePokerName = MessageServiceNames.ROLE_POKER;
-    		RolePokerQueue rolePokerQueue = (RolePokerQueue) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
+    		RolePokerQueue rolePokerQueue = MessageServiceNames.getRolePokerQueue(documentId);
     		rolePokerQueue.reResolveRole(documentId, roleName);
 		}
     }
@@ -82,11 +79,10 @@ public class RoleServiceImpl implements RoleService {
         LOG.debug("Re-resolving qualified role asynchronously for "+infoString);
     	Set documentIds = new HashSet();
     	findAffectedDocuments(documentType, roleName, qualifiedRoleNameLabel, documentIds);
-    	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerProcessor");
+    	LOG.debug(documentIds.size()+" documents were affected by this re-resolution, requeueing with the RolePokerQueue");
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
-    		QName rolePokerName = MessageServiceNames.ROLE_POKER;
-    		RolePokerQueue rolePokerQueue = (RolePokerQueue) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
+    		RolePokerQueue rolePokerQueue = MessageServiceNames.getRolePokerQueue(documentId);
     		rolePokerQueue.reResolveQualifiedRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
     }

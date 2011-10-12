@@ -306,7 +306,7 @@
 				<property name="service">
 					<bean class="org.kuali.rice.kew.rule.RolePokerProcessor" />
 				</property>
-				<property name="localServiceName" value="RolePokerProcessorService" />
+				<property name="localServiceName" value="rolePokerQueueSoap" />
 				<property name="priority" value="10" />
 			</bean>
 		</property>

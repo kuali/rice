@@ -19,6 +19,8 @@ package org.kuali.rice.kew.messaging;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.action.RolePokerQueue;
 import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
 import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
@@ -26,6 +28,7 @@ import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 /**
@@ -35,30 +38,23 @@ import org.kuali.rice.ksb.api.KsbApiServiceLocator;
  */
 public class MessageServiceNames {
 
-	public static final QName DOCUMENT_PROCESSING_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentProcessingQueueSoap");
+	private static final QName DOCUMENT_PROCESSING_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentProcessingQueueSoap");
 
-	public static final String ACTION_LIST_IMMEDIATE_REMINDER_SERVICE = "ImmediateEmailService";
+	private static final String ACTION_LIST_IMMEDIATE_REMINDER_SERVICE = "ImmediateEmailService";
 
-	public static final QName BLANKET_APPROVAL_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "blanketApprovalOrchestrationQueueSoap");
+	private static final QName BLANKET_APPROVAL_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "blanketApprovalOrchestrationQueueSoap");
 
-	public static final QName DOCUMENT_REFRESH_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentRefreshQueueSoap");
+	private static final QName DOCUMENT_REFRESH_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentRefreshQueueSoap");
 
-	public static final QName ROLE_POKER = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "RolePokerProcessorService");
+	private static final QName ROLE_POKER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "rolePokerQueueSoap");
 
-	public static final String MOVE_DOCUMENT_PROCESSOR = "MoveDocumentProcessor";
+	private static final String MOVE_DOCUMENT_PROCESSOR = "MoveDocumentProcessor";
 
-    public static final QName ACTION_INVOCATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "actionInvocationQueueSoap");
+    private static final QName ACTION_INVOCATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "actionInvocationQueueSoap");
 
 	private static QName getQName(String baseServiceName, DocumentRouteHeaderValue document) {
 		if (document != null) {
 			return new QName(document.getDocumentType().getApplicationId(), baseServiceName);
-		}
-		return new QName(baseServiceName);
-	}
-
-	private static QName getQName(String baseServiceName, String applicationId) {
-		if (!StringUtils.isEmpty(applicationId)) {
-			return new QName(applicationId, baseServiceName);
 		}
 		return new QName(baseServiceName);
 	}
@@ -79,6 +75,10 @@ public class MessageServiceNames {
             DocumentRouteHeaderValue document) {
 		return (BlanketApprovalOrchestrationQueue) getServiceAsynchronously(BLANKET_APPROVAL_ORCHESTRATION_QUEUE, document);
 	}
+
+    public static RolePokerQueue getRolePokerQueue(String documentId) {
+		return (RolePokerQueue) getServiceAsynchronously(ROLE_POKER_QUEUE, documentId);
+	}
 	
 	public static DocumentRefreshQueue getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
 		if (waitTime > 0) {
@@ -90,6 +90,14 @@ public class MessageServiceNames {
 	public static Object getServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document) {
         String applicationId = document.getDocumentType().getApplicationId();
 		return getServiceAsynchronously(serviceName, getDocId(document), applicationId);
+	}
+
+    public static Object getServiceAsynchronously(QName serviceName, String documentId) {
+        String applicationId = null;
+        if (StringUtils.isNotBlank(documentId)) {
+            applicationId = KEWServiceLocator.getRouteHeaderService().getApplicationIdByDocumentId(documentId);
+        }
+        return getServiceAsynchronously(serviceName, documentId, applicationId);
 	}
 
 	public static Object getServiceAsynchronously(QName serviceName, String documentId, String applicationId) {

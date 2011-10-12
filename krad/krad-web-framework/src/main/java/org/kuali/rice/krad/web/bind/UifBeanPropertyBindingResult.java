@@ -27,8 +27,8 @@ import org.springframework.validation.BeanPropertyBindingResult;
 public class UifBeanPropertyBindingResult extends BeanPropertyBindingResult {
     private static final long serialVersionUID = -3740046436620585003L;
 
-    public UifBeanPropertyBindingResult(Object target, String objectName,  boolean autoGrowNestedPaths) {
-        super(target, objectName, autoGrowNestedPaths);
+    public UifBeanPropertyBindingResult(Object target, String objectName,  boolean autoGrowNestedPaths, int autoGrowCollectionLimit) {
+        super(target, objectName, autoGrowNestedPaths, autoGrowCollectionLimit);
     }
 
     /**

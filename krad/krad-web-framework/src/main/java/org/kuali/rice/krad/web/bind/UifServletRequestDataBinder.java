@@ -68,7 +68,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     public void initBeanPropertyAccess() {
         Assert.state(this.bindingResult == null,
                 "DataBinder is already initialized - call initBeanPropertyAccess before other configuration methods");
-        this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths());
+        this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths(), getAutoGrowCollectionLimit());
         if (this.conversionService != null) {
             this.bindingResult.initConversion(this.conversionService);
         }

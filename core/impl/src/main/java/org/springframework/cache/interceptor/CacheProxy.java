@@ -50,7 +50,7 @@ public final class CacheProxy {
 
         final CacheInterceptor interceptor = new CacheInterceptor();
         interceptor.setCacheManager(cacheManager);
-        interceptor.setCacheDefinitionSources(source);
+        interceptor.setCacheOperationSources(source);
         //important!  must call afterPropertiesSet or does not execute caching logic
         interceptor.afterPropertiesSet();
 

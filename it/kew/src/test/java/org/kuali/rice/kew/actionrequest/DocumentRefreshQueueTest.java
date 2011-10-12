@@ -40,7 +40,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentRequeuerTest extends KEWTestCase {
+public class DocumentRefreshQueueTest extends KEWTestCase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionRequestsConfig.xml");

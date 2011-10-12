@@ -204,6 +204,18 @@
 						</goals>
 					</execution>
           <execution>
+						<id>rolePokerQueue-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.action.RolePokerQueue</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/RolePokerQueue.wsdl</outputFile>
+							<serviceName>RolePokerQueue</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
 						<id>pepleFlowService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>

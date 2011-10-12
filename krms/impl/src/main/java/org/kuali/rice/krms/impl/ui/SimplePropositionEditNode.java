@@ -61,9 +61,14 @@ public class SimplePropositionEditNode extends RuleTreeNode {
     private String getParamValue(PropositionParameterBo prop){
         if (PropositionParameterType.TERM.getCode().equalsIgnoreCase(prop.getParameterType())){
             //TODO: use termBoService
+            String termName = "";
             String termId = prop.getValue();
-            TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
-            String termName = term.getSpecification().getName();
+            if (termId != null && termId.length() > 0){
+                TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
+                if (term != null){
+                    termName = term.getSpecification().getName();
+                }
+            }
             return termName;
         } else {
             return prop.getValue();

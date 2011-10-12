@@ -192,6 +192,18 @@
 						</goals>
 					</execution>
           <execution>
+						<id>documentRefreshQueue-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.document.DocumentRefreshQueue</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentRefreshQueue.wsdl</outputFile>
+							<serviceName>DocumentRefreshQueue</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
 						<id>pepleFlowService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>

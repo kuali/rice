@@ -482,29 +482,6 @@
       </list>
     </property>
   </bean>
-  <bean name="ruleActionTable" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
-    <property name="header.render" value="false"/>
-    <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ActionBo"/>
-    <property name="propertyName" value="agendaItemLine.rule.actions"/>
-    <property name="layoutManager.sequencePropertyName" value="sequenceNumber" />
-    <!--<property name="layoutManager.renderSequenceField" value="false"/> // if you want to hide the sequence number in the table-->
-    <property name="layoutManager.tableTools.render" value="true"/>
-    <property name="collectionLookup.render" value="false"/>
-    <property name="items">
-      <list>
-        <bean parent="AttributeField" p:propertyName="typeId" p:label="Type" p:required="true">
-          <property name="control">
-            <bean parent="SelectControl"/>
-          </property>
-          <property name="optionsFinder">
-            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="true"/>
-          </property>
-        </bean>
-        <bean parent="AttributeField" p:propertyName="name" p:label="Name" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="description" p:label="Description" p:required="true"/>
-      </list>
-    </property>
-  </bean>
 
   <bean parent="CollectionGroupTableLayout"
     p:layoutManager.numberOfColumns="4">

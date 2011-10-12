@@ -48,7 +48,7 @@ public interface RuleService {
      */
     @WebMethod(operationName = "getRule")
     @WebResult(name = "rule")
-    @Cacheable(value=Rule.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value=Rule.Cache.NAME, key="'id=' + #p0")
 	Rule getRule(@WebParam(name="id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -64,7 +64,7 @@ public interface RuleService {
      */
     @WebMethod(operationName = "getRuleByName")
     @WebResult(name = "rule")
-    @Cacheable(value=Rule.Cache.NAME, key="'name=' + #name")
+    @Cacheable(value=Rule.Cache.NAME, key="'name=' + #p0")
 	Rule getRuleByName(@WebParam(name="name") String name)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -81,7 +81,7 @@ public interface RuleService {
     @WebResult(name = "rules")
     @XmlElementWrapper(name = "rules", required = true)
     @XmlElement(name = "rule", required = true)
-    @Cacheable(value=Rule.Cache.NAME, key="'templateId=' + #templateId")
+    @Cacheable(value=Rule.Cache.NAME, key="'templateId=' + #p0")
 	List<Rule> getRulesByTemplateId(@WebParam(name="templateId") String templateId)
         throws RiceIllegalArgumentException;
 
@@ -101,7 +101,7 @@ public interface RuleService {
     @WebResult(name = "rules")
     @XmlElementWrapper(name = "rules", required = true)
     @XmlElement(name = "rule", required = true)
-    @Cacheable(value=Rule.Cache.NAME, key="'templateName=' + #templateName + '|' + 'documentTypeName=' + #documentTypeName")
+    @Cacheable(value=Rule.Cache.NAME, key="'templateName=' + #p0 + '|' + 'documentTypeName=' + #p1")
 	List<Rule> getRulesByTemplateNameAndDocumentTypeName(@WebParam(name = "templateName") String templateName,
             @WebParam(name = "documentTypeName") String documentTypeName,
             @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name = "effectiveDate") DateTime effectiveDate)
@@ -153,7 +153,7 @@ public interface RuleService {
      */
     @WebMethod(operationName = "getRuleTemplate")
     @WebResult(name = "ruleTemplate")
-    @Cacheable(value=RuleTemplate.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value=RuleTemplate.Cache.NAME, key="'id=' + #p0")
     RuleTemplate getRuleTemplate(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -168,7 +168,7 @@ public interface RuleService {
      */
     @WebMethod(operationName = "getRuleTemplateByName")
     @WebResult(name = "ruleTemplate")
-    @Cacheable(value=RuleTemplate.Cache.NAME, key="'name=' + #name")
+    @Cacheable(value=RuleTemplate.Cache.NAME, key="'name=' + #p0")
     RuleTemplate getRuleTemplateByName(@WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
     /**
@@ -199,7 +199,7 @@ public interface RuleService {
      */
     @WebMethod(operationName = "getRuleResponsibility")
     @WebResult(name = "ruleResponsibility")
-    @Cacheable(value=RuleResponsibility.Cache.NAME, key="'responsibilityId=' + #responsibilityId")
+    @Cacheable(value=RuleResponsibility.Cache.NAME, key="'responsibilityId=' + #p0")
     RuleResponsibility getRuleResponsibility(@WebParam(name = "responsibilityId") String responsibilityId) throws RiceIllegalArgumentException;
 
     /**
@@ -215,7 +215,7 @@ public interface RuleService {
     @XmlElementWrapper(name = "ruleDelegations", required = true)
     @XmlElement(name = "ruleDelegation", required = false)
     @WebResult(name = "ruleDelegations")
-    @Cacheable(value=RuleDelegation.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value=RuleDelegation.Cache.NAME, key="'id=' + #p0")
 	List<RuleDelegation> getRuleDelegationsByResponsibiltityId(@WebParam(name="id") String id)
         throws RiceIllegalArgumentException;
 }

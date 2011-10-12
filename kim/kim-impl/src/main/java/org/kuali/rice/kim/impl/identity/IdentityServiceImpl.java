@@ -93,10 +93,8 @@ public class IdentityServiceImpl implements IdentityService {
 	private BusinessObjectService businessObjectService;
 
     @Override
-	public Entity getEntity(String entityId) {
-        if (StringUtils.isBlank(entityId)) {
-            throw new RiceIllegalArgumentException("entityId is blank");
-        }
+	public Entity getEntity(String entityId) throws RiceIllegalArgumentException {
+        incomingParamCheck(entityId, "entityId");
 
 		EntityBo entity = getEntityBo( entityId );
 		if ( entity == null ) {
@@ -106,10 +104,9 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 	
     @Override
-	public Entity getEntityByPrincipalId(String principalId) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is blank");
-        }
+	public Entity getEntityByPrincipalId(String principalId) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+
 		EntityBo entity = getEntityBoByPrincipalId(principalId);
 		if ( entity == null ) {
 			return null;
@@ -118,10 +115,9 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 	
     @Override
-	public Entity getEntityByPrincipalName(String principalName) {
-        if (StringUtils.isBlank(principalName)) {
-            throw new RiceIllegalArgumentException("principalName is blank");
-        }
+	public Entity getEntityByPrincipalName(String principalName) throws RiceIllegalArgumentException{
+        incomingParamCheck(principalName, "principalName");
+
 		EntityBo entity = getEntityBoByPrincipalName(principalName);
 		if ( entity == null ) {
 			return null;
@@ -130,10 +126,9 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 	
     @Override
-	public EntityDefault getEntityDefault(String entityId) {
-        if (StringUtils.isBlank(entityId)) {
-            throw new RiceIllegalArgumentException("entityId is blank");
-        }
+	public EntityDefault getEntityDefault(String entityId) throws RiceIllegalArgumentException {
+        incomingParamCheck(entityId, "entityId");
+
 		EntityBo entity = getEntityBo( entityId );
 		if ( entity == null ) {
 			return null;
@@ -142,10 +137,9 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 	
     @Override
-	public EntityDefault getEntityDefaultByPrincipalId(String principalId) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is blank");
-        }
+	public EntityDefault getEntityDefaultByPrincipalId(String principalId) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+
 		EntityBo entity = getEntityBoByPrincipalId(principalId);
 		if ( entity == null ) {
 			return null;
@@ -154,10 +148,9 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 	
     @Override
-	public EntityDefault getEntityDefaultByPrincipalName(String principalName) {
-        if (StringUtils.isBlank(principalName)) {
-            throw new RiceIllegalArgumentException("principalName is blank");
-        }
+	public EntityDefault getEntityDefaultByPrincipalName(String principalName) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalName, "principalName");
+
 		EntityBo entity = getEntityBoByPrincipalName(principalName);
 		if ( entity == null ) {
 			return null;
@@ -166,13 +159,10 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 	
     @Override
-	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) {
-        if (StringUtils.isBlank(principalName)) {
-            throw new RiceIllegalArgumentException("principalName is blank");
-        }
-        if (StringUtils.isBlank(password)) {
-            throw new RiceIllegalArgumentException("password is blank");
-        }
+	public Principal getPrincipalByPrincipalNameAndPassword(String principalName, String password) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalName, "principalName");
+        incomingParamCheck(password, "password");
+
 		Map<String,Object> criteria = new HashMap<String,Object>(3);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName);
         criteria.put(KIMPropertyConstants.Principal.PASSWORD, password);
@@ -186,10 +176,8 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
-    public Principal addPrincipalToEntity(Principal principal) {
-        if (principal == null) {
-            throw new RiceIllegalArgumentException("principal is null");
-        }
+    public Principal addPrincipalToEntity(Principal principal) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(principal, "principal");
 
         if (StringUtils.isEmpty(principal.getEntityId()) || StringUtils.isBlank(principal.getEntityId())
                 || StringUtils.isEmpty(principal.getPrincipalName()) || StringUtils.isBlank(principal.getPrincipalName())) {
@@ -204,10 +192,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public Principal updatePrincipal(Principal principal) {
-        if (principal == null) {
-            throw new RiceIllegalArgumentException("principal is null");
-        }
+    public Principal updatePrincipal(Principal principal) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(principal, "principal");
 
         if (StringUtils.isEmpty(principal.getEntityId()) || StringUtils.isBlank(principal.getEntityId())
                 || StringUtils.isEmpty(principal.getPrincipalName()) || StringUtils.isBlank(principal.getPrincipalName())) {
@@ -223,10 +209,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public Principal inactivatePrincipal(String principalId) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is blank");
-        }
+    public Principal inactivatePrincipal(String principalId) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(principalId, "principalId");
 
         Principal principal = getPrincipal(principalId);
         if (principal == null) {
@@ -238,10 +222,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public Principal inactivatePrincipalByName(String principalName) {
-        if (StringUtils.isBlank(principalName)) {
-            throw new RiceIllegalArgumentException("principalName is blank");
-        }
+    public Principal inactivatePrincipalByName(String principalName) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(principalName, "principalName");
 
         Principal principal = getPrincipalByPrincipalName(principalName);
         if (principal == null) {
@@ -253,10 +235,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityTypeContactInfo addEntityTypeContactInfoToEntity(EntityTypeContactInfo entityTypeData) {
-        if (entityTypeData == null) {
-            throw new RiceIllegalArgumentException("entityTypeData is null");
-        }
+    public EntityTypeContactInfo addEntityTypeContactInfoToEntity(EntityTypeContactInfo entityTypeData) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(entityTypeData, "entityTypeData");
 
         if (StringUtils.isEmpty(entityTypeData.getEntityId()) || StringUtils.isBlank(entityTypeData.getEntityId())
                 || StringUtils.isEmpty(entityTypeData.getEntityTypeCode()) || StringUtils.isBlank(entityTypeData.getEntityTypeCode())) {
@@ -279,10 +259,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityTypeContactInfo updateEntityTypeContactInfo(EntityTypeContactInfo entityTypeContactInfo) {
-        if (entityTypeContactInfo == null) {
-            throw new RiceIllegalArgumentException("entityTypeContactInfo is null");
-        }
+    public EntityTypeContactInfo updateEntityTypeContactInfo(EntityTypeContactInfo entityTypeContactInfo) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(entityTypeContactInfo, "entityTypeContactInfo");
 
         if (StringUtils.isBlank(entityTypeContactInfo.getEntityId()) || StringUtils.isEmpty(entityTypeContactInfo.getEntityId())
                 || StringUtils.isBlank(entityTypeContactInfo.getEntityTypeCode()) || StringUtils.isEmpty(entityTypeContactInfo.getEntityTypeCode())) {
@@ -297,14 +275,9 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityTypeContactInfo inactivateEntityTypeContactInfo(String entityId, String entityTypeCode) {
-        if (StringUtils.isBlank(entityId)) {
-            throw new RiceIllegalArgumentException("entityId is null");
-        }
-
-        if (StringUtils.isBlank(entityTypeCode)) {
-            throw new RiceIllegalArgumentException("entityTypeCode is null");
-        }
+    public EntityTypeContactInfo inactivateEntityTypeContactInfo(String entityId, String entityTypeCode) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(entityId, "entityId");
+        incomingParamCheck(entityTypeCode, "entityTypeCode");
 
         EntityTypeContactInfoBo bo = getEntityTypeDataBo(entityId, entityTypeCode);
         if (bo == null) {
@@ -330,10 +303,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityAddress addAddressToEntity(EntityAddress address) {
-        if (address == null) {
-            throw new RiceIllegalArgumentException("address is null");
-        }
+    public EntityAddress addAddressToEntity(EntityAddress address) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(address, "address");
 
         if (StringUtils.isEmpty(address.getEntityId()) || StringUtils.isBlank(address.getEntityId())
                 || StringUtils.isEmpty(address.getEntityTypeCode()) || StringUtils.isBlank(address.getEntityTypeCode())) {
@@ -351,10 +322,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityAddress updateAddress(EntityAddress address) {
-        if (address == null) {
-            throw new RiceIllegalArgumentException("address is null");
-        }
+    public EntityAddress updateAddress(EntityAddress address) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(address, "address");
 
         if (StringUtils.isEmpty(address.getEntityId()) || StringUtils.isBlank(address.getEntityId())
                 || StringUtils.isEmpty(address.getEntityTypeCode()) || StringUtils.isBlank(address.getEntityTypeCode())) {
@@ -373,10 +342,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityAddress inactivateAddress(String addressId) {
-        if (StringUtils.isBlank(addressId)) {
-            throw new RiceIllegalArgumentException("addressId is null");
-        }
+    public EntityAddress inactivateAddress(String addressId) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(addressId, "addressId");
 
         EntityAddressBo bo = getEntityAddressBo(addressId);
         if (bo == null) {
@@ -401,10 +368,8 @@ public class IdentityServiceImpl implements IdentityService {
         return businessObjectService.findByPrimaryKey(EntityEmailBo.class, criteria);
     }
     @Override
-    public EntityEmail addEmailToEntity(EntityEmail email) {
-        if (email == null) {
-            throw new RiceIllegalArgumentException("email is null");
-        }
+    public EntityEmail addEmailToEntity(EntityEmail email) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(email, "email");
 
         if (StringUtils.isEmpty(email.getEntityId()) || StringUtils.isBlank(email.getEntityId())
                 || StringUtils.isEmpty(email.getEntityTypeCode()) || StringUtils.isBlank(email.getEntityTypeCode())) {
@@ -422,10 +387,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityEmail updateEmail(EntityEmail email) {
-        if (email == null) {
-            throw new RiceIllegalArgumentException("email is null");
-        }
+    public EntityEmail updateEmail(EntityEmail email) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(email, "email");
 
         if (StringUtils.isEmpty(email.getEntityId()) || StringUtils.isBlank(email.getEntityId())
                 || StringUtils.isEmpty(email.getEntityTypeCode()) || StringUtils.isBlank(email.getEntityTypeCode())) {
@@ -444,10 +407,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityEmail inactivateEmail(String emailId) {
-        if (StringUtils.isBlank(emailId)) {
-            throw new RiceIllegalArgumentException("emailId is null");
-        }
+    public EntityEmail inactivateEmail(String emailId) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(emailId, "emailId");
 
         EntityEmailBo bo = getEntityEmailBo(emailId);
         if (bo == null) {
@@ -473,10 +434,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityPhone addPhoneToEntity(EntityPhone phone) {
-        if (phone == null) {
-            throw new RiceIllegalArgumentException("phone is null");
-        }
+    public EntityPhone addPhoneToEntity(EntityPhone phone) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(phone, "phone");
 
         if (StringUtils.isEmpty(phone.getEntityId()) || StringUtils.isBlank(phone.getEntityId())
                 || StringUtils.isEmpty(phone.getEntityTypeCode()) || StringUtils.isBlank(phone.getEntityTypeCode())) {
@@ -494,10 +453,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityPhone updatePhone(EntityPhone phone) {
-        if (phone == null) {
-            throw new RiceIllegalArgumentException("phone is null");
-        }
+    public EntityPhone updatePhone(EntityPhone phone) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(phone, "phone");
 
         if (StringUtils.isEmpty(phone.getEntityId()) || StringUtils.isBlank(phone.getEntityId())
                 || StringUtils.isEmpty(phone.getEntityTypeCode()) || StringUtils.isBlank(phone.getEntityTypeCode())) {
@@ -516,10 +473,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityPhone inactivatePhone(String phoneId) {
-        if (StringUtils.isBlank(phoneId)) {
-            throw new RiceIllegalArgumentException("phoneId is null");
-        }
+    public EntityPhone inactivatePhone(String phoneId) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(phoneId, "phoneId");
 
         EntityPhoneBo bo = getEntityPhoneBo(phoneId);
         if (bo == null) {
@@ -538,10 +493,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityExternalIdentifier addExternalIdentifierToEntity(EntityExternalIdentifier externalId) {
-        if (externalId == null) {
-            throw new RiceIllegalArgumentException("externalId is null");
-        }
+    public EntityExternalIdentifier addExternalIdentifierToEntity(EntityExternalIdentifier externalId) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(externalId, "externalId");
 
         if (StringUtils.isEmpty(externalId.getEntityId()) || StringUtils.isBlank(externalId.getEntityId())
                 || StringUtils.isEmpty(externalId.getExternalIdentifierTypeCode()) || StringUtils.isBlank(externalId.getExternalIdentifierTypeCode())) {
@@ -556,10 +509,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityExternalIdentifier updateExternalIdentifier(EntityExternalIdentifier externalId) {
-        if (externalId == null) {
-            throw new RiceIllegalArgumentException("externalId is null");
-        }
+    public EntityExternalIdentifier updateExternalIdentifier(EntityExternalIdentifier externalId) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(externalId, "externalId");
 
         if (StringUtils.isEmpty(externalId.getEntityId()) || StringUtils.isBlank(externalId.getEntityId())
                 || StringUtils.isEmpty(externalId.getExternalIdentifierTypeCode()) || StringUtils.isBlank(externalId.getExternalIdentifierTypeCode())) {
@@ -582,10 +533,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityAffiliation addAffiliationToEntity(EntityAffiliation affiliation) {
-        if (affiliation == null) {
-            throw new RiceIllegalArgumentException("affiliation is null");
-        }
+    public EntityAffiliation addAffiliationToEntity(EntityAffiliation affiliation) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(affiliation, "affiliation");
 
         if (StringUtils.isEmpty(affiliation.getEntityId()) || StringUtils.isBlank(affiliation.getEntityId())) {
             throw new RiceIllegalStateException("Affiliation's entityId must be populated before creation");
@@ -602,10 +551,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityAffiliation updateAffiliation(EntityAffiliation affiliation) {
-        if (affiliation == null) {
-            throw new RiceIllegalArgumentException("affiliation is null");
-        }
+    public EntityAffiliation updateAffiliation(EntityAffiliation affiliation) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(affiliation, "affiliation");
 
         if (StringUtils.isEmpty(affiliation.getEntityId()) || StringUtils.isBlank(affiliation.getEntityId())) {
             throw new RiceIllegalStateException("Affiliation's entityId must be populated before creation");
@@ -623,10 +570,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityAffiliation inactivateAffiliation(String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is null");
-        }
+    public EntityAffiliation inactivateAffiliation(String id) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(id, "id");
 
         EntityAffiliationBo bo = getEntityAffiliationBo(id);
         if (bo == null) {
@@ -637,10 +582,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-	public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) {
-		if (queryByCriteria == null) {
-            throw new RiceIllegalArgumentException("queryByCriteria is null");
-        }
+	public EntityQueryResults findEntities(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+		incomingParamCheck(queryByCriteria, "queryByCriteria");
 
         GenericQueryResults<EntityBo> results = criteriaLookupService.lookup(EntityBo.class, queryByCriteria);
 
@@ -658,10 +601,8 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
-	public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) {
-		if (queryByCriteria == null) {
-            throw new RiceIllegalArgumentException("queryByCriteria is null");
-        }
+	public EntityDefaultQueryResults findEntityDefaults(QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+		incomingParamCheck(queryByCriteria, "queryByCriteria");
 
         GenericQueryResults<EntityBo> results = criteriaLookupService.lookup(EntityBo.class, queryByCriteria);
 
@@ -679,9 +620,7 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 	protected EntityNameQueryResults findNames(QueryByCriteria queryByCriteria) {
-		if (queryByCriteria == null) {
-            throw new RiceIllegalArgumentException("queryByCriteria is null");
-        }
+		incomingParamCheck(queryByCriteria, "queryByCriteria");
 
         GenericQueryResults<EntityNameBo> results = criteriaLookupService.lookup(EntityNameBo.class, queryByCriteria);
 
@@ -699,20 +638,16 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
-	public EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId) {
-        if (StringUtils.isBlank(entityId)) {
-            throw new RiceIllegalArgumentException("entityId is null");
-        }
+	public EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId) throws RiceIllegalArgumentException {
+        incomingParamCheck(entityId, "entityId");
 		Map<String,String> criteria = new HashMap<String,String>(1);
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
 		return EntityPrivacyPreferencesBo.to(businessObjectService.findByPrimaryKey(EntityPrivacyPreferencesBo.class, criteria));
 	}
 
     @Override
-	public Principal getPrincipal(String principalId) {
-		if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null");
-        }
+	public Principal getPrincipal(String principalId) throws RiceIllegalArgumentException {
+		incomingParamCheck(principalId, "principalId");
 
         PrincipalBo principal = getPrincipalBo(principalId);
 		if ( principal == null ) {
@@ -732,10 +667,8 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
 	@Override
-	public Principal getPrincipalByPrincipalName(String principalName) {
-		if (StringUtils.isBlank(principalName)) {
-            throw new RiceIllegalArgumentException("principalName is null");
-        }
+	public Principal getPrincipalByPrincipalName(String principalName) throws RiceIllegalArgumentException {
+		incomingParamCheck(principalName, "principalName");
 
 		Map<String,Object> criteria = new HashMap<String,Object>(1);
         criteria.put(KIMPropertyConstants.Principal.PRINCIPAL_NAME, principalName.toLowerCase());
@@ -780,10 +713,8 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
-	public CodedAttribute getAddressType( String code ) {
-        if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+	public CodedAttribute getAddressType( String code ) throws RiceIllegalArgumentException {
+        incomingParamCheck(code, "code");
 		EntityAddressTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAddressTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -793,10 +724,8 @@ public class IdentityServiceImpl implements IdentityService {
 
 
     @Override
-    public EntityAffiliationType getAffiliationType( String code ) {
-        if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public EntityAffiliationType getAffiliationType( String code ) throws RiceIllegalArgumentException {
+        incomingParamCheck(code, "code");
 
         EntityAffiliationTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityAffiliationTypeBo.class, code);
 		if ( impl == null ) {
@@ -806,10 +735,8 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
-    public CodedAttribute getCitizenshipStatus( String code ) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public CodedAttribute getCitizenshipStatus( String code ) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
         EntityCitizenshipStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityCitizenshipStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -817,10 +744,8 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityCitizenshipStatusBo.to(impl);
 	}
     @Override
-    public CodedAttribute getEmailType( String code ) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public CodedAttribute getEmailType( String code ) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
         EntityEmailTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmailTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -828,10 +753,8 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityEmailTypeBo.to(impl);
 	}
     @Override
-    public CodedAttribute getEmploymentStatus( String code ) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public CodedAttribute getEmploymentStatus( String code ) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
         EntityEmploymentStatusBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentStatusBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -839,10 +762,8 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityEmploymentStatusBo.to(impl);
 	}
     @Override
-    public CodedAttribute getEmploymentType( String code ) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public CodedAttribute getEmploymentType( String code ) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
         EntityEmploymentTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityEmploymentTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -850,10 +771,8 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityEmploymentTypeBo.to(impl);
 	}
     @Override
-    public CodedAttribute getNameType(String code) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public CodedAttribute getNameType(String code) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
         EntityNameTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityNameTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -861,10 +780,8 @@ public class IdentityServiceImpl implements IdentityService {
 		return EntityNameTypeBo.to(impl);
 	}
     @Override
-    public CodedAttribute getEntityType( String code ) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public CodedAttribute getEntityType( String code ) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
         EntityTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -873,10 +790,8 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
-    public EntityExternalIdentifierType getExternalIdentifierType( String code ) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public EntityExternalIdentifierType getExternalIdentifierType( String code ) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
 
         EntityExternalIdentifierTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityExternalIdentifierTypeBo.class, code);
 		if ( impl == null ) {
@@ -887,10 +802,8 @@ public class IdentityServiceImpl implements IdentityService {
 
 
     @Override
-    public CodedAttribute getPhoneType( String code ) {
-		if (StringUtils.isBlank(code)) {
-            throw new RiceIllegalArgumentException("code is empty or null");
-        }
+    public CodedAttribute getPhoneType( String code ) throws RiceIllegalArgumentException {
+		incomingParamCheck(code, "code");
         EntityPhoneTypeBo impl = businessObjectService.findBySinglePrimaryKey(EntityPhoneTypeBo.class, code);
 		if ( impl == null ) {
 			return null;
@@ -899,10 +812,8 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 
     @Override
-    public Entity createEntity(Entity entity) {
-        if (entity == null) {
-            throw new RiceIllegalArgumentException("entity is null");
-        }
+    public Entity createEntity(Entity entity) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(entity, "entity");
 
         if (StringUtils.isNotBlank(entity.getId()) && getEntity(entity.getId()) != null) {
             throw new RiceIllegalStateException("the Entity to create already exists: " + entity);
@@ -913,10 +824,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public Entity updateEntity(Entity entity) {
-        if (entity == null) {
-            throw new RiceIllegalArgumentException("entity is null");
-        }
+    public Entity updateEntity(Entity entity) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(entity, "entity");
 
         if (StringUtils.isBlank(entity.getId()) || getEntity(entity.getId()) == null) {
             throw new RiceIllegalStateException("the Entity does not exist: " + entity);
@@ -927,10 +836,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public Entity inactivateEntity(String entityId) {
-         if (StringUtils.isEmpty(entityId)) {
-            throw new RiceIllegalArgumentException("entityId is empty");
-        }
+    public Entity inactivateEntity(String entityId) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(entityId, "entityId");
 
         Entity entity = getEntity(entityId);
         if (entity == null) {
@@ -943,10 +850,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityPrivacyPreferences addPrivacyPreferencesToEntity(EntityPrivacyPreferences privacyPreferences) {
-        if (privacyPreferences == null) {
-            throw new RiceIllegalArgumentException("privacyPreferences is null");
-        }
+    public EntityPrivacyPreferences addPrivacyPreferencesToEntity(EntityPrivacyPreferences privacyPreferences) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(privacyPreferences, "privacyPreferences");
 
         if (StringUtils.isEmpty(privacyPreferences.getEntityId()) || StringUtils.isBlank(privacyPreferences.getEntityId())) {
             throw new RiceIllegalStateException("PrivacyPreferences' entityId must be populated before creation");
@@ -960,10 +865,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityPrivacyPreferences updatePrivacyPreferences(EntityPrivacyPreferences privacyPreferences) {
-        if (privacyPreferences == null) {
-            throw new RiceIllegalArgumentException("privacyPreferences is null");
-        }
+    public EntityPrivacyPreferences updatePrivacyPreferences(EntityPrivacyPreferences privacyPreferences) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(privacyPreferences, "privacyPreferences");
 
         if (StringUtils.isEmpty(privacyPreferences.getEntityId()) || StringUtils.isBlank(privacyPreferences.getEntityId())) {
             throw new RiceIllegalStateException("PrivacyPreferences' entityId must be populated before update");
@@ -998,10 +901,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityCitizenship addCitizenshipToEntity(EntityCitizenship citizenship) {
-        if (citizenship == null) {
-            throw new RiceIllegalArgumentException("citizenship is null");
-        }
+    public EntityCitizenship addCitizenshipToEntity(EntityCitizenship citizenship) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(citizenship, "citizenship");
 
         if (StringUtils.isEmpty(citizenship.getEntityId()) || StringUtils.isBlank(citizenship.getEntityId())) {
             throw new RiceIllegalStateException("Citizenship's entityId must be populated before creation");
@@ -1018,10 +919,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityCitizenship updateCitizenship(EntityCitizenship citizenship) {
-        if (citizenship == null) {
-            throw new RiceIllegalArgumentException("citizenship is null");
-        }
+    public EntityCitizenship updateCitizenship(EntityCitizenship citizenship) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(citizenship, "citizenship");
 
         if (StringUtils.isEmpty(citizenship.getEntityId()) || StringUtils.isBlank(citizenship.getEntityId())) {
             throw new RiceIllegalStateException("Email's entityId must be populated before creation");
@@ -1038,10 +937,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityCitizenship inactivateCitizenship(String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is blank or null");
-        }
+    public EntityCitizenship inactivateCitizenship(String id) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(id, "id");
 
         EntityCitizenshipBo bo = getEntityCitizenshipBo(id);
         if (bo == null) {
@@ -1060,10 +957,8 @@ public class IdentityServiceImpl implements IdentityService {
         return businessObjectService.findByPrimaryKey(EntityEthnicityBo.class, criteria);
     }
     @Override
-    public EntityEthnicity addEthnicityToEntity(EntityEthnicity ethnicity) {
-        if (ethnicity == null) {
-            throw new RiceIllegalArgumentException("ethnicity is null");
-        }
+    public EntityEthnicity addEthnicityToEntity(EntityEthnicity ethnicity) throws RiceIllegalArgumentException {
+        incomingParamCheck(ethnicity, "ethnicity");
 
         if (StringUtils.isEmpty(ethnicity.getEntityId()) || StringUtils.isBlank(ethnicity.getEntityId())) {
             throw new RiceIllegalStateException("Ethnicity's entityId must be populated before creation");
@@ -1077,10 +972,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityEthnicity updateEthnicity(EntityEthnicity ethnicity) {
-        if (ethnicity == null) {
-            throw new RiceIllegalArgumentException("ethnicity is null");
-        }
+    public EntityEthnicity updateEthnicity(EntityEthnicity ethnicity) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(ethnicity, "ethnicity");
 
         if (StringUtils.isEmpty(ethnicity.getEntityId()) || StringUtils.isBlank(ethnicity.getEntityId())) {
             throw new RiceIllegalStateException("Ethnicity's entityId must be populated before creation");
@@ -1101,11 +994,10 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ID, residencyId);
         return businessObjectService.findByPrimaryKey(EntityResidencyBo.class, criteria);
     }
+
     @Override
-    public EntityResidency addResidencyToEntity(EntityResidency residency) {
-        if (residency == null) {
-            throw new RiceIllegalArgumentException("residency is null");
-        }
+    public EntityResidency addResidencyToEntity(EntityResidency residency) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(residency, "residency");
 
         if (StringUtils.isEmpty(residency.getEntityId()) || StringUtils.isBlank(residency.getEntityId())) {
             throw new RiceIllegalStateException("Residency's entityId must be populated before creation");
@@ -1119,10 +1011,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityResidency updateResidency(EntityResidency residency) {
-        if (residency == null) {
-            throw new RiceIllegalArgumentException("residency is null");
-        }
+    public EntityResidency updateResidency(EntityResidency residency) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(residency, "residency");
 
         if (StringUtils.isEmpty(residency.getEntityId()) || StringUtils.isBlank(residency.getEntityId())) {
             throw new RiceIllegalStateException("Residency's entityId must be populated before creation");
@@ -1143,11 +1033,10 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ID, visaId);
         return businessObjectService.findByPrimaryKey(EntityVisaBo.class, criteria);
     }
+
     @Override
-    public EntityVisa addVisaToEntity(EntityVisa visa) {
-        if (visa == null) {
-            throw new RiceIllegalArgumentException("visa is null");
-        }
+    public EntityVisa addVisaToEntity(EntityVisa visa) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(visa, "visa");
 
         if (StringUtils.isEmpty(visa.getEntityId()) || StringUtils.isBlank(visa.getEntityId())) {
             throw new RiceIllegalStateException("Visa's entityId must be populated before creation");
@@ -1161,10 +1050,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityVisa updateVisa(EntityVisa visa) {
-        if (visa == null) {
-            throw new RiceIllegalArgumentException("visa is null");
-        }
+    public EntityVisa updateVisa(EntityVisa visa) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(visa, "visa");
 
         if (StringUtils.isEmpty(visa.getEntityId()) || StringUtils.isBlank(visa.getEntityId())) {
             throw new RiceIllegalStateException("Visa's entityId must be populated before creation");
@@ -1199,10 +1086,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityName addNameToEntity(EntityName name) {
-        if (name == null) {
-            throw new RiceIllegalArgumentException("name is null");
-        }
+    public EntityName addNameToEntity(EntityName name) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(name, "name");
 
         if (StringUtils.isEmpty(name.getEntityId()) || StringUtils.isBlank(name.getEntityId())) {
             throw new RiceIllegalStateException("Name's entityId must be populated before creation");
@@ -1219,10 +1104,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityName updateName(EntityName name) {
-        if (name == null) {
-            throw new RiceIllegalArgumentException("name is null");
-        }
+    public EntityName updateName(EntityName name) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(name, "name");
 
         if (StringUtils.isEmpty(name.getEntityId()) || StringUtils.isBlank(name.getEntityId())) {
             throw new RiceIllegalStateException("Name's entityId must be populated before update");
@@ -1239,10 +1122,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityName inactivateName(String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is blank or null");
-        }
+    public EntityName inactivateName(String id) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(id, "id");
 
         EntityNameBo bo = getEntityNameBo(id);
         if (bo == null) {
@@ -1278,10 +1159,8 @@ public class IdentityServiceImpl implements IdentityService {
         return businessObjectService.findByPrimaryKey(EntityEmploymentBo.class, criteria);
     }
     @Override
-    public EntityEmployment addEmploymentToEntity(EntityEmployment employment) {
-        if (employment == null) {
-            throw new RiceIllegalArgumentException("employment is null");
-        }
+    public EntityEmployment addEmploymentToEntity(EntityEmployment employment) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(employment, "employment");
 
         if (StringUtils.isEmpty(employment.getEntityId()) || StringUtils.isBlank(employment.getEntityId())) {
             throw new RiceIllegalStateException("EntityEmployment's entityId must be populated before creation");
@@ -1300,10 +1179,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityEmployment updateEmployment(EntityEmployment employment) {
-        if (employment == null) {
-            throw new RiceIllegalArgumentException("employment is null");
-        }
+    public EntityEmployment updateEmployment(EntityEmployment employment) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(employment, "employment");
 
         if (StringUtils.isEmpty(employment.getEntityId()) || StringUtils.isBlank(employment.getEntityId())) {
             throw new RiceIllegalStateException("EntityEmployment's entityId must be populated before update");
@@ -1322,10 +1199,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityEmployment inactivateEmployment(String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is empty or null");
-        }
+    public EntityEmployment inactivateEmployment(String id) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(id, "id");
 
         EntityEmploymentBo bo = getEntityEmploymentBo(id);
         if (bo == null) {
@@ -1343,11 +1218,10 @@ public class IdentityServiceImpl implements IdentityService {
         criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
 		return businessObjectService.findByPrimaryKey(EntityBioDemographicsBo.class, criteria);
 	}
+
     @Override
-    public EntityBioDemographics addBioDemographicsToEntity(EntityBioDemographics bioDemographics) {
-        if (bioDemographics == null) {
-            throw new RiceIllegalArgumentException("bioDemographics is null");
-        }
+    public EntityBioDemographics addBioDemographicsToEntity(EntityBioDemographics bioDemographics) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(bioDemographics, "bioDemographics");
 
         if (StringUtils.isEmpty(bioDemographics.getEntityId()) || StringUtils.isBlank(bioDemographics.getEntityId())) {
             throw new RiceIllegalStateException("BioDemographics' entityId must be populated before creation");
@@ -1361,10 +1235,8 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
-    public EntityBioDemographics updateBioDemographics(EntityBioDemographics bioDemographics) {
-        if (bioDemographics == null) {
-            throw new RiceIllegalArgumentException("bioDemographics is null");
-        }
+    public EntityBioDemographics updateBioDemographics(EntityBioDemographics bioDemographics) throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(bioDemographics, "bioDemographics");
 
         if (getEntityBioDemographicsBo(bioDemographics.getEntityId()) == null) {
             throw new RiceIllegalStateException("the EntityBioDemographics to update does not exist: " + bioDemographics);
@@ -1380,5 +1252,14 @@ public class IdentityServiceImpl implements IdentityService {
 
     public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
+    }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
     }
 }

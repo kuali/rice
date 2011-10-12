@@ -323,7 +323,7 @@ public interface PermissionService {
      */
 	@WebMethod(operationName = "getPermission")
     @WebResult(name = "permission")
-    @Cacheable(value=Permission.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value=Permission.Cache.NAME, key="'id=' + #p0")
     Permission getPermission( @WebParam(name="id") String id );
 	
 	/** Get the Permission object with the unique combination of namespace and permission name.
@@ -332,7 +332,7 @@ public interface PermissionService {
      */
     @WebMethod(operationName = "findPermByNamespaceCodeAndName")
     @WebResult(name = "permission")
-    @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+    @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     Permission findPermByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
    
@@ -342,7 +342,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "findPermsByNamespaceCodeTemplateName")
     @WebResult(name = "permission")
-    @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'templateName=' + #templateName")
+    @Cacheable(value=Permission.Cache.NAME, key="'namespaceCode=' + #p1 + '|' + 'templateName=' + #p2")
     List<Permission> findPermsByNamespaceCodeTemplateName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "templateName") String templateName) throws RiceIllegalArgumentException;
 
@@ -355,7 +355,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "getPermissionTemplate")
     @WebResult(name = "id")
-    @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'id=' + #id")
+    @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'id=' + #p0")
     Template getPermissionTemplate( @WebParam(name="id") String id ) throws RiceIllegalArgumentException;
 
 	/**
@@ -367,7 +367,7 @@ public interface PermissionService {
 	 */
 	@WebMethod(operationName = "findPermTemplateByNamespaceCodeAndName")
     @WebResult(name = "permissionTemplate")
-    @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+    @Cacheable(value=Template.Cache.NAME + "{Permission}", key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     Template findPermTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 

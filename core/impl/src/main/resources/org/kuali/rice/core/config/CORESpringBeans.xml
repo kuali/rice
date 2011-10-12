@@ -59,7 +59,7 @@
 		</property>
 	</bean>
 
-    <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
+  <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="coreApplicationDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />
 	</bean>

@@ -118,7 +118,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntity")
     @WebResult(name = "entity")
-    @Cacheable(value= Entity.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value= Entity.Cache.NAME, key="'id=' + #p0")
 	Entity getEntity( @WebParam(name="id") String id )  throws RiceIllegalArgumentException;
 
 	/**
@@ -134,7 +134,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityByPrincipalId")
     @WebResult(name = "entity")
-    @Cacheable(value= Entity.Cache.NAME, key="'principalId=' + #principalId")
+    @Cacheable(value= Entity.Cache.NAME, key="'principalId=' + #p0")
 	Entity getEntityByPrincipalId(@WebParam(name = "principalId") String principalId)  throws RiceIllegalArgumentException;
 
 	/**
@@ -150,7 +150,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityByPrincipalName")
     @WebResult(name = "entity")
-    @Cacheable(value= Entity.Cache.NAME, key="'principalName=' + #principalName")
+    @Cacheable(value= Entity.Cache.NAME, key="'principalName=' + #p0")
 	Entity getEntityByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
 
 
@@ -213,7 +213,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefault")
     @WebResult(name = "entityDefault")
-    @Cacheable(value= EntityDefault.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value= EntityDefault.Cache.NAME, key="'id=' + #p0")
 	EntityDefault getEntityDefault(@WebParam(name = "id") String id)  throws RiceIllegalArgumentException;
 
 	/**
@@ -231,7 +231,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalId")
     @WebResult(name = "entityDefault")
-    @Cacheable(value= EntityDefault.Cache.NAME, key="'principalId=' + #principalId")
+    @Cacheable(value= EntityDefault.Cache.NAME, key="'principalId=' + #p0")
 	EntityDefault getEntityDefaultByPrincipalId(@WebParam(name = "principalId") String principalId)  throws RiceIllegalArgumentException;
 
 	/**
@@ -249,7 +249,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityDefaultByPrincipalName")
     @WebResult(name = "entityDefault")
-    @Cacheable(value= EntityDefault.Cache.NAME, key="'principalName=' + #principalName")
+    @Cacheable(value= EntityDefault.Cache.NAME, key="'principalName=' + #p0")
 	EntityDefault getEntityDefaultByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
     
     
@@ -267,7 +267,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipal")
     @WebResult(name = "principal")
-    @Cacheable(value= Principal.Cache.NAME, key="'principalId=' + #principalId")
+    @Cacheable(value= Principal.Cache.NAME, key="'principalId=' + #p0")
     Principal getPrincipal( @WebParam(name="principalId") String principalId )  throws RiceIllegalArgumentException;
 
     /**
@@ -283,7 +283,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipalByPrincipalName")
     @WebResult(name = "principal")
-    @Cacheable(value= Principal.Cache.NAME, key="'principalName=' + #principalName")
+    @Cacheable(value= Principal.Cache.NAME, key="'principalName=' + #p0")
     Principal getPrincipalByPrincipalName( @WebParam(name="principalName") String principalName )  throws RiceIllegalArgumentException;
 
     /**
@@ -300,7 +300,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPrincipalByPrincipalNameAndPassword")
     @WebResult(name = "principal")
-    @Cacheable(value= Principal.Cache.NAME, key="'principalName=' + #principalName + '|' + 'password=' + #password")
+    @Cacheable(value= Principal.Cache.NAME, key="'principalName=' + #p0 + '|' + 'password=' + #p1")
     Principal getPrincipalByPrincipalNameAndPassword( @WebParam(name="principalName") String principalName,  @WebParam(name="password") String password )  throws RiceIllegalArgumentException;
 
     /**
@@ -766,7 +766,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityPrivacyPreferences")
     @WebResult(name = "privacyPreferences")
-    @Cacheable(value= EntityPrivacyPreferences.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value= EntityPrivacyPreferences.Cache.NAME, key="'id=' + #p0")
 	EntityPrivacyPreferences getEntityPrivacyPreferences( @WebParam(name="id") String id )  throws RiceIllegalArgumentException;
 
     /**
@@ -954,7 +954,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEntityType")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{EntityType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EntityType}", key="'code=' + #p0")
 	CodedAttribute getEntityType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
 
@@ -971,7 +971,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getAddressType")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{AddressType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{AddressType}", key="'code=' + #p0")
 	CodedAttribute getAddressType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
     /**
@@ -987,7 +987,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getAffiliationType")
     @WebResult(name = "affiliationType")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{AffiliationType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{AffiliationType}", key="'code=' + #p0")
 	EntityAffiliationType getAffiliationType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
 
     /**
@@ -1003,7 +1003,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getCitizenshipStatus")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{CitizenshipStatus}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{CitizenshipStatus}", key="'code=' + #p0")
 	CodedAttribute getCitizenshipStatus( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
     /**
@@ -1019,7 +1019,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmploymentType")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentType}", key="'code=' + #p0")
 	CodedAttribute getEmploymentType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
     
     /**
@@ -1035,7 +1035,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmploymentStatus")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentStatus}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmploymentStatus}", key="'code=' + #p0")
 	CodedAttribute getEmploymentStatus( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
     
     /**
@@ -1051,7 +1051,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getExternalIdentifierType")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{ExternalIdentifierType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{ExternalIdentifierType}", key="'code=' + #p0")
 	EntityExternalIdentifierType getExternalIdentifierType( @WebParam(name="code") String code )  throws RiceIllegalArgumentException;
     
     /**
@@ -1067,7 +1067,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getNameType")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{NameType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{NameType}", key="'code=' + #p0")
 	CodedAttribute getNameType(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**
@@ -1083,7 +1083,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getPhoneType")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{PhoneType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{PhoneType}", key="'code=' + #p0")
 	CodedAttribute getPhoneType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
     
     /**
@@ -1099,7 +1099,7 @@ public interface IdentityService {
      */
     @WebMethod(operationName = "getEmailType")
     @WebResult(name = "type")
-    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmailType}", key="'code=' + #code")
+    @Cacheable(value= CodedAttribute.Cache.NAME + "{EmailType}", key="'code=' + #p0")
 	CodedAttribute getEmailType( @WebParam(name="code") String code ) throws RiceIllegalArgumentException;
 
 }

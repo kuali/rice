@@ -56,7 +56,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
-    @Cacheable(value= Group.Cache.NAME, key="'principalId=' + #principalId")
+    @Cacheable(value= Group.Cache.NAME, key="'principalId=' + #p0")
     List<Group> getGroupsByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
 
@@ -78,7 +78,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
-    @Cacheable(value= Group.Cache.NAME, key="'principalId=' + #principalId + '|' + 'namespaceCode=' + #namespaceCode")
+    @Cacheable(value= Group.Cache.NAME, key="'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1")
     List<Group> getGroupsByPrincipalIdAndNamespaceCode(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
@@ -157,7 +157,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroupByNameAndNamespaceCode")
     @WebResult(name = "group")
-    @Cacheable(value= Group.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'groupName=' + #groupName")
+    @Cacheable(value= Group.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'groupName=' + #p1")
     Group getGroupByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "groupName") String groupName) throws RiceIllegalArgumentException;
 
@@ -175,7 +175,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groups", required = true)
     @XmlElement(name = "group", required = false)
     @WebResult(name = "groups")
-    @Cacheable(value= Group.Cache.NAME, key="'ids=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#ids)")
+    @Cacheable(value= Group.Cache.NAME, key="'ids=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
     List<Group> getGroups(@WebParam(name="ids") Collection<String> ids) throws RiceIllegalArgumentException;
 
 
@@ -191,7 +191,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "isMemberOfGroup")
     @WebResult(name = "isMember")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{isMemberOfGroup}' + 'principalId=' + #principalId + '|' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{isMemberOfGroup}' + 'principalId=' + #p0 + '|' + 'groupId=' + #p1")
 	boolean isMemberOfGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 	/**
@@ -211,7 +211,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "isDirectMemberOfGroup")
     @WebResult(name = "isDirectMember")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{isDirectMemberOfGroup}' + 'principalId=' + #principalId + '|' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{isDirectMemberOfGroup}' + 'principalId=' + #p0 + '|' + 'groupId=' + #p1")
 	boolean isDirectMemberOfGroup(@WebParam(name="principalId") String principalId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
     /**
@@ -230,7 +230,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getGroupIdsByPrincipalId}' + 'principalId=' + #principalId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getGroupIdsByPrincipalId}' + 'principalId=' + #p0")
 	List<String> getGroupIdsByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
     /**
@@ -250,7 +250,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getGroupIdsByPrincipalIdAndNamespaceCode}' + 'principalId=' + #principalId + '|' + 'namespaceCode=' + #namespaceCode")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getGroupIdsByPrincipalIdAndNamespaceCode}' + 'principalId=' + #p0 + '|' + 'namespaceCode=' + #p1")
 	List<String> getGroupIdsByPrincipalIdAndNamespaceCode(@WebParam(name = "principalId") String principalId,
             @WebParam(name = "namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
@@ -270,7 +270,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectGroupIdsByPrincipalId}' + 'principalId=' + #principalId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectGroupIdsByPrincipalId}' + 'principalId=' + #p0")
     List<String> getDirectGroupIdsByPrincipalId(@WebParam(name = "principalId") String principalId) throws RiceIllegalArgumentException;
 
 
@@ -287,7 +287,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "isGroupMemberOfGroup")
     @WebResult(name = "isMember")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{isGroupMemberOfGroup}' + 'groupMemberId=' + #groupMemberId + '|' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{isGroupMemberOfGroup}' + 'groupMemberId=' + #p0 + '|' + 'groupId=' + #p1")
     boolean isGroupMemberOfGroup(@WebParam(name="groupMemberId") String groupMemberId, @WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -305,7 +305,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getMemberPrincipalIds}' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getMemberPrincipalIds}' + 'groupId=' + #p0")
 	List<String> getMemberPrincipalIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -322,7 +322,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectMemberPrincipalIds}' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectMemberPrincipalIds}' + 'groupId=' + #p0")
 	List<String> getDirectMemberPrincipalIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -340,7 +340,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getMemberGroupIds}' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getMemberGroupIds}' + 'groupId=' + #p0")
 	List<String> getMemberGroupIds( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -357,7 +357,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectMemberGroupIds}' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectMemberGroupIds}' + 'groupId=' + #p0")
 	List<String> getDirectMemberGroupIds( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -375,7 +375,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getParentGroupIds}' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getParentGroupIds}' + 'groupId=' + #p0")
     List<String> getParentGroupIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 
@@ -392,7 +392,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "groupIds", required = true)
     @XmlElement(name = "groupId", required = false)
     @WebResult(name = "groupIds")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectParentGroupIds}' + 'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'{getDirectParentGroupIds}' + 'groupId=' + #p0")
     List<String> getDirectParentGroupIds(@WebParam(name="groupId") String groupId) throws RiceIllegalArgumentException;
 
 	/**
@@ -402,7 +402,7 @@ public interface GroupService {
     @WebMethod(operationName = "getAttributes")
     @WebResult(name = "attributes")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    @Cacheable(value= Group.Cache.NAME, key="'{getAttributes}' + 'groupId=' + #groupId")
+    @Cacheable(value= Group.Cache.NAME, key="'{getAttributes}' + 'groupId=' + #p0")
     Map<String, String> getAttributes( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -421,7 +421,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "members", required = true)
     @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'groupId=' + #groupId")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'groupId=' + #p0")
 	List<GroupMember> getMembersOfGroup( @WebParam(name="groupId") String groupId ) throws RiceIllegalArgumentException;
 
 
@@ -441,7 +441,7 @@ public interface GroupService {
     @XmlElementWrapper(name = "members", required = true)
     @XmlElement(name = "member", required = false)
     @WebResult(name = "members")
-    @Cacheable(value= GroupMember.Cache.NAME, key="'groupIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#groupIds)")
+    @Cacheable(value= GroupMember.Cache.NAME, key="'groupIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
 	List<GroupMember> getMembers( @WebParam(name="groupIds") List<String> groupIds ) throws RiceIllegalArgumentException;
 
 

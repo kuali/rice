@@ -103,7 +103,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "getResponsibility")
     @WebResult(name = "responsibility")
-    @Cacheable(value=Responsibility.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value=Responsibility.Cache.NAME, key="'id=' + #p0")
     Responsibility getResponsibility(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -116,7 +116,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "findRespByNamespaceCodeAndName")
     @WebResult(name = "responsibility")
-    @Cacheable(value=Responsibility.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+    @Cacheable(value=Responsibility.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     Responsibility findRespByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
                                                   @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
     /**
@@ -132,7 +132,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "getResponsibilityTemplate")
     @WebResult(name = "template")
-    @Cacheable(value=Template.Cache.NAME + "{Responsibility}", key="'id=' + #id")
+    @Cacheable(value=Template.Cache.NAME + "{Responsibility}", key="'id=' + #p0")
     Template getResponsibilityTemplate(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
@@ -145,7 +145,7 @@ public interface ResponsibilityService {
      */
     @WebMethod(operationName = "findRespTemplateByNamespaceCodeAndName")
     @WebResult(name = "template")
-    @Cacheable(value=Template.Cache.NAME + "{Responsibility}", key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+    @Cacheable(value=Template.Cache.NAME + "{Responsibility}", key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     Template findRespTemplateByNamespaceCodeAndName(@WebParam(name = "namespaceCode") String namespaceCode,
                                                     @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
     /**

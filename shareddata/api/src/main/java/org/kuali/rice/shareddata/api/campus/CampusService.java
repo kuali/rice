@@ -44,7 +44,7 @@ public interface CampusService {
      * specific code
      */
     @WebMethod(operationName="getCampus")
-    @Cacheable(value=Campus.Cache.NAME, key="'code=' + #code")
+    @Cacheable(value=Campus.Cache.NAME, key="'code=' + #p0")
     Campus getCampus(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**
@@ -64,7 +64,7 @@ public interface CampusService {
      * specific code
      */
     @WebMethod(operationName="getCampusType")
-    @Cacheable(value=CampusType.Cache.NAME, key="'code=' + #code")
+    @Cacheable(value=CampusType.Cache.NAME, key="'code=' + #p0")
     CampusType getCampusType(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
     
     /**

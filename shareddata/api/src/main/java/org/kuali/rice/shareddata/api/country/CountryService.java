@@ -47,7 +47,7 @@ public interface CountryService {
      */
     @WebMethod(operationName = "getCountry")
     @WebResult(name = "country")
-    @Cacheable(value=Country.Cache.NAME, key="'code=' + #code")
+    @Cacheable(value=Country.Cache.NAME, key="'code=' + #p0")
     Country getCountry(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
 
     /**
@@ -61,7 +61,7 @@ public interface CountryService {
      */
     @WebMethod(operationName = "getCountryByAlternateCode")
     @WebResult(name = "country")
-    @Cacheable(value=Country.Cache.NAME, key="'alternateCode=' + #alternateCode")
+    @Cacheable(value=Country.Cache.NAME, key="'alternateCode=' + #p0")
     Country getCountryByAlternateCode(@WebParam(name = "alternateCode") String alternateCode)
             throws RiceIllegalStateException, RiceIllegalArgumentException;
 

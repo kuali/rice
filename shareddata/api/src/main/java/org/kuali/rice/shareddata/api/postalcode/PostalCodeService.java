@@ -54,7 +54,7 @@ public interface PostalCodeService {
      */
     @WebMethod(operationName="getPostalCode")
     @WebResult(name = "postalCode")
-    @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #countryCode + '|' + 'code=' + #code")
+    @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #p0 + '|' + 'code=' + #p1")
     PostalCode getPostalCode(@WebParam(name = "countryCode") String countryCode, @WebParam(name = "code") String code)
             throws RiceIllegalArgumentException;
 
@@ -76,7 +76,7 @@ public interface PostalCodeService {
      */
     @WebMethod(operationName="findAllPostalCodesInCountry")
     @WebResult(name = "postalCodes")
-    @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #countryCode")
+    @Cacheable(value=PostalCode.Cache.NAME, key="'countryCode=' + #p0")
     List<PostalCode> findAllPostalCodesInCountry(@WebParam(name = "countryCode") String countryCode)
             throws RiceIllegalArgumentException;
 }

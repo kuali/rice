@@ -51,14 +51,14 @@ public interface DocumentTypeService {
     @WebMethod(operationName = "getDocumentTypeById")
     @WebResult(name = "documentType")
     @XmlElement(name = "documentType", required = false)
-    @Cacheable(value= DocumentType.Cache.NAME, key="'documentTypeId=' + #documentTypeId")
+    @Cacheable(value= DocumentType.Cache.NAME, key="'documentTypeId=' + #p0")
     DocumentType getDocumentTypeById(@WebParam(name = "documentTypeId") String documentTypeId)
             throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDocumentTypeByName")
     @WebResult(name = "documentType")
     @XmlElement(name = "documentType", required = false)
-    @Cacheable(value= DocumentType.Cache.NAME, key="'documentTypeName=' + #documentTypeName")
+    @Cacheable(value= DocumentType.Cache.NAME, key="'documentTypeName=' + #p0")
     DocumentType getDocumentTypeByName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
 
@@ -109,14 +109,14 @@ public interface DocumentTypeService {
     @WebMethod(operationName = "getRoutePathForDocumentTypeId")
     @WebResult(name = "routePath")
     @XmlElement(name = "routePath", required = false)
-    @Cacheable(value= RoutePath.Cache.NAME, key="'documentTypeId=' + #documentTypeId")
+    @Cacheable(value= RoutePath.Cache.NAME, key="'documentTypeId=' + #p0")
     RoutePath getRoutePathForDocumentTypeId(@WebParam(name = "documentTypeId") String documentTypeId)
             throws RiceIllegalArgumentException;
     
     @WebMethod(operationName = "getRoutePathForDocumentTypeName")
     @WebResult(name = "routePath")
     @XmlElement(name = "routePath", required = false)
-    @Cacheable(value= RoutePath.Cache.NAME, key="'documentTypeName=' + #documentTypeName")
+    @Cacheable(value= RoutePath.Cache.NAME, key="'documentTypeName=' + #p0")
     RoutePath getRoutePathForDocumentTypeName(@WebParam(name = "documentTypeName") String documentTypeName)
             throws RiceIllegalArgumentException;
 

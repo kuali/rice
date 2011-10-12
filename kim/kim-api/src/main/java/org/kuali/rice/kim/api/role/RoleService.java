@@ -74,7 +74,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "getRole")
     @WebResult(name = "role")
-    @Cacheable(value= Role.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value= Role.Cache.NAME, key="'id=' + #p0")
     Role getRole(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
 	/**
@@ -84,7 +84,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "roles", required = true)
     @XmlElement(name = "role", required = false)
     @WebResult(name = "roles")
-    @Cacheable(value= Role.Cache.NAME, key="'ids=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#ids)")
+    @Cacheable(value= Role.Cache.NAME, key="'ids=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
 	List<Role> getRoles( @WebParam(name="ids") List<String> ids ) throws RiceIllegalArgumentException;
 
 	/** Get the KIM Role object with the unique combination of namespace, component,
@@ -93,7 +93,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "getRoleByNameAndNamespaceCode")
     @WebResult(name = "role")
-    @Cacheable(value=Role.Cache.NAME, key="'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+    @Cacheable(value=Role.Cache.NAME, key="'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
     Role getRoleByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
@@ -103,7 +103,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "getRoleIdByNameAndNamespaceCode")
     @WebResult(name = "roleId")
-    @Cacheable(value=Role.Cache.NAME, key="'{getRoleIdByNameAndNamespaceCode}' + 'namespaceCode=' + #namespaceCode + '|' + 'name=' + #name")
+    @Cacheable(value=Role.Cache.NAME, key="'{getRoleIdByNameAndNamespaceCode}' + 'namespaceCode=' + #p0 + '|' + 'name=' + #p1")
 	String getRoleIdByNameAndNamespaceCode(@WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "name") String name) throws RiceIllegalArgumentException;
 
@@ -115,7 +115,7 @@ public interface RoleService {
 	 */
     @WebMethod(operationName = "isRoleActive")
     @WebResult(name = "isRoleActive")
-    @Cacheable(value=Role.Cache.NAME, key="'{isRoleActive}' + 'id=' + #id")
+    @Cacheable(value=Role.Cache.NAME, key="'{isRoleActive}' + 'id=' + #p0")
     boolean isRoleActive( @WebParam(name="id") String id ) throws RiceIllegalArgumentException;
 
     /**
@@ -251,7 +251,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "roleMemberships", required = true)
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
-    @Cacheable(value=RoleMembership.Cache.NAME, key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#roleIds)")
+    @Cacheable(value=RoleMembership.Cache.NAME, key="'roleIds=' + T(org.kuali.rice.core.api.cache.CacheKeyUtils).key(#p0)")
 	List<RoleMembership> getFirstLevelRoleMembers(@WebParam(name="roleIds") List<String> roleIds) throws RiceIllegalArgumentException;
 
 	/**
@@ -270,7 +270,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "roleIds", required = true)
     @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
-    @Cacheable(value=RoleMembership.Cache.NAME, key="'memberType=' + #memberType + '|' + 'memberId=' + #memberId")
+    @Cacheable(value=RoleMembership.Cache.NAME, key="'memberType=' + #p0 + '|' + 'memberId=' + #p1")
 	List<String> getMemberParentRoleIds(String memberType, String memberId) throws RiceIllegalArgumentException;
 
 
@@ -282,7 +282,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "memberIds", required = true)
     @XmlElement(name = "memberId", required = false)
     @WebResult(name = "memberIds")
-    @Cacheable(value=RoleMember.Cache.NAME, key="'{getRoleTypeRoleMemberIds} + 'roleId=' + #roleId")
+    @Cacheable(value=RoleMember.Cache.NAME, key="'{getRoleTypeRoleMemberIds} + 'roleId=' + #p0")
     Set<String> getRoleTypeRoleMemberIds(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "findDelegateMembers")
@@ -298,45 +298,45 @@ public interface RoleService {
     @XmlElementWrapper(name = "delegateMembers", required = true)
     @XmlElement(name = "delegateMember", required = false)
     @WebResult(name = "delegateMembers")
-    @Cacheable(value=DelegateMember.Cache.NAME, key="'delegateId=' + #delegateId")
+    @Cacheable(value=DelegateMember.Cache.NAME, key="'delegateId=' + #p0")
     List<DelegateMember> getDelegationMembersByDelegationId(
             @WebParam(name = "delegateId") String delegateId) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDelegationMemberByDelegationAndMemberId")
     @WebResult(name = "delegateMember")
-    @Cacheable(value=DelegateMember.Cache.NAME, key="'delegateId=' + #delegateId + '|' + 'memberId=' + #memberId")
+    @Cacheable(value=DelegateMember.Cache.NAME, key="'delegateId=' + #p0 + '|' + 'memberId=' + #p1")
     DelegateMember getDelegationMemberByDelegationAndMemberId(
             @WebParam(name = "delegationId") String delegationId, @WebParam(name = "memberId") String memberId) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDelegationMemberById")
     @WebResult(name = "delegateMember")
-    @Cacheable(value=DelegateMember.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value=DelegateMember.Cache.NAME, key="'id=' + #p0")
     DelegateMember getDelegationMemberById(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getRoleResponsibilities")
     @XmlElementWrapper(name = "roleResponsibilities", required = true)
     @XmlElement(name = "roleResponsibility", required = false)
     @WebResult(name = "roleResponsibilities")
-    @Cacheable(value=RoleResponsibility.Cache.NAME, key="'roleId=' + #roleId")
+    @Cacheable(value=RoleResponsibility.Cache.NAME, key="'roleId=' + #p0")
 	List<RoleResponsibility> getRoleResponsibilities(@WebParam(name="roleId") String roleId)  throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getRoleMemberResponsibilityActions")
     @XmlElementWrapper(name = "roleResponsibilityActions", required = true)
     @XmlElement(name = "roleResponsibilityAction", required = false)
     @WebResult(name = "roleResponsibilityActions")
-    @Cacheable(value=RoleResponsibility.Cache.NAME, key="'roleMemberId=' + #roleMemberId")
+    @Cacheable(value=RoleResponsibility.Cache.NAME, key="'roleMemberId=' + #p0")
 	List<RoleResponsibilityAction> getRoleMemberResponsibilityActions(
             @WebParam(name = "roleMemberId") String roleMemberId)  throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDelegateTypeByRoleIdAndDelegateTypeCode")
     @WebResult(name = "delegateType")
-    @Cacheable(value=DelegateType.Cache.NAME, key="'roleId=' + #roleId + '|' + 'code=' + #code")
+    @Cacheable(value=DelegateType.Cache.NAME, key="'roleId=' + #p0 + '|' + 'code=' + #p1")
     DelegateType getDelegateTypeByRoleIdAndDelegateTypeCode(@WebParam(name = "roleId") String roleId,
             @WebParam(name = "delegateTypeCode") String delegateTypeCode)  throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDelegateTypeByDelegationId")
     @WebResult(name = "delegateType")
-    @Cacheable(value=DelegateType.Cache.NAME, key="'delegationId=' + #delegationId")
+    @Cacheable(value=DelegateType.Cache.NAME, key="'delegationId=' + #p0")
     DelegateType getDelegateTypeByDelegationId(@WebParam(name = "delegationId") String delegationId)  throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "lookupRoles")

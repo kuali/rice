@@ -27,7 +27,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RolePokerProcessor implements RolePokerQueue {
+public class RolePokerQueueImpl implements RolePokerQueue {
 
     @Override
 	public void reResolveQualifiedRole(String documentId, String roleName, String qualifiedRoleNameLabel) {

@@ -185,7 +185,7 @@
         <idref local="enMoveDocumentService" />
         <idref local="enActionListEmailService" />
         <idref local="enQuickLinksService" />
-        <idref local="enDocumentRequeuerService"/>
+        <idref local="rice.kew.documentRefreshQueue"/>
 
         <idref local="rice.kew.workflowDocumentActionsService" />
         <idref local="rice.kew.actionListService" />
@@ -534,7 +534,7 @@
   <bean id="rice.kew.blanketApprovalOrchestrationQueue" class="org.kuali.rice.kew.impl.action.BlanketApprovalOrchestrationQueueImpl"/>
   <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
   <bean id="rice.kew.actionInvocationQueue" class="org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl" />
-  <bean id="enDocumentRequeuerService" class="org.kuali.rice.kew.impl.document.DocumentRefreshQueueImpl" />
+  <bean id="rice.kew.documentRefreshQueue" class="org.kuali.rice.kew.impl.document.DocumentRefreshQueueImpl" />
 
   <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
 

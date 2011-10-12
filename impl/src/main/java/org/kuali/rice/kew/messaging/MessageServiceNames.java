@@ -41,7 +41,7 @@ public class MessageServiceNames {
 
 	public static final QName BLANKET_APPROVAL_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "blanketApprovalOrchestrationQueueSoap");
 
-	public static final QName DOCUMENT_REQUEUE_PROCESSING_SERVICE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "DocumentRequeueProcessorService");
+	public static final QName DOCUMENT_REFRESH_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentRefreshQueueSoap");
 
 	public static final QName ROLE_POKER = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "RolePokerProcessorService");
 
@@ -82,9 +82,9 @@ public class MessageServiceNames {
 	
 	public static DocumentRefreshQueue getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {
 		if (waitTime > 0) {
-			return (DocumentRefreshQueue) getDelayedServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, waitTime);
+			return (DocumentRefreshQueue) getDelayedServiceAsynchronously(DOCUMENT_REFRESH_QUEUE, documentId, waitTime);
 		}
-		return (DocumentRefreshQueue) getServiceAsynchronously(DOCUMENT_REQUEUE_PROCESSING_SERVICE, documentId, applicationId);
+		return (DocumentRefreshQueue) getServiceAsynchronously(DOCUMENT_REFRESH_QUEUE, documentId, applicationId);
 	}
 
 	public static Object getServiceAsynchronously(QName serviceName, DocumentRouteHeaderValue document) {

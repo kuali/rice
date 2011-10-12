@@ -247,9 +247,9 @@
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
-					<ref bean="enDocumentRequeuerService" />
+					<ref bean="rice.kew.documentRefreshQueue" />
 				</property>
-				<property name="localServiceName" value="DocumentRequeueProcessorService" />
+				<property name="localServiceName" value="documentRefreshQueueSoap" />
 				<property name="priority" value="10" />
 			</bean>
 		</property>

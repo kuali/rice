@@ -29,8 +29,15 @@
             <list>
               <bean parent="AttributeField" p:propertyName="number"/>
               <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="extension.accountTypeCode"/>
+              <bean parent="AttributeField" p:propertyName="extension.accountTypeCode">
+                <property name="fieldLookup">
+                  <bean parent="QuickFinderByScript"/>
+                </property>
+              </bean>
               <bean parent="AttributeField" p:propertyName="subAccount">
+                <property name="fieldLookup">
+                  <bean parent="QuickFinderByScript"/>
+                </property>
                 <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
                 <property name="fieldLookup.fieldConversions">
                   <map>
@@ -43,7 +50,11 @@
               <bean parent="AttributeField" p:propertyName="subAccountName"/>
               <bean parent="AttributeField" p:propertyName="createDate"/>
               <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
-              <bean parent="AttributeField" p:propertyName="foId"/>
+              <bean parent="AttributeField" p:propertyName="foId" >
+                <property name="fieldLookup">
+                  <bean parent="QuickFinderByScript"/>
+                </property>
+              </bean>
             </list>
           </property>
           <property name="title" value="Account Information"/>
@@ -56,7 +67,11 @@
             <list>
               <bean parent="AttributeField" p:propertyName="number"/>
               <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="foId"/>
+              <bean parent="AttributeField" p:propertyName="foId">
+                <property name="fieldLookup">
+                  <bean parent="QuickFinderByScript"/>
+                </property>
+              </bean>
             </list>
           </property>
           <property name="layoutManager.summaryTitle" value="Travel Account"/>

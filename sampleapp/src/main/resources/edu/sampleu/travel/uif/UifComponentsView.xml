@@ -1481,6 +1481,19 @@
 						</map>
 					</property>
 				</bean>
+				<bean parent="GenericTextField" p:label="Lookup (Return by script)"
+					p:instructionalText="click the button to perform a lookup on TravelAccounts"
+					p:propertyName="field90">
+          <property name="fieldLookup">
+            <bean parent="QuickFinderByScript"/>
+          </property>
+					<property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+					<property name="fieldLookup.fieldConversions">
+						<map>
+							<entry key="number" value="field90" />
+						</map>
+					</property>
+				</bean>
         <bean parent="GenericTextField" p:label="Lookup"
 					p:instructionalText="overriden link to display different text - Search Now"
 					p:propertyName="field87">

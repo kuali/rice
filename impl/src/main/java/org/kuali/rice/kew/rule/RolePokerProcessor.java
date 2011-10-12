@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.action.RolePokerQueue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 

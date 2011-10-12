@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 
-import org.kuali.rice.kew.actionrequest.service.impl.DocumentRefreshQueueImpl;
+import org.kuali.rice.kew.impl.document.DocumentRefreshQueueImpl;
 
 /**
  * a DocumentRefreshQueueImpl extension that keeps track of the ids for docs that were requeued
@@ -42,7 +42,7 @@ public class MockDocumentRefreshQueueImpl extends DocumentRefreshQueueImpl {
 	}
 
 	/**
-	 * @see org.kuali.rice.kew.actionrequest.service.impl.DocumentRefreshQueueImpl#requeueDocument(java.lang.Long)
+	 * @see org.kuali.rice.kew.impl.document.DocumentRefreshQueueImpl#requeueDocument(java.lang.Long)
 	 */
 	@Override
 	public void refreshDocument(String documentId) {

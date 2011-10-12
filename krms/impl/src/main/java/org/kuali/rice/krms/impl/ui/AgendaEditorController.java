@@ -29,9 +29,11 @@ import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
+import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
+import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
 import org.springframework.stereotype.Controller;
@@ -43,6 +45,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -1257,16 +1260,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
 
         // get selected id
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
         // find parent
-        Node parent = findParentPropositionNode(
+        Node<RuleTreeNode,String> parent = findParentPropositionNode(
                 agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
 
         // add new child at appropriate spot
-        // TODO: ??  EDIT the TREE?  or EDIT the Proposition and refresh the Tree?
         if (parent != null){
             List<Node<RuleTreeNode,String>> children = parent.getChildren();
             for( int index=0; index< children.size(); index++){
@@ -1277,20 +1280,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     if(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
                        SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType())){
 
-                        addOpCodeNode(parent, child.getData().getProposition(), index+2);
-
                         // build new Blank Proposition
-                        PropositionBo blankProp = new PropositionBo();
-                        blankProp.setPropositionTypeCode(PropositionType.SIMPLE.getCode());
-                        blankProp.setRuleId(child.getData().getProposition().getRuleId());
-                        blankProp.setDescription("");
+                        PropositionBo blank = createBlankPropositionBo(child.getData().getProposition(),PropositionType.SIMPLE.getCode());
 
-                        Node<RuleTreeNode, String> baby= new Node<RuleTreeNode, String>();
-                        baby.setNodeLabel("");
-                        baby.setNodeType(SimplePropositionEditNode.NODE_TYPE);
-                        SimplePropositionEditNode pNode = new SimplePropositionEditNode(blankProp);
-                        baby.setData(pNode);
-                        parent.insertChildAt(index+2, baby);
+                        //add it to the parent
+                        PropositionBo parentProp = parent.getData().getProposition();
+                        parentProp.getCompoundComponents().add((index/2)+1, blank);
+
+                        // redisplay the tree (editMode = true)
+                        rule.refreshPropositionTree(true);
+
+                        //redisplay the tree
+
                     }
 
                     break;
@@ -1299,6 +1300,61 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         return super.updateComponent(form, result, request, response);
+    }
+
+    private PropositionBo createBlankPropositionBo(PropositionBo sibling, String pType){
+        // create a simple proposition Bo
+        PropositionBo prop = null;
+        if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(pType)){
+            prop = new PropositionBo();
+            prop.setId(getNewPropId());
+            prop.setPropositionTypeCode(pType);
+            prop.setRuleId(sibling.getRuleId());
+            prop.setTypeId(sibling.getTypeId());
+
+            // create blank proposition parameters
+            PropositionParameterBo pTerm = new PropositionParameterBo();
+            pTerm.setId(getNewPropParameterId());
+            pTerm.setParameterType("T");
+            pTerm.setPropId(prop.getId());
+            pTerm.setSequenceNumber(new Integer("0"));
+            pTerm.setVersionNumber(new Long(1));
+            pTerm.setValue("");
+
+            // create blank proposition parameters
+            PropositionParameterBo pOp = new PropositionParameterBo();
+            pOp.setId(getNewPropParameterId());
+            pOp.setParameterType("F");
+            pOp.setPropId(prop.getId());
+            pOp.setSequenceNumber(new Integer("2"));
+            pOp.setVersionNumber(new Long(1));
+
+            // create blank proposition parameters
+            PropositionParameterBo pConst = new PropositionParameterBo();
+            pConst.setId(getNewPropParameterId());
+            pConst.setParameterType("C");
+            pConst.setPropId(prop.getId());
+            pConst.setSequenceNumber(new Integer("1"));
+            pConst.setVersionNumber(new Long(1));
+            pConst.setValue("");
+
+            List<PropositionParameterBo> paramList = Arrays.asList(pTerm, pConst, pOp);
+            prop.setParameters(paramList);
+        }
+        return prop;
+    }
+
+    private String getNewPropId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_S",
+        		PropositionBo.class);
+        return id.toString();
+    }
+    private String getNewPropParameterId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_PARM_S",
+        		PropositionParameterBo.class);
+        return id.toString();
     }
     /**
      *
@@ -1366,6 +1422,5 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
         return bingo;
     }
-
 
 }

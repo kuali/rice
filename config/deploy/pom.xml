@@ -124,7 +124,7 @@
         <deploy.groupId>org.kuali.rice</deploy.groupId>
         <local.app.dir>../../standalone</local.app.dir>
         <deploy.artifactId>rice-standalone</deploy.artifactId>
-        <deploy.app.configfile>standalone-config.xml</deploy.app.configfile>
+        <deploy.app.configfile>rice-config.xml</deploy.app.configfile>
       </properties>
     </profile>
     <profile>

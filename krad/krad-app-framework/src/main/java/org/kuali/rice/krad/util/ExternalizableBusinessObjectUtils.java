@@ -37,26 +37,22 @@ public final class ExternalizableBusinessObjectUtils {
 		if (businessObjectClass == null) {
 			return null;
 		}
-		if (businessObjectClass.isInterface()) {
+		//if (businessObjectClass.isInterface()) {
 			if (!ExternalizableBusinessObject.class.equals(businessObjectClass) && ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
 				return businessObjectClass;
 			}
-			else {
-				return null;
-			}
-		}
-		if (ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
-			Class tempClass = businessObjectClass;
-			while (tempClass != null && !Object.class.equals(tempClass)) {
-				for (Class tempClassInterface : tempClass.getInterfaces()) {
-					if (!ExternalizableBusinessObject.class.equals(tempClassInterface) && ExternalizableBusinessObject.class.isAssignableFrom(tempClassInterface)) {
-						return tempClassInterface;
-					}
-				}
-				tempClass = tempClass.getSuperclass();
-			}
-		}
-		return null;
+            if (ExternalizableBusinessObject.class.isAssignableFrom(businessObjectClass)) {
+                Class tempClass = businessObjectClass;
+                while (tempClass != null && !Object.class.equals(tempClass)) {
+                    for (Class tempClassInterface : tempClass.getInterfaces()) {
+                        if (!ExternalizableBusinessObject.class.equals(tempClassInterface) && ExternalizableBusinessObject.class.isAssignableFrom(tempClassInterface)) {
+                            return tempClassInterface;
+                        }
+                    }
+                    tempClass = tempClass.getSuperclass();
+                }
+            }
+            return null;
 	}
 	
 	public static boolean isExternalizableBusinessObjectInterface(Class businessObjectClass) {

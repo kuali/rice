@@ -23,8 +23,8 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
- * RolePokerQueue implementation which handles initiating refresh of the "poked" role.
- *
+ * Reference implementation of the {@code RokePokerQueue} which handle re-resolution of action requests which use roles.
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RolePokerProcessor implements RolePokerQueue {

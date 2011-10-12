@@ -37,9 +37,9 @@ public final class KRMSPropertyConstants {
 	}
 	
 	public static final class Context {
-		public static final String CONTEXT_ID ="contextId";
-		public static final String NAME = "name";
-		public static final String NAMESPACE = "namespace";
+		public static final String CONTEXT_ID ="dataObject.id";
+		public static final String NAME = "dataObject.name";
+		public static final String NAMESPACE = "dataObject.namespace";
 		public static final String ATTRIBUTE_BOS = "attributeBos";
 	}
 

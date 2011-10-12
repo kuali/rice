@@ -33,7 +33,7 @@
 
     <property name="documentTypeName" value="ContextMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    <!--<property name="businessRulesClass" value="edu.sampleu.travel.bo.TravelAccountRules"/>-->
+    <property name="businessRulesClass" value="org.kuali.rice.krms.impl.rule.ContextBusRule"/>
     <property name="workflowProperties">
       <ref bean="ContextMaintenanceDocument-workflowProperties"/>
     </property>

@@ -219,7 +219,7 @@
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
-					<ref bean="enBlanketApproveProcessor" />
+					<ref bean="rice.kew.blanketApprovalOrchestrationQueue" />
 				</property>
 				<property name="localServiceName" value="blanketApprovalOrchestrationQueueSoap" />
 				<property name="priority" value="4" />

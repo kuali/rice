@@ -36,7 +36,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**
- * Tests the DocumentRequeuer route queue processor.
+ * Tests the reference implementation of the {@link DocumentRefreshQueue}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

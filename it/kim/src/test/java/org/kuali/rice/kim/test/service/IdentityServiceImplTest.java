@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
@@ -35,11 +36,11 @@ import static org.junit.Assert.assertNotNull;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class IdentityServiceImplTest extends KIMTestCase {
 
-	private IdentityServiceImpl identityService;
+	private IdentityService identityService;
 
 	public void setUp() throws Exception {
 		super.setUp();
-		identityService = (IdentityServiceImpl) KIMServiceLocatorInternal.getBean("kimIdentityDelegateService");
+		identityService = (IdentityService) KIMServiceLocatorInternal.getBean("kimIdentityDelegateService");
 	}
 
 	@Test

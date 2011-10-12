@@ -548,7 +548,7 @@ abstract class RoleServiceBase {
     /**
      * @return the roleDao
      */
-    public RoleDao getRoleDao() {
+    protected RoleDao getRoleDao() {
         return this.roleDao;
     }
 

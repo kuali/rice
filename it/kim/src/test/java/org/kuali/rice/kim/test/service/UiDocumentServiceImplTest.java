@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.address.EntityAddressContract;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -42,7 +43,6 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.framework.type.KimTypeService;
-import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.kim.impl.identity.email.EntityEmailTypeBo;
@@ -114,7 +114,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		//verify that update doesn't cause external identifier to be encrypted twice
 		// and that update doesn't cause any problems
 		uiDocumentService.saveEntityPerson(personDoc);
-		Entity entity2 = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntity(
+		Entity entity2 = ((IdentityService) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntity(
                 personDoc.getEntityId());
         EntityTypeContactInfo entityType2 = entity2.getEntityTypeContactInfos().get(0);
         personDoc.getExternalIdentifiers();

@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.KimConstants.KimUIConstants;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.permission.PermissionContract;
+import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleContract;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMemberContract;
@@ -30,7 +31,6 @@ import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.xml.bind.UnmarshalException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -65,15 +65,22 @@ public final class RoleXmlUtil {
         
         // Validate the role and (if applicable) retrieve the ID from an existing matching role.
         validateAndPrepareRole(newRole);
-        
-        // Save the role.
-        KimApiServiceLocator.getRoleService().saveRole(newRole.getRoleId(), newRole.getRoleName(), newRole.getRoleDescription(), newRole.getActive().booleanValue(),
-                newRole.getKimTypeId(), newRole.getNamespaceCode());
-        
+
+        Role.Builder builder = Role.Builder.create();
+        builder.setActive(newRole.getActive());
+        builder.setDescription(newRole.getRoleDescription());
+        builder.setId(newRole.getRoleId());
+        builder.setKimTypeId(newRole.getKimTypeId());
+        builder.setName(newRole.getRoleName());
+        builder.setNamespaceCode(newRole.getNamespaceCode());
+
+        //save the role
+        Role role = KimApiServiceLocator.getRoleService().createRole(builder.build());
+
         // Set a flag on the role to indicate that it has now been persisted so that the unmarshalling process will not save this role more than once.
         newRole.setAlreadyPersisted(true);
         
-        return newRole.getRoleId();
+        return role.getId();
     }
     
     /**
@@ -106,13 +113,15 @@ public final class RoleXmlUtil {
         if (newRoleMember.getQualifications() == null) {
             newRoleMember.setQualifications(new HashMap<String, String>());
         }
-        
+
+        RoleMember.Builder builder = RoleMember.Builder.create(newRoleMember.getRoleId(), newRoleMember.getRoleIdAsMember(),
+                newRoleMember.getMemberId(), newRoleMember.getMemberTypeCode(),
+                newRoleMember.getActiveFromDate() == null ? null : new DateTime(newRoleMember.getActiveFromDate().getMillis()),
+                newRoleMember.getActiveToDate() == null ? null : new DateTime(newRoleMember.getActiveToDate().getMillis()),
+                newRoleMember.getQualifications());
+
         // Save the role member.
-        RoleMemberContract newMember = KimApiServiceLocator.getRoleService().saveRoleMemberForRole(
-                null, newRoleMember.getMemberId(), newRoleMember.getMemberTypeCode(),
-                        newRoleMember.getRoleId(), newRoleMember.getQualifications(),
-                                (newRoleMember.getActiveFromDate() != null) ? new DateTime(newRoleMember.getActiveFromDate().getMillis()) : null,
-                                (newRoleMember.getActiveToDate() != null) ? new DateTime(newRoleMember.getActiveToDate().getMillis()) : null);
+        RoleMemberContract newMember = KimApiServiceLocator.getRoleService().createRoleMember(builder.build());
         
         return newMember.getRoleMemberId();
     }

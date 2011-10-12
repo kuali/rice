@@ -15,10 +15,9 @@
 
 package org.kuali.rice.kim.api.role;
 
-import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
@@ -64,9 +63,32 @@ import java.util.Set;
 @WebService(name = "roleServiceSoap", targetNamespace = KimApiConstants.Namespaces.KIM_NAMESPACE_2_0 )
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RoleService {
-    // --------------------
-    // Role Data
-    // --------------------
+    /**
+     * This will create a {@link org.kuali.rice.kim.api.role.Role} exactly like the role passed in.
+     *
+     * @param role the role to create
+     * @return the newly created object.  will never be null.
+     * @throws IllegalArgumentException if the responsibility is null
+     * @throws IllegalStateException if the responsibility is already existing in the system
+     */
+    @WebMethod(operationName="createRole")
+    @WebResult(name = "role")
+    @CacheEvict(value={Role.Cache.NAME}, allEntries = true)
+    Role createRole(@WebParam(name = "role") Role role)
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+     * This will update a {@link Role}.
+     *
+     * @param role the role to update
+     * @throws IllegalArgumentException if the role is null
+     * @throws IllegalStateException if the role does not exist in the system
+     */
+    @WebMethod(operationName="updateRole")
+    @WebResult(name = "role")
+    @CacheEvict(value={Role.Cache.NAME}, allEntries = true)
+    Role updateRole(@WebParam(name = "role") Role role)
+            throws RiceIllegalArgumentException, RiceIllegalStateException;
 
 	/**
 	 * Get the KIM Role object with the given ID.
@@ -128,9 +150,10 @@ public interface RoleService {
     @XmlElement(name = "attribute", required = false)
     @WebResult(name = "attributes")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name="principalId") String principalId,
-                                                     @WebParam(name="roleIds") List<String> roleIds,
-                                                     @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification ) throws RiceIllegalArgumentException;
+    List<Map<String, String>> getRoleQualifersForPrincipalByRoleIds(@WebParam(name = "principalId") String principalId,
+            @WebParam(name = "roleIds") List<String> roleIds, @WebParam(name = "qualification") @XmlJavaTypeAdapter(
+            value = MapStringStringAdapter.class) Map<String, String> qualification)
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns a list of role qualifiers that the given principal has without taking into consideration
@@ -142,10 +165,11 @@ public interface RoleService {
     @XmlElement(name = "attribute", required = false)
     @WebResult(name = "attributes")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    List<Map<String, String>> getRoleQualifiersForPrincipal(@WebParam(name="principalId") String principalId,
-                                                     @WebParam(name="namespaceCode") String namespaceCode,
-                                                     @WebParam(name="roleName") String roleName,
-                                                     @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification ) throws RiceIllegalArgumentException;
+    List<Map<String, String>> getRoleQualifersForPrincipalByNamespaceAndRolename(
+            @WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(
+            value = MapStringStringAdapter.class) Map<String, String> qualification)
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
@@ -156,10 +180,11 @@ public interface RoleService {
     @XmlElement(name = "attribute", required = false)
     @WebResult(name = "attributes")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-	List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
-                                                           @WebParam(name = "namespaceCode") String namespaceCode,
-                                                           @WebParam(name = "roleName") String roleName,
-                                                           @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) throws RiceIllegalArgumentException;
+	List<Map<String, String>> getNestedRoleQualifersForPrincipalByNamespaceAndRolename(
+            @WebParam(name = "principalId") String principalId, @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "roleName") String roleName, @WebParam(name = "qualification") @XmlJavaTypeAdapter(
+            value = MapStringStringAdapter.class) Map<String, String> qualification)
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns a list of role qualifiers that the given principal.  If the principal's membership
@@ -170,9 +195,11 @@ public interface RoleService {
     @XmlElement(name = "attribute", required = false)
     @WebResult(name = "attributes")
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-	List<Map<String, String>> getNestedRoleQualifiersForPrincipal(@WebParam(name = "principalId") String principalId,
-                                                           @WebParam(name = "roleIds") List<String> roleIds,
-                                                           @WebParam(name = "qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) throws RiceIllegalArgumentException;
+	List<Map<String, String>> getNestedRoleQualifiersForPrincipalByRoleIds(
+            @WebParam(name = "principalId") String principalId, @WebParam(name = "roleIds") List<String> roleIds,
+            @WebParam(name = "qualification") @XmlJavaTypeAdapter(
+                    value = MapStringStringAdapter.class) Map<String, String> qualification)
+            throws RiceIllegalArgumentException;
 
 
     // --------------------
@@ -191,7 +218,8 @@ public interface RoleService {
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
     List<RoleMembership> getRoleMembers( @WebParam(name="roleIds") List<String> roleIds,
-                                             @WebParam(name="qualification")@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification ) throws RiceIllegalArgumentException;
+            @WebParam(name="qualification")@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
+            throws RiceIllegalArgumentException;
 
     /**
 	 * This method gets all the members, then traverses down into members of type role and group to obtain the nested principal ids
@@ -203,8 +231,9 @@ public interface RoleService {
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
     Collection<String> getRoleMemberPrincipalIds(@WebParam(name="namespaceCode") String namespaceCode,
-                                                 @WebParam(name="roleName") String roleName,
-                                                 @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification) throws RiceIllegalArgumentException;
+            @WebParam(name="roleName") String roleName,
+            @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification)
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns whether the given principal has any of the passed role IDs with the given qualification.
@@ -212,8 +241,9 @@ public interface RoleService {
     @WebMethod(operationName = "principalHasRole")
     @WebResult(name = "principalHasRole")
     boolean principalHasRole( @WebParam(name="principalId") String principalId,
-                              @WebParam(name="roleIds") List<String> roleIds,
-                              @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification ) throws RiceIllegalArgumentException;
+            @WebParam(name="roleIds") List<String> roleIds,
+            @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
+            throws RiceIllegalArgumentException;
 
     /**
      * Returns the subset of the given principal ID list which has the given role and qualification.
@@ -224,9 +254,10 @@ public interface RoleService {
     @XmlElement(name = "principalId", required = false)
     @WebResult(name = "principalIds")
     List<String> getPrincipalIdSubListWithRole( @WebParam(name="principalIds") List<String> principalIds,
-                                                @WebParam(name="roleNamespaceCode") String roleNamespaceCode,
-                                                @WebParam(name="roleName") String roleName,
-                                                @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification ) throws RiceIllegalArgumentException;
+            @WebParam(name="roleNamespaceCode") String roleNamespaceCode,
+            @WebParam(name="roleName") String roleName,
+            @WebParam(name="qualification") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification )
+            throws RiceIllegalArgumentException;
 
     /**
 	 *
@@ -339,12 +370,6 @@ public interface RoleService {
     @Cacheable(value=DelegateType.Cache.NAME, key="'delegationId=' + #p0")
     DelegateType getDelegateTypeByDelegationId(@WebParam(name = "delegationId") String delegationId)  throws RiceIllegalArgumentException;
 
-    @WebMethod(operationName = "lookupRoles")
-    @XmlElementWrapper(name = "roles", required = true)
-    @XmlElement(name = "role", required = false)
-    @WebResult(name = "roles")
-	List<Role> lookupRoles(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria) throws RiceIllegalArgumentException;
-
     /**
 	 * Assigns the principal with the given id to the role with the specified
 	 * namespace code and name with the supplied set of qualifications.
@@ -379,46 +404,40 @@ public interface RoleService {
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws RiceIllegalArgumentException;
 
 	/**
+	 * Creates a new RoleMember.  Needs to be passed a valid RoleMember object that does not currently exist.
+	 */
+    @WebMethod(operationName = "createRoleMember")
+    @WebResult(name = "roleMember")
+    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    RoleMember createRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
 	 * Assigns the role with the given id to the role with the specified
 	 * namespace code and name with the supplied set of qualifications.
 	 */
-    @WebMethod(operationName = "saveRoleMemberForRole")
+    @WebMethod(operationName = "updateRoleMember")
     @WebResult(name = "roleMember")
     @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
-    RoleMember saveRoleMemberForRole(@WebParam(name="roleMemberId") String roleMemberId,
-    		@WebParam(name="memberId") String memberId,
-    		@WebParam(name="memberTypeCode") String memberTypeCode,
-    		@WebParam(name="roleId") String roleId,
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
-    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeFromDate") DateTime activeFromDate,
-    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeToDate") DateTime activeToDate) throws RiceIllegalArgumentException;
+    RoleMember updateRoleMember(@WebParam(name = "roleMember") RoleMember roleMember) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
-    @WebMethod(operationName = "saveRoleRspActions")
+    @WebMethod(operationName = "createRoleResponsibilityAction")
     @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
-    void saveRoleRspActions(@WebParam(name="roleResponsibilityActionId") String roleResponsibilityActionId,
-    		@WebParam(name="roleId") String roleId,
-    		@WebParam(name="roleResponsibilityId") String roleResponsibilityId,
-    		@WebParam(name="roleMemberId") String roleMemberId,
-    		@WebParam(name="actionTypeCode") String actionTypeCode,
-    		@WebParam(name="actionPolicyCode") String actionPolicyCode,
-    		@WebParam(name="priorityNumber") Integer priorityNumber,
-    		@WebParam(name="forceAction") Boolean forceAction) throws RiceIllegalArgumentException;
+    RoleResponsibilityAction createRoleResponsibilityAction(@WebParam(name = "roleResponsibilityAction") RoleResponsibilityAction roleResponsibilityAction) throws RiceIllegalArgumentException;
 
 	/**
 	 * Assigns the member with the given id as a delegation member to the role
 	 * with the specified namespace code and name with the supplied set of qualifications.
 	 */
-    @WebMethod(operationName = "saveDelegationMemberForRole")
+    @WebMethod(operationName = "createDelegateType")
     @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
-    void saveDelegationMemberForRole(@WebParam(name="delegationMemberId") String delegationMemberId,
-    		@WebParam(name="roleMemberId") String roleMemberId,
-    		@WebParam(name="memberId") String memberId,
-    		@WebParam(name="memberTypeCode") String memberTypeCode,
-    		@WebParam(name="delegationTypeCode") String delegationTypeCode,
-    		@WebParam(name="roleId") String roleId,
-    		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications,
-    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeFromDate") DateTime activeFromDate,
-    		@XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="activeToDate") DateTime activeToDate) throws RiceIllegalArgumentException;
+    DelegateType createDelegateType(@WebParam(name="delegateType") DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException;
+
+    /**
+	 * Updates a delegation type, including attached members
+	 */
+    @WebMethod(operationName = "updateDelegateType")
+    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
+    DelegateType updateDelegateType(@WebParam(name="delegateType") DelegateType delegateType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Remove the principal with the given id and qualifications from the role
@@ -452,14 +471,6 @@ public interface RoleService {
     		@WebParam(name="namespaceCode") String namespaceCode,
     		@WebParam(name="roleName") String roleName,
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualifications) throws RiceIllegalArgumentException;
-
-    /**
-     * Creates or updates role with given attributes
-     */
-    @WebMethod(operationName = "saveRole")
-    @CacheEvict(value={Role.Cache.NAME, RoleMembership.Cache.NAME, RoleMember.Cache.NAME, DelegateMember.Cache.NAME, RoleResponsibility.Cache.NAME, DelegateType.Cache.NAME }, allEntries = true)
-    void saveRole(@WebParam(name = "roleId") String roleId, @WebParam(name = "roleName") String roleName, @WebParam(name = "roleDescription") String roleDescription, @WebParam(name = "active") boolean active, @WebParam(name = "kimTypeId") String kimTypeId,
-            @WebParam(name = "namespaceCode") String namespaceCode) throws RiceIllegalArgumentException;
 
     /**
      * Assigns the given permission to the given role

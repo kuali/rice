@@ -330,7 +330,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
          * Create the responsibility template
          */
 
-        String templateId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S");
+        String templateId = String.valueOf(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S"));
     	ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
         template.setId(templateId);
         template.setNamespaceCode(NAMESPACE);

@@ -19,6 +19,7 @@ import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimApiConstants;
+import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.impl.role.RoleServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -34,11 +35,11 @@ import static org.junit.Assert.assertTrue;
 
 public class RoleServiceImplTest extends KIMTestCase {
 
-	private RoleServiceImpl roleService;
+	private RoleService roleService;
 
 	public void setUp() throws Exception {
 		super.setUp();
-		roleService = (RoleServiceImpl) GlobalResourceLoader.getService(
+		roleService = (RoleService) GlobalResourceLoader.getService(
                 new QName(KimApiConstants.Namespaces.KIM_NAMESPACE_2_0, KimApiConstants.ServiceNames.ROLE_SERVICE_SOAP));
 	}
 

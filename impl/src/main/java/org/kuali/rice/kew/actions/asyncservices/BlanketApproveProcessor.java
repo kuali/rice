@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,12 +42,14 @@ public class BlanketApproveProcessor implements BlanketApprovalOrchestrationQueu
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
 
     @Override
-	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames) {
-        doBlanketApproveWork(documentId, principalId, actionTakenId, nodeNames, false);
+	public void orchestrateAndIndexDocument(String documentId, String principalId, String actionTakenId,
+            Set<String> nodeNames) {
+        orchestrateDocument(documentId, principalId, actionTakenId, nodeNames, false);
 	}
 
     @Override
-	public void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) {
+	public void orchestrateDocument(String documentId, String principalId, String actionTakenId, Set<String> nodeNames,
+            boolean shouldSearchIndex) {
 		if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
         }
@@ -59,7 +62,7 @@ public class BlanketApproveProcessor implements BlanketApprovalOrchestrationQueu
             throw new RiceIllegalArgumentException("actionTakenId is null");
         }
         if (nodeNames == null) {
-            throw new RiceIllegalArgumentException("nodeNames is null");
+            nodeNames = new HashSet<String>();
         }
 
         KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);

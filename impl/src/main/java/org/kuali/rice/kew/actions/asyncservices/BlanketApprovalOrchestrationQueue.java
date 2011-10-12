@@ -17,7 +17,12 @@
 package org.kuali.rice.kew.actions.asyncservices;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 import java.util.Set;
 
 /**
@@ -25,10 +30,58 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "blanketApprovalOrchestrationQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface BlanketApprovalOrchestrationQueue {
-	
-	void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames) throws RiceIllegalArgumentException;
-	
-	void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames, boolean shouldSearchIndex) throws RiceIllegalArgumentException;
+
+    /**
+     * Operates the same as if @{code orchestrateDocument} was called passing "true" for {@code shouldSearchIndex}.
+
+     * @param documentId the id of the document to orchestrate through the blanket approval process
+     * @param principalId the id of the principal who initiated the blanket approval
+     * @param actionTakenId the id of the blanket approve action that was taken by the principal
+     * @param nodeNames the Set of node names at which to terminate the blanket approval process, may be null or empty
+     * in which case the document is blanket approved through it's entire workflow process
+     *
+     * @throws RiceIllegalArgumentException if documentId is a null or blank value
+     * @throws RiceIllegalArgumentException if principalId is a null or blank value
+     * @throws RiceIllegalArgumentException if actionTakenId is a null or blank value
+     */
+    @WebMethod(operationName = "orchestrateAndIndexDocument")
+	void orchestrateAndIndexDocument(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "actionTakenId") String actionTakenId,
+            @WebParam(name = "nodeNames") Set<String> nodeNames
+    ) throws RiceIllegalArgumentException;
+
+    /**
+     * Orchestrates the document with the given id through the blanket approval process to the specified list of node
+     * names.  If the node names are empty, then the document will be orchestrated all the way to the end of its
+     * workflow process.
+     *
+     * <p>This orchestration can also optional index search attributes after orchestration has complete if the value
+     * for {@code shouldSearchIndex} is "true".</p>
+     *
+     * @param documentId the id of the document to orchestrate through the blanket approval process
+     * @param principalId the id of the principal who initiated the blanket approval
+     * @param actionTakenId the id of the blanket approve action that was taken by the principal
+     * @param nodeNames the Set of node names at which to terminate the blanket approval process, may be null or empty
+     * in which case the document is blanket approved through it's entire workflow process
+     * @param shouldSearchIndex indicates whether or not the document's attributes should be indexed after the
+     * orchestration process completes
+     *
+     * @throws RiceIllegalArgumentException if documentId is a null or blank value
+     * @throws RiceIllegalArgumentException if principalId is a null or blank value
+     * @throws RiceIllegalArgumentException if actionTakenId is a null or blank value
+     */
+    @WebMethod(operationName = "orchestrateDocument")
+	void orchestrateDocument(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "actionTakenId") String actionTakenId,
+            @WebParam(name = "nodeNames") Set<String> nodeNames,
+            @WebParam(name = "shouldSearchIndex") boolean shouldSearchIndex
+    ) throws RiceIllegalArgumentException;
 
 }

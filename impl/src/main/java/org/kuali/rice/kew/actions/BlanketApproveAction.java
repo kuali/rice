@@ -174,7 +174,8 @@ public class BlanketApproveAction extends ActionTakenEvent {
         	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
             BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
-            blanketApprove.doBlanketApproveWork(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames, shouldIndex);
+            blanketApprove.orchestrateDocument(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(),
+                    actionTaken.getActionTakenId(), nodeNames, shouldIndex);
 //
 
 //          KEWAsyncronousJavaService blanketApproveProcessor = (KEWAsyncronousJavaService)SpringServiceLocator.getMessageHelper().getServiceAsynchronously(

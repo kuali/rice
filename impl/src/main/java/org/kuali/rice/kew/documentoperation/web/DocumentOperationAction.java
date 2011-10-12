@@ -29,7 +29,7 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
-import org.kuali.rice.kew.actions.asyncservices.BlanketApprovalOrchestrationQueue;
+import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;

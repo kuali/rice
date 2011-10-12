@@ -88,7 +88,7 @@ public class PeopleFlowActionTypeServiceTest {
                 (String)ee.getEngineResults().getAttribute(PeopleFlowActionTypeService.PEOPLE_FLOWS_SELECTED_ATTRIBUTE);
 
         // compare against our expected output:
-        assertEquals(selectedPeopleFlows, "F:myBogusPeopleFlowId1,A:myBogusPeopleFlowId2");
+        assertEquals("F:myBogusPeopleFlowId1,A:myBogusPeopleFlowId2", selectedPeopleFlows);
 
         // TODO: test ActionDefinition w/o the attribute we need
 

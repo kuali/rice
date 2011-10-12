@@ -21,11 +21,14 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+import org.springframework.cache.CacheManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.xml.namespace.QName;
@@ -149,13 +152,19 @@ public abstract class KEWTestCase extends BaselineTestCase {
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
-			//KsbApiServiceLocator.getCacheAdministrator().flushAll();
-			//KimApiServiceLocator.getIdentityManagementService().flushAllCaches();
-			//KimApiServiceLocator.getRoleService().flushRoleCaches();
+            clearCacheManagers(KimImplServiceLocator.getLocalCacheManager(), KEWServiceLocator.getLocalCacheManager());
 			super.stop();
 		}
-
 	}
+
+    protected void clearCacheManagers(CacheManager... cacheManagers) {
+        for (CacheManager cacheManager : cacheManagers) {
+            for (String cacheName : cacheManager.getCacheNames()) {
+                LOG.info("Clearing cache: " + cacheName);
+                cacheManager.getCache(cacheName).clear();
+            }
+        }
+    }
 
 	/**
 	 * Returns the List of tables that should be cleared on every test run.

@@ -142,7 +142,7 @@ public interface GroupService {
      */
     @WebMethod(operationName = "getGroup")
     @WebResult(name = "group")
-    @Cacheable(value= Group.Cache.NAME, key="'id=' + #id")
+    @Cacheable(value= Group.Cache.NAME, key="'id=' + #p0")
     Group getGroup(@WebParam(name="id") String id) throws RiceIllegalArgumentException;
 
     /**

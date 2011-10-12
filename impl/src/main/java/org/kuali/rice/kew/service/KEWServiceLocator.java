@@ -59,6 +59,7 @@ import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.validation.RuleValidationAttributeResolver;
+import org.springframework.cache.CacheManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.persistence.EntityManagerFactory;
@@ -211,6 +212,8 @@ public final class KEWServiceLocator {
     public static final String DOCUMENT_LOOKUP_CUSTOMIZATION_MEDIATOR = "rice.kew.documentLookupCustomizationMediator";
 
     public static final String RULE_VALIDATION_ATTRIBUTE_RESOLVER = "rice.kew.ruleValidationAttributeResolver";
+
+    public static final String LOCAL_CACHE_MANAGER = "kimLocalCacheManager";
 
     public static EntityManagerFactory getEntityManagerFactory() {
         return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
@@ -407,5 +410,9 @@ public final class KEWServiceLocator {
 
     public static RuleValidationAttributeResolver getRuleValidationAttributeResolver() {
         return getBean(RULE_VALIDATION_ATTRIBUTE_RESOLVER);
+    }
+
+    public static CacheManager getLocalCacheManager() {
+        return (CacheManager) getService(LOCAL_CACHE_MANAGER);
     }
 }

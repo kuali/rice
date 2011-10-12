@@ -102,7 +102,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
             SerializationState state = serializationStates.get();
             PropertySerializabilityEvaluator evaluator = evaluators.get();
             
-            for (Iterator iterator = fieldDictionary.fieldsFor(object.getClass()); iterator.hasNext();) {
+            for (Iterator iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext();) {
                 Field field = (Field) iterator.next();
                 if (!fieldModifiersSupported(field)) {
                     continue;

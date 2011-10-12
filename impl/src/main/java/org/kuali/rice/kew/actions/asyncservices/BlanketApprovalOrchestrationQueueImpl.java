@@ -38,9 +38,9 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BlanketApproveProcessor implements BlanketApprovalOrchestrationQueue {
+public class BlanketApprovalOrchestrationQueueImpl implements BlanketApprovalOrchestrationQueue {
 	
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApprovalOrchestrationQueueImpl.class);
 
     @Override
 	public void orchestrateAndIndexDocument(String documentId, String principalId, String actionTakenId,

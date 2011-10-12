@@ -535,6 +535,7 @@
   <bean id="enMoveDocumentService" class="org.kuali.rice.kew.actions.asyncservices.MoveDocumentProcessor" />
   <bean id="rice.kew.actionInvocationQueue" class="org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl" />
   <bean id="rice.kew.documentRefreshQueue" class="org.kuali.rice.kew.impl.document.DocumentRefreshQueueImpl" />
+  <bean id="rice.kew.rolePokerQueue" class="org.kuali.rice.kew.impl.action.RolePokerQueueImpl" />
 
   <bean id="rice.kew.documentAttributeIndexingQueue" class="org.kuali.rice.kew.impl.document.attribute.DocumentAttributeIndexingQueueImpl" />
 

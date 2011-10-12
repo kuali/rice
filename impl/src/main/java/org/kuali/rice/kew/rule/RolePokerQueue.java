@@ -17,6 +17,12 @@
 package org.kuali.rice.kew.rule;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kew.api.KewApiConstants;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  * Defines the contract of a message queue for "poking" a role for a specified document.  When a role is "poked" it will
@@ -24,10 +30,23 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "rolePokerQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RolePokerQueue {
-	
-	void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "reResolveRole")
+    void reResolveRole(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "roleName") String roleName
+    ) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "reResolveQualifiedRole")
+	void reResolveQualifiedRole(
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "roleName") String roleName,
+            @WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel
+    ) throws RiceIllegalArgumentException;
     
-	void reResolveRole(String documentId, String roleName) throws RiceIllegalArgumentException;
+
 
 }

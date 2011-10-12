@@ -29,7 +29,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 public class RolePokerProcessor implements RolePokerQueue {
 
     @Override
-	public void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) {
+	public void reResolveQualifiedRole(String documentId, String roleName, String qualifiedRoleNameLabel) {
         if (StringUtils.isBlank(documentId)) {
 			throw new RiceIllegalArgumentException("documentId is null or blank");
 		}
@@ -48,6 +48,6 @@ public class RolePokerProcessor implements RolePokerQueue {
 
     @Override
 	public void reResolveRole(String documentId, String roleName) {
-		reResolveRole(documentId, roleName, null);
+		reResolveQualifiedRole(documentId, roleName, null);
 	}
 }

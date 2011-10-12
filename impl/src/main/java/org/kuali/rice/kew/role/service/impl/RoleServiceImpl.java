@@ -58,7 +58,7 @@ public class RoleServiceImpl implements RoleService {
     	String infoString = "documentType="+(documentType == null ? null : documentType.getName())+", role="+roleName;
         if (documentType == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
-            throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveRole: "+infoString);
+            throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving role asynchronously for "+infoString);
     	Set documentIds = new HashSet();
@@ -87,7 +87,7 @@ public class RoleServiceImpl implements RoleService {
     		String documentId = (String) iterator.next();
     		QName rolePokerName = MessageServiceNames.ROLE_POKER;
     		RolePokerQueue rolePokerQueue = (RolePokerQueue) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
-    		rolePokerQueue.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
+    		rolePokerQueue.reResolveQualifiedRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
     }
 
@@ -138,7 +138,7 @@ public class RoleServiceImpl implements RoleService {
     	String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getDocumentId())+", role="+roleName;
         if (routeHeader == null ||
                 org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
-            throw new RiceIllegalArgumentException("Cannot pass null arguments to reResolveRole: "+infoString);
+            throw new RiceIllegalArgumentException("Cannot pass null arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving role synchronously for "+infoString);
         List nodeInstances = findNodeInstances(routeHeader, roleName);

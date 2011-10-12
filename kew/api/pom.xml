@@ -180,6 +180,18 @@
 						</goals>
 					</execution>
           <execution>
+						<id>blanketApprovalOrchestrationQueue-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/BlanketApprovalOrchestrationQueue.wsdl</outputFile>
+							<serviceName>BlanketApprovalOrchestrationQueue</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
 						<id>pepleFlowService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>

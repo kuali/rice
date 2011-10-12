@@ -20,13 +20,12 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 
 import java.util.Set;
 
-
 /**
- * Created to front the BlanketApproveProcessor when it went to a service for async remoting.
+ * Defines the contract for a message queue which handles orchestrating documents through the blanket approval process.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface BlanketApproveProcessorService {
+public interface BlanketApprovalOrchestrationQueue {
 	
 	void doBlanketApproveWork(String documentId, String principalId, String actionTakenId, Set<String> nodeNames) throws RiceIllegalArgumentException;
 	

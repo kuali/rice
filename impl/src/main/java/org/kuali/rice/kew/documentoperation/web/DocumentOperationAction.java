@@ -29,9 +29,9 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
+import org.kuali.rice.kew.actions.asyncservices.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
-import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
@@ -767,7 +767,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-			BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
+			BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(docForm.getRouteHeader());
 			blanketApprove.doBlanketApproveWork(docForm.getRouteHeader().getDocumentId(), principalId, docForm.getBlanketApproveActionTakenId(), nodeNames, true);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
@@ -805,7 +805,8 @@ public class DocumentOperationAction extends KewKualiAction {
 		try {
 			DocumentOperationForm docForm = (DocumentOperationForm) form;
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(docForm.getActionInvocationUser());
-			ActionInvocation invocation = ActionInvocation.create(ActionType.fromCode(docForm.getActionInvocationActionCode()), docForm.getActionInvocationActionItemId());
+			ActionInvocation invocation = ActionInvocation.create(ActionType.fromCode(
+                    docForm.getActionInvocationActionCode()), docForm.getActionInvocationActionItemId());
 			ActionInvocationQueue actionInvocationQueue = MessageServiceNames.getActionInvocationProcessorService(docForm.getRouteHeader());
 			actionInvocationQueue.invokeAction(principalId, docForm.getRouteHeader().getDocumentId(), invocation);
 			ActionMessages messages = new ActionMessages();

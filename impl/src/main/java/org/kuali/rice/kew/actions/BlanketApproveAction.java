@@ -25,7 +25,7 @@ import java.util.Set;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
+import org.kuali.rice.kew.actions.asyncservices.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -173,7 +173,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         try {
         	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
-            BlanketApproveProcessorService blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
+            BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApproveProcessorService(routeHeader);
             blanketApprove.doBlanketApproveWork(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(), actionTaken.getActionTakenId(), nodeNames, shouldIndex);
 //
 

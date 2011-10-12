@@ -20,8 +20,8 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
+import org.kuali.rice.kew.actions.asyncservices.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
-import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
@@ -75,8 +75,8 @@ public class MessageServiceNames {
 		return (ActionInvocationQueue) getServiceAsynchronously(ACTION_INVOCATION_QUEUE, document);
 	}
 
-	public static BlanketApproveProcessorService getBlanketApproveProcessorService(DocumentRouteHeaderValue document) {
-		return (BlanketApproveProcessorService) getServiceAsynchronously(BLANKET_APPROVE_PROCESSING_SERVICE, document);
+	public static BlanketApprovalOrchestrationQueue getBlanketApproveProcessorService(DocumentRouteHeaderValue document) {
+		return (BlanketApprovalOrchestrationQueue) getServiceAsynchronously(BLANKET_APPROVE_PROCESSING_SERVICE, document);
 	}
 	
 	public static DocumentRequeuerService getDocumentRequeuerService(String applicationId, String documentId, long waitTime) {

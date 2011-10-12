@@ -25,7 +25,6 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -37,7 +36,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BlanketApproveProcessor implements BlanketApproveProcessorService {
+public class BlanketApproveProcessor implements BlanketApprovalOrchestrationQueue {
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApproveProcessor.class);
 

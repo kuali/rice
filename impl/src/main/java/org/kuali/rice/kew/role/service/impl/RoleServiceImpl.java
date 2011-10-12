@@ -30,7 +30,7 @@ import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.FlexRM;
 import org.kuali.rice.kew.rule.RoleAttribute;
-import org.kuali.rice.kew.rule.RolePoker;
+import org.kuali.rice.kew.rule.RolePokerQueue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -67,8 +67,8 @@ public class RoleServiceImpl implements RoleService {
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
     		QName rolePokerName = MessageServiceNames.ROLE_POKER;
-    		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
-    		rolePoker.reResolveRole(documentId, roleName);
+    		RolePokerQueue rolePokerQueue = (RolePokerQueue) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
+    		rolePokerQueue.reResolveRole(documentId, roleName);
 		}
     }
 
@@ -86,8 +86,8 @@ public class RoleServiceImpl implements RoleService {
     	for (Iterator iterator = documentIds.iterator(); iterator.hasNext();) {
     		String documentId = (String) iterator.next();
     		QName rolePokerName = MessageServiceNames.ROLE_POKER;
-    		RolePoker rolePoker = (RolePoker) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
-    		rolePoker.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
+    		RolePokerQueue rolePokerQueue = (RolePokerQueue) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(rolePokerName);
+    		rolePokerQueue.reResolveRole(documentId, roleName, qualifiedRoleNameLabel);
 		}
     }
 

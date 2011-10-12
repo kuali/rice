@@ -24,7 +24,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface RolePoker {
+public interface RolePokerQueue {
 	
 	void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) throws RiceIllegalArgumentException;
     

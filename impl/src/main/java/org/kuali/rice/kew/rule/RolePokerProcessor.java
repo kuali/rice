@@ -18,21 +18,15 @@ package org.kuali.rice.kew.rule;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 /**
- * RolePoker implementation which handles initiating refresh of the "poked" role.
+ * RolePokerQueue implementation which handles initiating refresh of the "poked" role.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RolePokerProcessor implements RolePoker {
+public class RolePokerProcessor implements RolePokerQueue {
 
     @Override
 	public void reResolveRole(String documentId, String roleName, String qualifiedRoleNameLabel) {

@@ -24,27 +24,27 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionItem;
-import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
+import org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
 /**
- * This test case verifies that the the ImmediateEmailReminderService can be retrieved from teh KewApiServiceLocator and that calling it
+ * This test case verifies that the the ImmediateEmailReminderQueue can be retrieved from teh KewApiServiceLocator and that calling it
  * will 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ImmediateEmailReminderServiceImplTest extends KEWTestCase {
 
-    private ImmediateEmailReminderService immediateEmailReminderService; // = new ImmediateEmailReminderServiceImpl();
+    private ImmediateEmailReminderQueue immediateEmailReminderQueue; // = new ImmediateEmailReminderServiceImpl();
     
     
     @Before
     public void setUp() throws Exception {
         super.setUp();
         
-        immediateEmailReminderService = KewApiServiceLocator.getImmediateEmailReminderService();
+        immediateEmailReminderQueue = KewApiServiceLocator.getImmediateEmailReminderService();
     }
     
     @After
@@ -54,13 +54,22 @@ public class ImmediateEmailReminderServiceImplTest extends KEWTestCase {
     
     @Test
     public void test() {  
-        ActionItem dto = ActionItem.Builder.create("124", KEWConstants.ACTION_REQUEST_APPROVE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
-                
-                //org.kuali.rice.kew.actionitem.ActionItem.to(bo);
-        immediateEmailReminderService.sendReminder(dto, Boolean.TRUE);
+        ActionItem actionItem = ActionItem.Builder.create("124", KEWConstants.ACTION_REQUEST_APPROVE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
+        immediateEmailReminderQueue.sendReminder(actionItem, Boolean.FALSE);
         
         assertEquals("user1 should have 1 email", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
         assertEquals("user2 should have no emails", 0, getMockEmailService().immediateReminderEmailsSent("user2", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+
+        getMockEmailService().resetReminderCounts();
+
+        immediateEmailReminderQueue.sendReminder(actionItem, Boolean.TRUE);
+        assertEquals("user1 should have no emails", 0, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+
+        getMockEmailService().resetReminderCounts();
+
+        actionItem = ActionItem.Builder.create("124", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
+        immediateEmailReminderQueue.sendReminder(actionItem, Boolean.TRUE);
+        assertEquals("user1 should have 1 emails", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
     }
 
     

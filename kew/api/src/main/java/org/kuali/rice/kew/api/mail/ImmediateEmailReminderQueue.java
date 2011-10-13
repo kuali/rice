@@ -17,7 +17,7 @@ import org.kuali.rice.kew.api.action.ActionItem;
   */
 @WebService(name = "immediateEmailReminderServiceSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface ImmediateEmailReminderService {
+public interface ImmediateEmailReminderQueue {
  
 	@WebMethod(operationName = "sendReminder")
 	void sendReminder(@WebParam(name="actionItem") ActionItem actionItem, @WebParam(name="skipOnApprovals") Boolean skipOnApprovals) throws RiceIllegalArgumentException;

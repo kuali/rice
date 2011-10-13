@@ -24,7 +24,7 @@ import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.group.GroupMembershipChangeQueue;
-import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
+import org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
@@ -113,7 +113,7 @@ public class KewApiServiceLocator {
         return (ResponsibilityChangeProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME);
     }
     
-    public static ImmediateEmailReminderService getImmediateEmailReminderService() {
+    public static ImmediateEmailReminderQueue getImmediateEmailReminderService() {
         return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(IMMEDIATE_EMAIL_REMINDER_SERVICE_QUEUE_NAME);
     }
 }

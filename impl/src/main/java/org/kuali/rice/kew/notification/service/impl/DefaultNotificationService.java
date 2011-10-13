@@ -29,7 +29,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.api.mail.ImmediateEmailReminderService;
+import org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.notification.service.NotificationService;
@@ -72,8 +72,8 @@ public class DefaultNotificationService implements NotificationService {
 	 * @param actionItem the action item
 	 */
 	protected void sendNotification(ActionItem actionItem) {
-        ImmediateEmailReminderService immediateEmailService = KewApiServiceLocator.getImmediateEmailReminderService();
-        immediateEmailService.sendReminder(actionItem, RouteContext.getCurrentRouteContext().isDoNotSendApproveNotificationEmails());
+        ImmediateEmailReminderQueue immediateEmailQueue = KewApiServiceLocator.getImmediateEmailReminderService();
+        immediateEmailQueue.sendReminder(actionItem, RouteContext.getCurrentRouteContext().isDoNotSendApproveNotificationEmails());
         // TODO: JLR - replace with direct call to ActionListEmailService 
 	}
 

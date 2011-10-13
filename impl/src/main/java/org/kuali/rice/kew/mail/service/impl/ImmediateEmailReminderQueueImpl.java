@@ -7,14 +7,14 @@ import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 /**
- * Implementation of the {@link org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue}.
+ * Reference implementation of an {@code ImmediateEmailReminderQueue}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ImmediateEmailReminderServiceImpl implements ImmediateEmailReminderQueue {
+public class ImmediateEmailReminderQueueImpl implements ImmediateEmailReminderQueue {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-            .getLogger(ImmediateEmailReminderServiceImpl.class);
+            .getLogger(ImmediateEmailReminderQueueImpl.class);
 
     private ActionListEmailService actionListEmailService;
 

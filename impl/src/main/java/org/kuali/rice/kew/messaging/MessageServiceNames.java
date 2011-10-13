@@ -40,8 +40,6 @@ public class MessageServiceNames {
 
 	private static final QName DOCUMENT_PROCESSING_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentProcessingQueueSoap");
 
-	private static final String ACTION_LIST_IMMEDIATE_REMINDER_SERVICE = "ImmediateEmailService";
-
 	private static final QName BLANKET_APPROVAL_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "blanketApprovalOrchestrationQueueSoap");
 
 	private static final QName DOCUMENT_REFRESH_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentRefreshQueueSoap");

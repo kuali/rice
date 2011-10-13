@@ -180,12 +180,12 @@
 						</goals>
 					</execution>
           <execution>
-						<id>blanketApprovalOrchestrationQueue-wsdl</id>
+						<id>documentOrchestrationQueue-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.kew.api.document.DocumentOrchestrationQueue</className>
-							<outputFile>${project.build.outputDirectory}/wsdl/BlanketApprovalOrchestrationQueue.wsdl</outputFile>
-							<serviceName>BlanketApprovalOrchestrationQueue</serviceName>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentOrchestrationQueue.wsdl</outputFile>
+							<serviceName>DocumentOrchestrationQueue</serviceName>
 						</configuration>
 						<goals>
 							<goal>java2ws</goal>

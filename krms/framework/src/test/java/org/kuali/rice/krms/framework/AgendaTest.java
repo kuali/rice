@@ -172,8 +172,7 @@ public class AgendaTest {
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);
-		engine.setTermResolutionEngine(new TermResolutionEngineImpl());
-		
+
 		// Set execution options to log execution
 		ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionFlag.LOG_EXECUTION, true);
 		

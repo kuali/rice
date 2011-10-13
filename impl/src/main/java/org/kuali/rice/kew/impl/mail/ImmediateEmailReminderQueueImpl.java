@@ -24,7 +24,7 @@ public class ImmediateEmailReminderQueueImpl implements ImmediateEmailReminderQu
 		}
 
         if (skipOnApprovals == null) {
-			throw new RiceIllegalArgumentException("skipOnApprovals was null");
+            skipOnApprovals = false;
 		}
 
         getActionListEmailService().sendImmediateReminder(actionItem, skipOnApprovals);

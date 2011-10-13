@@ -14,38 +14,37 @@
 -- limitations under the License.
 -- 
 
----- If you should want to clean out your KRMS tables:
-delete from  krms_cntxt_vld_rule_t ;
-delete from  krms_cntxt_vld_func_t ;
-delete from  krms_func_parm_t ;
-delete from  krms_func_t ;
-delete from  krms_term_parm_t ;
-delete from  krms_term_rslvr_parm_spec_t ;
-delete from  krms_term_t ;
-delete from  krms_cntxt_vld_term_spec_t ;
-delete from  krms_term_rslvr_input_spec_t ;
-delete from  krms_term_rslvr_attr_t ;
-delete from  krms_term_rslvr_t ;
-delete from  krms_term_spec_t ;
-delete from  krms_prop_parm_t ;
-delete from  krms_cmpnd_prop_props_t ;
-delete from  krms_agenda_attr_t ;
-delete from  krms_cntxt_vld_actn_t ;
-delete from  krms_cntxt_vld_agenda_t ;
-delete from  krms_cntxt_attr_t ;
-delete from  krms_rule_attr_t ;
-delete from  krms_agenda_itm_t ;
-delete from  krms_actn_attr_t ;
-delete from  krms_actn_t ;
-delete from  krms_typ_attr_t ;
-delete from  krms_attr_defn_t ;
-delete from  krms_agenda_t ;
-update krms_rule_t set prop_id=null;
-delete from  krms_prop_t ;
-delete from  krms_rule_t ;
-delete from  krms_typ_t where typ_id not in ('1000','1001');
-delete from  krms_cntxt_t ;
-
+-- ---- If you should want to clean out your KRMS tables:
+-- delete from  krms_cntxt_vld_rule_t ;
+-- delete from  krms_cntxt_vld_func_t ;
+-- delete from  krms_func_parm_t ;
+-- delete from  krms_func_t ;
+-- delete from  krms_term_parm_t ;
+-- delete from  krms_term_rslvr_parm_spec_t ;
+-- delete from  krms_term_t ;
+-- delete from  krms_cntxt_vld_term_spec_t ;
+-- delete from  krms_term_rslvr_input_spec_t ;
+-- delete from  krms_term_rslvr_attr_t ;
+-- delete from  krms_term_rslvr_t ;
+-- delete from  krms_term_spec_t ;
+-- delete from  krms_prop_parm_t ;
+-- delete from  krms_cmpnd_prop_props_t ;
+-- delete from  krms_agenda_attr_t ;
+-- delete from  krms_cntxt_vld_actn_t ;
+-- delete from  krms_cntxt_vld_agenda_t ;
+-- delete from  krms_cntxt_attr_t ;
+-- delete from  krms_rule_attr_t ;
+-- delete from  krms_agenda_itm_t ;
+-- delete from  krms_actn_attr_t ;
+-- delete from  krms_actn_t ;
+-- delete from  krms_typ_attr_t ;
+-- delete from  krms_attr_defn_t ;
+-- delete from  krms_agenda_t ;
+-- update krms_rule_t set prop_id=null;
+-- delete from  krms_prop_t ;
+-- delete from  krms_rule_t ;
+-- delete from  krms_typ_t where typ_id not in ('1000','1001');
+-- delete from  krms_cntxt_t ;
 
 insert into krms_attr_defn_t
 (attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)

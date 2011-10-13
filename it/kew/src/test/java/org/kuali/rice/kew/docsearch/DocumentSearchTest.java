@@ -98,10 +98,10 @@ public class DocumentSearchTest extends KEWTestCase {
         criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.EXACTLY);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
-        DocumentLookupCriteria savedCriteria = docSearchService.getSavedSearchCriteria(user.getPrincipalId(), "bytitle");
+        DocumentLookupCriteria savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "bytitle");
         assertNotNull(savedCriteria);
         assertEquals("bytitle", savedCriteria.getSaveName());
-        savedCriteria = docSearchService.getSavedSearchCriteria(user.getPrincipalId(), "for in accounts");
+        savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "for in accounts");
         assertNotNull(savedCriteria);
         assertEquals("for in accounts", savedCriteria.getSaveName());
     }

@@ -1,7 +1,9 @@
 package org.kuali.rice.kew.impl.document.lookup;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
@@ -10,6 +12,7 @@ import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
@@ -18,6 +21,7 @@ import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
@@ -44,7 +48,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,9 +68,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 
     private static final String DOCUMENT_ATTRIBUTE_PROPERTY_NAME_PREFIX = "documentAttribute.";
 
-    private static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
-    private static final String SUPER_USER_SEARCH_PARAM = "superUserSearch";
-    private static final String ADVANCED_SEARCH_PARAM = "isAdvancedSearch";
+    static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
 
     // warning message keys
 
@@ -154,12 +159,10 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * Namely, this handles populating the form with today's date if the create date was not filled in on the form.
      */
     protected void applyCriteriaChangesToFields(DocumentLookupCriteriaContract criteria) {
-        for (Row row : this.getRows()) {
-            for (Field field : row.getFields()) {
-                if(StringUtils.equals(field.getPropertyName(), KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "dateCreated") && StringUtils.isEmpty(field.getPropertyValue())) {
-                    if (criteria.getDateCreatedFrom() != null) {
-                        field.setPropertyValue(CoreApiServiceLocator.getDateTimeService().toDateString(criteria.getDateCreatedFrom().toDate()));
-                    }
+        for (Field field: getFormFields()) {
+            if(StringUtils.equals(field.getPropertyName(), KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "dateCreated") && StringUtils.isEmpty(field.getPropertyValue())) {
+                if (criteria.getDateCreatedFrom() != null) {
+                    field.setPropertyValue(CoreApiServiceLocator.getDateTimeService().toDateString(criteria.getDateCreatedFrom().toDate()));
                 }
             }
         }
@@ -191,21 +194,22 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     /**
-     * Loads the document lookup criteria from the given map of field values as submitted from the search screen.
+     * Loads the document lookup criteria from the given map of field values as submitted from the search screen, and
+     * populates the current form Rows/Fields with the saved criteria fields
      */
     protected DocumentLookupCriteria loadCriteria(Map<String, String> fieldValues) {
         fieldValues = cleanupFieldValues(fieldValues, getParameters());
-        String savedSearchToLoad = fieldValues.get(SAVED_SEARCH_NAME_PARAM);
-        boolean savedSearch = StringUtils.isNotBlank(savedSearchToLoad);
+        String[] savedSearchToLoad = getParameters().get(SAVED_SEARCH_NAME_PARAM);
+        boolean savedSearch = savedSearchToLoad != null && savedSearchToLoad.length > 0 && StringUtils.isNotBlank(savedSearchToLoad[0]);
         if (savedSearch) {
-            DocumentLookupCriteria criteria = getDocumentSearchService().getSavedSearchCriteria(
-                    GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad);
+            DocumentLookupCriteria criteria = getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad[0]);
             if (criteria != null) {
+                mergeFieldValues(getDocumentLookupCriteriaTranslator().translateCriteriaToFields(criteria));
                 return criteria;
             }
         }
         // either it wasn't a saved search or the saved search failed to resolve
-        return getDocumentLookupCriteriaTranslator().translate(fieldValues);
+        return getDocumentLookupCriteriaTranslator().translateFieldsToCriteria(fieldValues);
     }
 
     protected List<DocumentLookupCriteriaBo> populateSearchResults(List<DocumentLookupResult> lookupResults) {
@@ -223,6 +227,203 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         Collection lookupResult = super.performLookup(lookupForm, resultTable, bounded);
         postProcessResults(resultTable, this.lookupResults);
         return lookupResult;
+    }
+
+    /**
+     * Sets a Field value appropriately, depending on whether it is a "multi-value" field type
+     */
+    protected static void setFieldValue(Field field, String[] values) {
+        if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+            field.setPropertyValue(values[0]);
+        } else {
+            //multi value, set to values
+            field.setPropertyValues(values);
+        }
+    }
+
+    /**
+     * Preserves Field values, saving single or array property value depending on field type; single property value is
+     * converted into String[1]
+     * This implementation makes the assumption that a Field can either represent a single property value, or an array
+     * of values but not both! (only one is preserved)
+     * @return a Map<String, String[]> containing field values depending on field type
+     */
+    protected Map<String, String[]> getFormFieldsValues() {
+        Map<String, String[]> values = new HashMap<String, String[]>();
+        for (Field field : getFormFields()) {
+            String[] value;
+            if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+                value = new String[] { field.getPropertyValue() };
+            } else {
+                //multi value, set to values
+                value = field.getPropertyValues();
+            }
+            values.put(field.getPropertyName(), value);
+        }
+        return values;
+    }
+
+    /**
+     * Overrides a Field value; sets a fallback/restored value if there is no new value
+     */
+    protected static void overrideFieldValue(Field field, Map<String, String[]> newValues, Map<String, String[]> oldValues) {
+        if (StringUtils.isNotBlank(field.getPropertyName())) {
+            if (newValues.get(field.getPropertyName()) != null) {
+                setFieldValue(field, newValues.get(field.getPropertyName()));
+            } else if (oldValues.get(field.getPropertyName()) != null) {
+                setFieldValue(field, oldValues.get(field.getPropertyName()));
+            }
+        }
+    }
+
+    /**
+     * Overrides Row Field values with Map values
+     * @param values
+     */
+    protected void mergeFieldValues(Map<String, String[]> values) {
+        for (Field field: getFormFields()) {
+            if (StringUtils.isNotBlank(field.getPropertyName())) {
+                if (values.get(field.getPropertyName()) != null) {
+                    setFieldValue(field, values.get(field.getPropertyName()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets a single form field
+     */
+    protected void setFormField(String name, String value) {
+        for (Field field : getFormFields()) {
+            if(StringUtils.equals(field.getPropertyName(), name)) {
+                setFieldValue(field, new String[] { value });
+                break;
+            }
+        }
+    }
+
+    /**
+     * Handles toggling between form views.
+     * Reads and sets the Rows state.
+     */
+    protected void toggleFormView() {
+        Map<String,String[]> fieldValues = new HashMap<String,String[]>();
+        Map<String, String[]> savedValues = getFormFieldsValues();
+
+        // the original implementation saved the form values and then re-applied them
+        // we do the same here, however I suspect we may be able to avoid this re-application
+        // of existing values
+
+        for (Field field: getFormFields()) {
+            overrideFieldValue(field, this.getParameters(), savedValues);
+            // if we are sure this does not depend on or cause side effects in other fields
+            // then this phase can be extracted and these loops simplified
+            applyFieldAuthorizationsFromNestedLookups(field);
+            fieldValues.put(field.getPropertyName(), new String[] { field.getPropertyValue() });
+        }
+
+        // checkForAdditionalFields generates the form (setRows)
+        if (checkForAdditionalFields(fieldValues)) {
+            for (Field field: getFormFields()) {
+                overrideFieldValue(field, this.getParameters(), savedValues);
+                fieldValues.put(field.getPropertyName(), new String[] { field.getPropertyValue() });
+             }
+        }
+
+        // unset the clear search param, since this is not really a state, but just an action
+        // it can never be toggled "off", just "on"
+        setFormField(DocumentLookupCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, "");
+    }
+
+    /**
+     * Loads a saved search
+     * @return returns true on success to run the loaded search, false on error.
+     */
+    protected boolean loadSavedSearch(boolean ignoreErrors) {
+        Map<String,String[]> fieldValues = new HashMap<String,String[]>();
+        
+        String savedSearchName = getSavedSearchName();
+        if(StringUtils.isEmpty(savedSearchName) || "*ignore*".equals(savedSearchName)) {
+            if(!ignoreErrors) {
+                GlobalVariables.getMessageMap().putError(SAVED_SEARCH_NAME_PARAM, RiceKeyConstants.ERROR_CUSTOM, "You must select a saved search");
+            } else {
+                //if we're ignoring errors and we got an error just return, no reason to continue.  Also set false to indicate not to perform lookup
+                return false;
+            }
+            setFormField(SAVED_SEARCH_NAME_PARAM, "");
+        }
+        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
+            throw new ValidationException("errors in search criteria");
+        }
+
+        DocumentLookupCriteria criteria = KEWServiceLocator.getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchName);
+
+        // get the document type
+        String docTypeName = criteria.getDocumentTypeName();
+        // and set the rows based on doc type
+        setRows(docTypeName);
+
+        // clear the name of the search in the form
+        //fieldValues.put(SAVED_SEARCH_NAME_PARAM, new String[0]);
+
+        // set the custom document attribute values on the search form
+        for (Map.Entry<String, List<String>> entry: criteria.getDocumentAttributeValues().entrySet()) {
+            fieldValues.put(entry.getKey(), entry.getValue().toArray(new String[entry.getValue().size()]));
+        }
+
+        // sets the field values on the form, trying criteria object properties if a field value is not present in the map
+        for (Field field : getFormFields()) {
+            if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
+                // UI Fields know whether they are single or multiple value
+                // just set both so they can make the determination and render appropriately
+                String[] values = null;
+                if (fieldValues.get(field.getPropertyName()) != null) {
+                    values = fieldValues.get(field.getPropertyName());
+                } else {
+                    //may be on the root of the criteria object, try looking there:
+                    try {
+                        values = new String[] { ObjectUtils.toString(PropertyUtils.getProperty(criteria, field.getPropertyName())) };
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        // e.printStackTrace();
+                        //hmm what to do here, we should be able to find everything either in the search atts or at the base as far as I know.
+                    }
+                }
+                if (values != null) {
+                    setFieldValue(field, values);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Performs custom document search/lookup actions.
+     * 1) switching between simple/detailed search
+     * 2) switching between non-superuser/superuser search
+     * 3) clearing saved search results
+     * 4) restoring a saved search and executing the search
+     * @param ignoreErrors
+     * @return whether to rerun the previous search; false in cases 1-3 because we are just updating the form
+     */
+    @Override
+    public boolean performCustomAction(boolean ignoreErrors) {
+        //boolean isConfigAction = isAdvancedSearch() || isSuperUserSearch() || isClearSavedSearch();
+        if (getSavedSearchName() != null) {
+            return loadSavedSearch(ignoreErrors);
+        } else {
+            if (isClearSavedSearch()) {
+                KEWServiceLocator.getDocumentSearchService().clearNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
+            } else {
+                toggleFormView();
+            }
+            // Finally, return false to prevent the search from being performed and to skip the other custom processing below.
+            return false;
+        }
     }
 
     /**
@@ -305,42 +506,71 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
                         KRADConstants.DetailTypes.DOCUMENT_LOOKUP_DETAIL_TYPE,
                         KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND), ROUTE_LOG_POPUP_DEFAULT);
 	}
-    
+
     /**
-     * Returns true if the current search being executed is a super user search.
+     * Parses a boolean request parameter
      */
-    protected boolean isSuperUserSearch() {
-        if(this.getParameters().containsKey(SUPER_USER_SEARCH_PARAM)) {
-            String[] superUserSearchParams = (String[])this.getParameters().get(SUPER_USER_SEARCH_PARAM);
-            if (ArrayUtils.isNotEmpty(superUserSearchParams)) {
-                return "YES".equalsIgnoreCase(superUserSearchParams[0]);
+    protected boolean isFlagSet(String flagName) {
+        if(this.getParameters().containsKey(flagName)) {
+            String[] params = (String[])this.getParameters().get(flagName);
+            if (ArrayUtils.isNotEmpty(params)) {
+                return "YES".equalsIgnoreCase(params[0]);
             }
         }
         return false;
     }
 
     /**
+     * Returns true if the current search being executed is a super user search.
+     */
+    protected boolean isSuperUserSearch() {
+        return isFlagSet(DocumentLookupCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD);
+    }
+
+    /**
      * Returns true if the current search being executed is an "advanced" search.
      */
     protected boolean isAdvancedSearch() {
-        if(this.getParameters().containsKey(ADVANCED_SEARCH_PARAM)) {
-            String[] advancedSearchParams = (String[])this.getParameters().get(ADVANCED_SEARCH_PARAM);
-	        return "YES".equalsIgnoreCase(advancedSearchParams[0]);
-        }
-        return false;
+        return isFlagSet(DocumentLookupCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD);
     }
 
+    /**
+     * Returns true if the current "search" being executed is an "clear" search.
+     */
+    protected boolean isClearSavedSearch() {
+        return isFlagSet(DocumentLookupCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD);
+    }
+
+    protected String getSavedSearchName() {
+        String[] savedSearchName = getParameters().get(SAVED_SEARCH_NAME_PARAM);
+        if (savedSearchName != null && savedSearchName.length > 0) {
+            return savedSearchName[0];
+        }
+        return null;
+    }
+
+    /**
+     * Override setRows in order to post-process and add documenttype-dependent fields
+     */
     @Override
 	protected void setRows() {
 	    this.setRows(null);
 	}
 
     /**
+     * Returns an iterable of current form fields
+     */
+    protected Iterable<Field> getFormFields() {
+        return getFields(this.getRows());
+    }
+
+    /**
      * Sets the rows for the search criteria.  This method will delegate to the DocumentLookupCriteriaProcessor
      * in order to pull in fields for custom search attributes.
      *
      * @param documentTypeName the name of the document type currently entered on the form, if this is a valid document
-     * type then it may have search attribute fields that need to be displayed
+     * type then it may have search attribute fields that need to be displayed; documentType name may also be loaded
+     * via a saved search
      */
 	protected void setRows(String documentTypeName) {
 		if (getRows() == null) {
@@ -372,7 +602,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 
 	}
 
-    private List<Field> getFields(List<Row> rows) {
+    private static List<Field> getFields(Collection<? extends Row> rows) {
         List<Field> rList = new ArrayList<Field>();
         for (Row r : rows) {
             for (Field f : r.getFields()) {
@@ -397,41 +627,30 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     	return null;
     }
 
+    private static String TOGGLE_BUTTON = "<input type='image' name=''{0}'' id=''{0}'' class='tinybutton' src=''..{1}/images/tinybutton-{2}search.gif'' alt=''{3} search'' title=''{3} search''/>";
+
     @Override
-	public String getSupplementalMenuBar() {
-		boolean advancedSearch = isAdvancedSearch();
-		boolean superUserSearch = isSuperUserSearch();
-		StringBuilder suppMenuBar = new StringBuilder();
+    public String getSupplementalMenuBar() {
+        boolean advancedSearch = isAdvancedSearch();
+        boolean superUserSearch = isSuperUserSearch();
+        StringBuilder suppMenuBar = new StringBuilder();
 
         // Add the detailed-search-toggling button.
-        suppMenuBar.append("<input type=\"image\" ").
-                append(" name=\"toggleAdvancedSearch\" id=\"toggleAdvancedSearch\" class=\"tinybutton\" src=\"..").
-                append(KEWConstants.WEBAPP_DIRECTORY).
-                append(advancedSearch ?
-                        "/images/tinybutton-basicsearch.gif\" alt=\"basic search\" title=\"basic search\" />" :
-                        "/images/tinybutton-detailedsearch.gif\" alt=\"detailed search\" title=\"detailed search\" />");
+        // to mimic previous behavior, basic search button is shown both when currently rendering detailed search AND super user search
+        // as super user search is essentially a detailed search
+        String type = advancedSearch ? "basic" : "detailed";
+        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleAdvancedSearch", KEWConstants.WEBAPP_DIRECTORY, type, type));
 
-		// Add the superuser-search-toggling button.
-        suppMenuBar.append("&nbsp;").append("<input type=\"image\" ").
-                append(" name=\"toggleSuperUserSearch\" id=\"toggleSuperUserSearch\" class=\"tinybutton\" src=\"..").
-                append(KEWConstants.WEBAPP_DIRECTORY).
-                append(superUserSearch ?
-                        "/images/tinybutton-nonsupusearch.gif\" alt=\"non-superuser search\" title=\"non-superuser search\" />" :
-                        "/images/tinybutton-superusersearch.gif\" alt=\"superuser search\" title=\"superuser search\" />");
+        // Add the superuser-search-toggling button.
+        suppMenuBar.append("&nbsp;");
+        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleSuperUserSearch", KEWConstants.WEBAPP_DIRECTORY, superUserSearch ? "nonsupu" : "superuser", superUserSearch ? "non-superuser" : "superuser"));
 
-		// Add the "clear saved searches" button.
-		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");
+        // Add the "clear saved searches" button.
+        suppMenuBar.append("&nbsp;");
+        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, DocumentLookupCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, KEWConstants.WEBAPP_DIRECTORY, "clearsaved", "clear saved searches"));
 
-        String advancedToggleValue = isAdvancedSearch() ? "'NO'" : "'YES'";
-        String detailedSearchScript = "<script type=\"text/javascript\">jQuery(\"#toggleAdvancedSearch\").click(function() { jQuery('input[name=" + ADVANCED_SEARCH_PARAM + "]').val(" + advancedToggleValue + "); customLookupChanged() } )</script>";
-        suppMenuBar.append(detailedSearchScript);
-
-        String superUserToggleValue = isSuperUserSearch() ? "'NO'" : "'YES'";
-        String superUserSearchScript = "<script type=\"text/javascript\">jQuery(\"#toggleSuerUserSearch\").click(function() { jQuery('input[name=" + SUPER_USER_SEARCH_PARAM + "]').val(" + superUserToggleValue + "); customLookupChanged() } )</script>";
-        suppMenuBar.append(superUserSearchScript);
-
-		return suppMenuBar.toString();
-	}
+        return suppMenuBar.toString();
+    }
 
     @Override
 	public boolean shouldDisplayHeaderNonMaintActions() {
@@ -445,10 +664,20 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 		return true;
 	}
 
+    /**
+     * Determines if there should be more search fields rendered based on already entered search criteria, and
+     * generates additional form rows.
+     */
     @Override
 	public boolean checkForAdditionalFields(Map fieldValues) {
         // The given map is a Map<String, String>
-		String documentTypeName = (String)fieldValues.get("documentTypeName");
+		Object val = fieldValues.get("documentTypeName");
+        String documentTypeName;
+        if (val instanceof String[]) {
+            documentTypeName = ((String[]) val)[0];
+        } else {
+            documentTypeName = (String) val;
+        }
         if (StringUtils.isNotBlank(documentTypeName)) {
 	        setRows(documentTypeName);
         }
@@ -487,18 +716,16 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         boolean advancedSearch = isAdvancedSearch();
         boolean superUserSearch = isSuperUserSearch();
         int fieldsRepopulated = 0;
-        for (Row row : super.getRows()) {
+        for (Field field: getFields(super.getRows())) {
             if (fieldsRepopulated >= 2) {
                 break;
             }
-            for (Field tempField : row.getFields()) {
-                if (ADVANCED_SEARCH_PARAM.equals(tempField.getPropertyName())) {
-                    tempField.setPropertyValue(Boolean.toString(advancedSearch));
-                    fieldsRepopulated++;
-                } else if (SUPER_USER_SEARCH_PARAM.equals(tempField.getPropertyName())) {
-                    tempField.setPropertyValue(Boolean.toString(superUserSearch));
-                    fieldsRepopulated++;
-                }
+            if (DocumentLookupCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD.equals(field.getPropertyName())) {
+                field.setPropertyValue(advancedSearch ? "YES" : "NO");
+                fieldsRepopulated++;
+            } else if (DocumentLookupCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD.equals(field.getPropertyName())) {
+                field.setPropertyValue(advancedSearch ? "YES" : "NO");
+                fieldsRepopulated++;
             }
         }
 
@@ -560,7 +787,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
                 }
             }
         }
-        
+
         // determine which document attribute fields should be added
         List<RemotableAttributeField> searchAttributeFields = criteriaConfiguration.getFlattenedSearchAttributeFields();
         List<String> additionalFieldNamesToInclude = new ArrayList<String>();

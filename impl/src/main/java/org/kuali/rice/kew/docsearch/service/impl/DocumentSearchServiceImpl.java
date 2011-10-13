@@ -115,8 +115,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
 	}
 
+    public DocumentLookupCriteria getNamedSearchCriteria(String principalId, String searchName) {
+        return getSavedSearchCriteria(principalId, NAMED_SEARCH_ORDER_BASE + searchName);
+    }
+
     public DocumentLookupCriteria getSavedSearchCriteria(String principalId, String searchName) {
-        UserOptions savedSearch = userOptionsService.findByOptionId(NAMED_SEARCH_ORDER_BASE + searchName, principalId);
+        UserOptions savedSearch = userOptionsService.findByOptionId(searchName, principalId);
         if (savedSearch == null) {
             return null;
         }

@@ -20,6 +20,14 @@ public interface DocumentLookupCriteriaTranslator {
      * @return populated document lookup criteria which contains the various criteria components populated based on the
      * interpretation of the given field values
      */
-    DocumentLookupCriteria translate(Map<String, String> fieldValues);
+    DocumentLookupCriteria translateFieldsToCriteria(Map<String, String> fieldValues);
 
+    /**
+     * Translates the given {@link DocumentLookupCriteria} into a map of fields values.  Reverse of
+     * {@link #translateFieldsToCriteria(java.util.Map)}
+     *
+     * @param criteria document lookup criteria
+     * @return Map populated with the various criteria components
+     */
+    Map<String, String[]> translateCriteriaToFields(DocumentLookupCriteria criteria);
 }

@@ -19,6 +19,7 @@ import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 
 import java.io.Serializable;
@@ -59,12 +60,12 @@ public interface Lookupable extends Serializable {
      *
      * @param parameters
      */
-    public void setParameters(Map parameters);
+    public void setParameters(Map<String, String[]> parameters);
 
     /**
      * @return Returns the parameters passed to this lookup
      */
-    public Map getParameters();
+    public Map<String, String[]> getParameters();
 
     /**
      * @return the html to be displayed as a menu bar
@@ -79,7 +80,7 @@ public interface Lookupable extends Serializable {
     /**
      * @return List of Row objects used to render the search area
      */
-    public List getRows();
+    public List<? extends Row> getRows();
 
     /**
      * @return String displayed as title for the lookup

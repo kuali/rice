@@ -36,6 +36,18 @@ import java.util.List;
  *
  */
 public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookupCriteriaProcessor {
+    /**
+     * Name if the hidden input field containing basic/detailed search toggle state
+     */
+    public static final String ADVANCED_SEARCH_FIELD = "isAdvancedSearch";
+    /**
+     * Name if the hidden input field containing non-superuser/superuser search toggle state
+     */
+    public static final String SUPERUSER_SEARCH_FIELD = "superUserSearch";
+    /**
+     * Name if the hidden input field containing the clear saved search flag
+     */
+    public static final String CLEARSAVED_SEARCH_FIELD = "resetSavedSearch";
 
     /**
      * Indicates where document attributes should be placed inside search criteria
@@ -175,18 +187,24 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 		hiddenRow.setHidden(true);
 
 		Field detailedField = new Field();
-		detailedField.setPropertyName("isAdvancedSearch");
+		detailedField.setPropertyName(ADVANCED_SEARCH_FIELD);
 		detailedField.setPropertyValue(advancedSearch ? "YES" : "NO");
 		detailedField.setFieldType(Field.HIDDEN);
 
 		Field superUserSearchField = new Field();
-		superUserSearchField.setPropertyName("superUserSearch");
+		superUserSearchField.setPropertyName(SUPERUSER_SEARCH_FIELD);
 		superUserSearchField.setPropertyValue(superUserSearch ? "YES" : "NO");
 		superUserSearchField.setFieldType(Field.HIDDEN);
+
+		Field clearSavedSearchField = new Field();
+		clearSavedSearchField .setPropertyName(CLEARSAVED_SEARCH_FIELD);
+		clearSavedSearchField .setPropertyValue(superUserSearch ? "YES" : "NO");
+		clearSavedSearchField .setFieldType(Field.HIDDEN);
         
 		List<Field> hiddenFields = new ArrayList<Field>();
 		hiddenFields.add(detailedField);
 		hiddenFields.add(superUserSearchField);
+		hiddenFields.add(clearSavedSearchField);
 		hiddenRow.setFields(hiddenFields);
 		rows.add(hiddenRow);
 

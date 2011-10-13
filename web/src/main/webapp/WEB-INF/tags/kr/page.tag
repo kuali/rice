@@ -117,40 +117,22 @@ jQuery(function(){
 </script>
 
 </c:forEach>
-	<c:choose>
-		<c:when test="${lookup}" >
-			  <c:if test="${not empty KualiForm.headerNavigationTabs}">
-				<link href="kr/css/${KualiForm.navigationCss}" rel="stylesheet"
-					type="text/css" />
-			  </c:if>
+  <c:choose>
+    <c:when test="${lookup}" >
+      <c:if test="${not empty KualiForm.headerNavigationTabs}">
+        <link href="kr/css/${KualiForm.navigationCss}" rel="stylesheet" type="text/css" />
+      </c:if>
 
-			  <script type="text/javascript">
-			  <!-- allow for custom lookup calls -->
-			  function customLookupChanged() {
+      <!-- allow for custom lookup calls -->
+      <script language="JavaScript" type="text/javascript" src="${pageContext.request.contextPath}/kr/scripts/lookup.js"></script>
 
-				    methodToCallElement=document.createElement("input");
-				    methodToCallElement.setAttribute("type","hidden");
-				    methodToCallElement.setAttribute("name","methodToCall");
-				    methodToCallElement.setAttribute("value","refresh");
-				    document.forms[0].appendChild(methodToCallElement);
-
-				    refreshCallerElement=document.createElement("input");
-				    refreshCallerElement.setAttribute("type","hidden");
-				    refreshCallerElement.setAttribute("name","refreshCaller");
-				    refreshCallerElement.setAttribute("value","customLookupAction");
-				    document.forms[0].appendChild(refreshCallerElement);
-
-				    document.forms[0].submit();
-			  }
-			  </script>
-		</c:when>
-		<c:otherwise>
-			<c:forEach items="${additionalScriptFiles}" var="scriptFile" >
-				<script language="JavaScript" type="text/javascript"
-					src="${scriptFile}"></script>
-			</c:forEach>
-		</c:otherwise>
-	</c:choose>
+    </c:when>
+    <c:otherwise>
+      <c:forEach items="${additionalScriptFiles}" var="scriptFile" >
+        <script language="JavaScript" type="text/javascript" src="${scriptFile}"></script>
+      </c:forEach>
+    </c:otherwise>
+  </c:choose>
 </head>
 <c:choose>
 	<c:when test="${lookup}" >

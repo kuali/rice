@@ -263,12 +263,8 @@ public class KualiLookupAction extends KualiAction {
         Map fieldValues = new HashMap();
         Map values = lookupForm.getFields();
 
-        for (Iterator iter = kualiLookupable.getRows().iterator(); iter.hasNext();) {
-        	Row row = (Row) iter.next();
-
-        	for (Object element : row.getFields()) {
-        		Field field = (Field) element;
-
+        for (Row row: kualiLookupable.getRows()) {
+           	for (Field field: row.getFields()) {
         		if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
         			if (request.getParameter(field.getPropertyName()) != null) {
         				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
@@ -293,8 +289,7 @@ public class KualiLookupAction extends KualiAction {
         fieldValues.put("docNum", lookupForm.getDocNum());
 
         if (kualiLookupable.checkForAdditionalFields(fieldValues)) {
-            for (Iterator iter = kualiLookupable.getRows().iterator(); iter.hasNext();) {
-                Row row = (Row) iter.next();
+            for (Row row: kualiLookupable.getRows()) {
                 for (Object element : row.getFields()) {
                     Field field = (Field) element;
                     if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {

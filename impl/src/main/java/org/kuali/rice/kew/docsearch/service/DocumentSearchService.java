@@ -42,12 +42,40 @@ public interface DocumentSearchService {
      */
     DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria);
 
-    DocumentLookupCriteria getSavedSearchCriteria(String principalId, String savedSearchName);
+    /**
+     * Returns a saved search criteria, either explicitly named by the user, or saved automatically as a recent search
+     * @param principalId the user principal id
+     * @param key the user option key under which the criteria is saved
+     * @return the DocumentLookupCriteria or null if not found
+     */
+    DocumentLookupCriteria getSavedSearchCriteria(String principalId, String key);
 
+    /**
+     * Returns an explicitly named saved search criteria
+     * @param principalId the user principal id
+     * @param savedSearchName the user-provided saved search name
+     * @return the DocumentLookupCriteria or null if not found
+     */
+    DocumentLookupCriteria getNamedSearchCriteria(String principalId, String savedSearchName);
+
+    /**
+     * Clears all saved searches for the specified user (named and automatic)
+     * @param principalId user principal id
+     */
     void clearNamedSearches(String principalId);
 
+    /**
+     * Returns named saved searches for the specified user
+     * @param principalId the user principal id
+     * @return list of search key/label
+     */
     List<KeyValue> getNamedSearches(String principalId);
 
+    /**
+     * Returns automatically saved recent searches for the specified user
+     * @param principalId the user principal id
+     * @return list of search key/label
+     */
     List<KeyValue> getMostRecentSearches(String principalId);
 
     DocumentLookupCriteria clearCriteria(DocumentType documentType, DocumentLookupCriteria criteria);

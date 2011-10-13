@@ -331,11 +331,6 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
          * @param typeId the typeId to set
          */
 		public void setTypeId(String typeId) {
-			if (typeId != null){
-				if (StringUtils.isBlank(typeId)){
-					throw new IllegalArgumentException("type id is blank");					
-				}
-			}
 			this.typeId = typeId;
 		}
 		

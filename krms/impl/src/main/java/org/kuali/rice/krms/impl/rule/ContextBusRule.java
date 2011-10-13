@@ -19,6 +19,7 @@ package org.kuali.rice.krms.impl.rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
@@ -38,7 +39,8 @@ public class ContextBusRule extends MaintenanceDocumentRuleBase {
 
     private boolean validateId(ContextBo context) {
         if (StringUtils.isNotBlank(context.getId())) {
-            if(getContextBoService().getContextByContextId(context.getId()) != null) {
+            ContextDefinition contextInDatabase = getContextBoService().getContextByContextId(context.getId());
+            if ((contextInDatabase  != null) && (!StringUtils.equals(contextInDatabase.getId(), context.getId()))) {
                 this.putFieldError(KRMSPropertyConstants.Context.CONTEXT_ID, "error.context.duplicateId");
                 return false;
             }
@@ -54,7 +56,8 @@ public class ContextBusRule extends MaintenanceDocumentRuleBase {
      */
     private boolean validateNameNamespace(ContextBo context) {
         if (StringUtils.isNotBlank(context.getName()) && StringUtils.isNotBlank(context.getNamespace())) {
-            if(getContextBoService().getContextByNameAndNamespace(context.getName(), context.getNamespace()) != null) {
+            ContextDefinition contextInDatabase = getContextBoService().getContextByNameAndNamespace(context.getName(), context.getNamespace());
+            if((contextInDatabase != null) && (!StringUtils.equals(contextInDatabase.getId(), context.getId()))) {
                 this.putFieldError(KRMSPropertyConstants.Context.NAME, "error.context.duplicateNameNamespace");
                 return false;
             }

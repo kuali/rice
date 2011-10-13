@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.actionlist;
 
-import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;
@@ -93,6 +93,5 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 	public void setUserSession(UserSession userSession) {
 		this.userSession = userSession;
 	}
-    
     
 }

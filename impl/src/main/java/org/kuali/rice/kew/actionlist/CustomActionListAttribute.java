@@ -18,7 +18,7 @@ package org.kuali.rice.kew.actionlist;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.actionlist.web.ActionListAction;
 import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;

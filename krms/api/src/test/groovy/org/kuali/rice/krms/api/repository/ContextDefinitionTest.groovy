@@ -40,7 +40,6 @@ class ContextDefinitionTest {
 	private static final String CONTEXT_ID_1 = "CONTEXTID001"
     private static final String CONTEXT_NAME = "Context1"
     private static final String CONTEXT_DESCRIPTION = "Context1 Description ..."
-	private static final String TYPE_ID = "1234XYZ"
 
 	private static final String AGENDA_ID = "500Agenda"
 	private static final String AGENDA_ITEM_ID_1 = "AgendaItem1"
@@ -50,7 +49,6 @@ class ContextDefinitionTest {
     <ns2:id>CONTEXTID001</ns2:id>
     <ns2:namespace>Context1</ns2:namespace>
     <ns2:name>KRMS_TEST</ns2:name>
-    <ns2:typeId>1234XYZ</ns2:typeId>
     <ns2:agendas/>
     <ns2:attributes/>
 </ns2:context> """
@@ -60,7 +58,6 @@ class ContextDefinitionTest {
     <blah:id>CONTEXTID001</blah:id>
     <blah:namespace>Context1</blah:namespace>
     <blah:name>KRMS_TEST</blah:name>
-    <blah:typeId>1234XYZ</blah:typeId>
     <blah:description>Context1 Description ...</blah:description>
     <blah:agendas/>
     <blah:attributes/>
@@ -71,7 +68,6 @@ class ContextDefinitionTest {
     <id>CONTEXTID001</id>
     <namespace>Context1</namespace>
     <name>KRMS_TEST</name>
-    <typeId>1234XYZ</typeId>
     <description>Context1 Description ...</description>
     <agendas/>
     <attributes/>
@@ -82,7 +78,6 @@ class ContextDefinitionTest {
 			<id>CONTEXTID001</id>
 			<name>Context1</name>
 			<namespace>KRMS_TEST</namespace>
-			<typeId>1234XYZ</typeId>
 			<agendas>
     		</agendas>
 			<attributes>
@@ -142,30 +137,16 @@ class ContextDefinitionTest {
 		builder.setId("      ")
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	void test_ContextDefinition_Builder_create_fail_empty_type_id() {
-		ContextDefinition.Builder builder = ContextDefinition.Builder.create(CONTEXT_NAME, NAMESPACE)
-		builder.setTypeId("")
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	void test_ContextDefinition_Builder_create_fail_whitespace_type_id() {
-		ContextDefinition.Builder builder = ContextDefinition.Builder.create(CONTEXT_NAME, NAMESPACE)
-		builder.setTypeId("      ")
-	}
-
 	@Test
 	void test_ContextDefinition_Builder_create() {
 		ContextDefinition.Builder builder = ContextDefinition.Builder.create(CONTEXT_NAME, NAMESPACE)
 		builder.setId(CONTEXT_ID_1)
-		builder.setTypeId(TYPE_ID)
 	}
 	
 	@Test
 	void test_ContextDefinition_Builder_create_and_build() {
 		ContextDefinition.Builder builder = ContextDefinition.Builder.create(CONTEXT_NAME, NAMESPACE)
 		builder.setId(CONTEXT_ID_1)
-		builder.setTypeId(TYPE_ID)
 		builder.build()
 	}
 	
@@ -195,7 +176,6 @@ class ContextDefinitionTest {
     public static ContextDefinition buildFullContextDefinition() {
         Builder builder = Builder.create(CONTEXT_NAME, NAMESPACE)
         builder.setId(CONTEXT_ID_1)
-        builder.setTypeId(TYPE_ID)
         builder.setDescription(CONTEXT_DESCRIPTION);
         ContextDefinition myContext = builder.build()
         return myContext

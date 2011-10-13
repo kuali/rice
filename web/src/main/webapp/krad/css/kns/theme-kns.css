@@ -191,13 +191,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	color:#900000;
 	padding-top: 0em;
 }
-.kr-button-secondary2 {
+.kr-button-primary {
+	padding-bottom: .2em;
+}
+|  .kr-button-secondary2 {
 }
 .kr-button-secondary2:hover {
 }
 .kr-button-primary a, .kr-button-primary a:link, .kr-button-primary a:visited {
 }
 .kr-button-primary:hover, .kr-button-secondary1:hover {
+	background: #a90329; /* Old browsers */
+	background: -moz-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a90329), color-stop(44%, #8f0222), color-stop(100%, #6d0019)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019', GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, #a90329 0%, #8f0222 44%, #6d0019 100%); /* W3C */
+	color:#FFFFFF
 }
 .ui-state-hover {
 	border: 1px solid #054ccf;
@@ -436,6 +448,7 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
 #viewpage_div {
 	margin-left: 20px;
 	margin-right: 20px;
+	float:left;
 }
 .desc > label {
 	font-weight:bold;
@@ -663,6 +676,9 @@ ul.animated-navigation li.animated-element a.current {
 	padding-left: 25px !important;
 	color: white;
 }
+ul.animated-navigation .action {
+	margin-bottom: 0px;
+}
 .slideLink {
 	padding-left: .5em;
 	float: left;
@@ -818,7 +834,23 @@ span.labelTop {
 span .fieldLine.boxLayoutVerticalItem.clearfix a {
 	text-decoration:none;
 }
-
 .navigation-block {
 	width: 190px;
+}
+.kr-footer .fieldLine.boxLayoutHorizontalItem {
+	margin:0px;
+	padding:0px;
+	float: none;
+	display: inline;
+}
+
+.kr-field-attribute input, .kr-field-attribute textarea {			/* was .field_attribute input */ /* renamed in xml and/or jsp */
+	margin:  0em 0;
+	padding-top: 0em;
+    }
+	
+	
+	table td, table th {
+	vertical-align: middle;
+	text-align:left;
 }

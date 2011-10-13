@@ -11,7 +11,7 @@ import org.kuali.rice.kew.api.action.ActionItem;
 
 
  /**
-  * Service for sending immediate email reminders.
+  * A message queue which can be used for sending immediate email reminders.
   *
   * @author Kuali Rice Team (rice.collab@kuali.org)
   */
@@ -21,4 +21,5 @@ public interface ImmediateEmailReminderService {
  
 	@WebMethod(operationName = "sendReminder")
 	void sendReminder(@WebParam(name="actionItem") ActionItem actionItem, @WebParam(name="skipOnApprovals") Boolean skipOnApprovals) throws RiceIllegalArgumentException;
+
  }

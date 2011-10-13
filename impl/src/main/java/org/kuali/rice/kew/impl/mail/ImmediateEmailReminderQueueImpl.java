@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.mail.service.impl;
+package org.kuali.rice.kew.impl.mail;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.action.ActionItem;

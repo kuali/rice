@@ -862,7 +862,7 @@
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
   </bean>
 
-  <bean id="rice.kew.immediateEmailReminderQueue" class="org.kuali.rice.kew.mail.service.impl.ImmediateEmailReminderQueueImpl"/>
+  <bean id="rice.kew.immediateEmailReminderQueue" class="org.kuali.rice.kew.impl.mail.ImmediateEmailReminderQueueImpl"/>
 
   <bean id="rice.kew.kewTypeRepositoryService" class="org.kuali.rice.kew.impl.repository.KewTypeBoServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>

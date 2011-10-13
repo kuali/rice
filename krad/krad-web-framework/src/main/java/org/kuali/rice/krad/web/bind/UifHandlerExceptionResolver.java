@@ -71,7 +71,9 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
         UifFormBase form = UifWebUtils.getFormFromRequest(request);
         if (form instanceof DocumentFormBase) {
-            incidentDocId = ((DocumentFormBase) form).getDocument().getDocumentNumber();
+            if (((DocumentFormBase) form).getDocument() != null) {
+                incidentDocId = ((DocumentFormBase) form).getDocument().getDocumentNumber();
+            }
             incidentViewId = ((DocumentFormBase) form).getViewId();
         }
 

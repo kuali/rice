@@ -28,6 +28,14 @@ import java.util.Set;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityChangeQueue {
 
+    /**
+     * Notifies the workflow system that the given set of responsibility ids were updated in such a way that might
+     * affect routing.  Implementation of this method should re-resolve enroute documents as neccessary in this case.
+     *
+     * @param responsibilityIds the set of ids of responsibilities which have been modified, if this is a null or
+     * empty set then this method will do nothing
+     */
     @WebMethod(operationName = "responsibilitiesChanged")
-    void responsibilitiesChanged(@WebParam(name = "responsibilityIds") Set<String> responsibilityIds) throws RiceIllegalArgumentException;
+    void responsibilitiesChanged(@WebParam(name = "responsibilityIds") Set<String> responsibilityIds);
+    
 }

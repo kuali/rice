@@ -12,6 +12,7 @@ import org.kuali.rice.kew.engine.WorkflowEngine;
 import org.kuali.rice.kew.engine.WorkflowEngineFactory;
 
 import javax.jws.WebParam;
+import java.util.Collections;
 
 /**
  * Reference implementation of the {@code DocumentProcessingQueue}.
@@ -37,9 +38,10 @@ public class DocumentProcessingQueueImpl implements DocumentProcessingQueue {
             throw new RiceIllegalArgumentException("documentId was a null or blank value");
         }
         if (options == null) {
-            options = getDefaultOptions();
+            options = DocumentProcessingOptions.createDefault();
         }
-        OrchestrationConfig config = new OrchestrationConfig(OrchestrationConfig.EngineCapability.STANDARD, options.isRunPostProcessor());
+        OrchestrationConfig config = new OrchestrationConfig(OrchestrationConfig.EngineCapability.STANDARD,
+                Collections.<String>emptySet(), null, options.isSendNotifications(), options.isRunPostProcessor());
         WorkflowEngine engine = getWorkflowEngineFactory().newEngine(config);
         try {
 			engine.process(documentId, null);
@@ -53,10 +55,6 @@ public class DocumentProcessingQueueImpl implements DocumentProcessingQueue {
         if (options.isIndexSearchAttributes()) {
             getDocumentAttributeIndexingQueue().indexDocument(documentId);
         }
-    }
-
-    protected DocumentProcessingOptions getDefaultOptions() {
-        return new DocumentProcessingOptions(true, true);
     }
 
     public WorkflowEngineFactory getWorkflowEngineFactory() {

@@ -220,7 +220,7 @@ public abstract class ActionTakenEvent {
 	 */
 	protected void queueDocumentProcessing() {
 		DocumentProcessingQueue documentProcessingQueue = (DocumentProcessingQueue) MessageServiceNames.getDocumentProcessingQueue(getRouteHeader());
-        DocumentProcessingOptions options = new DocumentProcessingOptions(isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
+        DocumentProcessingOptions options = DocumentProcessingOptions.create(isRunPostProcessorLogic(), RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext());
         documentProcessingQueue.processWithOptions(getDocumentId(), options);
 	}
 

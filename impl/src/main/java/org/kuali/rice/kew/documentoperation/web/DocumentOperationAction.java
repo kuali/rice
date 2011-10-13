@@ -28,11 +28,11 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
+import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
+import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
 import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
-import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
-import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -41,6 +41,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
+import org.kuali.rice.kew.api.document.OrchestrationConfig;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -768,10 +769,12 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-			BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
+			DocumentOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
                     docForm.getRouteHeader());
+            OrchestrationConfig orchestrationConfig = OrchestrationConfig.create(docForm.getBlanketApproveActionTakenId(), nodeNames);
+            DocumentProcessingOptions options = DocumentProcessingOptions.createDefault();
 			blanketApprove.orchestrateDocument(docForm.getRouteHeader().getDocumentId(), principalId,
-                    docForm.getBlanketApproveActionTakenId(), nodeNames, true);
+                    orchestrationConfig, options);
 			ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Blanket Approve Processor was successfully scheduled"));
 			saveMessages(request, messages);
@@ -792,10 +795,12 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-			ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(docForm.getBlanketApproveActionTakenId());
-			MoveDocumentService moveService = MessageServiceNames.getMoveDocumentProcessorService(docForm.getRouteHeader());
-			moveService.moveDocument(principalId, docForm.getRouteHeader(), actionTaken, nodeNames);
-			ActionMessages messages = new ActionMessages();
+            DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getBlanketApprovalOrchestrationQueue(docForm.getRouteHeader());
+            OrchestrationConfig orchestrationConfig = OrchestrationConfig.create(docForm.getBlanketApproveActionTakenId(), nodeNames);
+            DocumentProcessingOptions options = DocumentProcessingOptions.create(true, true, false);
+            orchestrationQueue.orchestrateDocument(docForm.getDocumentId(), principalId, orchestrationConfig, options);
+
+            ActionMessages messages = new ActionMessages();
 			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.message", "Move Document Processor was successfully scheduled"));
 			saveMessages(request, messages);
 			return mapping.findForward("basic");

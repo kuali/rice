@@ -19,12 +19,10 @@ package org.kuali.rice.kew.messaging;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.RolePokerQueue;
+import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
 import org.kuali.rice.kew.api.document.DocumentRefreshQueue;
-import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
 import org.kuali.rice.kew.api.action.ActionInvocationQueue;
-import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -46,8 +44,6 @@ public class MessageServiceNames {
 
 	private static final QName ROLE_POKER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "rolePokerQueueSoap");
 
-	private static final String MOVE_DOCUMENT_PROCESSOR = "MoveDocumentProcessor";
-
     private static final QName ACTION_INVOCATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "actionInvocationQueueSoap");
 
 	private static QName getQName(String baseServiceName, DocumentRouteHeaderValue document) {
@@ -61,17 +57,13 @@ public class MessageServiceNames {
         return (DocumentProcessingQueue)getServiceAsynchronously(DOCUMENT_PROCESSING_QUEUE, document);
     }
 
-	public static MoveDocumentService getMoveDocumentProcessorService(DocumentRouteHeaderValue document) {
-		return (MoveDocumentService) getServiceAsynchronously(getQName(MOVE_DOCUMENT_PROCESSOR, document), document);
-	}
-
 	public static ActionInvocationQueue getActionInvocationProcessorService(DocumentRouteHeaderValue document) {
 		return (ActionInvocationQueue) getServiceAsynchronously(ACTION_INVOCATION_QUEUE, document);
 	}
 
-	public static BlanketApprovalOrchestrationQueue getBlanketApprovalOrchestrationQueue(
+	public static DocumentOrchestrationQueue getBlanketApprovalOrchestrationQueue(
             DocumentRouteHeaderValue document) {
-		return (BlanketApprovalOrchestrationQueue) getServiceAsynchronously(BLANKET_APPROVAL_ORCHESTRATION_QUEUE, document);
+		return (DocumentOrchestrationQueue) getServiceAsynchronously(BLANKET_APPROVAL_ORCHESTRATION_QUEUE, document);
 	}
 
     public static RolePokerQueue getRolePokerQueue(String documentId) {

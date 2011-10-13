@@ -25,9 +25,10 @@ import java.util.Set;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
+import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
@@ -173,17 +174,20 @@ public class BlanketApproveAction extends ActionTakenEvent {
         try {
         	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
-            BlanketApprovalOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
+            DocumentOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
                     routeHeader);
+            org.kuali.rice.kew.api.document.OrchestrationConfig orchestrationConfig =
+                    org.kuali.rice.kew.api.document.OrchestrationConfig.create(actionTaken.getActionTakenId(), nodeNames);
+            DocumentProcessingOptions options = DocumentProcessingOptions.create(true, shouldIndex);
             blanketApprove.orchestrateDocument(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(),
-                    actionTaken.getActionTakenId(), nodeNames, shouldIndex);
+                    orchestrationConfig, options);
         } catch (Exception e) {
             LOG.error(e);
             throw new WorkflowRuntimeException(e);
         }
     }
     
-    public void performDeferredBlanketApproveWork(ActionTakenValue actionTaken) throws Exception {
+    public void performDeferredBlanketApproveWork(ActionTakenValue actionTaken, DocumentProcessingOptions processingOptions) throws Exception {
 
         if (getRouteHeader().isInException()) {
             LOG.debug("Moving document back to Enroute from Exception");
@@ -194,7 +198,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);
         }
-        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken);
+        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken, processingOptions.isSendNotifications(), processingOptions.isRunPostProcessor());
         BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
         blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
    

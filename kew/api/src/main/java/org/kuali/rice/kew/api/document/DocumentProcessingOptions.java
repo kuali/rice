@@ -17,6 +17,7 @@ import java.util.Collection;
 @XmlType(name = DocumentProcessingOptions.Constants.TYPE_NAME, propOrder = {
         DocumentProcessingOptions.Elements.RUN_POST_PROCESSOR,
         DocumentProcessingOptions.Elements.INDEX_SEARCH_ATTRIBUTES,
+        DocumentProcessingOptions.Elements.SEND_NOTIFICATIONS,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentProcessingOptions extends AbstractDataTransferObject {
@@ -27,17 +28,33 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
     @XmlElement(name = Elements.INDEX_SEARCH_ATTRIBUTES, required = true)
     private final boolean indexSearchAttributes;
 
+    @XmlElement(name = Elements.SEND_NOTIFICATIONS, required = true)
+    private final boolean sendNotifications;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
-    public DocumentProcessingOptions() {
-        this(true, true);
+    private DocumentProcessingOptions() {
+        this(true, true, true);
     }
 
-    public DocumentProcessingOptions(boolean runPostProcessor, boolean indexSearchAttributes) {
+    private DocumentProcessingOptions(boolean runPostProcessor, boolean indexSearchAttributes, boolean sendNotifications) {
         this.runPostProcessor = runPostProcessor;
         this.indexSearchAttributes = indexSearchAttributes;
+        this.sendNotifications = sendNotifications;
+    }
+
+    public static DocumentProcessingOptions create(boolean runPostProcessor, boolean indexSearchAttributes) {
+        return create(runPostProcessor, indexSearchAttributes, true);
+    }
+
+    public static DocumentProcessingOptions create(boolean runPostProcessor, boolean indexSearchAttributes, boolean sendNotifications) {
+        return new DocumentProcessingOptions(runPostProcessor, indexSearchAttributes, sendNotifications);
+    }
+
+    public static DocumentProcessingOptions createDefault() {
+        return new DocumentProcessingOptions();
     }
 
     public boolean isRunPostProcessor() {
@@ -46,6 +63,10 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
 
     public boolean isIndexSearchAttributes() {
         return indexSearchAttributes;
+    }
+
+    public boolean isSendNotifications() {
+        return sendNotifications;
     }
 
     /**
@@ -62,6 +83,7 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
     static class Elements {
         final static String RUN_POST_PROCESSOR = "runPostProcessor";
         final static String INDEX_SEARCH_ATTRIBUTES = "indexSearchAttributes";
+        final static String SEND_NOTIFICATIONS = "sendNotifications";
     }
     
 }

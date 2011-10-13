@@ -22,36 +22,33 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actions.BlanketApproveAction;
+import org.kuali.rice.kew.actions.MoveDocumentAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue;
+import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
+import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
+import org.kuali.rice.kew.api.document.OrchestrationConfig;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
-
+import javax.jws.WebParam;
 
 /**
  * References implementation of the {@code BlanketApprovalOrchestrationQueue}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BlanketApprovalOrchestrationQueueImpl implements BlanketApprovalOrchestrationQueue {
+public class DocumentOrchestrationQueueImpl implements DocumentOrchestrationQueue {
 	
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BlanketApprovalOrchestrationQueueImpl.class);
+	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentOrchestrationQueueImpl.class);
 
     @Override
-	public void orchestrateAndIndexDocument(String documentId, String principalId, String actionTakenId,
-            Set<String> nodeNames) {
-        orchestrateDocument(documentId, principalId, actionTakenId, nodeNames, false);
-	}
-
-    @Override
-	public void orchestrateDocument(String documentId, String principalId, String actionTakenId, Set<String> nodeNames,
-            boolean shouldSearchIndex) {
-		if (StringUtils.isBlank(principalId)) {
+    public void orchestrateDocument(String documentId, String principalId, OrchestrationConfig orchestrationConfig,
+            DocumentProcessingOptions documentProcessingOptions) {
+        if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId is null or blank");
         }
 
@@ -59,28 +56,32 @@ public class BlanketApprovalOrchestrationQueueImpl implements BlanketApprovalOrc
             throw new RiceIllegalArgumentException("documentId is null");
         }
 
-        if (StringUtils.isBlank(actionTakenId)) {
-            throw new RiceIllegalArgumentException("actionTakenId is null");
+        if (orchestrationConfig == null) {
+            throw new RiceIllegalArgumentException("orchestrationConfig is null");
         }
-        if (nodeNames == null) {
-            nodeNames = new HashSet<String>();
+        if (documentProcessingOptions == null) {
+            documentProcessingOptions = DocumentProcessingOptions.createDefault();
         }
 
+        LOG.info("Performing document orchestration on documentId=" + documentId);
         KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(actionTakenId);
+        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+		ActionTakenValue actionTaken = KEWServiceLocator.getActionTakenService().findByActionTakenId(orchestrationConfig.getActionTakenId());
 		Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
-		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, principal, "", nodeNames);
-		LOG.debug("Doing blanket approve work document " + document.getDocumentId());
+		BlanketApproveAction blanketApprove = new BlanketApproveAction(document, principal, "", orchestrationConfig.getNodeNames());
 		try {
-			blanketApprove.performDeferredBlanketApproveWork(actionTaken);
+			blanketApprove.performDeferredBlanketApproveWork(actionTaken, documentProcessingOptions);
 		} catch (Exception e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException)e;
+            }
 			throw new WorkflowRuntimeException(e);
 		}
-		if (shouldSearchIndex) {
+		if (documentProcessingOptions.isIndexSearchAttributes()) {
             DocumentAttributeIndexingQueue queue = KewApiServiceLocator.getDocumentAttributeIndexingQueue(document.getDocumentType().getApplicationId());
             queue.indexDocument(documentId);
 		}
-		LOG.debug("Work done and document requeued, document " + document.getDocumentId());
-	}
+        LOG.info("Document orchestration complete against documentId=" + documentId);
+    }
+
 }

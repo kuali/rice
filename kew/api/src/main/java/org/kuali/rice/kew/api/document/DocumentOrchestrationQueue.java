@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.action;
+package org.kuali.rice.kew.api.document;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -30,30 +30,9 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "blanketApprovalOrchestrationQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@WebService(name = "documentOrchestrationQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface BlanketApprovalOrchestrationQueue {
-
-    /**
-     * Operates the same as if @{code orchestrateDocument} was called passing "true" for {@code shouldSearchIndex}.
-
-     * @param documentId the id of the document to orchestrate through the blanket approval process
-     * @param principalId the id of the principal who initiated the blanket approval
-     * @param actionTakenId the id of the blanket approve action that was taken by the principal
-     * @param nodeNames the Set of node names at which to terminate the blanket approval process, may be null or empty
-     * in which case the document is blanket approved through it's entire workflow process
-     *
-     * @throws RiceIllegalArgumentException if documentId is a null or blank value
-     * @throws RiceIllegalArgumentException if principalId is a null or blank value
-     * @throws RiceIllegalArgumentException if actionTakenId is a null or blank value
-     */
-    @WebMethod(operationName = "orchestrateAndIndexDocument")
-	void orchestrateAndIndexDocument(
-            @WebParam(name = "documentId") String documentId,
-            @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "actionTakenId") String actionTakenId,
-            @WebParam(name = "nodeNames") Set<String> nodeNames
-    ) throws RiceIllegalArgumentException;
+public interface DocumentOrchestrationQueue {
 
     /**
      * Orchestrates the document with the given id through the blanket approval process to the specified list of node
@@ -65,23 +44,18 @@ public interface BlanketApprovalOrchestrationQueue {
      *
      * @param documentId the id of the document to orchestrate through the blanket approval process
      * @param principalId the id of the principal who initiated the blanket approval
-     * @param actionTakenId the id of the blanket approve action that was taken by the principal
-     * @param nodeNames the Set of node names at which to terminate the blanket approval process, may be null or empty
-     * in which case the document is blanket approved through it's entire workflow process
-     * @param shouldSearchIndex indicates whether or not the document's attributes should be indexed after the
-     * orchestration process completes
+     * @param orchestrationConfig contains configuration for how the orchestration should be performed
      *
      * @throws RiceIllegalArgumentException if documentId is a null or blank value
      * @throws RiceIllegalArgumentException if principalId is a null or blank value
-     * @throws RiceIllegalArgumentException if actionTakenId is a null or blank value
+     * @throws RiceIllegalArgumentException if orchestrationConfig is null
      */
     @WebMethod(operationName = "orchestrateDocument")
 	void orchestrateDocument(
             @WebParam(name = "documentId") String documentId,
             @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "actionTakenId") String actionTakenId,
-            @WebParam(name = "nodeNames") Set<String> nodeNames,
-            @WebParam(name = "shouldSearchIndex") boolean shouldSearchIndex
+            @WebParam(name = "orchestrationConfig") OrchestrationConfig orchestrationConfig,
+            @WebParam(name = "documentProcessingOptions") DocumentProcessingOptions documentProcessingOptions
     ) throws RiceIllegalArgumentException;
 
 }

@@ -183,7 +183,7 @@
 						<id>blanketApprovalOrchestrationQueue-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
-							<className>org.kuali.rice.kew.api.action.BlanketApprovalOrchestrationQueue</className>
+							<className>org.kuali.rice.kew.api.document.DocumentOrchestrationQueue</className>
 							<outputFile>${project.build.outputDirectory}/wsdl/BlanketApprovalOrchestrationQueue.wsdl</outputFile>
 							<serviceName>BlanketApprovalOrchestrationQueue</serviceName>
 						</configuration>

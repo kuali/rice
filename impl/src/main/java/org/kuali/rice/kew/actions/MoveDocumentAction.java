@@ -24,12 +24,11 @@ import java.util.Set;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.actions.asyncservices.MoveDocumentService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.MovePoint;
-import org.kuali.rice.kew.engine.BlanketApproveEngine;
-import org.kuali.rice.kew.engine.OrchestrationConfig;
-import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
+import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
+import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
+import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
@@ -124,33 +123,18 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 Set<String> targetNodeNames = new HashSet<String>();
                 targetNodeNames.add(determineFutureNodeName(startNodeInstance, movePoint));
 
-                MoveDocumentService moveDocumentProcessor = MessageServiceNames.getMoveDocumentProcessorService(getRouteHeader());
-                moveDocumentProcessor.moveDocument(getPrincipal().getPrincipalId(), getRouteHeader(), actionTaken, targetNodeNames);
-
+        	    final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
+        	    DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getBlanketApprovalOrchestrationQueue(routeHeader);
+                org.kuali.rice.kew.api.document.OrchestrationConfig orchestrationConfig =
+                    org.kuali.rice.kew.api.document.OrchestrationConfig.create(actionTaken.getActionTakenId(), targetNodeNames);
+                DocumentProcessingOptions options = DocumentProcessingOptions.create(true, shouldIndex, false);
+                orchestrationQueue.orchestrateDocument(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(), orchestrationConfig, options);
             } else {
                 String targetNodeName = determineReturnNodeName(startNodeInstance, movePoint);
                 ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(KEWConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getPrincipal(), annotation, targetNodeName, false);
                 
                 returnAction.recordAction();
             }
-    }
-
-    public void performDeferredMoveDocumentWork(ActionTakenValue actionTaken, Set<String> nodeNames) throws Exception {
-
-        if (getRouteHeader().isInException()) {
-            LOG.debug("Moving document back to Enroute from Exception");
-
-            String oldStatus = getRouteHeader().getDocRouteStatus();
-            getRouteHeader().markDocumentEnroute();
-
-            String newStatus = getRouteHeader().getDocRouteStatus();
-            notifyStatusChange(newStatus, oldStatus);
-        }
-        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken, false, false);
-        BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
-		blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
-        
-        queueDocumentProcessing();
     }
 
     private RouteNodeInstance determineStartNode(Collection<RouteNodeInstance> activeNodes, MovePoint movePoint) throws InvalidActionTakenException {

@@ -68,6 +68,21 @@ public class ModelObjectUtils {
         return Collections.unmodifiableList(new ArrayList<T>(listToCopy));
     }
 
+    /**
+     * Takes the given set and returns an unmodifiable copy of that set containing the same elements as the original
+     * set.  This method handles a null set being passed to it by returning an unmodifiable empty set.
+     *
+     * @param setToCopy the set to copy
+     * @param <T> the type of the elements in the given set
+     *
+     * @return an unmodifiable copy containing the same elements as the given set
+     */
+    public static <T> Set<T> createImmutableCopy(Set<T> setToCopy) {
+        if (CollectionUtils.isEmpty(setToCopy)) {
+            return Collections.emptySet();
+        }
+        return Collections.unmodifiableSet(new HashSet<T>(setToCopy));
+    }
 
 	/**
 	 * This method is useful for converting a List&lt;? extends BlahContract&gt; to a

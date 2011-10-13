@@ -594,6 +594,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 if (lookupView.isReturnByScript()) {
                     Properties props = getReturnUrlParameters(lookupView, lookupForm, dataObject);
 
+//                    StringBuilder script = new StringBuilder("e.preventDefault();");
                     StringBuilder script = new StringBuilder("e.preventDefault();");
                     for (String returnField : lookupForm.getFieldConversions().values()) {
                         if (props.containsKey(returnField)) {
@@ -612,7 +613,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                     returnLinkField.setOnClickScript(script.append("parent.$.fancybox.close();").toString());
                 }  else{
                     // Close the light box if return target is not _self or _parent
-                    returnLinkField.setOnClickScript("parent.$.fancybox.close();createLoading(true);");
+                    returnLinkField.setOnClickScript("e.preventDefault();parent.$.fancybox.close();createLoading(true);window.open(jq(this).attr('href'), jq(this).attr('target'));");
                 }
             }
         } else {

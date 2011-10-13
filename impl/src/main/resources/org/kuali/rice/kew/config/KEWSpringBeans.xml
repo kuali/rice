@@ -546,7 +546,7 @@
 
   <bean id="rice.kew.groupMembershipChangeQueue" class="org.kuali.rice.kew.impl.group.GroupMembershipChangeQueueImpl" />
 
-  <bean id="rice.kew.responsibilityChangeProcessor" class="org.kuali.rice.kew.impl.Responsibility.ResponsibilityChangeProcessorImpl" />
+  <bean id="rice.kew.responsibilityChangeProcessor" class="org.kuali.rice.kew.impl.Responsibility.ResponsibilityChangeQueueImpl" />
 
   <bean id="dataDictionaryService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

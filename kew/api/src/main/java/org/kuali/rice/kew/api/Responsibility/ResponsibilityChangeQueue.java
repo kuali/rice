@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.Responsibility;
+package org.kuali.rice.kew.api.responsibility;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -26,7 +26,7 @@ import java.util.Set;
 
 @WebService(name = "responsibilityChangeProcessorSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface ResponsibilityChangeProcessor {
+public interface ResponsibilityChangeQueue {
     @WebMethod(operationName = "responsibilityChangeContents")
     void ResponsibilityChangeContents(@WebParam(name="responsibilities") Set<String> responsibilities) throws RiceIllegalArgumentException;
 }

@@ -16,13 +16,13 @@
 package org.kuali.rice.kew.impl.Responsibility;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kew.api.responsibility.ResponsibilityChangeProcessor;
+import org.kuali.rice.kew.api.responsibility.ResponsibilityChangeQueue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.jws.WebParam;
 import java.util.Set;
 
-public class ResponsibilityChangeProcessorImpl implements ResponsibilityChangeProcessor {
+public class ResponsibilityChangeQueueImpl implements ResponsibilityChangeQueue {
 
     @Override
     public void ResponsibilityChangeContents(@WebParam(name = "responsibilities") Set<String> responsibilities) {

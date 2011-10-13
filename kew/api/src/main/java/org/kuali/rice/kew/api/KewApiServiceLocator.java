@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.api;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.api.responsibility.ResponsibilityChangeProcessor;
+import org.kuali.rice.kew.api.responsibility.ResponsibilityChangeQueue;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.actionlist.ActionListService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
@@ -109,8 +109,8 @@ public class KewApiServiceLocator {
         return (GroupMembershipChangeQueue)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME);
     }
 
-    public static ResponsibilityChangeProcessor getResponsibilityChangeProcessor() {
-        return (ResponsibilityChangeProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME);
+    public static ResponsibilityChangeQueue getResponsibilityChangeProcessor() {
+        return (ResponsibilityChangeQueue)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME);
     }
     
     public static ImmediateEmailReminderQueue getImmediateEmailReminderQueue() {

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.api.responsibility;
 
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.jws.WebMethod;
@@ -24,7 +23,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.Set;
 
-@WebService(name = "responsibilityChangeProcessorSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@WebService(name = "responsibilityChangeQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityChangeQueue {
 
@@ -37,5 +36,5 @@ public interface ResponsibilityChangeQueue {
      */
     @WebMethod(operationName = "responsibilitiesChanged")
     void responsibilitiesChanged(@WebParam(name = "responsibilityIds") Set<String> responsibilityIds);
-    
+   
 }

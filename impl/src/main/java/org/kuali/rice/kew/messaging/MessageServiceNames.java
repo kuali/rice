@@ -61,8 +61,7 @@ public class MessageServiceNames {
 		return (ActionInvocationQueue) getServiceAsynchronously(ACTION_INVOCATION_QUEUE, document);
 	}
 
-	public static DocumentOrchestrationQueue getBlanketApprovalOrchestrationQueue(
-            DocumentRouteHeaderValue document) {
+	public static DocumentOrchestrationQueue getDocumentOrchestrationQueue(DocumentRouteHeaderValue document) {
 		return (DocumentOrchestrationQueue) getServiceAsynchronously(DOCUMENT_ORCHESTRATION_QUEUE, document);
 	}
 

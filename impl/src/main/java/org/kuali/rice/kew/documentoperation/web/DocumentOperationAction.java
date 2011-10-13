@@ -769,7 +769,7 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-			DocumentOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
+			DocumentOrchestrationQueue blanketApprove = MessageServiceNames.getDocumentOrchestrationQueue(
                     docForm.getRouteHeader());
             OrchestrationConfig orchestrationConfig = OrchestrationConfig.create(docForm.getBlanketApproveActionTakenId(), nodeNames);
             DocumentProcessingOptions options = DocumentProcessingOptions.createDefault();
@@ -795,7 +795,8 @@ public class DocumentOperationAction extends KewKualiAction {
 					nodeNames.add(nodeName.trim());
 				}
 			}
-            DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getBlanketApprovalOrchestrationQueue(docForm.getRouteHeader());
+            DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getDocumentOrchestrationQueue(
+                    docForm.getRouteHeader());
             OrchestrationConfig orchestrationConfig = OrchestrationConfig.create(docForm.getBlanketApproveActionTakenId(), nodeNames);
             DocumentProcessingOptions options = DocumentProcessingOptions.create(true, true, false);
             orchestrationQueue.orchestrateDocument(docForm.getDocumentId(), principalId, orchestrationConfig, options);

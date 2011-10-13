@@ -37,7 +37,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import javax.jws.WebParam;
 
 /**
- * References implementation of the {@code BlanketApprovalOrchestrationQueue}.
+ * References implementation of the {@code DocumentOrchestrationQueue}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

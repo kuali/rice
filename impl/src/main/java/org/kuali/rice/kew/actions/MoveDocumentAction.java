@@ -124,7 +124,8 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 targetNodeNames.add(determineFutureNodeName(startNodeInstance, movePoint));
 
         	    final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
-        	    DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getBlanketApprovalOrchestrationQueue(routeHeader);
+        	    DocumentOrchestrationQueue orchestrationQueue = MessageServiceNames.getDocumentOrchestrationQueue(
+                        routeHeader);
                 org.kuali.rice.kew.api.document.OrchestrationConfig orchestrationConfig =
                     org.kuali.rice.kew.api.document.OrchestrationConfig.create(actionTaken.getActionTakenId(), targetNodeNames);
                 DocumentProcessingOptions options = DocumentProcessingOptions.create(true, shouldIndex, false);

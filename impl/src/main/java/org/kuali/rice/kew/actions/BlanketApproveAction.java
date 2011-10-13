@@ -174,8 +174,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         try {
         	final boolean shouldIndex = getRouteHeader().getDocumentType().hasSearchableAttributes() && RouteContext.getCurrentRouteContext().isSearchIndexingRequestedForContext();
         	
-            DocumentOrchestrationQueue blanketApprove = MessageServiceNames.getBlanketApprovalOrchestrationQueue(
-                    routeHeader);
+            DocumentOrchestrationQueue blanketApprove = MessageServiceNames.getDocumentOrchestrationQueue(routeHeader);
             org.kuali.rice.kew.api.document.OrchestrationConfig orchestrationConfig =
                     org.kuali.rice.kew.api.document.OrchestrationConfig.create(actionTaken.getActionTakenId(), nodeNames);
             DocumentProcessingOptions options = DocumentProcessingOptions.create(true, shouldIndex);

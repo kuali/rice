@@ -35,6 +35,11 @@ th, td {
 /* CONTAINERS - e.g.: kr-nav-menu, ks-error-cont *************************/
 
 
+#viewpage_div {
+	
+	float:left;
+}
+
 .constraint {                  /* NOT RENAMED - changing this classname will break some javascript functionality  */
 	font-size:0.813em;
 	/* begin styles brought over from kuali-stacked.css  */
@@ -105,7 +110,7 @@ td.kr-clientError {
 }
 .kr-labelTop, .labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
 	float:none;
-	display:block;
+	/* [disabled]display:block; */
 }
 .kr-labelTop label, .labelTop label {				/* was .labelTop label */ /* renamed in xml and/or jsp */
 	font-weight:bold;

@@ -109,7 +109,6 @@ public class PageGroup extends Group {
                                     "general.info") + "', 'infoGrowl');";
                 }
             }
-
         }
 
         this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();" + growlScript);

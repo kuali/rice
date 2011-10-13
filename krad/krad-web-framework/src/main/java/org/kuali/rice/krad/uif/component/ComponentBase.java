@@ -64,6 +64,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private String refreshWhenChanged;
     private List<String> refreshWhenChangedControlNames;
 
+    private String refreshDiscloseMethodToCall;
+
     private boolean hidden;
     private boolean readOnly;
     private Boolean required;
@@ -158,6 +160,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             }
             getPropertyExpressions().put("render", conditionalRender);
 
+            // TODO: setting of the control names should probably be done in finalize, and we need KeepExpression
+            // on progressiveRender and conditionalRefresh
             progressiveDisclosureControlNames = new ArrayList<String>();
             progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
                     progressiveDisclosureControlNames);
@@ -1427,6 +1431,35 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setRefresh(boolean refresh) {
         this.refresh = refresh;
+    }
+
+    /**
+     * Name of a method on the controller that should be invoked as part of the component refresh and disclosure process
+     *
+     * <p>
+     * During the component refresh or disclosure process it might be necessary to perform other operations, such as
+     * preparing data or executing a business process. This allows the configuration of a method on the underlying
+     * controller that should be called for the component refresh action. In this method, the necessary logic can be
+     * performed and then the base component update method invoked to carry out the component refresh.
+     * </p>
+     *
+     * <p>
+     * Controller method to invoke must accept the form, binding result, request, and response arguments
+     * </p>
+     *
+     * @return String valid controller method name
+     */
+    public String getRefreshDiscloseMethodToCall() {
+        return refreshDiscloseMethodToCall;
+    }
+
+    /**
+     * Setter for the controller method to call for a refresh or disclosure action on this component
+     *
+     * @param refreshDiscloseMethodToCall
+     */
+    public void setRefreshDiscloseMethodToCall(String refreshDiscloseMethodToCall) {
+        this.refreshDiscloseMethodToCall = refreshDiscloseMethodToCall;
     }
 
     /**

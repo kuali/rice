@@ -16,6 +16,7 @@ import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
  */
 public class KRADServiceLocatorWeb {
 
+    public static final String DATA_DICTIONARY_REMOTE_FIELD_SERVICE = "dataDictionaryRemoteFieldService";
     public static final String DOCUMENT_DICTIONARY_SERVICE = "documentDictionaryService";
     public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
     public static final String DATA_OBJECT_AUTHORIZATION_SERVICE = "dataObjectAuthorizationService";
@@ -152,5 +153,9 @@ public class KRADServiceLocatorWeb {
 
     public static AttributeQueryService getAttributeQueryService() {
         return (AttributeQueryService) getService(ATTRIBUTE_QUERY_SERVICE);
+    }
+
+    public static DataDictionaryRemoteFieldService getDataDictionaryRemoteFieldService() {
+        return (DataDictionaryRemoteFieldService) getService(DATA_DICTIONARY_REMOTE_FIELD_SERVICE);
     }
 }

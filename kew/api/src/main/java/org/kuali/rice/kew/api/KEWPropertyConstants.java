@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.util;
+package org.kuali.rice.kew.api;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -60,7 +60,9 @@ public final class KEWPropertyConstants {
     public static final String FINAL_APPROVAL = "finalApprovalInd";
     public static final String KEY = "key";
     public static final String ROUTE_NODE_STATE_ID = "nodeStateId";
-    
+
+    // people flow and type
+    public static final String SEQUENCE_NUMBER = "sequenceNumber";
     
     public static final Set<String> DOC_SEARCH_RESULT_PROPERTY_NAME_SET = new HashSet<String>();
     static {

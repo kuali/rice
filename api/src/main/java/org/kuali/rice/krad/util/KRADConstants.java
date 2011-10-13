@@ -33,6 +33,9 @@ public final class KRADConstants {
     // special user used in the post-processor
     public static final String SYSTEM_USER = "kr";
 
+    public static final String KRAD_URL_KEY = "krad.url";
+    public static final String KRAD_LOOKUP_URL_KEY = "krad.lookup.url";
+
     public static final String PARAM_MAINTENANCE_VIEW_MODE = "maintenanceViewMode";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";

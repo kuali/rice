@@ -27,12 +27,15 @@
       <div id="${field.id}_errorMessages" style="display: none;" class="kr-errorMessages" aria-live="assertive" aria-relevant="additions removals">
     </c:otherwise>
   </c:choose>
+
   <c:if test="${field.displayErrorTitle}">
     <strong>${field.errorTitle}</strong>
   </c:if>
+
   <c:if test="${field.displayCounts && field.errorCount > 0}">
     <span>${field.errorCount} errors</span>
   </c:if>
+
   <ul class="errorLines">
     <c:if test="${field.displayErrorMessages}">
       <c:forEach var="message" items="${field.errors}">
@@ -48,9 +51,11 @@
       <c:if test="${field.displayWarningTitle}">
         <strong>${field.warningTitle}</strong>
       </c:if>
+
       <c:if test="${field.displayCounts && field.warningCount > 0}">
         <span>${field.warningCount} warnings</span>
       </c:if>
+
       <ul aria-live="assertive" aria-relevant="additions removals">
         <c:if test="${field.displayWarningMessages}">
           <c:forEach var="message" items="${field.warnings}">
@@ -67,9 +72,11 @@
       <c:if test="${field.displayInfoTitle}">
         <strong>${field.infoTitle}</strong>
       </c:if>
+
       <c:if test="${field.displayCounts && field.infoCount > 0}">
         <span>${field.infoCount} informational messages</span>
       </c:if>
+
       <ul aria-live="assertive" aria-relevant="additions removals">
         <c:if test="${field.displayInfoMessages}">
           <c:forEach var="message" items="${field.infos}">
@@ -86,5 +93,4 @@
 			applyErrorColors('${field.id}_div', ${field.errorCount}, ${field.warningCount}, ${field.infoCount}, false);
 			showFieldIcon('${field.id}_div', ${field.errorCount});
 		"/>
-  </script>
 </c:if>

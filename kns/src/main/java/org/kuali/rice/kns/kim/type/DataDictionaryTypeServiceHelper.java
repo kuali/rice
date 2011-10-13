@@ -100,7 +100,10 @@ public final class DataDictionaryTypeServiceHelper {
             final Class<KeyValuesFinder> clazz = (Class<KeyValuesFinder>) Class.forName(control.getValuesFinderClass());
             final KeyValuesFinder finder = clazz.newInstance();
             final Map<String, String> values = finder.getKeyLabelMap();
-            if ((values == null || values.isEmpty()) && attr.getOptionsFinder() != null) {
+            if ((values != null) && !values.isEmpty()) {
+               return values;
+            }
+            else if (attr.getOptionsFinder() != null) {
                 return attr.getOptionsFinder().getKeyLabelMap();
             }
         } catch (ClassNotFoundException e) {

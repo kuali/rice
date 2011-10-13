@@ -22,13 +22,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
-import org.kuali.rice.kew.util.KEWPropertyConstants;
-
 
 public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
 

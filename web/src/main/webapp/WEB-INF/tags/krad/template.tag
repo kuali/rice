@@ -80,7 +80,7 @@ still render, but render in a hidden container --%>
 	<c:forEach items="${component.progressiveDisclosureControlNames}" var="cName">
 		<krad:script
 			value="var condition = function(){return (${component.progressiveDisclosureConditionJs});};
-			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, ${component.progressiveRenderAndRefresh});" />
+			setupProgressiveCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, ${component.progressiveRenderAndRefresh}, '${component.refreshDiscloseMethodToCall}');" />
 	</c:forEach>
 	<krad:script value="hiddenInputValidationToggle('${component.id}_refreshWrapper');" />
 </c:if>
@@ -90,14 +90,14 @@ still render, but render in a hidden container --%>
 	<c:forEach items="${component.conditionalRefreshControlNames}" var="cName">
 		<krad:script
 			value="var condition = function(){return (${component.conditionalRefreshConditionJs});};
-		setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition);" />
+		setupRefreshCheck(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', condition, '${component.refreshDiscloseMethodToCall}');" />
 	</c:forEach>
 </c:if>
 
 <%-- Refresh when changed setup --%>
 <c:if test="${!empty component.refreshWhenChanged}">
 	<c:forEach items="${component.refreshWhenChangedControlNames}" var="cName">
-		<krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}');" />
+		<krad:script value="setupOnChangeRefresh(&quot;${cName}&quot;, '${component.id}', '${component.factoryId}', '${component.refreshDiscloseMethodToCall}');" />
 	</c:forEach>
 </c:if>
 

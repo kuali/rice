@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.impl.peopleflow;
+package org.kuali.rice.kew.peopleflow;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;

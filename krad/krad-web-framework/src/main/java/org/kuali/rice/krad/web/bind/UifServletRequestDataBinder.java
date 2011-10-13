@@ -105,18 +105,9 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 
         UifFormBase form = (UifFormBase) this.getTarget();
 
-        boolean refreshCall = false;
-        String methodToCall = request.getParameter(UifParameters.METHOD_TO_CALL);
-        if (StringUtils.isNotBlank(methodToCall) && StringUtils.equals(methodToCall,
-                UifConstants.MethodToCallNames.REFRESH)) {
-            refreshCall = true;
-        }
-
-        // back up previous view instance unless doing a refresh call
-        if (!refreshCall) {
-            View previousView = form.getView();
-            form.setPreviousView(previousView);
-        }
+        // back up previous view instance
+        View previousView = form.getView();
+        form.setPreviousView(previousView);
 
         // check for request param that indicates to skip view initialize
         Boolean skipViewInit = KRADUtils.getRequestParameterAsBoolean(request, UifParameters.SKIP_VIEW_INIT);

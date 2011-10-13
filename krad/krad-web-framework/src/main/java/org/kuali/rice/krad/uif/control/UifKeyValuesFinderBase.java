@@ -25,10 +25,32 @@ import java.util.List;
  */
 public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements UifKeyValuesFinder {
 
+    private boolean addBlankOption;
+
+    public UifKeyValuesFinderBase() {
+        addBlankOption = true;
+    }
+
     /**
      * @see org.kuali.rice.krad.uif.control.UifKeyValuesFinder#getKeyValues()
      */
     public List<KeyValue> getKeyValues() {
         return null;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.control.UifKeyValuesFinder#isAddBlankOption()
+     */
+    public boolean isAddBlankOption() {
+        return addBlankOption;
+    }
+
+    /**
+     * Setter for the addBlankOption indicator
+     *
+     * @param addBlankOption
+     */
+    public void setAddBlankOption(boolean addBlankOption) {
+        this.addBlankOption = addBlankOption;
     }
 }

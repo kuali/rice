@@ -126,7 +126,7 @@
   <bean id="QuickFinder" parent="QuickFinder-parentBean"/>
   <bean id="QuickFinder-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.QuickFinder" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/quickFinder.jsp"/>
-      <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/spring/lookup"/>
+      <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
       <property name="multipleValuesSelect" value="false"/>
       <property name="quickfinderActionField">
         <bean parent="ActionImageField" p:methodToCall="performLookup">
@@ -146,7 +146,7 @@
   <bean id="Inquiry" parent="Inquiry-parentBean" />
   <bean id="Inquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Inquiry" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/inquiry.jsp"/>
-      <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
+      <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
       <property name="inquiryLinkField">
         <bean parent="LinkField" p:styleClasses="action">
         	<property name="lightBox">
@@ -161,7 +161,7 @@
   <bean id="DirectInquiry" parent="DirectInquiry-parentBean"/>
   <bean id="DirectInquiry-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.DirectInquiry" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/directInquiry.jsp"/>
-    <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/spring/inquiry"/>
+    <property name="baseInquiryUrl" value="@{#ConfigProperties['application.url']}/kr-krad/inquiry"/>
     <property name="directInquiryActionField">
       <bean parent="ActionImageField">
         <property name="actionImage">

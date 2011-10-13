@@ -24,7 +24,7 @@
                                            PeopleFlow Lookup
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-LookupView" parent="LookupView">
+  <bean id="PeopleFlow-LookupView" parent="LookupView" p:maintenanceUrlMapping="peopleFlowMaintenance">
     <property name="title" value="People Flow Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
     <property name="criteriaFields">
@@ -71,6 +71,7 @@
     <property name="items">
       <list merge="true">
         <bean parent="PeopleFlow-Summary"/>
+        <bean parent="PeopleFlow-TypeAttributes"/>
         <bean parent="PeopleFlow-Detail"/>
       </list>
     </property>
@@ -90,19 +91,23 @@
         <bean parent="AttributeField" p:propertyName="namespaceCode" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="name" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="typeId" p:required="true"/>
-        <!--bean parent="FieldGroup" p:refreshWhenChanged="typeId">
-          <property name="items">
-            <list>
-              <bean parent="RemoteFieldsHolder" p:propertyName="attributeValues"
-                    p:fetchingMethodToCall="retrieveTypeAttributes"/>
-            </list>
-          </property>
-        </bean-->
         <bean parent="AttributeField" p:propertyName="description" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="active" p:defaultValue="true"/>
       </list>
     </property>
     <property name="title" value="PeopleFlow Summary"/>
+  </bean>
+
+  <bean id="PeopleFlow-TypeAttributes" parent="GroupSectionGridLayout" p:progressiveRenderViaAJAX="true"
+        p:progressiveRender="document.newMaintainableObject.dataObject.typeId != ''"
+        p:refreshWhenChanged="document.newMaintainableObject.dataObject.typeId"
+        p:refreshDiscloseMethodToCall="prepareTypeAttributes">
+    <property name="items">
+      <list>
+        <bean parent="RemoteFieldsHolder" p:propertyName="attributeValues"
+              p:fetchingMethodToCall="retrieveTypeAttributes"/>
+      </list>
+    </property>
   </bean>
 
   <!--
@@ -146,7 +151,7 @@
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="memberTypeCode" p:required="true"/>
+        <bean parent="AttributeField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean id="PeopleFlow-MemberDelegate" parent="PeopleFlow-Member" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="delegationTypeCode" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="actionRequestPolicyCode"

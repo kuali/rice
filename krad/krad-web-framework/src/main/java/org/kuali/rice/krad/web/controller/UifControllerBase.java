@@ -621,6 +621,9 @@ public abstract class UifControllerBase {
      * @return ModelAndView configured to redirect to the given URL
      */
     protected ModelAndView performRedirect(UifFormBase form, String baseUrl, Properties urlParameters) {
+        // since we are redirecting and will not be rendering the view, we need to reset the view from the previous
+        form.setView(form.getPreviousView());
+
         // On post redirects we need to make sure we are sending the history forward:
         urlParameters.setProperty(UifConstants.UrlParams.HISTORY, form.getFormHistory().getHistoryParameterString());
 

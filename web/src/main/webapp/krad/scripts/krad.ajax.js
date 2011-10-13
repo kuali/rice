@@ -148,8 +148,10 @@ function handleActionLink(methodToCall, navigateToPageId) {
  * and removed from the component.  This allows for label and component content seperation on fields
  *
  * @param id - id for the component to retrieve
+ * @param actualId - base id (without suffixes) for the component that should be refreshed
+ * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-function retrieveComponent(id, actualId){
+function retrieveComponent(id, actualId, methodToCall){
 	var elementToBlock = jq("#" + id + "_refreshWrapper");
 	if(elementToBlock.find("#" + actualId + "_attribute_span").length){
 		elementToBlock = jq("#" + actualId +"_attribute_span");
@@ -179,8 +181,12 @@ function retrieveComponent(id, actualId){
 
 		jq(".displayWith-" + actualId).show();
 	};
+
+    if (!methodToCall) {
+        methodToCall = "updateComponent";
+    }
 	
-	ajaxSubmitForm("updateComponent", updateRefreshableComponentCallback, 
+	ajaxSubmitForm(methodToCall, updateRefreshableComponentCallback,
 			{reqComponentId: id, skipViewInit: "true"}, elementToBlock);
 }
 
@@ -272,11 +278,13 @@ function addLineToCollection(collectionGroupId, collectionBaseId){
  * Same as setupRefreshCheck except the condition will always be true (always refresh when
  * value changed on control)
  *
- * @param controlName
- * @param refreshId
+ * @param controlName - value for the name attribute for the control the event should be generated for
+ * @param refreshId - id for the component that should be refreshed when change occurs
+ * @param baseId - base id (without suffixes) for the component that should be refreshed
+ * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-function setupOnChangeRefresh(controlName, refreshId, baseId){
-	setupRefreshCheck(controlName, refreshId, baseId, function(){return true;});
+function setupOnChangeRefresh(controlName, refreshId, baseId, methodToCall){
+	setupRefreshCheck(controlName, refreshId, baseId, function(){return true;}, methodToCall);
 }
 
 /**
@@ -285,17 +293,19 @@ function setupOnChangeRefresh(controlName, refreshId, baseId){
  * refresh the necessary content specified by id by making a server call to retrieve a new instance
  * of that component
  *
- * @param controlName
- * @param disclosureId
+ * @param controlName - value for the name attribute for the control the event should be generated for
+ * @param refreshId - id for the component that should be refreshed when condition occurs
+ * @param baseId - base id (without suffixes) for the component that should be refreshed
  * @param condition - function which returns true to refresh, false otherwise
+ * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  */
-function setupRefreshCheck(controlName, refreshId, baseId, condition){
+function setupRefreshCheck(controlName, refreshId, baseId, condition, methodToCall){
 	jq("[name='"+ controlName +"']").live('change', function() {
 		// visible check because a component must logically be visible to refresh
 		var refreshComp = jq("#" + refreshId + "_refreshWrapper");
 		if(refreshComp.length){
 			if(condition()){
-				retrieveComponent(refreshId, baseId);
+				retrieveComponent(refreshId, baseId, methodToCall);
 			}
 		}
 	});
@@ -312,15 +322,16 @@ function setupRefreshCheck(controlName, refreshId, baseId, condition){
  * @param controlName
  * @param disclosureId
  * @param condition - function which returns true to disclose, false otherwise
+ * @param methodToCall - name of the method that should be invoked for the retrieve call (if custom method is needed)
  */
-function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve){
+function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alwaysRetrieve, methodToCall){
 	if (!baseId.match("\_c0$")) {
 		jq("[name='"+ controlName +"']").change(function() {
 			var refreshDisclosure = jq("#" + disclosureId + "_refreshWrapper");
 			if(refreshDisclosure.length){
 				if(condition()){
 					if(refreshDisclosure.hasClass("unrendered") || alwaysRetrieve){
-						retrieveComponent(disclosureId, baseId);
+						retrieveComponent(disclosureId, baseId, methodToCall);
 					}
 					else{
 						refreshDisclosure.fadeIn("slow");

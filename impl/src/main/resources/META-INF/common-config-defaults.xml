@@ -107,7 +107,8 @@
     <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
-    <param name="krad.url" override="false">${application.url}/spring</param>
+    <param name="krad.url" override="false">${application.url}/kr-krad</param>
+    <param name="krad.lookup.url" override="false">${krad.url}/lookup</param>
     <param name="rice.server.url" override="false">${application.url}</param>
     <param name="workflow.url" override="false">${rice.server.url}/kew</param>
     <param name="workflow.documentsearch.base.url" override="false">${workflow.url}/DocumentSearch.do?docFormKey=88888888&amp;returnLocation=${application.url}/portal.do&amp;hideReturnLink=true</param>
@@ -370,7 +371,7 @@
 	<param name="transactionManager.jndi.location" override="false"></param>
 	<param name="userTransaction.jndi.location" override="false"></param>
 	
-	<!-- KNS -->
+	<!-- KRAD -->
 	<param name="rice.kr.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
 	<param name="kr.url" override="false">${application.url}/kr</param>
 	<param name="kr.mode" override="false">LOCAL</param>

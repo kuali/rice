@@ -25,7 +25,7 @@
       <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
       <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
       <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
-      <docHandler>${application.url}/spring/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo</docHandler>
+      <docHandler>${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo</docHandler>
       <active>true</active>
       <routingVersion>2</routingVersion>
       <routePaths>

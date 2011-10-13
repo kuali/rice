@@ -25,6 +25,10 @@ import java.util.List;
  * Values finder that can taken the {@link org.kuali.rice.krad.uif.view.ViewModel} that provides data to the view
  * for conditionally setting the valid options
  *
+ * <p>
+ * Values finder also allows configuration for a blank option that will be added by the framework
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface UifKeyValuesFinder extends KeyValuesFinder {
@@ -36,4 +40,11 @@ public interface UifKeyValuesFinder extends KeyValuesFinder {
      * @return List of KeyValue objects
      */
     public List<KeyValue> getKeyValues(ViewModel model);
+
+    /**
+     * Indicates whether a blank option should be included as a valid option
+     *
+     * @return boolean true if the blank option should be given, false if not
+     */
+    public boolean isAddBlankOption();
 }

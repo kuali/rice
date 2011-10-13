@@ -19,6 +19,9 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,10 +32,10 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KewTypeOptionsFinder extends KeyValuesBase {
+public class KewTypeOptionsFinder extends UifKeyValuesFinderBase {
 
     @Override
-    public List<KeyValue> getKeyValues() {
+    public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> kewTypes = new ArrayList<KeyValue>();
 
         Collection<KewTypeBo> kewTypeBos = KRADServiceLocator.getBusinessObjectService().findAllOrderBy(KewTypeBo.class,

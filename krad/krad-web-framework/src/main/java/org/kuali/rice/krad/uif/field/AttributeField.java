@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
@@ -30,6 +31,7 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
@@ -227,6 +229,11 @@ public class AttributeField extends FieldBase implements DataBinding {
                 List<KeyValue> options = new ArrayList<KeyValue>();
                 if (optionsFinder instanceof UifKeyValuesFinder) {
                     options = ((UifKeyValuesFinder) optionsFinder).getKeyValues((ViewModel) model);
+
+                    // check if blank option should be added
+                    if (((UifKeyValuesFinder) optionsFinder).isAddBlankOption()) {
+                        options.add(0, new ConcreteKeyValue("", ""));
+                    }
                 }
                 else {
                     options = optionsFinder.getKeyValues();
@@ -353,12 +360,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         // if alternateValue and additionalValue not set yet check whether the field has multi value control
         if (!alternateValueSet && !additionalValueSet &&
-                (control != null && control instanceof MultiValueControlBase)) {
-            MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
+                (control != null && control instanceof MultiValueControl)) {
+            MultiValueControl multiValueControl = (MultiValueControl) control;
             if (multiValueControl.getOptions() != null) {
+                Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
                 for (KeyValue keyValue : multiValueControl.getOptions()) {
-                    Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-
                     if (StringUtils.equals((String) fieldValue, keyValue.getKey())) {
                         alternateDisplayValue = keyValue.getValue();
                         break;

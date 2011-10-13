@@ -320,6 +320,8 @@ public class UifFormBase implements ViewModel {
      * can be looked at by the view or components to render differently
      * </p>
      *
+     * TODO: make sure action parameters are getting reinitialized on each request
+     *
      * @return String action event name or blank if action event was not sent
      */
     public String getActionEvent() {

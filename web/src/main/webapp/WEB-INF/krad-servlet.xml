@@ -16,6 +16,7 @@
   <context:component-scan base-package="edu.sampleu.student.web.controller" />
   <context:component-scan base-package="org.kuali.rice.krms" />
   <context:component-scan base-package="org.kuali.rice.core.web" />
+  <context:component-scan base-package="org.kuali.rice.kew.impl.peopleflow" />
 
   <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />

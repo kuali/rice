@@ -90,7 +90,9 @@
     <property name="shortLabel" value="Type"/>
     <property name="forceUppercase" value="false"/>
     <property name="maxLength" value="40"/>
-    <property name="optionsFinderClass" value="org.kuali.rice.kew.impl.type.KewTypeOptionsFinder"/>
+    <property name="optionsFinder">
+      <bean class="org.kuali.rice.kew.impl.type.KewTypeOptionsFinder"/>
+    </property>
     <property name="controlField">
       <bean parent="SelectControl"/>
     </property>

@@ -37,9 +37,11 @@
 </c:if>
 
 <krad:div component="${field}">
-  <div id="${field.id}_header" ${divStyleClass} ${divStyle}>
-     ${headerOpenTag}${field.headerText}${headerCloseTag}
-  </div>
+  <c:if test="${!empty field.headerText}">
+    <div id="${field.id}_header" ${divStyleClass} ${divStyle}>
+        ${headerOpenTag}${field.headerText}${headerCloseTag}
+    </div>
+  </c:if>
   
   <%-- render header group --%>
   <c:if test="${!empty field.group}">

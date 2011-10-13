@@ -1239,4 +1239,6 @@
   <bean id="criteriaLookupService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="criteriaLookupService"/>
   </bean>
+
+  <bean id="dataDictionaryRemoteFieldService" class="org.kuali.rice.krad.service.impl.DataDictionaryRemoteFieldServiceImpl"/>
 </beans>

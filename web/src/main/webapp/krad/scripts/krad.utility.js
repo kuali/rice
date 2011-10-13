@@ -181,7 +181,7 @@ function getComponentState(componentId, key) {
     return "";
 }
 
-//gets the the label for field with the corresponding id
+// gets the the label for field with the corresponding id
 function getLabel(id){
 	var label =  jq("#" + id + "_label");
 	if(label){

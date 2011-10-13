@@ -756,6 +756,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected String getActionUrlHref(LookupForm lookupForm, Object dataObject, String methodToCall,
             List<String> pkNames) {
+        LookupView lookupView = (LookupView) lookupForm.getView();
+
         Properties props = new Properties();
         props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
 
@@ -773,7 +775,12 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         props.put(UifParameters.DATA_OBJECT_CLASS_NAME, lookupForm.getDataObjectClassName());
         props.put(UifParameters.VIEW_TYPE_NAME, UifConstants.ViewType.MAINTENANCE.name());
 
-        return UrlFactory.parameterizeUrl(KRADConstants.Maintenance.REQUEST_MAPPING_MAINTENANCE, props);
+        String maintenanceMapping = KRADConstants.Maintenance.REQUEST_MAPPING_MAINTENANCE;
+        if (StringUtils.isNotBlank(lookupView.getMaintenanceUrlMapping())) {
+            maintenanceMapping = lookupView.getMaintenanceUrlMapping();
+        }
+
+        return UrlFactory.parameterizeUrl(maintenanceMapping, props);
     }
 
     /**

@@ -95,6 +95,7 @@
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.lookup.LookupableImpl"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.LookupForm"/>
     <property name="singlePageView" value="true"/>
+    <property name="maintenanceUrlMapping" value="maintenance"/>
     <property name="page">
       <bean parent="PageLookup"/>
     </property>

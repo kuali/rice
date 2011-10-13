@@ -171,7 +171,6 @@
   <bean id="Campus-lookupDefinition" parent="Campus-lookupDefinition-parentBean"/>
 
   <bean id="Campus-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    
     <property name="defaultSort">
       <bean parent="SortDefinition">
         <property name="attributeNames">

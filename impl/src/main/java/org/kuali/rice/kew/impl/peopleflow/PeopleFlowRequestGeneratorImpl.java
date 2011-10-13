@@ -2,7 +2,6 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Priority;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
@@ -20,6 +19,7 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kim.api.role.Role;

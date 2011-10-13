@@ -15,6 +15,8 @@ import org.apache.commons.collections.CollectionUtils
 import org.kuali.rice.kew.impl.type.KewTypeBo
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute
 import org.kuali.rice.krad.util.BeanPropertyComparator
+import org.kuali.rice.kew.api.KewApiServiceLocator
+import org.kuali.rice.kew.api.KEWPropertyConstants
 
 /**
  * Mapped entity for PeopleFlows
@@ -143,14 +145,29 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
         KewTypeDefinition typeDefinition = KewApiServiceLocator.getKewTypeRepositoryService().getTypeById(this.typeId);
         if ((typeDefinition.getAttributes() != null) && !typeDefinition.getAttributes().isEmpty()) {
             List<KewTypeAttribute> typeAttributes = new ArrayList<KewTypeAttribute>(typeDefinition.getAttributes());
-            Collections.sort(typeAttributes, new BeanPropertyComparator(new ArrayList<String>({"sequenceNumber"})));
-            for (KewTypeAttribute typeAttribute : typeAttributes) {
-                PeopleFlowAttributeBo attributeBo = new PeopleFlowAttributeBo();
-                attributeBo.setPeopleFlowId(this.id);
-                attributeBo.setAttributeDefinitionId(typeAttribute.attributeDefinitionId);
+
+            List<String> sortAttributes = new ArrayList<String>();
+            sortAttributes.add(KEWPropertyConstants.SEQUENCE_NUMBER);
+            Collections.sort(typeAttributes, new BeanPropertyComparator(sortAttributes));
+
+            for (KewTypeAttribute typeAttribute: typeAttributes) {
+                PeopleFlowAttributeBo attributeBo = PeopleFlowAttributeBo.from(typeAttribute.attributeDefinition, null,
+                        this.id, null);
                 attributeBos.add(attributeBo);
 
                 attributeValues.put(typeAttribute.getAttributeDefinition().name, "");
+            }
+        }
+    }
+
+    /**
+     * Updates the values in the attribute bos from the attribute values map
+     */
+    public void updateAttributeBoValues() {
+        for (PeopleFlowAttributeBo attributeBo: attributeBos) {
+            if (attributeValues.containsKey(attributeBo.getAttributeDefinition().getName())) {
+                String attributeValue = attributeValues.get(attributeBo.getAttributeDefinition().getName());
+                attributeBo.setValue(attributeValue);
             }
         }
     }

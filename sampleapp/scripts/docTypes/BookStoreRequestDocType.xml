@@ -49,7 +49,7 @@
 			<parent>BookstoreParentMaintenanceDocument</parent>
 			<description>Create or Update a Book Type</description>
 			<label>Book Type Maintenance</label>
-			<docHandler>${application.url}/spring/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.BookType
+			<docHandler>${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.BookType
 			</docHandler>
 		</documentType>
 		<documentType>
@@ -57,14 +57,14 @@
 			<parent>BookstoreParentMaintenanceDocument</parent>
 			<description>Create or Update a Author</description>
 			<label>Author Maintenance</label>
-			<docHandler>${application.url}/spring/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.Author</docHandler>
+			<docHandler>${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.Author</docHandler>
 		</documentType>
 		<documentType>
 			<name>AddressTypeMaintenanceDocument</name>
 			<parent>BookstoreParentMaintenanceDocument</parent>
 			<description>Create or Update a Address Type</description>
 			<label>Address Type Maintenance</label>
-			<docHandler>${application.url}/spring/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType</docHandler>
+			<docHandler>${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.BSAddressType</docHandler>
 		</documentType>
 <!--		<documentType>-->
 <!--			<name>BookOrderDocumentType</name>-->
@@ -78,7 +78,7 @@
 			<parent>BookstoreParentMaintenanceDocument</parent>
 			<description>Create or Update a Book</description>
 			<label>Book Maintenance</label>
-			<docHandler>${application.url}/spring/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.Book</docHandler>
+			<docHandler>${application.url}/krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=edu.sampleu.bookstore.bo.Book</docHandler>
 			<routePaths>
 				<routePath>
 					<start name="PreRoute" nextNode="Book Type Manager Approval" />

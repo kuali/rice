@@ -95,6 +95,9 @@
 							<ref bean="collection5" />
 						</list>
 					</property>
+          <property name="header">
+            <bean parent="HeaderPage_AccordionEdit"/>
+          </property>
 				</bean>
 				<bean parent="Page" p:id="uifpage7" p:title="Errors"
 					p:instructionalText="ErrorsField options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  ErrorsField options are also available on AttributeFields.">
@@ -1547,7 +1550,7 @@
 		<property name="title"
 			value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
 		<property name="instructionalText"
-			value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery tableTools" />
+			value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery tableTools and multi-value lookup" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list2" />
@@ -1572,12 +1575,13 @@
 
 	<bean id="collection3" parent="CollectionGroup">
 		<property name="title" value="Collection Group 3 - Stacked" />
-		<property name="accordion.render" value="false" />
 		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list3" />
+    <property name="layoutManager.summaryTitle" value="Line Summary" />
+    <property name="layoutManager.summaryFields" value="field1" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"
@@ -1597,10 +1601,10 @@
 			value="Collection Group 4 - Stacked Collection with a Table subcollection" />
 		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
-		<property name="accordion.render" value="false" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list4" />
+    <property name="layoutManager.summaryTitle" value="Line Summary '@{#line.field1}' With Expression" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:propertyName="field1" p:label="Field 1"
@@ -1649,10 +1653,11 @@
 			value="Collection Group 5 - Stacked Collection with a Stacked subcollection" />
 		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
-		<property name="accordion.render" value="false" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list5" />
+    <property name="layoutManager.summaryTitle" value="Line Summary" />
+    <property name="layoutManager.summaryFields" value="field1" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:propertyName="field1" p:label="Field 1"
@@ -1680,6 +1685,8 @@
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="subList" />
+    <property name="layoutManager.summaryTitle" value="Line Summary" />
+    <property name="layoutManager.summaryFields" value="field1" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:propertyName="field1" p:label="SubField 1"
@@ -1699,13 +1706,15 @@
 		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />
-		<property name="instructionalText" value="No sequence column rendering on" />
+		<property name="instructionalText" value="No sequence column rendering on, separate add line" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list6" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
 		<property name="layoutManager.renderSequenceField" value="false" />
 		<property name="layoutManager.generateAutoSequence" value="false" />
+    <property name="layoutManager.separateAddLine" value="true" />
+    <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8" />
 		<property name="layoutManager.tableTools.render" value="true" />
 		<property name="items">
 			<list>

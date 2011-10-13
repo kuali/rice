@@ -83,6 +83,8 @@ public class LookupView extends FormView {
 
     private Integer resultSetLimit = null;
 
+    private String maintenanceUrlMapping;
+
     public LookupView() {
         super();
         setViewTypeName(ViewType.LOOKUP);
@@ -398,5 +400,29 @@ public class LookupView extends FormView {
      */
     public void setReturnByScript(boolean returnByScript) {
         this.returnByScript = returnByScript;
+    }
+
+    /**
+     * String that maps to the maintenance controller for the maintenance document (if any) associated with the
+     * lookup data object class
+     *
+     * <p>
+     * Mapping will be used to build the maintenance action links (such as edit, copy, and new). If not given, the
+     * default maintenance mapping will be used
+     * </p>
+     *
+     * @return String mapping string
+     */
+    public String getMaintenanceUrlMapping() {
+        return maintenanceUrlMapping;
+    }
+
+    /**
+     * Setter for the URL mapping string that will be used to build up maintenance action URLs
+     *
+     * @param maintenanceUrlMapping
+     */
+    public void setMaintenanceUrlMapping(String maintenanceUrlMapping) {
+        this.maintenanceUrlMapping = maintenanceUrlMapping;
     }
 }

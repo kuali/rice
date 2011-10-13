@@ -46,9 +46,10 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	return KimApiServiceLocator.getGroupService();
     }
 
+    @Override
     public GroupBo saveWorkgroup(GroupBo group) {
     	GroupService ims = getGroupService();
-        List<String> oldIds = Collections.EMPTY_LIST;
+        List<String> oldIds = Collections.emptyList();
     	if (StringUtils.isNotEmpty(group.getId())) {
             oldIds = ims.getMemberPrincipalIds(group.getId());
         }
@@ -58,6 +59,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         return group;
     }
 
+    @Override
     public void updateForWorkgroupChange(String groupId,
     		List<String> oldPrincipalIds, List<String> newPrincipalIds) {
         MembersDiff membersDiff = getMembersDiff(oldPrincipalIds, newPrincipalIds);
@@ -69,6 +71,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
         }
     }
 
+    @Override
     public void updateForUserAddedToGroup(String principalId, String groupId) {
         // first verify that the user is still a member of the workgroup
     	if(getGroupService().isMemberOfGroup(principalId, groupId))
@@ -78,6 +81,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	}
     }
 
+    @Override
     public void updateForUserRemovedFromGroup(String principalId, String groupId) {
         // first verify that the user is no longer a member of the workgroup
     	if(!getGroupService().isMemberOfGroup(principalId, groupId))

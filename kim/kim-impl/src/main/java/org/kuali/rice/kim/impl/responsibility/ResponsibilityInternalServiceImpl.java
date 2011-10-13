@@ -39,19 +39,21 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     private ResponsibilityService responsibilityService;
 
     @Override
-	public void saveRoleMember(RoleMemberBo roleMember){
+	public RoleMemberBo saveRoleMember(RoleMemberBo roleMember){
 
 		//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	List<RoleResponsibility> oldRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	// add row to member table
-    	getBusinessObjectService().save( roleMember );
+    	RoleMemberBo member = getBusinessObjectService().save( roleMember );
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added
     	List<RoleResponsibility> newRoleResp = getRoleResponsibilities(roleMember.getRoleId());
 
     	updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(oldRoleResp, newRoleResp));
+
+        return member;
 	}
     @Override
 	public void removeRoleMember(RoleMemberBo roleMember){

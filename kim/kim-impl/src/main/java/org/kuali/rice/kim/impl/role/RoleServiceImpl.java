@@ -1302,7 +1302,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         RoleMemberBo bo = RoleMemberBo.from(roleMember);
         bo.setAttributeDetails(attrBos);
-        return RoleMemberBo.to(getBusinessObjectService().save(bo));
+        return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(bo));
     }
 
     @Override
@@ -1320,7 +1320,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         RoleMemberBo bo = RoleMemberBo.from(roleMember);
         bo.setAttributeDetails(attrBos);
-        return RoleMemberBo.to(getBusinessObjectService().save(bo));
+        return RoleMemberBo.to(getResponsibilityInternalService().saveRoleMember(bo));
     }
 
     @Override

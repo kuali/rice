@@ -30,7 +30,7 @@ import java.util.Set;
 public interface ResponsibilityInternalService {
 
 	void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds);
-	void saveRoleMember(RoleMemberBo roleMember);
+	RoleMemberBo saveRoleMember(RoleMemberBo roleMember);
 	void removeRoleMember(RoleMemberBo roleMember);
 	void updateActionRequestsForRoleChange(String roleId);
 

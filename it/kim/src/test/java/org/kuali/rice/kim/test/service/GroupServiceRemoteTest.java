@@ -16,11 +16,13 @@
 
 package org.kuali.rice.kim.test.service;
 
+import org.junit.Ignore;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceBus;
+import org.kuali.rice.test.BaselineTestCase;
 
 import javax.xml.namespace.QName;
 import java.util.List;
@@ -33,6 +35,7 @@ import static org.junit.Assert.fail;
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class GroupServiceRemoteTest extends GroupServiceTest {
 
 	public void setUp() throws Exception {

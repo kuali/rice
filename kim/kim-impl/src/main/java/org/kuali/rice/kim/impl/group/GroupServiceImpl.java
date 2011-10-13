@@ -25,7 +25,6 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -40,6 +39,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
+import javax.jws.WebParam;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -482,10 +482,13 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     protected GroupBo getGroupBo(String groupId) {
         incomingParamCheck(groupId, "groupId");
-        return businessObjectService.findBySinglePrimaryKey(GroupBo.class, groupId);
-
+        return businessObjectService.findByPrimaryKey(GroupBo.class, Collections.singletonMap("id", groupId));
     }
 
+    protected GroupMemberBo getGroupMemberBo(String id) {
+        incomingParamCheck(id, "id");
+        return businessObjectService.findByPrimaryKey(GroupMemberBo.class, Collections.singletonMap("id", id));
+    }
 
 	protected List<Group> getParentGroups(String groupId) throws RiceIllegalArgumentException {
 		if ( StringUtils.isEmpty(groupId) ) {
@@ -656,6 +659,63 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         saveGroup(groupBo);
 
         return GroupBo.to(newGroup);
+    }
+
+    @Override
+    public GroupMember createGroupMember(GroupMember groupMember) throws RiceIllegalArgumentException {
+        incomingParamCheck(groupMember, "groupMember");
+        if (StringUtils.isNotBlank(groupMember.getId()) && getGroupMemberBo(groupMember.getId()) != null) {
+            throw new RiceIllegalArgumentException("the groupMember to create already exists: " + groupMember);
+        }
+
+        GroupMemberBo bo = GroupMemberBo.from(groupMember);
+        GroupBo groupBo = getGroupBo(groupMember.getGroupId());
+        groupBo.getMembers().add(bo);
+        groupBo = saveGroup(groupBo);
+
+        //get new groupMember from saved group
+        for (GroupMemberBo member : groupBo.getMembers()) {
+            if (member.getMemberId().equals(groupMember.getMemberId())
+                    && member.getTypeCode().equals(groupMember.getTypeCode())
+                    && member.getActiveFromDate().equals(groupMember.getActiveFromDate())
+                    && member.getActiveToDate().equals(groupMember.getActiveToDate())) {
+                return GroupMemberBo.to(member);
+            }
+        }
+        return GroupMemberBo.to(bo);
+    }
+
+    @Override
+    public GroupMember updateGroupMember(
+            @WebParam(name = "groupMember") GroupMember groupMember) throws RiceIllegalArgumentException {
+        incomingParamCheck(groupMember, "groupMember");
+        if (StringUtils.isBlank(groupMember.getId()) || getGroupMemberBo(groupMember.getId()) == null) {
+            throw new RiceIllegalArgumentException("the groupMember to update does not exist: " + groupMember);
+        }
+
+        GroupMemberBo bo = GroupMemberBo.from(groupMember);
+        GroupBo groupBo = getGroupBo(groupMember.getGroupId());
+        //find and replace the existing member
+
+        List<GroupMemberBo> memberList = new ArrayList<GroupMemberBo>();
+        for (GroupMemberBo member : groupBo.getMembers()) {
+            if (member.getId().equals(bo.getId())) {
+                memberList.add(bo);
+            } else {
+                memberList.add(member);
+            }
+
+        }
+        groupBo.setMembers(memberList);
+        groupBo = saveGroup(groupBo);
+
+        //get new groupMember from saved group
+        for (GroupMemberBo member : groupBo.getMembers()) {
+            if (member.getId().equals(groupMember.getId())) {
+                return GroupMemberBo.to(member);
+            }
+        }
+        return GroupMemberBo.to(bo);
     }
 
     @Override

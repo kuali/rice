@@ -445,7 +445,7 @@ public interface GroupService {
 	List<GroupMember> getMembers( @WebParam(name="groupIds") List<String> groupIds ) throws RiceIllegalArgumentException;
 
 
-     /**
+    /**
      * Creates a new group using the given Group.
      *
      * <p>
@@ -495,6 +495,39 @@ public interface GroupService {
     @WebResult(name = "group")
     @CacheEvict(value={Group.Cache.NAME, GroupMember.Cache.NAME}, allEntries = true)
     Group updateGroup(@WebParam(name="groupId") String groupId, @WebParam(name="group") Group group) throws RiceIllegalArgumentException;
+
+    /**
+     * Creates a new group using the given GroupMember.
+     *
+     * <p>
+     * This will attempt to create a new GroupMember
+     * </p>
+     *
+     * @param groupMember The new groupMember to be created
+     * @return a the GroupMember that has been created.
+     * @throws IllegalArgumentException if the group is null
+     */
+    @WebMethod(operationName = "createGroupMember")
+    @WebResult(name = "groupMember")
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
+	GroupMember createGroupMember(@WebParam(name="groupMember") GroupMember groupMember) throws RiceIllegalArgumentException;
+
+    /**
+     * Updates an existing group using the given GroupMember.
+     *
+     * <p>
+     * This will attempt to update an existing GroupMember.  For this to return without exceptions, the passed in
+     * GroupMember must have it's Id set and be a valid groupMember that already exists.
+     * </p>
+     *
+     * @param groupMember The groupMember to be updated
+     * @return a the GroupMember that has been updated.
+     * @throws IllegalArgumentException if the groupMember is null
+     */
+    @WebMethod(operationName = "updateGroupMember")
+    @WebResult(name = "groupMember")
+    @CacheEvict(value={Group.Cache.NAME, GroupMember.Cache.NAME}, allEntries = true)
+	GroupMember updateGroupMember(@WebParam(name="groupMember") GroupMember groupMember) throws RiceIllegalArgumentException;
 
     /**
      * Adds the group with the id supplied in childId as a member of the group with the id supplied in parentId.

@@ -20,6 +20,7 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class GroupServiceTest extends KIMTestCase {
 
 	private GroupService groupService;
@@ -105,6 +107,11 @@ public class GroupServiceTest extends KIMTestCase {
 		Group gg = groupService.getGroup("g4");
         assertTrue(gg.isActive());
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
+
+        builder = Group.Builder.create(gg);
+        builder.setActive(false);
+        groupService.updateGroup(builder.build());
+        assertFalse( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
 	}
 
 	public GroupService getGroupService() {

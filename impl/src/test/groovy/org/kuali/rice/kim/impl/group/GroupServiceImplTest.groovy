@@ -162,8 +162,8 @@ class GroupServiceImplTest {
 
     @Test
     public void test_getGroup() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1..sampleGroups.size()) {
-            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1..sampleGroups.size()) {
+            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey.get("id"))
         }
         injectBusinessObjectServiceIntoGroupService()
         for (String id : sampleGroups.keySet()) {
@@ -175,8 +175,8 @@ class GroupServiceImplTest {
 
     @Test
     public void test_getGroupNonExistent() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
-            Class clazz, Object primaryKey -> return null
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
+            Class clazz, Map primaryKey -> return null
         }
         injectBusinessObjectServiceIntoGroupService()
         Group group = groupService.getGroup("badId")
@@ -213,20 +213,20 @@ class GroupServiceImplTest {
 
     @Test
     public void test_isMemberOfGroup() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
-            Class clazz, String groupId -> return sampleGroups.get(groupId)
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
+            Class clazz, Map groupId -> return sampleGroups.get(groupId.get("id"))
         }
         businessObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, Map map -> group1Members
         }
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
-            Class clazz, String groupId -> return sampleGroups.get(groupId)
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
+            Class clazz, Map groupId -> return sampleGroups.get(groupId.get("id"))
         }
         businessObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, Map map -> group2Members
         }
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1) {
-            Class clazz, String groupId -> return sampleGroups.get(groupId)
+        businessObjectServiceMockFor.demand.findByPrimaryKey(1) {
+            Class clazz, Map groupId -> return sampleGroups.get(groupId.get("id"))
         }
         businessObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, Map map -> Collections.emptyList()
@@ -415,8 +415,8 @@ class GroupServiceImplTest {
 
     @Test
     void test_getMemberPrincipalIds() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(0..3) {
-            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
+        businessObjectServiceMockFor.demand.findByPrimaryKey(0..3) {
+            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey.get("id"))
         }
 
         injectBusinessObjectServiceIntoGroupService()
@@ -458,8 +458,8 @@ class GroupServiceImplTest {
 
     @Test
     void test_getMemberGroupIds() {
-        businessObjectServiceMockFor.demand.findBySinglePrimaryKey(0..4) {
-            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
+        businessObjectServiceMockFor.demand.findByPrimaryKey(0..4) {
+            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey.get("id"))
         }
         injectBusinessObjectServiceIntoGroupService()
 
@@ -548,8 +548,8 @@ class GroupServiceImplTest {
         businessObjectServiceMockFor.demand.findMatching(1) {
             Class clazz, Map map -> return group2Members
         }
-        /*businessObjectServiceMockFor.demand.findBySinglePrimaryKey(1..sampleGroups.size()) {
-            Class clazz, Object primaryKey -> return sampleGroups.get(primaryKey)
+        /*businessObjectServiceMockFor.demand.findByPrimaryKey(1..sampleGroups.size()) {
+            Class clazz, Map primaryKey -> return sampleGroups.get(primaryKey)
         }*/
         injectBusinessObjectServiceIntoGroupService()
 

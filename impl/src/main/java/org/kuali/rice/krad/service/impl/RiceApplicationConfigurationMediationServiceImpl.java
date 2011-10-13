@@ -194,17 +194,4 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	return null;
     }
     
-    /**
-     * @see org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService#getBusinessObjectAttributeDefinition(java.lang.String, java.lang.String)
-     */
-    public AttributeDefinition getBusinessObjectAttributeDefinition(String businessObjectClassName, String attributeName) {
-    	if ( LOG.isDebugEnabled() ) {
-    		LOG.debug( "Querying for an AttributeDefinition for: " + businessObjectClassName + " / " + attributeName );
-    	}
-    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
-    	if ( racService != null ) {
-    		return racService.getBusinessObjectAttributeDefinition(businessObjectClassName, attributeName);
-    	}
-    	return null;
-    }
 }

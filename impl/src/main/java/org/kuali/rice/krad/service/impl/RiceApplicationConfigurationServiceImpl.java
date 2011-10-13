@@ -215,31 +215,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 		}
 		return false;
 	}
-	
-	/**
-	 * @see org.kuali.rice.krad.service.RiceApplicationConfigurationService#supportsBusinessObjectClass(java.lang.String)
-	 */
-	public boolean supportsBusinessObjectClass(String businessObjectClassName) {
-		return getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClassName) != null;
-	}
-	
-	/**
-	 * @see org.kuali.rice.krad.service.RiceApplicationConfigurationService#getBusinessObjectAttributeDefinition(java.lang.String, java.lang.String)
-	 */
-	public AttributeDefinition getBusinessObjectAttributeDefinition( String businessObjectClassName, String attributeName) {
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug( "Asking ("+packagePrefixes+") for BO AttributeDefinition: " + businessObjectClassName + " / " + attributeName );
-		}
-		BusinessObjectEntry boe = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClassName);
-		if ( boe == null ) {
-			if ( LOG.isInfoEnabled() ) {
-				LOG.info( "No BusinessObjectEntry found for class name: " + businessObjectClassName );
-			}
-			return null;
-		}
-		return boe.getAttributeDefinition(attributeName);
-	}
-
+		
 	/**
 	 * @return the packagePrefixes
 	 */

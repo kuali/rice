@@ -42,22 +42,7 @@ public interface RiceApplicationConfigurationService {
      * ensure that it falls within a set of configured parent packages.
      */
     boolean isResponsibleForPackage( String packageName );
-    
-    /**
-     * Checks whether this application supports the given business object (whether
-     * it is defined in the data dictionary) 
-     */
-    boolean supportsBusinessObjectClass( String businessObjectClassName );
-    
-    /**
-	 * This method will return the attribute definition from the local data dictionary.  It assumes that
-	 * the #supportsBusinessObjectClass(java.lang.String) method has already been checked to make sure that
-	 * this service will handle that class.  If not present, this method will return null.
-	 * 
-	 * This method also returns null if the given attribute definition can not be found on the business object.
-     */
-    AttributeDefinition getBusinessObjectAttributeDefinition( String businessObjectClassName, String attributeName );
-    
+            
     String getBaseLookupUrl( String businessObjectClassName );
     String getBaseInquiryUrl( String businessObjectClassName );
     String getBaseHelpUrl( String businessObjectClassName );

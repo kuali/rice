@@ -46,16 +46,7 @@ public interface RiceApplicationConfigurationMediationService {
 	 * Returns the non-database components that have been published by all Rice client applications.
 	 */
 	List<Component> getNonDatabaseComponents();
-    
-    /**
-	 * This method will return the attribute definition from the local data dictionary of the
-	 * application which supports that business object.  If not present in any application
-	 * attached to the bus, this method will return null.
-	 * 
-	 * This method also returns null if the given attribute definition can not be found on the business object.
-     */
-    AttributeDefinition getBusinessObjectAttributeDefinition( String businessObjectClassName, String attributeName );
-    
+        
     String getBaseLookupUrl( String businessObjectClassName );
     String getBaseInquiryUrl( String businessObjectClassName );
 	String getBaseHelpUrl( String businessObjectClassName );

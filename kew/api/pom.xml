@@ -123,7 +123,7 @@
 						<id>responsibilityChangeProcessor-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
-							<className>org.kuali.rice.kew.api.Responsibility.ResponsibilityChangeProcessor</className>
+							<className>org.kuali.rice.kew.api.responsibility.ResponsibilityChangeProcessor</className>
 							<outputFile>${project.build.outputDirectory}/wsdl/ResponsibilityChangeProcessor.wsdl</outputFile>
 							<serviceName>ResponsibilityChangeProcessor</serviceName>
 						</configuration>

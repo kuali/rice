@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.api;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.api.Responsibility.ResponsibilityChangeProcessor;
+import org.kuali.rice.kew.api.responsibility.ResponsibilityChangeProcessor;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.actionlist.ActionListService;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;

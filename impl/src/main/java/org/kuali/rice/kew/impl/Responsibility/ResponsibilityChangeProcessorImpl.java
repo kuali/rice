@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.impl.Responsibility;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kew.api.Responsibility.ResponsibilityChangeProcessor;
+import org.kuali.rice.kew.api.responsibility.ResponsibilityChangeProcessor;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.jws.WebParam;

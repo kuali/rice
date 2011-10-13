@@ -525,7 +525,7 @@
       enStatsService,
       enNoteService,
       rice.kew.documentProcessingQueue,
-      rice.kew.blanketApprovalOrchestrationQueue,
+      rice.kew.documentOrchestrationQueue,
       enMoveDocumentService,
       rice.kew.actionInvocationQueue,
       rice.kew.immediateEmailReminderQueue,

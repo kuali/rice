@@ -178,7 +178,7 @@
         <idref local="enStatsService" />
         <idref local="enNoteService" />
         <idref local="rice.kew.documentProcessingQueue" />
-        <idref local="rice.kew.blanketApprovalOrchestrationQueue" />
+        <idref local="rice.kew.documentOrchestrationQueue" />
         <idref local="rice.kew.documentAttributeIndexingQueue" />
         <idref local="rice.kew.groupMembershipChangeQueue" />
         <idref local="rice.kew.responsibilityChangeQueue" />
@@ -530,7 +530,7 @@
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
 
-  <bean id="rice.kew.blanketApprovalOrchestrationQueue" class="org.kuali.rice.kew.impl.action.DocumentOrchestrationQueueImpl"/>
+  <bean id="rice.kew.documentOrchestrationQueue" class="org.kuali.rice.kew.impl.action.DocumentOrchestrationQueueImpl"/>
   <bean id="rice.kew.actionInvocationQueue" class="org.kuali.rice.kew.impl.action.ActionInvocationQueueImpl" />
   <bean id="rice.kew.documentRefreshQueue" class="org.kuali.rice.kew.impl.document.DocumentRefreshQueueImpl" />
   <bean id="rice.kew.rolePokerQueue" class="org.kuali.rice.kew.impl.action.RolePokerQueueImpl" />

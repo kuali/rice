@@ -219,9 +219,9 @@
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
-					<ref bean="rice.kew.blanketApprovalOrchestrationQueue" />
+					<ref bean="rice.kew.documentOrchestrationQueue" />
 				</property>
-				<property name="localServiceName" value="blanketApprovalOrchestrationQueueSoap" />
+				<property name="localServiceName" value="documentOrchestrationQueueSoap" />
 				<property name="priority" value="4" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />

@@ -38,7 +38,7 @@ public class MessageServiceNames {
 
 	private static final QName DOCUMENT_PROCESSING_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentProcessingQueueSoap");
 
-	private static final QName BLANKET_APPROVAL_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "blanketApprovalOrchestrationQueueSoap");
+	private static final QName DOCUMENT_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentOrchestrationQueueSoap");
 
 	private static final QName DOCUMENT_REFRESH_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentRefreshQueueSoap");
 
@@ -63,7 +63,7 @@ public class MessageServiceNames {
 
 	public static DocumentOrchestrationQueue getBlanketApprovalOrchestrationQueue(
             DocumentRouteHeaderValue document) {
-		return (DocumentOrchestrationQueue) getServiceAsynchronously(BLANKET_APPROVAL_ORCHESTRATION_QUEUE, document);
+		return (DocumentOrchestrationQueue) getServiceAsynchronously(DOCUMENT_ORCHESTRATION_QUEUE, document);
 	}
 
     public static RolePokerQueue getRolePokerQueue(String documentId) {

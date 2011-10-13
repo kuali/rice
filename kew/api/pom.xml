@@ -216,6 +216,18 @@
 						</goals>
 					</execution>
           <execution>
+						<id>immediateEmailReminderQueue-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/ImmediateEmailReminderQueue.wsdl</outputFile>
+							<serviceName>ImmediateEmailReminderQueue</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
 						<id>pepleFlowService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>

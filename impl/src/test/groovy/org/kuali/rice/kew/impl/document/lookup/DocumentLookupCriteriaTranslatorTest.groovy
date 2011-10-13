@@ -1,7 +1,6 @@
 package org.kuali.rice.kew.impl.document.lookup
 
 import org.junit.Test
-import org.kuali.rice.kew.util.KEWPropertyConstants
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
 import static org.junit.Assert.assertNotNull

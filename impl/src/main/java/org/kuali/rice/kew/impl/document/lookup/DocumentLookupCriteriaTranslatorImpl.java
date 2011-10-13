@@ -21,13 +21,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jacorb.poa.util.StringPair;
 import org.joda.time.DateTime;
+import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 
 import java.lang.reflect.InvocationTargetException;

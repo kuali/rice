@@ -6,7 +6,6 @@ import org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertEquals
-import org.kuali.rice.kew.util.KEWPropertyConstants
 
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory

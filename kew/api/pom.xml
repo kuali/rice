@@ -120,12 +120,12 @@
             </goals>
           </execution>
           <execution>
-						<id>responsibilityChangeProcessor-wsdl</id>
+						<id>responsibilityChangeQueue-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.kew.api.responsibility.ResponsibilityChangeQueue</className>
 							<outputFile>${project.build.outputDirectory}/wsdl/ResponsibilityChangeProcessor.wsdl</outputFile>
-							<serviceName>ResponsibilityChangeProcessor</serviceName>
+							<serviceName>ResponsibilityChangeQueue</serviceName>
 						</configuration>
 						<goals>
 							<goal>java2ws</goal>

@@ -52,10 +52,8 @@ public class KewApiServiceLocator {
 
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
-    public static final QName RULE_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleCacheProcessorSoap");
-    public static final QName RULE_DELEGATION_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleDelegationCacheProcessorSoap");
     public static final QName IMMEDIATE_EMAIL_REMINDER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "immediateEmailReminderQueueSoap");
-    public static final QName RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeProcessorSoap");
+    public static final QName RESPONSIBILITY_CHANGE_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeQueueSoap");
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -109,8 +107,9 @@ public class KewApiServiceLocator {
         return (GroupMembershipChangeQueue)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME);
     }
 
-    public static ResponsibilityChangeQueue getResponsibilityChangeProcessor() {
-        return (ResponsibilityChangeQueue)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME);
+    public static ResponsibilityChangeQueue getResponsibilityChangeQueue() {
+        return (ResponsibilityChangeQueue)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(
+                RESPONSIBILITY_CHANGE_QUEUE);
     }
     
     public static ImmediateEmailReminderQueue getImmediateEmailReminderQueue() {

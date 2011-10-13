@@ -255,15 +255,15 @@
 		</property>
 	</bean>
 
-  <bean id="rice.kew.responsibilityChangeProcessorSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.responsibilityChangeQueueSoap.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
-          <ref bean="rice.kew.responsibilityChangeProcessor" />
+          <ref bean="rice.kew.responsibilityChangeQueue" />
         </property>
-        <property name="localServiceName" value="responsibilityChangeProcessorSoap" />
-        <property name="busSecurity" value="${rice.kew.responsibilityChangeProcessorSoap.secure}" />
+        <property name="localServiceName" value="responsibilityChangeQueueSoap" />
+        <property name="busSecurity" value="${rice.kew.responsibilityChangeQueueSoap.secure}" />
         <property name="queue" value="false" />
       </bean>
     </property>

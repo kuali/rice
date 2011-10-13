@@ -481,7 +481,7 @@
   <param name="rice.kew.ruleValidationAttributeExporterServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.workflowRuleAttributeHandlerServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.groupMembershipChangeQueueSoap.secure" override="false">true</param>
-  <param name="rice.kew.responsibilityChangeProcessorSoap.secure" override="false">true</param>
+  <param name="rice.kew.responsibilityChangeQueueSoap.secure" override="false">true</param>
   <param name="rice.kew.kewTypeRepositoryServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.peopleFlowServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.immediateEmailReminderQueueSoap.secure" override="false">true</param>

@@ -67,9 +67,19 @@ public class ImmediateEmailReminderQueueImplTest extends KEWTestCase {
 
         getMockEmailService().resetReminderCounts();
 
+        // ensure that skip on approvals defaults to false
+        immediateEmailReminderQueue.sendReminder(actionItem, null);
+        assertEquals("user1 should have 1 email", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+
+        getMockEmailService().resetReminderCounts();
+
+        // try sending an ack and make sure it doesn't get filtered out when skipOnApprovals is true
         actionItem = ActionItem.Builder.create("124", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
         immediateEmailReminderQueue.sendReminder(actionItem, Boolean.TRUE);
         assertEquals("user1 should have 1 emails", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+
+
+
     }
 
     

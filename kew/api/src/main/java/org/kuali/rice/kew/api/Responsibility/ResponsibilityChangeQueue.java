@@ -27,6 +27,7 @@ import java.util.Set;
 @WebService(name = "responsibilityChangeProcessorSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityChangeQueue {
-    @WebMethod(operationName = "responsibilityChangeContents")
-    void ResponsibilityChangeContents(@WebParam(name="responsibilities") Set<String> responsibilities) throws RiceIllegalArgumentException;
+
+    @WebMethod(operationName = "responsibilitiesChanged")
+    void responsibilitiesChanged(@WebParam(name = "responsibilityIds") Set<String> responsibilityIds) throws RiceIllegalArgumentException;
 }

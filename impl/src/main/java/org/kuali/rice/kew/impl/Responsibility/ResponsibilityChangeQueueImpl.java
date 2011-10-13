@@ -15,21 +15,18 @@
  */
 package org.kuali.rice.kew.impl.Responsibility;
 
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.kew.api.responsibility.ResponsibilityChangeQueue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
-import javax.jws.WebParam;
 import java.util.Set;
 
 public class ResponsibilityChangeQueueImpl implements ResponsibilityChangeQueue {
 
     @Override
-    public void ResponsibilityChangeContents(@WebParam(name = "responsibilities") Set<String> responsibilities) {
-        if (responsibilities == null) {
-            throw new RiceIllegalArgumentException("responsibilities is null");
+    public void responsibilitiesChanged(Set<String> responsibilityIds) {
+        if (CollectionUtils.isNotEmpty(responsibilityIds)) {
+            KEWServiceLocator.getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         }
-
-        KEWServiceLocator.getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilities);
     }
 }

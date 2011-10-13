@@ -84,7 +84,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	 */
     @Override
 	public void updateActionRequestsForResponsibilityChange(Set<String> responsibilityIds) {
-        KewApiServiceLocator.getResponsibilityChangeProcessor().ResponsibilityChangeContents(responsibilityIds);
+        KewApiServiceLocator.getResponsibilityChangeProcessor().responsibilitiesChanged(responsibilityIds);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -54,7 +54,7 @@ public class KewApiServiceLocator {
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
     public static final QName RULE_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleCacheProcessorSoap");
     public static final QName RULE_DELEGATION_CACHE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "ruleDelegationCacheProcessorSoap");
-    public static final QName IMMEDIATE_EMAIL_REMINDER_SERVICE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "immediateEmailReminderServiceSoap");
+    public static final QName IMMEDIATE_EMAIL_REMINDER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "immediateEmailReminderQueueSoap");
     public static final QName RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeProcessorSoap");
 
     static <T> T getService(String serviceName) {
@@ -113,7 +113,7 @@ public class KewApiServiceLocator {
         return (ResponsibilityChangeProcessor)KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(RESPONSIBILITY_CHANGE_PROCESSOR_QUEUE_NAME);
     }
     
-    public static ImmediateEmailReminderQueue getImmediateEmailReminderService() {
-        return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(IMMEDIATE_EMAIL_REMINDER_SERVICE_QUEUE_NAME);
+    public static ImmediateEmailReminderQueue getImmediateEmailReminderQueue() {
+        return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(IMMEDIATE_EMAIL_REMINDER_QUEUE);
     }
 }

@@ -484,7 +484,7 @@
   <param name="rice.kew.responsibilityChangeProcessorSoap.secure" override="false">true</param>
   <param name="rice.kew.kewTypeRepositoryServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.peopleFlowServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.immediateEmailReminderServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.immediateEmailReminderQueueSoap.secure" override="false">true</param>
 
   <param name="secure.workflowutility.javaservice.endpoint" override="false">true</param>
   <param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>
@@ -528,7 +528,7 @@
       rice.kew.blanketApprovalOrchestrationQueue,
       enMoveDocumentService,
       rice.kew.actionInvocationQueue,
-      rice.kew.immediateEmailReminderService,
+      rice.kew.immediateEmailReminderQueue,
       enActionListEmailService,
       enWorkflowUtilityService,
       enUserOptionsService,

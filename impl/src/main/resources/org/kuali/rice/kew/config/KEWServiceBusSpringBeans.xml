@@ -268,33 +268,16 @@
       </bean>
     </property>
   </bean>
-	
-	<!--   <bean parent="kewLocalServiceExporter" name="ImmediateEmailServiceBean"> -->
-<!-- 		<property name="serviceBus" ref="rice.ksb.serviceBus"/> -->
-<!-- 		<property name="serviceDefinition"> -->
-<!--         <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition"> -->
-<!--           <property name="service"> -->
-<!--             <ref bean="enImmediateEmailReminderService" /> -->
-<!--           </property> -->
-<!--           <property name="localServiceName" value="ImmediateEmailService" /> -->
-<!--           <property name="serviceNameSpaceURI" value=""/> -->
-<!--           <property name="priority" value="30"/> -->
-<!--           <property name="retryAttempts" value="1" /> -->
-<!--           <property name="messageExceptionHandler" value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" /> -->
-<!--         </bean> -->
-<!-- 		</property> -->
-<!-- 		<property name="exportIf" value="Email.useRemoteServices" /> -->
-<!-- 	</bean> -->
-	
-	<bean id="rice.kew.immediateEmailReminderServiceSoap.exporter" parent="kewLocalServiceExporter">
+
+	<bean id="rice.kew.immediateEmailReminderQueueSoap.exporter" parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
-					<ref bean="rice.kew.immediateEmailReminderService" />
+					<ref bean="rice.kew.immediateEmailReminderQueue" />
 				</property>
-				<property name="localServiceName" value="immediateEmailReminderServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.immediateEmailReminderServiceSoap.secure}" />
+				<property name="localServiceName" value="immediateEmailReminderQueueSoap" />
+				<property name="busSecurity" value="${rice.kew.immediateEmailReminderQueueSoap.secure}" />
 			</bean>
 		</property>
 	</bean>

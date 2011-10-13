@@ -37,14 +37,14 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 public class ImmediateEmailReminderQueueImplTest extends KEWTestCase {
 
-    private ImmediateEmailReminderQueue immediateEmailReminderQueue; // = new ImmediateEmailReminderServiceImpl();
+    private ImmediateEmailReminderQueue immediateEmailReminderQueue;
     
     
     @Before
     public void setUp() throws Exception {
         super.setUp();
         
-        immediateEmailReminderQueue = KewApiServiceLocator.getImmediateEmailReminderService();
+        immediateEmailReminderQueue = KewApiServiceLocator.getImmediateEmailReminderQueue();
     }
     
     @After

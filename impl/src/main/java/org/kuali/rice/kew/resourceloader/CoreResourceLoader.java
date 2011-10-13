@@ -96,7 +96,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	 */
 	protected boolean isRemoteService(QName serviceName) {
 	    return (useRemoteEmailServices() &&
-			    serviceName.getLocalPart().equals(KewApiServiceLocator.IMMEDIATE_EMAIL_REMINDER_SERVICE_QUEUE_NAME.getLocalPart()));
+			    serviceName.getLocalPart().equals(KewApiServiceLocator.IMMEDIATE_EMAIL_REMINDER_QUEUE.getLocalPart()));
 	}
 		
 	protected boolean useRemoteEmailServices() {

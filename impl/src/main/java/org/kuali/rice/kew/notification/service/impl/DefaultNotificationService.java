@@ -72,7 +72,7 @@ public class DefaultNotificationService implements NotificationService {
 	 * @param actionItem the action item
 	 */
 	protected void sendNotification(ActionItem actionItem) {
-        ImmediateEmailReminderQueue immediateEmailQueue = KewApiServiceLocator.getImmediateEmailReminderService();
+        ImmediateEmailReminderQueue immediateEmailQueue = KewApiServiceLocator.getImmediateEmailReminderQueue();
         immediateEmailQueue.sendReminder(actionItem, RouteContext.getCurrentRouteContext().isDoNotSendApproveNotificationEmails());
         // TODO: JLR - replace with direct call to ActionListEmailService 
 	}

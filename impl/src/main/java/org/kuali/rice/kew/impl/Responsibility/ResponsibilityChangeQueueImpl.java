@@ -21,6 +21,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import java.util.Set;
 
+/**
+ * Reference implementation of the {@code ResponsibilityChangeQueue}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ResponsibilityChangeQueueImpl implements ResponsibilityChangeQueue {
 
     @Override
@@ -29,4 +34,5 @@ public class ResponsibilityChangeQueueImpl implements ResponsibilityChangeQueue 
             KEWServiceLocator.getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         }
     }
+    
 }

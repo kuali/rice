@@ -205,12 +205,8 @@
     </property>
   </bean>
 
-  <bean id="rice.krms.termResolutionEngine" class="org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl"/>
-
   <bean id="rice.krms.engine" class="org.kuali.rice.krms.framework.engine.ProviderBasedEngine">
     <property name="contextProvider" ref="contextProvider"/>
-    <property name="termResolutionEngine" ref="rice.krms.termResolutionEngine"/>
   </bean>
-
 
 </beans>

@@ -10,7 +10,6 @@ import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
-import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.result.TimingResult;
 
@@ -22,8 +21,7 @@ public class ProviderBasedEngine implements Engine {
 	private static final ResultLogger KLog = ResultLogger.getInstance();
 
 	private ContextProvider contextProvider;
-	private TermResolutionEngine termResolutionEngine;
-	
+
 	@Override
 	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
 		DateTime start, end;
@@ -49,7 +47,7 @@ public class ProviderBasedEngine implements Engine {
 	}
 	
 	protected ExecutionEnvironment establishExecutionEnvironment(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
-		return new BasicExecutionEnvironment(selectionCriteria, facts, executionOptions, termResolutionEngine);
+		return new BasicExecutionEnvironment(selectionCriteria, facts, executionOptions, new TermResolutionEngineImpl());
 	}
 	
 	protected Context selectContext(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
@@ -64,8 +62,4 @@ public class ProviderBasedEngine implements Engine {
 		this.contextProvider = contextProvider;
 	}
 	
-	public void setTermResolutionEngine(TermResolutionEngine termResolutionEngine) {
-		this.termResolutionEngine = termResolutionEngine;
-	}
-
 }

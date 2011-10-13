@@ -54,10 +54,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     private RoleService roleService;
 
     @Override
-    public Responsibility createResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
-        if (responsibility == null) {
-            throw new RiceIllegalArgumentException("responsibility is null");
-        }
+    public Responsibility createResponsibility(final Responsibility responsibility)
+            throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(responsibility, "responsibility");
 
         if (StringUtils.isNotBlank(responsibility.getId()) && getResponsibility(responsibility.getId()) != null) {
             throw new RiceIllegalStateException("the responsibility to create already exists: " + responsibility);
@@ -72,10 +71,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public Responsibility updateResponsibility(final Responsibility responsibility) throws RiceIllegalArgumentException, RiceIllegalStateException {
-        if (responsibility == null) {
-            throw new RiceIllegalArgumentException("responsibility is null");
-        }
+    public Responsibility updateResponsibility(final Responsibility responsibility)
+            throws RiceIllegalArgumentException, RiceIllegalStateException {
+        incomingParamCheck(responsibility, "responsibility");
 
         if (StringUtils.isBlank(responsibility.getId()) || getResponsibility(responsibility.getId()) == null) {
             throw new RiceIllegalStateException("the responsibility does not exist: " + responsibility);
@@ -95,23 +93,17 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public Responsibility getResponsibility(final String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is null or blank");
-        }
+    public Responsibility getResponsibility(final String id) throws RiceIllegalArgumentException {
+        incomingParamCheck(id, "id");
 
         return ResponsibilityBo.to(businessObjectService.findBySinglePrimaryKey(ResponsibilityBo.class, id));
     }
 
     @Override
-    public Responsibility findRespByNamespaceCodeAndName(final String namespaceCode, final String name) {
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(name)) {
-            throw new RiceIllegalArgumentException("name is null or blank");
-        }
+    public Responsibility findRespByNamespaceCodeAndName(final String namespaceCode, final String name)
+            throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(name, "name");
 
         final Map<String, String> crit = new HashMap<String, String>();
         crit.put("namespaceCode", namespaceCode);
@@ -132,23 +124,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public Template getResponsibilityTemplate(final String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is null or blank");
-        }
+    public Template getResponsibilityTemplate(final String id) throws RiceIllegalArgumentException {
+        incomingParamCheck(id, "id");
 
         return ResponsibilityTemplateBo.to(businessObjectService.findBySinglePrimaryKey(ResponsibilityTemplateBo.class, id));
     }
 
     @Override
-    public Template findRespTemplateByNamespaceCodeAndName(final String namespaceCode, final String name) {
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(name)) {
-            throw new RiceIllegalArgumentException("name is null or blank");
-        }
+    public Template findRespTemplateByNamespaceCodeAndName(final String namespaceCode, final String name) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(name, "name");
 
         final Map<String, String> crit = new HashMap<String, String>();
         crit.put("namespaceCode", namespaceCode);
@@ -168,26 +153,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public boolean hasResponsibility(final String principalId, final String namespaceCode, final String respName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
-
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(respName)) {
-            throw new RiceIllegalArgumentException("respName is null or blank");
-        }
-
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-
-        if (responsibilityDetails == null) {
-            throw new RiceIllegalArgumentException("respDetails is null");
-        }
+    public boolean hasResponsibility(final String principalId, final String namespaceCode,
+            final String respName, final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(respName, "respName");
+        incomingParamCheck(qualification, "qualification");
+        incomingParamCheck(responsibilityDetails, "responsibilityDetails");
 
         // get all the responsibility objects whose name match that requested
         final List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, respName));
@@ -195,26 +168,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public boolean hasResponsibilityByTemplateName(final String principalId, final String namespaceCode, final String respTemplateName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
-
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(respTemplateName)) {
-            throw new RiceIllegalArgumentException("respTemplateName is null or blank");
-        }
-
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-
-        if (responsibilityDetails == null) {
-            throw new RiceIllegalArgumentException("respDetails is null");
-        }
+    public boolean hasResponsibilityByTemplateName(final String principalId, final String namespaceCode,
+            final String respTemplateName, final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(respTemplateName, "respTemplateName");
+        incomingParamCheck(qualification, "qualification");
+        incomingParamCheck(responsibilityDetails, "responsibilityDetails");
 
 
         // get all the responsibility objects whose name match that requested
@@ -222,7 +183,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return hasResp(principalId, namespaceCode, responsibilities, qualification, responsibilityDetails);
     }
 
-    private boolean hasResp(final String principalId, final String namespaceCode, final List<Responsibility> responsibilities, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
+    private boolean hasResp(final String principalId, final String namespaceCode,
+            final List<Responsibility> responsibilities, final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
         // now, filter the full list by the detail passed
         final List<String> ids = new ArrayList<String>();
         for (Responsibility r : getMatchingResponsibilities(responsibilities, responsibilityDetails)) {
@@ -233,22 +196,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<ResponsibilityAction> getResponsibilityActions(final String namespaceCode, final String responsibilityName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(responsibilityName)) {
-            throw new RiceIllegalArgumentException("respName is null or blank");
-        }
-
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-
-        if (responsibilityDetails == null) {
-            throw new RiceIllegalArgumentException("respDetails is null");
-        }
+    public List<ResponsibilityAction> getResponsibilityActions(final String namespaceCode,
+            final String responsibilityName, final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(responsibilityName, "responsibilityName");
+        incomingParamCheck(qualification, "qualification");
+        incomingParamCheck(responsibilityDetails, "responsibilityDetails");
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = Collections.singletonList(findRespByNamespaceCodeAndName(namespaceCode, responsibilityName));
@@ -256,22 +210,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(final String namespaceCode, final String respTemplateName, final Map<String, String> qualification, final Map<String, String> responsibilityDetails) {
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(respTemplateName)) {
-            throw new RiceIllegalArgumentException("respTemplateName is null or blank");
-        }
-
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-
-        if (responsibilityDetails == null) {
-            throw new RiceIllegalArgumentException("respDetails is null");
-        }
+    public List<ResponsibilityAction> getResponsibilityActionsByTemplateName(final String namespaceCode,
+            final String respTemplateName, final Map<String, String> qualification,
+            final Map<String, String> responsibilityDetails) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(respTemplateName, "respTemplateName");
+        incomingParamCheck(qualification, "qualification");
+        incomingParamCheck(responsibilityDetails, "responsibilityDetails");
 
         // get all the responsibility objects whose name match that requested
         List<Responsibility> responsibilities = findRespsByNamespaceCodeAndTemplateName(namespaceCode, respTemplateName);
@@ -361,14 +306,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<String> getRoleIdsForResponsibility(String id, Map<String, String> qualification) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is blank or blank");
-        }
-
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
+    public List<String> getRoleIdsForResponsibility(String id, Map<String, String> qualification) throws RiceIllegalArgumentException {
+        incomingParamCheck(id, "id");
+        incomingParamCheck(qualification, "qualification");
 
         final List<String> roleIds = getRoleIdsForPredicate(and(equal("responsibilityId", id), equal("active", "Y")));
 
@@ -377,10 +317,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public ResponsibilityQueryResults findResponsibilities(final QueryByCriteria queryByCriteria) {
-        if (queryByCriteria == null) {
-            throw new RiceIllegalArgumentException("queryByCriteria is null");
-        }
+    public ResponsibilityQueryResults findResponsibilities(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
 
         LookupCustomizer.Builder<ResponsibilityBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
@@ -401,10 +339,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public TemplateQueryResults findResponsibilityTemplates(final QueryByCriteria queryByCriteria) {
-        if (queryByCriteria == null) {
-            throw new RiceIllegalArgumentException("queryByCriteria is null");
-        }
+    public TemplateQueryResults findResponsibilityTemplates(final QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
 
         GenericQueryResults<ResponsibilityTemplateBo> results = criteriaLookupService.lookup(ResponsibilityTemplateBo.class, queryByCriteria);
 
@@ -546,5 +482,14 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     public void setRoleService(final RoleService roleService) {
         this.roleService = roleService;
+    }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
     }
 }

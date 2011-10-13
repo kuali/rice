@@ -33,23 +33,16 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
     private BusinessObjectService businessObjectService;
 
     @Override
-    public KimType getKimType(final String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new RiceIllegalArgumentException("id is blank");
-        }
+    public KimType getKimType(final String id) throws RiceIllegalArgumentException {
+        incomingParamCheck(id, "id");
 
         return KimTypeBo.to(businessObjectService.findBySinglePrimaryKey(KimTypeBo.class, id));
     }
 
     @Override
-    public KimType findKimTypeByNameAndNamespace(final String namespaceCode, final String name) {
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is blank");
-        }
-
-        if (StringUtils.isBlank(name)) {
-            throw new RiceIllegalArgumentException("name is blank");
-        }
+    public KimType findKimTypeByNameAndNamespace(final String namespaceCode, final String name) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(name, "name");
 
         final Map<String, Object> crit = new HashMap<String, Object>();
         crit.put("namespaceCode", namespaceCode);
@@ -83,5 +76,14 @@ public class KimTypeInfoServiceImpl implements KimTypeInfoService {
 
     public void setBusinessObjectService(final BusinessObjectService businessObjectService) {
         this.businessObjectService = businessObjectService;
+    }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
     }
 }

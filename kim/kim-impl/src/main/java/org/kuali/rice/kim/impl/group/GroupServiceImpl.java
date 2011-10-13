@@ -319,10 +319,10 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
     @Override
     public List<Group> getGroups(Collection<String> groupIds) throws RiceIllegalArgumentException {
-        if (CollectionUtils.isEmpty(groupIds)) {
-            throw new RiceIllegalArgumentException("groupIds is empty");
-		}
-
+        incomingParamCheck(groupIds, "groupIds");
+        if (groupIds.isEmpty()) {
+            return Collections.emptyList();
+        }
         final QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         builder.setPredicates(and(in("id", groupIds.toArray()), equal("active", "Y")));
         GroupQueryResults qr = findGroups(builder.build());

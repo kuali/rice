@@ -96,45 +96,26 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public boolean hasPermission(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
+    public boolean hasPermission(String principalId, String namespaceCode,
+                                 String permissionName, Map<String, String> permissionDetails) throws RiceIllegalArgumentException  {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionName, "permissionName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
 
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
         return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, Collections.<String, String>emptyMap() );
     }
 
     @Override
-    public boolean isAuthorized(String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
+    public boolean isAuthorized(String principalId, String namespaceCode,
+                                String permissionName, Map<String, String> permissionDetails,
+                                Map<String, String> qualification ) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionName, "permissionName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
+        incomingParamCheck(qualification, "qualification");
 
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
         List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
@@ -144,42 +125,25 @@ public class PermissionServiceImpl implements PermissionService {
 
     }
     @Override
-    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
+    public boolean hasPermissionByTemplateName(String principalId, String namespaceCode,
+            String permissionTemplateName, Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionTemplateName, "permissionTemplateName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
 
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionTemplateName)) {
-            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
         return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, Collections.<String, String>emptyMap() );
     }
     @Override
-    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
+    public boolean isAuthorizedByTemplateName(String principalId, String namespaceCode,
+                                              String permissionTemplateName, Map<String, String> permissionDetails,
+                                              Map<String, String> qualification ) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionTemplateName, "permissionTemplateName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
+        incomingParamCheck(qualification, "qualification");
 
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionTemplateName)) {
-            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
-        }
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
         List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
     	if ( roleIds.isEmpty() ) {
     		return false;
@@ -187,24 +151,15 @@ public class PermissionServiceImpl implements PermissionService {
     	return roleService.principalHasRole( principalId, roleIds, qualification);
     }
     @Override
-    public List<Permission> getAuthorizedPermissions( String principalId, String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
+    public List<Permission> getAuthorizedPermissions( String principalId,
+            String namespaceCode, String permissionName, Map<String, String> permissionDetails,
+            Map<String, String> qualification ) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionName, "permissionName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
+        incomingParamCheck(qualification, "qualification");
 
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
         // get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
@@ -212,24 +167,15 @@ public class PermissionServiceImpl implements PermissionService {
     	return getPermissionsForUser(principalId, applicablePermissions, qualification);
     }
     @Override
-    public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-        if (StringUtils.isBlank(principalId)) {
-            throw new RiceIllegalArgumentException("principalId is null or blank");
-        }
+    public List<Permission> getAuthorizedPermissionsByTemplateName( String principalId, String namespaceCode,
+            String permissionTemplateName, Map<String, String> permissionDetails,
+            Map<String, String> qualification ) throws RiceIllegalArgumentException {
+        incomingParamCheck(principalId, "principalId");
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionTemplateName, "permissionTemplateName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
+        incomingParamCheck(qualification, "qualification");
 
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionTemplateName)) {
-            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
-        }
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
         // get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
@@ -240,7 +186,8 @@ public class PermissionServiceImpl implements PermissionService {
     /**
      * Checks the list of permissions against the principal's roles and returns a subset of the list which match.
      */
-    protected List<Permission> getPermissionsForUser( String principalId, List<Permission> permissions, Map<String, String> qualification ) {
+    protected List<Permission> getPermissionsForUser( String principalId, List<Permission> permissions,
+            Map<String, String> qualification ) {
     	ArrayList<Permission> results = new ArrayList<Permission>();
     	List<Permission> tempList = new ArrayList<Permission>(1);
     	for ( Permission perm : permissions ) {
@@ -310,20 +257,12 @@ public class PermissionServiceImpl implements PermissionService {
     	return applicablePermissions;
     }
     @Override
-    public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName, Map<String, String> permissionDetails, Map<String, String> qualification ) {
-    	if (StringUtils.isBlank(permissionName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
+    public List<Assignee> getPermissionAssignees( String namespaceCode, String permissionName,
+            Map<String, String> permissionDetails, Map<String, String> qualification ) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionName, "permissionName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
+        incomingParamCheck(qualification, "qualification");
 
 
     	List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails);
@@ -347,22 +286,14 @@ public class PermissionServiceImpl implements PermissionService {
     	}
     	return Collections.unmodifiableList(results);
     }
+
     @Override
     public List<Assignee> getPermissionAssigneesByTemplateName(String namespaceCode, String permissionTemplateName,
-            Map<String, String> permissionDetails, Map<String, String> qualification) {
-    	if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionTemplateName)) {
-            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
-        }
-        if (qualification == null) {
-            throw new RiceIllegalArgumentException("qualification is null");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
+            Map<String, String> permissionDetails, Map<String, String> qualification) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionTemplateName, "permissionTemplateName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
+        incomingParamCheck(qualification, "qualification");
 
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
     	if ( roleIds.isEmpty() ) {
@@ -386,64 +317,45 @@ public class PermissionServiceImpl implements PermissionService {
     	return Collections.unmodifiableList(results);
     }
 
-     @Override
-    public boolean isPermissionDefined( String namespaceCode, String permissionName, Map<String, String> permissionDetails ) {
-    	if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
+    @Override
+    public boolean isPermissionDefined( String namespaceCode, String permissionName,
+             Map<String, String> permissionDetails ) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionName, "permissionName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
 
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();
     }
+
     @Override
     public boolean isPermissionDefinedByTemplateName(String namespaceCode, String permissionTemplateName,
-            Map<String, String> permissionDetails) {
+            Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
 
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionTemplateName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionTemplateName, "permissionTemplateName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
 
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();
     }
-     @Override
-    public List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, Map<String, String> permissionDetails) {
 
-    	if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
+    @Override
+    public List<String> getRoleIdsForPermission(String namespaceCode, String permissionName,
+            Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionName, "permissionName");
+        incomingParamCheck(permissionDetails, "permissionDetails");
 
-        if (StringUtils.isBlank(permissionName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
-        if (permissionDetails == null) {
-            throw new RiceIllegalArgumentException("permissionDetails is null");
-        }
-
-
-    	// get all the permission objects whose name match that requested
-    	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
-    	// now, filter the full list by the detail passed
-    	List<Permission> applicablePermissions = getMatchingPermissions( permissions, permissionDetails );
-        return getRoleIdsForPermissions( applicablePermissions );
+        // get all the permission objects whose name match that requested
+        List<PermissionBo> permissions = getPermissionImplsByName(namespaceCode, permissionName);
+        // now, filter the full list by the detail passed
+        List<Permission> applicablePermissions = getMatchingPermissions(permissions, permissionDetails);
+        return getRoleIdsForPermissions(applicablePermissions);
     }
 
     protected List<String> getRoleIdsForPermissionTemplate( String namespaceCode, String permissionTemplateName, Map<String, String> permissionDetails ) {
@@ -459,11 +371,8 @@ public class PermissionServiceImpl implements PermissionService {
     // --------------------
     
     @Override
-    public Permission getPermission(String permissionId) {
-
-        if (StringUtils.isBlank(permissionId)) {
-            throw new RiceIllegalArgumentException("permissionId is null or blank");
-        }
+    public Permission getPermission(String permissionId) throws RiceIllegalArgumentException {
+        incomingParamCheck(permissionId, "permissionId");
 
         PermissionBo impl = getPermissionImpl( permissionId );
     	if ( impl != null ) {
@@ -473,15 +382,10 @@ public class PermissionServiceImpl implements PermissionService {
     }
     
     @Override
-    public List<Permission> findPermsByNamespaceCodeTemplateName(String namespaceCode, String permissionTemplateName) {
-
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionTemplateName)) {
-            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
-        }
+    public List<Permission> findPermsByNamespaceCodeTemplateName(String namespaceCode,
+            String permissionTemplateName) throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionTemplateName, "permissionTemplateName");
 
         List<PermissionBo> impls = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
     	List<Permission> results = new ArrayList<Permission>(impls.size());
@@ -491,10 +395,9 @@ public class PermissionServiceImpl implements PermissionService {
     	return Collections.unmodifiableList(results);
     }
 
-	protected PermissionBo getPermissionImpl(String permissionId) {
-    	if ( StringUtils.isBlank( permissionId ) ) {
-    		return null;
-    	}
+	protected PermissionBo getPermissionImpl(String permissionId) throws RiceIllegalArgumentException {
+    	incomingParamCheck(permissionId, "permissionId");
+
         HashMap<String,Object> pk = new HashMap<String,Object>( 1 );
         pk.put( KimConstants.PrimaryKeyConstants.PERMISSION_ID, permissionId );
         return businessObjectService.findByPrimaryKey( PermissionBo.class, pk );
@@ -518,10 +421,8 @@ public class PermissionServiceImpl implements PermissionService {
     }
 	
     @Override
-	public Template getPermissionTemplate(String permissionTemplateId) {
-		if (StringUtils.isBlank(permissionTemplateId)) {
-            throw new RiceIllegalArgumentException("permissionTemplateId is null or blank");
-        }
+	public Template getPermissionTemplate(String permissionTemplateId) throws RiceIllegalArgumentException {
+        incomingParamCheck(permissionTemplateId, "permissionTemplateId");
 
         PermissionTemplateBo impl = businessObjectService.findBySinglePrimaryKey( PermissionTemplateBo.class, permissionTemplateId );
 		if ( impl != null ) {
@@ -531,15 +432,10 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
     @Override
-	public Template findPermTemplateByNamespaceCodeAndName(String namespaceCode, String permissionTemplateName) {
-		if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionTemplateName)) {
-            throw new RiceIllegalArgumentException("permissionTemplateName is null or blank");
-        }
-
+	public Template findPermTemplateByNamespaceCodeAndName(String namespaceCode,
+            String permissionTemplateName) throws RiceIllegalArgumentException {
+		incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionTemplateName, "permissionTemplateName");
 
         Map<String,String> criteria = new HashMap<String,String>(2);
 		criteria.put( KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode );
@@ -550,6 +446,7 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		return null;
 	}
+
     @Override
 	public List<Template> getAllTemplates() {
 		if ( allTemplates.isEmpty() ) {
@@ -581,9 +478,7 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public Permission createPermission(Permission permission)
 			throws RiceIllegalArgumentException, RiceIllegalStateException {
-        if (permission == null) {
-            throw new RiceIllegalArgumentException("permission is null");
-        }
+        incomingParamCheck(permission, "permission");
 
         if (StringUtils.isNotBlank(permission.getId()) && getPermission(permission.getId()) != null) {
             throw new RiceIllegalStateException("the permission to create already exists: " + permission);
@@ -603,9 +498,7 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public Permission updatePermission(Permission permission)
 			throws RiceIllegalArgumentException, RiceIllegalStateException {
-        if (permission == null) {
-            throw new RiceIllegalArgumentException("permission is null");
-        }
+        incomingParamCheck(permission, "permission");
 
         PermissionBo oldPermission = getPermissionImpl(permission.getId());
         if (StringUtils.isBlank(permission.getId()) || oldPermission == null) {
@@ -642,15 +535,10 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 	
     @Override
-    public Permission findPermByNamespaceCodeAndName(String namespaceCode, String permissionName) {
-
-        if (StringUtils.isBlank(namespaceCode)) {
-            throw new RiceIllegalArgumentException("namespaceCode is null or blank");
-        }
-
-        if (StringUtils.isBlank(permissionName)) {
-            throw new RiceIllegalArgumentException("permissionName is null or blank");
-        }
+    public Permission findPermByNamespaceCodeAndName(String namespaceCode, String permissionName)
+            throws RiceIllegalArgumentException {
+        incomingParamCheck(namespaceCode, "namespaceCode");
+        incomingParamCheck(permissionName, "permissionName");
 
         PermissionBo permissionBo = getPermissionBoByName(namespaceCode, permissionName);
         if (permissionBo != null) {
@@ -673,10 +561,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public PermissionQueryResults findPermissions(final QueryByCriteria queryByCriteria) {
-        if (queryByCriteria == null) {
-            throw new RiceIllegalArgumentException("queryByCriteria is null");
-        }
+    public PermissionQueryResults findPermissions(final QueryByCriteria queryByCriteria)
+            throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
 
         LookupCustomizer.Builder<PermissionBo> lc = LookupCustomizer.Builder.create();
         lc.setPredicateTransform(AttributeTransform.getInstance());
@@ -697,10 +584,9 @@ public class PermissionServiceImpl implements PermissionService {
     }
 
     @Override
-    public TemplateQueryResults findPermissionTemplates(final QueryByCriteria queryByCriteria) {
-        if (queryByCriteria == null) {
-            throw new RiceIllegalArgumentException("queryByCriteria is null");
-        }
+    public TemplateQueryResults findPermissionTemplates(final QueryByCriteria queryByCriteria)
+            throws RiceIllegalArgumentException {
+        incomingParamCheck(queryByCriteria, "queryByCriteria");
 
         GenericQueryResults<PermissionTemplateBo> results = criteriaLookupService.lookup(PermissionTemplateBo.class, queryByCriteria);
 
@@ -779,5 +665,14 @@ public class PermissionServiceImpl implements PermissionService {
      */
     public void setCriteriaLookupService(final CriteriaLookupService criteriaLookupService) {
         this.criteriaLookupService = criteriaLookupService;
+    }
+
+    private void incomingParamCheck(Object object, String name) {
+        if (object == null) {
+            throw new RiceIllegalArgumentException(name + " was null");
+        } else if (object instanceof String
+                && StringUtils.isBlank((String) object)) {
+            throw new RiceIllegalArgumentException(name + " was blank");
+        }
     }
 }

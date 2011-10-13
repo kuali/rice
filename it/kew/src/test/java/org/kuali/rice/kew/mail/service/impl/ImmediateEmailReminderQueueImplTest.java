@@ -35,7 +35,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ImmediateEmailReminderServiceImplTest extends KEWTestCase {
+public class ImmediateEmailReminderQueueImplTest extends KEWTestCase {
 
     private ImmediateEmailReminderQueue immediateEmailReminderQueue; // = new ImmediateEmailReminderServiceImpl();
     

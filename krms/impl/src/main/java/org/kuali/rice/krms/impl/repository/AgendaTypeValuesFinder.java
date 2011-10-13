@@ -60,7 +60,11 @@ public class AgendaTypeValuesFinder extends UifKeyValuesFinderBase {
         MaintenanceForm maintenanceForm = (MaintenanceForm) model;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
 
+        // if we have an agenda w/ a selected context
         if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {
+
+            // key off the contextId
+
             String contextId = agendaEditor.getAgenda().getContextId();
 
             if(blankOption){
@@ -73,7 +77,6 @@ public class AgendaTypeValuesFinder extends UifKeyValuesFinderBase {
                             ContextValidAgendaBo.class, criteria, "agendaType.name", true
                     );
 
-//            Collection<ContextValidAgendaBo> contextValidAgendas = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidAgendaBo.class);
             for (ContextValidAgendaBo contextValidAgenda : contextValidAgendas) {
                 keyValues.add(new ConcreteKeyValue(contextValidAgenda.getAgendaType().getId(), contextValidAgenda.getAgendaType().getName()));
             }

@@ -45,9 +45,11 @@ import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -65,9 +67,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 	private static final long serialVersionUID = 1L;
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AgendaEditorMaintainable.class);
-
-    private final ModelObjectUtils.Transformer<KrmsTypeAttribute, RemotableAttributeField> attributeTransformer =
-            new TypeAttributeToFieldTransformer();
 
 	/**
 	 * @return the boService
@@ -87,56 +86,43 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
 
         MaintenanceForm maintenanceForm = (MaintenanceForm)model;
-
         AgendaEditor agendaEditor = (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
 
+        // if we have an agenda w/ a typeId set on it
         if (agendaEditor.getAgenda() != null && !StringUtils.isBlank(agendaEditor.getAgenda().getTypeId())) {
 
-            KrmsTypeDefinition krmsType =
-                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
-                            getTypeById(agendaEditor.getAgenda().getTypeId());
+            String krmsTypeId = agendaEditor.getAgenda().getTypeId();
 
-            if (krmsType != null) {
-                String serviceName = krmsType.getServiceName();
-
-                if (!StringUtils.isBlank(serviceName)) {
-                    AgendaTypeService agendaTypeService = KrmsRepositoryServiceLocator.getService(krmsType.getServiceName());
-
-                    if (agendaTypeService == null) {
-                        LOG.warn("could not find " + AgendaTypeService.class.getSimpleName() + " with name '" + krmsType.getServiceName() +"'");
-                    } else {
-                        List<RemotableAttributeField> remotableAttributeFields = agendaTypeService.getAttributeFields(krmsType.getId());
-
-                        if (!CollectionUtils.isEmpty(remotableAttributeFields)) {
-                            results.addAll(remotableAttributeFields);
-                        }
-                    }
-                }
-
-                // need to merge in type attributes that the service doesn't create RemotableAttributeFields for
-                // iterate through attribute fields and build list of attribute names
-                Set<String> serviceDefinedAttributes = new HashSet<String>();
-                for (RemotableAttributeField field : results) {
-                    serviceDefinedAttributes.add(field.getName());
-                }
-
-                List<KrmsTypeAttribute> typeAttributes = krmsType.getAttributes();
-                if (!CollectionUtils.isEmpty(typeAttributes)) {
-                    List<RemotableAttributeField> typeAttributeFields = ModelObjectUtils.transform(typeAttributes, attributeTransformer);
-
-                    // add fields for any attributes not yet provided by the AgendaTypeService
-                    for (RemotableAttributeField field : typeAttributeFields) {
-                        if (!serviceDefinedAttributes.contains(field.getName())) {
-                            results.add(field);
-                        }
-                    }
-                }
-            }
+            AgendaTypeService agendaTypeService = getAgendaTypeService(krmsTypeId);
+            results.addAll(agendaTypeService.getAttributeFields(krmsTypeId));
         }
 
         return results;
     }
 
+    private AgendaTypeService getAgendaTypeService(String krmsTypeId) {
+        //
+        // Get the AgendaTypeService by hook or by crook
+        //
+
+        KrmsTypeDefinition krmsType =
+                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
+                            getTypeById(krmsTypeId);
+
+        AgendaTypeService agendaTypeService = null;
+
+        if (!StringUtils.isBlank(krmsTypeId)) {
+            String serviceName = krmsType.getServiceName();
+
+            if (!StringUtils.isBlank(serviceName)) {
+                agendaTypeService = KrmsRepositoryServiceLocator.getService(serviceName);
+            }
+        }
+
+        if (agendaTypeService == null) { agendaTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
+
+        return agendaTypeService;
+    }
 
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
@@ -242,11 +228,13 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                     attributeBo.setAttributeDefinitionId(attrDef.getId());
                     attributeBo.setValue(entry.getValue());
                     attributes.add( attributeBo );
-                } else {
-                    throw new RiceIllegalStateException("there is no attribute definition with the name '" +
-                    entry.getKey() + "' that is valid for the agenda type with id = '" + agendaBo.getTypeId() +"'");
                 }
             }
+            // remove old attributes if any -- doesn't seem like we should have to do this!
+            if (!CollectionUtils.isEmpty(agendaBo.getAttributeBos())) {
+                getBusinessObjectService().delete(new ArrayList<AgendaAttributeBo>(agendaBo.getAttributeBos()));
+            }
+            // set new ones
             agendaBo.setAttributeBos(attributes);
 
             // And finally, save it
@@ -320,37 +308,4 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
         super.processBeforeAddLine(view, collectionGroup, model, addLine);
     }
-
-    private static class TypeAttributeToFieldTransformer implements  ModelObjectUtils.Transformer<KrmsTypeAttribute, RemotableAttributeField>, Serializable {
-
-        private static final long serialVersionUID = 7469910736454633231L;
-
-        @Override
-                public RemotableAttributeField transform(KrmsTypeAttribute input) {
-
-                    KrmsTypeRepositoryService typeRepositoryService = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
-
-                    KrmsAttributeDefinition attributeDefinition =
-                            typeRepositoryService.getAttributeDefinitionById(input.getAttributeDefinitionId());
-
-                    RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(attributeDefinition.getName());
-
-                    RemotableTextarea.Builder controlBuilder = RemotableTextarea.Builder.create();
-                    controlBuilder.setCols(80);
-                    controlBuilder.setRows(5);
-
-
-                    controlBuilder.setWatermark(attributeDefinition.getDescription());
-
-                    builder.setLongLabel(attributeDefinition.getName());
-                    builder.setName(attributeDefinition.getName());
-                    builder.setHelpSummary("helpSummary: " + attributeDefinition.getDescription());
-                    builder.setHelpDescription("helpDescription: " + attributeDefinition.getDescription());
-                    builder.setControl(controlBuilder);
-                    builder.setMaxLength(400);
-
-                    return builder.build();
-                }
-            };
-
 }

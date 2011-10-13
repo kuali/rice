@@ -541,7 +541,7 @@ public class ActionListAction extends KualiAction {
     			if (customActionListAttribute != null) {
     				Map customActions = new LinkedHashMap();
     				customActions.put("NONE", "NONE");
-    				ActionSet legalActions = customActionListAttribute.getLegalActions(getUserSession().getPrincipalId(), actionItem);
+    				ActionSet legalActions = customActionListAttribute.getLegalActions(getUserSession().getPrincipalId(), ActionItem.to(actionItem));
     				if (legalActions != null && legalActions.hasApprove() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_APPROVED_CD)) {
     					customActions.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
     					itemHasApproves = true;
@@ -566,7 +566,7 @@ public class ActionListAction extends KualiAction {
     					actionItem.setCustomActions(customActions);
     					itemHasCustomActions = true;
     				}
-    				actionItem.setDisplayParameters(customActionListAttribute.getDocHandlerDisplayParameters(getUserSession().getPrincipalId(), actionItem));
+    				actionItem.setDisplayParameters(customActionListAttribute.getDocHandlerDisplayParameters(getUserSession().getPrincipalId(), ActionItem.to(actionItem)));
     				haveApproves = haveApproves || itemHasApproves;
     				haveAcknowledges = haveAcknowledges || itemHasAcknowledges;
     				haveFyis = haveFyis || itemHasFyis;

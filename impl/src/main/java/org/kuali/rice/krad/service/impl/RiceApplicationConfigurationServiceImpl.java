@@ -95,7 +95,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 
         String namespace = getKualiModuleService().getNamespaceCode(documentOrStepClass);
         String name = (detailTypeName == null) ? detailTypeString : detailTypeName;
-        Component.Builder detailType = Component.Builder.create(namespace, detailTypeName, name, false);
+        Component.Builder detailType = Component.Builder.create(namespace, detailTypeName, name);
         return detailType.build();
     }
 

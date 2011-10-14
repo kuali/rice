@@ -614,7 +614,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return GroupBo.to(bo);
     }
 
-     @Override
+    @Override
     public Group updateGroup(Group group) throws RiceIllegalArgumentException{
         incomingParamCheck(group, "group");
         GroupBo origGroup = getGroupBo(group.getId());

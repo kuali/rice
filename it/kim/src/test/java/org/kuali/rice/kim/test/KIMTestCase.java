@@ -100,6 +100,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		tablesNotToClear.add("KRIM_.*");
 		tablesNotToClear.add("KRNS_.*");
         tablesNotToClear.add("KRCR_.*");
+        tablesNotToClear.add("KREW_.*");
 		return tablesNotToClear;
 	}
 

@@ -294,6 +294,8 @@
 	  <param name="kim.hide.PersonDocumentPhone.type" override="false">HM</param>
 
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
+    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">300</param>
+    <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize" override="false">300</param>
     
     <!-- KIM-specific JPA parameters --> 
 	  <param name="rice.kim.jpa.enabled" override="false">false</param>

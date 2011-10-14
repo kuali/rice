@@ -446,9 +446,12 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
 	background-repeat:no-repeat;
 }
 #viewpage_div {
-	margin-left: 20px;
-	margin-right: 20px;
+	padding-left: 20px;
+	padding-right:0px;
 	float:left;
+	width: 95%;
+	margin-left:0px;
+	margin-right:0px
 }
 .desc > label {
 	font-weight:bold;
@@ -519,7 +522,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', end
 	border: 1px solid #999;
 	cursor:pointer;
 	height:16px;
-	font-size:.9em;
+	font-size:0.9em;
+	text-transform: lowercase;
 }
 .ui-priority-secondary-sm:hover {
 	background: rgb(153,153,153);
@@ -853,4 +857,19 @@ span .fieldLine.boxLayoutVerticalItem.clearfix a {
 	table td, table th {
 	vertical-align: middle;
 	text-align:left;
+}
+
+
+
+
+
+#AgendaEditorView-TreeControls_span .boxLayoutHorizontalItem {
+	float: none;
+	display: inline;
+	margin-right:0em;
+	text-align:center;
+}
+#AgendaEditorView-TreeControls_span  {
+
+	text-align:center;
 }

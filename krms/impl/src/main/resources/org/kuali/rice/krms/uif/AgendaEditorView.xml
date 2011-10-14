@@ -38,8 +38,8 @@
   </bean>
   
   <util:list id="buttonClasses">
-    <value>ui-button</value>
-    <value>ui-widget</value>
+    <value>ui-priority-secondary-sm</value>
+    <!-- <value>ui-widget</value> -->
   </util:list>
 
   <!-- hack to merge a list with one of those util:lists -->

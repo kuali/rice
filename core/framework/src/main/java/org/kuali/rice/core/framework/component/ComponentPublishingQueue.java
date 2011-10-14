@@ -19,6 +19,19 @@ import java.util.List;
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ComponentPublishingQueue {
 
+    /**
+     * Publishes the given list of components to make them available to the component system.  It should only ever be
+     * necessary to invoke this service whenever published components for an application change.   When invoked, the
+     * set of components know to the component system for the given application id will be updated.  Any existing
+     * components for the application id which are not contained within the given list will be switched to "inactive".
+     *
+     * @param applicationId the id of the application under which to publish the given components, must be a valid
+     * appplication id
+     * @param components the components to publish, may be empty or null, in which case all components for the given
+     * application id will be inactived in the component system
+     *
+     * @throws RiceIllegalArgumentException if applicationId is a null or blank value
+     */
     @WebMethod(operationName = "publishComponents")
     void publishComponents(
             @WebParam(name = "applicationId") String applicationId,

@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.web.bind;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -44,10 +43,16 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
             UifServletRequestDataBinder.class);
 
+    private ViewService viewService;
     private UifBeanPropertyBindingResult bindingResult;
+	//--------------------------------------------------------------------------------
+	// BEGIN SPRING 3.1 OVERRIDES
+	//--------------------------------------------------------------------------------
     private ConversionService conversionService;
-
-    protected ViewService viewService;
+    private boolean autoGrowNestedPaths = true;
+	//--------------------------------------------------------------------------------
+	// END SPRING 3.1 OVERRIDES
+	//--------------------------------------------------------------------------------
 
     public UifServletRequestDataBinder(Object target) {
         super(target);
@@ -58,6 +63,53 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         super(target, name);
         setBindingErrorProcessor(new UifBindingErrorProcessor());
     }
+
+	//--------------------------------------------------------------------------------
+	// BEGIN SPRING 3.1 OVERRIDES
+    //    These overrides only exist because we use a custom class for bindingResult
+	//--------------------------------------------------------------------------------
+
+    /**
+     * @see org.springframework.validation.DataBinder#setAutoGrowNestedPaths(boolean)
+     */
+    @Override
+    public void setAutoGrowNestedPaths(boolean autoGrowNestedPaths) {
+        Assert.state(this.bindingResult == null,
+                "DataBinder is already initialized - call setAutoGrowNestedPaths before other configuration methods");
+        this.autoGrowNestedPaths = autoGrowNestedPaths;
+    }
+
+    /**
+     * @see org.springframework.validation.DataBinder#isAutoGrowNestedPaths()
+     */
+    @Override
+    public boolean isAutoGrowNestedPaths() {
+        return this.autoGrowNestedPaths;
+    }
+
+    /**
+     * @see org.springframework.validation.DataBinder#setConversionService(org.springframework.core.convert.ConversionService)
+     */
+    @Override
+    public void setConversionService(ConversionService conversionService) {
+        Assert.state(this.conversionService == null, "DataBinder is already initialized with ConversionService");
+        this.conversionService = conversionService;
+        if (this.bindingResult != null && conversionService != null) {
+            this.bindingResult.initConversion(conversionService);
+        }
+    }
+
+    /**
+     * @see org.springframework.validation.DataBinder#getConversionService()
+     */
+    @Override
+    public ConversionService getConversionService() {
+        return this.conversionService;
+    }
+
+	//---------------------------------------------------------------------
+	// END SPRING 3.1 OVERRIDES
+	//---------------------------------------------------------------------
 
     /**
      * Allows for a custom binding result class.
@@ -123,11 +175,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
                 ViewType viewType = null;
 
                 String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
-                if (StringUtils.isBlank(viewTypeName)) {
-                    viewType = form.getViewTypeName();
-                } else {
-                    viewType = ViewType.valueOf(viewTypeName);
-                }
+                viewType = StringUtils.isBlank(viewTypeName) ? form.getViewTypeName() : ViewType.valueOf(viewTypeName);
 
                 if (viewType == null) {
                     view = getViewFromPreviousModel(form);

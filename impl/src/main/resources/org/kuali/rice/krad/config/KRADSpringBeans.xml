@@ -1059,11 +1059,6 @@
   <!-- RiceApplicationConfigurationService needs to be published using the applicationId as its namespace and not KNS -->
   <bean id="riceApplicationConfigurationService"
         class="org.kuali.rice.krad.service.impl.RiceApplicationConfigurationServiceImpl">
-    <property name="packagePrefixes">
-      <list>
-        <value>org.kuali.rice</value>
-      </list>
-    </property>
   </bean>
 
   <bean id="dataObjectAuthorizationService"

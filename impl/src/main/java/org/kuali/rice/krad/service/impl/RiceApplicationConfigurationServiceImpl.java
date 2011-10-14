@@ -40,20 +40,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@Transactional
 public class RiceApplicationConfigurationServiceImpl implements RiceApplicationConfigurationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationServiceImpl.class);
     
     protected List<Component> components = new ArrayList<Component>();
-    protected List<String> packagePrefixes = new ArrayList<String>();
     private ConfigurationService kualiConfigurationService;
     private KualiModuleService kualiModuleService;
     private DataDictionaryService dataDictionaryService;
-    
-    public String getConfigurationParameter( String parameterName ){
-    	return getKualiConfigurationService().getPropertyValueAsString(parameterName);
-    }
-    
+
     /**
      * This method derived ParameterDetailedTypes from the DataDictionary for all BusinessObjects and Documents and from Spring for
      * all batch Steps.
@@ -175,58 +169,4 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     	return dataDictionaryService;
     }
 
-	/**
-	 * @see org.kuali.rice.krad.service.RiceApplicationConfigurationService#getBaseInquiryUrl(java.lang.String)
-	 */
-	public String getBaseInquiryUrl(String businessObjectClassName) {
-		return LookupUtils.getBaseInquiryUrl();
-	}
-
-	/**
-	 * @see org.kuali.rice.krad.service.RiceApplicationConfigurationService#getBaseLookupUrl(java.lang.String)
-	 */
-	public String getBaseLookupUrl(String businessObjectClassName) {
-		// all Rice applications share the same type of lookup URL
-		return LookupUtils.getBaseLookupUrl(false);
-	}
-	
-	public String getBaseHelpUrl(String businessObjectClassName) {
-		return KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                KRADConstants.APPLICATION_URL_KEY) + "/kr/help.do";
-	}
-
-	/**
-	 * @see org.kuali.rice.krad.service.RiceApplicationConfigurationService#isResponsibleForPackage(java.lang.String)
-	 */
-	public boolean isResponsibleForPackage(String packageName) {
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug( "Checking if application ("+packagePrefixes+") is responsible for package: " + packageName );
-		}
-		for ( String prefix : packagePrefixes ) {
-			if ( packageName.startsWith(prefix) ) {
-				if ( LOG.isDebugEnabled() ) {
-					LOG.debug("Found match ("+prefix+") - returning true");
-				}
-				return true;
-			}
-		}
-		if ( LOG.isDebugEnabled() ) {
-			LOG.debug("No Match Found: packageName="+packageName+" / prefix list=" + packagePrefixes);
-		}
-		return false;
-	}
-		
-	/**
-	 * @return the packagePrefixes
-	 */
-	public List<String> getPackagePrefixes() {
-		return this.packagePrefixes;
-	}
-
-	/**
-	 * @param packagePrefixes the packagePrefixes to set
-	 */
-	public void setPackagePrefixes(List<String> packagePrefixes) {
-		this.packagePrefixes = packagePrefixes;
-	}
 }

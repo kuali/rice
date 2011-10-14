@@ -440,19 +440,7 @@ public abstract class KualiAction extends DispatchAction {
 		try{
 			boClass = Class.forName(boClassName);
 		} catch(ClassNotFoundException cnfex){
-			// we must have a valid boClass that can be loaded unless baseLookupUrl is defined
-			if (StringUtils.isBlank(baseLookupUrl)) {
-				if ( LOG.isDebugEnabled() ) {
-					LOG.debug( "BO Class " + boClassName + " not found in the current context, checking the RiceApplicationConfigurationService." );
-				}
-				baseLookupUrl = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBaseLookupUrl(boClassName);
-				if ( LOG.isDebugEnabled() ) {
-					LOG.debug( "URL Returned from KSB: " + baseLookupUrl );
-				}
-				if ( StringUtils.isBlank(baseLookupUrl)) {
-					throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class and no base URL could be found on the bus.");
-				}
-			}
+            throw new IllegalArgumentException("The classname (" + boClassName + ") does not represent a valid class which this application understands.");
 		}
 		
         // build the parameters for the lookup url
@@ -682,7 +670,8 @@ public abstract class KualiAction extends DispatchAction {
         	Class.forName(boClassName);
         	inquiryUrl = getApplicationBaseUrl() + "/kr/" + KRADConstants.DIRECT_INQUIRY_ACTION;
         } catch ( ClassNotFoundException ex ) {
-        	inquiryUrl = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBaseInquiryUrl(boClassName);
+            // allow inquiry url to be null (and therefore no inquiry link will be displayed) but at least log a warning
+        	LOG.warn("Class name does not represent a valid class which this application understands: " + boClassName);
         }
         inquiryUrl = UrlFactory.parameterizeUrl(inquiryUrl, parameters);
         return new ActionForward(inquiryUrl, true);

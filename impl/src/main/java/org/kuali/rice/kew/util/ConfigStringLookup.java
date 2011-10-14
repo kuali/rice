@@ -18,8 +18,11 @@ package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrLookup;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.parameter.ParameterKey;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -30,37 +33,37 @@ import org.kuali.rice.krad.util.KRADConstants;
  */
 public class ConfigStringLookup extends StrLookup {
 	
-	private String applicationId;
+	private final String applicationId;
 	
 	public ConfigStringLookup() {
-		
+        this(null);
 	}
 	
 	public ConfigStringLookup(String applicationId) {
 		this.applicationId = applicationId;
 	}
-	
-	@Override
-	public String lookup(String propertyName) {
-		if (StringUtils.isBlank(propertyName)) {
-			return null;
-		}
-		
-		String paramValue = null;
-		
-		// TODO temporarily disabling configuration parameter resolution against the racms because it's been causing some issues
-		if ( applicationId != null ) {
-			paramValue = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getConfigurationParameter(applicationId, propertyName);
-		}
-		
-		// check system parameters first
-		if ( paramValue == null ) {
-			paramValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
-		}
-		if (paramValue == null) {
-			paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
-		}
-		return paramValue;
-	}
+
+    @Override
+    public String lookup(String propertyName) {
+        if (StringUtils.isBlank(propertyName)) {
+            return null;
+        }
+
+        String paramValue = null;
+        // check system parameters first
+        if (StringUtils.isBlank(applicationId)) {
+            paramValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
+                    KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+        } else {
+            ParameterKey parameterKey = ParameterKey.create(applicationId, KEWConstants.KEW_NAMESPACE,
+                    KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+            paramValue = CoreApiServiceLocator.getParameterRepositoryService().getParameterValueAsString(parameterKey);
+        }
+
+        if (paramValue == null) {
+            paramValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+        }
+        return paramValue;
+    }
 
 }

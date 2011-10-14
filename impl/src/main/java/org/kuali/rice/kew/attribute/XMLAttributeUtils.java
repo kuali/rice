@@ -82,11 +82,7 @@ public final class XMLAttributeUtils {
             }
         }
         String dataObjectClass = dataObjectNode.getNodeValue();
-        String baseLookupUrl = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBaseLookupUrl(dataObjectClass);
-        if (StringUtils.isBlank(baseLookupUrl)) {
-            // if it's blank, default the baseLookupUrl
-            baseLookupUrl = LookupUtils.getBaseLookupUrl(false);
-        }
+        String baseLookupUrl = LookupUtils.getBaseLookupUrl(false);
         RemotableQuickFinder.Builder quickFinderBuilder = RemotableQuickFinder.Builder.create(baseLookupUrl, dataObjectClass);
 		for (int lcIndex = 0; lcIndex < lookupNode.getChildNodes().getLength(); lcIndex++) {
 			Map<String, String> fieldConversionsMap = new HashMap<String, String>();

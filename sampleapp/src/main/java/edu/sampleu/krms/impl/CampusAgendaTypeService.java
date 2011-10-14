@@ -7,7 +7,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 import org.kuali.rice.shareddata.impl.campus.CampusBo;
 
@@ -29,8 +29,7 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
 
         String campusBoClassName = CampusBo.class.getName();
 
-        String baseLookupUrl = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService()
-                .getBaseLookupUrl(campusBoClassName);
+        String baseLookupUrl = LookupUtils.getBaseLookupUrl(false);
 
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create(baseLookupUrl, campusBoClassName);

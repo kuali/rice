@@ -13,16 +13,19 @@
 package org.kuali.rice.krad.service.impl;
 
 import com.google.common.collect.MapMaker;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.namespace.Namespace;
 import org.kuali.rice.core.api.namespace.NamespaceService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.krad.service.RiceApplicationConfigurationService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
+import org.kuali.rice.ksb.api.bus.ServiceBus;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
@@ -30,34 +33,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 public class RiceApplicationConfigurationMediationServiceImpl implements RiceApplicationConfigurationMediationService {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
 
-    //TODO: use the concurrentMap properties rather than synchronized blocks
-    protected final ConcurrentMap<String,RiceApplicationConfigurationService> responsibleServiceByPackageClass = new MapMaker().softValues().makeMap();
-    
-    public String getConfigurationParameter( String namespaceCode, String parameterName ){
-    	
-    	String parameterValue = null;
-    	if ( namespaceCode != null ) {
-    	    NamespaceService nsService = KRADServiceLocatorInternal.getNamespaceService();
-    	    final String applicationNamespaceCode;
-    	    Namespace namespace = nsService.getNamespace(namespaceCode);
-    	    if (namespace != null) {
-    	        applicationNamespaceCode = namespace.getApplicationId();
-    	    } else {
-    	        applicationNamespaceCode = namespaceCode;
-    	    }
-			if (applicationNamespaceCode != null) {
-				RiceApplicationConfigurationService rac = findRiceApplicationConfigurationService(applicationNamespaceCode);
-				if (rac != null) {
-					parameterValue = rac.getConfigurationParameter(parameterName);
-				}
-			}
-		}
-    	return parameterValue;
-    }
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceApplicationConfigurationMediationServiceImpl.class);
 
     public List<Component> getNonDatabaseComponents() {
     	
@@ -104,94 +84,5 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	}
     	return null;
     }
-    
-    protected RiceApplicationConfigurationService findRiceApplicationConfigurationService(String namespace) {
-    	try {
-    		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(new QName(namespace, KRADServiceLocatorInternal.RICE_APPLICATION_CONFIGURATION_SERVICE));
-    	} catch (Exception e) {
-    		// if the service doesn't exist an exception is thrown
-    		LOG.warn("Failed to locate RiceApplicationConfigurationService with namespace: " + namespace,e);
-    	}
-    	return null;
-    }
-    
-    /**
-     * Call each available service to see if it's responsible for the given package.  When found, cache the result
-     * to prevent need for future service lookups for the same package.
-     */
-    protected RiceApplicationConfigurationService findServiceResponsibleForPackageOrClass( String packageOrClassName ) {
-    	if ( LOG.isDebugEnabled() ) {
-    		LOG.debug( "Checking for app config service responsible for: " + packageOrClassName );
-    	}
-    	RiceApplicationConfigurationService racService = responsibleServiceByPackageClass.get(packageOrClassName);
-
-
-        if ( racService != null ) {
-            if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "Service found in cache: " + racService.getClass().getName() );
-            }
-        }
-
-    	if ( racService == null ) {
-        	Set<QName> serviceNames = findApplicationConfigurationServices();
-			for ( QName serviceName : serviceNames ) {
-				racService = findRiceApplicationConfigurationService(serviceName);
-				if ( racService != null ) {
-				
-					try {
-						if ( racService.isResponsibleForPackage(packageOrClassName) ) {
-				        	if ( LOG.isDebugEnabled() ) {
-				        		LOG.debug( "Found responsible class on bus with name: " + serviceName );
-				        	}    		
-							responsibleServiceByPackageClass.put(packageOrClassName, racService );
-							break;
-						} else {
-							racService = null; // null it out in case this is the last iteration
-						}
-					} catch (Exception e) {
-						LOG.warn( "Assuming this racService is not responsible for the package or class.  racService: "  +
-								racService.toString() + " ;  packageOrClassName: " + packageOrClassName);
-					}
-				}
-			}
-    	}
-    	if ( racService == null ) {
-    		LOG.warn( "Unable to find service which handles package/class: " + packageOrClassName + " -- returning null." );
-    	}
-		return racService;
-    }
-    
-    /**
-     * @see org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService#getBaseInquiryUrl(java.lang.String)
-     */
-    public String getBaseInquiryUrl(String businessObjectClassName) {
-    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
-    	if ( racService != null ) {
-    		return racService.getBaseInquiryUrl(businessObjectClassName);
-    	}
-    	return null;
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService#getBaseLookupUrl(java.lang.String)
-     */
-    public String getBaseLookupUrl(String businessObjectClassName) {
-    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
-    	if ( racService != null ) {
-    		return racService.getBaseLookupUrl(businessObjectClassName);
-    	}
-    	return null;
-    }
-    
-    /**
-     * @see org.kuali.rice.krad.service.RiceApplicationConfigurationMediationService#getBaseHelpUrl(java.lang.String)
-     */
-    public String getBaseHelpUrl(String businessObjectClassName) {
-    	RiceApplicationConfigurationService racService = findServiceResponsibleForPackageOrClass(businessObjectClassName);
-    	if ( racService != null ) {
-    		return racService.getBaseHelpUrl(businessObjectClassName);
-    	}
-    	return null;
-    }
-    
+        
 }

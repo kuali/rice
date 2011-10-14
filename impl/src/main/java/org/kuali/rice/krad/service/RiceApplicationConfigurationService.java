@@ -22,28 +22,12 @@ import java.util.List;
  * resources.
  */
 public interface RiceApplicationConfigurationService {
-    /**
-     * Given a property name (parameterName), returns the value associated with it.
-     * 
-     * @param parameterName
-     * @return String associated with the given parameterName
-     */
-    String getConfigurationParameter( String parameterName ); 
-    
+
     /**
      * This method can be used to supplement the list of ParameterDetailTypes defined in the database from other sources.
      * 
      * @return List<ParameterDetailedType> containing the detailed types configured in non-database sources
      */
     List<Component> getNonDatabaseComponents();
-    
-    /**
-     * Checks whether this application is responsible for the package given.  It will
-     * ensure that it falls within a set of configured parent packages.
-     */
-    boolean isResponsibleForPackage( String packageName );
-            
-    String getBaseLookupUrl( String businessObjectClassName );
-    String getBaseInquiryUrl( String businessObjectClassName );
-    String getBaseHelpUrl( String businessObjectClassName );
+
 }

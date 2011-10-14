@@ -1,5 +1,6 @@
 package org.kuali.rice.krad.service;
 
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.question.Question;
@@ -9,12 +10,25 @@ import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 
+import javax.xml.namespace.QName;
+
 /**
  * Service locator for the KRAD Web module
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KRADServiceLocatorWeb {
+
+    public static final class Namespaces {
+        public static final String MODULE_NAME = "krad";
+        public static final String KRAD_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
+
+        /**
+         * Namespace for the krad module which is compatible with Kuali Rice 2.0.x.
+         */
+        public static final String KRAD_NAMESPACE_2_0 = KRAD_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
+
+    }
 
     public static final String DATA_DICTIONARY_REMOTE_FIELD_SERVICE = "dataDictionaryRemoteFieldService";
     public static final String DOCUMENT_DICTIONARY_SERVICE = "documentDictionaryService";
@@ -42,6 +56,8 @@ public class KRADServiceLocatorWeb {
     public static final String VIEW_SERVICE = "viewService";
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
     public static final String ATTRIBUTE_QUERY_SERVICE = "attributeQueryService";
+
+    public static final QName APPLICATION_CONFIGURATION_SERVICE = new QName(Namespaces.KRAD_NAMESPACE_2_0, "applicationConfigurationServiceSoap");
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);

@@ -32,22 +32,10 @@ import java.util.List;
 public interface RiceApplicationConfigurationMediationService {
 
 	/**
-	 * Returns the configuration parameter value for the given applicationId and parameterName.
-	 * The applicationId is used to determine which RiceApplicationConfigurationService to
-	 * call by looking up the applicationNamespaceCode associated with it's applicationId.
-	 * 
-	 * @param applicationId
-	 * @param parameterName
-	 * @return
-	 */
-	String getConfigurationParameter(String applicationId, String parameterName);
-
-	/**
 	 * Returns the non-database components that have been published by all Rice client applications.
 	 */
 	List<Component> getNonDatabaseComponents();
         
-    String getBaseLookupUrl( String businessObjectClassName );
-    String getBaseInquiryUrl( String businessObjectClassName );
-	String getBaseHelpUrl( String businessObjectClassName );
+
+
 }

@@ -112,24 +112,6 @@ public final class WorkflowUtils {
     }
 
     /**
-     * This method is for use by WorkflowLookupableImpl and WorkflowAttribute implementations to derive the fieldHelpUrl for use on
-     * org.kuali.rice.krad.web.ui.Fieldss.
-     *
-     * @param field The kuali field that we need to derive a help url for. @ return Returns the help url for the field.
-     */
-    public static String getHelpUrl(Field field) {
-        Properties params = new Properties();
-        params.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
-        params.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
-        params.put(KRADPropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
-        String baseUrl = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBaseHelpUrl(field.getBusinessObjectClassName());
-        if (baseUrl == null) {
-        	return null;
-        }
-        return UrlFactory.parameterizeUrl(baseUrl, params);
-    }
-
-    /**
      * This method returns a label from the data dictionary service
      *
      * @param businessObjectClass - class where the label should come from

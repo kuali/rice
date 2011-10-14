@@ -5,8 +5,11 @@ import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
 import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
 import org.kuali.rice.core.api.namespace.NamespaceService;
+import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.style.StyleService;
+
+import javax.xml.namespace.QName;
 
 public class CoreApiServiceLocator {
 
@@ -14,8 +17,14 @@ public class CoreApiServiceLocator {
 	public static final String XML_EXPORTER_SERVICE = "xmlExporterService";
 	public static final String XML_INGESTER_SERVICE = "xmlIngesterService";
 	public static final String STYLE_SERVICE = "styleService";
+
+    public static final QName PARAMETER_REPOSITORY_SERVICE = new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, "parameterServiceSoap");
 	
     static <T> T getService(String serviceName) {
+        return GlobalResourceLoader.<T>getService(serviceName);
+    }
+
+    static <T> T getService(QName serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
@@ -42,4 +51,8 @@ public class CoreApiServiceLocator {
 	public static DateTimeService getDateTimeService() {
 	    return getService(CoreConstants.Services.DATETIME_SERVICE);
 	}
+
+    public static ParameterRepositoryService getParameterRepositoryService() {
+        return getService(PARAMETER_REPOSITORY_SERVICE);
+    }
 }

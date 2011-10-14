@@ -4,6 +4,7 @@ import org.junit.Test
 import org.junit.Before
 import org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
+import org.kuali.rice.kew.api.KEWPropertyConstants;
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertEquals
 

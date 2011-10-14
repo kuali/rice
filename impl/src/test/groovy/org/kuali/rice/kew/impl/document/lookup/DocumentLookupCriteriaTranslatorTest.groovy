@@ -3,6 +3,7 @@ package org.kuali.rice.kew.impl.document.lookup
 import org.junit.Test
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
+import org.kuali.rice.kew.api.KEWPropertyConstants
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertEquals
 

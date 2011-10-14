@@ -44,7 +44,6 @@ import java.util.Collection;
     Component.Elements.NAMESPACE_CODE,
     Component.Elements.CODE,
     Component.Elements.NAME,
-    Component.Elements.VIRTUAL,
     Component.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
@@ -63,9 +62,6 @@ public final class Component extends AbstractDataTransferObject implements Compo
     @XmlElement(name = Elements.NAME, required=true)
     private final String name;
 
-    @XmlElement(name = Elements.VIRTUAL, required=true)
-    private final boolean virtual;
-    
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
 
@@ -86,7 +82,6 @@ public final class Component extends AbstractDataTransferObject implements Compo
     	this.namespaceCode = null;
     	this.code = null;
     	this.name = null;
-    	this.virtual = false;
     	this.active = true;
         this.versionNumber = null;
         this.objectId = null;
@@ -102,7 +97,6 @@ public final class Component extends AbstractDataTransferObject implements Compo
 		namespaceCode = builder.getNamespaceCode();
 		code = builder.getCode();
         name = builder.getName();
-        virtual = builder.isVirtual();
         active = builder.isActive();
         versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -122,11 +116,6 @@ public final class Component extends AbstractDataTransferObject implements Compo
     @Override
 	public String getName() {
 		return name;
-	}
-
-    @Override
-	public boolean isVirtual() {
-		return virtual;
 	}
 
     @Override
@@ -154,7 +143,6 @@ public final class Component extends AbstractDataTransferObject implements Compo
 		private String namespaceCode;
 		private String code;
         private String name;
-        private boolean virtual;
         private boolean active;
         private Long versionNumber;
         private String objectId;
@@ -162,26 +150,24 @@ public final class Component extends AbstractDataTransferObject implements Compo
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
-        private Builder(String namespaceCode, String code, String name, boolean virtual) {
+        private Builder(String namespaceCode, String code, String name) {
 			setNamespaceCode(namespaceCode);
             setCode(code);
             setName(name);
-            setVirtual(virtual);
 			setActive(true);
         }
 
         /**
-		 * Constructs a Namespace builder given the namcespace code, component code, name, and virtual flag
+		 * Constructs a Namespace builder given the namcespace code, component code, and name
 		 * which are all required.  Defaults the active indicator to true.
 		 *
 		 * @param namespaceCode the namespace code to use when constructing this builder
 		 * @param code the component code to use when constructing this builder
 		 * @param name the component name to use when constructing this builder
-		 * @param virtual the virtual flag to use when constructing this builder
 		 * @throws IllegalArgumentException if any of the parameters are null or blank
 		 */
-        public static Builder create(String namespaceCode, String code, String name, boolean virtual) {
-            return new Builder(namespaceCode, code, name, virtual);
+        public static Builder create(String namespaceCode, String code, String name) {
+            return new Builder(namespaceCode, code, name);
         }
 
         /**
@@ -191,7 +177,7 @@ public final class Component extends AbstractDataTransferObject implements Compo
          * @return an instance of the builder populated with data from the contract
          */
         public static Builder create(ComponentContract contract) {
-            Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName(),  contract.isVirtual());
+            Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -236,15 +222,6 @@ public final class Component extends AbstractDataTransferObject implements Compo
             }
             this.name = name;
         }
-
-        @Override
-		public boolean isVirtual() {
-			return virtual;
-		}
-
-		public void setVirtual(boolean virtual) {
-			this.virtual = virtual;
-		}
 
         @Override
 		public boolean isActive() {
@@ -315,7 +292,6 @@ public final class Component extends AbstractDataTransferObject implements Compo
 	static class Elements {
 	    final static String CODE = "code";
 	    final static String NAME = "name";
-	    final static String VIRTUAL = "virtual";
 		final static String NAMESPACE_CODE = "namespaceCode";
 		final static String ACTIVE = "active";
 	}

@@ -30,7 +30,6 @@ class ComponentEbo implements ComponentContract, MutableInactivatable, Externali
 	def String code
 	def String name
 	def boolean active = true
-	def boolean virtual
     def Long versionNumber
 	def String objectId
 
@@ -62,7 +61,6 @@ class ComponentEbo implements ComponentContract, MutableInactivatable, Externali
         bo.name = im.name
         bo.active = im.active
         bo.namespaceCode = im.namespaceCode
-        bo.virtual = im.virtual
 		bo.objectId = im.objectId
         return bo;
     }

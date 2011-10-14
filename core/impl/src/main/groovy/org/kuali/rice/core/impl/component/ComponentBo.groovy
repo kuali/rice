@@ -54,9 +54,6 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 	@Column(name="ACTV_IND")
 	def boolean active = true;
 
-    @Transient
-	def boolean virtual;
-	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false)
 	def NamespaceBo namespace;
@@ -89,7 +86,6 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
         bo.name = im.name
         bo.active = im.active
         bo.namespaceCode = im.namespaceCode
-        bo.virtual = im.virtual
 		bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId
 

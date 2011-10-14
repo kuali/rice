@@ -44,12 +44,6 @@ public interface ComponentContract extends Versioned, GloballyUnique, Inactivata
     String getNamespaceCode();
 
     /**
-     * Whether this is a virtual or derived component.
-     * @return virtual
-     */
-    boolean isVirtual();
-
-    /**
      * This the active flag for the Component.
      *
      * @return active

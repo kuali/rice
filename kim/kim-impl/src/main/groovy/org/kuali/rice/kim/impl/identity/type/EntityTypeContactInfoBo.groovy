@@ -25,6 +25,7 @@ import org.kuali.rice.kim.impl.identity.email.EntityEmailBo
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault
+import org.kuali.rice.kim.api.identity.email.EntityEmail
 
 @Entity
 @IdClass(EntityTypeContactInfoId.class)
@@ -84,7 +85,7 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
           if (bo == null) { return null }
           return new EntityTypeContactInfoDefault(bo.getEntityTypeCode(),
                                         EntityAddressBo.to(bo.getDefaultAddress()),
-                                        EntityTypeContactInfoBo.to(bo.getDefaultEmailAddress()),
+                                        EntityEmailBo.to(bo.getDefaultEmailAddress()),
                                         EntityPhoneBo.to(bo.getDefaultPhoneNumber()))
       }
 
@@ -113,10 +114,10 @@ public class EntityTypeContactInfoBo extends PersistableBusinessObjectBase imple
                 bo.phoneNumbers.add(EntityPhoneBo.from(phone))
             }
         }
-        bo.emailAddresses = new ArrayList<EntityTypeContactInfoBo>()
+        bo.emailAddresses = new ArrayList<EntityEmailBo>()
         if (CollectionUtils.isNotEmpty(immutable.emailAddresses)) {
-            for (EntityTypeContactInfo email : immutable.emailAddresses) {
-                bo.emailAddresses.add(EntityTypeContactInfoBo.from(email))
+            for (EntityEmail email : immutable.emailAddresses) {
+                bo.emailAddresses.add(EntityEmailBo.from(email))
             }
         }
         bo.versionNumber = immutable.versionNumber

@@ -525,6 +525,7 @@ public class PermissionServiceImpl implements PermissionService {
         }
         PermissionBo bo = PermissionBo.from(permission);
         if (CollectionUtils.isNotEmpty(newAttrBos)) {
+            bo.getAttributeDetails().clear();
             bo.setAttributeDetails(newAttrBos);
         }
         if (bo.getTemplate() == null && bo.getTemplateId() != null) {

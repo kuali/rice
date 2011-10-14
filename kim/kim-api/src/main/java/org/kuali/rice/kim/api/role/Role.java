@@ -50,6 +50,7 @@ import java.util.Collection;
         Role.Elements.KIM_TYPE_ID,
         Role.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
+        CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class Role extends AbstractDataTransferObject implements RoleContract {
@@ -81,6 +82,9 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER)
     private final Long versionNumber;
 
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+    private final String objectId;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -97,6 +101,7 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
         description = null;
         kimTypeId = null;
         active = false;
+        objectId = null;
         versionNumber = null;
     }
 
@@ -108,6 +113,7 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
         kimTypeId = builder.getKimTypeId();
         active = builder.isActive();
         versionNumber = builder.getVersionNumber();
+        objectId = builder.getObjectId();
     }
 
 
@@ -157,6 +163,11 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
     }
 
     @Override
+    public String getObjectId() {
+        return objectId;
+    }
+
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -170,6 +181,7 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
         private String kimTypeId;
         private boolean active;
         private Long versionNumber;
+        private String objectId;
 
         private Builder() {
         }
@@ -199,7 +211,7 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
             b.setKimTypeId(roleContract.getKimTypeId());
             b.setActive(roleContract.isActive());
             b.setVersionNumber(roleContract.getVersionNumber());
-
+            b.setObjectId(roleContract.getObjectId());
             return b;
         }
 
@@ -275,15 +287,21 @@ public final class Role extends AbstractDataTransferObject implements RoleContra
         }
 
         public void setVersionNumber(Long versionNumber) {
-            if (versionNumber == null) {
-                throw new IllegalArgumentException("versionNumber must be non-null");
-            }
             this.versionNumber = versionNumber;
         }
 
         @Override
         public Long getVersionNumber() {
             return versionNumber;
+        }
+
+        public void setObjectId(String objectId) {
+            this.objectId = objectId;
+        }
+
+        @Override
+        public String getObjectId() {
+            return objectId;
         }
 
         @Override

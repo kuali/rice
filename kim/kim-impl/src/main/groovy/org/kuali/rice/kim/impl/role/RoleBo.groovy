@@ -142,5 +142,6 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleContrac
         bo.kimTypeId = immutable.kimTypeId
         bo.active = immutable.active
         bo.versionNumber = immutable.versionNumber
+        bo.objectId = immutable.objectId
     }
 }

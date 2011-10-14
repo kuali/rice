@@ -86,7 +86,8 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         ResponsibilityBo bo = ResponsibilityBo.from(responsibility);
 
         if (bo.getAttributeDetails() != null) {
-            bo.getAttributeDetails().addAll(attrBos);
+            bo.getAttributeDetails().clear();
+            bo.setAttributeDetails(attrBos);
         }
 
         return ResponsibilityBo.to(businessObjectService.save(bo));

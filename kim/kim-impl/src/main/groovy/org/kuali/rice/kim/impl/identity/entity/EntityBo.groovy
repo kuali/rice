@@ -110,32 +110,41 @@ class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
     @Column(name="ACTV_IND")
     boolean active;
 
-     /*
-       * Converts a mutable EntityBo to an immutable Entity representation.
-       * @param bo
-       * @return an immutable Entity
-       */
-      static Entity to(EntityBo bo) {
+    /*
+     * Converts a mutable EntityBo to an immutable Entity representation.
+     * @param bo
+     * @return an immutable Entity
+     */
+    static Entity to(EntityBo bo) {
         if (bo == null) { return null }
         return Entity.Builder.create(bo).build()
-      }
+    }
 
-      static EntityDefault toDefault(EntityBo bo) {
-          if (bo == null) { return null }
-          return EntityDefault.Builder.create(bo).build()
-      }
+    static EntityDefault toDefault(EntityBo bo) {
+        if (bo == null) { return null }
+        return EntityDefault.Builder.create(bo).build()
+    }
 
-      /**
-       * Creates a EntityBo business object from an immutable representation of a Entity.
-       * @param an immutable Entity
-       * @return a EntityBo
-       */
-      static EntityBo from(Entity immutable) {
+    static EntityBo from(Entity immutable) {
+        return fromAndUpdate(immutable, null)
+    }
+
+    /**
+     * Creates a EntityBo business object from an immutable representation of a Entity.
+     * @param an immutable Entity
+     * @return a EntityBo
+     */
+    static EntityBo fromAndUpdate(Entity immutable, EntityBo toUpdate) {
         if (immutable == null) {return null}
 
-        EntityBo bo = new EntityBo()
+        EntityBo bo = toUpdate
+        if (toUpdate == null) {
+            bo = new EntityBo()
+        }
+
         bo.active = immutable.active
         bo.id = immutable.id
+
 
         bo.names = new ArrayList<EntityNameBo>()
         if (CollectionUtils.isNotEmpty(immutable.names)) {
@@ -219,7 +228,7 @@ class EntityBo extends PersistableBusinessObjectBase implements EntityContract {
         bo.objectId = immutable.objectId
 
         return bo;
-      }
+    }
 
 
     EntityTypeContactInfoBo getEntityTypeContactInfoByTypeCode(String entityTypeCode) {

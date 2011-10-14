@@ -14,6 +14,7 @@ class RoleEbo implements RoleContract, ExternalizableBusinessObject {
     String kimTypeId;
     String namespaceCode;
     Long versionNumber
+    String objectId
 
     static Role to(RoleEbo ebo) {
         if (ebo == null) { return null}
@@ -29,7 +30,8 @@ class RoleEbo implements RoleContract, ExternalizableBusinessObject {
                 active : im.active,
                 kimTypeId : im.kimTypeId,
                 namespaceCode : im.namespaceCode,
-                versionNumber : im.versionNumber
+                versionNumber : im.versionNumber,
+                objectId : im.objectId
         )
         return ebo;
     }

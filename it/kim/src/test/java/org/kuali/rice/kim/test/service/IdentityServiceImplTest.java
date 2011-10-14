@@ -16,8 +16,11 @@
 package org.kuali.rice.kim.test.service;
 
 import org.junit.Test;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoContract;
@@ -25,6 +28,9 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.test.BaselineTestCase;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -68,5 +74,48 @@ public class IdentityServiceImplTest extends KIMTestCase {
 		assertEquals( "there should be 1 email address", 1, eet.getEmailAddresses().size() );
 		assertEquals( "email address does not match", "p1@kuali.org", eet.getDefaultEmailAddress().getEmailAddressUnmasked() );
 	}
+
+    @Test
+    public void testEntityUpdate() {
+        Principal principal = identityService.getPrincipal("p1");
+        Entity entity = identityService.getEntity(principal.getEntityId());
+        assertNotNull("Entity Must not be null", entity);
+
+        assertEquals("Entity should have 1 name", 1, entity.getNames().size());
+        Entity.Builder builder = Entity.Builder.create(entity);
+        //lets add a "Name"
+
+        List<EntityName.Builder> names = builder.getNames();
+        names.add(getNewEntityName(entity.getId()));
+
+        entity = identityService.updateEntity(builder.build());
+        assertNotNull("Entity Must not be null", entity);
+        assertEquals("Entity should have 2 names", 2, entity.getNames().size());
+
+        //remove the old name - make sure collection items are removed.
+        builder = Entity.Builder.create(entity);
+        builder.setNames(Collections.singletonList(getNewEntityName(entity.getId())));
+
+        entity = identityService.updateEntity(builder.build());
+        assertNotNull("Entity Must not be null", entity);
+        assertEquals("Entity should have 1 names", 1, entity.getNames().size());
+
+    }
+
+    private EntityName.Builder getNewEntityName(String entityId) {
+
+        EntityName.Builder builder = EntityName.Builder.create();
+        builder.setActive(true);
+        builder.setDefaultValue(false);
+        builder.setEntityId(entityId);
+        builder.setFirstName("Bob");
+        builder.setLastName("Bobbers");
+        builder.setNamePrefix("Mr");
+
+        CodedAttribute.Builder nameType = CodedAttribute.Builder.create(identityService.getNameType(
+                KimConstants.NameTypes.PRIMARY));
+        builder.setNameType(nameType);
+        return builder;
+    }
 
 }

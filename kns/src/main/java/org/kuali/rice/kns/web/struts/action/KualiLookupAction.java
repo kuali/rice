@@ -68,12 +68,12 @@ public class KualiLookupAction extends KualiAction {
                 if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
                         KRADUtils.getNamespaceAndComponentSimpleName(businessObjectClass), Collections.<String, String>emptyMap())) {
                     throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
-                    		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
-                    		businessObjectClass.getSimpleName());
+                            KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
+                            businessObjectClass.getSimpleName());
                 }
             }
             catch (ClassNotFoundException e) {
-            	LOG.warn("Unable to load BusinessObject class: " + ((LookupForm) form).getBusinessObjectClassName(), e);
+                LOG.warn("Unable to load BusinessObject class: " + ((LookupForm) form).getBusinessObjectClassName(), e);
                 super.checkAuthorization(form, methodToCall);
             }
         }
@@ -82,16 +82,16 @@ public class KualiLookupAction extends KualiAction {
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
     private static DocumentHelperService documentHelperService;
     private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-    	if (maintenanceDocumentDictionaryService == null) {
-    		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
-    	}
-    	return maintenanceDocumentDictionaryService;
+        if (maintenanceDocumentDictionaryService == null) {
+            maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+        }
+        return maintenanceDocumentDictionaryService;
     }
     private static DocumentHelperService getDocumentHelperService() {
-    	if (documentHelperService == null) {
-    	    documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
-    	}
-    	return documentHelperService;
+        if (documentHelperService == null) {
+            documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+        }
+        return documentHelperService;
     }
     /**
      * Checks if the user can create a document for this business object.  Used to suppress the actions on the results.
@@ -112,63 +112,63 @@ public class KualiLookupAction extends KualiAction {
     }
 
     /**
-	 * This method hides the criteria if set in parameter or lookupable
-	 *
-	 * @param form
-	 */
-	private void setCriteriaEnabled(ActionForm form) {
-		 LookupForm lookupForm = (LookupForm) form;
-		 if(lookupForm.isLookupCriteriaEnabled()) {
-			 //only overide if it's enabled, if disabled don't call lookupable
-		 }
-	}
-	/**
-	 * This method hides actions that are not related to the maintenance (as opposed to supressActionsIfNeeded)
-	 *
-	 * @param form
-	 */
-	private void suppressNonMaintActionsIfNeeded(ActionForm form) {
-		LookupForm lookupForm = (LookupForm) form;
-		if(lookupForm.getLookupable()!=null) {
-			if(StringUtils.isNotEmpty(lookupForm.getLookupable().getSupplementalMenuBar())) {
-				lookupForm.setSupplementalActionsEnabled(true);
-			}
+     * This method hides the criteria if set in parameter or lookupable
+     *
+     * @param form
+     */
+    private void setCriteriaEnabled(ActionForm form) {
+         LookupForm lookupForm = (LookupForm) form;
+         if(lookupForm.isLookupCriteriaEnabled()) {
+             //only overide if it's enabled, if disabled don't call lookupable
+         }
+    }
+    /**
+     * This method hides actions that are not related to the maintenance (as opposed to supressActionsIfNeeded)
+     *
+     * @param form
+     */
+    private void suppressNonMaintActionsIfNeeded(ActionForm form) {
+        LookupForm lookupForm = (LookupForm) form;
+        if(lookupForm.getLookupable()!=null) {
+            if(StringUtils.isNotEmpty(lookupForm.getLookupable().getSupplementalMenuBar())) {
+                lookupForm.setSupplementalActionsEnabled(true);
+            }
 
-		}
-	}
+        }
+    }
 
-	@Override
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		LookupForm lookupForm = (LookupForm) form;
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        LookupForm lookupForm = (LookupForm) form;
 
-		request.setAttribute(KRADConstants.PARAM_MAINTENANCE_VIEW_MODE, KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
-		supressActionsIfNeeded(form);
-		suppressNonMaintActionsIfNeeded(form);
-		setCriteriaEnabled(form);
+        request.setAttribute(KRADConstants.PARAM_MAINTENANCE_VIEW_MODE, KRADConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
+        supressActionsIfNeeded(form);
+        suppressNonMaintActionsIfNeeded(form);
+        setCriteriaEnabled(form);
 
-		hideHeaderBarIfNeeded(form, request);
+        hideHeaderBarIfNeeded(form, request);
 
-		int numCols = KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
-				Class.forName(lookupForm.getBusinessObjectClassName()));
-		lookupForm.setNumColumns(numCols);
+        int numCols = KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
+                Class.forName(lookupForm.getBusinessObjectClassName()));
+        lookupForm.setNumColumns(numCols);
 
-		ActionForward forward = super.execute(mapping, form, request, response);
+        ActionForward forward = super.execute(mapping, form, request, response);
 
-		// apply conditional logic after all setting of field values has been completed
-		lookupForm.getLookupable().applyConditionalLogicForFieldDisplay();
+        // apply conditional logic after all setting of field values has been completed
+        lookupForm.getLookupable().applyConditionalLogicForFieldDisplay();
 
-		return forward;
-	}
+        return forward;
+    }
 
-	private void hideHeaderBarIfNeeded(ActionForm form, HttpServletRequest request) {
-		if (!((LookupForm) form).isHeaderBarEnabled()) {
-			((LookupForm) form).setHeaderBarEnabled(false);
-		}
-	}
+    private void hideHeaderBarIfNeeded(ActionForm form, HttpServletRequest request) {
+        if (!((LookupForm) form).isHeaderBarEnabled()) {
+            ((LookupForm) form).setHeaderBarEnabled(false);
+        }
+    }
 
-	
-	/**
+
+    /**
      * Entry point to lookups, forwards to jsp for search render.
      */
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -180,15 +180,15 @@ public class KualiLookupAction extends KualiAction {
      */
     public ActionForward search(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LookupForm lookupForm = (LookupForm) form;
-		        
-       
-		String methodToCall = findMethodToCall(form, request);
-		if (methodToCall.equalsIgnoreCase("search")) {
-			GlobalVariables.getUserSession().removeObjectsByPrefix(KRADConstants.SEARCH_METHOD);
-		}
-		
 
-		
+
+        String methodToCall = findMethodToCall(form, request);
+        if (methodToCall.equalsIgnoreCase("search")) {
+            GlobalVariables.getUserSession().removeObjectsByPrefix(KRADConstants.SEARCH_METHOD);
+        }
+
+
+
         Lookupable kualiLookupable = lookupForm.getLookupable();
         if (kualiLookupable == null) {
             LOG.error("Lookupable is null.");
@@ -224,20 +224,20 @@ public class KualiLookupAction extends KualiAction {
         // exist in the URL's value, they will be converted to regular whitespace ('\u0020').
         boolean hasActionUrls = false;
         for (Iterator<ResultRow> iterator = resultTable.iterator(); !hasActionUrls && iterator.hasNext();) {
-			if (StringUtils.isNotBlank(HtmlUtils.htmlUnescape(iterator.next().getActionUrls()).replace('\u00A0', '\u0020'))) {
-				hasActionUrls = true;
-			}
-		}
-		lookupForm.setActionUrlsExist(hasActionUrls);
+            if (StringUtils.isNotBlank(HtmlUtils.htmlUnescape(iterator.next().getActionUrls()).replace('\u00A0', '\u0020'))) {
+                hasActionUrls = true;
+            }
+        }
+        lookupForm.setActionUrlsExist(hasActionUrls);
 
         request.setAttribute("reqSearchResults", resultTable);
 
         if (request.getParameter(KRADConstants.SEARCH_LIST_REQUEST_KEY) != null) {
             GlobalVariables.getUserSession().removeObject(request.getParameter(KRADConstants.SEARCH_LIST_REQUEST_KEY));
         }
-        
-     	request.setAttribute(KRADConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(resultTable, KRADConstants.SEARCH_LIST_KEY_PREFIX));
-      	        
+
+        request.setAttribute(KRADConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(resultTable, KRADConstants.SEARCH_LIST_KEY_PREFIX));
+
         request.getParameter(KRADConstants.REFRESH_CALLER);
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -248,7 +248,7 @@ public class KualiLookupAction extends KualiAction {
      * refresh - is called when one quickFinder returns to the previous one. Sets all the values and performs the new search.
      */
     @Override
-	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LookupForm lookupForm = (LookupForm) form;
         Lookupable kualiLookupable = lookupForm.getLookupable();
         if (kualiLookupable == null) {
@@ -257,32 +257,32 @@ public class KualiLookupAction extends KualiAction {
         }
 
         if(StringUtils.equals(lookupForm.getRefreshCaller(),"customLookupAction")) {
-        	return this.customLookupableMethodCall(mapping, lookupForm, request, response);
+            return this.customLookupableMethodCall(mapping, lookupForm, request, response);
         }
 
         Map fieldValues = new HashMap();
         Map values = lookupForm.getFields();
 
         for (Row row: kualiLookupable.getRows()) {
-           	for (Field field: row.getFields()) {
-        		if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
-        			if (request.getParameter(field.getPropertyName()) != null) {
-        				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-        					field.setPropertyValue(request.getParameter(field.getPropertyName()));
-        				} else {
-        					//multi value, set to values
-        					field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
-        				}
-        			}
-        		}
-        		else if (values.get(field.getPropertyName()) != null) {
-        			field.setPropertyValue(values.get(field.getPropertyName()));
-        		}
+            for (Field field: row.getFields()) {
+                if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
+                    if (request.getParameter(field.getPropertyName()) != null) {
+                        if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+                            field.setPropertyValue(request.getParameter(field.getPropertyName()));
+                        } else {
+                            //multi value, set to values
+                            field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
+                        }
+                    }
+                }
+                else if (values.get(field.getPropertyName()) != null) {
+                    field.setPropertyValue(values.get(field.getPropertyName()));
+                }
 
-        		kualiLookupable.applyFieldAuthorizationsFromNestedLookups(field);
+                kualiLookupable.applyFieldAuthorizationsFromNestedLookups(field);
 
-        		fieldValues.put(field.getPropertyName(), field.getPropertyValue());
-        	}
+                fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+            }
         }
         fieldValues.put("docFormKey", lookupForm.getFormKey());
         fieldValues.put("backLocation", lookupForm.getBackLocation());
@@ -295,12 +295,12 @@ public class KualiLookupAction extends KualiAction {
                     if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
                         if (request.getParameter(field.getPropertyName()) != null) {
 //                            field.setPropertyValue(request.getParameter(field.getPropertyName()));
-            				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
-            					field.setPropertyValue(request.getParameter(field.getPropertyName()));
-            				} else {
-            					//multi value, set to values
-            					field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
-            				}
+                            if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+                                field.setPropertyValue(request.getParameter(field.getPropertyName()));
+                            } else {
+                                //multi value, set to values
+                                field.setPropertyValues(request.getParameterValues(field.getPropertyName()));
+                            }
                             //FIXME: any reason this is inside this "if" instead of the outer one, like above - this seems inconsistent
                             fieldValues.put(field.getPropertyName(), request.getParameter(field.getPropertyName()));
                         }
@@ -356,23 +356,23 @@ public class KualiLookupAction extends KualiAction {
     }
 
     public ActionForward customLookupableMethodCall(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//    	lookupableMethodToCall
-    	Lookupable kualiLookupable = ((LookupForm)form).getLookupable();
-    	if (kualiLookupable == null) {
+//      lookupableMethodToCall
+        Lookupable kualiLookupable = ((LookupForm)form).getLookupable();
+        if (kualiLookupable == null) {
             LOG.error("Lookupable is null.");
             throw new RuntimeException("Lookupable is null.");
         }
 
-    	boolean ignoreErrors=false;
-		if(StringUtils.equals(((LookupForm)form).getRefreshCaller(),"customLookupAction")) {
-			ignoreErrors=true;
-    	}
+        boolean ignoreErrors=false;
+        if(StringUtils.equals(((LookupForm)form).getRefreshCaller(),"customLookupAction")) {
+            ignoreErrors=true;
+        }
 
-		if(kualiLookupable.performCustomAction(ignoreErrors)) {
-			//redo the search if the method comes back
-			return search(mapping, form, request, response);
-		}
-		return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        if(kualiLookupable.performCustomAction(ignoreErrors)) {
+            //redo the search if the method comes back
+            return search(mapping, form, request, response);
+        }
+        return mapping.findForward(RiceConstants.MAPPING_BASIC);
 
     }
 

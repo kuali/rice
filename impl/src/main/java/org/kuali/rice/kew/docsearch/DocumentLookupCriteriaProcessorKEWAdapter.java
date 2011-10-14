@@ -90,16 +90,16 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
     };
 
     @Override
-	public List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean advancedSearch, boolean superUserSearch) {
-		List<Row> rows = null;
+    public List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean advancedSearch, boolean superUserSearch) {
+        List<Row> rows = null;
         if(advancedSearch) {
             rows = loadRowsForAdvancedSearch(defaultRows, documentType);
         } else {
             rows = loadRowsForBasicSearch(defaultRows, documentType);
         }
         addHiddenFields(rows, advancedSearch, superUserSearch);
-		return rows;
-	}
+        return rows;
+    }
 
     protected List<Row> loadRowsForAdvancedSearch(List<Row> defaultRows, DocumentType documentType) {
         List<Row> rows = new ArrayList<Row>();
@@ -155,58 +155,58 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
         List<Row> fixedDocumentAttributeRows = new ArrayList<Row>();
         for (Row row : documentAttributeRows) {
             List<Field> fields = row.getFields();
-			for (Field field : fields) {
-				//force the max length for now if not set
-				if(field.getMaxLength() == 0) {
-					field.setMaxLength(100);
-				}
-				if(field.isDatePicker() && field.isRanged()) {
-					Field newDate = FieldUtils.createRangeDateField(field);
-					List<Field> newFields = new ArrayList<Field>();
-					newFields.add(newDate);
-					fixedDocumentAttributeRows.addAll(FieldUtils.wrapFields(newFields));
-				}
+            for (Field field : fields) {
+                //force the max length for now if not set
+                if(field.getMaxLength() == 0) {
+                    field.setMaxLength(100);
+                }
+                if(field.isDatePicker() && field.isRanged()) {
+                    Field newDate = FieldUtils.createRangeDateField(field);
+                    List<Field> newFields = new ArrayList<Field>();
+                    newFields.add(newDate);
+                    fixedDocumentAttributeRows.addAll(FieldUtils.wrapFields(newFields));
+                }
                 // prepend all document attribute field names with "documentAttribute."
                 field.setPropertyName(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + field.getPropertyName());
-			}
+            }
             fixedDocumentAttributeRows.add(row);
         }
 
-		// TODO - Rice 2.0 - need to add back in the building of application document status row, commented out for now because this code is weird!
-		// If Application Document Status policy is in effect for this document type,
-		// add search attributes for document status, and transition dates.
-		// Note: document status field is a drop down if valid statuses are defined,
-		//       a text input field otherwise.
-		// fixedDocumentAttributeRows.addAll( buildAppDocStatusRows(documentType) );
+        // TODO - Rice 2.0 - need to add back in the building of application document status row, commented out for now because this code is weird!
+        // If Application Document Status policy is in effect for this document type,
+        // add search attributes for document status, and transition dates.
+        // Note: document status field is a drop down if valid statuses are defined,
+        //       a text input field otherwise.
+        // fixedDocumentAttributeRows.addAll( buildAppDocStatusRows(documentType) );
 
-		return fixedDocumentAttributeRows;
-	}
+        return fixedDocumentAttributeRows;
+    }
 
     protected void addHiddenFields(List<Row> rows, boolean advancedSearch, boolean superUserSearch) {
-		Row hiddenRow = new Row();
-		hiddenRow.setHidden(true);
+        Row hiddenRow = new Row();
+        hiddenRow.setHidden(true);
 
-		Field detailedField = new Field();
-		detailedField.setPropertyName(ADVANCED_SEARCH_FIELD);
-		detailedField.setPropertyValue(advancedSearch ? "YES" : "NO");
-		detailedField.setFieldType(Field.HIDDEN);
+        Field detailedField = new Field();
+        detailedField.setPropertyName(ADVANCED_SEARCH_FIELD);
+        detailedField.setPropertyValue(advancedSearch ? "YES" : "NO");
+        detailedField.setFieldType(Field.HIDDEN);
 
-		Field superUserSearchField = new Field();
-		superUserSearchField.setPropertyName(SUPERUSER_SEARCH_FIELD);
-		superUserSearchField.setPropertyValue(superUserSearch ? "YES" : "NO");
-		superUserSearchField.setFieldType(Field.HIDDEN);
+        Field superUserSearchField = new Field();
+        superUserSearchField.setPropertyName(SUPERUSER_SEARCH_FIELD);
+        superUserSearchField.setPropertyValue(superUserSearch ? "YES" : "NO");
+        superUserSearchField.setFieldType(Field.HIDDEN);
 
-		Field clearSavedSearchField = new Field();
-		clearSavedSearchField .setPropertyName(CLEARSAVED_SEARCH_FIELD);
-		clearSavedSearchField .setPropertyValue(superUserSearch ? "YES" : "NO");
-		clearSavedSearchField .setFieldType(Field.HIDDEN);
-        
-		List<Field> hiddenFields = new ArrayList<Field>();
-		hiddenFields.add(detailedField);
-		hiddenFields.add(superUserSearchField);
-		hiddenFields.add(clearSavedSearchField);
-		hiddenRow.setFields(hiddenFields);
-		rows.add(hiddenRow);
+        Field clearSavedSearchField = new Field();
+        clearSavedSearchField .setPropertyName(CLEARSAVED_SEARCH_FIELD);
+        clearSavedSearchField .setPropertyValue(superUserSearch ? "YES" : "NO");
+        clearSavedSearchField .setFieldType(Field.HIDDEN);
+
+        List<Field> hiddenFields = new ArrayList<Field>();
+        hiddenFields.add(detailedField);
+        hiddenFields.add(superUserSearchField);
+        hiddenFields.add(clearSavedSearchField);
+        hiddenRow.setFields(hiddenFields);
+        rows.add(hiddenRow);
 
     }
 

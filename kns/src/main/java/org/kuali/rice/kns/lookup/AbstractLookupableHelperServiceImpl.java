@@ -990,8 +990,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         // make sure a wildcard/operator is in the value
         boolean found = false;
-		for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
-			String queryCharacter = op.op();
+        for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
+            String queryCharacter = op.op();
 
             if (attributeValue.contains(queryCharacter)) {
                 found = true;

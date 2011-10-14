@@ -12,7 +12,6 @@ import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
@@ -51,7 +50,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -341,7 +339,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      */
     protected boolean loadSavedSearch(boolean ignoreErrors) {
         Map<String,String[]> fieldValues = new HashMap<String,String[]>();
-        
+
         String savedSearchName = getSavedSearchName();
         if(StringUtils.isEmpty(savedSearchName) || "*ignore*".equals(savedSearchName)) {
             if(!ignoreErrors) {
@@ -429,17 +427,17 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     /**
      * Custom implementation of getInquiryUrl that sets up doc handler link.
      */
-	@Override
-	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
+    @Override
+    public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
         DocumentLookupCriteriaBo criteriaBo = (DocumentLookupCriteriaBo)bo;
-		if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID.equals(propertyName)) {
+        if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID.equals(propertyName)) {
             return generateDocumentHandlerUrl(criteriaBo.getDocumentId(), criteriaBo.getDocumentType(),
                     isSuperUserSearch());
-		} else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(propertyName)) {
+        } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(propertyName)) {
             return generateRouteLogUrl(criteriaBo.getDocumentId());
         }
-		return super.getInquiryUrl(bo, propertyName);
-	}
+        return super.getInquiryUrl(bo, propertyName);
+    }
 
     /**
      * Generates the appropriate document handler url for the given document.  If superUserSearch is true then a super
@@ -448,36 +446,36 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     protected HtmlData.AnchorHtmlData generateDocumentHandlerUrl(String documentId, DocumentType documentType, boolean superUserSearch) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
         link.setDisplayText(documentId);
-		if (isDocumentHandlerPopup()) {
+        if (isDocumentHandlerPopup()) {
             link.setTarget("_blank");
-		}
+        }
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/";
-		if (superUserSearch) {
-			if (documentType.getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue().booleanValue()) {
+        if (superUserSearch) {
+            if (documentType.getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue().booleanValue()) {
                 url += "SuperUser.do?methodToCall=displaySuperUserDocument&documentId=" + documentId;
             } else {
-				url = KEWConstants.DOC_HANDLER_REDIRECT_PAGE
-						+ "?" + KEWConstants.COMMAND_PARAMETER + "="
-						+ KEWConstants.SUPERUSER_COMMAND + "&"
-						+ KEWConstants.DOCUMENT_ID_PARAMETER + "="
-						+ documentId;
-			}
-		} else {
-			url += KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?"
-					+ KEWConstants.COMMAND_PARAMETER + "="
-					+ KEWConstants.DOCSEARCH_COMMAND + "&"
-					+ KEWConstants.DOCUMENT_ID_PARAMETER + "="
-					+ documentId;
-		}
+                url = KEWConstants.DOC_HANDLER_REDIRECT_PAGE
+                        + "?" + KEWConstants.COMMAND_PARAMETER + "="
+                        + KEWConstants.SUPERUSER_COMMAND + "&"
+                        + KEWConstants.DOCUMENT_ID_PARAMETER + "="
+                        + documentId;
+            }
+        } else {
+            url += KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?"
+                    + KEWConstants.COMMAND_PARAMETER + "="
+                    + KEWConstants.DOCSEARCH_COMMAND + "&"
+                    + KEWConstants.DOCUMENT_ID_PARAMETER + "="
+                    + documentId;
+        }
         link.setHref(url);
         return link;
     }
 
     protected HtmlData.AnchorHtmlData generateRouteLogUrl(String documentId) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
-		if (isRouteLogPopup()) {
+        if (isRouteLogPopup()) {
             link.setTarget("_blank");
-		}
+        }
         link.setDisplayText("Route Log for document " + documentId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/" +
                 "RouteLog.do?documentId=" + documentId;
@@ -495,17 +493,17 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
                     KRADConstants.DetailTypes.DOCUMENT_LOOKUP_DETAIL_TYPE,
                     KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND),
                 DOCUMENT_HANDLER_POPUP_DEFAULT);
-	}
+    }
 
     /**
      * Returns true if the route log should open in a new window.
      */
     public boolean isRouteLogPopup() {
-		return BooleanUtils.toBooleanDefaultIfNull(
+        return BooleanUtils.toBooleanDefaultIfNull(
                 CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE,
                         KRADConstants.DetailTypes.DOCUMENT_LOOKUP_DETAIL_TYPE,
                         KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND), ROUTE_LOG_POPUP_DEFAULT);
-	}
+    }
 
     /**
      * Parses a boolean request parameter
@@ -553,9 +551,9 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * Override setRows in order to post-process and add documenttype-dependent fields
      */
     @Override
-	protected void setRows() {
-	    this.setRows(null);
-	}
+    protected void setRows() {
+        this.setRows(null);
+    }
 
     /**
      * Returns an iterable of current form fields
@@ -572,35 +570,35 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * type then it may have search attribute fields that need to be displayed; documentType name may also be loaded
      * via a saved search
      */
-	protected void setRows(String documentTypeName) {
-		if (getRows() == null) {
-		    super.setRows();
-		}
-		List<Row> lookupRows = new ArrayList<Row>();
-		//copy the current rows
-		for (Row row : getRows()) {
-			lookupRows.add(row);
-		}
-		//clear out
-		getRows().clear();
+    protected void setRows(String documentTypeName) {
+        if (getRows() == null) {
+            super.setRows();
+        }
+        List<Row> lookupRows = new ArrayList<Row>();
+        //copy the current rows
+        for (Row row : getRows()) {
+            lookupRows.add(row);
+        }
+        //clear out
+        getRows().clear();
 
-		DocumentType docType = getValidDocumentType(documentTypeName);
+        DocumentType docType = getValidDocumentType(documentTypeName);
 
         boolean advancedSearch = isAdvancedSearch();
         boolean superUserSearch = isSuperUserSearch();
 
-		//call get rows
-		List<Row> rows = getDocumentLookupCriteriaProcessor().getRows(docType,lookupRows, advancedSearch, superUserSearch);
+        //call get rows
+        List<Row> rows = getDocumentLookupCriteriaProcessor().getRows(docType,lookupRows, advancedSearch, superUserSearch);
 
-		BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
+        BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
         if(numCols == 0) {
-			numCols = KRADConstants.DEFAULT_NUM_OF_COLUMNS;
-		}
+            numCols = KRADConstants.DEFAULT_NUM_OF_COLUMNS;
+        }
 
-		super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows), numCols));
+        super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows), numCols));
 
-	}
+    }
 
     private static List<Field> getFields(Collection<? extends Row> rows) {
         List<Field> rList = new ArrayList<Field>();
@@ -623,8 +621,8 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
             if (documentType != null && documentType.isActive()) {
                 return documentType;
             }
-    	}
-    	return null;
+        }
+        return null;
     }
 
     private static String TOGGLE_BUTTON = "<input type='image' name=''{0}'' id=''{0}'' class='tinybutton' src=''..{1}/images/tinybutton-{2}search.gif'' alt=''{3} search'' title=''{3} search''/>";
@@ -653,25 +651,25 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     @Override
-	public boolean shouldDisplayHeaderNonMaintActions() {
+    public boolean shouldDisplayHeaderNonMaintActions() {
         // TODO - Rice 2.0 - ensure this can be customized via url
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean shouldDisplayLookupCriteria() {
+    @Override
+    public boolean shouldDisplayLookupCriteria() {
         // TODO - Rice 2.0 - ensure this can be customized via url
-		return true;
-	}
+        return true;
+    }
 
     /**
      * Determines if there should be more search fields rendered based on already entered search criteria, and
      * generates additional form rows.
      */
     @Override
-	public boolean checkForAdditionalFields(Map fieldValues) {
+    public boolean checkForAdditionalFields(Map fieldValues) {
         // The given map is a Map<String, String>
-		Object val = fieldValues.get("documentTypeName");
+        Object val = fieldValues.get("documentTypeName");
         String documentTypeName;
         if (val instanceof String[]) {
             documentTypeName = ((String[]) val)[0];
@@ -679,35 +677,35 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
             documentTypeName = (String) val;
         }
         if (StringUtils.isNotBlank(documentTypeName)) {
-	        setRows(documentTypeName);
+            setRows(documentTypeName);
         }
-	    return true;
-	}
+        return true;
+    }
 
     @Override
-	public Field getExtraField() {
-		SavedSearchValuesFinder savedSearchValuesFinder = new SavedSearchValuesFinder();
-		List<KeyValue> savedSearchValues = savedSearchValuesFinder.getKeyValues();
-		Field savedSearch = new Field();
-		savedSearch.setPropertyName(SAVED_SEARCH_NAME_PARAM);
-		savedSearch.setFieldType(Field.DROPDOWN_SCRIPT);
-		savedSearch.setScript("customLookupChanged()");
-		savedSearch.setFieldValidValues(savedSearchValues);
-		savedSearch.setFieldLabel("Saved Searches");
-		return savedSearch;
-	}
+    public Field getExtraField() {
+        SavedSearchValuesFinder savedSearchValuesFinder = new SavedSearchValuesFinder();
+        List<KeyValue> savedSearchValues = savedSearchValuesFinder.getKeyValues();
+        Field savedSearch = new Field();
+        savedSearch.setPropertyName(SAVED_SEARCH_NAME_PARAM);
+        savedSearch.setFieldType(Field.DROPDOWN_SCRIPT);
+        savedSearch.setScript("customLookupChanged()");
+        savedSearch.setFieldValidValues(savedSearchValues);
+        savedSearch.setFieldLabel("Saved Searches");
+        return savedSearch;
+    }
 
     @Override
-	public void performClear(LookupForm lookupForm) {
+    public void performClear(LookupForm lookupForm) {
         DocumentLookupCriteria criteria = loadCriteria(lookupForm.getFields());
         super.performClear(lookupForm);
         repopulateSearchTypeFlags();
-		DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
-		if (documentType != null) {
+        DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
+        if (documentType != null) {
             DocumentLookupCriteria clearedCriteria = documentSearchService.clearCriteria(documentType, criteria);
             applyCriteriaChangesToFields(DocumentLookupCriteria.Builder.create(clearedCriteria));
-		}
-	}
+        }
+    }
 
     /**
      * Repopulate the fields indicating advanced/superuser search type.

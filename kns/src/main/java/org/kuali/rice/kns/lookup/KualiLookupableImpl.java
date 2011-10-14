@@ -152,12 +152,12 @@ public class KualiLookupableImpl implements Lookupable {
         return getBusinessObjectDictionaryService().getLookupMenuBar(getBusinessObjectClass());
     }
 
-	/**
-	 * @see Lookupable#getSupplementalMenuBar()
-	 */
-	public String getSupplementalMenuBar() {
-		return getLookupableHelperService().getSupplementalMenuBar();
-	}
+    /**
+     * @see Lookupable#getSupplementalMenuBar()
+     */
+    public String getSupplementalMenuBar() {
+        return getLookupableHelperService().getSupplementalMenuBar();
+    }
 
     /**
      * @see Lookupable#getRows()
@@ -315,85 +315,85 @@ public class KualiLookupableImpl implements Lookupable {
         return getLookupableHelperService().getPrimaryKeyFieldLabels();
     }
 
-	/**
-	 * calls the lookup helper service to do "clear" behaviors
-	 *
-	 * @see Lookupable#performClear()
-	 */
-	public void performClear(LookupForm lookupForm) {
-		 getLookupableHelperService().performClear(lookupForm);
-	}
+    /**
+     * calls the lookup helper service to do "clear" behaviors
+     *
+     * @see Lookupable#performClear()
+     */
+    public void performClear(LookupForm lookupForm) {
+         getLookupableHelperService().performClear(lookupForm);
+    }
 
-	/**
-	 * calls the lookup helper service to check if non maintenance actions should be displayed
-	 *
-	 * @see Lookupable#shouldDisplayHeaderNonMaintActions()
-	 */
-	public boolean shouldDisplayHeaderNonMaintActions() {
-		return getLookupableHelperService().shouldDisplayHeaderNonMaintActions();
-	}
+    /**
+     * calls the lookup helper service to check if non maintenance actions should be displayed
+     *
+     * @see Lookupable#shouldDisplayHeaderNonMaintActions()
+     */
+    public boolean shouldDisplayHeaderNonMaintActions() {
+        return getLookupableHelperService().shouldDisplayHeaderNonMaintActions();
+    }
 
-	/**
-	 * calls the lookup helper service to check if criteria should be displayed
-	 *
-	 * @see Lookupable#shouldDisplayLookupCriteria()
-	 */
-	public boolean shouldDisplayLookupCriteria() {
-		return getLookupableHelperService().shouldDisplayLookupCriteria();
-	}
+    /**
+     * calls the lookup helper service to check if criteria should be displayed
+     *
+     * @see Lookupable#shouldDisplayLookupCriteria()
+     */
+    public boolean shouldDisplayLookupCriteria() {
+        return getLookupableHelperService().shouldDisplayLookupCriteria();
+    }
 
-	protected String getCreateNewUrl(String url){
-		return "<a title=\"Create a new record\" href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
-	}
+    protected String getCreateNewUrl(String url){
+        return "<a title=\"Create a new record\" href=\"" + url + "\"><img src=\"images/tinybutton-createnew.gif\" alt=\"create new\" width=\"70\" height=\"15\"/></a>";
+    }
 
-	/**
-	 * @see Lookupable#performCustomAction(boolean)
-	 */
-	public boolean performCustomAction(boolean ignoreErrors) {
-		return getLookupableHelperService().performCustomAction(ignoreErrors);
-	}
+    /**
+     * @see Lookupable#performCustomAction(boolean)
+     */
+    public boolean performCustomAction(boolean ignoreErrors) {
+        return getLookupableHelperService().performCustomAction(ignoreErrors);
+    }
 
-	/**
-	 * This overridden method ...
-	 *
-	 * @see Lookupable#getExtraField()
-	 */
-	public Field getExtraField() {
-		return getLookupableHelperService().getExtraField();
-	}
+    /**
+     * This overridden method ...
+     *
+     * @see Lookupable#getExtraField()
+     */
+    public Field getExtraField() {
+        return getLookupableHelperService().getExtraField();
+    }
 
-	/**
-	 * This overridden method ...
-	 *
-	 * @see Lookupable#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.krad.web.ui.Field)
-	 */
-	public void applyFieldAuthorizationsFromNestedLookups(Field field) {
-		getLookupableHelperService().applyFieldAuthorizationsFromNestedLookups(field);
-	}
+    /**
+     * This overridden method ...
+     *
+     * @see Lookupable#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.krad.web.ui.Field)
+     */
+    public void applyFieldAuthorizationsFromNestedLookups(Field field) {
+        getLookupableHelperService().applyFieldAuthorizationsFromNestedLookups(field);
+    }
 
-	/**
-	 * This overridden method returns the extraOnLoad variable. The 
-	 * varible is currently accessed in page.tag and is called in the onLoad.
-	 * it allows us to inject javascript onload.
-	 *
-	 * @see Lookupable#getExtraOnLoad()
-	 */
-	public String getExtraOnLoad() {
-		return extraOnLoad;
-	}
+    /**
+     * This overridden method returns the extraOnLoad variable. The
+     * varible is currently accessed in page.tag and is called in the onLoad.
+     * it allows us to inject javascript onload.
+     *
+     * @see Lookupable#getExtraOnLoad()
+     */
+    public String getExtraOnLoad() {
+        return extraOnLoad;
+    }
 
-	/**
-	 * @param extraOnLoad the extraOnLoad to set
-	 */
-	public void setExtraOnLoad(String extraOnLoad) {
-		this.extraOnLoad = extraOnLoad;
-	}
+    /**
+     * @param extraOnLoad the extraOnLoad to set
+     */
+    public void setExtraOnLoad(String extraOnLoad) {
+        this.extraOnLoad = extraOnLoad;
+    }
 
-	/**
-	 * @see Lookupable#applyConditionalLogicForFieldDisplay()
-	 */
-	public void applyConditionalLogicForFieldDisplay() {
-		getLookupableHelperService().applyConditionalLogicForFieldDisplay();
-	}
+    /**
+     * @see Lookupable#applyConditionalLogicForFieldDisplay()
+     */
+    public void applyConditionalLogicForFieldDisplay() {
+        getLookupableHelperService().applyConditionalLogicForFieldDisplay();
+    }
 
 }

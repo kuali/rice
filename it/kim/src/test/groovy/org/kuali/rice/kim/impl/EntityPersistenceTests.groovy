@@ -1,8 +1,9 @@
-package org.kuali.rice.kim.impl.identity.name
+package org.kuali.rice.kim.impl
 
 import org.junit.Test
 import org.kuali.rice.kim.impl.identity.address.EntityAddressBo
 import org.kuali.rice.kim.impl.identity.entity.EntityBo
+import org.kuali.rice.kim.impl.identity.name.EntityNameBo
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo
 import org.kuali.rice.kim.test.BoPersistenceTest
 import org.kuali.rice.kim.test.Factory

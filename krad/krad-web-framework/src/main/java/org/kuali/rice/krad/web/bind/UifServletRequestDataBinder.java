@@ -49,7 +49,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
 	// BEGIN SPRING 3.1 OVERRIDES
 	//--------------------------------------------------------------------------------
     private ConversionService conversionService;
-    private boolean autoGrowNestedPaths = true;
+//    private boolean autoGrowNestedPaths = true;
 	//--------------------------------------------------------------------------------
 	// END SPRING 3.1 OVERRIDES
 	//--------------------------------------------------------------------------------
@@ -72,24 +72,27 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     /**
      * @see org.springframework.validation.DataBinder#setAutoGrowNestedPaths(boolean)
      */
+/*
     @Override
     public void setAutoGrowNestedPaths(boolean autoGrowNestedPaths) {
         Assert.state(this.bindingResult == null,
                 "DataBinder is already initialized - call setAutoGrowNestedPaths before other configuration methods");
         this.autoGrowNestedPaths = autoGrowNestedPaths;
     }
-
+*/
     /**
      * @see org.springframework.validation.DataBinder#isAutoGrowNestedPaths()
      */
+/*
     @Override
     public boolean isAutoGrowNestedPaths() {
         return this.autoGrowNestedPaths;
     }
-
+*/
     /**
      * @see org.springframework.validation.DataBinder#setConversionService(org.springframework.core.convert.ConversionService)
      */
+/*
     @Override
     public void setConversionService(ConversionService conversionService) {
         Assert.state(this.conversionService == null, "DataBinder is already initialized with ConversionService");
@@ -98,15 +101,16 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
             this.bindingResult.initConversion(conversionService);
         }
     }
-
+*/
     /**
      * @see org.springframework.validation.DataBinder#getConversionService()
      */
+/*
     @Override
     public ConversionService getConversionService() {
         return this.conversionService;
     }
-
+*/
 	//---------------------------------------------------------------------
 	// END SPRING 3.1 OVERRIDES
 	//---------------------------------------------------------------------

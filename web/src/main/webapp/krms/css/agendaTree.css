@@ -1,5 +1,7 @@
 /* tweaks to jstree css for agenda tree view */
 
+
+
 .logicNode { border: 1px solid #ccd; background-color:#dde; /* -moz-border-radius: 3px; border-radius: 3px; */ font-weight: bold; padding-bottom: 2pt; padding-top: 2pt; 
                 padding-left: 10pt; padding-right: 10pt; margin-bottom: 2pt; }
 .logicNode .jstree-open { margin-bottom: 2pt; }
@@ -16,3 +18,5 @@
 .jstree-default li.jstree-last { margin-bottom: 5pt; }
 
 .jstree li { margin-top 3pt; }
+
+.tree-bar-button { padding-right: 1em; padding-left: 1em; }

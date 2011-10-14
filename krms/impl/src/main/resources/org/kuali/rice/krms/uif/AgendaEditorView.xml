@@ -240,16 +240,56 @@
     </property>
   </bean>
 
-  <bean id="AgendaEditorView-TreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
+  <!--
+
+   <bean id="Footer-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
+      <property name="renderHeader" value="false"/>
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+      </property>
+      <property name="styleClasses" value="kr-footer"/>
+  </bean>
+
+  -->
+
+  <util:list id="AgendaEditorView-treeBarButtonClasses">
+    <value>kr-button-secondary1</value>
+    <value>tree-bar-button</value>
+  </util:list>
+
+  <bean id="AgendaEditorView-barButton" parent="ActionField_Secondary" p:actionImageLocation="LEFT"
+        p:styleClasses-ref="AgendaEditorView-treeBarButtonClasses" abstract="true" />
+
+  <!-- TODO: figure out how to style this without using kr-footer -->
+  <bean id="AgendaEditorView-TreeControls" parent="Group"
+        p:style="text-align: left; margin-top: 3px;"
+        p:styleClasses="kr-footer">
+
+    <property name="renderHeader" value="false"/>
+    <property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+    </property>
+
     <property name="items">
       <list>
-        <bean parent="NavigationActionField" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
-        <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+
+        <bean parent="AgendaEditorView-barButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/add.png"
+                  p:altText="Add Rule"/>
+          </property>
+        </bean>
+
+        <bean parent="AgendaEditorView-barButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule" p:style="margin-right: 15pt;">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
+                  p:altText="Edit Rule"/>
+          </property>
+        </bean>
 
         <!--
-        <bean parent="AttributeField_Form" p:propertyName="maintenanceAction" p:label="" 
+        <bean parent="AttributeField_Form" p:propertyName="maintenanceAction" p:label=""
            p:defaultValue="below" p:style="float:none; margin-right: 15px;">
           <property name="control">
             <bean parent="SelectControl">
@@ -265,38 +305,76 @@
           </property>
         </bean>
          -->
-         
+
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
 
-        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-Tree');"
-              p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
-<!--
-        <bean parent="ActionField" p:methodToCall="moveLeft"
-          p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
--->
-        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveRight', 'AgendaEditorView-Tree');"
-          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses"
-          p:style="margin-right: 15pt;"/> <!-- Horiz whitespace -->
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveLeft', 'AgendaEditorView-Tree');"
+              p:actionLabel="Left">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
+                  p:altText="Left"/>
+          </property>
+        </bean>
 
-        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveUp', 'AgendaEditorView-Tree');" p:actionLabel="Up ^"
-          p:styleClasses-ref="buttonClasses" />
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveRight', 'AgendaEditorView-Tree');"
+          p:actionLabel="Right" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
+                  p:altText="Right"/>
+          </property>
+        </bean>
 
-        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxMoveDown', 'AgendaEditorView-Tree');"
-          p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveUp', 'AgendaEditorView-Tree');"
+              p:actionLabel="Up">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
+                  p:altText="Up"/>
+          </property>
+        </bean>
+
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxMoveDown', 'AgendaEditorView-Tree');"
+              p:actionLabel="Down">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
+                  p:altText="Down"/>
+          </property>
+        </bean>
 
         <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
-        
-        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxCut', 'AgendaEditorView-Tree');" p:actionLabel="Cut" p:styleClasses-ref="buttonClasses"
-              p:style="margin-left: 15pt;"/> <!-- Horiz whitespace -->
+
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxCut', 'AgendaEditorView-Tree');"
+              p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
+                  p:altText="Cut"/>
+          </property>
+        </bean>
 
         <!-- Add a conditional disable once KRAD supports this.  Disable if cut buffer is empty, something like this:
             p:conditionalDisable="document.newMaintainableObject.dataObject.agendaItemCutPaste == null -->
-        <bean parent="ActionField"  p:clientSideJs="ajaxCall('ajaxPaste', 'AgendaEditorView-Tree');" p:actionLabel="Paste" p:styleClasses-ref="buttonClasses" />
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxPaste', 'AgendaEditorView-Tree');"
+              p:actionLabel="Paste">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
+                  p:altText="Paste"/>
+          </property>
+        </bean>
 
-        <bean parent="ActionField" p:clientSideJs="ajaxCall('ajaxDelete', 'AgendaEditorView-Tree');" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses"
-              p:style="margin-right: 15pt;" /> <!-- Horiz whitespace -->
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCall('ajaxDelete', 'AgendaEditorView-Tree');"
+              p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
+                  p:altText="Delete"/>
+          </property>
+        </bean>
 
-        <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
+        <bean parent="AgendaEditorView-barButton" p:methodToCall="refresh" p:actionLabel="refresh">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/refresh.png"
+                  p:altText="Delete"/>
+          </property>
+        </bean>
+
       </list>
     </property> 
   </bean>

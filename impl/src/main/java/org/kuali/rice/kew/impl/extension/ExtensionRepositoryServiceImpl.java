@@ -1,11 +1,21 @@
 package org.kuali.rice.kew.impl.extension;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
+import org.w3c.dom.Element;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.Collection;
 
 /**
  * Reference implementation of the {@code ExtensionRepositoryService}.  This implementation
@@ -13,10 +23,30 @@ import org.kuali.rice.kew.rule.service.RuleAttributeService;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@XmlRootElement(name = ExtensionRepositoryServiceImpl.Constants.ROOT_ELEMENT_NAME)
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = ExtensionRepositoryServiceImpl.Constants.TYPE_NAME, propOrder = {
+    ExtensionRepositoryServiceImpl.Elements.RULE_ATTRIBUTE_SERVICE,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
 public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryService {
 
+    /**
+     * Private constructor used only by JAXB.
+     *
+     */
+    private ExtensionRepositoryServiceImpl() {
+        this.ruleAttributeService = null;
+    }
+
+    @XmlElement(name = Elements.RULE_ATTRIBUTE_SERVICE, required = true)
     private RuleAttributeService ruleAttributeService;
 
+    /**
+	 * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given id.
+	 * @param id the id to search by.
+     * @return the extension definition found for the matching rule attribute service
+	 */
     @Override
     public ExtensionDefinition getExtensionById(String id) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(id)) {
@@ -26,6 +56,11 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
         return translateFromRuleAttribute(ruleAttribute);
     }
 
+    /**
+	 * Returns the {@link ExtensionDefinition} of the {@Link RuleAttribute} for the given name.
+	 * @param name the name to search by.
+     * @return the extension definition found for the matching rule attribute service
+	 */
     @Override
     public ExtensionDefinition getExtensionByName(String name) throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(name)) {
@@ -39,8 +74,32 @@ public class ExtensionRepositoryServiceImpl implements ExtensionRepositoryServic
         return RuleAttribute.to(ruleAttribute);
     }
 
+    /**
+         * Sets the rule attribute service.
+         * @param ruleAttributeService the rule attribute service to set.
+         */
     public void setRuleAttributeService(RuleAttributeService ruleAttributeService) {
         this.ruleAttributeService = ruleAttributeService;
     }
 
+    @SuppressWarnings("unused")
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
+
+    /**
+     * Defines some internal constants used on this class.
+     *
+     */
+    static class Constants {
+        static final String ROOT_ELEMENT_NAME = "extensionRepositoryService";
+        static final String TYPE_NAME = "ExtensionRepositoryService";
+    }
+
+    /**
+     * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
+     *
+     */
+    static class Elements {
+        static final String RULE_ATTRIBUTE_SERVICE = "ruleAttributeService";
+    }
 }

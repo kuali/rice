@@ -14,6 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper
 import org.junit.Test
 import org.apache.commons.lang.SerializationUtils
 import static org.junit.Assert.assertEquals
+import org.codehaus.jackson.map.AnnotationIntrospector
 
 /**
  * Tests DocumentLookupCriteria marshalling and performance
@@ -34,6 +35,13 @@ class DocumentLookupCriteriaTest {
         DocumentLookupCriteria c = createWithoutDates("name")
         ObjectMapper m = new ObjectMapper()
         // these options don't seem to allow jackson to set fields directly on DLC (possibly because they're final?)
+
+        /*AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
+        // make deserializer use JAXB annotations (only)
+        mapper.getDeserializationConfig().setAnnotationIntrospector(introspector);
+        // make serializer use JAXB annotations (only)
+        mapper.getSerializationConfig().setAnnotationIntrospector(introspector);*/
+        
         // we have to use the Builder instead
         //m.getDeserializationConfig().disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS)
         //m.getDeserializationConfig().enable(DeserializationConfig.Feature.AUTO_DETECT_FIELDS)

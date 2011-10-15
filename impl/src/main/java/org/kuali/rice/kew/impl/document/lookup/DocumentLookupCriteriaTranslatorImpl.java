@@ -132,14 +132,14 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
             convertCriteriaPropertyToField(criteria, property, values);
         }
 
-        for (String property: DIRECT_TRANSLATE_FIELD_NAMES) {
+        for (String property: DATE_RANGE_TRANSLATE_FIELD_NAMES) {
             convertCriteriaPropertyToField(criteria, property + "From", values);
             convertCriteriaPropertyToField(criteria, property + "To", values);
         }
 
         Map<String, List<String>> docAttrValues = criteria.getDocumentAttributeValues();
         for (Map.Entry<String, List<String>> entry: docAttrValues.entrySet()) {
-            values.put(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey(), entry.getValue().toArray(new String[10]));
+            values.put(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey(), entry.getValue().toArray(new String[0]));
         }
 
         RouteNodeLookupLogic lookupLogic = criteria.getRouteNodeLookupLogic();
@@ -154,7 +154,7 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
         for (DocumentStatusCategory category: criteria.getDocumentStatusCategories()) {
             statuses.add("category:" + category.getCode());
         }
-        values.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE, statuses.toArray(new String[10]));
+        values.put(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE, statuses.toArray(new String[0]));
 
         return values;
     }

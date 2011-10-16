@@ -18,6 +18,9 @@ package org.kuali.rice.kew.docsearch.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -29,7 +32,10 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.util.JacksonRiceModule;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
+import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.framework.document.lookup.AttributeFields;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
@@ -61,6 +67,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -130,9 +137,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     protected DocumentLookupCriteria getCriteriaFromSavedSearch(UserOptions savedSearch) {
         String optionValue = savedSearch.getOptionVal();
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class);
-            return (DocumentLookupCriteria)jaxbContext.createUnmarshaller().unmarshal(new StringReader(optionValue));
-        } catch (JAXBException e) {
+            return DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(optionValue);
+        } catch (IOException e) {
             throw new WorkflowRuntimeException("Failed to load saved search for name '" + savedSearch.getOptionId() + "'", e);
         }
     }
@@ -484,12 +490,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         // TODO - Rice 2.0 - need to add support for "advanced" vs. "basic" vs. "super user" searches, this was originally stored with savedSearchString in Rice 1.x
 
         try {
-            StringWriter marshalledCriteriaWriter = new StringWriter();
-            JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class);
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.marshal(criteria, marshalledCriteriaWriter);
-            String savedSearchString = marshalledCriteriaWriter.toString();
-            
+            String savedSearchString = DocumentLookupInternalUtils.marshalDocumentLookupCriteria(criteria);
+
             if (StringUtils.isNotBlank(criteria.getSaveName())) {
                 userOptionsService.save(principalId, NAMED_SEARCH_ORDER_BASE + criteria.getSaveName(), savedSearchString);
             } else {

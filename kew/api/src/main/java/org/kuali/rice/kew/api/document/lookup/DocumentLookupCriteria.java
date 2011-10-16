@@ -2,6 +2,7 @@ package org.kuali.rice.kew.api.document.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
@@ -734,6 +735,24 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
 
         public void setMaxResults(Integer maxResults) {
             this.maxResults = maxResults;
+        }
+
+        /**
+         * Resets DateTimes to local TimeZone (preserving absolute time)
+         * @see {@link http://jira.codehaus.org/browse/JACKSON-279}
+         * @see {@link org.kuali.rice.core.util.JacksonRiceModule}
+         */
+        public void normalizeDateTimes() {
+            if (dateCreatedFrom != null) dateCreatedFrom = dateCreatedFrom.withZone(DateTimeZone.getDefault());
+            if (dateCreatedTo != null) dateCreatedTo = dateCreatedTo.withZone(DateTimeZone.getDefault());
+            if (dateLastModifiedFrom != null) dateLastModifiedFrom = dateLastModifiedFrom.withZone(DateTimeZone.getDefault());
+            if (dateLastModifiedTo != null) dateLastModifiedTo = dateLastModifiedTo.withZone(DateTimeZone.getDefault());
+            if (dateApprovedFrom != null) dateApprovedFrom = dateApprovedFrom.withZone(DateTimeZone.getDefault());
+            if (dateApprovedTo != null) dateApprovedTo = dateApprovedTo.withZone(DateTimeZone.getDefault());
+            if (dateFinalizedFrom != null) dateFinalizedFrom = dateFinalizedFrom.withZone(DateTimeZone.getDefault());
+            if (dateFinalizedTo != null) dateFinalizedTo = dateFinalizedTo.withZone(DateTimeZone.getDefault());
+            if (dateApplicationDocumentStatusChangedFrom != null) dateApplicationDocumentStatusChangedFrom = dateApplicationDocumentStatusChangedFrom.withZone(DateTimeZone.getDefault());
+            if (dateApplicationDocumentStatusChangedTo != null) dateApplicationDocumentStatusChangedTo = dateApplicationDocumentStatusChangedTo.withZone(DateTimeZone.getDefault());
         }
 
     }

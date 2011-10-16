@@ -2,6 +2,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -13,7 +14,9 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -251,4 +254,35 @@ public class DocumentLookupInternalUtils {
 
     }
 
+    /**
+     * Unmarshals a DocumentLookupCriteria from JSON string
+     * @param string the JSON
+     * @return unmarshalled DocumentLookupCriteria
+     * @throws IOException
+     */
+    public static DocumentLookupCriteria unmarshalDocumentLookupCriteria(String string) throws IOException {
+        ObjectMapper jsonMapper = new ObjectMapper();
+        DocumentLookupCriteria.Builder builder = (DocumentLookupCriteria.Builder) jsonMapper.readValue(string, DocumentLookupCriteria.Builder.class); // see JacksonRiceModule for details of unmarshalling
+        // fix up the Joda DateTimes
+        builder.normalizeDateTimes();
+        // build() it
+        return builder.build();
+    }
+
+    /**
+     * Marshals a DocumentLookupCriteria to JSON string
+     * @param criteria the criteria
+     * @return a JSON string
+     * @throws IOException
+     */
+    public static String marshalDocumentLookupCriteria(DocumentLookupCriteria criteria) throws IOException {
+        ObjectMapper jsonMapper = new ObjectMapper();
+        // Jackson XC support not included by Rice, so no auto-magic JAXB-compatibility
+        // AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
+        // // make deserializer use JAXB annotations (only)
+        // mapper.getDeserializationConfig().setAnnotationIntrospector(introspector);
+        // // make serializer use JAXB annotations (only)
+        // mapper.getSerializationConfig().setAnnotationIntrospector(introspector);
+        return jsonMapper.writeValueAsString(criteria);
+    }
 }

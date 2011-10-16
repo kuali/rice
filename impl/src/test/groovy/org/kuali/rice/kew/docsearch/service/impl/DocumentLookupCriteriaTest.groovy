@@ -1,20 +1,19 @@
 package org.kuali.rice.kew.docsearch.service.impl
 
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
-import org.joda.time.DateTime
-import org.kuali.rice.kew.api.document.DocumentStatusCategory
-import org.kuali.rice.kew.api.document.DocumentStatus
 import org.apache.commons.lang.RandomStringUtils
-import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic
-import org.apache.commons.lang.time.StopWatch
-import org.codehaus.jackson.map.ObjectMapper
-import org.junit.Test
 import org.apache.commons.lang.SerializationUtils
+import org.apache.commons.lang.time.StopWatch
+import org.joda.time.DateTime
+import org.junit.Test
+import org.kuali.rice.kew.api.document.DocumentStatus
+import org.kuali.rice.kew.api.document.DocumentStatusCategory
+import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
+import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic
+import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils
 import static org.junit.Assert.assertEquals
-import org.codehaus.jackson.map.AnnotationIntrospector
 
 /**
  * Tests DocumentLookupCriteria marshalling and performance
@@ -26,49 +25,34 @@ class DocumentLookupCriteriaTest {
         //JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create("name"), XML, DocumentLookupCriteria.class)
         // DateTimeAdapter ensures DateTimes are marshalled appropriately, but MultiValuedStringMapAdapter is not fully implemented
         DocumentLookupCriteria c = createWithoutDocAttribs("name")
-        assertEquals(c, unmarshall(marshall(c)))
+        assertEquals(c, unmarshalJAXB(marshalJAXB(c)))
     }
 
     @Test
     void testJSONMarshalling() {
-        // JSON deserializes maps properly, but not DateTimes
-        DocumentLookupCriteria c = createWithoutDates("name")
-        ObjectMapper m = new ObjectMapper()
-        // these options don't seem to allow jackson to set fields directly on DLC (possibly because they're final?)
-
-        /*AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
-        // make deserializer use JAXB annotations (only)
-        mapper.getDeserializationConfig().setAnnotationIntrospector(introspector);
-        // make serializer use JAXB annotations (only)
-        mapper.getSerializationConfig().setAnnotationIntrospector(introspector);*/
-        
-        // we have to use the Builder instead
-        //m.getDeserializationConfig().disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS)
-        //m.getDeserializationConfig().enable(DeserializationConfig.Feature.AUTO_DETECT_FIELDS)
-        //m.getDeserializationConfig().enable(DeserializationConfig.Feature.CAN_OVERRIDE_ACCESS_MODIFIERS)
-        def s = m.writeValueAsString(c)
-        def d = m.readValue(s, DocumentLookupCriteria.Builder.class)
-        assertEquals(c.getDateApplicationDocumentStatusChangedFrom(), d.build().getDateApplicationDocumentStatusChangedFrom())
-        assertEquals(c, d.build())
+        DocumentLookupCriteria c = create("name")
+        def s = DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c)
+        def d = DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(s)
+        assertEquals(c, d)
     }
 
     @Test
     void testPerformance() {
         def strats = [
             jaxb: [
-                marshall: { marshall(it) },
-                unmarshall: { unmarshall(it) }
+                marshal: { marshalJAXB(it) },
+                unmarshal: { unmarshalJAXB(it) }
             ],
             serialization: [
-                marshall: { SerializationUtils.serialize(it) },
-                unmarshall: { SerializationUtils.deserialize(it) }
+                marshal: { SerializationUtils.serialize(it) },
+                unmarshal: { SerializationUtils.deserialize(it) }
             ],
             json: [
-                marshall: {
-                    new ObjectMapper().writeValueAsString(it)
+                marshal: {
+                    DocumentLookupInternalUtils.marshalDocumentLookupCriteria(it)
                 },
-                unmarshall: {
-                    new ObjectMapper().readValue(it, DocumentLookupCriteria.Builder.class).build()
+                unmarshal: {
+                    DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(it)
                 }
             ]
         ]
@@ -88,21 +72,21 @@ class DocumentLookupCriteriaTest {
             sw.start()
             def marshalled = []
             for (c in criterias) {
-                marshalled << strat['marshall'].call(c)
+                marshalled << strat['marshal'].call(c)
             }
             //println marshalled[0]
-            println("Marshall time: " + sw + " " + (sw.getTime() / 1000) + "ms/object")
+            println("Marshal time: " + sw + " " + (sw.getTime() / 1000) + "ms/object")
             sw.reset()
             criterias.clear()
             sw.start()
             for (string in marshalled) {
-                criterias << strat['unmarshall'].call(string)
+                criterias << strat['unmarshal'].call(string)
             }
-            println("Unmarshall time: " + sw + " " + (sw.getTime() / 1000) + "ms/object")
+            println("Unmarshal time: " + sw + " " + (sw.getTime() / 1000) + "ms/object")
         }
     }
 
-    protected static String marshall(DocumentLookupCriteria criteria) {
+    protected static String marshalJAXB(DocumentLookupCriteria criteria) {
         StringWriter marshalledCriteriaWriter = new StringWriter()
         JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class)
         Marshaller marshaller = jaxbContext.createMarshaller()
@@ -110,7 +94,7 @@ class DocumentLookupCriteriaTest {
         marshalledCriteriaWriter.toString()
     }
 
-    protected static DocumentLookupCriteria unmarshall(String s) {
+    protected static DocumentLookupCriteria unmarshalJAXB(String s) {
         JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class)
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller()
         return unmarshaller.unmarshal(new StringReader(s))
@@ -139,7 +123,7 @@ class DocumentLookupCriteriaTest {
     }
 
     protected static void addDocAttribs(DocumentLookupCriteria.Builder builder) {
-        // TODO: FIXME: MultiValuedStringMapAdapter unmarshall not implemented
+        // TODO: FIXME: MultiValuedStringMapAdapter unmarshal not implemented
         Map<String, List<String>> attrs = new HashMap<String, List<String>>()
         for (i in 1..10) {
             def list = new ArrayList(10)

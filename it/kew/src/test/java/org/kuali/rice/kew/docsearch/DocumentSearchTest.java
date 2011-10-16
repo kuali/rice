@@ -19,17 +19,13 @@ package org.kuali.rice.kew.docsearch;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Years;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -38,25 +34,18 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import java.io.StringWriter;
-import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DocumentSearchTest extends KEWTestCase {
@@ -194,11 +183,7 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     protected static String marshall(DocumentLookupCriteria criteria) throws Exception {
-        StringWriter marshalledCriteriaWriter = new StringWriter();
-        JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class);
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.marshal(criteria, marshalledCriteriaWriter);
-        return marshalledCriteriaWriter.toString();
+        return DocumentLookupInternalUtils.marshalDocumentLookupCriteria(criteria);
     }
 
     @Test

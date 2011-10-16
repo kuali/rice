@@ -7,9 +7,8 @@ import org.kuali.rice.kew.useroptions.UserOptions
 import org.kuali.rice.kew.useroptions.UserOptionsServiceImpl
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO
 import static org.junit.Assert.assertEquals
-import static DocumentLookupCriteriaTest.marshall
-import static DocumentLookupCriteriaTest.unmarshall
 import static DocumentLookupCriteriaTest.create
+import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils
 
 /**
  * Unit tests DocumentLookupCriteria saving behavior of DocumentSearchServiceImpl
@@ -92,7 +91,7 @@ class DocSearchSavingTest {
         assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size())
 
         assertEquals("DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
-        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
 
         // 2nd search
 
@@ -103,8 +102,8 @@ class DocSearchSavingTest {
         // 1 more user option
         assertEquals(allUserOptions_before.size() + 3, allUserOptions_after.size())
         assertEquals("DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
-        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
-        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
     }
 
     @Test
@@ -118,7 +117,7 @@ class DocSearchSavingTest {
 
         def allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
         assertEquals(allUserOptions_before.size() + 1, allUserOptions_after.size())
-        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c1.getSaveName(), princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c1), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c1.getSaveName(), princ).optionVal)
 
         // 2nd search
 
@@ -127,7 +126,7 @@ class DocSearchSavingTest {
         allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
         // saves a second named search
         assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size())
-        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c2.getSaveName(), princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c2), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c2.getSaveName(), princ).optionVal)
     }
 
     @Test
@@ -146,11 +145,11 @@ class DocSearchSavingTest {
         def allUserOptions_after = userOptionsService.findByWorkflowUser(princ)
         assertEquals(allUserOptions_before.size() + 5 + 1, allUserOptions_after.size())
         assertEquals("DocSearch.LastSearch.Holding4,DocSearch.LastSearch.Holding3,DocSearch.LastSearch.Holding2,DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
-        assertEquals(marshall(c5), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding4", princ).optionVal)
-        assertEquals(marshall(c4), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding3", princ).optionVal)
-        assertEquals(marshall(c3), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding2", princ).optionVal)
-        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
-        assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c5), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding4", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c4), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding3", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c3), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding2", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
 
         // now add 1 more
 
@@ -163,11 +162,11 @@ class DocSearchSavingTest {
         // still 5 entries
         assertEquals(allUserOptions_before.size() + 5 + 1, allUserOptions_after.size())
         assertEquals("DocSearch.LastSearch.Holding0,DocSearch.LastSearch.Holding4,DocSearch.LastSearch.Holding3,DocSearch.LastSearch.Holding2,DocSearch.LastSearch.Holding1", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
-        assertEquals(marshall(c6), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
-        assertEquals(marshall(c5), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding4", princ).optionVal)
-        assertEquals(marshall(c4), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding3", princ).optionVal)
-        assertEquals(marshall(c3), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding2", princ).optionVal)
-        assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c6), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c5), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding4", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c4), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding3", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c3), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding2", princ).optionVal)
+        assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
     }
 
     protected DocumentLookupCriteria saveSearch(String princ, String name = null) {

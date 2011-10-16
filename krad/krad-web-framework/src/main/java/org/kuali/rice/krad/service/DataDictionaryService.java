@@ -451,6 +451,14 @@ public interface DataDictionaryService {
     public Object getDictionaryObject(String id);
 
     /**
+     * Indicates whether the data dictionary contains a bean with the given id
+     *
+     * @param id - id of the bean to check for
+     * @return boolean true if dictionary contains bean, false otherwise
+     */
+    public boolean containsDictionaryObject(String id);
+
+    /**
      * Returns View instance identified by the view type name and index
      *
      * @param viewTypeName - type name for the view

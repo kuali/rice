@@ -255,6 +255,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             component.setFactoryId(component.getId());
             view.getViewIndex().addInitialComponentState(component);
         }
+        // make sure we can get the bean from dictionary, else add to view index
+        else if (!getDataDictionaryService().containsDictionaryObject(component.getFactoryId())) {
+            view.getViewIndex().addInitialComponentState(component);
+        }
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();

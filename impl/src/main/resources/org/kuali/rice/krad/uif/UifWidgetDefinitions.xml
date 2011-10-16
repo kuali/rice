@@ -102,6 +102,7 @@
   <bean id="TableTools-ScrollInfinite-parentBean" parent="TableTools-parentBean" scope="prototype">
     <property name="componentOptions">
       <map merge="true">
+        <entry key="sDom" value="fTrt"/>
         <entry key="bScrollInfinite" value="true"/>
         <entry key="bScrollCollapse" value="true"/>
         <entry key="sScrollY" value="100%"/>

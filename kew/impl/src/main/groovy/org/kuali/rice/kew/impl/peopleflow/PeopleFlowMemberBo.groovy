@@ -17,7 +17,10 @@ import org.kuali.rice.kim.api.role.Role
 import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.framework.group.GroupEbo
-import org.kuali.rice.kim.framework.role.RoleEbo;
+import org.kuali.rice.kim.framework.role.RoleEbo
+import org.kuali.rice.krad.service.KRADServiceLocator
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb
+import org.kuali.rice.krad.service.ModuleService;
 
 /**
  * mapped entity for PeopleFlow members
@@ -52,6 +55,20 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
         }
 
         return KimApiServiceLocator.personService.personImplementationClass.newInstance();
+    }
+
+    public GroupEbo getGroup() {
+        ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(GroupEbo.class);
+        group = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, group, "group");
+
+        return group;
+    }
+
+    public RoleEbo getRole() {
+        ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(RoleEbo.class);
+        role = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, role, "role");
+
+        return role;
     }
 
     @Override

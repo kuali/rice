@@ -33,6 +33,58 @@
         <ref bean="PeopleFlowDelegate-actionRequestPolicyCode"/>
       </list>
     </property>
+    <property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition" p:objectAttributeName="person">
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="memberId"
+                    p:targetName="principalId"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:identifier="true"
+                    p:sourceName="memberName" p:targetName="principalName"/>
+              <bean parent="SupportAttributeDefinition" p:sourceName="person.name"
+                    p:targetName="name"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition" p:objectAttributeName="group">
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="memberId"
+                    p:targetName="id"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:identifier="true"
+                    p:sourceName="memberName" p:targetName="name"/>
+              <bean parent="SupportAttributeDefinition" p:sourceName="group.namespaceCode"
+                    p:targetName="namespaceCode"/>
+            </list>
+          </property>
+        </bean>
+        <bean parent="RelationshipDefinition" p:objectAttributeName="role">
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="memberId"
+                    p:targetName="id"/>
+            </list>
+          </property>
+          <property name="supportAttributes">
+            <list>
+              <bean parent="SupportAttributeDefinition" p:identifier="true"
+                    p:sourceName="memberName" p:targetName="name"/>
+              <bean parent="SupportAttributeDefinition" p:sourceName="role.namespaceCode"
+                    p:targetName="namespaceCode"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
   </bean>
 
   <bean id="PeopleFlowDelegate-memberId" parent="PeopleFlowDelegate-memberId-parentBean"/>

@@ -154,6 +154,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             // least one of the two are false
             String conditionalRender = getPropertyExpression("render");
             if (StringUtils.isNotEmpty(conditionalRender)) {
+                // TODO: does conditional render have the el placeholder? if so this will not work
                 conditionalRender = "(" + conditionalRender + ") and (" + progressiveRender + ")";
             } else {
                 conditionalRender = progressiveRender;

@@ -127,6 +127,7 @@ public class UifConstants {
 
     public static class TableToolsKeys {
         public static final String AASORTING = "aaSorting";
+        public static final String BAUTO_TYPE = "bAutoType";
         public static final String SDOM = "sDom";
         public static final String LANGUAGE = "oLanguage";
         public static final String EMPTY_TABLE = "sEmptyTable";
@@ -144,6 +145,7 @@ public class UifConstants {
         public static final String DOM_CHECK = "dom-checkbox";
         public static final String DOM_RADIO = "dom-radio";
         public static final String NUMERIC = "numeric";
+        public static final String STRING = "string";
         public static final String DATE = "kuali_date";
         public static final String PERCENT = "kuali_percent";
         public static final String CURRENCY = "kuali_currency";

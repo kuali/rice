@@ -365,6 +365,16 @@ public class DataDictionary  {
     }
 
     /**
+     * Indicates whether the data dictionary contains a bean with the given id
+     *
+     * @param id - id of the bean to check for
+     * @return boolean true if dictionary contains bean, false otherwise
+     */
+    public boolean containsDictionaryObject(String id) {
+        return ddBeans.containsBean(id);
+    }
+
+    /**
      * Retrieves the configured property values for the view bean definition associated with the given id
      *
      * <p>

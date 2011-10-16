@@ -120,7 +120,7 @@ public class TableTools extends WidgetBase {
             setDisableTableSort(true);
         }
 
-        if (!isDisableTableSort()) {
+       // if (!isDisableTableSort()) {
             // if rendering add line, skip that row from col sorting
             if (collectionGroup.isRenderAddLine()
                     && !collectionGroup.isReadOnly()
@@ -188,74 +188,41 @@ public class TableTools extends WidgetBase {
             tableToolsColumnOptions.append("]");
 
             getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
-        }
+       // }
     }
 
     /**
      * Constructs the sort data type for each datatable columns.
      */
-    protected String constructTableColumnOptions(boolean isSortable, Class dataTypeClass, String sortType) {
+    protected String constructTableColumnOptions(boolean isSortable, Class dataTypeClass, String sortDataType) {
         String colOptions = "null";
 
+        String sortType = "";
         if (!isSortable || dataTypeClass == null || sortType == null) {
-            colOptions = "{ \"" + UifConstants.TableToolsKeys.SORTABLE + "\" : false } ";
+            colOptions = "\"" + UifConstants.TableToolsKeys.SORTABLE + "\" : false, \"sType\" : \"string\"";
         } else {
             if (ClassUtils.isAssignable(dataTypeClass, KualiPercent.class)) {
-                colOptions = "{ \""
-                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
-                        + "\" : \""
-                        + sortType
-                        + "\" , \""
-                        + UifConstants.TableToolsKeys.SORT_TYPE
-                        + "\" : \""
-                        + UifConstants.TableToolsValues.PERCENT
-                        + "\" } ";
+                sortType = UifConstants.TableToolsValues.PERCENT;
             } else if (ClassUtils.isAssignable(dataTypeClass, KualiInteger.class) || ClassUtils.isAssignable(
                     dataTypeClass, KualiDecimal.class)) {
-                colOptions = "{ \""
-                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
-                        + "\" : \""
-                        + sortType
-                        + "\" , \""
-                        + UifConstants.TableToolsKeys.SORT_TYPE
-                        + "\" : \""
-                        + UifConstants.TableToolsValues.CURRENCY
-                        + "\" } ";
+                sortType = UifConstants.TableToolsValues.CURRENCY;
             } else if (ClassUtils.isAssignable(dataTypeClass, Timestamp.class)) {
-                colOptions = "{ \""
-                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
-                        + "\" : \""
-                        + sortType
-                        + "\" , \""
-                        + UifConstants.TableToolsKeys.SORT_TYPE
-                        + "\" : \""
-                        + "date"
-                        + "\" } ";
+                sortType = "date";
             } else if (ClassUtils.isAssignable(dataTypeClass, java.sql.Date.class) || ClassUtils.isAssignable(
                     dataTypeClass, java.util.Date.class)) {
-                colOptions = "{ \""
-                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
-                        + "\" : \""
-                        + sortType
-                        + "\" , \""
-                        + UifConstants.TableToolsKeys.SORT_TYPE
-                        + "\" : \""
-                        + UifConstants.TableToolsValues.DATE
-                        + "\" } ";
+                sortType = UifConstants.TableToolsValues.DATE;
             } else if (ClassUtils.isAssignable(dataTypeClass, Number.class)) {
-                colOptions = "{ \""
-                        + UifConstants.TableToolsKeys.SORT_DATA_TYPE
-                        + "\" : \""
-                        + sortType
-                        + "\" , \""
-                        + UifConstants.TableToolsKeys.SORT_TYPE
-                        + "\" : \""
-                        + UifConstants.TableToolsValues.NUMERIC
-                        + "\" } ";
-            } else {
-                colOptions = "{ \"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortType + "\" } ";
+                sortType = UifConstants.TableToolsValues.NUMERIC;
             }
+            else {
+                sortType = UifConstants.TableToolsValues.STRING;
+            }
+
+            colOptions = "\"" + UifConstants.TableToolsKeys.SORT_DATA_TYPE + "\" : \"" + sortDataType + "\"";
+            colOptions += " , \"" + UifConstants.TableToolsKeys.SORT_TYPE + "\" : \"" + sortType + "\"";
         }
+
+        colOptions = "{" + colOptions + "}";
 
         return colOptions;
     }

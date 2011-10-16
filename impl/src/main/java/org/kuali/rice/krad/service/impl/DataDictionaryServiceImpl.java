@@ -866,6 +866,13 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     }
 
     /**
+     * @see org.kuali.rice.krad.service.DataDictionaryService#containsDictionaryObject(java.lang.String)
+     */
+    public boolean containsDictionaryObject(String id) {
+        return dataDictionary.containsDictionaryObject(id);
+    }
+
+    /**
      * @see org.kuali.rice.krad.service.DataDictionaryService#getViewByTypeIndex(java.lang.String,
      *      java.util.Map)
      */

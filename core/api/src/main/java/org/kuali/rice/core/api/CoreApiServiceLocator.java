@@ -18,7 +18,7 @@ public class CoreApiServiceLocator {
 	public static final String XML_INGESTER_SERVICE = "xmlIngesterService";
 	public static final String STYLE_SERVICE = "styleService";
 
-    public static final QName PARAMETER_REPOSITORY_SERVICE = new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, "parameterServiceSoap");
+    public static final QName PARAMETER_REPOSITORY_SERVICE = new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, "parameterRepositoryServiceSoap");
 	
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);

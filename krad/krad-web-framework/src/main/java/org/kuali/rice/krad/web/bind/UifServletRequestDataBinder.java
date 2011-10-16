@@ -43,16 +43,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(
             UifServletRequestDataBinder.class);
 
-    private ViewService viewService;
     private UifBeanPropertyBindingResult bindingResult;
-	//--------------------------------------------------------------------------------
-	// BEGIN SPRING 3.1 OVERRIDES
-	//--------------------------------------------------------------------------------
     private ConversionService conversionService;
-//    private boolean autoGrowNestedPaths = true;
-	//--------------------------------------------------------------------------------
-	// END SPRING 3.1 OVERRIDES
-	//--------------------------------------------------------------------------------
 
     public UifServletRequestDataBinder(Object target) {
         super(target);
@@ -64,57 +56,6 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
         setBindingErrorProcessor(new UifBindingErrorProcessor());
     }
 
-	//--------------------------------------------------------------------------------
-	// BEGIN SPRING 3.1 OVERRIDES
-    //    These overrides only exist because we use a custom class for bindingResult
-	//--------------------------------------------------------------------------------
-
-    /**
-     * @see org.springframework.validation.DataBinder#setAutoGrowNestedPaths(boolean)
-     */
-/*
-    @Override
-    public void setAutoGrowNestedPaths(boolean autoGrowNestedPaths) {
-        Assert.state(this.bindingResult == null,
-                "DataBinder is already initialized - call setAutoGrowNestedPaths before other configuration methods");
-        this.autoGrowNestedPaths = autoGrowNestedPaths;
-    }
-*/
-    /**
-     * @see org.springframework.validation.DataBinder#isAutoGrowNestedPaths()
-     */
-/*
-    @Override
-    public boolean isAutoGrowNestedPaths() {
-        return this.autoGrowNestedPaths;
-    }
-*/
-    /**
-     * @see org.springframework.validation.DataBinder#setConversionService(org.springframework.core.convert.ConversionService)
-     */
-/*
-    @Override
-    public void setConversionService(ConversionService conversionService) {
-        Assert.state(this.conversionService == null, "DataBinder is already initialized with ConversionService");
-        this.conversionService = conversionService;
-        if (this.bindingResult != null && conversionService != null) {
-            this.bindingResult.initConversion(conversionService);
-        }
-    }
-*/
-    /**
-     * @see org.springframework.validation.DataBinder#getConversionService()
-     */
-/*
-    @Override
-    public ConversionService getConversionService() {
-        return this.conversionService;
-    }
-*/
-	//---------------------------------------------------------------------
-	// END SPRING 3.1 OVERRIDES
-	//---------------------------------------------------------------------
-
     /**
      * Allows for a custom binding result class.
      *
@@ -124,7 +65,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     public void initBeanPropertyAccess() {
         Assert.state(this.bindingResult == null,
                 "DataBinder is already initialized - call initBeanPropertyAccess before other configuration methods");
-        this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths(), getAutoGrowCollectionLimit());
+        this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths(),
+                getAutoGrowCollectionLimit());
         if (this.conversionService != null) {
             this.bindingResult.initConversion(this.conversionService);
         }
@@ -226,14 +168,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     }
 
     public ViewService getViewService() {
-        if (viewService == null) {
-            viewService = KRADServiceLocatorWeb.getViewService();
-        }
-        return this.viewService;
-    }
-
-    public void setViewService(ViewService viewService) {
-        this.viewService = viewService;
+        return KRADServiceLocatorWeb.getViewService();
     }
 
 }

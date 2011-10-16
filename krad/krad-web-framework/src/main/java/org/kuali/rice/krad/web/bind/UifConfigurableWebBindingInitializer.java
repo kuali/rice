@@ -34,6 +34,8 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
 
     @Override
     public void initBinder(WebDataBinder binder, WebRequest request) {
+        super.initBinder(binder, request);
+
         binder.registerCustomEditor(KualiDecimal.class, new UifCurrencyEditor());
         binder.registerCustomEditor(KualiInteger.class, new UifKualiIntegerCurrencyEditor());
 
@@ -60,7 +62,5 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
         // Use the StringArrayPropertyEditor for string arrays with "," as the
         // separator
         binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(",", false));
-
-        super.initBinder(binder, request);
     }
 }

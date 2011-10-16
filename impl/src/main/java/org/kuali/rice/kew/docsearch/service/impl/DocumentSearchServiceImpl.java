@@ -32,7 +32,6 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.core.util.JacksonRiceModule;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;

@@ -169,18 +169,18 @@ public class CollectionGroupBuilder implements Serializable {
 		CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
 		// copy group items for new line
-        List<Field> lineFields = null;
-        String lineSuffix = "";
+        List<Field> lineFields = (List<Field>) collectionGroup.getItems();
+        String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (lineIndex == -1) {
+            lineFields = (List<Field>) collectionGroup.getAddLineFields();
             lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
-            lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getAddLineFields(), bindingPath,
-                    lineSuffix);
-        } else {
-            lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
-            lineFields = (List<Field>) ComponentUtils.copyFieldList(collectionGroup.getItems(), bindingPath,
-                    lineSuffix);
         }
-        
+        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
+            lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
+        }
+
+        lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
+
 		if(lineIndex == -1 && !lineFields.isEmpty()){
     		for(Field f: lineFields){
     		    if(f instanceof AttributeField){
@@ -244,15 +244,9 @@ public class CollectionGroupBuilder implements Serializable {
             }
         }
 
-        // check for sub-collection suffix which needs added to IDs before the line index
-        String idSuffix = lineSuffix;
-        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
-            idSuffix = collectionGroup.getSubCollectionSuffix() + idSuffix;
-        }
-		
 		// invoke layout manager to build the complete line
 		layoutManager.buildLine(view, model, collectionGroup, lineFields, subCollectionFields, bindingPath, actions,
-				idSuffix, currentLine, lineIndex);
+				lineSuffix, currentLine, lineIndex);
 	}
 
 	

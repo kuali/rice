@@ -40,9 +40,12 @@ import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -58,7 +61,7 @@ public class DocumentSearchTest extends KEWTestCase {
     @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
-        
+
     }
 
     @Override
@@ -67,7 +70,7 @@ public class DocumentSearchTest extends KEWTestCase {
         userOptionsService = (UserOptionsService)KEWServiceLocator.getUserOptionsService();
     }
 
-    
+
     @Test public void testDocSearch() throws Exception {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
@@ -177,7 +180,7 @@ public class DocumentSearchTest extends KEWTestCase {
         // saves a second named search
         assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size());
         assertEquals(namedSearches_before.size() + 2, namedSearches_after.size());
-        
+
         assertEquals(marshall(c2), userOptionsService.findByOptionId("DocSearch.NamedSearch." + criteria.getSaveName(), user.getPrincipalId()).getOptionVal());
 
     }
@@ -292,7 +295,7 @@ public class DocumentSearchTest extends KEWTestCase {
     @Test public void testDocSearch_RouteNodeName() throws Exception {
         loadXmlFile("DocSearchTest_RouteNode.xml");
         String documentTypeName = "SearchDocType_RouteNodeTest";
-    	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+        DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "rkirkend";
 
         // route a document to enroute and route one to final
@@ -341,14 +344,14 @@ public class DocumentSearchTest extends KEWTestCase {
 
     private String getRouteNodeForSearch(String documentTypeName, Set<String> nodeNames) {
         assertEquals(1,	nodeNames.size());
-	String expectedNodeName = nodeNames.iterator().next();
+    String expectedNodeName = nodeNames.iterator().next();
         List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName), true);
         for (Iterator iterator = routeNodes.iterator(); iterator.hasNext();) {
-	    RouteNode node = (RouteNode) iterator.next();
-	    if (expectedNodeName.equals(node.getRouteNodeName())) {
-		return node.getRouteNodeName();
-	    }
-	}
+        RouteNode node = (RouteNode) iterator.next();
+        if (expectedNodeName.equals(node.getRouteNodeName())) {
+        return node.getRouteNodeName();
+        }
+    }
         return null;
     }
 
@@ -362,31 +365,42 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     /**
+     * Tests searching against document search attrs
+     * @throws Exception
+     */
+    @Test public void testDocSearchWithAttributes() throws Exception {
+        String[] docIds = routeTestDocs();
+
+        String principalId = getPrincipalId("bmcgough");
+        DocumentLookupCriteria.Builder builder = DocumentLookupCriteria.Builder.create();
+        builder.setDocumentTypeName("SearchDocType");
+        builder.setSaveName("testDocSearchWithAttributes");
+        Map<String, List<String>> docAttrs = new HashMap<String, List<String>>();
+        docAttrs.put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, Arrays.asList(new String[]{TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE}));
+        builder.setDocumentAttributeValues(docAttrs);
+
+        DocumentLookupResults results = docSearchService.lookupDocuments(principalId, builder.build());
+        assertEquals(docIds.length, results.getLookupResults().size());
+
+        DocumentLookupCriteria loaded = docSearchService.getNamedSearchCriteria(principalId, builder.getSaveName());
+        assertNotNull(loaded);
+        assertEquals(docAttrs, loaded.getDocumentAttributeValues());
+
+        // re-run saved search
+        results = docSearchService.lookupDocuments(principalId, loaded);
+        assertEquals(docIds.length, results.getLookupResults().size());
+    }
+
+    /**
      * Tests the usage of wildcards on the regular document search attributes.
      * @throws Exception
      */
-
     @Test public void testDocSearch_WildcardsOnRegularAttributes() throws Exception {
-    	// TODO: Add some wildcard testing for the document type attribute once wildcards are usable with it.
+        // TODO: Add some wildcard testing for the document type attribute once wildcards are usable with it.
 
-    	// Route some test documents.
-    	String docTypeName = "SearchDocType";
-    	String[] principalNames = {"bmcgough", "quickstart", "rkirkend"};
-    	String[] titles = {"The New Doc", "Document Number 2", "Some New Document"};
-    	String[] docIds = new String[titles.length];
-    	String[] appDocIds = {"6543", "5432", "4321"};
-    	String[] approverNames = {null, "jhopf", null};
-    	for (int i = 0; i < titles.length; i++) {
-        	WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(principalNames[i]), docTypeName);
-        	workflowDocument.setTitle(titles[i]);
-        	workflowDocument.setApplicationDocumentId(appDocIds[i]);
-        	workflowDocument.route("routing this document.");
-        	docIds[i] = workflowDocument.getDocumentId();
-        	if (approverNames[i] != null) {
-        		workflowDocument.switchPrincipal(getPrincipalId(approverNames[i]));
-        		workflowDocument.approve("approving this document.");
-        	}
-    	}
+        // Route some test documents.
+        String[] docIds = routeTestDocs();
+
         String principalId = getPrincipalId("bmcgough");
         DocumentLookupCriteria.Builder criteria = null;
         DocumentLookupResults results = null;
@@ -434,46 +448,73 @@ public class DocumentSearchTest extends KEWTestCase {
 
         // Test the wildcards on the document/notification ID attribute. The string wildcards should work, since the doc ID is not a string.
         String[] searchStrings = new String[] {"!"+docIds[0], docIds[1]+"|"+docIds[2], "<="+docIds[1], ">="+docIds[2], "<"+docIds[0]+"&&>"+docIds[2],
-        		">"+docIds[1], "<"+docIds[2]+"&&!"+docIds[0], docIds[0]+".."+docIds[2], "?"+docIds[1]+"*", "?"+docIds[1].substring(1)+"*", "?9*7"};
+                ">"+docIds[1], "<"+docIds[2]+"&&!"+docIds[0], docIds[0]+".."+docIds[2], "?"+docIds[1]+"*", "?"+docIds[1].substring(1)+"*", "?9*7"};
         int[] expectedResults = new int[] {2, 2, 2, 1, 0, 1, 1, 3, 0, 1, 0};
         for (int i = 0; i < searchStrings.length; i++) {
-        	criteria = DocumentLookupCriteria.Builder.create();
-        	criteria.setDocumentId(searchStrings[i]);
-        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-        	assertEquals("Doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+            criteria = DocumentLookupCriteria.Builder.create();
+            criteria.setDocumentId(searchStrings[i]);
+            results = docSearchService.lookupDocuments(principalId, criteria.build());
+            assertEquals("Doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
         }
 
         // Test the wildcards on the application document/notification ID attribute. The string wildcards should work, since the app doc ID is a string.
         searchStrings = new String[] {"6543", "5432|4321", ">4321", "<=5432", ">=6543", "<3210", "!3210", "!5432", "!4321!5432", ">4321&&!6543",
-        		"*5?3*", "*", "?3?1", "!*43*", "!???2", ">43*1", "<=5432&&!?32?", "5432..6543"};
+                "*5?3*", "*", "?3?1", "!*43*", "!???2", ">43*1", "<=5432&&!?32?", "5432..6543"};
         expectedResults = new int[] {1, 2, 2, 2, 1, 0, 3, 2, 1, 1, 2, 3, 1, 0, 2, 3, 1, 2/*1*/};
         for (int i = 0; i < searchStrings.length; i++) {
-        	criteria = DocumentLookupCriteria.Builder.create();
-        	criteria.setApplicationDocumentId(searchStrings[i]);
-        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-        	if(expectedResults[i] !=  results.getLookupResults().size()){
-        		assertEquals("App doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
-        	}
+            criteria = DocumentLookupCriteria.Builder.create();
+            criteria.setApplicationDocumentId(searchStrings[i]);
+            results = docSearchService.lookupDocuments(principalId, criteria.build());
+            if(expectedResults[i] !=  results.getLookupResults().size()){
+                assertEquals("App doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+            }
         }
 
         // Test the wildcards on the title attribute.
         searchStrings = new String[] {"Some New Document", "Document Number 2|The New Doc", "!The New Doc", "!Some New Document!Document Number 2",
-        		"!The New Doc&&!Some New Document", ">Document Number 2", "<=Some New Document", ">=The New Doc&&<Some New Document", ">A New Doc",
-        		"<Some New Document|The New Doc", ">=Document Number 2&&!Some New Document", "*Docu??nt*", "*New*", "The ??? Doc", "*Doc*", "*Number*",
-        		"Some New Document..The New Doc", "Document..The", "*New*&&!*Some*", "!The ??? Doc|!*New*"};
+                "!The New Doc&&!Some New Document", ">Document Number 2", "<=Some New Document", ">=The New Doc&&<Some New Document", ">A New Doc",
+                "<Some New Document|The New Doc", ">=Document Number 2&&!Some New Document", "*Docu??nt*", "*New*", "The ??? Doc", "*Doc*", "*Number*",
+                "Some New Document..The New Doc", "Document..The", "*New*&&!*Some*", "!The ??? Doc|!*New*"};
         expectedResults = new int[] {1, 2, 2, 1, 1, 2, 2, 0, 3, 2, 2, 2, 2, 1, 3, 1, 2/*1*/, 2, 1, 2};
         for (int i = 0; i < searchStrings.length; i++) {
-        	criteria = DocumentLookupCriteria.Builder.create();
-        	criteria.setTitle(searchStrings[i]);
-        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-        	if(expectedResults[i] !=  results.getLookupResults().size()){
-        		assertEquals("Doc title search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
-        	}
+            criteria = DocumentLookupCriteria.Builder.create();
+            criteria.setTitle(searchStrings[i]);
+            results = docSearchService.lookupDocuments(principalId, criteria.build());
+            if(expectedResults[i] !=  results.getLookupResults().size()){
+                assertEquals("Doc title search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+            }
         }
 
     }
-    
+
+    /**
+     * Routes some test docs for searching
+     * @return String[] of doc ids
+     */
+    protected String[] routeTestDocs() {
+        // Route some test documents.
+        String docTypeName = "SearchDocType";
+        String[] principalNames = {"bmcgough", "quickstart", "rkirkend"};
+        String[] titles = {"The New Doc", "Document Number 2", "Some New Document"};
+        String[] docIds = new String[titles.length];
+        String[] appDocIds = {"6543", "5432", "4321"};
+        String[] approverNames = {null, "jhopf", null};
+        for (int i = 0; i < titles.length; i++) {
+            WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(principalNames[i]), docTypeName);
+            workflowDocument.setTitle(titles[i]);
+            workflowDocument.setApplicationDocumentId(appDocIds[i]);
+            workflowDocument.route("routing this document.");
+            docIds[i] = workflowDocument.getDocumentId();
+            if (approverNames[i] != null) {
+                workflowDocument.switchPrincipal(getPrincipalId(approverNames[i]));
+                workflowDocument.approve("approving this document.");
+            }
+        }
+
+        return docIds;
+    }
+
     private String getPrincipalId(String principalName) {
-    	return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
+        return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
 }

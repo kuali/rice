@@ -9,6 +9,7 @@ import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO
 import static org.junit.Assert.assertEquals
 import static DocumentLookupCriteriaTest.create
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils
+import org.apache.commons.lang.NotImplementedException
 
 /**
  * Unit tests DocumentLookupCriteria saving behavior of DocumentSearchServiceImpl
@@ -19,14 +20,27 @@ class DocSearchSavingTest {
         def options = new HashMap<String, String>()
         Collection<UserOptions> findByWorkflowUser(String principalId) {
             options.collect {
-                def opt = new UserOptions();
+                def opt = new UserOptions()
                 opt.optionId = it.key
                 opt.optionVal = it.value
                 opt
             }
         }
-        List<UserOptions> findByUserQualified(String principalId, String likeString) { null }
-        void deleteByUserQualified(String principalId, String likeString) { }
+        List<UserOptions> findByUserQualified(String principalId, String likeString) {
+            def prefix = likeString.replaceAll(/%$/, '')
+            options.findResults { k, v ->
+                if (k.startsWith(prefix)) {
+                    def opt = new UserOptions()
+                    opt.optionId = k
+                    opt.optionVal = v
+                    opt
+                }
+            }
+        }
+        void deleteByUserQualified(String principalId, String likeString) {
+            def prefix = likeString.replaceAll(/%$/, '')
+            options = options.findAll { k, v -> !k.startsWith(prefix) }
+        }
         void save(UserOptions userOptions) {
             options.put(userOptions.optionId, userOptions.optionVal)
         }
@@ -104,6 +118,9 @@ class DocSearchSavingTest {
         assertEquals("DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0", userOptionsService.findByOptionId("DocSearch.LastSearch.Order", princ).optionVal)
         assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c1), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding0", princ).optionVal)
         assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
+
+        docSearchService.clearNamedSearches(princ)
+        assertEquals(0, userOptionsService.findByWorkflowUser(princ).size())
     }
 
     @Test
@@ -127,6 +144,9 @@ class DocSearchSavingTest {
         // saves a second named search
         assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size())
         assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c2), userOptionsService.findByOptionId("DocSearch.NamedSearch." + c2.getSaveName(), princ).optionVal)
+
+        docSearchService.clearNamedSearches(princ)
+        assertEquals(0, userOptionsService.findByWorkflowUser(princ).size())
     }
 
     @Test
@@ -167,6 +187,9 @@ class DocSearchSavingTest {
         assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c4), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding3", princ).optionVal)
         assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c3), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding2", princ).optionVal)
         assertEquals(DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c2), userOptionsService.findByOptionId("DocSearch.LastSearch.Holding1", princ).optionVal)
+
+        docSearchService.clearNamedSearches(princ)
+        assertEquals(0, userOptionsService.findByWorkflowUser(princ).size())
     }
 
     protected DocumentLookupCriteria saveSearch(String princ, String name = null) {

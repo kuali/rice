@@ -3,6 +3,8 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -262,6 +264,7 @@ public class DocumentLookupInternalUtils {
      */
     public static DocumentLookupCriteria unmarshalDocumentLookupCriteria(String string) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         DocumentLookupCriteria.Builder builder = (DocumentLookupCriteria.Builder) jsonMapper.readValue(string, DocumentLookupCriteria.Builder.class); // see JacksonRiceModule for details of unmarshalling
         // fix up the Joda DateTimes
         builder.normalizeDateTimes();
@@ -277,6 +280,7 @@ public class DocumentLookupInternalUtils {
      */
     public static String marshalDocumentLookupCriteria(DocumentLookupCriteria criteria) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         // Jackson XC support not included by Rice, so no auto-magic JAXB-compatibility
         // AnnotationIntrospector introspector = new JaxbAnnotationIntrospector();
         // // make deserializer use JAXB annotations (only)

@@ -232,11 +232,11 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
             // XXX: hax
             Config config = ConfigContext.getCurrentContextConfig();
             DatabasePlatform platform = null;
-			try {
-				platform = (DatabasePlatform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();
-			} catch (Exception e) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
+            try {
+                platform = (DatabasePlatform) Class.forName(config.getProperty(Config.DATASOURCE_PLATFORM)).newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
+            }
             q.setQuerySuffix(" " + platform.getSelectForUpdateSuffix(wait));
             query = q;            
         } else {
@@ -294,43 +294,43 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
         return criteria;
     }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.framework.persistence.dao.GenericDao#findMatching(java.lang.Class, org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria)
-	 */
-	@Override
-	public Collection findMatching(Class clazz,
-			org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria) {
-		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
-		return null;
-	}
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.core.framework.persistence.dao.GenericDao#findMatching(java.lang.Class, org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria)
+     */
+    @Override
+    public Collection findMatching(Class clazz,
+            org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria) {
+        // TODO g1zhang - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.framework.persistence.dao.GenericDao#findMatching(java.lang.Class, org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria, boolean, long)
-	 */
-	@Override
-	public Collection findMatching(Class clazz,
-			org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria,
-			boolean selectForUpdate, long wait) {
-		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
-		return null;
-	}
-	
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.core.framework.persistence.dao.GenericDao#findMatching(java.lang.Class, org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria, boolean, long)
+     */
+    @Override
+    public Collection findMatching(Class clazz,
+            org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria criteria,
+            boolean selectForUpdate, long wait) {
+        // TODO g1zhang - THIS METHOD NEEDS JAVADOCS
+        return null;
+    }
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.framework.persistence.dao.GenericDao#findMatching(java.lang.Class, java.util.Map, boolean, long)
-	 */
-	@Override
-	public Collection findMatching(Class clazz, Map criteria,
-			boolean selectForUpdate, long wait) {
-		
-		LOG.info("*******************************calling GenericDaoOjb.findMatching(Class clazz, Map criteria, boolean selectForUpdate, long wait)");
-		Criteria c = buildCriteria(criteria);
-		return findMatching(clazz, c, selectForUpdate, wait);
-	}
+
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.core.framework.persistence.dao.GenericDao#findMatching(java.lang.Class, java.util.Map, boolean, long)
+     */
+    @Override
+    public Collection findMatching(Class clazz, Map criteria,
+            boolean selectForUpdate, long wait) {
+
+        LOG.info("*******************************calling GenericDaoOjb.findMatching(Class clazz, Map criteria, boolean selectForUpdate, long wait)");
+        Criteria c = buildCriteria(criteria);
+        return findMatching(clazz, c, selectForUpdate, wait);
+    }
 }

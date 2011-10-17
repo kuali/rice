@@ -18,7 +18,7 @@ public class KimImplServiceLocator {
     public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
     public static final String RESPONSIBILITY_INTERNAL_SERVICE = "responsibilityInternalService";
     public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
-    public static final String ROLE_INTERNAL_SERVICE = "roleInternalService";
+    public static final String ROLE_INTERNAL_SERVICE = "kimRoleInternalService";
     public static final String LOCAL_CACHE_MANAGER = "kimLocalCacheManager";
 
     public static Object getService(String serviceName) {
@@ -43,7 +43,7 @@ public class KimImplServiceLocator {
     }
 
     public static RoleInternalService getRoleInternalService() {
-        return (RoleInternalService) getService(GROUP_INTERNAL_SERVICE);
+        return (RoleInternalService) getService(ROLE_INTERNAL_SERVICE);
     }
 
     public static CacheManager getLocalCacheManager() {

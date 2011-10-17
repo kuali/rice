@@ -63,7 +63,6 @@
   <!-- the distributed cache manager that calls into the sharedDataCacheService on the ksb -->
   <bean id="sharedDataDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="sharedDataLocalCacheManager" />
-    <property name="messageHelper" ref="rice.ksb.messageHelper" />
     <property name="serviceName" value="{http://rice.kuali.org/shareddata}sharedDataCacheServiceSoap" />
   </bean>
 

@@ -52,6 +52,10 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
 		</dependency>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+    </dependency>
 		<dependency>
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>
@@ -80,6 +84,19 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-java2ws-plugin</artifactId>
 				<executions>
+          <execution>
+              <id>coreCacheService-wsdl</id>
+                <phase>${rice.java2ws.phase}</phase>
+              <configuration>
+                <className>org.kuali.rice.core.api.cache.CacheService</className>
+                <outputFile>${project.build.outputDirectory}/wsdl/CacheService.wsdl</outputFile>
+                <targetNamespace>http://rice.kuali.org/core</targetNamespace>
+                <serviceName>CoreCacheService</serviceName>
+              </configuration>
+              <goals>
+                  <goal>java2ws</goal>
+              </goals>
+          </execution>
 					<execution>
 						<id>parameterRepositoryService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>

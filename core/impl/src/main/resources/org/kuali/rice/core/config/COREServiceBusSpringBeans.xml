@@ -101,7 +101,7 @@
     </property>
     <property name="exportIf" value="namespaceServiceSOAP.expose"/>
   </bean>
-  <!--
+
   <bean parent="coreRemoteServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
@@ -111,5 +111,5 @@
     </property>
     <property name="exportIf" value="coreCacheServiceSOAP.expose"/>
   </bean>
-  -->
+
 </beans>

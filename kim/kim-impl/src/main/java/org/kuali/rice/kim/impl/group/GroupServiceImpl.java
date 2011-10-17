@@ -627,6 +627,10 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         bo.setAttributeDetails(attrBos);
 
         bo = saveGroup(bo);
+        if (origGroup.isActive()
+                && !bo.isActive()) {
+            KimImplServiceLocator.getRoleInternalService().groupInactivated(bo.getId());
+        }
 
         return GroupBo.to(bo);
     }

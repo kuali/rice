@@ -355,4 +355,8 @@ public final class Parameter extends AbstractDataTransferObject implements Param
         final static String EVALUATION_OPERATOR = "evaluationOperator";
     }
 
+    public static class Cache {
+        public static final String NAME = CoreConstants.Namespaces.CORE_NAMESPACE_2_0 + "/" + Parameter.Constants.TYPE_NAME;
+    }
+
 }

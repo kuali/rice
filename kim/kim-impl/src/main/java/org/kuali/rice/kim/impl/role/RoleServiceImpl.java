@@ -34,6 +34,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.jws.WebParam;
@@ -79,13 +80,19 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public Role updateRole(final Role role) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(role, "role");
 
-        if (StringUtils.isBlank(role.getId()) || getRole(role.getId()) == null) {
+        RoleBo originalRole = getRoleBo(role.getId());
+        if (StringUtils.isBlank(role.getId()) || originalRole == null) {
             throw new RiceIllegalStateException("the role does not exist: " + role);
         }
 
         RoleBo bo = RoleBo.from(role);
 
-        return RoleBo.to(getBusinessObjectService().save(bo));
+        RoleBo updatedRole = getBusinessObjectService().save(bo);
+        if (originalRole.isActive()
+                && !updatedRole.isActive()) {
+            KimImplServiceLocator.getRoleInternalService().roleInactivated(updatedRole.getId());
+        }
+        return RoleBo.to(updatedRole);
     }
 
     /**

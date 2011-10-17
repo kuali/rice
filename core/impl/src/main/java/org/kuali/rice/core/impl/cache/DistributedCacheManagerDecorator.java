@@ -9,8 +9,6 @@ import org.kuali.rice.core.api.cache.CacheService;
 import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.Endpoint;
-import org.kuali.rice.ksb.api.bus.ServiceBus;
-import org.kuali.rice.ksb.api.messaging.MessageHelper;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NamedBean;
@@ -49,7 +47,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
     private static final Log LOG = LogFactory.getLog(DistributedCacheManagerDecorator.class);
 
     private CacheManager cacheManager;
-    private MessageHelper messageHelper;
     private String serviceName;
     private String name;
 
@@ -119,10 +116,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
             throw new IllegalStateException("cacheManager was null");
         }
 
-        if (messageHelper == null) {
-            throw new IllegalStateException("messageHelper was null");
-        }
-
         if (StringUtils.isBlank(serviceName)) {
             throw new IllegalStateException("serviceName was null or blank");
         }
@@ -134,10 +127,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
     public void setCacheManager(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
-    }
-
-    public void setMessageHelper(MessageHelper messageHelper) {
-        this.messageHelper = messageHelper;
     }
 
     public void setServiceName(String serviceName) {

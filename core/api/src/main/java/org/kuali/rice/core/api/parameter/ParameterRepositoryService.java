@@ -20,6 +20,8 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -47,6 +49,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="createParameter")
     @WebResult(name = "parameter")
+    @CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
     Parameter createParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -68,6 +71,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="updateParameter")
     @WebResult(name = "parameter")
+    @CacheEvict(value={Parameter.Cache.NAME}, allEntries = true)
     Parameter updateParameter(@WebParam(name = "parameter") Parameter parameter)
             throws RiceIllegalArgumentException, RiceIllegalStateException;
 
@@ -91,6 +95,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getParameter")
     @WebResult(name = "parameter")
+    @Cacheable(value= Parameter.Cache.NAME, key="'key=' + #p0.hashCode()")
     Parameter getParameter(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
@@ -113,6 +118,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getPropertyValueAsString")
     @WebResult(name = "value")
+    @Cacheable(value= Parameter.Cache.NAME, key="'{getParameterValueAsString}' + 'key=' + #p0.hashCode()")
     String getParameterValueAsString(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
@@ -155,6 +161,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getParameterValueAsBoolean")
     @WebResult(name = "value")
+    @Cacheable(value= Parameter.Cache.NAME, key="'{getParameterValueAsBoolean}' + 'key=' + #p0.hashCode()")
     Boolean getParameterValueAsBoolean(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
@@ -186,6 +193,7 @@ public interface ParameterRepositoryService {
     @XmlElementWrapper(name = "values", required = true)
     @XmlElement(name = "value", required = false)
     @WebResult(name = "values")
+    @Cacheable(value= Parameter.Cache.NAME, key="'{getParameterValuesAsString}' + 'key=' + #p0.hashCode()")
     Collection<String> getParameterValuesAsString(@WebParam(name = "key") ParameterKey key) throws RiceIllegalArgumentException;
 
     /**
@@ -225,6 +233,7 @@ public interface ParameterRepositoryService {
      */
     @WebMethod(operationName="getSubParameterValueAsString")
     @WebResult(name = "value")
+    @Cacheable(value= Parameter.Cache.NAME, key="'{getSubParameterValueAsString}' + 'key=' + #p0.hashCode() + '|' + 'subParameterName=' + #p1")
     String getSubParameterValueAsString(@WebParam(name = "key") ParameterKey key,
                                         @WebParam(name = "subParameterName") String subParameterName)
             throws RiceIllegalArgumentException;
@@ -277,6 +286,7 @@ public interface ParameterRepositoryService {
     @XmlElementWrapper(name = "values", required = true)
     @XmlElement(name = "value", required = false)
     @WebResult(name = "values")
+    @Cacheable(value= Parameter.Cache.NAME, key="'{getSubParameterValuesAsString}' + 'key=' + #p0.hashCode() + '|' + 'subParameterName=' + #p1")
     Collection<String> getSubParameterValuesAsString(@WebParam(name = "key") ParameterKey key,
                                                      @WebParam(name = "subParameterName") String subParameterName)
             throws RiceIllegalArgumentException;

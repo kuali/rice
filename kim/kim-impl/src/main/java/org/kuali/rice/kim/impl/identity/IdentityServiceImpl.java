@@ -71,6 +71,7 @@ import org.kuali.rice.kim.impl.identity.privacy.EntityPrivacyPreferencesBo;
 import org.kuali.rice.kim.impl.identity.residency.EntityResidencyBo;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
 import java.util.ArrayList;
@@ -194,18 +195,23 @@ public class IdentityServiceImpl implements IdentityService {
     @Override
     public Principal updatePrincipal(Principal principal) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(principal, "principal");
-
+        Principal originalPrincipal = null;
         if (StringUtils.isEmpty(principal.getEntityId()) || StringUtils.isBlank(principal.getEntityId())
                 || StringUtils.isEmpty(principal.getPrincipalName()) || StringUtils.isBlank(principal.getPrincipalName())) {
             throw new RiceIllegalStateException("Principal's entityId and PrincipalName must be populated before update");
         }  else {
-            if (StringUtils.isEmpty(principal.getPrincipalId()) ||
-                    getPrincipalByPrincipalName(principal.getPrincipalName()) == null) {
+             originalPrincipal = getPrincipalByPrincipalName(principal.getPrincipalName());
+            if (StringUtils.isEmpty(principal.getPrincipalId()) || originalPrincipal == null) {
                 throw new RiceIllegalStateException("the Principal to update does not exist: " + principal);
             }
         }
         PrincipalBo bo = PrincipalBo.from(principal);
-        return PrincipalBo.to(businessObjectService.save(bo));
+        PrincipalBo updatedPrincipal = businessObjectService.save(bo);
+        if (originalPrincipal.isActive()
+                && !updatedPrincipal.isActive()) {
+            KimImplServiceLocator.getRoleInternalService().principalInactivated(updatedPrincipal.getPrincipalId());
+        }
+        return PrincipalBo.to(updatedPrincipal);
     }
 
     @Override

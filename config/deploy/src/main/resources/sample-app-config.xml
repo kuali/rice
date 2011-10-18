@@ -1,4 +1,6 @@
 <!-- Configuration specific to the Kuali Rice Sample Application -->
 <config>
+  <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
+  <param name="filtermapping.login.1">/*</param>
   <param name="config.location">/home/${tomcat.instance}/kuali/main/${environment}/env-config.xml</param>
 </config>

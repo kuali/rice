@@ -1,6 +1,6 @@
 <!-- Configuration specific to the application deployed to this environment -->
 <config>
-ice.ksb.batch.mode  <param name="dev.mode">false</param>
+  <param name="dev.mode">false</param>
   <param name="rice.ksb.batch.mode">false</param>
   <param name="rice.standalone">true</param>
   <param name="rice.server.datasource.url">jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</param>

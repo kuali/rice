@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.options;
 
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kim.api.KimConstants;
@@ -34,9 +35,9 @@ public class MemberTypeValuesFinder extends KeyValuesBase {
 	private static final List<KeyValue> LABELS;
 	static {
 		final List<KeyValue> labels = new ArrayList<KeyValue>( 3 );
-        labels.add(new ConcreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
-        labels.add(new ConcreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
-        labels.add(new ConcreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE));
+        labels.add(new ConcreteKeyValue(MemberType.PRINCIPAL.getCode(), KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
+        labels.add(new ConcreteKeyValue(MemberType.GROUP.getCode(), KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
+        labels.add(new ConcreteKeyValue(MemberType.ROLE.getCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE));
         LABELS = Collections.unmodifiableList(labels);
 	}
 	

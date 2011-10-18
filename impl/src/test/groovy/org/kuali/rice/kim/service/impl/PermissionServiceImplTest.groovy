@@ -7,6 +7,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.kuali.rice.core.api.criteria.CriteriaLookupService
 import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.core.api.membership.MemberType
 import org.kuali.rice.kim.api.common.assignee.Assignee
 import org.kuali.rice.kim.api.common.delegate.DelegateType
 import org.kuali.rice.kim.api.permission.Permission
@@ -312,7 +313,7 @@ class PermissionServiceImplTest {
 
 		mockRoleService.demand.getRoleMembers(1) {
             List<String> roleIds, Map<String, String> qualification -> List<RoleMembership> memberships = new ArrayList<RoleMembership>(1);
-            RoleMembership.Builder builder = RoleMembership.Builder.create("roleidone", "rolememberId", "memberid", "P", null);
+            RoleMembership.Builder builder = RoleMembership.Builder.create("roleidone", "rolememberId", "memberid", MemberType.PRINCIPAL, null);
             memberships.add(builder.build());
             return memberships;
         }
@@ -355,7 +356,7 @@ class PermissionServiceImplTest {
 
         mockRoleService.demand.getRoleMembers(1) {
             List<String> roleIds, Map<String, String> qualification -> List<RoleMembership> memberships = new ArrayList<RoleMembership>(1);
-            RoleMembership.Builder builder = RoleMembership.Builder.create("roleidone", "rolememberId", "memberid", "P", null);
+            RoleMembership.Builder builder = RoleMembership.Builder.create("roleidone", "rolememberId", "memberid", MemberType.PRINCIPAL, null);
             memberships.add(builder.build());
             return memberships;
         }

@@ -578,9 +578,9 @@ public class ActionRequestFactory {
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Processing RoleMembership for action request: " + membership );
     		}
-			if (MemberType.PRINCIPAL.getCode().equals(membership.getMemberTypeCode())) {
+			if (MemberType.PRINCIPAL.equals(membership.getMemberType())) {
 				roleRecipient.setTarget(new KimPrincipalRecipient(membership.getMemberId()));
-			} else if (MemberType.GROUP.getCode().equals(membership.getMemberTypeCode())) {
+			} else if (MemberType.GROUP.equals(membership.getMemberType())) {
 				roleRecipient.setTarget(new KimGroupRecipient(membership.getMemberId()));
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given RoleMembership:" + membership);

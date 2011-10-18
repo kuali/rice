@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
@@ -346,14 +347,14 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
     public BusinessObject getMember(String memberTypeCode, String memberId){
         Class<? extends BusinessObject> roleMemberTypeClass = null;
         String roleMemberIdName = "";
-    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+    	if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = PrincipalBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
 	 	 	Principal principalInfo = getIdentityService().getPrincipal(memberId);
 	 	 	if (principalInfo != null) {
 	 	 		
 	 	 	}
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = GroupBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
         	Group groupInfo = null;
@@ -361,7 +362,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
 	 	 	if (groupInfo != null) {
 	 	 		
 	 	 	}
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
         	roleMemberTypeClass = RoleBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
 	 	 	Role role = getRoleService().getRole(memberId);
@@ -413,7 +414,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
                     for(RoleMemberBo origRoleMemberImpl: origRoleMembers){
                         if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
                             (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
-                            (origRoleMemberImpl.getMemberTypeCode()!=null && StringUtils.equals(origRoleMemberImpl.getMemberTypeCode(), newRoleMember.getMemberTypeCode())) &&
+                            (origRoleMemberImpl.getMemberType()!=null && org.apache.commons.lang.ObjectUtils.equals(origRoleMemberImpl.getMemberType(), newRoleMember.getMemberType())) &&
                             !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
                             !kimTypeService.validateAttributesAgainstExisting(identityManagementRoleDocument.getKimType().getId(),
                                     documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes()).isEmpty()) {

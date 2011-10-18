@@ -84,9 +84,9 @@ public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeService
         List<RoleMembership> members = new ArrayList<RoleMembership>();
         for (Assignee permissionAssigneeInfo : permissionAssignees) {
             if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
-                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), MemberType.PRINCIPAL.getCode(), null).build());
+                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), MemberType.PRINCIPAL, null).build());
             } else if (StringUtils.isNotBlank(permissionAssigneeInfo.getGroupId())) {
-                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getGroupId(), MemberType.GROUP.getCode(), null).build());
+                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getGroupId(), MemberType.GROUP, null).build());
             }
         }
         return members;

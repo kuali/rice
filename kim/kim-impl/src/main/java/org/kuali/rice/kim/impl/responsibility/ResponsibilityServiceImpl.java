@@ -255,7 +255,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 rai.setResponsibilityName(responsibility.getName());
                 rai.setResponsibilityNamespaceCode(responsibility.getNamespaceCode());
 
-                if (MemberType.PRINCIPAL.getCode().equals(rm.getMemberTypeCode())) {
+                if (MemberType.PRINCIPAL.equals(rm.getMemberType())) {
                     rai.setPrincipalId(rm.getMemberId());
                 } else {
                     rai.setGroupId(rm.getMemberId());

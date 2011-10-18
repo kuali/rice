@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -240,7 +241,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
-    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){
+    	if(MemberType.PRINCIPAL.getCode().equals(newMember.getMemberTypeCode())){
         	Principal principalInfo = getIdentityService().getPrincipal(newMember.getMemberId());
         	if (principalInfo == null) {
         		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
@@ -250,7 +251,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	else {
         		newMember.setMemberName(principalInfo.getPrincipalName());
         	}
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){
+        } else if(MemberType.GROUP.getCode().equals(newMember.getMemberTypeCode())){
         	Group groupInfo = null;
         	groupInfo = KimApiServiceLocator.getGroupService().getGroup(newMember.getMemberId());
         	if (groupInfo == null) {
@@ -262,14 +263,14 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         		newMember.setMemberName(groupInfo.getName());
                 newMember.setMemberNamespaceCode(groupInfo.getNamespaceCode());
         	}
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
+        } else if(MemberType.ROLE.getCode().equals(newMember.getMemberTypeCode())){
         	Role role = KimApiServiceLocator.getRoleService().getRole(newMember.getMemberId());
         	if (role == null) {
         		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
             			new String[] {newMember.getMemberId()});
             	return false;
         	}
-        	else if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE)
+        	else if(StringUtils.equals(newMember.getMemberTypeCode(), MemberType.ROLE.getCode())
             		&& !validateRole(newMember.getMemberId(), role, "document.member.memberId", "Role")){
             	return false;
             }

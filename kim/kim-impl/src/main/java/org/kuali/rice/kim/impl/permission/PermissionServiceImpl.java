@@ -279,9 +279,9 @@ public class PermissionServiceImpl implements PermissionService {
                     delegateBuilderList.add(DelegateType.Builder.create(delegate));
     			}
 			}
-    		if ( MemberType.PRINCIPAL.getCode().equals(rm.getMemberTypeCode()) ) {
+    		if ( MemberType.PRINCIPAL.equals(rm.getMemberType()) ) {
     			results.add (Assignee.Builder.create(rm.getMemberId(), null, delegateBuilderList).build());
-    		} else if ( MemberType.GROUP.getCode().equals(rm.getMemberTypeCode()) ) {
+    		} else if ( MemberType.GROUP.equals(rm.getMemberType()) ) {
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());
     		}
     	}
@@ -309,7 +309,7 @@ public class PermissionServiceImpl implements PermissionService {
                     delegateBuilderList.add(DelegateType.Builder.create(delegate));
     			}
 			}
-    		if ( MemberType.PRINCIPAL.getCode().equals(rm.getMemberTypeCode()) ) {
+    		if ( MemberType.PRINCIPAL.equals(rm.getMemberType()) ) {
     			results.add (Assignee.Builder.create(rm.getMemberId(), null, delegateBuilderList).build());
     		} else { // a group membership
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());

@@ -17,6 +17,7 @@ package org.kuali.rice.kim.lookup;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -171,7 +172,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				}
 			}
 			//need to find roles that current role is a member of and build search string
-			List<String> parentRoleIds = KimApiServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getId());
+			List<String> parentRoleIds = KimApiServiceLocator.getRoleService().getMemberParentRoleIds(MemberType.ROLE.getCode(), roleImpl.getId());
 			for (String parentRoleId : parentRoleIds) {
 				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
 				roleSearchCriteria.put("roleId", parentRoleId);

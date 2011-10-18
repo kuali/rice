@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.web.struts.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.type.KimType;
@@ -158,13 +159,13 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 			return "";
         }
 		String memberTypeCode = getDelegationMember().getMemberTypeCode();
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+		if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
 			return "principalId:delegationMember.memberId,principalName:delegationMember.memberName";
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
 			return "roleId:delegationMember.memberId,roleName:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return "groupId:delegationMember.memberId,groupName:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
         }
 		return "";
@@ -178,26 +179,26 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	}
 
 	protected String getMemberFieldConversions(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+		if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
 			return "principalId:member.memberId,principalName:member.memberName";
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
 			return "roleId:member.memberId,roleName:member.memberName,namespaceCode:member.memberNamespaceCode";
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return "groupId:member.memberId,groupName:member.memberName,namespaceCode:member.memberNamespaceCode";
         }
 		return "";
 	}
 
 	protected String getMemberBusinessObjectName(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+		if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
 			return PersonImpl.class.getName();
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
 			return RoleBo.class.getName();
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return GroupBo.class.getName();
         }
 		return "";

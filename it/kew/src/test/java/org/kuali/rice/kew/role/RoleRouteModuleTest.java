@@ -158,7 +158,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         Principal adminPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("admin");
         assertNotNull(adminPrincipal);
         adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
-        adminRolePrincipal.setMemberTypeCode( MemberType.PRINCIPAL.getCode() );
+        adminRolePrincipal.setMemberType( MemberType.PRINCIPAL );
 
         String roleMemberId2 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo user2RolePrincipal = new RoleMemberBo();
@@ -167,7 +167,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         Principal user2Principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("user2");
         assertNotNull(user2Principal);
         user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
-        user2RolePrincipal.setMemberTypeCode( MemberType.PRINCIPAL.getCode() );
+        user2RolePrincipal.setMemberType( MemberType.PRINCIPAL );
 
         String roleMemberId3 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo user1RolePrincipal = new RoleMemberBo();
@@ -176,7 +176,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         Principal user1Principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
         assertNotNull(user1Principal);
         user1RolePrincipal.setMemberId(user1Principal.getPrincipalId());
-        user1RolePrincipal.setMemberTypeCode( MemberType.PRINCIPAL.getCode() );
+        user1RolePrincipal.setMemberType( MemberType.PRINCIPAL );
 
         List<RoleMemberBo> memberPrincipals = new ArrayList<RoleMemberBo>();
         memberPrincipals.add(adminRolePrincipal);

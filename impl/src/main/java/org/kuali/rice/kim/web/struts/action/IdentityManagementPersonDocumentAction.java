@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -480,7 +481,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        	qualifier.setKimAttrDefnId(attrHelper.getKimAttributeDefnId(attrDefinition));
 	        	qualifier.setAttrVal(attrHelper.getAttributeValue(roleMemberAttributes, attrDefinition.getAttributeField().getName()));
 	        	newDelegationMember.setMemberId(personDocument.getPrincipalId());
-	        	newDelegationMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+	        	newDelegationMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
 	        	newDelegationMember.getQualifiers().add(qualifier);
 	        }
 	        //newDelegationMember.setAttributeEntry(getUiDocumentService().getAttributeEntries(newDelegationMember.getAttributesHelper().getDefinitions())));
@@ -540,7 +541,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             impdForm.getNewDelegationMember().setRoleMemberId(roleMemberId);
             RoleMemberBo roleMember = getUiDocumentService().getRoleMember(roleMemberId);
             impdForm.getNewDelegationMember().setRoleMemberMemberId(roleMember.getMemberId());
-            impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getMemberTypeCode());
+            impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getMemberType().getCode());
             impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
             impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
 

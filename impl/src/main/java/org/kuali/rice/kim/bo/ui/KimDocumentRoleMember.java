@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -207,19 +208,19 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	}
 
 	protected void populateDerivedValues() {
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())){
+        if(MemberType.PRINCIPAL.getCode().equals(getMemberTypeCode())){
             Principal principalInfo = KimApiServiceLocator.getIdentityService().getPrincipal(getMemberId());
         	if (principalInfo != null) {
         		setMemberName(principalInfo.getPrincipalName());
         	}        	        	
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
+        } else if(MemberType.GROUP.getCode().equals(getMemberTypeCode())){
         	Group groupInfo = KimApiServiceLocator.getGroupService().getGroup(getMemberId());
         	if (groupInfo != null) {
         		setMemberName(groupInfo.getName());
         		setMemberNamespaceCode(groupInfo.getNamespaceCode());
         	}
         	
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
+        } else if(MemberType.ROLE.getCode().equals(getMemberTypeCode())){
         	Role role = KimApiServiceLocator.getRoleService().getRole(getMemberId());
         	setMemberName(role.getName());
         	setMemberNamespaceCode(role.getNamespaceCode());
@@ -227,15 +228,15 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	}
 	
 	public boolean isRole(){
-		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(MemberType.ROLE.getCode());
 	}
 	
 	public boolean isGroup(){
-		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(MemberType.GROUP.getCode());
 	}
 
 	public boolean isPrincipal(){
-		return getMemberTypeCode()!=null && getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+		return getMemberTypeCode()!=null && getMemberTypeCode().equals(MemberType.PRINCIPAL.getCode());
 	}
 
 	public Map<String, String> getQualifierAsMap() {

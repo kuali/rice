@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.web.struts.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -78,26 +79,26 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	}
 
 	protected String getMemberFieldConversions(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+		if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
 			return "principalId:member.memberId,principalName:member.memberName";
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
 			return "roleId:member.memberId,roleName:member.memberName";
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return "id:member.memberId,name:member.memberName,namespaceCode:member.memberNamespaceCode";
         }
 		return "";
 	}
 
 	protected String getMemberBusinessObjectName(String memberTypeCode){
-		if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+		if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
 			return PersonImpl.class.getName();
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
 			return RoleBo.class.getName();
         }
-		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return GroupBo.class.getName();
         }
 		return "";

@@ -265,7 +265,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
         if (roleIds != null && !roleIds.isEmpty()) {
             c.addIn(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds);
         }
-        c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+        c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode());
         addSubCriteriaBasedOnRoleQualification(c, qualification);
 
         Query query = QueryFactory.newQuery(RoleMemberBo.class, c);

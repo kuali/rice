@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.role.RoleMembership
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults
 import org.kuali.rice.core.api.criteria.Predicate
+import org.kuali.rice.core.api.membership.MemberType
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*
 import org.kuali.rice.core.api.criteria.LookupCustomizer
@@ -629,7 +630,7 @@ class ResponsibilityServiceImplTest {
                 builder.embeddedRoleId = "embeddedroleidone";
                 builder.roleId = "roleidone";
                 builder.qualifier = new HashMap<>();
-                builder.memberTypeCode = "P";
+                builder.memberType = MemberType.PRINCIPAL;
                 builder.roleMemberId = "rolememberidone";
                 roleMemberships.add(builder.build());
                 return roleMemberships;
@@ -724,7 +725,7 @@ class ResponsibilityServiceImplTest {
                 builder.embeddedRoleId = "embeddedroleidone";
                 builder.roleId = "roleidone";
                 builder.qualifier = new HashMap<>();
-                builder.memberTypeCode = "P";
+                builder.memberType = MemberType.PRINCIPAL;
                 builder.roleMemberId = "rolememberidone";
                 roleMemberships.add(builder.build());
                 return roleMemberships;

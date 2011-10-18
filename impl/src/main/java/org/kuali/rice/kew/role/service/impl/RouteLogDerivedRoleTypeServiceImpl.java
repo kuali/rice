@@ -76,20 +76,20 @@ public class RouteLogDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBa
 					if (INITIATOR_ROLE_NAME.equals(roleName)) {
 					    String principalId = KewApiServiceLocator.getWorkflowDocumentService().getDocumentInitiatorPrincipalId(
                                 documentId);
-                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, MemberType.PRINCIPAL.getCode(), null).build();
+                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, MemberType.PRINCIPAL, null).build();
 	                    members.add(roleMembership);
 					} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
 					    List<String> ids = KewApiServiceLocator.getWorkflowDocumentActionsService().getPrincipalIdsInRouteLog(
                                 documentId, true);
 					    for ( String id : ids ) {
 					    	if ( StringUtils.isNotBlank(id) ) {
-                                RoleMembership roleMembership = RoleMembership.Builder.create(null,null,id, MemberType.PRINCIPAL.getCode(), null).build();
+                                RoleMembership roleMembership = RoleMembership.Builder.create(null,null,id, MemberType.PRINCIPAL, null).build();
 					    		members.add(roleMembership );
 					    	}
 					    }
 					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
                         String principalId = workflowDocumentService.getRoutedByPrincipalIdByDocumentId(documentId);
-                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, MemberType.PRINCIPAL.getCode(), null).build();
+                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, MemberType.PRINCIPAL, null).build();
 	                    members.add(roleMembership);
 					}
 				} catch(Exception wex){

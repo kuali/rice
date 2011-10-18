@@ -4,6 +4,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -84,9 +85,9 @@ abstract class RoleServiceBase {
     protected void getNestedRoleTypeMemberIds(String roleId, Set<String> members) {
         ArrayList<String> roleList = new ArrayList<String>(1);
         roleList.add(roleId);
-        List<RoleMemberBo> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, Collections.<String, String>emptyMap());
+        List<RoleMemberBo> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, MemberType.ROLE.getCode(), Collections.<String, String>emptyMap());
         for (RoleMemberBo member : firstLevelMembers) {
-            if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(member.getMemberTypeCode())) {
+            if (MemberType.ROLE.equals(member.getMemberType())) {
                 if (!members.contains(member.getMemberId())) {
                     members.add(member.getMemberId());
                     getNestedRoleTypeMemberIds(member.getMemberId(), members);
@@ -270,11 +271,11 @@ abstract class RoleServiceBase {
         if (StringUtils.isBlank(memberId)) {
             return null;
         }
-        if (KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+        if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
             return getIdentityService().getPrincipal(memberId);
-        } else if (KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+        } else if (MemberType.GROUP.getCode().equals(memberTypeCode)) {
             return getGroupService().getGroup(memberId);
-        } else if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+        } else if (MemberType.ROLE.getCode().equals(memberTypeCode)) {
             return getRoleBo(memberId);
         }
         return null;
@@ -433,7 +434,7 @@ abstract class RoleServiceBase {
     }
 
     protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, Map<String, String> qualifier) {
-        if (roleMember.getMemberId().equals(memberId) && roleMember.getMemberTypeCode().equals(memberTypeCode)) {
+        if (roleMember.getMemberId().equals(memberId) && roleMember.getMemberType().getCode().equals(memberTypeCode)) {
             // member ID/type match
             Map<String, String> roleQualifier = roleMember.getAttributes();
             if ((qualifier == null || qualifier.isEmpty())

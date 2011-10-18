@@ -24,6 +24,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.kim.api.common.delegate.DelegateType
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeTest
+import org.kuali.rice.core.api.membership.MemberType
 
 public class RoleMembershipTest {
 
@@ -33,6 +34,7 @@ public class RoleMembershipTest {
     final static String ROLE_MEMBER_ID = "187"
     final static String EMBEDDED_ROLE_ID = "255"
     final static String MEMBER_ID = "42"
+    final static MemberType MEMBER_TYPE = MemberType.PRINCIPAL
     final static String MEMBER_TYPE_CODE = "P"
     final static String ROLE_SORTING_CODE = "DESC"
     final static Map<String, String> QUALIFIER = [:]
@@ -89,7 +91,7 @@ public class RoleMembershipTest {
         Marshaller marshaller = jc.createMarshaller()
         StringWriter sw = new StringWriter()
 
-        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER)
+        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         builder.embeddedRoleId = EMBEDDED_ROLE_ID
         builder.roleSortingCode = ROLE_SORTING_CODE
         builder.delegates = DELEGATES
@@ -122,19 +124,19 @@ public class RoleMembershipTest {
 
     @Test
     void test_Builder() {
-        RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER).build()
+        RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER).build()
     }
 
     @Test
     void test_BuilderForContract() {
-        RoleMembership rm = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER).build()
+        RoleMembership rm = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER).build()
         RoleMembership rm_from_contract = RoleMembership.Builder.create(rm).build()
         Assert.assertEquals(rm, rm_from_contract)
     }
 
     @Test
     void test_MemberId_Blank() {
-        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER)
+        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         shouldFail(IllegalArgumentException) {
             builder.memberId = ""
         }
@@ -142,7 +144,7 @@ public class RoleMembershipTest {
 
     @Test
     void test_MemberId_Null() {
-        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER)
+        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         shouldFail(IllegalArgumentException) {
             builder.memberId = null
         }
@@ -150,23 +152,23 @@ public class RoleMembershipTest {
 
     @Test
     void test_MemberTypeCode_Blank() {
-        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER)
+        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         shouldFail(IllegalArgumentException) {
-            builder.memberTypeCode = ""
+            builder.memberType = null
         }
     }
 
     @Test
     void test_MemberTypeCode_Null() {
-        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER)
+        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         shouldFail(IllegalArgumentException) {
-            builder.memberTypeCode = null
+            builder.memberType = null
         }
     }
 
     @Test
     void test_DelegatesImmutable() {
-        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE_CODE, QUALIFIER)
+        RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         builder.delegates = DELEGATES
         RoleMembership rm = builder.build()
         shouldFail(UnsupportedOperationException) {

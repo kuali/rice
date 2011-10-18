@@ -98,7 +98,7 @@
     <property name="caseConstraint">
       <bean parent="CaseConstraint">
         <property name="caseSensitive" value="false"/>
-        <property name="fieldPath" value="state"/>
+        <property name="propertyName" value="state"/>
         <property name="whenConstraint">
           <list>
             <bean parent="WhenConstraint">
@@ -134,7 +134,7 @@
     <property name="caseConstraint">
       <bean parent="CaseConstraint">
         <property name="caseSensitive" value="false"/>
-        <property name="fieldPath" value="country"/>
+        <property name="propertyName" value="country"/>
         <property name="whenConstraint">
           <list>
             <bean parent="WhenConstraint">

@@ -319,7 +319,7 @@
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
-                            <property name="fieldPath" value="field2"/>
+                            <property name="propertyName" value="field2"/>
                             <property name="whenConstraint">
                                 <list>
                                     <bean parent="WhenConstraint">
@@ -348,7 +348,7 @@
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
-                            <property name="fieldPath" value="field2"/>
+                            <property name="propertyName" value="field2"/>
                             <property name="whenConstraint">
                                 <list>
                                     <bean parent="WhenConstraint">
@@ -442,14 +442,14 @@
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
-                            <property name="fieldPath" value="field2"/>
+                            <property name="propertyName" value="field2"/>
                             <property name="whenConstraint">
                                 <list>
                                     <bean parent="WhenConstraint">
                                         <property name="value" value="dog_pet"/>
                                         <property name="constraint">
                                             <bean parent="CaseConstraint">
-                                                <property name="fieldPath" value="field4"/>
+                                                <property name="propertyName" value="field4"/>
                                                 <property name="whenConstraint">
                                                     <list>
                                                         <bean parent="WhenConstraint">
@@ -475,7 +475,7 @@
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
-                            <property name="fieldPath" value="field2"/>
+                            <property name="propertyName" value="field2"/>
                             <property name="whenConstraint">
                                 <list>
                                     <bean parent="WhenConstraint">
@@ -502,7 +502,7 @@
                     </property>
                     <property name="caseConstraint">
                         <bean parent="CaseConstraint">
-                            <property name="fieldPath" value="field2"/>
+                            <property name="propertyName" value="field2"/>
                             <property name="whenConstraint">
                                 <list>
                                     <bean parent="WhenConstraint">

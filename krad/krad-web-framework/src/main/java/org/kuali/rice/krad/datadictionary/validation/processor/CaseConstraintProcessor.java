@@ -58,7 +58,7 @@ public class CaseConstraintProcessor extends MandatoryElementConstraintProcessor
         
         
         String operator = (ValidationUtils.hasText(caseConstraint.getOperator())) ? caseConstraint.getOperator() : "EQUALS";
-        AttributeValueReader fieldPathReader = (ValidationUtils.hasText(caseConstraint.getFieldPath())) ? getChildAttributeValueReader(caseConstraint.getFieldPath(), attributeValueReader) : attributeValueReader;
+        AttributeValueReader fieldPathReader = (ValidationUtils.hasText(caseConstraint.getPropertyName())) ? getChildAttributeValueReader(caseConstraint.getPropertyName(), attributeValueReader) : attributeValueReader;
 
         Constrainable caseField = (null != fieldPathReader) ? fieldPathReader.getDefinition(fieldPathReader.getAttributeName()) : null;
         Object fieldValue = (null != fieldPathReader) ? fieldPathReader.getValue(fieldPathReader.getAttributeName()) : value;

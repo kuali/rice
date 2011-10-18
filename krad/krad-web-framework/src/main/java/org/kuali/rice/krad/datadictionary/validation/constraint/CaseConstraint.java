@@ -19,7 +19,7 @@ public class CaseConstraint extends BaseConstraint {
 	@XmlElement
     protected List<WhenConstraint> whenConstraint;
 	@XmlElement
-	protected String fieldPath;
+	protected String propertyName;
 	@XmlElement
 	protected String operator;
 	@XmlElement
@@ -33,12 +33,12 @@ public class CaseConstraint extends BaseConstraint {
 		this.whenConstraint = whenConstraint;
 	}
 
-	public String getFieldPath() {
-		return fieldPath;
+	public String getPropertyName() {
+		return propertyName;
 	}
 
-	public void setFieldPath(String fieldPath) {
-		this.fieldPath = fieldPath;
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
 	}
 
 	public String getOperator() {

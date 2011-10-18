@@ -232,10 +232,10 @@ public class ClientValidationUtils {
 		}
 		// add more operator types here if more are supported later
 
-		field.getControl().addStyleClass("dependsOn-" + constraint.getFieldPath());
+		field.getControl().addStyleClass("dependsOn-" + constraint.getPropertyName());
 
 		if (constraint.getWhenConstraint() != null && !constraint.getWhenConstraint().isEmpty()) {
-			String fieldPath = field.getBindingInfo().getBindingObjectPath() + "." + constraint.getFieldPath();
+			String fieldPath = field.getBindingInfo().getBindingObjectPath() + "." + constraint.getPropertyName();
 		    for (WhenConstraint wc : constraint.getWhenConstraint()) {
 				processWhenConstraint(field, view, constraint, wc, fieldPath, operator, andedCase);
 			}

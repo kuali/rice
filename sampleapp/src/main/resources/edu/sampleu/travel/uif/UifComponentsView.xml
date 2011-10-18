@@ -977,7 +977,7 @@
 					p:propertyName="field25">
 					<property name="caseConstraint">
 						<bean parent="CaseConstraint">
-							<property name="fieldPath" value="field24" />
+							<property name="propertyName" value="field24" />
 							<property name="whenConstraint">
 								<list>
 									<bean parent="WhenConstraint">
@@ -1016,7 +1016,7 @@
 					p:propertyName="field26">
 					<property name="caseConstraint">
 						<bean parent="CaseConstraint">
-							<property name="fieldPath" value="field24" />
+							<property name="propertyName" value="field24" />
 							<property name="whenConstraint">
 								<list>
 									<bean parent="WhenConstraint">
@@ -1047,7 +1047,7 @@
 					p:propertyName="field27">
 					<property name="caseConstraint">
 						<bean parent="CaseConstraint">
-							<property name="fieldPath" value="field24" />
+							<property name="propertyName" value="field24" />
 							<property name="whenConstraint">
 								<list>
 									<bean parent="WhenConstraint">
@@ -1084,7 +1084,7 @@
 					p:propertyName="field33">
 					<property name="caseConstraint">
 						<bean parent="CaseConstraint">
-							<property name="fieldPath" value="field31" />
+							<property name="propertyName" value="field31" />
 							<property name="operator" value="has_value" />
 							<property name="whenConstraint">
 								<list>
@@ -1092,7 +1092,7 @@
 										<property name="value" value="true" />
 										<property name="constraint">
 											<bean parent="CaseConstraint">
-												<property name="fieldPath" value="field32" />
+												<property name="propertyName" value="field32" />
 												<property name="operator" value="not_equals" />
 												<property name="whenConstraint">
 													<list>

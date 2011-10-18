@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.assignee.Assignee;
@@ -278,9 +279,9 @@ public class PermissionServiceImpl implements PermissionService {
                     delegateBuilderList.add(DelegateType.Builder.create(delegate));
     			}
 			}
-    		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
+    		if ( MemberType.PRINCIPAL.getCode().equals(rm.getMemberTypeCode()) ) {
     			results.add (Assignee.Builder.create(rm.getMemberId(), null, delegateBuilderList).build());
-    		} else if ( rm.getMemberTypeCode().equals( Role.GROUP_MEMBER_TYPE ) ) {
+    		} else if ( MemberType.GROUP.getCode().equals(rm.getMemberTypeCode()) ) {
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());
     		}
     	}
@@ -308,7 +309,7 @@ public class PermissionServiceImpl implements PermissionService {
                     delegateBuilderList.add(DelegateType.Builder.create(delegate));
     			}
 			}
-    		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
+    		if ( MemberType.PRINCIPAL.getCode().equals(rm.getMemberTypeCode()) ) {
     			results.add (Assignee.Builder.create(rm.getMemberId(), null, delegateBuilderList).build());
     		} else { // a group membership
     			results.add (Assignee.Builder.create(null, rm.getMemberId(), delegateBuilderList).build());

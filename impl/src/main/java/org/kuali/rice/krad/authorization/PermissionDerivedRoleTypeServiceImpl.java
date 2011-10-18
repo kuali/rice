@@ -17,6 +17,7 @@ package org.kuali.rice.krad.authorization;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -83,9 +84,9 @@ public class PermissionDerivedRoleTypeServiceImpl extends DerivedRoleTypeService
         List<RoleMembership> members = new ArrayList<RoleMembership>();
         for (Assignee permissionAssigneeInfo : permissionAssignees) {
             if (StringUtils.isNotBlank(permissionAssigneeInfo.getPrincipalId())) {
-                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), Role.PRINCIPAL_MEMBER_TYPE, null).build());
+                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getPrincipalId(), MemberType.PRINCIPAL.getCode(), null).build());
             } else if (StringUtils.isNotBlank(permissionAssigneeInfo.getGroupId())) {
-                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getGroupId(), Role.GROUP_MEMBER_TYPE, null).build());
+                members.add(RoleMembership.Builder.create(null/*roleId*/, null, permissionAssigneeInfo.getGroupId(), MemberType.GROUP.getCode(), null).build());
             }
         }
         return members;

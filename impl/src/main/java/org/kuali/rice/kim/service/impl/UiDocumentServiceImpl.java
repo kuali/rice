@@ -23,6 +23,7 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.parameter.Parameter;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.framework.parameter.ParameterService;
@@ -334,7 +335,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         }
 		Map<String,String> criteria = new HashMap<String,String>(1);
 		criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, principalId);
-		criteria.put( KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
+		criteria.put( KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode() );
 		List<DelegateMemberBo> delegationMembers = (List<DelegateMemberBo>)getBusinessObjectService().findMatching(DelegateMemberBo.class, criteria);
 		List<DelegateTypeBo> delegations = new ArrayList<DelegateTypeBo>();
 		List<String> delegationIds = new ArrayList<String>();
@@ -635,7 +636,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 2 );
 		criteria.put("members.memberId", principalId);
-		criteria.put("members.memberTypeCode", Role.PRINCIPAL_MEMBER_TYPE);
+		criteria.put("members.memberTypeCode", MemberType.PRINCIPAL.getCode());
 		return (List<RoleBo>)getBusinessObjectService().findMatching(RoleBo.class, criteria);
 	}
 
@@ -646,7 +647,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 2 );
 		criteria.put("memberId", principalId);
-		criteria.put("memberTypeCode", Role.PRINCIPAL_MEMBER_TYPE);
+		criteria.put("memberTypeCode", MemberType.PRINCIPAL.getCode());
 		return (List<RoleMemberBo>)getBusinessObjectService().findMatching(RoleMemberBo.class, criteria);
 	}
 
@@ -670,7 +671,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List <KimDocumentRoleMember> docRoleMembers = new ArrayList <KimDocumentRoleMember>();
 		if(ObjectUtils.isNotNull(roleMembers)){
 	    	for (RoleMemberBo rolePrincipal : roleMembers) {
-	    		if (rolePrincipal.isActive(new Timestamp(System.currentTimeMillis())) && Role.PRINCIPAL_MEMBER_TYPE.equals(rolePrincipal.getMemberTypeCode()) &&
+	    		if (rolePrincipal.isActive(new Timestamp(System.currentTimeMillis())) && MemberType.PRINCIPAL.getCode().equals(rolePrincipal.getMemberTypeCode()) &&
 	    				StringUtils.equals(rolePrincipal.getMemberId(), principalId)) {
 	        		KimDocumentRoleMember docRolePrncpl = new KimDocumentRoleMember();
 	        		docRolePrncpl.setMemberId(rolePrincipal.getMemberId());
@@ -1346,7 +1347,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							RoleMemberBo roleMemberImpl = new RoleMemberBo();
 							roleMemberImpl.setRoleId(role.getRoleId());
 							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-							roleMemberImpl.setMemberTypeCode(Role.PRINCIPAL_MEMBER_TYPE);
+							roleMemberImpl.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
 							roleMembers.add(roleMemberImpl);
 						}
 					} else {
@@ -1355,7 +1356,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							roleMemberImpl.setRoleId(role.getRoleId());
 							// TODO : principalId is not ready here yet ?
 							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-							roleMemberImpl.setMemberTypeCode(Role.PRINCIPAL_MEMBER_TYPE);
+							roleMemberImpl.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
 							roleMemberImpl.setRoleMemberId(roleMember.getRoleMemberId());
 							if (roleMember.getActiveFromDate() != null) {
 								roleMemberImpl.setActiveFromDateValue(

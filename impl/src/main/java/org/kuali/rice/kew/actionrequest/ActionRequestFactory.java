@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -577,9 +578,9 @@ public class ActionRequestFactory {
     		if ( LOG.isDebugEnabled() ) {
     			LOG.debug( "Processing RoleMembership for action request: " + membership );
     		}
-			if (Role.PRINCIPAL_MEMBER_TYPE.equals(membership.getMemberTypeCode())) {
+			if (MemberType.PRINCIPAL.getCode().equals(membership.getMemberTypeCode())) {
 				roleRecipient.setTarget(new KimPrincipalRecipient(membership.getMemberId()));
-			} else if (Role.GROUP_MEMBER_TYPE.equals(membership.getMemberTypeCode())) {
+			} else if (MemberType.GROUP.getCode().equals(membership.getMemberTypeCode())) {
 				roleRecipient.setTarget(new KimGroupRecipient(membership.getMemberId()));
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given RoleMembership:" + membership);
@@ -611,8 +612,8 @@ public class ActionRequestFactory {
      private void generateKimRoleDelegationRequests(List<DelegateType> delegates, ActionRequestValue parentRequest) {
     	for (DelegateType delegate : delegates) {
     		Recipient recipient;
-    		boolean isPrincipal = delegate.getDelegationTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE);
-            boolean isGroup = delegate.getDelegationTypeCode().equals(Role.GROUP_MEMBER_TYPE);
+    		boolean isPrincipal = MemberType.PRINCIPAL.getCode().equals(delegate.getDelegationTypeCode());
+            boolean isGroup = MemberType.GROUP.getCode().equals(delegate.getDelegationTypeCode());
     		if (isPrincipal) {
     			recipient = new KimPrincipalRecipient(delegate.getDelegationId());
     		} else if (isGroup) {

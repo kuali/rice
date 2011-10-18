@@ -10,6 +10,7 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.common.template.Template;
@@ -254,7 +255,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 rai.setResponsibilityName(responsibility.getName());
                 rai.setResponsibilityNamespaceCode(responsibility.getNamespaceCode());
 
-                if (rm.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE)) {
+                if (MemberType.PRINCIPAL.getCode().equals(rm.getMemberTypeCode())) {
                     rai.setPrincipalId(rm.getMemberId());
                 } else {
                     rai.setGroupId(rm.getMemberId());

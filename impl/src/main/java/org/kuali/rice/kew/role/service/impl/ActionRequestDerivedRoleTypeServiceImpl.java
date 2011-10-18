@@ -17,6 +17,7 @@ package org.kuali.rice.kew.role.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
@@ -71,7 +72,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 			if (qualification.containsKey(KimConstants.AttributeConstants.PRINCIPAL_ID)
 					&& hasApplicationRole(principalId, null, namespaceCode,
 							roleName, qualification)) {
-                members.add(RoleMembership.Builder.create(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null).build());
+                members.add(RoleMembership.Builder.create(null/*roleId*/, null, principalId, MemberType.PRINCIPAL.getCode(), null).build());
 			}
 		}
 		return members;

@@ -17,6 +17,7 @@ package org.kuali.rice.kew.role.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.kim.api.KimConstants;
@@ -75,20 +76,20 @@ public class RouteLogDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBa
 					if (INITIATOR_ROLE_NAME.equals(roleName)) {
 					    String principalId = KewApiServiceLocator.getWorkflowDocumentService().getDocumentInitiatorPrincipalId(
                                 documentId);
-                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, Role.PRINCIPAL_MEMBER_TYPE,null).build();
+                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, MemberType.PRINCIPAL.getCode(), null).build();
 	                    members.add(roleMembership);
 					} else if(INITIATOR_OR_REVIEWER_ROLE_NAME.equals(roleName)) {
 					    List<String> ids = KewApiServiceLocator.getWorkflowDocumentActionsService().getPrincipalIdsInRouteLog(
                                 documentId, true);
 					    for ( String id : ids ) {
 					    	if ( StringUtils.isNotBlank(id) ) {
-                                RoleMembership roleMembership = RoleMembership.Builder.create(null,null,id, Role.PRINCIPAL_MEMBER_TYPE,null).build();
+                                RoleMembership roleMembership = RoleMembership.Builder.create(null,null,id, MemberType.PRINCIPAL.getCode(), null).build();
 					    		members.add(roleMembership );
 					    	}
 					    }
 					} else if(ROUTER_ROLE_NAME.equals(roleName)) {
                         String principalId = workflowDocumentService.getRoutedByPrincipalIdByDocumentId(documentId);
-                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, Role.PRINCIPAL_MEMBER_TYPE,null).build();
+                        RoleMembership roleMembership = RoleMembership.Builder.create(null,null,principalId, MemberType.PRINCIPAL.getCode(), null).build();
 	                    members.add(roleMembership);
 					}
 				} catch(Exception wex){

@@ -108,13 +108,13 @@ public class ClientValidationUtils {
 		}
 		//replace characters that might cause issues with their equivalent html codes
 		if(message.contains("\"")){
-		    message = message.replaceAll("\"", "&quot;");
+		    message = message.replace("\"", "&quot;");
 		}
 		if(message.contains("'")){
-		    message = message.replaceAll("'", "&#39;");
+		    message = message.replace("'", "&#39;");
 		}
 		if(message.contains("\\")){
-		    message = message.replaceAll("\\", "&#92;");
+		    message = message.replace("\\", "&#92;");
 		}
 		return message;
 	}
@@ -347,7 +347,7 @@ public class ClientValidationUtils {
 	 * this field is being validated. Note the use of custom methods for min/max
 	 * length/value.
 	 * 
-	 * @param applyToField
+	 * @param field
 	 *            the field to apply the generated methods and rules to
 	 * @param constraint
 	 *            the constraint to be applied when the booleanStatement
@@ -449,8 +449,7 @@ public class ClientValidationUtils {
 	/**
 	 * This method is a simpler version of processPrerequisiteConstraint
 	 * 
-	 * @see AttributeField#processPrerequisiteConstraint(PrerequisiteConstraint,
-	 *      View, String)
+	 * @see ClientValidationUtils#processPrerequisiteConstraint(AttributeField, PrerequisiteConstraint, View, String)
 	 * @param constraint
 	 * @param view
 	 */
@@ -471,13 +470,13 @@ public class ClientValidationUtils {
 	 */
 	public static void processPrerequisiteConstraint(AttributeField field, PrerequisiteConstraint constraint, View view, String booleanStatement) {
 		if (constraint != null && constraint.getApplyClientSide().booleanValue()) {
-		    String dependsClass = "dependsOn-" + constraint.getAttributePath();
+		    String dependsClass = "dependsOn-" + constraint.getPropertyName();
 		    String addClass = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').addClass('" + dependsClass + "');" +
-		        "jq('[name=\""+ constraint.getAttributePath() + "\"]').addClass('" + "dependsOn-" + field.getBindingInfo().getBindingPath() + "');";
+		        "jq('[name=\""+ constraint.getPropertyName() + "\"]').addClass('" + "dependsOn-" + field.getBindingInfo().getBindingPath() + "');";
 			addScriptToPage(view, field, addClass + getPrerequisiteStatement(field, view, constraint, booleanStatement)
 					+ getPostrequisiteStatement(field, constraint, booleanStatement));
 	        //special requiredness indicator handling
-	        String showIndicatorScript = "setupShowReqIndicatorCheck('"+ field.getBindingInfo().getBindingPath() +"', '" + constraint.getAttributePath() + "', " + "function(){\nreturn (coerceValue('" + field.getBindingInfo().getBindingPath() + "') && " + booleanStatement + ");});\n";
+	        String showIndicatorScript = "setupShowReqIndicatorCheck('"+ field.getBindingInfo().getBindingPath() +"', '" + constraint.getPropertyName() + "', " + "function(){\nreturn (coerceValue('" + field.getBindingInfo().getBindingPath() + "') && " + booleanStatement + ");});\n";
 	        addScriptToPage(view, field, showIndicatorScript);
 		}
 	}
@@ -509,7 +508,7 @@ public class ClientValidationUtils {
 			message = "prerequisite - No message";
 		}
 		else{
-			AttributeField requiredField = view.getViewIndex().getAttributeFieldByPath(constraint.getAttributePath());
+			AttributeField requiredField = view.getViewIndex().getAttributeFieldByPath(constraint.getPropertyName());
 			if(requiredField != null && StringUtils.isNotEmpty(requiredField.getLabel())){
 				message = MessageFormat.format(message, requiredField.getLabel());
 			}
@@ -522,10 +521,10 @@ public class ClientValidationUtils {
 		String methodName = "prConstraint-" + field.getBindingInfo().getBindingPath()+ methodKey;
 		String addClass = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').addClass('" + methodName + "');\n";
 		String method = "\njQuery.validator.addMethod(\""+ methodName +"\", function(value, element) {\n" +
-			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + constraint.getAttributePath() + "')));}else{return true;} " +
+			" if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + constraint.getPropertyName() + "')));}else{return true;} " +
 			"}, \"" + message + "\");";
 		
-		String ifStatement = "if(occursBefore('" + constraint.getAttributePath() + "','" + field.getBindingInfo().getBindingPath() + 
+		String ifStatement = "if(occursBefore('" + constraint.getPropertyName() + "','" + field.getBindingInfo().getBindingPath() +
 		"')){" + addClass + method + "}";
 		return ifStatement;
 	}
@@ -565,8 +564,8 @@ public class ClientValidationUtils {
 		
 		String function = "function(element){\n" +
 			"return (coerceValue('"+ field.getBindingInfo().getBindingPath() + "') && " + booleanStatement + ");}";
-		String postStatement = "\nelse if(occursBefore('" + field.getBindingInfo().getBindingPath() + "','" + constraint.getAttributePath() + 
-			"')){\njq('[name=\""+ constraint.getAttributePath() + 
+		String postStatement = "\nelse if(occursBefore('" + field.getBindingInfo().getBindingPath() + "','" + constraint.getPropertyName() +
+			"')){\njq('[name=\""+ constraint.getPropertyName() +
 			"\"]').rules(\"add\", { required: \n" + function 
 			+ ", \nmessages: {\nrequired: \""+ message +"\"}});}\n";
 		
@@ -617,9 +616,9 @@ public class ClientValidationUtils {
 			if (constraint.getPrerequisiteConstraints() != null) {
 				for (int i = 0; i < constraint.getPrerequisiteConstraints().size(); i++) {
 					field.getControl().addStyleClass("dependsOn-"
-							+ constraint.getPrerequisiteConstraints().get(i).getAttributePath());
-					array = array + "'" + constraint.getPrerequisiteConstraints().get(i).getAttributePath() + "'";
-					attributePaths.add(constraint.getPrerequisiteConstraints().get(i).getAttributePath());
+							+ constraint.getPrerequisiteConstraints().get(i).getPropertyName());
+					array = array + "'" + constraint.getPrerequisiteConstraints().get(i).getPropertyName() + "'";
+					attributePaths.add(constraint.getPrerequisiteConstraints().get(i).getPropertyName());
 					if (i + 1 != constraint.getPrerequisiteConstraints().size()) {
 						array = array + ",";
 					}
@@ -759,7 +758,7 @@ public class ClientValidationUtils {
 	 * The result is js that will validate all the constraints contained on an AttributeField during user interaction
 	 * with the field using the jQuery validation plugin and custom code.
 	 * 
-	 * @param attributeField
+	 * @param field
 	 */
 	@SuppressWarnings("boxing")
 	public static void processAndApplyConstraints(AttributeField field, View view) {

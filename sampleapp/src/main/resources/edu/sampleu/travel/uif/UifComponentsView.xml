@@ -715,8 +715,8 @@
 					p:propertyName="field6" p:constraintText="Field A requires Field B and Field C">
 					<property name="dependencyConstraints">
 						<list>
-							<bean parent="PrerequisiteConstraint" p:attributePath="field7" />
-							<bean parent="PrerequisiteConstraint" p:attributePath="field8" />
+							<bean parent="PrerequisiteConstraint" p:propertyName="field7" />
+							<bean parent="PrerequisiteConstraint" p:propertyName="field8" />
 						</list>
 					</property>
 				</bean>
@@ -728,7 +728,7 @@
 					p:constraintText="Required when Field A has a value, BUT also requires Field A to be filled out">
 					<property name="dependencyConstraints">
 						<list>
-							<bean parent="PrerequisiteConstraint" p:attributePath="field6" />
+							<bean parent="PrerequisiteConstraint" p:propertyName="field6" />
 						</list>
 					</property>
 				</bean>
@@ -802,7 +802,7 @@
 								<property name="max" value="2" />
 								<property name="prerequisiteConstraints">
 									<list>
-										<bean parent="PrerequisiteConstraint" p:attributePath="field11" />
+										<bean parent="PrerequisiteConstraint" p:propertyName="field11" />
 									</list>
 								</property>
 								<!-- essentially an OR'ed list: each MustOccur constraint in this
@@ -818,8 +818,8 @@
 											<property name="max" value="2" />
 											<property name="prerequisiteConstraints">
 												<list>
-													<bean parent="PrerequisiteConstraint" p:attributePath="field12" />
-													<bean parent="PrerequisiteConstraint" p:attributePath="field13" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field12" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field13" />
 												</list>
 											</property>
 										</bean>
@@ -854,7 +854,7 @@
 								<property name="max" value="1" />
 								<property name="prerequisiteConstraints">
 									<list>
-										<bean parent="PrerequisiteConstraint" p:attributePath="field15" />
+										<bean parent="PrerequisiteConstraint" p:propertyName="field15" />
 									</list>
 								</property>
 								<property name="mustOccurConstraints">
@@ -864,8 +864,8 @@
 											<property name="max" value="2" />
 											<property name="prerequisiteConstraints">
 												<list>
-													<bean parent="PrerequisiteConstraint" p:attributePath="field16" />
-													<bean parent="PrerequisiteConstraint" p:attributePath="field17" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field16" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field17" />
 												</list>
 											</property>
 										</bean>
@@ -907,8 +907,8 @@
 											<property name="max" value="2" />
 											<property name="prerequisiteConstraints">
 												<list>
-													<bean parent="PrerequisiteConstraint" p:attributePath="field19" />
-													<bean parent="PrerequisiteConstraint" p:attributePath="field20" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field19" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field20" />
 												</list>
 											</property>
 										</bean>
@@ -917,8 +917,8 @@
 											<property name="max" value="2" />
 											<property name="prerequisiteConstraints">
 												<list>
-													<bean parent="PrerequisiteConstraint" p:attributePath="field21" />
-													<bean parent="PrerequisiteConstraint" p:attributePath="field22" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field21" />
+													<bean parent="PrerequisiteConstraint" p:propertyName="field22" />
 												</list>
 											</property>
 										</bean>
@@ -1053,7 +1053,7 @@
 									<bean parent="WhenConstraint">
 										<property name="value" value="case4" />
 										<property name="constraint">
-											<bean parent="PrerequisiteConstraint" p:attributePath="field28" />
+											<bean parent="PrerequisiteConstraint" p:propertyName="field28" />
 										</property>
 									</bean>
 								</list>

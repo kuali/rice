@@ -53,7 +53,7 @@
           <property name="prerequisiteConstraints">
             <list>
               <bean parent="PrerequisiteConstraint">
-                <property name="attributePath" value="postalCode"/>
+                <property name="propertyName" value="postalCode"/>
               </bean>
             </list>              
           </property>
@@ -65,10 +65,10 @@
                 <property name="prerequisiteConstraints">
                   <list>
                     <bean parent="PrerequisiteConstraint">
-                      <property name="attributePath" value="city"/>                      
+                      <property name="propertyName" value="city"/>
                     </bean>
                     <bean parent="PrerequisiteConstraint">
-                      <property name="attributePath" value="state"/>                      
+                      <property name="propertyName" value="state"/>
                     </bean>
                   </list>
                 </property>              
@@ -230,7 +230,7 @@
               <property name="value" value="USA"/>
               <property name="constraint">
                 <bean parent="PrerequisiteConstraint">
-                  <property name="attributePath" value="state"/>
+                  <property name="propertyName" value="state"/>
                 </bean>
               </property>
             </bean>

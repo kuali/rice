@@ -68,7 +68,7 @@ public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest<Cas
 		
 		PrerequisiteConstraint prerequisiteConstraint = (PrerequisiteConstraint)constraint;
 		
-		Assert.assertEquals("state", prerequisiteConstraint.getAttributePath());
+		Assert.assertEquals("state", prerequisiteConstraint.getPropertyName());
 		
 		ConstraintValidationResult result = processorResult.getFirstConstraintValidationResult();
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
@@ -78,7 +78,7 @@ public class CaseConstraintProcessorTest extends BaseConstraintProcessorTest<Cas
 	}
 	
 	/**
-	 * @see org.kuali.rice.kns.datadictionary.validation.processor.BaseConstraintProcessorTest#newProcessor()
+	 * @see BaseConstraintProcessorTest#newProcessor()
 	 */
 	@Override
 	protected CaseConstraintProcessor newProcessor() {

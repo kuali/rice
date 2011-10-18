@@ -15,13 +15,13 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PrerequisiteConstraint extends BaseConstraint {
 	@XmlElement
-    protected String attributePath;
+    protected String propertyName;
 
-	public String getAttributePath() {
-		return attributePath;
+	public String getPropertyName() {
+		return propertyName;
 	}
 
-	public void setAttributePath(String attributePath) {
-		this.attributePath = attributePath;
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
 	}
 }

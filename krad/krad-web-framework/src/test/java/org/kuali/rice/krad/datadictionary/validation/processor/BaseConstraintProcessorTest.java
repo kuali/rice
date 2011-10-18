@@ -69,13 +69,13 @@ public abstract class BaseConstraintProcessorTest<P extends ConstraintProcessor>
 		List<MustOccurConstraint> mustOccurConstraints = new ArrayList<MustOccurConstraint>();
 		
 		PrerequisiteConstraint postalCodeConstraint = new PrerequisiteConstraint();
-		postalCodeConstraint.setAttributePath("postalCode");
+		postalCodeConstraint.setPropertyName("postalCode");
 			
 		PrerequisiteConstraint cityConstraint = new PrerequisiteConstraint();
-		cityConstraint.setAttributePath("city");
+		cityConstraint.setPropertyName("city");
 		
 		PrerequisiteConstraint stateConstraint = new PrerequisiteConstraint();
-		stateConstraint.setAttributePath("state");
+		stateConstraint.setPropertyName("state");
 		
 		List<PrerequisiteConstraint> cityStateDependencyConstraints = new ArrayList<PrerequisiteConstraint>();
 		cityStateDependencyConstraints.add(cityConstraint);
@@ -100,7 +100,7 @@ public abstract class BaseConstraintProcessorTest<P extends ConstraintProcessor>
 		List<WhenConstraint> whenConstraints = new ArrayList<WhenConstraint>();
 		
 		PrerequisiteConstraint prerequisiteConstraint = new PrerequisiteConstraint();
-		prerequisiteConstraint.setAttributePath("state");
+		prerequisiteConstraint.setPropertyName("state");
 		
 		WhenConstraint whenConstraint1 = new WhenConstraint();
 		whenConstraint1.setValue("USA");

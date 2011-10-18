@@ -7,7 +7,7 @@
 					<property name="value" value="USA"/>
 					<property name="constraint">
 						<bean parent="prequisiteConstraint">
-							<property name="attributePath" value="origin"/>
+							<property name="propertyName" value="origin"/>
 						</bean>
 					</property>
 				</bean>

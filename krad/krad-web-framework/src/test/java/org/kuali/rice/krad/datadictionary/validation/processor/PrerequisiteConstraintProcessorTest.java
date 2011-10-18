@@ -69,13 +69,13 @@ public class PrerequisiteConstraintProcessorTest {
 		addressEntry = new BusinessObjectEntry();
 		
 		street1Constraint = new PrerequisiteConstraint();
-		street1Constraint.setAttributePath("street1");
+		street1Constraint.setPropertyName("street1");
 			
 		cityConstraint = new PrerequisiteConstraint();
-		cityConstraint.setAttributePath("city");
+		cityConstraint.setPropertyName("city");
 		
 		stateConstraint = new PrerequisiteConstraint();
-		stateConstraint.setAttributePath("state");
+		stateConstraint.setPropertyName("state");
 		
 		List<PrerequisiteConstraint> prerequisiteConstraints = new ArrayList<PrerequisiteConstraint>();
 		prerequisiteConstraints.add(street1Constraint);

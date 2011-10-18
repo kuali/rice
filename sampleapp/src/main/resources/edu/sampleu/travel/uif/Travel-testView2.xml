@@ -373,7 +373,7 @@
                     </property>
                     <property name="dependencyConstraints">
                         <list>
-                            <bean parent="PrerequisiteConstraint" p:attributePath="travelAccount4.subAccountName"/>
+                            <bean parent="PrerequisiteConstraint" p:propertyName="travelAccount4.subAccountName"/>
                         </list>
                     </property>
                 </bean>
@@ -384,7 +384,7 @@
                     </property>
                     <property name="dependencyConstraints">
                         <list>
-                            <bean parent="PrerequisiteConstraint" p:attributePath="travelAccount4.name"/>
+                            <bean parent="PrerequisiteConstraint" p:propertyName="travelAccount4.name"/>
                         </list>
                     </property>
                 </bean>
@@ -423,9 +423,9 @@
                                 <property name="max" value="3"/>
                                 <property name="prerequisiteConstraints">
                                     <list>
-                                        <bean parent="PrerequisiteConstraint" p:attributePath="field15"/>
-                                        <bean parent="PrerequisiteConstraint" p:attributePath="field16"/>
-                                        <bean parent="PrerequisiteConstraint" p:attributePath="field17"/>
+                                        <bean parent="PrerequisiteConstraint" p:propertyName="field15"/>
+                                        <bean parent="PrerequisiteConstraint" p:propertyName="field16"/>
+                                        <bean parent="PrerequisiteConstraint" p:propertyName="field17"/>
                                     </list>
                                 </property>
                             </bean>
@@ -481,7 +481,7 @@
                                     <bean parent="WhenConstraint">
                                         <property name="value" value="cat_pet"/>
                                         <property name="constraint">
-                                            <bean parent="PrerequisiteConstraint" p:attributePath="field3"/>
+                                            <bean parent="PrerequisiteConstraint" p:propertyName="field3"/>
                                         </property>
                                     </bean>
                                     <bean parent="WhenConstraint">
@@ -519,9 +519,9 @@
                                                 <property name="prerequisiteConstraints">
                                                     <list>
                                                         <bean parent="PrerequisiteConstraint"
-                                                              p:attributePath="field16"/>
+                                                              p:propertyName="field16"/>
                                                         <bean parent="PrerequisiteConstraint"
-                                                              p:attributePath="field17"/>
+                                                              p:propertyName="field17"/>
                                                     </list>
                                                 </property>
                                                 <property name="mustOccurConstraints">
@@ -532,7 +532,7 @@
                                                             <property name="prerequisiteConstraints">
                                                                 <list>
                                                                     <bean parent="PrerequisiteConstraint"
-                                                                          p:attributePath="field18"/>
+                                                                          p:propertyName="field18"/>
                                                                 </list>
                                                             </property>
                                                         </bean>

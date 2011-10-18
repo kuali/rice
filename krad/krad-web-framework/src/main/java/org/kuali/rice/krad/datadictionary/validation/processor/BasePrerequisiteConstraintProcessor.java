@@ -43,7 +43,7 @@ public abstract class BasePrerequisiteConstraintProcessor<C extends Constraint> 
 			
 		
     	// TODO: Does this code need to be able to look at more than just the other immediate members of the object? 
-        String attributeName = constraint.getAttributePath();
+        String attributeName = constraint.getPropertyName();
         
         if (ValidationUtils.isNullOrEmpty(attributeName)) {
         	throw new AttributeValidationException("Prerequisite constraints must include the name of the attribute that is required");

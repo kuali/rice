@@ -68,9 +68,13 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
         return role;
     }
 
+    String getMemberTypeCode() {
+        return memberTypeCode
+    }
+
     @Override
     MemberType getMemberType() {
-        return MemberType.fromCode(memberTypeCode);
+        return MemberType.fromCode(memberTypeCode)
     }
 
     void setMemberType(MemberType type) {

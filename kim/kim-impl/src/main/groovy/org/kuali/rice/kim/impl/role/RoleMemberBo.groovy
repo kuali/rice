@@ -107,6 +107,10 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         return qualifier;
     }*/
 
+    public String getMemberTypeCode() {
+        return memberTypeCode;
+    }
+
     public MemberType getMemberType() {
         return MemberType.fromCode(memberTypeCode)
     }

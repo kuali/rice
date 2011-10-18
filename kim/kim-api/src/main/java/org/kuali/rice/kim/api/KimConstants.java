@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.api;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.membership.MemberType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -164,18 +165,15 @@ public final class KimConstants {
 		public static final String MEMBER_ID_PREFIX = PrimaryKeyConstants.MEMBER_ID+".";
 		public static final String MEMBER_NAME = "memberName";
 		public static final String MEMBER_NAMESPACE_CODE = "memberNamespaceCode";
-		public static final String MEMBER_TYPE_PRINCIPAL_CODE = "P";
-		public static final String MEMBER_TYPE_GROUP_CODE = "G";
-		public static final String MEMBER_TYPE_ROLE_CODE = "R";
 		public static final String MEMBER_TYPE_PRINCIPAL = "Principal";
 		public static final String MEMBER_TYPE_GROUP = "Group";
 		public static final String MEMBER_TYPE_ROLE = "Role";
 		public static final Map<String, String> KIM_MEMBER_TYPES_MAP = getKimMemberTypesMap();
 	    private static Map<String, String> getKimMemberTypesMap() {
 	    	Map<String, String> kimDocumentActionsMap = new HashMap<String, String>();
-	    	kimDocumentActionsMap.put(MEMBER_TYPE_PRINCIPAL_CODE, MEMBER_TYPE_PRINCIPAL);
-	    	kimDocumentActionsMap.put(MEMBER_TYPE_GROUP_CODE, MEMBER_TYPE_GROUP);
-	    	kimDocumentActionsMap.put(MEMBER_TYPE_ROLE_CODE, MEMBER_TYPE_ROLE);
+	    	kimDocumentActionsMap.put(MemberType.PRINCIPAL.getCode(), MEMBER_TYPE_PRINCIPAL);
+	    	kimDocumentActionsMap.put(MemberType.GROUP.getCode(), MEMBER_TYPE_GROUP);
+	    	kimDocumentActionsMap.put(MemberType.ROLE.getCode(), MEMBER_TYPE_ROLE);
 	        return kimDocumentActionsMap;
 	    }
 

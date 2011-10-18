@@ -100,7 +100,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowBo.getAttributeBos().add(peopleFlowAttr);
 
         PeopleFlowMemberBo peopleFlowMember = new PeopleFlowMemberBo();
-        peopleFlowMember.setMemberTypeCode("P");
+        peopleFlowMember.setMemberType(MemberType.PRINCIPAL);
         peopleFlowMember.setMemberId("admin");
         peopleFlowMember.setPriority(1);
         peopleFlowMember.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
@@ -108,14 +108,14 @@ public class PeopleFlowBoTest extends KEWTestCase {
         peopleFlowBo.getMembers().add(peopleFlowMember);
 
         PeopleFlowDelegateBo peopleFlowDelegate1 = new PeopleFlowDelegateBo();
-        peopleFlowDelegate1.setMemberTypeCode(MemberType.GROUP.getCode());
+        peopleFlowDelegate1.setMemberType(MemberType.GROUP);
         peopleFlowDelegate1.setMemberId("1");
         peopleFlowDelegate1.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
         peopleFlowDelegate1.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
         peopleFlowMember.getDelegates().add(peopleFlowDelegate1);
 
         PeopleFlowDelegateBo peopleFlowDelegate2 = new PeopleFlowDelegateBo();
-        peopleFlowDelegate2.setMemberTypeCode(MemberType.ROLE.getCode());
+        peopleFlowDelegate2.setMemberType(MemberType.ROLE);
         peopleFlowDelegate2.setMemberId("2");
         peopleFlowDelegate2.setActionRequestPolicyCode(ActionRequestPolicy.FIRST.getCode());
         peopleFlowDelegate2.setDelegationTypeCode(DelegationType.SECONDARY.getCode());
@@ -135,7 +135,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         assertNotNull(memberBo.getId());
         assertEquals(peopleFlowBo.getId(), memberBo.getPeopleFlowId());
         assertEquals("admin", memberBo.getMemberId());
-        assertEquals(MemberType.PRINCIPAL.getCode(), memberBo.getMemberTypeCode());
+        assertEquals(MemberType.PRINCIPAL, memberBo.getMemberType());
         assertEquals(peopleFlowMember.getResponsibilityId(), memberBo.getResponsibilityId());
         assertSame(1, memberBo.getPriority());
         assertTrue(memberBo.getDelegates().size() == 2);
@@ -144,7 +144,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         assertNotNull(delegateBo1.getId());
         assertEquals(memberBo.getId(), delegateBo1.getPeopleFlowMemberId());
         assertEquals("1", delegateBo1.getMemberId());
-        assertEquals(MemberType.GROUP.getCode(), delegateBo1.getMemberTypeCode());
+        assertEquals(MemberType.GROUP, delegateBo1.getMemberType());
         assertEquals(DelegationType.PRIMARY.getCode(), delegateBo1.getDelegationTypeCode());
         assertEquals(peopleFlowDelegate1.getResponsibilityId(), delegateBo1.getResponsibilityId());
         assertNull(delegateBo1.getActionRequestPolicyCode());
@@ -153,7 +153,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         assertNotNull(delegateBo2.getId());
         assertEquals(memberBo.getId(), delegateBo2.getPeopleFlowMemberId());
         assertEquals("2", delegateBo2.getMemberId());
-        assertEquals(MemberType.ROLE.getCode(), delegateBo2.getMemberTypeCode());
+        assertEquals(MemberType.ROLE, delegateBo2.getMemberType());
         assertEquals(DelegationType.SECONDARY.getCode(), delegateBo2.getDelegationTypeCode());
         assertEquals(peopleFlowDelegate2.getResponsibilityId(), delegateBo2.getResponsibilityId());
         assertEquals(ActionRequestPolicy.FIRST.getCode(), delegateBo2.getActionRequestPolicyCode());

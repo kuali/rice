@@ -37,6 +37,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
 import java.sql.Timestamp
+import org.kuali.rice.core.api.membership.MemberType
 
 @Entity
 @Table(name = "KRIM_ROLE_MBR_T")
@@ -57,7 +58,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
     String roleId;
 
     @Column(name = "MBR_TYP_CD")
-    String memberTypeCode
+    private String memberTypeCode
 
     @OneToMany(targetEntity = RoleMemberAttributeDataBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_MBR_ID", insertable = false, updatable = false)
@@ -105,6 +106,15 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         }
         return qualifier;
     }*/
+
+    public MemberType getMemberType() {
+        return MemberType.fromCode(memberTypeCode)
+    }
+
+    public void setMemberType(MemberType type) {
+        this.memberTypeCode = type.getCode()
+    }
+
     public static RoleMember to(RoleMemberBo bo) {
         if (bo == null) {return null;}
         return RoleMember.Builder.create(bo).build();

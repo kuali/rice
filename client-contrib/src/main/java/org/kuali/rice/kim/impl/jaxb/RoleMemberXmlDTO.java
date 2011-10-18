@@ -16,7 +16,9 @@
 package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
+import org.jacorb.idl.Member;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePairValidatingAdapter;
@@ -89,7 +91,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
     private Map<String, String> qualifications;
     
     @XmlTransient
-    private String memberTypeCode;
+    private MemberType memberType;
     
     /**
      * Constructs an empty RoleMemberXmlDTO instance.
@@ -102,27 +104,28 @@ public abstract class RoleMemberXmlDTO implements Serializable {
      * @param roleMember The role member that this DTO should populate its data from.
      * @param populateMemberId If true, the member principal/group/role ID will get populated; otherwise, only
      * the member principal/group/role name and (if applicable) namespace will get populated.
-     * @throws IllegalArgumentException if roleMember is null, has an invalid member type code, or refers to a nonexistent principal/group/role.
+     * @throws IllegalArgumentException if roleMember is null, has an invalid member type, or refers to a nonexistent principal/group/role.
      */
     public RoleMemberXmlDTO(RoleMember roleMember, boolean populateMemberId) {
         if (roleMember == null) {
             throw new IllegalArgumentException("roleMember cannot be null");
         }
-        this.memberTypeCode = roleMember.getMemberTypeCode();
+        this.memberType = roleMember.getMemberType();
         this.activeFromDate = roleMember.getActiveFromDate();
         this.activeToDate = roleMember.getActiveToDate();
         this.qualifications = (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>();
         
-        if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+        if (MemberType.PRINCIPAL.equals(memberType)) {
             if (populateMemberId) {
                 this.principalId = roleMember.getMemberId();
             }
-            PrincipalContract principal = KimApiServiceLocator.getIdentityService().getPrincipal(roleMember.getMemberId());
+            PrincipalContract principal = KimApiServiceLocator.getIdentityService().getPrincipal(
+                    roleMember.getMemberId());
             if (principal == null) {
                 throw new IllegalArgumentException("Cannot find principal with ID \"" +  roleMember.getMemberId() + "\"");
             }
             this.principalName = principal.getPrincipalName();
-        } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+        } else if (MemberType.GROUP.equals(memberType)) {
             if (populateMemberId) {
                 this.groupId = roleMember.getMemberId();
             }
@@ -131,7 +134,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
                 throw new IllegalArgumentException("Cannot find group with ID \"" + roleMember.getMemberId() + "\"");
             }
             this.groupName = new NameAndNamespacePair(group.getNamespaceCode(), group.getName());
-        } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+        } else if (MemberType.ROLE.equals(memberType)) {
             if (populateMemberId) {
                 this.roleIdAsMember = roleMember.getMemberId();
             }
@@ -142,7 +145,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
             this.roleNameAsMember = new NameAndNamespacePair(role.getNamespaceCode(), role.getName());
         } else {
             throw new IllegalArgumentException("Cannot construct a RoleMemberXmlDTO from a role member with an unrecognized member type code of \"" +
-                    memberTypeCode + "\"");
+                    memberType + "\"");
         }    
     }
 
@@ -273,97 +276,97 @@ public abstract class RoleMemberXmlDTO implements Serializable {
     }
 
     /**
-     * Retrieves the member type code.
+     * Retrieves the member type.
      * 
-     * <p>If the member type code is null at the time that this method is invoked, an attempt will be made to set its
+     * <p>If the member type is null at the time that this method is invoked, an attempt will be made to set its
      * value based on any populated member principal/group/role ID/name information.
      * 
-     * @return the member type code, or null if no membership identification information has been set on this member.
+     * @return the member type, or null if no membership identification information has been set on this member.
      * @throws IllegalStateException if the role member is populated simultaneously with multiple member ID/name information
      */
-    public String getMemberTypeCode() {
-        if (memberTypeCode == null) {
+    public MemberType getMemberType() {
+        if (memberType == null) {
             boolean foundMemberInfo = false;
             
             if (StringUtils.isNotBlank(principalId) || StringUtils.isNotBlank(principalName)) {
-                memberTypeCode = KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE;
+                memberType = MemberType.PRINCIPAL;
                 foundMemberInfo = true;
             }
             
             if (StringUtils.isNotBlank(groupId) || groupName != null) {
                 if (foundMemberInfo) {
-                    memberTypeCode = null;
+                    memberType = null;
                     throw new IllegalStateException("Cannot have a role member that is simultaneously populated with member principal, member group, and/or member role information");
                 }
-                memberTypeCode = KimUIConstants.MEMBER_TYPE_GROUP_CODE;
+                memberType = MemberType.GROUP;
                 foundMemberInfo = true;
             }
             
             if (StringUtils.isNotBlank(roleIdAsMember) || roleNameAsMember != null) {
                 if (foundMemberInfo) {
-                    memberTypeCode = null;
+                    memberType = null;
                     throw new IllegalStateException("Cannot have a role member that is simultaneously populated with member principal, member group, and/or member role information");
                 }
-                memberTypeCode = KimUIConstants.MEMBER_TYPE_ROLE_CODE;
+                memberType = MemberType.ROLE;
                 foundMemberInfo = true;
             }
         }
-        return this.memberTypeCode;
+        return this.memberType;
     }
 
     /**
-     * Retrieves the role member's ID, based on the member type code and any populated member principal/group/role IDs.
+     * Retrieves the role member's ID, based on the member type and any populated member principal/group/role IDs.
      * 
-     * <p>If the member type code is null at the time that this method is invoked, an attempt will be made to set its
+     * <p>If the member type is null at the time that this method is invoked, an attempt will be made to set its
      * value based on any populated member principal/group/role ID/name information.
      * 
-     * @return The member's ID, or null if the member type code is null or the associated member ID information is null.
+     * @return The member's ID, or null if the member type is null or the associated member ID information is null.
      */
     public String getMemberId() {
-        if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())) {
+        if (MemberType.PRINCIPAL.equals(getMemberType())) {
             return principalId;
-        } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())) {
+        } else if (MemberType.GROUP.equals(getMemberType())) {
             return groupId;
-        } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())) {
+        } else if (MemberType.ROLE.equals(getMemberType())) {
             return roleIdAsMember;
         }
         return null;
     }
     
     /**
-     * Retrieves the role member's name, based on the member type code and any populated member principal/group/role names.
+     * Retrieves the role member's name, based on the member type and any populated member principal/group/role names.
      * 
-     * <p>If the member type code is null at the time that this method is invoked, an attempt will be made to set its
+     * <p>If the member type is null at the time that this method is invoked, an attempt will be made to set its
      * value based on any populated member principal/group/role ID/name information.
      * 
-     * @return The member's name, or null if the member type code is null or the associated member name information is null.
+     * @return The member's name, or null if the member type is null or the associated member name information is null.
      */
     public String getMemberName() {
-        if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())) {
+        if (MemberType.PRINCIPAL.equals(getMemberType())) {
             return principalName;
-        } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())) {
+        } else if (MemberType.GROUP.equals(getMemberType())) {
             return (groupName != null) ? groupName.getName() : null;
-        } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())) {
+        } else if (MemberType.ROLE.equals(getMemberType())) {
             return (roleNameAsMember != null) ? roleNameAsMember.getName() : null;
         }
         return null;
     }
     
     /**
-     * Retrieves the role member's namespace code, based on the member type code and any populated member principal/group/role names.
+     * Retrieves the role member's namespace code, based on the member type and any populated member principal/group/role names.
      * 
-     * <p>If the member type code is null at the time that this method is invoked, an attempt will be made to set its
+     * <p>If the member type is null at the time that this method is invoked, an attempt will be made to set its
      * value based on any populated member principal/group/role ID/name information.
      * 
-     * @return The member's namespace code, or null if the member type code is null, the associated member name information is null,
+     * @return The member's namespace code, or null if the member type is null, the associated member name information is null,
      * or the role member is a principal.
      */
     public String getMemberNamespaceCode() {
-        if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())) {
+        if (MemberType.PRINCIPAL.equals(getMemberType())) {
             return null;
-        } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())) {
+        } else if (MemberType.GROUP.equals(getMemberType())) {
             return (groupName != null) ? groupName.getName() : null;
-        } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())) {
+        } else if (MemberType.ROLE.equals(getMemberType())) {
             return (roleNameAsMember != null) ? roleNameAsMember.getName() : null;
         }
         return null;

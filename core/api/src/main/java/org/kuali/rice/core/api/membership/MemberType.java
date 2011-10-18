@@ -39,15 +39,15 @@ public enum MemberType implements Coded {
     }
 
     public static MemberType fromCode(String code) {
-		if (code == null) {
-			return null;
-		}
-		for (MemberType memberType : values()) {
-			if (memberType.code.equals(code)) {
-				return memberType;
-			}
-		}
-		throw new IllegalArgumentException("Failed to locate the MemberType with the given code: " + code);
-	}
+        if (code == null) {
+            return null;
+        }
+        for (MemberType memberType : values()) {
+            if (memberType.code.equals(code)) {
+                return memberType;
+            }
+        }
+        throw new IllegalArgumentException("Failed to locate the MemberType with the given code: " + code);
+    }
 
 }

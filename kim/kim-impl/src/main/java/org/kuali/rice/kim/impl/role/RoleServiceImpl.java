@@ -292,7 +292,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         Map<String, List<RoleMembership>> roleIdToMembershipMap = new HashMap<String, List<RoleMembership>>();
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
             // gather up the qualifier sets and the service they go with
-            if (roleMemberBo.getMemberTypeCode().equals(MemberType.PRINCIPAL.getCode())) {
+            if (MemberType.PRINCIPAL.equals(roleMemberBo.getMemberType())) {
                 RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
                 if (roleTypeService != null) {
                     List<RoleMembership> las = roleIdToMembershipMap.get(roleMemberBo.getRoleId());
@@ -304,7 +304,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             roleMemberBo.getRoleId(),
                             roleMemberBo.getRoleMemberId(),
                             roleMemberBo.getMemberId(),
-                            roleMemberBo.getMemberTypeCode(),
+                            roleMemberBo.getMemberType(),
                             roleMemberBo.getAttributes()).build();
 
                     las.add(mi);
@@ -382,8 +382,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (RoleMemberBo roleMemberBo : roleMemberBos) {
             RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
             // gather up the qualifier sets and the service they go with
-            if (roleMemberBo.getMemberTypeCode().equals(MemberType.PRINCIPAL.getCode())
-                    || roleMemberBo.getMemberTypeCode().equals(MemberType.GROUP.getCode())) {
+            if (MemberType.PRINCIPAL.equals(roleMemberBo.getMemberType())
+                    || MemberType.GROUP.equals(roleMemberBo.getMemberType())) {
                 if (roleTypeService != null) {
                     List<RoleMembership> las = roleIdToMembershipMap.get(roleMemberBo.getRoleId());
                     if (las == null) {
@@ -394,14 +394,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             roleMemberBo.getRoleId(),
                             roleMemberBo.getRoleMemberId(),
                             roleMemberBo.getMemberId(),
-                            roleMemberBo.getMemberTypeCode(),
+                            roleMemberBo.getMemberType(),
                             roleMemberBo.getAttributes()).build();
 
                     las.add(mi);
                 } else {
                     results.add(roleMemberBo.getAttributes());
                 }
-            } else if (roleMemberBo.getMemberTypeCode().equals(MemberType.ROLE.getCode())) {
+            } else if (MemberType.ROLE.equals(roleMemberBo.getMemberType())) {
                 // find out if the user has the role
                 // need to convert qualification using this role's service
                 Map<String, String> nestedQualification = qualification;
@@ -463,7 +463,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         List<String> roleIds = Collections.singletonList(getRoleIdByNameAndNamespaceCode(namespaceCode, roleName));
         for (RoleMembership roleMembership : getRoleMembers(roleIds, qualification, false, foundRoleTypeMembers)) {
-            if (MemberType.GROUP.getCode().equals(roleMembership.getMemberTypeCode())) {
+            if (MemberType.GROUP.equals(roleMembership.getMemberType())) {
                 principalIds.addAll(getGroupService().getMemberPrincipalIds(roleMembership.getMemberId()));
             } else {
                 principalIds.add(roleMembership.getMemberId());
@@ -532,7 +532,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getRoleId(),
                     roleMemberBo.getRoleMemberId(),
                     roleMemberBo.getMemberId(),
-                    roleMemberBo.getMemberTypeCode(),
+                    roleMemberBo.getMemberType(),
                     roleMemberBo.getAttributes()).build();
             roleMemberships.add(roleMembeship);
         }
@@ -555,7 +555,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     bo.getRoleId(),
                     bo.getRoleMemberId(),
                     bo.getMemberId(),
-                    bo.getMemberTypeCode(),
+                    bo.getMemberType(),
                     bo.getAttributes());
             ims.add(roleMembership);
         }
@@ -673,12 +673,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getRoleId(),
                     roleMemberBo.getRoleMemberId(),
                     roleMemberBo.getMemberId(),
-                    roleMemberBo.getMemberTypeCode(),
+                    roleMemberBo.getMemberType(),
                     roleMemberBo.getAttributes()).build();
 
             // if the qualification check does not need to be made, just add the result
             if ((qualification == null || qualification.isEmpty()) || getRoleTypeService(roleMemberBo.getRoleId()) == null) {
-                if (roleMemberBo.getMemberTypeCode().equals(MemberType.ROLE.getCode())) {
+                if (MemberType.ROLE.equals(roleMemberBo.getMemberType())) {
                     // if a role member type, do a non-recursive role member check
                     // to obtain the group and principal members of that role
                     // given the qualification
@@ -729,7 +729,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             entry.getValue());
                     // loop over the matching entries, adding them to the results
                     for (RoleMembership roleMemberships : matchingMembers) {
-                        if (roleMemberships.getMemberTypeCode().equals(MemberType.ROLE.getCode())) {
+                        if (MemberType.ROLE.equals(roleMemberships.getMemberType())) {
                             // if a role member type, do a non-recursive role member check
                             // to obtain the group and principal members of that role
                             // given the qualification
@@ -1047,7 +1047,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getRoleId(),
                     roleMemberBo.getRoleMemberId(),
                     roleMemberBo.getMemberId(),
-                    roleMemberBo.getMemberTypeCode(),
+                    roleMemberBo.getMemberType(),
                     roleMemberBo.getAttributes()).build();
 
             // if the role type service is null, assume that all qualifiers match
@@ -1227,7 +1227,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         newRoleMember.setRoleId(role.getId());
         newRoleMember.setMemberId(principalId);
-        newRoleMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
+        newRoleMember.setMemberType(MemberType.PRINCIPAL);
 
         // build role member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, role.getKimTypeId());
@@ -1256,7 +1256,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         RoleMemberBo newRoleMember = new RoleMemberBo();
         newRoleMember.setRoleId(role.getId());
         newRoleMember.setMemberId(groupId);
-        newRoleMember.setMemberTypeCode(MemberType.GROUP.getCode());
+        newRoleMember.setMemberType(MemberType.GROUP);
 
         // build role member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, role.getKimTypeId());
@@ -1288,7 +1288,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         RoleMemberBo newRoleMember = new RoleMemberBo();
         newRoleMember.setRoleId(roleBo.getId());
         newRoleMember.setMemberId(roleId);
-        newRoleMember.setMemberTypeCode(MemberType.ROLE.getCode());
+        newRoleMember.setMemberType(MemberType.ROLE);
         // build roleBo member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, roleBo.getKimTypeId());
 

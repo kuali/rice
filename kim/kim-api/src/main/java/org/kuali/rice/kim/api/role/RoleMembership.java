@@ -21,6 +21,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
@@ -108,7 +109,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         roleMemberId = b.getRoleMemberId();
         embeddedRoleId = b.getEmbeddedRoleId();
         memberId = b.getMemberId();
-        memberTypeCode = b.getMemberTypeCode();
+        memberTypeCode = b.getMemberType().getCode();
         roleSortingCode = b.getRoleSortingCode();
         qualifier = b.getQualifier();
 
@@ -136,8 +137,8 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         return memberId;
     }
 
-    public String getMemberTypeCode() {
-        return memberTypeCode;
+    public MemberType getMemberType() {
+        return MemberType.fromCode(memberTypeCode);
     }
 
     public String getRoleSortingCode() {
@@ -158,7 +159,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         private String roleMemberId;
         private String embeddedRoleId;
         private String memberId;
-        private String memberTypeCode;
+        private MemberType memberType;
         private String roleSortingCode;
         private Map<String, String> qualifier;
         private List<DelegateType.Builder> delegates;
@@ -166,14 +167,14 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         private Builder() {
         }
 
-        public static Builder create(String roleId, String roleMemberId, String memberId, String memberTypeCode,
+        public static Builder create(String roleId, String roleMemberId, String memberId, MemberType memberType,
                                      Map<String, String> qualifier) {
 
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setRoleMemberId(roleMemberId);
             b.setMemberId(memberId);
-            b.setMemberTypeCode(memberTypeCode);
+            b.setMemberType(memberType);
             b.setQualifier(qualifier);
             return b;
         }
@@ -184,7 +185,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             b.setRoleMemberId(contract.getRoleMemberId());
             b.setEmbeddedRoleId(contract.getEmbeddedRoleId());
             b.setMemberId(contract.getMemberId());
-            b.setMemberTypeCode(contract.getMemberTypeCode());
+            b.setMemberType(contract.getMemberType());
             b.setRoleSortingCode(contract.getRoleSortingCode());
             b.setQualifier(contract.getQualifier());
 
@@ -247,15 +248,15 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             this.memberId = memberId;
         }
 
-        public String getMemberTypeCode() {
-            return this.memberTypeCode;
+        public MemberType getMemberType() {
+            return this.memberType;
         }
 
-        public void setMemberTypeCode(String memberTypeCode) {
-            if (StringUtils.isEmpty(memberTypeCode)) {
-                throw new IllegalArgumentException("memberTypeCode cannot be empty or null");
+        public void setMemberType(MemberType memberType) {
+            if (memberType == null) {
+                throw new IllegalArgumentException("memberTypeCode cannot be null");
             }
-            this.memberTypeCode = memberTypeCode;
+            this.memberType = memberType;
         }
 
         public String getEmbeddedRoleId() {

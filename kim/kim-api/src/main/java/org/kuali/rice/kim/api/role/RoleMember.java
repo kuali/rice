@@ -22,6 +22,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
@@ -120,7 +121,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         this.roleResponsibilityActions = roleResponsibilityActions;
 
         memberId = b.getMemberId();
-        memberTypeCode = b.getMemberTypeCode();
+        memberTypeCode = b.getMemberType().getCode();
         activeFromDate = b.getActiveFromDate();
         activeToDate = b.getActiveToDate();
     }
@@ -130,8 +131,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         return this.memberId;
     }
 
-    public String getMemberTypeCode() {
-        return this.memberTypeCode;
+    public MemberType getMemberType() {
+        return MemberType.fromCode(this.memberTypeCode);
     }
 
 
@@ -177,17 +178,17 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         private Map<String, String> attributes;
         private List<RoleResponsibilityAction.Builder> roleRspActions;
         private String memberId;
-        private String memberTypeCode;
+        private MemberType memberType;
         private DateTime activeFromDate;
         private DateTime activeToDate;
 
         public static Builder create(String roleId, String roleMemberId, String memberId,
-                                     String memberTypeCode, DateTime activeFromDate, DateTime activeToDate, Map<String, String> attributes) {
+                                     MemberType memberType, DateTime activeFromDate, DateTime activeToDate, Map<String, String> attributes) {
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setRoleMemberId(roleMemberId);
             b.setMemberId(memberId);
-            b.setMemberTypeCode(memberTypeCode);
+            b.setMemberType(memberType);
             b.setActiveFromDate(activeFromDate);
             b.setActiveToDate(activeToDate);
             b.setAttributes(attributes);
@@ -209,7 +210,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             b.setRoleRspActions(rraBuilders);
 
             b.setMemberId(contract.getMemberId());
-            b.setMemberTypeCode(contract.getMemberTypeCode());
+            b.setMemberType(contract.getMemberType());
             b.setActiveFromDate(contract.getActiveFromDate());
             b.setActiveToDate(contract.getActiveToDate());
             return b;
@@ -262,15 +263,15 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.memberId = memberId;
         }
 
-        public String getMemberTypeCode() {
-            return memberTypeCode;
+        public MemberType getMemberType() {
+            return memberType;
         }
 
-        public void setMemberTypeCode(String memberTypeCode) {
-            if (StringUtils.isBlank(memberTypeCode)) {
-                throw new IllegalArgumentException("memberTypeCode may not be null");
+        public void setMemberType(MemberType memberType) {
+            if (memberType == null) {
+                throw new IllegalArgumentException("memberType may not be null");
             }
-            this.memberTypeCode = memberTypeCode;
+            this.memberType = memberType;
         }
 
         public DateTime getActiveFromDate() {

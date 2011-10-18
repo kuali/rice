@@ -15,6 +15,7 @@
 
 package org.kuali.rice.kim.api.role;
 
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Map;
 public interface RoleMemberContract extends InactivatableFromTo {
     String getMemberId();
 
-    String getMemberTypeCode();
+    MemberType getMemberType();
 
     String getRoleMemberId();
 

@@ -91,7 +91,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceB
 		// check that the principal ID is not null
 		String principalId = qualification.get( KimConstants.AttributeConstants.PRINCIPAL_ID );
 		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
-	        tempIdList.add( RoleMembership.Builder.create(null/*roleId*/, null, principalId, MemberType.PRINCIPAL.getCode(), null).build());
+	        tempIdList.add( RoleMembership.Builder.create(null/*roleId*/, null, principalId, MemberType.PRINCIPAL, null).build());
 		}
 		return tempIdList;
 	}

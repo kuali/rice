@@ -15,6 +15,7 @@
 
 package org.kuali.rice.kim.api.role;
 
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface RoleMembershipContract {
 
     String getMemberId();
 
-    String getMemberTypeCode();
+    MemberType getMemberType();
 
     /**
      * @return String Identifier of the role from which the group or principal was derived.

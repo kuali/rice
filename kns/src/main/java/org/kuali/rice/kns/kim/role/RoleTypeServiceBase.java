@@ -141,7 +141,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 		    	if ( StringUtils.isBlank( rm.getRoleMemberId() ) ) {
 		    		continue;
 		    	}
-		        if ( rm.getMemberTypeCode().equals( MemberType.PRINCIPAL.getCode() ) ) {
+		        if ( MemberType.PRINCIPAL.equals(rm.getMemberType()) ) {
 		            if ( rm.getMemberId().equals( principalId ) ) {
 		                return true;
 		            }

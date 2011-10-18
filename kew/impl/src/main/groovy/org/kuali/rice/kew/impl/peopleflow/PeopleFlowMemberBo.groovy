@@ -27,7 +27,7 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
     String id
     String peopleFlowId
     String memberId
-    String memberTypeCode
+    private String memberTypeCode
     String actionRequestPolicyCode
     String responsibilityId
     int priority = 1;
@@ -71,6 +71,10 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
     @Override
     MemberType getMemberType() {
         return MemberType.fromCode(memberTypeCode);
+    }
+
+    void setMemberType(MemberType type) {
+        memberTypeCode = type.getCode()
     }
 
     @Override

@@ -18,6 +18,7 @@ package org.kuali.rice.kim.impl.jaxb;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.kim.api.KimConstants.KimUIConstants;
 import org.kuali.rice.kim.api.group.GroupContract;
@@ -115,7 +116,7 @@ public final class RoleXmlUtil {
         }
 
         RoleMember.Builder builder = RoleMember.Builder.create(newRoleMember.getRoleId(), newRoleMember.getRoleIdAsMember(),
-                newRoleMember.getMemberId(), newRoleMember.getMemberTypeCode(),
+                newRoleMember.getMemberId(), newRoleMember.getMemberType(),
                 newRoleMember.getActiveFromDate() == null ? null : new DateTime(newRoleMember.getActiveFromDate().getMillis()),
                 newRoleMember.getActiveToDate() == null ? null : new DateTime(newRoleMember.getActiveToDate().getMillis()),
                 newRoleMember.getQualifications());
@@ -171,14 +172,14 @@ public final class RoleXmlUtil {
             for (RoleMemberContract roleMember : roleMembers) {
                 if (!existingRoleMemberIds.contains(roleMember.getRoleMemberId())) {
                     // If the role member needs to be removed, use the member type code to determine which removal method to call.
-                    String memberTypeCode = roleMember.getMemberTypeCode();
-                    if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+                    MemberType memberType = roleMember.getMemberType();
+                    if (MemberType.PRINCIPAL.equals(memberType)) {
                         roleUpdateService.removePrincipalFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
                                 (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>());
-                    } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+                    } else if (MemberType.GROUP.equals(memberType)) {
                         roleUpdateService.removeGroupFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
                                 (roleMember.getAttributes() != null) ? roleMember.getAttributes() :new HashMap<String, String>());
-                    } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+                    } else if (MemberType.ROLE.equals(memberType)) {
                         roleUpdateService.removeRoleFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
                                 (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>());
                     }
@@ -250,26 +251,26 @@ public final class RoleXmlUtil {
      */
     private static void validateMemberIdentity(RoleMemberXmlDTO newRoleMember) throws UnmarshalException {
         // Ensure that sufficient and non-conflicting membership info has been set. (The getMemberTypeCode() method performs such validation.)
-        String memberTypeCode = newRoleMember.getMemberTypeCode();
-        if (StringUtils.isBlank(memberTypeCode)) {
+        MemberType memberType = newRoleMember.getMemberType();
+        if (memberType == null) {
             throw new UnmarshalException("Cannot create a role member with no member principal/group/role identification information specified");
         }
         
         // Ensure that a valid member ID was specified, if present.
         if (StringUtils.isNotBlank(newRoleMember.getMemberId())) {
-            if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+            if (MemberType.PRINCIPAL.equals(memberType)) {
                 // If the member is a principal, ensure that the principal exists.
                 if (KimApiServiceLocator.getIdentityService().getPrincipal(newRoleMember.getPrincipalId()) == null) {
                     throw new UnmarshalException("Cannot create principal role member with principal ID \"" +
                             newRoleMember.getPrincipalId() + "\" because such a person does not exist");
                 }
-            } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+            } else if (MemberType.GROUP.equals(memberType)) {
                 // If the member is a group, ensure that the group exists.
                 if (KimApiServiceLocator.getGroupService().getGroup(newRoleMember.getGroupId()) == null) {
                     throw new UnmarshalException("Cannot create group role member with group ID \"" +
                             newRoleMember.getGroupId() + "\" because such a group does not exist");
                 }
-            } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+            } else if (MemberType.ROLE.equals(memberType)) {
                 // If the member is another role, ensure that the role exists and that the role is not trying to become a member of itself.
                 if (newRoleMember.getRoleId().equals(newRoleMember.getRoleIdAsMember())) {
                     throw new UnmarshalException("The role with ID \"" + newRoleMember.getRoleIdAsMember() + "\" cannot be made a member of itself");
@@ -282,7 +283,7 @@ public final class RoleXmlUtil {
         
         // Ensure that a valid member name (and namespace, if applicable) was specified, if present.
         if (StringUtils.isNotBlank(newRoleMember.getMemberName())) {
-            if (KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+            if (MemberType.PRINCIPAL.equals(memberType)) {
                 //If the member is a principal, ensure that the principal exists and does not conflict with any existing principal ID information.
                 PrincipalContract tempPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newRoleMember.getPrincipalName());
                 if (tempPrincipal == null) {
@@ -296,7 +297,7 @@ public final class RoleXmlUtil {
                             "\" and principal name \"" + newRoleMember.getPrincipalName() + "\" because the principal with that name has an ID of \"" +
                                     tempPrincipal.getPrincipalId() + "\" instead");
                 }
-            } else if (KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)) {
+            } else if (MemberType.GROUP.equals(memberType)) {
                 // If the member is a group, ensure that the group exists and does not conflict with any existing group ID information.
                 NameAndNamespacePair groupNameAndNamespace = newRoleMember.getGroupName();
                 GroupContract tempGroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
@@ -312,7 +313,7 @@ public final class RoleXmlUtil {
                             groupNameAndNamespace.getNamespaceCode() + "\", and name \"" + groupNameAndNamespace.getName() +
                                     "\" because the group with that namespace and name has an ID of \"" + tempGroup.getId() + "\" instead");
                 }
-            } else if (KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)) {
+            } else if (MemberType.ROLE.equals(memberType)) {
                 // If the member is another role, ensure that the role exists, does not conflict with any existing role ID information, and is not the member's role.
                 NameAndNamespacePair roleNameAndNamespace = newRoleMember.getRoleNameAsMember();
                 RoleContract tempRole = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(

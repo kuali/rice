@@ -24,7 +24,7 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
     String id
     String peopleFlowMemberId
     String memberId
-    String memberTypeCode
+    private String memberTypeCode
     String actionRequestPolicyCode
     String delegationTypeCode
     String responsibilityId
@@ -68,6 +68,10 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
         return MemberType.fromCode(memberTypeCode)
     }
 
+    void setMemberType(MemberType type) {
+        memberTypeCode = type.getCode()
+    }
+
     @Override
     ActionRequestPolicy getActionRequestPolicy() {
         return ActionRequestPolicy.fromCode(actionRequestPolicyCode)
@@ -92,7 +96,7 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
         }
         PeopleFlowDelegateBo delegateBo = new PeopleFlowDelegateBo()
         delegateBo.setMemberId(delegate.getMemberId())
-        delegateBo.setMemberTypeCode(delegate.getMemberType().getCode())
+        delegateBo.setMemberType(delegate.getMemberType())
         if (delegate.getActionRequestPolicy() != null) {
             delegateBo.setActionRequestPolicyCode(delegate.getActionRequestPolicy().getCode())
         }

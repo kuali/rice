@@ -9,12 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Parameter object for the {@link org.kuali.rice.krms.api.engine.Engine} used to pass in mappings from Term to value
+ * <p>Parameter object for the {@link org.kuali.rice.krms.api.engine.Engine} used to pass in mappings from Term to value
  * (aka facts).  In rule parlance, a fact is a concrete value of a term.  Intuitively this relationship is one of
  * definition and instance, similar to a parameter definition (e.g. int count) for a function (or method) in a
- * programming language and a parameter value (e.g. 5).
+ * programming language and a parameter value (e.g. 5).</p>
  *
- * {@link Facts} is immutable, and has a private constructor.  Use the inner {@link Builder} class to construct.
+ * <p>{@link Facts} is immutable, and has a private constructor.  Use the inner {@link Builder} class to construct.</p>
  */
 public final class Facts implements ModelObjectComplete, Serializable {
 

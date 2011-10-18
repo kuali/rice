@@ -31,7 +31,6 @@ import org.joda.time.format.DateTimeFormatter
 import org.kuali.rice.kim.api.test.JAXBAssert
 import org.kuali.rice.core.api.membership.MemberType
 
-@Ignore
 class RoleMemberTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
 
@@ -43,7 +42,7 @@ class RoleMemberTest {
     static final String MEMBER_NAME = "Spock";
     static final String MEMBER_NAMESPACE_CODE = "KUALI";
     static final String MEMBER_ID = "42";
-    static final String MEMBER_TYPE = MemberType.GROUP
+    static final MemberType MEMBER_TYPE = MemberType.GROUP
     static final String MEMBER_TYPE_CODE = "G";
 
     static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00"

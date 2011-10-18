@@ -141,6 +141,14 @@ th .kr-collection-cntr .summary {
 .kr-field-attribute .kr-labelTop {
     font-weight:bold;
 }
+.kr-field-attribute>span:nth-child(1) label {
+    font-weight:bold;
+    line-height:2em;
+    margin-right:1em;
+}
+.Hey S>label {          /* this should go away, not sure what this is or why it's in the build */
+    font-weight:bold;
+}
 th.labelTop {
     display:inline;
 }

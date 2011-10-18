@@ -4,6 +4,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.engine.Engine;
 import org.kuali.rice.krms.api.engine.EngineResults;
+import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 
@@ -29,6 +30,6 @@ public class TestRulesEngineExecutor implements RulesEngineExecutor {
         contextQualifiers.put("namespaceCode", CONTEXT_NAMESPACE_CODE);
         contextQualifiers.put("name", CONTEXT_NAME);
         SelectionCriteria sectionCriteria = SelectionCriteria.createCriteria(EVENT_NAME, null, contextQualifiers, null);
-        return engine.execute(sectionCriteria, new HashMap<Term, Object>(), null);
+        return engine.execute(sectionCriteria, Facts.EMPTY_FACTS, null);
     }
 }

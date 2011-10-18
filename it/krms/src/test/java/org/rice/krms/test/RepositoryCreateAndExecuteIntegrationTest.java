@@ -16,10 +16,10 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionFlag;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
+import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
@@ -56,6 +56,7 @@ import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.ContextBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.PropositionBoService;
 import org.kuali.rice.krms.impl.repository.PropositionBoServiceImpl;
@@ -72,6 +73,7 @@ import org.springframework.transaction.annotation.Transactional;
 @BaselineMode(Mode.CLEAR_DB)
 public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
+    public static final String CAMPUS_CODE_TERM_NAME = "campusCodeTermSpec";
     // Services needed for creation:
 	private TermBoService termBoService;
 	private ContextBoService contextRepository;
@@ -112,14 +114,14 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         ruleBoService = new RuleBoServiceImpl();
         ((RuleBoServiceImpl)ruleBoService).setBusinessObjectService(getBoService());
 
+        krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+
         agendaBoService = new AgendaBoServiceImpl();
         ((AgendaBoServiceImpl)agendaBoService).setBusinessObjectService(getBoService());
+        ((AgendaBoServiceImpl)agendaBoService).setAttributeDefinitionService(krmsAttributeDefinitionService);
 
         actionBoService = new ActionBoServiceImpl();
         ((ActionBoServiceImpl)actionBoService).setBusinessObjectService(getBoService());
-
-        krmsAttributeDefinitionService = new KrmsAttributeDefinitionServiceImpl();
-        ((KrmsAttributeDefinitionServiceImpl)krmsAttributeDefinitionService).setBusinessObjectService(getBoService());
 
 
         // wire up services needed for execution
@@ -128,6 +130,8 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         ruleRepositoryService = new RuleRepositoryServiceImpl();
         ((RuleRepositoryServiceImpl)ruleRepositoryService).setBusinessObjectService(getBoService());
+        ((RuleRepositoryServiceImpl)ruleRepositoryService).setCriteriaLookupService(KrmsRepositoryServiceLocator.getCriteriaLookupService());
+
 
         repositoryToEngineTranslator = new RepositoryToEngineTranslatorImpl();
 
@@ -265,10 +269,9 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         SelectionCriteria sc1 = SelectionCriteria.createCriteria("Tsunami", now, contextQualifiers, agendaQualifiers);
 
-        Map<Term, Object> facts1 = new HashMap<Term, Object>();
-        TermSpecification campusCodeTermSpecCond = new TermSpecification("campusCodeTermSpec", "java.lang.String");
-        Term myCampusCode = new Term( campusCodeTermSpecCond );
-        facts1.put(myCampusCode, "BL");
+        Facts.Builder factsBuilder1 = Facts.Builder.create();
+        Term myCampusCode = new Term(CAMPUS_CODE_TERM_NAME);
+        factsBuilder1.addFact(myCampusCode, "BL");
 
         ExecutionOptions xOptions1 = new ExecutionOptions();
         xOptions1.setFlag(ExecutionFlag.LOG_EXECUTION, true);
@@ -282,7 +285,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         PerformanceLogger perfLog = new PerformanceLogger();
         perfLog.log("starting rule execution");
-        EngineResults eResults1 = engine.execute(sc1, facts1, xOptions1);
+        EngineResults eResults1 = engine.execute(sc1, factsBuilder1.build(), xOptions1);
         perfLog.log("finished rule execution", true);
         resultLogger.removeListener(engineResultListener);
         List<ResultEvent> rEvents1 = eResults1.getAllResults();
@@ -372,14 +375,9 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
 	    SelectionCriteria sc2 = SelectionCriteria.createCriteria("Earthquake", now, contextQualifiers, agendaQualifiers);
 
-	    Map<Term, Object> facts2 = new HashMap<Term, Object>();
-        TermSpecification campusCodeTermSpecCond = new TermSpecification("campusCodeTermSpec", "java.lang.String");
-        Term myCampusCode = new Term( campusCodeTermSpecCond );
-	    facts2.put(myCampusCode, "BL");
-
-	    TermSpecification resolverPrereqTermSpec = new TermSpecification("prereqTermSpec", "java.lang.String");
-        Term resolverPrereqTerm = new Term(resolverPrereqTermSpec);
-        facts2.put(resolverPrereqTerm, "prereqValue");
+	    Facts.Builder factsBuilder2 = Facts.Builder.create();
+        factsBuilder2.addFact(CAMPUS_CODE_TERM_NAME, "BL");
+        factsBuilder2.addFact("prereqTermSpec", "prereqValue");
 
 	    ExecutionOptions xOptions2 = new ExecutionOptions();
 	    xOptions2.setFlag(ExecutionFlag.LOG_EXECUTION, true);
@@ -393,7 +391,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
         PerformanceLogger perfLog = new PerformanceLogger();
         perfLog.log("starting rule execution");
-	    EngineResults eResults2 = engine.execute(sc2, facts2, xOptions2);
+	    EngineResults eResults2 = engine.execute(sc2, factsBuilder2.build(), xOptions2);
         perfLog.log("finished rule execution", true);
 
         resultLogger.removeListener(engineResultListener);

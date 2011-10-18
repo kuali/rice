@@ -20,7 +20,6 @@ import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.api.engine.TermResolver;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
 import org.springframework.util.CollectionUtils;
 
@@ -228,8 +227,8 @@ public class TermResolutionEngineTest {
 		params.put("param", "value");
 		testHelper.assertSuccess(testHelper.getTerm("A", params));
 
-		// term A needs parameters, so this shouldn't work
-		testHelper.assertException(new Term(testHelper.getTermSpec("A"), null));
+		// termName A needs parameters, so this shouldn't work
+		testHelper.assertException(new Term("A"));
 
 	}
 	
@@ -249,7 +248,7 @@ public class TermResolutionEngineTest {
 		Map<String,String> params = new HashMap();
 		params.put("foo", "foovalue");
 
-		// Resolver for term b requires parameters, so this shouldn't work
+		// Resolver for termName b requires parameters, so this shouldn't work
 		testHelper.assertException(testHelper.getTerm("A", params));
 	}
 	
@@ -257,8 +256,8 @@ public class TermResolutionEngineTest {
 		
 		// expose this for testing purposes
 		@Override
-		public List<TermResolverKey> buildTermResolutionPlan(TermSpecification term) {
-			return super.buildTermResolutionPlan(term);
+		public List<TermResolverKey> buildTermResolutionPlan(String termName) {
+			return super.buildTermResolutionPlan(termName);
 		}
 	}
 	
@@ -284,7 +283,7 @@ public class TermResolutionEngineTest {
 		
 		testHelper.logScenarioDescription();
 		
-		List<?> plan = whiteBoxTermResolutionService.buildTermResolutionPlan(testHelper.getTermSpec("A"));
+		List<?> plan = whiteBoxTermResolutionService.buildTermResolutionPlan("A");
 		LOG.info("resolutionPlan: " + StringUtils.join(plan, ", ") + " <-- should be length 1!");
 		assertTrue("didn't choose the shortest resolution path (of length 1)", plan.size() == 1);
 	}
@@ -292,7 +291,7 @@ public class TermResolutionEngineTest {
 	/*
 	 *  TODO: test exception variants:
 	 *  - TermResolver throws TermResolutionException
-	 *  - TermResolutionEngine is passed a null term
+	 *  - TermResolutionEngine is passed a null termName
 	 */
 	
 	// TODO: what should the TermResolutionEngine do if a resolver throws a RuntimeException?
@@ -317,22 +316,22 @@ public class TermResolutionEngineTest {
 	
 	
 	private static class TermResolverMock<T> implements TermResolver<T> {
-		private TermSpecification output;
+		private String output;
 		private Set<String> params;
 		private T result;
-		private Set<TermSpecification> prereqs;
+		private Set<String> prereqs;
 		private int cost;
 		private boolean isExploder = false;
 
-		public TermResolverMock(TermSpecification output, T result, int cost, TermSpecification ... prereqs) {
+		public TermResolverMock(String output, T result, int cost, String ... prereqs) {
 			this(output, null, result, cost, prereqs);
 		}
 		
-		public TermResolverMock(TermSpecification output, Set<String> params, T result, int cost, TermSpecification ... prereqs) {
+		public TermResolverMock(String output, Set<String> params, T result, int cost, String ... prereqs) {
 			this.output = output;
 			this.params = Collections.unmodifiableSet(params);
 			this.result = result;
-			this.prereqs = new HashSet<TermSpecification>(Arrays.asList(prereqs));
+			this.prereqs = new HashSet<String>(Arrays.asList(prereqs));
 			this.cost = cost;
 		}
 		
@@ -342,12 +341,12 @@ public class TermResolutionEngineTest {
 		}
 		
 		@Override
-		public TermSpecification getOutput() {
+		public String getOutput() {
 			return output;
 		}
 		
 		@Override
-		public Set<TermSpecification> getPrerequisites() {
+		public Set<String> getPrerequisites() {
 			return prereqs;
 		}
 		
@@ -361,14 +360,14 @@ public class TermResolutionEngineTest {
 		}
 		
 		@Override
-		public T resolve(Map<TermSpecification, Object> resolvedPrereqs, Map<String, String> parameters) {
+		public T resolve(Map<String, Object> resolvedPrereqs, Map<String, String> parameters) {
 			
 			if (isExploder) {
 				throw new RuntimeException("I'm the exploder, coo coo catchoo");
 			}
 			
 			// get all prereqs first
-			for (TermSpecification prereq : prereqs) {
+			for (String prereq : prereqs) {
 				Object result = resolvedPrereqs.get(prereq);
 				if (result == null) fail("got back null for prereq " + prereq);
 			}
@@ -402,26 +401,21 @@ public class TermResolutionEngineTest {
 		
 		public void addGivens(String ... names) {
 			for (String name : names) {
-				TermSpecification given = getTermSpec(name); // empty String type for less clutter
-				ars.addTermValue(new Term(given, null), getResult(name));
+				ars.addTermValue(new Term(name, null), getResult(name));
 				givens.add(name);
 			}
 		}
 		
 		public String getResult(String name) {
-			return getResult(new Term(getTermSpec(name), null));
+			return getResult(new Term(name, null));
 		}
 		
 		public String getResult(Term term) {
-			return term.getSpecification().getName()+"-result";
-		}
-		
-		public TermSpecification getTermSpec(String name) {
-			return new TermSpecification(name, "");
+			return term.getName()  +"-result";
 		}
 		
 		public Term getTerm(String name, Map<String,String> params) {
-			return new Term(new TermSpecification(name, ""), params);
+			return new Term(name, params);
 		}
 		
 		public void addResolver(String out, String ... prereqs) {
@@ -433,14 +427,14 @@ public class TermResolutionEngineTest {
 		}
 		
 		public void addResolver(int cost, String out, String[] params, String ... prereqs) {
-			TermSpecification [] prereqTerms = new TermSpecification [prereqs.length];
+			String [] prereqTerms = new String [prereqs.length];
 			
-			for (int i=0; i<prereqs.length; i++) prereqTerms[i] = getTermSpec(prereqs[i]);
+			for (int i=0; i<prereqs.length; i++) prereqTerms[i] = prereqs[i];
 			
 			Set<String> paramSet = Collections.emptySet();
 			if (params != null) paramSet = new HashSet<String>(Arrays.asList(params));
 			
-			ars.addTermResolver(new TermResolverMock<Object>(getTermSpec(out), paramSet, getResult(out), cost, prereqTerms));
+			ars.addTermResolver(new TermResolverMock<Object>(out, paramSet, getResult(out), cost, prereqTerms));
 			resolvers.add("(" + out + " <- " + StringUtils.join(prereqs, ",") + ")");
 		}
 		
@@ -460,7 +454,7 @@ public class TermResolutionEngineTest {
 		}
 		
 		public void assertSuccess(String toResolve) {
-			assertSuccess(new Term(getTermSpec(toResolve), null));
+			assertSuccess(new Term(toResolve, null));
 		}
 		
 		public void assertSuccess(Term toResolve) {
@@ -469,12 +463,12 @@ public class TermResolutionEngineTest {
 				assertEquals(getResult(toResolve), ars.resolveTerm(toResolve));
 				LOG.info("Success!");
 			} catch (TermResolutionException e) {
-				fail("Should resolve the term w/o exceptions");
+				fail("Should resolve the termName w/o exceptions");
 			}
 		}
 
 		public void assertException(String toResolve) {
-			assertException(new Term(getTermSpec(toResolve), null));
+			assertException(new Term(toResolve, null));
 		}
 			
 		public void assertException(Term toResolve) {

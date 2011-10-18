@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.api.engine.TermResolver;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
@@ -22,21 +21,21 @@ public class TestTermResolverTypeService implements TermResolverTypeService {
             return new TermResolver<String>() {
 
                 @Override
-                public Set<TermSpecification> getPrerequisites() {
-                    HashSet<TermSpecification> results = new HashSet<TermSpecification>();
+                public Set<String> getPrerequisites() {
+                    HashSet<String> results = new HashSet<String>();
                     
                     Set<TermSpecificationDefinition> prereqDefs = termResolverDefinition.getPrerequisites();
                     if (prereqDefs != null) for (TermSpecificationDefinition def : prereqDefs) {
-                        results.add(new TermSpecification(def.getName(), def.getType()));
+                        results.add(def.getName());
                     }
                     
                     return results;
                 }
 
                 @Override
-                public TermSpecification getOutput() {
+                public String getOutput() {
                     TermSpecificationDefinition def = termResolverDefinition.getOutput();
-                    return new TermSpecification(def.getName(), def.getType());
+                    return def.getName();
                 }
 
                 @Override
@@ -51,7 +50,7 @@ public class TestTermResolverTypeService implements TermResolverTypeService {
 
                 @Override
                 public String resolve(
-                        Map<TermSpecification, Object> resolvedPrereqs,
+                        Map<String, Object> resolvedPrereqs,
                         Map<String, String> parameters)
                         throws TermResolutionException {
                     return "RESULT1";

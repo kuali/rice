@@ -16,10 +16,10 @@ import org.junit.Test;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.ExecutionFlag;
+import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolver;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
@@ -36,7 +36,6 @@ import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.Rule;
-import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
 
 public class CollectionOfComparablesTermBasedPropositionTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
@@ -123,7 +122,7 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 		ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionFlag.LOG_EXECUTION, true);
 		
 		LOG.init();
-		EngineResults results = engine.execute(selectionCriteria, new HashMap<Term, Object>(), executionOptions);
+		EngineResults results = engine.execute(selectionCriteria, Facts.EMPTY_FACTS, executionOptions);
 		assertNotNull(results);
 	}
 	
@@ -166,8 +165,8 @@ public class CollectionOfComparablesTermBasedPropositionTest {
 	private ActionMock executeTestAgenda(List<Float> termValue,
 			CollectionOperator collectionOper,
 			ComparisonOperator comparisonOper, Float compareValue) {
-		Term expensesTerm = new Term(new TermSpecification("expenses","Collection<Float>"));
-		TermResolver<Collection<Float>> expensesResolver = new TermResolverMock<Collection<Float>>(expensesTerm.getSpecification(), termValue); 
+		Term expensesTerm = new Term("expenses");
+		TermResolver<Collection<Float>> expensesResolver = new TermResolverMock<Collection<Float>>(expensesTerm.getName(), termValue);
 		
 		Proposition prop1 = new CollectionOfComparablesTermBasedProposition(collectionOper, comparisonOper, expensesTerm, compareValue);
 		ActionMock prop1Action = new ActionMock("prop1Action");

@@ -172,6 +172,9 @@
         <property name="businessObjectService">
             <ref local="testBoService"/>
         </property>
+        <property name="criteriaLookupService">
+            <ref local="criteriaLookupService"/>
+        </property>
     </bean>
     
     <bean id="testResolverTypeService1" class="org.rice.krms.test.TestTermResolverTypeService" />
@@ -179,10 +182,25 @@
     <bean id="testActionTypeService" class="org.rice.krms.test.TestActionTypeService">
         <constructor-arg><value>testAction</value></constructor-arg>
     </bean>
-    
-    
-    <!-- Import core beans -->
-    <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+
+
+    <!-- db platform -->
+    <bean id="dbPlatform" class="org.kuali.rice.core.BeanHolder">
+        <property name="objectType">
+          <value>${datasource.platform}</value>
+       </property>
+    </bean>
+
+    <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
+      <property name="jcdAlias" value="krmsDataSource" />
+      <property name="dbPlatform" ref="dbPlatform" />
+    </bean>
+
+    <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>
+
+
+  <!-- Import core beans -->
+  <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 
 </beans>

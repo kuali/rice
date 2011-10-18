@@ -24,8 +24,6 @@ import java.util.TreeMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krms.api.engine.Term;
-import org.kuali.rice.krms.api.engine.TermResolutionEngine;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.function.FunctionParameterDefinition;
@@ -151,7 +149,7 @@ public class SimplePropositionTypeService implements PropositionTypeService {
 			paramsMap.put(param.getName(), param.getValue());
 		}
 		
-		return new Term(new TermSpecification(termSpecificationDefinition.getName(), termSpecificationDefinition.getType()), paramsMap);
+		return new Term(termSpecificationDefinition.getName(), paramsMap);
 	}
 
 	/**

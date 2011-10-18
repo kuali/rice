@@ -15,8 +15,8 @@ public class TermResolutionException extends RiceRuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public final String termResolverClassName;
-	public final TermSpecification outputTerm;
-	public final Set<TermSpecification> prereqs;
+	public final String outputTerm;
+	public final Set<String> prereqs;
 	public final Set<String> parameterNames;
 	public final Map<String, String> parameters;
 	

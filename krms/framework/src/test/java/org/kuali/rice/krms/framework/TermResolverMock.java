@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.krms.api.engine.TermResolver;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 
 /**
  * Cheesy {@link TermResolver} implementation for testing purposes.
@@ -34,15 +33,15 @@ import org.kuali.rice.krms.api.engine.TermSpecification;
 public class TermResolverMock<T> implements TermResolver<T> {
 	
 	private T result;
-	private TermSpecification outputTermSpec;
+	private String outputName;
 	private Set<String> params;
 	
-	public TermResolverMock(TermSpecification outputTermSpec, T result) {
-		this(outputTermSpec, null, result);
+	public TermResolverMock(String outputName, T result) {
+		this(outputName, null, result);
 	}
 	
-	public TermResolverMock(TermSpecification outputTerm, String [] params, T result) {
-		this.outputTermSpec = outputTerm;
+	public TermResolverMock(String outputName, String [] params, T result) {
+		this.outputName = outputName;
 		this.result = result;
 		if (ArrayUtils.isEmpty(params)) {
 			this.params = Collections.emptySet(); 
@@ -55,10 +54,10 @@ public class TermResolverMock<T> implements TermResolver<T> {
 	public int getCost() { return 1; }
 	
 	@Override
-	public TermSpecification getOutput() { return outputTermSpec; }
+	public String getOutput() { return outputName; }
 	
 	@Override
-	public Set<TermSpecification> getPrerequisites() { return Collections.emptySet(); }
+	public Set<String> getPrerequisites() { return Collections.emptySet(); }
 	
 	@Override
 	public Set<String> getParameterNames() {
@@ -66,7 +65,7 @@ public class TermResolverMock<T> implements TermResolver<T> {
 	}
 	
 	@Override
-	public T resolve(Map<TermSpecification, Object> resolvedPrereqs, Map<String, String> parameters) {
+	public T resolve(Map<String, Object> resolvedPrereqs, Map<String, String> parameters) {
 		return result;
 	}
 };

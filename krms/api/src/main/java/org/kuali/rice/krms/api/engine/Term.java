@@ -11,33 +11,33 @@ import java.util.TreeMap;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Identifies a (hopefully) resolvable {@link Term}.  For resolution in the {@link TermResolutionEngine}, The appropriate 
- * {@link TermResolver} will be selected by matching the {@link TermSpecification} and parameters of the {@link Term} with 
+ * Identifies a (hopefully) resolvable {@link Term}.  For resolution in the {@link TermResolutionEngine}, The
+ * appropriate {@link TermResolver} will be selected by matching the name and parameters of the {@link Term} with
  * the output and parameter names of the {@link TermResolver}. 
  * @author gilesp
  *
  */
 public final class Term implements Comparable<Term> {
 
-	private final TermSpecification specification;
+	private final String name;
 	
 	private final Map<String, String> parameters;
 	
 	private static final TreeMapComparator<String,String> treeMapComparator = new TreeMapComparator<String, String>();
 
-	public Term(TermSpecification specification) {
-		this(specification, null);
+	public Term(String name) {
+		this(name, null);
 	}	
 	
 	/**
-	 * This constructs a Term, which is a named piece of data that is usually obtainable 
+	 * This constructs a Term, which is a named piece of data that is usually obtainable
 	 * through the {@link TermResolutionEngine}
-	 * 
-	 * @param specification the specification (which maps a Term to a resolver) for this Term
-	 * @param parameters an optional map of properties that may be used to allow a single TermResolver to resolve multiple Terms
-	 */
-	public Term(TermSpecification specification, Map<String, String> parameters) {
-		this.specification = specification;
+	 *
+     * @param name
+     * @param parameters an optional map of properties that may be used to allow a single TermResolver to resolve multiple Terms
+     */
+	public Term(String name, Map<String, String> parameters) {
+		this.name = name;
 		if (parameters == null) {
 			this.parameters = Collections.emptyMap();
 		} else {
@@ -46,7 +46,7 @@ public final class Term implements Comparable<Term> {
 		}
 	}
 	
-	public TermSpecification getSpecification() { return this.specification; }
+	public String getName() { return this.name; }
 	public Map<String, String> getProperties() { return parameters; }
 
 	/* (non-Javadoc)
@@ -56,7 +56,7 @@ public final class Term implements Comparable<Term> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((specification == null) ? 0 : specification.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((parameters == null) ? 0 : parameters.hashCode());
 		return result;
 	}
@@ -100,7 +100,7 @@ public final class Term implements Comparable<Term> {
 			sb.append("=");
 			sb.append(parameter.getValue());
 		}
-		return getClass().getSimpleName()+"("+specification.toString() + sb.toString() + ")";
+		return getClass().getSimpleName()+"(["+ name + "]" +  sb.toString() + ")";
 	}
 	
 	@SuppressWarnings("rawtypes")

@@ -7,33 +7,41 @@ import org.kuali.rice.krms.api.engine.Engine;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
+import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 import org.kuali.rice.krms.framework.engine.result.TimingResult;
 
 public class ProviderBasedEngine implements Engine {
 
-	private static final Term effectiveExecutionTimeTerm = new Term(new TermSpecification("effectiveExecutionTime", "java.lang.Long"), null);
+	private static final Term effectiveExecutionTimeTerm = new Term("effectiveExecutionTime", null);
 	
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ProviderBasedEngine.class);
 	private static final ResultLogger KLog = ResultLogger.getInstance();
 
 	private ContextProvider contextProvider;
 
-	@Override
-	public EngineResults execute(SelectionCriteria selectionCriteria, Map<Term, Object> facts, ExecutionOptions executionOptions) {
+    @Override
+    public EngineResults execute(SelectionCriteria selectionCriteria, Map<String, Object> facts,
+            ExecutionOptions executionOptions) {
+        return execute(selectionCriteria,
+                Facts.Builder.create().addFactsByName(facts).build(),
+                executionOptions);
+    }
+
+    @Override
+	public EngineResults execute(SelectionCriteria selectionCriteria, Facts facts, ExecutionOptions executionOptions) {
 		DateTime start, end;
 		start = new DateTime();
-		ExecutionEnvironment environment = establishExecutionEnvironment(selectionCriteria, facts, executionOptions);
+		ExecutionEnvironment environment = establishExecutionEnvironment(selectionCriteria, facts.getFactMap(), executionOptions);
 		
 		// set execution time
 		Long effectiveExecutionTime = environment.getSelectionCriteria().getEffectiveExecutionTime();
 		if (effectiveExecutionTime == null) { effectiveExecutionTime = System.currentTimeMillis(); }
 		environment.publishFact(effectiveExecutionTimeTerm, effectiveExecutionTime);
 
-		Context context = selectContext(selectionCriteria, facts, executionOptions);
+		Context context = selectContext(selectionCriteria, facts.getFactMap(), executionOptions);
 		if (context == null) {
 			LOG.info("Failed to locate a Context for the given qualifiers, skipping rule engine execution: " + selectionCriteria.getContextQualifiers());
 			return null;

@@ -21,12 +21,11 @@ import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.api.engine.TermResolver;
-import org.kuali.rice.krms.api.engine.TermSpecification;
 
 public class TermResolutionEngineImpl implements TermResolutionEngine {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TermResolutionEngineImpl.class);
 	
-	private final Map<TermSpecification, List<TermResolver<?>>> termResolversByOutput = new HashMap<TermSpecification, List<TermResolver<?>>>();
+	private final Map<String, List<TermResolver<?>>> termResolversByOutput = new HashMap<String, List<TermResolver<?>>>();
 	private final Map<TermResolverKey, TermResolver<?>> termResolversByKey = new HashMap<TermResolverKey, TermResolver<?>>(); 
 	
 	// should this use soft refs?  Will require some refactoring to check if the referenced object is around;
@@ -57,10 +56,10 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		LOG.debug("+--> resolveTerm(" + term + ")");
 		if (termCache.containsKey(term)) return (T)termCache.get(term);
 		
-		TermSpecification termSpec = term.getSpecification();
+		String termName = term.getName();
 		
-		// build plan w/ term spec for correct TermResolver selection
-		List<TermResolverKey> resolutionPlan = buildTermResolutionPlan(termSpec);
+		// build plan w/ termName spec for correct TermResolver selection
+		List<TermResolverKey> resolutionPlan = buildTermResolutionPlan(termName);
 		// TODO: could cache these plans somewhere, since future agendas will likely require the same plans
 		
 		LOG.debug("resolutionPlan: " + (resolutionPlan == null ? "null" : StringUtils.join(resolutionPlan.iterator(), ", ")));
@@ -71,17 +70,17 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				TermResolver<?> resolver = termResolversByKey.get(resolverKey);
 				
 				// build prereqs
-				Map<TermSpecification, Object> resolvedPrereqs = new HashMap<TermSpecification, Object>();
+				Map<String, Object> resolvedPrereqs = new HashMap<String, Object>();
 				
 				// The plan order should guarantee these prereqs exist and are cached.
-				for (TermSpecification prereq : resolver.getPrerequisites()) {
+				for (String prereq : resolver.getPrerequisites()) {
 					Object resolvedPrereq = termCache.get(new Term(prereq, null));
 					resolvedPrereqs.put(prereq, resolvedPrereq);
 				}
 				
 				Map<String, String> providedParameters = Collections.emptyMap();
 				// The destination Term (and only the dest Term) can be parameterized
-				if (termSpec.equals(resolver.getOutput())) {
+				if (termName.equals(resolver.getOutput())) {
 					providedParameters = term.getParameters();
 					
 					// throw a TermResolutionException if the params doen't match up
@@ -89,7 +88,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 				}
 				
 				Object resolvedTerm = resolver.resolve(resolvedPrereqs, providedParameters);
-				if (termSpec.equals(resolver.getOutput())) {
+				if (termName.equals(resolver.getOutput())) {
 					termCache.put(term, resolvedTerm);
 				} else {
 					if (!CollectionUtils.isEmpty(resolver.getParameterNames())) {
@@ -138,7 +137,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		}
 	}
 
-	protected List<TermResolverKey> buildTermResolutionPlan(TermSpecification term) {
+	protected List<TermResolverKey> buildTermResolutionPlan(String termName) {
 		// our result
 		List<TermResolverKey> resolutionPlan = null;
 
@@ -149,12 +148,12 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		PriorityQueue<ToVisit> toVisits = new PriorityQueue<ToVisit>(); // nice grammar there cowboy
 
 		// dummy resolver to be the root of this tree
-		// Do I really need this?  Yes, because there may be more than one resolver that resolves to the desired term,
+		// Do I really need this?  Yes, because there may be more than one resolver that resolves to the desired termName,
 		// so this destination unifies the trees of those candidate resolvers
-		TermResolver destination = createDestination(term); // problem is we can't get this one out of the registry
+		TermResolver destination = createDestination(termName); // problem is we can't get this one out of the registry
 		TermResolverKey destinationKey = new TermResolverKey(destination);
 
-		LOG.debug("Beginning resolution tree search for " + term);
+		LOG.debug("Beginning resolution tree search for " + termName);
 
 		// seed our queue of resolvers to visit
 		// need to be aware of null parent for root ToVisit
@@ -164,7 +163,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		boolean plannedToDestination = false;
 
 		// We'll do a modified Dijkstra's shortest path algorithm, where at each leaf we see if we've planned out
-		// term resolution all the way up to the root, our destination.  If so, we just reconstruct our plan.
+		// termName resolution all the way up to the root, our destination.  If so, we just reconstruct our plan.
 		while (!plannedToDestination && toVisits.size() > 0) {
 			// visit least cost node remaining
 			ToVisit visiting = toVisits.poll();
@@ -182,20 +181,20 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			Visited parentVisited = visitedByKey.get(visiting.getParentKey());
 
 			if (resolver == null) throw new RuntimeException("Unable to get TermResolver by its key");
-			Set<TermSpecification> prereqs = resolver.getPrerequisites();
+			Set<String> prereqs = resolver.getPrerequisites();
 			// keep track of any prereqs that we already have handy
-			List<TermSpecification> metPrereqs = new LinkedList<TermSpecification>();
+			List<String> metPrereqs = new LinkedList<String>();
 
 			// see what prereqs we have already, and which we'll need to visit
-			if (prereqs != null) for (TermSpecification prereq : prereqs) {
+			if (prereqs != null) for (String prereq : prereqs) {
 				if (!termCache.containsKey(new Term(prereq, null))) {
 					// enqueue all resolvers in toVisits
 					List<TermResolver<?>> prereqResolvers = termResolversByOutput.get(prereq);
 					if (prereqResolvers != null) for (TermResolver prereqResolver : prereqResolvers) {
 						// Only TermResolvers that don't take paramaterized terms can be chained, so:
-						// if the TermResolver doesn't take parameters, or it resolves the output term
+						// if the TermResolver doesn't take parameters, or it resolves the output termName
 						if (CollectionUtils.isEmpty(prereqResolver.getParameterNames()) ||
-								term.equals(prereqResolver.getOutput()))
+								termName.equals(prereqResolver.getOutput()))
 						{
 							// queue it up for visiting
 							toVisits.add(new ToVisit(visiting.getCost() /* cost to get to this resolver */, prereqResolver, resolver));
@@ -225,7 +224,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 	/**
 	 *  @return the Visited object for the resolver we just, er, well, visited.
 	 */
-	private Visited buildVisited(TermResolver resolver, Visited parentVisited, Collection<TermSpecification> metPrereqs) {
+	private Visited buildVisited(TermResolver resolver, Visited parentVisited, Collection<String> metPrereqs) {
 		Visited visited = null;
 
 		List<TermResolverKey> pathTo = new ArrayList<TermResolverKey>(1 + (parentVisited == null ? 0 : parentVisited.pathTo.size()));
@@ -234,7 +233,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		TermResolverKey resolverKey = new TermResolverKey(resolver);
 
 		visited = new Visited(resolverKey, pathTo, resolver.getPrerequisites(), resolver.getCost() + (parentVisited == null ? 0 : parentVisited.getCost()));
-		for (TermSpecification metPrereq : metPrereqs) { visited.addPlannedPrereq(metPrereq); }
+		for (String metPrereq : metPrereqs) { visited.addPlannedPrereq(metPrereq); }
 
 		return visited;
 	}
@@ -257,7 +256,6 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 	 * @param visited
 	 * @param destinationKey
 	 * @param visitedByKey
-	 * @param plannedToDestination
 	 * @return
 	 */
 	private boolean isPlannedBackToDestination(Visited visited,
@@ -316,29 +314,29 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 
 	/**
 	 * Create our dummy destination resolver
-	 * @param term
+	 * @param termName
 	 */
-	private TermResolver<? extends Object> createDestination(final TermSpecification term) {
+	private TermResolver<? extends Object> createDestination(final String termName) {
 		TermResolver<?> destination = new TermResolver<Object>() {
-			final TermSpecification dest = new TermSpecification("", "");
+			final String dest = "termResolutionEngineDestination";
 			@Override
 			public int getCost() {
 				return 0;
 			}
 			@Override
-			public TermSpecification getOutput() {
+			public String getOutput() {
 				return dest;
 			}
 			@Override
-			public Set<TermSpecification> getPrerequisites() {
-				return Collections.<TermSpecification>singleton(term);
+			public Set<String> getPrerequisites() {
+				return Collections.<String>singleton(termName);
 			}
 			@Override
 			public Set<String> getParameterNames() {
 				return Collections.emptySet();
 			}
 			@Override
-			public Object resolve(Map<TermSpecification, Object> resolvedPrereqs, Map<String, String> parameters) throws TermResolutionException {
+			public Object resolve(Map<String, Object> resolvedPrereqs, Map<String, String> parameters) throws TermResolutionException {
 				return null;
 			}
 		};
@@ -424,20 +422,20 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 	}
 
 	protected static class TermResolverKey implements Comparable<TermResolverKey> {
-		private final List<TermSpecification> data;
+		private final List<String> data;
 		private final String [] params;
 
 		// just used for toArray call
-		private static final TermSpecification[] TERM_SPEC_TYPER = new TermSpecification[0];
+		private static final String[] TERM_SPEC_TYPER = new String[0];
 		private static final String[] STRING_TYPER = new String[0];
 
 		public TermResolverKey(TermResolver resolver) {
 			this(resolver.getOutput(), resolver.getParameterNames(), resolver.getPrerequisites());
 		}
 
-		private TermResolverKey(TermSpecification dest, Set<String> paramSet, Set<TermSpecification> prereqs) {
+		private TermResolverKey(String dest, Set<String> paramSet, Set<String> prereqs) {
 			if (dest == null) throw new IllegalArgumentException("dest parameter must not be null");
-			data = new ArrayList<TermSpecification>(1 + ((prereqs == null) ? 0 : prereqs.size())); // size ArrayList perfectly
+			data = new ArrayList<String>(1 + ((prereqs == null) ? 0 : prereqs.size())); // size ArrayList perfectly
 			data.add(dest);
 			if (!CollectionUtils.isEmpty(paramSet)) {
 				params = paramSet.toArray(STRING_TYPER);
@@ -447,15 +445,15 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			}
 			if (prereqs != null) {
 				// this is painful, but to be able to compare we need a defined order
-				TermSpecification [] prereqsArray = prereqs.toArray(TERM_SPEC_TYPER);
+				String [] prereqsArray = prereqs.toArray(TERM_SPEC_TYPER);
 				Arrays.sort(prereqsArray);
-				for (TermSpecification prereq : prereqsArray) {
+				for (String prereq : prereqsArray) {
 					data.add(prereq);
 				}
 			}
 		}
 
-		public TermSpecification getOutput() {
+		public String getOutput() {
 			return data.get(0);
 		}
 
@@ -463,8 +461,8 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 		public int compareTo(TermResolverKey o) {
 			if (o == null) return 1;
 
-			Iterator<TermSpecification> mDataIter = data.iterator();
-			Iterator<TermSpecification> oDataIter = o.data.iterator();
+			Iterator<String> mDataIter = data.iterator();
+			Iterator<String> oDataIter = o.data.iterator();
 
 			while (mDataIter.hasNext() && oDataIter.hasNext()) {
 				int itemCompareResult = mDataIter.next().compareTo(oDataIter.next());
@@ -505,7 +503,7 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			StringBuilder sb = new StringBuilder();
 			sb.append(getClass().getSimpleName());
 			sb.append("(");
-			Iterator<TermSpecification> iter = data.iterator();
+			Iterator<String> iter = data.iterator();
 			sb.append(iter.next().toString());
 			if (params.length != 0) {
 				sb.append("+");
@@ -529,22 +527,22 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 	private static class Visited {
 		private TermResolverKey resolverKey;
 		private List<TermResolverKey> pathTo;
-		private Set<TermSpecification> remainingPrereqs;
-		private Map<TermSpecification, TermResolverKey> prereqResolvers;
+		private Set<String> remainingPrereqs;
+		private Map<String, TermResolverKey> prereqResolvers;
 		private int cost;
 
 		/**
-		 * @param resolver
+		 * @param resolverKey
 		 * @param pathTo
-		 * @param fullyPlanned
+		 * @param prereqs
 		 * @param cost
 		 */
-		public Visited(TermResolverKey resolverKey, List<TermResolverKey> pathTo, Set<TermSpecification> prereqs, int cost) {
+		public Visited(TermResolverKey resolverKey, List<TermResolverKey> pathTo, Set<String> prereqs, int cost) {
 			super();
 			this.resolverKey = resolverKey;
 			this.pathTo = pathTo;
-			this.remainingPrereqs = new HashSet<TermSpecification>(prereqs);
-			this.prereqResolvers = new HashMap<TermSpecification, TermResolverKey>();
+			this.remainingPrereqs = new HashSet<String>(prereqs);
+			this.prereqResolvers = new HashMap<String, TermResolverKey>();
 			this.cost = cost;
 		}
 
@@ -579,8 +577,8 @@ public class TermResolutionEngineImpl implements TermResolutionEngine {
 			prereqResolvers.put(termResolverKey.getOutput(), termResolverKey);
 		}
 
-		public void addPlannedPrereq(TermSpecification termSpec) {
-			remainingPrereqs.remove(termSpec);
+		public void addPlannedPrereq(String termName) {
+			remainingPrereqs.remove(termName);
 		}
 	}
 

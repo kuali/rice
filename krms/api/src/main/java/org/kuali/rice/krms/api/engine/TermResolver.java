@@ -30,14 +30,14 @@ import java.util.Set;
 public interface TermResolver <T> {
 	
 	/**
-	 * @return the set of {@link TermSpecification}s that this resolver requires to resolve its output, or an empty set if it has no prereqs;
+	 * @return the names of the terms that this resolver requires to resolve its output, or an empty set if it has no prereqs;
 	 */
-	Set<TermSpecification> getPrerequisites();
+	Set<String> getPrerequisites();
 	
 	/**
-	 * @return the {@link TermSpecification} that the implementor resolves
+	 * @return the name of the term that the implementor resolves
 	 */
-	TermSpecification getOutput();
+	String getOutput();
 	
 	/**
 	 * 
@@ -58,5 +58,5 @@ public interface TermResolver <T> {
 	 * @return the resolved fact value for the specified {@link Term}
 	 * @throws TermResolutionException if something bad happens during the term resolution process
 	 */
-	T resolve(Map<TermSpecification, Object> resolvedPrereqs, Map<String, String> parameters) throws TermResolutionException;
+	T resolve(Map<String, Object> resolvedPrereqs, Map<String, String> parameters) throws TermResolutionException;
 }

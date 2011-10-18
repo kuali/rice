@@ -1,10 +1,9 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.api.peopleflow.MemberType;
 import org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo;
 import org.kuali.rice.kew.impl.type.KewTypeAttributeBo;
 import org.kuali.rice.kew.impl.type.KewTypeBo;
@@ -13,13 +12,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import sun.security.krb5.ServiceName;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;

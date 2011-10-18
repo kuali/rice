@@ -8,6 +8,7 @@ import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -58,9 +59,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     private static Map<String, RoleDaoAction> populateMemberTypeToRoleDaoActionMap() {
         Map<String, RoleDaoAction> map = new HashMap<String, RoleDaoAction>();
-        map.put(Role.GROUP_MEMBER_TYPE, RoleDaoAction.ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS);
-        map.put(Role.PRINCIPAL_MEMBER_TYPE, RoleDaoAction.ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS);
-        map.put(Role.ROLE_MEMBER_TYPE, RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS);     
+        map.put(MemberType.GROUP.getCode(), RoleDaoAction.ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS);
+        map.put(MemberType.PRINCIPAL.getCode(), RoleDaoAction.ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS);
+        map.put(MemberType.ROLE.getCode(), RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS);
         return Collections.unmodifiableMap(map);
     }
 
@@ -291,7 +292,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         Map<String, List<RoleMembership>> roleIdToMembershipMap = new HashMap<String, List<RoleMembership>>();
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
             // gather up the qualifier sets and the service they go with
-            if (roleMemberBo.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE)) {
+            if (roleMemberBo.getMemberTypeCode().equals(MemberType.PRINCIPAL.getCode())) {
                 RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
                 if (roleTypeService != null) {
                     List<RoleMembership> las = roleIdToMembershipMap.get(roleMemberBo.getRoleId());
@@ -381,8 +382,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (RoleMemberBo roleMemberBo : roleMemberBos) {
             RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
             // gather up the qualifier sets and the service they go with
-            if (roleMemberBo.getMemberTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE)
-                    || roleMemberBo.getMemberTypeCode().equals(Role.GROUP_MEMBER_TYPE)) {
+            if (roleMemberBo.getMemberTypeCode().equals(MemberType.PRINCIPAL.getCode())
+                    || roleMemberBo.getMemberTypeCode().equals(MemberType.GROUP.getCode())) {
                 if (roleTypeService != null) {
                     List<RoleMembership> las = roleIdToMembershipMap.get(roleMemberBo.getRoleId());
                     if (las == null) {
@@ -400,7 +401,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 } else {
                     results.add(roleMemberBo.getAttributes());
                 }
-            } else if (roleMemberBo.getMemberTypeCode().equals(Role.ROLE_MEMBER_TYPE)) {
+            } else if (roleMemberBo.getMemberTypeCode().equals(MemberType.ROLE.getCode())) {
                 // find out if the user has the role
                 // need to convert qualification using this role's service
                 Map<String, String> nestedQualification = qualification;
@@ -462,7 +463,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         List<String> roleIds = Collections.singletonList(getRoleIdByNameAndNamespaceCode(namespaceCode, roleName));
         for (RoleMembership roleMembership : getRoleMembers(roleIds, qualification, false, foundRoleTypeMembers)) {
-            if (Role.GROUP_MEMBER_TYPE.equals(roleMembership.getMemberTypeCode())) {
+            if (MemberType.GROUP.getCode().equals(roleMembership.getMemberTypeCode())) {
                 principalIds.addAll(getGroupService().getMemberPrincipalIds(roleMembership.getMemberId()));
             } else {
                 principalIds.add(roleMembership.getMemberId());
@@ -677,7 +678,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
             // if the qualification check does not need to be made, just add the result
             if ((qualification == null || qualification.isEmpty()) || getRoleTypeService(roleMemberBo.getRoleId()) == null) {
-                if (roleMemberBo.getMemberTypeCode().equals(Role.ROLE_MEMBER_TYPE)) {
+                if (roleMemberBo.getMemberTypeCode().equals(MemberType.ROLE.getCode())) {
                     // if a role member type, do a non-recursive role member check
                     // to obtain the group and principal members of that role
                     // given the qualification
@@ -728,7 +729,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             entry.getValue());
                     // loop over the matching entries, adding them to the results
                     for (RoleMembership roleMemberships : matchingMembers) {
-                        if (roleMemberships.getMemberTypeCode().equals(Role.ROLE_MEMBER_TYPE)) {
+                        if (roleMemberships.getMemberTypeCode().equals(MemberType.ROLE.getCode())) {
                             // if a role member type, do a non-recursive role member check
                             // to obtain the group and principal members of that role
                             // given the qualification
@@ -849,7 +850,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // check member roles
         // first, check that the qualifiers on the role membership match
         // then, perform a principalHasRole on the embedded role
-        List<RoleMemberBo> roleMemberBos = getStoredRoleMembersForRoleIds(roleIds, Role.ROLE_MEMBER_TYPE, null);
+        List<RoleMemberBo> roleMemberBos = getStoredRoleMembersForRoleIds(roleIds, MemberType.ROLE.getCode(), null);
         for (RoleMemberBo roleMemberBo : roleMemberBos) {
             RoleTypeService roleTypeService = getRoleTypeService(roleMemberBo.getRoleId());
             if (roleTypeService != null) {
@@ -959,17 +960,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     continue;
                 }
                 // check if this delegateBo record applies to the given person
-                if (delegateMemberBo.getTypeCode().equals(Role.PRINCIPAL_MEMBER_TYPE)
+                if (delegateMemberBo.getTypeCode().equals(MemberType.PRINCIPAL.getCode())
                         && !delegateMemberBo.getMemberId().equals(principalId)) {
                     continue; // no match on principal
                 }
                 // or if a group
-                if (delegateMemberBo.getTypeCode().equals(Role.GROUP_MEMBER_TYPE)
+                if (delegateMemberBo.getTypeCode().equals(MemberType.GROUP.getCode())
                         && !principalGroupIds.contains(delegateMemberBo.getMemberId())) {
                     continue; // no match on group
                 }
                 // or if a role
-                if (delegateMemberBo.getTypeCode().equals(Role.ROLE_MEMBER_TYPE)
+                if (delegateMemberBo.getTypeCode().equals(MemberType.ROLE.getCode())
                         && !principalHasRole(principalId, Collections.singletonList(delegateMemberBo.getMemberId()), qualification, false)) {
                     continue; // no match on role
                 }
@@ -1217,8 +1218,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         role.refreshReferenceObject("members");
 
         // check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(Role.PRINCIPAL_MEMBER_TYPE), qualifier) || 
-    			doAnyMemberRecordsMatch( role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
+    	if ( doAnyMemberRecordsMatchByExactQualifier(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier) ||
+    			doAnyMemberRecordsMatch( role.getMembers(), principalId, MemberType.PRINCIPAL.getCode(), qualifier ) ) {
     		return;
     	}
         // create the new role member object
@@ -1226,7 +1227,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         newRoleMember.setRoleId(role.getId());
         newRoleMember.setMemberId(principalId);
-        newRoleMember.setMemberTypeCode(Role.PRINCIPAL_MEMBER_TYPE);
+        newRoleMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
 
         // build role member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, role.getKimTypeId());
@@ -1247,15 +1248,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // look up the role
         RoleBo role = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(Role.GROUP_MEMBER_TYPE), qualifier) || 
-    			doAnyMemberRecordsMatch( role.getMembers(), groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) { 
+    	if ( doAnyMemberRecordsMatchByExactQualifier(role, groupId, memberTypeToRoleDaoActionMap.get(MemberType.GROUP.getCode()), qualifier) ||
+    			doAnyMemberRecordsMatch( role.getMembers(), groupId, MemberType.GROUP.getCode(), qualifier ) ) {
     		return;
     	}
         // create the new role member object
         RoleMemberBo newRoleMember = new RoleMemberBo();
         newRoleMember.setRoleId(role.getId());
         newRoleMember.setMemberId(groupId);
-        newRoleMember.setMemberTypeCode(Role.GROUP_MEMBER_TYPE);
+        newRoleMember.setMemberTypeCode(MemberType.GROUP.getCode());
 
         // build role member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, role.getKimTypeId());
@@ -1275,8 +1276,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // look up the roleBo
         RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
         // check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatchByExactQualifier(roleBo, roleId, memberTypeToRoleDaoActionMap.get(Role.ROLE_MEMBER_TYPE), qualifier) || 
-    			doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
+    	if ( doAnyMemberRecordsMatchByExactQualifier(roleBo, roleId, memberTypeToRoleDaoActionMap.get(MemberType.ROLE.getCode()), qualifier) ||
+    			doAnyMemberRecordsMatch( roleBo.getMembers(), roleId, MemberType.ROLE.getCode(), qualifier ) ) {
     		return;
     	}
         // Check to make sure this doesn't create a circular membership
@@ -1287,7 +1288,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         RoleMemberBo newRoleMember = new RoleMemberBo();
         newRoleMember.setRoleId(roleBo.getId());
         newRoleMember.setMemberId(roleId);
-        newRoleMember.setMemberTypeCode(Role.ROLE_MEMBER_TYPE);
+        newRoleMember.setMemberTypeCode(MemberType.ROLE.getCode());
         // build roleBo member attribute objects from the given Map<String, String>
         addMemberAttributeData(newRoleMember, qualifier, roleBo.getKimTypeId());
 
@@ -1457,9 +1458,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the principal members
     	// look for an exact qualifier match
-        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, principalId, memberTypeToRoleDaoActionMap.get(Role.PRINCIPAL_MEMBER_TYPE), qualifier);
+        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier);
         if(CollectionUtils.isEmpty(rms)) {
-            rms = getRoleMembersByDefaultStrategy(role, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier);
+            rms = getRoleMembersByDefaultStrategy(role, principalId, MemberType.PRINCIPAL.getCode(), qualifier);
         } 
         removeRoleMembers(rms);
     }
@@ -1487,9 +1488,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	RoleBo roleBo = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group roleBo members
     	// look for an exact qualifier match
-        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(roleBo, groupId, memberTypeToRoleDaoActionMap.get(Role.GROUP_MEMBER_TYPE), qualifier);
+        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(roleBo, groupId, memberTypeToRoleDaoActionMap.get(MemberType.GROUP.getCode()), qualifier);
         if(CollectionUtils.isEmpty(rms)) {
-            rms = getRoleMembersByDefaultStrategy(roleBo, groupId, Role.GROUP_MEMBER_TYPE, qualifier);
+            rms = getRoleMembersByDefaultStrategy(roleBo, groupId, MemberType.GROUP.getCode(), qualifier);
         } 
         removeRoleMembers(rms);
     }   
@@ -1507,9 +1508,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
     	// pull all the group role members
     	// look for an exact qualifier match
-        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, roleId, memberTypeToRoleDaoActionMap.get(Role.ROLE_MEMBER_TYPE), qualifier);
+        List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, roleId, memberTypeToRoleDaoActionMap.get(MemberType.ROLE.getCode()), qualifier);
         if(CollectionUtils.isEmpty(rms)) {
-            rms = getRoleMembersByDefaultStrategy(role, roleId, Role.ROLE_MEMBER_TYPE, qualifier);
+            rms = getRoleMembersByDefaultStrategy(role, roleId, MemberType.ROLE.getCode(), qualifier);
         } 
         removeRoleMembers(rms);
     }

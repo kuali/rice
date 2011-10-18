@@ -18,6 +18,7 @@ package org.kuali.rice.kns.kim.role;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
@@ -90,7 +91,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceB
 		// check that the principal ID is not null
 		String principalId = qualification.get( KimConstants.AttributeConstants.PRINCIPAL_ID );
 		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
-	        tempIdList.add( RoleMembership.Builder.create(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null).build());
+	        tempIdList.add( RoleMembership.Builder.create(null/*roleId*/, null, principalId, MemberType.PRINCIPAL.getCode(), null).build());
 		}
 		return tempIdList;
 	}

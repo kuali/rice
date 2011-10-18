@@ -17,6 +17,7 @@ package org.kuali.rice.kns.kim.role;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
@@ -140,7 +141,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 		    	if ( StringUtils.isBlank( rm.getRoleMemberId() ) ) {
 		    		continue;
 		    	}
-		        if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
+		        if ( rm.getMemberTypeCode().equals( MemberType.PRINCIPAL.getCode() ) ) {
 		            if ( rm.getMemberId().equals( principalId ) ) {
 		                return true;
 		            }

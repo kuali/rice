@@ -56,11 +56,6 @@ import java.util.Collection;
 public final class Role extends AbstractDataTransferObject implements RoleContract {
     private static final long serialVersionUID = 1L;
 
-    public static final String GROUP_MEMBER_TYPE = "G";
-    public static final String PRINCIPAL_MEMBER_TYPE = "P";
-    public static final String ROLE_MEMBER_TYPE = "R";
-
-
     @XmlElement(name = Role.Elements.ID, required = true)
     private final String id;
 

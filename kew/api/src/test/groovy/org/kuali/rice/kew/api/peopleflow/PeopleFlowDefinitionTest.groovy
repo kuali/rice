@@ -19,6 +19,7 @@ package org.kuali.rice.kew.api.peopleflow
 import org.junit.Test
 import static org.junit.Assert.*
 import org.kuali.rice.core.test.JAXBAssert
+import org.kuali.rice.core.api.membership.MemberType
 
 /**
  * Unit test for PeopleFlowDefinition

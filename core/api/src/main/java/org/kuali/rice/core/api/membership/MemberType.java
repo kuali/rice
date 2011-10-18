@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.peopleflow;
+package org.kuali.rice.core.api.membership;
 
 import org.kuali.rice.core.api.mo.common.Coded;
 

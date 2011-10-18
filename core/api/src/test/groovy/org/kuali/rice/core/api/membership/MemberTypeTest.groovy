@@ -14,24 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.peopleflow
+package org.kuali.rice.core.api.membership
 
 import org.junit.Assert
-import org.junit.Ignore
+
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
-import org.kuali.rice.kew.api.rule.Rule
-import org.kuali.rice.kew.api.rule.RuleDelegation
-import org.kuali.rice.kew.api.validation.RuleValidationContext
+
+import org.kuali.rice.core.api.membership.MemberType
 
 /**
  * Unit test for MemberType
  */
 class MemberTypeTest {
 
-    private static final String ROLE_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/kew/v2_0">R</memberType>"""
-    private static final String GROUP_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/kew/v2_0">G</memberType>"""
-    private static final String PRINCIPAL_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/kew/v2_0">P</memberType>"""
+    private static final String ROLE_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/core/v2_0">R</memberType>"""
+    private static final String GROUP_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/core/v2_0">G</memberType>"""
+    private static final String PRINCIPAL_MEMBER_TYPE_XML = """<memberType xmlns="http://rice.kuali.org/core/v2_0">P</memberType>"""
 
     @Test
     void test_fromCode_null() {

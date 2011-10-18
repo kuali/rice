@@ -1,13 +1,11 @@
 package org.kuali.rice.kew.impl.peopleflow
 
-import org.apache.commons.collections.CollectionUtils
 import org.kuali.rice.kew.api.action.DelegationType
-import org.kuali.rice.kew.api.peopleflow.MemberType
+import org.kuali.rice.core.api.membership.MemberType
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate
-import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember
+
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.springframework.util.LinkedMultiValueMap
-import org.springframework.util.MultiValueMap
+
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegateContract
 import org.kuali.rice.kew.api.action.ActionRequestPolicy
 import org.kuali.rice.kim.api.identity.Person

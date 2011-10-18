@@ -2,6 +2,7 @@ package org.kuali.rice.kew.api.peopleflow;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectUtils;

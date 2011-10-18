@@ -2,10 +2,10 @@ package org.kuali.rice.kew.api.peopleflow;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
-import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.w3c.dom.Element;
 

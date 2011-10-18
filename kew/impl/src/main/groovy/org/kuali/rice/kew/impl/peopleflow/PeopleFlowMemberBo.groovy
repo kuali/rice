@@ -2,23 +2,20 @@ package org.kuali.rice.kew.impl.peopleflow
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
-import org.kuali.rice.kew.api.peopleflow.MemberType
+import org.kuali.rice.core.api.membership.MemberType
 
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember
-import org.springframework.util.MultiValueMap
-import org.springframework.util.LinkedMultiValueMap
-import org.apache.commons.collections.CollectionUtils
+
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate
-import org.kuali.rice.kew.api.action.DelegationType
+
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kim.api.identity.Person
-import org.kuali.rice.kim.api.group.Group
-import org.kuali.rice.kim.api.role.Role
+
 import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.framework.group.GroupEbo
 import org.kuali.rice.kim.framework.role.RoleEbo
-import org.kuali.rice.krad.service.KRADServiceLocator
+
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 import org.kuali.rice.krad.service.ModuleService;
 

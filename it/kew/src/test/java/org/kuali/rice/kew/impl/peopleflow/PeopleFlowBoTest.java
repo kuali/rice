@@ -41,7 +41,7 @@ public class PeopleFlowBoTest extends KEWTestCase {
         try {
             // same info again should be a no go
             boService.save(builder.build());
-            fail("this shoould violate unique constraints");
+            fail("this should violate unique constraints");
         } catch (Exception e) {
             // good
         }
@@ -68,6 +68,25 @@ public class PeopleFlowBoTest extends KEWTestCase {
         }
 
         boService.save(kewTypeBo);
+    }
+
+    @Test
+    public void testPeopleFlowPersonMembers() {
+        PeopleFlowMemberBo peopleFlowMember = new PeopleFlowMemberBo();
+        peopleFlowMember.setMemberType(MemberType.PRINCIPAL);
+        peopleFlowMember.setMemberId("admin");
+        peopleFlowMember.setPriority(1);
+        peopleFlowMember.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
+        assertNotNull(peopleFlowMember.getPerson());
+        assertEquals("admin", peopleFlowMember.getPerson().getPrincipalName());
+
+        PeopleFlowDelegateBo peopleFlowDelegate = new PeopleFlowDelegateBo();
+        peopleFlowDelegate.setMemberType(MemberType.PRINCIPAL);
+        peopleFlowDelegate.setMemberId("admin");
+        peopleFlowDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
+        peopleFlowDelegate.setResponsibilityId(responsibilityIdService.getNewResponsibilityId());
+        assertNotNull(peopleFlowDelegate.getPerson());
+        assertEquals("admin", peopleFlowDelegate.getPerson().getPrincipalName());
     }
 
     @Test
@@ -136,6 +155,8 @@ public class PeopleFlowBoTest extends KEWTestCase {
         assertEquals(peopleFlowBo.getId(), memberBo.getPeopleFlowId());
         assertEquals("admin", memberBo.getMemberId());
         assertEquals(MemberType.PRINCIPAL, memberBo.getMemberType());
+        assertNotNull(memberBo.getPerson());
+        assertEquals("admin", memberBo.getPerson().getPrincipalName());
         assertEquals(peopleFlowMember.getResponsibilityId(), memberBo.getResponsibilityId());
         assertSame(1, memberBo.getPriority());
         assertTrue(memberBo.getDelegates().size() == 2);
@@ -158,7 +179,6 @@ public class PeopleFlowBoTest extends KEWTestCase {
         assertEquals(peopleFlowDelegate2.getResponsibilityId(), delegateBo2.getResponsibilityId());
         assertEquals(ActionRequestPolicy.FIRST.getCode(), delegateBo2.getActionRequestPolicyCode());
     }
-
 
     public static KewTypeBo buildMinimalKewTypeBo() {
         KewTypeBo kewTypeBo = new KewTypeBo();

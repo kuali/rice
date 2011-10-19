@@ -212,9 +212,9 @@
               p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
         <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="ActionField" p:methodToCall="cut" p:actionLabel="Cut" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
-        <bean parent="ActionField" p:methodToCall="paste" p:actionLabel="Paste" p:clientSideJs="alert('Not Yet Implemented');" p:styleClasses-ref="buttonClasses"/>
-        <bean parent="ActionField" p:methodToCall="delete" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses" 
+        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('cutProposition', 'RuleEditorView-Tree');" p:actionLabel="Cut" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
+        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-Tree');" p:actionLabel="Paste" p:styleClasses-ref="buttonClasses"/>
+        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-Tree');" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses"
           p:style="margin-right: 15pt;"/>
         <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
       </list> 
@@ -354,9 +354,9 @@
                       </property>
                     </bean>
                     <bean parent="AttributeField" p:propertyName="proposition.description"
-                          p:style="margin-left: 13pt" p:showLabel="false" p:label="id" p:maxLength="255">
+                          p:style="margin-left: 12pt" p:showLabel="false" p:label="id" p:maxLength="255">
                       <property name="control">
-                        <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Proposition Description"/>
+                        <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt" />
                       </property>
                     </bean>
                     <bean parent="GroupBodyOnly" p:hidden="true" >
@@ -384,7 +384,7 @@
                           <bean parent="AttributeField" p:propertyName="proposition.parameters[1].value"
                                   p:showLabel="false" p:label="id" p:maxLength="255">
                             <property name="control">
-                              <bean parent="TextControl"/>
+                              <bean parent="TextControl" p:watermarkText="Enter a Literal Value" />
                             </property>
                           </bean>
                         </list>

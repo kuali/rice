@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import org.apache.commons.digester.Rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -50,7 +51,6 @@ import java.util.List;
 
 /**
  * Controller for the Test UI Page
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
@@ -1281,7 +1281,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                        SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType())){
 
                         // build new Blank Proposition
-                        PropositionBo blank = createBlankPropositionBo(child.getData().getProposition(),PropositionType.SIMPLE.getCode());
+                        PropositionBo blank = PropositionBo.createSimplePropositionBoStub(child.getData().getProposition(),PropositionType.SIMPLE.getCode());
 
                         //add it to the parent
                         PropositionBo parentProp = parent.getData().getProposition();
@@ -1289,73 +1289,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
                         // redisplay the tree (editMode = true)
                         rule.refreshPropositionTree(true);
-
-                        //redisplay the tree
-
                     }
 
                     break;
                 }
             }
         }
-
         return super.updateComponent(form, result, request, response);
     }
 
-    private PropositionBo createBlankPropositionBo(PropositionBo sibling, String pType){
-        // create a simple proposition Bo
-        PropositionBo prop = null;
-        if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(pType)){
-            prop = new PropositionBo();
-            prop.setId(getNewPropId());
-            prop.setPropositionTypeCode(pType);
-            prop.setRuleId(sibling.getRuleId());
-            prop.setTypeId(sibling.getTypeId());
-
-            // create blank proposition parameters
-            PropositionParameterBo pTerm = new PropositionParameterBo();
-            pTerm.setId(getNewPropParameterId());
-            pTerm.setParameterType("T");
-            pTerm.setPropId(prop.getId());
-            pTerm.setSequenceNumber(new Integer("0"));
-            pTerm.setVersionNumber(new Long(1));
-            pTerm.setValue("");
-
-            // create blank proposition parameters
-            PropositionParameterBo pOp = new PropositionParameterBo();
-            pOp.setId(getNewPropParameterId());
-            pOp.setParameterType("F");
-            pOp.setPropId(prop.getId());
-            pOp.setSequenceNumber(new Integer("2"));
-            pOp.setVersionNumber(new Long(1));
-
-            // create blank proposition parameters
-            PropositionParameterBo pConst = new PropositionParameterBo();
-            pConst.setId(getNewPropParameterId());
-            pConst.setParameterType("C");
-            pConst.setPropId(prop.getId());
-            pConst.setSequenceNumber(new Integer("1"));
-            pConst.setVersionNumber(new Long(1));
-            pConst.setValue("");
-
-            List<PropositionParameterBo> paramList = Arrays.asList(pTerm, pConst, pOp);
-            prop.setParameters(paramList);
-        }
-        return prop;
-    }
-
-    private String getNewPropId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_S",
-        		PropositionBo.class);
-        return id.toString();
-    }
-    private String getNewPropParameterId(){
-        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
-        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_PARM_S",
-        		PropositionParameterBo.class);
-        return id.toString();
-    }
     /**
      *
      * This method adds an opCode Node to separate components in a compound proposition.
@@ -1421,6 +1363,155 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
         return bingo;
+    }
+
+    @RequestMapping(params = "methodToCall=" + "movePropositionUp")
+    public ModelAndView movePropositionUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        moveSelectedProposition(form, true);
+
+        return super.updateComponent(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "movePropositionDown")
+    public ModelAndView movePropositionDown(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        moveSelectedProposition(form, false);
+
+        return super.updateComponent(form, result, request, response);
+    }
+
+    private void moveSelectedProposition(UifFormBase form, boolean up) {
+
+        /* Rough algorithm for moving a node up.
+         *
+         * find the following:
+         *   node := the selected node
+         *   parent := the selected node's parent, its containing node (via when true or when false relationship)
+         *   parentsOlderCousin := the parent's level-order predecessor (sibling or cousin)
+         *
+         */
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+
+        // get selected id
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+        // find parent
+        Node<RuleTreeNode,String> parent = findParentPropositionNode(
+                agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
+
+        // add new child at appropriate spot
+        if (parent != null){
+            List<Node<RuleTreeNode,String>> children = parent.getChildren();
+            for( int index=0; index< children.size(); index++){
+                Node<RuleTreeNode,String> child = children.get(index);
+                // if our selected node is a simple proposition, add a new one after
+                if (propIdMatches(child, selectedPropId)){
+                    if(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
+                       SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
+                       RuleTreeNode.COMPOUND_NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ){
+
+                        if (((index > 0) && up) || ((index <(children.size() - 1)&& !up))){
+                            //remove it from its current spot
+                            PropositionBo parentProp = parent.getData().getProposition();
+                            PropositionBo workingProp = parentProp.getCompoundComponents().remove(index/2);
+                            if (up){
+                                parentProp.getCompoundComponents().add((index/2)-1, workingProp);
+                            }else{
+                                parentProp.getCompoundComponents().add((index/2)+1, workingProp);
+                            }
+
+                            // insert it in the new spot
+                            // redisplay the tree (editMode = true)
+                            boolean editMode = (SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()));
+                            rule.refreshPropositionTree(editMode);
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
+    @RequestMapping(params = "methodToCall=" + "cutProposition")
+    public ModelAndView cutProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+        agendaEditor.setCutPropositionId(selectedPropId);
+
+        return super.updateComponent(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "pasteProposition")
+    public ModelAndView pasteProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+
+        // get selected id
+        String cutPropId = agendaEditor.getCutPropositionId();
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+        if (selectedPropId == cutPropId) {
+                // do nothing; can't paste to itself
+        } else {
+
+            // proposition tree root
+            Node<RuleTreeNode, String> root = rule.getPropositionTree().getRootElement();
+
+            if (StringUtils.isNotBlank(selectedPropId) && StringUtils.isNotBlank(cutPropId)) {
+                PropositionBo newParent = findParentPropositionNode(root, selectedPropId).getData().getProposition();
+                PropositionBo oldParent = findParentPropositionNode(root, cutPropId).getData().getProposition();
+
+                PropositionBo workingProp = null;
+                // cut from old
+                if (oldParent != null){
+                    List <PropositionBo> children = oldParent.getCompoundComponents();
+                    for( int index=0; index< children.size(); index++){
+                        if (cutPropId.equalsIgnoreCase(children.get(index).getId())){
+                            workingProp = oldParent.getCompoundComponents().remove(index);
+                            break;
+                        }
+                    }
+                }
+
+                // add to new
+                if (newParent != null && workingProp != null){
+                    List <PropositionBo> children = newParent.getCompoundComponents();
+                    for( int index=0; index< children.size(); index++){
+                        if (selectedPropId.equalsIgnoreCase(children.get(index).getId())){
+                            newParent.getCompoundComponents().add(index+1, workingProp);
+                            break;
+                        }
+                    }
+                }
+                // TODO: determine edit mode.
+//                boolean editMode = (SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()));
+                rule.refreshPropositionTree(false);
+            }
+        }
+
+        agendaEditor.setCutPropositionId(null);
+        // call the super method to avoid the agenda tree being reloaded from the db
+        return super.updateComponent(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "deleteProposition")
+    public ModelAndView deleteProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        moveSelectedProposition(form, true);
+
+        return super.updateComponent(form, result, request, response);
     }
 
 }

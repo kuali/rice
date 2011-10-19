@@ -8,7 +8,8 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContr
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator
 import org.kuali.rice.krms.api.repository.proposition.PropositionType
-import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType;
+import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType
+import org.kuali.rice.krad.service.SequenceAccessorService;
 
 
 public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
@@ -27,6 +28,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 
     // parameter display string (for tree display)
     def String parameterDisplayString;
+    private SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
 
     private void setupParameterDisplayString(){
         if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(getPropositionTypeCode())){
@@ -126,4 +128,71 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
        }
    }
  
-} 
+    /**
+       * This method creates a partially populated Simple PropositionBo with
+       * three parameters:  a term type paramter (value not assigned)
+       *                    a operation parameter
+       *                    a constant parameter (value set to empty string)
+       * The returned PropositionBo has an generatedId. The type code, ruleId and TypeId properties are assigned the
+       * same value as the sibling param passed in.
+       * Each PropositionParameter has the id generated, and type, sequenceNumber,
+       * propId default values set. The value is set to "".
+       * @param sibling -
+       * @param pType
+       * @return  a PropositionBo partially populated.
+       */
+  public static PropositionBo createSimplePropositionBoStub(PropositionBo sibling, String pType){
+      // create a simple proposition Bo
+      PropositionBo prop = null;
+      if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(pType)){
+          prop = new PropositionBo();
+          prop.setId(getNewPropId());
+          prop.setPropositionTypeCode(pType);
+          prop.setRuleId(sibling.getRuleId());
+          prop.setTypeId(sibling.getTypeId());
+
+          // create blank proposition parameters
+          PropositionParameterBo pTerm = new PropositionParameterBo();
+          pTerm.setId(getNewPropParameterId());
+          pTerm.setParameterType("T");
+          pTerm.setPropId(prop.getId());
+          pTerm.setSequenceNumber(new Integer("0"));
+          pTerm.setVersionNumber(new Long(1));
+          pTerm.setValue("");
+
+          // create blank proposition parameters
+          PropositionParameterBo pOp = new PropositionParameterBo();
+          pOp.setId(getNewPropParameterId());
+          pOp.setParameterType("F");
+          pOp.setPropId(prop.getId());
+          pOp.setSequenceNumber(new Integer("2"));
+          pOp.setVersionNumber(new Long(1));
+
+          // create blank proposition parameters
+          PropositionParameterBo pConst = new PropositionParameterBo();
+          pConst.setId(getNewPropParameterId());
+          pConst.setParameterType("C");
+          pConst.setPropId(prop.getId());
+          pConst.setSequenceNumber(new Integer("1"));
+          pConst.setVersionNumber(new Long(1));
+          pConst.setValue("");
+
+          List<PropositionParameterBo> paramList = Arrays.asList(pTerm, pConst, pOp);
+          prop.setParameters(paramList);
+      }
+      return prop;
+  }
+
+    private String getNewPropId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_S",
+                PropositionBo.class);
+        return id.toString();
+    }
+    private String getNewPropParameterId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_PARM_S",
+                PropositionParameterBo.class);
+        return id.toString();
+    }
+}

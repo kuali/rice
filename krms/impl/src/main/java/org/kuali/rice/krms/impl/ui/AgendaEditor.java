@@ -42,6 +42,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String selectedAgendaItemId;
     private String cutAgendaItemId;
     private String selectedPropositionId;
+    private String cutPropositionId;
     private String copyRuleName;
     private String oldContextId;
     private Map<String, String> customAttributesMap = new HashMap<String, String>();
@@ -228,6 +229,21 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
      */
     public void setSelectedPropositionId(String selectedPropositionId) {
         this.selectedPropositionId = selectedPropositionId;
+    }
+
+
+    /**
+     * @return the cutPropositionId
+     */
+    public String getCutPropositionId() {
+        return cutPropositionId;
+    }
+
+    /**
+     * @param selectedPropositionId the selectedPropositionId to set
+     */
+    public void setCutPropositionId(String cutPropositionId) {
+        this.cutPropositionId = cutPropositionId;
     }
 
     // Need to override this method since the actual persistable BO is wrapped inside dataObject.

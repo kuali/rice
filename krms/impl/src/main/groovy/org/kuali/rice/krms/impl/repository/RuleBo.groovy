@@ -81,13 +81,16 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     *
     * @return Tree representing a rule proposition.
     */
-   public Tree getPropositionTree() {
-       if (this.propositionTree == null){
-           this.propositionTree = refreshPropositionTree(false);
-       }
+    public Tree getPropositionTree() {
+        if (this.propositionTree == null){
+            this.propositionTree = refreshPropositionTree(false);
+        }
 
-       return this.propositionTree;
-   }
+        return this.propositionTree;
+    }
+    public void setPropositionTree(Tree<RuleTreeNode, String> tree) {
+        this.propositionTree == tree;
+       }
 
    public Tree refreshPropositionTree(boolean editMode){
        Tree myTree = new Tree<RuleTreeNode, String>();

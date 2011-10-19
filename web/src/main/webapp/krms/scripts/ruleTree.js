@@ -59,7 +59,7 @@ jq('#' + componentId).bind('loaded.jstree', function (event, data) {
     /* mark the selected node */
     jq('a.ruleTreeNode').each( function() {
         var propositionId = jq(this.parentNode).find('input').attr('value');
-        var selectedItemTracker = jq('input[name=\"proposition_selected_attribute\"]');
+        var selectedItemTracker = getSelectedPropositionInput();
         var selectedItemId = selectedItemTracker.val();
 
         if (selectedItemId == propositionId) {

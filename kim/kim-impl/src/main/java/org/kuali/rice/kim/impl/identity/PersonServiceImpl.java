@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.Person;
@@ -50,8 +51,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -313,20 +312,10 @@ public class PersonServiceImpl implements PersonService {
         //TODO convert this to the new criteria predicates
 		Map<String,String> entityCriteria = convertPersonPropertiesToEntityProperties( criteria );
 
+        Predicate predicate = PredicateUtils.convertMapToPredicate(entityCriteria);
+
         QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        for (String key : entityCriteria.keySet()) {
-            // hack for OR'd criteria
-            if (entityCriteria.get(key).contains("|")) {
-                String[] values = entityCriteria.get(key).split("\\|");
-                predicates.add(in(key, values));
-            } else {
-                predicates.add(equal(key, entityCriteria.get(key)));
-            }
-        }
-        if (!predicates.isEmpty()) {
-            queryBuilder.setPredicates(and(predicates.toArray(new Predicate[] {})));
-        }
+        queryBuilder.setPredicates(predicate);
 
 		List<Person> people = new ArrayList<Person>();
 

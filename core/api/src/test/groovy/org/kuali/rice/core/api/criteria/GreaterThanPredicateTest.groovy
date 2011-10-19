@@ -57,14 +57,13 @@ public class GreaterThanPredicateTest {
 		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaDateTimeValue(dateTime));
 		assertEquals("property.path", greaterThanExpression.getPropertyPath());
 		assertEquals(dateTime, greaterThanExpression.getValue().getValue());
-		
-		// Doesn't support string criteria values
-		try {
-			new GreaterThanPredicate("property.path", new CriteriaStringValue("some string value"));
-			fail("Should have thrown an IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			// expected exception
-		}
+
+
+        // Test that it can take a CriteriaStringValue
+		greaterThanExpression = new GreaterThanPredicate("property.path", new CriteriaStringValue("test"));
+		assertEquals("property.path", greaterThanExpression.getPropertyPath());
+		assertEquals("test", greaterThanExpression.getValue().getValue());
+
 		
 		// test failure cases, should throw IllegalArgumentException when null is passed
 		try {

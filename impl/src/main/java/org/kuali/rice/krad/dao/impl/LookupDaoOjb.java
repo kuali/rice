@@ -274,17 +274,18 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     /**
      * @see org.kuali.rice.krad.dao.LookupDao#findObjectByMap(java.lang.Object, java.util.Map)
      */
-    public Object findObjectByMap(Object example, Map formProps) {
+    @Override
+    public <T extends Object> T findObjectByMap(T example, Map<String, String> formProps) {
     	if ( persistenceStructureService.isPersistable(example.getClass())) {
 	    	Criteria criteria = new Criteria();
 	
-	    	// iterate through the parameter map for key values search criteria
-	    	Iterator propsIter = formProps.keySet().iterator();
-	    	while (propsIter.hasNext()) {
-	    		String propertyName = (String) propsIter.next();
+	    	// iterate through the parameter map for search criteria
+            for (Map.Entry<String, String> formProp : formProps.entrySet()) {
+
+	    		String propertyName = formProp.getKey();
 	    		String searchValue = "";
-	    		if (formProps.get(propertyName) != null) {
-	    			searchValue = (formProps.get(propertyName)).toString();
+	    		if (formProp.getValue() != null) {
+	    			searchValue = formProp.getValue();
 	    		}
 	
 	    		if (StringUtils.isNotBlank(searchValue) & PropertyUtils.isWriteable(example, propertyName)) {
@@ -301,7 +302,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
 	
 	    	// execute query and return result list
 	    	Query query = QueryFactory.newQuery(example.getClass(), criteria);
-	    	return getPersistenceBrokerTemplate().getObjectByQuery(query);
+	    	return (T)getPersistenceBrokerTemplate().getObjectByQuery(query);
     	}
     	return null;
     }

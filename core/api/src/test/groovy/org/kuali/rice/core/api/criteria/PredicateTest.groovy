@@ -205,11 +205,6 @@ public class PredicateTest {
 		greaterThan("propertyPath", null);
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void testGreaterThan_illegalValue() {
-		greaterThan("pp", "stringValue");
-	}
-	
 	@Test
 	public void testGreaterThan() {
 		greaterThan("pp", 100);

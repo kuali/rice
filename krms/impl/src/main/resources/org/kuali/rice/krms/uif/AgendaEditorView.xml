@@ -281,12 +281,16 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule" p:style="margin-right: 15pt;">
+<!--
+        <bean parent="AgendaEditorView-barButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"  p:style="margin-right: 15pt;">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
                   p:altText="Edit Rule"/>
           </property>
         </bean>
+-->
+        <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
+          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
 
         <!--
         <bean parent="AttributeField_Form" p:propertyName="maintenanceAction" p:label=""

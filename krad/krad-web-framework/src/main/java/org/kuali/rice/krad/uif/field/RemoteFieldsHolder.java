@@ -156,6 +156,8 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
             BindingInfo fieldBindingInfo = CloneUtils.deepClone(bindingInfo);
             fieldBindingInfo.setDefaults(view, field.getPropertyName());
             field.setBindingInfo(fieldBindingInfo);
+
+            view.assignComponentIds(field);
         }
 
         return attributeFields;

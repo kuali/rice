@@ -138,11 +138,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
 	 */
 	@Override
-	public List<Component> getNestedComponents() {
-		List<Component> components = super.getNestedComponents();
+	public List<Component> getComponentsForLifecycle() {
+		List<Component> components = super.getComponentsForLifecycle();
 
 		components.add(header);
 		components.add(footer);
@@ -155,11 +155,25 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		}
 
 		if (layoutManager != null) {
-			components.addAll(layoutManager.getNestedComponents());
+			components.addAll(layoutManager.getComponentsForLifecycle());
 		}
 
 		return components;
 	}
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
+     */
+    @Override
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = super.getComponentPrototypes();
+
+        if (layoutManager != null) {
+            components.addAll(layoutManager.getComponentPrototypes());
+        }
+
+        return components;
+    }
 
 	/**
 	 * Additional keys that should be matching on when gathering errors or other
@@ -395,13 +409,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * Gets only the attribute fields that are nested in this container.  This is a subset of
-	 * what getNestedComponents() returns.
+	 * what getComponentsForLifecycle() returns.
 	 * 
 	 * @return
 	 */
 	public List<AttributeField> getAttributeFields(){
 		List<AttributeField> attributeFields = new ArrayList<AttributeField>();
-		for(Component c: this.getNestedComponents()){
+		for(Component c: this.getComponentsForLifecycle()){
 			if(c instanceof AttributeField){
 				attributeFields.add((AttributeField)c);
 			}

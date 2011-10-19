@@ -52,7 +52,6 @@ import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.BlankField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
-import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.GenericField;
 import org.kuali.rice.krad.uif.field.HeaderField;
@@ -62,7 +61,6 @@ import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,27 +121,22 @@ public class ComponentFactory {
     protected static final String FOOTER_SAVECLOSECANCEL = "Footer_SaveCloseCancel";
 
     /**
-     * Returns a new <code>Component</code> instance from the given component id initialized by the
-     * corresponding initial configuration
+     * Gets a fresh copy of the component by the id passed in which used to look up the component in
+     * the view index, then retrieve a new instance with initial state configured using the factory id
      *
-     * @param factoryId - factory id for the component to retrieve
-     * @return new component instance or null if no such component definition was found
-     * @see org.kuali.rice.krad.uif.component.Component#getFactoryId()
+     * @param id - id for the component in the view index
+     * @return Component new instance
      */
-    public static Component getNewComponentInstance(View view, String factoryId) {
+    public static Component getNewInstanceForRefresh(View view, String id) {
         Component component = null;
+        Component origComponent = view.getViewIndex().getComponentById(id);
 
-        // first check if the view index contains an initial configuration for this id
-        if (view.getViewIndex().getInitialComponentStates().containsKey(factoryId)) {
-            component = view.getViewIndex().getInitialComponentStates().get(factoryId);
+        if (view.getViewIndex().getInitialComponentStates().containsKey(origComponent.getFactoryId())) {
+            component = view.getViewIndex().getInitialComponentStates().get(origComponent.getFactoryId());
             component = ComponentUtils.copyObject(component);
-        } else {
-            // attempt to get an instance from the spring bean factory
-            component = (Component) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryObject(factoryId);
         }
 
-        // clear id before returning so duplicates do not occur
-        component.setId(null);
+        component.setId(origComponent.getFactoryId());
 
         return component;
     }
@@ -159,6 +152,7 @@ public class ComponentFactory {
 
         // clear id before returning so duplicates do not occur
         component.setId(null);
+        component.setFactoryId(null);
 
         return component;
     }
@@ -592,83 +586,6 @@ public class ComponentFactory {
 
     public static Group getFooterSaveCloseCancel() {
         return (Group) getNewComponentInstance(FOOTER_SAVECLOSECANCEL);
-    }
-
-    /**
-     * Gets a fresh copy of the component by the id passed in which used to look up the component in
-     * the view index, then retrieve a new instance with initial state configured using the factory id
-     *
-     * @param id - id for the component to retrieve
-     * @return Component new instance
-     */
-    public static Component getComponentById(UifFormBase form, String id) {
-        Component origComponent = form.getView().getViewIndex().getComponentById(id);
-
-        Component component = getNewComponentInstance(form.getView(), origComponent.getFactoryId());
-        component.setId(origComponent.getFactoryId());
-
-        return component;
-    }
-
-    /**
-     * Gets a fresh copy of the component by the id passed in with its lifecycle performed upon it,
-     * using the form data passed in
-     *
-     * @param form - object containing the view instance and data
-     * @param id - id for the component to retrieve
-     * @return Component instance that has been run through the lifecycle
-     */
-    public static Component getComponentByIdWithLifecycle(UifFormBase form, String id) {
-        Component origComponent = form.getView().getViewIndex().getComponentById(id);
-        Component component = getComponentById(form, id);
-
-        if (component instanceof Field) {
-            ((Field) component).setLabelFieldRendered(((Field) origComponent).isLabelFieldRendered());
-        }
-
-        if (component instanceof AttributeField) {
-            ((AttributeField) component).setBindingInfo(((AttributeField) origComponent).getBindingInfo());
-            ((AttributeField) component).getBindingInfo().setBindingPath(
-                    ((AttributeField) origComponent).getBindingInfo().getBindingPath());
-        }
-
-        if (component instanceof CollectionGroup) {
-            ((CollectionGroup) component).setBindingInfo(((CollectionGroup) origComponent).getBindingInfo());
-            ((CollectionGroup) component).getBindingInfo().setBindingPath(
-                    ((CollectionGroup) origComponent).getBindingInfo().getBindingPath());
-        }
-
-        if (component instanceof Group || component instanceof FieldGroup) {
-            List<AttributeField> fields = ComponentUtils.getComponentsOfTypeDeep(component, AttributeField.class);
-            String suffix = StringUtils.replaceOnce(component.getId(), component.getFactoryId(), "");
-            for (AttributeField field : fields) {
-                AttributeField origField = (AttributeField) form.getView().getViewIndex().getComponentById(
-                        StringUtils.replaceOnce(field.getId(), field.getFactoryId(), field.getFactoryId() + suffix));
-                if (origField != null) {
-                    field.setBindingInfo(origField.getBindingInfo());
-                    field.getBindingInfo().setBindingPath(origField.getBindingInfo().getBindingPath());
-                    field.setLabelFieldRendered(origField.isLabelFieldRendered());
-                }
-            }
-
-            List<CollectionGroup> collections = ComponentUtils.getComponentsOfTypeDeep(component,
-                    CollectionGroup.class);
-            for (CollectionGroup collection : collections) {
-                CollectionGroup origField = (CollectionGroup) form.getView().getViewIndex().getComponentById(
-                        StringUtils.replaceOnce(collection.getId(), collection.getFactoryId(),
-                                collection.getFactoryId() + suffix));
-                if (origField != null) {
-                    collection.setBindingInfo(origField.getBindingInfo());
-                    collection.getBindingInfo().setBindingPath(origField.getBindingInfo().getBindingPath());
-                }
-            }
-        }
-
-        form.getView().getViewHelperService().performComponentLifecycle(form, component, id);
-
-        form.getView().getViewIndex().indexComponent(component);
-
-        return component;
     }
 
 }

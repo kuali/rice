@@ -100,7 +100,7 @@ public class ViewIndex implements Serializable {
             collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
         }
 
-        for (Component nestedComponent : component.getNestedComponents()) {
+        for (Component nestedComponent : component.getComponentsForLifecycle()) {
             indexComponent(nestedComponent);
         }
     }

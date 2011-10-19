@@ -189,7 +189,8 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void performFinalize(View view, Object model, Component parent);
 
     /**
-     * List of components that are contained within the component
+     * List of components that are contained within the component and should be sent through
+     * the lifecycle
      *
      * <p>
      * Used by <code>ViewHelperService</code> for the various lifecycle
@@ -198,7 +199,20 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
      *
      * @return List<Component> child components
      */
-    public List<Component> getNestedComponents();
+    public List<Component> getComponentsForLifecycle();
+
+    /**
+     * List of components that are maintained by the component as prototypes for creating other component instances
+     *
+     * <p>
+     * Prototypes are held for configuring how a component should be created during the lifecycle. An example of this
+     * are the fields in a collection group that are created for each collection record. They only participate in the
+     * initialize phase.
+     * </p>
+     *
+     * @return List<Component> child component prototypes
+     */
+    public List<Component> getComponentPrototypes();
 
     /**
      * List of components that are contained within the List of <code>PropertyReplacer</code> in component

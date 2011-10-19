@@ -226,7 +226,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
         // Set the skipInTabOrder flag on all nested components
         // Set the tabIndex on controls to -1 in order to be skipped on tabbing
-        for (Component component : getNestedComponents()) {
+        for (Component component : getComponentsForLifecycle()) {
             if (component != null && component instanceof ComponentBase && skipInTabOrder) {
                 ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
                 if (component instanceof ControlBase) {
@@ -279,23 +279,41 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.Component#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentsForLifecycle()
      */
-    @Override
-    public List<Component> getNestedComponents() {
+    public List<Component> getComponentsForLifecycle() {
         List<Component> components = new ArrayList<Component>();
 
         return components;
     }
 
-    @Override
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
+     */
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = new ArrayList<Component>();
+
+        for (ComponentModifier modifier : componentModifiers) {
+            components.addAll(modifier.getComponentPrototypes());
+        }
+
+        components.addAll(getPropertyReplacerComponents());
+
+        return components;
+    }
+
+    /**
+     * Returns list of components that are being held in property replacers configured for this component
+     *
+     * @return List<Component>
+     */
     public List<Component> getPropertyReplacerComponents() {
         List<Component> components = new ArrayList<Component>();
         for (Object replacer : propertyReplacers) {
             components.addAll(((PropertyReplacer) replacer).getNestedComponents());
         }
-        return components;
 
+        return components;
     }
 
     /**

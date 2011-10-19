@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 
@@ -67,7 +68,7 @@ public class LookupAttributeField extends AttributeField {
      * @see org.kuali.rice.krad.uif.field.AttributeField#copyFromAttributeDefinition(org.kuali.rice.krad.datadictionary.AttributeDefinition)
      */
     @Override
-    public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
+    public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
         // label
         if (StringUtils.isEmpty(getLabel())) {
             setLabel(attributeDefinition.getLabel());
@@ -92,7 +93,10 @@ public class LookupAttributeField extends AttributeField {
 
         // use control from dictionary if not specified and convert for searching
         if (getControl() == null) {
-            setControl(convertControlToLookupControl(attributeDefinition));
+            Control control = convertControlToLookupControl(attributeDefinition);
+            view.assignComponentIds(control);
+
+            setControl(control);
         }
 
         // overwrite maxLength to allow for wildcards and ranges

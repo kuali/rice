@@ -149,6 +149,23 @@ public class LookupView extends FormView {
         super.performApplyModel(view, model, parent);
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
+     */
+    @Override
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = super.getComponentPrototypes();
+
+        components.add(criteriaGroup);
+        components.add(resultsGroup);
+        components.add(resultsActionsField);
+        components.add(resultsReturnField);
+        components.addAll(criteriaFields);
+        components.addAll(resultFields);
+
+        return components;
+    }
+
     public void applyConditionalLogicForFieldDisplay() {
         // TODO: work into view lifecycle
 //	    LookupViewHelperService lookupViewHelperService = (LookupViewHelperService) getViewHelperService();

@@ -325,7 +325,7 @@ public class ErrorsField extends FieldBase {
 	 * @param component
 	 */
 	private void addNestedKeys(List<String> keyList, Component component) {
-		for (Component c : component.getNestedComponents()) {
+		for (Component c : component.getComponentsForLifecycle()) {
 			ErrorsField ef = null;
 			if (c instanceof AttributeField) {
 				ef = ((AttributeField) c).getErrorsField();

@@ -135,6 +135,23 @@ public interface ViewHelperService {
 	 */
 	public void performFinalize(View view, Object model);
 
+    /**
+     * Performs the complete component lifecycle on the component passed in for use during a refresh process
+     *
+     * <p>
+     * Runs the three lifecycle phases on the component passed in. Some adjustments are made to account for the
+     * component being processed without its parent. The component within the view (contained on the form) is
+     * retrieved to obtain the context to use (such as parent). The created components id is then updated to match
+     * the current id within the view.
+     * </p>
+     *
+     * @param view - view instance the component belongs to
+     * @param model - object containing the full view data
+     * @param component - component instance to perform lifecycle for
+     * @param origId - id of the component within the view, used to pull the current component from the view
+     */
+    public void performComponentLifecycle(View view, Object model, Component component, String origId);
+
 	/**
 	 * Invoked when the add line action is chosen for a collection. The
 	 * collection path gives the full path to the collection that action was
@@ -224,20 +241,5 @@ public interface ViewHelperService {
      */
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line);
-    
-    /**
-     * Performs the complete component lifecycle on the component passed in
-     *
-     * <p>
-     * Retrieves a new component instance from the <code>ComponentFactory</code> and then runs the three
-     * lifecycles. The component within the view (contained on the form) is retrieved to obtain the context
-     * to use (such as parent). The created components id is then updated to match the current id within the
-     * view.
-     * </p>
-     * 
-     * @param form - object containing the full view data
-     * @param component - component instance to perform lifecycle for
-     * @param origId - id of the component within the view, used to pull the current component from the view
-     */
-    public void performComponentLifecycle(UifFormBase form, Component component, String origId);
+
 }

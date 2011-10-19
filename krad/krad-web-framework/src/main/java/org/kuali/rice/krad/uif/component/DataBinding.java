@@ -38,6 +38,13 @@ public interface DataBinding {
 	 */
 	public BindingInfo getBindingInfo();
 
+    /**
+     * Setter for the binding info instance
+     *
+     * @param bindingInfo
+     */
+    public void setBindingInfo(BindingInfo bindingInfo);
+
 	/**
 	 * Name of the property (relative to the parent object) the component binds
 	 * to

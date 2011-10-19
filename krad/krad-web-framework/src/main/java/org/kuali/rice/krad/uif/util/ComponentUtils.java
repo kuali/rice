@@ -187,12 +187,27 @@ public class ComponentUtils {
             typeComponents.add((T) component);
         }
 
-        for (Component nested : component.getNestedComponents()) {
+        for (Component nested : component.getComponentsForLifecycle()) {
             typeComponents.addAll(getComponentsOfTypeDeep(nested, componentType));
         }
 
         return typeComponents;
-    }   
+    }
+
+    public static List<Component> getAllNestedComponents(Component component) {
+        List<Component> components = new ArrayList<Component>();
+
+        if (component == null) {
+            return components;
+        }
+
+        for (Component nested : component.getComponentsForLifecycle()) {
+            components.add(nested);
+            components.addAll(getAllNestedComponents(nested));
+        }
+
+        return components;
+    }
 
     public static void prefixBindingPath(List<? extends Field> fields, String addBindingPrefix) {
         for (Field field : fields) {
@@ -214,7 +229,7 @@ public class ComponentUtils {
             prefixBindingPath((DataBinding) component, addBindingPrefix);
         }
 
-        for (Component nested : component.getNestedComponents()) {
+        for (Component nested : component.getComponentsForLifecycle()) {
            if (nested != null) {
               prefixBindingPathNested(nested, addBindingPrefix);
            }
@@ -243,7 +258,7 @@ public class ComponentUtils {
             layoutManager.setId(layoutManager.getId() + idSuffix);
         }
 
-        for (Component nested : component.getNestedComponents()) {
+        for (Component nested : component.getComponentsForLifecycle()) {
             if (nested != null) {
                 updateIdsWithSuffixNested(nested, idSuffix);
             }
@@ -270,7 +285,7 @@ public class ComponentUtils {
     public static void setComponentPropertyDeep(Component component, String propertyPath, Object propertyValue) {
         ObjectPropertyUtils.setPropertyValue(component, propertyPath, propertyValue, true);
 
-        for (Component nested : component.getNestedComponents()) {
+        for (Component nested : component.getComponentsForLifecycle()) {
             if (nested != null) {
                 setComponentPropertyDeep(nested, propertyPath, propertyValue);
             }
@@ -310,13 +325,13 @@ public class ComponentUtils {
             if (layoutManager != null) {
                 layoutManager.pushObjectToContext(contextName, contextValue);
 
-                for (Component nestedComponent : layoutManager.getNestedComponents()) {
+                for (Component nestedComponent : layoutManager.getComponentsForLifecycle()) {
                     pushObjectToContext(nestedComponent, contextName, contextValue);
                 }
             }
         }
 
-        for (Component nestedComponent : component.getNestedComponents()) {
+        for (Component nestedComponent : component.getComponentsForLifecycle()) {
             pushObjectToContext(nestedComponent, contextName, contextValue);
         }
     }

@@ -22,7 +22,6 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Accordion;
-import sun.rmi.transport.ObjectTable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -127,11 +126,11 @@ public class Group extends ContainerBase {
     }
 
 	/**
-	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
+	 * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
 	 */
 	@Override
-	public List<Component> getNestedComponents() {
-		List<Component> components = super.getNestedComponents();
+	public List<Component> getComponentsForLifecycle() {
+		List<Component> components = super.getComponentsForLifecycle();
 
 		components.add(accordion);
 

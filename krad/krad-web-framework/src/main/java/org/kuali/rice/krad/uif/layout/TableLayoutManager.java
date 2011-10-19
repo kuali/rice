@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -108,6 +107,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 		
         if (generateAutoSequence && !(sequenceFieldPrototype instanceof MessageField)) {
             sequenceFieldPrototype = ComponentFactory.getMessageField();
+            view.assignComponentIds(sequenceFieldPrototype);
         }
 
 		view.getViewHelperService().performComponentInitialization(view, model, headerFieldPrototype);
@@ -422,11 +422,11 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#getNestedComponents()
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#getComponentsForLifecycle()
 	 */
 	@Override
-	public List<Component> getNestedComponents() {
-		List<Component> components = super.getNestedComponents();
+	public List<Component> getComponentsForLifecycle() {
+		List<Component> components = super.getComponentsForLifecycle();
 
 		components.add(tableTools);
         components.add(addLineGroup);
@@ -435,6 +435,22 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 		return components;
 	}
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
+     */
+    @Override
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = super.getComponentPrototypes();
+
+        components.add(headerFieldPrototype);
+        components.add(sequenceFieldPrototype);
+        components.add(actionFieldPrototype);
+        components.add(subCollectionFieldGroupPrototype);
+        components.add(selectFieldPrototype);
+
+        return components;
+    }
 
 	/**
 	 * Indicates whether the short label for the collection field should be used

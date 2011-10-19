@@ -136,14 +136,30 @@ public interface LayoutManager extends Configurable, Serializable {
 	public Class<? extends Container> getSupportedContainer();
 
 	/**
-	 * List of components that are contained within the layout manager
+	 * List of components that are contained within the layout manager that should be sent through the lifecycle
+     *
 	 * <p>
 	 * Used by <code>ViewHelperService</code> for the various lifecycle
 	 * callbacks
+     * </p>
 	 * 
 	 * @return List<Component> child components
 	 */
-	public List<Component> getNestedComponents();
+	public List<Component> getComponentsForLifecycle();
+
+    /**
+     * List of components that are maintained by the layout manager as prototypes for creating other component
+     * instances
+     *
+     * <p>
+     * Prototypes are held for configuring how a component should be created during the lifecycle. An example of this
+     * are the fields in a collection group that are created for each collection record. They only participate in the
+     * initialize phase.
+     * </p>
+     *
+     * @return List<Component> child component prototypes
+     */
+    public List<Component> getComponentPrototypes();
 
 	/**
 	 * Used by the copy process to determine for which properties only the value

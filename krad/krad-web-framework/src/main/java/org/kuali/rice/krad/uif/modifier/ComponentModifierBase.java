@@ -20,6 +20,9 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ConfigurableBase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Base class for <code>ComponentModifier</code> implementations
  * 
@@ -53,6 +56,15 @@ public abstract class ComponentModifierBase extends ConfigurableBase implements 
     @Override
     public void performInitialization(View view, Object model, Component component) {
 
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#getComponentPrototypes()
+     */
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = new ArrayList<Component>();
+
+        return components;
     }
 
     /**

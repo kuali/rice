@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -33,13 +32,13 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
  * Group that holds a collection of objects and configuration for presenting the
  * collection in the UI. Supports functionality such as add line, line actions,
  * and nested collections.
- * 
+ *
  * <p>
  * Note the standard header/footer can be used to give a header to the
  * collection as a whole, or to provide actions that apply to the entire
  * collection
  * </p>
- * 
+ *
  * <p>
  * For binding purposes the binding path of each row field is indexed. The name
  * property inherited from <code>ComponentBase</code> is used as the collection
@@ -107,7 +106,8 @@ public class CollectionGroup extends Group implements DataBinding {
      * collection class</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
      */
     @Override
     public void performInitialization(View view, Object model) {
@@ -139,7 +139,7 @@ public class CollectionGroup extends Group implements DataBinding {
                 }
             }
         }
-        
+
         if ((addLineFields == null) || addLineFields.isEmpty()) {
             addLineFields = getItems();
         }
@@ -148,7 +148,7 @@ public class CollectionGroup extends Group implements DataBinding {
         if (this.activeCollectionFilter == null) {
             activeCollectionFilter = new ActiveCollectionFilter();
         }
-        
+
         // set static collection path on items
         String collectionPath = "";
         if (StringUtils.isNotBlank(getBindingInfo().getCollectionPath())) {
@@ -158,8 +158,9 @@ public class CollectionGroup extends Group implements DataBinding {
             collectionPath += getBindingInfo().getBindByNamePrefix() + ".";
         }
         collectionPath += getBindingInfo().getBindingName();
-        
-        List<AttributeField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(), AttributeField.class);
+
+        List<AttributeField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(),
+                AttributeField.class);
         for (AttributeField collectionField : collectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
@@ -184,7 +185,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Calls the configured <code>CollectionGroupBuilder</code> to build the
      * necessary components based on the collection data
-     * 
+     *
      * @see org.kuali.rice.krad.uif.container.ContainerBase#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
@@ -205,12 +206,11 @@ public class CollectionGroup extends Group implements DataBinding {
      * instance, and sets name as parameter for an action fields in the group
      */
     protected void pushCollectionGroupToReference() {
-        List<Component> components = this.getNestedComponents();
-        
+        List<Component> components = this.getComponentsForLifecycle();
+
         ComponentUtils.pushObjectToContext(components, UifConstants.ContextVariableNames.COLLECTION_GROUP, this);
 
-        List<ActionField> actionFields =
-                ComponentUtils.getComponentsOfTypeDeep(components, ActionField.class);
+        List<ActionField> actionFields = ComponentUtils.getComponentsOfTypeDeep(components, ActionField.class);
         for (ActionField actionField : actionFields) {
             actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
                     this.getBindingInfo().getBindingPath());
@@ -230,7 +230,7 @@ public class CollectionGroup extends Group implements DataBinding {
     protected List<Integer> performCollectionFiltering(View view, Object model) {
         if (Inactivatable.class.isAssignableFrom(this.collectionObjectClass) && !showInactive) {
             return this.activeCollectionFilter.filter(view, model, this);
-        }else{
+        } else {
             return null;
         }
     }
@@ -243,12 +243,10 @@ public class CollectionGroup extends Group implements DataBinding {
      * is not available (clearExistingLine will force a new instance). The given
      * model must be a subclass of <code>UifFormBase</code> in order to find the
      * Map.
-     * 
-     * @param model
-     *            - Model instance that contains the new collection lines Map
-     * @param clearExistingLine
-     *            - boolean that indicates whether the line should be set to a
-     *            new instance if it already exists
+     *
+     * @param model - Model instance that contains the new collection lines Map
+     * @param clearExistingLine - boolean that indicates whether the line should be set to a
+     * new instance if it already exists
      */
     public void initializeNewCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             boolean clearExistingLine) {
@@ -256,11 +254,11 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#getComponentsForLifecycle()
      */
     @Override
-    public List<Component> getNestedComponents() {
-        List<Component> components = super.getNestedComponents();
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
         components.add(addLineLabelField);
         components.addAll(actionFields);
@@ -280,9 +278,22 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
+     */
+    @Override
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = super.getComponentPrototypes();
+
+        components.addAll(getItems());
+        components.addAll(getSubCollections());
+
+        return components;
+    }
+
+    /**
      * Object class the collection maintains. Used to get dictionary information
      * in addition to creating new instances for the collection when necessary
-     * 
+     *
      * @return Class<?> collection object class
      */
     public Class<?> getCollectionObjectClass() {
@@ -291,7 +302,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the collection object class
-     * 
+     *
      * @param collectionObjectClass
      */
     public void setCollectionObjectClass(Class<?> collectionObjectClass) {
@@ -307,7 +318,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the collections property name
-     * 
+     *
      * @param propertyName
      */
     public void setPropertyName(String propertyName) {
@@ -318,7 +329,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Determines the binding path for the collection. Used to get the
      * collection value from the model in addition to setting the binding path
      * for the collection attributes
-     * 
+     *
      * @see org.kuali.rice.krad.uif.component.DataBinding#getBindingInfo()
      */
     public BindingInfo getBindingInfo() {
@@ -327,7 +338,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the binding info instance
-     * 
+     *
      * @param bindingInfo
      */
     public void setBindingInfo(BindingInfo bindingInfo) {
@@ -337,7 +348,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * Action fields that should be rendered for each collection line. Example
      * line action is the delete action
-     * 
+     *
      * @return List<ActionField> line action fields
      */
     public List<ActionField> getActionFields() {
@@ -346,7 +357,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the line action fields list
-     * 
+     *
      * @param actionFields
      */
     public void setActionFields(List<ActionField> actionFields) {
@@ -355,7 +366,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Indicates whether the action column for the collection should be rendered
-     * 
+     *
      * @return boolean true if the actions should be rendered, false if not
      * @see #getActionFields()
      */
@@ -365,7 +376,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the render line actions indicator
-     * 
+     *
      * @param renderLineActions
      */
     public void setRenderLineActions(boolean renderLineActions) {
@@ -374,7 +385,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Indicates whether an add line should be rendered for the collection
-     * 
+     *
      * @return boolean true if add line should be rendered, false if it should
      *         not be
      */
@@ -384,7 +395,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the render add line indicator
-     * 
+     *
      * @param renderAddLine
      */
     public void setRenderAddLine(boolean renderAddLine) {
@@ -401,7 +412,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * <code>StackedLayoutManager</code> the label is placed into the group
      * header for the line.
      * </p>
-     * 
+     *
      * @return String add line label
      */
     public String getAddLineLabel() {
@@ -414,7 +425,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the add line label text
-     * 
+     *
      * @param addLineLabel
      */
     public void setAddLineLabel(String addLineLabel) {
@@ -425,7 +436,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * <code>LabelField</code> instance for the add line label
-     * 
+     *
      * @return LabelField add line label field
      * @see #getAddLineLabel()
      */
@@ -435,7 +446,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the <code>LabelField</code> instance for the add line label
-     * 
+     *
      * @param addLineLabelField
      * @see #getAddLineLabel()
      */
@@ -448,7 +459,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * this is used with the binding info to create the path to the add line.
      * Can be left blank in which case the framework will manage the add line
      * instance in a generic map.
-     * 
+     *
      * @return String add line property name
      */
     public String getAddLinePropertyName() {
@@ -457,7 +468,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the add line property name
-     * 
+     *
      * @param addLinePropertyName
      */
     public void setAddLinePropertyName(String addLinePropertyName) {
@@ -471,7 +482,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * binding info. Add line label and binding info are not required, in which
      * case the framework will manage the new add line instances through a
      * generic map (model must extend UifFormBase)
-     * 
+     *
      * @return BindingInfo add line binding info
      */
     public BindingInfo getAddLineBindingInfo() {
@@ -480,7 +491,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the add line binding info
-     * 
+     *
      * @param addLineBindingInfo
      */
     public void setAddLineBindingInfo(BindingInfo addLineBindingInfo) {
@@ -491,7 +502,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * List of <code>Field</code> instances that should be rendered for the
      * collection add line (if enabled). If not set, the default group's items
      * list will be used
-     * 
+     *
      * @return List<? extends Field> add line field list
      */
     public List<? extends Field> getAddLineFields() {
@@ -500,7 +511,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the add line field list
-     * 
+     *
      * @param addLineFields
      */
     public void setAddLineFields(List<? extends Field> addLineFields) {
@@ -511,7 +522,7 @@ public class CollectionGroup extends Group implements DataBinding {
      * Action fields that should be rendered for the add line. This is generally
      * the add action (button) but can be configured to contain additional
      * actions
-     * 
+     *
      * @return List<ActionField> add line action fields
      */
     public List<ActionField> getAddLineActionFields() {
@@ -520,7 +531,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the add line action fields
-     * 
+     *
      * @param addLineActionFields
      */
     public void setAddLineActionFields(List<ActionField> addLineActionFields) {
@@ -654,7 +665,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * List of <code>CollectionGroup</code> instances that are sub-collections
      * of the collection represented by this collection group
-     * 
+     *
      * @return List<CollectionGroup> sub collections
      */
     public List<CollectionGroup> getSubCollections() {
@@ -663,7 +674,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the sub collection list
-     * 
+     *
      * @param subCollections
      */
     public void setSubCollections(List<CollectionGroup> subCollections) {
@@ -696,7 +707,7 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * <code>CollectionGroupBuilder</code> instance that will build the
      * components dynamically for the collection instance
-     * 
+     *
      * @return CollectionGroupBuilder instance
      */
     public CollectionGroupBuilder getCollectionGroupBuilder() {
@@ -708,7 +719,7 @@ public class CollectionGroup extends Group implements DataBinding {
 
     /**
      * Setter for the collection group building instance
-     * 
+     *
      * @param collectionGroupBuilder
      */
     public void setCollectionGroupBuilder(CollectionGroupBuilder collectionGroupBuilder) {

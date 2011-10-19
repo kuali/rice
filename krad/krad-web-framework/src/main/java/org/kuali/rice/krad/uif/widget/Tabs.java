@@ -22,4 +22,8 @@ package org.kuali.rice.krad.uif.widget;
  */
 public class Tabs extends WidgetBase{
 	private static final long serialVersionUID = 2L;
+
+    public Tabs() {
+        super();
+    }
 }

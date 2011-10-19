@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
@@ -30,7 +29,6 @@ import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,13 +219,28 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.layout.LayoutManagerBase#getComponentsForLifecycle()
      */
     @Override
-    public List<Component> getNestedComponents() {
-        List<Component> components = super.getNestedComponents();
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
         components.addAll(stackedGroups);
+
+        return components;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
+     */
+    @Override
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = super.getComponentPrototypes();
+
+        components.add(addLineGroup);
+        components.add(lineGroupPrototype);
+        components.add(subCollectionFieldGroupPrototype);
+        components.add(selectFieldPrototype);
 
         return components;
     }

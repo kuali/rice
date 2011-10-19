@@ -118,12 +118,20 @@ public abstract class LayoutManagerBase extends ConfigurableBase implements Layo
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getNestedComponents()
+	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentsForLifecycle()
 	 */
-	@Override
-	public List<Component> getNestedComponents() {
+	public List<Component> getComponentsForLifecycle() {
 		return new ArrayList<Component>();
 	}
+
+    /**
+     * @see org.kuali.rice.krad.uif.layout.LayoutManager#getComponentPrototypes()
+     */
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = new ArrayList<Component>();
+
+        return components;
+    }
 
 	/**
 	 * @see org.kuali.rice.krad.uif.layout.LayoutManager#getId()

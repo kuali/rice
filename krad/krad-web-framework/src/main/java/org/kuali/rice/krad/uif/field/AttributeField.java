@@ -435,10 +435,11 @@ public class AttributeField extends FieldBase implements DataBinding {
      * already contains a value for a property, the definitions value is not
      * used.
      *
+     * @param view - view instance the field belongs to
      * @param attributeDefinition - AttributeDefinition instance the property values should be
      * copied from
      */
-    public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
+    public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
         // label
         if (StringUtils.isEmpty(getLabel())) {
             setLabel(attributeDefinition.getLabel());
@@ -488,7 +489,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         // control
         if ((getControl() == null) && (attributeDefinition.getControlField() != null)) {
-            setControl(ComponentUtils.copy(attributeDefinition.getControlField()));
+            Control control = attributeDefinition.getControlField();
+            view.assignComponentIds(control);
+
+            setControl(ComponentUtils.copy(control));
         }
 
         // summary
@@ -544,11 +548,11 @@ public class AttributeField extends FieldBase implements DataBinding {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
     @Override
-    public List<Component> getNestedComponents() {
-        List<Component> components = super.getNestedComponents();
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
         components.add(control);
         components.add(errorsField);

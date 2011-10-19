@@ -31,7 +31,9 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
@@ -75,8 +77,6 @@ import java.util.Set;
  */
 public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ViewHelperServiceImpl.class);
-
-    private Set<String> initializedComponentIds;
 
     private transient DataDictionaryService dataDictionaryService;
     private transient ExpressionEvaluatorService expressionEvaluatorService;
@@ -159,7 +159,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performInitialization(View view, Object model) {
-        initializedComponentIds = new HashSet<String>();
+        view.assignComponentIds(view);
         performComponentInitialization(view, model, view);
     }
 
@@ -167,43 +167,80 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * Performs the complete component lifecycle on the component passed in, in this order:
      * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
      *
-     * @see {@link ViewHelperService#performComponentLifecycle(org.kuali.rice.krad.web.form.UifFormBase,
-     *      org.kuali.rice.krad.uif.component.Component, String)}
+     * @see {@link org.kuali.rice.krad.uif.service.ViewHelperService#performComponentLifecycle(
+     * org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component, java.lang.String)
      * @see {@link #performComponentInitialization(org.kuali.rice.krad.uif.view.View, Object,
      *      org.kuali.rice.krad.uif.component.Component)}
      * @see {@link #performComponentApplyModel(View, Component, Object)}
      * @see {@link #performComponentFinalize(View, Component, Object, Component, Map)}
      */
-    public void performComponentLifecycle(UifFormBase form, Component component, String origId) {
-        Component origComponent = form.getView().getViewIndex().getComponentById(origId);
+    public void performComponentLifecycle(View view, Object model, Component component, String origId) {
+        Component origComponent = view.getViewIndex().getComponentById(origId);
 
         Component parent = (Component) origComponent.getContext().get(UifConstants.ContextVariableNames.PARENT);
         component.pushAllToContext(origComponent.getContext());
 
-        // if origid contained collection suffix, need to add back on before doing lifecycle
-        if (StringUtils.contains(origId, UifConstants.IdSuffixes.ADD_LINE)) {
-            ComponentUtils.updateIdsWithSuffix(component, UifConstants.IdSuffixes.ADD_LINE);
-        } else if (StringUtils.contains(origId, UifConstants.IdSuffixes.LINE)) {
-            String index = StringUtils.substringBetween(origId, UifConstants.IdSuffixes.LINE, "_");
-            ComponentUtils.updateIdsWithSuffix(component, UifConstants.IdSuffixes.LINE + index);
+        // adjust IDs for suffixes that might have been added by a parent component during the full view lifecycle
+        String suffix = StringUtils.replaceOnce(origComponent.getId(), origComponent.getFactoryId(), "");
+        // remove attribute suffix since that gets added in lifecycle
+        if (suffix.endsWith(UifConstants.IdSuffixes.ATTRIBUTE)) {
+            suffix = StringUtils.removeEnd(suffix, UifConstants.IdSuffixes.ATTRIBUTE);
+        }
+        ComponentUtils.updateIdsWithSuffix(component, suffix);
+
+        // binding path should stay the same
+        if (component instanceof DataBinding) {
+            ((DataBinding) component).setBindingInfo(((DataBinding) origComponent).getBindingInfo());
+            ((DataBinding) component).getBindingInfo().setBindingPath(
+                    ((DataBinding) origComponent).getBindingInfo().getBindingPath());
         }
 
-        initializedComponentIds = new HashSet<String>();
+        // copy properties that are set by parent components in the full view lifecycle
+        if (component instanceof Field) {
+            ((Field) component).setLabelFieldRendered(((Field) origComponent).isLabelFieldRendered());
+        } else if (component instanceof CollectionGroup) {
+            ((CollectionGroup) component).setSubCollectionSuffix(
+                    ((CollectionGroup) origComponent).getSubCollectionSuffix());
+        }
 
-        performComponentInitialization(form.getView(), form, component);
-        performComponentApplyModel(form.getView(), component, form);
+        performComponentInitialization(view, model, component);
+        performComponentApplyModel(view, component, model);
 
         // TODO: need to handle updating client state for component refresh
         Map<String, Object> clientState = new HashMap<String, Object>();
-        performComponentFinalize(form.getView(), component, form, parent, clientState);
+        performComponentFinalize(view, component, model, parent, clientState);
+
+        // make sure binding and label settings stay the same as initial
+//        if (component instanceof Group || component instanceof FieldGroup) {
+//            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
+//            for (Component nestedComponent : nestedComponents) {
+//                Component origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId());
+//                if (origNestedComponent != null) {
+//                    if (component instanceof DataBinding) {
+//                        ((DataBinding) nestedComponent).setBindingInfo(
+//                                ((DataBinding) origNestedComponent).getBindingInfo());
+//                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
+//                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
+//                    }
+//
+//                    if (component instanceof Field) {
+//                        ((Field) nestedComponent).setLabelFieldRendered(
+//                                ((Field) origNestedComponent).isLabelFieldRendered());
+//                    }
+//                }
+//            }
+//        }
 
         // get client state for component and build update script for on load
-        String clientStateScript = buildClientSideStateScript(form.getView(), clientState, true);
+        String clientStateScript = buildClientSideStateScript(view, clientState, true);
         String onLoadScript = component.getOnLoadScript();
         if (StringUtils.isNotBlank(onLoadScript)) {
             clientStateScript = onLoadScript + clientStateScript;
         }
         component.setOnLoadScript(clientStateScript);
+
+        // update index for component
+        view.getViewIndex().indexComponent(component);
     }
 
     /**
@@ -236,29 +273,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
-        // assign ID if necessary
-        if (StringUtils.isBlank(component.getId())) {
-            component.setId(view.getNextId());
+        if (StringUtils.isBlank(component.getId()) || StringUtils.isBlank(component.getFactoryId())) {
+            throw new RiceRuntimeException("Ids are not set, this should happen unless a component is misconfigured");
         }
 
-        // check if component has already been initialized to prevent cyclic references
-        if (initializedComponentIds.contains(component.getId())) {
-            throw new RiceRuntimeException(
-                    "Circular reference or duplicate id found for component with id: " + component.getId());
-        }
-        initializedComponentIds.add(component.getId());
-
-        // determine if we need to hold the state for doing refreshes, if factory id already set, we can
-        // get the initial component state from spring
-        if (StringUtils.isBlank(component.getFactoryId())) {
-            // only need to hold state if a refresh can occur
-            component.setFactoryId(component.getId());
-            view.getViewIndex().addInitialComponentState(component);
-        }
-        // make sure we can get the bean from dictionary, else add to view index
-        else if (!getDataDictionaryService().containsDictionaryObject(component.getFactoryId())) {
-            view.getViewIndex().addInitialComponentState(component);
-        }
+        // TODO: duplicate ID check
 
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -284,6 +303,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             initializeAttributeFieldFromDataDictionary(view, (AttributeField) component);
         }
 
+        // add initial state to the view index for component refreshes
+        view.getViewIndex().addInitialComponentState(component);
+
         // for collection groups set defaults from dictionary entry
         if (component instanceof CollectionGroup) {
             // TODO: initialize from dictionary
@@ -293,7 +315,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         runComponentModifiers(view, component, null, UifConstants.ViewPhases.INITIALIZE);
 
         // initialize nested components
-        for (Component nestedComponent : component.getNestedComponents()) {
+        for (Component nestedComponent : component.getComponentsForLifecycle()) {
             performComponentInitialization(view, model, nestedComponent);
         }
 
@@ -377,12 +399,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // if a definition was found, initialize field from definition
         if (attributeDefinition != null) {
-            field.copyFromAttributeDefinition(attributeDefinition);
+            field.copyFromAttributeDefinition(view, attributeDefinition);
         }
 
         if (field.getControl() == null) {
-            field.setControl(ComponentFactory.getTextControl());
-            field.getControl().setId(view.getNextId());
+            Control control = ComponentFactory.getTextControl();
+            control.setId(view.getNextId());
+            control.setFactoryId(control.getId());
+
+            field.setControl(control);
         }
     }
 
@@ -619,7 +644,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.APPLY_MODEL);
 
         // get children and recursively perform conditional logic
-        for (Component nestedComponent : component.getNestedComponents()) {
+        for (Component nestedComponent : component.getComponentsForLifecycle()) {
             if (nestedComponent != null) {
                 nestedComponent.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, component);
             }
@@ -806,7 +831,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         // get components children and recursively update state
-        for (Component nestedComponent : component.getNestedComponents()) {
+        for (Component nestedComponent : component.getComponentsForLifecycle()) {
             performComponentFinalize(view, nestedComponent, model, component, clientSideState);
         }
     }

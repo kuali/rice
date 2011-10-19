@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,7 +93,7 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 		}
 
 		// recursively update components
-		for (Component nestedComponent : component.getNestedComponents()) {
+		for (Component nestedComponent : component.getComponentsForLifecycle()) {
 			convertToReplacement(nestedComponent, idSuffix);
 		}
 	}
@@ -125,6 +126,17 @@ public class ComponentConvertModifier extends ComponentModifierBase {
 
 		return components;
 	}
+
+    /**
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#getComponentPrototypes()
+     */
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = new ArrayList<Component>();
+
+        components.add(componentReplacementPrototype);
+
+        return components;
+    }
 
 	/**
 	 * Type of component that should be replaced with an instance of the

@@ -237,7 +237,7 @@ public class CollectionGroupBuilder implements Serializable {
 
                 FieldGroup fieldGroupPrototype = layoutManager.getSubCollectionFieldGroupPrototype();
                 FieldGroup subCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype,
-                        lineSuffix + "s" + subLineIndex);
+                        lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
 
                 subCollectionFields.add(subCollectionFieldGroup);
@@ -397,7 +397,12 @@ public class CollectionGroupBuilder implements Serializable {
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
 			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 
-            actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ collectionGroup.getFactoryId() +"');");
+            String baseId = collectionGroup.getFactoryId();
+            if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
+                baseId += collectionGroup.getSubCollectionSuffix();
+            }
+
+            actionField.setClientSideJs("addLineToCollection('"+collectionGroup.getId()+"', '"+ baseId +"');");
 		}
 
 		// get add line for context

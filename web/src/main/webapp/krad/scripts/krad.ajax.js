@@ -50,7 +50,10 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 					successCallback(tempDiv);
 				}
 				jq("#formComplete").html("");
-			}
+			},
+            error: function(jqXHR, textStatus) {
+                alert( "Request failed: " + textStatus );
+            }
 	};
 	
 	if(elementToBlock != null && elementToBlock.length){

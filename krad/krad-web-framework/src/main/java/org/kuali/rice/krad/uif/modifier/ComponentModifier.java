@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.component.Configurable;
 import org.kuali.rice.krad.uif.component.Ordered;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,7 +31,7 @@ import java.util.Set;
  * <code>ComponentModifier</code> instances are configured by the component's
  * dictionary definition. They can be used to provide dynamic initialization
  * behavior for a certain type of component or all components based on the
- * getSupportedComponents method. In addition they can do dynamic generation of
+ * getComponentsForLifecycle method. In addition they can do dynamic generation of
  * new <code>Component</code> instances, or replacement of the components or
  * their properties.
  * </p>
@@ -97,6 +98,19 @@ public interface ComponentModifier extends Configurable, Serializable, Ordered {
      * @return Set component classes
      */
     public Set<Class<? extends Component>> getSupportedComponents();
+
+    /**
+     * List of components that are maintained by the modifier as prototypes for creating other component instances
+     *
+     * <p>
+     * Prototypes are held for configuring how a component should be created during the lifecycle. An example of this
+     * are the fields in a collection group that are created for each collection record. They only participate in the
+     * initialize phase.
+     * </p>
+     *
+     * @return List<Component> child component prototypes
+     */
+    public List<Component> getComponentPrototypes();
 
     /**
      * Indicates what phase of the component lifecycle the

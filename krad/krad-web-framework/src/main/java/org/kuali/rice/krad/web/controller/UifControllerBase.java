@@ -275,15 +275,15 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Show inactive records flag not found in request");
         }
 
-        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getComponentById(uifForm,
+        CollectionGroup collectionGroup = (CollectionGroup) ComponentFactory.getNewInstanceForRefresh(uifForm.getView(),
                 collectionGroupId);
 
         // update inactive flag on group
         collectionGroup.setShowInactive(showInactive);
 
         // run lifecycle and update in view
-        uifForm.getView().getViewHelperService().performComponentLifecycle(uifForm, collectionGroup, collectionGroupId);
-        uifForm.getView().getViewIndex().indexComponent(collectionGroup);
+        uifForm.getView().getViewHelperService().performComponentLifecycle(uifForm.getView(), uifForm, collectionGroup,
+                collectionGroupId);
 
         return UifWebUtils.getComponentModelAndView(collectionGroup, uifForm);
     }
@@ -442,7 +442,12 @@ public abstract class UifControllerBase {
             throw new RuntimeException("Requested component id for update not found in request");
         }
 
-        Component comp = ComponentFactory.getComponentByIdWithLifecycle(form, requestedComponentId);
+        // get a new instance of the component
+        Component comp = ComponentFactory.getNewInstanceForRefresh(form.getView(), requestedComponentId);
+
+        // run lifecycle and update in view
+        form.getView().getViewHelperService().performComponentLifecycle(form.getView(), form, comp,
+                requestedComponentId);
 
         return UifWebUtils.getComponentModelAndView(comp, form);
     }

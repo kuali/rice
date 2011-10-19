@@ -152,7 +152,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
             for (ComparableInfo comparable : groupComparables) {
                 String idSuffix = comparable.getIdSuffix();
                 if (StringUtils.isBlank(idSuffix)) {
-                    idSuffix = "_c" + defaultSuffix;
+                    idSuffix = UifConstants.IdSuffixes.COMPARE + defaultSuffix;
                 }
 
                 Component compareItem = ComponentUtils.copy(item, idSuffix);
@@ -259,6 +259,17 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     public Set<Class<? extends Component>> getSupportedComponents() {
         Set<Class<? extends Component>> components = new HashSet<Class<? extends Component>>();
         components.add(Group.class);
+
+        return components;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.modifier.ComponentModifierBase#getComponentPrototypes()
+     */
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = new ArrayList<Component>();
+
+        components.add(headerFieldPrototype);
 
         return components;
     }

@@ -159,8 +159,6 @@ public class View extends ContainerBase {
      * The following initialization is performed:
      *
      * <ul>
-     * <li>If current page id is not set, it is set to the configured entry page
-     * or first item in list id</li>
      * <li>If a single paged view, set items in page group and put the page in
      * the items list</li>
      * </ul>
@@ -191,16 +189,6 @@ public class View extends ContainerBase {
                 group.setId(view.getNextId());
             }
         }
-
-        // default current page if not set
-        if (StringUtils.isBlank(currentPageId)) {
-            if (StringUtils.isNotBlank(entryPageId)) {
-                currentPageId = entryPageId;
-            } else {
-                Group firstPageGroup = getItems().get(0);
-                currentPageId = firstPageGroup.getId();
-            }
-        }
     }
 
     /**
@@ -227,11 +215,46 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#getNestedComponents()
+     * Assigns an id to the component if one was not configured
+     *
+     * @param component - component instance to assign id to
+     */
+    public void assignComponentIds(Component component) {
+        if (component == null) {
+            return;
+        }
+
+        // assign IDs if necessary
+        if (StringUtils.isBlank(component.getId())) {
+            component.setId(getNextId());
+
+        }
+        if (StringUtils.isBlank(component.getFactoryId())) {
+            component.setFactoryId(component.getId());
+        }
+
+        // check if component has already been initialized to prevent cyclic references
+        // TODO: move to VHS initialize
+        //        if (initializedComponentIds.contains(component.getId())) {
+        //            throw new RiceRuntimeException(
+        //                    "Circular reference or duplicate id found for component with id: " + component.getId());
+        //        }
+        //        initializedComponentIds.add(component.getId());
+
+        // assign id to nested components
+        List<Component> allNested = new ArrayList<Component>(component.getComponentsForLifecycle());
+        allNested.addAll(component.getComponentPrototypes());
+        for (Component nestedComponent : allNested) {
+            assignComponentIds(nestedComponent);
+        }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#getComponentsForLifecycle()
      */
     @Override
-    public List<Component> getNestedComponents() {
-        List<Component> components = super.getNestedComponents();
+    public List<Component> getComponentsForLifecycle() {
+        List<Component> components = super.getComponentsForLifecycle();
 
         components.add(applicationHeader);
         components.add(applicationFooter);
@@ -243,8 +266,8 @@ public class View extends ContainerBase {
         // remove all pages that are not the current page
         if (!singlePageView) {
             for (Group group : this.getItems()) {
-                if ((group instanceof PageGroup) && !StringUtils.equals(group.getId(), getCurrentPageId()) && components.contains(
-                        group)) {
+                if ((group instanceof PageGroup) && !StringUtils.equals(group.getId(), getCurrentPageId()) && components
+                        .contains(group)) {
                     components.remove(group);
                 }
             }
@@ -254,7 +277,19 @@ public class View extends ContainerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
+     * @see org.kuali.rice.krad.uif.component.Component#getComponentPrototypes()
+     */
+    @Override
+    public List<Component> getComponentPrototypes() {
+        List<Component> components = super.getComponentPrototypes();
+
+        components.add(page);
+
+        return components;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.Container#getSupportedComponents()
      */
     @Override
     public Set<Class<? extends Component>> getSupportedComponents() {
@@ -396,9 +431,23 @@ public class View extends ContainerBase {
      * The id for the page within the view that should be displayed in the UI.
      * Other pages of the view will not be rendered
      *
+     * <p>
+     * If current page id is not set, it is set to the configured entry page or first item in list id
+     * </p>
+     *
      * @return String id of the page that should be displayed
      */
     public String getCurrentPageId() {
+        // default current page if not set
+        if (StringUtils.isBlank(currentPageId)) {
+            if (StringUtils.isNotBlank(entryPageId)) {
+                currentPageId = entryPageId;
+            } else if ((getItems() != null) && !getItems().isEmpty()) {
+                Group firstPageGroup = getItems().get(0);
+                currentPageId = firstPageGroup.getId();
+            }
+        }
+
         return this.currentPageId;
     }
 

@@ -100,7 +100,7 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
         }
         PeopleFlowMemberBo memberBo = new PeopleFlowMemberBo();
         memberBo.setMemberId(member.getMemberId());
-        memberBo.setMemberTypeCode(member.getMemberType().getCode());
+        memberBo.setMemberType(member.getMemberType());
         if (member.getActionRequestPolicy() != null) {
             memberBo.setActionRequestPolicyCode(member.getActionRequestPolicy().getCode());
         }

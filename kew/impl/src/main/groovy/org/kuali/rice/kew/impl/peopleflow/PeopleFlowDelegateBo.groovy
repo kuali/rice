@@ -36,7 +36,7 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
     RoleEbo role;
 
     public Person getPerson() {
-        if (KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)) {
+        if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
             if ((this.person == null) || !person.getPrincipalId().equals(memberId)) {
                 this.person = KimApiServiceLocator.personService.getPerson(memberId);
             }

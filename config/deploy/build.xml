@@ -213,7 +213,7 @@
   </target>
   <target name="runscript">
     <echo>${message}</echo>
-    <echo>Running ${deploy.server}/${script} as ${tomcat.instance}</echo>
+    <echo>Running ${deploy.server}:${script} as ${tomcat.instance}</echo>
     <exec executable="ssh" failonerror="true">
       <arg value="-i" />
       <arg value="${deploy.auth}" />

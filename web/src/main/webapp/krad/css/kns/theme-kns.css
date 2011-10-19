@@ -1,7 +1,7 @@
 @charset "UTF-8";
 body {
 	font-family:Verdana, Geneva, sans-serif;
-	font-size:.7em;
+	font-size:.85em;
 }
 a {
 	color:#900000;
@@ -144,9 +144,11 @@ h5.kr-header-page-subhead {
 }
 #viewheader_div {
 	background:url(../../images/kns/masthead1.png);
+	margin-bottom:20px;
 }
 div.doc_view_header .left {
 	float:left;
+	
 }
 div.group_docheader {
 	float:right
@@ -447,8 +449,8 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
 }
 #viewpage_div {
 	padding-left: 20px;
-	padding-right:0px;
-	float:left;
+	padding-right:20px;
+	
 	width: 95%;
 	margin-left:0px;
 	margin-right:0px
@@ -799,8 +801,8 @@ td.col2, td.col4 {
 	padding:.5em;
 }
 table.datatable {
-	border-top:1px solid #CCC;
-	border-right: 1px solid #CCC;
+	/* [disabled]border-top:1px solid #CCC; */
+	/* [disabled]border-right: 1px solid #CCC; */
 	width: 100%;
 }
 .sorting_asc {
@@ -819,7 +821,7 @@ table.datatable {
 	background: url('../../images/kns/sort_desc_disabled.png') no-repeat center right;
 }
 .boxLayoutVerticalItem {
-	padding-bottom: 0px;
+	/* [disabled]padding-bottom: 0px; */
 	display: block;
 }
 .fieldLine.boxLayoutVerticalItem.clearfix {
@@ -859,10 +861,6 @@ span .fieldLine.boxLayoutVerticalItem.clearfix a {
 	text-align:left;
 }
 
-
-
-
-
 #AgendaEditorView-TreeControls_span .boxLayoutHorizontalItem {
 	float: none;
 	display: inline;
@@ -873,3 +871,14 @@ span .fieldLine.boxLayoutVerticalItem.clearfix a {
 
 	text-align:center;
 }
+
+
+
+div.kr-addLine, span.kr-addLine{
+	background-color:#FFF !important;
+	border: none !important;
+}
+
+
+
+.kr-collection-cntr .kr-collection-item {margin-left:50px}

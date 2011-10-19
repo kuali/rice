@@ -16,8 +16,11 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
+import org.kuali.rice.krms.impl.type.KrmsTypeServiceBase;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 import javax.jws.WebParam;
@@ -38,7 +41,7 @@ import java.util.Map;
  * <pre>    "A:1000,F:1001"</pre>
  *
  */
-public class PeopleFlowActionTypeService implements ActionTypeService {
+public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements ActionTypeService {
 
     /**
      * enum used to specify the action type to be specified in the vended actions.
@@ -136,9 +139,18 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
     }
 
     @Override
-    public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId) {
+    public RemotableAttributeField translateTypeAttribute(KrmsTypeAttribute inputAttribute,
+            KrmsAttributeDefinition attributeDefinition) {
 
-        validateNonBlankKrmsTypeId(krmsTypeId);
+        if (ATTRIBUTE_FIELD_NAME.equals(attributeDefinition.getName())) {
+            return createPeopleFlowField();
+        } else {
+            return super.translateTypeAttribute(inputAttribute,
+                    attributeDefinition);
+        }
+    }
+
+    public RemotableAttributeField createPeopleFlowField() {
 
         // TODO: real params here.  At the time this was written, lookups didn't exist for PeopleFlows yet.
         RemotableQuickFinder.Builder quickFinderBuilder =
@@ -167,7 +179,7 @@ public class PeopleFlowActionTypeService implements ActionTypeService {
         builder.setMaxLength(Integer.valueOf(40));
         builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
 
-        return Collections.singletonList(builder.build());
+        return builder.build();
     }
 
     private void validateNonBlankKrmsTypeId(String krmsTypeId) {

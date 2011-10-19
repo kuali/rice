@@ -222,7 +222,7 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
 		final static String ID = "id";
 		final static String TYPE_ID = "typeId";
 		final static String ATTR_DEFN_ID = "attributeDefinitionId";
-		final static String SEQ_NO = "sequenceNumber";
+		public final static String SEQ_NO = "sequenceNumber";
 		final static String ACTIVE = "active";
 	}
 }

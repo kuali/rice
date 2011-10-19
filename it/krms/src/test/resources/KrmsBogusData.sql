@@ -717,14 +717,14 @@ values ('CONTEXT1T6', 'CONTEXT1', 'T6', 1)
 
 -- add a db-only attribute to CampusAgendaType
 insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL, CMPNT_NM, DESC_TXT)
-values ('Q9900', 'dbOnlyAttribute', 'KRMS_TEST', 'label', 'dbOnlyAttribute component name',
+values ('Q9900', 'dbOnlyAttribute', 'KRMS_TEST', 'label', null,
 'dbOnlyAttribute is an (optional) attribute that only resides in the database, so it will have a very simple control')
 ;
-insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('T6A', 1, 'T6', 'Q9900');
+insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('T6A', 2, 'T6', 'Q9900');
 
 -- add our campus attribute to CampusAgendaType
 insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL, CMPNT_NM, DESC_TXT)
-values ('Q9901', 'Campus', 'KRMS_TEST', 'campus label', 'campus component name', 'the campus which this agenda is valid for')
+values ('Q9901', 'Campus', 'KRMS_TEST', 'campus label', null, 'the campus which this agenda is valid for')
 ;
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('T6B', 1, 'T6', 'Q9901');
 

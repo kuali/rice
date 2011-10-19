@@ -8,6 +8,8 @@ import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 import org.kuali.rice.shareddata.impl.campus.CampusBo;
 
@@ -21,11 +23,21 @@ import java.util.List;
  */
 public class CampusAgendaTypeService extends AgendaTypeServiceBase {
 
-    @Override
-    public List<RemotableAttributeField> getCustomAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId)
-            throws RiceIllegalArgumentException {
+    private static final String CAMPUS_FIELD_NAME = "Campus";
 
-        List<RemotableAttributeField> remoteFields = new ArrayList<RemotableAttributeField>();
+    @Override
+    public RemotableAttributeField translateTypeAttribute(KrmsTypeAttribute inputAttribute,
+            KrmsAttributeDefinition attributeDefinition) {
+
+        if (CAMPUS_FIELD_NAME.equals(attributeDefinition.getName())) {
+            return createCampusField();
+        } else {
+            return super.translateTypeAttribute(inputAttribute,
+                attributeDefinition);
+        }
+    }
+
+    private RemotableAttributeField createCampusField() {
 
         String campusBoClassName = CampusBo.class.getName();
 
@@ -40,6 +52,7 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
         controlBuilder.setSize(30);
         controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(Integer.valueOf(40));
+        controlBuilder.setWatermark("campus code");
 
         RemotableAttributeLookupSettings.Builder lookupSettingsBuilder = RemotableAttributeLookupSettings.Builder.create();
         lookupSettingsBuilder.setCaseSensitive(Boolean.TRUE);
@@ -47,7 +60,7 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
         lookupSettingsBuilder.setInResults(true);
         lookupSettingsBuilder.setRanged(false);
 
-        RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create("Campus");
+        RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(CAMPUS_FIELD_NAME);
         builder.setAttributeLookupSettings(lookupSettingsBuilder);
         builder.setRequired(true);
         builder.setDataType(DataType.STRING);
@@ -58,9 +71,7 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
         builder.setMaxLength(Integer.valueOf(40));
         builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
 
-        remoteFields.add(builder.build());
-
-        return remoteFields;
+        return builder.build();
     }
 
 }

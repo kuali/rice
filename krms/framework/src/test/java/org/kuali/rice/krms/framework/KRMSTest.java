@@ -18,6 +18,7 @@ import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.engine.BasicAgendaTree;
@@ -48,7 +49,7 @@ public class KRMSTest {
 		Rule rule = new BasicRule("InBetween",compoundProp1, null);
 		
 		BasicAgendaTree agendaTree = new BasicAgendaTree(new BasicAgendaTreeEntry(rule)); 
-		Agenda agenda = new BasicAgenda("test", new HashMap<String, String>(), agendaTree);
+		Agenda agenda = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree);
 		
 		Map<String, String> contextQualifiers = new HashMap<String, String>();
 		contextQualifiers.put("docTypeName", "Proposal");
@@ -59,7 +60,8 @@ public class KRMSTest {
 		Context context = new BasicContext(Arrays.asList(agenda), testResolvers);
 		ContextProvider contextProvider = new ManualContextProvider(context);
 		
-		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", null, contextQualifiers, Collections.EMPTY_MAP);
+		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria(null, contextQualifiers,
+                Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"));
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);

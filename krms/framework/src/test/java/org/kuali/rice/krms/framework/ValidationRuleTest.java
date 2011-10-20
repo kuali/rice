@@ -23,6 +23,7 @@ import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionEngine;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.BasicExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.ComparableTermBasedProposition;
@@ -45,8 +46,8 @@ import static junit.framework.Assert.assertTrue;
  */
 public class ValidationRuleTest {
     Term term = new Term("true");
-    final SelectionCriteria testEvent = SelectionCriteria.createCriteria("testEvent", new DateTime(), Collections.EMPTY_MAP,
-            Collections.EMPTY_MAP);
+    final SelectionCriteria testEvent = SelectionCriteria.createCriteria(new DateTime(), Collections.EMPTY_MAP,
+            Collections.singletonMap(AgendaDefinition.Constants.EVENT, "testEvent"));
     Map<Term, Object> facts = new HashMap<Term, Object>();
     TermResolutionEngine termResolutionEngine = new TermResolutionEngineImpl();
 	// Set execution options to log execution

@@ -7,12 +7,10 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
 public class BasicAgenda implements Agenda {
 
-	private String eventName;
 	private Map<String, String> qualifiers;
 	private AgendaTree agendaTree;
 	
-	public BasicAgenda(String eventName, Map<String, String> qualifiers, AgendaTree agendaTree) {
-		this.eventName = eventName;
+	public BasicAgenda(Map<String, String> qualifiers, AgendaTree agendaTree) {
 		this.qualifiers = qualifiers;
 		this.agendaTree = agendaTree;
 	}
@@ -24,20 +22,13 @@ public class BasicAgenda implements Agenda {
 
 	@Override
 	public boolean appliesTo(ExecutionEnvironment environment) {
-		if (eventName.equals(environment.getSelectionCriteria().getEventName())) {
-			for (String agendaQualifierName : qualifiers.keySet()) {
-			    // ignore the eventName qualifier, we've already matched it
-			    if (agendaQualifierName.equals(AgendaDefinition.Constants.EVENT)) continue;
-			    
-				String qualifierValue = qualifiers.get(agendaQualifierName);
-				String environmentQualifierValue = environment.getSelectionCriteria().getAgendaQualifiers().get(agendaQualifierName);
-				if (!qualifierValue.equals(environmentQualifierValue)) {
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
+        for (String agendaQualifierName : qualifiers.keySet()) {
+            String qualifierValue = qualifiers.get(agendaQualifierName);
+            String environmentQualifierValue = environment.getSelectionCriteria().getAgendaQualifiers().get(agendaQualifierName);
+            if (!qualifierValue.equals(environmentQualifierValue)) {
+                return false;
+            }
+        }
 		return true;
 	}
 

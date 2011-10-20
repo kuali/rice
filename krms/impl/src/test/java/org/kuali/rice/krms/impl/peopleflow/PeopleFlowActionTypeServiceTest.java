@@ -13,6 +13,7 @@ import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.BasicExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
@@ -64,7 +65,8 @@ public class PeopleFlowActionTypeServiceTest {
         // create an ExecutionEnvironment
 
         SelectionCriteria sc1 =
-                SelectionCriteria.createCriteria("foo", new DateTime(), Collections.<String, String>emptyMap(), Collections.<String, String>emptyMap());
+                SelectionCriteria.createCriteria(new DateTime(), Collections.<String, String>emptyMap(), Collections.singletonMap(
+                        AgendaDefinition.Constants.EVENT, "foo"));
 
         ExecutionEnvironment ee = new BasicExecutionEnvironment(sc1, Collections.<Term, Object>emptyMap(), new ExecutionOptions(), new TermResolutionEngineImpl());
 

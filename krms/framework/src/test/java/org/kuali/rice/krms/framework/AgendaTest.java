@@ -20,6 +20,7 @@ import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolver;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTreeEntry;
@@ -60,7 +61,7 @@ public class AgendaTest {
 		AgendaTreeEntry entry2 = new BasicAgendaTreeEntry(rule2);
 		AgendaTreeEntry entry3 = new BasicAgendaTreeEntry(rule3);
 		BasicAgendaTree agendaTree = new BasicAgendaTree(entry1, entry2, entry3); 
-		Agenda agenda = new BasicAgenda("test", new HashMap<String, String>(), agendaTree);
+		Agenda agenda = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree);
 		
 		execute(agenda);
 
@@ -78,7 +79,7 @@ public class AgendaTest {
 		
 		BasicAgendaTree subAgendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
 		BasicAgendaTree agendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule1, subAgendaTree1, null)); 
-		Agenda agenda1 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree1);
+		Agenda agenda1 = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree1);
 		
 		execute(agenda1);
 
@@ -90,7 +91,7 @@ public class AgendaTest {
 		
 		BasicAgendaTree subAgendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
 		BasicAgendaTree agendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule2, subAgendaTree2, null)); 
-		Agenda agenda2 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree2);
+		Agenda agenda2 = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree2);
 		
 		execute(agenda2);
 
@@ -107,7 +108,7 @@ public class AgendaTest {
 		
 		BasicAgendaTree subAgendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
 		BasicAgendaTree agendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule1, null, subAgendaTree1)); 
-		Agenda agenda1 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree1);
+		Agenda agenda1 = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree1);
 		
 		execute(agenda1);
 
@@ -119,7 +120,7 @@ public class AgendaTest {
 		
 		BasicAgendaTree subAgendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(subRule1));
 		BasicAgendaTree agendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule2, null, subAgendaTree2)); 
-		Agenda agenda2 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree2);
+		Agenda agenda2 = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree2);
 		
 		execute(agenda2);
 
@@ -135,7 +136,7 @@ public class AgendaTest {
 		Rule subRule1 = new BasicRule("r1s1", trueProp, Collections.<Action>singletonList(new ActionMock("a3")));
 		
 		BasicAgendaTree agendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule1), new BasicAgendaTreeEntry(subRule1)); 
-		Agenda agenda1 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree1);
+		Agenda agenda1 = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree1);
 		
 		execute(agenda1);
 
@@ -146,7 +147,7 @@ public class AgendaTest {
 		ActionMock.resetActionsFired();
 		
 		BasicAgendaTree agendaTree2 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule2), new BasicAgendaTreeEntry(subRule1)); 
-		Agenda agenda2 = new BasicAgenda("test", new HashMap<String, String>(), agendaTree2);
+		Agenda agenda2 = new BasicAgenda(Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"), agendaTree2);
 		
 		execute(agenda2);
 
@@ -160,14 +161,15 @@ public class AgendaTest {
 	private void execute(Agenda agenda) {
 		Map<String, String> contextQualifiers = new HashMap<String, String>();
 		contextQualifiers.put("docTypeName", "Proposal");
-		
+
 		List<TermResolver<?>> testResolvers = new ArrayList<TermResolver<?>>();
 		testResolvers.add(testResolver);
 		
 		Context context = new BasicContext(Arrays.asList(agenda), testResolvers);
 		ContextProvider contextProvider = new ManualContextProvider(context);
 		
-		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria("test", null, contextQualifiers, Collections.EMPTY_MAP);
+		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria(null, contextQualifiers,
+                Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"));
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);

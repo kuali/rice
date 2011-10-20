@@ -37,6 +37,8 @@ import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.PropositionResult;
 
 import groovy.mock.interceptor.MockFor
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
+import org.joda.time.DateTime
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -150,7 +152,9 @@ class CompoundPropositionTypeServiceTest {
 		Proposition proposition = service.loadProposition(propositionDefintion);
 		assert proposition != null;		
 		BasicExecutionEnvironment environment = new BasicExecutionEnvironment(
-			new SelectionCriteria("name", null), new HashMap<Term, Object>(), null, null);
+			SelectionCriteria.createCriteria(null, Collections.EMPTY_MAP, Collections.singletonMap(AgendaDefinition.Constants.EVENT, "name")),
+                new HashMap<Term, Object>(), null, null
+        );
 		assert !(proposition.evaluate(environment).getResult());
 		verifyMocks();
 	}
@@ -161,8 +165,10 @@ class CompoundPropositionTypeServiceTest {
 		PropositionDefinition propositionDefintion = createCompoundPropositionDefinition(LogicalOperator.OR);
 		Proposition proposition = service.loadProposition(propositionDefintion);
 		assert proposition != null;
-		BasicExecutionEnvironment environment = new BasicExecutionEnvironment(
-			new SelectionCriteria("name", null), new HashMap<Term, Object>(), null, null);
+        BasicExecutionEnvironment environment = new BasicExecutionEnvironment(
+            SelectionCriteria.createCriteria(null, Collections.EMPTY_MAP, Collections.singletonMap(AgendaDefinition.Constants.EVENT, "name")),
+                new HashMap<Term, Object>(), null, null
+        );
 		assert (proposition.evaluate(environment).getResult());
 		verifyMocks();
 	}

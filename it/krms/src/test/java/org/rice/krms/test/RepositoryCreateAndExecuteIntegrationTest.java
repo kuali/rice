@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionFlag;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
@@ -264,14 +265,13 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         contextQualifiers.put("namespaceCode", nameSpace);
         contextQualifiers.put("name", "Context1");
         contextQualifiers.put("Context1Qualifier", "BLAH");
-        Map<String,String> agendaQualifiers = new HashMap<String,String>();
         DateTime now = new DateTime();
 
-        SelectionCriteria sc1 = SelectionCriteria.createCriteria("Tsunami", now, contextQualifiers, agendaQualifiers);
+        SelectionCriteria sc1 = SelectionCriteria.createCriteria(now, contextQualifiers,
+                Collections.singletonMap(AgendaDefinition.Constants.EVENT, "Tsunami"));
 
         Facts.Builder factsBuilder1 = Facts.Builder.create();
-        Term myCampusCode = new Term(CAMPUS_CODE_TERM_NAME);
-        factsBuilder1.addFact(myCampusCode, "BL");
+        factsBuilder1.addFact(CAMPUS_CODE_TERM_NAME, "BL");
 
         ExecutionOptions xOptions1 = new ExecutionOptions();
         xOptions1.setFlag(ExecutionFlag.LOG_EXECUTION, true);
@@ -371,9 +371,10 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         contextQualifiers.put("name", "Context1");
         contextQualifiers.put("Context1Qualifier", "BLAH");
         Map<String,String> agendaQualifiers = new HashMap<String,String>();
+        agendaQualifiers.put(AgendaDefinition.Constants.EVENT, "Earthquake");
         DateTime now = new DateTime();
 
-	    SelectionCriteria sc2 = SelectionCriteria.createCriteria("Earthquake", now, contextQualifiers, agendaQualifiers);
+	    SelectionCriteria sc2 = SelectionCriteria.createCriteria(now, contextQualifiers, agendaQualifiers);
 
 	    Facts.Builder factsBuilder2 = Facts.Builder.create();
         factsBuilder2.addFact(CAMPUS_CODE_TERM_NAME, "BL");

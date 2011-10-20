@@ -199,6 +199,11 @@
         <idref local="rice.kew.kewTypeRepositoryService" />
         <idref local="rice.kew.peopleFlowService" />
         <idref local="rice.kew.actionInvocationQueue" />
+        <idref local="actionRequestDerivedRoleTypeService" />
+        <idref local="adhocReviewPermissionTypeService" />
+        <idref local="documentTypeResponsibilityTypeService" />
+        <idref local="reviewResponsibilityTypeService" />
+        <idref local="routeLogDerivedRoleTypeService" />
         <!-- it's important that this service remains non-transactionally proxied for various reasons
           <idref local="enUserOptionsService"/>
         -->

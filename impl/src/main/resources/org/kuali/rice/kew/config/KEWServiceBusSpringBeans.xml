@@ -282,6 +282,76 @@
 		</property>
 	</bean>
 
+  <bean id="rice.kew.actionRequestDerivedRoleTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewService">
+        <property name="service">
+          <ref bean="actionRequestDerivedRoleTypeService" />
+        </property>
+        <property name="localServiceName" value="actionRequestDerivedRoleTypeServiceSoap" />
+        <property name="busSecurity" value="${rice.kew.actionRequestDerivedRoleTypeServiceSoap.secure}" />
+        <property name="queue" value="false" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="rice.kew.adhocReviewPermissionTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewService">
+        <property name="service">
+          <ref bean="adhocReviewPermissionTypeService" />
+        </property>
+        <property name="localServiceName" value="adhocReviewPermissionTypeServiceSoap" />
+        <property name="busSecurity" value="${rice.kew.adhocReviewPermissionTypeServiceSoap.secure}" />
+        <property name="queue" value="false" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="rice.kew.documentTypeResponsibilityTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewService">
+        <property name="service">
+          <ref bean="documentTypeResponsibilityTypeService" />
+        </property>
+        <property name="localServiceName" value="documentTypeResponsibilityTypeServiceSoap" />
+        <property name="busSecurity" value="${rice.kew.documentTypeResponsibilityTypeServiceSoap.secure}" />
+        <property name="queue" value="false" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="rice.kew.reviewResponsibilityTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewService">
+        <property name="service">
+          <ref bean="reviewResponsibilityTypeService" />
+        </property>
+        <property name="localServiceName" value="reviewResponsibilityTypeServiceSoap" />
+        <property name="busSecurity" value="${rice.kew.reviewResponsibilityTypeServiceSoap.secure}" />
+        <property name="queue" value="false" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="rice.kew.routeLogDerivedRoleTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus" />
+    <property name="serviceDefinition">
+      <bean parent="kewService">
+        <property name="service">
+          <ref bean="routeLogDerivedRoleTypeService" />
+        </property>
+        <property name="localServiceName" value="routeLogDerivedRoleTypeServiceSoap" />
+        <property name="busSecurity" value="${rice.kew.routeLogDerivedRoleTypeServiceSoap.secure}" />
+        <property name="queue" value="false" />
+      </bean>
+    </property>
+  </bean>
+
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">

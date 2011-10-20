@@ -488,6 +488,11 @@
   <param name="rice.kew.kewTypeRepositoryServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.peopleFlowServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.immediateEmailReminderQueueSoap.secure" override="false">true</param>
+  <param name="rice.kew.actionRequestDerivedRoleTypeServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.adhocReviewPermissionTypeServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.documentTypeResponsibilityTypeServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.reviewResponsibilityTypeServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.routeLogDerivedRoleTypeServiceSoap.secure" override="false">true</param>
 
   <param name="secure.workflowutility.javaservice.endpoint" override="false">true</param>
   <param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>

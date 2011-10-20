@@ -131,7 +131,7 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
             value = MapStringStringAdapter.class) Map<String, String> newAttributes,
             @WebParam(name = "oldAttributes") @XmlJavaTypeAdapter(
                     value = MapStringStringAdapter.class) Map<String, String> oldAttributes) throws RiceIllegalArgumentException {
-        return Collections.emptyList();
+        return validateAttributes(krmsTypeId, newAttributes);
     }
 
     /**

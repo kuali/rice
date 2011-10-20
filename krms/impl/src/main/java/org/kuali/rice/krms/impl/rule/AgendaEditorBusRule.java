@@ -16,6 +16,9 @@
 
 package org.kuali.rice.krms.impl.rule;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -25,6 +28,8 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaBoService;
@@ -36,6 +41,7 @@ import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
 import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,13 +113,17 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return success;
     }
 
+
+
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
         boolean isValid = true;
 
         AgendaEditor agenda = (AgendaEditor) document.getNewMaintainableObject().getDataObject();
+        AgendaEditor oldAgenda = (AgendaEditor) document.getOldMaintainableObject().getDataObject();
         isValid &= validContext(agenda);
         isValid &= validAgendaName(agenda);
+        isValid &= validAgendaAttributes(oldAgenda, agenda);
 
         return isValid;
     }
@@ -143,6 +153,52 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
             isValid = false;
         }
 
+        return isValid;
+    }
+
+    private boolean validAgendaAttributes(AgendaEditor oldAgenda, AgendaEditor newAgenda) {
+        boolean isValid = true;
+
+        String typeId = newAgenda.getAgenda().getTypeId();
+
+        if (!StringUtils.isEmpty(typeId)) {
+            KrmsTypeDefinition typeDefinition =
+                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(typeId);
+
+            if (typeDefinition == null) {
+                throw new IllegalStateException("agenda typeId must match the id of a valid krms type");
+            } else if (StringUtils.isBlank(typeDefinition.getServiceName())) {
+                throw new IllegalStateException("agenda type definition must have a non-blank service name");
+            } else {
+                AgendaTypeService agendaTypeService =
+                        (AgendaTypeService)KrmsRepositoryServiceLocator.getService(typeDefinition.getServiceName());
+
+                if (agendaTypeService == null) {
+                    throw new IllegalStateException("typeDefinition must have a valid serviceName");
+                } else {
+
+                    List<RemotableAttributeError> errors;
+                    if (oldAgenda == null) {
+                        errors = agendaTypeService.validateAttributes(typeId, newAgenda.getCustomAttributesMap());
+                    } else {
+                        errors = agendaTypeService.validateAttributesAgainstExisting(typeId, newAgenda.getCustomAttributesMap(), oldAgenda.getCustomAttributesMap());
+                    }
+
+                    if (!CollectionUtils.isEmpty(errors)) {
+                        isValid = false;
+                        for (RemotableAttributeError error : errors) {
+                            for (String errorStr : error.getErrors()) {
+                                this.putFieldError(
+                                        KRMSPropertyConstants.AgendaEditor.CUSTOM_ATTRIBUTES_MAP +
+                                                "['" + error.getAttributeName() + "']",
+                                        errorStr
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return isValid;
     }
 

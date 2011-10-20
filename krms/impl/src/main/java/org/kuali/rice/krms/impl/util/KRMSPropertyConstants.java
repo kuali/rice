@@ -35,6 +35,11 @@ public final class KRMSPropertyConstants {
         public static final String NAME = "dataObject.agenda.name";
         public static final String CONTEXT = "dataObject.agenda.contextId";
 	}
+
+    public static final class AgendaEditor {
+        // used for building binding paths to the custom attributes map
+        public static final String CUSTOM_ATTRIBUTES_MAP = "dataObject.customAttributesMap";
+    }
 	
 	public static final class Context {
 		public static final String CONTEXT_ID ="dataObject.id";

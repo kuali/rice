@@ -1,22 +1,30 @@
 package edu.sampleu.krms.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
+import org.kuali.rice.shareddata.api.campus.Campus;
+import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
 import org.kuali.rice.shareddata.impl.campus.CampusBo;
 
 import javax.jws.WebParam;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample AgendaTypeService that creates a RemotableAttributeField for specifying the campus
@@ -41,7 +49,7 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
 
         String campusBoClassName = CampusBo.class.getName();
 
-        String baseLookupUrl = LookupUtils.getBaseLookupUrl(false);
+        String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
 
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create(baseLookupUrl, campusBoClassName);
@@ -74,4 +82,31 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
         return builder.build();
     }
 
+    @Override
+    public List<RemotableAttributeError> validateAttributes(@WebParam(name = "krmsTypeId") String krmsTypeId,
+            @WebParam(name = "attributes") @XmlJavaTypeAdapter(
+                    value = MapStringStringAdapter.class) Map<String, String> attributes) throws RiceIllegalArgumentException {
+
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>(super.validateAttributes(krmsTypeId, attributes));
+
+        RemotableAttributeError.Builder campusErrorBuilder = RemotableAttributeError.Builder.create(CAMPUS_FIELD_NAME);
+
+        String campusValue = attributes.get(CAMPUS_FIELD_NAME);
+
+        if (StringUtils.isEmpty(campusValue)) {
+            campusErrorBuilder.addErrors("error.agenda.invalidAttributeValue");
+        } else {
+            Campus campus = SharedDataApiServiceLocator.getCampusService().getCampus(campusValue);
+
+            if (campus == null) {
+                campusErrorBuilder.addErrors("error.agenda.invalidAttributeValue");
+            }
+        }
+
+        if (campusErrorBuilder.getErrors().size() > 0) {
+            errors.add(campusErrorBuilder.build());
+        }
+
+        return errors;
+    }
 }

@@ -17,11 +17,13 @@ package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.Control;
@@ -92,8 +94,13 @@ public class LookupInquiryUtils {
 
 		return parameterValue;
 	}
-	
-	/**
+
+    public static String getBaseLookupUrl() {
+        return KRADServiceLocator.getKualiConfigurationService().
+                getPropertyValueAsString(KRADConstants.KRAD_LOOKUP_URL_KEY);
+    }
+
+    /**
 	 * Helper method for building the title text for an element and a map of
 	 * key/value pairs
 	 * 

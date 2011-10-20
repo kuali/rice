@@ -16,6 +16,7 @@ import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.authorization.Authorizer;
 import org.kuali.rice.krad.uif.authorization.PresentationController;
+import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.NavigationGroup;
@@ -26,6 +27,7 @@ import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.LinkField;
+import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
@@ -231,6 +233,13 @@ public class View extends ContainerBase {
         }
         if (StringUtils.isBlank(component.getFactoryId())) {
             component.setFactoryId(component.getId());
+        }
+
+        if (component instanceof Container) {
+            LayoutManager layoutManager = ((Container) component).getLayoutManager();
+            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
+                layoutManager.setId(getNextId());
+            }
         }
 
         // check if component has already been initialized to prevent cyclic references

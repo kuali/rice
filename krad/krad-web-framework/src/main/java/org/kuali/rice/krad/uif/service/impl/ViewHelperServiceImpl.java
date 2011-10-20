@@ -279,20 +279,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // TODO: duplicate ID check
 
-        if (component instanceof Container) {
-            LayoutManager layoutManager = ((Container) component).getLayoutManager();
-
-            if ((layoutManager != null) && StringUtils.isBlank(layoutManager.getId())) {
-                layoutManager.setId(view.getNextId());
-            }
-
-            // invoke hook point for adding components through code
-            addCustomContainerComponents(view, model, (Container) component);
-
-            // process any remote fields holder that might be in the containers items
-            processAnyRemoteFieldsHolder(view, model, (Container) component);
-        }
-
         LOG.debug("Initializing component: " + component.getId() + " with type: " + component.getClass());
 
         // invoke component to initialize itself after properties have been set
@@ -305,6 +291,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // add initial state to the view index for component refreshes
         view.getViewIndex().addInitialComponentState(component);
+
+        if (component instanceof Container) {
+            LayoutManager layoutManager = ((Container) component).getLayoutManager();
+
+            // invoke hook point for adding components through code
+            addCustomContainerComponents(view, model, (Container) component);
+
+            // process any remote fields holder that might be in the containers items
+            processAnyRemoteFieldsHolder(view, model, (Container) component);
+        }
 
         // for collection groups set defaults from dictionary entry
         if (component instanceof CollectionGroup) {

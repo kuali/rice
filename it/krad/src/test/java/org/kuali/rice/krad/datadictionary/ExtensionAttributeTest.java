@@ -69,12 +69,12 @@ public class ExtensionAttributeTest extends KRADTestCase {
 		dd.addConfigFileLocation("file:" + getUserDir() + "/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/group/Group.xml");
 		dd.addConfigFileLocation("file:" + getUserDir() + "/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/role/RoleBo.xml");
 		dd.addConfigFileLocation("file:" + getUserDir() + "/kim/kim-impl/src/main/resources/org/kuali/rice/kim/impl/type/KimType.xml");
-		dd.addConfigFileLocation("file:" + getUserDir() + "/shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/Campus.xml");
-        dd.addConfigFileLocation("file:" + getUserDir() + "/shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/campus/CampusType.xml");
-        dd.addConfigFileLocation("file:" + getUserDir() + "/shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/country/Country.xml");
-        dd.addConfigFileLocation("file:" + getUserDir() + "/shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/state/State.xml");
-        dd.addConfigFileLocation("file:" + getUserDir() + "/shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/county/County.xml");
-        dd.addConfigFileLocation("file:" + getUserDir() + "/shareddata/rice-shareddata-web/src/main/resources/org/kuali/rice/shareddata/web/postalcode/PostalCode.xml");
+		dd.addConfigFileLocation("file:" + getUserDir() + "/location/rice-location-web/src/main/resources/org/kuali/rice/location/web/campus/Campus.xml");
+        dd.addConfigFileLocation("file:" + getUserDir() + "/location/rice-location-web/src/main/resources/org/kuali/rice/location/web/campus/CampusType.xml");
+        dd.addConfigFileLocation("file:" + getUserDir() + "/location/rice-location-web/src/main/resources/org/kuali/rice/location/web/country/Country.xml");
+        dd.addConfigFileLocation("file:" + getUserDir() + "/location/rice-location-web/src/main/resources/org/kuali/rice/location/web/state/State.xml");
+        dd.addConfigFileLocation("file:" + getUserDir() + "/location/rice-location-web/src/main/resources/org/kuali/rice/location/web/county/County.xml");
+        dd.addConfigFileLocation("file:" + getUserDir() + "/location/rice-location-web/src/main/resources/org/kuali/rice/location/web/postalcode/PostalCode.xml");
         dd.addConfigFileLocation("file:" + getUserDir() + "/core/web/src/main/resources/org/kuali/rice/core/web/parameter/Parameter.xml");
         dd.addConfigFileLocation("file:" + getUserDir() + "/core/web/src/main/resources/org/kuali/rice/core/web/parameter/ParameterType.xml");
         dd.addConfigFileLocation("file:" + getUserDir() + "/core/web/src/main/resources/org/kuali/rice/core/web/namespace/Namespace.xml");

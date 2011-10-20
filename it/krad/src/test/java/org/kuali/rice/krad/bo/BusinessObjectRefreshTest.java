@@ -21,10 +21,10 @@ import org.junit.Test;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
-import org.kuali.rice.shareddata.impl.county.CountyBo;
-import org.kuali.rice.shareddata.impl.county.CountyId;
-import org.kuali.rice.shareddata.impl.state.StateBo;
-import org.kuali.rice.shareddata.impl.state.StateId;
+import org.kuali.rice.location.impl.county.CountyBo;
+import org.kuali.rice.location.impl.county.CountyId;
+import org.kuali.rice.location.impl.state.StateBo;
+import org.kuali.rice.location.impl.state.StateId;
 import org.kuali.test.KRADTestCase;
 
 /**

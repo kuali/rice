@@ -22,9 +22,9 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.shareddata.api.country.Country;
-import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
-import org.kuali.rice.shareddata.api.state.State;
+import org.kuali.rice.location.api.country.Country;
+import org.kuali.rice.location.api.services.LocationApiServiceLocator;
+import org.kuali.rice.location.api.state.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,7 +198,7 @@ public class VendorAddress extends PersistableBusinessObjectBase implements Muta
 
     public State getVendorState() {
         if ((vendorState == null) || (StringUtils.equals(vendorState.getCode(), vendorStateCode))) {
-            vendorState = SharedDataApiServiceLocator.getStateService().getState(vendorCountryCode, vendorStateCode);
+            vendorState = LocationApiServiceLocator.getStateService().getState(vendorCountryCode, vendorStateCode);
         }
 
         return vendorState;
@@ -212,7 +212,7 @@ public class VendorAddress extends PersistableBusinessObjectBase implements Muta
         String postalCountryCode = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
                 KRADConstants.KRAD_NAMESPACE,
                 KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
-        vendorCountry = SharedDataApiServiceLocator.getCountryService().getCountry(postalCountryCode);
+        vendorCountry = LocationApiServiceLocator.getCountryService().getCountry(postalCountryCode);
 
         return vendorCountry;
     }

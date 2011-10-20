@@ -37,7 +37,7 @@
       <bean parent="AlphaNumericValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.shareddata.framework.country.CountryValuesFinder" />
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.location.framework.country.CountryValuesFinder" />
     </property>
   </bean>
 

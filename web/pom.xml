@@ -32,12 +32,12 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-shareddata-web</artifactId>
+      <artifactId>rice-location-web</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-shareddata-impl</artifactId>
+      <artifactId>rice-location-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

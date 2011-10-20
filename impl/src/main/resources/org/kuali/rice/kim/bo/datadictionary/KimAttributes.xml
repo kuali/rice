@@ -97,7 +97,7 @@
     <property name="required" value="false"/>
     <property name="name" value="campusCode"/>
     <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.shareddata.framework.campus.CampusValuesFinder" p:includeKeyInLabel="false"/>
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.location.framework.campus.CampusValuesFinder" p:includeKeyInLabel="false"/>
     </property>
   </bean>
   

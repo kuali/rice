@@ -391,7 +391,7 @@
 					<visibility>
 						<column visible="false"/>
 					</visibility>
-					<lookup businessObjectClass="org.kuali.rice.shareddata.impl.campus.CampusBo">
+					<lookup businessObjectClass="org.kuali.rice.location.impl.campus.CampusBo">
 					  <fieldConversions>
 					    <fieldConversion lookupFieldName="chart" localFieldName="chart" />
 					  </fieldConversions>

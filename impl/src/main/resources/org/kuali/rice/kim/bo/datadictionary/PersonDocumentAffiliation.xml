@@ -37,7 +37,7 @@
       <bean parent="AlphaNumericValidationPattern"/>
     </property>
     <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.shareddata.framework.campus.CampusValuesFinder" />
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.location.framework.campus.CampusValuesFinder" />
     </property>
   </bean>
 

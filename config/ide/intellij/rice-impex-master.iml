@@ -4,7 +4,9 @@
     <output url="file://$MODULE_DIR$/../../../db/impex/master/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../db/impex/master/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../db/impex/master">
+      <sourceFolder url="file://$MODULE_DIR$/../../../db/impex/master/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../db/impex/master/src/main/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../db/impex/master/src/test/groovy" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../db/impex/master/target" />
     </content>
     <orderEntry type="inheritedJdk" />

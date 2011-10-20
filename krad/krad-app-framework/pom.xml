@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>rice-shareddata-api</artifactId>
+            <artifactId>rice-location-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

@@ -53,9 +53,13 @@
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.M2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
@@ -63,14 +67,10 @@
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.M2" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.M2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -91,14 +91,14 @@
     <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
-    <orderEntry type="module" module-name="rice-shareddata-api" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.5" level="project" />
+    <orderEntry type="module" module-name="rice-location-api" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.M2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.M2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-core:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-api:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: commons-digester:commons-digester:2.0" level="project" />
@@ -152,9 +152,8 @@
     <orderEntry type="library" name="Maven: displaytag:displaytag:1.2" level="project" />
     <orderEntry type="library" name="Maven: com.lowagie:itext:1.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" level="project" />
-    <orderEntry type="library" name="Maven: com.thoughtworks.xstream:xstream:1.4.1" level="project" />
-    <orderEntry type="library" name="Maven: xmlpull:xmlpull:1.1.3.1" level="project" />
-    <orderEntry type="library" name="Maven: xpp3:xpp3_min:1.1.4c" level="project" />
+    <orderEntry type="library" name="Maven: com.thoughtworks.xstream:xstream:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: xpp3:xpp3_min:1.1.3.4.O" level="project" />
     <orderEntry type="library" name="Maven: org.directwebremoting:dwr:3.0.M1" level="project" />
     <orderEntry type="library" name="Maven: org.mortbay.jetty:cometd:6.1.4" level="project" />
     <orderEntry type="library" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" level="project" />
@@ -168,9 +167,9 @@
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-kns" />
     <orderEntry type="module" module-name="rice-core-web" />
-    <orderEntry type="module" module-name="rice-shareddata-framework" />
-    <orderEntry type="module" module-name="rice-shareddata-impl" />
-    <orderEntry type="module" module-name="rice-shareddata-web" />
+    <orderEntry type="module" module-name="rice-location-framework" />
+    <orderEntry type="module" module-name="rice-location-impl" />
+    <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />

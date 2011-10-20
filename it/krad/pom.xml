@@ -42,7 +42,7 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-shareddata-impl</artifactId>
+      <artifactId>rice-location-impl</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>

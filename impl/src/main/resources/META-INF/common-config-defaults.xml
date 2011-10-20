@@ -431,13 +431,13 @@
   <param name="rice.krms.approvalPeopleFlowActionTypeServiceSoap.secure" override="false">true</param>
   <param name="rice.krms.expose.services.on.bus" override="false">true</param>
 
-  <!-- SHAREDDATA -->
+  <!-- LOCATION -->
 
-	<param name="shareddata.mode" override="false">LOCAL</param>
-	<param name="rice.shareddata.set.soap.services.as.default" override="false">true</param>
-	<param name="rice.shareddata.expose.services.on.bus" override="false">true</param>
-	<param name="rice.shareddata.include.user.interface.components" override="false">false</param>
-    <param name="shareddata.soapExposedService.jaxws.security" override="false">true</param>
+	<param name="location.mode" override="false">LOCAL</param>
+	<param name="rice.location.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.location.expose.services.on.bus" override="false">true</param>
+	<param name="rice.location.include.user.interface.components" override="false">false</param>
+    <param name="location.soapExposedService.jaxws.security" override="false">true</param>
 
 	<!-- KSB -->
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>

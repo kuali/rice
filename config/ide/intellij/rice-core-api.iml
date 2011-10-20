@@ -41,6 +41,10 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />

@@ -35,7 +35,7 @@
     <module>kcb</module>
     <module>impl</module>
     <module>edl</module>
-    <module>shareddata</module>
+    <module>location</module>
     <module>krms</module>
   </modules>
   <properties>

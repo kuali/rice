@@ -183,7 +183,7 @@
     <property name="name" value="countryCode"/>
     <property name="label" value="Country"/>
     <property name="shortLabel" value="Country"/>
-    <property name="optionsFinderClass" value="org.kuali.rice.shareddata.framework.country.CountryNotRestrictedValuesFinder"/>
+    <property name="optionsFinderClass" value="org.kuali.rice.location.framework.country.CountryNotRestrictedValuesFinder"/>
     <property name="controlField">
       <bean parent="SelectControl"/>
     </property> 

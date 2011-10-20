@@ -24,9 +24,9 @@ import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
-import org.kuali.rice.shareddata.impl.country.CountryBo;
-import org.kuali.rice.shareddata.impl.state.StateBo;
-import org.kuali.rice.shareddata.impl.state.StateId;
+import org.kuali.rice.location.impl.country.CountryBo;
+import org.kuali.rice.location.impl.state.StateBo;
+import org.kuali.rice.location.impl.state.StateId;
 import org.kuali.test.KRADTestCase;
 
 import java.util.HashMap;

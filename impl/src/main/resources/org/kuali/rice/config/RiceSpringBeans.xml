@@ -63,5 +63,5 @@
 	<import resource="classpath:org/kuali/rice/ken/config/KENConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/edl/impl/config/EDLConfigSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/krms/config/KRMSConfigSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/shareddata/config/SHAREDDATAConfigSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/location/config/LocationConfigSpringBeans.xml"/>
 </beans>

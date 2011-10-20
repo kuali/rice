@@ -10,14 +10,13 @@ import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
-import org.kuali.rice.shareddata.api.campus.Campus;
-import org.kuali.rice.shareddata.api.services.SharedDataApiServiceLocator;
-import org.kuali.rice.shareddata.impl.campus.CampusBo;
+import org.kuali.rice.location.api.campus.Campus;
+import org.kuali.rice.location.api.services.LocationApiServiceLocator;
+import org.kuali.rice.location.impl.campus.CampusBo;
 
 import javax.jws.WebParam;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -96,7 +95,7 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
         if (StringUtils.isEmpty(campusValue)) {
             campusErrorBuilder.addErrors("error.agenda.invalidAttributeValue");
         } else {
-            Campus campus = SharedDataApiServiceLocator.getCampusService().getCampus(campusValue);
+            Campus campus = LocationApiServiceLocator.getCampusService().getCampus(campusValue);
 
             if (campus == null) {
                 campusErrorBuilder.addErrors("error.agenda.invalidAttributeValue");

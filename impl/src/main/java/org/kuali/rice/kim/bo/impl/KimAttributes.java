@@ -15,16 +15,12 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import org.kuali.rice.core.framework.component.ComponentEbo;
-import org.kuali.rice.core.framework.namespace.NamespaceEbo;
-import org.kuali.rice.core.framework.parameter.ParameterEbo;
 import org.kuali.rice.core.impl.component.ComponentBo;
 import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.core.impl.parameter.ParameterBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
-import org.kuali.rice.shareddata.framework.campus.CampusEbo;
-import org.kuali.rice.shareddata.impl.campus.CampusBo;
+import org.kuali.rice.location.impl.campus.CampusBo;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

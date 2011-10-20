@@ -243,21 +243,21 @@
     <property name="persistenceService" ref="persistenceServiceOjb"/>
     <property name="dataDictionaryPackages">
       <list>
-        <value>classpath:org/kuali/rice/shareddata/web/campus/Campus.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/campus/CampusType.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/country/Country.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/county/County.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/Campus.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusType.xml</value>
+        <value>classpath:org/kuali/rice/location/web/country/Country.xml</value>
+        <value>classpath:org/kuali/rice/location/web/county/County.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/Parameter.xml</value>
         <value>classpath:org/kuali/rice/core/web/component/Component.xml</value>
         <value>classpath:org/kuali/rice/core/web/namespace/Namespace.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterType.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/postalcode/PostalCode.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/state/State.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/campus/CampusMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/campus/CampusTypeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/country/CountryMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/county/CountyMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml</value>
+        <value>classpath:org/kuali/rice/location/web/state/State.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusTypeMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/country/CountryMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/county/CountyMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/component/ComponentMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterMaintenanceDocument.xml</value>
 
@@ -265,8 +265,8 @@
 
         <value>classpath:org/kuali/rice/core/web/namespace/NamespaceMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/state/StateMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/state/StateMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
@@ -283,18 +283,18 @@
     </property>
     <property name="externalizableBusinessObjectImplementations">
       <map>
-        <entry key="org.kuali.rice.shareddata.api.country.CountryContract"
-               value="org.kuali.rice.shareddata.framework.country.CountryEbo"/>
-        <entry key="org.kuali.rice.shareddata.api.state.StateContract"
-               value="org.kuali.rice.shareddata.framework.state.StateEbo"/>
-        <entry key="org.kuali.rice.shareddata.api.postalcode.PostalCodeContract"
-               value="org.kuali.rice.shareddata.framework.postalcode.PostalCodeEbo"/>
-        <entry key="org.kuali.rice.shareddata.api.county.CountyContract"
-               value="org.kuali.rice.shareddata.framework.county.CountyEbo"/>
-        <entry key="org.kuali.rice.shareddata.api.campus.CampusContract"
-               value="org.kuali.rice.shareddata.framework.campus.CampusEbo"/>
-        <entry key="org.kuali.rice.shareddata.api.campus.CampusTypeContract"
-               value="org.kuali.rice.shareddata.framework.campus.CampusTypeEbo"/>
+        <entry key="org.kuali.rice.location.api.country.CountryContract"
+               value="org.kuali.rice.location.framework.country.CountryEbo"/>
+        <entry key="org.kuali.rice.location.api.state.StateContract"
+               value="org.kuali.rice.location.framework.state.StateEbo"/>
+        <entry key="org.kuali.rice.location.api.postalcode.PostalCodeContract"
+               value="org.kuali.rice.location.framework.postalcode.PostalCodeEbo"/>
+        <entry key="org.kuali.rice.location.api.county.CountyContract"
+               value="org.kuali.rice.location.framework.county.CountyEbo"/>
+        <entry key="org.kuali.rice.location.api.campus.CampusContract"
+               value="org.kuali.rice.location.framework.campus.CampusEbo"/>
+        <entry key="org.kuali.rice.location.api.campus.CampusTypeContract"
+               value="org.kuali.rice.location.framework.campus.CampusTypeEbo"/>
         <entry key="org.kuali.rice.core.api.component.ComponentContract"
                value="org.kuali.rice.core.framework.component.ComponentEbo"/>
         <entry key="org.kuali.rice.core.api.namespace.NamespaceContract"
@@ -333,13 +333,13 @@
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/campus/Campus.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/campus/CampusType.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/Campus.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusType.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/country/Country.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/county/County.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/state/State.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/postalcode/PostalCode.xml</value>
+        <value>classpath:org/kuali/rice/location/web/country/Country.xml</value>
+        <value>classpath:org/kuali/rice/location/web/county/County.xml</value>
+        <value>classpath:org/kuali/rice/location/web/state/State.xml</value>
+        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml</value>
 
         <value>classpath:org/kuali/rice/core/web/namespace/Namespace.xml</value>
         <value>classpath:org/kuali/rice/core/web/parameter/ParameterType.xml</value>
@@ -357,12 +357,12 @@
 
         <value>classpath:org/kuali/rice/core/web/cache/CacheAdmin.xml</value>
 
-        <value>classpath:org/kuali/rice/shareddata/web/campus/CampusMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/campus/CampusTypeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/country/CountryMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/county/CountyMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/state/StateMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/shareddata/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusTypeMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/country/CountryMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/county/CountyMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/state/StateMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
@@ -1006,12 +1006,12 @@
         <value>org.kuali.rice.core.impl.component.ComponentBo</value>
         <value>org.kuali.rice.core.impl.parameter.ParameterBo</value>
 
-        <value>org.kuali.rice.shareddata.impl.state.StateBo</value>
-        <value>org.kuali.rice.shareddata.impl.county.CountyBo</value>
-        <value>org.kuali.rice.shareddata.impl.postalcode.PostalCodeBo</value>
-        <value>org.kuali.rice.shareddata.impl.country.CountryBo</value>
-        <value>org.kuali.rice.shareddata.impl.campus.CampusBo</value>
-        <value>org.kuali.rice.shareddata.impl.campus.CampusTypeBo</value>
+        <value>org.kuali.rice.location.impl.state.StateBo</value>
+        <value>org.kuali.rice.location.impl.county.CountyBo</value>
+        <value>org.kuali.rice.location.impl.postalcode.PostalCodeBo</value>
+        <value>org.kuali.rice.location.impl.country.CountryBo</value>
+        <value>org.kuali.rice.location.impl.campus.CampusBo</value>
+        <value>org.kuali.rice.location.impl.campus.CampusTypeBo</value>
       </list>
     </property>
   </bean>

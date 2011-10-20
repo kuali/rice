@@ -21,16 +21,21 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -50,11 +55,23 @@ import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.PaginatedActionList;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionItemCustomization;
 import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.actionlist.DisplayParameters;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
+import org.kuali.rice.kew.doctype.SecuritySession;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
+import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
+import org.kuali.rice.kew.framework.document.security.DocumentSecurityDirective;
+import org.kuali.rice.kew.framework.document.security.DocumentSecurityHandlerService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
@@ -69,6 +86,8 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 
 /**
@@ -537,6 +556,7 @@ public class ActionListAction extends KualiAction {
     			boolean itemHasAcknowledges = false;
     			boolean itemHasFyis = false;
     			boolean itemHasCustomActions = false;
+    			// TODO see DocumentSecurityServiceImpl.checkAuthorizations to see how the Handler replaces the Attribute
     			CustomActionListAttribute customActionListAttribute = routeHeaders.get(actionItem.getDocumentId()).getCustomActionListAttribute();
     			if (customActionListAttribute != null) {
     				Map customActions = new LinkedHashMap();
@@ -840,5 +860,79 @@ public class ActionListAction extends KualiAction {
 			}
 		}
     }
+    
+    protected void processActionListCustomizations(String principalId, List<ActionItem> actionItems){
+        if (CollectionUtils.isNotEmpty(actionItems)) {
+            LOG.info("Beginning processing of Action List Customizations (total: "
+                    + actionItems.size()
+                    + " Action Items)");
+            long start = System.currentTimeMillis();
+            MultiValueMap<PartitionKey, ActionItem> partitions = partitionActionItems(actionItems);
+            
+            // TODO fill this out - DocumentSecurityServiceImpl.processDocumentRequiringExtensionProcessing
+    
+            long end = System.currentTimeMillis();
+            LOG.info("Finished processing of Action List Customizations (total time: "
+                    + (start - end)
+                    + ")");
+        }
+    }
+    
+    protected MultiValueMap<PartitionKey,ActionItem> partitionActionItems(List<ActionItem> actionItems){
+        // TODO fill this out - see DocumentSecurityServiceImpl.partitionDocumentsForSecurity
+        MultiValueMap<PartitionKey, ActionItem> partitions = new LinkedMultiValueMap<PartitionKey, ActionItem>();
 
+        return partitions;
+    }
+     
+    protected ActionListCustomizationHandlerService loadActionListCustomizationHandler(String applicationId){
+        ActionListCustomizationHandlerService service = KewFrameworkServiceLocator.getActionListCustomizationHandlerService(applicationId);
+        if (service == null) {
+            throw new WorkflowRuntimeException(
+                    "Failed to locate ActionListCustomizationHandlerService for applicationId: " + applicationId);
+        }
+        return service;
+    }
+    
+    /**
+     * Simple class which defines the key of a partition of Action Items associated with an Application ID.
+     *
+     * <p>This class allows direct field access since it is intended for internal use only.</p>
+     */
+    private static final class PartitionKey {
+        String applicationId;
+        Set<String> customActionListAttributeNames;
+
+        PartitionKey(String applicationId, Collection<ExtensionDefinition> extensionDefinitions) {
+            this.applicationId = applicationId;
+            this.customActionListAttributeNames = new HashSet<String>();
+            for (ExtensionDefinition extensionDefinition : extensionDefinitions) {
+                this.customActionListAttributeNames.add(extensionDefinition.getName());
+            }
+        }
+
+        List<String> getCustomActionListAttributeNameList() {
+            return new ArrayList<String>(customActionListAttributeNames);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof PartitionKey)) {
+                return false;
+            }
+            PartitionKey key = (PartitionKey) o;
+            EqualsBuilder builder = new EqualsBuilder();
+            builder.append(applicationId, key.applicationId);
+            builder.append(customActionListAttributeNames, key.customActionListAttributeNames);
+            return builder.isEquals();
+        }
+
+        @Override
+        public int hashCode() {
+            HashCodeBuilder builder = new HashCodeBuilder();
+            builder.append(applicationId);
+            builder.append(customActionListAttributeNames);
+            return builder.hashCode();
+        }
+    }
 }

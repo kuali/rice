@@ -9,14 +9,14 @@
     <output url="file://$MODULE_DIR$/../../../it/krms/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/krms/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../it/krms">
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/src/test/resources/META-INF" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/krms/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/krms/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krms/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/krms/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krms/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

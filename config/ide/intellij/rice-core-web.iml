@@ -9,16 +9,14 @@
     <output url="file://$MODULE_DIR$/../../../core/web/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../core/web/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../core/web">
+      <sourceFolder url="file://$MODULE_DIR$/../../../core/web/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/web/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/web/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/web/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/web/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../core/web/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../core/web/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../core/web/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

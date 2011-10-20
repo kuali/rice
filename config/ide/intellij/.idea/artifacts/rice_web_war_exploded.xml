@@ -37,6 +37,10 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.1.0.RC1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:3.1.0.RC1" />
           <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.1.0.RC1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.1.0.RC1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.1.0.RC1" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.1.0.RC1" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.0" />
           <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" />
@@ -48,10 +52,6 @@
             <element id="module-output" name="rice-ksb-api" />
           </element>
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.1.0.RC1" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.1.0.RC1" />
-          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.1.0.RC1" />
           <element id="archive" name="rice-core-framework-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
@@ -82,10 +82,10 @@
           <element id="archive" name="rice-kim-api-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-api" />
           </element>
-          <element id="archive" name="rice-shareddata-api-2.0.0-b1-SNAPSHOT.jar">
-            <element id="module-output" name="rice-shareddata-api" />
+          <element id="archive" name="rice-location-api-2.0.0-b1-SNAPSHOT.jar">
+            <element id="module-output" name="rice-location-api" />
           </element>
-          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.4.5" />
+          <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" />
           <element id="archive" name="rice-krad-web-framework-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-web-framework" />
           </element>
@@ -165,11 +165,11 @@
           <element id="archive" name="rice-krms-api-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-krms-api" />
           </element>
-          <element id="archive" name="rice-shareddata-web-2.0.0-b1-SNAPSHOT.jar">
-            <element id="module-output" name="rice-shareddata-web" />
+          <element id="archive" name="rice-location-web-2.0.0-b1-SNAPSHOT.jar">
+            <element id="module-output" name="rice-location-web" />
           </element>
-          <element id="archive" name="rice-shareddata-impl-2.0.0-b1-SNAPSHOT.jar">
-            <element id="module-output" name="rice-shareddata-impl" />
+          <element id="archive" name="rice-location-impl-2.0.0-b1-SNAPSHOT.jar">
+            <element id="module-output" name="rice-location-impl" />
           </element>
           <element id="archive" name="rice-kew-impl-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-impl" />
@@ -186,8 +186,8 @@
           <element id="archive" name="rice-core-web-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-web" />
           </element>
-          <element id="archive" name="rice-shareddata-framework-2.0.0-b1-SNAPSHOT.jar">
-            <element id="module-output" name="rice-shareddata-framework" />
+          <element id="archive" name="rice-location-framework-2.0.0-b1-SNAPSHOT.jar">
+            <element id="module-output" name="rice-location-framework" />
           </element>
           <element id="archive" name="rice-ksb-framework-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-framework" />

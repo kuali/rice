@@ -9,14 +9,14 @@
     <output url="file://$MODULE_DIR$/../../../it/internal-tools/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/internal-tools/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../it/internal-tools">
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/internal-tools/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

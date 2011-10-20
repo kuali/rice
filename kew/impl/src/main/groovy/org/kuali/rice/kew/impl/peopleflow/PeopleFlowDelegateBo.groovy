@@ -24,7 +24,7 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
     String id
     String peopleFlowMemberId
     String memberId
-    private String memberTypeCode
+    String memberTypeCode
     String actionRequestPolicyCode
     String delegationTypeCode
     String responsibilityId
@@ -61,10 +61,6 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
         role = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, role, "role");
 
         return role;
-    }
-
-    String getMemberTypeCode() {
-        return memberTypeCode
     }
 
     @Override

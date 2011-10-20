@@ -62,6 +62,7 @@
 				<role name="Role1">
 					<activationType>P</activationType>
 					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
+          <responsibilityTemplateName>FirstApproveReview</responsibilityTemplateName>
 				</role>
 			</routeNodes>
 		</documentType>

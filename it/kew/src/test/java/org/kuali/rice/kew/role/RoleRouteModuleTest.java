@@ -65,21 +65,20 @@ import static org.junit.Assert.*;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class RoleRouteModuleTest extends KEWTestCase {
 
-	private static final String NAMESPACE = KEWConstants.KEW_NAMESPACE;
-	private static final String ROLE_NAME = "RoleRouteModuleTestRole";
-	
-	private static boolean suiteDataInitialized = false;
-	private static boolean suiteCreateDelegateInitialized = false;
+    private static final String NAMESPACE = KEWConstants.KEW_NAMESPACE;
+    private static final String ROLE_NAME = "RoleRouteModuleTestRole";
 
-	protected void loadTestData() throws Exception {
+    private static boolean suiteDataInitialized = false;
+    private static boolean suiteCreateDelegateInitialized = false;
+
+    protected void loadTestData() throws Exception {
         loadXmlFile("RoleRouteModuleTestConfig.xml");
 
         // only create this data once per suite!
-        
         if (suiteDataInitialized) {
-        	return;
+            return;
         }
-        
+
         /**
          * First we need to set up:
          *
@@ -325,17 +324,17 @@ public class RoleRouteModuleTest extends KEWTestCase {
         suiteDataInitialized = true;
     }
 
-	private void createResponsibilityForRoleRouteModuleTest1(RoleBo role, KimAttributeBo documentTypeAttribute, KimAttributeBo nodeNameAttribute, KimTypeBo kimRespType, RoleMemberBo user1RolePrincipal, RoleMemberBo user2RolePrincipal, RoleMemberBo adminRolePrincipal) {
+    private void createResponsibilityForRoleRouteModuleTest1(RoleBo role, KimAttributeBo documentTypeAttribute, KimAttributeBo nodeNameAttribute, KimTypeBo kimRespType, RoleMemberBo user1RolePrincipal, RoleMemberBo user2RolePrincipal, RoleMemberBo adminRolePrincipal) {
 
-		/**
+        /**
          * Create the responsibility template
          */
 
         String templateId = String.valueOf(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S"));
-    	ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
+        ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
         template.setId(templateId);
         template.setNamespaceCode(NAMESPACE);
-        template.setName("ReviewRoleRoute");
+        template.setName("FirstApproveReview");
         template.setKimTypeId(kimRespType.getId());
         template.setActive(true);
         template.setDescription("description");
@@ -435,16 +434,16 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
 
-	}
+    }
 
-	private void createResponsibilityForRoleRouteModuleTest2(RoleBo role, KimAttributeBo documentTypeAttribute, KimAttributeBo nodeNameAttribute, KimTypeBo kimRespType, RoleMemberBo user1RolePrincipal, RoleMemberBo user2RolePrincipal, RoleMemberBo adminRolePrincipal) {
+    private void createResponsibilityForRoleRouteModuleTest2(RoleBo role, KimAttributeBo documentTypeAttribute, KimAttributeBo nodeNameAttribute, KimTypeBo kimRespType, RoleMemberBo user1RolePrincipal, RoleMemberBo user2RolePrincipal, RoleMemberBo adminRolePrincipal) {
 
-		/**
+        /**
          * Create the responsibility template
          */
 
         String templateId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S");
-    	ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
+        ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
         template.setId(templateId);
         template.setNamespaceCode(NAMESPACE);
         template.setName("AllApproveReview");
@@ -522,7 +521,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
         roleResponsibilityAction1.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
+        roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
         roleResponsibilityAction1 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
 
@@ -532,7 +531,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
         roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
+        roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
         roleResponsibilityAction2 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
 
@@ -542,18 +541,18 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
         roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
-        roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
+        roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
-	}
+    }
 
-	private void createDelegate(){
+    private void createDelegate(){
 
-		if (suiteCreateDelegateInitialized) {
-			return;
-		}
+        if (suiteCreateDelegateInitialized) {
+            return;
+        }
 
-		// create delegation KimType
+        // create delegation KimType
         Long kimDlgnTypeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_TYP_ID_S");
         KimTypeBo kimDlgnType = new KimTypeBo();
         kimDlgnType.setId("" + kimDlgnTypeId);
@@ -563,157 +562,157 @@ public class RoleRouteModuleTest extends KEWTestCase {
         kimDlgnType.setActive(true);
         kimDlgnType = KRADServiceLocator.getBusinessObjectService().save(kimDlgnType);
 
-		/*
-		 * Manually create a delegate
-		 */
-		String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
-		DelegateTypeBo delegate = new DelegateTypeBo();
+        /*
+         * Manually create a delegate
+         */
+        String id = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        DelegateTypeBo delegate = new DelegateTypeBo();
 
-		delegate.setDelegationId(id);
-		delegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
-		delegate.setActive(true);
-		delegate.setKimTypeId("" + kimDlgnTypeId);
-		/*
-		 * Assign it a role that was created above.  This should mean that every
-		 * principle in the role can have the delegate added below as a delegate
-		 */
-		Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(NAMESPACE, ROLE_NAME);
-		assertNotNull("Role should exist.", role);
-		delegate.setRoleId(role.getId());
-		delegate = KRADServiceLocator.getBusinessObjectService().save(delegate);
+        delegate.setDelegationId(id);
+        delegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
+        delegate.setActive(true);
+        delegate.setKimTypeId("" + kimDlgnTypeId);
+        /*
+         * Assign it a role that was created above.  This should mean that every
+         * principle in the role can have the delegate added below as a delegate
+         */
+        Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(NAMESPACE, ROLE_NAME);
+        assertNotNull("Role should exist.", role);
+        delegate.setRoleId(role.getId());
+        delegate = KRADServiceLocator.getBusinessObjectService().save(delegate);
 
-		// BC of the way the jpa is handled we have to create the delagate, then the members
-		String delgMemberId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
-	    DelegateMemberBo user1RoleDelegate = new DelegateMemberBo();
-	    user1RoleDelegate.setRoleMemberId(delgMemberId);
-	    // This is the user the delegation requests should be sent to.
-	    Principal kPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
-	    assertNotNull(kPrincipal);
-	    user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
-	    /*
-	     * this is checked when adding delegates in both the ActionRequestFactory
-	     * and RoleServiceImpl
-	     */
-	    user1RoleDelegate.setTypeCode( MemberType.PRINCIPAL.getCode() );
+        // BC of the way the jpa is handled we have to create the delagate, then the members
+        String delgMemberId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
+        DelegateMemberBo user1RoleDelegate = new DelegateMemberBo();
+        user1RoleDelegate.setRoleMemberId(delgMemberId);
+        // This is the user the delegation requests should be sent to.
+        Principal kPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
+        assertNotNull(kPrincipal);
+        user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
+        /*
+         * this is checked when adding delegates in both the ActionRequestFactory
+         * and RoleServiceImpl
+         */
+        user1RoleDelegate.setType( MemberType.PRINCIPAL );
 
-	    // attach it to the delegate we created above
-	    user1RoleDelegate.setDelegationId(delegate.getDelegationId());
+        // attach it to the delegate we created above
+        user1RoleDelegate.setDelegationId(delegate.getDelegationId());
 
-	    user1RoleDelegate = KRADServiceLocator.getBusinessObjectService().save(user1RoleDelegate);
+        user1RoleDelegate = KRADServiceLocator.getBusinessObjectService().save(user1RoleDelegate);
 
-	    suiteCreateDelegateInitialized = true;
-	    
-	}
+        suiteCreateDelegateInitialized = true;
+
+    }
 
 
-	@Test
-	public void testRoleRouteModule_FirstApprove() throws Exception {
-		
-		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
-		document.route("");
+    @Test
+    public void testRoleRouteModule_FirstApprove() throws Exception {
 
-		// in this case we should have a first approve role that contains admin and user2, we
-		// should also have a first approve role that contains just user1
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
+        document.route("");
 
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
+        // in this case we should have a first approve role that contains admin and user2, we
+        // should also have a first approve role that contains just user1
 
-		// examine the action requests
-		List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
-		// there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and one containing the request for "IN"
-		assertEquals("Should have 3 action requests.", 3, actionRequests.size());
-		int numRoots = 0;
-		for (ActionRequest actionRequest : actionRequests) {
-			// each of these should be "first approve"
-			if (actionRequest.getRequestPolicy() != null) {
-				assertEquals(ActionRequestPolicy.FIRST.getCode(), actionRequest.getRequestPolicy());
-			}
-			if (actionRequest.getParentActionRequestId() == null) {
-				numRoots++;
-			}
-		}
-		assertEquals("There should have been 3 root requests.", 3, numRoots);
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
 
-		// let's approve as "user1" and verify the document is still ENROUTE
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
-		document.approve("");
-		assertTrue("Document should be ENROUTE.", document.isEnroute());
+        // examine the action requests
+        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
+        // there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and one containing the request for "IN"
+        assertEquals("Should have 3 action requests.", 3, actionRequests.size());
+        int numRoots = 0;
+        for (ActionRequest actionRequest : actionRequests) {
+            // each of these should be "first approve"
+            if (actionRequest.getRequestPolicy() != null) {
+                assertEquals(ActionRequestPolicy.FIRST, actionRequest.getRequestPolicy());
+            }
+            if (actionRequest.getParentActionRequestId() == null) {
+                numRoots++;
+            }
+        }
+        assertEquals("There should have been 3 root requests.", 3, numRoots);
 
-		// verify that admin and user2 still have requests
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
+        // let's approve as "user1" and verify the document is still ENROUTE
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        document.approve("");
+        assertTrue("Document should be ENROUTE.", document.isEnroute());
 
-		// let's approve as "user2" and verify the document is still ENROUTE
-		document.approve("");
-		assertTrue("Document should be ENROUTE.", document.isEnroute());
+        // verify that admin and user2 still have requests
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
 
-		// let's approve as "admin" and verify the document has gone FINAL
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
-		document.approve("");
-		assertTrue("Document should be FINAL.", document.isFinal());
-	}
+        // let's approve as "user2" and verify the document is still ENROUTE
+        document.approve("");
+        assertTrue("Document should be ENROUTE.", document.isEnroute());
 
-	@Test
-	public void testRoleRouteModule_AllApprove() throws Exception {
+        // let's approve as "admin" and verify the document has gone FINAL
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
+        document.approve("");
+        assertTrue("Document should be FINAL.", document.isFinal());
+    }
 
-		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest2");
-		document.route("");
+    @Test
+    public void testRoleRouteModule_AllApprove() throws Exception {
 
-		// in this case we should have all approve roles for admin, user1 and user2
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest2");
+        document.route("");
 
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
+        // in this case we should have all approve roles for admin, user1 and user2
 
-		// examine the action requests
-		List<ActionRequest> actionRequests = KewApiServiceLocator
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
+
+        // examine the action requests
+        List<ActionRequest> actionRequests = KewApiServiceLocator
                 .getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
-		assertEquals("Should have 3 action requests.", 3, actionRequests.size());
-		int numRoots = 0;
-		for (ActionRequest actionRequest : actionRequests) {
-			if (actionRequest.getRequestPolicy() != null) {
-				assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getRequestPolicy().getCode());
-			}
-			if (actionRequest.getParentActionRequestId() == null) {
-				numRoots++;
-			}
-		}
-		assertEquals("There should have been 3 root requests.", 3, numRoots);
+        assertEquals("Should have 3 action requests.", 3, actionRequests.size());
+        int numRoots = 0;
+        for (ActionRequest actionRequest : actionRequests) {
+            if (actionRequest.getRequestPolicy() != null) {
+                assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getRequestPolicy().getCode());
+            }
+            if (actionRequest.getParentActionRequestId() == null) {
+                numRoots++;
+            }
+        }
+        assertEquals("There should have been 3 root requests.", 3, numRoots);
 
-		// let's approve as "user1" and verify the document does NOT go FINAL
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
-		document.approve("");
-		assertTrue("Document should still be enroute.", document.isEnroute());
+        // let's approve as "user1" and verify the document does NOT go FINAL
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user1"), document.getDocumentId());
+        document.approve("");
+        assertTrue("Document should still be enroute.", document.isEnroute());
 
-		// verify that admin and user2 still have requests
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
-		assertTrue("Approval should be requested.", document.isApprovalRequested());
+        // verify that admin and user2 still have requests
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
+        assertTrue("Approval should be requested.", document.isApprovalRequested());
 
-		// approve as "user2" and verify document is still ENROUTE
-		document.approve("");
-		assertTrue("Document should be ENROUTE.", document.isEnroute());
+        // approve as "user2" and verify document is still ENROUTE
+        document.approve("");
+        assertTrue("Document should be ENROUTE.", document.isEnroute());
 
-		// now approve as "admin", coument should be FINAL
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
-		document.approve("");
-		assertTrue("Document should be FINAL.", document.isFinal());
-	}
+        // now approve as "admin", coument should be FINAL
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("admin"), document.getDocumentId());
+        document.approve("");
+        assertTrue("Document should be FINAL.", document.isFinal());
+    }
 
-	@Test
+    @Test
     public void testDelegate() throws Exception{
-		this.createDelegate();
-		
+        this.createDelegate();
+
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
         document.route("");
 
@@ -729,79 +728,79 @@ public class RoleRouteModuleTest extends KEWTestCase {
         boolean ewestfalHasRequest = false;
         boolean ewestfalHasDelegateRequest = false;
         for (ActionRequest actionRequest : actionRequests) {
-        	if (ewestfalPrincipalId.equals(actionRequest.getPrincipalId())) {
-        		ewestfalHasRequest = true;
-        		if (actionRequest.getParentActionRequestId() != null) {
-        			ewestfalHasDelegateRequest = true;
-        			assertEquals("Delegation type should been PRIMARY", DelegationType.PRIMARY.getCode(), actionRequest.getDelegationType());
-        		}
-        	}
+            if (ewestfalPrincipalId.equals(actionRequest.getPrincipalId())) {
+                ewestfalHasRequest = true;
+                if (actionRequest.getParentActionRequestId() != null) {
+                    ewestfalHasDelegateRequest = true;
+                    assertEquals("Delegation type should been PRIMARY", DelegationType.PRIMARY.getCode(), actionRequest.getDelegationType());
+                }
+            }
         }
         assertTrue("ewestfal should have had a request", ewestfalHasRequest);
         assertTrue("ewestfal should have had a delegate request", ewestfalHasDelegateRequest);
     }
 
-	@Test
-	public void testDelegateApproval() throws Exception{
-		this.createDelegate();
+    @Test
+    public void testDelegateApproval() throws Exception{
+        this.createDelegate();
 
-		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
-		document.route("");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "RoleRouteModuleTest2");
+        document.route("");
 
-		// See if the delegate can approve the document
-		document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-		assertTrue("ewestfal should have an approval request", document.isApprovalRequested());
-		document.approve("");
+        // See if the delegate can approve the document
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        assertTrue("ewestfal should have an approval request", document.isApprovalRequested());
+        document.approve("");
 
-		assertTrue("Document should have been approved by the delegate.", document.isFinal());
-	}
-	
-	@Test
-	public void testRoleWithNoMembers() throws Exception {
-		getTransactionTemplate().execute(new TransactionCallback<Object>() {
-			public Object doInTransaction(TransactionStatus status) {
-				
-				try {
-				
-					// first let's clear all of the members out of our role
-				
-					Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(NAMESPACE,
+        assertTrue("Document should have been approved by the delegate.", document.isFinal());
+    }
+
+    @Test
+    public void testRoleWithNoMembers() throws Exception {
+        getTransactionTemplate().execute(new TransactionCallback<Object>() {
+            public Object doInTransaction(TransactionStatus status) {
+
+                try {
+
+                    // first let's clear all of the members out of our role
+
+                    Role role = KimApiServiceLocator.getRoleService().getRoleByNameAndNamespaceCode(NAMESPACE,
                             ROLE_NAME);
-					Map<String, String> criteria = new HashMap<String, String>();
-					criteria.put("roleId", role.getId());
-					List<RoleMemberBo> roleMembers = (List<RoleMemberBo>) KRADServiceLocator
+                    Map<String, String> criteria = new HashMap<String, String>();
+                    criteria.put("roleId", role.getId());
+                    List<RoleMemberBo> roleMembers = (List<RoleMemberBo>) KRADServiceLocator
                             .getBusinessObjectService().findMatching(RoleMemberBo.class, criteria);
-					assertFalse("role member list should not currently be empty", roleMembers.isEmpty());
-					for (RoleMemberBo roleMember : roleMembers) {
-						//String roleMemberId = roleMember.getRoleMemberId();
-						//RoleMemberImpl roleMemberImpl = KRADServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(RoleMemberImpl.class, roleMemberId);
-						assertNotNull("Role Member should exist.", roleMember);
-						KRADServiceLocator.getBusinessObjectService().delete(roleMember);
-					}
-				
-					List<RoleMembership> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getId()), Collections.<String, String>emptyMap());
-					assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
-				
-					// now that we've removed all members from the Role, let's trying routing the doc!
-					WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
-					document.route("");
-					
-					// the document should be final now, because the role has no members so all nodes should have been skipped for routing purposes
-					
-					assertTrue("document should now be in final status", document.isFinal());
-					
-					// verify that the document went through the appropriate route path
-					
-					List<RouteNodeInstance> routeNodeInstances = document.getRouteNodeInstances();
-					assertEquals("Document should have 2 route node instances", 2, routeNodeInstances.size());
-					
-					return null;
-				} finally {
-					status.setRollbackOnly();
-				}
-			}
-		});
-		
-	}
+                    assertFalse("role member list should not currently be empty", roleMembers.isEmpty());
+                    for (RoleMemberBo roleMember : roleMembers) {
+                        //String roleMemberId = roleMember.getRoleMemberId();
+                        //RoleMemberImpl roleMemberImpl = KRADServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(RoleMemberImpl.class, roleMemberId);
+                        assertNotNull("Role Member should exist.", roleMember);
+                        KRADServiceLocator.getBusinessObjectService().delete(roleMember);
+                    }
+
+                    List<RoleMembership> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getId()), Collections.<String, String>emptyMap());
+                    assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
+
+                    // now that we've removed all members from the Role, let's trying routing the doc!
+                    WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
+                    document.route("");
+
+                    // the document should be final now, because the role has no members so all nodes should have been skipped for routing purposes
+
+                    assertTrue("document should now be in final status", document.isFinal());
+
+                    // verify that the document went through the appropriate route path
+
+                    List<RouteNodeInstance> routeNodeInstances = document.getRouteNodeInstances();
+                    assertEquals("Document should have 2 route node instances", 2, routeNodeInstances.size());
+
+                    return null;
+                } finally {
+                    status.setRollbackOnly();
+                }
+            }
+        });
+
+    }
 
 }

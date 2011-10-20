@@ -17,6 +17,7 @@ package org.kuali.rice.kim.test.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
@@ -211,11 +212,11 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		boolean foundG1 = false;
 		boolean foundR1 = false;
 		for (RoleMembership member : members) {
-			if (member.getMemberId().equals(principal3Id) && member.getMemberType().getCode().equals("P")) {
+			if (member.getMemberId().equals(principal3Id) && member.getMemberType().equals(MemberType.PRINCIPAL)) {
 				foundP3 = true;
-			} else if (member.getMemberId().equals(group1Id) && member.getMemberType().getCode().equals("G")) {
+			} else if (member.getMemberId().equals(group1Id) && member.getMemberType().equals(MemberType.GROUP)) {
 				foundG1 = true;
-			} else if (member.getMemberId().equals(principal1Id) && member.getMemberType().getCode().equals("P")) {
+			} else if (member.getMemberId().equals(principal1Id) && member.getMemberType().equals(MemberType.PRINCIPAL)) {
 				foundR1 = true;
 				assertEquals("Should have r1 embedded role id.", role1Id, member.getEmbeddedRoleId());
 			}

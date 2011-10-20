@@ -223,7 +223,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 
 		Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
-        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
 
         return new ArrayList<GroupMemberBo>(businessObjectService.findMatching(GroupMemberBo.class, criteria));
 	}
@@ -232,7 +232,7 @@ public class GroupUpdateServiceImplTest extends KIMTestCase {
 
 		Map<String,Object> criteria = new HashMap<String,Object>();
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
-        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+        criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
 
         return new ArrayList<GroupMemberBo>(businessObjectService.findMatching(GroupMemberBo.class, criteria));
 	}

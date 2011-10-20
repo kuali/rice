@@ -58,7 +58,7 @@ public class LocationPostCodeBlanketAppIT {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Postal Code");        
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.shareddata.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;http://localhost:8080/kr-dev/kr/lookup.do;::::).anchor4");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.shareddata.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.type("code", "US");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
@@ -66,7 +66,7 @@ public class LocationPostCodeBlanketAppIT {
         selenium.click("link=return value");
         selenium.waitForPageToLoad("30000");
         selenium.type("//input[@id='document.newMaintainableObject.code']", "PC1");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.shareddata.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;http://localhost:8080/kr-dev/kr/lookup.do;::::).anchor4");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.shareddata.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

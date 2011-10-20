@@ -74,7 +74,7 @@ public class WorkFlowRouteRulesBlanketAppIT {
         selenium.click("//input[@id='document.newMaintainableObject.forceAction']");
         selenium.type("//textarea[@id='document.newMaintainableObject.description']", "Test Routing Rule1");
         selenium.type("//input[@id='document.newMaintainableObject.fieldValues(1321:docTypeFullName)']", "DocumentTypeDocument");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;http://localhost:8080/kr-dev/kr/lookup.do;::::).anchor15");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalName:document.newMaintainableObject.add.personResponsibilities.principalName,))).((`document.newMaintainableObject.add.personResponsibilities.principalName:principalName,`)).((<>)).(([])).((**)).((^^)).((&&)).((/personImpl/)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor15");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

@@ -39,7 +39,7 @@ public class LocationStateBlanketAppIT {
         selenium.start();
     }
 
-  //  @Test
+    @Test
     public void testState() throws Exception {
         selenium.open(System.getProperty("remote.public.url"));
         assertEquals("Login", selenium.getTitle());
@@ -59,7 +59,7 @@ public class LocationStateBlanketAppIT {
         String docId = selenium.getText("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");
         assertTrue(selenium.isElementPresent("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test State");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.shareddata.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;http://localhost:8080/kr-dev/kr/lookup.do;::::).anchor4");
+        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.shareddata.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

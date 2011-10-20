@@ -194,9 +194,6 @@ public class AttributeField extends FieldBase implements DataBinding {
             constraintMessageField.setMessageText(constraintText);
         }
 
-        // Additional and Alternate display value
-        setAlternateAndAdditionalDisplayValue(view, model);
-
         // adjust paths on informational property names
         List<String> informationalPropertyPaths = new ArrayList<String>();
         for (String infoPropertyName : getInformationalDisplayPropertyNames()) {
@@ -213,14 +210,6 @@ public class AttributeField extends FieldBase implements DataBinding {
             hiddenPropertyPaths.add(hiddenPropertyPath);
         }
         this.hiddenPropertyNames = hiddenPropertyPaths;
-
-        // if read only or the control is not set no need to set client side
-        // validation
-        if (isReadOnly() || getControl() == null) {
-            return;
-        }
-
-        setupFieldQuery();
 
         // invoke options finder if options not configured on the control
         if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
@@ -242,6 +231,16 @@ public class AttributeField extends FieldBase implements DataBinding {
                 multiValueControl.setOptions(options);
             }
         }
+
+        // Additional and Alternate display value
+        setAlternateAndAdditionalDisplayValue(view, model);
+
+        // if read only or the control is not set no need to set client side validation
+        if (isReadOnly() || getControl() == null) {
+            return;
+        }
+
+        setupFieldQuery();
 
         if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
             ClientValidationUtils.processAndApplyConstraints(this, view);
@@ -338,8 +337,9 @@ public class AttributeField extends FieldBase implements DataBinding {
                     .getDataObjectRelationship(null, parentObjectClass, getBindingInfo().getBindingName(), "", true,
                             false, false);
 
-            if (relationship != null && getPropertyName().startsWith(relationship.getParentAttributeName()) &&
-                    KualiCode.class.isAssignableFrom(relationship.getRelatedClass())) {
+            if (relationship != null
+                    && getPropertyName().startsWith(relationship.getParentAttributeName())
+                    && KualiCode.class.isAssignableFrom(relationship.getRelatedClass())) {
                 additionalDisplayPropertyName =
                         relationship.getParentAttributeName() + "." + KRADPropertyConstants.NAME;
             }

@@ -340,13 +340,13 @@ public final class KimConstants {
 		/**
 		 * For group members that are themselves groups
 		 */
-		public static final String GROUP_MEMBER_TYPE = "G";
+		public static final MemberType GROUP_MEMBER_TYPE = MemberType.GROUP;
 
 		/**
 		 * For group members that are principals
 		 */
-		public static final String PRINCIPAL_MEMBER_TYPE = "P";
-		
+		public static final MemberType PRINCIPAL_MEMBER_TYPE = MemberType.PRINCIPAL;
+
 		private KimGroupMemberTypes() {
 			throw new UnsupportedOperationException("do not call");
 		}

@@ -3,6 +3,7 @@ package org.kuali.rice.kim.api.common.delegate;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
@@ -86,7 +87,7 @@ public final class DelegateMember extends AbstractDataTransferObject
         this.delegationId = builder.getDelegationId();
         this.memberId = builder.getMemberId();
         this.roleMemberId = builder.getRoleMemberId();
-        this.typeCode = builder.getTypeCode();
+        this.typeCode = builder.getType().getCode();
         this.versionNumber = builder.getVersionNumber();
         this.activeFromDate = builder.getActiveFromDate();
         this.activeToDate = builder.getActiveToDate();
@@ -104,8 +105,8 @@ public final class DelegateMember extends AbstractDataTransferObject
     }
 
     @Override
-    public String getTypeCode() {
-        return this.typeCode;
+    public MemberType getType() {
+        return MemberType.fromCode(this.typeCode);
     }
 
     @Override
@@ -147,7 +148,7 @@ public final class DelegateMember extends AbstractDataTransferObject
         private String delegationId;
         private String memberId;
         private String roleMemberId;
-        private String typeCode;
+        private MemberType type;
         private DateTime activeFromDate;
         private DateTime activeToDate;
         private Long versionNumber;
@@ -169,7 +170,7 @@ public final class DelegateMember extends AbstractDataTransferObject
             builder.setDelegationId(contract.getDelegationId());
             builder.setMemberId(contract.getMemberId());
             builder.setRoleMemberId(contract.getRoleMemberId());
-            builder.setTypeCode(contract.getTypeCode());
+            builder.setType(contract.getType());
             builder.setActiveFromDate(contract.getActiveFromDate());
             builder.setActiveToDate(contract.getActiveToDate());
             builder.setVersionNumber(contract.getVersionNumber());
@@ -220,12 +221,12 @@ public final class DelegateMember extends AbstractDataTransferObject
             this.roleMemberId = roleMemberId;
         }
 
-        public String getTypeCode() {
-            return typeCode;
+        public MemberType getType() {
+            return type;
         }
 
-        public void setTypeCode(String typeCode) {
-            this.typeCode = typeCode;
+        public void setType(MemberType type) {
+            this.type = type;
         }
 
         @Override

@@ -61,7 +61,7 @@ public class GroupDocumentMember extends KimDocumentBoActiveToFromBase {
 
 	//TODO: remove the default
 	@Column(name="MBR_TYP_CD")
-	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
+	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode();
 
 	public String getGroupMemberId() {
 		return this.groupMemberId;

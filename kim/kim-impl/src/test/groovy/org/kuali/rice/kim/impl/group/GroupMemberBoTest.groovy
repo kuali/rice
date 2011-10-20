@@ -19,6 +19,7 @@ package org.kuali.rice.kim.impl.group
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.kim.api.group.GroupMember
+import org.kuali.rice.core.api.membership.MemberType
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,7 +31,7 @@ import org.kuali.rice.kim.api.group.GroupMember
 class GroupMemberBoTest {
   @Test
   public void testNotEqualsWithGroupMember() {
-    GroupMember immutable = GroupMember.Builder.create("groupId", "memberId", "type").build()
+    GroupMember immutable = GroupMember.Builder.create("groupId", "memberId", MemberType.PRINCIPAL).build()
     GroupMemberBo bo = GroupMemberBo.from(immutable )
     Assert.assertFalse(bo.equals(immutable))
     Assert.assertFalse(immutable.equals(bo))

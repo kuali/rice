@@ -90,7 +90,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	protected String memberId;
 
 	@Column(name="MBR_TYP_CD")
-	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
+	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode();
 	
 	@Transient
 	protected String memberNamespaceCode;

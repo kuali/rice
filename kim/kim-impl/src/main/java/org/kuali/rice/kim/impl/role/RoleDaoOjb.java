@@ -100,7 +100,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
             Collection<GroupMember> groupMembers = KimApiServiceLocator.getGroupService().getMembers(groupIdValues);
             for (GroupMember groupMembershipInfo : groupMembers) {
                 if (principalId != null) {
-                    if (StringUtils.equals(groupMembershipInfo.getTypeCode(), MemberType.PRINCIPAL.getCode())
+                    if (MemberType.PRINCIPAL.equals(groupMembershipInfo.getType())
                             && StringUtils.equals(principalId, groupMembershipInfo.getMemberId())
                             && groupMembershipInfo.isActive(new DateTime())) {
                         groupPrincipals.add(groupMembershipInfo);
@@ -124,7 +124,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
                 if (!CollectionUtils.isEmpty(groupMemberships)) {
                     for (GroupMember groupMembershipInfo : groupMemberships) {
-                        if (StringUtils.equals(groupMembershipInfo.getTypeCode(), MemberType.GROUP.getCode())
+                        if (MemberType.GROUP.equals(groupMembershipInfo.getType())
                                 && groupMembershipInfo.isActive(new DateTime())) {
                             groupMembers.add(groupMembershipInfo);
                         }

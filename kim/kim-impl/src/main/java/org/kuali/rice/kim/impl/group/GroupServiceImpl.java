@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupMember;
@@ -111,7 +112,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
 		criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, groupId);
 
 		Collection<GroupMemberBo> groupMembers = businessObjectService.findMatching(GroupMemberBo.class, criteria);
@@ -387,7 +388,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
     }
 
 
-    protected boolean isMemberOfGroupInternal(String memberId, String groupId, Set<String> visitedGroupIds, String memberType) {
+    protected boolean isMemberOfGroupInternal(String memberId, String groupId, Set<String> visitedGroupIds, MemberType memberType) {
 		if ( memberId == null || groupId == null ) {
 			return false;
 		}
@@ -436,7 +437,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, groupId);
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
 
 		List<GroupMemberBo> groupMembers = (List<GroupMemberBo>)businessObjectService.findMatching(GroupMemberBo.class, criteria);
 		Set<String> matchingGroupIds = new HashSet<String>();
@@ -468,11 +469,11 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return Collections.unmodifiableList(groupMembers);
     }
 
-    protected List<String> getMemberIdsByType(Collection<GroupMember> members, String memberType) {
+    protected List<String> getMemberIdsByType(Collection<GroupMember> members, MemberType memberType) {
         List<String> membersIds = new ArrayList<String>();
         if (members != null) {
             for (GroupMember member : members) {
-                if (member.getTypeCode().equals(memberType)) {
+                if (member.getType().equals(memberType)) {
                     membersIds.add(member.getMemberId());
                 }
             }
@@ -533,7 +534,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 		Map<String,Object> criteria = new HashMap<String,Object>();
 		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
-		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+		criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
 		Collection<GroupMemberBo> groupMembers = businessObjectService.findMatching(GroupMemberBo.class, criteria);
 		Set<String> groupIds = new HashSet<String>( groupMembers.size() );
 		// only return the active members
@@ -570,7 +571,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         GroupMemberBo groupMember = new GroupMemberBo();
         groupMember.setGroupId(parentId);
-        groupMember.setTypeCode(KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+        groupMember.setType(KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE);
         groupMember.setMemberId(childId);
 
         this.businessObjectService.save(groupMember);
@@ -584,7 +585,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         GroupMemberBo groupMember = new GroupMemberBo();
         groupMember.setGroupId(groupId);
-        groupMember.setTypeCode(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+        groupMember.setType(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
         groupMember.setMemberId(principalId);
 
         groupMember = this.businessObjectService.save(groupMember);
@@ -680,7 +681,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         //get new groupMember from saved group
         for (GroupMemberBo member : groupBo.getMembers()) {
             if (member.getMemberId().equals(groupMember.getMemberId())
-                    && member.getTypeCode().equals(groupMember.getTypeCode())
+                    && member.getType().equals(groupMember.getType())
                     && member.getActiveFromDate().equals(groupMember.getActiveFromDate())
                     && member.getActiveToDate().equals(groupMember.getActiveToDate())) {
                 return GroupMemberBo.to(member);
@@ -844,8 +845,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	 * @param memberType optional, but must be provided if childId is
      * @return a list of group members
 	 */
-	private List<GroupMemberBo> getActiveGroupMembers(String parentId,
-			String childId, String memberType) {
+	private List<GroupMemberBo> getActiveGroupMembers(String parentId, String childId, MemberType memberType) {
     	final java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
 
     	if (childId != null && memberType == null) {
@@ -857,7 +857,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
         if (childId != null) {
         	criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, childId);
-        	criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, memberType);
+        	criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, memberType.getCode());
         }
 
         Collection<GroupMemberBo> groupMembers = this.businessObjectService.findMatching(GroupMemberBo.class, criteria);

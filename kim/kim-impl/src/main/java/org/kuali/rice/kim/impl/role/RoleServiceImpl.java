@@ -960,17 +960,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     continue;
                 }
                 // check if this delegateBo record applies to the given person
-                if (delegateMemberBo.getTypeCode().equals(MemberType.PRINCIPAL.getCode())
+                if (MemberType.PRINCIPAL.equals(delegateMemberBo.getType())
                         && !delegateMemberBo.getMemberId().equals(principalId)) {
                     continue; // no match on principal
                 }
                 // or if a group
-                if (delegateMemberBo.getTypeCode().equals(MemberType.GROUP.getCode())
+                if (MemberType.GROUP.equals(delegateMemberBo.getType())
                         && !principalGroupIds.contains(delegateMemberBo.getMemberId())) {
                     continue; // no match on group
                 }
                 // or if a role
-                if (delegateMemberBo.getTypeCode().equals(MemberType.ROLE.getCode())
+                if (MemberType.ROLE.equals(delegateMemberBo.getType())
                         && !principalHasRole(principalId, Collections.singletonList(delegateMemberBo.getMemberId()), qualification, false)) {
                     continue; // no match on role
                 }
@@ -1201,7 +1201,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         if (delegateBo == null || delegateMemberBo == null) {return null;}
 
         DelegateMember.Builder delegateMemberBuilder = DelegateMember.Builder.create(delegateMemberBo);
-        delegateMemberBuilder.setTypeCode(delegateBo.getDelegationTypeCode());
+        delegateMemberBuilder.setType(delegateMemberBo.getType());
         return delegateMemberBuilder.build();
     }
 

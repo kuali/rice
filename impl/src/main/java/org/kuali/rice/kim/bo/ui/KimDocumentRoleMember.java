@@ -70,7 +70,7 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	
 	//TODO: remove the default
 	@Column(name="MBR_TYP_CD")
-	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
+	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode();
 	@Transient
 	protected String memberName;
 	@Transient

@@ -35,6 +35,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.krad.service.BusinessObjectService
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal
+import org.kuali.rice.core.api.membership.MemberType
 
 class GroupServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
@@ -423,7 +424,7 @@ class GroupServiceImplTest {
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
-            if (memberBo.typeCode.equals("P")) {
+            if (MemberType.PRINCIPAL.equals(memberBo.type)) {
                 expectedIds.add(memberBo.memberId)
             }
         }
@@ -444,7 +445,7 @@ class GroupServiceImplTest {
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
-            if (memberBo.typeCode.equals("P")) {
+            if (MemberType.PRINCIPAL.equals(memberBo.type)) {
                 expectedIds.add(memberBo.memberId)
             }
         }
@@ -465,7 +466,7 @@ class GroupServiceImplTest {
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
-            if (memberBo.typeCode.equals("G")) {
+            if (MemberType.GROUP.equals(memberBo.type)) {
                 expectedIds.add(memberBo.memberId)
             }
         }
@@ -486,7 +487,7 @@ class GroupServiceImplTest {
 
         List<String> expectedIds = new ArrayList<String>()
         for (GroupMemberBo memberBo : sampleGroups.get("1").getMembers()){
-            if (memberBo.typeCode.equals("G")) {
+            if (MemberType.GROUP.equals(memberBo.type)) {
                 expectedIds.add(memberBo.memberId)
             }
         }

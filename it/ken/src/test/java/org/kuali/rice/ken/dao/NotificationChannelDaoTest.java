@@ -172,8 +172,7 @@ public class NotificationChannelDaoTest extends BusinessObjectPersistenceTestCas
 
             channel2.setDescription(updatedDescriptions[1]);
             channel2.setSubscribable(updatedSubscribables[1]);
-            NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(
-                    KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
+            NotificationChannelReviewer reviewer = MockObjectsUtil.buildTestNotificationChannelReviewer(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE, "aReviewer");
             reviewer.setChannel(channel2);
             channel2.getReviewers().add(reviewer);
 

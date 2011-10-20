@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service;
 
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.role.Role;
@@ -95,23 +96,23 @@ public interface UiDocumentService {
 	 */
 	public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument);
 
-	public BusinessObject getMember(String memberTypeCode, String memberId);
+	public BusinessObject getMember(MemberType memberType, String memberId);
 	
-	public String getMemberName(String memberTypeCode, String memberId);
+	public String getMemberName(MemberType memberType, String memberId);
 	
-	public String getMemberNamespaceCode(String memberTypeCode, String memberId);
+	public String getMemberNamespaceCode(MemberType memberType, String memberId);
 
-	public String getMemberName(String memberTypeCode, BusinessObject member);
+	public String getMemberName(MemberType memberType, BusinessObject member);
 	
-	public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member);
+	public String getMemberNamespaceCode(MemberType memberType, BusinessObject member);
 
 	public List<RoleResponsibilityActionBo> getRoleMemberResponsibilityActionImpls(String roleMemberId);
 	
 	public List<DelegateTypeBo> getRoleDelegations(String roleId);
 	
-	public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId);
+	public KimDocumentRoleMember getKimDocumentRoleMember(MemberType memberType, String memberId, String roleId);
 	
-	public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName);
+	public String getMemberIdByName(MemberType memberType, String memberNamespaceCode, String memberName);
 
 	public void setDelegationMembersInDocument(IdentityManagementRoleDocument identityManagementRoleDocument);
 	

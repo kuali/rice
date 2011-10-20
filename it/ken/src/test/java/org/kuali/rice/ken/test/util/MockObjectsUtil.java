@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ken.test.util;
 
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationChannelReviewer;
@@ -90,9 +91,9 @@ public final class MockObjectsUtil {
      * @param reviewerId
      * @return
      */
-    public static final NotificationChannelReviewer buildTestNotificationChannelReviewer(String reviewerType, String reviewerId) {
+    public static final NotificationChannelReviewer buildTestNotificationChannelReviewer(MemberType reviewerType, String reviewerId) {
         NotificationChannelReviewer reviewer = new NotificationChannelReviewer();
-        reviewer.setReviewerType(reviewerType);
+        reviewer.setReviewerType(reviewerType.getCode());
         reviewer.setReviewerId(reviewerId);
         return reviewer;
     }
@@ -160,10 +161,10 @@ public final class MockObjectsUtil {
      * @param recipientType
      * @return NotificationRecipient
      */
-    public static final NotificationRecipient buildTestNotificationRecipient(String recipientId, String recipientType) {
+    public static final NotificationRecipient buildTestNotificationRecipient(String recipientId, MemberType recipientType) {
         NotificationRecipient recipient = new NotificationRecipient();
         recipient.setRecipientId(recipientId);
-        recipient.setRecipientType(recipientType);
+        recipient.setRecipientType(recipientType.getCode());
         return recipient;
     }
 

@@ -542,8 +542,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             RoleMemberBo roleMember = getUiDocumentService().getRoleMember(roleMemberId);
             impdForm.getNewDelegationMember().setRoleMemberMemberId(roleMember.getMemberId());
             impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getMemberType().getCode());
-            impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
-            impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
+            impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(MemberType.fromCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode()), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
+            impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(MemberType.fromCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode()), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
 
             Role role;
         	role = KimApiServiceLocator.getRoleService().getRole(impdForm.getNewDelegationMember().getRoleBo().getId());

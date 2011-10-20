@@ -7,6 +7,14 @@ import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * A MemberType is an enum that represents valid membership type for Role, Group, and Delegate members.
+ * This enum is currently slightly overloaded, as only PRINCIPAL and GROUP are valid Group membership types.
+ * @see org.kuali.rice.kim.impl.membership.AbstractMemberBo
+ * @see org.kuali.rice.kim.impl.group.GroupMemberBo
+ * @see org.kuali.rice.kim.impl.role.RoleMemberBo
+ * @see org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo
+ */
 @XmlRootElement(name = "memberType")
 @XmlType(name = "MemberTypeType")
 @XmlEnum

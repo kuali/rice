@@ -43,32 +43,32 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
     private static final long serialVersionUID = 1L;
 
     @Id
-	@Column(name="GRP_ID")
-	String id
+    @Column(name="GRP_ID")
+    String id
 
     @Column(name="GRP_NM")
-	String name
+    String name
 
     @Column(name="GRP_DESC",length=4000)
-	String description
+    String description
 
-	@Column(name="ACTV_IND")
-	@Type(type="yes_no")
-	boolean active
+    @Column(name="ACTV_IND")
+    @Type(type="yes_no")
+    boolean active
 
-	@Column(name="KIM_TYP_ID")
-	String kimTypeId
+    @Column(name="KIM_TYP_ID")
+    String kimTypeId
 
     @Column(name="NMSPC_CD")
-	String namespaceCode
+    String namespaceCode
 
-	@OneToMany(targetEntity=GroupMemberBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
-	@Fetch(value = FetchMode.SELECT)
-	List<GroupMemberBo> members
+    @OneToMany(targetEntity=GroupMemberBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
+    @Fetch(value = FetchMode.SELECT)
+    List<GroupMemberBo> members
 
-	@OneToMany(targetEntity=GroupAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
-	@Fetch(value = FetchMode.SELECT)
-	List<GroupAttributeBo> attributeDetails
+    @OneToMany(targetEntity=GroupAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
+    @Fetch(value = FetchMode.SELECT)
+    List<GroupAttributeBo> attributeDetails
 
     @Transient
     private List<Person> memberPersons
@@ -116,20 +116,20 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         bo.attributes = im.attributes
         //bo.attributeDetails = KimAttributeDataBo.createFrom(GroupAttributeBo.class, im.attributes, im.kimTypeId )
         bo.versionNumber = im.versionNumber
-		bo.objectId = im.objectId;
+        bo.objectId = im.objectId;
 
         return bo
     }
 
     //helper function to get Attribute Value with specific id
     public String getGroupAttributeValueById(String attributeId) {
-	    for (GroupAttributeBo gad : getAttributeDetails()) {
-	        if (gad.getKimAttributeId().equals(attributeId.trim())) {
-	            return gad.getAttributeValue();
-	        }
-	    }
-	    return null;
-	}
+        for (GroupAttributeBo gad : getAttributeDetails()) {
+            if (gad.getKimAttributeId().equals(attributeId.trim())) {
+                return gad.getAttributeValue();
+            }
+        }
+        return null;
+    }
 
     private void splitMembersToTypes() {
         memberPersons = new ArrayList<Person>()
@@ -137,12 +137,12 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         if (getMembers() != null) {
             for ( GroupMemberBo groupMember : getMembers() ) {
                 if (groupMember.isActive(new DateTime())) {
-                    if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )) {
+                    if ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
                         Person tempPerson =  KimApiServiceLocator.getPersonService().getPerson(groupMember.getMemberId())
                         if (tempPerson != null && tempPerson.isActive()) {
                             memberPersons.add(tempPerson)
                         }
-                    } else if (groupMember.getTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE ) ) {
+                    } else if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(groupMember.getType())) {
                         Group tempGroup =  KimApiServiceLocator.getGroupService().getGroup(groupMember.getMemberId())
                         if (tempGroup != null && tempGroup.isActive()) {
                             memberGroups.add(tempGroup)
@@ -165,7 +165,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         if (getMembers() != null) {
             for ( GroupMemberBo groupMember : getMembers() ) {
                 if (groupMember.isActive(new DateTime())) {
-                    if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE )) {
+                    if ( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
                         principalIds.add(groupMember.getMemberId());
                     }
                 }
@@ -179,7 +179,7 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         if (getMembers() != null) {
             for ( GroupMemberBo groupMember : getMembers() ) {
                 if (groupMember.isActive(new DateTime())) {
-                    if ( groupMember.getTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )) {
+                    if ( KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(groupMember.getType())) {
                         principalIds.add(groupMember.getMemberId());
                     }
                 }

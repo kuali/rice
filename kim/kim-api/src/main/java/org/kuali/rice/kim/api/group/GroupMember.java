@@ -19,6 +19,7 @@ package org.kuali.rice.kim.api.group;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
@@ -97,7 +98,7 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         this.id = builder.getId();
         this.groupId = builder.getGroupId();
         this.memberId = builder.getMemberId();
-        this.typeCode = builder.getTypeCode();
+        this.typeCode = builder.getType().getCode();
         this.versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
         this.activeFromDate = builder.getActiveFromDate();
@@ -116,8 +117,8 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         return memberId;
     }
 
-    public String getTypeCode() {
-        return typeCode;
+    public MemberType getType() {
+        return MemberType.fromCode(typeCode);
     }
 
     public DateTime getActiveFromDate() {
@@ -145,23 +146,23 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         private String id;
         private String groupId;
         private String memberId;
-        private String typeCode;
+        private MemberType type;
         private DateTime activeFromDate;
         private DateTime activeToDate;
         private Long versionNumber;
         private String objectId;
 
-        private Builder(String groupId, String memberId, String typeCode) {
+        private Builder(String groupId, String memberId, MemberType type) {
             setGroupId(groupId);
             setMemberId(memberId);
-            setTypeCode(typeCode);
+            setType(type);
         }
 
         /**
          * creates a Parameter with the required fields.
          */
-        public static Builder create(String groupId, String memberId, String typeCode) {
-            return new Builder(groupId, memberId, typeCode);
+        public static Builder create(String groupId, String memberId, MemberType type) {
+            return new Builder(groupId, memberId, type);
         }
 
         /**
@@ -171,7 +172,7 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
-            Builder builder = new Builder(contract.getGroupId(), contract.getMemberId(), contract.getTypeCode());
+            Builder builder = new Builder(contract.getGroupId(), contract.getMemberId(), contract.getType());
             builder.setId(contract.getId());
             builder.setActiveFromDate(contract.getActiveFromDate());
             builder.setActiveToDate(contract.getActiveToDate());
@@ -217,15 +218,15 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         }
 
         @Override
-        public String getTypeCode() {
-            return typeCode;
+        public MemberType getType() {
+            return type;
         }
 
-        public void setTypeCode(final String typeCode) {
-            if (StringUtils.isEmpty(typeCode)) {
-                throw new IllegalArgumentException("typeCode is empty");
+        public void setType(final MemberType type) {
+            if (type == null) {
+                throw new IllegalArgumentException("type is null");
             }
-            this.typeCode = typeCode;
+            this.type = type;
         }
 
         @Override

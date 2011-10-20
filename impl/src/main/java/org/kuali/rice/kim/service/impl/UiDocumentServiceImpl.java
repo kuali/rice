@@ -367,7 +367,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					documentDelegation.setKimTypeId(del.getKimTypeId());
 					documentDelegation.setMembers(
 							loadDelegationMembers(identityManagementPersonDocument,
-									del.getMembers(), (RoleBo)getMember(MemberType.ROLE.getCode(), del.getRoleId())));
+									del.getMembers(), (RoleBo)getMember(MemberType.ROLE, del.getRoleId())));
 					documentDelegation.setRoleId(del.getRoleId());
 					documentDelegation.setEdit(true);
 					delList.add(documentDelegation);
@@ -411,11 +411,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setRoleMemberId(member.getRoleMemberId());
 					roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
 					if(roleMember!=null){
-						pndMember.setRoleMemberName(getMemberName(roleMember.getMemberType().getCode(), roleMember.getMemberId()));
-						pndMember.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getMemberType().getCode(), roleMember.getMemberId()));
+						pndMember.setRoleMemberName(getMemberName(roleMember.getMemberType(), roleMember.getMemberId()));
+						pndMember.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getMemberType(), roleMember.getMemberId()));
 					}
-					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getTypeCode(), member.getMemberId()));
-					pndMember.setMemberName(getMemberName(member.getTypeCode(), member.getMemberId()));
+					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
+					pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
 					pndMember.setEdit(true);
 					pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementPersonDocument, pndMember.getAttributesHelper().getDefinitions(), member.getAttributes()));
 					pndMembers.add(pndMember);
@@ -486,7 +486,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                             if(ObjectUtils.isNotNull(groupMemberships)){
                                 for (GroupMember groupMember: groupMemberships) {
                                     if (groupMember.isActive(new DateTime(System.currentTimeMillis())) && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
-                                        StringUtils.equals(groupMember.getTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+                                        KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(groupMember.getType())) {
                                         // create one PersonDocumentGroup per GroupMembershipInfo **
                                         PersonDocumentGroup docGroup = new PersonDocumentGroup();
                                         docGroup.setGroupId(group.getId());
@@ -1311,7 +1311,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(ObjectUtils.isNotNull(currGroupMembers)){
 					for (GroupMember origGroupMember: currGroupMembers) {
                         if (origGroupMember.isActive(new DateTime(System.currentTimeMillis()))
-                            && origGroupMember.getTypeCode().equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+                            && KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.equals(origGroupMember.getType())) {
                             if(origGroupMember.getId()!=null && StringUtils.equals(origGroupMember.getId(), group.getGroupMemberId())){
                                 groupPrincipalImpl.setObjectId(origGroupMember.getObjectId());
                                 groupPrincipalImpl.setVersionNumber(origGroupMember.getVersionNumber());
@@ -1654,9 +1654,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setRoleMemberId(member.getRoleMemberId());
 					pndMember.setRoleId(member.getRoleId());
 					pndMember.setMemberId(member.getMemberId());
-					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getMemberType().getCode(), member.getMemberId()));
-					pndMember.setMemberName(getMemberName(member.getMemberType().getCode(), member.getMemberId()));
-					pndMember.setMemberFullName(getMemberFullName(member.getMemberType().getCode(), member.getMemberId()));
+					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getMemberType(), member.getMemberId()));
+					pndMember.setMemberName(getMemberName(member.getMemberType(), member.getMemberId()));
+					pndMember.setMemberFullName(getMemberFullName(member.getMemberType(), member.getMemberId()));
 					pndMember.setMemberTypeCode(member.getMemberType().getCode());
 					pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributeDetails()));
 					pndMember.setEdit(true);
@@ -1721,17 +1721,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return documentRoleRespActions;
 	}
 
-    public BusinessObject getMember(String memberTypeCode, String memberId){
+    public BusinessObject getMember(MemberType memberType, String memberId){
         Class<? extends BusinessObject> roleMemberTypeClass = null;
         String roleMemberIdName = "";
-    	if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
+    	if(MemberType.PRINCIPAL.equals(memberType)) {
         	roleMemberTypeClass = PrincipalBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
 	 	 	Principal principalInfo = getIdentityService().getPrincipal(memberId);
 	 	 	if (principalInfo != null) {
 	 	 		
 	 	 	}
-        } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
+        } else if(MemberType.GROUP.equals(memberType)){
         	roleMemberTypeClass = GroupBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
         	Group groupInfo = null;
@@ -1739,7 +1739,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 	 	if (groupInfo != null) {
 	 	 		
 	 	 	}
-        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
+        } else if(MemberType.ROLE.equals(memberType)){
         	roleMemberTypeClass = RoleBo.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
 	 	 	Role role = getRoleService().getRole(memberId);
@@ -1752,9 +1752,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         return getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
     }
 
-	public String getMemberName(String memberTypeCode, String memberId){
-		if (StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) { return "";}
-		BusinessObject member = getMember(memberTypeCode, memberId);
+	public String getMemberName(MemberType memberType, String memberId){
+		if (memberType == null || StringUtils.isEmpty(memberId)) { return "";}
+		BusinessObject member = getMember(memberType, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
 			Principal kp = KimApiServiceLocator.getIdentityService().getPrincipal(memberId);
@@ -1764,13 +1764,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 			return fakeName;
 		}
-		return getMemberName(memberTypeCode, member);
+		return getMemberName(memberType, member);
 	}
 
-	public String getMemberFullName(String memberTypeCode, String memberId){
-		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) {return "";}
+	public String getMemberFullName(MemberType memberType, String memberId){
+		if(memberType == null || StringUtils.isEmpty(memberId)) {return "";}
 	   	String memberFullName = "";
-        if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
+        if(MemberType.PRINCIPAL.equals(memberType)){
         	Principal principalInfo = null;
         	principalInfo = getIdentityService().getPrincipal(memberId);
         	if (principalInfo != null) {
@@ -1778,31 +1778,31 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         		Person psn = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
         		memberFullName = psn.getFirstName() + " " + psn.getLastName();
         	}        	        	
-        } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
+        } else if(MemberType.GROUP.equals(memberType)){
         	Group group = null;
         	group = getGroupService().getGroup(memberId);
         	if (group != null) {
         		memberFullName = group.getName();
         	}
         	
-        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
+        } else if(MemberType.ROLE.equals(memberType)){
         	Role role = getRoleService().getRole(memberId);
         	memberFullName = role.getName();
         }
         return memberFullName;
 	}
 
-	public String getMemberNamespaceCode(String memberTypeCode, String memberId){
-		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) {return "";}
+	public String getMemberNamespaceCode(MemberType memberType, String memberId){
+		if(memberType == null || StringUtils.isEmpty(memberId)) {return "";}
     	String roleMemberNamespaceCode = "";
-        if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
+        if(MemberType.PRINCIPAL.equals(memberType)){
         	roleMemberNamespaceCode = "";
-        } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
+        } else if(MemberType.GROUP.equals(memberType)){
         	Group groupInfo = getGroupService().getGroup(memberId);
         	if (groupInfo!= null) {
         		roleMemberNamespaceCode = groupInfo.getNamespaceCode();
         	}
-        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
+        } else if(MemberType.ROLE.equals(memberType)){
         	Role role = getRoleService().getRole(memberId);
         	if (role != null) {
         		roleMemberNamespaceCode = role.getNamespaceCode();
@@ -1811,45 +1811,45 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         return roleMemberNamespaceCode;
 	}
 
-    public String getMemberIdByName(String memberTypeCode, String memberNamespaceCode, String memberName){
+    public String getMemberIdByName(MemberType memberType, String memberNamespaceCode, String memberName){
     	String memberId = "";
-        if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
+        if(MemberType.PRINCIPAL.equals(memberType)){
             Principal principal = getIdentityService().getPrincipalByPrincipalName(memberName);
             if(principal!=null) {
                 memberId = principal.getPrincipalId();
             }
 
-       } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
+       } else if(MemberType.GROUP.equals(memberType)){
         	Group groupInfo = getGroupService().getGroupByNameAndNamespaceCode(memberNamespaceCode, memberName);
         	if (groupInfo!=null) {
                 memberId = groupInfo.getId();
             }
 
-        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
+        } else if(MemberType.ROLE.equals(memberType)){
         	memberId = getRoleService().getRoleIdByNameAndNamespaceCode(memberNamespaceCode, memberName);
         }
         return memberId;
     }
 
-    public String getMemberName(String memberTypeCode, BusinessObject member){
+    public String getMemberName(MemberType memberType, BusinessObject member){
     	String roleMemberName = "";
-        if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
+        if(MemberType.PRINCIPAL.equals(memberType)){
         	roleMemberName = ((PrincipalBo)member).getPrincipalName();
-        } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
+        } else if(MemberType.GROUP.equals(memberType)){
         	roleMemberName = ((GroupBo)member).getName();
-        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
+        } else if(MemberType.ROLE.equals(memberType)){
         	roleMemberName = ((RoleBo)member).getName();
         }
         return roleMemberName;
     }
 
-    public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member){
+    public String getMemberNamespaceCode(MemberType memberType, BusinessObject member){
     	String roleMemberNamespaceCode = "";
-        if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
+        if(MemberType.PRINCIPAL.equals(memberType)){
         	roleMemberNamespaceCode = "";
-        } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
+        } else if(MemberType.GROUP.equals(memberType)){
         	roleMemberNamespaceCode = ((GroupBo)member).getNamespaceCode();
-        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
+        } else if(MemberType.ROLE.equals(memberType)){
         	roleMemberNamespaceCode = ((RoleBo)member).getNamespaceCode();
         }
         return roleMemberNamespaceCode;
@@ -1953,11 +1953,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setRoleMemberId(member.getRoleMemberId());
 					roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
 					if(roleMember!=null){
-						pndMember.setRoleMemberName(getMemberName(roleMember.getMemberType().getCode(), roleMember.getMemberId()));
-						pndMember.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getMemberType().getCode(), roleMember.getMemberId()));
+						pndMember.setRoleMemberName(getMemberName(roleMember.getMemberType(), roleMember.getMemberId()));
+						pndMember.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getMemberType(), roleMember.getMemberId()));
 					}
-					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getTypeCode(), member.getMemberId()));
-					pndMember.setMemberName(getMemberName(member.getTypeCode(), member.getMemberId()));
+					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
+					pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
 					pndMember.setEdit(true);
 					pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementRoleDocument, member.getAttributes()));
 					pndMembers.add(pndMember);
@@ -2455,7 +2455,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(RoleDocumentDelegationMember delegationMember: delegationMembers){
 				newDelegationMemberImpl = new DelegateMemberBo();
 				KimCommonUtilsInternal.copyProperties(newDelegationMemberImpl, delegationMember);
-                newDelegationMemberImpl.setTypeCode(delegationMember.getMemberTypeCode());
+                newDelegationMemberImpl.setType(MemberType.fromCode(delegationMember.getMemberTypeCode()));
 				if(ObjectUtils.isNotNull(origDelegationMembers)){
 					for(DelegateMemberBo origDelegationMember: origDelegationMembers){
 						if(activatingInactive && StringUtils.equals(origDelegationMember.getMemberId(), newDelegationMemberImpl.getMemberId()) &&
@@ -2568,9 +2568,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setGroupMemberId(member.getMemberId());
 					pndMember.setGroupId(member.getGroupId());
 					pndMember.setMemberId(member.getMemberId());
-					pndMember.setMemberName(getMemberName(member.getTypeCode(), member.getMemberId()));
-					pndMember.setMemberFullName(getMemberFullName(member.getTypeCode(), member.getMemberId()));
-					pndMember.setMemberTypeCode(member.getTypeCode());
+					pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
+					pndMember.setMemberFullName(getMemberFullName(member.getType(), member.getMemberId()));
+					pndMember.setMemberTypeCode(member.getType().getCode());
 					pndMember.setEdit(true);
 					pndMembers.add(pndMember);
 				}
@@ -2744,8 +2744,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
     @SuppressWarnings("unchecked")
-	public KimDocumentRoleMember getKimDocumentRoleMember(String memberTypeCode, String memberId, String roleId){
-    	if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId) || StringUtils.isEmpty(roleId)) {
+	public KimDocumentRoleMember getKimDocumentRoleMember(MemberType memberType, String memberId, String roleId){
+    	if(memberType == null || StringUtils.isEmpty(memberId) || StringUtils.isEmpty(roleId)) {
     		return null;
         }
     	KimDocumentRoleMember documentRoleMember = new KimDocumentRoleMember();
@@ -2759,14 +2759,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     	RoleMemberBo roleMemberImpl = matchingRoleMembers.get(0);
     	documentRoleMember.setRoleMemberId(roleMemberImpl.getRoleMemberId());
-    	if(MemberType.PRINCIPAL.getCode().equals(memberTypeCode)){
+    	if(MemberType.PRINCIPAL.equals(memberType)){
     		Principal principal = getIdentityService().getPrincipal(memberId);
     		if (principal != null) {
     			documentRoleMember.setMemberId(principal.getPrincipalId());
         		documentRoleMember.setMemberName(principal.getPrincipalName());
         		documentRoleMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
     		}    		
-        } else if(MemberType.GROUP.getCode().equals(memberTypeCode)){
+        } else if(MemberType.GROUP.equals(memberType)){
         	Group group = getGroupService().getGroup(memberId);
         	if (group != null) {
         		documentRoleMember.setMemberNamespaceCode(group.getNamespaceCode());
@@ -2775,7 +2775,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         		documentRoleMember.setMemberTypeCode(MemberType.GROUP.getCode());
         	}
         	
-        } else if(MemberType.ROLE.getCode().equals(memberTypeCode)){
+        } else if(MemberType.ROLE.equals(memberType)){
         	Role role = getRoleService().getRole(memberId);
         	if (role != null) {
         		documentRoleMember.setMemberNamespaceCode(role.getNamespaceCode());
@@ -2824,11 +2824,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(CollectionUtils.isNotEmpty(matchingRoleMembersTemp)){
 			for(RoleMember roleMember: matchingRoleMembersTemp){
 				roleMemberBo = getRoleMember(roleMember.getRoleMemberId());
-				roleMemberObject = getMember(roleMemberBo.getMemberType().getCode(), roleMemberBo.getMemberId());
+				roleMemberObject = getMember(roleMemberBo.getMemberType(), roleMemberBo.getMemberId());
 				matchingRoleMember = new KimDocumentRoleMember();
 				KimCommonUtilsInternal.copyProperties(matchingRoleMember, roleMemberBo);
-				matchingRoleMember.setMemberName(getMemberName(roleMemberBo.getMemberType().getCode(), roleMemberObject));
-				matchingRoleMember.setMemberNamespaceCode(getMemberNamespaceCode(roleMemberBo.getMemberType().getCode(), roleMemberObject));
+				matchingRoleMember.setMemberName(getMemberName(roleMemberBo.getMemberType(), roleMemberObject));
+				matchingRoleMember.setMemberNamespaceCode(getMemberNamespaceCode(roleMemberBo.getMemberType(), roleMemberObject));
 				matchingRoleMember.setQualifiers(getQualifiers(roleMemberBo.getAttributeDetails()));
 				matchingRoleMembers.add(matchingRoleMember);
 			}

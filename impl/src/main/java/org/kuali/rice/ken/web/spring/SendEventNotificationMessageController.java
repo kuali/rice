@@ -518,7 +518,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    for (String userRecipientId : userRecipients) {
 	        if (isUserRecipientValid(userRecipientId, errors)) {
         		NotificationRecipient recipient = new NotificationRecipient();
-        		recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+        		recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode());
         		recipient.setRecipientId(userRecipientId);
         		notification.addRecipient(recipient);
 	        }
@@ -532,7 +532,7 @@ public class SendEventNotificationMessageController extends BaseSendNotification
 	    		for (int i = 0; i < workgroupRecipients.length; i++) {
 	    			if (isWorkgroupRecipientValid(workgroupRecipients[i], workgroupNamespaceCodes[i], errors)) {
 	    				NotificationRecipient recipient = new NotificationRecipient();
-	    				recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+	    				recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
 	    				recipient.setRecipientId(
 	    						getGroupService().getGroupByNameAndNamespaceCode(workgroupNamespaceCodes[i],
                                         workgroupRecipients[i]).getId());

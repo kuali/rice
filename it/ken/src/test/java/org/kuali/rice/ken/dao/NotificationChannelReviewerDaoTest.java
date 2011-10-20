@@ -107,7 +107,7 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
         NotificationChannelReviewer reviewer = (NotificationChannelReviewer) businessObjectDao.findByUniqueKey(NotificationChannelReviewer.class, criteria);
 
         reviewer.setReviewerId("updatedReviewerId");
-        reviewer.setReviewerType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+        reviewer.setReviewerType(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
 
         try {
             businessObjectDao.save(reviewer);

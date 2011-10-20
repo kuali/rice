@@ -74,7 +74,7 @@ public class GroupMemberBo extends AbstractMemberBo implements GroupMemberContra
         bo.id = im.id
         bo.groupId = im.groupId
         bo.memberId = im.memberId
-        bo.typeCode = im.typeCode
+        bo.typeCode = im.type.code
         bo.activeFromDateValue = im.activeFromDate == null ? null : new Timestamp(im.activeFromDate.getMillis());
         bo.activeToDateValue = im.activeToDate == null ? null : new Timestamp(im.activeToDate.getMillis());
         bo.versionNumber = im.versionNumber

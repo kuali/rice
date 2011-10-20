@@ -77,14 +77,14 @@ public class NotificationRecipientServiceKimImplTest extends KENTestCase
     @Test
     public final void testIsRecipientValid()
     {
-        assertTrue( nrski.isRecipientValid( TestConstants.VALID_KIM_PRINCIPAL_NAME, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE));
-        assertFalse( nrski.isRecipientValid( "BoogalooShrimp44", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE));
+        assertTrue( nrski.isRecipientValid( TestConstants.VALID_KIM_PRINCIPAL_NAME, KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()));
+        assertFalse( nrski.isRecipientValid( "BoogalooShrimp44", KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()));
 
         Group group = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
                 Utilities.parseGroupNamespaceCode(TestConstants.VALID_KIM_GROUP_NAME_1), Utilities.parseGroupName(
                 TestConstants.VALID_KIM_GROUP_NAME_1));
-        assertTrue( nrski.isRecipientValid( group.getId(), KimGroupMemberTypes.GROUP_MEMBER_TYPE));
-        assertFalse( nrski.isRecipientValid( "FooSchnickens99", KimGroupMemberTypes.GROUP_MEMBER_TYPE));
+        assertTrue( nrski.isRecipientValid( group.getId(), KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode()));
+        assertFalse( nrski.isRecipientValid( "FooSchnickens99", KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode()));
     }
 
     /**

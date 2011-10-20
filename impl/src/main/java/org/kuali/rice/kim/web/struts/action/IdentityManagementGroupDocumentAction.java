@@ -208,7 +208,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if (StringUtils.isEmpty(newMember.getMemberId()) 
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
-        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode())) {
         	Group tempGroup = KimApiServiceLocator.getGroupService().getGroupByNameAndNamespaceCode(
                     newMember.getMemberNamespaceCode(), newMember.getMemberName());
         	if (tempGroup != null) {
@@ -219,7 +219,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         //See if possible to grab details for Principal
         if (StringUtils.isEmpty(newMember.getMemberId()) 
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
-        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode())) {
         	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(newMember.getMemberName());
         	if (principal != null) {
         		newMember.setMemberId(principal.getPrincipalId());

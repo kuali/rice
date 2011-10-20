@@ -17,6 +17,7 @@
 package org.kuali.rice.kim.api.group;
 
 
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
@@ -57,5 +58,5 @@ public interface GroupMemberContract extends Versioned, GloballyUnique, Inactiva
      *
      * @return typeCode
      */
-    String getTypeCode();
+    MemberType getType();
 }

@@ -24,13 +24,14 @@ import org.junit.Assert
 import org.junit.Test
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.DateTimeFormat
+import org.kuali.rice.core.api.membership.MemberType
 
 class GroupMemberTest {
     static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     private static final String ID = "1"
     private static final String GROUP_ID = "50"
     private static final String MEMBER_ID = "1"
-    private static final String TYPE_CD = "P"
+    private static final MemberType TYPE = MemberType.PRINCIPAL
     private static final Long VER_NBR = new Long(1)
     private static final String OBJ_ID = UUID.randomUUID()
     private static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00"
@@ -43,7 +44,7 @@ class GroupMemberTest {
         <id>${ID}</id>
         <groupId>${GROUP_ID}</groupId>
         <memberId>${MEMBER_ID}</memberId>
-        <typeCode>${TYPE_CD}</typeCode>
+        <typeCode>${TYPE.getCode()}</typeCode>
         <activeFromDate>${ACTIVE_FROM}</activeFromDate>
         <activeToDate>${ACTIVE_TO}</activeToDate>
         <versionNumber>${VER_NBR}</versionNumber>
@@ -72,7 +73,7 @@ class GroupMemberTest {
             String getId() {GroupMemberTest.ID}
             String getGroupId() {GroupMemberTest.GROUP_ID}
             String getMemberId() {GroupMemberTest.MEMBER_ID}
-            String getTypeCode() {GroupMemberTest.TYPE_CD}
+            MemberType getType() {GroupMemberTest.TYPE}
             DateTime getActiveFromDate() {GroupMemberTest.ACTIVE_FROM}
             DateTime getActiveToDate() {GroupMemberTest.ACTIVE_TO}
             Long getVersionNumber() { GroupMemberTest.VER_NBR }
@@ -93,7 +94,7 @@ class GroupMemberTest {
         Assert.assertEquals(ID, groupMember.id)
         Assert.assertEquals(GROUP_ID, groupMember.groupId)
         Assert.assertEquals(MEMBER_ID, groupMember.memberId)
-        Assert.assertEquals(TYPE_CD, groupMember.typeCode)
+        Assert.assertEquals(TYPE, groupMember.type)
         Assert.assertEquals(ACTIVE_FROM, groupMember.activeFromDate)
         Assert.assertEquals(ACTIVE_TO, groupMember.activeToDate)
         Assert.assertEquals(OBJ_ID, groupMember.objectId)

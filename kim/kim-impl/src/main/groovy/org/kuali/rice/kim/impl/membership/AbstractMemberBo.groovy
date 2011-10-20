@@ -18,11 +18,28 @@ package org.kuali.rice.kim.impl.membership
 
 import javax.persistence.Column
 import org.kuali.rice.kim.impl.common.active.ActiveFromToBo
+import org.kuali.rice.core.api.membership.MemberType
 
 public abstract class AbstractMemberBo extends ActiveFromToBo {
     @Column(name="MBR_ID")
 	String memberId;
 
 	@Column(name="MBR_TYP_CD")
-	String typeCode;
+	private String typeCode;
+
+    /**
+     * Direct setter must be present for DD
+     * @param typeCode the string member typeCode
+     */
+    void setTypeCode(String typeCode) {
+        this.typeCode = typeCode;
+    }
+
+    void setType(MemberType type) {
+        typeCode = type.getCode()
+    }
+
+    MemberType getType() {
+        return MemberType.fromCode(typeCode);
+    }
 }

@@ -45,7 +45,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="PageGroup" abstract="true" parent="PageGroup-parentBean"/>
   <bean id="PageGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
-	  <property name="errorsField">
+      <!-- default set here so page header will always be genereated -->
+      <property name="title" value="&amp;nbsp;"/>
+	    <property name="errorsField">
         <bean parent="ErrorsField_Page"/>
       </property>
       <property name="header">

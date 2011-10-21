@@ -236,7 +236,7 @@ INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_C
   VALUES('KR-WKFLW', 'All', 'MAXIMUM_NODES_BEFORE_RUNAWAY', '4656B6E7E9844E2C9E2255014AFC86B5', 1, 'CONFG', NULL, 'The maximum number of nodes the workflow engine will process before it determines the process is a runaway process.  This is prevent infinite "loops" in the workflow engine.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
-  VALUES('KR-WKFLW', 'Workgroup', 'NOTIFY_EXCLUDED_USERS_IND', '08280F2575904F3586CF48BB97907506', 1, 'CONFG', NULL, 'Defines whether or not to send a notification to users excluded from a workgroup.', 'A', 'KUALI')
+  VALUES('KR-WKFLW', 'Notification', 'NOTIFY_GROUPS', '08280F2575904F3586CF48BB97907506', 1, 'CONFG', NULL, 'Defines a group name (in the format "namespace:name") which contains members who should never receive "notifications" action requests from KEW.', 'D', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
   VALUES('KR-WKFLW', 'DocSearchCriteriaDTO', 'FETCH_MORE_ITERATION_LIMIT', 'D43459D143FC46C6BF83C71AC2383B76', 1, 'CONFG', NULL, 'Limit of fetch more iterations for document searches.', 'A', 'KUALI')

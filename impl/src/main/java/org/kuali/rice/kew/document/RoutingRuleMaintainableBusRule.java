@@ -59,7 +59,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 		RuleBaseValues oldRuleBaseValues = this.getOldRuleBaseValues(document);
 		
 		if (oldRuleBaseValues != null) {
-			ruleBaseValues.setPreviousVersionId(oldRuleBaseValues.getId());
+			ruleBaseValues.setPreviousRuleId(oldRuleBaseValues.getId());
         }
 		isValid &= this.populateErrorMap(ruleBaseValues);
 
@@ -201,9 +201,9 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 		RuleBaseValues tmp = KEWServiceLocator.getRuleService().getRuleByName(rule.getName());
 
 		if(tmp != null) {
-		    if ((rule.getPreviousVersionId() == null) 
-		         || (rule.getPreviousVersionId() != null
-		            && !rule.getPreviousVersionId().equals(tmp.getId()))) {
+		    if ((rule.getPreviousRuleId() == null)
+		         || (rule.getPreviousRuleId() != null
+		            && !rule.getPreviousRuleId().equals(tmp.getId()))) {
 			    bRet = true;
 		    }
 		}

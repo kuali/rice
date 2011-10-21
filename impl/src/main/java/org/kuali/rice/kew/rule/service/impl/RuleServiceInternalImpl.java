@@ -20,17 +20,12 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
-import org.kuali.rice.core.api.cache.CacheService;
-import org.kuali.rice.core.api.cache.CacheTarget;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlConstants;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -74,7 +69,6 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import javax.xml.namespace.QName;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -120,8 +114,8 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     }
 
     public void save2(RuleBaseValues ruleBaseValues, RuleDelegationBo ruleDelegation, boolean saveDelegations) throws Exception {
-        if (ruleBaseValues.getPreviousVersionId() != null) {
-            RuleBaseValues oldRule = findRuleBaseValuesById(ruleBaseValues.getPreviousVersionId());
+        if (ruleBaseValues.getPreviousRuleId() != null) {
+            RuleBaseValues oldRule = findRuleBaseValuesById(ruleBaseValues.getPreviousRuleId());
             ruleBaseValues.setPreviousVersion(oldRule);
             ruleBaseValues.setCurrentInd(Boolean.FALSE);
             ruleBaseValues.setVersionNbr(getNextVersionNumber(oldRule));
@@ -190,7 +184,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
                     responsibilityIds.addAll(getResponsibilityIdsFromGraph(oldRule, isGenerateRuleArs));
                 }
                 //TODO if more than one delegate is edited from the create delegation screen (which currently can not happen), then this logic will not work.
-                if (rule.getDelegateRule().booleanValue() && rule.getPreviousVersionId() != null) {
+                if (rule.getDelegateRule().booleanValue() && rule.getPreviousRuleId() != null) {
                     delegateFirst = true;
                 }
 
@@ -344,8 +338,8 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         rule.setDeactivationDate(null);
 
         rulesToSave.put(rule.getId(), rule);
-        if (rule.getPreviousVersionId() != null) {
-        	RuleBaseValues oldRule = findRuleBaseValuesById(rule.getPreviousVersionId());
+        if (rule.getPreviousRuleId() != null) {
+        	RuleBaseValues oldRule = findRuleBaseValuesById(rule.getPreviousRuleId());
         	rule.setPreviousVersion(oldRule);
         }
         rule.setVersionNbr(0);
@@ -448,7 +442,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         if (parentRule.getDelegateRule().booleanValue()) {
             throw new IllegalArgumentException("Parent rule cannot be a delegate.");
         }
-        if (parentRule.getPreviousVersionId() == null && delegateRule.getPreviousVersionId() == null) {
+        if (parentRule.getPreviousRuleId() == null && delegateRule.getPreviousRuleId() == null) {
             throw new IllegalArgumentException("Previous rule version required.");
         }
 
@@ -525,7 +519,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
     private String generateTitle(RuleBaseValues parentRule, RuleBaseValues delegateRule) {
         StringBuffer title = new StringBuffer();
-        if (delegateRule.getPreviousVersionId() != null) {
+        if (delegateRule.getPreviousRuleId() != null) {
             title.append("Editing Delegation Rule '").append(delegateRule.getDescription()).append("' on '");
         } else {
             title.append("Adding Delegation Rule '").append(delegateRule.getDescription()).append("' to '");
@@ -744,7 +738,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     private Integer getNextVersionNumber(RuleBaseValues currentRule) {
         List candidates = new ArrayList();
         candidates.add(currentRule.getVersionNbr());
-        List pendingRules = ruleDAO.findByPreviousVersionId(currentRule.getId());
+        List pendingRules = ruleDAO.findByPreviousRuleId(currentRule.getId());
         for (Iterator iterator = pendingRules.iterator(); iterator.hasNext();) {
             RuleBaseValues pendingRule = (RuleBaseValues) iterator.next();
             candidates.add(pendingRule.getVersionNbr());
@@ -767,7 +761,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     public String isLockedForRouting(String currentRuleBaseValuesId) {
         // checks for any other versions of the given rule, essentially, if this is a rule edit we want to see how many other
         // pending edits are out there
-        List pendingRules = ruleDAO.findByPreviousVersionId(currentRuleBaseValuesId);
+        List pendingRules = ruleDAO.findByPreviousRuleId(currentRuleBaseValuesId);
         boolean isDead = true;
         for (Iterator iterator = pendingRules.iterator(); iterator.hasNext();) {
             RuleBaseValues pendingRule = (RuleBaseValues) iterator.next();
@@ -785,7 +779,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
                 RuleResponsibilityBo responsibility = (RuleResponsibilityBo) element;
                 for (Object element2 : responsibility.getDelegationRules()) {
                     RuleDelegationBo delegation = (RuleDelegationBo) element2;
-                    List pendingDelegateRules = ruleDAO.findByPreviousVersionId(delegation.getDelegationRule().getId());
+                    List pendingDelegateRules = ruleDAO.findByPreviousRuleId(delegation.getDelegationRule().getId());
                     for (Iterator iterator3 = pendingDelegateRules.iterator(); iterator3.hasNext();) {
                         RuleBaseValues pendingDelegateRule = (RuleBaseValues) iterator3.next();
                         if (pendingDelegateRule.getDocumentId() != null && StringUtils.isNotBlank(pendingDelegateRule.getDocumentId())) {
@@ -1026,7 +1020,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         RuleBaseValues rule = new RuleBaseValues();
         PropertyUtils.copyProperties(rule, existingRule);
         rule.setPreviousVersion(existingRule);
-        rule.setPreviousVersionId(existingRule.getId());
+        rule.setPreviousRuleId(existingRule.getId());
         rule.setId(null);
         rule.setActivationDate(null);
         rule.setDeactivationDate(null);
@@ -1168,7 +1162,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     }
 
     public RuleBaseValues saveRule(RuleBaseValues rule, boolean isRetroactiveUpdatePermitted) {
-    	rule.setPreviousVersionId(rule.getId());
+    	rule.setPreviousRuleId(rule.getId());
 		rule.setPreviousVersion(null);
 		rule.setId(null);
 		makeCurrent(rule, isRetroactiveUpdatePermitted);
@@ -1186,7 +1180,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
     public RuleDelegationBo saveRuleDelegation(RuleDelegationBo ruleDelegation, boolean isRetroactiveUpdatePermitted) {
     	RuleBaseValues rule = ruleDelegation.getDelegationRule();
-		rule.setPreviousVersionId(rule.getId());
+		rule.setPreviousRuleId(rule.getId());
 		rule.setPreviousVersion(null);
 		rule.setId(null);
 		ruleDelegation.setRuleDelegationId(null);

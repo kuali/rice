@@ -279,7 +279,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="items">
               <list>
                <bean parent="AttributeField" p:propertyName="id"/>
-               <bean parent="AttributeField" p:propertyName="previousVersionId"/>
+               <bean parent="AttributeField" p:propertyName="previousRuleId"/>
                <bean parent="AttributeField" p:propertyName="documentId"/>
                <bean parent="AttributeField" p:propertyName="documentType.name"/>
                <bean parent="AttributeField" p:propertyName="ruleTemplate.name"/>

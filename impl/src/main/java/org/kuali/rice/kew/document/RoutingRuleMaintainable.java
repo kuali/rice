@@ -102,7 +102,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 		}
 		WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
 		
-		getNewRule(document).setPreviousVersionId(getOldRule(document).getId());
+		getNewRule(document).setPreviousRuleId(getOldRule(document).getId());
 
 		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 		super.processAfterEdit(document, parameters);
@@ -141,7 +141,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	 */
 	@Override
 	public List<MaintenanceLock> generateMaintenanceLocks() {
-		if (getThisRule().getPreviousVersionId() == null) {
+		if (getThisRule().getPreviousRuleId() == null) {
 			return Collections.emptyList();
 		}
 		return super.generateMaintenanceLocks();
@@ -151,7 +151,7 @@ public class RoutingRuleMaintainable extends KualiMaintainableImpl {
 	public String getDocumentTitle(MaintenanceDocument document) {
 		StringBuffer title = new StringBuffer();
         RuleBaseValues rule = getThisRule();
-        if (rule.getPreviousVersionId() != null) {
+        if (rule.getPreviousRuleId() != null) {
             title.append("Editing Rule '").append(rule.getDescription()).append("'");
         } else {
             title.append("Adding Rule '").append(rule.getDescription()).append("'");

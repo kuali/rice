@@ -125,7 +125,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
 		}
 		WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
-		getNewRule(document).setPreviousVersionId(getOldRule(document).getId());
+		getNewRule(document).setPreviousRuleId(getOldRule(document).getId());
 		getNewRule(document).setDocumentId(document.getDocumentHeader().getDocumentNumber());
 		super.processAfterEdit(document, parameters);
 	}
@@ -143,7 +143,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	public String getDocumentTitle(MaintenanceDocument document) {
 		StringBuffer title = new StringBuffer();
         RuleBaseValues rule = getThisRule();
-        if (rule.getPreviousVersionId() != null) {
+        if (rule.getPreviousRuleId() != null) {
             title.append("Editing Rule Delegation '").append(rule.getDescription()).append("'");
         } else {
             title.append("Adding Rule Delegation '").append(rule.getDescription()).append("'");

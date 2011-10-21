@@ -431,9 +431,9 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		return query;
 	}
 
-	public List<RuleBaseValues> findByPreviousVersionId(String previousVersionId) {
+	public List<RuleBaseValues> findByPreviousRuleId(String previousRuleId) {
 		Criteria crit = new Criteria();
-		crit.addEqualTo("previousVersionId", previousVersionId);
+		crit.addEqualTo("previousRuleId", previousRuleId);
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 	}
 

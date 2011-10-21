@@ -568,7 +568,7 @@
     <field-descriptor column="DACTVN_DT" name="deactivationDate" jdbc-type="TIMESTAMP" />
     <field-descriptor column="CUR_IND" name="currentInd" jdbc-type="BIT" />
     <field-descriptor column="TMPL_RULE_IND" name="templateRuleInd" jdbc-type="BIT" />
-    <field-descriptor column="PREV_RULE_VER_NBR" name="previousVersionId" jdbc-type="VARCHAR" />
+    <field-descriptor column="PREV_VER_RULE_ID" name="previousRuleId" jdbc-type="VARCHAR" />
     <field-descriptor column="DLGN_IND" name="delegateRule" jdbc-type="BIT" />
     <field-descriptor column="ACTVN_DT" name="activationDate" jdbc-type="TIMESTAMP" />
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />

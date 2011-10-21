@@ -39,7 +39,7 @@ public interface RuleDAO {
     public List<RuleBaseValues> findByDocumentId(String documentId);
     public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type);
     public List<RuleBaseValues> findRuleBaseValuesByResponsibilityReviewerTemplateDoc(String ruleTemplateName, String documentType, String reviewerName, String type);
-    public List<RuleBaseValues> findByPreviousVersionId(String previousVersionId);
+    public List<RuleBaseValues> findByPreviousRuleId(String previousVersionId);
     public void retrieveAllReferences(RuleBaseValues rule);
     public RuleBaseValues findDefaultRuleByRuleTemplateId(String ruleTemplateId);
     public RuleBaseValues getParentRule(String ruleBaseValuesId);

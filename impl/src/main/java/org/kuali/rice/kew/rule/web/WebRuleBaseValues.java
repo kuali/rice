@@ -287,7 +287,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 
 	public void initialize() throws Exception {
 		loadFields();
-		// setPreviousVersionId(getId());
+		// setPreviousRuleId(getId());
 		for (Object element : getRuleResponsibilities()) {
 			WebRuleResponsibility responsibility = (WebRuleResponsibility) element;
 			responsibility.initialize();
@@ -349,13 +349,13 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		return fieldMap;
 	}
 
-	public void populatePreviousVersionIds() {
-		if (getPreviousVersionId() == null) {
-			setPreviousVersionId(getId());
+	public void populatePreviousRuleIds() {
+		if (getPreviousRuleId() == null) {
+			setPreviousRuleId(getId());
 		}
 		for (Object element : getRuleResponsibilities()) {
 			WebRuleResponsibility responsibility = (WebRuleResponsibility) element;
-			responsibility.populatePreviousVersionIds();
+			responsibility.populatePreviousRuleIds();
 		}
 	}
 

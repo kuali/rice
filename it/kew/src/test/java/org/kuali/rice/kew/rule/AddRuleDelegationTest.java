@@ -165,7 +165,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 			if (ruleDelegation.getRuleDelegationId().equals(newRuleDelegationId2)) {
 				// this is our reversioned rule
 				foundReversionedDelegateRule = true;
-				assertEquals("Previous version relationship should be set up now", newRuleDelegation.getDelegationRule().getId(), ruleDelegation.getDelegationRule().getPreviousVersionId());
+				assertEquals("Previous version relationship should be set up now", newRuleDelegation.getDelegationRule().getId(), ruleDelegation.getDelegationRule().getPreviousRuleId());
 				assertEquals("Rule Version should have been incremented.",
 						Long.valueOf(newRuleDelegation.getVersionNumber().longValue() + 1),
 						ruleDelegation.getVersionNumber());

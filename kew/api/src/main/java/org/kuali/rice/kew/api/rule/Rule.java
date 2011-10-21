@@ -66,7 +66,7 @@ public final class Rule
     @XmlElement(name = Elements.FORCE_ACTION, required = false)
     private final boolean forceAction;
     @XmlElement(name = Elements.PREVIOUS_VERSION_ID, required = false)
-    private final String previousVersionId;
+    private final String previousRuleId;
     @XmlElement(name = Elements.RULE_RESPONSIBILITIES, required = false)
     private final List<RuleResponsibility> ruleResponsibilities;
     @XmlElement(name = Elements.RULE_EXTENSION_MAP, required = false)
@@ -98,7 +98,7 @@ public final class Rule
         this.ruleExtensions = null;
         this.ruleTemplateName = null;
         this.ruleExpressionDef = null;
-        this.previousVersionId = null;
+        this.previousRuleId = null;
     }
 
     private Rule(Builder builder) {
@@ -123,7 +123,7 @@ public final class Rule
         this.ruleExtensions = builder.getRuleExtensionMap();
         this.ruleTemplateName = builder.getRuleTemplateName();
         this.ruleExpressionDef = builder.getRuleExpressionDef() == null ? null : builder.getRuleExpressionDef().build();
-        this.previousVersionId = builder.getPreviousVersionId();
+        this.previousRuleId = builder.getPreviousRuleId();
     }
 
     @Override
@@ -152,8 +152,8 @@ public final class Rule
     }
 
     @Override
-    public String getPreviousVersionId() {
-        return this.previousVersionId;
+    public String getPreviousRuleId() {
+        return this.previousRuleId;
     }
 
     @Override
@@ -216,7 +216,7 @@ public final class Rule
         private List<RuleResponsibility.Builder> ruleResponsibilities = Collections.<RuleResponsibility.Builder>emptyList();
         private Map<String, String> ruleExtensions = Collections.<String,String>emptyMap();
         private String ruleTemplateName;
-        private String previousVersionId;
+        private String previousRuleId;
         private RuleExpression.Builder ruleExpressionDef;
 
         private Builder() {
@@ -242,7 +242,7 @@ public final class Rule
             builder.setFromDate(contract.getFromDate());
             builder.setToDate(contract.getToDate());
             builder.setForceAction(contract.isForceAction());
-            builder.setPreviousVersionId(contract.getPreviousVersionId());
+            builder.setPreviousRuleId(contract.getPreviousRuleId());
             if (CollectionUtils.isNotEmpty(contract.getRuleResponsibilities())) {
                 List<RuleResponsibility.Builder> responsibilityBuilders = new ArrayList<RuleResponsibility.Builder>();
                 for (RuleResponsibilityContract c : contract.getRuleResponsibilities()) {
@@ -310,8 +310,8 @@ public final class Rule
         }
 
         @Override
-        public String getPreviousVersionId() {
-            return this.previousVersionId;
+        public String getPreviousRuleId() {
+            return this.previousRuleId;
         }
 
         @Override
@@ -372,8 +372,8 @@ public final class Rule
             this.forceAction = forceAction;
         }
 
-        public void setPreviousVersionId(String previousVersionId) {
-            this.previousVersionId = previousVersionId;
+        public void setPreviousRuleId(String previousRuleId) {
+            this.previousRuleId = previousRuleId;
         }
 
         public void setRuleResponsibilities(List<RuleResponsibility.Builder> ruleResponsibilities) {
@@ -425,7 +425,7 @@ public final class Rule
         final static String RULE_EXTENSION_MAP = "ruleExtensions";
         final static String RULE_TEMPLATE_NAME = "ruleTemplateName";
         final static String RULE_EXPRESSION_DEF = "ruleExpressionDef";
-        final static String PREVIOUS_VERSION_ID = "previousVersionId";
+        final static String PREVIOUS_VERSION_ID = "previousRuleId";
     }
 
     public static class Cache {

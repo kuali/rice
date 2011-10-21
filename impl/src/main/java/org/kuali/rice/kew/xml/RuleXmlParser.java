@@ -310,7 +310,7 @@ public class RuleXmlParser {
     	if (existingRule != null) {
     		// copy keys and responsibiliities from the existing rule
     		rule.setId(existingRule.getId());
-    		rule.setPreviousVersionId(existingRule.getPreviousVersionId());
+    		rule.setPreviousRuleId(existingRule.getPreviousRuleId());
     		rule.setPreviousVersion(existingRule.getPreviousVersion());
     		rule.setRuleResponsibilities(existingRule.getRuleResponsibilities());
     	}

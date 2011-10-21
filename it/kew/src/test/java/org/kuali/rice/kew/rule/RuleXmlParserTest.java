@@ -198,7 +198,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         
         // check that the previous versions line up and that the rule is not the same
         assertFalse("Rule ids should be different", ruleId.equals(rule.getId()));
-        assertEquals("Previous version id should be correct", ruleId, rule.getPreviousVersionId());
+        assertEquals("Previous version id should be correct", ruleId, rule.getPreviousRuleId());
         assertEquals("Version ids are incorrect", new Integer(versionNumber + 1), rule.getVersionNbr());
         // fetch the original rule and verify that it's no longer current
         RuleBaseValues oldRule = ruleService.findRuleBaseValuesById(ruleId);

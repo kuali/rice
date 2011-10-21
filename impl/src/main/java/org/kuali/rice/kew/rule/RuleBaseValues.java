@@ -88,8 +88,8 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 	private String name;
     @Column(name="RULE_TMPL_ID", insertable=false, updatable=false)
 	private String ruleTemplateId;
-    @Column(name="PREV_RULE_VER_NBR")
-	private String previousVersionId;
+    @Column(name="PREV_VER_RULE_ID")
+	private String previousRuleId;
     @Column(name="ACTV_IND")
 	private boolean active = true;
     @Column(name="RULE_BASE_VAL_DESC")
@@ -211,9 +211,9 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
     }
 
     public RuleBaseValues getPreviousVersion() {
-        if (previousVersion == null && previousVersionId != null) {
+        if (previousVersion == null && previousRuleId != null) {
             RuleServiceInternal ruleService = (RuleServiceInternal) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
-            return ruleService.findRuleBaseValuesById(previousVersionId);
+            return ruleService.findRuleBaseValuesById(previousRuleId);
         }
         return previousVersion;
     }
@@ -266,12 +266,12 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         return null;
     }
 
-    public String getPreviousVersionId() {
-        return previousVersionId;
+    public String getPreviousRuleId() {
+        return previousRuleId;
     }
 
-    public void setPreviousVersionId(String previousVersion) {
-        this.previousVersionId = previousVersion;
+    public void setPreviousRuleId(String previousVersion) {
+        this.previousRuleId = previousVersion;
     }
 
     public void addRuleResponsibility(RuleResponsibilityBo ruleResponsibility) {

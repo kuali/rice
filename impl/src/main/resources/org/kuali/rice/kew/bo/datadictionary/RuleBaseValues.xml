@@ -31,7 +31,7 @@
     <property name="attributes">
       <list>
         <ref bean="RuleBaseValues-id"/>
-        <ref bean="RuleBaseValues-previousVersionId"/>
+        <ref bean="RuleBaseValues-previousRuleId"/>
         <ref bean="RuleBaseValues-documentId"/>
 
         <ref bean="RuleBaseValues-name"/>
@@ -80,7 +80,7 @@
           <property name="objectAttributeName" value="previousVersion"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="previousVersionId" p:targetName="id"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="previousRuleId" p:targetName="id"/>
             </list>
           </property>
         </bean>
@@ -151,12 +151,12 @@
   </bean>
 
 
-  <bean id="RuleBaseValues-previousVersionId" parent="RuleBaseValues-previousVersionId-parentBean"/>
+  <bean id="RuleBaseValues-previousRuleId" parent="RuleBaseValues-previousRuleId-parentBean"/>
 
-  <bean id="RuleBaseValues-previousVersionId-parentBean" abstract="true" parent="RuleBaseValues-id">
-    <property name="shortLabel" value="previousVersionId"/>
-    <property name="name" value="previousVersionId"/>
-    <property name="label" value="Previous Version"/>
+  <bean id="RuleBaseValues-previousRuleId-parentBean" abstract="true" parent="RuleBaseValues-id">
+    <property name="shortLabel" value="previousRuleId"/>
+    <property name="name" value="previousRuleId"/>
+    <property name="label" value="Previous Rule"/>
   </bean> 
 
   <bean id="RuleBaseValues-documentId" parent="DocumentLookupCriteria-documentId"/>
@@ -448,7 +448,7 @@
             <list>
    
               <bean parent="FieldDefinition" p:attributeName="id" p:noInquiry="true"/>
-              <bean parent="FieldDefinition" p:attributeName="previousVersionId"/>
+              <bean parent="FieldDefinition" p:attributeName="previousRuleId"/>
               <bean parent="FieldDefinition" p:attributeName="documentId"/>
 
               <bean parent="FieldDefinition" p:attributeName="documentType.name"/>

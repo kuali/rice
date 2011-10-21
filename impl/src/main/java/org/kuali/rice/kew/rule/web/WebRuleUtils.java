@@ -83,7 +83,7 @@ public final class WebRuleUtils {
     public static WebRuleBaseValues copyRuleOntoExistingDocument(WebRuleBaseValues rule) throws Exception {
         WebRuleBaseValues ruleCopy = new WebRuleBaseValues();
         PropertyUtils.copyProperties(ruleCopy, rule);
-        ruleCopy.setPreviousVersionId(null);
+        ruleCopy.setPreviousRuleId(null);
         ruleCopy.setCurrentInd(null);
         ruleCopy.setVersionNbr(null);
 
@@ -111,7 +111,7 @@ public final class WebRuleUtils {
                 WebRuleBaseValues ruleDelegateCopy = new WebRuleBaseValues();
                 PropertyUtils.copyProperties(ruleDelegateCopy, delegationRule);
 
-                ruleDelegateCopy.setPreviousVersionId(null);
+                ruleDelegateCopy.setPreviousRuleId(null);
                 ruleDelegateCopy.setCurrentInd(null);
                 ruleDelegateCopy.setVersionNbr(null);
 
@@ -596,7 +596,7 @@ public final class WebRuleUtils {
 	
 	public static void clearKeysForCopy(RuleBaseValues rule) {    	
     	rule.setId(null);
-    	rule.setPreviousVersionId(null);
+    	rule.setPreviousRuleId(null);
     	rule.setPreviousVersion(null);
     	rule.setName(null);
     	for (PersonRuleResponsibility responsibility : rule.getPersonResponsibilities()) {

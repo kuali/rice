@@ -360,14 +360,14 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 			ruleDelegation.setDelegationRule(webRule);
 		}
 		delegationRulesMaterialized = true;
-		populatePreviousVersionIds();
+		populatePreviousRuleIds();
 	}
 
-	public void populatePreviousVersionIds() {
+	public void populatePreviousRuleIds() {
 		if (delegationRulesMaterialized) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegationBo delegation = (RuleDelegationBo) iterator.next();
-				((WebRuleBaseValues) delegation.getDelegationRule()).populatePreviousVersionIds();
+				((WebRuleBaseValues) delegation.getDelegationRule()).populatePreviousRuleIds();
 			}
 		}
 	}
@@ -399,7 +399,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 
 			RuleBaseValues rule = delegation.getDelegationRule();
 			rule.setVersionNumber(null);
-			rule.setPreviousVersionId(rule.getId());
+			rule.setPreviousRuleId(rule.getId());
 			rule.setDocumentId(null);
 			rule.setId(null);
 

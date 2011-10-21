@@ -427,9 +427,9 @@ public class RuleDAOJpaImpl implements RuleDAO {
 //		return responsibilityCrit;
 //	}
 
-	public List<RuleBaseValues> findByPreviousVersionId(String previousVersionId) {
+	public List<RuleBaseValues> findByPreviousRuleId(String previousRuleId) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
-		crit.eq("previousVersionId", previousVersionId);
+		crit.eq("previousRuleId", previousRuleId);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 

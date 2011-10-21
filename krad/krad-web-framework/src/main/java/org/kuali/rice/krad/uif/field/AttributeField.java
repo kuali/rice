@@ -211,6 +211,18 @@ public class AttributeField extends FieldBase implements DataBinding {
         }
         this.hiddenPropertyNames = hiddenPropertyPaths;
 
+        // adjust paths on PrerequisiteConstraint property names
+        adjustPrerequisiteConstraintBinding(dependencyConstraints);
+
+        // adjust paths on MustOccurConstraints property names
+        adjustMustOccurConstraintBinding(mustOccurConstraints);
+
+        // adjust paths on CaseConstraint property names
+        if (caseConstraint != null) {
+            String propertyName = getBindingInfo().getPropertyAdjustedBindingPath(caseConstraint.getPropertyName());
+            caseConstraint.setPropertyName(propertyName);
+        }        
+        
         // invoke options finder if options not configured on the control
         if ((optionsFinder != null) && (control != null) && control instanceof MultiValueControlBase) {
             MultiValueControlBase multiValueControl = (MultiValueControlBase) control;
@@ -244,6 +256,24 @@ public class AttributeField extends FieldBase implements DataBinding {
 
         if (view instanceof FormView && ((FormView) view).isValidateClientSide()) {
             ClientValidationUtils.processAndApplyConstraints(this, view);
+        }
+    }
+
+    protected void adjustMustOccurConstraintBinding(List<MustOccurConstraint> mustOccurConstraints) {
+        if (mustOccurConstraints != null) {
+            for (MustOccurConstraint mustOccurConstraint : mustOccurConstraints) {
+                adjustPrerequisiteConstraintBinding(mustOccurConstraint.getPrerequisiteConstraints());
+                adjustMustOccurConstraintBinding(mustOccurConstraint.getMustOccurConstraints());
+            }
+        }
+    }
+
+    protected void adjustPrerequisiteConstraintBinding(List<PrerequisiteConstraint> prerequisiteConstraints) {
+        if (prerequisiteConstraints != null) {
+            for (PrerequisiteConstraint prerequisiteConstraint : prerequisiteConstraints) {
+                String propertyName = getBindingInfo().getPropertyAdjustedBindingPath(prerequisiteConstraint.getPropertyName());
+                prerequisiteConstraint.setPropertyName(propertyName);
+            }
         }
     }
 

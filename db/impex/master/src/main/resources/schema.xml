@@ -1181,7 +1181,7 @@
         <column default="0" name="CUR_IND" size="1" type="DECIMAL"/>
         <column default="0" name="RULE_VER_NBR" size="8" type="DECIMAL"/>
         <column name="DLGN_IND" size="1" type="DECIMAL"/>
-        <column name="PREV_RULE_VER_NBR" size="40" type="VARCHAR"/>
+        <column name="PREV_VER_RULE_ID" size="40" type="VARCHAR"/>
         <column name="ACTVN_DT" type="DATE"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>

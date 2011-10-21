@@ -344,7 +344,10 @@ public class LookupUtils {
     private static String BASE_LOOKUP_ACTION_URL = null;
     private static String BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = null;
     private static String BASE_INQUIRY_ACTION_URL = null;
-    
+
+    /**
+     * @see org.kuali.rice.krad.uif.util.LookupInquiryUtils#getBaseLookupUrl()
+     */
     @Deprecated
     public static String getBaseLookupUrl(boolean isMultipleValue) {
         ConfigurationService kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();

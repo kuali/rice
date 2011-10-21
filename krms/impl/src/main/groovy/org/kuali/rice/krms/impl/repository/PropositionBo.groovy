@@ -9,7 +9,8 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator
 import org.kuali.rice.krms.api.repository.proposition.PropositionType
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType
-import org.kuali.rice.krad.service.SequenceAccessorService;
+import org.kuali.rice.krad.service.SequenceAccessorService
+import org.kuali.rice.krms.api.repository.LogicalOperator;
 
 
 public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
@@ -28,6 +29,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 
     // parameter display string (for tree display)
     def String parameterDisplayString;
+    def boolean editMode = false;
     private SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
 
     private void setupParameterDisplayString(){
@@ -74,6 +76,14 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
      */
     public void setParameterDisplayString(String parameterDisplayString) {
         this.parameterDisplayString = parameterDisplayString;
+    }
+
+    public boolean getEditMode(){
+        return this.editMode;
+    }
+
+    public void setEditMode(boolean editMode){
+        this.editMode = editMode;
     }
 
     public BusinessObjectService getBoService() {
@@ -150,6 +160,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
           prop.setPropositionTypeCode(pType);
           prop.setRuleId(sibling.getRuleId());
           prop.setTypeId(sibling.getTypeId());
+          prop.setEditMode(true);
 
           // create blank proposition parameters
           PropositionParameterBo pTerm = new PropositionParameterBo();
@@ -183,13 +194,30 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
       return prop;
   }
 
-    private String getNewPropId(){
+    public static PropositionBo createCompoundPropositionBoStub(PropositionBo simple){
+        // create a simple proposition Bo
+        PropositionBo prop = new PropositionBo();
+        prop.setId(getNewPropId());
+        prop.setPropositionTypeCode(PropositionType.COMPOUND.code);
+        prop.setRuleId(simple.getRuleId());
+        prop.setTypeId(simple.getTypeId());
+        prop.setCompoundOpCode(LogicalOperator.AND.code);  // default to and
+        prop.setDescription("");
+        prop.setEditMode(true);
+
+        PropositionBo newProp = createSimplePropositionBoStub(simple, PropositionType.SIMPLE.code)
+        List <PropositionBo> components = Arrays.asList(simple, newProp);
+        prop.setCompoundComponents(components);
+        return prop;
+    }
+
+    private static String getNewPropId(){
         SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
         Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_S",
                 PropositionBo.class);
         return id.toString();
     }
-    private String getNewPropParameterId(){
+    private static String getNewPropParameterId(){
         SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
         Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_PARM_S",
                 PropositionParameterBo.class);

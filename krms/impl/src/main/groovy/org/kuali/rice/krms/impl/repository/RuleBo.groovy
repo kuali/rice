@@ -29,6 +29,7 @@ import org.kuali.rice.krms.impl.ui.CompoundOpCodeNode
 import org.kuali.rice.krms.impl.ui.RuleTreeNode
 import org.kuali.rice.krms.impl.ui.SimplePropositionNode
 import org.kuali.rice.krms.impl.ui.SimplePropositionEditNode
+import org.kuali.rice.krms.impl.ui.CompoundPropositionEditNode
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
    
@@ -114,7 +115,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                // add a node for the description display with a child proposition node
                Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
                child.setNodeLabel(prop.getDescription());
-               if (editMode){
+               if (prop.getEditMode()){
                    child.setNodeLabel("");
                    child.setNodeType(SimplePropositionEditNode.NODE_TYPE);
                    SimplePropositionEditNode pNode = new SimplePropositionEditNode(prop);
@@ -140,8 +141,16 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                propositionSummaryBuffer.append(" ( ");
                Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
                aNode.setNodeLabel(prop.getDescription());
-               aNode.setNodeType("ruleTreeNode compoundNode");
-               aNode.setData(new RuleTreeNode(prop));
+               if (prop.getEditMode()){
+                   aNode.setNodeLabel("");
+                   aNode.setNodeType("ruleTreeNode compoundNode editNode");
+                   CompoundPropositionEditNode pNode = new CompoundPropositionEditNode(prop);
+                   aNode.setData(pNode);
+               } else {
+                   aNode.setNodeType("ruleTreeNode compoundNode");
+                   RuleTreeNode pNode = new RuleTreeNode(prop);
+                   aNode.setData(pNode);
+               }
                sprout.getChildren().add(aNode);
 
                boolean first = true;

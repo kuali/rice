@@ -246,90 +246,16 @@
             <bean class="java.lang.Class" factory-method="forName">
               <constructor-arg value="org.kuali.rice.krms.impl.ui.RuleTreeNode"/>
             </bean>
-          </key> 
-          <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
-            <property name="labelPrototype">
-              <bean parent="MessageField"/>
-            </property>
-            <property name="dataGroupPrototype">
-              <!-- float:right is a hack to get the group for this hidden control out of the way -->
-              <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
-                <property name="layoutManager.orientation" value="HORIZONTAL"/>
-                <property name="items">
-                  <list>
-                    <bean parent="AttributeField" p:propertyName="proposition.id"
-                            p:showLabel="false" p:label="id" p:maxLength="255">
-                      <property name="control">
-                        <bean parent="HiddenControl"/>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-              </bean>
-            </property>
-          </bean>
+          </key>
+          <ref bean="RuleTreeNodePrototype"/>
         </entry>
         <entry>
           <key>
             <bean class="java.lang.Class" factory-method="forName">
               <constructor-arg value="org.kuali.rice.krms.impl.ui.SimplePropositionNode"/>
             </bean>
-          </key> 
-          <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
-            <property name="labelPrototype">
-              <bean parent="MessageField"/>
-            </property>
-            <property name="dataGroupPrototype">
-              <!-- float:right is a hack to get the group for this hidden control out of the way -->
-              <bean parent="GroupBodyOnly" p:hidden="true" >
-                <property name="items">
-                  <list>
-                    <bean parent="AttributeField" p:propertyName="proposition.id"
-                            p:showLabel="false" p:label="id" p:maxLength="255">
-                      <property name="control">
-                        <bean parent="HiddenControl"/>
-                      </property>
-                    </bean>
-                    <bean parent="AttributeField" p:propertyName="proposition.parameterDisplayString"
-                          p:style="margin-left: 15pt" p:showLabel="false" p:label="id" p:maxLength="255">
-                      <property name="control">
-                        <bean parent="TextControl" p:size="100" p:style="border: 0"/>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-              </bean>
-            </property>
-          </bean>
-        </entry>
-        <entry>
-          <key>
-            <bean class="java.lang.Class" factory-method="forName">
-              <constructor-arg value="org.kuali.rice.krms.impl.ui.CompoundOpCodeNode"/>
-            </bean>
-          </key> 
-          <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
-            <property name="labelPrototype">
-              <bean parent="MessageField"/>
-            </property>
-            <property name="dataGroupPrototype">
-              <bean parent="GroupBodyOnly">
-                <property name="items">
-                  <list>                
-                    <bean parent="AttributeField" p:propertyName="proposition.compoundOpCode"
-                            p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="20">
-                      <property name="control">
-			            <bean parent="SelectControl"/>
-                      </property>
-                      <property name="optionsFinder">
-                        <bean class="org.kuali.rice.krms.impl.ui.CompoundOpCodeValuesFinder"/>
-                      </property>
-                    </bean>                      
-                  </list>
-                </property>
-              </bean>
-            </property>
-          </bean>
+          </key>
+          <ref bean="SimplePropositionNodePrototype"/>
         </entry>
         <entry>
           <key>
@@ -337,70 +263,204 @@
               <constructor-arg value="org.kuali.rice.krms.impl.ui.SimplePropositionEditNode"/>
             </bean>
           </key>
-          <bean class="org.kuali.rice.krad.uif.container.NodePrototype">
-            <property name="labelPrototype">
-              <bean parent="MessageField"/>
-            </property>
-            <property name="dataGroupPrototype">
-              <!-- float:right is a hack to get the group for this hidden control out of the way -->
-              <bean parent="GroupBodyOnly" p:hidden="false">
-                <property name="layoutManager.orientation" value="VERTICAL"/>
-                <property name="items">
-                  <list>
-                    <bean parent="AttributeField" p:propertyName="proposition.id"
-                            p:showLabel="false" p:label="id" p:maxLength="255">
-                      <property name="control">
-                        <bean parent="HiddenControl"/>
-                      </property>
-                    </bean>
-                    <bean parent="AttributeField" p:propertyName="proposition.description"
-                          p:style="margin-left: 12pt" p:showLabel="false" p:label="id" p:maxLength="255">
-                      <property name="control">
-                        <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt" />
-                      </property>
-                    </bean>
-                    <bean parent="GroupBodyOnly" p:hidden="true" >
-                      <property name="layoutManager.orientation" value="HORIZONTAL"/>
-                      <property name="items">
-                        <list>
-                          <bean parent="AttributeField" p:propertyName="proposition.parameters[0].value"
-                                  p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="255">
-                            <property name="control">
-                              <bean parent="SelectControl"/>
-                            </property>
-                            <property name="optionsFinder">
-                              <bean class="org.kuali.rice.krms.impl.ui.ValidTermsValuesFinder"/>
-                            </property>
-                          </bean>
-                          <bean parent="AttributeField" p:propertyName="proposition.parameters[2].value"
-                                  p:showLabel="false" p:label="operator" p:maxLength="20">
-                            <property name="control">
-                              <bean parent="SelectControl"/>
-                            </property>
-                            <property name="optionsFinder">
-                              <bean class="org.kuali.rice.krms.impl.ui.PropositionOpCodeValuesFinder"/>
-                            </property>
-                          </bean>
-                          <bean parent="AttributeField" p:propertyName="proposition.parameters[1].value"
-                                  p:showLabel="false" p:label="id" p:maxLength="255">
-                            <property name="control">
-                              <bean parent="TextControl" p:watermarkText="Enter a Literal Value" />
-                            </property>
-                          </bean>
-                        </list>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-              </bean>
-            </property>
-          </bean>
+          <ref bean="SimplePropositionEditNodePrototype"/>
+        </entry>
+        <entry>
+          <key>
+            <bean class="java.lang.Class" factory-method="forName">
+              <constructor-arg value="org.kuali.rice.krms.impl.ui.CompoundOpCodeNode"/>
+            </bean>
+          </key> 
+          <ref bean="CompoundOpCodeNodePrototype"/>
+        </entry>
+        <entry>
+          <key>
+            <bean class="java.lang.Class" factory-method="forName">
+              <constructor-arg value="org.kuali.rice.krms.impl.ui.CompoundPropositionEditNode"/>
+            </bean>
+          </key>
+          <ref bean="CompoundPropositionEditNodePrototype"/>
         </entry>
       </map>
     </property>
   </bean>
         
-        
+<bean id="RuleTreeNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
+  <property name="labelPrototype">
+    <bean parent="MessageField"/>
+  </property>
+  <property name="dataGroupPrototype">
+    <!-- float:right is a hack to get the group for this hidden control out of the way -->
+    <bean parent="GroupBodyOnly" p:hidden="true" >
+      <property name="layoutManager.orientation" value="VERTICAL"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:propertyName="proposition.id"
+                  p:showLabel="false" p:label="id" p:maxLength="255">
+            <property name="control">
+              <bean parent="HiddenControl"/>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>
+  </property>
+</bean>
+
+  <bean id="SimplePropositionNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
+    <property name="labelPrototype">
+      <bean parent="MessageField"/>
+    </property>
+    <property name="dataGroupPrototype">
+      <!-- float:right is a hack to get the group for this hidden control out of the way -->
+      <bean parent="GroupBodyOnly" p:hidden="true" >
+        <property name="items">
+          <list>
+            <bean parent="AttributeField" p:propertyName="proposition.id"
+                    p:showLabel="false" p:label="id" p:maxLength="255">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField" p:propertyName="proposition.parameterDisplayString"
+                  p:style="margin-left: 15pt" p:showLabel="false" p:label="id" p:maxLength="255">
+              <property name="control">
+                <bean parent="TextControl" p:size="100" p:style="border: 0"/>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="SimplePropositionEditNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
+    <property name="labelPrototype">
+      <bean parent="MessageField"/>
+    </property>
+    <property name="dataGroupPrototype">
+      <!-- float:right is a hack to get the group for this hidden control out of the way -->
+      <bean parent="GroupBodyOnly" p:hidden="false">
+        <property name="layoutManager.orientation" value="VERTICAL"/>
+        <property name="items">
+          <list>
+            <bean parent="AttributeField" p:propertyName="proposition.id"
+                    p:showLabel="false" p:label="id" p:maxLength="255">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField" p:propertyName="proposition.description"
+                  p:style="margin-left: 1pt" p:showLabel="false" p:label="id" p:maxLength="255">
+              <property name="control">
+                <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt" />
+              </property>
+            </bean>
+            <bean parent="GroupBodyOnly" p:hidden="true" >
+              <property name="layoutManager.orientation" value="HORIZONTAL"/>
+              <property name="items">
+                <list>
+<!--
+                  <bean parent="AttributeField" abstract="true"
+        p:label="Select" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
+        p:labelField.renderColon="false">
+
+                    <property name="control">
+                      <bean parent="SelectControl">
+                        <property name="options">
+                          <list>
+                            <bean parent="KeyLabelPair" p:key="" p:value="default Category"/>
+                            <bean parent="KeyLabelPair" p:key="1" p:value="Notifications"/>
+                            <bean parent="KeyLabelPair" p:key="2" p:value="Validations"/>
+                            <bean parent="KeyLabelPair" p:key="3" p:value="Workflow"/>
+                          </list>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+-->
+                  <bean parent="AttributeField" p:propertyName="proposition.parameters[0].value"
+                          p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="255">
+                    <property name="control">
+                      <bean parent="SelectControl"/>
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krms.impl.ui.ValidTermsValuesFinder"/>
+                    </property>
+                  </bean>
+                  <bean parent="AttributeField" p:propertyName="proposition.parameters[2].value"
+                          p:showLabel="false" p:label="operator" p:maxLength="20">
+                    <property name="control">
+                      <bean parent="SelectControl"/>
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krms.impl.ui.PropositionOpCodeValuesFinder"/>
+                    </property>
+                  </bean>
+                  <bean parent="AttributeField" p:propertyName="proposition.parameters[1].value"
+                          p:showLabel="false" p:label="id" p:maxLength="255">
+                    <property name="control">
+                      <bean parent="TextControl" p:watermarkText="Enter a Literal Value" />
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="CompoundOpCodeNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
+    <property name="labelPrototype">
+      <bean parent="MessageField"/>
+    </property>
+    <property name="dataGroupPrototype">
+      <bean parent="GroupBodyOnly">
+        <property name="items">
+          <list>
+            <bean parent="AttributeField" p:propertyName="proposition.compoundOpCode"
+                    p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="20">
+              <property name="control">
+                <bean parent="SelectControl"/>
+              </property>
+              <property name="optionsFinder">
+                <bean class="org.kuali.rice.krms.impl.ui.CompoundOpCodeValuesFinder"/>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+  <bean id="CompoundPropositionEditNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
+    <property name="labelPrototype">
+      <bean parent="MessageField"/>
+    </property>
+    <property name="dataGroupPrototype">
+      <!-- float:right is a hack to get the group for this hidden control out of the way -->
+      <bean parent="GroupBodyOnly" p:hidden="true" >
+        <property name="layoutManager.orientation" value="VERTICAL"/>
+        <property name="items">
+          <list>
+            <bean parent="AttributeField" p:propertyName="proposition.id"
+                    p:showLabel="false" p:label="id" p:maxLength="255">
+              <property name="control">
+                <bean parent="HiddenControl"/>
+              </property>
+            </bean>
+            <bean parent="AttributeField" p:propertyName="proposition.description"
+                    p:showLabel="false" p:label="description" p:maxLength="255" p:style="margin-left: 0pt">
+              <property name="control">
+                <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Compound Proposition Description" />
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
 
   <bean name="ruleAttributesSection" parent="ruleAttributesSection-parent" />
   <bean name="ruleAttributesSection-parent" parent="Group"  p:style="padding-bottom: 1em;">

@@ -30,18 +30,33 @@ public class RuleTreeNode implements Serializable {
     private static final long serialVersionUID = 8038174553531544943L;
     public static final String COMPOUND_NODE_TYPE = "ruleTreeNode compoundNode";
     protected PropositionBo proposition;
+    protected boolean editMode;
     
     public RuleTreeNode(){}
     
     public RuleTreeNode(PropositionBo proposition){
         this.proposition = proposition;
+        this.editMode = false;
     }
     
+    public RuleTreeNode(PropositionBo proposition, boolean editMode){
+        this.proposition = proposition;
+        this.editMode = editMode;
+    }
+
     public PropositionBo getProposition() {
         return this.proposition;
     }
     
     public void setProposition(PropositionBo proposition) {
         this.proposition = proposition;
+    }
+
+    public boolean getEditMode(){
+        return this.editMode;
+    }
+
+    public void setEditMode(boolean editMode){
+        this.editMode = editMode;
     }
 }

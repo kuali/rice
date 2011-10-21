@@ -1266,8 +1266,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
         // find parent
-        Node<RuleTreeNode,String> parent = findParentPropositionNode(
-                agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
+        Node<RuleTreeNode,String> root = agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
+        Node<RuleTreeNode,String> parent = findParentPropositionNode( root, selectedPropId);
 
         // add new child at appropriate spot
         if (parent != null){
@@ -1277,17 +1277,30 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
                 // if our selected node is a simple proposition, add a new one after
                 if (propIdMatches(child, selectedPropId)){
-                    if(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
+                    // handle special case of adding to a lone simple proposition.
+                    // in this case, we need to change the root level proposition to a compound proposition
+                    // move the existing simple proposition as the first compound component,
+                    // then add a new blank simple prop as the second compound component.
+                    if (parent == root &&
+                        (SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
+                        SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()))){
+
+                        // create a new compound proposition
+                        PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(child.getData().getProposition());
+                        compound.setEditMode(true);
+                        rule.setProposition(compound);
+                        rule.refreshPropositionTree(true);
+                    }
+                    // handle regular case of adding a simple prop to an existing compound prop
+                    else if(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
                        SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType())){
 
                         // build new Blank Proposition
                         PropositionBo blank = PropositionBo.createSimplePropositionBoStub(child.getData().getProposition(),PropositionType.SIMPLE.getCode());
-
                         //add it to the parent
                         PropositionBo parentProp = parent.getData().getProposition();
-                        parentProp.getCompoundComponents().add((index/2)+1, blank);
+                        parentProp.getCompoundComponents().add(((index/2)+1), blank);
 
-                        // redisplay the tree (editMode = true)
                         rule.refreshPropositionTree(true);
                     }
 
@@ -1509,8 +1522,22 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView deleteProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        moveSelectedProposition(form, true);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+        Node<RuleTreeNode, String> root = agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
 
+        PropositionBo parent = findParentPropositionNode(root, selectedPropId).getData().getProposition();
+        if (parent != null){
+            List <PropositionBo> children = parent.getCompoundComponents();
+            for( int index=0; index< children.size(); index++){
+                if (selectedPropId.equalsIgnoreCase(children.get(index).getId())){
+                    parent.getCompoundComponents().remove(index);
+                    break;
+                }
+            }
+        }
+        //TODO: handle edit mode
+        agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(false);
         return super.updateComponent(form, result, request, response);
     }
 

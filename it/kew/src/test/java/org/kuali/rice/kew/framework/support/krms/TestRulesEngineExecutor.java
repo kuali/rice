@@ -7,7 +7,9 @@ import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
 import org.kuali.rice.krms.api.engine.Term;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +31,8 @@ public class TestRulesEngineExecutor implements RulesEngineExecutor {
         Map<String, String> contextQualifiers = new HashMap<String, String>();
         contextQualifiers.put("namespaceCode", CONTEXT_NAMESPACE_CODE);
         contextQualifiers.put("name", CONTEXT_NAME);
-        SelectionCriteria sectionCriteria = SelectionCriteria.createCriteria(EVENT_NAME, null, contextQualifiers, null);
+        SelectionCriteria sectionCriteria = SelectionCriteria.createCriteria(null, contextQualifiers,
+                Collections.singletonMap(AgendaDefinition.Constants.EVENT, EVENT_NAME));
         return engine.execute(sectionCriteria, Facts.EMPTY_FACTS, null);
     }
 }

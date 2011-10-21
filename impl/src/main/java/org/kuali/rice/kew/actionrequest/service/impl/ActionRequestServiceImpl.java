@@ -597,9 +597,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             {
                 applicationId = CoreConfigHelper.getApplicationId();
             }
-            DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(applicationId,
-                    documentId, cacheWait);
-            documentRequeuer.refreshDocument(documentId);
+            if(documentType.getRegenerateActionRequestsOnChange().getPolicyValue()) {
+                DocumentRefreshQueue documentRequeuer = MessageServiceNames.getDocumentRequeuerService(applicationId,
+                        documentId, cacheWait);
+                documentRequeuer.refreshDocument(documentId);
+            }
         }
         if ( LOG.isInfoEnabled() ) {
         	performanceLogger.log("Time to updateActionRequestsForResponsibilityChange");

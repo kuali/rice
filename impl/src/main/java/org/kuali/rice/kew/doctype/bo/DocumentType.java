@@ -321,6 +321,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public DocumentTypePolicy getSuPostprocessorOverridePolicy() {
         return getPolicyByName(DocumentTypePolicyEnum.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY.getName(), Boolean.TRUE);
     }
+    
+    public DocumentTypePolicy getRegenerateActionRequestsOnChange() {
+    	return getPolicyByName(DocumentTypePolicyEnum.REGENERATE_ACTION_REQUESTS_ON_CHANGE.getName(), Boolean.TRUE);
+    }
 
     /**
      * This method returns a boolean denoting whether the KEW Route Status is to be displayed.

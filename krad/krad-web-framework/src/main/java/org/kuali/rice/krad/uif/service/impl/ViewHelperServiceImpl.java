@@ -805,6 +805,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
+        // implement readonly request overrides
+        ViewModel viewModel = (ViewModel) model;
+        if ((component instanceof DataBinding) && view.isSupportsReadOnlyFieldsOverride() && !viewModel
+                .getReadOnlyFieldsList().isEmpty()) {
+            String propertyName = ((DataBinding) component).getPropertyName();
+            if (viewModel.getReadOnlyFieldsList().contains(propertyName)) {
+                component.setReadOnly(true);
+            }
+        }
+
         // invoke configured method finalizers
         invokeMethodFinalizer(view, component, model);
 

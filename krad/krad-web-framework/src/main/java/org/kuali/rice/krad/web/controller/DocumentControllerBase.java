@@ -219,8 +219,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     		// save in workflow
     		getDocumentService().saveDocument(document);
 
-            // TODO: should add message to message map
-    		//GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SAVED);
+            GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, RiceKeyConstants.MESSAGE_SAVED);
     		form.setAnnotation("");
 		}
 		catch(ValidationException vex) {
@@ -263,8 +262,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 		// combineAdHocRecipients(kualiDocumentFormBase));
 		getDocumentService().routeDocument(document, form.getAnnotation(), new ArrayList<AdHocRouteRecipient>());
 
-        // TODO: should added message to message map
-		//GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
+        GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
 		form.setAnnotation("");
 
 		// GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY,Boolean.TRUE);

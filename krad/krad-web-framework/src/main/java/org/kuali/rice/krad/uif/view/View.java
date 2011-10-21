@@ -131,6 +131,8 @@ public class View extends ContainerBase {
     private String preLoadScript;
     private Map<String, Object> clientSideState;
 
+    private boolean supportsReadOnlyFieldsOverride;
+
     @RequestParameter
     private boolean dialogMode;
 
@@ -144,6 +146,7 @@ public class View extends ContainerBase {
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
         breadcrumbsInApplicationHeader = false;
+        supportsReadOnlyFieldsOverride = true;
 
         idSequence = 0;
         this.viewIndex = new ViewIndex();
@@ -1280,6 +1283,29 @@ public class View extends ContainerBase {
         // add variables to component state and reinsert into view's client state
         componentClientState.put(variableName, value);
         clientSideState.put(componentId, componentClientState);
+    }
+
+    /**
+     * Indicates whether the view allows read only fields to be specified on the request URL which will
+     * override the view setting
+     *
+     * <p>
+     * If enabled, the readOnlyFields request parameter can be sent to indicate fields that should be set read only
+     * </p>
+     *
+     * @return boolean true if read only request overrides are allowed, false if not
+     */
+    public boolean isSupportsReadOnlyFieldsOverride() {
+        return supportsReadOnlyFieldsOverride;
+    }
+
+    /**
+     * Setter for the the read only field override indicator
+     *
+     * @param supportsReadOnlyFieldsOverride
+     */
+    public void setSupportsReadOnlyFieldsOverride(boolean supportsReadOnlyFieldsOverride) {
+        this.supportsReadOnlyFieldsOverride = supportsReadOnlyFieldsOverride;
     }
 
     /**

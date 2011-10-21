@@ -376,6 +376,7 @@
 	<!-- KRAD -->
 	<param name="rice.kr.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
 	<param name="kr.url" override="false">${application.url}/kr</param>
+    <param name="kr.krad.url" override="false">${application.url}/kr-krad</param>
 	<param name="kr.mode" override="false">LOCAL</param>
 	<param name="kradServer.datasource.jndi.location" override="false"></param>
 	<param name="kradApplication.datasource.jndi.location" override="false"></param>

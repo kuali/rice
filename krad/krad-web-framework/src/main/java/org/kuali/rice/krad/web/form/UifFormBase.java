@@ -24,13 +24,15 @@ import org.kuali.rice.krad.uif.view.History;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -65,7 +67,9 @@ public class UifFormBase implements ViewModel {
 
     protected View view;
     protected View previousView;
+
     protected Map<String, String> viewRequestParameters;
+    protected List<String> readOnlyFieldsList;
 
     protected Map<String, Object> newCollectionLines;
     protected Map<String, String> actionParameters;
@@ -88,6 +92,7 @@ public class UifFormBase implements ViewModel {
         renderFullView = true;
         defaultsApplied = false;
 
+        readOnlyFieldsList = new ArrayList<String>();
         viewRequestParameters = new HashMap<String, String>();
         newCollectionLines = new HashMap<String, Object>();
         actionParameters = new HashMap<String, String>();
@@ -129,6 +134,12 @@ public class UifFormBase implements ViewModel {
                     throw new RuntimeException("Unable to decode client side state JSON", e);
                 }
             }
+        }
+
+        // populate read only fields list
+        if (request.getParameter(UifParameters.READ_ONLY_FIELDS) != null) {
+            String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
+            setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
         }
     }
 
@@ -250,6 +261,20 @@ public class UifFormBase implements ViewModel {
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters) {
         this.viewRequestParameters = viewRequestParameters;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getReadOnlyFieldsList()
+     */
+    public List<String> getReadOnlyFieldsList() {
+        return readOnlyFieldsList;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setReadOnlyFieldsList(java.util.List<java.lang.String>)
+     */
+    public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
+        this.readOnlyFieldsList = readOnlyFieldsList;
     }
 
     /**

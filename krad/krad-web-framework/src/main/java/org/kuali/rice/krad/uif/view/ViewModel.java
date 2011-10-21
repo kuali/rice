@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.view;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -126,6 +127,31 @@ public interface ViewModel extends Serializable {
      * @param viewRequestParameters
      */
     public void setViewRequestParameters(Map<String, String> viewRequestParameters);
+
+    /**
+     * List of fields that should be read only on the view
+     *
+     * <p>
+     * If the view being rendered supports request setting of read-only fields, the readOnlyFields request parameter
+     * can be sent to mark fields as read only that might not have been otherwise
+     * </p>
+     *
+     * <p>
+     * Note the paths specified should be the simple property names (not the full binding path). Therefore if the
+     * property name appears multiple times in the view, all instances will be set as read only
+     * </p>
+     *
+     * @return List<String> read only property names
+     * @see View#isSupportsReadOnlyFieldsOverride()
+     */
+    public List<String> getReadOnlyFieldsList();
+
+    /**
+     * Setter for the list of read only fields
+     *
+     * @param readOnlyFieldsList
+     */
+    public void setReadOnlyFieldsList(List<String> readOnlyFieldsList);
 
     /**
      * Holds instances for collection add lines. The key of the Map gives the

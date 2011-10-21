@@ -123,6 +123,7 @@ public class UILayoutTestForm extends UifFormBase {
     private String field88;
     private String field89;
     private String field90;
+    private String field91;
     
     private String gField1;
     private String gField2;
@@ -146,6 +147,7 @@ public class UILayoutTestForm extends UifFormBase {
     private boolean bField3;
 
     private Map<String, Object> remoteFieldValuesMap;
+    private Map<String, Object> remoteFieldValuesMap2;
 
     public UILayoutTestForm() {
         super();
@@ -220,7 +222,14 @@ public class UILayoutTestForm extends UifFormBase {
         remoteFieldValuesMap.put("remoteField3", true);
         remoteFieldValuesMap.put("remoteField4", "Fruit");
 
+        remoteFieldValuesMap2 = new HashMap<String, Object>();
+        remoteFieldValuesMap2.put("remoteField1", "Apple");
+        remoteFieldValuesMap2.put("remoteField2", "Banana");
+        remoteFieldValuesMap2.put("remoteField3", true);
+        remoteFieldValuesMap2.put("remoteField4", "Fruit");
+
         field88 = "Fruits";
+        field91 = "Read only value";
     }
 
     @Override
@@ -1662,11 +1671,27 @@ public class UILayoutTestForm extends UifFormBase {
         this.remoteFieldValuesMap = remoteFieldValuesMap;
     }
 
+    public Map<String, Object> getRemoteFieldValuesMap2() {
+        return remoteFieldValuesMap2;
+    }
+
+    public void setRemoteFieldValuesMap2(Map<String, Object> remoteFieldValuesMap2) {
+        this.remoteFieldValuesMap2 = remoteFieldValuesMap2;
+    }
+
     public String getField90() {
         return field90;
     }
 
     public void setField90(String field90) {
         this.field90 = field90;
+    }
+
+    public String getField91() {
+        return field91;
+    }
+
+    public void setField91(String field91) {
+        this.field91 = field91;
     }
 }

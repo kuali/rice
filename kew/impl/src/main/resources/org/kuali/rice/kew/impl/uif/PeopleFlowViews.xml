@@ -85,13 +85,14 @@
   ********************************************************************************************************************
   -->
   <bean id="PeopleFlow-Summary" parent="GroupSectionGridLayout">
-    <property name="layoutManager.numberOfColumns" value="2"/>
+    <property name="layoutManager.numberOfColumns" value="4"/>
     <property name="items">
       <list>
         <bean parent="AttributeField" p:propertyName="namespaceCode" p:required="true"/>
+        <bean parent="AttributeField" p:propertyName="description" p:required="true" p:rowSpan="2"
+              p:labelField.rowSpan="2"/>
         <bean parent="AttributeField" p:propertyName="name" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="typeId" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="description" p:required="true"/>
         <bean parent="AttributeField" p:propertyName="active" p:defaultValue="true"/>
       </list>
     </property>

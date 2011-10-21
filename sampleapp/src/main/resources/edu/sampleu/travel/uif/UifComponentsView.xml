@@ -115,6 +115,7 @@
 					<property name="items">
 						<list>
 							<ref bean="remotableFieldsGroup" />
+              <ref bean="miscGroup" />
 						</list>
 					</property>
 				</bean>
@@ -1455,7 +1456,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Direct Inquiry"
-					p:instructionalText="Click the button to perform an inquiry on this TravelAccount number"
+					p:instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
 					p:propertyName="field71" p:defaultValue="a1">
 					<property name="fieldDirectInquiry.dataObjectClassName"
 						value="edu.sampleu.travel.bo.TravelAccount" />
@@ -1466,7 +1467,7 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Ajax Field Query"
-					p:instructionalText="Displays additional information retrieved from an ajax data retrieval"
+					p:instructionalText="Displays additional information retrieved from an ajax data retrieval (input 'a1')"
 					p:propertyName="field72" p:defaultValue="a3">
 					<property name="informationalDisplayPropertyNames" value="field73,field74" />
 					<property name="fieldAttributeQuery">
@@ -1822,9 +1823,23 @@
               p:fetchingMethodToCall="retrieveRemoteFields"/>
         <bean parent="HorizontalFieldGroup" p:group.instructionalText="Remote fields pulled into a Field Group">
           <property name="items">
-            <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
+            <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap2"
                   p:fetchingMethodToCall="retrieveRemoteFields"/>
           </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="miscGroup" parent="Group" p:accordion.render="false">
+    <property name="title" value="Various configuration and feature examples"/>
+    <property name="items">
+      <list>
+				<bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
+                p:instructionalText="Field that is being set to read only by request">
+           <property name="control">
+             <bean parent="TextControl" p:size="30"/>
+           </property>
         </bean>
       </list>
     </property>

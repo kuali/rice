@@ -50,7 +50,6 @@ public class LookupForm extends UifFormBase {
 
     private Map<String, String> criteriaFields;
     private Map<String, String> fieldConversions;
-    private List<String> readOnlyFieldsList;
 
     private boolean atLeastOneRowReturnable;
     private boolean atLeastOneRowHasActions;
@@ -67,7 +66,6 @@ public class LookupForm extends UifFormBase {
 
         criteriaFields = new HashMap<String, String>();
         fieldConversions = new HashMap<String, String>();
-        readOnlyFieldsList = new ArrayList<String>();
     }
 
     /**
@@ -103,12 +101,8 @@ public class LookupForm extends UifFormBase {
                 }
             }
 
-            // populate lookup read only fields list
-            if (request.getParameter(KRADConstants.LOOKUP_READ_ONLY_FIELDS) != null) {
-                String readOnlyFields = request.getParameter(KRADConstants.LOOKUP_READ_ONLY_FIELDS);
-                setReadOnlyFieldsList(KRADUtils.convertStringParameterToList(readOnlyFields));
-                lookupable.setReadOnlyFieldsList(getReadOnlyFieldsList());
-            }
+            // populate lookup read only fields list on lookupable
+            lookupable.setReadOnlyFieldsList(getReadOnlyFieldsList());
 
             // populate field conversions list
             if (request.getParameter(KRADConstants.CONVERSION_FIELDS_PARAMETER) != null) {
@@ -257,14 +251,6 @@ public class LookupForm extends UifFormBase {
 
     public void setSearchResults(Collection<?> searchResults) {
         this.searchResults = searchResults;
-    }
-
-    public List<String> getReadOnlyFieldsList() {
-        return this.readOnlyFieldsList;
-    }
-
-    public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {
-        this.readOnlyFieldsList = readOnlyFieldsList;
     }
 
     public boolean isAtLeastOneRowReturnable() {

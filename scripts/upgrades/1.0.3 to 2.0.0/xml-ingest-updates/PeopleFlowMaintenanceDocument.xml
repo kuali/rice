@@ -5,7 +5,7 @@
       <name>PeopleFlowMaintenanceDocument</name>
       <parent>RiceDocument</parent>
       <label>PeopleFlowMaintenanceDocument</label>
-      <docHandler>${kr.url}/maintenance.do?methodToCall=docHandler</docHandler>
+      <docHandler>${kr.krad.url}/peopleFlowMaintenance?methodToCall=docHandler</docHandler>
       <active>true</active>
       <routingVersion>2</routingVersion>
     </documentType>

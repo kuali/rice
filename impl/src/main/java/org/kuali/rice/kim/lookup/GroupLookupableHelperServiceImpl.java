@@ -18,6 +18,7 @@ package org.kuali.rice.kim.lookup;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -31,6 +32,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupQueryResults;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.api.type.KimType;
@@ -128,33 +130,29 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         criteriaMap.remove(KRADConstants.DOC_FORM_KEY);
         criteriaMap.remove(KRADConstants.BACK_LOCATION);
         criteriaMap.remove(KRADConstants.DOC_NUM);
+
         if (!criteriaMap.isEmpty()) {
             List<Predicate> predicates = new ArrayList<Predicate>();
-            for (Map.Entry<String, String> entry : criteriaMap.entrySet()) {
-                if (StringUtils.isNotBlank(entry.getValue())) {
-                    if ("principalName".equals(entry.getKey())) {
-                        //get principalId, which we can actually use
-                        Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-                        String principalId = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(criteriaMap.get(entry.getKey())).getPrincipalId();
-                        predicates.add(
-                                and(
+            //principalId doesn't exist on 'Group'.  Lets do this predicate conversion separately
+            if (StringUtils.isNotBlank(criteriaMap.get(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME))) {
+                String principalId = KimApiServiceLocator.getIdentityService()
+                        .getPrincipalByPrincipalName(criteriaMap.get(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME)).getPrincipalId();
+                Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+                predicates.add( and(
                                     equal("members.memberId", principalId),
-                                    equal("members.typeCode", KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE),
+                                    equal("members.typeCode", KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode()),
                                     and(
                                         or(isNull("members.activeFromDateValue"), greaterThanOrEqual("members.activeFromDateValue", currentTime)),
                                         or(isNull("members.activeToDateValue"), lessThan("members.activeToDateValue", currentTime))
-                                       )
+                                    )
                                 ));
-                    } else {
-                        predicates.add(like(entry.getKey(), entry.getValue()));
-                    }
-                }
-            }
-            if (!predicates.isEmpty()) {
-                criteria.setPredicates(and(predicates.toArray(new Predicate[predicates.size()])));
-            }
-        }
 
+            }
+            criteriaMap.remove(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME);
+
+            predicates.add(PredicateUtils.convertMapToPredicate(criteriaMap));
+            criteria.setPredicates(and(predicates.toArray(new Predicate[predicates.size()])));
+        }
     	GroupQueryResults groupResults = KimApiServiceLocator.getGroupService().findGroups(criteria.build());
     	List<Group> groups = groupResults.getResults();
 

@@ -174,7 +174,7 @@
         Role Service
   -->
   <bean id="kimRoleService" class="org.kuali.rice.kim.impl.role.RoleServiceImpl"
-  	p:roleDao-ref="kimRoleDao" />
+  	p:roleDao-ref="kimRoleDao" p:criteriaLookupService-ref="criteriaLookupService"/>
 
   <bean id="kimRoleInternalService" class="org.kuali.rice.kim.impl.role.RoleInternalServiceImpl"
   	p:roleDao-ref="kimRoleDao" />

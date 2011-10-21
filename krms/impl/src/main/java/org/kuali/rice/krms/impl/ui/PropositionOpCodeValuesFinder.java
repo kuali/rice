@@ -36,12 +36,12 @@ public class PropositionOpCodeValuesFinder extends KeyValuesBase {
     private static final List<KeyValue> LABELS;
     static {
         final List<KeyValue> labels = new ArrayList<KeyValue>( 6 );
-        labels.add(new ConcreteKeyValue(ComparisonOperator.EQUALS.name(), ComparisonOperator.EQUALS.name()));
-        labels.add(new ConcreteKeyValue(ComparisonOperator.GREATER_THAN.name(), ComparisonOperator.GREATER_THAN.name()));
-        labels.add(new ConcreteKeyValue(ComparisonOperator.GREATER_THAN_EQUAL.name(), ComparisonOperator.GREATER_THAN_EQUAL.name()));
-        labels.add(new ConcreteKeyValue(ComparisonOperator.LESS_THAN.name(), ComparisonOperator.LESS_THAN.name()));
-        labels.add(new ConcreteKeyValue(ComparisonOperator.LESS_THAN_EQUAL.name(), ComparisonOperator.LESS_THAN_EQUAL.name()));
-        labels.add(new ConcreteKeyValue(ComparisonOperator.NOT_EQUALS.name(), ComparisonOperator.NOT_EQUALS.name()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.EQUALS.name(), ComparisonOperator.EQUALS.getCode()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.GREATER_THAN.name(), ComparisonOperator.GREATER_THAN.getCode()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.GREATER_THAN_EQUAL.name(), ComparisonOperator.GREATER_THAN_EQUAL.getCode()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.LESS_THAN.name(), ComparisonOperator.LESS_THAN.getCode()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.LESS_THAN_EQUAL.name(), ComparisonOperator.LESS_THAN_EQUAL.getCode()));
+        labels.add(new ConcreteKeyValue(ComparisonOperator.NOT_EQUALS.name(), ComparisonOperator.NOT_EQUALS.getCode()));
         LABELS = Collections.unmodifiableList(labels);
     }
     

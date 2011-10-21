@@ -1,14 +1,32 @@
 package org.kuali.rice.krms.framework.engine;
 
-public enum ComparisonOperator {
+import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
 
-	EQUALS,
-	NOT_EQUALS,
-	GREATER_THAN,
-	GREATER_THAN_EQUAL,
-	LESS_THAN,
-	LESS_THAN_EQUAL;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+public enum ComparisonOperator implements Coded {
+
+	EQUALS ("="),
+	NOT_EQUALS ("!="),
+	GREATER_THAN (">"),
+	GREATER_THAN_EQUAL (">="),
+	LESS_THAN ("<"),
+	LESS_THAN_EQUAL ("<=");
 	
+    private final String code;
+    
+    private ComparisonOperator(String code){
+        this.code = code;
+    }
+    
+    @Override
+    public String getCode(){
+        return code;
+    }
+    
 	public <T> boolean compare(Comparable<T> lhs, T rhs) {
 		int result = lhs.compareTo(rhs);
 		if (this == EQUALS) {
@@ -32,5 +50,35 @@ public enum ComparisonOperator {
 		throw new IllegalStateException("Invalid operator detected: " + this);
 	}
 	
+    public static final Collection<String> OPERATOR_CODES =
+        Collections.unmodifiableCollection(Arrays.asList(EQUALS.getCode(), NOT_EQUALS.getCode(), GREATER_THAN.getCode(),
+                GREATER_THAN_EQUAL.getCode(), LESS_THAN.getCode(), LESS_THAN_EQUAL.getCode()));
+		
+    public static final Collection<String> OPERATOR_NAMES =
+        Collections.unmodifiableCollection(Arrays.asList(EQUALS.name(), NOT_EQUALS.name(), GREATER_THAN.name(),
+                GREATER_THAN_EQUAL.name(), LESS_THAN.name(), LESS_THAN_EQUAL.name()));
+        
+    public static ComparisonOperator fromCode(String code) {
+        if (code == null) {
+            return null;
+        }
+        for (ComparisonOperator operator : values()) {
+            if (operator.code.equals(code)) {
+                return operator;
+            }
+        }
+        throw new IllegalArgumentException("Failed to locate the ComparisonOperator with the given code: " + code);
+    }
 	
+    @Override
+    public String toString(){
+        return code;
+    }
+	
+    static final class Adapter extends EnumStringAdapter<ComparisonOperator> {
+		
+        protected Class<ComparisonOperator> getEnumClass() {
+            return ComparisonOperator.class;
+        }
+    }
 }

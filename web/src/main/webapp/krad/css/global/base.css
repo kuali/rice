@@ -36,7 +36,7 @@ th, td {
 
 
 #viewpage_div {
-	
+
 	float:left;
 }
 
@@ -47,7 +47,7 @@ th, td {
 	color: gray;
 	margin-bottom: 5px;
 	margin-top: 5px;
-	display: block; 
+	display: block;
 }
 
 /* headers */
@@ -149,6 +149,7 @@ li label.kr-error {
 
 .kr-errorsField {					/* was .errorsField */  /* renamed in xml and/or jsp */
 	overflow: hidden;
+	float:left;
     *zoom: 1;
     color: #DF0000;
 }
@@ -348,8 +349,8 @@ div.kr-addLine, span.kr-addLine{
 .ui-datepicker-trigger {
 	cursor: pointer;
 }
-  
-  
+
+
 
 /* fg buttons */
 .fg-button {
@@ -399,10 +400,10 @@ div.kr-addLine, span.kr-addLine{
    width:8px;
    text-indent: -9999px;
    }	 /* solo icon buttons must have block properties for the text-indent to work */
-   
-   
-   
-   
+
+
+
+
    button, a{
     overflow: visible;
     white-space:nowrap;
@@ -435,8 +436,8 @@ button img.leftActionImage, a img.leftActionImage{
 button img.rightActionImage, a img.rightActionImage{
     margin-left: 5px;
 }
-   
-   
+
+
 
 /* tabs */
 /* Tab menu */
@@ -508,7 +509,7 @@ ul.basic-navigation {
 }
 
 ul.basic-navigation li{
-  
+
     border-bottom: 1px solid #bebebe;
 }
 
@@ -517,7 +518,7 @@ ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2
     display: block;
     margin: 0;
     padding: 5px 10px;
-	
+
 }
 
 ul.basic-navigation li.basic-element a {
@@ -530,7 +531,7 @@ ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-eleme
 }
 
 ul.basic-navigation li.basic-element a.current {
-	
+
 }
 
 /*

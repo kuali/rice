@@ -169,7 +169,8 @@ div.group_docheader td {
 	font-family: "Arial Narrow";
 	font-weight: bold;
 	font-size: 1.6em;
-	background:url(../../images/kns/masthead1.png)
+	background:url(../../images/kns/masthead1.png);
+	color: #0F0;
 }
 .kr-button-primary.boxLayoutHorizontalItem {
 	padding-bottom: 0.5em;

@@ -1541,4 +1541,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.updateComponent(form, result, request, response);
     }
 
+    @RequestMapping(params = "methodToCall=" + "updateCompoundOperator")
+    public ModelAndView updateCompoundOperator(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+        rule.refreshPropositionTree(false);
+
+        return super.updateComponent(form, result, request, response);
+    }
 }

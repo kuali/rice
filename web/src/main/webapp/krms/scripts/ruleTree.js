@@ -67,6 +67,20 @@ jq('#' + componentId).bind('loaded.jstree', function (event, data) {
             jq(this).click();
         }
     });
+
+    /* update sister compound operators and update proposition summary */
+    jq("[name$='data.proposition.compoundOpCode']").change(function(){
+      var onChangeElementId = this.id;
+
+      jq("select").filter(function() {
+        return this.id.match(
+          new RegExp(onChangeElementId.replace(/^(\d+_node_)(\d+)(_.*)$/, '^$1\\d+$3$$'))
+        );
+      }).val(jq(this).val());
+
+      ajaxCallPropositionTree('updateCompoundOperator', 'RuleEditorView-PropositionSummary');
+    })
+
 });
 
 /* create the tree */

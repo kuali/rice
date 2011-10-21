@@ -135,7 +135,7 @@
     <property name="items">
       <list>
 
-        <bean parent="GroupGridLayout" p:renderHeader="false" p:style="margin-bottom: 0em;">
+        <bean id="RuleEditorView-PropositionSummary" parent="GroupGridLayout" p:renderHeader="false" p:style="margin-bottom: 0em;">
           <property name="accordion.render" value="false" />
           <property name="layoutManager.numberOfColumns" value="8" />
           <property name="items">

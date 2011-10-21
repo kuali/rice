@@ -172,10 +172,10 @@
         PARM_NM="FROM_ADDRESS" PARM_TYP_CD="CONFG"
         VAL="quickstart@localhost" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Notification"
-        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
+        EVAL_OPRTR_CD="D" NMSPC_CD="KR-WKFLW"
         OBJ_ID="08280F2575904F3586CF48BB97907506"
-        PARM_DESC_TXT="Defines whether or not to send a notification to users excluded from a workgroup."
-        PARM_NM="NOTIFY_EXCLUDED_USERS_IND" PARM_TYP_CD="CONFG" VER_NBR="1"/>
+        PARM_DESC_TXT="Defines a group name (in the format &quot;namespace:name&quot;) which contains members who should never receive &quot;notifications&quot; action requests from KEW."
+        PARM_NM="NOTIFY_GROUPS" PARM_TYP_CD="CONFG" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="PersonDocumentName"
         EVAL_OPRTR_CD="A" NMSPC_CD="KR-IDM"
         OBJ_ID="61645D045B0105D7E0404F8189D849B1" PARM_NM="PREFIXES"

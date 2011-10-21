@@ -255,6 +255,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     public String findDocumentTypeIdByName(String documentTypeName) {
     	Criteria crit = new Criteria(DocumentType.class.getName());
     	crit.eq("name", documentTypeName);
+        crit.eq("currentInd", Boolean.TRUE);
 
     	final DocumentType documentType = (DocumentType)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     	return (documentType != null) ? documentType.getDocumentTypeId() : null;

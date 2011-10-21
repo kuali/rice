@@ -261,6 +261,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     public String findDocumentTypeIdByName(String documentTypeName) {
     	Criteria crit = new Criteria();
     	crit.addEqualTo("name", documentTypeName);
+        crit.addEqualTo("currentInd", Boolean.TRUE);
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentType.class, crit);
     	query.setAttributes(new String[] { "documentTypeId" });
 

@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.kuali.rice.core.api.uif.AttributeField;
 
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupResultSetConfigurationContract {
+public interface DocumentSearchResultSetConfigurationContract {
 
     /**
      * Returns true if the custom field names returned by {@link #getCustomFieldNamesToAdd()} should be used to define

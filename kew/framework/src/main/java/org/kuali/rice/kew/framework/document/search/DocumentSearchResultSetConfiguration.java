@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,22 +22,22 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.w3c.dom.Element;
 
 /**
- * An immutable data transfer object implementation of the {@link DocumentLookupResultSetConfigurationContract}.
+ * An immutable data transfer object implementation of the {@link DocumentSearchResultSetConfigurationContract}.
  * Instances of this class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = DocumentLookupResultSetConfiguration.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentSearchResultSetConfiguration.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentLookupResultSetConfiguration.Constants.TYPE_NAME, propOrder = {
-    DocumentLookupResultSetConfiguration.Elements.OVERRIDE_SEARCHABLE_ATTRIBUTES,
-    DocumentLookupResultSetConfiguration.Elements.CUSTOM_FIELD_NAMES_TO_ADD,
-    DocumentLookupResultSetConfiguration.Elements.STANDARD_RESULT_FIELDS_TO_REMOVE,
-    DocumentLookupResultSetConfiguration.Elements.ADDITIONAL_ATTRIBUTE_FIELDS,
+@XmlType(name = DocumentSearchResultSetConfiguration.Constants.TYPE_NAME, propOrder = {
+    DocumentSearchResultSetConfiguration.Elements.OVERRIDE_SEARCHABLE_ATTRIBUTES,
+    DocumentSearchResultSetConfiguration.Elements.CUSTOM_FIELD_NAMES_TO_ADD,
+    DocumentSearchResultSetConfiguration.Elements.STANDARD_RESULT_FIELDS_TO_REMOVE,
+    DocumentSearchResultSetConfiguration.Elements.ADDITIONAL_ATTRIBUTE_FIELDS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentLookupResultSetConfiguration extends AbstractDataTransferObject
-        implements DocumentLookupResultSetConfigurationContract {
+public final class DocumentSearchResultSetConfiguration extends AbstractDataTransferObject
+        implements DocumentSearchResultSetConfigurationContract {
 
     @XmlElement(name = Elements.OVERRIDE_SEARCHABLE_ATTRIBUTES, required = true)
     private final boolean overrideSearchableAttributes;
@@ -62,14 +62,14 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
      * Private constructor used only by JAXB.
      */
     @SuppressWarnings("unused")
-    private DocumentLookupResultSetConfiguration() {
+    private DocumentSearchResultSetConfiguration() {
         this.overrideSearchableAttributes = false;
         this.customFieldNamesToAdd = null;
         this.standardResultFieldsToRemove = null;
         this.additionalAttributeFields = null;
     }
 
-    private DocumentLookupResultSetConfiguration(Builder builder) {
+    private DocumentSearchResultSetConfiguration(Builder builder) {
         this.overrideSearchableAttributes = builder.isOverrideSearchableAttributes();
         this.customFieldNamesToAdd = ModelObjectUtils.createImmutableCopy(builder.getCustomFieldNamesToAdd());
         this.standardResultFieldsToRemove =
@@ -98,11 +98,10 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
     }
 
     /**
-     * A builder which can be used to construct {@link DocumentLookupResultSetConfiguration} instances.  Enforces the
-     * constraints of the {@link DocumentLookupResultSetConfigurationContract}.
+     * A builder which can be used to construct {@link DocumentSearchResultSetConfiguration} instances.  Enforces the
+     * constraints of the {@link DocumentSearchResultSetConfigurationContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder,
-            DocumentLookupResultSetConfigurationContract {
+    public final static class Builder implements Serializable, ModelBuilder, DocumentSearchResultSetConfigurationContract {
 
         private boolean overrideSearchableAttributes;
         private List<String> customFieldNamesToAdd;
@@ -135,7 +134,7 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
          *
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(DocumentLookupResultSetConfigurationContract contract) {
+        public static Builder create(DocumentSearchResultSetConfigurationContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -157,8 +156,8 @@ public final class DocumentLookupResultSetConfiguration extends AbstractDataTran
         }
 
         @Override
-        public DocumentLookupResultSetConfiguration build() {
-            return new DocumentLookupResultSetConfiguration(this);
+        public DocumentSearchResultSetConfiguration build() {
+            return new DocumentSearchResultSetConfiguration(this);
         }
 
         @Override

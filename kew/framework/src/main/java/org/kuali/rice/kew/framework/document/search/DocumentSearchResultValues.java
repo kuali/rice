@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.CoreConstants;
@@ -20,22 +20,22 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * An immutable data transfer object implementation of the {@link DocumentLookupResultValuesContract}.
+ * An immutable data transfer object implementation of the {@link DocumentSearchResultValuesContract}.
  * Instances of this class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = DocumentLookupResultValues.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentSearchResultValues.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentLookupResultValues.Constants.TYPE_NAME, propOrder = {
-    DocumentLookupResultValues.Elements.RESULT_VALUES,
+@XmlType(name = DocumentSearchResultValues.Constants.TYPE_NAME, propOrder = {
+    DocumentSearchResultValues.Elements.RESULT_VALUES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentLookupResultValues extends AbstractDataTransferObject implements DocumentLookupResultValuesContract {
+public final class DocumentSearchResultValues extends AbstractDataTransferObject implements DocumentSearchResultValuesContract {
 
     @XmlElementWrapper(name = Elements.RESULT_VALUES, required = false)
     @XmlElement(name = Elements.RESULT_VALUE, required = false)
-    private final List<DocumentLookupResultValue> resultValues;
+    private final List<DocumentSearchResultValue> resultValues;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -45,29 +45,29 @@ public final class DocumentLookupResultValues extends AbstractDataTransferObject
      * Private constructor used only by JAXB.
      */
     @SuppressWarnings("unused")
-    private DocumentLookupResultValues() {
+    private DocumentSearchResultValues() {
         this.resultValues = null;
     }
 
-    private DocumentLookupResultValues(Builder builder) {
+    private DocumentSearchResultValues(Builder builder) {
         this.resultValues = ModelObjectUtils.buildImmutableCopy(builder.getResultValues());
     }
 
     @Override
-    public List<DocumentLookupResultValue> getResultValues() {
+    public List<DocumentSearchResultValue> getResultValues() {
         return this.resultValues;
     }
 
     /**
-     * A builder which can be used to construct {@link DocumentLookupResultValues} instances.  Enforces the
-     * constraints of the {@link DocumentLookupResultValuesContract}.
+     * A builder which can be used to construct {@link DocumentSearchResultValues} instances.  Enforces the
+     * constraints of the {@link DocumentSearchResultValuesContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, DocumentLookupResultValuesContract {
+    public final static class Builder implements Serializable, ModelBuilder, DocumentSearchResultValuesContract {
 
-        private List<DocumentLookupResultValue.Builder> resultValues;
+        private List<DocumentSearchResultValue.Builder> resultValues;
 
         private Builder() {
-            setResultValues(new ArrayList<DocumentLookupResultValue.Builder>());
+            setResultValues(new ArrayList<DocumentSearchResultValue.Builder>());
         }
 
         /**
@@ -89,30 +89,30 @@ public final class DocumentLookupResultValues extends AbstractDataTransferObject
          *
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(DocumentLookupResultValuesContract contract) {
+        public static Builder create(DocumentSearchResultValuesContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
             Builder builder = create();
             if (!CollectionUtils.isEmpty(contract.getResultValues())) {
-                for (DocumentLookupResultValueContract resultValueContract : contract.getResultValues()) {
-                    //builder.getResultValues().add(DocumentLookupResultValue.Builder.create(resultValueContract));
+                for (DocumentSearchResultValueContract resultValueContract : contract.getResultValues()) {
+                    //builder.getResultValues().add(DocumentSearchResultValue.Builder.create(resultValueContract));
                 }
             }
             return builder;
         }
 
         @Override
-        public DocumentLookupResultValues build() {
-            return new DocumentLookupResultValues(this);
+        public DocumentSearchResultValues build() {
+            return new DocumentSearchResultValues(this);
         }
 
         @Override
-        public List<DocumentLookupResultValue.Builder> getResultValues() {
+        public List<DocumentSearchResultValue.Builder> getResultValues() {
             return this.resultValues;
         }
 
-        public void setResultValues(List<DocumentLookupResultValue.Builder> resultValues) {
+        public void setResultValues(List<DocumentSearchResultValue.Builder> resultValues) {
             this.resultValues = resultValues;
         }
 

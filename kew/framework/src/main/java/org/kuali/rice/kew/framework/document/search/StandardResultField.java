@@ -1,7 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
-
-import org.apache.commons.collections.SetUtils;
-import org.apache.commons.lang.ArrayUtils;
+package org.kuali.rice.kew.framework.document.search;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;

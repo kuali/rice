@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupCriteriaConfigurationContract {
+public interface DocumentSearchCriteriaConfigurationContract {
 
     /**
      * Returns the additional attribute fields that should be included as part of the document lookup criteria on the

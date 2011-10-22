@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "documentLookupCustomization")
 @XmlType(name = "DocumentLookupCustomizationType")
 @XmlEnum
-public enum DocumentLookupCustomization {
+public enum DocumentSearchCustomization {
 
     /**
      * Customization of the document lookup criteria.

@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupResultValuesContract {
+public interface DocumentSearchResultValuesContract {
 
     /**
      * Returns an unmodifiable list of the result values, one for each customized document.
      *
      * @return the list of customized document lookup result values, will never be null but may be empty
      */
-    List<? extends DocumentLookupResultValueContract> getResultValues();
+    List<? extends DocumentSearchResultValueContract> getResultValues();
 
 }

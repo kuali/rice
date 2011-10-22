@@ -17,7 +17,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -143,7 +143,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookup
 
     protected List<Row> getDocumentAttributeRows(DocumentType documentType) {
         List<Row> documentAttributeRows = new ArrayList<Row>();
-        DocumentLookupCriteriaConfiguration configuration =
+        DocumentSearchCriteriaConfiguration configuration =
                 KEWServiceLocator.getDocumentLookupCustomizationMediator().
                         getDocumentLookupCriteriaConfiguration(documentType);
         if (configuration != null) {

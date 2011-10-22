@@ -454,7 +454,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public DocumentTypeAttribute getCustomizerAttribute() {
         List<DocumentTypeAttribute> documentTypeAttributes = getDocumentTypeAttributes(KEWConstants.DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE);
         if (documentTypeAttributes.size() > 1) {
-            throw new IllegalStateException("Encountered more than one DocumentLookupCustomizer attribute on this document type: " + getName());
+            throw new IllegalStateException("Encountered more than one DocumentSearchCustomizer attribute on this document type: " + getName());
         }
         if (documentTypeAttributes.isEmpty()) {
             return null;

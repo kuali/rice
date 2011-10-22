@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeContract;
 
@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupResultValueContract {
+public interface DocumentSearchResultValueContract {
 
     /**
      * Returns the id of the document for which this customized result value applies.

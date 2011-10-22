@@ -24,27 +24,26 @@ import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizer;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
-import org.kuali.rice.kew.framework.document.lookup.NullDocumentLookupCustomizer;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizer;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValues;
+import org.kuali.rice.kew.framework.document.search.NullDocumentSearchCustomizer;
 
 import java.util.List;
-import java.util.Map;
 
-public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribute, DocumentLookupCustomizer {
+public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribute, DocumentSearchCustomizer {
 
     private SearchableAttribute searchableAttribute;
-    private DocumentLookupCustomizer documentLookupCustomizer;
+    private DocumentSearchCustomizer documentSearchCustomizer;
 
     public DataDictionaryDocumentSearchCustomizer() {
-        this(new DataDictionarySearchableAttribute(), new NullDocumentLookupCustomizer());
+        this(new DataDictionarySearchableAttribute(), new NullDocumentSearchCustomizer());
     }
 
     public DataDictionaryDocumentSearchCustomizer(SearchableAttribute searchableAttribute,
-            DocumentLookupCustomizer documentLookupCustomizer) {
+            DocumentSearchCustomizer documentSearchCustomizer) {
         this.searchableAttribute = searchableAttribute;
-        this.documentLookupCustomizer = documentLookupCustomizer;
+        this.documentSearchCustomizer = documentSearchCustomizer;
     }
 
     @Override
@@ -75,44 +74,44 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
 
     @Override
     public final DocumentLookupCriteria customizeCriteria(DocumentLookupCriteria documentLookupCriteria) {
-        return getDocumentLookupCustomizer().customizeCriteria(documentLookupCriteria);
+        return getDocumentSearchCustomizer().customizeCriteria(documentLookupCriteria);
     }
 
     @Override
     public final DocumentLookupCriteria customizeClearCriteria(DocumentLookupCriteria documentLookupCriteria) {
-        return getDocumentLookupCustomizer().customizeClearCriteria(documentLookupCriteria);
+        return getDocumentSearchCustomizer().customizeClearCriteria(documentLookupCriteria);
     }
 
     @Override
-    public final DocumentLookupResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
+    public final DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
             List<DocumentLookupResult> defaultResults) {
-        return getDocumentLookupCustomizer().customizeResults(documentLookupCriteria, defaultResults);
+        return getDocumentSearchCustomizer().customizeResults(documentLookupCriteria, defaultResults);
     }
 
     @Override
-    public DocumentLookupResultSetConfiguration customizeResultSetConfiguration(
+    public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(
             DocumentLookupCriteria documentLookupCriteria) {
-        return getDocumentLookupCustomizer().customizeResultSetConfiguration(documentLookupCriteria);
+        return getDocumentSearchCustomizer().customizeResultSetConfiguration(documentLookupCriteria);
     }
 
     @Override
     public final boolean isCustomizeCriteriaEnabled(String documentTypeName) {
-        return getDocumentLookupCustomizer().isCustomizeCriteriaEnabled(documentTypeName);
+        return getDocumentSearchCustomizer().isCustomizeCriteriaEnabled(documentTypeName);
     }
 
     @Override
     public final boolean isCustomizeClearCriteriaEnabled(String documentTypeName) {
-        return getDocumentLookupCustomizer().isCustomizeClearCriteriaEnabled(documentTypeName);
+        return getDocumentSearchCustomizer().isCustomizeClearCriteriaEnabled(documentTypeName);
     }
 
     @Override
     public final boolean isCustomizeResultsEnabled(String documentTypeName) {
-        return getDocumentLookupCustomizer().isCustomizeResultsEnabled(documentTypeName);
+        return getDocumentSearchCustomizer().isCustomizeResultsEnabled(documentTypeName);
     }
 
     @Override
     public final boolean isCustomizeResultSetFieldsEnabled(String documentTypeName) {
-        return getDocumentLookupCustomizer().isCustomizeResultSetFieldsEnabled(documentTypeName);
+        return getDocumentSearchCustomizer().isCustomizeResultSetFieldsEnabled(documentTypeName);
     }
 
 	protected SearchableAttribute getSearchableAttribute() {
@@ -123,12 +122,12 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
         this.searchableAttribute = searchableAttribute;
     }
 
-    protected DocumentLookupCustomizer getDocumentLookupCustomizer() {
-        return this.documentLookupCustomizer;
+    protected DocumentSearchCustomizer getDocumentSearchCustomizer() {
+        return this.documentSearchCustomizer;
     }
 
-    public void setDocumentLookupCustomizer(DocumentLookupCustomizer documentLookupCustomizer) {
-        this.documentLookupCustomizer = documentLookupCustomizer;
+    public void setDocumentSearchCustomizer(DocumentSearchCustomizer documentSearchCustomizer) {
+        this.documentSearchCustomizer = documentSearchCustomizer;
     }
 
 

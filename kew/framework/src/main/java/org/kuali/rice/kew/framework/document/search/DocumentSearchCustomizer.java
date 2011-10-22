@@ -11,7 +11,7 @@
  * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
@@ -59,7 +59,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupCustomizer {
+public interface DocumentSearchCustomizer {
 
     /**
      * Performs customization on the given document lookup criteria.  This method should return the customized version
@@ -100,12 +100,12 @@ public interface DocumentLookupCustomizer {
      * the api or from the document lookup user interface.
      *
      * <p>This method returns a {@code DocumentLookupResultValues} object which contains a list of
-     * {@link DocumentLookupResultValue} objects.  Each of these result values maps to a specific document id and
+     * {@link DocumentSearchResultValue} objects.  Each of these result values maps to a specific document id and
      * contains a list of {@link org.kuali.rice.kew.api.document.attribute.DocumentAttribute} values which can be used
      * to modify existing document attributes or create new ones that are included as part of the lookup results.  It
      * is important to note that in order for these custom attribute values to be displayed in the result set in the
      * document lookup user interface, there must be a corresponding entry in the
-     * {@link DocumentLookupResultSetConfiguration} returned by the
+     * {@link DocumentSearchResultSetConfiguration} returned by the
      * {@link #customizeResultSetConfiguration(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)} method
      * on this customizer implementation.</p>
      *
@@ -123,7 +123,7 @@ public interface DocumentLookupCustomizer {
      * @return customized lookup result values for any of the document results requiring custom values, or null if no
      * customization was performed
      */
-    DocumentLookupResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria, List<DocumentLookupResult> defaultResults);
+    DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria, List<DocumentLookupResult> defaultResults);
 
     /**
      * Performs customization of what result fields should be displayed in the result set.  Allows for hiding of
@@ -140,7 +140,7 @@ public interface DocumentLookupCustomizer {
      * @param documentLookupCriteria the criteria against which the document lookup was executed
      * @return the customized result set configuration, or null if no customization was performed
      */
-    DocumentLookupResultSetConfiguration customizeResultSetConfiguration(DocumentLookupCriteria documentLookupCriteria);
+    DocumentSearchResultSetConfiguration customizeResultSetConfiguration(DocumentLookupCriteria documentLookupCriteria);
 
     /**
      * Indicates if the {@link #customizeCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)} on

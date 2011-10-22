@@ -18,9 +18,6 @@ package org.kuali.rice.kew.docsearch.service.impl;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -33,9 +30,8 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
-import org.kuali.rice.kew.framework.document.lookup.AttributeFields;
+import org.kuali.rice.kew.framework.document.search.AttributeFields;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
@@ -49,9 +45,9 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValue;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValue;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValues;
 import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
 import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGeneratorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -63,12 +59,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -169,14 +160,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
         DocumentLookupResults.Builder searchResults = docSearchDao.findDocuments(docLookupGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
-            DocumentLookupResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
+            DocumentSearchResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
-                Map<String, DocumentLookupResultValue> resultValueMap = new HashMap<String, DocumentLookupResultValue>();
-                for (DocumentLookupResultValue resultValue : resultValues.getResultValues()) {
+                Map<String, DocumentSearchResultValue> resultValueMap = new HashMap<String, DocumentSearchResultValue>();
+                for (DocumentSearchResultValue resultValue : resultValues.getResultValues()) {
                     resultValueMap.put(resultValue.getDocumentId(), resultValue);
                 }
                 for (DocumentLookupResult.Builder result : searchResults.getLookupResults()) {
-                    DocumentLookupResultValue value = resultValueMap.get(result.getDocument().getDocumentId());
+                    DocumentSearchResultValue value = resultValueMap.get(result.getDocument().getDocumentId());
                     if (value != null) {
                         applyResultCustomization(result, value);
                     }
@@ -205,7 +196,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return searchResults.build();
 	}
 
-    protected void applyResultCustomization(DocumentLookupResult.Builder result, DocumentLookupResultValue value) {
+    protected void applyResultCustomization(DocumentLookupResult.Builder result, DocumentSearchResultValue value) {
         Map<String, List<DocumentAttribute.AbstractBuilder<?>>> customizedAttributeMap =
                 new LinkedHashMap<String, List<DocumentAttribute.AbstractBuilder<?>>>();
         for (DocumentAttribute customizedAttribute : value.getDocumentAttributes()) {
@@ -288,10 +279,10 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     protected List<RemotableAttributeField> determineSearchFields(DocumentType documentType) {
         List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
         if (documentType != null) {
-            DocumentLookupCriteriaConfiguration lookupConfiguration =
+            DocumentSearchCriteriaConfiguration searchConfiguration =
                     getDocumentLookupCustomizationMediator().getDocumentLookupCriteriaConfiguration(documentType);
-            if (lookupConfiguration != null) {
-                List<AttributeFields> attributeFields = lookupConfiguration.getSearchAttributeFields();
+            if (searchConfiguration != null) {
+                List<AttributeFields> attributeFields = searchConfiguration.getSearchAttributeFields();
                 if (attributeFields != null) {
                     for (AttributeFields fields : attributeFields) {
                         searchFields.addAll(fields.getRemotableAttributeFields());

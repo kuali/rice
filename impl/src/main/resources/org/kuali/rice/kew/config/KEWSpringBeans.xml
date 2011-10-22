@@ -838,7 +838,7 @@
         p:businessObjectService-ref="businessObjectService"
         p:criteriaLookupService-ref="criteriaLookupService" />
 
-  <bean id="rice.kew.documentLookupCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentLookupCustomizationHandlerServiceImpl">
+  <bean id="rice.kew.documentLookupCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
   </bean>
 

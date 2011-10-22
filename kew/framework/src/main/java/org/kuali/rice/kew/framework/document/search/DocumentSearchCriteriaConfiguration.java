@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -20,18 +20,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An immutable data transfer object implementation of the {@link DocumentLookupCriteriaConfigurationContract}.
+ * An immutable data transfer object implementation of the {@link DocumentSearchCriteriaConfigurationContract}.
  * Instances of this class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = DocumentLookupCriteriaConfiguration.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentSearchCriteriaConfiguration.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentLookupCriteriaConfiguration.Constants.TYPE_NAME, propOrder = {
-    DocumentLookupCriteriaConfiguration.Elements.SEARCH_ATTRIBUTE_FIELDS,
+@XmlType(name = DocumentSearchCriteriaConfiguration.Constants.TYPE_NAME, propOrder = {
+    DocumentSearchCriteriaConfiguration.Elements.SEARCH_ATTRIBUTE_FIELDS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentLookupCriteriaConfiguration extends AbstractDataTransferObject implements DocumentLookupCriteriaConfigurationContract {
+public final class DocumentSearchCriteriaConfiguration extends AbstractDataTransferObject implements DocumentSearchCriteriaConfigurationContract {
 
     private static final long serialVersionUID = -5764134034667636217L;
 
@@ -47,11 +47,11 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
      * Private constructor used only by JAXB.
      */
     @SuppressWarnings("unused")
-    private DocumentLookupCriteriaConfiguration() {
+    private DocumentSearchCriteriaConfiguration() {
         this.searchAttributeFields = null;
     }
 
-    private DocumentLookupCriteriaConfiguration(Builder builder) {
+    private DocumentSearchCriteriaConfiguration(Builder builder) {
         if (builder.getSearchAttributeFields() == null) {
             this.searchAttributeFields = Collections.emptyList();
         } else {
@@ -73,10 +73,10 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
     }
 
     /**
-     * A builder which can be used to construct {@link DocumentLookupCriteriaConfiguration} instances.  Enforces the
-     * constraints of the {@link DocumentLookupCriteriaConfigurationContract}.
+     * A builder which can be used to construct {@link DocumentSearchCriteriaConfiguration} instances.  Enforces the
+     * constraints of the {@link DocumentSearchCriteriaConfigurationContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, DocumentLookupCriteriaConfigurationContract {
+    public final static class Builder implements Serializable, ModelBuilder, DocumentSearchCriteriaConfigurationContract {
 
         private List<AttributeFields> searchAttributeFields;
 
@@ -103,7 +103,7 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
          *
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(DocumentLookupCriteriaConfigurationContract contract) {
+        public static Builder create(DocumentSearchCriteriaConfigurationContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -113,8 +113,8 @@ public final class DocumentLookupCriteriaConfiguration extends AbstractDataTrans
         }
 
         @Override
-        public DocumentLookupCriteriaConfiguration build() {
-            return new DocumentLookupCriteriaConfiguration(this);
+        public DocumentSearchCriteriaConfiguration build() {
+            return new DocumentSearchCriteriaConfiguration(this);
         }
 
         @Override

@@ -26,9 +26,9 @@ import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.StandardResultField;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
+import org.kuali.rice.kew.framework.document.search.StandardResultField;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -738,8 +738,8 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
                     + resultRows.size() + " != " + lookupResults.getLookupResults().size());
         }
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
-        DocumentLookupResultSetConfiguration resultSetConfiguration = null;
-        DocumentLookupCriteriaConfiguration criteriaConfiguration = null;
+        DocumentSearchResultSetConfiguration resultSetConfiguration = null;
+        DocumentSearchCriteriaConfiguration criteriaConfiguration = null;
         if (documentType != null) {
             resultSetConfiguration =
                 KEWServiceLocator.getDocumentLookupCustomizationMediator().customizeResultSetConfiguration(
@@ -761,13 +761,13 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * result row (in cases where columns are added by document lookup customization, such as searchable attributes).
      */
     protected void executeColumnCustomization(ResultRow resultRow, DocumentLookupResult lookupResult,
-            DocumentLookupResultSetConfiguration resultSetConfiguration,
-            DocumentLookupCriteriaConfiguration criteriaConfiguration) {
+            DocumentSearchResultSetConfiguration resultSetConfiguration,
+            DocumentSearchCriteriaConfiguration criteriaConfiguration) {
         if (resultSetConfiguration == null) {
-            resultSetConfiguration = DocumentLookupResultSetConfiguration.Builder.create().build();
+            resultSetConfiguration = DocumentSearchResultSetConfiguration.Builder.create().build();
         }
         if (criteriaConfiguration == null) {
-            criteriaConfiguration = DocumentLookupCriteriaConfiguration.Builder.create().build();
+            criteriaConfiguration = DocumentSearchCriteriaConfiguration.Builder.create().build();
         }
         List<StandardResultField> standardFieldsToRemove = resultSetConfiguration.getStandardResultFieldsToRemove();
         if (standardFieldsToRemove == null) {

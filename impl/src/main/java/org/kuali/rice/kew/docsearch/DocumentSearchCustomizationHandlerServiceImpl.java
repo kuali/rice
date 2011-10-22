@@ -13,13 +13,13 @@ import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.framework.document.lookup.AttributeFields;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomization;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizer;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
+import org.kuali.rice.kew.framework.document.search.AttributeFields;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomization;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizationHandlerService;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizer;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValues;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,14 +32,14 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLookupCustomizationHandlerService {
+public class DocumentSearchCustomizationHandlerServiceImpl implements DocumentSearchCustomizationHandlerService {
 
-    private static final Logger LOG = Logger.getLogger(DocumentLookupCustomizationHandlerServiceImpl.class);
+    private static final Logger LOG = Logger.getLogger(DocumentSearchCustomizationHandlerServiceImpl.class);
 
     private ExtensionRepositoryService extensionRepositoryService;
 
     @Override
-    public DocumentLookupCriteriaConfiguration getDocumentLookupConfiguration(String documentTypeName, List<String> searchableAttributeNames) {
+    public DocumentSearchCriteriaConfiguration getDocumentLookupConfiguration(String documentTypeName, List<String> searchableAttributeNames) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
         }
@@ -47,7 +47,7 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (searchableAttributeNames == null) {
             throw new RiceIllegalArgumentException("searchableAttributeNames was null");
         }
-        DocumentLookupCriteriaConfiguration.Builder configBuilder = DocumentLookupCriteriaConfiguration.Builder.create();
+        DocumentSearchCriteriaConfiguration.Builder configBuilder = DocumentSearchCriteriaConfiguration.Builder.create();
         if (CollectionUtils.isNotEmpty(searchableAttributeNames)) {
             try {
                 List<AttributeFields> searchAttributeFields = new ArrayList<AttributeFields>();
@@ -107,7 +107,7 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
-        DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
+        DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
         return customizer.customizeCriteria(documentLookupCriteria);
     }
 
@@ -120,12 +120,12 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
-        DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
+        DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
         return customizer.customizeClearCriteria(documentLookupCriteria);
     }
 
     @Override
-    public DocumentLookupResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
+    public DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
             List<DocumentLookupResult> defaultResults,
             String customizerName) throws RiceIllegalArgumentException {
         if (documentLookupCriteria == null) {
@@ -137,12 +137,12 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
-        DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
+        DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
         return customizer.customizeResults(documentLookupCriteria, defaultResults);
     }
 
     @Override
-    public DocumentLookupResultSetConfiguration customizeResultSetConfiguration(
+    public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(
             DocumentLookupCriteria documentLookupCriteria, String customizerName) throws RiceIllegalArgumentException {
         if (documentLookupCriteria == null) {
             throw new RiceIllegalArgumentException("documentLookupCriteria was null");
@@ -150,12 +150,12 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
-        DocumentLookupCustomizer customizer = loadCustomizer(customizerName);
+        DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
         return customizer.customizeResultSetConfiguration(documentLookupCriteria);
     }
 
     @Override
-    public Set<DocumentLookupCustomization> getEnabledCustomizations(String documentTypeName, String customizerName)
+    public Set<DocumentSearchCustomization> getEnabledCustomizations(String documentTypeName, String customizerName)
             throws RiceIllegalArgumentException {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
@@ -163,19 +163,19 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
-        DocumentLookupCustomizer customizer = loadCustomizer(documentTypeName);
-        Set<DocumentLookupCustomization> customizations = new HashSet<DocumentLookupCustomization>();
+        DocumentSearchCustomizer customizer = loadCustomizer(documentTypeName);
+        Set<DocumentSearchCustomization> customizations = new HashSet<DocumentSearchCustomization>();
         if (customizer.isCustomizeCriteriaEnabled(documentTypeName)) {
-            customizations.add(DocumentLookupCustomization.CRITERIA);
+            customizations.add(DocumentSearchCustomization.CRITERIA);
         }
         if (customizer.isCustomizeClearCriteriaEnabled(documentTypeName)) {
-            customizations.add(DocumentLookupCustomization.CLEAR_CRITERIA);
+            customizations.add(DocumentSearchCustomization.CLEAR_CRITERIA);
         }
         if (customizer.isCustomizeResultsEnabled(documentTypeName)) {
-            customizations.add(DocumentLookupCustomization.RESULTS);
+            customizations.add(DocumentSearchCustomization.RESULTS);
         }
         if (customizer.isCustomizeResultSetFieldsEnabled(documentTypeName)) {
-            customizations.add(DocumentLookupCustomization.RESULT_SET_FIELDS);
+            customizations.add(DocumentSearchCustomization.RESULT_SET_FIELDS);
         }
         return Collections.unmodifiableSet(customizations);
     }
@@ -188,14 +188,14 @@ public class DocumentLookupCustomizationHandlerServiceImpl implements DocumentLo
         return (SearchableAttribute)searchableAttribute;
     }
 
-    private DocumentLookupCustomizer loadCustomizer(String customizerName) {
+    private DocumentSearchCustomizer loadCustomizer(String customizerName) {
         ExtensionDefinition extensionDefinition = getExtensionRepositoryService().getExtensionByName(customizerName);
         if (extensionDefinition == null) {
-            throw new RiceIllegalArgumentException("Failed to locate a DocumentLookupCustomizer with the given name: " + customizerName);
+            throw new RiceIllegalArgumentException("Failed to locate a DocumentSearchCustomizer with the given name: " + customizerName);
         }
-        DocumentLookupCustomizer customizer = ExtensionUtils.loadExtension(extensionDefinition);
+        DocumentSearchCustomizer customizer = ExtensionUtils.loadExtension(extensionDefinition);
         if (customizer == null) {
-            throw new RiceIllegalArgumentException("Failed to load DocumentLookupCustomizer for: " + extensionDefinition);
+            throw new RiceIllegalArgumentException("Failed to load DocumentSearchCustomizer for: " + extensionDefinition);
         }
         return customizer;
     }

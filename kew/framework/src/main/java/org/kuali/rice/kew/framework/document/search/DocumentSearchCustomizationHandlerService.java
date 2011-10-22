@@ -1,8 +1,7 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
@@ -15,9 +14,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -27,7 +24,7 @@ import java.util.Set;
  */
 @WebService(name = KewFrameworkServiceLocator.DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE, targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
-public interface DocumentLookupCustomizationHandlerService {
+public interface DocumentSearchCustomizationHandlerService {
 
     /**
      * Retrieves the custom {@code DocumentLookupCriteriaConfiguration} to use for the document type with the given name
@@ -54,7 +51,7 @@ public interface DocumentLookupCustomizationHandlerService {
     @WebMethod(operationName = "getDocumentLookupConfiguration")
 	@WebResult(name = "documentLookupConfiguration")
 	@XmlElement(name = "documentLookupConfiguration", required = false)
-    DocumentLookupCriteriaConfiguration getDocumentLookupConfiguration(
+    DocumentSearchCriteriaConfiguration getDocumentLookupConfiguration(
             @WebParam(name = "documentTypeName") String documentTypeName,
             @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
     ) throws RiceIllegalArgumentException;
@@ -89,11 +86,11 @@ public interface DocumentLookupCustomizationHandlerService {
     ) throws RiceIllegalArgumentException;
 
     /**
-     * Executes criteria customization against the given criteria using the {@link DocumentLookupCustomizer} with the
+     * Executes criteria customization against the given criteria using the {@link DocumentSearchCustomizer} with the
      * given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the customizer
      * where the customizer extension's applicationId is the same as the application hosting this service.
      *
-     * <p>This method effectively invokes the {@link DocumentLookupCustomizer#customizeCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
+     * <p>This method effectively invokes the {@link DocumentSearchCustomizer#customizeCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
      * on the requested customizer which is owned by this application.
      *
      * @param documentLookupCriteria the criteria to customize
@@ -114,11 +111,11 @@ public interface DocumentLookupCustomizationHandlerService {
     ) throws RiceIllegalArgumentException;
 
     /**
-     * Executes custom criteria clearing against the given criteria using the {@link DocumentLookupCustomizer} with the
+     * Executes custom criteria clearing against the given criteria using the {@link DocumentSearchCustomizer} with the
      * given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the customizer
      * where the customizer extension's applicationId is the same as the application hosting this service.
      *
-     * <p>This method effectively invokes the {@link DocumentLookupCustomizer#customizeClearCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
+     * <p>This method effectively invokes the {@link DocumentSearchCustomizer#customizeClearCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
      * on the requested customizer which is owned by this application.
      *
      * @param documentLookupCriteria the criteria on which to perform custom clearing
@@ -139,11 +136,11 @@ public interface DocumentLookupCustomizationHandlerService {
     ) throws RiceIllegalArgumentException;
 
     /**
-     * Executes customization of document lookup results using the {@link DocumentLookupCustomizer} with the
+     * Executes customization of document lookup results using the {@link DocumentSearchCustomizer} with the
      * given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the customizer
      * where the customizer extension's applicationId is the same as the application hosting this service.
      *
-     * <p>This method effectively invokes the {@link DocumentLookupCustomizer#customizeResults(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria, java.util.List)}
+     * <p>This method effectively invokes the {@link DocumentSearchCustomizer#customizeResults(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria, java.util.List)}
      * on the requested customizer which is owned by this application.
      *
      * @param documentLookupCriteria the criteria that was used to perform the lookup
@@ -160,18 +157,18 @@ public interface DocumentLookupCustomizationHandlerService {
     @WebMethod(operationName = "customizeResults")
     @WebResult(name = "resultValues")
     @XmlElement(name = "resultValues", required = false)
-    DocumentLookupResultValues customizeResults(
+    DocumentSearchResultValues customizeResults(
             @WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria,
             @WebParam(name = "results") List<DocumentLookupResult> results,
             @WebParam(name = "customizerName") String customizerName
     ) throws RiceIllegalArgumentException;
 
     /**
-     * Executes customization of document lookup result set configuration using the {@link DocumentLookupCustomizer}
+     * Executes customization of document lookup result set configuration using the {@link DocumentSearchCustomizer}
      * with the given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the
      * customizer where the customizer extension's applicationId is the same as the application hosting this service.
      *
-     * <p>This method effectively invokes the {@link DocumentLookupCustomizer#customizeResultSetConfiguration(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)} 
+     * <p>This method effectively invokes the {@link DocumentSearchCustomizer#customizeResultSetConfiguration(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
      * on the requested customizer which is owned by this application.
      *
      * @param documentLookupCriteria the criteria that was used to perform the lookup
@@ -186,12 +183,12 @@ public interface DocumentLookupCustomizationHandlerService {
     @WebMethod(operationName = "customizeResultSetConfiguration")
     @WebResult(name = "resultSetConfiguration")
     @XmlElement(name = "resultSetConfiguration", required = false)
-    DocumentLookupResultSetConfiguration customizeResultSetConfiguration(
+    DocumentSearchResultSetConfiguration customizeResultSetConfiguration(
             @WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria,
             @WebParam(name = "customizerName") String customizerName) throws RiceIllegalArgumentException;
 
     /**
-     * Returns the set of customizations that are enabled and should be executed for the {@link DocumentLookupCustomizer}
+     * Returns the set of customizations that are enabled and should be executed for the {@link DocumentSearchCustomizer}
      * with the given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the
      * customizer where the customizer extension's applicationId is the same as the application hosting this service.
      *
@@ -214,7 +211,7 @@ public interface DocumentLookupCustomizationHandlerService {
     @WebResult(name = "enabledCustomizations")
     @XmlElementWrapper(name = "enabledCustomizations", required = true)
     @XmlElement(name = "enabledCustomization", required = false)
-    Set<DocumentLookupCustomization> getEnabledCustomizations(
+    Set<DocumentSearchCustomization> getEnabledCustomizations(
             @WebParam(name = "documentTypeName") String documentTypeName,
             @WebParam(name = "customizerName") String customizerName
     ) throws RiceIllegalArgumentException;

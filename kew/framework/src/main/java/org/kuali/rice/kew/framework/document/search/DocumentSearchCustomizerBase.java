@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
@@ -6,13 +6,13 @@ import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
 import java.util.List;
 
 /**
- * An abstract implementation of a {@link DocumentLookupCustomizer} which classes can extend from and override the
+ * An abstract implementation of a {@link DocumentSearchCustomizer} which classes can extend from and override the
  * individual methods that they require in order to perform desired customization.  All of the base method
  * implementations in this class perform the default operation of doing no customization.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DocumentLookupCustomizerBase implements DocumentLookupCustomizer {
+public abstract class DocumentSearchCustomizerBase implements DocumentSearchCustomizer {
 
     /**
      * Always returns a null reference which instructs the document lookup framework that the criteria was not
@@ -47,7 +47,7 @@ public abstract class DocumentLookupCustomizerBase implements DocumentLookupCust
      * @return a null reference indicating that no customization was performed
      */
     @Override
-    public DocumentLookupResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
+    public DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
             List<DocumentLookupResult> defaultResults) {
         return null;
     }
@@ -60,7 +60,7 @@ public abstract class DocumentLookupCustomizerBase implements DocumentLookupCust
      * @return a null reference indicating that no customization was performed
      */
     @Override
-    public DocumentLookupResultSetConfiguration customizeResultSetConfiguration(
+    public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(
             DocumentLookupCriteria documentLookupCriteria) {
         return null;
     }

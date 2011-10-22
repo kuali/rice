@@ -15,7 +15,6 @@ package org.kuali.rice.kew.framework.document.attribute;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
@@ -30,9 +29,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Allows for definition of custom attributes on a document that should be indexed along with that document and made
@@ -66,10 +63,10 @@ import java.util.Map;
  * implementations on the bus.  However, this is optional as it is possible to declare an extension definition for a searchable
  * attribute which uses the class name instead of a service name.  In these cases, searchable attribute implementations
  * will be located and invoked via an application's
- * {@link org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService} endpoint assuming that
+ * {@link org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizationHandlerService} endpoint assuming that
  * the proper application id is associated with the extension definition.</p>
  *
- * @see org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService
+ * @see org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizationHandlerService
  * @see org.kuali.rice.kew.api.extension.ExtensionRepositoryService
  * @see ExtensionDefinition
  * @see WorkflowAttributeDefinition

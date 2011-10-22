@@ -18,7 +18,7 @@ package org.kuali.rice.kew.framework;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizationHandlerService;
 import org.kuali.rice.kew.framework.document.security.DocumentSecurityHandlerService;
 import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterService;
@@ -46,11 +46,11 @@ public class KewFrameworkServiceLocator {
         return (T)KsbApiServiceLocator.getServiceBus().getService(new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName), applicationId);
     }
 
-    public static DocumentLookupCustomizationHandlerService getDocumentLookupCustomizationHandlerService() {
+    public static DocumentSearchCustomizationHandlerService getDocumentLookupCustomizationHandlerService() {
         return getDocumentLookupCustomizationHandlerService(null);
     }
 
-    public static DocumentLookupCustomizationHandlerService getDocumentLookupCustomizationHandlerService(
+    public static DocumentSearchCustomizationHandlerService getDocumentLookupCustomizationHandlerService(
             String applicationId) {
         return getServiceOnBus(DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE, applicationId);
     }

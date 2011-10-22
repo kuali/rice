@@ -1,18 +1,17 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupCriteriaConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultSetConfiguration;
-import org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValues;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValues;
 import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * Handles communication between {@link org.kuali.rice.kew.framework.document.lookup.DocumentLookupCustomizationHandlerService}
+ * Handles communication between {@link org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizationHandlerService}
  * endpoints in order to invoke document lookup customizations which might be hosted from various applications.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -31,7 +30,7 @@ public interface DocumentLookupCustomizationMediator {
      * displayed to the user when performing a search against documents of the given type, if null is returned this
      * indicates that the default document lookup criteria configuration should be used
      */
-    DocumentLookupCriteriaConfiguration getDocumentLookupCriteriaConfiguration(DocumentType documentType);
+    DocumentSearchCriteriaConfiguration getDocumentLookupCriteriaConfiguration(DocumentType documentType);
 
     /**
      * Performs optional validation of document lookup criteria prior to execution of the search.
@@ -77,7 +76,7 @@ public interface DocumentLookupCustomizationMediator {
     /**
      * Optionally performs customization on the given set of document lookup results.  This could include changing
      * existing document values or synthesizing new ones.  The results of this method include a list of
-     * {@link org.kuali.rice.kew.framework.document.lookup.DocumentLookupResultValue} objects, each of which are mapped to a
+     * {@link org.kuali.rice.kew.framework.document.search.DocumentSearchResultValue} objects, each of which are mapped to a
      * specific document id from the results and include additional key-value pairs for customized or synthesized
      * values for that document.  This method can return a null value if no customization was performed.
      *
@@ -87,7 +86,7 @@ public interface DocumentLookupCustomizationMediator {
      *
      * @return the customized result values, or null if not result customization was performed
      */
-    DocumentLookupResultValues customizeResults(DocumentType documentType,
+    DocumentSearchResultValues customizeResults(DocumentType documentType,
             DocumentLookupCriteria documentLookupCriteria,
             DocumentLookupResults results);
 
@@ -102,7 +101,7 @@ public interface DocumentLookupCustomizationMediator {
      * @return the customized document lookup result set configuration, or null if no result set customization was
      * performed
      */
-    DocumentLookupResultSetConfiguration customizeResultSetConfiguration(DocumentType documentType,
+    DocumentSearchResultSetConfiguration customizeResultSetConfiguration(DocumentType documentType,
             DocumentLookupCriteria documentLookupCriteria);
 
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
@@ -38,7 +38,7 @@ import java.util.List;
  * {@link org.kuali.rice.kew.framework.document.attribute.SearchableAttribute} from which the fields are derived.  This
  * is essentially used as a grouping mechanism in order to identify which fields are sourced from which attributes.
  *
- * <p>Since this class serves primarily as a simple wrapper for use by {@link DocumentLookupCriteriaConfiguration},
+ * <p>Since this class serves primarily as a simple wrapper for use by {@link DocumentSearchCriteriaConfiguration},
  * it does not have a builder, only a single static create method that is used for constructing instances of it.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

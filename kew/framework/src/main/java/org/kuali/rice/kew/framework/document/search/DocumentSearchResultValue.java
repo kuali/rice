@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.framework.document.lookup;
+package org.kuali.rice.kew.framework.document.search;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,20 +23,20 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.w3c.dom.Element;
 
 /**
- * An immutable data transfer object implementation of the {@link DocumentLookupResultValueContract}.
+ * An immutable data transfer object implementation of the {@link DocumentSearchResultValueContract}.
  * Instances of this class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = DocumentLookupResultValue.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentSearchResultValue.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentLookupResultValue.Constants.TYPE_NAME, propOrder = {
-    DocumentLookupResultValue.Elements.DOCUMENT_ID,
-    DocumentLookupResultValue.Elements.DOCUMENT_ATTRIBUTES,
+@XmlType(name = DocumentSearchResultValue.Constants.TYPE_NAME, propOrder = {
+    DocumentSearchResultValue.Elements.DOCUMENT_ID,
+    DocumentSearchResultValue.Elements.DOCUMENT_ATTRIBUTES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentLookupResultValue extends AbstractDataTransferObject
-        implements DocumentLookupResultValueContract {
+public final class DocumentSearchResultValue extends AbstractDataTransferObject
+        implements DocumentSearchResultValueContract {
 
     @XmlElement(name = Elements.DOCUMENT_ID, required = true)
     private final String documentId;
@@ -53,12 +53,12 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
      * Private constructor used only by JAXB.
      */
     @SuppressWarnings("unused")
-    private DocumentLookupResultValue() {
+    private DocumentSearchResultValue() {
         this.documentId = null;
         this.documentAttributes = null;
     }
 
-    private DocumentLookupResultValue(Builder builder) {
+    private DocumentSearchResultValue(Builder builder) {
         this.documentId = builder.getDocumentId();
         this.documentAttributes = ModelObjectUtils.buildImmutableCopy(builder.getDocumentAttributes());
     }
@@ -74,10 +74,10 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
     }
 
     /**
-     * A builder which can be used to construct {@link DocumentLookupResultValue} instances.  Enforces the constraints
-     * of the {@link DocumentLookupResultValueContract}.
+     * A builder which can be used to construct {@link DocumentSearchResultValue} instances.  Enforces the constraints
+     * of the {@link DocumentSearchResultValueContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, DocumentLookupResultValueContract {
+    public final static class Builder implements Serializable, ModelBuilder, DocumentSearchResultValueContract {
 
         private String documentId;
         private List<DocumentAttribute.AbstractBuilder<?>> documentAttributes;
@@ -109,7 +109,7 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
          *
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(DocumentLookupResultValueContract contract) {
+        public static Builder create(DocumentSearchResultValueContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -123,8 +123,8 @@ public final class DocumentLookupResultValue extends AbstractDataTransferObject
         }
 
         @Override
-        public DocumentLookupResultValue build() {
-            return new DocumentLookupResultValue(this);
+        public DocumentSearchResultValue build() {
+            return new DocumentSearchResultValue(this);
         }
 
         @Override

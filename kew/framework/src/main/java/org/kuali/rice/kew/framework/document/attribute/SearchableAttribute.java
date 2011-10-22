@@ -19,7 +19,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 
 import javax.jws.WebMethod;
@@ -163,7 +163,7 @@ public interface SearchableAttribute {
      * any desired validation of this searchable attributes custom document attribute values to be performed prior to
      * the execution of the document lookup.
      *
-     * <p>The entire {@link DocumentLookupCriteria} is passed to this method, though it's intended that implementing
+     * <p>The entire {@link org.kuali.rice.kew.api.document.search.DocumentSearchCriteria} is passed to this method, though it's intended that implementing
      * code will pull out the document attribute values on the criteria which are managed by this searchable attribute
      * and perform any desired validation.  However, there are certainly no restrictions on this method that would
      * prevent it from performing validations outside of this scope and in relation to other portions of the criteria,
@@ -174,7 +174,7 @@ public interface SearchableAttribute {
      *
      * @param extensionDefinition the extension definition which was used to locate and load this searchable attribute
      * implementation
-     * @param documentLookupCriteria the criteria that was submitted to the document lookup and against which validation
+     * @param documentSearchCriteria the criteria that was submitted to the document lookup and against which validation
      * is requested
      *
      * @return a list of attribute errors containing and validation failure errors messages for the relevant document
@@ -186,7 +186,7 @@ public interface SearchableAttribute {
     @XmlElement(name = "validationError", required = false)
     public List<RemotableAttributeError> validateDocumentAttributeCriteria(
             @WebParam(name = "extensionDefinition") ExtensionDefinition extensionDefinition,
-            @WebParam(name = "documentLookupCriteria") DocumentLookupCriteria documentLookupCriteria
+            @WebParam(name = "documentSearchCriteria") DocumentSearchCriteria documentSearchCriteria
     );
 
 }

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.doctype.service;
 
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
@@ -25,6 +25,6 @@ public interface DocumentSecurityService {
 
     boolean routeLogAuthorized(String principalId, DocumentRouteHeaderValue routeHeader, SecuritySession session);
 
-    Set<String> documentLookupResultAuthorized(String principalId, DocumentLookupResults results, SecuritySession securitySession);
+    Set<String> documentLookupResultAuthorized(String principalId, DocumentSearchResults results, SecuritySession securitySession);
 
 }

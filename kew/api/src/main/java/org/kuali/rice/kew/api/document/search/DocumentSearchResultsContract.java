@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.api.document.lookup;
+package org.kuali.rice.kew.api.document.search;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupResultsContract {
+public interface DocumentSearchResultsContract {
 
     /**
      * Returns the unmodifiable list of lookup results.  Each of these result objects represents a document returned
@@ -38,7 +38,7 @@ public interface DocumentLookupResultsContract {
      *
      * @return an unmodifiable list of lookup results, will never be null but may be null
      */
-    List<? extends DocumentLookupResultContract> getLookupResults();
+    List<? extends DocumentSearchResultContract> getSearchResults();
 
     /**
      * Returns the criteria that was used to execute the lookup.  This may not be the same criteria that was submitted
@@ -47,7 +47,7 @@ public interface DocumentLookupResultsContract {
      *
      * @return the criteria used to execute this lookup, will never be null
      */
-    DocumentLookupCriteriaContract getCriteria();
+    DocumentSearchCriteriaContract getCriteria();
 
     /**
      * Returns true if the criteria on this lookup result was modified from the original criteria submitted by the

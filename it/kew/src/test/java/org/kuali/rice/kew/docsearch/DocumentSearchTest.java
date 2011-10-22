@@ -22,9 +22,9 @@ import org.joda.time.Years;
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
-import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
+import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -73,24 +73,24 @@ public class DocumentSearchTest extends KEWTestCase {
 
     @Test public void testDocSearch() throws Exception {
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
-        DocumentLookupResults results = null;
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        DocumentSearchResults results = null;
         criteria.setTitle("*IN");
         criteria.setSaveName("bytitle");
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setTitle("*IN-CFSG");
         criteria.setSaveName("for in accounts");
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDateApprovedFrom(new DateTime(2004, 9, 16, 0, 0));
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setRouteNodeName("AdHoc");
         criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.EXACTLY);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
-        DocumentLookupCriteria savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "bytitle");
+        DocumentSearchCriteria savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "bytitle");
         assertNotNull(savedCriteria);
         assertEquals("bytitle", savedCriteria.getSaveName());
         savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "for in accounts");
@@ -109,11 +109,11 @@ public class DocumentSearchTest extends KEWTestCase {
         assertEquals(0, namedSearches_before.size());
         assertEquals(0, allUserOptions_before.size());
 
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setTitle("*IN");
         criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
-        DocumentLookupCriteria c1 = criteria.build();
-        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1);
+        DocumentSearchCriteria c1 = criteria.build();
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1);
 
         Collection<UserOptions> allUserOptions_after = userOptionsService.findByWorkflowUser(user.getPrincipalId());
         List<UserOptions> namedSearches_after = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
@@ -128,10 +128,10 @@ public class DocumentSearchTest extends KEWTestCase {
 
         // 2nd search
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setTitle("*IN-CFSG*");
         criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
-        DocumentLookupCriteria c2 = criteria.build();
+        DocumentSearchCriteria c2 = criteria.build();
         results = docSearchService.lookupDocuments(user.getPrincipalId(), c2);
 
         // still only 2 more user options
@@ -151,12 +151,12 @@ public class DocumentSearchTest extends KEWTestCase {
         Collection<UserOptions> allUserOptions_before = userOptionsService.findByWorkflowUser(user.getPrincipalId());
         List<UserOptions> namedSearches_before = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
 
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setTitle("*IN");
         criteria.setSaveName("bytitle");
         criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
-        DocumentLookupCriteria c1 = criteria.build();
-        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1);
+        DocumentSearchCriteria c1 = criteria.build();
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1);
 
         Collection<UserOptions> allUserOptions_after = userOptionsService.findByWorkflowUser(user.getPrincipalId());
         List<UserOptions> namedSearches_after = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
@@ -167,11 +167,11 @@ public class DocumentSearchTest extends KEWTestCase {
         assertEquals(marshall(c1), userOptionsService.findByOptionId("DocSearch.NamedSearch." + criteria.getSaveName(), user.getPrincipalId()).getOptionVal());
 
         // second search
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setTitle("*IN");
         criteria.setSaveName("bytitle2");
         criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
-        DocumentLookupCriteria c2 = criteria.build();
+        DocumentSearchCriteria c2 = criteria.build();
         results = docSearchService.lookupDocuments(user.getPrincipalId(), c2);
 
         allUserOptions_after = userOptionsService.findByWorkflowUser(user.getPrincipalId());
@@ -185,7 +185,7 @@ public class DocumentSearchTest extends KEWTestCase {
 
     }
 
-    protected static String marshall(DocumentLookupCriteria criteria) throws Exception {
+    protected static String marshall(DocumentSearchCriteria criteria) throws Exception {
         return DocumentLookupInternalUtils.marshalDocumentLookupCriteria(criteria);
     }
 
@@ -194,8 +194,8 @@ public class DocumentSearchTest extends KEWTestCase {
         String principalId = getPrincipalId("ewestfal");
 
         // if no criteria is specified, the dateCreatedFrom is defaulted to today
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
-        DocumentLookupResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
         assertTrue("criteria should have been modified", results.isCriteriaModified());
         assertNull("original date created from should have been null", criteria.getDateCreatedFrom());
         assertNotNull("modified date created from should be non-null", results.getCriteria().getDateCreatedFrom());
@@ -253,10 +253,10 @@ public class DocumentSearchTest extends KEWTestCase {
 
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
-        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search returned invalid number of documents", 1, results.getLookupResults().size());
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search returned invalid number of documents", 1, results.getSearchResults().size());
     }
 
     /**
@@ -282,12 +282,12 @@ public class DocumentSearchTest extends KEWTestCase {
 
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("jhopf");
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setInitiatorPrincipalName("bogus user");
 
-        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(),
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(),
                 criteria.build());
-        int size = results.getLookupResults().size();
+        int size = results.getSearchResults().size();
         assertTrue("Searching by an invalid initiator should return nothing", size == 0);
 
     }
@@ -319,16 +319,16 @@ public class DocumentSearchTest extends KEWTestCase {
 
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
-        DocumentLookupResults results = docSearchService.lookupDocuments(user.getPrincipalId(),
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(),
                 criteria.build());
-        assertEquals("Search returned invalid number of documents", 2, results.getLookupResults().size());
+        assertEquals("Search returned invalid number of documents", 2, results.getSearchResults().size());
 
         criteria.setRouteNodeName(getRouteNodeForSearch(documentTypeName,workflowDocument.getNodeNames()));
         criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.EXACTLY);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search returned invalid number of documents", 1, results.getLookupResults().size());
+        assertEquals("Search returned invalid number of documents", 1, results.getSearchResults().size());
 
         // load the document type again to change the route node ids
         loadXmlFile("DocSearchTest_RouteNode.xml");
@@ -338,7 +338,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue(workflowDocument.isApprovalRequested());
         criteria.setRouteNodeName(getRouteNodeForSearch(documentTypeName, workflowDocument.getNodeNames()));
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search returned invalid number of documents", 1, results.getLookupResults().size());
+        assertEquals("Search returned invalid number of documents", 1, results.getSearchResults().size());
 
     }
 
@@ -372,23 +372,23 @@ public class DocumentSearchTest extends KEWTestCase {
         String[] docIds = routeTestDocs();
 
         String principalId = getPrincipalId("bmcgough");
-        DocumentLookupCriteria.Builder builder = DocumentLookupCriteria.Builder.create();
+        DocumentSearchCriteria.Builder builder = DocumentSearchCriteria.Builder.create();
         builder.setDocumentTypeName("SearchDocType");
         builder.setSaveName("testDocSearchWithAttributes");
         Map<String, List<String>> docAttrs = new HashMap<String, List<String>>();
         docAttrs.put(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, Arrays.asList(new String[]{TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE}));
         builder.setDocumentAttributeValues(docAttrs);
 
-        DocumentLookupResults results = docSearchService.lookupDocuments(principalId, builder.build());
-        assertEquals(docIds.length, results.getLookupResults().size());
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, builder.build());
+        assertEquals(docIds.length, results.getSearchResults().size());
 
-        DocumentLookupCriteria loaded = docSearchService.getNamedSearchCriteria(principalId, builder.getSaveName());
+        DocumentSearchCriteria loaded = docSearchService.getNamedSearchCriteria(principalId, builder.getSaveName());
         assertNotNull(loaded);
         assertEquals(docAttrs, loaded.getDocumentAttributeValues());
 
         // re-run saved search
         results = docSearchService.lookupDocuments(principalId, loaded);
-        assertEquals(docIds.length, results.getLookupResults().size());
+        assertEquals(docIds.length, results.getSearchResults().size());
     }
 
     /**
@@ -402,8 +402,8 @@ public class DocumentSearchTest extends KEWTestCase {
         String[] docIds = routeTestDocs();
 
         String principalId = getPrincipalId("bmcgough");
-        DocumentLookupCriteria.Builder criteria = null;
-        DocumentLookupResults results = null;
+        DocumentSearchCriteria.Builder criteria = null;
+        DocumentSearchResults results = null;
 
         /**
          * BEGIN - commenting out until we can resolve issues with person service not returning proper persons based on wildcards and various things
@@ -414,31 +414,31 @@ public class DocumentSearchTest extends KEWTestCase {
 //        		"?mc?oug?", "*t", "*i?k*", "*", "!quick*", "!b???????!?kirk???", "!*g*&&!*k*", ">bmc?ough", "<=quick*", "quickstart..rkirkend"};
 //        int[] expectedResults = {2, 1, 1, 3, 0, 2, 1, 2, 1, 0, 2, 2, 1, 1, 1, 2, 3, 2, 1, 0, 2, 1, 2/*1*/};
 //        for (int i = 0; i < searchStrings.length; i++) {
-//        	criteria = DocumentLookupCriteria.Builder.create();
+//        	criteria = DocumentSearchCriteria.Builder.create();
 //        	criteria.setInitiatorPrincipalName(searchStrings[i]);
 //        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-//        	assertEquals("Initiator search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+//        	assertEquals("Initiator search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
 //        }
 
         // Test the wildcards on the approver attribute.
 //        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
 //        expectedResults = new int[] {1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 1};
 //        for (int i = 0; i < searchStrings.length; i++) {
-//        	criteria = DocumentLookupCriteria.Builder.create();
+//        	criteria = DocumentSearchCriteria.Builder.create();
 //        	criteria.setApproverPrincipalName(searchStrings[i]);
 //        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-//        	assertEquals("Approver search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+//        	assertEquals("Approver search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
 //        }
 
         // Test the wildcards on the viewer attribute.
 //        searchStrings = new String[] {"jhopf","!jhopf", ">jhopf", "<jjopf", ">=quickstart", "<=jhopf", "jhope..jhopg", "?hopf", "*i*", "!*f", "j*"};
 //        expectedResults = new int[] {3, 0, 0, 3, 0, 3, 3, 3, 0, 0, 3};
 //        for (int i = 0; i < searchStrings.length; i++) {
-//        	criteria = DocumentLookupCriteria.Builder.create();
+//        	criteria = DocumentSearchCriteria.Builder.create();
 //        	criteria.setViewerPrincipalName(searchStrings[i]);
 //        	results = docSearchService.lookupDocuments(principalId, criteria.build());
-//        	if(expectedResults[i] !=  results.getLookupResults().size()){
-//        		assertEquals("Viewer search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+//        	if(expectedResults[i] !=  results.getSearchResults().size()){
+//        		assertEquals("Viewer search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
 //        	}
 //        }
 
@@ -451,10 +451,10 @@ public class DocumentSearchTest extends KEWTestCase {
                 ">"+docIds[1], "<"+docIds[2]+"&&!"+docIds[0], docIds[0]+".."+docIds[2], "?"+docIds[1]+"*", "?"+docIds[1].substring(1)+"*", "?9*7"};
         int[] expectedResults = new int[] {2, 2, 2, 1, 0, 1, 1, 3, 0, 1, 0};
         for (int i = 0; i < searchStrings.length; i++) {
-            criteria = DocumentLookupCriteria.Builder.create();
+            criteria = DocumentSearchCriteria.Builder.create();
             criteria.setDocumentId(searchStrings[i]);
             results = docSearchService.lookupDocuments(principalId, criteria.build());
-            assertEquals("Doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+            assertEquals("Doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
         }
 
         // Test the wildcards on the application document/notification ID attribute. The string wildcards should work, since the app doc ID is a string.
@@ -462,11 +462,11 @@ public class DocumentSearchTest extends KEWTestCase {
                 "*5?3*", "*", "?3?1", "!*43*", "!???2", ">43*1", "<=5432&&!?32?", "5432..6543"};
         expectedResults = new int[] {1, 2, 2, 2, 1, 0, 3, 2, 1, 1, 2, 3, 1, 0, 2, 3, 1, 2/*1*/};
         for (int i = 0; i < searchStrings.length; i++) {
-            criteria = DocumentLookupCriteria.Builder.create();
+            criteria = DocumentSearchCriteria.Builder.create();
             criteria.setApplicationDocumentId(searchStrings[i]);
             results = docSearchService.lookupDocuments(principalId, criteria.build());
-            if(expectedResults[i] !=  results.getLookupResults().size()){
-                assertEquals("App doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+            if(expectedResults[i] !=  results.getSearchResults().size()){
+                assertEquals("App doc ID search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
             }
         }
 
@@ -477,11 +477,11 @@ public class DocumentSearchTest extends KEWTestCase {
                 "Some New Document..The New Doc", "Document..The", "*New*&&!*Some*", "!The ??? Doc|!*New*"};
         expectedResults = new int[] {1, 2, 2, 1, 1, 2, 2, 0, 3, 2, 2, 2, 2, 1, 3, 1, 2/*1*/, 2, 1, 2};
         for (int i = 0; i < searchStrings.length; i++) {
-            criteria = DocumentLookupCriteria.Builder.create();
+            criteria = DocumentSearchCriteria.Builder.create();
             criteria.setTitle(searchStrings[i]);
             results = docSearchService.lookupDocuments(principalId, criteria.build());
-            if(expectedResults[i] !=  results.getLookupResults().size()){
-                assertEquals("Doc title search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getLookupResults().size());
+            if(expectedResults[i] !=  results.getSearchResults().size()){
+                assertEquals("Doc title search at index " + i + " retrieved the wrong number of documents.", expectedResults[i], results.getSearchResults().size());
             }
         }
 

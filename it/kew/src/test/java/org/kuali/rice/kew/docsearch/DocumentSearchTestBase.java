@@ -17,7 +17,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
 
@@ -45,17 +45,17 @@ public class DocumentSearchTestBase extends KEWTestCase {
         return attribute;
     }
 
-    protected void addSearchableAttribute(DocumentLookupCriteria.Builder criteria, String name, String value) {
+    protected void addSearchableAttribute(DocumentSearchCriteria.Builder criteria, String name, String value) {
         criteria.addDocumentAttributeValue(name, value);
     }
 
-    protected void addSearchableAttribute(DocumentLookupCriteria.Builder criteria, String name, String[] values) {
+    protected void addSearchableAttribute(DocumentSearchCriteria.Builder criteria, String name, String[] values) {
         for (String value : values) {
             addSearchableAttribute(criteria, name, value);
         }
     }
 
-    protected void addSearchableAttributeRange(DocumentLookupCriteria.Builder criteria, String name, String lowerBound, String upperBound, boolean upperBoundInclusive) {
+    protected void addSearchableAttributeRange(DocumentSearchCriteria.Builder criteria, String name, String lowerBound, String upperBound, boolean upperBoundInclusive) {
         StringBuilder value = new StringBuilder();
         if (StringUtils.isNotBlank(lowerBound) && StringUtils.isNotBlank(upperBound)) {
             value.append(lowerBound);

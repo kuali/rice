@@ -10,27 +10,28 @@ import org.joda.time.DateTime
 import org.junit.Test
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
-import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic
+
+import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils
 import static org.junit.Assert.assertEquals
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 
 /**
- * Tests DocumentLookupCriteria marshalling and performance
+ * Tests DocumentSearchCriteria marshalling and performance
  */
 class DocumentLookupCriteriaTest {
 
     @Test
     public void test_Xml_Marshal_Unmarshal() {
-        //JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create("name"), XML, DocumentLookupCriteria.class)
+        //JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create("name"), XML, DocumentSearchCriteria.class)
         // DateTimeAdapter ensures DateTimes are marshalled appropriately, but MultiValuedStringMapAdapter is not fully implemented
-        DocumentLookupCriteria c = createWithoutDocAttribs("name")
+        DocumentSearchCriteria c = createWithoutDocAttribs("name")
         assertEquals(c, unmarshalJAXB(marshalJAXB(c)))
     }
 
     @Test
     void testJSONMarshalling() {
-        DocumentLookupCriteria c = create("name")
+        DocumentSearchCriteria c = create("name")
         def s = DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c)
         def d = DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(s)
         assertEquals(c, d)
@@ -86,22 +87,22 @@ class DocumentLookupCriteriaTest {
         }
     }
 
-    protected static String marshalJAXB(DocumentLookupCriteria criteria) {
+    protected static String marshalJAXB(DocumentSearchCriteria criteria) {
         StringWriter marshalledCriteriaWriter = new StringWriter()
-        JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class)
+        JAXBContext jaxbContext = JAXBContext.newInstance(DocumentSearchCriteria.class)
         Marshaller marshaller = jaxbContext.createMarshaller()
         marshaller.marshal(criteria, marshalledCriteriaWriter)
         marshalledCriteriaWriter.toString()
     }
 
-    protected static DocumentLookupCriteria unmarshalJAXB(String s) {
-        JAXBContext jaxbContext = JAXBContext.newInstance(DocumentLookupCriteria.class)
+    protected static DocumentSearchCriteria unmarshalJAXB(String s) {
+        JAXBContext jaxbContext = JAXBContext.newInstance(DocumentSearchCriteria.class)
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller()
         return unmarshaller.unmarshal(new StringReader(s))
     }
 
-    protected static DocumentLookupCriteria.Builder createBare(String saveName = null) {
-        def builder = DocumentLookupCriteria.Builder.create()
+    protected static DocumentSearchCriteria.Builder createBare(String saveName = null) {
+        def builder = DocumentSearchCriteria.Builder.create()
         builder.applicationDocumentId = RandomStringUtils.randomAlphanumeric(20)
         builder.applicationDocumentStatus = RandomStringUtils.randomAlphanumeric(10)
         builder.approverPrincipalName = RandomStringUtils.randomAlphanumeric(20)
@@ -122,7 +123,7 @@ class DocumentLookupCriteriaTest {
         return builder
     }
 
-    protected static void addDocAttribs(DocumentLookupCriteria.Builder builder) {
+    protected static void addDocAttribs(DocumentSearchCriteria.Builder builder) {
         // TODO: FIXME: MultiValuedStringMapAdapter unmarshal not implemented
         Map<String, List<String>> attrs = new HashMap<String, List<String>>()
         for (i in 1..10) {
@@ -135,7 +136,7 @@ class DocumentLookupCriteriaTest {
         builder.documentAttributeValues = attrs
     }
 
-    protected static void addDates(DocumentLookupCriteria.Builder builder) {
+    protected static void addDates(DocumentSearchCriteria.Builder builder) {
         builder.dateApplicationDocumentStatusChangedFrom = new DateTime()
         builder.dateApplicationDocumentStatusChangedTo = new DateTime()
         builder.dateApprovedFrom = new DateTime()
@@ -148,19 +149,19 @@ class DocumentLookupCriteriaTest {
         builder.dateLastModifiedTo = new DateTime()
     }
 
-    protected static DocumentLookupCriteria createWithoutDocAttribs(String saveName = null) {
+    protected static DocumentSearchCriteria createWithoutDocAttribs(String saveName = null) {
         def builder = createBare(saveName)
         addDates(builder)
         return builder.build()
     }
 
-    protected static DocumentLookupCriteria createWithoutDates(String saveName = null) {
+    protected static DocumentSearchCriteria createWithoutDates(String saveName = null) {
         def builder = createBare(saveName)
         addDocAttribs(builder)
         return builder.build()
     }
 
-    protected static DocumentLookupCriteria create(String saveName = null) {
+    protected static DocumentSearchCriteria create(String saveName = null) {
         def builder = createBare(saveName)
         addDates(builder)
         addDocAttribs(builder)

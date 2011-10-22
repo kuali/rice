@@ -21,8 +21,8 @@ import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
@@ -298,14 +298,14 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
 
         // begin string attribute value testing
-        DocumentLookupCriteria.Builder criteria = null;
-        DocumentLookupResults results = null;
+        DocumentSearchCriteria.Builder criteria = null;
+        DocumentSearchResults results = null;
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        int size = results.getLookupResults().size();
+        int size = results.getSearchResults().size();
         assertTrue("Searching for a lower bound of 'jack'. case insensitive, inclusive.  so searching for something >= 'JACK'. Should Return 1, but got" + size, 1 == size);
 
         // begin long attribute value testing
@@ -315,82 +315,82 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         Long longValueToUse = null;
 
         // test lower bound only
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         longValueToUse = searchAttributeLongValue;
         addSearchableAttributeRange(criteria, searchAttributeLongKey, longValueToUse.toString(), null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
         
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() - 1);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, longValueToUse.toString(), null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
         
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() + 1);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, longValueToUse.toString(), null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
         // test upper bound only
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         longValueToUse = searchAttributeLongValue;
         addSearchableAttributeRange(criteria, searchAttributeLongKey, null, longValueToUse.toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() - 1);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, null, longValueToUse.toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() + 1);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, null, longValueToUse.toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
         // test both bounds
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(searchAttributeLongValue.longValue())
                 .toString(), Long.valueOf(searchAttributeLongValue.longValue()).toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(
                 searchAttributeLongValue.longValue() + 2).toString(), Long.valueOf(
                 searchAttributeLongValue.longValue() + 4).toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
         
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(
                 searchAttributeLongValue.longValue() - 2).toString(), Long.valueOf(
                 searchAttributeLongValue.longValue() - 4).toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(
                 searchAttributeLongValue.longValue() - 2).toString(), Long.valueOf(
                 searchAttributeLongValue.longValue() + 2).toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(searchAttributeLongValue.longValue() + 2).toString(), Long.valueOf(searchAttributeLongValue.longValue() - 2).toString(), true);
         try {
@@ -404,79 +404,79 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 
         BigDecimal floatValueToUse = null;
         // test lower bound only
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         floatValueToUse = searchAttributeFloatValue;
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, floatValueToUse.toString(), null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         floatValueToUse = searchAttributeFloatValue.subtract(BigDecimal.ONE);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, floatValueToUse.toString(), null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         floatValueToUse = searchAttributeFloatValue.add(BigDecimal.ONE);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, floatValueToUse.toString(), null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
         // test upper bound only
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         floatValueToUse = searchAttributeFloatValue;
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, null, floatValueToUse.toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         floatValueToUse = searchAttributeFloatValue.subtract(BigDecimal.ONE);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, null, floatValueToUse.toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         floatValueToUse = searchAttributeFloatValue.add(BigDecimal.ONE);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, null, floatValueToUse.toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
         // test both bounds
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, searchAttributeFloatValue.toString(),
                 searchAttributeFloatValue.toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(
                 2))).toString(), (searchAttributeFloatValue.add(new BigDecimal(4))).toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.subtract(
                 new BigDecimal(4))).toString(), (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(),
                 true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(), (searchAttributeFloatValue.add(new BigDecimal(2))).toString(), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(
                 2))).toString(), (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(), true);
@@ -492,16 +492,16 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 
         Calendar calendarValueToUse = null;
         // test lower bound only
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         String valueToSearch = DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(
                 calendarValueToUse));
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, -1);
@@ -509,9 +509,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 calendarValueToUse));
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, 1);
@@ -519,37 +519,37 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 calendarValueToUse));
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
         // test upper bound only
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null,
                 DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, -1);
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null, DocumentLookupInternalUtils
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
         calendarValueToUse.add(Calendar.DATE, 1);
         addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null,
                 DocumentLookupInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
         // test both bounds
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         Calendar lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         Calendar upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
@@ -557,9 +557,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         lowerBoundValue.add(Calendar.DATE, 2);
@@ -569,9 +569,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         lowerBoundValue.add(Calendar.DATE, -4);
@@ -581,9 +581,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 0, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 0, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         lowerBoundValue.add(Calendar.DATE, -2);
@@ -593,9 +593,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentLookupInternalUtils
                 .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getLookupResults().size());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
 
-        criteria = DocumentLookupCriteria.Builder.create();
+        criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
         lowerBoundValue.add(Calendar.DATE, 2);
@@ -671,11 +671,11 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
      */
     private void assertSearchBehavesAsExpected(DocumentType docType, String principalId, String fieldDefKey, String[] lowBounds, String[] upBounds,
     		int[] resultSizes) throws Exception {
-        DocumentLookupCriteria.Builder criteria = null;
-        DocumentLookupResults results = null;
+        DocumentSearchCriteria.Builder criteria = null;
+        DocumentSearchResults results = null;
         DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
         for (int i = 0; i < resultSizes.length; i++) {
-        	criteria = DocumentLookupCriteria.Builder.create();
+        	criteria = DocumentSearchCriteria.Builder.create();
         	criteria.setDocumentTypeName(docType.getName());
             addSearchableAttributeRange(criteria, fieldDefKey, lowBounds[i], upBounds[i], true);
         	try {
@@ -686,7 +686,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         		assertEquals(fieldDefKey
                         + "'s search results at loop index "
                         + i
-                        + " returned the wrong number of documents.", resultSizes[i], results.getLookupResults().size());
+                        + " returned the wrong number of documents.", resultSizes[i], results.getSearchResults().size());
         	} catch (Exception ex) {
         		if (resultSizes[i] >= 0) {
         			fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");

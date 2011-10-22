@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.lookup;
+package org.kuali.rice.kew.api.document.search;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -23,19 +23,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An immutable data transfer object implementation of the {@link DocumentLookupResultContract}.  Instances of this
+ * An immutable data transfer object implementation of the {@link DocumentSearchResultContract}.  Instances of this
  * class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = DocumentLookupResult.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentSearchResult.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentLookupResult.Constants.TYPE_NAME, propOrder = {
-    DocumentLookupResult.Elements.DOCUMENT,
-    DocumentLookupResult.Elements.DOCUMENT_ATTRIBUTES,
+@XmlType(name = DocumentSearchResult.Constants.TYPE_NAME, propOrder = {
+    DocumentSearchResult.Elements.DOCUMENT,
+    DocumentSearchResult.Elements.DOCUMENT_ATTRIBUTES,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentLookupResult extends AbstractDataTransferObject implements DocumentLookupResultContract {
+public final class DocumentSearchResult extends AbstractDataTransferObject implements DocumentSearchResultContract {
 
     @XmlElement(name = Elements.DOCUMENT, required = false)
     private final Document document;
@@ -52,12 +52,12 @@ public final class DocumentLookupResult extends AbstractDataTransferObject imple
      * Private constructor used only by JAXB.
      */
     @SuppressWarnings("unused")
-    private DocumentLookupResult() {
+    private DocumentSearchResult() {
         this.document = null;
         this.documentAttributes = null;
     }
 
-    private DocumentLookupResult(Builder builder) {
+    private DocumentSearchResult(Builder builder) {
         this.document = builder.getDocument().build();
         List<DocumentAttribute> documentAttributes = new ArrayList<DocumentAttribute>();
         for (DocumentAttribute.AbstractBuilder<?> documentAttribute : builder.getDocumentAttributes()) {
@@ -112,10 +112,10 @@ public final class DocumentLookupResult extends AbstractDataTransferObject imple
     }
 
     /**
-     * A builder which can be used to construct {@link DocumentLookupResult} instances.  Enforces the constraints of the
-     * {@link DocumentLookupResultContract}.
+     * A builder which can be used to construct {@link DocumentSearchResult} instances.  Enforces the constraints of the
+     * {@link DocumentSearchResultContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, DocumentLookupResultContract {
+    public final static class Builder implements Serializable, ModelBuilder, DocumentSearchResultContract {
 
         private Document.Builder document;
         private List<DocumentAttribute.AbstractBuilder<?>> documentAttributes;
@@ -148,7 +148,7 @@ public final class DocumentLookupResult extends AbstractDataTransferObject imple
          *
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(DocumentLookupResultContract contract) {
+        public static Builder create(DocumentSearchResultContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -162,8 +162,8 @@ public final class DocumentLookupResult extends AbstractDataTransferObject imple
             return builder;
         }
 
-        public DocumentLookupResult build() {
-            return new DocumentLookupResult(this);
+        public DocumentSearchResult build() {
+            return new DocumentSearchResult(this);
         }
 
         @Override

@@ -1,7 +1,7 @@
 package org.kuali.rice.kew.framework.document.search;
 
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 
 import java.util.List;
 
@@ -18,11 +18,11 @@ public abstract class DocumentSearchCustomizerBase implements DocumentSearchCust
      * Always returns a null reference which instructs the document lookup framework that the criteria was not
      * customized.
      *
-     * @param documentLookupCriteria the criteria on which to perform customization
+     * @param documentSearchCriteria the criteria on which to perform customization
      * @return a null reference indicating that no customization was performed
      */
     @Override
-    public DocumentLookupCriteria customizeCriteria(DocumentLookupCriteria documentLookupCriteria) {
+    public DocumentSearchCriteria customizeCriteria(DocumentSearchCriteria documentSearchCriteria) {
         return null;
     }
 
@@ -30,11 +30,11 @@ public abstract class DocumentSearchCustomizerBase implements DocumentSearchCust
      * Always returns a null reference which instructs the document lookup framework that custom criteria clearing was not
      * performed.
      *
-     * @param documentLookupCriteria the criteria on which to perform a customized clear
+     * @param documentSearchCriteria the criteria on which to perform a customized clear
      * @return a null reference indicating that no customization was performed
      */
     @Override
-    public DocumentLookupCriteria customizeClearCriteria(DocumentLookupCriteria documentLookupCriteria) {
+    public DocumentSearchCriteria customizeClearCriteria(DocumentSearchCriteria documentSearchCriteria) {
         return null;
     }
 
@@ -42,13 +42,13 @@ public abstract class DocumentSearchCustomizerBase implements DocumentSearchCust
      * Always returns a null reference which instructs the document lookup framework that the customization of results
      * was not performed.
      *
-     * @param documentLookupCriteria the lookup criteria
+     * @param documentSearchCriteria the lookup criteria
      * @param defaultResults the results obtained when executing the lookup
      * @return a null reference indicating that no customization was performed
      */
     @Override
-    public DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
-            List<DocumentLookupResult> defaultResults) {
+    public DocumentSearchResultValues customizeResults(DocumentSearchCriteria documentSearchCriteria,
+            List<DocumentSearchResult> defaultResults) {
         return null;
     }
 
@@ -56,12 +56,12 @@ public abstract class DocumentSearchCustomizerBase implements DocumentSearchCust
      * Always returns a null reference which instructs the document lookup framework that the customization of result
      * set fields was not performed.
      *
-     * @param documentLookupCriteria the lookup criteria
+     * @param documentSearchCriteria the lookup criteria
      * @return a null reference indicating that no customization was performed
      */
     @Override
     public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(
-            DocumentLookupCriteria documentLookupCriteria) {
+            DocumentSearchCriteria documentSearchCriteria) {
         return null;
     }
 

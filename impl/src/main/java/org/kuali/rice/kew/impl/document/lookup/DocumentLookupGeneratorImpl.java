@@ -32,10 +32,10 @@ import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
-import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
+import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.docsearch.QueryComponent;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
@@ -84,8 +84,8 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
     private SqlBuilder sqlBuilder = null;
 
     @Override
-    public DocumentLookupCriteria clearSearch(DocumentLookupCriteria criteria) {
-        return DocumentLookupCriteria.Builder.create().build();
+    public DocumentSearchCriteria clearSearch(DocumentSearchCriteria criteria) {
+        return DocumentSearchCriteria.Builder.create().build();
     }
 
     public DocumentType getValidDocumentType(String documentTypeFullName) {
@@ -100,7 +100,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
     }
 
     @Override
-    public List<RemotableAttributeError> validateSearchableAttributes(DocumentLookupCriteria.Builder criteria) {
+    public List<RemotableAttributeError> validateSearchableAttributes(DocumentSearchCriteria.Builder criteria) {
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
         if (documentType != null) {
@@ -215,19 +215,19 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
     }
 
     @Override
-    public DocumentLookupResults.Builder processResultSet(DocumentLookupCriteria criteria, boolean criteriaModified, Statement searchAttributeStatement, ResultSet resultSet, int maxResultCap, int fetchLimit) throws SQLException {
-        DocumentLookupCriteria.Builder criteriaBuilder = DocumentLookupCriteria.Builder.create(criteria);
-        DocumentLookupResults.Builder results = DocumentLookupResults.Builder.create(criteriaBuilder);
+    public DocumentSearchResults.Builder processResultSet(DocumentSearchCriteria criteria, boolean criteriaModified, Statement searchAttributeStatement, ResultSet resultSet, int maxResultCap, int fetchLimit) throws SQLException {
+        DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
+        DocumentSearchResults.Builder results = DocumentSearchResults.Builder.create(criteriaBuilder);
         results.setCriteriaModified(criteriaModified);
         int size = 0;
-        List<DocumentLookupResult.Builder> resultList = new ArrayList<DocumentLookupResult.Builder>();
+        List<DocumentSearchResult.Builder> resultList = new ArrayList<DocumentSearchResult.Builder>();
         results.setLookupResults(resultList);
-        Map<String, DocumentLookupResult.Builder> resultMap = new HashMap<String, DocumentLookupResult.Builder>();
+        Map<String, DocumentSearchResult.Builder> resultMap = new HashMap<String, DocumentSearchResult.Builder>();
         PerformanceLogger perfLog = new PerformanceLogger();
         int iteration = 0;
         boolean resultSetHasNext = resultSet.next();
         while ( resultSetHasNext && resultMap.size() < maxResultCap && iteration++ < fetchLimit) {
-            DocumentLookupResult.Builder resultBuilder = processRow(criteria, searchAttributeStatement, resultSet);
+            DocumentSearchResult.Builder resultBuilder = processRow(criteria, searchAttributeStatement, resultSet);
             String documentId = resultBuilder.getDocument().getDocumentId();
             if (!resultMap.containsKey(documentId)) {
                 resultList.add(resultBuilder);
@@ -235,7 +235,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
                 size++;
             } else {
                 // handle duplicate rows with different search data
-                DocumentLookupResult.Builder previousEntry = resultMap.get(documentId);
+                DocumentSearchResult.Builder previousEntry = resultMap.get(documentId);
                 handleMultipleDocumentRows(previousEntry, resultBuilder);
             }
             resultSetHasNext = resultSet.next();
@@ -256,13 +256,13 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
      * @param existingRow the existing row to combine the new row into
      * @param newRow the new row from which to combine document attributes with the existing row
      */
-    private void handleMultipleDocumentRows(DocumentLookupResult.Builder existingRow, DocumentLookupResult.Builder newRow) {
+    private void handleMultipleDocumentRows(DocumentSearchResult.Builder existingRow, DocumentSearchResult.Builder newRow) {
         for (DocumentAttribute.AbstractBuilder<?> newDocumentAttribute : newRow.getDocumentAttributes()) {
             existingRow.getDocumentAttributes().add(newDocumentAttribute);
         }
     }
 
-    protected DocumentLookupResult.Builder processRow(DocumentLookupCriteria criteria, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
+    protected DocumentSearchResult.Builder processRow(DocumentSearchCriteria criteria, Statement searchAttributeStatement, ResultSet rs) throws SQLException {
 
         String documentId = rs.getString("DOC_HDR_ID");
         String initiatorPrincipalId = rs.getString("INITR_PRNCPL_ID");
@@ -275,7 +275,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
         String documentTypeId = documentType.getId();
 
         Document.Builder documentBuilder = Document.Builder.create(documentId, initiatorPrincipalId, documentTypeName, documentTypeId);
-        DocumentLookupResult.Builder resultBuilder = DocumentLookupResult.Builder.create(documentBuilder);
+        DocumentSearchResult.Builder resultBuilder = DocumentSearchResult.Builder.create(documentBuilder);
 
         String statusCode = rs.getString("DOC_HDR_STAT_CD");
         Timestamp createTimestamp = rs.getTimestamp("CRTE_DT");
@@ -304,7 +304,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
      * @param searchAttributeStatement - statement being used to call the database for queries
      * @throws SQLException
      */
-    public void populateDocumentAttributesValues(DocumentLookupResult.Builder resultBuilder, Statement searchAttributeStatement) throws SQLException {
+    public void populateDocumentAttributesValues(DocumentSearchResult.Builder resultBuilder, Statement searchAttributeStatement) throws SQLException {
         searchAttributeStatement.setFetchSize(50);
         String documentId = resultBuilder.getDocument().getDocumentId();
         List<SearchableAttributeValue> attributeValues = DocumentLookupInternalUtils
@@ -337,7 +337,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
         perfLog.log("Time to execute doc search search attribute queries.", true);
     }
 
-    public String generateSearchSql(DocumentLookupCriteria criteria, List<RemotableAttributeField> searchFields) {
+    public String generateSearchSql(DocumentSearchCriteria criteria, List<RemotableAttributeField> searchFields) {
 
         String docTypeTableAlias   = "DOC1";
         String docHeaderTableAlias = "DOC_HDR";
@@ -776,7 +776,7 @@ public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
      * @return True if the search criteria contains at least one searchable attribute or the criteria's doc type name is
      * non-blank; false otherwise.
      */
-    protected boolean isUsingAtLeastOneSearchAttribute(DocumentLookupCriteria criteria) {
+    protected boolean isUsingAtLeastOneSearchAttribute(DocumentSearchCriteria criteria) {
         return criteria.getDocumentAttributeValues().size() > 0 || StringUtils.isNotBlank(criteria.getDocumentTypeName());
     }
 

@@ -2,17 +2,17 @@ package org.kuali.rice.kew.docsearch.service.impl
 
 import org.junit.Before
 import org.junit.Test
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 import org.kuali.rice.kew.useroptions.UserOptions
 import org.kuali.rice.kew.useroptions.UserOptionsServiceImpl
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO
 import static org.junit.Assert.assertEquals
+
 import static DocumentLookupCriteriaTest.create
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils
-import org.apache.commons.lang.NotImplementedException
 
 /**
- * Unit tests DocumentLookupCriteria saving behavior of DocumentSearchServiceImpl
+ * Unit tests DocumentSearchCriteria saving behavior of DocumentSearchServiceImpl
  */
 class DocSearchSavingTest {
     // mock out UserOptionsDAO - just save in memory
@@ -66,7 +66,7 @@ class DocSearchSavingTest {
 
     private def userOptionsService = new UserOptionsServiceImpl()
     private def docSearchService = new DocumentSearchServiceImpl() {
-        public void saveSearch(String principalId, DocumentLookupCriteria criteria) {
+        public void saveSearch(String principalId, DocumentSearchCriteria criteria) {
             super.saveSearch(principalId, criteria)
         }
     }
@@ -192,7 +192,7 @@ class DocSearchSavingTest {
         assertEquals(0, userOptionsService.findByWorkflowUser(princ).size())
     }
 
-    protected DocumentLookupCriteria saveSearch(String princ, String name = null) {
+    protected DocumentSearchCriteria saveSearch(String princ, String name = null) {
         def c = create(name)
         docSearchService.saveSearch(princ, c)
         return c

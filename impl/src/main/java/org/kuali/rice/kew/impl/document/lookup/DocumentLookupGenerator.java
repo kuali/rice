@@ -18,8 +18,8 @@ package org.kuali.rice.kew.impl.document.lookup;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,12 +34,12 @@ import java.util.List;
  */
 public interface DocumentLookupGenerator {
 
-    List<RemotableAttributeError> validateSearchableAttributes(DocumentLookupCriteria.Builder criteria);
+    List<RemotableAttributeError> validateSearchableAttributes(DocumentSearchCriteria.Builder criteria);
 
-    String generateSearchSql(DocumentLookupCriteria criteria, List<RemotableAttributeField> searchFields);
+    String generateSearchSql(DocumentSearchCriteria criteria, List<RemotableAttributeField> searchFields);
 
-    DocumentLookupResults.Builder processResultSet(DocumentLookupCriteria criteria, boolean criteriaModified, Statement searchAttributeStatement, ResultSet resultSet, int actualMaxResults, int fetchLimit) throws SQLException;
+    DocumentSearchResults.Builder processResultSet(DocumentSearchCriteria criteria, boolean criteriaModified, Statement searchAttributeStatement, ResultSet resultSet, int actualMaxResults, int fetchLimit) throws SQLException;
     
-    DocumentLookupCriteria clearSearch(DocumentLookupCriteria criteria);
+    DocumentSearchCriteria clearSearch(DocumentSearchCriteria criteria);
 
 }

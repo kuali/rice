@@ -37,13 +37,12 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -613,7 +612,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     }
 
     @Override
-    public List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition, DocumentLookupCriteria documentLookupCriteria) {
+    public List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition, DocumentSearchCriteria documentSearchCriteria) {
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 
 		XPath xpath = XPathHelper.newXPath();
@@ -633,7 +632,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     // check for range search members in the parameter map
                     boolean rangeMemberInSearchParams = false;
 
-                    Map<String, List<String>> documentAttributeValues = documentLookupCriteria.getDocumentAttributeValues();
+                    Map<String, List<String>> documentAttributeValues = documentSearchCriteria.getDocumentAttributeValues();
                     if (documentAttributeValues != null) {
 
                         // TODO - Rice 2.0 - I'm pretty sure this *won't* work because we don't store lower and upper bound keys in the document attributes

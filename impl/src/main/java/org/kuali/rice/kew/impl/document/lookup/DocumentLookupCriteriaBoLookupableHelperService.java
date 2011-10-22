@@ -16,10 +16,10 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteriaContract;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteriaContract;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
@@ -85,19 +85,19 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     private DocumentLookupCriteriaTranslator documentLookupCriteriaTranslator;
 
     // unfortunately, lookup helpers are stateful, need to store these here for other methods to use
-    protected DocumentLookupResults lookupResults = null;
-    protected DocumentLookupCriteria criteria = null;
+    protected DocumentSearchResults searchResults = null;
+    protected DocumentSearchCriteria criteria = null;
 
     @Override
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues,
             boolean unbounded) {
         criteria = loadCriteria(fieldValues);
-        lookupResults = null;
+        searchResults = null;
         try {
-            lookupResults = KEWServiceLocator.getDocumentSearchService().lookupDocuments(
+            searchResults = KEWServiceLocator.getDocumentSearchService().lookupDocuments(
                     GlobalVariables.getUserSession().getPrincipalId(), criteria);
-            if (lookupResults.isCriteriaModified()) {
-                criteria = lookupResults.getCriteria();
+            if (searchResults.isCriteriaModified()) {
+                criteria = searchResults.getCriteria();
             }
         } catch (WorkflowServiceErrorException wsee) {
             for (WorkflowServiceError workflowServiceError : (List<WorkflowServiceError>) wsee.getServiceErrors()) {
@@ -111,31 +111,31 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
             }
         }
 
-        if (!GlobalVariables.getMessageMap().hasNoErrors() || lookupResults == null) {
+        if (!GlobalVariables.getMessageMap().hasNoErrors() || searchResults == null) {
             throw new ValidationException("error with doc search");
         }
 
-        populateResultWarningMessages(lookupResults);
+        populateResultWarningMessages(searchResults);
 
-        List<DocumentLookupResult> individualLookupResults = lookupResults.getLookupResults();
+        List<DocumentSearchResult> individualSearchResults = searchResults.getSearchResults();
 
         setBackLocation(fieldValues.get(KRADConstants.BACK_LOCATION));
         setDocFormKey(fieldValues.get(KRADConstants.DOC_FORM_KEY));
 
         applyCriteriaChangesToFields(criteria);
 
-        return populateSearchResults(individualLookupResults);
+        return populateSearchResults(individualSearchResults);
 
     }
 
     /**
      * Inspects the lookup results to determine if any warning messages should be published to the message map.
      */
-    protected void populateResultWarningMessages(DocumentLookupResults lookupResults) {
+    protected void populateResultWarningMessages(DocumentSearchResults searchResults) {
         // check various warning conditions
-        boolean overThreshold = lookupResults.isOverThreshold();
-        int numFiltered = lookupResults.getNumberOfSecurityFilteredResults();
-        int numResults = lookupResults.getLookupResults().size();
+        boolean overThreshold = searchResults.isOverThreshold();
+        int numFiltered = searchResults.getNumberOfSecurityFilteredResults();
+        int numResults = searchResults.getSearchResults().size();
         if (overThreshold && numFiltered > 0) {
             GlobalVariables.getMessageMap().putWarning(KRADConstants.GLOBAL_MESSAGES,
                     EXCEED_THRESHOLD_AND_SECURITY_FILTERED_MESSAGE_KEY,
@@ -156,7 +156,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * Applies changes that might have happened to the criteria back to the fields so that they show up on the form.
      * Namely, this handles populating the form with today's date if the create date was not filled in on the form.
      */
-    protected void applyCriteriaChangesToFields(DocumentLookupCriteriaContract criteria) {
+    protected void applyCriteriaChangesToFields(DocumentSearchCriteriaContract criteria) {
         for (Field field: getFormFields()) {
             if(StringUtils.equals(field.getPropertyName(), KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "dateCreated") && StringUtils.isEmpty(field.getPropertyValue())) {
                 if (criteria.getDateCreatedFrom() != null) {
@@ -195,12 +195,12 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * Loads the document lookup criteria from the given map of field values as submitted from the search screen, and
      * populates the current form Rows/Fields with the saved criteria fields
      */
-    protected DocumentLookupCriteria loadCriteria(Map<String, String> fieldValues) {
+    protected DocumentSearchCriteria loadCriteria(Map<String, String> fieldValues) {
         fieldValues = cleanupFieldValues(fieldValues, getParameters());
         String[] savedSearchToLoad = getParameters().get(SAVED_SEARCH_NAME_PARAM);
         boolean savedSearch = savedSearchToLoad != null && savedSearchToLoad.length > 0 && StringUtils.isNotBlank(savedSearchToLoad[0]);
         if (savedSearch) {
-            DocumentLookupCriteria criteria = getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad[0]);
+            DocumentSearchCriteria criteria = getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad[0]);
             if (criteria != null) {
                 mergeFieldValues(getDocumentLookupCriteriaTranslator().translateCriteriaToFields(criteria));
                 return criteria;
@@ -210,11 +210,11 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         return getDocumentLookupCriteriaTranslator().translateFieldsToCriteria(fieldValues);
     }
 
-    protected List<DocumentLookupCriteriaBo> populateSearchResults(List<DocumentLookupResult> lookupResults) {
+    protected List<DocumentLookupCriteriaBo> populateSearchResults(List<DocumentSearchResult> lookupResults) {
         List<DocumentLookupCriteriaBo> searchResults = new ArrayList<DocumentLookupCriteriaBo>();
-        for (DocumentLookupResult lookupResult : lookupResults) {
+        for (DocumentSearchResult searchResult : lookupResults) {
             DocumentLookupCriteriaBo result = new DocumentLookupCriteriaBo();
-            result.populateFromDocumentLookupResult(lookupResult);
+            result.populateFromDocumentLookupResult(searchResult);
             searchResults.add(result);
         }
         return searchResults;
@@ -223,7 +223,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     @Override
     public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
         Collection lookupResult = super.performLookup(lookupForm, resultTable, bounded);
-        postProcessResults(resultTable, this.lookupResults);
+        postProcessResults(resultTable, this.searchResults);
         return lookupResult;
     }
 
@@ -354,7 +354,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
             throw new ValidationException("errors in search criteria");
         }
 
-        DocumentLookupCriteria criteria = KEWServiceLocator.getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchName);
+        DocumentSearchCriteria criteria = KEWServiceLocator.getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchName);
 
         // get the document type
         String docTypeName = criteria.getDocumentTypeName();
@@ -697,13 +697,13 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 
     @Override
     public void performClear(LookupForm lookupForm) {
-        DocumentLookupCriteria criteria = loadCriteria(lookupForm.getFields());
+        DocumentSearchCriteria criteria = loadCriteria(lookupForm.getFields());
         super.performClear(lookupForm);
         repopulateSearchTypeFlags();
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
         if (documentType != null) {
-            DocumentLookupCriteria clearedCriteria = documentSearchService.clearCriteria(documentType, criteria);
-            applyCriteriaChangesToFields(DocumentLookupCriteria.Builder.create(clearedCriteria));
+            DocumentSearchCriteria clearedCriteria = documentSearchService.clearCriteria(documentType, criteria);
+            applyCriteriaChangesToFields(DocumentSearchCriteria.Builder.create(clearedCriteria));
         }
     }
 
@@ -732,10 +732,10 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
     /**
      * Takes a collection of result rows and does final processing on them.
      */
-    protected void postProcessResults(Collection<ResultRow> resultRows, DocumentLookupResults lookupResults) {
-        if (resultRows.size() != lookupResults.getLookupResults().size()) {
+    protected void postProcessResults(Collection<ResultRow> resultRows, DocumentSearchResults searchResults) {
+        if (resultRows.size() != searchResults.getSearchResults().size()) {
             throw new IllegalStateException("Encountered a mismatch between ResultRow items and document lookup results "
-                    + resultRows.size() + " != " + lookupResults.getLookupResults().size());
+                    + resultRows.size() + " != " + searchResults.getSearchResults().size());
         }
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
         DocumentSearchResultSetConfiguration resultSetConfiguration = null;
@@ -750,8 +750,8 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         }
         int index = 0;
         for (ResultRow resultRow : resultRows) {
-            DocumentLookupResult lookupResult = lookupResults.getLookupResults().get(index);
-            executeColumnCustomization(resultRow, lookupResult, resultSetConfiguration, criteriaConfiguration);
+            DocumentSearchResult searchResult = searchResults.getSearchResults().get(index);
+            executeColumnCustomization(resultRow, searchResult, resultSetConfiguration, criteriaConfiguration);
             index++;
         }
     }
@@ -760,7 +760,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      * Executes customization of columns, could include removing certain columns or adding additional columns to the
      * result row (in cases where columns are added by document lookup customization, such as searchable attributes).
      */
-    protected void executeColumnCustomization(ResultRow resultRow, DocumentLookupResult lookupResult,
+    protected void executeColumnCustomization(ResultRow resultRow, DocumentSearchResult searchResult,
             DocumentSearchResultSetConfiguration resultSetConfiguration,
             DocumentSearchCriteriaConfiguration criteriaConfiguration) {
         if (resultSetConfiguration == null) {
@@ -827,7 +827,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
                     + additionalFieldNameToInclude
                     + "'");
         }
-        populateCustomColumns(customColumns, lookupResult);
+        populateCustomColumns(customColumns, searchResult);
 
         // now merge the custom columns into the standard columns right before the route log (if the route log column wasn't removed!)
         if (newColumns.isEmpty() || !StandardResultField.ROUTE_LOG.isFieldNameValid(newColumns.get(newColumns.size() - 1).getPropertyName())) {
@@ -838,10 +838,10 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         resultRow.setColumns(newColumns);
     }
 
-    protected void populateCustomColumns(List<Column> customColumns, DocumentLookupResult lookupResult) {
+    protected void populateCustomColumns(List<Column> customColumns, DocumentSearchResult searchResult) {
         for (Column customColumn : customColumns) {
             DocumentAttribute documentAttribute =
-                    lookupResult.getSingleDocumentAttributeByName(customColumn.getPropertyName());
+                    searchResult.getSingleDocumentAttributeByName(customColumn.getPropertyName());
             if (documentAttribute != null && documentAttribute.getValue() != null) {
                 wrapDocumentAttributeColumnName(customColumn);
                 // TODO - Rice 2.0 - in Rice 1.0.x we currently only display one value, but it probably makes sense to display a comma-separated

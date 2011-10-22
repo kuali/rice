@@ -30,13 +30,13 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.framework.document.search.AttributeFields;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
@@ -112,11 +112,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
 	}
 
-    public DocumentLookupCriteria getNamedSearchCriteria(String principalId, String searchName) {
+    public DocumentSearchCriteria getNamedSearchCriteria(String principalId, String searchName) {
         return getSavedSearchCriteria(principalId, NAMED_SEARCH_ORDER_BASE + searchName);
     }
 
-    public DocumentLookupCriteria getSavedSearchCriteria(String principalId, String searchName) {
+    public DocumentSearchCriteria getSavedSearchCriteria(String principalId, String searchName) {
         UserOptions savedSearch = userOptionsService.findByOptionId(searchName, principalId);
         if (savedSearch == null) {
             return null;
@@ -124,7 +124,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return getCriteriaFromSavedSearch(savedSearch);
     }
 
-    protected DocumentLookupCriteria getCriteriaFromSavedSearch(UserOptions savedSearch) {
+    protected DocumentSearchCriteria getCriteriaFromSavedSearch(UserOptions savedSearch) {
         String optionValue = savedSearch.getOptionVal();
         try {
             return DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(optionValue);
@@ -149,16 +149,16 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     @Override
-	public DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria) {
+	public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
 		DocumentLookupGenerator docLookupGenerator = getStandardDocumentSearchGenerator();
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
-        DocumentLookupCriteria.Builder criteriaBuilder = DocumentLookupCriteria.Builder.create(criteria);
+        DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
         validateDocumentSearchCriteria(docLookupGenerator, criteriaBuilder);
-        DocumentLookupCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
+        DocumentSearchCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
         builtCriteria = applyCriteriaDefaults(builtCriteria);
         boolean criteriaModified = !criteria.equals(builtCriteria);
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
-        DocumentLookupResults.Builder searchResults = docSearchDao.findDocuments(docLookupGenerator, builtCriteria, criteriaModified, searchFields);
+        DocumentSearchResults.Builder searchResults = docSearchDao.findDocuments(docLookupGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
             DocumentSearchResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
@@ -166,7 +166,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 for (DocumentSearchResultValue resultValue : resultValues.getResultValues()) {
                     resultValueMap.put(resultValue.getDocumentId(), resultValue);
                 }
-                for (DocumentLookupResult.Builder result : searchResults.getLookupResults()) {
+                for (DocumentSearchResult.Builder result : searchResults.getSearchResults()) {
                     DocumentSearchResultValue value = resultValueMap.get(result.getDocument().getDocumentId());
                     if (value != null) {
                         applyResultCustomization(result, value);
@@ -175,13 +175,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             }
         }
 
-        if (StringUtils.isNotBlank(principalId) && !searchResults.getLookupResults().isEmpty()) {
-            DocumentLookupResults builtResults = searchResults.build();
+        if (StringUtils.isNotBlank(principalId) && !searchResults.getSearchResults().isEmpty()) {
+            DocumentSearchResults builtResults = searchResults.build();
             Set<String> authorizedDocumentIds = KEWServiceLocator.getDocumentSecurityService().documentLookupResultAuthorized(principalId, builtResults, new SecuritySession(principalId));
             if (CollectionUtils.isNotEmpty(authorizedDocumentIds)) {
                 int numFiltered = 0;
-                List<DocumentLookupResult.Builder> finalResults = new ArrayList<DocumentLookupResult.Builder>();
-                for (DocumentLookupResult.Builder result : searchResults.getLookupResults()) {
+                List<DocumentSearchResult.Builder> finalResults = new ArrayList<DocumentSearchResult.Builder>();
+                for (DocumentSearchResult.Builder result : searchResults.getSearchResults()) {
                     if (authorizedDocumentIds.contains(result.getDocument().getDocumentId())) {
                         finalResults.add(result);
                     } else {
@@ -196,7 +196,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return searchResults.build();
 	}
 
-    protected void applyResultCustomization(DocumentLookupResult.Builder result, DocumentSearchResultValue value) {
+    protected void applyResultCustomization(DocumentSearchResult.Builder result, DocumentSearchResultValue value) {
         Map<String, List<DocumentAttribute.AbstractBuilder<?>>> customizedAttributeMap =
                 new LinkedHashMap<String, List<DocumentAttribute.AbstractBuilder<?>>>();
         for (DocumentAttribute customizedAttribute : value.getDocumentAttributes()) {
@@ -225,19 +225,19 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
      * for the document type, this method will simply return the criteria that is passed to it.  If
      * the given DocumentType is null, then this method will also simply return the criteria that is passed to it.
      */
-    protected DocumentLookupCriteria applyCriteriaCustomizations(DocumentType documentType, DocumentLookupCriteria criteria) {
+    protected DocumentSearchCriteria applyCriteriaCustomizations(DocumentType documentType, DocumentSearchCriteria criteria) {
         if (documentType == null) {
             return criteria;
         }
-        DocumentLookupCriteria customizedCriteria = getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria);
+        DocumentSearchCriteria customizedCriteria = getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria);
         if (customizedCriteria != null) {
             return customizedCriteria;
         }
         return criteria;
     }
 
-    protected DocumentLookupCriteria applyCriteriaDefaults(DocumentLookupCriteria criteria) {
-        DocumentLookupCriteria.Builder comparisonCriteria = createEmptyComparisonCriteria(criteria);
+    protected DocumentSearchCriteria applyCriteriaDefaults(DocumentSearchCriteria criteria) {
+        DocumentSearchCriteria.Builder comparisonCriteria = createEmptyComparisonCriteria(criteria);
         boolean isCriteriaEmpty = criteria.equals(comparisonCriteria.build());
         boolean isTitleOnly = false;
         if (!isCriteriaEmpty) {
@@ -246,7 +246,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
 
         if (isCriteriaEmpty || isTitleOnly) {
-            DocumentLookupCriteria.Builder criteriaBuilder = DocumentLookupCriteria.Builder.create(criteria);
+            DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
             Integer defaultCreateDateDaysAgoValue = null;
             if (isCriteriaEmpty) {
                 // if they haven't set any criteria, default the from created date to today minus days from constant variable
@@ -267,8 +267,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return criteria;
     }
 
-    protected DocumentLookupCriteria.Builder createEmptyComparisonCriteria(DocumentLookupCriteria criteria) {
-        DocumentLookupCriteria.Builder builder = DocumentLookupCriteria.Builder.create();
+    protected DocumentSearchCriteria.Builder createEmptyComparisonCriteria(DocumentSearchCriteria criteria) {
+        DocumentSearchCriteria.Builder builder = DocumentSearchCriteria.Builder.create();
         // copy over the fields that shouldn't be considered when determining if the criteria is empty
         builder.setSaveName(criteria.getSaveName());
         builder.setStartAtIndex(criteria.getStartAtIndex());
@@ -302,7 +302,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     @Override
-    public void validateDocumentSearchCriteria(DocumentLookupGenerator docLookupGenerator, DocumentLookupCriteria.Builder criteria) {
+    public void validateDocumentSearchCriteria(DocumentLookupGenerator docLookupGenerator, DocumentSearchCriteria.Builder criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
         List<RemotableAttributeError> searchAttributeErrors = docLookupGenerator.validateSearchableAttributes(criteria);
         if (!CollectionUtils.isEmpty(searchAttributeErrors)) {
@@ -319,7 +319,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         }
     }
 
-    protected List<WorkflowServiceError> validateWorkflowDocumentSearchCriteria(DocumentLookupCriteria.Builder criteria) {
+    protected List<WorkflowServiceError> validateWorkflowDocumentSearchCriteria(DocumentSearchCriteria.Builder criteria) {
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
 
         // trim the principal names, validation isn't really necessary, because if not found, no results will be
@@ -342,7 +342,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return criteriaValue;
     }
 
-    private void validateGroupCriteria(DocumentLookupCriteria.Builder criteria, List<WorkflowServiceError> errors) {
+    private void validateGroupCriteria(DocumentSearchCriteria.Builder criteria, List<WorkflowServiceError> errors) {
         if (StringUtils.isNotBlank(criteria.getViewerGroupId())) {
             Group group = KimApiServiceLocator.getGroupService().getGroup(criteria.getViewerGroupId());
             if (group == null) {
@@ -383,7 +383,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                     }
                 }
                 if (matchingOption != null) {
-                    DocumentLookupCriteria matchingCriteria = getCriteriaFromSavedSearch(matchingOption);
+                    DocumentSearchCriteria matchingCriteria = getCriteriaFromSavedSearch(matchingOption);
                 	sortedMostRecentSearches.add(new ConcreteKeyValue(anOrdered, getSavedSearchAbbreviatedString(matchingCriteria)));
                 }
             }
@@ -391,8 +391,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		return sortedMostRecentSearches;
 	}
 
-    public DocumentLookupCriteria clearCriteria(DocumentType documentType, DocumentLookupCriteria criteria) {
-        DocumentLookupCriteria clearedCriteria = getDocumentLookupCustomizationMediator().customizeClearCriteria(
+    public DocumentSearchCriteria clearCriteria(DocumentType documentType, DocumentSearchCriteria criteria) {
+        DocumentSearchCriteria clearedCriteria = getDocumentLookupCustomizationMediator().customizeClearCriteria(
                 documentType, criteria);
         if (clearedCriteria == null) {
             clearedCriteria = getStandardDocumentSearchGenerator().clearSearch(criteria);
@@ -400,7 +400,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return clearedCriteria;
     }
 
-    protected String getSavedSearchAbbreviatedString(DocumentLookupCriteria criteria) {
+    protected String getSavedSearchAbbreviatedString(DocumentSearchCriteria criteria) {
         Map<String, String> abbreviatedStringMap = new LinkedHashMap<String, String>();
         addAbbreviatedString(abbreviatedStringMap, "Doc Type", criteria.getDocumentTypeName());
         addAbbreviatedString(abbreviatedStringMap, "Initiator", criteria.getInitiatorPrincipalName());
@@ -465,14 +465,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     /**
-     * Saves a DocumentLookupCriteria into the UserOptions.  This method operates in one of two ways:
+     * Saves a DocumentSearchCriteria into the UserOptions.  This method operates in one of two ways:
      * 1) The search is named: the criteria is saved under NAMED_SEARCH_ORDER_BASE + <name>
      * 2) The search is unnamed: the criteria is given a name that indicates its order, which is saved in a second user option
      *    which contains a list of these names comprising recent searches
      * @param principalId the user to save the criteria under
      * @param criteria the doc lookup criteria
      */
-    private void saveSearch(String principalId, DocumentLookupCriteria criteria) {
+    private void saveSearch(String principalId, DocumentSearchCriteria criteria) {
         if (StringUtils.isBlank(principalId)) {
             throw new IllegalArgumentException("principalId was null or blank");
         }

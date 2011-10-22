@@ -23,11 +23,10 @@ import org.joda.time.DateTime;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.web.ui.Field;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -52,7 +51,7 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
     private static final String ROUTE_NODE_LOOKUP_LOGIC = "routeNodeLookupLogic";
 
     /**
-     * Fields which translate directory from criteria strings to properties on the DocumentLookupCriteria.
+     * Fields which translate directory from criteria strings to properties on the DocumentSearchCriteria.
      */
     private static final String[] DIRECT_TRANSLATE_FIELD_NAMES = {
             "documentId",
@@ -78,9 +77,9 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
             new HashSet<String>(Arrays.asList(DATE_RANGE_TRANSLATE_FIELD_NAMES));
 
     @Override
-    public DocumentLookupCriteria translateFieldsToCriteria(Map<String, String> fieldValues) {
+    public DocumentSearchCriteria translateFieldsToCriteria(Map<String, String> fieldValues) {
 
-        DocumentLookupCriteria.Builder criteria = DocumentLookupCriteria.Builder.create();
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         for (Map.Entry<String, String> field : fieldValues.entrySet()) {
             try {
                 if (StringUtils.isNotBlank(field.getValue())) {
@@ -121,11 +120,11 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
     }
 
     /**
-     * Converts the DocumentLookupCriteria to a Map of values that can be applied to the Lookup form fields.
+     * Converts the DocumentSearchCriteria to a Map of values that can be applied to the Lookup form fields.
      * @param criteria the criteria to translate
      * @return a Map of values that can be applied to the Lookup form fields.
      */
-    public Map<String, String[]> translateCriteriaToFields(DocumentLookupCriteria criteria) {
+    public Map<String, String[]> translateCriteriaToFields(DocumentSearchCriteria criteria) {
         Map<String, String[]> values = new HashMap<String, String[]>();
 
         for (String property: DIRECT_TRANSLATE_FIELD_NAMES) {
@@ -161,11 +160,11 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
 
     /**
      * Looks up a property on the criteria object and sets it as a key/value pair in the values Map
-     * @param criteria the DocumentLookupCriteria
-     * @param property the DocumentLookupCriteria property name
+     * @param criteria the DocumentSearchCriteria
+     * @param property the DocumentSearchCriteria property name
      * @param values the map of values to update
      */
-    protected static void convertCriteriaPropertyToField(DocumentLookupCriteria criteria, String property, Map<String, String[]> values) {
+    protected static void convertCriteriaPropertyToField(DocumentSearchCriteria criteria, String property, Map<String, String[]> values) {
         try {
             Object val = PropertyUtils.getProperty(criteria, property);
             if (val != null) {
@@ -181,7 +180,7 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
         }
     }
 
-    protected void applyDateRangeField(DocumentLookupCriteria.Builder criteria, String fieldName, String fieldValue) throws Exception {
+    protected void applyDateRangeField(DocumentSearchCriteria.Builder criteria, String fieldName, String fieldValue) throws Exception {
         DateTime lowerDateTime = DocumentLookupInternalUtils.getLowerDateTimeBound(fieldValue);
         DateTime upperDateTime = DocumentLookupInternalUtils.getUpperDateTimeBound(fieldValue);
         if (lowerDateTime != null) {
@@ -192,7 +191,7 @@ public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCrite
         }
     }
 
-    protected void applyDocumentAttribute(DocumentLookupCriteria.Builder criteria, String documentAttributeName, String attributeValue) {
+    protected void applyDocumentAttribute(DocumentSearchCriteria.Builder criteria, String documentAttributeName, String attributeValue) {
         criteria.addDocumentAttributeValue(documentAttributeName, attributeValue);
     }
 

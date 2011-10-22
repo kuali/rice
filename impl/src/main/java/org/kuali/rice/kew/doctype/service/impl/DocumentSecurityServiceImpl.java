@@ -27,8 +27,8 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.Document;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
@@ -77,10 +77,10 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     @Override
-    public Set<String> documentLookupResultAuthorized(String principalId, DocumentLookupResults results,
+    public Set<String> documentLookupResultAuthorized(String principalId, DocumentSearchResults results,
             SecuritySession securitySession) {
         List<Document> documents = new ArrayList<Document>();
-        for (DocumentLookupResult result : results.getLookupResults()) {
+        for (DocumentSearchResult result : results.getSearchResults()) {
             documents.add(result.getDocument());
         }
         return checkAuthorizations(principalId, securitySession, documents);

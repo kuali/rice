@@ -7,13 +7,12 @@ import org.kuali.rice.kew.api.KEWPropertyConstants
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertEquals
 import org.joda.time.DateTime
-import org.kuali.rice.kew.api.document.lookup.RouteNodeLookupLogic
+import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
 import org.kuali.rice.kew.util.KEWConstants
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
-import static org.junit.Assert.assertArrayEquals
+
 import org.junit.Before
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import org.kuali.rice.core.api.resourceloader.ResourceLoader
+
 import org.kuali.rice.core.impl.resourceloader.SimpleServiceLocator
 import org.kuali.rice.core.api.CoreConstants
 import javax.xml.namespace.QName
@@ -21,6 +20,7 @@ import org.kuali.rice.core.framework.config.property.SimpleConfig
 import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.impl.datetime.DateTimeServiceImpl
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 
 /**
  *
@@ -50,7 +50,7 @@ class DocumentLookupCriteriaTranslatorTest {
         GlobalResourceLoader.addResourceLoader(new BaseResourceLoader(new QName("whatever"), ssl))
     }
     /**
-     * Tests that the lookup form fields are property parsed into a DocumentLookupCriteria object
+     * Tests that the lookup form fields are property parsed into a DocumentSearchCriteria object
      */
     @Test
     void testTranslateFieldsToCriteria() {
@@ -92,7 +92,7 @@ class DocumentLookupCriteriaTranslatorTest {
      */
     @Test
     void testTranslateCriteriaToFields() {
-        def builder = DocumentLookupCriteria.Builder.create()
+        def builder = DocumentSearchCriteria.Builder.create()
         builder.documentTypeName = "whatever"
         builder.documentStatuses = [ DocumentStatus.INITIATED, DocumentStatus.PROCESSED, DocumentStatus.FINAL ]
         builder.documentStatusCategories = [ DocumentStatusCategory.UNSUCCESSFUL, DocumentStatusCategory.SUCCESSFUL ]

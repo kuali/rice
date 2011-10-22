@@ -3,13 +3,14 @@ package org.kuali.rice.kew.impl.document.lookup
 import org.junit.Test
 import org.junit.Before
 import org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria
+
 import org.kuali.rice.kew.api.KEWPropertyConstants;
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertEquals
 
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 
 /**
  * Tests parsing of document search criteria form
@@ -21,7 +22,7 @@ class DocumentLookupCriteriaBoLookupableHelperServiceTest {
     void init() {
         lookupableHelperService.setDocumentSearchService(new DocumentSearchServiceImpl() {
             @Override // stub this out
-            DocumentLookupCriteria getSavedSearchCriteria(String principalId, String searchName) {
+            DocumentSearchCriteria getSavedSearchCriteria(String principalId, String searchName) {
                 return null
             }
         });
@@ -30,7 +31,7 @@ class DocumentLookupCriteriaBoLookupableHelperServiceTest {
 
     /**
      * Tests that the doc statuses selected on the document search form are properly parsed into
-     * the DocumentLookupCriteria
+     * the DocumentSearchCriteria
      */
     @Test
     void testLoadCriteriaDocStatuses() {

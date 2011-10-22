@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.lookup;
+package org.kuali.rice.kew.api.document.search;
 
 import org.kuali.rice.kew.api.document.DocumentContract;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeContract;
@@ -9,7 +9,7 @@ import java.util.List;
  * Defines the contract for a single document result from execution of a document lookup.  This serves to package the
  * actual document with it's document attributes.
  */
-public interface DocumentLookupResultContract {
+public interface DocumentSearchResultContract {
 
     /**
      * Returns the document represented by this result.  This should include all information available on the

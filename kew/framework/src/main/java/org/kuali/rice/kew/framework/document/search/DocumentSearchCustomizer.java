@@ -13,8 +13,8 @@
  */
 package org.kuali.rice.kew.framework.document.search;
 
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 
 import java.util.List;
 
@@ -70,11 +70,11 @@ public interface DocumentSearchCustomizer {
      * <p>It is guaranteed that the document type name on the given criteria will never be null and will always
      * represent a valid document type.</p>
      *
-     * @param documentLookupCriteria the original criteria against which to perform customization, will never be null
+     * @param documentSearchCriteria the original criteria against which to perform customization, will never be null
      *
      * @return the customized criteria, or null if no customization was performed
      */
-    DocumentLookupCriteria customizeCriteria(DocumentLookupCriteria documentLookupCriteria);
+    DocumentSearchCriteria customizeCriteria(DocumentSearchCriteria documentSearchCriteria);
 
     /**
      * Performs a customized "clear" of the given document lookup criteria.  Clearing of the criteria is typically
@@ -88,11 +88,11 @@ public interface DocumentSearchCustomizer {
      * <p>It is guaranteed that the document type name on the given criteria will never be null and will always
      * represent a valid document type.</p>
      *
-     * @param documentLookupCriteria the criteria to clear
+     * @param documentSearchCriteria the criteria to clear
      *
      * @return the cleared criteria, or null if no custom criteria clearing was performed
      */
-    DocumentLookupCriteria customizeClearCriteria(DocumentLookupCriteria documentLookupCriteria);
+    DocumentSearchCriteria customizeClearCriteria(DocumentSearchCriteria documentSearchCriteria);
 
     /**
      * Performs customization of the given list of document lookup results.  This method is invoked after the search is
@@ -106,7 +106,7 @@ public interface DocumentSearchCustomizer {
      * is important to note that in order for these custom attribute values to be displayed in the result set in the
      * document lookup user interface, there must be a corresponding entry in the
      * {@link DocumentSearchResultSetConfiguration} returned by the
-     * {@link #customizeResultSetConfiguration(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)} method
+     * {@link #customizeResultSetConfiguration(org.kuali.rice.kew.api.document.search.DocumentSearchCriteria)} method
      * on this customizer implementation.</p>
      *
      * <p>It is permissible that implementations of this method may not return result values for all of the document
@@ -117,13 +117,13 @@ public interface DocumentSearchCustomizer {
      * <p>It is guaranteed that the document type name on the given criteria will never be null and will always
      * represent a valid document type.</p>
      *
-     * @param documentLookupCriteria the criteria against which the document lookup was executed
+     * @param documentSearchCriteria the criteria against which the document lookup was executed
      * @param defaultResults the results that were returned by the execution of the document lookup
      * 
      * @return customized lookup result values for any of the document results requiring custom values, or null if no
      * customization was performed
      */
-    DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria, List<DocumentLookupResult> defaultResults);
+    DocumentSearchResultValues customizeResults(DocumentSearchCriteria documentSearchCriteria, List<DocumentSearchResult> defaultResults);
 
     /**
      * Performs customization of what result fields should be displayed in the result set.  Allows for hiding of
@@ -137,13 +137,13 @@ public interface DocumentSearchCustomizer {
      * <p>It is guaranteed that the document type name on the given criteria will never be null and will always
      * represent a valid document type.</p>
      *
-     * @param documentLookupCriteria the criteria against which the document lookup was executed
+     * @param documentSearchCriteria the criteria against which the document lookup was executed
      * @return the customized result set configuration, or null if no customization was performed
      */
-    DocumentSearchResultSetConfiguration customizeResultSetConfiguration(DocumentLookupCriteria documentLookupCriteria);
+    DocumentSearchResultSetConfiguration customizeResultSetConfiguration(DocumentSearchCriteria documentSearchCriteria);
 
     /**
-     * Indicates if the {@link #customizeCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)} on
+     * Indicates if the {@link #customizeCriteria(org.kuali.rice.kew.api.document.search.DocumentSearchCriteria)} on
      * this customizer should be invoked for the document type with the given name.  The caller of this method is
      * permitted to cache the return value for a length of time of their choosing.
      *
@@ -153,7 +153,7 @@ public interface DocumentSearchCustomizer {
     boolean isCustomizeCriteriaEnabled(String documentTypeName);
 
     /**
-     * Indicates if the {@link #customizeClearCriteria(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
+     * Indicates if the {@link #customizeClearCriteria(org.kuali.rice.kew.api.document.search.DocumentSearchCriteria)}
      * on this customizer should be invoked for the document type with the given name.  The caller of this method is
      * permitted to cache the return value for a length of time of their choosing.
      *
@@ -163,7 +163,7 @@ public interface DocumentSearchCustomizer {
     boolean isCustomizeClearCriteriaEnabled(String documentTypeName);
 
     /**
-     * Indicates if the {@link #customizeResults(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria, java.util.List)}
+     * Indicates if the {@link #customizeResults(org.kuali.rice.kew.api.document.search.DocumentSearchCriteria, java.util.List)}
      * on this customizer should be invoked for the document type with the given name.  The caller of this method is
      * permitted to cache the return value for a length of time of their choosing.
      *
@@ -173,7 +173,7 @@ public interface DocumentSearchCustomizer {
     boolean isCustomizeResultsEnabled(String documentTypeName);
 
     /**
-     * Indicates if the {@link #customizeResultSetConfiguration(org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria)}
+     * Indicates if the {@link #customizeResultSetConfiguration(org.kuali.rice.kew.api.document.search.DocumentSearchCriteria)}
      * on this customizer should be invoked for the document type with the given name.  The caller of this method is
      * permitted to cache the return value for a length of time of their choosing.
      *

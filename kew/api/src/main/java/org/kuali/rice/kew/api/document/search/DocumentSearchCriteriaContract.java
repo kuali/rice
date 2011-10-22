@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.lookup;
+package org.kuali.rice.kew.api.document.search;
 
 import org.joda.time.DateTime;
 import org.kuali.rice.kew.api.document.DocumentStatus;
@@ -36,7 +36,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupCriteriaContract {
+public interface DocumentSearchCriteriaContract {
 
     /**
      * Returns the document id criteria to search against when executing the document lookup.

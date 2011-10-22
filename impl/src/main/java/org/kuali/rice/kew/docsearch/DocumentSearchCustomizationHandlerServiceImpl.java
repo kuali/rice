@@ -7,8 +7,8 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.api.extension.ExtensionRepositoryService;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
@@ -71,10 +71,10 @@ public class DocumentSearchCustomizationHandlerServiceImpl implements DocumentSe
     }
 
     @Override
-    public List<RemotableAttributeError> validateCriteria(DocumentLookupCriteria documentLookupCriteria,
+    public List<RemotableAttributeError> validateCriteria(DocumentSearchCriteria documentSearchCriteria,
             List<String> searchableAttributeNames) {
-        if (documentLookupCriteria == null) {
-            throw new RiceIllegalArgumentException("documentLookupCriteria was null or blank");
+        if (documentSearchCriteria == null) {
+            throw new RiceIllegalArgumentException("documentSearchCriteria was null or blank");
         }
         if (searchableAttributeNames == null) {
             throw new RiceIllegalArgumentException("searchableAttributeNames was null");
@@ -87,49 +87,50 @@ public class DocumentSearchCustomizationHandlerServiceImpl implements DocumentSe
                    throw new RiceIllegalArgumentException("Failed to locate a SearchableAttribute with the given name: " + searchableAttributeName);
                 }
                 SearchableAttribute searchableAttribute = loadSearchableAttribute(extensionDefinition);
-                List<RemotableAttributeError> errors = searchableAttribute.validateDocumentAttributeCriteria(extensionDefinition, documentLookupCriteria);
+                List<RemotableAttributeError> errors = searchableAttribute.validateDocumentAttributeCriteria(extensionDefinition,
+                        documentSearchCriteria);
                 if (!CollectionUtils.isEmpty(errors)) {
                     searchFieldErrors.addAll(errors);
                 }
             }
             return Collections.unmodifiableList(searchFieldErrors);
         } catch (RiceRemoteServiceConnectionException e) {
-            LOG.warn("Unable to connect to load searchable attributes for criteria: " + documentLookupCriteria, e);
+            LOG.warn("Unable to connect to load searchable attributes for criteria: " + documentSearchCriteria, e);
             return Collections.emptyList();
         }
     }
 
     @Override
-    public DocumentLookupCriteria customizeCriteria(DocumentLookupCriteria documentLookupCriteria, String customizerName) throws RiceIllegalArgumentException {
-        if (documentLookupCriteria == null) {
-            throw new RiceIllegalArgumentException("documentLookupCriteria was null");
+    public DocumentSearchCriteria customizeCriteria(DocumentSearchCriteria documentSearchCriteria, String customizerName) throws RiceIllegalArgumentException {
+        if (documentSearchCriteria == null) {
+            throw new RiceIllegalArgumentException("documentSearchCriteria was null");
         }
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
         DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
-        return customizer.customizeCriteria(documentLookupCriteria);
+        return customizer.customizeCriteria(documentSearchCriteria);
     }
 
     @Override
-    public DocumentLookupCriteria customizeClearCriteria(DocumentLookupCriteria documentLookupCriteria, String customizerName)
+    public DocumentSearchCriteria customizeClearCriteria(DocumentSearchCriteria documentSearchCriteria, String customizerName)
             throws RiceIllegalArgumentException {
-        if (documentLookupCriteria == null) {
-            throw new RiceIllegalArgumentException("documentLookupCriteria was null");
+        if (documentSearchCriteria == null) {
+            throw new RiceIllegalArgumentException("documentSearchCriteria was null");
         }
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
         DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
-        return customizer.customizeClearCriteria(documentLookupCriteria);
+        return customizer.customizeClearCriteria(documentSearchCriteria);
     }
 
     @Override
-    public DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
-            List<DocumentLookupResult> defaultResults,
+    public DocumentSearchResultValues customizeResults(DocumentSearchCriteria documentSearchCriteria,
+            List<DocumentSearchResult> defaultResults,
             String customizerName) throws RiceIllegalArgumentException {
-        if (documentLookupCriteria == null) {
-            throw new RiceIllegalArgumentException("documentLookupCriteria was null");
+        if (documentSearchCriteria == null) {
+            throw new RiceIllegalArgumentException("documentSearchCriteria was null");
         }
         if (defaultResults == null) {
             throw new RiceIllegalArgumentException("defaultResults was null");
@@ -138,20 +139,20 @@ public class DocumentSearchCustomizationHandlerServiceImpl implements DocumentSe
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
         DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
-        return customizer.customizeResults(documentLookupCriteria, defaultResults);
+        return customizer.customizeResults(documentSearchCriteria, defaultResults);
     }
 
     @Override
     public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(
-            DocumentLookupCriteria documentLookupCriteria, String customizerName) throws RiceIllegalArgumentException {
-        if (documentLookupCriteria == null) {
-            throw new RiceIllegalArgumentException("documentLookupCriteria was null");
+            DocumentSearchCriteria documentSearchCriteria, String customizerName) throws RiceIllegalArgumentException {
+        if (documentSearchCriteria == null) {
+            throw new RiceIllegalArgumentException("documentSearchCriteria was null");
         }
         if (StringUtils.isBlank(customizerName)) {
             throw new RiceIllegalArgumentException("customizerName was null or blank");
         }
         DocumentSearchCustomizer customizer = loadCustomizer(customizerName);
-        return customizer.customizeResultSetConfiguration(documentLookupCriteria);
+        return customizer.customizeResultSetConfiguration(documentSearchCriteria);
     }
 
     @Override

@@ -3,12 +3,12 @@ package org.kuali.rice.kew.impl.document.lookup
 import org.kuali.rice.krad.bo.BusinessObject
 import org.kuali.rice.kew.doctype.bo.DocumentType
 import org.kuali.rice.kew.service.KEWServiceLocator
-import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO
+
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.identity.Person
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult
 import org.kuali.rice.kew.api.document.Document
-import org.kuali.rice.core.api.CoreApiServiceLocator
+
 import org.kuali.rice.kew.api.document.DocumentStatus
 import java.sql.Timestamp
 
@@ -93,7 +93,7 @@ class DocumentLookupCriteriaBo implements BusinessObject {
         return "<img alt=\"Route Log for Document\" src=\"images/my_route_log.gif\"/>";
     }
 
-    void populateFromDocumentLookupResult(DocumentLookupResult result) {
+    void populateFromDocumentLookupResult(DocumentSearchResult result) {
         Document document = result.document
         documentTypeName = document.documentTypeName
         documentId = document.documentId

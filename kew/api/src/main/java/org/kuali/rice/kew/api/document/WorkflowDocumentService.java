@@ -23,8 +23,8 @@ import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 
 import javax.jws.WebMethod;
@@ -221,9 +221,9 @@ public interface WorkflowDocumentService {
      */
     @WebMethod(operationName = "lookupDocuments")
     @WebResult(name = "documentLookupResults")
-    DocumentLookupResults lookupDocuments(
+    DocumentSearchResults lookupDocuments(
             @WebParam(name = "principalId") String principalId,
-            @WebParam(name = "criteria") DocumentLookupCriteria criteria)
+            @WebParam(name = "criteria") DocumentSearchCriteria criteria)
         throws RiceIllegalArgumentException;
 
     /**

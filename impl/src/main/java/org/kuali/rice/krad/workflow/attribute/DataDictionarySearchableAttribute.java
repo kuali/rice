@@ -27,7 +27,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
@@ -213,18 +213,18 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
     @Override
     public List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition,
-            DocumentLookupCriteria documentLookupCriteria) {
+            DocumentSearchCriteria documentSearchCriteria) {
         List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         DictionaryValidationService validationService = KNSServiceLocator.getDictionaryValidationService();
 
         // validate the document attribute values
-        Map<String, List<String>> documentAttributeValues = documentLookupCriteria.getDocumentAttributeValues();
+        Map<String, List<String>> documentAttributeValues = documentSearchCriteria.getDocumentAttributeValues();
         for (String key : documentAttributeValues.keySet()) {
             List<String> values = documentAttributeValues.get(key);
             if (CollectionUtils.isNotEmpty(values)) {
                 for (String value : values) {
                     if (StringUtils.isNotBlank(value)) {
-                        validationService.validateAttributeFormat(documentLookupCriteria.getDocumentTypeName(), key, value, key);
+                        validationService.validateAttributeFormat(documentSearchCriteria.getDocumentTypeName(), key, value, key);
                     }
                 }
             }

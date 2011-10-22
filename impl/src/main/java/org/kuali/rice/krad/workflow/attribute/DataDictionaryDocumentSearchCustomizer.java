@@ -20,8 +20,8 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResult;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizer;
@@ -68,30 +68,30 @@ public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribu
 
     @Override
     public final List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition,
-            DocumentLookupCriteria documentLookupCriteria) {
-        return getSearchableAttribute().validateDocumentAttributeCriteria(extensionDefinition, documentLookupCriteria);
+            DocumentSearchCriteria documentSearchCriteria) {
+        return getSearchableAttribute().validateDocumentAttributeCriteria(extensionDefinition, documentSearchCriteria);
     }
 
     @Override
-    public final DocumentLookupCriteria customizeCriteria(DocumentLookupCriteria documentLookupCriteria) {
-        return getDocumentSearchCustomizer().customizeCriteria(documentLookupCriteria);
+    public final DocumentSearchCriteria customizeCriteria(DocumentSearchCriteria documentSearchCriteria) {
+        return getDocumentSearchCustomizer().customizeCriteria(documentSearchCriteria);
     }
 
     @Override
-    public final DocumentLookupCriteria customizeClearCriteria(DocumentLookupCriteria documentLookupCriteria) {
-        return getDocumentSearchCustomizer().customizeClearCriteria(documentLookupCriteria);
+    public final DocumentSearchCriteria customizeClearCriteria(DocumentSearchCriteria documentSearchCriteria) {
+        return getDocumentSearchCustomizer().customizeClearCriteria(documentSearchCriteria);
     }
 
     @Override
-    public final DocumentSearchResultValues customizeResults(DocumentLookupCriteria documentLookupCriteria,
-            List<DocumentLookupResult> defaultResults) {
-        return getDocumentSearchCustomizer().customizeResults(documentLookupCriteria, defaultResults);
+    public final DocumentSearchResultValues customizeResults(DocumentSearchCriteria documentSearchCriteria,
+            List<DocumentSearchResult> defaultResults) {
+        return getDocumentSearchCustomizer().customizeResults(documentSearchCriteria, defaultResults);
     }
 
     @Override
     public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(
-            DocumentLookupCriteria documentLookupCriteria) {
-        return getDocumentSearchCustomizer().customizeResultSetConfiguration(documentLookupCriteria);
+            DocumentSearchCriteria documentSearchCriteria) {
+        return getDocumentSearchCustomizer().customizeResultSetConfiguration(documentSearchCriteria);
     }
 
     @Override

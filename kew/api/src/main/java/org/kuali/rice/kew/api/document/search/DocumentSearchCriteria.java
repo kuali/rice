@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.api.document.lookup;
+package org.kuali.rice.kew.api.document.search;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -29,44 +29,44 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An immutable data transfer object implementation of the {@link DocumentLookupCriteriaContract}.  Instances of this
+ * An immutable data transfer object implementation of the {@link DocumentSearchCriteriaContract}.  Instances of this
  * class should be constructed using the nested {@link Builder} class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = DocumentLookupCriteria.Constants.ROOT_ELEMENT_NAME)
+@XmlRootElement(name = DocumentSearchCriteria.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = DocumentLookupCriteria.Constants.TYPE_NAME, propOrder = {
-    DocumentLookupCriteria.Elements.DOCUMENT_ID,
-    DocumentLookupCriteria.Elements.DOCUMENT_STATUSES,
-    DocumentLookupCriteria.Elements.DOCUMENT_STATUS_CATEGORIES,
-    DocumentLookupCriteria.Elements.TITLE,
-    DocumentLookupCriteria.Elements.APPLICATION_DOCUMENT_ID,
-    DocumentLookupCriteria.Elements.APPLICATION_DOCUMENT_STATUS,
-    DocumentLookupCriteria.Elements.INITIATOR_PRINCIPAL_NAME,
-    DocumentLookupCriteria.Elements.VIEWER_PRINCIPAL_NAME,
-    DocumentLookupCriteria.Elements.VIEWER_GROUP_ID,
-    DocumentLookupCriteria.Elements.APPROVER_PRINCIPAL_NAME,
-    DocumentLookupCriteria.Elements.ROUTE_NODE_NAME,
-    DocumentLookupCriteria.Elements.ROUTE_NODE_LOOKUP_LOGIC,
-    DocumentLookupCriteria.Elements.DOCUMENT_TYPE_NAME,
-    DocumentLookupCriteria.Elements.DATE_CREATED_FROM,
-    DocumentLookupCriteria.Elements.DATE_CREATED_TO,
-    DocumentLookupCriteria.Elements.DATE_LAST_MODIFIED_FROM,
-    DocumentLookupCriteria.Elements.DATE_LAST_MODIFIED_TO,
-    DocumentLookupCriteria.Elements.DATE_APPROVED_FROM,
-    DocumentLookupCriteria.Elements.DATE_APPROVED_TO,
-    DocumentLookupCriteria.Elements.DATE_FINALIZED_FROM,
-    DocumentLookupCriteria.Elements.DATE_FINALIZED_TO,
-    DocumentLookupCriteria.Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_FROM,
-    DocumentLookupCriteria.Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_TO,
-    DocumentLookupCriteria.Elements.DOCUMENT_ATTRIBUTE_VALUES,
-    DocumentLookupCriteria.Elements.SAVE_NAME,
-    DocumentLookupCriteria.Elements.START_AT_INDEX,
-    DocumentLookupCriteria.Elements.MAX_RESULTS,
+@XmlType(name = DocumentSearchCriteria.Constants.TYPE_NAME, propOrder = {
+    DocumentSearchCriteria.Elements.DOCUMENT_ID,
+    DocumentSearchCriteria.Elements.DOCUMENT_STATUSES,
+    DocumentSearchCriteria.Elements.DOCUMENT_STATUS_CATEGORIES,
+    DocumentSearchCriteria.Elements.TITLE,
+    DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_ID,
+    DocumentSearchCriteria.Elements.APPLICATION_DOCUMENT_STATUS,
+    DocumentSearchCriteria.Elements.INITIATOR_PRINCIPAL_NAME,
+    DocumentSearchCriteria.Elements.VIEWER_PRINCIPAL_NAME,
+    DocumentSearchCriteria.Elements.VIEWER_GROUP_ID,
+    DocumentSearchCriteria.Elements.APPROVER_PRINCIPAL_NAME,
+    DocumentSearchCriteria.Elements.ROUTE_NODE_NAME,
+    DocumentSearchCriteria.Elements.ROUTE_NODE_LOOKUP_LOGIC,
+    DocumentSearchCriteria.Elements.DOCUMENT_TYPE_NAME,
+    DocumentSearchCriteria.Elements.DATE_CREATED_FROM,
+    DocumentSearchCriteria.Elements.DATE_CREATED_TO,
+    DocumentSearchCriteria.Elements.DATE_LAST_MODIFIED_FROM,
+    DocumentSearchCriteria.Elements.DATE_LAST_MODIFIED_TO,
+    DocumentSearchCriteria.Elements.DATE_APPROVED_FROM,
+    DocumentSearchCriteria.Elements.DATE_APPROVED_TO,
+    DocumentSearchCriteria.Elements.DATE_FINALIZED_FROM,
+    DocumentSearchCriteria.Elements.DATE_FINALIZED_TO,
+    DocumentSearchCriteria.Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_FROM,
+    DocumentSearchCriteria.Elements.DATE_APPLICATION_DOCUMENT_STATUS_CHANGED_TO,
+    DocumentSearchCriteria.Elements.DOCUMENT_ATTRIBUTE_VALUES,
+    DocumentSearchCriteria.Elements.SAVE_NAME,
+    DocumentSearchCriteria.Elements.START_AT_INDEX,
+    DocumentSearchCriteria.Elements.MAX_RESULTS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
-public final class DocumentLookupCriteria extends AbstractDataTransferObject implements DocumentLookupCriteriaContract {
+public final class DocumentSearchCriteria extends AbstractDataTransferObject implements DocumentSearchCriteriaContract {
 
     private static final long serialVersionUID = -221440103480740497L;
     
@@ -171,7 +171,7 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     /**
      * Private constructor used only by JAXB.
      */
-    private DocumentLookupCriteria() {
+    private DocumentSearchCriteria() {
         this.documentId = null;
         this.documentStatuses = null;
         this.documentStatusCategories = null;
@@ -201,7 +201,7 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         this.maxResults = null;
     }
 
-    private DocumentLookupCriteria(Builder builder) {
+    private DocumentSearchCriteria(Builder builder) {
         this.documentId = builder.getDocumentId();
         if (builder.getDocumentStatuses() == null) {
             this.documentStatuses = Collections.emptyList();
@@ -379,10 +379,10 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
     }
 
     /**
-     * A builder which can be used to construct {@link DocumentLookupCriteria} instances.  Enforces the constraints of
-     * the {@link DocumentLookupCriteriaContract}.
+     * A builder which can be used to construct {@link DocumentSearchCriteria} instances.  Enforces the constraints of
+     * the {@link DocumentSearchCriteriaContract}.
      */
-    public final static class Builder implements Serializable, ModelBuilder, DocumentLookupCriteriaContract {
+    public final static class Builder implements Serializable, ModelBuilder, DocumentSearchCriteriaContract {
 
         private String documentId;
         private List<DocumentStatus> documentStatuses;
@@ -436,7 +436,7 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
          *
          * @throws IllegalArgumentException if the given contract is null
          */
-        public static Builder create(DocumentLookupCriteriaContract contract) {
+        public static Builder create(DocumentSearchCriteriaContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
@@ -478,8 +478,8 @@ public final class DocumentLookupCriteria extends AbstractDataTransferObject imp
         }
 
         @Override
-        public DocumentLookupCriteria build() {
-            return new DocumentLookupCriteria(this);
+        public DocumentSearchCriteria build() {
+            return new DocumentSearchCriteria(this);
         }
 
         @Override

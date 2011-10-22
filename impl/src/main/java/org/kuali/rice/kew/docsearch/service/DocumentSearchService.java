@@ -17,8 +17,8 @@
 package org.kuali.rice.kew.docsearch.service;
 
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 
@@ -40,23 +40,23 @@ public interface DocumentSearchService {
      * @param criteria criteria to use to search documents
      * @return the results of the search, will never return null
      */
-    DocumentLookupResults lookupDocuments(String principalId, DocumentLookupCriteria criteria);
+    DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria);
 
     /**
      * Returns a saved search criteria, either explicitly named by the user, or saved automatically as a recent search
      * @param principalId the user principal id
      * @param key the user option key under which the criteria is saved
-     * @return the DocumentLookupCriteria or null if not found
+     * @return the DocumentSearchCriteria or null if not found
      */
-    DocumentLookupCriteria getSavedSearchCriteria(String principalId, String key);
+    DocumentSearchCriteria getSavedSearchCriteria(String principalId, String key);
 
     /**
      * Returns an explicitly named saved search criteria
      * @param principalId the user principal id
      * @param savedSearchName the user-provided saved search name
-     * @return the DocumentLookupCriteria or null if not found
+     * @return the DocumentSearchCriteria or null if not found
      */
-    DocumentLookupCriteria getNamedSearchCriteria(String principalId, String savedSearchName);
+    DocumentSearchCriteria getNamedSearchCriteria(String principalId, String savedSearchName);
 
     /**
      * Clears all saved searches for the specified user (named and automatic)
@@ -78,9 +78,9 @@ public interface DocumentSearchService {
      */
     List<KeyValue> getMostRecentSearches(String principalId);
 
-    DocumentLookupCriteria clearCriteria(DocumentType documentType, DocumentLookupCriteria criteria);
+    DocumentSearchCriteria clearCriteria(DocumentType documentType, DocumentSearchCriteria criteria);
 
     DocumentLookupGenerator getStandardDocumentSearchGenerator();
 
-    void validateDocumentSearchCriteria(DocumentLookupGenerator docLookupGenerator, DocumentLookupCriteria.Builder criteria);
+    void validateDocumentSearchCriteria(DocumentLookupGenerator docLookupGenerator, DocumentSearchCriteria.Builder criteria);
 }

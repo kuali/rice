@@ -23,14 +23,13 @@ import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class TestXMLSearchableAttributeString implements SearchableAttribute {
 
@@ -67,7 +66,7 @@ public class TestXMLSearchableAttributeString implements SearchableAttribute {
 
     @Override
     public List<RemotableAttributeError> validateDocumentAttributeCriteria(ExtensionDefinition extensionDefinition,
-            DocumentLookupCriteria documentLookupCriteria) {
+            DocumentSearchCriteria documentSearchCriteria) {
         return Collections.emptyList();
     }
 

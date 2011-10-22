@@ -3,12 +3,12 @@ package org.kuali.rice.kew.docsearch;
 import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.framework.document.search.AttributeFields;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupCriteria;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValues;
-import org.kuali.rice.kew.api.document.lookup.DocumentLookupResults;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
@@ -73,7 +73,7 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
 
     @Override
     public List<RemotableAttributeError> validateLookupFieldParameters(DocumentType documentType,
-            DocumentLookupCriteria documentLookupCriteria) {
+            DocumentSearchCriteria documentSearchCriteria) {
 
         List<DocumentTypeAttribute> searchableAttributes = documentType.getSearchableAttributes();
         LinkedHashMap<String, List<String>> applicationIdToAttributeNameMap = new LinkedHashMap<String, List<String>>();
@@ -93,7 +93,7 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
             DocumentSearchCustomizationHandlerService documentSearchCustomizationService = loadCustomizationService(applicationId);
             List<String> searchableAttributeNames = applicationIdToAttributeNameMap.get(applicationId);
             List<RemotableAttributeError> searchErrors = documentSearchCustomizationService.validateCriteria(
-                    documentLookupCriteria, searchableAttributeNames);
+                    documentSearchCriteria, searchableAttributeNames);
             if (!CollectionUtils.isEmpty(searchErrors)) {
                 errors.addAll(searchErrors);
             }
@@ -103,13 +103,13 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
     }
 
     @Override
-    public DocumentLookupCriteria customizeCriteria(DocumentType documentType, DocumentLookupCriteria documentLookupCriteria) {
+    public DocumentSearchCriteria customizeCriteria(DocumentType documentType, DocumentSearchCriteria documentSearchCriteria) {
         DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
                     DocumentSearchCustomization.CRITERIA)) {
-                DocumentLookupCriteria customizedCriteria = service.customizeCriteria(documentLookupCriteria, customizerAttribute.getRuleAttribute().getName());
+                DocumentSearchCriteria customizedCriteria = service.customizeCriteria(documentSearchCriteria, customizerAttribute.getRuleAttribute().getName());
                 if (customizedCriteria != null) {
                     return customizedCriteria;
                 }
@@ -119,30 +119,30 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
     }
 
     @Override
-    public DocumentLookupCriteria customizeClearCriteria(DocumentType documentType, DocumentLookupCriteria documentLookupCriteria) {
+    public DocumentSearchCriteria customizeClearCriteria(DocumentType documentType, DocumentSearchCriteria documentSearchCriteria) {
         DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
                     DocumentSearchCustomization.CLEAR_CRITERIA)) {
-                DocumentLookupCriteria customizedCriteria = service.customizeClearCriteria(documentLookupCriteria, customizerAttribute.getRuleAttribute().getName());
+                DocumentSearchCriteria customizedCriteria = service.customizeClearCriteria(documentSearchCriteria, customizerAttribute.getRuleAttribute().getName());
                 if (customizedCriteria != null) {
                     return customizedCriteria;
                 }
             }
         }
-        return documentLookupCriteria;
+        return documentSearchCriteria;
     }
 
     @Override
     public DocumentSearchResultValues customizeResults(DocumentType documentType,
-            DocumentLookupCriteria documentLookupCriteria, DocumentLookupResults results) {
+            DocumentSearchCriteria documentSearchCriteria, DocumentSearchResults results) {
         DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
                     DocumentSearchCustomization.RESULTS)) {
-                DocumentSearchResultValues customizedResults = service.customizeResults(documentLookupCriteria, results.getLookupResults(), customizerAttribute.getRuleAttribute().getName());
+                DocumentSearchResultValues customizedResults = service.customizeResults(documentSearchCriteria, results.getSearchResults(), customizerAttribute.getRuleAttribute().getName());
                 if (customizedResults != null) {
                     return customizedResults;
                 }
@@ -153,14 +153,14 @@ public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCu
 
     @Override
     public DocumentSearchResultSetConfiguration customizeResultSetConfiguration(DocumentType documentType,
-            DocumentLookupCriteria documentLookupCriteria) {
+            DocumentSearchCriteria documentSearchCriteria) {
         DocumentTypeAttribute customizerAttribute = documentType.getCustomizerAttribute();
         if (customizerAttribute != null) {
             DocumentSearchCustomizationHandlerService service = loadCustomizationService(customizerAttribute.getRuleAttribute().getApplicationId());
             if (service.getEnabledCustomizations(documentType.getName(), customizerAttribute.getRuleAttribute().getName()).contains(
                     DocumentSearchCustomization.RESULT_SET_FIELDS)) {
                 DocumentSearchResultSetConfiguration resultSetConfiguration = service.customizeResultSetConfiguration(
-                        documentLookupCriteria, customizerAttribute.getRuleAttribute().getName());
+                        documentSearchCriteria, customizerAttribute.getRuleAttribute().getName());
                 if (resultSetConfiguration != null) {
                     return resultSetConfiguration;
                 }

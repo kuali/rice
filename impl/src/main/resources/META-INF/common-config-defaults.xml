@@ -480,7 +480,7 @@
   <param name="rice.kew.noteServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.ruleServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.documentAttributeIndexingQueueSoap.secure" override="false">true</param>
-  <param name="rice.kew.documentLookupCustomizationHandlerServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.documentSearchCustomizationHandlerServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.documentSecurityHandlerServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.ruleValidationAttributeExporterServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.workflowRuleAttributeHandlerServiceSoap.secure" override="false">true</param>

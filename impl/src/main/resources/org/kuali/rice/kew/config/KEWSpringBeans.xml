@@ -191,7 +191,7 @@
         <idref local="rice.kew.documentTypeService" />
         <idref local="rice.kew.noteService" />
         <idref local="rice.kew.ruleService" />
-        <idref local="rice.kew.documentLookupCustomizationHandlerService" />
+        <idref local="rice.kew.documentSearchCustomizationHandlerService" />
         <idref local="rice.kew.documentSecurityHandlerService" />
         <idref local="rice.kew.ruleValidationAttributeExporterService" />
         <idref local="rice.kew.workflowRuleAttributeHandlerService" />
@@ -428,18 +428,18 @@
 
   <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter"/>
 
-  <bean id="documentLookupCriteriaTranslator" class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslatorImpl"/>
+  <bean id="documentSearchCriteriaTranslator" class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslatorImpl"/>
 
-  <bean id="documentLookupCriteriaBoLookupableHelperService"
+  <bean id="documentSearchCriteriaBoLookupableHelperService"
         class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBoLookupableHelperService" scope="prototype">
     <property name="documentLookupCriteriaProcessor" ref="documentLookupCriteriaProcessor"/>
-    <property name="documentSearchCriteriaTranslator" ref="documentLookupCriteriaTranslator"/>
+    <property name="documentSearchCriteriaTranslator" ref="documentSearchCriteriaTranslator"/>
     <property name="documentSearchService" ref="enDocumentSearchService"/>
   </bean>
 
   <bean id="documentLookupCriteriaBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
     <property name="lookupableHelperService">
-      <ref local="documentLookupCriteriaBoLookupableHelperService" />
+      <ref local="documentSearchCriteriaBoLookupableHelperService" />
     </property>
     <property name="extraOnLoad" value="storeCurrentDocTypeNameOnLoad()"/>
   </bean>
@@ -838,7 +838,7 @@
         p:businessObjectService-ref="businessObjectService"
         p:criteriaLookupService-ref="criteriaLookupService" />
 
-  <bean id="rice.kew.documentLookupCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
+  <bean id="rice.kew.documentSearchCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
   </bean>
 

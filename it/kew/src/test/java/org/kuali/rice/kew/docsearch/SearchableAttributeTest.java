@@ -254,7 +254,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttribute(criteria, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY,
-                DocumentLookupInternalUtils.getDisplayValueWithDateOnly(new Timestamp(
+                DocumentSearchInternalUtils.getDisplayValueWithDateOnly(new Timestamp(
                         TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)));
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 1, results.getSearchResults().size());

@@ -36,7 +36,7 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
-import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
 import org.kuali.rice.kew.docsearch.QueryComponent;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -128,12 +128,12 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
             String tableAlias = "EXT" + tableIndex;
             RemotableAttributeField searchField = getSearchFieldByName(documentAttributeName, searchFields);
-            String tableName = DocumentLookupInternalUtils.getAttributeTableName(searchField);
-            boolean caseSensitive = DocumentLookupInternalUtils.isLookupCaseSensitive(searchField);
+            String tableName = DocumentSearchInternalUtils.getAttributeTableName(searchField);
+            boolean caseSensitive = DocumentSearchInternalUtils.isLookupCaseSensitive(searchField);
 
             Criteria crit = null;
 
-            Class<?> dataTypeClass = DocumentLookupInternalUtils.getDataTypeClass(searchField);
+            Class<?> dataTypeClass = DocumentSearchInternalUtils.getDataTypeClass(searchField);
             if (searchValues.size() > 1) {
                 // if there's more than one entry, we need to do an "in"
                 crit = new Criteria(tableName, tableAlias);
@@ -307,7 +307,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
     public void populateDocumentAttributesValues(DocumentSearchResult.Builder resultBuilder, Statement searchAttributeStatement) throws SQLException {
         searchAttributeStatement.setFetchSize(50);
         String documentId = resultBuilder.getDocument().getDocumentId();
-        List<SearchableAttributeValue> attributeValues = DocumentLookupInternalUtils
+        List<SearchableAttributeValue> attributeValues = DocumentSearchInternalUtils
                 .getSearchableAttributeValueObjectTypes();
         PerformanceLogger perfLog = new PerformanceLogger(documentId);
         for (SearchableAttributeValue searchAttValue : attributeValues) {

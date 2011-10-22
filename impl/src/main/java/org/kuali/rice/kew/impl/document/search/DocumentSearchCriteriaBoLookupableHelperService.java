@@ -20,8 +20,8 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteriaContract;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
-import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
-import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
+import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessorKEWAdapter;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
@@ -82,7 +82,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     // injected services
 
     private DocumentSearchService documentSearchService;
-    private DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor;
+    private DocumentSearchCriteriaProcessor documentSearchCriteriaProcessor;
     private DocumentSearchCriteriaTranslator documentSearchCriteriaTranslator;
 
     // unfortunately, lookup helpers are stateful, need to store these here for other methods to use
@@ -331,7 +331,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         // unset the clear search param, since this is not really a state, but just an action
         // it can never be toggled "off", just "on"
-        setFormField(DocumentLookupCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, "");
+        setFormField(DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, "");
     }
 
     /**
@@ -523,21 +523,21 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * Returns true if the current search being executed is a super user search.
      */
     protected boolean isSuperUserSearch() {
-        return isFlagSet(DocumentLookupCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD);
+        return isFlagSet(DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD);
     }
 
     /**
      * Returns true if the current search being executed is an "advanced" search.
      */
     protected boolean isAdvancedSearch() {
-        return isFlagSet(DocumentLookupCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD);
+        return isFlagSet(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD);
     }
 
     /**
      * Returns true if the current "search" being executed is an "clear" search.
      */
     protected boolean isClearSavedSearch() {
-        return isFlagSet(DocumentLookupCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD);
+        return isFlagSet(DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD);
     }
 
     protected String getSavedSearchName() {
@@ -564,7 +564,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     /**
-     * Sets the rows for the search criteria.  This method will delegate to the DocumentLookupCriteriaProcessor
+     * Sets the rows for the search criteria.  This method will delegate to the DocumentSearchCriteriaProcessor
      * in order to pull in fields for custom search attributes.
      *
      * @param documentTypeName the name of the document type currently entered on the form, if this is a valid document
@@ -589,7 +589,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         boolean superUserSearch = isSuperUserSearch();
 
         //call get rows
-        List<Row> rows = getDocumentLookupCriteriaProcessor().getRows(docType,lookupRows, advancedSearch, superUserSearch);
+        List<Row> rows = getDocumentSearchCriteriaProcessor().getRows(docType,lookupRows, advancedSearch, superUserSearch);
 
         BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
@@ -646,7 +646,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         // Add the "clear saved searches" button.
         suppMenuBar.append("&nbsp;");
-        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, DocumentLookupCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, KEWConstants.WEBAPP_DIRECTORY, "clearsaved", "clear saved searches"));
+        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, KEWConstants.WEBAPP_DIRECTORY, "clearsaved", "clear saved searches"));
 
         return suppMenuBar.toString();
     }
@@ -719,10 +719,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             if (fieldsRepopulated >= 2) {
                 break;
             }
-            if (DocumentLookupCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD.equals(field.getPropertyName())) {
+            if (DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD.equals(field.getPropertyName())) {
                 field.setPropertyValue(advancedSearch ? "YES" : "NO");
                 fieldsRepopulated++;
-            } else if (DocumentLookupCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD.equals(field.getPropertyName())) {
+            } else if (DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD.equals(field.getPropertyName())) {
                 field.setPropertyValue(advancedSearch ? "YES" : "NO");
                 fieldsRepopulated++;
             }
@@ -866,12 +866,12 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         return documentSearchService;
     }
 
-    public DocumentLookupCriteriaProcessor getDocumentLookupCriteriaProcessor() {
-        return documentLookupCriteriaProcessor;
+    public DocumentSearchCriteriaProcessor getDocumentSearchCriteriaProcessor() {
+        return documentSearchCriteriaProcessor;
     }
 
-    public void setDocumentLookupCriteriaProcessor(DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor) {
-        this.documentLookupCriteriaProcessor = documentLookupCriteriaProcessor;
+    public void setDocumentSearchCriteriaProcessor(DocumentSearchCriteriaProcessor documentSearchCriteriaProcessor) {
+        this.documentSearchCriteriaProcessor = documentSearchCriteriaProcessor;
     }
 
     public DocumentSearchCriteriaTranslator getDocumentSearchCriteriaTranslator() {

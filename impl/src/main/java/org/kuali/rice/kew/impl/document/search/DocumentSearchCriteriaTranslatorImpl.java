@@ -25,7 +25,7 @@ import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
-import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 
 import java.lang.reflect.InvocationTargetException;
@@ -181,8 +181,8 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
     }
 
     protected void applyDateRangeField(DocumentSearchCriteria.Builder criteria, String fieldName, String fieldValue) throws Exception {
-        DateTime lowerDateTime = DocumentLookupInternalUtils.getLowerDateTimeBound(fieldValue);
-        DateTime upperDateTime = DocumentLookupInternalUtils.getUpperDateTimeBound(fieldValue);
+        DateTime lowerDateTime = DocumentSearchInternalUtils.getLowerDateTimeBound(fieldValue);
+        DateTime upperDateTime = DocumentSearchInternalUtils.getUpperDateTimeBound(fieldValue);
         if (lowerDateTime != null) {
             PropertyUtils.setNestedProperty(criteria, fieldName + "From", lowerDateTime);
         }

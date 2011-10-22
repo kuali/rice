@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupCustomizationMediator {
+public interface DocumentSearchCustomizationMediator {
 
     /**
      * Retrieves the document lookup criteria configuration for the given document type.  This should include attribute

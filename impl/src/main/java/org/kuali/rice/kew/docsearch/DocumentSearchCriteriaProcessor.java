@@ -26,7 +26,7 @@ import org.kuali.rice.kns.web.ui.Row;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface DocumentLookupCriteriaProcessor {
+public interface DocumentSearchCriteriaProcessor {
 
     /**
      * Constructs the list of rows and fields to display in the lookup criteria section of the document lookup screen.

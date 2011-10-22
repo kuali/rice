@@ -30,9 +30,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentLookupInternalUtils {
+public class DocumentSearchInternalUtils {
 
-    private static final Logger LOG = Logger.getLogger(DocumentLookupInternalUtils.class);
+    private static final Logger LOG = Logger.getLogger(DocumentSearchInternalUtils.class);
 
     private static final boolean CASE_SENSITIVE_DEFAULT = true;
 

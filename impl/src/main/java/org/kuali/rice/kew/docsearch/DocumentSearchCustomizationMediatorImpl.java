@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentLookupCustomizationMediatorImpl implements DocumentLookupCustomizationMediator {
+public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCustomizationMediator {
 
     @Override
     public DocumentSearchCriteriaConfiguration getDocumentLookupCriteriaConfiguration(DocumentType documentType) {

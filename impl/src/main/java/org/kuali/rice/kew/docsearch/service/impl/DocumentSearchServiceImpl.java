@@ -33,11 +33,11 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
-import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediator;
 import org.kuali.rice.kew.framework.document.search.AttributeFields;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
-import org.kuali.rice.kew.docsearch.DocumentLookupCustomizationMediator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.SecuritySession;
@@ -80,7 +80,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private static final String LAST_SEARCH_BASE_NAME = "DocSearch.LastSearch.Holding";
 
 	private volatile ConfigurationService kualiConfigurationService;
-    private DocumentLookupCustomizationMediator documentLookupCustomizationMediator;
+    private DocumentSearchCustomizationMediator documentSearchCustomizationMediator;
 
 	private DocumentSearchDAO docSearchDao;
 	private UserOptionsService userOptionsService;
@@ -93,12 +93,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		this.userOptionsService = userOptionsService;
 	}
 
-    public void setDocumentLookupCustomizationMediator(DocumentLookupCustomizationMediator documentLookupCustomizationMediator) {
-        this.documentLookupCustomizationMediator = documentLookupCustomizationMediator;
+    public void setDocumentSearchCustomizationMediator(DocumentSearchCustomizationMediator documentSearchCustomizationMediator) {
+        this.documentSearchCustomizationMediator = documentSearchCustomizationMediator;
     }
 
-    protected DocumentLookupCustomizationMediator getDocumentLookupCustomizationMediator() {
-        return this.documentLookupCustomizationMediator;
+    protected DocumentSearchCustomizationMediator getDocumentSearchCustomizationMediator() {
+        return this.documentSearchCustomizationMediator;
     }
 
 	public void clearNamedSearches(String principalId) {
@@ -127,7 +127,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     protected DocumentSearchCriteria getCriteriaFromSavedSearch(UserOptions savedSearch) {
         String optionValue = savedSearch.getOptionVal();
         try {
-            return DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(optionValue);
+            return DocumentSearchInternalUtils.unmarshalDocumentLookupCriteria(optionValue);
         } catch (IOException e) {
             throw new WorkflowRuntimeException("Failed to load saved search for name '" + savedSearch.getOptionId() + "'", e);
         }
@@ -160,7 +160,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
         DocumentSearchResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
-            DocumentSearchResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
+            DocumentSearchResultValues resultValues = getDocumentSearchCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
                 Map<String, DocumentSearchResultValue> resultValueMap = new HashMap<String, DocumentSearchResultValue>();
                 for (DocumentSearchResultValue resultValue : resultValues.getResultValues()) {
@@ -229,7 +229,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (documentType == null) {
             return criteria;
         }
-        DocumentSearchCriteria customizedCriteria = getDocumentLookupCustomizationMediator().customizeCriteria(documentType, criteria);
+        DocumentSearchCriteria customizedCriteria = getDocumentSearchCustomizationMediator().customizeCriteria(documentType, criteria);
         if (customizedCriteria != null) {
             return customizedCriteria;
         }
@@ -280,7 +280,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
         if (documentType != null) {
             DocumentSearchCriteriaConfiguration searchConfiguration =
-                    getDocumentLookupCustomizationMediator().getDocumentLookupCriteriaConfiguration(documentType);
+                    getDocumentSearchCustomizationMediator().getDocumentLookupCriteriaConfiguration(documentType);
             if (searchConfiguration != null) {
                 List<AttributeFields> attributeFields = searchConfiguration.getSearchAttributeFields();
                 if (attributeFields != null) {
@@ -392,7 +392,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
 
     public DocumentSearchCriteria clearCriteria(DocumentType documentType, DocumentSearchCriteria criteria) {
-        DocumentSearchCriteria clearedCriteria = getDocumentLookupCustomizationMediator().customizeClearCriteria(
+        DocumentSearchCriteria clearedCriteria = getDocumentSearchCustomizationMediator().customizeClearCriteria(
                 documentType, criteria);
         if (clearedCriteria == null) {
             clearedCriteria = getStandardDocumentSearchGenerator().clearSearch(criteria);
@@ -480,7 +480,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         // TODO - Rice 2.0 - need to add support for "advanced" vs. "basic" vs. "super user" searches, this was originally stored with savedSearchString in Rice 1.x
 
         try {
-            String savedSearchString = DocumentLookupInternalUtils.marshalDocumentLookupCriteria(criteria);
+            String savedSearchString = DocumentSearchInternalUtils.marshalDocumentLookupCriteria(criteria);
 
             if (StringUtils.isNotBlank(criteria.getSaveName())) {
                 userOptionsService.save(principalId, NAMED_SEARCH_ORDER_BASE + criteria.getSaveName(), savedSearchString);

@@ -35,7 +35,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocumentLookupCriteriaProcessorKEWAdapter implements DocumentLookupCriteriaProcessor {
+public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearchCriteriaProcessor {
     /**
      * Name if the hidden input field containing basic/detailed search toggle state
      */

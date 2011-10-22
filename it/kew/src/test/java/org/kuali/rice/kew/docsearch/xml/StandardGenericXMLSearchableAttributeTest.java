@@ -24,7 +24,7 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
-import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils;
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
@@ -121,7 +121,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         // adding string searchable attribute
         i++;
         WorkflowAttributeDefinition.Builder dateXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdDateTime");
-        dateXMLDef.addPropertyDefinition(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocumentLookupInternalUtils
+        dateXMLDef.addPropertyDefinition(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocumentSearchInternalUtils
                 .getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
         workflowDocument.addSearchableDefinition(dateXMLDef.build());
 
@@ -208,7 +208,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttribute(criteria, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY,
-                DocumentLookupInternalUtils.getDisplayValueWithDateOnly(new Timestamp(
+                DocumentSearchInternalUtils.getDisplayValueWithDateOnly(new Timestamp(
                         TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)));
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         assertEquals("Search results should have one document.", 1, results.getSearchResults().size());

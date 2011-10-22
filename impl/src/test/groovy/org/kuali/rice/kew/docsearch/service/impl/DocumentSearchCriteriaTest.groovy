@@ -12,14 +12,14 @@ import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
 
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
-import org.kuali.rice.kew.docsearch.DocumentLookupInternalUtils
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
 import static org.junit.Assert.assertEquals
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 
 /**
  * Tests DocumentSearchCriteria marshalling and performance
  */
-class DocumentLookupCriteriaTest {
+class DocumentSearchCriteriaTest {
 
     @Test
     public void test_Xml_Marshal_Unmarshal() {
@@ -32,8 +32,8 @@ class DocumentLookupCriteriaTest {
     @Test
     void testJSONMarshalling() {
         DocumentSearchCriteria c = create("name")
-        def s = DocumentLookupInternalUtils.marshalDocumentLookupCriteria(c)
-        def d = DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(s)
+        def s = DocumentSearchInternalUtils.marshalDocumentLookupCriteria(c)
+        def d = DocumentSearchInternalUtils.unmarshalDocumentLookupCriteria(s)
         assertEquals(c, d)
     }
 
@@ -50,10 +50,10 @@ class DocumentLookupCriteriaTest {
             ],
             json: [
                 marshal: {
-                    DocumentLookupInternalUtils.marshalDocumentLookupCriteria(it)
+                    DocumentSearchInternalUtils.marshalDocumentLookupCriteria(it)
                 },
                 unmarshal: {
-                    DocumentLookupInternalUtils.unmarshalDocumentLookupCriteria(it)
+                    DocumentSearchInternalUtils.unmarshalDocumentLookupCriteria(it)
                 }
             ]
         ]

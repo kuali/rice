@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.impl.document.lookup;
+package org.kuali.rice.kew.impl.document.search;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -69,9 +69,9 @@ import java.util.TreeSet;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentLookupGeneratorImpl implements DocumentLookupGenerator {
+public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentLookupGeneratorImpl.class);
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSearchGeneratorImpl.class);
 
     private static final String ROUTE_NODE_TABLE = "KREW_RTE_NODE_T";
     private static final String ROUTE_NODE_INST_TABLE = "KREW_RTE_NODE_INSTN_T";

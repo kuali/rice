@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
-import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -56,7 +56,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
     }
 
     @Override
-    public DocumentSearchResults.Builder findDocuments(final DocumentLookupGenerator documentLookupGenerator, final DocumentSearchCriteria criteria, final boolean criteriaModified, final List<RemotableAttributeField> searchFields) {
+    public DocumentSearchResults.Builder findDocuments(final DocumentSearchGenerator documentSearchGenerator, final DocumentSearchCriteria criteria, final boolean criteriaModified, final List<RemotableAttributeField> searchFields) {
         final int maxResultCap = getMaxResultCap(criteria);
         try {
             final JdbcTemplate template = new JdbcTemplate(dataSource);
@@ -72,8 +72,8 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
                         statement.setMaxRows(fetchLimit + 1);
 
                         PerformanceLogger perfLog = new PerformanceLogger();
-                        String sql = documentLookupGenerator.generateSearchSql(criteria, searchFields);
-                        perfLog.log("Time to generate search sql from documentLookupGenerator class: " + documentLookupGenerator
+                        String sql = documentSearchGenerator.generateSearchSql(criteria, searchFields);
+                        perfLog.log("Time to generate search sql from documentSearchGenerator class: " + documentSearchGenerator
                                 .getClass().getName(), true);
                         LOG.info("Executing document search with statement max rows: " + statement.getMaxRows());
                         LOG.info("Executing document search with statement fetch size: " + statement.getFetchSize());
@@ -83,7 +83,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
                             perfLog.log("Time to execute doc search database query.", true);
                             final Statement searchAttributeStatement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                             try {
-                           		return documentLookupGenerator.processResultSet(criteria, criteriaModified, searchAttributeStatement, rs, maxResultCap, fetchLimit);
+                           		return documentSearchGenerator.processResultSet(criteria, criteriaModified, searchAttributeStatement, rs, maxResultCap, fetchLimit);
                             } finally {
                                 try {
                                     searchAttributeStatement.close();

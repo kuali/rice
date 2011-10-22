@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.impl.document.lookup;
+package org.kuali.rice.kew.impl.document.search;
 
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 
@@ -9,7 +9,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupCriteriaTranslator {
+public interface DocumentSearchCriteriaTranslator {
 
     /**
      * Translates the given map of fields values into a {@link org.kuali.rice.kew.api.document.search.DocumentSearchCriteria}.  The given map of

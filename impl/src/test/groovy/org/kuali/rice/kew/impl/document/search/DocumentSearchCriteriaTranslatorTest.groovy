@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.impl.document.lookup
+package org.kuali.rice.kew.impl.document.search
 
 import org.junit.Test
 import org.kuali.rice.kew.api.document.DocumentStatus
@@ -25,8 +25,8 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 /**
  *
  */
-class DocumentLookupCriteriaTranslatorTest {
-    def documentLookupCriteriaTranslator = new DocumentLookupCriteriaTranslatorImpl()
+class DocumentSearchCriteriaTranslatorTest {
+    def documentLookupCriteriaTranslator = new DocumentSearchCriteriaTranslatorImpl()
 
     @Before
     void init() {

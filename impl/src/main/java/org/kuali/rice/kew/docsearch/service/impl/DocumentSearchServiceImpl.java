@@ -48,8 +48,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValue;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultValues;
-import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
-import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGeneratorImpl;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchGenerator;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchGeneratorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
@@ -150,15 +150,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     @Override
 	public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
-		DocumentLookupGenerator docLookupGenerator = getStandardDocumentSearchGenerator();
+		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
 		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(criteria.getDocumentTypeName());
         DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
-        validateDocumentSearchCriteria(docLookupGenerator, criteriaBuilder);
+        validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
         DocumentSearchCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
         builtCriteria = applyCriteriaDefaults(builtCriteria);
         boolean criteriaModified = !criteria.equals(builtCriteria);
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
-        DocumentSearchResults.Builder searchResults = docSearchDao.findDocuments(docLookupGenerator, builtCriteria, criteriaModified, searchFields);
+        DocumentSearchResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
             DocumentSearchResultValues resultValues = getDocumentLookupCustomizationMediator().customizeResults(documentType, builtCriteria, searchResults.build());
             if (resultValues != null && CollectionUtils.isNotEmpty(resultValues.getResultValues())) {
@@ -293,18 +293,18 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return searchFields;
     }
 
-    public DocumentLookupGenerator getStandardDocumentSearchGenerator() {
+    public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
 	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
 	if (searchGeneratorClass == null){
-	    return new DocumentLookupGeneratorImpl();
+	    return new DocumentSearchGeneratorImpl();
 	}
-    	return (DocumentLookupGenerator)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
+    	return (DocumentSearchGenerator)GlobalResourceLoader.getObject(new ObjectDefinition(searchGeneratorClass));
     }
 
     @Override
-    public void validateDocumentSearchCriteria(DocumentLookupGenerator docLookupGenerator, DocumentSearchCriteria.Builder criteria) {
+    public void validateDocumentSearchCriteria(DocumentSearchGenerator docSearchGenerator, DocumentSearchCriteria.Builder criteria) {
         List<WorkflowServiceError> errors = this.validateWorkflowDocumentSearchCriteria(criteria);
-        List<RemotableAttributeError> searchAttributeErrors = docLookupGenerator.validateSearchableAttributes(criteria);
+        List<RemotableAttributeError> searchAttributeErrors = docSearchGenerator.validateSearchableAttributes(criteria);
         if (!CollectionUtils.isEmpty(searchAttributeErrors)) {
             // attribute errors are fully materialized error messages, so the only "key" that makes sense is to use "error.custom"
             for (RemotableAttributeError searchAttributeError : searchAttributeErrors) {

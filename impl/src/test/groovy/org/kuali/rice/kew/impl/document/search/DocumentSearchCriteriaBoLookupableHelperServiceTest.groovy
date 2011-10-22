@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.impl.document.lookup
+package org.kuali.rice.kew.impl.document.search
 
 import org.junit.Test
 import org.junit.Before
@@ -15,8 +15,8 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 /**
  * Tests parsing of document search criteria form
  */
-class DocumentLookupCriteriaBoLookupableHelperServiceTest {
-    def lookupableHelperService = new DocumentLookupCriteriaBoLookupableHelperService()
+class DocumentSearchCriteriaBoLookupableHelperServiceTest {
+    def lookupableHelperService = new DocumentSearchCriteriaBoLookupableHelperService()
 
     @Before
     void init() {
@@ -26,7 +26,7 @@ class DocumentLookupCriteriaBoLookupableHelperServiceTest {
                 return null
             }
         });
-        lookupableHelperService.setDocumentLookupCriteriaTranslator(new DocumentLookupCriteriaTranslatorImpl())
+        lookupableHelperService.setDocumentSearchCriteriaTranslator(new DocumentSearchCriteriaTranslatorImpl())
     }
 
     /**

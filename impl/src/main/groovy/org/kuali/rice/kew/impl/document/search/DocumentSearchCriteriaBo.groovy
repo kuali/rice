@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.impl.document.lookup
+package org.kuali.rice.kew.impl.document.search
 
 import org.kuali.rice.krad.bo.BusinessObject
 import org.kuali.rice.kew.doctype.bo.DocumentType
@@ -17,7 +17,7 @@ import java.sql.Timestamp
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-class DocumentLookupCriteriaBo implements BusinessObject {
+class DocumentSearchCriteriaBo implements BusinessObject {
 
     String documentTypeName
     String documentId

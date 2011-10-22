@@ -53,7 +53,7 @@
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>DocumentSearchGeneratorAttribute</name>
-			<className>org.kuali.rice.kew.docsearch.CustomDocumentLookupGeneratorImpl</className>
+			<className>org.kuali.rice.kew.docsearch.CustomDocumentSearchGeneratorImpl</className>
 			<label>DocumentSearchGeneratorAttribute</label>
 			<description>DocumentSearchGeneratorAttribute</description>
 			<type>DocumentSearchGeneratorAttribute</type>

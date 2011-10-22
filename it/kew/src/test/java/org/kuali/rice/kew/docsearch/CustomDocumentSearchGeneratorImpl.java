@@ -17,13 +17,13 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGeneratorImpl;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchGeneratorImpl;
 
 /**
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CustomDocumentLookupGeneratorImpl extends DocumentLookupGeneratorImpl {
+public class CustomDocumentSearchGeneratorImpl extends DocumentSearchGeneratorImpl {
 	
 	@Override
 	public void addExtraDocumentTypesToSearch(StringBuilder whereSql, DocumentType docType) {

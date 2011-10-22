@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.impl.document.lookup;
+package org.kuali.rice.kew.impl.document.search;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;

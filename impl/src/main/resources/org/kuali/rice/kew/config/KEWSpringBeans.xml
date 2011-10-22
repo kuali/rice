@@ -428,12 +428,12 @@
 
   <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter"/>
 
-  <bean id="documentLookupCriteriaTranslator" class="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaTranslatorImpl"/>
+  <bean id="documentLookupCriteriaTranslator" class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslatorImpl"/>
 
   <bean id="documentLookupCriteriaBoLookupableHelperService"
-        class="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaBoLookupableHelperService" scope="prototype">
+        class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBoLookupableHelperService" scope="prototype">
     <property name="documentLookupCriteriaProcessor" ref="documentLookupCriteriaProcessor"/>
-    <property name="documentLookupCriteriaTranslator" ref="documentLookupCriteriaTranslator"/>
+    <property name="documentSearchCriteriaTranslator" ref="documentLookupCriteriaTranslator"/>
     <property name="documentSearchService" ref="enDocumentSearchService"/>
   </bean>
 
@@ -597,7 +597,7 @@
         <value>classpath:org/kuali/rice/kew/document/datadictionary/DocumentTypeMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/kew/document/datadictionary/RoutingRuleDelegationMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/kew/impl/document/lookup/DocumentLookupCriteriaBo.xml</value>
+        <value>classpath:org/kuali/rice/kew/impl/document/search/DocumentSearchCriteriaBo.xml</value>
         <value>classpath:org/kuali/rice/kew/impl/datadictionary/PeopleFlowBo.xml</value>
         <value>classpath:org/kuali/rice/kew/impl/datadictionary/PeopleFlowDelegateBo.xml</value>
         <value>classpath:org/kuali/rice/kew/impl/datadictionary/PeopleFlowMemberBo.xml</value>
@@ -688,7 +688,7 @@
       <map>
         <entry key="org.kuali.rice.kew.doctype.bo.DocumentTypeEBO" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
         <entry key="org.kuali.rice.kew.docsearch.DocumentEbo"
-               value="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaBo"/>
+               value="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo"/>
       </map>
     </property>
   </bean>

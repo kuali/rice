@@ -19,13 +19,13 @@ package org.kuali.rice.kew.docsearch.dao;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
-import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchGenerator;
 
 import java.util.List;
 
 
 public interface DocumentSearchDAO {
 
-    public DocumentSearchResults.Builder findDocuments(DocumentLookupGenerator docLookupGenerator, DocumentSearchCriteria criteria, boolean criteriaModified, List<RemotableAttributeField> searchFields);
+    public DocumentSearchResults.Builder findDocuments(DocumentSearchGenerator docSearchGenerator, DocumentSearchCriteria criteria, boolean criteriaModified, List<RemotableAttributeField> searchFields);
 
 }

@@ -1,4 +1,4 @@
-package org.kuali.rice.kew.impl.document.lookup;
+package org.kuali.rice.kew.impl.document.search;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -29,6 +29,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchResultSetConfiguration;
 import org.kuali.rice.kew.framework.document.search.StandardResultField;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -62,7 +63,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookupableHelperServiceImpl {
+public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookupableHelperServiceImpl {
 
     private static final String DOCUMENT_ATTRIBUTE_PROPERTY_NAME_PREFIX = "documentAttribute.";
 
@@ -82,7 +83,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
 
     private DocumentSearchService documentSearchService;
     private DocumentLookupCriteriaProcessor documentLookupCriteriaProcessor;
-    private DocumentLookupCriteriaTranslator documentLookupCriteriaTranslator;
+    private DocumentSearchCriteriaTranslator documentSearchCriteriaTranslator;
 
     // unfortunately, lookup helpers are stateful, need to store these here for other methods to use
     protected DocumentSearchResults searchResults = null;
@@ -202,18 +203,18 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         if (savedSearch) {
             DocumentSearchCriteria criteria = getDocumentSearchService().getSavedSearchCriteria(GlobalVariables.getUserSession().getPrincipalId(), savedSearchToLoad[0]);
             if (criteria != null) {
-                mergeFieldValues(getDocumentLookupCriteriaTranslator().translateCriteriaToFields(criteria));
+                mergeFieldValues(getDocumentSearchCriteriaTranslator().translateCriteriaToFields(criteria));
                 return criteria;
             }
         }
         // either it wasn't a saved search or the saved search failed to resolve
-        return getDocumentLookupCriteriaTranslator().translateFieldsToCriteria(fieldValues);
+        return getDocumentSearchCriteriaTranslator().translateFieldsToCriteria(fieldValues);
     }
 
-    protected List<DocumentLookupCriteriaBo> populateSearchResults(List<DocumentSearchResult> lookupResults) {
-        List<DocumentLookupCriteriaBo> searchResults = new ArrayList<DocumentLookupCriteriaBo>();
+    protected List<DocumentSearchCriteriaBo> populateSearchResults(List<DocumentSearchResult> lookupResults) {
+        List<DocumentSearchCriteriaBo> searchResults = new ArrayList<DocumentSearchCriteriaBo>();
         for (DocumentSearchResult searchResult : lookupResults) {
-            DocumentLookupCriteriaBo result = new DocumentLookupCriteriaBo();
+            DocumentSearchCriteriaBo result = new DocumentSearchCriteriaBo();
             result.populateFromDocumentLookupResult(searchResult);
             searchResults.add(result);
         }
@@ -429,7 +430,7 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
      */
     @Override
     public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
-        DocumentLookupCriteriaBo criteriaBo = (DocumentLookupCriteriaBo)bo;
+        DocumentSearchCriteriaBo criteriaBo = (DocumentSearchCriteriaBo)bo;
         if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DOCUMENT_ID.equals(propertyName)) {
             return generateDocumentHandlerUrl(criteriaBo.getDocumentId(), criteriaBo.getDocumentType(),
                     isSuperUserSearch());
@@ -873,12 +874,12 @@ public class DocumentLookupCriteriaBoLookupableHelperService extends KualiLookup
         this.documentLookupCriteriaProcessor = documentLookupCriteriaProcessor;
     }
 
-    public DocumentLookupCriteriaTranslator getDocumentLookupCriteriaTranslator() {
-        return documentLookupCriteriaTranslator;
+    public DocumentSearchCriteriaTranslator getDocumentSearchCriteriaTranslator() {
+        return documentSearchCriteriaTranslator;
     }
 
-    public void setDocumentLookupCriteriaTranslator(DocumentLookupCriteriaTranslator documentLookupCriteriaTranslator) {
-        this.documentLookupCriteriaTranslator = documentLookupCriteriaTranslator;
+    public void setDocumentSearchCriteriaTranslator(DocumentSearchCriteriaTranslator documentSearchCriteriaTranslator) {
+        this.documentSearchCriteriaTranslator = documentSearchCriteriaTranslator;
     }
 
 }

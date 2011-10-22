@@ -8,7 +8,7 @@
   <bean id="DocumentLookupCriteria" parent="DocumentLookupCriteria-parentBean"/>
 
   <bean id="DocumentLookupCriteria-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="dataObjectClass" value="org.kuali.rice.kew.impl.document.lookup.DocumentLookupCriteriaBo"/>
+    <property name="dataObjectClass" value="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo"/>
     <property name="lookupDefinition">
       <ref bean="DocumentLookupCriteria-lookupDefinition"/>
     </property>
@@ -181,7 +181,7 @@
     <property name="shortLabel" value="Status"/>
     <property name="control">
       <bean parent="MultiselectControlDefinition" p:size="5"
-            p:valuesFinderClass="org.kuali.rice.kew.impl.document.lookup.DocumentStatusValuesFinder"/>
+            p:valuesFinderClass="org.kuali.rice.kew.impl.document.search.DocumentStatusValuesFinder"/>
     </property>
   </bean>
 

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.impl.document.lookup;
+package org.kuali.rice.kew.impl.document.search;
 
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -32,7 +32,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface DocumentLookupGenerator {
+public interface DocumentSearchGenerator {
 
     List<RemotableAttributeError> validateSearchableAttributes(DocumentSearchCriteria.Builder criteria);
 

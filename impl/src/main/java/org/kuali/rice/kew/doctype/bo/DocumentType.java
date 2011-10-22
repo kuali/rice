@@ -43,7 +43,7 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.impl.document.lookup.DocumentLookupGenerator;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchGenerator;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
@@ -1152,7 +1152,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
 
-    public DocumentLookupGenerator getDocumentSearchGenerator() {
+    public DocumentSearchGenerator getDocumentSearchGenerator() {
         ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
         if (objDef == null) {
             if (getParentDocType() != null) {
@@ -1166,16 +1166,16 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         try {
             searchGenerator = GlobalResourceLoader.getObject(objDef);
         } catch (RiceRemoteServiceConnectionException e) {
-            LOG.warn("Unable to connect to load searchGenerator for " + this.getName() + ".  Using DocumentLookupGeneratorImpl as default.");
+            LOG.warn("Unable to connect to load searchGenerator for " + this.getName() + ".  Using DocumentSearchGeneratorImpl as default.");
             LOG.warn(e.getMessage());
             return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
         }
 
         if (searchGenerator == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentLookupGenerator in this JVM or at application id " + getApplicationId() + ": " + objDef.getClassName());
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at application id " + getApplicationId() + ": " + objDef.getClassName());
         }
 
-        return (DocumentLookupGenerator) searchGenerator;
+        return (DocumentSearchGenerator) searchGenerator;
     }
 
     public DocumentTypeAttribute getDocumentSearchResultProcessorAttribute() {

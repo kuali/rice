@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.impl.document.lookup;
+package org.kuali.rice.kew.impl.document.search;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -43,9 +43,9 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentLookupCriteriaTranslatorImpl implements DocumentLookupCriteriaTranslator {
+public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCriteriaTranslator {
 
-    private static final Logger LOG = Logger.getLogger(DocumentLookupCriteriaTranslatorImpl.class);
+    private static final Logger LOG = Logger.getLogger(DocumentSearchCriteriaTranslatorImpl.class);
 
     private static final String DOCUMENT_STATUSES = "documentStatuses";
     private static final String ROUTE_NODE_LOOKUP_LOGIC = "routeNodeLookupLogic";

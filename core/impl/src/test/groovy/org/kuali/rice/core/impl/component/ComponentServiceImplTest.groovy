@@ -172,6 +172,20 @@ class ComponentServiceImplTest {
         }
     }
 
+    @Test
+    void test_getAllComponentsByNamespaceCode_not_exists() {
+        mock.demand.findMatching(1..1) { clazz, map -> [] }
+        injectBusinessObjectService()
+        List<Component> components = service.getAllComponentsByNamespaceCode("blah")
+        assertNotNull components
+        assert 0 == components.size()
+
+        // list should be unmodifiable
+        shouldFail(UnsupportedOperationException) {
+            components.add(component)
+        }
+    }
+
 
     private static final String NAMESPACE_CODE = "MyNamespaceCode"
     private static final String CODE = "MyComponentCode"

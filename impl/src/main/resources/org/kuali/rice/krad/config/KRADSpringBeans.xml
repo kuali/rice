@@ -755,6 +755,10 @@
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
+  <bean id="componentService" class="org.kuali.rice.core.impl.component.ComponentServiceImpl">
+    <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
   <bean id="parameterRepositoryService" class="org.kuali.rice.core.impl.parameter.ParameterRepositoryServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
     <property name="criteriaLookupService" ref="criteriaLookupService"/>

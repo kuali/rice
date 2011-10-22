@@ -88,7 +88,6 @@
             p:localServiceName="parameterRepositoryServiceSoap"
             p:serviceInterface="org.kuali.rice.core.api.parameter.ParameterRepositoryService"/>
     </property>
-    <property name="exportIf" value="parameterRepositoryServiceSOAP.expose"/>
   </bean>
 
   <bean parent="coreLocalServiceExporter">
@@ -99,7 +98,16 @@
             p:localServiceName="namespaceServiceSoap"
             p:serviceInterface="org.kuali.rice.core.api.namespace.NamespaceService"/>
     </property>
-    <property name="exportIf" value="namespaceServiceSOAP.expose"/>
+  </bean>
+  
+  <bean parent="coreLocalServiceExporter">
+    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <property name="serviceDefinition">
+      <bean parent="coreService"
+            p:service-ref="componentService"
+            p:localServiceName="componentServiceSoap"
+            p:serviceInterface="org.kuali.rice.core.api.component.ComponentService"/>
+    </property>
   </bean>
 
   <bean parent="coreRemoteServiceExporter">
@@ -109,7 +117,6 @@
             p:service-ref="coreCacheService"
             p:localServiceName="coreCacheServiceSoap"/>
     </property>
-    <property name="exportIf" value="coreCacheServiceSOAP.expose"/>
   </bean>
 
 </beans>

@@ -280,7 +280,7 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
     <property name="name" value="saveName"/>
-    <property name="label" value="Name this lookup (optional)"/>
+    <property name="label" value="Name this search (optional)"/>
   </bean>
 
   <bean id="DocumentLookupCriteria-initiatorPerson-name" parent="DocumentLookupCriteria-initiatorPerson-name-parentBean"/>
@@ -366,7 +366,7 @@
         <bean parent="FieldDefinition" p:attributeName="routeLog"/>
       </list>
     </property>
-    <property name="title" value="Document Lookup"/>
+    <property name="title" value="Document Search"/>
   </bean>
   
 </beans>

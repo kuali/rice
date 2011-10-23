@@ -102,4 +102,50 @@ public class ComponentServiceTest extends KRADTestCase {
         assertEquals(1, numInactive);
     }
 
+    @Test
+    public void testGetActiveComponentsByNamespaceCode() {
+        // get by a component namespace we know does not exist
+        List<Component> components = componentService.getActiveComponentsByNamespaceCode("blah");
+        assertNotNull(components);
+        assertEquals(0, components.size());
+
+        // now fetch all components for a namespace which we know has more than 1,
+        // we should have 7 components under the "KR-NS" namespace code in our default test data set as follows:
+        // +----------+-----------------------------+
+        // | NMSPC_CD | CMPNT_CD                    |
+        // +----------+-----------------------------+
+        // | KR-NS    | All                         |
+        // | KR-NS    | Batch                       |
+        // | KR-NS    | Document                    |
+        // | KR-NS    | Lookup                      |
+        // | KR-NS    | PurgePendingAttachmentsStep |
+        // | KR-NS    | PurgeSessionDocumentsStep   |
+        // | KR-NS    | ScheduleStep                |
+        // +----------+-----------------------------+
+
+        components = componentService.getActiveComponentsByNamespaceCode("KR-NS");
+        assertEquals(7, components.size());
+
+        ComponentBo scheduleStepComponent = null;
+        // all should be active
+        for (Component component : components) {
+            assertTrue("Component should have been active: " + component, component.isActive());
+            if (component.getCode().equals("ScheduleStep")) {
+                scheduleStepComponent = ComponentBo.from(component);
+            }
+        }
+        assertNotNull("Failed to locate schedule step component", scheduleStepComponent);
+
+        // inactivate schedule step component
+        scheduleStepComponent.setActive(false);
+        KRADServiceLocator.getBusinessObjectService().save(scheduleStepComponent);
+
+        components = componentService.getActiveComponentsByNamespaceCode("KR-NS");
+        assertEquals(6, components.size());
+        for (Component component : components) {
+            assertTrue("Component should have been active: " + component, component.isActive());
+        }
+    }
+
+
 }

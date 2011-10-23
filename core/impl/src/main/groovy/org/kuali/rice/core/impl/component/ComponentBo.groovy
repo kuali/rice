@@ -41,22 +41,25 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
 
 	@Id
 	@Column(name="NMSPC_CD")
-	def String namespaceCode;
+	String namespaceCode;
 
 	@Id
 	@Column(name="CMPNT_CD")
-	def String code;
+	String code;
 
 	@Column(name="NM")
-	def String name;
+	String name;
+
+    @Column(name="CMPNT_SET_ID")
+    String componentSetId;
 
 	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
-	def boolean active = true;
+	boolean active = true;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false)
-	def NamespaceBo namespace;
+	NamespaceBo namespace;
 
    /**
      * Converts a mutable bo to its immutable counterpart
@@ -84,6 +87,7 @@ public class ComponentBo extends PersistableBusinessObjectBase implements Compon
         ComponentBo bo = new ComponentBo()
         bo.code = im.code
         bo.name = im.name
+        bo.componentSetId = im.componentSetId
         bo.active = im.active
         bo.namespaceCode = im.namespaceCode
 		bo.versionNumber = im.versionNumber

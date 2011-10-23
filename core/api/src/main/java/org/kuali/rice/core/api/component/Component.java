@@ -44,6 +44,7 @@ import java.util.Collection;
     Component.Elements.NAMESPACE_CODE,
     Component.Elements.CODE,
     Component.Elements.NAME,
+    Component.Elements.COMPONENT_SET_ID,
     Component.Elements.ACTIVE,
     CoreConstants.CommonElements.VERSION_NUMBER,
     CoreConstants.CommonElements.OBJECT_ID,
@@ -61,6 +62,9 @@ public final class Component extends AbstractDataTransferObject implements Compo
 
     @XmlElement(name = Elements.NAME, required=true)
     private final String name;
+
+    @XmlElement(name = Elements.COMPONENT_SET_ID, required = false)
+    private final String componentSetId;
 
     @XmlElement(name = Elements.ACTIVE, required=false)
     private final boolean active;
@@ -82,6 +86,7 @@ public final class Component extends AbstractDataTransferObject implements Compo
     	this.namespaceCode = null;
     	this.code = null;
     	this.name = null;
+        this.componentSetId = null;
     	this.active = true;
         this.versionNumber = null;
         this.objectId = null;
@@ -97,6 +102,7 @@ public final class Component extends AbstractDataTransferObject implements Compo
 		namespaceCode = builder.getNamespaceCode();
 		code = builder.getCode();
         name = builder.getName();
+        componentSetId = builder.getComponentSetId();
         active = builder.isActive();
         versionNumber = builder.getVersionNumber();
         this.objectId = builder.getObjectId();
@@ -117,6 +123,11 @@ public final class Component extends AbstractDataTransferObject implements Compo
 	public String getName() {
 		return name;
 	}
+
+    @Override
+    public String getComponentSetId() {
+        return componentSetId;
+    }
 
     @Override
 	public boolean isActive() {
@@ -143,6 +154,7 @@ public final class Component extends AbstractDataTransferObject implements Compo
 		private String namespaceCode;
 		private String code;
         private String name;
+        private String componentSetId;
         private boolean active;
         private Long versionNumber;
         private String objectId;
@@ -178,6 +190,7 @@ public final class Component extends AbstractDataTransferObject implements Compo
          */
         public static Builder create(ComponentContract contract) {
             Builder builder = new Builder(contract.getNamespaceCode(), contract.getCode(), contract.getName());
+            builder.setComponentSetId(contract.getComponentSetId());
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
@@ -247,7 +260,19 @@ public final class Component extends AbstractDataTransferObject implements Compo
 			return name;
 		}
 
-         @Override
+        @Override
+        public String getComponentSetId() {
+            return componentSetId;
+        }
+
+        public void setComponentSetId(String componentSetId) {
+            if (componentSetId != null && StringUtils.isBlank(componentSetId)) {
+                throw new IllegalArgumentException("componentSetId should be either null or a non-blank value");
+            }
+            this.componentSetId = componentSetId;
+        }
+
+        @Override
 		public Long getVersionNumber() {
 			return versionNumber;
 		}
@@ -293,6 +318,7 @@ public final class Component extends AbstractDataTransferObject implements Compo
 	    final static String CODE = "code";
 	    final static String NAME = "name";
 		final static String NAMESPACE_CODE = "namespaceCode";
+        final static String COMPONENT_SET_ID = "componentSetId";
 		final static String ACTIVE = "active";
 	}
    

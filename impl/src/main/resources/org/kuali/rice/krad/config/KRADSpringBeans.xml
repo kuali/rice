@@ -755,8 +755,14 @@
     <property name="businessObjectService" ref="businessObjectService"/>
   </bean>
 
+  <!-- TODO - this needs to be moved out of this file and set up with the core data source on the rice standalone server! -->
+  <bean id="componentSetDao" class="org.kuali.rice.core.impl.component.ComponentSetDaoOjbImpl" lazy-init="true">
+    <property name="jcdAlias" value="kradApplicationDataSource" />
+  </bean>
+
   <bean id="componentService" class="org.kuali.rice.core.impl.component.ComponentServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+    <property name="componentSetDao" ref="componentSetDao"/>
   </bean>
 
   <bean id="parameterRepositoryService" class="org.kuali.rice.core.impl.parameter.ParameterRepositoryServiceImpl">

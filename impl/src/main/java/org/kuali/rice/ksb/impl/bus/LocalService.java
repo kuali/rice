@@ -3,6 +3,7 @@ package org.kuali.rice.ksb.impl.bus;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.util.ChecksumUtils;
 import org.kuali.rice.core.api.util.RiceUtilities;
 import org.kuali.rice.ksb.api.bus.Endpoint;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;
@@ -78,7 +79,7 @@ public final class LocalService {
 		ServiceInfo.Builder builder = ServiceInfo.Builder.create();
 		builder.setInstanceId(instanceId);
 		builder.setApplicationId(serviceConfiguration.getApplicationId());
-		builder.setChecksum(calculateChecksum(serviceConfiguration));
+		builder.setChecksum(ChecksumUtils.calculateChecksum(serviceConfiguration));
 		builder.setEndpointUrl(serviceConfiguration.getEndpointUrl().toExternalForm());
 		builder.setServerIpAddress(RiceUtilities.getIpNumber());
 		builder.setServiceName(serviceConfiguration.getServiceName());
@@ -92,35 +93,6 @@ public final class LocalService {
 		ServiceDescriptor.Builder builder = ServiceDescriptor.Builder.create();
 		builder.setDescriptor(ServiceConfigurationSerializationHandler.marshallToXml(serviceConfiguration));
 		return builder;
-	}
-	
-	/**
-	 * Creates a checksum for the given ServiceConfiguration.
-	 * 
-	 * @param serviceConfiguration The configuration for which to calcuate the checksum
-	 * @return A checksum value for the object.
-	 */
-	static String calculateChecksum(ServiceConfiguration serviceConfiguration) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = null;
-        try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(serviceConfiguration);
-        } catch (IOException e) {
-            throw new RiceRuntimeException(e);
-        } finally {
-            try {
-                out.close();
-            } catch (IOException e) {}
-        }
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            return new String( Base64.encodeBase64( md.digest( bos.toByteArray() ) ), "UTF-8");
-        } catch( GeneralSecurityException ex ) {
-        	throw new RiceRuntimeException(ex);
-        } catch( UnsupportedEncodingException ex ) {
-        	throw new RiceRuntimeException(ex);
-        }
 	}
 	
 }

@@ -6,6 +6,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.component.ComponentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.kuali.test.KRADTestCase;
 import org.springframework.dao.DataAccessException;
@@ -14,6 +15,8 @@ import org.springframework.jdbc.core.StatementCallback;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -145,6 +148,76 @@ public class ComponentServiceTest extends KRADTestCase {
         for (Component component : components) {
             assertTrue("Component should have been active: " + component, component.isActive());
         }
+    }
+
+    @Test
+    public void testPublishComponents_and_getPublishedComponentSet() {
+
+        String testComponentSetId = "testComponentSet";
+        String workflowNamespace = "KR-WKFLW";
+        String testNamespace1 = "TestNamespace1";
+        String testNamespace2 = "TestNamespace2";
+
+        List<Component> testComponentSet = componentService.getPublishedComponentSet(testComponentSetId);
+        assertTrue("Initial testComponentSet should be empty", testComponentSet.isEmpty());
+        List<Component> workflowComponents = componentService.getAllComponentsByNamespaceCode(workflowNamespace);
+        assertFalse("There should be some components for the " + workflowNamespace + " namespace", workflowComponents.isEmpty());
+
+        assertTrue(componentService.getAllComponentsByNamespaceCode(testNamespace1).isEmpty());
+        assertTrue(componentService.getAllComponentsByNamespaceCode(testNamespace2).isEmpty());
+
+        String customTestWorkflowComponent = "CustomTestWorkflowComponent";
+        Component component1 = Component.Builder.create(workflowNamespace, customTestWorkflowComponent, customTestWorkflowComponent).build();
+        String testNamespace1Component = "TestNamespace1Component";
+        Component component2 = Component.Builder.create(testNamespace1, testNamespace1Component, testNamespace1Component).build();
+        String testNamespace2Component1 = "TestNamespace2Component1";
+        Component component3 = Component.Builder.create(testNamespace2, testNamespace2Component1, testNamespace2Component1).build();
+        String testNamespace2Component2 = "TestNamespace2Component2";
+        Component component4 = Component.Builder.create(testNamespace2, testNamespace2Component2, testNamespace2Component2).build();
+
+        List<Component> setToPublish = new ArrayList<Component>();
+        setToPublish.add(component1);
+        setToPublish.add(component2);
+        setToPublish.add(component3);
+        setToPublish.add(component4);
+
+        componentService.publishComponents(testComponentSetId, setToPublish);
+
+        // now if we fetch the component set it should be non-empty and should contain our 4 items
+        testComponentSet = componentService.getPublishedComponentSet(testComponentSetId);
+        assertEquals(4, testComponentSet.size());
+        for (Component component : testComponentSet) {
+            // ensure they all have the appropriate component set id
+            assertEquals(testComponentSetId, component.getComponentSetId());
+        }
+
+        List<Component> shuffledComponentSet = new ArrayList<Component>(testComponentSet);
+        // now, do a slight shuffle of the list and republish...
+        Collections.shuffle(shuffledComponentSet);
+        componentService.publishComponents(testComponentSetId, shuffledComponentSet);
+
+        // we should still have the same set
+        testComponentSet = componentService.getPublishedComponentSet(testComponentSetId);
+        assertEquals(4, testComponentSet.size());
+
+        // refetch by workflow namespace, we should have an additional component now
+        List<Component> workflowComponentsNew = componentService.getAllComponentsByNamespaceCode(workflowNamespace);
+        assertEquals(workflowComponents.size() + 1, workflowComponentsNew.size());
+
+        // now republish our component set without the workflow namespace component
+        setToPublish = new ArrayList<Component>();
+        setToPublish.add(component2);
+        setToPublish.add(component3);
+        setToPublish.add(component4);
+        componentService.publishComponents(testComponentSetId, setToPublish);
+
+        // we should have 3 components now
+        testComponentSet = componentService.getPublishedComponentSet(testComponentSetId);
+        assertEquals(3, testComponentSet.size());
+
+        // and the workflow component should be gone
+        workflowComponentsNew = componentService.getAllComponentsByNamespaceCode(workflowNamespace);
+        assertEquals(workflowComponents.size(), workflowComponentsNew.size());
     }
 
 

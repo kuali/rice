@@ -36,7 +36,6 @@
   <class-descriptor class="org.kuali.rice.core.impl.parameter.ParameterTypeBo" table="KRCR_PARM_TYP_T">
     <field-descriptor name="code" column="PARM_TYP_CD" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"/>
-
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"
                       conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
@@ -47,16 +46,22 @@
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="code" column="CMPNT_CD" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"/>
-
+    <field-descriptor name="componentSetId" column="CMPNT_SET_ID" jdbc-type="VARCHAR"/>
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"
                       conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
-
     <reference-descriptor name="namespace" class-ref="org.kuali.rice.core.impl.namespace.NamespaceBo"
                           auto-retrieve="true" auto-update="none" auto-delete="none">
       <foreignkey field-ref="namespaceCode" target-field-ref="code"/>
     </reference-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.core.impl.component.ComponentSetBo" table="KRCR_CMPNT_SET_T">
+    <field-descriptor name="componentSetId" column="CMPNT_SET_ID" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="lastUpdateTimestamp" column="LAST_UPDT_TS" jdbc-type="TIMESTAMP"/>
+    <field-descriptor name="checksum" column="CHKSM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.core.impl.parameter.ParameterBo" table="KRCR_PARM_T">

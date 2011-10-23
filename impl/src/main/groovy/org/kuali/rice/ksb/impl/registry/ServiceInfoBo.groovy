@@ -16,12 +16,10 @@
 
 package org.kuali.rice.ksb.impl.registry;
 
-import java.io.Serializable
 
 import javax.persistence.Column
 import javax.persistence.Version
 import javax.xml.namespace.QName
-
 import org.kuali.rice.ksb.api.registry.ServiceEndpointStatus
 import org.kuali.rice.ksb.api.registry.ServiceInfo
 import org.kuali.rice.ksb.api.registry.ServiceInfoContract
@@ -29,7 +27,7 @@ import org.kuali.rice.ksb.api.registry.ServiceInfoContract
 /**
  * Model bean that represents the definition of a service on the bus.
  * 
- * @see ServiceDefinition
+ * @see ServiceInfo
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

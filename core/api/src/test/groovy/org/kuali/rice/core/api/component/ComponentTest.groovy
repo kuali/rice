@@ -23,6 +23,7 @@ class ComponentTest {
 	private static final String CODE = "PC"
 	private static final String NAME = "Config"
 	private static final String NAMESPACE_CODE = "NSC"
+    private static final String COMPONENT_SET_ID = "DD:myAppId";
 	private static final boolean ACTIVE = true
 	private static final Long VERSION_NUMBER = new Long(1);
 	private static final String OBJECT_ID = UUID.randomUUID();
@@ -31,6 +32,18 @@ class ComponentTest {
             <code>${CODE}</code>
             <name>${NAME}</name>
             <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
+            <active>${ACTIVE}</active>
+            <versionNumber>${VERSION_NUMBER}</versionNumber>
+            <objectId>${OBJECT_ID}</objectId>
+        </component>
+    """
+
+    private static final String XML_COMPONENT_SET = """
+        <component xmlns="http://rice.kuali.org/core/v2_0">
+            <code>${CODE}</code>
+            <name>${NAME}</name>
+            <namespaceCode>${NAMESPACE_CODE}</namespaceCode>
+            <componentSetId>${COMPONENT_SET_ID}</componentSetId>
             <active>${ACTIVE}</active>
             <versionNumber>${VERSION_NUMBER}</versionNumber>
             <objectId>${OBJECT_ID}</objectId>
@@ -99,14 +112,28 @@ class ComponentTest {
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.create(), XML, Component.class)
 	}
 
+    @Test
+	public void test_Xml_Marshal_Unmarshal_with_componentSetId() {
+		JAXBAssert.assertEqualXmlMarshalUnmarshal(this.createWithDefaultComponentSetId(), XML_COMPONENT_SET, Component.class)
+	}
+
     private create() {
+        return createWithComponentSetId(null)
+    }
+
+    private createWithDefaultComponentSetId() {
+        return createWithComponentSetId(COMPONENT_SET_ID)
+    }
+
+    private createWithComponentSetId(String _componentSetId) {
 		return Component.Builder.create(new ComponentContract() {
-				def String code = ComponentTest.CODE
-				def String name = ComponentTest.NAME
-				def String namespaceCode = ComponentTest.NAMESPACE_CODE
-                def boolean active = ComponentTest.ACTIVE
-                def Long versionNumber = ComponentTest.VERSION_NUMBER
-				def String objectId = ComponentTest.OBJECT_ID
+				String code = ComponentTest.CODE
+				String name = ComponentTest.NAME
+				String namespaceCode = ComponentTest.NAMESPACE_CODE
+                String componentSetId = _componentSetId
+                boolean active = ComponentTest.ACTIVE
+                Long versionNumber = ComponentTest.VERSION_NUMBER
+				String objectId = ComponentTest.OBJECT_ID
 			}).build()
 	}
 }

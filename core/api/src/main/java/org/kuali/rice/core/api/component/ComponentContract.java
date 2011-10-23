@@ -44,11 +44,13 @@ public interface ComponentContract extends Versioned, GloballyUnique, Inactivata
     String getNamespaceCode();
 
     /**
-     * This the active flag for the Component.
+     * Returns the id of the component set this component belongs to if this component was published as part of such
+     * a component set.  Will return a null value if this component was not published as part of a component set.
      *
-     * @return active
+     * @return the id of the component set this component was published under, or null if this component is not part of
+     * a published set
      */
-    boolean isActive();
+    String getComponentSetId();
 
 
 }

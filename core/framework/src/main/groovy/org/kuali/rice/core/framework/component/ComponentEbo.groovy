@@ -26,12 +26,13 @@ class ComponentEbo implements ComponentContract, MutableInactivatable, Externali
 
     private static final long serialVersionUID = 1L;
 
-    def String namespaceCode
-	def String code
-	def String name
-	def boolean active = true
-    def Long versionNumber
-	def String objectId
+    String namespaceCode
+	String code
+	String name
+    String componentSetId
+	boolean active = true
+    Long versionNumber
+	String objectId
 
     /**
      * Converts a mutable ebo to its immutable counterpart
@@ -59,6 +60,7 @@ class ComponentEbo implements ComponentContract, MutableInactivatable, Externali
         ComponentEbo bo = new ComponentEbo()
         bo.code = im.code
         bo.name = im.name
+        bo.componentSetId = im.componentSetId
         bo.active = im.active
         bo.namespaceCode = im.namespaceCode
 		bo.objectId = im.objectId

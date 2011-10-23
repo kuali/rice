@@ -248,7 +248,7 @@
 		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    	<reference-descriptor name="proposition" class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" auto-retrieve="true" auto-update="true" auto-delete="none" proxy="true">
+    	<reference-descriptor name="proposition" class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
       		<foreignkey field-ref="propId" />
     	</reference-descriptor>
         <!--  collection-descriptor name="allChildPropositions" element-class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">

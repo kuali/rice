@@ -62,6 +62,11 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        return proposition;
    }
    public void setProposition(PropositionBo proposition){
+       if (proposition != null) {
+           propId = proposition.getId();
+       } else {
+           propId = null;
+       }
        this.proposition = proposition;
    }
    

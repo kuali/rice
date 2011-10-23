@@ -141,7 +141,8 @@ public class ComponentServiceImpl implements ComponentService {
     /**
      * Calculates the checksum for the list of components.  The list of components should be sorted in a
      * consistent way prior to generation of the checksum to ensure that the checksum value comes out the same regardless
-     * of the ordering of components contained therein.
+     * of the ordering of components contained therein.  The checksum allows us to easily determine if the component set
+     * has been updated or not.
      */
     protected String calculateChecksum(List<Component> components) {
         Collections.sort(components, new Comparator<Component>() {

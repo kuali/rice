@@ -27,6 +27,11 @@ import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.fail
 import java.sql.Timestamp
 
+/**
+ * Unit test for {@link ComponentServiceImpl}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 class ComponentServiceImplTest {
 
     private MockFor boServiceMock

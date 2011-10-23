@@ -35,6 +35,7 @@ import org.kuali.rice.core.api.component.ComponentService
 import org.junit.After
 import org.kuali.rice.core.api.component.Component
 import static org.junit.Assert.assertNull
+import static org.junit.Assert.fail
 
 class ComponentServiceImplTest {
 
@@ -134,7 +135,7 @@ class ComponentServiceImplTest {
     }
 
     @Test
-    void test_getgetAllComponentsByNamespaceCode_null_namespaceCode() {
+    void test_getAllComponentsByNamespaceCode_null_namespaceCode() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getAllComponentsByNamespaceCode(null)
@@ -142,7 +143,7 @@ class ComponentServiceImplTest {
     }
 
     @Test
-    void test_getgetAllComponentsByNamespaceCode_empty_namespaceCode() {
+    void test_getAllComponentsByNamespaceCode_empty_namespaceCode() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
             service.getAllComponentsByNamespaceCode("")
@@ -186,6 +187,61 @@ class ComponentServiceImplTest {
         }
     }
 
+    @Test
+    void test_getActiveComponentsByNamespaceCode_null_namespaceCode() {
+        injectBusinessObjectService()
+        shouldFail(IllegalArgumentException.class) {
+            service.getActiveComponentsByNamespaceCode(null)
+        }
+    }
+
+    @Test
+    void test_getActiveComponentsByNamespaceCode_empty_namespaceCode() {
+        injectBusinessObjectService()
+        shouldFail(IllegalArgumentException.class) {
+            service.getActiveComponentsByNamespaceCode("")
+        }
+    }
+
+    @Test
+    void test_getActiveComponentsByNamespaceCode_blank_namespaceCode() {
+        injectBusinessObjectService()
+        shouldFail(IllegalArgumentException.class) {
+            service.getActiveComponentsByNamespaceCode("  ")
+        }
+    }
+
+    @Test
+    void test_getActiveComponentsByNamespaceCode_exists() {
+        mock.demand.findMatching(1..1) { clazz, map ->
+            if (!map.containsKey("active")) fail("Did not pass active criteria")
+            [componentBo]
+        }
+        injectBusinessObjectService()
+        List<Component> components = service.getActiveComponentsByNamespaceCode(NAMESPACE_CODE)
+        assertNotNull components
+        assert 1 == components.size()
+        assert component == components[0]
+
+        // list should be unmodifiable
+        shouldFail(UnsupportedOperationException) {
+            components.add(component)
+        }
+    }
+
+    @Test
+    void test_getActiveComponentsByNamespaceCode_not_exists() {
+        mock.demand.findMatching(1..1) { clazz, map -> [] }
+        injectBusinessObjectService()
+        List<Component> components = service.getActiveComponentsByNamespaceCode("blah")
+        assertNotNull components
+        assert 0 == components.size()
+
+        // list should be unmodifiable
+        shouldFail(UnsupportedOperationException) {
+            components.add(component)
+        }
+    }
 
     private static final String NAMESPACE_CODE = "MyNamespaceCode"
     private static final String CODE = "MyComponentCode"

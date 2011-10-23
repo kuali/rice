@@ -58,6 +58,26 @@ public class ComponentServiceImpl implements ComponentService {
     }
 
     @Override
+    public List<Component> getActiveComponentsByNamespaceCode(String namespaceCode) {
+        if (StringUtils.isBlank(namespaceCode)) {
+            throw new RiceIllegalArgumentException("namespaceCode was a null or blank value");
+        }
+        Map<String, Object> criteria = new HashMap<String, Object>();
+        criteria.put("namespaceCode", namespaceCode);
+        criteria.put("active", Boolean.TRUE);
+        Collection<ComponentBo> componentBos =
+                getBusinessObjectService().findMatching(ComponentBo.class, criteria);
+        if (CollectionUtils.isEmpty(componentBos)) {
+            return Collections.emptyList();
+        }
+        List<Component> components = new ArrayList<Component>();
+        for (ComponentBo componentBo : componentBos) {
+            components.add(ComponentBo.to(componentBo));
+        }
+        return Collections.unmodifiableList(components);
+    }
+
+    @Override
     public List<Component> getPublishedComponentSet(String componentSetId) {
         if (StringUtils.isBlank(componentSetId)) {
             throw new RiceIllegalArgumentException("componentSetId was a null or blank value");

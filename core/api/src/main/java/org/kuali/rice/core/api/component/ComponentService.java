@@ -36,6 +36,14 @@ public interface ComponentService {
             @WebParam(name = "namespaceCode") String namespaceCode
     ) throws RiceIllegalArgumentException;
 
+    @WebMethod(operationName = "getActiveComponentsByNamespaceCode")
+    @WebResult(name = "components")
+    @XmlElementWrapper(name = "components", required = true)
+	@XmlElement(name = "component", required = false)
+    List<Component> getActiveComponentsByNamespaceCode(
+            @WebParam(name = "namespaceCode") String namespaceCode
+    ) throws RiceIllegalArgumentException;
+
     @WebMethod(operationName = "getPublishedComponentSet")
     @WebResult(name = "components")
     @XmlElementWrapper(name = "components", required = true)

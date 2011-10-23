@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krms.framework.engine;
 
-import org.kuali.rice.krms.framework.engine.Action;
-import org.kuali.rice.krms.framework.engine.BasicRule;
-import org.kuali.rice.krms.framework.engine.Proposition;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krms.framework.type.ValidationRuleType;
 
 import java.util.List;
 
@@ -29,16 +28,24 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidationRule extends BasicRule {
-    public ValidationRule(String name, Proposition proposition, List<Action> actions) {
-        super(name, proposition, actions);
-    }
+    // TODO EGHM move VALIDATIONS_RULE_ATTRIBUTE to ValidationRuleTypeService Interface
+    public static final String VALIDATIONS_RULE_ATTRIBUTE = "validations";
+    private ValidationRuleType type = null;
+    private String validationId = null;
 
-    public ValidationRule(Proposition proposition, List<Action> actions) {
-        super(proposition, actions);
+    public ValidationRule(ValidationRuleType type, String validationId, String name, Proposition proposition, List<Action> actions) {
+        super(name, proposition, actions);
+        if (type == null) throw new IllegalArgumentException("type must not be null");
+        if (StringUtils.isBlank(validationId)) throw new IllegalArgumentException("validationId must not be null");
+        this.type = type;
+        this.validationId = validationId;
     }
 
     @Override
     protected boolean shouldExecuteAction(boolean ruleExecutionResult) {
-        return !ruleExecutionResult;
+        if (type == null || type.equals(ValidationRuleType.VALID)) {
+            return !ruleExecutionResult;
+        }
+        return ruleExecutionResult;
     }
 }

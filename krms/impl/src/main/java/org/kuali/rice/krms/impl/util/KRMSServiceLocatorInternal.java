@@ -21,10 +21,11 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.krms.api.validation.ValidationActionService;
+import org.kuali.rice.krms.api.validation.ValidationRuleService;
 
 /**
- * This is a description of what this class does - gilesp don't forget to fill this in. 
- * 
+ * Like {@link org.kuali.rice.krms.api.KrmsApiServiceLocator} only for non-remotable.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -32,7 +33,9 @@ public class KRMSServiceLocatorInternal {
 	
 	public static final String KRMS_RUN_MODE_PROPERTY = "krms.mode";
 	public static final String KRMS_MODULE_NAMESPACE = "KRMS";
-	
+    public static final String VALIDATION_ACTION_SERVICE = "validationActionService";
+    public static final String VALIDATION_RULE_SERVICE = "validationRuleService";
+
 	private static final Logger LOG = Logger.getLogger(KRMSServiceLocatorInternal.class);
 
 	
@@ -54,4 +57,11 @@ public class KRMSServiceLocatorInternal {
 //    	return getService(KRMS_BO_SERVICE);
 //    }
 	
+    public static ValidationActionService getValidationActionService() {
+        return getService(VALIDATION_ACTION_SERVICE);
+    }
+
+    public static ValidationRuleService getValidationRuleService() {
+        return getService(VALIDATION_RULE_SERVICE);
+    }
 }

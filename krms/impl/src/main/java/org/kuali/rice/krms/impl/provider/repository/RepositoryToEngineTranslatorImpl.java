@@ -50,8 +50,11 @@ import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
+import org.kuali.rice.krms.framework.type.ValidationRuleType;
+import org.kuali.rice.krms.framework.type.ValidationRuleTypeService;
 import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
+import org.kuali.rice.krms.impl.validation.ValidationRule;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -249,6 +252,18 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 				actions.add(translateActionDefinition(actionDefinition));
 			}
 		}
+         // TODO EGHM implement RuleTypeServices
+         if (ruleDefinition.getAttributes() != null) {
+             Map<String, String> attribs = ruleDefinition.getAttributes();
+             String ruleTypeCode = attribs.get(ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE);
+             if (ValidationRuleType.VALID.getCode().equals(ruleTypeCode)) {
+                 return new ValidationRule(ValidationRuleType.VALID, ruleDefinition.getId(), ruleDefinition.getName(),
+                         condition, actions);
+             } else if (ValidationRuleType.INVALID.getCode().equals(ruleTypeCode)) {
+                 return new ValidationRule(ValidationRuleType.INVALID, ruleDefinition.getId(), ruleDefinition.getName(),
+                         condition, actions);
+             }
+         }
 		return new BasicRule(ruleDefinition.getName(), condition, actions);
 	}
 	

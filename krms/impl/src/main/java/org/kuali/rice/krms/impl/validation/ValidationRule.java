@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krms.framework.engine;
+package org.kuali.rice.krms.impl.validation;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krms.framework.engine.Action;
+import org.kuali.rice.krms.framework.engine.BasicRule;
+import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
 
 import java.util.List;
 
 /**
  *
- * A {@link org.kuali.rice.krms.framework.engine.Rule} that executes a {@link Action} when the {@link Proposition} is false,
+ * A {@link org.kuali.rice.krms.framework.engine.Rule} that executes a {@link org.kuali.rice.krms.framework.engine.Action} when the {@link Proposition} is false,
  * as opposed to {@link BasicRule} which executes its action when the proposition is true.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidationRule extends BasicRule {
-    // TODO EGHM move VALIDATIONS_RULE_ATTRIBUTE to ValidationRuleTypeService Interface
-    public static final String VALIDATIONS_RULE_ATTRIBUTE = "validations";
     private ValidationRuleType type = null;
     private String validationId = null;
 

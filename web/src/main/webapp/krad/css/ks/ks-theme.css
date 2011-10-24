@@ -890,18 +890,17 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 .kr-collection-header a h3.kr-page-section-title,
 .grouping-header-expandable a h4.kr-section-subhead,
 .group_header a h4.kr-section-subhead,
-.fieldLine.boxLayoutVerticalItem a h4.kr-section-subhead,
 .grouping-header-expandable a h3.kr-page-section-title,
 a.h4.kr-section-subhead {
     border: 1px solid rgba(255,255,255,0);
     padding: .25em .25em .25em 0;
     margin-bottom:.5em;
+    margin-top:0;
 }
 
 .kr-collection-cntr a .kr-section-subhead:hover,
 .kr-collection-header a h3.kr-page-section-title:hover,
 .grouping-header-expandable a h4.kr-section-subhead:hover,
-.fieldLine.boxLayoutVerticalItem a h4.kr-section-subhead:hover,
 .group_header a h4.kr-section-subhead:hover,
 .grouping-header-expandable a h3.kr-page-section-title:hover {
     background-color:#ECFCE8;

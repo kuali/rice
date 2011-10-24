@@ -40,10 +40,6 @@
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>${oracle.jdbc.artifactId}</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
       <artifactId>rice-it-internal-tools</artifactId>

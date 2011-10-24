@@ -281,12 +281,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>${oracle.jdbc.artifactId}</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>${mysql.jdbc.artifactId}</artifactId>
             <scope>provided</scope>

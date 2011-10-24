@@ -533,6 +533,7 @@ h2 img.expand_collapse-buttons[alt="collapse"] {		/* was h2 img.expand_collapse-
 img.expand_collapse-buttons[alt="collapse"]{
     background: url(../../images/h3_collapse-back-ks.png);
     background-repeat:no-repeat;
+    padding-right: .25em;
 }
 
 img.expand_collapse-buttons[alt="expand"]{

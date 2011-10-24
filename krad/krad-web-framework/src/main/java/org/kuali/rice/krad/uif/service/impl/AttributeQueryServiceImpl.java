@@ -251,7 +251,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
 
         // build criteria for query
         Map<String, String> queryCriteria = new HashMap<String, String>();
-        for (String fieldName : attributeQuery.getQueryFieldMapping().keySet()) {
+        for (String fieldName : attributeQuery.getQueryFieldMapping().values()) {
             if (queryParameters.containsKey(fieldName) && StringUtils.isNotBlank(queryParameters.get(fieldName))) {
                 queryCriteria.put(fieldName, queryParameters.get(fieldName));
             }

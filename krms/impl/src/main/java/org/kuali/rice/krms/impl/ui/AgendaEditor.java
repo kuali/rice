@@ -37,7 +37,9 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = 1L;
 	
 	private ContextBo context;
+    private String namespace;
 	private AgendaBo agenda;
+    private String contextName;
 	private AgendaItemBo agendaItemLine;
     private String selectedAgendaItemId;
     private String cutAgendaItemId;
@@ -237,6 +239,22 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
      */
     public String getCutPropositionId() {
         return cutPropositionId;
+    }
+
+    public String getContextName() {
+        return contextName;
+    }
+
+    public void setContextName(String contextName) {
+        this.contextName = contextName;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     /**

@@ -1472,7 +1472,7 @@
 					<property name="informationalDisplayPropertyNames" value="field73,field74" />
 					<property name="fieldAttributeQuery">
 						<bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
-							p:queryFieldMapping="number:field72" p:returnFieldMapping="name:field73,subAccountName:field74" />
+							p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74" />
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Lookup"

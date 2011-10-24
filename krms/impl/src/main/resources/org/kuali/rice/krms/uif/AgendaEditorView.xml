@@ -54,7 +54,7 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
-  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:refreshWhenChanged="document.newMaintainableObject.agenda.name" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js">
+  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js">
     <property name="additionalCssFiles" ref="krms-css" />
     <property name="title" value="Agenda Editor"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
@@ -133,30 +133,51 @@
         <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2">
           <property name="items">
             <list>
+
+              <bean parent="AttributeField" p:propertyName="namespace" p:label="Namespace" p:required="true">
+                <property name="control">
+                  <bean parent="SelectControl"/>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krms.impl.repository.AgendaNamespaceValuesFinder" />
+                </property>
+              </bean>
+
               <bean parent="AttributeField" p:propertyName="agenda.name" p:label="Name" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30" p:watermarkText="agenda name"/>
                 </property>
               </bean>
-              <bean parent="AttributeField" p:propertyName="agenda.contextId" p:label="Context" p:required="true">
+
+              <bean parent="AttributeField" p:propertyName="contextName" p:label="Context" p:required="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30" p:watermarkText="agenda context"/>
+                  <bean parent="TextControl" p:size="30" p:watermarkText="agenda name"/>
                 </property>
 
+                <!-- add a hidden sub-field to hold the context id -->
+                <property name="hiddenPropertyNames" value="agenda.contextId" />
+
+                <!-- configure context quickfinder button -->
                 <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
                 <property name="fieldLookup.fieldConversions">
                   <map>
                     <entry key="id" value="agenda.contextId"/>
+                    <entry key="name" value="contextName"/>
                   </map>
                 </property>
 
+                <!-- suggest context names -->
+                <!-- TODO: only suggest for the selected namespace -->
                 <property name="fieldSuggest.render" value="true" />
                 <property name="fieldSuggest.sourcePropertyName" value="name" />
                 <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
-<!--                <property name="fieldAttributeQuery">
+
+                <!-- populate context id field on tab out based on namespace and contextName-->
+                <property name="fieldAttributeQuery">
                     <bean parent="FieldAttributeQuery" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo"
-                        p:queryFieldMapping="name:name" p:returnFieldMapping="name:name,namespace:namespace,id:id"/>
-                </property> -->
+                        p:queryFieldMapping="namespace:namespace,contextName:name" p:returnFieldMapping="name:contextName,id:agenda.contextId"/>
+                </property>
+
               </bean>
 
               <bean parent="AttributeField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"

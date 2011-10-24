@@ -535,7 +535,7 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
     queryData.queryFieldId = queryFieldId;
 
     for (var parameter in queryParameters) {
-        queryData['queryParameter.' + parameter] = coerceValue(queryParameters[parameter]);
+        queryData['queryParameter.' + queryParameters[parameter]] = coerceValue(parameter);
     }
 
     for (var i = 0; i < queryMethodArgs.length; i++) {

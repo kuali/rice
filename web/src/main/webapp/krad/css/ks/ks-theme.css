@@ -343,7 +343,18 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
    }
 
 
-.ui-icon { width: 16px; height: 16px; background-image: url(images/ui-icons_0078ae_256x240.png); }
+.ui-icon { width: 16px; height: 16px; background-image: url(/images/ui-icons_0078ae_256x240.png); }
+/* states and images */
+
+/* fixing image references in jquery-ui-1.8.11.css */
+.ui-widget-content .ui-icon {background-image: url(/krad/images/jquery/ui-icons_222222_256x240.png); }
+.ui-widget-header .ui-icon {background-image: url(/krad/images/jquery/ui-icons_004b2a_256x240.png); }
+.ui-state-default .ui-icon { background-image: url(/krad/images/jquery/ui-icons_004b2a_256x240.png); }
+.ui-state-hover .ui-icon, .ui-state-focus .ui-icon {background-image: url(/krad/images/jquery/ui-icons_004b2a_256x240.png); }
+.ui-state-active .ui-icon {background-image: url(/krad/images/jquery/ui-icons_454545_256x240.png); }
+.ui-state-highlight .ui-icon {background-image: url(/krad/images/jquery/ui-icons_2e83ff_256x240.png); }
+.ui-state-error .ui-icon, .ui-state-error-text .ui-icon {background-image: url(/krad/images/jquery/ui-icons_cd0a0a_256x240.png); }
+
 
 /* Jquery Tab Styles */
 .tab-navigation-block, .tab-navigation-block li {

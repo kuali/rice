@@ -896,10 +896,6 @@ a.h4.kr-section-subhead {
     border: 1px solid rgba(255,255,255,0);
     padding: .25em .25em .25em 0;
     margin-bottom:.5em;
-    -webkit-transition: all .5s ease-in-out;          /* animations - newer non-ie browsers only will see this */
-    -moz-transition: all .5s ease-in-out;
-    -o-transition: all .5s ease-in-out;
-    -ms-transition: all .5s ease-in-out;
 }
 
 .kr-collection-cntr a .kr-section-subhead:hover,
@@ -913,20 +909,20 @@ a.h4.kr-section-subhead {
 }
 
 /* messing with collections */
-.kr-collection-cntr a h3.kr-collectionGroup-header:hover{
+.kr-collection-cntr a h4.kr-collectionGroup-header:hover{
     background-color:#666;
 }
-.kr-collection-cntr h3.kr-collectionGroup-header {
+.kr-collection-cntr h4.kr-collectionGroup-header {
     color:#fff;
     background-color: #000;
     font-family: Arial, Helvetica, sans-serif ;
-    margin:  0.25em 0;
+    margin:  0.25em 0 0 0;
     padding: 0.5em;
 }
-.kr-collection-cntr h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+.kr-collection-cntr h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
     background: url("../../images/h3_expand-back-white-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-collection-cntr h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+.kr-collection-cntr h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
     background: url("../../images/h3_collapse-back-white-ks.png") no-repeat scroll 0 0 transparent;
 }
 .kr-collection-cntr{

@@ -15,7 +15,7 @@ public class BasicRule implements Rule {
 	
 	public BasicRule(String name, Proposition proposition, List<Action> actions) {
 		if (proposition == null) {
-			throw new IllegalArgumentException("Propsition cannot be null.");
+			throw new IllegalArgumentException("Proposition cannot be null.");
 		}
 		this.name = name;
 		this.proposition = proposition;

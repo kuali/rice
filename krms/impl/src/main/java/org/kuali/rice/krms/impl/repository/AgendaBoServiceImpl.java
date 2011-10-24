@@ -351,7 +351,7 @@ public final class AgendaBoServiceImpl implements AgendaBoService {
         Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();
 
         List<KrmsAttributeDefinition> attributeDefinitions =
-                attributeDefinitionService.findAttributeDefinitionsByType(im.getTypeId());
+                getAttributeDefinitionService().findAttributeDefinitionsByType(im.getTypeId());
 
         for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
             attributeDefinitionMap.put(attributeDefinition.getName(), attributeDefinition);

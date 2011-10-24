@@ -11,7 +11,7 @@ import org.kuali.rice.ksb.api.registry.ServiceRegistry;
 import javax.xml.namespace.QName;
 
 /**
- * A static service locator which aids in locating the various services that form the Kuali Rule Management System API.
+ * A static service locator which aids in locating the various remotable services that form the Kuali Rule Management System API.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -198,7 +198,12 @@ public interface BusinessObjectDictionaryService {
      * returns String indicating the result set limit for the lookup
      */
     public Integer getLookupResultSetLimit(Class businessObjectClass);
-    
+
+    /**
+     * returns Integer indicating the result set limit for a multiple values lookup
+     */
+    public Integer getMultipleValueLookupResultSetLimit(Class businessObjectClass);
+   
     /**
      * @return number of search columns configured for the lookup associated with the class
      */

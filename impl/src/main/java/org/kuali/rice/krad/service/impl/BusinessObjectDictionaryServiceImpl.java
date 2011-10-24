@@ -297,7 +297,6 @@ public class BusinessObjectDictionaryServiceImpl implements
         return results;
     }
 
-
     /**
 	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupResultFieldMaxLength(java.lang.Class,
 	 *      java.lang.String)
@@ -325,6 +324,18 @@ public class BusinessObjectDictionaryServiceImpl implements
         if ( lookupDefinition != null ) {
 			return lookupDefinition.getResultSetLimit(); // TODO: stupid, change
 															// to return int
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getMultipleValueLookupResultSetLimit(java.lang.Class)
+     */
+    public Integer getMultipleValueLookupResultSetLimit(Class businessObjectClass) {
+        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+        if ( lookupDefinition != null ) {
+            return lookupDefinition.getMultipleValuesResultSetLimit();                                          
         } else {
             return null;
         }

@@ -25,7 +25,10 @@ import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.web.comparator.NullValueComparator;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -127,9 +130,23 @@ public class LookupUtils {
      * @return result set limit for this BO (or null if the BO doesn't have a limit)
      */
     public static Integer getBusinessObjectSearchResultsLimit(Class businessObjectClass) {
-        return getBusinessObjectDictionaryService().getLookupResultSetLimit(businessObjectClass);
+		if (!(isMultipleValueLookup())) {
+			return getBusinessObjectDictionaryService().getLookupResultSetLimit(businessObjectClass);
+		} else {
+	        return getBusinessObjectDictionaryService().getMultipleValueLookupResultSetLimit(businessObjectClass);
+		}
     }
 
+	private static boolean isMultipleValueLookup() {
+		KualiForm kualiForm = KNSGlobalVariables.getKualiForm();
+		if (kualiForm instanceof LookupForm) {
+			LookupForm lookupForm = (LookupForm) kualiForm;
+			return lookupForm.isMultipleValues();
+		} else {
+			return false;
+		}
+	} 
+	
     /**
      * This method applies the search results limit to the search criteria for this BO
      *

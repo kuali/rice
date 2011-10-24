@@ -165,7 +165,8 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     	try {
     		Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils
                     .getSearchResultsLimit(businessObjectClass);
-    		if (!unbounded && (searchResultsLimit != null)) {
+    		// A negative number in searchResultsLimit means the search results should be unlimited.
+            if (!unbounded && (searchResultsLimit != null) && searchResultsLimit >= 0) {
     			matchingResultsCount = new Long(getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(businessObjectClass, criteria)));
     			org.kuali.rice.kns.lookup.LookupUtils
                         .applySearchResultsLimit(businessObjectClass, criteria, getDbPlatform());

@@ -69,6 +69,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     protected Map<String, FieldDefinition> resultFieldMap = new LinkedHashMap<String, FieldDefinition>();
 
     protected Integer resultSetLimit = null;
+    protected Integer multipleValuesResultSetLimit = null;
 
     protected String extraButtonSource;
     protected String extraButtonParams;
@@ -286,7 +287,31 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     public Integer getResultSetLimit() {
         return resultSetLimit;
     }
+  
+    /**
+     * The multipleValuesResultSetLimit element specifies the maximum number of records that will be listed
+     * as a result of a multiple values lookup search.
+     */
+    public void setMultipleValuesResultSetLimit(Integer multipleValuesResultSetLimit) {
+    	this.multipleValuesResultSetLimit = multipleValuesResultSetLimit;
+	}
 
+    /**
+     * @return true if this instance has a multiple values result set limit
+     */
+    public boolean hasMultipleValuesResultSetLimit() {
+    	return (multipleValuesResultSetLimit != null);
+    }
+
+
+    /**
+     * The multipleValuesResultSetLimit element specifies the maximum number of records that will be listed
+     * as a result of a multiple values lookup search.
+     */
+    public Integer getMultipleValuesResultSetLimit() {
+    	return multipleValuesResultSetLimit;
+    }
+    
     /**
      * Directly validate simple fields, call completeValidation on Definition fields.
      *

@@ -273,6 +273,7 @@
               <goals>
                 <goal>enforce</goal>
               </goals>
+              <phase>${maven.enforcer.phase}</phase>
               <configuration>
                 <skip>${maven.enforcer.skip}</skip>
                 <rules>

@@ -20,7 +20,8 @@ import org.kuali.rice.krms.api.validation.ValidationActionService;
 import org.kuali.rice.krms.framework.engine.Action;
 
 /**
- * Exists for constants and mocking of the Validation Action Type Services
+ * ValidationAction constants and mocking of the {@link ValidationActionService}.
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -33,8 +34,10 @@ public interface ValidationActionTypeService extends RemotableAttributeOwner, Ac
 	public Action loadAction(ActionDefinition actionDefinition);
 
     /**
-     * Set the validation service.  Useful for mocking.
-     * @param validationService
+     * Set the {@link ValidationActionService}.
+     *
+     * @param validationService the {@link ValidationActionService} to use.
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if the given Validation Service is null
      */
     void setValidationService(ValidationActionService validationService);
 }

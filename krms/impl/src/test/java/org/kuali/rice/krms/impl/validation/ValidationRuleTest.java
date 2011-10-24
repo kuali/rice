@@ -51,7 +51,7 @@ public class ValidationRuleTest {
 
     @Test
     public void testValidRulePassesActionDoesntFire() {
-        Rule validationRule = new ValidationRule(ValidationRuleType.VALID, "ValidPassesTestId", "ValidPassesTestName",
+        Rule validationRule = new ValidationRule(ValidationRuleType.VALID, "testValidRulePassesActionDoesntFire",
                 new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "true"), Collections
                 .<Action>singletonList(actionMock));
         assertTrue(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
@@ -61,7 +61,7 @@ public class ValidationRuleTest {
 
     @Test
     public void testValidRuleFailsActionFires() {
-        Rule validationRule = new ValidationRule(ValidationRuleType.VALID, "ValidFailsTestId", "ValidFailsTestName",
+        Rule validationRule = new ValidationRule(ValidationRuleType.VALID, "testValidRuleFailsActionFires",
                 new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "false"), Collections
                 .<Action>singletonList(actionMock));
         assertFalse(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
@@ -71,7 +71,7 @@ public class ValidationRuleTest {
 
     @Test
     public void testInvalidRulePassesActionFires() {
-        Rule validationRule = new ValidationRule(ValidationRuleType.INVALID, "InvalidPassesTestId", "InvalidPassesTestName",
+        Rule validationRule = new ValidationRule(ValidationRuleType.INVALID, "testInvalidRulePassesActionFires",
                 new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "true"), Collections
                 .<Action>singletonList(actionMock));
         assertTrue(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
@@ -81,7 +81,7 @@ public class ValidationRuleTest {
 
     @Test
     public void testInvalidRuleFalseActionDoesntFire() {
-        Rule validationRule = new ValidationRule(ValidationRuleType.INVALID, "InvalidFailsTestId", "InvalidFailsTestName",
+        Rule validationRule = new ValidationRule(ValidationRuleType.INVALID, "testInvalidRuleFalseActionDoesntFire",
                 new ComparableTermBasedProposition(ComparisonOperator.EQUALS, term, "false"), Collections
                 .<Action>singletonList(actionMock));
         assertFalse(validationRule.evaluate(new BasicExecutionEnvironment(testEvent, facts, executionOptions,
@@ -113,9 +113,6 @@ public class ValidationRuleTest {
             actionsFired.add(name);
         }
 
-        /**
-         * @see org.kuali.rice.krms.framework.engine.Action#executeSimulation(org.kuali.rice.krms.api.engine.ExecutionEnvironment)
-         */
         @Override
         public void executeSimulation(ExecutionEnvironment environment) {
             throw new UnsupportedOperationException();

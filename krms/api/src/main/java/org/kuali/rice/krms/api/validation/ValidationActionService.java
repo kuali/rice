@@ -50,7 +50,7 @@ public interface ValidationActionService {
      *
      * @param validation
      *
-     * @return
+     * @return {@link ActionDefinition}
      *
      * @throws RiceIllegalArgumentException if the given Validation definition is null
      * @throws RiceIllegalArgumentException if the given Validation definition has a non-null id.  When creating a new
@@ -66,9 +66,9 @@ public interface ValidationActionService {
      *
      * @param validation
      *
-     * @return
+     * @return {@link ActionDefinition}
      *
-     * @throws RiceIllegalArgumentException
+     * @throws RiceIllegalArgumentException if the given Validation definition is null
      * @throws RiceIllegalStateException if the Validation does not exist in the system under the given validationId
      */
     @WebMethod(operationName = "updateValidationAction")

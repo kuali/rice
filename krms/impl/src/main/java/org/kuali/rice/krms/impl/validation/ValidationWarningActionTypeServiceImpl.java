@@ -26,7 +26,7 @@ import org.kuali.rice.krms.impl.type.KrmsTypeServiceBase;
 import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 
 /**
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Kuali Rice Team (rice.collab@kuali.org).
  */
 public class ValidationWarningActionTypeServiceImpl extends KrmsTypeServiceBase implements ValidationActionTypeService {
     private ValidationActionService validationService;
@@ -35,7 +35,7 @@ public class ValidationWarningActionTypeServiceImpl extends KrmsTypeServiceBase 
 
     /**
      * Factory method for getting a {@link ActionTypeService}
-     * @return a {@link ValidationActionTypeService} corresponding to the given {@link org.kuali.rice.krms.framework.type.ValidationActionType}.
+     * @return a {@link ActionTypeService}
      */
     public static ActionTypeService getInstance() {
         return new ValidationWarningActionTypeServiceImpl();
@@ -43,7 +43,7 @@ public class ValidationWarningActionTypeServiceImpl extends KrmsTypeServiceBase 
 
 
     /**
-     * @return the configured {@link org.kuali.rice.krms.api.validation.ValidationActionService}
+     * @return the configured {@link org.kuali.rice.krms.api.validation.ValidationActionService}.
      */
     public ValidationActionService getValidationService() {
         if (validationService == null) {
@@ -56,12 +56,10 @@ public class ValidationWarningActionTypeServiceImpl extends KrmsTypeServiceBase 
     @Override
     public Action loadAction(ActionDefinition actionDefinition) {
         // TODO EGHM translator?
-        return new ValidationAction(ValidationActionType.WARNING, actionDefinition.getTypeId(), actionDefinition.getDescription());
+        return new ValidationAction(ValidationActionType.WARNING, actionDefinition.getDescription());
     }
 
-    /**
-     * @return the configured {@link org.kuali.rice.krms.api.validation.ValidationActionService}
-     */
+    @Override
     public void setValidationService(ValidationActionService validationService) {
         if (validationService == null) {
             throw new RiceIllegalArgumentException("validationService must not be null");

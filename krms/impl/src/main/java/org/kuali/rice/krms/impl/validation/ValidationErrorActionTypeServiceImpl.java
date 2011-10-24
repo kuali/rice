@@ -31,18 +31,14 @@ import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 public class ValidationErrorActionTypeServiceImpl extends KrmsTypeServiceBase implements ValidationActionTypeService {
     private ValidationActionService validationService;
 
-    // TODO EGHM do i really not care about type now?
-    private ValidationErrorActionTypeServiceImpl(ValidationActionType type) {super();}
-
     private ValidationErrorActionTypeServiceImpl() {}
 
     /**
-     * Factory method for getting a {@link ValidationActionTypeService}
-     * @param type indicates the type of action that the returned {@link ValidationActionTypeService} will produce
-     * @return a {@link ValidationActionTypeService} corresponding to the given {@link org.kuali.rice.krms.framework.type.ValidationActionType}.
+     * Factory method for getting a ValidationErrorActionTypeServiceImpl.
+     * @return a {@link ActionTypeService}
      */
-    public static ActionTypeService getInstance(ValidationActionType type) {
-        return new ValidationErrorActionTypeServiceImpl(type);
+    public static ActionTypeService getInstance() {
+        return new ValidationErrorActionTypeServiceImpl();
     }
 
 
@@ -60,12 +56,10 @@ public class ValidationErrorActionTypeServiceImpl extends KrmsTypeServiceBase im
     @Override
     public Action loadAction(ActionDefinition actionDefinition) {
         // TODO EGHM translator?
-        return new ValidationAction(ValidationActionType.ERROR, actionDefinition.getTypeId(), actionDefinition.getDescription());
+        return new ValidationAction(ValidationActionType.ERROR, actionDefinition.getDescription());
     }
 
-    /**
-     * @return the configured {@link org.kuali.rice.krms.api.validation.ValidationActionService}
-     */
+    @Override
     public void setValidationService(ValidationActionService validationService) {
         if (validationService == null) {
             throw new RiceIllegalArgumentException("validationService must not be null");

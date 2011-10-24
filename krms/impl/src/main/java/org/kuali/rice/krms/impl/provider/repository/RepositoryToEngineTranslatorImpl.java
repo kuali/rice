@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krms.api.engine.TermResolver;
 import org.kuali.rice.krms.api.repository.RepositoryDataException;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
@@ -257,10 +255,10 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
              Map<String, String> attribs = ruleDefinition.getAttributes();
              String ruleTypeCode = attribs.get(ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE);
              if (ValidationRuleType.VALID.getCode().equals(ruleTypeCode)) {
-                 return new ValidationRule(ValidationRuleType.VALID, ruleDefinition.getId(), ruleDefinition.getName(),
+                 return new ValidationRule(ValidationRuleType.VALID, ruleDefinition.getName(),
                          condition, actions);
              } else if (ValidationRuleType.INVALID.getCode().equals(ruleTypeCode)) {
-                 return new ValidationRule(ValidationRuleType.INVALID, ruleDefinition.getId(), ruleDefinition.getName(),
+                 return new ValidationRule(ValidationRuleType.INVALID, ruleDefinition.getName(),
                          condition, actions);
              }
          }

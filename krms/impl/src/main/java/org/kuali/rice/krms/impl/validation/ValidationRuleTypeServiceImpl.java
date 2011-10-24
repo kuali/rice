@@ -31,7 +31,6 @@ import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
  */
 public class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase implements ValidationRuleTypeService {
 
-
     private ValidationRuleType type;
 
     private ValidationRuleService validationService;
@@ -59,7 +58,6 @@ public class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase implement
     }
 
     @Override
-    // if this return is ValidationRule, then ValidationRule and Type need to be extracted from this file
     public Rule loadRule(RuleDefinition validationRuleDefinition) {
         if (validationRuleDefinition == null) { throw new RiceIllegalArgumentException("validationRuleDefinition must not be null"); }
 
@@ -92,9 +90,7 @@ public class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase implement
         return validationService;
     }
 
-    /**
-     * @return the configured {@link org.kuali.rice.krms.api.validation.ValidationActionService}
-     */
+    @Override
     public void setValidationRuleService(ValidationRuleService validationService) {
         if (validationService == null) {
             throw new RiceIllegalArgumentException("validationService must not be null");

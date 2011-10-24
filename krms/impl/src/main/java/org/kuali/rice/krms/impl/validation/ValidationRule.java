@@ -32,14 +32,11 @@ import java.util.List;
  */
 public class ValidationRule extends BasicRule {
     private ValidationRuleType type = null;
-    private String validationId = null;
 
-    public ValidationRule(ValidationRuleType type, String validationId, String name, Proposition proposition, List<Action> actions) {
+    public ValidationRule(ValidationRuleType type, String name, Proposition proposition, List<Action> actions) {
         super(name, proposition, actions);
         if (type == null) throw new IllegalArgumentException("type must not be null");
-        if (StringUtils.isBlank(validationId)) throw new IllegalArgumentException("validationId must not be null");
         this.type = type;
-        this.validationId = validationId;
     }
 
     @Override

@@ -28,16 +28,12 @@ public class ValidationAction implements Action {
 
 
     private final ValidationActionType type;
-    private final String validationId;
     private final String message;
 
-    public ValidationAction(ValidationActionType type, String validationId, String message) {
-
+    public ValidationAction(ValidationActionType type, String message) {
         if (type == null) throw new IllegalArgumentException("type must not be null");
-        if (StringUtils.isBlank(validationId)) throw new IllegalArgumentException("validationId must not be null");
 
         this.type = type;
-        this.validationId = validationId;
         this.message = message;
     }
 

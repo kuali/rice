@@ -51,26 +51,8 @@
           <artifactId>maven-site-plugin</artifactId>
           <version>${kuali.site.plugin.version}</version>
           <configuration>
-            <reportPlugins>
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <!-- Version is included here only because it does not inherit correctly from the pluginManagement section
-                  of the parent pom -->
-                <version>2.3</version>
-                <configuration>
-                  <dependencyLocationsEnabled>${kuali.reporting.dependency.locations}</dependencyLocationsEnabled>
-                </configuration>
-              </plugin>
-            </reportPlugins>
+            <skip>true</skip>
           </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>org.kuali.cm</groupId>
-              <artifactId>cm-tools</artifactId>
-              <version>${kuali.cm.tools.version}</version>
-            </dependency>
-          </dependencies>
         </plugin>
       </plugins>
     </pluginManagement>

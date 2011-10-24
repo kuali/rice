@@ -131,14 +131,6 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                    child.setData(pNode);
                }
                sprout.getChildren().add(child);
-               
-//               Node<RuleTreeNode, String> grandChild = new Node<RuleTreeNode, String>();
-//               SimplePropositionNode pNode = new SimplePropositionNode(prop);
-//               grandChild.setNodeLabel(pNode.getParameterDisplayString());
-//               grandChild.setNodeType("ruleTreeNode simplePropositionParameterNode");
-//               grandChild.setData(pNode);
-//               child.getChildren().add(grandChild);
-               
                propositionSummaryBuffer.append(prop.getParameterDisplayString())
            }
            else if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
@@ -146,6 +138,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                propositionSummaryBuffer.append(" ( ");
                Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
                aNode.setNodeLabel(prop.getDescription());
+               // editMode has description as an editable field
                if (prop.getEditMode()){
                    aNode.setNodeLabel("");
                    aNode.setNodeType("ruleTreeNode compoundNode editNode");

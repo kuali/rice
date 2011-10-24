@@ -1378,6 +1378,25 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return bingo;
     }
 
+    /**
+     * This method return the index of the position of the child that matches the id
+     * @param parent
+     * @param propId
+     * @return index if found, -1 if not found
+     */
+    private int findChildIndex(Node<RuleTreeNode,String> parent, String propId){
+        int index;
+        List<Node<RuleTreeNode,String>> children = parent.getChildren();
+        for(index=0; index< children.size(); index++){
+            Node<RuleTreeNode,String> child = children.get(index);
+            // if our selected node is a simple proposition, add a new one after
+            if (propIdMatches(child, propId)){
+                return index;
+            }
+        }
+        return -1;
+    }
+
     @RequestMapping(params = "methodToCall=" + "movePropositionUp")
     public ModelAndView movePropositionUp(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response)
@@ -1408,13 +1427,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
          */
         AgendaEditor agendaEditor = getAgendaEditor(form);
         RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
-
-        // get selected id
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
         // find parent
-        Node<RuleTreeNode,String> parent = findParentPropositionNode(
-                agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement(), selectedPropId);
+        Node<RuleTreeNode,String> parent = findParentPropositionNode(rule.getPropositionTree().getRootElement(), selectedPropId);
 
         // add new child at appropriate spot
         if (parent != null){
@@ -1449,6 +1465,80 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
     }
+    @RequestMapping(params = "methodToCall=" + "movePropositionLeft")
+    public ModelAndView movePropositionLeft(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        /* Rough algorithm for moving a node up.
+         *
+         * find the following:
+         *   node := the selected node
+         *   parent := the selected node's parent, its containing node (via when true or when false relationship)
+         *   parentsOlderCousin := the parent's level-order predecessor (sibling or cousin)
+         *
+         */
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+        // find agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement()parent
+        Node<RuleTreeNode,String> root = rule.getPropositionTree().getRootElement();
+        Node<RuleTreeNode,String> parent = findParentPropositionNode(root, selectedPropId);
+        if ((parent != null) && (RuleTreeNode.COMPOUND_NODE_TYPE.equalsIgnoreCase(parent.getNodeType()))){
+            Node<RuleTreeNode,String> granny = findParentPropositionNode(root,parent.getData().getProposition().getId());
+            if (granny != null && granny != root){
+                int oldIndex = findChildIndex(parent, selectedPropId);
+                int newIndex = findChildIndex(granny, parent.getData().getProposition().getId());
+                if (oldIndex >= 0 && newIndex >= 0){
+                    PropositionBo prop = parent.getData().getProposition().getCompoundComponents().remove(oldIndex/2);
+                    granny.getData().getProposition().getCompoundComponents().add((newIndex/2)+1, prop);
+                    rule.refreshPropositionTree(false);
+                }
+            }
+        }
+        return super.updateComponent(form, result, request, response);
+    }
+
+    @RequestMapping(params = "methodToCall=" + "movePropositionRight")
+    public ModelAndView movePropositionRight(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        /* Rough algorithm for moving a node Right
+         * if the selected node is above a compound proposition, move it into the compound proposition as the first child
+         * if the node is above a simple proposition, do nothing.
+         * find the following:
+         *   node := the selected node
+         *   parent := the selected node's parent, its containing node
+         *   nextSibling := the node after the selected node
+         *
+         */
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+        // find parent
+        Node<RuleTreeNode,String> parent = findParentPropositionNode(
+                rule.getPropositionTree().getRootElement(), selectedPropId);
+        if (parent != null){
+            int index = findChildIndex(parent, selectedPropId);
+            // if we are the last child, do nothing, otherwise
+            if (index >= 0 && index+1 < parent.getChildren().size()){
+                Node<RuleTreeNode,String> child = parent.getChildren().get(index);
+                Node<RuleTreeNode,String> nextSibling = parent.getChildren().get(index+2);
+                // if selected node above a compound node, move it into it as first child
+                if(RuleTreeNode.COMPOUND_NODE_TYPE.equalsIgnoreCase(nextSibling.getNodeType()) ){
+                    // remove selected node from it's current spot
+                    PropositionBo prop = parent.getData().getProposition().getCompoundComponents().remove(index/2);
+                    // add it to it's siblings children
+                    nextSibling.getData().getProposition().getCompoundComponents().add(0, prop);
+                    rule.refreshPropositionTree(false);
+                }
+            }
+        }
+        return super.updateComponent(form, result, request, response);
+    }
+
 
     @RequestMapping(params = "methodToCall=" + "cutProposition")
     public ModelAndView cutProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,

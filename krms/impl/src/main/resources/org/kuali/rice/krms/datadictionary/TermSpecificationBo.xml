@@ -128,7 +128,7 @@
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="contextId"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace"/>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="type"/>
       </list>
     </property>
@@ -136,7 +136,7 @@
       <list>
         <bean parent="AttributeField" p:propertyName="id"/>
         <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="contextId"/>
+        <bean parent="AttributeField" p:propertyName="namespace"/>
         <bean parent="AttributeField" p:propertyName="type"/>
       </list>
     </property>

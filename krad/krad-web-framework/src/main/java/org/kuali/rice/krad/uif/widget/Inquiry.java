@@ -107,8 +107,6 @@ public class Inquiry extends WidgetBase {
      * @param field - The parent Attribute field
      */
     public void setupLink(View view, Object model, AttributeField field) {
-        // get parent object for inquiry
-        Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, field);
         String propertyName = field.getBindingInfo().getBindingName();
 
         // if class and parameters configured, build link from those
@@ -124,10 +122,12 @@ public class Inquiry extends WidgetBase {
 
             updateInquiryParameters(field.getBindingInfo());
 
-            buildInquiryLink(parentObject, propertyName, inquiryObjectClass, getInquiryParameters());
+            buildInquiryLink(model, propertyName, inquiryObjectClass, getInquiryParameters());
         }
         // get inquiry class and parameters from view helper
         else {
+            // get parent object for inquiry metadata
+            Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, field);
             view.getViewHelperService().buildInquiryLink(parentObject, propertyName, this);
         }
     }

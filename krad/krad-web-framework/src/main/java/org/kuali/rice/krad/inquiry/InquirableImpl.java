@@ -288,8 +288,7 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
                     inquiryObjectClass);
         }
 
-        // listPrimaryKeyFieldNames returns an unmodifiable list. So a copy is
-        // necessary.
+        // listPrimaryKeyFieldNames returns an unmodifiable list. So a copy is necessary.
         List<String> keys = new ArrayList<String>(getDataObjectMetaDataService().listPrimaryKeyFieldNames(
                 inquiryObjectClass));
 

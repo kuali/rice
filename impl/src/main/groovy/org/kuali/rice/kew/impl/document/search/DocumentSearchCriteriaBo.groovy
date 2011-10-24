@@ -53,21 +53,21 @@ class DocumentSearchCriteriaBo implements BusinessObject {
         if (initiatorPrincipalName == null) {
             return null
         }
-        return KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalName)
+        return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorPrincipalName)
     }
 
     Person getApproverPerson() {
         if (approverPrincipalName == null) {
             return null
         }
-        return KimApiServiceLocator.getPersonService().getPerson(approverPrincipalName)
+        return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(approverPrincipalName)
     }
 
     Person getViewerPerson() {
         if (viewerPrincipalName == null) {
             return null
         }
-        return KimApiServiceLocator.getPersonService().getPerson(viewerPrincipalName)
+        return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(viewerPrincipalName)
     }
 
 

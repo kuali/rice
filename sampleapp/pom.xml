@@ -23,6 +23,7 @@
     <maven.surefire.skip>true</maven.surefire.skip>
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
+    <kuali.testjar.phase>none</kuali.testjar.phase>
   </properties>
 
   <build>
@@ -43,8 +44,38 @@
         </excludes>
       </resource>
     </resources>
-    <plugins>
-      <plugin>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${kuali.site.plugin.version}</version>
+          <configuration>
+            <reportPlugins>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <!-- Version is included here only because it does not inherit correctly from the pluginManagement section
+                  of the parent pom -->
+                <version>2.3</version>
+                <configuration>
+                  <dependencyLocationsEnabled>${kuali.reporting.dependency.locations}</dependencyLocationsEnabled>
+                </configuration>
+              </plugin>
+            </reportPlugins>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.kuali.cm</groupId>
+              <artifactId>cm-tools</artifactId>
+              <version>${kuali.cm.tools.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins> 
+     <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
       </plugin>

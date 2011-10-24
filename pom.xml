@@ -312,19 +312,6 @@
                   </formats>
                 </configuration>
               </plugin>
-              <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-              </plugin>
-              <plugin>
-                <groupId>org.kuali.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <configuration>
-                  <configLocation>org/kuali/cm/checkstyle/kuali-sun.xml</configLocation>
-                  <enableRulesSummary>${checkstyle.enable.rules.summary}</enableRulesSummary>
-                  <logViolationsToConsole>${checkstyle.console}</logViolationsToConsole>
-                </configuration>
-              </plugin>
               <!-- Included here as a default only until Maven 3.1 is out which will support 'mixins'.
                 This plugin only generates output if the project is a maven plugin.
                 For projects that are not maven plugins it does nothing. -->
@@ -338,35 +325,6 @@
                 <configuration>
                   <targetJdk>${kuali.compile.source}</targetJdk>
                   <aggregate>${kuali.reporting.aggregate}</aggregate>
-                </configuration>
-              </plugin>
-              <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>taglist-maven-plugin</artifactId>
-                <configuration>
-                  <aggregate>${kuali.reporting.aggregate}</aggregate>
-                  <tagListOptions>
-                    <tagClasses>
-                      <tagClass>
-                        <displayName>TODO's</displayName>
-                        <tags>
-                          <tag>
-                            <matchString>TODO</matchString>
-                            <matchType>ignoreCase</matchType>
-                          </tag>
-                        </tags>
-                      </tagClass>
-                      <tagClass>
-                        <displayName>FIXME's</displayName>
-                        <tags>
-                          <tag>
-                            <matchString>FIXME</matchString>
-                            <matchType>ignoreCase</matchType>
-                          </tag>
-                        </tags>
-                      </tagClass>
-                    </tagClasses>
-                  </tagListOptions>
                 </configuration>
               </plugin>
             </reportPlugins>

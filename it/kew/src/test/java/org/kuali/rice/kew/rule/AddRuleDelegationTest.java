@@ -148,7 +148,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 
 		String newRuleDelegationId = newRuleDelegation.getRuleDelegationId();
 		// change the delegation type to secondary
-		newRuleDelegation.setDelegationType(DelegationType.SECONDARY.getCode());
+		newRuleDelegation.setDelegationType(DelegationType.SECONDARY);
 		saveNewVersion(newRuleDelegation);
 		String newRuleDelegationId2 = newRuleDelegation.getRuleDelegationId();
 

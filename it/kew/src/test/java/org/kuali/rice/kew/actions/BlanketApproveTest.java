@@ -394,13 +394,13 @@ public class BlanketApproveTest extends KEWTestCase {
                     String childId = (childRequest.isGroupRequest() ? childRequest.getGroup().getName(): getPrincipalNameForId(childRequest.getPrincipalId()));
                     if ("temay".equals(childId)) {
                         foundTemayDelegate = true;
-                        assertEquals("Should be primary delegation.", DelegationType.PRIMARY.getCode(), childRequest.getDelegationType());
+                        assertEquals("Should be primary delegation.", DelegationType.PRIMARY, childRequest.getDelegationType());
                     } else if ("pmckown".equals(childId)) {
                         foundPmckownDelegate = true;
-                        assertEquals("Should be secondary delegation.", DelegationType.SECONDARY.getCode(), childRequest.getDelegationType());
+                        assertEquals("Should be secondary delegation.", DelegationType.SECONDARY, childRequest.getDelegationType());
                     } else if ("NonSIT".equals(childId)) {
                         foundNonSITWGDelegate = true;
-                        assertEquals("Should be primary delegation.", DelegationType.PRIMARY.getCode(), childRequest.getDelegationType());
+                        assertEquals("Should be primary delegation.", DelegationType.PRIMARY, childRequest.getDelegationType());
                     }
                 }
                 assertTrue("Could not locate delegate request for temay.", foundTemayDelegate);

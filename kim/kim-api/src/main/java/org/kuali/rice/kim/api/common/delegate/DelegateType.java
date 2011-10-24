@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
@@ -92,7 +93,7 @@ public final class DelegateType extends AbstractDataTransferObject implements De
     private DelegateType(Builder b) {
         roleId = b.getRoleId();
         delegationId = b.getDelegationId();
-        delegationTypeCode = b.getDelegationTypeCode();
+        delegationTypeCode = b.getDelegationType() != null ? b.getDelegationType().getCode() : null;
         kimTypeId = b.getKimTypeId();
         active = b.isActive();
 
@@ -116,8 +117,8 @@ public final class DelegateType extends AbstractDataTransferObject implements De
     }
 
     @Override
-    public String getDelegationTypeCode() {
-        return this.delegationTypeCode;
+    public DelegationType getDelegationType() {
+        return DelegationType.fromCode(this.delegationTypeCode);
     }
 
     @Override
@@ -138,7 +139,7 @@ public final class DelegateType extends AbstractDataTransferObject implements De
     public static final class Builder implements DelegateTypeContract, ModelBuilder, ModelObjectComplete {
         private String roleId;
         private String delegationId;
-        private String delegationTypeCode;
+        private DelegationType delegationType;
         private String kimTypeId;
         private List<DelegateMember.Builder> members;
         private boolean active;
@@ -147,7 +148,7 @@ public final class DelegateType extends AbstractDataTransferObject implements De
             Builder b = new Builder();
             b.setRoleId(dtc.getRoleId());
             b.setDelegationId(dtc.getDelegationId());
-            b.setDelegationTypeCode(dtc.getDelegationTypeCode());
+            b.setDelegationType(dtc.getDelegationType());
             b.setActive(dtc.isActive());
 
             ArrayList<DelegateMember.Builder> delegateBuilders = new ArrayList<DelegateMember.Builder>();
@@ -159,11 +160,11 @@ public final class DelegateType extends AbstractDataTransferObject implements De
             return b;
         }
 
-        public static Builder create(String roleId, String delegationId, String delegationTypeCode, List<DelegateMember.Builder> members) {
+        public static Builder create(String roleId, String delegationId, DelegationType delegationType, List<DelegateMember.Builder> members) {
             Builder b = new Builder();
             b.setRoleId(roleId);
             b.setDelegationId(delegationId);
-            b.setDelegationTypeCode(delegationTypeCode);
+            b.setDelegationType(delegationType);
             b.setMembers(members);
             b.setActive(true);
 
@@ -201,15 +202,15 @@ public final class DelegateType extends AbstractDataTransferObject implements De
         }
 
         @Override
-        public String getDelegationTypeCode() {
-            return delegationTypeCode;
+        public DelegationType getDelegationType() {
+            return delegationType;
         }
 
-        public void setDelegationTypeCode(String delegationTypeCode) {
-            if (StringUtils.isBlank(delegationTypeCode)) {
-                throw new IllegalArgumentException("delegationTypeCode cannot be null or blank");
+        public void setDelegationType(DelegationType delegationType) {
+            if (delegationType == null) {
+                throw new IllegalArgumentException("delegationTypeCode cannot be null");
             }
-            this.delegationTypeCode = delegationTypeCode;
+            this.delegationType = delegationType;
         }
 
         @Override

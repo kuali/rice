@@ -70,7 +70,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.docTypeName" p:unconditionallyReadOnly="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.ruleTemplate.name" p:unconditionallyReadOnly="true"/>
-        <bean parent="MaintainableFieldDefinition" p:name="delegationType" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="delegationTypeCode" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.name" p:required="false" p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.description" p:required="true" p:noLookup="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="delegationRuleBaseValues.fromDateValue" p:required="false" p:noLookup="true"/>

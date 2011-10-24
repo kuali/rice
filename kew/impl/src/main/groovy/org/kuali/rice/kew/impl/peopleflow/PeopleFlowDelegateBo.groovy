@@ -82,6 +82,10 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
         return DelegationType.fromCode(delegationTypeCode)
     }
 
+    void setDelegationType(DelegationType delegationType) {
+        this.delegationTypeCode = delegationType.getCode()
+    }
+
     public static PeopleFlowDelegate to(PeopleFlowDelegateBo delegateBo) {
         if (delegateBo == null) {
             return null
@@ -100,7 +104,9 @@ class PeopleFlowDelegateBo extends PersistableBusinessObjectBase implements Peop
         if (delegate.getActionRequestPolicy() != null) {
             delegateBo.setActionRequestPolicyCode(delegate.getActionRequestPolicy().getCode())
         }
-        delegateBo.setDelegationTypeCode(delegate.getDelegationType().getCode())
+        if (delegate.getDelegationType() != null) {
+            delegateBo.setDelegationTypeCode(delegate.getDelegationType().getCode())
+        }
         delegateBo.setResponsibilityId(delegate.getResponsibilityId())
         return delegateBo
     }

@@ -39,7 +39,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 /**
  * A model bean representing the delegation of a rule from a responsibility to
  * another rule.  Specifies the delegation type which can be either
- * {@link KEWConstants#DELEGATION_PRIMARY} or {@link KEWConstants#DELEGATION_SECONDARY}.
+ * {@link {@link DelegationType#PRIMARY} or {@link DelegationType#SECONDARY}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -62,7 +62,7 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
     @Column(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
 	private String delegateRuleId;
     @Column(name="DLGN_TYP")
-    private String delegationType = DelegationType.PRIMARY.getCode();
+    private String delegationTypeCode = DelegationType.PRIMARY.getCode();
 
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="DLGN_RULE_BASE_VAL_ID")
@@ -81,8 +81,8 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
         }
         clone.setDelegationRule(delegationRule);
         clone.setDelegateRuleId(delegationRule.getId());
-        if (delegationType != null) {
-            clone.setDelegationType(new String(delegationType));
+        if (delegationTypeCode != null) {
+            clone.setDelegationType(DelegationType.fromCode(delegationTypeCode));
         }
         return clone;
     }
@@ -105,12 +105,30 @@ public class RuleDelegationBo extends PersistableBusinessObjectBase implements R
     public void setDelegationRule(RuleBaseValues delegationRule) {
         this.delegationRule = delegationRule;
     }
-    @Override
-    public String getDelegationType() {
-        return delegationType;
+
+    /**
+     * Setter for type code preserved for DD
+     * @param delegationTypeCode the DelegationType code
+     */
+    public void setDelegationTypeCode(String delegationTypeCode) {
+        DelegationType.fromCode(delegationTypeCode);
+        this.delegationTypeCode = delegationTypeCode;
     }
-    public void setDelegationType(String delegationType) {
-        this.delegationType = delegationType;
+
+    /**
+     * Getter for type code preserved for DD
+     * @return the DelegationType code
+     */
+    public String getDelegationTypeCode() {
+        return delegationTypeCode;
+    }
+
+    @Override
+    public DelegationType getDelegationType() {
+        return DelegationType.fromCode(delegationTypeCode);
+    }
+    public void setDelegationType(DelegationType delegationType) {
+        this.delegationTypeCode = delegationType.getCode();
     }
     public String getRuleDelegationId() {
         return ruleDelegationId;

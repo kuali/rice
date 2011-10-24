@@ -69,7 +69,7 @@ public class RuleDelegationXmlExporter implements XmlExporter {
     private void exportRuleDelegation(Element parent, RuleDelegationBo ruleDelegation) {
     	Element ruleDelegationElement = renderer.renderElement(parent, RULE_DELEGATION);
     	exportParentResponsibility(ruleDelegationElement, ruleDelegation);
-    	renderer.renderTextElement(ruleDelegationElement, DELEGATION_TYPE, ruleDelegation.getDelegationType());
+    	renderer.renderTextElement(ruleDelegationElement, DELEGATION_TYPE, ruleDelegation.getDelegationType().getCode());
     	ruleExporter.exportRule(ruleDelegationElement, ruleDelegation.getDelegationRule());
     }
     

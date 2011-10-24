@@ -54,12 +54,19 @@ public enum DelegationType implements Coded {
         if (code == null) {
             return null;
         }
+        DelegationType value = parseCode(code);
+        if (value != null) {
+            return value;
+        }
+        throw new IllegalArgumentException("Failed to locate the DelegationType with the given code: " + code);
+    }
+
+    public static DelegationType parseCode(String code) {
         for (DelegationType value : values()) {
             if (value.code.equals(code)) {
                 return value;
             }
         }
-        throw new IllegalArgumentException("Failed to locate the DelegationType with the given code: " + code);
+        return null;
     }
-
 }

@@ -44,7 +44,7 @@ public class RoleMembershipTest {
         DelegateType.Builder builder =  DelegateType.Builder.create(
             DelegateTypeTest.ROLE_ID,
             DelegateTypeTest.DELEGATION_ID,
-            DelegateTypeTest.DELEGATION_TYPE.code,
+            DelegateTypeTest.DELEGATION_TYPE,
             DelegateTypeTest.DELEGATE_MEMBERS)
         builder.kimTypeId = DelegateTypeTest.KIM_TYPE_ID
         builder.active = true

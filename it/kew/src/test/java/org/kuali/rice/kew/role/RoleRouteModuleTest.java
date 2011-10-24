@@ -569,7 +569,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         DelegateTypeBo delegate = new DelegateTypeBo();
 
         delegate.setDelegationId(id);
-        delegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
+        delegate.setDelegationType(DelegationType.PRIMARY);
         delegate.setActive(true);
         delegate.setKimTypeId("" + kimDlgnTypeId);
         /*

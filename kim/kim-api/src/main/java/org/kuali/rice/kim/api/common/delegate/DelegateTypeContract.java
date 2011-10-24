@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.api.common.delegate;
 
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.kew.api.action.DelegationType;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public interface DelegateTypeContract extends Inactivatable {
      */
     String getKimTypeId();
 
-    String getDelegationTypeCode();
+    DelegationType getDelegationType();
 
     List<? extends DelegateMemberContract> getMembers();
 }

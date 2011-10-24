@@ -16,12 +16,14 @@
  */
 package org.kuali.rice.kew.routemodule;
 
+import org.kuali.rice.kew.api.action.DelegationType;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TestDelegation {
 
-    private String type;
+    private DelegationType type;
     private TestResponsibility responsibility;
     
     public TestResponsibility getResponsibility() {
@@ -32,11 +34,11 @@ public class TestDelegation {
         this.responsibility = responsibility;
     }
     
-    public String getType() {
+    public DelegationType getType() {
         return type;
     }
     
-    public void setType(String type) {
+    public void setType(DelegationType type) {
         this.type = type;
     }
     

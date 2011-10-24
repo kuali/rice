@@ -162,7 +162,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 	public RuleDelegationBo addNewDelegation() {
 		RuleDelegationBo ruleDelegation = new RuleDelegationBo();
 		ruleDelegation.setDelegationRule(new WebRuleBaseValues());
-		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
+		ruleDelegation.setDelegationType(DelegationType.PRIMARY);
 		ruleDelegation.getDelegationRule().setDelegateRule(Boolean.TRUE);
 		ruleDelegation.getDelegationRule().setDocTypeName(getRuleBaseValues().getDocTypeName());
 		getDelegationRules().add(ruleDelegation);

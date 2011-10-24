@@ -381,7 +381,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.toDateValue"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.forceAction"/>
 	              <bean parent="AttributeField" p:propertyName="delegationRuleBaseValues.active"/>
-	              <bean parent="AttributeField" p:propertyName="delegationType"/>
+	              <bean parent="AttributeField" p:propertyName="delegationTypeCode"/>
               </list>
             </property>
           </bean>

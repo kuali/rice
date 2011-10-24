@@ -217,7 +217,7 @@ public class BeanConverterTester extends KEWTestCase {
         String docTypeLabel = "Label Me";
         String docTitle = "Title me";
         String responsibilityId = "35";
-        String delegationType = DelegationType.PRIMARY.getCode();
+        DelegationType delegationType = DelegationType.PRIMARY;
 
         // create fake action item
         ActionItem actionItem = new ActionItem();

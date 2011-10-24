@@ -12,6 +12,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = RuleDelegation.Constants.ROOT_ELEMENT_NAME)
@@ -44,13 +45,13 @@ public final class RuleDelegation
     }
 
     private RuleDelegation(Builder builder) {
-        this.delegationType = builder.getDelegationType();
+        this.delegationType = builder.getDelegationType() != null ? builder.getDelegationType().getCode() : null;
         this.delegationRule = builder.getDelegationRule() == null ? null : builder.getDelegationRule().build();
     }
 
     @Override
-    public String getDelegationType() {
-        return this.delegationType;
+    public DelegationType getDelegationType() {
+        return DelegationType.fromCode(this.delegationType);
     }
 
     @Override
@@ -67,7 +68,7 @@ public final class RuleDelegation
         implements Serializable, ModelBuilder, RuleDelegationContract
     {
 
-        private String delegationType;
+        private DelegationType delegationType;
         private Rule.Builder delegationRule;
 
         private Builder() {
@@ -94,7 +95,7 @@ public final class RuleDelegation
         }
 
         @Override
-        public String getDelegationType() {
+        public DelegationType getDelegationType() {
             return this.delegationType;
         }
 
@@ -103,7 +104,7 @@ public final class RuleDelegation
             return this.delegationRule;
         }
 
-        public void setDelegationType(String delegationType) {
+        public void setDelegationType(DelegationType delegationType) {
             this.delegationType = delegationType;
         }
 

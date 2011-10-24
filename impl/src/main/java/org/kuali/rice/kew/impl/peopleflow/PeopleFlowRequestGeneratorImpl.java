@@ -65,7 +65,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             if (CollectionUtils.isNotEmpty(member.getDelegates())) {
                 for (PeopleFlowDelegate delegate : member.getDelegates()) {
                     context.getActionRequestFactory().addDelegationRequest(actionRequest, toRecipient(delegate),
-                            delegate.getResponsibilityId(), Boolean.TRUE, delegate.getDelegationType().getCode(), "", null);
+                            delegate.getResponsibilityId(), Boolean.TRUE, delegate.getDelegationType(), "", null);
                 }
             }
         }

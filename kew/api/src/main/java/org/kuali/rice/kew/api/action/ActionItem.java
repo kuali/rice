@@ -127,7 +127,7 @@ public final class ActionItem
         this.roleName = builder.getRoleName();
         this.dateAssignedString = builder.getDateAssignedString();
         this.actionToTake = builder.getActionToTake();
-        this.delegationType = builder.getDelegationType();
+        this.delegationType = builder.getDelegationType() != null ? builder.getDelegationType().getCode() : null;
         this.actionItemIndex = builder.getActionItemIndex();
         this.groupId = builder.getGroupId();
         this.principalId = builder.getPrincipalId();
@@ -201,8 +201,8 @@ public final class ActionItem
     }
 
     @Override
-    public String getDelegationType() {
-        return this.delegationType;
+    public DelegationType getDelegationType() {
+        return DelegationType.fromCode(this.delegationType);
     }
 
     @Override
@@ -252,7 +252,7 @@ public final class ActionItem
         private String roleName;
         private String dateAssignedString;
         private String actionToTake;
-        private String delegationType;
+        private DelegationType delegationType;
         private Integer actionItemIndex;
         private String groupId;
         private String principalId;
@@ -371,7 +371,7 @@ public final class ActionItem
         }
 
         @Override
-        public String getDelegationType() {
+        public DelegationType getDelegationType() {
             return this.delegationType;
         }
 
@@ -479,7 +479,7 @@ public final class ActionItem
             this.actionToTake = actionToTake;
         }
 
-        public void setDelegationType(String delegationType) {
+        public void setDelegationType(DelegationType delegationType) {
             this.delegationType = delegationType;
         }
 

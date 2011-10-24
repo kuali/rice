@@ -185,7 +185,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
         // save a new rule delegation
         RuleDelegationBo ruleDelegation = new RuleDelegationBo();
         ruleDelegation.setResponsibilityId(originalResp.getResponsibilityId());
-        ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
+        ruleDelegation.setDelegationType(DelegationType.PRIMARY);
         RuleBaseValues rule = new RuleBaseValues();
         ruleDelegation.setDelegationRule(rule);
         rule.setDelegateRule(true);

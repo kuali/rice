@@ -67,6 +67,8 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 /**
@@ -104,7 +106,7 @@ public class ActionRequestValue implements Serializable {
 
     private static final String ACTION_CODE_RANK = "FKACB";//B is a hack for allowing blanket approves to count for approve and complete requests in findPreviousAction in ActionTakenService this is a hack and accounts for the -3 on compareActionCode
     private static final String RECIPIENT_TYPE_RANK = "RWU";
-    private static final String DELEGATION_TYPE_RANK = "SPN";
+    private static final List DELEGATION_TYPE_RANK = Arrays.asList(new Object[]{DelegationType.SECONDARY, DelegationType.PRIMARY, null});
 
     @Id
     @GeneratedValue(generator="KREW_ACTN_RQST_S")
@@ -663,13 +665,7 @@ public class ActionRequestValue implements Serializable {
         return type1Index.compareTo(type2Index);
     }
 
-    public static int compareDelegationType(String type1, String type2) {
-    	if (StringUtils.isEmpty(type1)) {
-    		type1 = "N";
-    	}
-    	if (StringUtils.isEmpty(type2)) {
-    		type2 = "N";
-    	}
+    public static int compareDelegationType(DelegationType type1, DelegationType type2) {
     	Integer type1Index = DELEGATION_TYPE_RANK.indexOf(type1);
         Integer type2Index = DELEGATION_TYPE_RANK.indexOf(type2);
         return type1Index.compareTo(type2Index);
@@ -734,12 +730,12 @@ public class ActionRequestValue implements Serializable {
         this.qualifiedRoleName = roleName;
     }
 
-    public String getDelegationType() {
-        return delegationType;
+    public DelegationType getDelegationType() {
+        return DelegationType.fromCode(delegationType);
     }
 
-    public void setDelegationType(String delegatePolicy) {
-        this.delegationType = delegatePolicy;
+    public void setDelegationType(DelegationType delegationPolicy) {
+        this.delegationType = delegationPolicy.getCode();
     }
 
     public String getRoleName() {
@@ -992,8 +988,8 @@ public class ActionRequestValue implements Serializable {
 		builder.setAnnotation(actionRequestBo.getAnnotation());
 		builder.setCurrent(actionRequestBo.getCurrentIndicator().booleanValue());
 		builder.setDateCreated(new DateTime(actionRequestBo.getCreateDate().getTime()));
-		if (!StringUtils.isBlank(actionRequestBo.getDelegationType())) {
-			builder.setDelegationType(DelegationType.fromCode(actionRequestBo.getDelegationType()));
+		if (actionRequestBo.getDelegationType() != null) {
+			builder.setDelegationType(actionRequestBo.getDelegationType());
 		}
 		builder.setForceAction(actionRequestBo.getForceAction().booleanValue());
 		builder.setGroupId(actionRequestBo.getGroupId());
@@ -1102,7 +1098,7 @@ public class ActionRequestValue implements Serializable {
         actionRequestBo.setCreateDate(new Timestamp(actionRequest.getDateCreated().getMillis()));
         actionRequestBo.setCurrentIndicator(actionRequest.isCurrent());
         if (actionRequest.getDelegationType() != null) {
-            actionRequestBo.setDelegationType(actionRequest.getDelegationType().getCode());
+            actionRequestBo.setDelegationType(actionRequest.getDelegationType());
         }
         //actionRequestBo.setDocVersion(actionRequest.?);
         actionRequestBo.setForceAction(actionRequest.isForceAction());

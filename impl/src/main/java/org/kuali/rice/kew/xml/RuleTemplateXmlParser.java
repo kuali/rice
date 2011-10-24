@@ -263,8 +263,9 @@ public class RuleTemplateXmlParser {
         boolean isDelegation = false;
 
         if (defaultsElement != null) {
-            String delegationType = defaultsElement.getChildText(DELEGATION_TYPE, RULE_TEMPLATE_NAMESPACE);
-            isDelegation = !org.apache.commons.lang.StringUtils.isEmpty(delegationType);
+            String delegationTypeCode = defaultsElement.getChildText(DELEGATION_TYPE, RULE_TEMPLATE_NAMESPACE);
+            DelegationType delegationType = null;
+            isDelegation = !org.apache.commons.lang.StringUtils.isEmpty(delegationTypeCode);
 
             String description = defaultsElement.getChildText(DESCRIPTION, RULE_TEMPLATE_NAMESPACE);
             
@@ -279,9 +280,12 @@ public class RuleTemplateXmlParser {
             Boolean forceAction = BooleanUtils.toBooleanObject(defaultsElement.getChildText(FORCE_ACTION, RULE_TEMPLATE_NAMESPACE));
             Boolean active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
 
-            if (isDelegation && !DelegationType.PRIMARY.getCode().equals(delegationType) && !DelegationType.SECONDARY.getCode().equals(delegationType)) {
-                throw new XmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
-                        + DelegationType.PRIMARY.getCode() + "," + DelegationType.SECONDARY.getCode());
+            if (isDelegation) {
+                delegationType = DelegationType.parseCode(delegationTypeCode);
+                if (delegationType == null) {
+                    throw new XmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
+                                            + DelegationType.PRIMARY.getCode() + "," + DelegationType.SECONDARY.getCode());
+                }
             }
     
             // create our "default rule" which encapsulates the defaults for the rule

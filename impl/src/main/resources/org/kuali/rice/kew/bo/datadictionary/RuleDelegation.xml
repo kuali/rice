@@ -40,7 +40,7 @@
         <ref bean="RuleDelegation-parentResponsibility-ruleResponsibilityType"/>
         <ref bean="RuleDelegation-parentResponsibility-actionRequest"/>
         <ref bean="RuleDelegation-responsibilityId"/>
-        <ref bean="RuleDelegation-delegationType"/>
+        <ref bean="RuleDelegation-delegationTypeCode"/>
         <ref bean="RuleDelegation-name"/>
         <ref bean="RuleDelegation-rulesBaseValueId"/>
         <ref bean="RuleDelegation-documentTypeName"/>
@@ -226,9 +226,9 @@
     <property name="label" value="Responsibility Id"/>
   </bean>
 
-  <bean id="RuleDelegation-delegationType" parent="RuleDelegation-delegationType-parentBean"/>
+  <bean id="RuleDelegation-delegationTypeCode" parent="RuleDelegation-delegationTypeCode-parentBean"/>
 
-  <bean id="RuleDelegation-delegationType-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="RuleDelegation-delegationTypeCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Delegation Type"/>
     <property name="maxLength" value="1"/>
     <property name="validationPattern">
@@ -237,7 +237,7 @@
     <property name="control">
       <bean parent="RadioControlDefinition" p:valuesFinderClass="org.kuali.rice.kew.rule.bo.DelegationTypeValuesFinder" p:includeKeyInLabel="true" p:keyAttribute="Both"/>
     </property>
-    <property name="name" value="delegationType"/>
+    <property name="name" value="delegationTypeCode"/>
     <property name="label" value="Delegation Type"/>
     <property name="formatterClass" value="org.kuali.rice.kns.web.format.DelegationTypeFormatter"/>
   </bean>
@@ -396,7 +396,7 @@
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.toDateValue" p:noInquiry="true"/>
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.forceAction" p:noInquiry="true"/>
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.active" p:noInquiry="true"/>
-              <bean parent="FieldDefinition" p:attributeName="delegationType"/>
+              <bean parent="FieldDefinition" p:attributeName="delegationTypeCode"/>
             </list>
           </property>
         </bean>
@@ -511,7 +511,7 @@
         <bean parent="FieldDefinition" p:noLookup="true" p:attributeName="delegationRuleBaseValues.personReviewerType"/>
         <bean parent="FieldDefinition" p:noLookup="true" p:attributeName="delegationRuleBaseValues.active"/>
         <bean parent="FieldDefinition" p:noLookup="true" p:attributeName="delegationRuleBaseValues.id"/>
-        <bean parent="FieldDefinition" p:attributeName="delegationType" p:defaultValue="E"/>
+        <bean parent="FieldDefinition" p:attributeName="delegationTypeCode" p:defaultValue="E"/>
       </list>
     </property>
     <property name="resultFields">
@@ -523,7 +523,7 @@
         <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.ruleTemplate.name"/>
         <bean parent="FieldDefinition" p:noInquiry="true" p:attributeName="delegationRuleBaseValues.active"/>
         <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.documentType.name"/>
-        <bean parent="FieldDefinition" p:attributeName="delegationType"/>
+        <bean parent="FieldDefinition" p:attributeName="delegationTypeCode"/>
       </list>
     </property>
     <property name="title" value="Delegate Rule Lookup"/>

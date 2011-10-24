@@ -173,12 +173,12 @@ public class RuleXmlParser {
     	}
     	String parentResponsibilityId = parseParentResponsibilityId(parentResponsibilityElement);
     	String delegationType = element.getChildText(DELEGATION_TYPE, element.getNamespace());
-        if (delegationType == null || !(delegationType.equals(DelegationType.PRIMARY.getCode()) || delegationType.equals(DelegationType.SECONDARY.getCode()))) {
+        if (delegationType == null || DelegationType.parseCode(delegationType) == null) {
             throw new XmlException("Invalid delegation type specified for delegate rule '" + delegationType + "'");
         }
         
         ruleDelegation.setResponsibilityId(parentResponsibilityId);
-        ruleDelegation.setDelegationType(delegationType);
+        ruleDelegation.setDelegationType(DelegationType.fromCode(delegationType));
         
         Element ruleElement = element.getChild(RULE, element.getNamespace());
         RuleBaseValues rule = parseRule(ruleElement);

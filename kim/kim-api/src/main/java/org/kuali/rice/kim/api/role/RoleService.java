@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -363,7 +364,7 @@ public interface RoleService {
     @WebResult(name = "delegateType")
     @Cacheable(value=DelegateType.Cache.NAME, key="'roleId=' + #p0 + '|' + 'code=' + #p1")
     DelegateType getDelegateTypeByRoleIdAndDelegateTypeCode(@WebParam(name = "roleId") String roleId,
-            @WebParam(name = "delegateTypeCode") String delegateTypeCode)  throws RiceIllegalArgumentException;
+            @WebParam(name = "delegateType") DelegationType delegateType)  throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "getDelegateTypeByDelegationId")
     @WebResult(name = "delegateType")

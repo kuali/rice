@@ -131,7 +131,7 @@ public final class RuleTestUtils {
     	RuleTemplateBo delegationTemplate = parentRule.getRuleTemplate();
 		RuleDelegationBo ruleDelegation = new RuleDelegationBo();
 		ruleDelegation.setResponsibilityId(parentResponsibility.getResponsibilityId());
-		ruleDelegation.setDelegationType(DelegationType.PRIMARY.getCode());
+		ruleDelegation.setDelegationType(DelegationType.PRIMARY);
 		RuleBaseValues rule = new RuleBaseValues();
 		ruleDelegation.setDelegationRule(rule);
 		rule.setDelegateRule(true);

@@ -9,6 +9,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -616,11 +617,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     @Override
-    public DelegateType getDelegateTypeByRoleIdAndDelegateTypeCode(String roleId, String delegationTypeCode) throws RiceIllegalStateException {
+    public DelegateType getDelegateTypeByRoleIdAndDelegateTypeCode(String roleId, DelegationType delegationType) throws RiceIllegalStateException {
         incomingParamCheck(roleId, "roleId");
-        incomingParamCheck(delegationTypeCode, "delegationTypeCode");
+        incomingParamCheck(delegationType, "delegationType");
 
-        DelegateTypeBo delegateBo = getDelegationOfType(roleId, delegationTypeCode);
+        DelegateTypeBo delegateBo = getDelegationOfType(roleId, delegationType);
         return DelegateTypeBo.to(delegateBo);
     }
 

@@ -44,6 +44,7 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.action.ActionItemContract;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
@@ -211,8 +212,8 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
         return delegatorGroupId;
     }
 
-    public String getDelegationType() {
-        return delegationType;
+    public DelegationType getDelegationType() {
+        return DelegationType.fromCode(delegationType);
     }
 
     public String getRequestLabel() {
@@ -383,8 +384,8 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
         this.customActions = customActions;
     }
     
-    public void setDelegationType(String delegationType) {
-        this.delegationType = delegationType;
+    public void setDelegationType(DelegationType delegationType) {
+        this.delegationType = delegationType.getCode();
     }
 
 

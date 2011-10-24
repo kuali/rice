@@ -304,9 +304,9 @@ abstract class RoleServiceBase {
         return getBusinessObjectService().findBySinglePrimaryKey(RoleBo.class, roleId);
     }
 
-    protected DelegateTypeBo getDelegationOfType(String roleId, String delegationTypeCode) {
+    protected DelegateTypeBo getDelegationOfType(String roleId, DelegationType delegationType) {
         List<DelegateTypeBo> roleDelegates = getRoleDelegations(roleId);
-        if (isDelegationPrimary(delegationTypeCode)) {
+        if (isDelegationPrimary(delegationType)) {
             return getPrimaryDelegation(roleId, roleDelegates);
         } else {
             return getSecondaryDelegation(roleId, roleDelegates);
@@ -317,14 +317,14 @@ abstract class RoleServiceBase {
         DelegateTypeBo secondaryDelegate = null;
         RoleBo roleBo = getRoleBo(roleId);
         for (DelegateTypeBo delegate : roleDelegates) {
-            if (isDelegationSecondary(delegate.getDelegationTypeCode())) {
+            if (isDelegationSecondary(delegate.getDelegationType())) {
                 secondaryDelegate = delegate;
             }
         }
         if (secondaryDelegate == null) {
             secondaryDelegate = new DelegateTypeBo();
             secondaryDelegate.setRoleId(roleId);
-            secondaryDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
+            secondaryDelegate.setDelegationType(DelegationType.PRIMARY);
             secondaryDelegate.setKimTypeId(roleBo.getKimTypeId());
         }
         return secondaryDelegate;
@@ -334,14 +334,14 @@ abstract class RoleServiceBase {
         DelegateTypeBo primaryDelegate = null;
         RoleBo roleBo = getRoleBo(roleId);
         for (DelegateTypeBo delegate : roleDelegates) {
-            if (isDelegationPrimary(delegate.getDelegationTypeCode())) {
+            if (isDelegationPrimary(delegate.getDelegationType())) {
                 primaryDelegate = delegate;
             }
         }
         if (primaryDelegate == null) {
             primaryDelegate = new DelegateTypeBo();
             primaryDelegate.setRoleId(roleId);
-            primaryDelegate.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
+            primaryDelegate.setDelegationType(DelegationType.PRIMARY);
             primaryDelegate.setKimTypeId(roleBo.getKimTypeId());
         }
         return primaryDelegate;
@@ -356,12 +356,12 @@ abstract class RoleServiceBase {
         return null;
     }
 
-    protected boolean isDelegationPrimary(String delegationTypeCode) {
-        return DelegationType.PRIMARY.getCode().equals(delegationTypeCode);
+    protected boolean isDelegationPrimary(DelegationType delegationType) {
+        return DelegationType.PRIMARY.equals(delegationType);
     }
 
-    protected boolean isDelegationSecondary(String delegationTypeCode) {
-        return DelegationType.PRIMARY.getCode().equals(delegationTypeCode);
+    protected boolean isDelegationSecondary(DelegationType delegationType) {
+        return DelegationType.SECONDARY.equals(delegationType);
     }
 
 

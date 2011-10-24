@@ -16,7 +16,7 @@ public interface ActionItemContract {
     String getRoleName();
     String getDateAssignedString();
     String getActionToTake();
-    String getDelegationType();
+    DelegationType getDelegationType();
     Integer getActionItemIndex();
     String getGroupId();
     String getPrincipalId();

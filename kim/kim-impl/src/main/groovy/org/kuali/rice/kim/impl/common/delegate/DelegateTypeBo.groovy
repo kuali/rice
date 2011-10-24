@@ -15,6 +15,7 @@ import org.kuali.rice.kim.api.common.delegate.DelegateType
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.springframework.util.AutoPopulatingList
+import org.kuali.rice.kew.api.action.DelegationType
 
 @Entity
 @Table(name = "KRIM_DLGN_T")
@@ -43,7 +44,13 @@ public class DelegateTypeBo extends PersistableBusinessObjectBase implements Del
     @JoinColumn(name = "DLGN_ID", insertable = false, updatable = false)
     List<DelegateMemberBo> members = new AutoPopulatingList(DelegateMemberBo.class);
 
+    public void setDelegationType(DelegationType type) {
+        this.delegationTypeCode = type.getCode();
+    }
 
+    public DelegationType getDelegationType() {
+        return DelegationType.fromCode(this.delegationTypeCode);
+    }
 
     public static DelegateType to(DelegateTypeBo bo) {
         return DelegateType.Builder.create(bo).build()

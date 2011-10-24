@@ -93,7 +93,7 @@ public class RuleTemplateXmlExporter implements XmlExporter {
             RuleDelegationBo defaultDelegationValues = getDefaultDelegationValues(defaultRuleValues);
             Element defaultsElement = renderer.renderElement(parent, RULE_DEFAULTS);
             if (defaultDelegationValues != null) {
-                renderer.renderTextElement(defaultsElement, DELEGATION_TYPE, defaultDelegationValues.getDelegationType());
+                renderer.renderTextElement(defaultsElement, DELEGATION_TYPE, defaultDelegationValues.getDelegationType().getCode());
             }
             renderer.renderTextElement(defaultsElement, DESCRIPTION, defaultRuleValues.getDescription());
             if (defaultRuleValues.getFromDateValue() != null) {

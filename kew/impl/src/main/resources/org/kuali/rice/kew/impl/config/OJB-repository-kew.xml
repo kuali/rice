@@ -603,7 +603,7 @@
   	<field-descriptor column="DLGN_RULE_ID" name="ruleDelegationId" jdbc-type="VARCHAR" primarykey="true" sequence-name="KREW_RTE_TMPL_S" autoincrement="true"/>
   	<field-descriptor column="RSP_ID" name="responsibilityId" jdbc-type="VARCHAR"/>
   	<field-descriptor column="DLGN_RULE_BASE_VAL_ID" name="delegateRuleId" jdbc-type="VARCHAR" />
-  	<field-descriptor column="DLGN_TYP" name="delegationType" jdbc-type="VARCHAR" />
+  	<field-descriptor column="DLGN_TYP" name="delegationTypeCode" jdbc-type="VARCHAR" />
   	<field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor column="VER_NBR" name="versionNumber" jdbc-type="BIGINT" locking="true" />
 

@@ -26,6 +26,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -486,7 +487,7 @@ public class ActionRequestFactory {
     	return annotation.toString();
     }
 
-    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, String responsibilityId, Boolean forceAction, String delegationType, String description, String ruleId) {
+    public ActionRequestValue addDelegationRoleRequest(ActionRequestValue parentRequest, String approvePolicy, RoleRecipient role, String responsibilityId, Boolean forceAction, DelegationType delegationType, String description, String ruleId) {
     	Recipient parentRecipient = parentRequest.getRecipient();
     	if (parentRecipient instanceof RoleRecipient) {
     		throw new WorkflowRuntimeException("Cannot delegate on Role Request.  It must be a request to a person or workgroup, although that request may be in a role");
@@ -526,7 +527,7 @@ public class ActionRequestFactory {
     	return delegationRoleRequest;
     }
 
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, String responsibilityId, Boolean forceAction, String delegationType, String annotation, String ruleId) {
+    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, String responsibilityId, Boolean forceAction, DelegationType delegationType, String annotation, String ruleId) {
     	if (! relatedToRoot(parentRequest)) {
     		throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
     	}
@@ -612,17 +613,17 @@ public class ActionRequestFactory {
      private void generateKimRoleDelegationRequests(List<DelegateType> delegates, ActionRequestValue parentRequest) {
     	for (DelegateType delegate : delegates) {
     		Recipient recipient;
-    		boolean isPrincipal = MemberType.PRINCIPAL.getCode().equals(delegate.getDelegationTypeCode());
-            boolean isGroup = MemberType.GROUP.getCode().equals(delegate.getDelegationTypeCode());
+    		boolean isPrincipal = MemberType.PRINCIPAL.equals(delegate.getDelegationType());
+            boolean isGroup = MemberType.GROUP.equals(delegate.getDelegationType());
     		if (isPrincipal) {
     			recipient = new KimPrincipalRecipient(delegate.getDelegationId());
     		} else if (isGroup) {
     			recipient = new KimGroupRecipient(delegate.getDelegationId());
     		} else {
-    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getDelegationTypeCode() + "'");
+    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getDelegationType() + "'");
     		}
     		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
-    		addDelegationRequest(parentRequest, recipient, delegate.getDelegationId(), parentRequest.getForceAction(), delegate.getDelegationTypeCode(), delegationAnnotation, null);
+    		addDelegationRequest(parentRequest, recipient, delegate.getDelegationId(), parentRequest.getForceAction(), delegate.getDelegationType(), delegationAnnotation, null);
     	}
     }
 

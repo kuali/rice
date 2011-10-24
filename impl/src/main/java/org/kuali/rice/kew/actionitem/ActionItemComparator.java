@@ -36,7 +36,7 @@ public class ActionItemComparator implements Comparator {
 		if (actionCodeValue != 0) {
 			return actionCodeValue;
 		}
-		int recipientTypeValue = ActionRequestValue.compareRecipientType(getRecipientTypeCode(actionItem1), getRecipientTypeCode(actionItem1));
+		int recipientTypeValue = ActionRequestValue.compareRecipientType(getRecipientTypeCode(actionItem1), getRecipientTypeCode(actionItem2));
 		if (recipientTypeValue != 0) {
 			return recipientTypeValue;
 		}

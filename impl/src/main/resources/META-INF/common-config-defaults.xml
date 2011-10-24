@@ -548,4 +548,8 @@
       enQuickLinksService
       enDocumentLinkService
   </param>
+
+  <param name="rice.krad.componentPublishing.enabled" override="false">true</param>
+  <param name="rice.krad.componentPublishing.delay" override="false">15000</param>
+
 </config>

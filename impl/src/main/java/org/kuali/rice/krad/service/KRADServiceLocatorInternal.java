@@ -74,6 +74,12 @@ public class KRADServiceLocatorInternal {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
     }
 
+    public static final String DATA_DICTIONARY_COMPONENT_PUBLISHER_SERVICE = "dataDictionaryComponentPublisherService";
+
+    public static DataDictionaryComponentPublisherService getDataDictionaryComponentPublisherService() {
+        return getService(DATA_DICTIONARY_COMPONENT_PUBLISHER_SERVICE);
+    }
+
     
     public static final String DOCUMENT_DAO = "documentDao";
     

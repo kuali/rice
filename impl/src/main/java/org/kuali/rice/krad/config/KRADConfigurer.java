@@ -21,12 +21,17 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class KRADConfigurer extends ModuleConfigurer {
 
@@ -66,6 +71,7 @@ public class KRADConfigurer extends ModuleConfigurer {
     @Override
     public void doAdditionalContextStartedLogic() {
         loadDataDictionary();
+        publishDataDictionaryComponents();
     }
 
     /**
@@ -74,7 +80,7 @@ public class KRADConfigurer extends ModuleConfigurer {
      *
      * Also initializes the DateTimeService
      */
-    private void loadDataDictionary() {
+    protected void loadDataDictionary() {
         if (isLoadDataDictionary()) {
             LOG.info("KRAD Configurer - Loading DD");
             DataDictionaryService dds = KRADServiceLocatorWeb.getDataDictionaryService();
@@ -94,10 +100,32 @@ public class KRADConfigurer extends ModuleConfigurer {
         }
     }
 
+    protected void publishDataDictionaryComponents() {
+        if (isComponentPublishingEnabled()) {
+            long delay = getComponentPublishingDelay();
+            LOG.info("Publishing of Data Dictionary components is enabled, scheduling publish after " + delay + " millisecond delay");
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            try {
+                scheduler.schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        long s = System.currentTimeMillis();
+                        LOG.info("Executing scheduled Data Dictionary component publishing...");
+                        KRADServiceLocatorInternal.getDataDictionaryComponentPublisherService().publishAllComponents();
+                        long e = System.currentTimeMillis();
+                        LOG.info("... finished scheduled execution of Data Dictionary component publishing.  Took " + (e-s) + " milliseconds");
+                    }
+                }, delay, TimeUnit.MILLISECONDS);
+            } finally {
+                scheduler.shutdown();
+            }
+        }
+    }
+
     /**
      * Returns true - KNS UI should always be included.
      *
-     * @see org.kuali.rice.core.api.config.ModuleConfigurer#shouldRenderWebInterface()
+     * @see org.kuali.rice.core.impl.config.module.ModuleConfigurer#shouldRenderWebInterface()
      */
     @Override
     public boolean shouldRenderWebInterface() {
@@ -105,19 +133,24 @@ public class KRADConfigurer extends ModuleConfigurer {
     }
 
     public boolean isLoadDataDictionary() {
-        return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("load.data.dictionary"))
-                .booleanValue();
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty("load.data.dictionary", true);
     }
 
     public boolean isValidateDataDictionary() {
-        return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("validate.data.dictionary"))
-                .booleanValue();
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty("validate.data.dictionary", false);
     }
 
     public boolean isValidateDataDictionaryEboReferences() {
-        return Boolean
-                .valueOf(ConfigContext.getCurrentContextConfig().getProperty("validate.data.dictionary.ebo.references"))
-                .booleanValue();
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty("validate.data.dictionary.ebo.references",
+                false);
+    }
+
+    public boolean isComponentPublishingEnabled() {
+        return ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.COMPONENT_PUBLISHING_ENABLED, false);
+    }
+
+    public long getComponentPublishingDelay() {
+        return ConfigContext.getCurrentContextConfig().getNumericProperty(KRADConstants.Config.COMPONENT_PUBLISHING_DELAY, 0);
     }
 
     /**

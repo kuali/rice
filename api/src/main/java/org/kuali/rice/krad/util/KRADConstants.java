@@ -551,6 +551,8 @@ public final class KRADConstants {
     public static final class Config {
     	public static final String APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK = "rice.krad.illegalBusinessObjectsForSave.applyCheck";
     	public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.krad.illegalBusinessObjectsForSave";
+        public static final String COMPONENT_PUBLISHING_ENABLED = "rice.krad.componentPublishing.enabled";
+        public static final String COMPONENT_PUBLISHING_DELAY = "rice.krad.componentPublishing.delay";
     	
     	private Config() {
     		throw new UnsupportedOperationException("do not call");

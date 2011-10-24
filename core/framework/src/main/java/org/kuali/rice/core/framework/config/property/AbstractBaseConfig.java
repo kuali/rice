@@ -79,8 +79,33 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
         return new Boolean(getProperty(org.kuali.rice.core.api.config.property.Config.BATCH_MODE));
     }
 
+    @Override
     public boolean getBooleanProperty(String key, boolean defaultValue) {
-        return Truth.strToBooleanIgnoreCase(getProperty(key), defaultValue);
+        return Truth.strToBooleanIgnoreCase(getProperty(key), defaultValue).booleanValue();
+    }
+
+    @Override
+    public Boolean getBooleanProperty(String key) {
+        return Truth.strToBooleanIgnoreCase(getProperty(key));
+    }
+
+    @Override
+    public long getNumericProperty(String key, long defaultValue) {
+        Long propertyValue = getNumericProperty(key);
+        if (propertyValue == null) {
+            return defaultValue;
+        } else {
+            return propertyValue.longValue();
+        }
+    }
+
+    @Override
+    public Long getNumericProperty(String key) {
+        String propertyValue = getProperty(key);
+        if (StringUtils.isBlank(propertyValue)) {
+            return null;
+        }
+        return new Long(propertyValue);
     }
 
     public String getClientWSDLFullPathAndFileName() {

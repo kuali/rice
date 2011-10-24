@@ -191,23 +191,6 @@ public interface Config {
 
 	public String getWeeklyEmailFirstDeliveryDate();
 
-	/**
-	 * Returns properties explicitly configured in this Config
-	 *
-	 * @return properties explicitly configured in this Config
-	 */
-	public Properties getProperties();
-
-	public String getProperty(String key);
-	
-	public boolean getBooleanProperty(String key, boolean defaultValue);
-	
-	public Map<String, String> getPropertiesWithPrefix(String prefix, boolean stripPrefix);
-	
-	public Map<String, Object> getObjects();
-
-	public Object getObject(String key);
-
 	public String getBaseWebServiceURL();
 
 	public String getBaseWebServiceWsdlPath();
@@ -290,6 +273,29 @@ public interface Config {
      * Returns whether this Config object defines a production environment
      */
     public boolean isProductionEnvironment();
+
+    /**
+	 * Returns properties explicitly configured in this Config
+	 *
+	 * @return properties explicitly configured in this Config
+	 */
+	public Properties getProperties();
+
+	public String getProperty(String key);
+
+	public boolean getBooleanProperty(String key, boolean defaultValue);
+
+    public Boolean getBooleanProperty(String key);
+
+    public long getNumericProperty(String key, long defaultValue);
+
+    public Long getNumericProperty(String key);
+
+	public Map<String, String> getPropertiesWithPrefix(String prefix, boolean stripPrefix);
+
+	public Map<String, Object> getObjects();
+
+	public Object getObject(String key);
 
 	/**
 	 * 

@@ -1270,6 +1270,11 @@
 
   <bean id="dataDictionaryRemoteFieldService" class="org.kuali.rice.krad.service.impl.DataDictionaryRemoteFieldServiceImpl"/>
 
-  <bean id="dataDictionaryComponentPublisherService" class="org.kuali.rice.krad.service.impl.DataDictionaryComponentPublisherServiceImpl"/>
+  <bean id="dataDictionaryComponentPublisherService" class="org.kuali.rice.krad.service.impl.DataDictionaryComponentPublisherServiceImpl">
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="kualiModuleService" ref="kualiModuleService"/>
+    <property name="componentService" ref="componentService"/>
+    <property name="applicationId" value="${application.id}"/>
+  </bean>
   
 </beans>

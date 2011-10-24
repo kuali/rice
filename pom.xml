@@ -44,6 +44,7 @@
 
   <properties>
     <maven.enforcer.skip>false</maven.enforcer.skip>
+    <maven.enforcer.phase>validate</maven.enforcer.phase>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>

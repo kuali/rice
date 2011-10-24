@@ -43,6 +43,7 @@
   </ciManagement>
 
   <properties>
+    <maven.enforcer.skip>false</maven.enforcer.skip>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
@@ -272,6 +273,7 @@
                 <goal>enforce</goal>
               </goals>
               <configuration>
+                <skip>${maven.enforcer.skip}</skip>
                 <rules>
                   <requireJavaVersion>
                     <version>1.6</version>

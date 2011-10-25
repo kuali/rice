@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Reference implementation of {@code DocumentLookupCriteriaTranslator}.
+ * Reference implementation of {@code DocumentSearchCriteriaTranslator}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -94,7 +94,7 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
 
                 }
             } catch (Exception e) {
-                throw new IllegalStateException("Failed to set document lookup criteria field: " + field.getKey(), e);
+                throw new IllegalStateException("Failed to set document search criteria field: " + field.getKey(), e);
             }
         }
 

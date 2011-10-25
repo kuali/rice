@@ -80,8 +80,6 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
         return components;
     }
 
-
-
 	protected Component deriveComponentFromClass(Class<?> componentSourceClass) {
         String componentCode = getKualiModuleService().getComponentCode(componentSourceClass);
         String componentName = deriveComponentName(componentSourceClass);

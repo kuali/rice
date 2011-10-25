@@ -69,6 +69,42 @@
 							<goal>java2ws</goal>
 						</goals>
 					</execution>
+          <execution>
+						<id>workflowRuleAttributeHandlerService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/WorkflowRuleAttributeHandlerService.wsdl</outputFile>
+							<serviceName>WorkflowRuleAttributeHandlerService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
+						<id>actionListCustomizationHandlerService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/ActionListCustomizationHandlerService.wsdl</outputFile>
+							<serviceName>ActionListCustomizationHandlerService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
+						<id>peopleFlowTypeService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.kew.peopleflow.PeopleFlowTypeService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/PeopleFlowTypeService.wsdl</outputFile>
+							<serviceName>PeopleFlowTypeService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
         </executions>
       </plugin>
     </plugins>

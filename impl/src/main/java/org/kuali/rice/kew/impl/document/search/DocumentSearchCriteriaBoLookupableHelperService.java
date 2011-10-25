@@ -215,7 +215,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         List<DocumentSearchCriteriaBo> searchResults = new ArrayList<DocumentSearchCriteriaBo>();
         for (DocumentSearchResult searchResult : lookupResults) {
             DocumentSearchCriteriaBo result = new DocumentSearchCriteriaBo();
-            result.populateFromDocumentLookupResult(searchResult);
+            result.populateFromDocumentSearchResult(searchResult);
             searchResults.add(result);
         }
         return searchResults;

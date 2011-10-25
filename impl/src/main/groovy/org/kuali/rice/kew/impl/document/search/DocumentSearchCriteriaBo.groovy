@@ -93,7 +93,7 @@ class DocumentSearchCriteriaBo implements BusinessObject {
         return "<img alt=\"Route Log for Document\" src=\"images/my_route_log.gif\"/>";
     }
 
-    void populateFromDocumentLookupResult(DocumentSearchResult result) {
+    void populateFromDocumentSearchResult(DocumentSearchResult result) {
         Document document = result.document
         documentTypeName = document.documentTypeName
         documentId = document.documentId

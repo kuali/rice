@@ -78,7 +78,7 @@ class DocSearchSavingTest {
 
     @Test(expected=IllegalArgumentException)
     void testIllegalArgument() {
-        docSearchService.saveSearch(null, create())
+        docSearchService.saveSearch(null, DocumentSearchCriteriaTest.create())
     }
 
     @Test
@@ -192,7 +192,7 @@ class DocSearchSavingTest {
     }
 
     protected DocumentSearchCriteria saveSearch(String princ, String name = null) {
-        def c = create(name)
+        def c = DocumentSearchCriteriaTest.create(name)
         docSearchService.saveSearch(princ, c)
         return c
     }

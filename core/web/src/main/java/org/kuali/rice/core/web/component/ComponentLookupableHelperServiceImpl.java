@@ -15,47 +15,40 @@
  */
 package org.kuali.rice.core.web.component;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.impl.component.DerivedComponentBo;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.LookupUtils;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
+    private static final long serialVersionUID = -3978422770535345525L;
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ComponentLookupableHelperServiceImpl.class);
+    
     private static final String ACTIVE = "active";
     private static final String CODE = "code";
     private static final String NAMESPACE_CODE = "namespaceCode";
     private static final String NAME = "name";
-    private ParameterService parameterService;
 
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String, String> fieldValues) {
 
         List<BusinessObject> baseLookup = (List<BusinessObject>) super.getSearchResults(fieldValues);
-
-        // all step beans
-        // all BO beans
-        // all trans doc beans
-
-        List<Component> components;
-        try {
-        	components = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
-        }
-        catch (DataDictionaryException ex) {
-            throw new RuntimeException("Problem parsing data dictionary during full load required for lookup to function: " + ex.getMessage(), ex);
-        }
 
         String activeCheck = fieldValues.get(ACTIVE);
         if (activeCheck == null) {
@@ -97,24 +90,34 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
                     LOG.error("Unable to parse name pattern, ignoring.", ex);
                 }
             }
-            for (Component pdt : components) {
-                boolean includeType = true;
-                if (detailTypeRegex != null) {
-                    includeType = detailTypeRegex.matcher(pdt.getCode().toUpperCase()).matches();
-                }
-                if (includeType && namespaceRegex != null) {
-                    includeType = namespaceRegex.matcher(pdt.getNamespaceCode().toUpperCase()).matches();
-                }
-                if (includeType && nameRegex != null) {
-                    includeType = nameRegex.matcher(pdt.getName().toUpperCase()).matches();
-                }
-                if (includeType) {
-                    if (totalCount < maxResultsCount) {
-                        baseLookup.add(ComponentBo.from(pdt));
+
+            // now search for derived components
+            Map<String, Object> derivedComponentCriteria = new HashMap<String, Object>();
+            if (fieldValues.containsKey(NAMESPACE_CODE) && StringUtils.isNotBlank(fieldValues.get(NAMESPACE_CODE))) {
+                derivedComponentCriteria.put(NAMESPACE_CODE, fieldValues.get(NAMESPACE_CODE));
+            }
+            if (fieldValues.containsKey(CODE) && StringUtils.isNotBlank(fieldValues.get(CODE))) {
+                derivedComponentCriteria.put(CODE, fieldValues.get(CODE));
+            }
+            if (fieldValues.containsKey(NAME) && StringUtils.isNotBlank(fieldValues.get(NAME))) {
+                derivedComponentCriteria.put(NAME, fieldValues.get(NAME));
+            }
+            Collection<DerivedComponentBo> derivedComponentBos = null;
+            if (derivedComponentCriteria.isEmpty()) {
+                derivedComponentBos = KRADServiceLocator.getBusinessObjectService().findAll(DerivedComponentBo.class);
+            } else {
+                derivedComponentBos = KRADServiceLocator.getBusinessObjectService().findMatching(DerivedComponentBo.class, derivedComponentCriteria);
+            }
+            if (CollectionUtils.isNotEmpty(derivedComponentBos)) {
+                for (DerivedComponentBo derivedComponentBo : derivedComponentBos) {
+                    if (totalCount++ < maxResultsCount) {
+                        baseLookup.add(DerivedComponentBo.toComponentBo(derivedComponentBo));
+                    } else {
+                        break;
                     }
-                    totalCount++;
                 }
             }
+
             if (totalCount > maxResultsCount) {
                 ((CollectionIncomplete) baseLookup).setActualSizeIfTruncated(totalCount);
             }
@@ -128,8 +131,6 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
 
     /**
      * Suppress the edit/copy links on synthetic detail types.
-     * 
-     * @see org.kuali.rice.krad.lookup.AbstractLookupableHelperServiceImpl#getCustomActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List)
      */
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
@@ -137,10 +138,6 @@ public class ComponentLookupableHelperServiceImpl extends KualiLookupableHelperS
             return super.getEmptyActionUrls();
         }
         return super.getCustomActionUrls(businessObject, pkNames);
-    }
-
-    public void setParameterService(ParameterService parameterService) {
-        this.parameterService = parameterService;
     }
 
 }

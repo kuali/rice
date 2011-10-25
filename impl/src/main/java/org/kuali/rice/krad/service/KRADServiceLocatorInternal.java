@@ -106,12 +106,6 @@ public class KRADServiceLocatorInternal {
     	return (BusinessObjectAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
     }
 
-    public static final String RICE_APPLICATION_CONFIGURATION_SERVICE = "riceApplicationConfigurationService";
-    
-    public static RiceApplicationConfigurationService getRiceApplicationConfigurationService() {
-    	return (RiceApplicationConfigurationService) getService(RICE_APPLICATION_CONFIGURATION_SERVICE);
-    }
-
     public static final String WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE = "workflowAttributesPropertyResolutionService";
     
     public static WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {

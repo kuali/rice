@@ -30,6 +30,7 @@ import org.kuali.rice.core.api.parameter.ParameterContract
 import org.kuali.rice.core.impl.component.ComponentBo
 import org.kuali.rice.core.impl.namespace.NamespaceBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.core.impl.component.DerivedComponentBo
 
 @IdClass(ParameterId.class)
 @Entity
@@ -77,6 +78,10 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
     def ComponentBo component
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PARM_TYP_CD", insertable = false, updatable = false)
+    def DerivedComponentBo derivedComponent
 
     /**
      * Converts a mutable bo to its immutable counterpart

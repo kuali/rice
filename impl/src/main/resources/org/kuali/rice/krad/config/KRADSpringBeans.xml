@@ -1086,14 +1086,6 @@
   <bean id="documentTypeAndExistingRecordsOnlyPermissionTypeService"
         class="org.kuali.rice.krad.service.impl.DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl"/>
 
-  <bean id="riceApplicationConfigurationMediationService"
-        class="org.kuali.rice.krad.service.impl.RiceApplicationConfigurationMediationServiceImpl" />
-
-  <!-- RiceApplicationConfigurationService needs to be published using the applicationId as its namespace and not KNS -->
-  <bean id="riceApplicationConfigurationService"
-        class="org.kuali.rice.krad.service.impl.RiceApplicationConfigurationServiceImpl">
-  </bean>
-
   <bean id="dataObjectAuthorizationService"
         class="org.kuali.rice.krad.service.impl.DataObjectAuthorizationServiceImpl"/>
 

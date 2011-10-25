@@ -44,18 +44,16 @@ public interface ComponentService {
             @WebParam(name = "namespaceCode") String namespaceCode
     ) throws RiceIllegalArgumentException;
 
-    @WebMethod(operationName = "getPublishedComponentSet")
+    @WebMethod(operationName = "getDerivedComponentSet")
     @WebResult(name = "components")
     @XmlElementWrapper(name = "components", required = true)
 	@XmlElement(name = "component", required = false)
-    List<Component> getPublishedComponentSet(
-            @WebParam(name = "componentSetId") String componentSetId
-    ) throws RiceIllegalArgumentException;
+    List<Component> getDerivedComponentSet(@WebParam(name = "componentSetId") String componentSetId) throws RiceIllegalArgumentException;
 
     /**
-     * Publishes the given component set to make them available to the component system.  It should only ever be
-     * necessary to invoke this service whenever published components for an application change.  However, it is always
-     * safe to invoke this method even if the client cannot make this determination as the implementation of this
+     * Publishes the given set of derived components to make them available to the component system.  It should only
+     * ever be necessary to invoke this service whenever published components for an application change.  However, it is
+     * always safe to invoke this method even if the client cannot make this determination as the implementation of this
      * service should be responsible for handling the given information and ignoring it if no publication needs to
      * occur.  To this end, this method should be idempotent.
      *
@@ -82,10 +80,8 @@ public interface ComponentService {
      * @throws RiceIllegalArgumentException if any of the components in the given list have a non-null componentSetId
      * which does not match the componentSetId parameter supplied to this method
      */
-    @WebMethod(operationName = "publishComponents")
-    void publishComponents(
-            @WebParam(name = "componentSetId") String componentSetId,
-            @WebParam(name = "components") List<Component> components
-    ) throws RiceIllegalArgumentException;
+    @WebMethod(operationName = "publishDerivedComponents")
+    void publishDerivedComponents(@WebParam(name = "componentSetId") String componentSetId,
+            @WebParam(name = "components") List<Component> components) throws RiceIllegalArgumentException;
 
 }

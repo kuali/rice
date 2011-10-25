@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.core.web.component;
 
-import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.impl.component.ComponentBo;
+import org.kuali.rice.core.impl.component.DerivedComponentBo;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.DataDictionaryException;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,82 +33,46 @@ import java.util.Map;
  */
 public class ComponentInquirableImpl extends KualiInquirableImpl {
 
-	private static final String PARAMETER_DETAIL_TYPE_CODE = "componentCode";
-	private static final String PARAMETER_NAMESPACE_CODE = "namespaceCode";
+	private static final String COMPONENT_CODE = "code";
+	private static final String NAMESPACE_CODE = "namespaceCode";
 	
 	@Override
 	public Object retrieveDataObject(Map fieldValues){
 		BusinessObject result = (BusinessObject)super.retrieveDataObject(fieldValues);
-
 		if (result == null) {
-
-			String parameterDetailTypeCode = (String)fieldValues.get(PARAMETER_DETAIL_TYPE_CODE);
-	        String parameterNamespaceCode = (String)fieldValues.get(PARAMETER_NAMESPACE_CODE);
-			
-	        if (parameterDetailTypeCode == null) throw new RuntimeException(PARAMETER_DETAIL_TYPE_CODE + 
-	        		" is a required key for this inquiry");
-	        if (parameterNamespaceCode == null) throw new RuntimeException(PARAMETER_NAMESPACE_CODE + 
-	        		" is a required key for this inquiry");
-
-			List<Component> components;
-	        try {
-	        	components = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
-	        } catch (DataDictionaryException ex) {
-	            throw new RuntimeException(
-	            		"Problem parsing data dictionary during full load required for inquiry to function: " + 
-	            		ex.getMessage(), ex);
-	        }
-	        
-	        for (Component pdt : components) {
-	        	if (parameterDetailTypeCode.equals(pdt.getCode()) &&
-	        			parameterNamespaceCode.equals(pdt.getNamespaceCode())) {
-	        		result = ComponentBo.from(pdt);
-	        		break;
-	        	}
-	        }
-		}
-		
+            result = loadDerivedComponent(fieldValues);
+        }
 		return result; 
     }
 	
-	/**
-	 * This overridden method gets the BO for inquiries on {@link org.kuali.rice.core.impl.component.ComponentBo}
-	 * 
-	 * @see org.kuali.rice.krad.inquiry.KualiInquirableImpl#getBusinessObject(java.util.Map)
-	 */
 	@Override
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		BusinessObject result = super.getBusinessObject(fieldValues);
-
 		if (result == null) {
-
-			String parameterDetailTypeCode = (String)fieldValues.get(PARAMETER_DETAIL_TYPE_CODE);
-	        String parameterNamespaceCode = (String)fieldValues.get(PARAMETER_NAMESPACE_CODE);
-			
-	        if (parameterDetailTypeCode == null) throw new RuntimeException(PARAMETER_DETAIL_TYPE_CODE + 
-	        		" is a required key for this inquiry");
-	        if (parameterNamespaceCode == null) throw new RuntimeException(PARAMETER_NAMESPACE_CODE + 
-	        		" is a required key for this inquiry");
-
-			List<Component> components;
-	        try {
-	        	components = KRADServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
-	        } catch (DataDictionaryException ex) {
-	            throw new RuntimeException(
-	            		"Problem parsing data dictionary during full load required for inquiry to function: " + 
-	            		ex.getMessage(), ex);
-	        }
-	        
-	        for (Component pdt : components) {
-	        	if (parameterDetailTypeCode.equals(pdt.getCode()) &&
-	        			parameterNamespaceCode.equals(pdt.getNamespaceCode())) {
-	        		result = ComponentBo.from(pdt);
-	        		break;
-	        	}
-	        }
+			result = loadDerivedComponent(fieldValues);
 		}
-		
 		return result; 
 	}
+
+    protected ComponentBo loadDerivedComponent(Map fieldValues) {
+        String componentCode = (String)fieldValues.get(COMPONENT_CODE);
+	    String namespaceCode = (String)fieldValues.get(NAMESPACE_CODE);
+        if (componentCode == null) {
+            throw new RuntimeException(COMPONENT_CODE + " is a required key for this inquiry");
+        }
+	    if (namespaceCode == null) {
+            throw new RuntimeException(NAMESPACE_CODE + " is a required key for this inquiry");
+        }
+        Map<String, Object> primaryKeys = new HashMap<String, Object>();
+        primaryKeys.put(COMPONENT_CODE, componentCode);
+        primaryKeys.put(NAMESPACE_CODE, namespaceCode);
+
+        DerivedComponentBo derivedComponentBo = KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(
+                DerivedComponentBo.class, primaryKeys);
+        if (derivedComponentBo != null) {
+            return DerivedComponentBo.toComponentBo(derivedComponentBo);
+        }
+        return null;
+    }
 	
 }

@@ -45,4 +45,7 @@
     <param name="rice.kew.set.soap.services.as.default">false</param>
     <param name="rice.kim.set.soap.services.as.default">false</param>
     <param name="rice.ksb.set.soap.services.as.default">false</param>
+
+    <param name="rice.krad.componentPublishing.enabled">false</param>
+
 </config>

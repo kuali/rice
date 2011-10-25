@@ -46,7 +46,6 @@
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="code" column="CMPNT_CD" jdbc-type="VARCHAR" primarykey="true"/>
     <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"/>
-    <field-descriptor name="componentSetId" column="CMPNT_SET_ID" jdbc-type="VARCHAR"/>
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR"
                       conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true"/>
@@ -55,6 +54,13 @@
                           auto-retrieve="true" auto-update="none" auto-delete="none">
       <foreignkey field-ref="namespaceCode" target-field-ref="code"/>
     </reference-descriptor>
+  </class-descriptor>
+
+  <class-descriptor class="org.kuali.rice.core.impl.component.DerivedComponentBo" table="KRCR_DRVD_CMPNT_T">
+    <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="code" column="CMPNT_CD" jdbc-type="VARCHAR" primarykey="true"/>
+    <field-descriptor name="name" column="NM" jdbc-type="VARCHAR"/>
+    <field-descriptor name="componentSetId" column="CMPNT_SET_ID" jdbc-type="VARCHAR"/>
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.core.impl.component.ComponentSetBo" table="KRCR_CMPNT_SET_T">
@@ -77,6 +83,11 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
 
     <reference-descriptor name="component" class-ref="org.kuali.rice.core.impl.component.ComponentBo"
+                          auto-retrieve="true" auto-update="none" auto-delete="none">
+      <foreignkey field-ref="namespaceCode"/>
+      <foreignkey field-ref="componentCode" target-field-ref="code"/>
+    </reference-descriptor>
+    <reference-descriptor name="derivedComponent" class-ref="org.kuali.rice.core.impl.component.DerivedComponentBo"
                           auto-retrieve="true" auto-update="none" auto-delete="none">
       <foreignkey field-ref="namespaceCode"/>
       <foreignkey field-ref="componentCode" target-field-ref="code"/>

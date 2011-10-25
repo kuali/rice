@@ -50,7 +50,6 @@ public class KRADServiceLocatorWeb {
     public static final String LOOKUP_SERVICE = "lookupService";
     public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
     public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
-    public static final String RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE = "riceApplicationConfigurationMediationService";
     public static final String DATA_OBJECT_METADATA_SERVICE = "dataObjectMetaDataService";
     public static final String EXPRESSION_EVALUATOR_SERVICE = "expressionEvaluatorService";
     public static final String VIEW_SERVICE = "viewService";
@@ -141,10 +140,6 @@ public class KRADServiceLocatorWeb {
 
     public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
         return (InactivationBlockingDetectionService) getService(serviceName);
-    }
-
-    public static RiceApplicationConfigurationMediationService getRiceApplicationConfigurationMediationService() {
-    	return (RiceApplicationConfigurationMediationService) getService(RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE);
     }
 
 	public static Question getQuestion(String questionName) {

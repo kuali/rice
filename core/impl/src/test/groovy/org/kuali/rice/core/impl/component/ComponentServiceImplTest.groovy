@@ -41,13 +41,16 @@ class ComponentServiceImplTest {
     //GroovyTestCase which is junit 3 style
     private final shouldFail = new GroovyTestCase().&shouldFail
 
-    ComponentServiceImpl serviceImpl;
-    ComponentService service;
-    BusinessObjectService boService;
-    ComponentSetDao componentSetDao;
+    ComponentServiceImpl serviceImpl
+    ComponentService service
+    BusinessObjectService boService
+    ComponentSetDao componentSetDao
 
-    static final Component component = createComponent();
-    static final ComponentBo componentBo = ComponentBo.from(component);
+    static final Component component = createComponent()
+    static final ComponentBo componentBo = ComponentBo.from(component)
+
+    static final Component derivedComponent = createDerivedComponent()
+    static final DerivedComponentBo derivedComponentBo = DerivedComponentBo.from(derivedComponent)
 
     @Before
     void setupServiceUnderTest() {
@@ -137,7 +140,7 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getComponentsByCode_not_exists() {
-        boServiceMock.demand.findByPrimaryKey { clazz, map -> null }
+        boServiceMock.demand.findByPrimaryKey(2) { clazz, map -> null }
         injectBusinessObjectService()
         assert null == service.getComponentByCode("blah", "blah")
     }
@@ -169,6 +172,7 @@ class ComponentServiceImplTest {
     @Test
     void test_getAllComponentsByNamespaceCode_exists() {
         boServiceMock.demand.findMatching { clazz, map -> [componentBo] }
+        boServiceMock.demand.findMatching { clazz, map -> [] }
         injectBusinessObjectService()
         List<Component> components = service.getAllComponentsByNamespaceCode(NAMESPACE_CODE)
         assertNotNull components
@@ -179,11 +183,24 @@ class ComponentServiceImplTest {
 
     @Test
     void test_getAllComponentsByNamespaceCode_not_exists() {
-        boServiceMock.demand.findMatching { clazz, map -> [] }
+        boServiceMock.demand.findMatching(2) { clazz, map -> [] }
         injectBusinessObjectService()
         List<Component> components = service.getAllComponentsByNamespaceCode("blah")
         assertNotNull components
         assert 0 == components.size()
+        assertImmutableList(components, component)
+    }
+
+    @Test
+    void test_getAllComponentsByNamespaceCode_with_derived() {
+        boServiceMock.demand.findMatching { clazz, map -> [componentBo] }
+        boServiceMock.demand.findMatching { clazz, map -> [derivedComponentBo] }
+        injectBusinessObjectService()
+        List<Component> components = service.getAllComponentsByNamespaceCode(NAMESPACE_CODE)
+        assertNotNull components
+        assert 2 == components.size()
+        assert component == components[0]
+        assert derivedComponent == components[1]
         assertImmutableList(components, component)
     }
 
@@ -217,6 +234,7 @@ class ComponentServiceImplTest {
             if (!map.containsKey("active")) fail("Did not pass active criteria")
             [componentBo]
         }
+        boServiceMock.demand.findMatching { clazz, map -> null }
         injectBusinessObjectService()
         List<Component> components = service.getActiveComponentsByNamespaceCode(NAMESPACE_CODE)
         assertNotNull components
@@ -228,6 +246,7 @@ class ComponentServiceImplTest {
     @Test
     void test_getActiveComponentsByNamespaceCode_not_exists() {
         boServiceMock.demand.findMatching { clazz, map -> [] }
+        boServiceMock.demand.findMatching { clazz, map -> null }
         injectBusinessObjectService()
         List<Component> components = service.getActiveComponentsByNamespaceCode("blah")
         assertNotNull components
@@ -236,76 +255,92 @@ class ComponentServiceImplTest {
     }
 
     @Test
-    void test_getPublishedComponentSet_null_componentSetId() {
+    void test_getActiveComponentsByNamespaceCode_with_derived() {
+        boServiceMock.demand.findMatching { clazz, map ->
+            if (!map.containsKey("active")) fail("Did not pass active criteria")
+            [componentBo]
+        }
+        boServiceMock.demand.findMatching { clazz, map -> [derivedComponentBo] }
+        injectBusinessObjectService()
+        List<Component> components = service.getActiveComponentsByNamespaceCode(NAMESPACE_CODE)
+        assertNotNull components
+        assert 2 == components.size()
+        assert component == components[0]
+        assert derivedComponent == components[1]
+        assertImmutableList(components, component)
+    }
+
+    @Test
+    void test_getDerivedComponentSet_null_componentSetId() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
-            service.getPublishedComponentSet(null)
+            service.getDerivedComponentSet(null)
         }
     }
 
     @Test
-    void test_getPublishedComponentSet_empty_componentSetId() {
+    void test_getDerivedComponentSet_empty_componentSetId() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
-            service.getPublishedComponentSet("")
+            service.getDerivedComponentSet("")
         }
     }
 
     @Test
-    void test_getPublishedComponentSet_blank_componentSetId() {
+    void test_getDerivedComponentSet_blank_componentSetId() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
-            service.getPublishedComponentSet("  ")
+            service.getDerivedComponentSet("  ")
         }
     }
 
     @Test
-    void test_getPublishedComponentSet_not_exists() {
+    void test_getDerivedComponentSet_not_exists() {
         boServiceMock.demand.findMatching { clazz, map -> [] }
         injectBusinessObjectService()
-        List<Component> components = service.getPublishedComponentSet("blah")
+        List<Component> components = service.getDerivedComponentSet("blah")
         assert components != null
         assert components.isEmpty()
         assertImmutableList(components, component)
     }
 
     @Test
-    void test_publishComponents_null_componentSetId() {
+    void test_publishDerivedComponents_null_componentSetId() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
-            service.publishComponents(null, [ component ])
+            service.publishDerivedComponents(null, [ component ])
         }
     }
 
     @Test
-    void test_publishComponents_empty_componentSetId() {
+    void test_publishDerivedComponents_empty_componentSetId() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
-            service.publishComponents("", [ component ])
+            service.publishDerivedComponents("", [ component ])
         }
     }
 
     @Test
-    void test_publishComponents_blank_componentSetId() {
+    void test_publishDerivedComponents_blank_componentSetId() {
         injectBusinessObjectService()
         shouldFail(IllegalArgumentException.class) {
-            service.publishComponents("  ", [ component ])
+            service.publishDerivedComponents("  ", [ component ])
         }
     }
 
     @Test
-    void test_publishComponents_invalidComponentSetId_onComponents() {
+    void test_publishDerivedComponents_invalidComponentSetId_onComponents() {
         injectBusinessObjectService()
         Component.Builder builder = Component.Builder.create(component)
         builder.setComponentSetId("myComponentSet")
         // should fail, componentSetIds don't match!
         shouldFail(IllegalArgumentException.class) {
-            service.publishComponents("blah", [ builder.build() ])
+            service.publishDerivedComponents("blah", [ builder.build() ])
         }
     }
 
     @Test
-    void test_publishComponents_null_components() {
+    void test_publishDerivedComponents_null_components() {
 
         ComponentSetBo savedComponentSet = null;
         componentSetDaoMock.demand.getComponentSet { id -> null }
@@ -316,8 +351,8 @@ class ComponentServiceImplTest {
         injectBusinessObjectService()
         injectComponentSetDao()
 
-        service.publishComponents("myComponentSet", null)
-        assert service.getPublishedComponentSet("myComponentSet").isEmpty()
+        service.publishDerivedComponents("myComponentSet", null)
+        assert service.getDerivedComponentSet("myComponentSet").isEmpty()
 
         assert savedComponentSet != null
         assert savedComponentSet.checksum != null
@@ -330,7 +365,7 @@ class ComponentServiceImplTest {
      * the component set.
      */
     @Test
-    void test_publishComponents_empty_components_withExisting_componentSet() {
+    void test_publishDerivedComponents_empty_components_withExisting_componentSet() {
 
         ComponentSetBo existingComponentSet = new ComponentSetBo(componentSetId:"myComponentSet", checksum:"blah",
                 lastUpdateTimestamp:new Timestamp(System.currentTimeMillis()), versionNumber:500)
@@ -344,8 +379,8 @@ class ComponentServiceImplTest {
         injectBusinessObjectService()
         injectComponentSetDao()
 
-        service.publishComponents("myComponentSet", [])
-        assert service.getPublishedComponentSet("myComponentSet").isEmpty()
+        service.publishDerivedComponents("myComponentSet", [])
+        assert service.getDerivedComponentSet("myComponentSet").isEmpty()
 
         assert savedComponentSet != null
         assert savedComponentSet.versionNumber == 501
@@ -353,7 +388,7 @@ class ComponentServiceImplTest {
     }
 
     @Test
-    void test_publishComponents() {
+    void test_publishDerivedComponents() {
 
         List<ComponentBo> publishedComponentBos = []
         ComponentSetBo componentSet = null;
@@ -368,10 +403,10 @@ class ComponentServiceImplTest {
         injectBusinessObjectService()
         injectComponentSetDao()
         
-        List<Component> components = service.getPublishedComponentSet("myComponentSet")
+        List<Component> components = service.getDerivedComponentSet("myComponentSet")
         assert components.isEmpty()
-        service.publishComponents("myComponentSet", [ component ])
-        components = service.getPublishedComponentSet("myComponentSet")
+        service.publishDerivedComponents("myComponentSet", [ component ])
+        components = service.getDerivedComponentSet("myComponentSet")
         assert components.size() == 1
 
         assert component.namespaceCode == components[0].namespaceCode
@@ -420,27 +455,46 @@ class ComponentServiceImplTest {
     }
 
     @Test
-    void test_translateCollection_nullList() {
-        List<Component> components = serviceImpl.translateCollection(null)
+    void test_translateCollections_nullList() {
+        List<Component> components = serviceImpl.translateCollections(null, null)
         assert components != null
         assert components.isEmpty()
         assertImmutableList(components, component)
     }
 
     @Test
-    void test_translateCollection_emptyList() {
-        List<Component> components = serviceImpl.translateCollection(new ArrayList<Component>())
+    void test_translateCollections_emptyList() {
+        List<Component> components = serviceImpl.translateCollections(new ArrayList<Component>(), new ArrayList<Component>())
         assert components != null
         assert components.isEmpty()
         assertImmutableList(components, component)
     }
 
     @Test
-    void test_translateCollection() {
-        List<Component> components = serviceImpl.translateCollection([componentBo])
+    void test_translateCollections_components() {
+        List<Component> components = serviceImpl.translateCollections([componentBo], null)
         assert components != null
         assert components.size() == 1
         assert components[0] == component
+        assertImmutableList(components, component)
+    }
+
+    @Test
+    void test_translateCollections_derivedComponents() {
+        List<Component> components = serviceImpl.translateCollections(null, [derivedComponentBo])
+        assert components != null
+        assert components.size() == 1
+        assert components[0] == derivedComponent
+        assertImmutableList(components, derivedComponent)
+    }
+
+    @Test
+    void test_translateCollections_both() {
+        List<Component> components = serviceImpl.translateCollections([componentBo], [derivedComponentBo])
+        assert components != null
+        assert components.size() == 2
+        assert components[0] == component
+        assert components[1] == derivedComponent
         assertImmutableList(components, component)
     }
 
@@ -456,6 +510,16 @@ class ComponentServiceImplTest {
 
     private static createComponent() {
         Component.Builder builder = Component.Builder.create(NAMESPACE_CODE, CODE, NAME)
+        return builder.build()
+    }
+
+    private static final String DERIVED_CODE = "MyDerivedComponentCode"
+    private static final String DERIVED_NAME = "This is my derived component!"
+    private static final String DERIVED_COMPONENT_SET_ID = "derivedComponentSetId"
+
+    private static createDerivedComponent() {
+        Component.Builder builder = Component.Builder.create(NAMESPACE_CODE, DERIVED_CODE, DERIVED_NAME)
+        builder.setComponentSetId(DERIVED_COMPONENT_SET_ID)
         return builder.build()
     }
 

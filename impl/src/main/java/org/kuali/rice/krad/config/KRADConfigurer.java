@@ -41,8 +41,6 @@ public class KRADConfigurer extends ModuleConfigurer {
     private boolean includeKnsSpringBeans;
 
     private static final String KRAD_SPRING_BEANS_PATH = "classpath:org/kuali/rice/krad/config/KRADSpringBeans.xml";
-    private static final String KRAD_KSB_SPRING_BEANS_PATH =
-            "classpath:org/kuali/rice/krad/config/KRADServiceBusSpringBeans.xml";
     private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
 
     @Override
@@ -56,7 +54,6 @@ public class KRADConfigurer extends ModuleConfigurer {
         springFileLocations.add(KRAD_SPRING_BEANS_PATH);
 
         if (isExposeServicesOnBus()) {
-            springFileLocations.add(KRAD_KSB_SPRING_BEANS_PATH);
             //TODO FIXME hack!  KRAD should not be loading core!  (needed for now to publish core services)
             springFileLocations.add("classpath:org/kuali/rice/core/config/COREServiceBusSpringBeans.xml");
         }
@@ -111,9 +108,15 @@ public class KRADConfigurer extends ModuleConfigurer {
                     public void run() {
                         long s = System.currentTimeMillis();
                         LOG.info("Executing scheduled Data Dictionary component publishing...");
-                        KRADServiceLocatorInternal.getDataDictionaryComponentPublisherService().publishAllComponents();
-                        long e = System.currentTimeMillis();
-                        LOG.info("... finished scheduled execution of Data Dictionary component publishing.  Took " + (e-s) + " milliseconds");
+                        try {
+                            KRADServiceLocatorInternal.getDataDictionaryComponentPublisherService().publishAllComponents();
+                        } catch (RuntimeException e) {
+                            LOG.error("Failed to publish data dictionary components.", e);
+                            throw e;
+                        } finally {
+                            long e = System.currentTimeMillis();
+                            LOG.info("... finished scheduled execution of Data Dictionary component publishing.  Took " + (e-s) + " milliseconds");
+                        }
                     }
                 }, delay, TimeUnit.MILLISECONDS);
             } finally {

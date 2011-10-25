@@ -32,7 +32,7 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
 
     private static final Logger LOG = Logger.getLogger(DataDictionaryComponentPublisherServiceImpl.class);
 
-    private static final String DEFAULT_COMPONENT_SET_ID_PREFIX = "KRAD:";
+    private static final String DEFAULT_COMPONENT_SET_ID_PREFIX = "DD:";
 
     private DataDictionaryService dataDictionaryService;
     private KualiModuleService kualiModuleService;
@@ -41,10 +41,8 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
 
     @Override
     public void publishAllComponents() {
-        // TODO - uncomment these when ready to proceed
-        
-        // List<Component> componentsToPublish = getComponentsToPublish();
-        // getComponentService().publishComponents(generateComponentSetId(), componentsToPublish);
+        List<Component> componentsToPublish = getComponentsToPublish();
+        getComponentService().publishDerivedComponents(generateComponentSetId(), componentsToPublish);
     }
 
     protected String generateComponentSetId() {

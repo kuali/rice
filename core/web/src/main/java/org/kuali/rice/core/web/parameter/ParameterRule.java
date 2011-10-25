@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.web.parameter;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.impl.component.ComponentBo;
@@ -80,36 +81,17 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	}
 
     public boolean checkComponent(ParameterBo param) {
-        String component = param.getComponentCode();
+        String componentCode = param.getComponentCode();
         String namespace = param.getNamespaceCode();
         boolean result = false;
-
-        try {
-            List<Component> dataDictionaryAndSpringComponents = KRADServiceLocatorWeb
-                    .getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
-            for (Component pdt : dataDictionaryAndSpringComponents) {
-                if (namespace.equals(pdt.getNamespaceCode()) && component.equals(pdt.getCode())) {
-                    result = true;
-                    break;
-                }
-            }
-
-            if (!result) {
-                Map<String, String> primaryKeys = new HashMap<String, String>(2);
-                primaryKeys.put("namespaceCode", namespace);
-                primaryKeys.put("code", component);
-                result = ObjectUtils.isNotNull(getBoService().findByPrimaryKey(ComponentBo.class, primaryKeys));
-            }
-
-            if (!result) {
-                putFieldError("code", "error.document.parameter.detailType.invalid", component);
-            }
-
-            return result;
+        Component component = CoreApiServiceLocator.getComponentService().getComponentByCode(namespace, componentCode);
+        if (component != null) {
+            result = true;
         }
-        catch (DataDictionaryException ex) {
-            throw new RuntimeException("Problem parsing data dictionary during full load required for rule validation: " + ex.getMessage(), ex);
+        if (!result) {
+            putFieldError("code", "error.document.parameter.detailType.invalid", componentCode);
         }
+        return result;
     }
 }
 

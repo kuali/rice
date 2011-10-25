@@ -3,6 +3,7 @@ package org.kuali.rice.core.impl.component;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.component.Component;
 import org.kuali.rice.core.api.component.ComponentService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -27,7 +28,7 @@ import java.util.Map;
 @Transactional
 public class ComponentServiceImpl implements ComponentService {
 
-
+    private static final Logger LOG = Logger.getLogger(ComponentServiceImpl.class);
 
     private BusinessObjectService businessObjectService;
     private ComponentSetDao componentSetDao;
@@ -44,7 +45,11 @@ public class ComponentServiceImpl implements ComponentService {
         primaryKeys.put("namespaceCode", namespaceCode);
         primaryKeys.put("code", componentCode);
         ComponentBo componentBo = getBusinessObjectService().findByPrimaryKey(ComponentBo.class, primaryKeys);
-        return componentBo == null ? null : ComponentBo.to(componentBo);
+        if (componentBo != null) {
+            return ComponentBo.to(componentBo);
+        }
+        DerivedComponentBo derivedComponentBo = getBusinessObjectService().findByPrimaryKey(DerivedComponentBo.class, primaryKeys);
+        return derivedComponentBo == null ? null : DerivedComponentBo.to(derivedComponentBo);
     }
 
     @Override
@@ -54,16 +59,14 @@ public class ComponentServiceImpl implements ComponentService {
         }
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("namespaceCode", namespaceCode);
+
+        List<Component> components = new ArrayList<Component>();
+
         Collection<ComponentBo> componentBos =
                 getBusinessObjectService().findMatching(ComponentBo.class, criteria);
-        if (CollectionUtils.isEmpty(componentBos)) {
-            return Collections.emptyList();
-        }
-        List<Component> components = new ArrayList<Component>();
-        for (ComponentBo componentBo : componentBos) {
-            components.add(ComponentBo.to(componentBo));
-        }
-        return Collections.unmodifiableList(components);
+        Collection<DerivedComponentBo> derivedComponentBos =
+                getBusinessObjectService().findMatching(DerivedComponentBo.class, criteria);
+        return translateCollections(componentBos, derivedComponentBos);
     }
 
     @Override
@@ -76,28 +79,31 @@ public class ComponentServiceImpl implements ComponentService {
         criteria.put("active", Boolean.TRUE);
         Collection<ComponentBo> componentBos =
                 getBusinessObjectService().findMatching(ComponentBo.class, criteria);
-        return translateCollection(componentBos);
+        criteria.remove("active");
+        Collection<DerivedComponentBo> derivedComponentBos =
+                getBusinessObjectService().findMatching(DerivedComponentBo.class, criteria);
+        return translateCollections(componentBos, derivedComponentBos);
     }
 
     @Override
-    public List<Component> getPublishedComponentSet(String componentSetId) {
+    public List<Component> getDerivedComponentSet(String componentSetId) {
         if (StringUtils.isBlank(componentSetId)) {
             throw new RiceIllegalArgumentException("componentSetId was a null or blank value");
         }
         Map<String, Object> criteria = new HashMap<String, Object>();
         criteria.put("componentSetId", componentSetId);
-        criteria.put("active", Boolean.TRUE);
-        Collection<ComponentBo> componentBos =
-                getBusinessObjectService().findMatching(ComponentBo.class, criteria);
-        return translateCollection(componentBos);
+        Collection<DerivedComponentBo> derivedComponentBos =
+                getBusinessObjectService().findMatching(DerivedComponentBo.class, criteria);
+        return translateCollections(null, derivedComponentBos);
     }
 
     @Override
-    public void publishComponents(String componentSetId, List<Component> components) {
+    public void publishDerivedComponents(String componentSetId, List<Component> components) {
         if (StringUtils.isBlank(componentSetId)) {
             throw new RiceIllegalArgumentException("componentSetId was a null or blank value");
         }
         components = validateAndNormalizeComponents(componentSetId, components);
+        LOG.info("Requesting to publish " + components.size() + " derived components for componentSetId=" + componentSetId);
         ComponentSetBo componentSet = getComponentSetDao().getComponentSet(componentSetId);
         if (componentSet == null) {
             componentSet = new ComponentSetBo();
@@ -105,11 +111,14 @@ public class ComponentServiceImpl implements ComponentService {
         }
         String checksum = calculateChecksum(components);
         if (!checksum.equals(componentSet.getChecksum())) {
+            LOG.info("Checksums were different, proceeding with update of derived components for componentSetId=" + componentSetId);
             componentSet.setChecksum(checksum);
             componentSet.setLastUpdateTimestamp(new Timestamp(System.currentTimeMillis()));
             if (getComponentSetDao().saveIgnoreLockingFailure(componentSet)) {
-                updatePublishedComponents(componentSetId, components);
+                updateDerivedComponents(componentSetId, components);
             }
+        } else {
+            LOG.info("Checksums were the same, no derived component update needed for componentSetId=" + componentSetId);
         }
     }
 
@@ -156,29 +165,32 @@ public class ComponentServiceImpl implements ComponentService {
         return ChecksumUtils.calculateChecksum(components);
     }
 
-    protected void updatePublishedComponents(String componentSetId, List<Component> components) {
+    protected void updateDerivedComponents(String componentSetId, List<Component> components) {
         Map<String, Object> deleteCriteria = new HashMap<String, Object>();
         deleteCriteria.put("componentSetId", componentSetId);
-        businessObjectService.deleteMatching(ComponentBo.class, deleteCriteria);
+        businessObjectService.deleteMatching(DerivedComponentBo.class, deleteCriteria);
         if (CollectionUtils.isNotEmpty(components)) {
-            List<ComponentBo> componentBos = new ArrayList<ComponentBo>();
+            List<DerivedComponentBo> derivedComponentBos = new ArrayList<DerivedComponentBo>();
             for (Component component : components) {
-                componentBos.add(ComponentBo.from(component));
+                derivedComponentBos.add(DerivedComponentBo.from(component));
             }
-            businessObjectService.save(componentBos);
+            businessObjectService.save(derivedComponentBos);
         }
     }
 
-    protected List<Component> translateCollection(Collection<ComponentBo> componentBos) {
-        if (CollectionUtils.isEmpty(componentBos)) {
-            return Collections.emptyList();
-        } else {
-            List<Component> components = new ArrayList<Component>();
+    protected List<Component> translateCollections(Collection<ComponentBo> componentBos, Collection<DerivedComponentBo> derivedComponentBos) {
+        List<Component> components = new ArrayList<Component>();
+        if (CollectionUtils.isNotEmpty(componentBos)) {
             for (ComponentBo componentBo : componentBos) {
                 components.add(ComponentBo.to(componentBo));
             }
-            return Collections.unmodifiableList(components);
         }
+        if (CollectionUtils.isNotEmpty(derivedComponentBos)) {
+            for (DerivedComponentBo derivedComponentBo : derivedComponentBos) {
+                components.add(DerivedComponentBo.to(derivedComponentBo));
+            }
+        }
+        return Collections.unmodifiableList(components);
     }
 
     public BusinessObjectService getBusinessObjectService() {

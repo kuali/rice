@@ -43,8 +43,7 @@
   </ciManagement>
 
   <properties>
-    <maven.enforcer.skip>false</maven.enforcer.skip>
-    <maven.enforcer.phase>validate</maven.enforcer.phase>
+    <kuali.generate.reports>true</kuali.generate.reports>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
@@ -238,63 +237,6 @@
           </dependencies>
         </plugin>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${kuali.site.plugin.version}</version>
-          <configuration>
-            <reportPlugins>
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <!-- Version is included here only because it does not inherit correctly from the pluginManagement section
-                  of the parent pom -->
-                <version>${kuali.javadoc.plugin.version}</version>
-                <configuration>
-                  <excludePackageNames>${kuali.javadoc.exclude.package.names}</excludePackageNames>
-                  <links>
-                    <link>${kuali.javadoc.link.1}</link>
-                    <link>${kuali.javadoc.link.2}</link>
-                    <link>${kuali.javadoc.link.3}</link>
-                    <link>${kuali.javadoc.link.4}</link>
-                    <link>${kuali.javadoc.link.5}</link>
-                    <link>${kuali.javadoc.link.6}</link>
-                    <link>${kuali.javadoc.link.7}</link>
-                    <link>${kuali.javadoc.link.8}</link>
-                    <link>${kuali.javadoc.link.9}</link>
-                    <link>${kuali.javadoc.link.10}</link>
-                  </links>
-                  <additionalJOption>${kuali.javadoc.additional.joption}</additionalJOption>
-                  <maxmemory>${kuali.javadoc.maxmemory}</maxmemory>
-                  <linksource>${kuali.javadoc.linksource}</linksource>
-                  <javadocVersion>${kuali.javadoc.tool.version}</javadocVersion>
-                  <show>${kuali.javadoc.show}</show>
-                  <debug>${kuali.javadoc.debug}</debug>
-                  <source>${kuali.compile.source}</source>
-                  <quiet>${kuali.javadoc.quiet}</quiet>
-                  <aggregate>${kuali.javadoc.aggregate}</aggregate>
-                  <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-                <reportSets>
-                  <reportSet>
-                    <id>generate-javadocs</id>
-                    <reports>
-                      <report>${kuali.javadoc.report.1}</report>
-                      <report>${kuali.javadoc.report.2}</report>
-                    </reports>
-                  </reportSet>
-                </reportSets>
-              </plugin>
-            </reportPlugins>
-          </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>org.kuali.cm</groupId>
-              <artifactId>cm-tools</artifactId>
-              <version>${kuali.cm.tools.version}</version>
-            </dependency>
-          </dependencies>
-        </plugin>
         <!--
           This plugin helps enforce that excluded dependencies stay excluded
           and don't sneak back in through another dependency (a global ban). Here are
@@ -330,7 +272,6 @@
               <goals>
                 <goal>enforce</goal>
               </goals>
-              <phase>${maven.enforcer.phase}</phase>
               <configuration>
                 <rules>
                   <requireJavaVersion>
@@ -500,7 +441,7 @@
             <!-- impl module is huge and requires at least 768m to compile -->
             <fork>true</fork>
             <meminitial>256</meminitial>
-            <maxmem>1024</maxmem>            
+            <maxmem>1024</maxmem>
           </configuration>
         </plugin>
         <plugin>

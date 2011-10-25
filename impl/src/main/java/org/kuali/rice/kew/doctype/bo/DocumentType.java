@@ -1178,22 +1178,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         return (DocumentSearchGenerator) searchGenerator;
     }
 
-    public DocumentTypeAttribute getDocumentSearchResultProcessorAttribute() {
-        if (documentTypeAttributes != null) {
-            for (DocumentTypeAttribute attribute : documentTypeAttributes) {
-                RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-                if (KEWConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType()) ||
-                        KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-                    return attribute;
-                }
-            }
-        }
-        if (getParentDocType() != null) {
-            return getParentDocType().getDocumentSearchResultProcessorAttribute();
-        }
-        return null;
-    }
-
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {
 
         ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.ACTION_LIST_ATTRIBUTE_TYPE);

@@ -613,6 +613,7 @@ public class ActionRequestFactory {
      private void generateKimRoleDelegationRequests(List<DelegateType> delegates, ActionRequestValue parentRequest) {
     	for (DelegateType delegate : delegates) {
     		Recipient recipient;
+            // FIXME: KULRICE-5827 delegation type is Primary/Secondary, not a membership type...?
     		boolean isPrincipal = MemberType.PRINCIPAL.equals(delegate.getDelegationType());
             boolean isGroup = MemberType.GROUP.equals(delegate.getDelegationType());
     		if (isPrincipal) {

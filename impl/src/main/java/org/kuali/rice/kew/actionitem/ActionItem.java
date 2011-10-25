@@ -385,8 +385,7 @@ public class ActionItem implements ActionItemContract, RowStyleable, Serializabl
     }
     
     public void setDelegationType(DelegationType delegationType) {
-        this.delegationType = delegationType != null ? delegationType.getCode() : null;
-        //this.delegationType = delegationType.getCode();
+        this.delegationType = delegationType == null ? null : delegationType.getCode();
     }
 
 

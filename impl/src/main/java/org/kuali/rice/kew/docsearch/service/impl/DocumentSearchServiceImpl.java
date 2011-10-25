@@ -280,7 +280,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
         if (documentType != null) {
             DocumentSearchCriteriaConfiguration searchConfiguration =
-                    getDocumentSearchCustomizationMediator().getDocumentLookupCriteriaConfiguration(documentType);
+                    getDocumentSearchCustomizationMediator().getDocumentSearchCriteriaConfiguration(documentType);
             if (searchConfiguration != null) {
                 List<AttributeFields> attributeFields = searchConfiguration.getSearchAttributeFields();
                 if (attributeFields != null) {

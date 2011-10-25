@@ -28,7 +28,7 @@ import java.util.List;
 public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCustomizationMediator {
 
     @Override
-    public DocumentSearchCriteriaConfiguration getDocumentLookupCriteriaConfiguration(DocumentType documentType) {
+    public DocumentSearchCriteriaConfiguration getDocumentSearchCriteriaConfiguration(DocumentType documentType) {
 
         List<DocumentTypeAttribute> searchableAttributes = documentType.getSearchableAttributes();
 

@@ -39,6 +39,14 @@
   <build>
     <plugins>
       <plugin>
+        <inherited>true</inherited>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <generateReports>${kuali.generate.reports}</generateReports>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>
         <executions>

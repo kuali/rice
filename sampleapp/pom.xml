@@ -52,20 +52,22 @@
           <artifactId>maven-site-plugin</artifactId>
           <version>${kuali.site.plugin.version}</version>
           <configuration>
-            <skip>true</skip>
+            <generateReports>${kuali.generate.reports}</generateReports>
           </configuration>
-          <executions>
-            <execution>
-              <id>none</id>
-              <phase>none</phase>
-            </execution>
-          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
   
     <plugins> 
-     <plugin>
+      <plugin>
+        <inherited>true</inherited>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <configuration>
+          <generateReports>${kuali.generate.reports}</generateReports>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
       </plugin>

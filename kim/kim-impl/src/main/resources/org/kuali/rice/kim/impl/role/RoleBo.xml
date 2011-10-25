@@ -313,7 +313,7 @@
             <list>
               <bean parent="AttributeField" p:propertyName="id"/>
               <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="kimTypeId" p:fieldInquiry.render="false"/>
+              <bean parent="AttributeField" p:propertyName="kimTypeId"/>
               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
               <bean parent="AttributeField" p:propertyName="description"/>
               <bean parent="AttributeField" p:propertyName="active"/>

@@ -145,7 +145,7 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
             // if property is nested, need to override any parent expressions set on nested beans
             if (StringUtils.contains(pv.getName(), ".")) {
-                //   removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
+                removeParentExpressionsOnNested(pv.getName(), pvs, beanDefinition.getParentName(), beanFactory);
             }
         }
 
@@ -167,6 +167,8 @@ public class UifBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
     protected void removeParentExpressionsOnNested(String propertyName, MutablePropertyValues pvs,
             String parentBeanName, ConfigurableListableBeanFactory beanFactory) {
         BeanDefinition parentBeanDefinition = beanFactory.getMergedBeanDefinition(parentBeanName);
+
+        // TODO: this only handles one level of nesting
         MutablePropertyValues parentPvs = parentBeanDefinition.getPropertyValues();
         PropertyValue[] pvArray = parentPvs.getPropertyValues();
         for (PropertyValue pv : pvArray) {

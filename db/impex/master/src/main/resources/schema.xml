@@ -28,13 +28,18 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="NM" size="255" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" required="true" size="1" type="CHAR"/>
-        <column name="CMPNT_SET_ID" size="40" type="VARCHAR"/>
         <foreign-key foreignTable="KRCR_NMSPC_T" name="KRNS_PARM_DTL_TYP_TR1">
             <reference foreign="NMSPC_CD" local="NMSPC_CD"/>
         </foreign-key>
         <unique name="KRNS_PARM_DTL_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
+    </table>
+    <table name="KRCR_DRVD_CMPNT_T">
+        <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>
+        <column name="CMPNT_CD" primaryKey="true" size="100" type="VARCHAR"/>
+        <column name="NM" size="255" type="VARCHAR"/>
+        <column name="CMPNT_SET_ID" required="true" size="40" type="VARCHAR"/>
     </table>
     <table name="KRCR_NMSPC_T">
         <column name="NMSPC_CD" primaryKey="true" size="20" type="VARCHAR"/>

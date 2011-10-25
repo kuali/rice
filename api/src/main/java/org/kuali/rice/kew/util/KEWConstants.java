@@ -682,7 +682,7 @@ public final class KEWConstants {
     public static final String RULE_XML_ATTRIBUTE_TYPE = "RuleXmlAttribute";
     public static final String SEARCHABLE_ATTRIBUTE_TYPE = "SearchableAttribute";
     public static final String SEARCHABLE_XML_ATTRIBUTE_TYPE = "SearchableXmlAttribute";
-    public static final String DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE = "DocumentLookupCustomizer";
+    public static final String DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE = "DocumentSearchCustomizer";
     public static final String DOCUMENT_SECURITY_ATTRIBUTE_TYPE = "DocumentSecurityAttribute";
     public static final String EXTENSION_ATTRIBUTE_TYPE = "ExtensionAttribute";
     public static final String EMAIL_ATTRIBUTE_TYPE = "EmailAttribute";

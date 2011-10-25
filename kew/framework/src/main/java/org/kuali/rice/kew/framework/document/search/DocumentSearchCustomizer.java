@@ -33,7 +33,7 @@ import java.util.List;
  *     <li>The ability to customize how result data is processed and presented.</li>
  * </ul>
  *
- * <p>Only one {@code DocumentLookupCustomizer} is supported for a given document type.  It is important to note however
+ * <p>Only one {@code DocumentSearchCustomizer} is supported for a given document type.  It is important to note however
  * that it is permitted that an implementation of this interface could be tied to more than one document type via the
  * extension framework.  This is why information about the specific document type for which the customizations is being
  * applied is passed to all methods on this interface (note that the document type information is available from the

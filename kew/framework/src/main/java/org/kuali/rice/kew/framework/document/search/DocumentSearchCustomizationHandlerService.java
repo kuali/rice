@@ -94,7 +94,7 @@ public interface DocumentSearchCustomizationHandlerService {
      * on the requested customizer which is owned by this application.
      *
      * @param documentSearchCriteria the criteria to customize
-     * @param customizerName the name of the extension definition for the {@code DocumentLookupCustomizer} which should
+     * @param customizerName the name of the extension definition for the {@code DocumentSearchCustomizer} which should
      * be used in order to execute the customization
      *
      * @return the customized criteria, or null if no customization was performed
@@ -119,7 +119,7 @@ public interface DocumentSearchCustomizationHandlerService {
      * on the requested customizer which is owned by this application.
      *
      * @param documentSearchCriteria the criteria on which to perform custom clearing
-     * @param customizerName the name of the extension definition for the {@code DocumentLookupCustomizer} which should
+     * @param customizerName the name of the extension definition for the {@code DocumentSearchCustomizer} which should
      * be used in order to execute the customization
      *
      * @return the cleared criteria, or null if no custom clear was performed
@@ -145,7 +145,7 @@ public interface DocumentSearchCustomizationHandlerService {
      *
      * @param documentSearchCriteria the criteria that was used to perform the lookup
      * @param results the results that were returned from the lookup
-     * @param customizerName the name of the extension definition for the {@code DocumentLookupCustomizer} which should
+     * @param customizerName the name of the extension definition for the {@code DocumentSearchCustomizer} which should
      * be used in order to execute the customization
      *
      * @return the customized document lookup results values, or null if no customization was performed
@@ -172,7 +172,7 @@ public interface DocumentSearchCustomizationHandlerService {
      * on the requested customizer which is owned by this application.
      *
      * @param documentSearchCriteria the criteria that was used to perform the lookup
-     * @param customizerName the name of the extension definition for the {@code DocumentLookupCustomizer} which should
+     * @param customizerName the name of the extension definition for the {@code DocumentSearchCustomizer} which should
      * be used in order to execute the customization
      *
      * @return the customized document lookup result configuration, or null if no customization was performed
@@ -192,14 +192,14 @@ public interface DocumentSearchCustomizationHandlerService {
      * with the given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the
      * customizer where the customizer extension's applicationId is the same as the application hosting this service.
      *
-     * <p>This method essentially invokes the various boolean methods on the {@code DocumentLookupCustomizer} which
+     * <p>This method essentially invokes the various boolean methods on the {@code DocumentSearchCustomizer} which
      * indicate which customizations the implementation provides.  This primarily serves as a means of optimization to
      * reduce the number of remote callbacks that the document lookup implementation needs to make to the various
      * customizations provided by this service and the customizers it delegates too.</p>
      *
      * @param documentTypeName the name of the document type against which to check for enabled customizations on the
      * specified customizer
-     * @param customizerName the name of the extension definition for the {@code DocumentLookupCustomizer} which should
+     * @param customizerName the name of the extension definition for the {@code DocumentSearchCustomizer} which should
      * be used in order to check for enabled customizations
      *
      * @return the set of customizations that are enabled

@@ -78,7 +78,8 @@
 			<script language="JavaScript" type="text/javascript"
 				src="${pageContext.request.contextPath}/${javascriptFile}"></script>
 </c:if>
-
+</c:forEach>
+  
 <!-- new iframe resize logic -->
 <script type="text/javascript">
 
@@ -116,7 +117,6 @@ jQuery(function(){
 });
 </script>
 
-</c:forEach>
   <c:choose>
     <c:when test="${lookup}" >
       <c:if test="${not empty KualiForm.headerNavigationTabs}">

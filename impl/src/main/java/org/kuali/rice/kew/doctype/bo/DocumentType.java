@@ -43,7 +43,6 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.impl.document.search.DocumentSearchGenerator;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
@@ -456,7 +455,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public DocumentTypeAttribute getCustomizerAttribute() {
-        List<DocumentTypeAttribute> documentTypeAttributes = getDocumentTypeAttributes(KEWConstants.DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE);
+        List<DocumentTypeAttribute> documentTypeAttributes = getDocumentTypeAttributes(KEWConstants.DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE);
         if (documentTypeAttributes.size() > 1) {
             throw new IllegalStateException("Encountered more than one DocumentSearchCustomizer attribute on this document type: " + getName());
         }

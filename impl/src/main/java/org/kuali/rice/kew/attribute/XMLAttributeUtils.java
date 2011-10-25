@@ -44,9 +44,6 @@ public final class XMLAttributeUtils {
 		throw new UnsupportedOperationException("do not call");
 	}
 
-    /**
-     * TODO - Rice 2.0 - Can remove this method once old xml attributes have been converted to RemotableAttributeField
-     */
 	public static void establishFieldLookup(Field field, Node lookupNode) {
 		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
 		String businessObjectClass = quickfinderAttributes.getNamedItem("businessObjectClass").getNodeValue();

@@ -26,7 +26,7 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
  *
  */
 class DocumentSearchCriteriaTranslatorTest {
-    def documentLookupCriteriaTranslator = new DocumentSearchCriteriaTranslatorImpl()
+    def documentSearchCriteriaTranslator = new DocumentSearchCriteriaTranslatorImpl()
 
     @Before
     void init() {
@@ -72,7 +72,7 @@ class DocumentSearchCriteriaTranslatorTest {
             fields.put(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + k, v.join(','))
         }
 
-        def crit = documentLookupCriteriaTranslator.translateFieldsToCriteria(fields)
+        def crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields)
         assertNotNull(crit)
 
         assertEquals("whatever", crit.documentTypeName)
@@ -102,7 +102,7 @@ class DocumentSearchCriteriaTranslatorTest {
 
         builder.documentAttributeValues = [ attr1: [ "val1" ], attr2: [ "val2" ], attr3: [ "mult0", "mult1" ] ]
 
-        def fields = documentLookupCriteriaTranslator.translateCriteriaToFields(builder.build())
+        def fields = documentSearchCriteriaTranslator.translateCriteriaToFields(builder.build())
 
         println fields
         assertEquals("whatever", fields["documentTypeName"][0])

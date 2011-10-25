@@ -27,7 +27,6 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
  */
 public class AttributeDefinition {
 
-    // TODO - Rice 2.0 - remove once we no longer need
     private RuleAttribute ruleAttribute;
 	private ExtensionDefinition extensionDefinition;
 	private ObjectDefinition objectDefinition;

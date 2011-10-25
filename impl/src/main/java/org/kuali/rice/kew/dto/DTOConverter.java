@@ -340,7 +340,6 @@ public class DTOConverter {
                 ExtensionDefinition extensionDefinition = definition.getExtensionDefinition();
                 Object attribute = ExtensionUtils.loadExtension(extensionDefinition);
 
-                // TODO - Rice 2.0 - Remove this once we have eliminated XmlConfiguredAttribute
                 if (attribute instanceof XmlConfiguredAttribute) {
                     ((XmlConfiguredAttribute)attribute).setExtensionDefinition(RuleAttribute.to(definition.getRuleAttribute()));
                 }

@@ -17,7 +17,7 @@ package org.kuali.rice.krms.impl.validation;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.validation.ValidationActionService;
+import org.kuali.rice.krms.framework.type.ValidationActionService;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.ValidationActionType;
@@ -43,7 +43,7 @@ public class ValidationErrorActionTypeServiceImpl extends KrmsTypeServiceBase im
 
 
     /**
-     * @return the configured {@link org.kuali.rice.krms.api.validation.ValidationActionService}
+     * @return the configured {@link org.kuali.rice.krms.framework.type.ValidationActionService}
      */
     public ValidationActionService getValidationService() {
         if (validationService == null) {

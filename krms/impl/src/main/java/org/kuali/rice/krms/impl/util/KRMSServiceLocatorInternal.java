@@ -21,8 +21,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.krms.api.validation.ValidationActionService;
-import org.kuali.rice.krms.api.validation.ValidationRuleService;
+import org.kuali.rice.krms.framework.type.ValidationActionService;
+import org.kuali.rice.krms.framework.type.ValidationRuleService;
 
 /**
  * Like {@link org.kuali.rice.krms.api.KrmsApiServiceLocator} only for non-remotable.

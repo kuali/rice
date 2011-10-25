@@ -18,7 +18,7 @@ package org.kuali.rice.krms.impl.validation;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.api.validation.ValidationRuleService;
+import org.kuali.rice.krms.framework.type.ValidationRuleService;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
 import org.kuali.rice.krms.framework.type.ValidationRuleTypeService;
@@ -80,7 +80,7 @@ public class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase implement
     }
 
     /**
-     * @return the configured {@link org.kuali.rice.krms.api.validation.ValidationActionService}
+     * @return the configured {@link org.kuali.rice.krms.framework.type.ValidationActionService}
      */
     public ValidationRuleService getValidationRuleService() {
         if (validationService == null) {

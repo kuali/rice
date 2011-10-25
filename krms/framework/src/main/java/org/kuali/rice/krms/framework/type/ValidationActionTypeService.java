@@ -16,7 +16,6 @@
 package org.kuali.rice.krms.framework.type;
 
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.validation.ValidationActionService;
 import org.kuali.rice.krms.framework.engine.Action;
 
 /**

@@ -20,7 +20,6 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.api.validation.ValidationRuleService;
 import org.kuali.rice.krms.framework.engine.Rule;
 
 import javax.jws.WebParam;

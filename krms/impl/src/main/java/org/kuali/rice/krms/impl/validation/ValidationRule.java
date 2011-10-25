@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krms.impl.validation;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.Proposition;

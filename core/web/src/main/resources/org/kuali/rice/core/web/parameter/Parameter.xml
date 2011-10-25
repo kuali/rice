@@ -73,6 +73,10 @@
 		<property name="control">
 			<bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.core.web.namespace.NamespaceValuesFinder" p:includeKeyInLabel="false"/>
 		</property>
+    <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+    <property name="controlField">
+      <bean parent="SelectControl"/>
+    </property>
 		<property name="summary" value="The namespace that the parameter is associated with."/>
 		<property name="description" value="This value is used to categorize parameters by namespace."/>
 	</bean>

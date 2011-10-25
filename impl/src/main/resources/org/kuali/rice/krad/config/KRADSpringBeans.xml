@@ -144,7 +144,7 @@
 
         <!-- from KIM-->
 
-        <value>classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/PersonImpl.xml</value>
         <value>classpath:org/kuali/rice/kim/impl/role/RoleBo.xml</value>
         <value>classpath:org/kuali/rice/kim/impl/role/RoleMemberBo.xml</value>
         <value>classpath:org/kuali/rice/kim/impl/group/Group.xml</value>
@@ -319,9 +319,6 @@
   </bean>
 
   <bean id="dataDictionaryService" class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
-    <constructor-arg>
-      <bean class="org.kuali.rice.krad.datadictionary.ReloadingDataDictionary" />
-    </constructor-arg>
     <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
     <property name="baselinePackages">

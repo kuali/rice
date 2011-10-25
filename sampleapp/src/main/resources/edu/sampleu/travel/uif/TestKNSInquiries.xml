@@ -19,46 +19,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  limitations under the License.
 -->
 
-<bean id="Group-InquiryView" parent="InquiryView">
-    <property name="title" value="Group Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.GroupInquirableImpl"/>
-    <property name="Items">
-        <list>
-          <bean parent="GroupSectionGridLayout">
-            <property name="layoutManager.numberOfColumns" value="4"/>
-            <property name="items">
-              <list>
-               <bean parent="AttributeField" p:propertyName="id"/>
-               <bean parent="AttributeField" p:propertyName="kimTypeInfo.name"/>
-               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-               <bean parent="AttributeField" p:propertyName="name"/>
-               <bean parent="AttributeField" p:propertyName="active"/>
-               <bean parent="AttributeField" p:propertyName="description"/>
-              </list>
-            </property>
-            <property name="title" value="Group Information"/>
-          </bean>
-          <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="6">
-             <property name="title" value="Assignees"/>  
-             <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
-             <property name="propertyName" value="memberPersons"/>
-             <property name="layoutManager.renderSequenceField" value="false"/>
-             <property name="items">
-               <list>
-                 <bean parent="AttributeField" p:propertyName="principalName"/>
-                 <bean parent="AttributeField" p:propertyName="name"/>
-                 <bean parent="AttributeField" p:propertyName="firstName"/>
-                 <bean parent="AttributeField" p:propertyName="middleName"/>
-                 <bean parent="AttributeField" p:propertyName="lastName"/>
-                 <bean parent="AttributeField" p:propertyName="principalId"/>
-               </list>
-             </property>      
-          </bean>
-        </list>
-    </property>
-</bean>
-
   <bean id="Permission-InquiryView" parent="InquiryView">
 	<property name="title" value="Permission Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
@@ -202,28 +162,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          </list>
     </property>  
   </bean>
-  
-  <bean id="RoleImpl-InquiryView" parent="InquiryView">
-	<property name="title" value="Role Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.RoleInquirableImpl"/>
-    <property name="Items">
-        <list>
-          <bean parent="GroupSectionGridLayout">
-            <property name="layoutManager.numberOfColumns" value="2"/>
-            <property name="items">
-              <list>
-               <bean parent="AttributeField" p:propertyName="roleId"/>
-               <bean parent="AttributeField" p:propertyName="roleName"/>
-               <bean parent="AttributeField" p:propertyName="kimRoleType.name"/>
-               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-              </list>
-            </property>
-          </bean>
-         </list>
-    </property>  
-  </bean>
-  
+
   <bean id="Namespace-InquiryView" parent="InquiryView">
 	<property name="title" value="Namespace Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>

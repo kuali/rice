@@ -338,7 +338,10 @@
     <property name="required" value="false"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
-    </property>  
+    </property>
+    <property name="controlField">
+      <bean parent="DateControl" p:size="10"/>
+    </property>
     <property name="formatterClass" value="org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter"/>  
     <property name="summary" value="Start Date"/>
     <property name="description" value="Start Date"/>
@@ -352,6 +355,9 @@
     <property name="required" value="false"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
+    </property>
+    <property name="controlField">
+      <bean parent="DateControl" p:size="10"/>
     </property>
     <property name="formatterClass" value="org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter"/>  
     <property name="summary" value="End Date"/>

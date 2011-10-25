@@ -125,8 +125,8 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
                         + " should probably have a DD definition.", ex);
             }
 
-            if (forceUppercase.booleanValue()) {
-                keyPropertyName = keyPropertyName.toUpperCase();
+            if (forceUppercase.booleanValue() && (keyPropertyValue != null)) {
+                keyPropertyValue = keyPropertyValue.toUpperCase();
             }
 
             // check security on key field

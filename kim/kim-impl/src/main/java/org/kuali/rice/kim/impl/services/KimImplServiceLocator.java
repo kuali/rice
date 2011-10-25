@@ -7,6 +7,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.impl.group.GroupInternalService;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
+import org.kuali.rice.kim.impl.role.RoleDao;
 import org.kuali.rice.kim.impl.role.RoleInternalService;
 import org.springframework.cache.CacheManager;
 
@@ -20,6 +21,8 @@ public class KimImplServiceLocator {
     public static final String GROUP_INTERNAL_SERVICE = "groupInternalService";
     public static final String ROLE_INTERNAL_SERVICE = "kimRoleInternalService";
     public static final String LOCAL_CACHE_MANAGER = "kimLocalCacheManager";
+
+    public static final String KIM_ROLE_DAO = "kimRoleDao";
 
     public static Object getService(String serviceName) {
         return getBean(serviceName);
@@ -48,5 +51,9 @@ public class KimImplServiceLocator {
 
     public static CacheManager getLocalCacheManager() {
         return (CacheManager) getService(LOCAL_CACHE_MANAGER);
+    }
+
+    public static RoleDao getRoleDao() {
+        return (RoleDao) getService(KIM_ROLE_DAO);
     }
 }

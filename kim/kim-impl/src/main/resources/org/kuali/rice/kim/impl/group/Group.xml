@@ -1,24 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
-<!--
- Copyright 2009 The Kuali Foundation
- 
- Licensed under the Educational Community License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
- 
- http://www.opensource.org/licenses/ecl2.php
- 
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
--->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+  <!--
+   Copyright 2009 The Kuali Foundation
+
+   Licensed under the Educational Community License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.opensource.org/licenses/ecl2.php
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+  -->
 
   <bean id="GroupBo" parent="GroupBo-parentBean"/>
 
-  <bean id="GroupBo-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.impl.group.GroupBo" p:titleAttribute="id" p:objectLabel="Group" p:inquiryDefinition-ref="Group-inquiryDefinition" p:lookupDefinition-ref="Group-lookupDefinition">
-	<property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/> 
+  <bean id="GroupBo-parentBean" abstract="true" parent="BusinessObjectEntry"
+        p:businessObjectClass="org.kuali.rice.kim.impl.group.GroupBo" p:titleAttribute="id" p:objectLabel="Group"
+        p:inquiryDefinition-ref="Group-inquiryDefinition" p:lookupDefinition-ref="Group-lookupDefinition">
+    <property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/>
     <property name="attributes">
       <list>
         <ref bean="Group-id"/>
@@ -33,9 +38,12 @@
     </property>
     <property name="collections">
       <list>
-        <bean parent="CollectionDefinition" p:name="members" p:label="Assigned Principals" p:shortLabel="Assigned Principals" p:summary="Assigned Principals" p:description="Assigned Principals"/>
-        <bean parent="CollectionDefinition" p:name="memberPersons" p:label="Assigned Principals" p:shortLabel="Assigned Principals" p:summary="Assigned Principals" p:description="Assigned Principals"/>
-        <bean parent="CollectionDefinition" p:name="memberGroups" p:label="Assigned Groups" p:shortLabel="Assigned Groups" p:summary="Assigned Groups" p:description="Assigned Groups"/>
+        <bean parent="CollectionDefinition" p:name="members" p:label="Assigned Principals"
+              p:shortLabel="Assigned Principals" p:summary="Assigned Principals" p:description="Assigned Principals"/>
+        <bean parent="CollectionDefinition" p:name="memberPersons" p:label="Assigned Principals"
+              p:shortLabel="Assigned Principals" p:summary="Assigned Principals" p:description="Assigned Principals"/>
+        <bean parent="CollectionDefinition" p:name="memberGroups" p:label="Assigned Groups"
+              p:shortLabel="Assigned Groups" p:summary="Assigned Groups" p:description="Assigned Groups"/>
       </list>
     </property>
     <property name="relationships">
@@ -49,8 +57,10 @@
           </property>
           <property name="supportAttributes">
             <list>
-              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimTypeInfo.name" p:targetName="name"/>
-              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimTypeInfo.namespaceCode" p:targetName="namespaceCode"/>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimTypeInfo.name"
+                    p:targetName="name"/>
+              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="kimTypeInfo.namespaceCode"
+                    p:targetName="namespaceCode"/>
             </list>
           </property>
         </bean>
@@ -59,7 +69,8 @@
   </bean>
 
   <bean id="Group-id" parent="Group-id-parentBean"/>
-  <bean id="Group-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id" p:forceUppercase="true" p:label="Group Id" p:shortLabel="Group Id" p:maxLength="70" p:required="false">
+  <bean id="Group-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id" p:forceUppercase="true"
+        p:label="Group Id" p:shortLabel="Group Id" p:maxLength="70" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
@@ -69,7 +80,8 @@
   </bean>
 
   <bean id="Group-kimTypeId" parent="Group-kimTypeId-parentBean"/>
-  <bean id="Group-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true" p:name="kimTypeId" p:forceUppercase="true" p:label="Group Type" p:shortLabel="Group Type" p:maxLength="40" p:required="false">
+  <bean id="Group-kimTypeId-parentBean" parent="AttributeDefinition" abstract="true" p:name="kimTypeId"
+        p:forceUppercase="true" p:label="Group Type" p:shortLabel="Group Type" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
@@ -91,28 +103,32 @@
   </bean>
 
   <bean id="Group-name" parent="Group-name-parentBean"/>
-  <bean id="Group-name-parentBean" parent="AttributeDefinition" abstract="true" p:name="name" p:forceUppercase="false" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="80" p:required="true">
+  <bean id="Group-name-parentBean" parent="AttributeDefinition" abstract="true" p:name="name" p:forceUppercase="false"
+        p:label="Group Name" p:shortLabel="Group Name" p:maxLength="80" p:required="true">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
     <property name="controlField">
-       <bean parent="TextControl" p:size="50"/>
+      <bean parent="TextControl" p:size="50"/>
     </property>
   </bean>
 
-	<!-- Added Group Description -->
+  <!-- Added Group Description -->
   <bean id="Group-description" parent="Group-description-parentBean"/>
-  <bean id="Group-description-parentBean" parent="AttributeDefinition" abstract="true" p:name="description" p:forceUppercase="false" p:label="Group Description" p:shortLabel="Group Description" p:maxLength="4000" p:required="false">
+  <bean id="Group-description-parentBean" parent="AttributeDefinition" abstract="true" p:name="description"
+        p:forceUppercase="false" p:label="Group Description" p:shortLabel="Group Description" p:maxLength="4000"
+        p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="50"/>
     </property>
     <property name="controlField">
-       <bean parent="TextControl" p:size="50"/>
+      <bean parent="TextControl" p:size="50"/>
     </property>
   </bean>
 
   <bean id="Group-namespaceCode" parent="Group-namespaceCode-parentBean"/>
-  <bean id="Group-namespaceCode-parentBean" parent="KimType-namespaceCode" abstract="true" p:name="namespaceCode" p:label="Group Namespace" p:shortLabel="Group Namespace" p:required="true" p:maxLength="40">
+  <bean id="Group-namespaceCode-parentBean" parent="KimType-namespaceCode" abstract="true" p:name="namespaceCode"
+        p:label="Group Namespace" p:shortLabel="Group Namespace" p:required="true" p:maxLength="40">
   </bean>
 
   <bean id="Group-active" parent="Group-active-parentBean"/>
@@ -134,11 +150,11 @@
               <bean parent="FieldDefinition" p:attributeName="description"/>
               <!-- <bean parent="FieldDefinition" p:attributeName="kimTypeId" />-->
               <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.namespaceCode" p:noInquiry="true"/>
-		      <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
+              <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
             </list>
           </property>
         </bean>
-		<bean parent="InquirySectionDefinition">
+        <bean parent="InquirySectionDefinition">
           <property name="title" value="Assigned Groups"/>
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
@@ -149,19 +165,19 @@
                 <property name="numberOfColumns" value="1"/>
                 <property name="inquiryFields">
                   <list>
-                      <bean parent="FieldDefinition" p:attributeName="id"/>
-				      <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
-				      <bean parent="FieldDefinition" p:attributeName="name"/>
-				      <bean parent="FieldDefinition" p:attributeName="description"/>
-				      <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.namespaceCode" p:noInquiry="true"/>
-				      <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
+                    <bean parent="FieldDefinition" p:attributeName="id"/>
+                    <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+                    <bean parent="FieldDefinition" p:attributeName="name"/>
+                    <bean parent="FieldDefinition" p:attributeName="description"/>
+                    <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.namespaceCode" p:noInquiry="true"/>
+                    <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
                   </list>
                 </property>
                 <property name="summaryFields">
                   <list>
-                      <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
-				      <bean parent="FieldDefinition" p:attributeName="name"/>
-				      <bean parent="FieldDefinition" p:attributeName="description"/>
+                    <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
+                    <bean parent="FieldDefinition" p:attributeName="name"/>
+                    <bean parent="FieldDefinition" p:attributeName="description"/>
                   </list>
                 </property>
               </bean>
@@ -180,17 +196,17 @@
                 <property name="numberOfColumns" value="1"/>
                 <property name="inquiryFields">
                   <list>
-                      <bean parent="FieldDefinition" p:attributeName="principalName"/>
-                      <bean parent="FieldDefinition" p:attributeName="name"/>
-		              <bean parent="FieldDefinition" p:attributeName="firstName"/>
-		              <bean parent="FieldDefinition" p:attributeName="middleName"/>
-		              <bean parent="FieldDefinition" p:attributeName="lastName"/>
-		              <bean parent="FieldDefinition" p:attributeName="principalId"/>
+                    <bean parent="FieldDefinition" p:attributeName="principalName"/>
+                    <bean parent="FieldDefinition" p:attributeName="name"/>
+                    <bean parent="FieldDefinition" p:attributeName="firstName"/>
+                    <bean parent="FieldDefinition" p:attributeName="middleName"/>
+                    <bean parent="FieldDefinition" p:attributeName="lastName"/>
+                    <bean parent="FieldDefinition" p:attributeName="principalId"/>
                   </list>
                 </property>
                 <property name="summaryFields">
                   <list>
-                      <bean parent="FieldDefinition" p:attributeName="principalName"/>
+                    <bean parent="FieldDefinition" p:attributeName="principalName"/>
                   </list>
                 </property>
               </bean>
@@ -245,7 +261,6 @@
   <bean id="Group-InquiryView" parent="InquiryView">
     <property name="title" value="Group Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.GroupInquirableImpl"/>
     <property name="Items">
       <list>
         <bean parent="GroupSectionGridLayout">
@@ -255,7 +270,10 @@
               <bean parent="AttributeField" p:propertyName="id"/>
               <bean parent="AttributeField" p:propertyName="kimTypeInfo.name"/>
               <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
+              <bean parent="AttributeField" p:propertyName="name">
+                <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
+                <property name="fieldInquiry.inquiryParameters" value="id:id"/>
+              </bean>
               <bean parent="AttributeField" p:propertyName="active"/>
               <bean parent="AttributeField" p:propertyName="description"/>
             </list>
@@ -286,6 +304,7 @@
   <bean id="Group-LookupView" parent="LookupView">
     <property name="title" value="Group Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.group.GroupLookupableImpl"/>
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
@@ -300,7 +319,10 @@
       <list>
         <bean parent="AttributeField" p:propertyName="kimTypeInfo.name"/>
         <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
+        <bean parent="AttributeField" p:propertyName="name">
+          <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
+          <property name="fieldInquiry.inquiryParameters" value="id:id"/>
+        </bean>
         <bean parent="AttributeField" p:propertyName="description"/>
       </list>
     </property>

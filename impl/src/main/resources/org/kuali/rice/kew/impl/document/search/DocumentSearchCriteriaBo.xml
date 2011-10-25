@@ -192,7 +192,7 @@
     <property name="label" value="Application Document Status"/>
     <property name="shortLabel" value="App Doc Status"/>
     <property name="control">
-      <!-- TODO - Rice 2.0 - TextControlDefinition For now...though should be a select control with values finder -->
+      <!-- TODO - KULRICE-5635 - TextControlDefinition For now...though should be a select control with values finder -->
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
   </bean>
@@ -204,7 +204,7 @@
     <property name="label" value="Route Node"/>
     <property name="shortLabel" value="Node"/>
     <property name="maxLength" value="255"/>
-    <!-- TODO - Rice 2.0 - TextControlDefinition For now...though should be a select control with values finder -->
+    <!-- TODO - KULRICE-5831 - TextControlDefinition For now...though should be a select control with values finder -->
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
@@ -216,7 +216,7 @@
     <property name="name" value="routeNodeLogic"/>
     <property name="label" value="Route Node Logic"/>
     <property name="shortLabel" value="Node Logic"/>
-    <!-- TODO - Rice 2.0 - TextControlDefinition For now...though should be a select control with values finder -->
+    <!-- TODO - KULRICE-5831 - TextControlDefinition For now...though should be a select control with values finder -->
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>

@@ -171,14 +171,12 @@ public class RuleAttributeXmlParser {
 				throw new XmlException("A routing config must be present to be of type: "+type);
 			} else if(KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(type)){
 				throw new XmlException("A searching config must be present to be of type: "+type);
-			} else if(KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(type)){
-				throw new XmlException("A searching config must be present to be of type: "+type);
 			}
 		}
 		return ruleAttribute;
 	}
 
     protected void validateRuleAttributeType(String type) {
-        KEWConstants.
+
     }
 }

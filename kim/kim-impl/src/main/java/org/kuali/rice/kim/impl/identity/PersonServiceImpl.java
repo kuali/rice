@@ -48,9 +48,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -302,7 +304,25 @@ public class PersonServiceImpl implements PersonService {
 			}
 			people = findPeopleInternal(criteria, unbounded);
 		}
-		return people;
+			
+		// The following change is for KULRICE-5694 - It prevents duplicate rows from being returned for the 
+		// person inquiry (In this case, duplicate meaning same entityId, principalId, and principalNm).  
+		// This allows for multiple rows to be returned if an entityID has more then one principal name
+		// or more than one principal ID.  
+        Set<String> peopleNoDupsSet = new HashSet<String>();
+        List<Person> peopleNoDupsList = new ArrayList<Person>();
+
+	    for (Iterator<Person> iter = people.iterator(); iter.hasNext(); ) {
+	        Person person = iter.next();
+	        if (peopleNoDupsSet.add(person.getEntityId() + person.getPrincipalId() + person.getPrincipalName())) {
+	            peopleNoDupsList.add(person);
+	        }
+	    }
+	     
+	    people.clear();
+	    people.addAll(peopleNoDupsList);
+		
+	    return people;
 	}
 	
 	@SuppressWarnings("unchecked")

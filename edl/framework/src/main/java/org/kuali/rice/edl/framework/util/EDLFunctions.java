@@ -16,13 +16,16 @@
  */
 package org.kuali.rice.edl.framework.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.util.List;
@@ -106,7 +109,33 @@ public class EDLFunctions {
 	public static String getEmailAddress() {
 	    return getAuthenticatedPerson().getEmailAddress();
 	}
+	
+    public static String getCampus() {
+        return getAuthenticatedPerson().getCampusCode();
+    }
+    
+    public static String getPrimaryDeptCd() {
+        return getAuthenticatedPerson().getPrimaryDepartmentCode();
+    }
+    
+    public static String getEmpTypCd() {
+        return getAuthenticatedPerson().getEmployeeTypeCode();
+    }
+    
+    public static String getEmpPhoneNumber() {
+        return getAuthenticatedPerson().getPhoneNumber();
+    }
+    
+    public static String getCurrentNodeName(String documentId){
+        List<RouteNodeInstance> routeNodeInstances = null;
 
+        routeNodeInstances = KewApiServiceLocator.getWorkflowDocumentService().getCurrentRouteNodeInstances(documentId);
+        for (RouteNodeInstance currentNode : routeNodeInstances) {
+            return currentNode.getName();
+        }   
+        return null;
+    }
+    
 	public static boolean isNodeInPreviousNodeList(String nodeName, String id) {
 		LOG.debug("nodeName came in as: " + nodeName);
 		LOG.debug("id came in as: " + id);
@@ -165,5 +194,27 @@ public class EDLFunctions {
 	    return userSession.getPrincipalName();
 	
 	}
+    
+	public static boolean isUserInGroup(String namespace, String groupName){
+		boolean isUserInGroup=false;
+		if(!StringUtils.isEmpty(groupName)){
+			String principalId = getUserId();
+			try{
+				isUserInGroup = isMemberOfGroupWithName(namespace, groupName, principalId);
+			}catch(Exception e){
+	    		LOG.error("Exception encountered trying to determine if user is member of a group: userId: " + principalId + ";groupNamespace/Name: " 
+	    				+ namespace + "/" + groupName + " resulted in error:" + e);
+			}
+		}
+		return isUserInGroup;
+	}
 	
+    private static boolean isMemberOfGroupWithName(String namespace, String groupName, String principalId) {
+        for (Group group : KimApiServiceLocator.getGroupService().getGroupsByPrincipalId(principalId)) {
+            if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }  
 }

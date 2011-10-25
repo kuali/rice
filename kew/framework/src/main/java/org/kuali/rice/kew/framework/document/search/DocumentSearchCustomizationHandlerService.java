@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A remotable service which handles processing of a client application's document lookup customizations.
+ * A remotable service which handles processing of a client application's document search customizations.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -27,8 +27,8 @@ import java.util.Set;
 public interface DocumentSearchCustomizationHandlerService {
 
     /**
-     * Retrieves the custom {@code DocumentLookupCriteriaConfiguration} to use for the document type with the given name
-     * and for the given list of searchable attributes.  This method is invoked by the document lookup implementation in
+     * Retrieves the custom {@code DocumentSearchCriteriaConfiguration} to use for the document type with the given name
+     * and for the given list of searchable attributes.  This method is invoked by the document search implementation in
      * order to help assemble the final criteria attribute fields (which includes configuration for all searchable
      * attributes on the document type).
      *
@@ -43,22 +43,21 @@ public interface DocumentSearchCustomizationHandlerService {
      * @param searchableAttributeNames the names of the searchable attributes from which to assemble criteria
      * configuration which are owned by the application hosting this service
      *
-     * @return the custom document lookup criteria configuration for the given searchable attribute, or null if no
+     * @return the custom document search criteria configuration for the given searchable attribute, or null if no
      * custom configuration is needed
      * 
      * @throws RiceIllegalArgumentException if documentTypeName is a null or blank value
      */
-    @WebMethod(operationName = "getDocumentLookupConfiguration")
-	@WebResult(name = "documentLookupConfiguration")
-	@XmlElement(name = "documentLookupConfiguration", required = false)
-    DocumentSearchCriteriaConfiguration getDocumentLookupConfiguration(
+    @WebMethod(operationName = "getDocumentSearchConfiguration")
+	@WebResult(name = "documentSearchConfiguration")
+	@XmlElement(name = "documentSearchConfiguration", required = false)
+    DocumentSearchCriteriaConfiguration getDocumentSearchConfiguration(
             @WebParam(name = "documentTypeName") String documentTypeName,
-            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames
-    ) throws RiceIllegalArgumentException;
+            @WebParam(name = "searchableAttributeNames") List<String> searchableAttributeNames) throws RiceIllegalArgumentException;
 
     /**
-     * Executes validation of the given {@code DocumentLookupCriteria} against the searchable attributes with the given
-     * names..  This method is invoked by the document lookup implementation in order to allow for validation to be
+     * Executes validation of the given {@code DocumentSearchCriteria} against the searchable attributes with the given
+     * names..  This method is invoked by the document search implementation in order to allow for validation to be
      * customized via custom searchable attribute implementations.
      *
      * <p>The given list of searchable attribute names may not necessary include all searchable attribute on the
@@ -136,7 +135,7 @@ public interface DocumentSearchCustomizationHandlerService {
     ) throws RiceIllegalArgumentException;
 
     /**
-     * Executes customization of document lookup results using the {@link DocumentSearchCustomizer} with the
+     * Executes customization of document search results using the {@link DocumentSearchCustomizer} with the
      * given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the customizer
      * where the customizer extension's applicationId is the same as the application hosting this service.
      *
@@ -148,7 +147,7 @@ public interface DocumentSearchCustomizationHandlerService {
      * @param customizerName the name of the extension definition for the {@code DocumentSearchCustomizer} which should
      * be used in order to execute the customization
      *
-     * @return the customized document lookup results values, or null if no customization was performed
+     * @return the customized document search results values, or null if no customization was performed
      *
      * @throws RiceIllegalArgumentException if documentSearchCriteria is null
      * @throws RiceIllegalArgumentException if results is null
@@ -164,7 +163,7 @@ public interface DocumentSearchCustomizationHandlerService {
     ) throws RiceIllegalArgumentException;
 
     /**
-     * Executes customization of document lookup result set configuration using the {@link DocumentSearchCustomizer}
+     * Executes customization of document search result set configuration using the {@link DocumentSearchCustomizer}
      * with the given customizer name.  This name is the name of the {@code ExtensionDefinition} that defines the
      * customizer where the customizer extension's applicationId is the same as the application hosting this service.
      *
@@ -175,7 +174,7 @@ public interface DocumentSearchCustomizationHandlerService {
      * @param customizerName the name of the extension definition for the {@code DocumentSearchCustomizer} which should
      * be used in order to execute the customization
      *
-     * @return the customized document lookup result configuration, or null if no customization was performed
+     * @return the customized document search result configuration, or null if no customization was performed
      *
      * @throws RiceIllegalArgumentException if documentSearchCriteria is null
      * @throws RiceIllegalArgumentException if customizerName is a null or blank value
@@ -194,7 +193,7 @@ public interface DocumentSearchCustomizationHandlerService {
      *
      * <p>This method essentially invokes the various boolean methods on the {@code DocumentSearchCustomizer} which
      * indicate which customizations the implementation provides.  This primarily serves as a means of optimization to
-     * reduce the number of remote callbacks that the document lookup implementation needs to make to the various
+     * reduce the number of remote callbacks that the document search implementation needs to make to the various
      * customizations provided by this service and the customizers it delegates too.</p>
      *
      * @param documentTypeName the name of the document type against which to check for enabled customizations on the

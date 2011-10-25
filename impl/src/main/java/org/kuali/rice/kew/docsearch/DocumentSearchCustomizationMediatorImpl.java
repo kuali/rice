@@ -61,7 +61,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
             DocumentSearchCustomizationHandlerService documentSearchCustomizationService = loadCustomizationService(
                     applicationId);
             List<String> searchableAttributeNames = applicationIdToAttributeNameMap.get(applicationId);
-            DocumentSearchCriteriaConfiguration documentSearchConfiguration = documentSearchCustomizationService.getDocumentLookupConfiguration(
+            DocumentSearchCriteriaConfiguration documentSearchConfiguration = documentSearchCustomizationService.getDocumentSearchConfiguration(
                     documentType.getName(), searchableAttributeNames);
             mergeAttributeFields(documentSearchConfiguration.getSearchAttributeFields(), orderedSearchFieldMap);
         }

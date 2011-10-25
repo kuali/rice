@@ -39,7 +39,8 @@ public class DocumentSearchCustomizationHandlerServiceImpl implements DocumentSe
     private ExtensionRepositoryService extensionRepositoryService;
 
     @Override
-    public DocumentSearchCriteriaConfiguration getDocumentLookupConfiguration(String documentTypeName, List<String> searchableAttributeNames) {
+    public DocumentSearchCriteriaConfiguration getDocumentSearchConfiguration(String documentTypeName,
+            List<String> searchableAttributeNames) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new RiceIllegalArgumentException("documentTypeName was null or blank");
         }

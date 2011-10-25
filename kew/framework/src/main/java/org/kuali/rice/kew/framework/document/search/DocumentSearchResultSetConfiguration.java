@@ -202,8 +202,8 @@ public final class DocumentSearchResultSetConfiguration extends AbstractDataTran
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentLookupResultSetConfiguration";
-        final static String TYPE_NAME = "DocumentLookupResultSetConfigurationType";
+        final static String ROOT_ELEMENT_NAME = "documentSearchResultSetConfiguration";
+        final static String TYPE_NAME = "DocumentSearchResultSetConfigurationType";
     }
 
     /**

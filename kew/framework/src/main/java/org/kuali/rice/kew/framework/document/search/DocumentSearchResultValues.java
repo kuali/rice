@@ -122,8 +122,8 @@ public final class DocumentSearchResultValues extends AbstractDataTransferObject
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentLookupResultValues";
-        final static String TYPE_NAME = "DocumentLookupResultValuesType";
+        final static String ROOT_ELEMENT_NAME = "documentSearchResultValues";
+        final static String TYPE_NAME = "DocumentSearchResultValuesType";
     }
 
     /**

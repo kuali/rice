@@ -10,13 +10,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * An enumeration which defines fields that are used on the document lookup screen and subject to customization by
- * specific document types which configure such customizations via the document lookup framework.
+ * An enumeration which defines fields that are used on the document search screen and subject to customization by
+ * specific document types which configure such customizations via the document search framework.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@XmlRootElement(name = "documentLookupResultField")
-@XmlType(name = "DocumentLookupResultFieldType")
+@XmlRootElement(name = "documentSearchResultField")
+@XmlType(name = "DocumentSearchResultFieldType")
 @XmlEnum
 public enum StandardResultField {
 

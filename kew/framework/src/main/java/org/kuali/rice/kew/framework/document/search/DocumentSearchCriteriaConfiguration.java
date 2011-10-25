@@ -137,8 +137,8 @@ public final class DocumentSearchCriteriaConfiguration extends AbstractDataTrans
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentLookupCriteriaConfiguration";
-        final static String TYPE_NAME = "DocumentLookupCriteriaConfigurationType";
+        final static String ROOT_ELEMENT_NAME = "documentSearchCriteriaConfiguration";
+        final static String TYPE_NAME = "DocumentSearchCriteriaConfigurationType";
     }
 
     /**

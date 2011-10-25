@@ -112,7 +112,12 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public List<Rule> getRulesByTemplateNameAndDocumentTypeName(String templateName, String documentTypeName,
+    public List<Rule> getRulesByTemplateNameAndDocumentTypeName(String templateName, String documentTypeName) {
+        return getRulesByTemplateNameAndDocumentTypeNameAndEffectiveDate(templateName, documentTypeName, null);
+    }
+
+    @Override
+    public List<Rule> getRulesByTemplateNameAndDocumentTypeNameAndEffectiveDate(String templateName, String documentTypeName,
             DateTime effectiveDate)
             throws RiceIllegalArgumentException {
         QueryByCriteria.Builder query = QueryByCriteria.Builder.create();
@@ -122,29 +127,27 @@ public class RuleServiceImpl implements RuleService {
         // Check all document types in ancestry
         DocumentTypeService documentTypeService = KewApiServiceLocator.getDocumentTypeService();
         org.kuali.rice.kew.api.doctype.DocumentType dt = documentTypeService.getDocumentTypeByName(documentTypeName);
-        List<Predicate> documentTypeAncestry = new ArrayList<Predicate>();
+        List<String> documentTypeAncestryNames = new ArrayList<String>();
         while (dt != null) {
-            documentTypeAncestry.add(equal("docTypeName", dt.getName()));
+            documentTypeAncestryNames.add(dt.getName());
             dt = dt.getParentId() == null ? null : documentTypeService.getDocumentTypeById(dt.getParentId());
         }
-        predicates.add(and(or(documentTypeAncestry.toArray(new Predicate[documentTypeAncestry.size()]))));
-        Timestamp currentTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        predicates.add(in("docTypeName", documentTypeAncestryNames.toArray(
+                new String[documentTypeAncestryNames.size()])));
+        DateTime currentTime = new DateTime();
         predicates.add(and(
-                           or(isNull("fromDateValue"), greaterThanOrEqual("fromDateValue", currentTime)),
-                           or(isNull("toDateValue"), lessThan("toDateValue", currentTime))
+                           or(isNull("fromDateValue"), lessThanOrEqual("fromDateValue", currentTime)),
+                           or(isNull("toDateValue"), greaterThan("toDateValue", currentTime))
                       ));
         predicates.add(equal("active", new Integer(1))); //true
         predicates.add(equal("delegateRule", new Integer(0)));  //false
         predicates.add(equal("templateRuleInd", new Integer(0))); //false
         if (effectiveDate != null) {
             predicates.add(
-                    and(
-                        lessThanOrEqual("activationDate", effectiveDate),
-                        greaterThan("deactivationDate", effectiveDate)));
-            //rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName(), effectiveDate);
+                    and(lessThanOrEqual("activationDate", effectiveDate),
+                            greaterThan("deactivationDate", effectiveDate)));
         } else {
             predicates.add(equal("currentInd", new Integer(1))); //true
-            //rules = KEWServiceLocator.getRuleService().fetchAllCurrentRulesForTemplateDocCombination(ruleTemplateName, routeHeader.getDocumentType().getName());
         }
         Predicate p = and(predicates.toArray(new Predicate[]{}));
         query.setPredicates(p);

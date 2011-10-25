@@ -91,7 +91,6 @@ public interface RuleService {
      *
      * @param templateName unique name for the Rule Template.  Cannot be null or empty
      * @param documentTypeName documentTypeName for Rule.  Cannot be null or empty
-     * @param effectiveDate date for rule effectiveness. Can be null.  If null, current time is used.
      *
      * @return Rules with the passed in templateId, documentTypeName (or parent document type)or an empty list if none exist
      *
@@ -103,6 +102,26 @@ public interface RuleService {
     @XmlElement(name = "rule", required = true)
     @Cacheable(value=Rule.Cache.NAME, key="'templateName=' + #p0 + '|' + 'documentTypeName=' + #p1")
 	List<Rule> getRulesByTemplateNameAndDocumentTypeName(@WebParam(name = "templateName") String templateName,
+            @WebParam(name = "documentTypeName") String documentTypeName)
+        throws RiceIllegalArgumentException;
+
+    /**
+     * Gets a list of Rules with the specified templateId and documentTypeName.  Scales up the hierarchy of
+     * documentTypes
+     *
+     * @param templateName unique name for the Rule Template.  Cannot be null or empty
+     * @param documentTypeName documentTypeName for Rule.  Cannot be null or empty
+     * @param effectiveDate date for rule effectiveness. Can be null.  If null, current time is used.
+     *
+     * @return Rules with the passed in templateId, documentTypeName (or parent document type)or an empty list if none exist
+     *
+     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if {@code id} is null
+     */
+    @WebMethod(operationName = "getRulesByTemplateNameAndDocumentTypeNameAndEffectiveDate")
+    @WebResult(name = "rules")
+    @XmlElementWrapper(name = "rules", required = true)
+    @XmlElement(name = "rule", required = true)
+	List<Rule> getRulesByTemplateNameAndDocumentTypeNameAndEffectiveDate(@WebParam(name = "templateName") String templateName,
             @WebParam(name = "documentTypeName") String documentTypeName,
             @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name = "effectiveDate") DateTime effectiveDate)
         throws RiceIllegalArgumentException;

@@ -29,6 +29,7 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -71,10 +72,16 @@ class TemplateRuleSelector implements RuleSelector {
 
         }
 
-        DateTime effectiveDateTime = effectiveDate == null ? null : new DateTime(effectiveDate.getTime());
-        List<org.kuali.rice.kew.api.rule.Rule> rules = KewApiServiceLocator.getRuleService()
-                .getRulesByTemplateNameAndDocumentTypeName(ruleTemplateName, routeHeader.getDocumentType().getName(),
-                        effectiveDateTime);
+        List<org.kuali.rice.kew.api.rule.Rule> rules = Collections.emptyList();
+        if (effectiveDate == null) {
+            rules = KewApiServiceLocator.getRuleService()
+                    .getRulesByTemplateNameAndDocumentTypeName(ruleTemplateName,
+                            routeHeader.getDocumentType().getName());
+        } else {
+            rules = KewApiServiceLocator.getRuleService()
+                    .getRulesByTemplateNameAndDocumentTypeNameAndEffectiveDate(ruleTemplateName,
+                            routeHeader.getDocumentType().getName(), new DateTime(effectiveDate.getTime()));
+        }
         numberOfSelectedRules = rules.size();
 
         // TODO really the route context just needs to be able to support nested create and clears

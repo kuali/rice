@@ -1132,7 +1132,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     	String ruleTemplateName = baseRule.getRuleTemplateName();
         //use api service to take advantage of caching
         List<Rule> rules = KewApiServiceLocator.getRuleService().getRulesByTemplateNameAndDocumentTypeName(
-                baseRule.getRuleTemplateName(), baseRule.getDocTypeName(), null);
+                baseRule.getRuleTemplateName(), baseRule.getDocTypeName());
         for (Rule r : rules) {
             if (ObjectUtils.equals(rule.isActive(), r.isActive()) &&
         	ObjectUtils.equals(docTypeName, r.getDocTypeName()) &&

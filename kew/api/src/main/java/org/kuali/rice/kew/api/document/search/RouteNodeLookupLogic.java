@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Defines flags that can be used during document lookup to indicate what relation the route node name being searched on
+ * Defines flags that can be used during document search to indicate what relation the route node name being searched on
  * should have to the current route node of the documents being searched.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

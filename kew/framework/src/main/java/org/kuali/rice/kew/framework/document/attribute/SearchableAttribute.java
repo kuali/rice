@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * Allows for definition of custom attributes on a document that should be indexed along with that document and made
- * searchable when performing document lookups.  Applications who want to index and expose these custom attributes on
+ * searchable when performing document searches.  Applications who want to index and expose these custom attributes on
  * their documents can implement this interface and configure their document type to point to the searchable attributes
  * that it should use.
  *
@@ -42,8 +42,8 @@ import java.util.List;
  * <ul>
  *     <li>The ability to generate XML content that can be associated with the document and used for indexing purposes.</li>
  *     <li>The ability to extract attribute values from the document and supply them to the indexer for indexing.</li>
- *     <li>The ability to define how custom search attributes will be presented in the document lookup user interface.</li>
- *     <li>The ability to define validation for custom search attribute criteria which is executed from the document lookup user interface.</li>
+ *     <li>The ability to define how custom search attributes will be presented in the document search user interface.</li>
+ *     <li>The ability to define validation for custom search attribute criteria which is executed from the document search user interface.</li>
  * </ul>
  *
  * <p>Searchable attributes are mapped to document types via the KEW extension framework (see
@@ -110,7 +110,7 @@ public interface SearchableAttribute {
 
     /**
      * Extracts and returns document attributes for the given document in order to allow indexing of those values for
-     * association with the document and use in document lookups.  The document and it's XML content is passed to this
+     * association with the document and use in document searches.  The document and it's XML content is passed to this
      * method as that is a common source of data for indexing purposes, though implementations are free to pull data for
      * indexing from any readily accessible source.
      *
@@ -139,14 +139,14 @@ public interface SearchableAttribute {
 
     /**
      * Returns a list of {@link RemotableAttributeField} objects which define which searchable attribute criteria fields
-     * should be included in the criteria section of the document lookup user interface for this searchable attribute.
+     * should be included in the criteria section of the document search user interface for this searchable attribute.
      *
      * @param extensionDefinition the extension definition which was used to locate and load this searchable attribute
      * implementation
      * @param documentTypeName the name of the document type for which this method is being invoked
      *
      * @return a list of remotable attribute fields which define the search fields that should be included in the
-     * document lookup criteria, or a null or empty list if no criteria should be included for this searchable attribute
+     * document search criteria, or a null or empty list if no criteria should be included for this searchable attribute
      */
     @WebMethod(operationName = "getSearchFields")
     @WebResult(name = "searchFields")
@@ -159,9 +159,9 @@ public interface SearchableAttribute {
 
     /**
      * Performs custom validation of document attribute values that come from this searchable attribute whenever a
-     * document lookup is performed against a document type which uses this searchable attribute.  This hook allows for
+     * document search is performed against a document type which uses this searchable attribute.  This hook allows for
      * any desired validation of this searchable attributes custom document attribute values to be performed prior to
-     * the execution of the document lookup.
+     * the execution of the document search.
      *
      * <p>The entire {@link org.kuali.rice.kew.api.document.search.DocumentSearchCriteria} is passed to this method, though it's intended that implementing
      * code will pull out the document attribute values on the criteria which are managed by this searchable attribute
@@ -169,12 +169,12 @@ public interface SearchableAttribute {
      * prevent it from performing validations outside of this scope and in relation to other portions of the criteria,
      * though this is certainly not the intent of this validation hook.</p>
      *
-     * <p>Note that this method is invoked when performing a document lookup from the user interface as well as via
+     * <p>Note that this method is invoked when performing a document search from the user interface as well as via
      * the {@link org.kuali.rice.kew.api.document.WorkflowDocumentService} api.</p>
      *
      * @param extensionDefinition the extension definition which was used to locate and load this searchable attribute
      * implementation
-     * @param documentSearchCriteria the criteria that was submitted to the document lookup and against which validation
+     * @param documentSearchCriteria the criteria that was submitted to the document search and against which validation
      * is requested
      *
      * @return a list of attribute errors containing and validation failure errors messages for the relevant document

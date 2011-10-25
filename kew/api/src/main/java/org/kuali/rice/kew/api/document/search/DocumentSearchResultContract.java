@@ -6,7 +6,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeContract;
 import java.util.List;
 
 /**
- * Defines the contract for a single document result from execution of a document lookup.  This serves to package the
+ * Defines the contract for a single document result from execution of a document search.  This serves to package the
  * actual document with it's document attributes.
  */
 public interface DocumentSearchResultContract {

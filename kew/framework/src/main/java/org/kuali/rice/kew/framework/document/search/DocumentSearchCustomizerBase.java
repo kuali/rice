@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class DocumentSearchCustomizerBase implements DocumentSearchCustomizer {
 
     /**
-     * Always returns a null reference which instructs the document lookup framework that the criteria was not
+     * Always returns a null reference which instructs the document search framework that the criteria was not
      * customized.
      *
      * @param documentSearchCriteria the criteria on which to perform customization
@@ -27,7 +27,7 @@ public abstract class DocumentSearchCustomizerBase implements DocumentSearchCust
     }
 
     /**
-     * Always returns a null reference which instructs the document lookup framework that custom criteria clearing was not
+     * Always returns a null reference which instructs the document search framework that custom criteria clearing was not
      * performed.
      *
      * @param documentSearchCriteria the criteria on which to perform a customized clear
@@ -39,11 +39,11 @@ public abstract class DocumentSearchCustomizerBase implements DocumentSearchCust
     }
 
     /**
-     * Always returns a null reference which instructs the document lookup framework that the customization of results
+     * Always returns a null reference which instructs the document search framework that the customization of results
      * was not performed.
      *
-     * @param documentSearchCriteria the lookup criteria
-     * @param defaultResults the results obtained when executing the lookup
+     * @param documentSearchCriteria the search criteria
+     * @param defaultResults the results obtained when executing the search
      * @return a null reference indicating that no customization was performed
      */
     @Override
@@ -53,10 +53,10 @@ public abstract class DocumentSearchCustomizerBase implements DocumentSearchCust
     }
 
     /**
-     * Always returns a null reference which instructs the document lookup framework that the customization of result
+     * Always returns a null reference which instructs the document search framework that the customization of result
      * set fields was not performed.
      *
-     * @param documentSearchCriteria the lookup criteria
+     * @param documentSearchCriteria the search criteria
      * @return a null reference indicating that no customization was performed
      */
     @Override

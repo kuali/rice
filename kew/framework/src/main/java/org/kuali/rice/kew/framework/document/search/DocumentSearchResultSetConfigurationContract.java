@@ -5,8 +5,8 @@ import org.kuali.rice.core.api.uif.AttributeField;
 import java.util.List;
 
 /**
- * Defines how the display of results on the document lookup should be customized and configured.  This class can be
- * used to remove standard fields from the result set that are typically show on document lookup results.  This class
+ * Defines how the display of results on the document search should be customized and configured.  This class can be
+ * used to remove standard fields from the result set that are typically show on document search results.  This class
  * is also used to add additional fields
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -35,10 +35,10 @@ public interface DocumentSearchResultSetConfigurationContract {
     List<String> getCustomFieldNamesToAdd();
 
     /**
-     * Returns a list of the standard (built-in) document lookup result fields which should not be displayed in the
-     * result set.  The document lookup implementation should do it's best to honor the request to remove standard
+     * Returns a list of the standard (built-in) document search result fields which should not be displayed in the
+     * result set.  The document search implementation should do it's best to honor the request to remove standard
      * fields from the result set, but it is free to ignore such requests if needed.  An example of this would be a
-     * preference for the implementation of document lookup that requires certain result set fields to remain (such as
+     * preference for the implementation of document search that requires certain result set fields to remain (such as
      * the document id and route log which is usually recommended to display).
      *
      * @return a list of standard result fields to remove from inclusion in the result set, may be an empty or null

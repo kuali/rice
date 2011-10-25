@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A remotable service which handles processing of a client application's document lookup customizations.
+ * A remotable service which handles processing of a client application's document search customizations.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -20,9 +20,9 @@ import org.kuali.rice.kew.api.document.Document;
 import java.io.Serializable;
 
 /**
- * This is an attribute used to implement custom document security for document lookup and the route log.
+ * This is an attribute used to implement custom document security for document search and the route log.
  * SecurityAttributes are configured to be associated with the document type against which they should
- * be applied.  For each route log or row that is returned from a document lookup, this authorization
+ * be applied.  For each route log or row that is returned from a document search, this authorization
  * methods will be executed. 
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

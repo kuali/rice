@@ -50,8 +50,9 @@ public class NetworkIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfig
 	
 	@Override
 	public String getErrorMessage(Element originalConfigElement, RequestParser requestParser, MatchingParam param) {
-		
-		if (param.getParamValue().length() == 0 && required == true) {
+        if (!getEdlContext().getUserAction().isValidatableAction()) {
+            return null;
+        } else if (param.getParamValue().length() == 0 && required == true) {
 			//empty and required so send error
 			return ("Network ID is a required field");
 		} else if (param.getParamValue().length() == 0 && required == false) { 

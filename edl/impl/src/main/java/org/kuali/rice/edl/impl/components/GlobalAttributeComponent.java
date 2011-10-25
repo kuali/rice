@@ -103,23 +103,25 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 				
 
 				if(curAttrValid){
-					for (int fIndex = 0; fIndex < fieldNodes.getLength(); fIndex++) {
-						Element fieldElem = (Element)fieldNodes.item(fIndex);
-						String edlField = fieldElem.getAttribute("edlField");
-						String attributeField = fieldElem.getAttribute("attributeField");
-						PropertyDefinition property = attributeDefBuilder.getPropertyDefinition(attributeField);
-						String value = requestParser.getParameterValue(edlField);
-						if (property == null) {
-							property = PropertyDefinition.create(attributeField, value);							
-						} else {
-		                    // modify the current property
-		                    attributeDefBuilder.getPropertyDefinitions().remove(property);
-		                    property = PropertyDefinition.create(property.getName(), value);
-						}
-						attributeDefBuilder.addPropertyDefinition(property);
-					}
-					WorkflowAttributeDefinition attributeDef = attributeDefBuilder.build();
-	                document.addAttributeDefinition(attributeDef);
+                   if (edlContext.getUserAction().isValidatableAction()) { 
+                       for (int fIndex = 0; fIndex < fieldNodes.getLength(); fIndex++) {
+                           Element fieldElem = (Element)fieldNodes.item(fIndex);
+                           String edlField = fieldElem.getAttribute("edlField");
+                           String attributeField = fieldElem.getAttribute("attributeField");
+                           PropertyDefinition property = attributeDefBuilder.getPropertyDefinition(attributeField);
+                           String value = requestParser.getParameterValue(edlField);
+                           if (property == null) {
+                               property = PropertyDefinition.create(attributeField, value);							
+                           } else {
+                               // modify the current property
+                               attributeDefBuilder.getPropertyDefinitions().remove(property);
+                               property = PropertyDefinition.create(property.getName(), value);
+                           }
+                           attributeDefBuilder.addPropertyDefinition(property);
+                       }
+                       WorkflowAttributeDefinition attributeDef = attributeDefBuilder.build();
+                       document.addAttributeDefinition(attributeDef);
+                   }
 				}
 				
 				

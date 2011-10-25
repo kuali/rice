@@ -286,16 +286,6 @@
                 </reportSets>
               </plugin>
               <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <!-- Version is included here only because it does not inherit correctly from the pluginManagement section
-                  of the parent pom -->
-                <version>2.3</version>
-                <configuration>
-                  <dependencyLocationsEnabled>${kuali.reporting.dependency.locations}</dependencyLocationsEnabled>
-                </configuration>
-              </plugin>
-              <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <configuration>
@@ -310,21 +300,6 @@
                   <formats>
                     <format>html</format>
                   </formats>
-                </configuration>
-              </plugin>
-              <!-- Included here as a default only until Maven 3.1 is out which will support 'mixins'.
-                This plugin only generates output if the project is a maven plugin.
-                For projects that are not maven plugins it does nothing. -->
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-              </plugin>
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                  <targetJdk>${kuali.compile.source}</targetJdk>
-                  <aggregate>${kuali.reporting.aggregate}</aggregate>
                 </configuration>
               </plugin>
             </reportPlugins>
@@ -1924,6 +1899,31 @@
 
     </dependencies>
   </dependencyManagement>
+
+  <profiles>
+    <profile>
+      <id>skipCompile</id>
+      <build>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <!-- impl module is huge and requires at least 768m to compile -->
+            <fork>true</fork>
+            <meminitial>256</meminitial>
+            <maxmem>1024</maxmem>
+          </configuration>
+          <executions>
+            <execution>
+              <id>skip</id>
+              <phase>none</phase>
+            </execution>
+          </executions>
+        </plugin>
+      </build>
+    </profile>
+  </profiles>
+
 
   <scm>
     <connection>scm:svn:https://test.kuali.org/svn/rice/trunk</connection>

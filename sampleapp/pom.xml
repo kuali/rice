@@ -44,6 +44,7 @@
         </excludes>
       </resource>
     </resources>
+  
     <pluginManagement>
       <plugins>
         <plugin>
@@ -53,9 +54,16 @@
           <configuration>
             <skip>true</skip>
           </configuration>
+          <executions>
+            <execution>
+              <id>none</id>
+              <phase>none</phase>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
+  
     <plugins> 
      <plugin>
         <groupId>org.mortbay.jetty</groupId>

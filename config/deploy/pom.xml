@@ -75,8 +75,14 @@
           <artifactId>maven-site-plugin</artifactId>
           <version>${kuali.site.plugin.version}</version>
           <configuration>
-          <skip>true</skip>
+            <skip>true</skip>
           </configuration>
+          <executions>
+            <execution>
+              <id>none</id>
+              <phase>none</phase>
+            </execution>
+          </executions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

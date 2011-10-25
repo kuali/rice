@@ -20,4 +20,24 @@
   <properties>
     <kuali.testjar.phase>none</kuali.testjar.phase>
   </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${kuali.site.plugin.version}</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+          <executions>
+            <execution>
+              <id>none</id>
+              <phase>none</phase>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>

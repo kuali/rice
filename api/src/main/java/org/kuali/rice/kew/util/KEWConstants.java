@@ -18,7 +18,6 @@ package org.kuali.rice.kew.util;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -679,50 +678,44 @@ public final class KEWConstants {
 
 
     public static final String RULE_ATTRIBUTE_TYPE = "RuleAttribute";
-    public static final String SEARCHABLE_ATTRIBUTE_TYPE = "SearchableAttribute";
     public static final String RULE_XML_ATTRIBUTE_TYPE = "RuleXmlAttribute";
+    public static final String SEARCHABLE_ATTRIBUTE_TYPE = "SearchableAttribute";
     public static final String SEARCHABLE_XML_ATTRIBUTE_TYPE = "SearchableXmlAttribute";
+    public static final String DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE = "DocumentLookupCustomizer";
+    public static final String DOCUMENT_SECURITY_ATTRIBUTE_TYPE = "DocumentSecurityAttribute";
     public static final String EXTENSION_ATTRIBUTE_TYPE = "ExtensionAttribute";
     public static final String EMAIL_ATTRIBUTE_TYPE = "EmailAttribute";
     public static final String NOTE_ATTRIBUTE_TYPE = "NoteAttribute";
     public static final String ACTION_LIST_ATTRIBUTE_TYPE = "ActionListAttribute";
     public static final String RULE_VALIDATION_ATTRIBUTE_TYPE = "RuleValidationAttribute";
-    public static final String SEARCH_GENERATOR_ATTRIBUTE_TYPE = "DocumentSearchGeneratorAttribute";
-    public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchResultProcessorAttribute";
-    public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE = "DocumentSearchXMLResultProcessorAttribute";
-    public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE = "DocumentSearchSecurityFilterAttribute";
     public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE = "QualifierResolver";
-    public static final String DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE = "DocumentLookupCustomizer";
 
     public static final String RULE_ATTRIBUTE_TYPE_LABEL = "Rule Attribute";
-    public static final String SEARCHABLE_ATTRIBUTE_TYPE_LABEL = "Searchable Attribute";
     public static final String RULE_XML_ATTRIBUTE_TYPE_LABEL = "Rule Xml Attribute";
+    public static final String SEARCHABLE_ATTRIBUTE_TYPE_LABEL = "Searchable Attribute";
     public static final String SEARCHABLE_XML_ATTRIBUTE_TYPE_LABEL = "Searchable Xml Attribute";
+    public static final String DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE_LABEL = "Document Lookup Customizer";
+    public static final String DOCUMENT_SECURITY_ATTRIBUTE_TYPE_LABEL = "Document Security Attribute";
     public static final String EXTENSION_ATTRIBUTE_TYPE_LABEL = "Extension Attribute";
     public static final String EMAIL_ATTRIBUTE_TYPE_LABEL = "Email Attribute";
     public static final String NOTE_ATTRIBUTE_TYPE_LABEL = "Note Attribute";
     public static final String ACTION_LIST_ATTRIBUTE_TYPE_LABEL = "Action List Attribute";
     public static final String RULE_VALIDATION_ATTRIBUTE_TYPE_LABEL = "Rule Validation Attribute";
-    public static final String SEARCH_GENERATOR_ATTRIBUTE_TYPE_LABEL = "Document Search Generator Attribute";
-    public static final String SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor Attribute";
-    public static final String SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL = "Document Search Result Processor XML Attribute";
-    public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL = "Document Search Security Filter Attribute";
     public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL = "Qualifier Resolver";
+
 
     public static final String[] RULE_ATTRIBUTE_TYPES = {
     	RULE_ATTRIBUTE_TYPE,
-        SEARCHABLE_ATTRIBUTE_TYPE,
         RULE_XML_ATTRIBUTE_TYPE,
+        SEARCHABLE_ATTRIBUTE_TYPE,
         SEARCHABLE_XML_ATTRIBUTE_TYPE,
+        DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE,
+        DOCUMENT_SECURITY_ATTRIBUTE_TYPE,
         EXTENSION_ATTRIBUTE_TYPE,
         EMAIL_ATTRIBUTE_TYPE,
         NOTE_ATTRIBUTE_TYPE,
         ACTION_LIST_ATTRIBUTE_TYPE,
         RULE_VALIDATION_ATTRIBUTE_TYPE,
-        SEARCH_GENERATOR_ATTRIBUTE_TYPE,
-        SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE,
-        SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE,
-        DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE,
         QUALIFIER_RESOLVER_ATTRIBUTE_TYPE
     };
 
@@ -730,18 +723,16 @@ public final class KEWConstants {
     static {
     	RULE_ATTRIBUTE_TYPE_MAP = new HashMap<String, String>();
     	RULE_ATTRIBUTE_TYPE_MAP.put(RULE_ATTRIBUTE_TYPE, RULE_ATTRIBUTE_TYPE_LABEL);
-        RULE_ATTRIBUTE_TYPE_MAP.put(SEARCHABLE_ATTRIBUTE_TYPE, SEARCHABLE_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(RULE_XML_ATTRIBUTE_TYPE, RULE_XML_ATTRIBUTE_TYPE_LABEL);
+        RULE_ATTRIBUTE_TYPE_MAP.put(SEARCHABLE_ATTRIBUTE_TYPE, SEARCHABLE_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCHABLE_XML_ATTRIBUTE_TYPE, SEARCHABLE_XML_ATTRIBUTE_TYPE_LABEL);
+        RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE, DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE_LABEL);
+        RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SECURITY_ATTRIBUTE_TYPE, DOCUMENT_SECURITY_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(EXTENSION_ATTRIBUTE_TYPE, EXTENSION_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(EMAIL_ATTRIBUTE_TYPE, EMAIL_ATTRIBUTE_TYPE_LABEL);
        	RULE_ATTRIBUTE_TYPE_MAP.put(NOTE_ATTRIBUTE_TYPE, NOTE_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(ACTION_LIST_ATTRIBUTE_TYPE, ACTION_LIST_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(RULE_VALIDATION_ATTRIBUTE_TYPE, RULE_VALIDATION_ATTRIBUTE_TYPE_LABEL);
-        RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_GENERATOR_ATTRIBUTE_TYPE, SEARCH_GENERATOR_ATTRIBUTE_TYPE_LABEL);
-        RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE_LABEL);
-        RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL);
-        RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE, DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(QUALIFIER_RESOLVER_ATTRIBUTE_TYPE, QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL);
     }
 

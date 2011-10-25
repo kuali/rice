@@ -145,6 +145,9 @@ public class RuleAttributeXmlParser {
 			type = KEWConstants.RULE_ATTRIBUTE_TYPE;
 			//throw new XmlException("RuleAttribute must have an attribute type");
 		}
+        type = type.trim();
+        validateRuleAttributeType(type);
+
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName(name.trim());
 		ruleAttribute.setResourceDescriptor(className.trim());
@@ -173,5 +176,9 @@ public class RuleAttributeXmlParser {
 			}
 		}
 		return ruleAttribute;
-	}	
+	}
+
+    protected void validateRuleAttributeType(String type) {
+        KEWConstants.
+    }
 }

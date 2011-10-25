@@ -28,7 +28,7 @@
 			<className>org.kuali.rice.kew.docsearch.CustomSecurityFilterAttribute</className>
 			<label>CustomSecurityFilterAttribute</label>
 			<description>CustomSecurityFilterAttribute</description>
-			<type>DocumentSearchSecurityFilterAttribute</type>
+			<type>DocumentSecurityAttribute</type>
 		</ruleAttribute>
 		<ruleAttribute>
 			<name>UserEmployeeId</name>

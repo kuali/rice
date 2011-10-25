@@ -1151,33 +1151,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         this.defaultExceptionWorkgroup = defaultExceptionWorkgroup;
     }
 
-
-    public DocumentSearchGenerator getDocumentSearchGenerator() {
-        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
-        if (objDef == null) {
-            if (getParentDocType() != null) {
-                return getParentDocType().getDocumentSearchGenerator();
-            } else {
-                return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
-            }
-        }
-
-        Object searchGenerator;
-        try {
-            searchGenerator = GlobalResourceLoader.getObject(objDef);
-        } catch (RiceRemoteServiceConnectionException e) {
-            LOG.warn("Unable to connect to load searchGenerator for " + this.getName() + ".  Using DocumentSearchGeneratorImpl as default.");
-            LOG.warn(e.getMessage());
-            return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
-        }
-
-        if (searchGenerator == null) {
-            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at application id " + getApplicationId() + ": " + objDef.getClassName());
-        }
-
-        return (DocumentSearchGenerator) searchGenerator;
-    }
-
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {
 
         ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.ACTION_LIST_ATTRIBUTE_TYPE);

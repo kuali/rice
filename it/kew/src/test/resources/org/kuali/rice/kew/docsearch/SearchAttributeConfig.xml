@@ -51,7 +51,7 @@
 			<description>CustomActionListAttribute</description>
 			<type>ActionListAttribute</type>
 		</ruleAttribute>
-		<!-- ruleAttribute>
+		<ruleAttribute>
 			<name>DocumentSearchGeneratorAttribute</name>
 			<className>org.kuali.rice.kew.docsearch.CustomDocumentSearchGeneratorImpl</className>
 			<label>DocumentSearchGeneratorAttribute</label>
@@ -64,7 +64,7 @@
 			<label>DocumentSearchResultProcessorAttributeCustom</label>
 			<description>DocumentSearchResultProcessorAttributeCustom</description>
 			<type>DocumentSearchResultProcessorAttribute</type>
-		</ruleAttribute -->
+		</ruleAttribute>
 		<!-- XML rul attributes -->
 		<ruleAttribute>
 			<name>SearchableAttributeVisible</name>

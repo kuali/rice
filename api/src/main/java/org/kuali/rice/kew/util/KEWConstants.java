@@ -703,9 +703,6 @@ public final class KEWConstants {
     public static final String RULE_VALIDATION_ATTRIBUTE_TYPE_LABEL = "Rule Validation Attribute";
     public static final String QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL = "Qualifier Resolver";
 
-    // TODO remove these
-    public static final String DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE = "DocumentSearchSecurityFilterAttribute";
-
     public static final String[] RULE_ATTRIBUTE_TYPES = {
     	RULE_ATTRIBUTE_TYPE,
         RULE_XML_ATTRIBUTE_TYPE,

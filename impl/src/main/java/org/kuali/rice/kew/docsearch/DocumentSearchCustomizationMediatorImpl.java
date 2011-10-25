@@ -170,7 +170,7 @@ public class DocumentSearchCustomizationMediatorImpl implements DocumentSearchCu
     }
 
     protected DocumentSearchCustomizationHandlerService loadCustomizationService(String applicationId) {
-        DocumentSearchCustomizationHandlerService service = KewFrameworkServiceLocator.getDocumentLookupCustomizationHandlerService(
+        DocumentSearchCustomizationHandlerService service = KewFrameworkServiceLocator.getDocumentSearchCustomizationHandlerService(
                 applicationId);
         if (service == null) {
             throw new WorkflowRuntimeException("Failed to locate DocumentSearchCustomizationService for applicationId: " + applicationId);

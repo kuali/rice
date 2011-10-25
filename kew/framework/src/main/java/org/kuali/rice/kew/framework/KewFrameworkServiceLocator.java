@@ -31,7 +31,7 @@ import javax.xml.namespace.QName;
  */
 public class KewFrameworkServiceLocator {
 
-    public static final String DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE = "documentLookupCustomizationHandlerServiceSoap";
+    public static final String DOCUMENT_SEARCH_CUSTOMIZATION_HANDLER_SERVICE = "documentSearchCustomizationHandlerServiceSoap";
     public static final String DOCUMENT_SECURITY_HANDLER_SERVICE = "documentSecurityHandlerServiceSoap";
     public static final String RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE = "ruleValidationAttributeExporterServiceSoap";
     public static final String ACTION_LIST_CUSTOMIZATION_HANDLER_SERVICE = "actionListCustomizationHandlerSoap";
@@ -46,13 +46,13 @@ public class KewFrameworkServiceLocator {
         return (T)KsbApiServiceLocator.getServiceBus().getService(new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, serviceName), applicationId);
     }
 
-    public static DocumentSearchCustomizationHandlerService getDocumentLookupCustomizationHandlerService() {
-        return getDocumentLookupCustomizationHandlerService(null);
+    public static DocumentSearchCustomizationHandlerService getDocumentSearchCustomizationHandlerService() {
+        return getDocumentSearchCustomizationHandlerService(null);
     }
 
-    public static DocumentSearchCustomizationHandlerService getDocumentLookupCustomizationHandlerService(
+    public static DocumentSearchCustomizationHandlerService getDocumentSearchCustomizationHandlerService(
             String applicationId) {
-        return getServiceOnBus(DOCUMENT_LOOKUP_CUSTOMIZATION_HANDLER_SERVICE, applicationId);
+        return getServiceOnBus(DOCUMENT_SEARCH_CUSTOMIZATION_HANDLER_SERVICE, applicationId);
     }
 
     public static DocumentSecurityHandlerService getDocumentSecurityHandlerService() {

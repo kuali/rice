@@ -345,7 +345,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
                     /**
 
-                     TODO - Rice 2.0 - Figure out how to handle these formatters
+                     TODO - KULRICE-5737 - Figure out how to handle these formatters
 
                      String formatterClass = (searchDefAttributes.getNamedItem("formatterClass") == null) ? null : searchDefAttributes.getNamedItem("formatterClass").getNodeValue();
                      if (!StringUtils.isEmpty(formatterClass)) {
@@ -635,7 +635,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     Map<String, List<String>> documentAttributeValues = documentSearchCriteria.getDocumentAttributeValues();
                     if (documentAttributeValues != null) {
 
-                        // TODO - Rice 2.0 - I'm pretty sure this *won't* work because we don't store lower and upper bound keys in the document attributes
+                        // TODO - KULRICE-5630 - I'm pretty sure this *won't* work because we don't store lower and upper bound keys in the document attributes
 
                         String lowerBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName;
                         String upperBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName;

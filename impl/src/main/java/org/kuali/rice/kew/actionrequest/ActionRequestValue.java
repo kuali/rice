@@ -735,7 +735,7 @@ public class ActionRequestValue implements Serializable {
     }
 
     public void setDelegationType(DelegationType delegationPolicy) {
-        this.delegationType = delegationPolicy.getCode();
+        this.delegationType = delegationPolicy == null ? null : delegationPolicy.getCode();
     }
 
     public String getRoleName() {

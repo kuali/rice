@@ -76,8 +76,6 @@ public class DocumentSearchInternalUtils {
 
     }
 
-    // TODO - Rice 2.0 - need to determine what the default for case sensitivity is and should be, right now defaulting
-    // to "true"
     public static boolean isLookupCaseSensitive(RemotableAttributeField remotableAttributeField) {
         if (remotableAttributeField == null) {
             throw new IllegalArgumentException("remotableAttributeField was null");
@@ -123,9 +121,6 @@ public class DocumentSearchInternalUtils {
         return searchableAttributeValueClasses;
     }
 
-    /**
-     * TODO - Rice 2.0 - Move once migrated over to new doc search framework
-     */
     public static SearchableAttributeValue getSearchableAttributeValueByDataTypeString(String dataType) {
         SearchableAttributeValue returnableValue = null;
         if (StringUtils.isBlank(dataType)) {

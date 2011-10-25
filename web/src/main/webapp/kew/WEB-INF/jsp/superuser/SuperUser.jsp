@@ -189,7 +189,7 @@
 </c:choose>
 
 <div class="globalbuttons">
-	<a href="DocumentSearch.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&${returnLocParam}hideReturnLink=true&superUserSearch=YES&isAdvancedSearch=YES"><img src="images/buttonsmall_cancel.gif" border="0" alt="cancel"></a>
+	<a href="DocumentSearch.do"><img src="images/buttonsmall_cancel.gif" border="0" alt="cancel"></a>
 </div>
 <%--
 </body>

@@ -80,7 +80,7 @@ public final class KRADConstants {
         public static final String RULE_DETAIL_TYPE = "Rule";
         public static final String ACTION_LIST_DETAIL_TYPE = "ActionList";
         public static final String BACKDOOR_DETAIL_TYPE = "Backdoor";
-        public static final String DOCUMENT_LOOKUP_DETAIL_TYPE = "DocumentLookup";
+        public static final String DOCUMENT_SEARCH_DETAIL_TYPE = "DocumentSearch";
         public static final String EDOC_LITE_DETAIL_TYPE = "EDocLite";
         public static final String FEATURE_DETAIL_TYPE = "Feature";
         public static final String GLOBAL_REVIEWER_DETAIL_TYPE = "GlobalReviewer";

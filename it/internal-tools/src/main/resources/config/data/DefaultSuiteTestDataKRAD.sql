@@ -239,16 +239,16 @@ INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_C
   VALUES('KR-WKFLW', 'Notification', 'NOTIFY_GROUPS', '08280F2575904F3586CF48BB97907506', 1, 'CONFG', NULL, 'Defines a group name (in the format "namespace:name") which contains members who should never receive "notifications" action requests from KEW.', 'D', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
-  VALUES('KR-WKFLW', 'DocSearchCriteriaDTO', 'FETCH_MORE_ITERATION_LIMIT', 'D43459D143FC46C6BF83C71AC2383B76', 1, 'CONFG', NULL, 'Limit of fetch more iterations for document searches.', 'A', 'KUALI')
+  VALUES('KR-WKFLW', 'DocumentSearch', 'FETCH_MORE_ITERATION_LIMIT', 'D43459D143FC46C6BF83C71AC2383B76', 1, 'CONFG', NULL, 'Limit of fetch more iterations for document searches.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
-  VALUES('KR-WKFLW', 'DocSearchCriteriaDTO', 'DOCUMENT_SEARCH_POPUP_IND', 'E78100F6F14C4932B54F7719FA5C27E9', 1, 'CONFG', 'Y', 'Flag to specify if clicking on a Document ID from Document Search will load the Document in a new window.', 'A', 'KUALI')
+  VALUES('KR-WKFLW', 'DocumentSearch', 'DOCUMENT_SEARCH_POPUP_IND', 'E78100F6F14C4932B54F7719FA5C27E9', 1, 'CONFG', 'Y', 'Flag to specify if clicking on a Document ID from Document Search will load the Document in a new window.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
-  VALUES('KR-WKFLW', 'DocSearchCriteriaDTO', 'DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND', '632680DDE9A7478CBD379FAF90C7AE72', 1, 'CONFG', 'N', 'Flag to specify if clicking on a Route Log from Document Search will load the Route Log in a new window.', 'A', 'KUALI')
+  VALUES('KR-WKFLW', 'DocumentSearch', 'DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND', '632680DDE9A7478CBD379FAF90C7AE72', 1, 'CONFG', 'N', 'Flag to specify if clicking on a Route Log from Document Search will load the Route Log in a new window.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
-  VALUES('KR-WKFLW', 'DocSearchCriteriaDTO', 'RESULT_CAP', 'E324D85082184EB6967537B3EE1F655B', 1, 'CONFG', NULL, 'Maximum number of documents to return from a search.', 'A', 'KUALI')
+  VALUES('KR-WKFLW', 'DocumentSearch', 'RESULT_CAP', 'E324D85082184EB6967537B3EE1F655B', 1, 'CONFG', NULL, 'Maximum number of documents to return from a search.', 'A', 'KUALI')
 /
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
   VALUES('KR-WKFLW', 'DocumentType', 'DOCUMENT_TYPE_SEARCH_INSTRUCTION', '7ADC4995AB7E47299A13A5B66E495683', 1, 'CONFG', 'Enter document type information below and click search.', 'Instructions for searching document types.', 'A', 'KUALI')

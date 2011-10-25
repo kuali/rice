@@ -491,7 +491,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         return BooleanUtils.toBooleanDefaultIfNull(
                 CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                     KEWConstants.KEW_NAMESPACE,
-                    KRADConstants.DetailTypes.DOCUMENT_LOOKUP_DETAIL_TYPE,
+                    KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
                     KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND),
                 DOCUMENT_HANDLER_POPUP_DEFAULT);
     }
@@ -502,7 +502,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     public boolean isRouteLogPopup() {
         return BooleanUtils.toBooleanDefaultIfNull(
                 CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE,
-                        KRADConstants.DetailTypes.DOCUMENT_LOOKUP_DETAIL_TYPE,
+                        KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
                         KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND), ROUTE_LOG_POPUP_DEFAULT);
     }
 

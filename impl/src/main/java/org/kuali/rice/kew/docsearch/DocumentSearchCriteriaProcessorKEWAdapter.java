@@ -172,7 +172,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             fixedDocumentAttributeRows.add(row);
         }
 
-        // TODO - Rice 2.0 - need to add back in the building of application document status row, commented out for now because this code is weird!
+        // TODO - KULRICE-5635 - need to add back in the building of application document status row, commented out for now because this code is weird!
         // If Application Document Status policy is in effect for this document type,
         // add search attributes for document status, and transition dates.
         // Note: document status field is a drop down if valid statuses are defined,

@@ -241,6 +241,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (deactivateOnActionAlreadyTaken(actionRequest, activationContext)) {
             return;
         }
+        if (deactivateOnInactiveGroup(actionRequest, activationContext)) {
+            return;
+        }
         if (deactivateOnEmptyGroup(actionRequest, activationContext)) {
         	return;
         }
@@ -398,6 +401,20 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     	return false;
     }
 
+    /**
+     * Checks if the action request which is being activated is being assigned to an inactive group.  If this is the case and if the FailOnInactiveGroup 
+     * policy is set to false then it will immediately initiate de-activation on the request
+     */
+    protected boolean deactivateOnInactiveGroup(ActionRequestValue actionRequestToActivate, ActivationContext activationContext) {
+        if (actionRequestToActivate.isGroupRequest()) {
+            if (!actionRequestToActivate.getGroup().isActive() && !actionRequestToActivate.getRouteHeader().getDocumentType().getFailOnInactiveGroup().getPolicyValue()) {
+                deactivateRequest(null, actionRequestToActivate, null, activationContext);
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest) {
         deactivateRequest(actionTaken, actionRequest, null, new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
     }
@@ -709,7 +726,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
         if (actionRequest.isGroupRequest()) {
-        	if (!actionRequest.getGroup().isActive()) {
+            if (!actionRequest.getGroup().isActive() && actionRequest.getRouteHeader().getDocumentType().getFailOnInactiveGroup().getPolicyValue()) {
         		throw new RiceRuntimeException("Attempted to save an action request with an inactive group.");
         	}
         }

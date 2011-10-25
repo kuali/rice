@@ -104,7 +104,11 @@ public enum DocumentTypePolicy implements Coded {
      * This document type policy allows us to configure if the "Perform Post Processor Logic" for the super user action on action requests is displayed.  
      * KULRICE-3584
      */
-    @XmlEnumValue(Codes.ALLOW_SU_POSTPROCESSOR_OVERRIDE) ALLOW_SU_POSTPROCESSOR_OVERRIDE(Codes.ALLOW_SU_POSTPROCESSOR_OVERRIDE);
+    @XmlEnumValue(Codes.ALLOW_SU_POSTPROCESSOR_OVERRIDE) ALLOW_SU_POSTPROCESSOR_OVERRIDE(Codes.ALLOW_SU_POSTPROCESSOR_OVERRIDE),
+
+    @XmlEnumValue(Codes.FAIL_ON_INACTIVE_GROUP) FAIL_ON_INACTIVE_GROUP(Codes.FAIL_ON_INACTIVE_GROUP),
+
+    @XmlEnumValue(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE) REGENERATE_ACTION_REQUESTS_ON_CHANGE(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE);
 
     
     private final String code;
@@ -145,6 +149,8 @@ public enum DocumentTypePolicy implements Coded {
         private static final String NOTIFY_ON_SAVE = "NOTIFY_ON_SAVE";
         private static final String DOCUMENT_STATUS_POLICY = "DOCUMENT_STATUS_POLICY";
         private static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE = "ALLOW_SU_POSTPROCESSOR_OVERRIDE";
+        private static final String FAIL_ON_INACTIVE_GROUP = "FAIL_ON_INACTIVE_GROUP";
+        private static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";       
     }
     
 }

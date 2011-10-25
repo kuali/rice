@@ -450,8 +450,10 @@
       <enumeration value="document_status_policy"/>
       <enumeration value="ALLOW_SU_POSTPROCESSOR_OVERRIDE"/>
       <enumeration value="allow_su_postprocessor_override"/>
-       <enumeration value="REGENERATE_ACTION_REQUESTS_ON_CHANGE"/>
-       <enumeration value="regenerate_action_requests_on_change"/>
+      <enumeration value="FAIL_ON_INACTIVE_GROUP"/>
+      <enumeration value="fail_on_inactive_group"/> 
+      <enumeration value="REGENERATE_ACTION_REQUESTS_ON_CHANGE"/>
+      <enumeration value="regenerate_action_requests_on_change"/>
     </restriction>
   </simpleType>
 

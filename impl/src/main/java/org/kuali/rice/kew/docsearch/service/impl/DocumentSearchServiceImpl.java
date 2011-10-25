@@ -478,7 +478,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             throw new IllegalArgumentException("principalId was null or blank");
         }
 
-        // TODO - Rice 2.0 - need to add support for "advanced" vs. "basic" vs. "super user" searches, this was originally stored with savedSearchString in Rice 1.x
+        // TODO - KULRICE-5832 - need to add support for whether or not the saved search is a detailed/advanced search, this was originally stored with savedSearchString in Rice 1.x
 
         try {
             String savedSearchString = DocumentSearchInternalUtils.marshalDocumentSearchCriteria(criteria);

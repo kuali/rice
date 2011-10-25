@@ -26,7 +26,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 /**
- * Defines various utilities for internal use in the reference implementation of the document lookup functionality.
+ * Defines various utilities for internal use in the reference implementation of the document search functionality.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -261,7 +261,7 @@ public class DocumentSearchInternalUtils {
      * @return unmarshalled DocumentSearchCriteria
      * @throws IOException
      */
-    public static DocumentSearchCriteria unmarshalDocumentLookupCriteria(String string) throws IOException {
+    public static DocumentSearchCriteria unmarshalDocumentSearchCriteria(String string) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         DocumentSearchCriteria.Builder builder = (DocumentSearchCriteria.Builder) jsonMapper.readValue(string, DocumentSearchCriteria.Builder.class); // see JacksonRiceModule for details of unmarshalling
@@ -277,7 +277,7 @@ public class DocumentSearchInternalUtils {
      * @return a JSON string
      * @throws IOException
      */
-    public static String marshalDocumentLookupCriteria(DocumentSearchCriteria criteria) throws IOException {
+    public static String marshalDocumentSearchCriteria(DocumentSearchCriteria criteria) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
         // Jackson XC support not included by Rice, so no auto-magic JAXB-compatibility

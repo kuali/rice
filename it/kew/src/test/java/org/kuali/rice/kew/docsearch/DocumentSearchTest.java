@@ -186,7 +186,7 @@ public class DocumentSearchTest extends KEWTestCase {
     }
 
     protected static String marshall(DocumentSearchCriteria criteria) throws Exception {
-        return DocumentSearchInternalUtils.marshalDocumentLookupCriteria(criteria);
+        return DocumentSearchInternalUtils.marshalDocumentSearchCriteria(criteria);
     }
 
     @Test

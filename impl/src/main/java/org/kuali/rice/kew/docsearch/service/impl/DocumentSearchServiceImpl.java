@@ -127,7 +127,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     protected DocumentSearchCriteria getCriteriaFromSavedSearch(UserOptions savedSearch) {
         String optionValue = savedSearch.getOptionVal();
         try {
-            return DocumentSearchInternalUtils.unmarshalDocumentLookupCriteria(optionValue);
+            return DocumentSearchInternalUtils.unmarshalDocumentSearchCriteria(optionValue);
         } catch (IOException e) {
             throw new WorkflowRuntimeException("Failed to load saved search for name '" + savedSearch.getOptionId() + "'", e);
         }
@@ -480,7 +480,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         // TODO - Rice 2.0 - need to add support for "advanced" vs. "basic" vs. "super user" searches, this was originally stored with savedSearchString in Rice 1.x
 
         try {
-            String savedSearchString = DocumentSearchInternalUtils.marshalDocumentLookupCriteria(criteria);
+            String savedSearchString = DocumentSearchInternalUtils.marshalDocumentSearchCriteria(criteria);
 
             if (StringUtils.isNotBlank(criteria.getSaveName())) {
                 userOptionsService.save(principalId, NAMED_SEARCH_ORDER_BASE + criteria.getSaveName(), savedSearchString);

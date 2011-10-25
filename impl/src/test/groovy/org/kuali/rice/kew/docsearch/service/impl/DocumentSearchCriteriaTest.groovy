@@ -32,8 +32,8 @@ class DocumentSearchCriteriaTest {
     @Test
     void testJSONMarshalling() {
         DocumentSearchCriteria c = create("name")
-        def s = DocumentSearchInternalUtils.marshalDocumentLookupCriteria(c)
-        def d = DocumentSearchInternalUtils.unmarshalDocumentLookupCriteria(s)
+        def s = DocumentSearchInternalUtils.marshalDocumentSearchCriteria(c)
+        def d = DocumentSearchInternalUtils.unmarshalDocumentSearchCriteria(s)
         assertEquals(c, d)
     }
 
@@ -50,10 +50,10 @@ class DocumentSearchCriteriaTest {
             ],
             json: [
                 marshal: {
-                    DocumentSearchInternalUtils.marshalDocumentLookupCriteria(it)
+                    DocumentSearchInternalUtils.marshalDocumentSearchCriteria(it)
                 },
                 unmarshal: {
-                    DocumentSearchInternalUtils.unmarshalDocumentLookupCriteria(it)
+                    DocumentSearchInternalUtils.unmarshalDocumentSearchCriteria(it)
                 }
             ]
         ]

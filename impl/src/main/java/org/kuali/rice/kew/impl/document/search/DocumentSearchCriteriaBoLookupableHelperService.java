@@ -75,7 +75,6 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     private static final String SECURITY_FILTERED_MESSAGE_KEY = "docsearch.DocumentSearchService.securityFiltered";
     private static final String EXCEED_THRESHOLD_AND_SECURITY_FILTERED_MESSAGE_KEY = "docsearch.DocumentSearchService.exceededThresholdAndSecurityFiltered";
 
-    // TODO - Rice 2.0 - can we move these somewhere else?  Should be the job of this class to know what the defaults are for these
     private static final boolean DOCUMENT_HANDLER_POPUP_DEFAULT = true;
     private static final boolean ROUTE_LOG_POPUP_DEFAULT = true;
 
@@ -653,13 +652,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     @Override
     public boolean shouldDisplayHeaderNonMaintActions() {
-        // TODO - Rice 2.0 - ensure this can be customized via url
         return true;
     }
 
     @Override
     public boolean shouldDisplayLookupCriteria() {
-        // TODO - Rice 2.0 - ensure this can be customized via url
         return true;
     }
 
@@ -793,7 +790,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         List<String> additionalFieldNamesToInclude = new ArrayList<String>();
         if (!resultSetConfiguration.isOverrideSearchableAttributes()) {
             for (RemotableAttributeField searchAttributeField : searchAttributeFields) {
-                // TODO - Rice 2.0 - add check here to make sure the searchable attribute should be displayed in result set
+                // TODO - KULRICE-5738 - add check here to make sure the searchable attribute should be displayed in result set
                 // right now this is default always including all searchable attributes!
                 additionalFieldNamesToInclude.add(searchAttributeField.getName());
             }
@@ -846,7 +843,6 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                     searchResult.getSingleDocumentAttributeByName(customColumn.getPropertyName());
             if (documentAttribute != null && documentAttribute.getValue() != null) {
                 wrapDocumentAttributeColumnName(customColumn);
-                // TODO - Rice 2.0 - in Rice 1.0.x we currently only display one value, but it probably makes sense to display a comma-separated
                 // list moving forward if the attribute has more than one value
                 Formatter formatter = customColumn.getFormatter();
                 customColumn.setPropertyValue(formatter.format(documentAttribute.getValue()).toString());

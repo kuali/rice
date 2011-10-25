@@ -34,12 +34,12 @@
             </goals>
           </execution>
           <execution>
-						<id>documentLookupCustomizationHandlerService-wsdl</id>
+						<id>documentSearchCustomizationHandlerService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
 							<className>org.kuali.rice.kew.framework.document.search.DocumentSearchCustomizationHandlerService</className>
-							<outputFile>${project.build.outputDirectory}/wsdl/DocumentLookupCustomizationHandlerService.wsdl</outputFile>
-							<serviceName>DocumentLookupCustomizationHandlerService</serviceName>
+							<outputFile>${project.build.outputDirectory}/wsdl/DocumentSearchCustomizationHandlerService.wsdl</outputFile>
+							<serviceName>DocumentSearchCustomizationHandlerService</serviceName>
 						</configuration>
 						<goals>
 							<goal>java2ws</goal>

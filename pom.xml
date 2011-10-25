@@ -243,49 +243,7 @@
           <artifactId>maven-site-plugin</artifactId>
           <version>${kuali.site.plugin.version}</version>
           <configuration>
-            <reportPlugins>
-              <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <!-- Version is included here only because it does not inherit correctly from the pluginManagement section
-                  of the parent pom -->
-                <version>${kuali.javadoc.plugin.version}</version>
-                <configuration>
-                  <excludePackageNames>${kuali.javadoc.exclude.package.names}</excludePackageNames>
-                  <links>
-                    <link>${kuali.javadoc.link.1}</link>
-                    <link>${kuali.javadoc.link.2}</link>
-                    <link>${kuali.javadoc.link.3}</link>
-                    <link>${kuali.javadoc.link.4}</link>
-                    <link>${kuali.javadoc.link.5}</link>
-                    <link>${kuali.javadoc.link.6}</link>
-                    <link>${kuali.javadoc.link.7}</link>
-                    <link>${kuali.javadoc.link.8}</link>
-                    <link>${kuali.javadoc.link.9}</link>
-                    <link>${kuali.javadoc.link.10}</link>
-                  </links>
-                  <additionalJOption>${kuali.javadoc.additional.joption}</additionalJOption>
-                  <maxmemory>${kuali.javadoc.maxmemory}</maxmemory>
-                  <linksource>${kuali.javadoc.linksource}</linksource>
-                  <javadocVersion>${kuali.javadoc.tool.version}</javadocVersion>
-                  <show>${kuali.javadoc.show}</show>
-                  <debug>${kuali.javadoc.debug}</debug>
-                  <source>${kuali.compile.source}</source>
-                  <quiet>${kuali.javadoc.quiet}</quiet>
-                  <aggregate>${kuali.javadoc.aggregate}</aggregate>
-                  <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-                <reportSets>
-                  <reportSet>
-                    <id>generate-javadocs</id>
-                    <reports>
-                      <report>${kuali.javadoc.report.1}</report>
-                      <report>${kuali.javadoc.report.2}</report>
-                    </reports>
-                  </reportSet>
-                </reportSets>
-              </plugin>
-            </reportPlugins>
+            <reportPlugins />
           </configuration>
           <dependencies>
             <dependency>

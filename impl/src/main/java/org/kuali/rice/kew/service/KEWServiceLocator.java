@@ -209,7 +209,7 @@ public final class KEWServiceLocator {
 	
 	public static final String WORKFLOW_DOCUMENT_PROTOTYPE = "rice.kew.workflowDocumentPrototype";
 
-    public static final String DOCUMENT_LOOKUP_CUSTOMIZATION_MEDIATOR = "rice.kew.documentLookupCustomizationMediator";
+    public static final String DOCUMENT_SEARCH_CUSTOMIZATION_MEDIATOR = "rice.kew.documentSearchCustomizationMediator";
 
     public static final String RULE_VALIDATION_ATTRIBUTE_RESOLVER = "rice.kew.ruleValidationAttributeResolver";
 
@@ -404,7 +404,7 @@ public final class KEWServiceLocator {
     }
 
     public static DocumentSearchCustomizationMediator getDocumentSearchCustomizationMediator() {
-        return getBean(DOCUMENT_LOOKUP_CUSTOMIZATION_MEDIATOR);
+        return getBean(DOCUMENT_SEARCH_CUSTOMIZATION_MEDIATOR);
     }
 
 

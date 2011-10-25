@@ -126,7 +126,7 @@ public final class DocumentSearchResult extends AbstractDataTransferObject imple
         }
 
         /**
-         * Create a builder for the document lookup result and initialize it with the given document builder.
+         * Create a builder for the document search result and initialize it with the given document builder.
          * Additionally initializes the list of document attribute builders on the new instance to an empty list.
          *
          * @param document the document builder with which to initialize the returned builder instance
@@ -193,8 +193,8 @@ public final class DocumentSearchResult extends AbstractDataTransferObject imple
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentLookupResult";
-        final static String TYPE_NAME = "DocumentLookupResultType";
+        final static String ROOT_ELEMENT_NAME = "documentSearchResult";
+        final static String TYPE_NAME = "DocumentSearchResultType";
     }
 
     /**

@@ -221,7 +221,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         results.setCriteriaModified(criteriaModified);
         int size = 0;
         List<DocumentSearchResult.Builder> resultList = new ArrayList<DocumentSearchResult.Builder>();
-        results.setLookupResults(resultList);
+        results.setSearchResults(resultList);
         Map<String, DocumentSearchResult.Builder> resultMap = new HashMap<String, DocumentSearchResult.Builder>();
         PerformanceLogger perfLog = new PerformanceLogger();
         int iteration = 0;

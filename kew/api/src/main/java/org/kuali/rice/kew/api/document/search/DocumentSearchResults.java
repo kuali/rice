@@ -28,7 +28,7 @@ import java.util.List;
 @XmlRootElement(name = DocumentSearchResults.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentSearchResults.Constants.TYPE_NAME, propOrder = {
-    DocumentSearchResults.Elements.LOOKUP_RESULTS,
+    DocumentSearchResults.Elements.SEARCH_RESULTS,
     DocumentSearchResults.Elements.CRITERIA,
     DocumentSearchResults.Elements.CRITERIA_MODIFIED,
     DocumentSearchResults.Elements.OVER_THRESHOLD,
@@ -37,8 +37,8 @@ import java.util.List;
 })
 public final class DocumentSearchResults extends AbstractDataTransferObject implements DocumentSearchResultsContract {
 
-    @XmlElementWrapper(name = Elements.LOOKUP_RESULTS, required = true)
-    @XmlElement(name = Elements.LOOKUP_RESULT, required = false)
+    @XmlElementWrapper(name = Elements.SEARCH_RESULTS, required = true)
+    @XmlElement(name = Elements.SEARCH_RESULT, required = false)
     private final List<DocumentSearchResult> searchResults;
 
     @XmlElement(name = Elements.CRITERIA, required = true)
@@ -108,14 +108,14 @@ public final class DocumentSearchResults extends AbstractDataTransferObject impl
      */
     public final static class Builder implements Serializable, ModelBuilder, DocumentSearchResultsContract {
 
-        private List<DocumentSearchResult.Builder> lookupResults;
+        private List<DocumentSearchResult.Builder> searchResults;
         private DocumentSearchCriteria.Builder criteria;
         private boolean criteriaModified;
         private boolean overThreshold;
         private int numberOfSecurityFilteredResults;
 
         private Builder(DocumentSearchCriteria.Builder criteria) {
-            setLookupResults(new ArrayList<DocumentSearchResult.Builder>());
+            setSearchResults(new ArrayList<DocumentSearchResult.Builder>());
             setCriteria(criteria);
             setCriteriaModified(false);
             setOverThreshold(false);
@@ -124,15 +124,15 @@ public final class DocumentSearchResults extends AbstractDataTransferObject impl
         }
 
         /**
-         * Create a builder for the document lookup result and initialize it with the given document lookup criteria
+         * Create a builder for the document search result and initialize it with the given document search criteria
          * builder.  Additionally initializes {@code criteriaModified} to "false", {@code overThreshold} to "false",
          * and {@code numberOfSecurityFilteredResults} to 0.
          *
-         * @param criteria the document lookup criteria builder with which to initialize the returned builder instance
+         * @param criteria the document search criteria builder with which to initialize the returned builder instance
          *
-         * @return a builder instance initialized with the given document lookup criteria builder
+         * @return a builder instance initialized with the given document search criteria builder
          *
-         * @throws IllegalArgumentException if the given document lookup criteria builder is null
+         * @throws IllegalArgumentException if the given document search criteria builder is null
          */
         public static Builder create(DocumentSearchCriteria.Builder criteria) {
             return new Builder(criteria);
@@ -169,7 +169,7 @@ public final class DocumentSearchResults extends AbstractDataTransferObject impl
 
         @Override
         public List<DocumentSearchResult.Builder> getSearchResults() {
-            return this.lookupResults;
+            return this.searchResults;
         }
 
         @Override
@@ -192,8 +192,8 @@ public final class DocumentSearchResults extends AbstractDataTransferObject impl
             return this.numberOfSecurityFilteredResults;
         }
 
-        public void setLookupResults(List<DocumentSearchResult.Builder> lookupResults) {
-            this.lookupResults = lookupResults;
+        public void setSearchResults(List<DocumentSearchResult.Builder> searchResults) {
+            this.searchResults = searchResults;
         }
 
         /**
@@ -228,16 +228,16 @@ public final class DocumentSearchResults extends AbstractDataTransferObject impl
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String ROOT_ELEMENT_NAME = "documentLookupResults";
-        final static String TYPE_NAME = "DocumentLookupResultsType";
+        final static String ROOT_ELEMENT_NAME = "documentSearchResults";
+        final static String TYPE_NAME = "DocumentSearchResultsType";
     }
 
     /**
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
-        final static String LOOKUP_RESULTS = "searchResults";
-        final static String LOOKUP_RESULT = "lookupResult";
+        final static String SEARCH_RESULTS = "searchResults";
+        final static String SEARCH_RESULT = "searchResult";
         final static String CRITERIA = "criteria";
         final static String CRITERIA_MODIFIED = "criteriaModified";
         final static String OVER_THRESHOLD = "overThreshold";

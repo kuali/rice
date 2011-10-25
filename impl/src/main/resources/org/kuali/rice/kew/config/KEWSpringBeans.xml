@@ -358,7 +358,7 @@
   <bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl" lazy-init="true">
     <property name="documentSearchDAO" ref="enDocumentSearchDAO" />
     <property name="userOptionsService" ref="enUserOptionsService" />
-    <property name="documentSearchCustomizationMediator" ref="rice.kew.documentLookupCustomizationMediator" />
+    <property name="documentSearchCustomizationMediator" ref="rice.kew.documentSearchCustomizationMediator" />
   </bean>
   <bean id="enDocumentSearchDAO" class="org.kuali.rice.kew.docsearch.dao.impl.DocumentSearchDAOJdbcImpl" lazy-init="true">
     <property name="dataSource" ref="enWorkflowDataSource" />
@@ -426,18 +426,18 @@
     </property>
   </bean>
 
-  <bean id="documentLookupCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessorKEWAdapter"/>
+  <bean id="documentSearchCriteriaProcessor" class="org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessorKEWAdapter"/>
 
   <bean id="documentSearchCriteriaTranslator" class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslatorImpl"/>
 
   <bean id="documentSearchCriteriaBoLookupableHelperService"
         class="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBoLookupableHelperService" scope="prototype">
-    <property name="documentSearchCriteriaProcessor" ref="documentLookupCriteriaProcessor"/>
+    <property name="documentSearchCriteriaProcessor" ref="documentSearchCriteriaProcessor"/>
     <property name="documentSearchCriteriaTranslator" ref="documentSearchCriteriaTranslator"/>
     <property name="documentSearchService" ref="enDocumentSearchService"/>
   </bean>
 
-  <bean id="documentLookupCriteriaBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+  <bean id="documentSearchCriteriaBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
     <property name="lookupableHelperService">
       <ref local="documentSearchCriteriaBoLookupableHelperService" />
     </property>
@@ -842,7 +842,7 @@
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
   </bean>
 
-  <bean id="rice.kew.documentLookupCustomizationMediator" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediatorImpl" />
+  <bean id="rice.kew.documentSearchCustomizationMediator" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediatorImpl" />
 
   <bean id="rice.kew.documentSecurityHandlerService" class="org.kuali.rice.kew.impl.document.security.DocumentSecurityHandlerServiceImpl">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />

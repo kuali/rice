@@ -211,17 +211,17 @@ public interface WorkflowDocumentService {
      * documents can define security which permits access to view certain search results, the given principal id will
      * be used when evaluating which documents should be filtered from the results because of lack of access.
      *
-     * @param principalId the id of the principal to execute the lookup as, if this value is non-null then security
+     * @param principalId the id of the principal to execute the search as, if this value is non-null then security
      * filtering will be executed against the results, if it is null then no filtering will be performed
-     * @param criteria the criteria to use when executing the lookup
+     * @param criteria the criteria to use when executing the search
      *
-     * @return the results of the lookup, this will never be null but may contain an empty list of results
+     * @return the results of the search, this will never be null but may contain an empty list of results
      *
      * @throws RiceIllegalArgumentException if the given criteria is null
      */
-    @WebMethod(operationName = "lookupDocuments")
-    @WebResult(name = "documentLookupResults")
-    DocumentSearchResults lookupDocuments(
+    @WebMethod(operationName = "documentSearch")
+    @WebResult(name = "documentSearchResults")
+    DocumentSearchResults documentSearch(
             @WebParam(name = "principalId") String principalId,
             @WebParam(name = "criteria") DocumentSearchCriteria criteria)
         throws RiceIllegalArgumentException;

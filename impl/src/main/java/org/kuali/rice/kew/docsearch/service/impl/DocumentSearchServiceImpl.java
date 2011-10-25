@@ -189,7 +189,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                         numFiltered++;
                     }
                 }
-                searchResults.setLookupResults(finalResults);
+                searchResults.setSearchResults(finalResults);
                 searchResults.setNumberOfSecurityFilteredResults(numFiltered);
             }
         }

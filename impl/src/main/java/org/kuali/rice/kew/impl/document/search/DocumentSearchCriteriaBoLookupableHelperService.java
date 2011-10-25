@@ -743,10 +743,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         DocumentSearchCriteriaConfiguration criteriaConfiguration = null;
         if (documentType != null) {
             resultSetConfiguration =
-                KEWServiceLocator.getDocumentLookupCustomizationMediator().customizeResultSetConfiguration(
+                KEWServiceLocator.getDocumentSearchCustomizationMediator().customizeResultSetConfiguration(
                         documentType, criteria);
             criteriaConfiguration =
-                    KEWServiceLocator.getDocumentLookupCustomizationMediator().getDocumentLookupCriteriaConfiguration(documentType);
+                    KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentLookupCriteriaConfiguration(documentType);
 
         }
         int index = 0;

@@ -104,7 +104,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
         if (documentType != null) {
-            errors = KEWServiceLocator.getDocumentLookupCustomizationMediator().validateLookupFieldParameters(documentType, criteria.build());
+            errors = KEWServiceLocator.getDocumentSearchCustomizationMediator().validateLookupFieldParameters(documentType, criteria.build());
         }
         return errors == null ? Collections.<RemotableAttributeError>emptyList() : Collections.unmodifiableList(errors);
     }

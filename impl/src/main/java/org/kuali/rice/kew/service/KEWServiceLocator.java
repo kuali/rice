@@ -403,7 +403,7 @@ public final class KEWServiceLocator {
     	return getBean(WORKFLOW_DOCUMENT_PROTOTYPE);
     }
 
-    public static DocumentSearchCustomizationMediator getDocumentLookupCustomizationMediator() {
+    public static DocumentSearchCustomizationMediator getDocumentSearchCustomizationMediator() {
         return getBean(DOCUMENT_LOOKUP_CUSTOMIZATION_MEDIATOR);
     }
 

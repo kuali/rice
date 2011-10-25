@@ -144,7 +144,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
     protected List<Row> getDocumentAttributeRows(DocumentType documentType) {
         List<Row> documentAttributeRows = new ArrayList<Row>();
         DocumentSearchCriteriaConfiguration configuration =
-                KEWServiceLocator.getDocumentLookupCustomizationMediator().
+                KEWServiceLocator.getDocumentSearchCustomizationMediator().
                         getDocumentLookupCriteriaConfiguration(documentType);
         if (configuration != null) {
             List<RemotableAttributeField> remotableAttributeFields = configuration.getFlattenedSearchAttributeFields();

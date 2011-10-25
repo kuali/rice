@@ -25,6 +25,7 @@ public interface DocumentSecurityService {
 
     boolean routeLogAuthorized(String principalId, DocumentRouteHeaderValue routeHeader, SecuritySession session);
 
-    Set<String> documentLookupResultAuthorized(String principalId, DocumentSearchResults results, SecuritySession securitySession);
+    Set<String> documentSearchResultAuthorized(String principalId, DocumentSearchResults results,
+            SecuritySession securitySession);
 
 }

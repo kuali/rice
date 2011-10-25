@@ -177,7 +177,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         if (StringUtils.isNotBlank(principalId) && !searchResults.getSearchResults().isEmpty()) {
             DocumentSearchResults builtResults = searchResults.build();
-            Set<String> authorizedDocumentIds = KEWServiceLocator.getDocumentSecurityService().documentLookupResultAuthorized(principalId, builtResults, new SecuritySession(principalId));
+            Set<String> authorizedDocumentIds = KEWServiceLocator.getDocumentSecurityService().documentSearchResultAuthorized(
+                    principalId, builtResults, new SecuritySession(principalId));
             if (CollectionUtils.isNotEmpty(authorizedDocumentIds)) {
                 int numFiltered = 0;
                 List<DocumentSearchResult.Builder> finalResults = new ArrayList<DocumentSearchResult.Builder>();

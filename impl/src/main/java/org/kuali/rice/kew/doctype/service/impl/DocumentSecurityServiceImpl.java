@@ -77,7 +77,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     @Override
-    public Set<String> documentLookupResultAuthorized(String principalId, DocumentSearchResults results,
+    public Set<String> documentSearchResultAuthorized(String principalId, DocumentSearchResults results,
             SecuritySession securitySession) {
         List<Document> documents = new ArrayList<Document>();
         for (DocumentSearchResult result : results.getSearchResults()) {

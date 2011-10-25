@@ -20,7 +20,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentTypeService;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
-import org.kuali.rice.kew.docsearch.DocumentEbo;
+import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEbo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -52,7 +52,7 @@ public class KEWModuleService extends ModuleServiceBase {
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "documentTypeId" );
 			return pkFields;
-		}else if(DocumentEbo.class.isAssignableFrom( businessObjectInterfaceClass )){
+		}else if(DocumentSearchCriteriaEbo.class.isAssignableFrom( businessObjectInterfaceClass )){
 			List<String> pkFields = new ArrayList<String>( 1 );
 			pkFields.add( "documentId" );
 			return pkFields;
@@ -79,7 +79,7 @@ public class KEWModuleService extends ModuleServiceBase {
 				return (T) DocumentType.from(getDocumentTypeService().getDocumentTypeById(fieldValues.get("id").toString()));
 			}
 
-		}else if(DocumentEbo.class.isAssignableFrom( businessObjectClass )){
+		}else if(DocumentSearchCriteriaEbo.class.isAssignableFrom( businessObjectClass )){
 			if ( fieldValues.containsKey( "documentId" ) ) {
 				return (T)createDocumentSearchEbo(KewApiServiceLocator.getWorkflowDocumentService().getDocument(
                         fieldValues.get("documentId").toString()));
@@ -109,8 +109,8 @@ public class KEWModuleService extends ModuleServiceBase {
 		this.docTypeService = docTypeService;
 	}
 
-	private DocumentEbo createDocumentSearchEbo(final Document doc){
-		return new DocumentEbo(){
+	private DocumentSearchCriteriaEbo createDocumentSearchEbo(final Document doc){
+		return new DocumentSearchCriteriaEbo(){
 
             @Override
             public String getApplicationDocumentId() {

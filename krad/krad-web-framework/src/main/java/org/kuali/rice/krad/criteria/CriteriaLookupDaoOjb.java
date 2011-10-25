@@ -1,4 +1,4 @@
-package org.kuali.rice.core.impl.criteria;
+package org.kuali.rice.krad.criteria;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
@@ -42,7 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CriteriaLookupServiceOjbImpl extends PlatformAwareDaoBaseOjb implements CriteriaLookupService {
+public class CriteriaLookupDaoOjb extends PlatformAwareDaoBaseOjb implements CriteriaLookupDao {
 
     @Override
     public <T> GenericQueryResults<T> lookup(final Class<T> queryClass, final QueryByCriteria criteria) {

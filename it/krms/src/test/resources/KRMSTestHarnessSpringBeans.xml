@@ -269,7 +269,9 @@
       <property name="dbPlatform" ref="dbPlatform" />
     </bean>
 
-    <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>
+    <bean id="criteriaLookupService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+      <property name="serviceName" value="criteriaLookupService" />
+    </bean>
 
 
   <!-- Import core beans -->

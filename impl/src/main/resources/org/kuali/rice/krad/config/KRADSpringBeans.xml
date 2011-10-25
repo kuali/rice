@@ -283,26 +283,26 @@
     </property>
     <property name="externalizableBusinessObjectImplementations">
       <map>
-        <entry key="org.kuali.rice.location.api.country.CountryContract"
-               value="org.kuali.rice.location.framework.country.CountryEbo"/>
-        <entry key="org.kuali.rice.location.api.state.StateContract"
-               value="org.kuali.rice.location.framework.state.StateEbo"/>
-        <entry key="org.kuali.rice.location.api.postalcode.PostalCodeContract"
-               value="org.kuali.rice.location.framework.postalcode.PostalCodeEbo"/>
-        <entry key="org.kuali.rice.location.api.county.CountyContract"
-               value="org.kuali.rice.location.framework.county.CountyEbo"/>
-        <entry key="org.kuali.rice.location.api.campus.CampusContract"
-               value="org.kuali.rice.location.framework.campus.CampusEbo"/>
-        <entry key="org.kuali.rice.location.api.campus.CampusTypeContract"
-               value="org.kuali.rice.location.framework.campus.CampusTypeEbo"/>
-        <entry key="org.kuali.rice.core.api.component.ComponentContract"
-               value="org.kuali.rice.core.framework.component.ComponentEbo"/>
-        <entry key="org.kuali.rice.core.api.namespace.NamespaceContract"
-               value="org.kuali.rice.core.framework.namespace.NamespaceEbo"/>
-        <entry key="org.kuali.rice.core.api.parameter.ParameterTypeContract"
-               value="org.kuali.rice.core.framework.parameter.ParameterTypeEbo"/>
-        <entry key="org.kuali.rice.core.api.parameter.ParameterContract"
-               value="org.kuali.rice.core.framework.parameter.ParameterEbo"/>
+        <entry key="org.kuali.rice.location.framework.country.CountryEbo"
+               value="org.kuali.rice.location.impl.country.CountryBo"/>
+        <entry key="org.kuali.rice.location.framework.state.StateEbo"
+               value="org.kuali.rice.location.impl.state.StateBo"/>
+        <entry key="org.kuali.rice.location.framework.postalcode.PostalCodeEbo"
+               value="org.kuali.rice.location.impl.postalcode.PostalCodeBo"/>
+        <entry key="org.kuali.rice.location.framework.county.CountyEbo"
+               value="org.kuali.rice.location.impl.county.CountyBo"/>
+        <entry key="org.kuali.rice.location.framework.campus.CampusEbo"
+               value="org.kuali.rice.location.impl.campus.CampusBo"/>
+        <entry key="org.kuali.rice.location.framework.campus.CampusTypeEbo"
+               value="org.kuali.rice.location.impl.campus.CampusTypeBo"/>
+        <entry key="org.kuali.rice.core.framework.component.ComponentEbo"
+               value="org.kuali.rice.core.impl.component.ComponentBo"/>
+        <entry key="org.kuali.rice.core.framework.namespace.NamespaceEbo"
+               value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>
+        <entry key="org.kuali.rice.core.framework.parameter.ParameterTypeEbo"
+               value="org.kuali.rice.core.impl.parameter.ParameterTypeBo"/>
+        <entry key="org.kuali.rice.core.framework.parameter.ParameterEbo"
+               value="org.kuali.rice.core.impl.parameter.ParameterBo"/>
       </map>
     </property>
   </bean>
@@ -489,6 +489,19 @@
       <ref bean="kualiConfigurationService"/>
     </property>
   </bean>
+
+  <bean id="criteriaLookupService" class="org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl">
+    <property name="criteriaLookupDao">
+      <ref bean="criterialookupDao"/>
+    </property>
+  </bean>
+
+  <!--<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
+		<property name="jcdAlias" value="coreApplicationDataSource" />
+		<property name="dbPlatform" ref="dbPlatform" />
+	</bean>-->
+
+  <!-- this should go in the core spring beans once ojb is available-->
 
   <bean id="workflowDocumentService" class="org.kuali.rice.krad.workflow.service.impl.WorkflowDocumentServiceImpl"/>
 
@@ -855,6 +868,11 @@
     <property name="lookupDaoOjb" ref="lookupDaoOjb"/>
   </bean>
 
+  <bean id="criterialookupDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy">
+    <property name="criteriaLookupDaoJpa" ref="criterialookupDaoJpa"/>
+    <property name="criteriaLookupDaoOjb" ref="criterialookupDaoOjb"/>
+  </bean>
+
   <bean id="maintenanceDocumentDao" class="org.kuali.rice.krad.dao.proxy.MaintenanceDocumentDaoProxy">
     <property name="maintenanceDocumentDaoJpa" ref="maintenanceDocumentDaoJpa"/>
     <property name="maintenanceDocumentDaoOjb" ref="maintenanceDocumentDaoOjb"/>
@@ -1141,6 +1159,12 @@
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
 
+  <bean id="criterialookupDaoJpa" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoJpa">
+    <property name="entityManager" ref="kradApplicationEntityManager"/>
+  </bean>
+
+  <bean id="criterialookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoOjb" />
+
   <bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.krad.dao.impl.MaintenanceDocumentDaoJpa">
     <property name="entityManager" ref="kradApplicationEntityManager"/>
   </bean>
@@ -1254,10 +1278,6 @@
     <property name="lookupService">
       <ref bean="lookupService"/>
     </property>
-  </bean>
-
-  <bean id="criteriaLookupService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="criteriaLookupService"/>
   </bean>
 
   <bean id="dataDictionaryRemoteFieldService" class="org.kuali.rice.krad.service.impl.DataDictionaryRemoteFieldServiceImpl"/>

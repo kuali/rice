@@ -37,6 +37,8 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.springframework.util.AutoPopulatingList
+import org.joda.time.DateTime
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 
 @Entity
 @Table(name = "KRIM_ROLE_T")
@@ -106,7 +108,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleContrac
         List<String> roleMembers = new ArrayList<String>();
         for (RoleMemberBo member: getMembers()) {
             if (member.getMemberTypeCode().equals(memberTypeCode)
-                    && member.isActive()) {
+                    && member.isActive(new DateTime())) {
                 roleMembers.add(member.getMemberId());
             }
         }
@@ -143,5 +145,7 @@ public class RoleBo extends PersistableBusinessObjectBase implements RoleContrac
         bo.active = immutable.active
         bo.versionNumber = immutable.versionNumber
         bo.objectId = immutable.objectId
+
+        return bo
     }
 }

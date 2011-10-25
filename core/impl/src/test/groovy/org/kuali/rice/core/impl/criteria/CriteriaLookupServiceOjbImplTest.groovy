@@ -4,9 +4,11 @@ import org.junit.Test
 import org.kuali.rice.core.api.criteria.QueryByCriteria
 import org.kuali.rice.core.api.parameter.Parameter
 
+import org.kuali.rice.krad.criteria.CriteriaLookupDaoOjb
+
 class CriteriaLookupServiceOjbImplTest {
 
-    def lookup = new CriteriaLookupServiceOjbImpl();
+    def lookup = new CriteriaLookupDaoOjb();
 
     @Test(expected=IllegalArgumentException.class)
     void test_lookup_with_null_1() {

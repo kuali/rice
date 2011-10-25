@@ -62,37 +62,15 @@
 		</property>
 	</bean>
 
-  <!-- caching start -->
-  <!--<cache:annotation-driven cache-manager="coreDistributedCacheManager" />-->
+ <!-- core caching set in KRADSpringBeans (sadly) -->
 
-  <!-- this can be swapped with whatever cache manager you want (ehcache, java.util.concurrent, etc.) -->
-  <!--<bean id="coreLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-    <property name="cacheManager">
-      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="${core.ehcache.config.location}"/>
-    </property>
-  </bean>
-
-  &lt;!&ndash; the distributed cache manager that calls into the coreCacheService on the ksb &ndash;&gt;
-  <bean id="coreDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
-    <property name="cacheManager" ref="coreLocalCacheManager" />
-    <property name="serviceName" value="{http://rice.kuali.org/core/v2_0}coreCacheServiceSoap" />
-  </bean>
-
-  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
-    <property name="cacheManager" ref="coreDistributedCacheManager" />
-  </bean>
-
-  &lt;!&ndash; spring service that should be exposed on the ksb to receive messages from the distributed cache manager &ndash;&gt;
-  <bean id="coreCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="coreLocalCacheManager" />-->
-  <!-- caching end -->
-
-  <bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
+  <!--<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="coreApplicationDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />
 	</bean>
 
-    <!-- this should go in the core spring beans once ojb is available-->
-    <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>
+  &lt;!&ndash; this should go in the core spring beans once ojb is available&ndash;&gt;
+  <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>-->
 
 	<!-- Mail Sender Factory -->
 	<bean id="mailSender" class="org.kuali.rice.core.mail.MailSenderFactoryBean" />

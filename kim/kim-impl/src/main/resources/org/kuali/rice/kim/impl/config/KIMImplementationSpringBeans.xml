@@ -199,8 +199,7 @@
   <!--
         Responsibility Service
   -->
-  	<bean id="criteriaLookupService"
-		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+  <bean id="criteriaLookupService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="criteriaLookupService" />
 	</bean>
 

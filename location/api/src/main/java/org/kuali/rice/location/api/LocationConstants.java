@@ -25,6 +25,16 @@ import org.kuali.rice.core.api.CoreConstants;
  */
 public final class LocationConstants {
 
+    public final static class PrimaryKeyConstants {
+		public static final String CODE = "code";
+        public static final String COUNTRY_CODE = "countryCode";
+		public static final String STATE_CODE = "stateCode";
+
+        private PrimaryKeyConstants() {
+			throw new UnsupportedOperationException("do not call");
+		}
+    }
+
     public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 
     public static final class Namespaces {

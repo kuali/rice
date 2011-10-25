@@ -28,7 +28,7 @@ import java.util.List;
 
 
 /**
- * Handles various functions related to generation and processing of document lookups.
+ * Handles various functions related to generation and processing of document searches.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

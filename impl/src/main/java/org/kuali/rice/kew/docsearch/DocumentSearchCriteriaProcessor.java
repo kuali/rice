@@ -21,7 +21,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
- * Used by the document lookup helper to produce rows to render for the document lookup screen.
+ * Used by the document search helper to produce rows to render for the document search screen.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -29,21 +29,21 @@ import org.kuali.rice.kns.web.ui.Row;
 public interface DocumentSearchCriteriaProcessor {
 
     /**
-     * Constructs the list of rows and fields to display in the lookup criteria section of the document lookup screen.
+     * Constructs the list of rows and fields to display in the lookup criteria section of the document search screen.
      * The documentType parameter passed to this method will generally be supplied in cases where the document type name
      * was supplied to the lookup via a query parameter or when refreshing the criteria after making a change to it
-     * (like the user doing a document type lookup to fill in the value and then returning it back to the document lookup).
+     * (like the user doing a document type lookup to fill in the value and then returning it back to the document search).
      *
      * <p>This method should look at the given document type (if there is one) to determine if there are any custom
      * rows to render for that document type.  It should also look at the request for detailed and super user search
      * and adjust the rows accordingly for either of those conditions.</p>
      *
      * @param documentType supplies the document type in use on this search if one is specified, will be null otherwise
-     * @param defaultRows the default set of rows that are supplied from the data dictionary for the document lookup
+     * @param defaultRows the default set of rows that are supplied from the data dictionary for the document search
      * @param detailed indicates whether or not a detailed search has been requested
      * @param superSearch indicates whether or not a super user search has been requested
      *
-     * @return the rows to render is the criteria section of the document lookup.
+     * @return the rows to render is the criteria section of the document search.
      */
 	List<Row> getRows(DocumentType documentType, List<Row> defaultRows, boolean detailed, boolean superSearch);
 

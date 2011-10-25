@@ -120,10 +120,10 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
     }
 
     /**
-     * Returns the maximum number of results that should be returned from the document lookup.
+     * Returns the maximum number of results that should be returned from the document search.
      *
      * @param criteria the criteria in which to check for a max results value
-     * @return the maximum number of results that should be returned from a document lookup
+     * @return the maximum number of results that should be returned from a document search
      */
     protected int getMaxResultCap(DocumentSearchCriteria criteria) {
         int maxResults = KEWConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;

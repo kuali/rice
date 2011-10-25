@@ -695,7 +695,7 @@ public final class KEWConstants {
     public static final String RULE_XML_ATTRIBUTE_TYPE_LABEL = "Rule Xml Attribute";
     public static final String SEARCHABLE_ATTRIBUTE_TYPE_LABEL = "Searchable Attribute";
     public static final String SEARCHABLE_XML_ATTRIBUTE_TYPE_LABEL = "Searchable Xml Attribute";
-    public static final String DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE_LABEL = "Document Lookup Customizer";
+    public static final String DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE_LABEL = "Document Search Customizer";
     public static final String DOCUMENT_SECURITY_ATTRIBUTE_TYPE_LABEL = "Document Security Attribute";
     public static final String EXTENSION_ATTRIBUTE_TYPE_LABEL = "Extension Attribute";
     public static final String EMAIL_ATTRIBUTE_TYPE_LABEL = "Email Attribute";
@@ -725,7 +725,8 @@ public final class KEWConstants {
         RULE_ATTRIBUTE_TYPE_MAP.put(RULE_XML_ATTRIBUTE_TYPE, RULE_XML_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCHABLE_ATTRIBUTE_TYPE, SEARCHABLE_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCHABLE_XML_ATTRIBUTE_TYPE, SEARCHABLE_XML_ATTRIBUTE_TYPE_LABEL);
-        RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE, DOCUMENT_LOOKUP_CUSTOMIZER_ATTRIBUTE_TYPE_LABEL);
+        RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE,
+                DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SECURITY_ATTRIBUTE_TYPE, DOCUMENT_SECURITY_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(EXTENSION_ATTRIBUTE_TYPE, EXTENSION_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(EMAIL_ATTRIBUTE_TYPE, EMAIL_ATTRIBUTE_TYPE_LABEL);
@@ -976,7 +977,7 @@ public final class KEWConstants {
     }
 
     /**
-     * Defines the prefix to add to document attribute field names on the document lookup screens.
+     * Defines the prefix to add to document attribute field names on the document search screens.
      */
     public static final String DOCUMENT_ATTRIBUTE_FIELD_PREFIX = "documentAttribute.";
     

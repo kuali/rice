@@ -13,7 +13,7 @@ import org.kuali.rice.kew.api.document.DocumentStatus
 import java.sql.Timestamp
 
 /**
- * Defines the business object that specifies the criteria used on document lookups.
+ * Defines the business object that specifies the criteria used on document searches.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

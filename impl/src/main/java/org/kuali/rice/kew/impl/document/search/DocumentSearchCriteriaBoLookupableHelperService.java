@@ -59,7 +59,7 @@ import java.util.Map;
 
 /**
  * Implementation of lookupable helper service which handles the complex lookup behavior required by the KEW
- * document lookup screen.
+ * document search screen.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -193,7 +193,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     /**
-     * Loads the document lookup criteria from the given map of field values as submitted from the search screen, and
+     * Loads the document search criteria from the given map of field values as submitted from the search screen, and
      * populates the current form Rows/Fields with the saved criteria fields
      */
     protected DocumentSearchCriteria loadCriteria(Map<String, String> fieldValues) {
@@ -735,7 +735,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      */
     protected void postProcessResults(Collection<ResultRow> resultRows, DocumentSearchResults searchResults) {
         if (resultRows.size() != searchResults.getSearchResults().size()) {
-            throw new IllegalStateException("Encountered a mismatch between ResultRow items and document lookup results "
+            throw new IllegalStateException("Encountered a mismatch between ResultRow items and document search results "
                     + resultRows.size() + " != " + searchResults.getSearchResults().size());
         }
         DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
@@ -760,7 +760,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     /**
      * Executes customization of columns, could include removing certain columns or adding additional columns to the
-     * result row (in cases where columns are added by document lookup customization, such as searchable attributes).
+     * result row (in cases where columns are added by document search customization, such as searchable attributes).
      */
     protected void executeColumnCustomization(ResultRow resultRow, DocumentSearchResult searchResult,
             DocumentSearchResultSetConfiguration resultSetConfiguration,

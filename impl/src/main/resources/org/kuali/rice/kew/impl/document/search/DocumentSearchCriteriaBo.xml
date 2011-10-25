@@ -5,40 +5,40 @@
 
   <!-- Business Object Definition -->
 
-  <bean id="DocumentLookupCriteria" parent="DocumentLookupCriteria-parentBean"/>
+  <bean id="DocumentSearchCriteria" parent="DocumentSearchCriteria-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-parentBean" abstract="true" parent="BusinessObjectEntry">
+  <bean id="DocumentSearchCriteria-parentBean" abstract="true" parent="BusinessObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo"/>
     <property name="lookupDefinition">
-      <ref bean="DocumentLookupCriteria-lookupDefinition"/>
+      <ref bean="DocumentSearchCriteria-lookupDefinition"/>
     </property>
     <property name="titleAttribute" value="documentId"/>
     <property name="objectLabel" value="Document"/>
     <property name="attributes">
       <list>
-        <ref bean="DocumentLookupCriteria-documentTypeName"/>
-        <ref bean="DocumentLookupCriteria-initiatorPrincipalName"/>
-        <ref bean="DocumentLookupCriteria-approverPrincipalName"/>
-        <ref bean="DocumentLookupCriteria-viewerPrincipalName"/>
-        <ref bean="DocumentLookupCriteria-groupViewerName"/>
-        <ref bean="DocumentLookupCriteria-groupViewerId"/>
-        <ref bean="DocumentLookupCriteria-documentId"/>
-        <ref bean="DocumentLookupCriteria-applicationDocumentId"/>
-        <ref bean="DocumentLookupCriteria-statusCode"/>
-        <ref bean="DocumentLookupCriteria-applicationDocumentStatus"/>
-        <ref bean="DocumentLookupCriteria-routeNodeName"/>
-        <ref bean="DocumentLookupCriteria-routeNodeLogic"/>
-        <ref bean="DocumentLookupCriteria-dateCreated"/>
-        <ref bean="DocumentLookupCriteria-dateApproved"/>
-        <ref bean="DocumentLookupCriteria-dateLastModified"/>
-        <ref bean="DocumentLookupCriteria-dateFinalized"/>
-        <ref bean="DocumentLookupCriteria-title"/>
-        <ref bean="DocumentLookupCriteria-saveName"/>
+        <ref bean="DocumentSearchCriteria-documentTypeName"/>
+        <ref bean="DocumentSearchCriteria-initiatorPrincipalName"/>
+        <ref bean="DocumentSearchCriteria-approverPrincipalName"/>
+        <ref bean="DocumentSearchCriteria-viewerPrincipalName"/>
+        <ref bean="DocumentSearchCriteria-groupViewerName"/>
+        <ref bean="DocumentSearchCriteria-groupViewerId"/>
+        <ref bean="DocumentSearchCriteria-documentId"/>
+        <ref bean="DocumentSearchCriteria-applicationDocumentId"/>
+        <ref bean="DocumentSearchCriteria-statusCode"/>
+        <ref bean="DocumentSearchCriteria-applicationDocumentStatus"/>
+        <ref bean="DocumentSearchCriteria-routeNodeName"/>
+        <ref bean="DocumentSearchCriteria-routeNodeLogic"/>
+        <ref bean="DocumentSearchCriteria-dateCreated"/>
+        <ref bean="DocumentSearchCriteria-dateApproved"/>
+        <ref bean="DocumentSearchCriteria-dateLastModified"/>
+        <ref bean="DocumentSearchCriteria-dateFinalized"/>
+        <ref bean="DocumentSearchCriteria-title"/>
+        <ref bean="DocumentSearchCriteria-saveName"/>
         <!-- Additional Attributes used for display purposes -->
-        <ref bean="DocumentLookupCriteria-statusLabel"/>
-        <ref bean="DocumentLookupCriteria-initiatorPerson-name"/>
-        <ref bean="DocumentLookupCriteria-documentTypeLabel"/>
-        <ref bean="DocumentLookupCriteria-routeLog"/>
+        <ref bean="DocumentSearchCriteria-statusLabel"/>
+        <ref bean="DocumentSearchCriteria-initiatorPerson-name"/>
+        <ref bean="DocumentSearchCriteria-documentTypeLabel"/>
+        <ref bean="DocumentSearchCriteria-routeLog"/>
       </list>
     </property>
     <property name="relationships">
@@ -81,9 +81,9 @@
 
   <!-- Attribute Definitions -->
 
-  <bean id="DocumentLookupCriteria-documentTypeName" parent="DocumentLookupCriteria-documentTypeName-parentBean"/>
+  <bean id="DocumentSearchCriteria-documentTypeName" parent="DocumentSearchCriteria-documentTypeName-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-documentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-documentTypeName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="documentTypeName"/>
     <property name="label" value="Document Type"/>
     <property name="shortLabel" value="Type"/>
@@ -93,9 +93,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-initiatorPrincipalName" parent="DocumentLookupCriteria-initiatorPrincipalName-parentBean"/>
+  <bean id="DocumentSearchCriteria-initiatorPrincipalName" parent="DocumentSearchCriteria-initiatorPrincipalName-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-initiatorPrincipalName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-initiatorPrincipalName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="initiatorPrincipalName"/>
     <property name="label" value="Initiator"/>
     <property name="shortLabel" value="Initiator"/>
@@ -104,9 +104,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-approverPrincipalName" parent="DocumentLookupCriteria-approverPrincipalName-parentBean"/>
+  <bean id="DocumentSearchCriteria-approverPrincipalName" parent="DocumentSearchCriteria-approverPrincipalName-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-approverPrincipalName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-approverPrincipalName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="approverPrincipalName"/>
     <property name="label" value="Approver"/>
     <property name="shortLabel" value="Aprover"/>
@@ -115,9 +115,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-viewerPrincipalName" parent="DocumentLookupCriteria-viewerPrincipalName-parentBean"/>
+  <bean id="DocumentSearchCriteria-viewerPrincipalName" parent="DocumentSearchCriteria-viewerPrincipalName-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-viewerPrincipalName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-viewerPrincipalName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="viewerPrincipalName"/>
     <property name="label" value="Viewer"/>
     <property name="shortLabel" value="Viewer"/>
@@ -126,9 +126,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-groupViewerName" parent="DocumentLookupCriteria-groupViewerName-parentBean"/>
+  <bean id="DocumentSearchCriteria-groupViewerName" parent="DocumentSearchCriteria-groupViewerName-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-groupViewerName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-groupViewerName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="groupViewerName"/>
     <property name="label" value="Group Viewer"/>
     <property name="shortLabel" value="Group Viewer"/>
@@ -137,9 +137,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-groupViewerId" parent="DocumentLookupCriteria-groupViewerId-parentBean"/>
+  <bean id="DocumentSearchCriteria-groupViewerId" parent="DocumentSearchCriteria-groupViewerId-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-groupViewerId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-groupViewerId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="groupViewerId"/>
     <property name="label" value="Group Viewer Id"/>
     <property name="shortLabel" value="Group Viewer Id"/>
@@ -148,9 +148,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-applicationDocumentId" parent="DocumentLookupCriteria-applicationDocumentId-parentBean"/>
+  <bean id="DocumentSearchCriteria-applicationDocumentId" parent="DocumentSearchCriteria-applicationDocumentId-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-applicationDocumentId-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-applicationDocumentId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="applicationDocumentId"/>
     <property name="label" value="Application Document Id"/>
     <property name="shortLabel" value="App Doc Id"/>
@@ -160,9 +160,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-documentId" parent="DocumentLookupCriteria-documentId-parentBean"/>
+  <bean id="DocumentSearchCriteria-documentId" parent="DocumentSearchCriteria-documentId-parentBean"/>
 
-    <bean id="DocumentLookupCriteria-documentId-parentBean" abstract="true" parent="AttributeDefinition">
+    <bean id="DocumentSearchCriteria-documentId-parentBean" abstract="true" parent="AttributeDefinition">
       <property name="name" value="documentId"/>
       <property name="label" value="Document Id"/>
       <property name="shortLabel" value="Id"/>
@@ -173,9 +173,9 @@
     </bean>
 
 
-  <bean id="DocumentLookupCriteria-statusCode" parent="DocumentLookupCriteria-statusCode-parentBean"/>
+  <bean id="DocumentSearchCriteria-statusCode" parent="DocumentSearchCriteria-statusCode-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-statusCode-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-statusCode-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="statusCode"/>
     <property name="label" value="Document Status"/>
     <property name="shortLabel" value="Status"/>
@@ -185,9 +185,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-applicationDocumentStatus" parent="DocumentLookupCriteria-applicationDocumentStatus-parentBean"/>
+  <bean id="DocumentSearchCriteria-applicationDocumentStatus" parent="DocumentSearchCriteria-applicationDocumentStatus-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-applicationDocumentStatus-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-applicationDocumentStatus-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="applicationDocumentStatus"/>
     <property name="label" value="Application Document Status"/>
     <property name="shortLabel" value="App Doc Status"/>
@@ -197,9 +197,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-routeNodeName" parent="DocumentLookupCriteria-routeNodeName-parentBean"/>
+  <bean id="DocumentSearchCriteria-routeNodeName" parent="DocumentSearchCriteria-routeNodeName-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-routeNodeName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-routeNodeName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="routeNodeName"/>
     <property name="label" value="Route Node"/>
     <property name="shortLabel" value="Node"/>
@@ -210,9 +210,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-routeNodeLogic" parent="DocumentLookupCriteria-routeNodeLogic-parentBean"/>
+  <bean id="DocumentSearchCriteria-routeNodeLogic" parent="DocumentSearchCriteria-routeNodeLogic-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-routeNodeLogic-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-routeNodeLogic-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="routeNodeLogic"/>
     <property name="label" value="Route Node Logic"/>
     <property name="shortLabel" value="Node Logic"/>
@@ -222,9 +222,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-dateCreated" parent="DocumentLookupCriteria-dateCreated-parentBean"/>
+  <bean id="DocumentSearchCriteria-dateCreated" parent="DocumentSearchCriteria-dateCreated-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-dateCreated-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocumentSearchCriteria-dateCreated-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="dateCreated"/>
     <property name="label" value="Date Created"/>
     <property name="shortLabel" value="Date Created"/>
@@ -232,33 +232,33 @@
     <property name="formatterClass" value="org.kuali.rice.core.web.format.TimestampAMPMFormatter"/>
   </bean>
 
-  <bean id="DocumentLookupCriteria-dateApproved" parent="DocumentLookupCriteria-dateApproved-parentBean"/>
+  <bean id="DocumentSearchCriteria-dateApproved" parent="DocumentSearchCriteria-dateApproved-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-dateApproved-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocumentSearchCriteria-dateApproved-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="dateApproved"/>
     <property name="label" value="Date Approved"/>
     <property name="shortLabel" value="Date Approved"/>
   </bean>
 
-  <bean id="DocumentLookupCriteria-dateLastModified" parent="DocumentLookupCriteria-dateLastModified-parentBean"/>
+  <bean id="DocumentSearchCriteria-dateLastModified" parent="DocumentSearchCriteria-dateLastModified-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-dateLastModified-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocumentSearchCriteria-dateLastModified-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="dateLastModified"/>
     <property name="label" value="Date Last Modified"/>
     <property name="shortLabel" value="Date Last Modified"/>
   </bean>
 
-  <bean id="DocumentLookupCriteria-dateFinalized" parent="DocumentLookupCriteria-dateFinalized-parentBean"/>
+  <bean id="DocumentSearchCriteria-dateFinalized" parent="DocumentSearchCriteria-dateFinalized-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-dateFinalized-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocumentSearchCriteria-dateFinalized-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
     <property name="name" value="dateFinalized"/>
     <property name="label" value="Date Finalized"/>
     <property name="shortLabel" value="Date Finalized"/>
   </bean>
 
-  <bean id="DocumentLookupCriteria-title" parent="DocumentLookupCriteria-title-parentBean"/>
+  <bean id="DocumentSearchCriteria-title" parent="DocumentSearchCriteria-title-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-title-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-title-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="title"/>
     <property name="label" value="Title"/>
     <property name="shortLabel" value="Title"/>
@@ -268,9 +268,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-saveName" parent="DocumentLookupCriteria-saveName-parentBean"/>
+  <bean id="DocumentSearchCriteria-saveName" parent="DocumentSearchCriteria-saveName-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-saveName-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-saveName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Save Name"/>
     <property name="maxLength" value="30"/>
     <property name="validationPattern">
@@ -283,9 +283,9 @@
     <property name="label" value="Name this search (optional)"/>
   </bean>
 
-  <bean id="DocumentLookupCriteria-initiatorPerson-name" parent="DocumentLookupCriteria-initiatorPerson-name-parentBean"/>
+  <bean id="DocumentSearchCriteria-initiatorPerson-name" parent="DocumentSearchCriteria-initiatorPerson-name-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-initiatorPerson-name-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-initiatorPerson-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="initiatorPerson.name"/>
     <property name="label" value="Initiator"/>
     <property name="shortLabel" value="Initiator"/>
@@ -294,9 +294,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-statusLabel" parent="DocumentLookupCriteria-statusLabel-parentBean"/>
+  <bean id="DocumentSearchCriteria-statusLabel" parent="DocumentSearchCriteria-statusLabel-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-statusLabel-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-statusLabel-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="statusLabel"/>
     <property name="label" value="Status"/>
     <property name="shortLabel" value="Status"/>
@@ -305,9 +305,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-documentTypeLabel" parent="DocumentLookupCriteria-documentTypeLabel-parentBean"/>
+  <bean id="DocumentSearchCriteria-documentTypeLabel" parent="DocumentSearchCriteria-documentTypeLabel-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-documentTypeLabel-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-documentTypeLabel-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="documentTypeLabel"/>
     <property name="label" value="Document Type"/>
     <property name="shortLabel" value="Type"/>
@@ -316,9 +316,9 @@
     </property>
   </bean>
 
-  <bean id="DocumentLookupCriteria-routeLog" parent="DocumentLookupCriteria-routeLog-parentBean"/>
+  <bean id="DocumentSearchCriteria-routeLog" parent="DocumentSearchCriteria-routeLog-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-routeLog-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="DocumentSearchCriteria-routeLog-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="routeLog"/>
     <property name="label" value="Route Log"/>
     <property name="shortLabel" value="Route Log"/>
@@ -329,10 +329,10 @@
 
   <!-- Lookup Definition -->
 
-  <bean id="DocumentLookupCriteria-lookupDefinition" parent="DocumentLookupCriteria-lookupDefinition-parentBean"/>
+  <bean id="DocumentSearchCriteria-lookupDefinition" parent="DocumentSearchCriteria-lookupDefinition-parentBean"/>
 
-  <bean id="DocumentLookupCriteria-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
-    <property name="lookupableID" value="documentLookupCriteriaBoLookupable"/>
+  <bean id="DocumentSearchCriteria-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <property name="lookupableID" value="documentSearchCriteriaBoLookupable"/>
     <property name="lookupFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="documentTypeName"/>

@@ -159,7 +159,7 @@
     <property name="label" value="Previous Rule"/>
   </bean> 
 
-  <bean id="RuleBaseValues-documentId" parent="DocumentLookupCriteria-documentId"/>
+  <bean id="RuleBaseValues-documentId" parent="DocumentSearchCriteria-documentId"/>
 
   <bean id="RuleBaseValues-documentId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="documentId"/>

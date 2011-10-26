@@ -144,8 +144,10 @@ public class RuleServiceImpl implements RuleService {
         predicates.add(equal("templateRuleInd", new Integer(0))); //false
         if (effectiveDate != null) {
             predicates.add(
-                    and(lessThanOrEqual("activationDate", effectiveDate),
-                            greaterThan("deactivationDate", effectiveDate)));
+                    and(
+                        or(isNull("activationDate"), lessThanOrEqual("activationDate", effectiveDate)),
+                        or(isNull("deactivationDate"), greaterThan("deactivationDate", effectiveDate))
+                    ));
         } else {
             predicates.add(equal("currentInd", new Integer(1))); //true
         }

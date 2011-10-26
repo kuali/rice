@@ -28,8 +28,10 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	def List<PropositionBo> compoundComponents
 
     // parameter display string (for tree display)
-    def String parameterDisplayString;
-    def boolean editMode = false;
+    def String parameterDisplayString
+    def boolean editMode = false
+    def String categoryId;
+
     private SequenceAccessorService sequenceAccessorService;  //todo move to wrapper object
 
     private void setupParameterDisplayString(){
@@ -84,6 +86,14 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 
     public void setEditMode(boolean editMode){
         this.editMode = editMode;
+    }
+
+    public String getCategoryId(){
+        return this.categoryId;
+    }
+
+    public void setCategoryId(String categoryId){
+        this.categoryId = categoryId;
     }
 
     public BusinessObjectService getBoService() {

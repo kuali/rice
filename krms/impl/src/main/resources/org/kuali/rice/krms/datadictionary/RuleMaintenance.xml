@@ -409,8 +409,23 @@
               <property name="layoutManager.orientation" value="HORIZONTAL"/>
               <property name="items">
                 <list>
-                  <bean parent="AttributeField" p:propertyName="proposition.parameters[0].value"
+                  <bean parent="AttributeField" p:propertyName="proposition.categoryId"
                           p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="255">
+                    <property name="control">
+                      <bean parent="SelectControl">
+                        <property name="options">
+                          <list>
+                            <bean parent="KeyLabelPair" p:key="1" p:value="default" />
+                            <bean parent="KeyLabelPair" p:key="2" p:value="Notification" />
+                            <bean parent="KeyLabelPair" p:key="3" p:value="Validation" />
+                            <bean parent="KeyLabelPair" p:key="4" p:value="Workflow" />
+                          </list>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+                  <bean parent="AttributeField" p:propertyName="proposition.parameters[0].value"
+                          p:showLabel="false" p:label="operator" p:maxLength="255">
                     <property name="control">
                       <bean parent="SelectControl"/>
                     </property>

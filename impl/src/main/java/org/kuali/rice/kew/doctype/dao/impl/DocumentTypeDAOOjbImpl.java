@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.ReportQueryRsIterator;
+import org.apache.ojb.broker.accesslayer.RsIterator;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -250,11 +251,14 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(DocumentRouteHeaderValue.class, crit);
     	query.setAttributes(new String[] { "documentTypeId" });
 
-    	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
+    	RsIterator iter = (RsIterator)getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
     	while (iter.hasNext()) {
     	    Object[] row = (Object[]) iter.next();
-    	    return (String)row[0];
+            String id = (String)row[0];
+            iter.releaseDbResources();
+            return id;
     	}
+        iter.releaseDbResources();
     	return null;
     }
     

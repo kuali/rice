@@ -85,27 +85,6 @@
         PARM_DESC_TXT="Batch file types that are active options for the file upload screen."
         PARM_NM="ACTIVE_FILE_TYPES" PARM_TYP_CD="CONFG"
         VAL="collectorInputFileType;procurementCardInputFileType;enterpriseFeederFileSetType;assetBarcodeInventoryInputFileType;customerLoadInputFileType" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocSearchCriteriaDTO"
-        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
-        OBJ_ID="E78100F6F14C4932B54F7719FA5C27E9"
-        PARM_DESC_TXT="Flag to specify if clicking on a Document ID from Document Search will load the Document in a new window."
-        PARM_NM="DOCUMENT_SEARCH_POPUP_IND" PARM_TYP_CD="CONFG" VAL="Y" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocSearchCriteriaDTO"
-        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
-        OBJ_ID="632680DDE9A7478CBD379FAF90C7AE72"
-        PARM_DESC_TXT="Flag to specify if clicking on a Route Log from Document Search will load the Route Log in a new window."
-        PARM_NM="DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND"
-        PARM_TYP_CD="CONFG" VAL="N" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocSearchCriteriaDTO"
-        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
-        OBJ_ID="D43459D143FC46C6BF83C71AC2383B76"
-        PARM_DESC_TXT="Limit of fetch more iterations for document searches."
-        PARM_NM="FETCH_MORE_ITERATION_LIMIT" PARM_TYP_CD="CONFG" VER_NBR="1"/>
-    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocSearchCriteriaDTO"
-        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
-        OBJ_ID="E324D85082184EB6967537B3EE1F655B"
-        PARM_DESC_TXT="Maximum number of documents to return from a search."
-        PARM_NM="RESULT_CAP" PARM_TYP_CD="CONFG" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Document" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-IDM" OBJ_ID="2238b58e-8fb9-102c-9461-def224dad9b3"
         PARM_DESC_TXT="The maximum number of role or group members to display at once on their documents. If the number is above this value, the document will switch into a paging mode with only this many rows displayed at a time."
@@ -134,6 +113,27 @@
         PARM_DESC_TXT="The number of minutes before a session expires that user should be warned when a document uses pessimistic locking."
         PARM_NM="SESSION_TIMEOUT_WARNING_MESSAGE_TIME"
         PARM_TYP_CD="CONFG" VAL="5" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocumentSearch"
+        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="E78100F6F14C4932B54F7719FA5C27E9"
+        PARM_DESC_TXT="Flag to specify if clicking on a Document ID from Document Search will load the Document in a new window."
+        PARM_NM="DOCUMENT_SEARCH_POPUP_IND" PARM_TYP_CD="CONFG" VAL="Y" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocumentSearch"
+        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="632680DDE9A7478CBD379FAF90C7AE72"
+        PARM_DESC_TXT="Flag to specify if clicking on a Route Log from Document Search will load the Route Log in a new window."
+        PARM_NM="DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND"
+        PARM_TYP_CD="CONFG" VAL="N" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocumentSearch"
+        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="D43459D143FC46C6BF83C71AC2383B76"
+        PARM_DESC_TXT="Limit of fetch more iterations for document searches."
+        PARM_NM="FETCH_MORE_ITERATION_LIMIT" PARM_TYP_CD="CONFG" VER_NBR="1"/>
+    <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="DocumentSearch"
+        EVAL_OPRTR_CD="A" NMSPC_CD="KR-WKFLW"
+        OBJ_ID="E324D85082184EB6967537B3EE1F655B"
+        PARM_DESC_TXT="Maximum number of documents to return from a search."
+        PARM_NM="RESULT_CAP" PARM_TYP_CD="CONFG" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="EDocLite" EVAL_OPRTR_CD="A"
         NMSPC_CD="KR-WKFLW" OBJ_ID="68B2EA08E13A4FF3B9EDBD5415818C93"
         PARM_DESC_TXT="Defines whether the debug transform is enabled for eDcoLite."

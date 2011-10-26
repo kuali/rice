@@ -293,7 +293,7 @@
         LBL="Permission" OBJ_ID="A3AE4787-018E-1F17-6EB6-F2F0F366774F"
         PARNT_ID="2994" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
-        DOC_HDLR_URL="${application.url}/spring/maintenance?methodToCall=docHandler"
+        DOC_HDLR_URL="${kr.krad.url}/krmsAgendaEditor?methodToCall=docHandler"
         DOC_TYP_DESC="Create a KRMS Agenda" DOC_TYP_ID="3000"
         DOC_TYP_NM="AgendaEditorMaintenanceDocument" DOC_TYP_VER_NBR="0"
         GRP_ID="1" LBL="KRMS Agenda Editor Maintenance Document"
@@ -301,7 +301,7 @@
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
-        DOC_HDLR_URL="${application.url}/spring/maintenance?methodToCall=docHandler"
+        DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Agenda" DOC_TYP_ID="3001"
         DOC_TYP_NM="AgendaMaintenanceDocument" DOC_TYP_VER_NBR="0"
         GRP_ID="1" LBL="Agenda Maintenance Document"
@@ -309,7 +309,7 @@
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
-        DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
+        DOC_HDLR_URL="${kr.krad.url}/peopleFlowMaintenance?methodToCall=docHandler"
         DOC_TYP_ID="3002" DOC_TYP_NM="PeopleFlowMaintenanceDocument"
         DOC_TYP_VER_NBR="0" LBL="PeopleFlowMaintenanceDocument"
         OBJ_ID="2c0a1333-f60b-47c4-a9b0-76f32f1ed97d" PARNT_ID="2681"

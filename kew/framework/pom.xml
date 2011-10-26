@@ -97,7 +97,7 @@
 						<id>peopleFlowTypeService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
-							<className>org.kuali.rice.kew.peopleflow.PeopleFlowTypeService</className>
+							<className>org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService</className>
 							<outputFile>${project.build.outputDirectory}/wsdl/PeopleFlowTypeService.wsdl</outputFile>
 							<serviceName>PeopleFlowTypeService</serviceName>
 						</configuration>

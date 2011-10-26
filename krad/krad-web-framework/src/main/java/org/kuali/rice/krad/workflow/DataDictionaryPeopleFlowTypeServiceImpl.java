@@ -13,7 +13,7 @@ import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
-import org.kuali.rice.kew.peopleflow.PeopleFlowTypeService;
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.BeanPropertyComparator;
@@ -32,7 +32,7 @@ import java.util.Map;
 public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeService {
 
     /**
-     * @see org.kuali.rice.kew.peopleflow.PeopleFlowTypeService#filterToSelectableRoleIds(java.lang.String,
+     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#filterToSelectableRoleIds(java.lang.String,
      *      java.util.List<java.lang.String>)
      */
     public List<String> filterToSelectableRoleIds(@WebParam(name = "kewTypeId") String kewTypeId,
@@ -41,7 +41,7 @@ public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeSe
     }
 
     /**
-     * @see org.kuali.rice.kew.peopleflow.PeopleFlowTypeService#resolveRoleQualifiers(java.lang.String,
+     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#resolveRoleQualifiers(java.lang.String,
      *      java.lang.String, org.kuali.rice.kew.api.document.Document, org.kuali.rice.kew.api.document.DocumentContent)
      */
     public Map<String, String> resolveRoleQualifiers(@WebParam(name = "kewTypeId") String kewTypeId,
@@ -51,7 +51,7 @@ public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeSe
     }
 
     /**
-     * @see org.kuali.rice.kew.peopleflow.PeopleFlowTypeService#getAttributeFields(java.lang.String)
+     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#getAttributeFields(java.lang.String)
      */
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "kewTypeId") String kewTypeId) {
         List<RemotableAttributeField> fields = new ArrayList<RemotableAttributeField>();
@@ -115,7 +115,7 @@ public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeSe
     }
 
     /**
-     * @see org.kuali.rice.kew.peopleflow.PeopleFlowTypeService#validateAttributes(java.lang.String,
+     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#validateAttributes(java.lang.String,
      *      java.util.Map<java.lang.String,java.lang.String>)
      */
     public List<RemotableAttributeError> validateAttributes(@WebParam(name = "kewTypeId") String kewTypeId,
@@ -125,7 +125,7 @@ public class DataDictionaryPeopleFlowTypeServiceImpl implements PeopleFlowTypeSe
     }
 
     /**
-     * @see org.kuali.rice.kew.peopleflow.PeopleFlowTypeService#validateAttributesAgainstExisting(java.lang.String,
+     * @see org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService#validateAttributesAgainstExisting(java.lang.String,
      *      java.util.Map<java.lang.String,java.lang.String>, java.util.Map<java.lang.String,java.lang.String>)
      */
     public List<RemotableAttributeError> validateAttributesAgainstExisting(

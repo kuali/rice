@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
-import org.kuali.rice.kew.peopleflow.PeopleFlowTypeService;
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;

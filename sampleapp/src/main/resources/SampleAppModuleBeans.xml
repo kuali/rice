@@ -203,7 +203,7 @@
       <bean class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
             p:service-ref="sampleAppPeopleFlowTypeService"
             p:localServiceName="sampleAppPeopleFlowTypeService"
-            p:serviceInterface="org.kuali.rice.kew.peopleflow.PeopleFlowTypeService"/>
+            p:serviceInterface="org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService"/>
     </property>
   </bean>
 

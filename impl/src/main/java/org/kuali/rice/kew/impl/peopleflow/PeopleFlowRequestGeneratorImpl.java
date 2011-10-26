@@ -19,7 +19,7 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.peopleflow.PeopleFlowTypeService;
+import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kim.api.role.Role;

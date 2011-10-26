@@ -194,19 +194,38 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
       return prop;
   }
 
-    public static PropositionBo createCompoundPropositionBoStub(PropositionBo simple){
+    public static PropositionBo createCompoundPropositionBoStub(PropositionBo existing){
         // create a simple proposition Bo
         PropositionBo prop = new PropositionBo();
         prop.setId(getNewPropId());
         prop.setPropositionTypeCode(PropositionType.COMPOUND.code);
-        prop.setRuleId(simple.getRuleId());
-        prop.setTypeId(simple.getTypeId());
+        prop.setRuleId(existing.getRuleId());
+        prop.setTypeId(existing.getTypeId());
         prop.setCompoundOpCode(LogicalOperator.AND.code);  // default to and
         prop.setDescription("");
         prop.setEditMode(true);
 
-        PropositionBo newProp = createSimplePropositionBoStub(simple, PropositionType.SIMPLE.code)
-        List <PropositionBo> components = Arrays.asList(simple, newProp);
+        PropositionBo newProp = createSimplePropositionBoStub(existing, PropositionType.SIMPLE.code)
+        List <PropositionBo> components = new ArrayList<PropositionBo>(2);
+        components.add(existing);
+        components.add(newProp);
+        prop.setCompoundComponents(components);
+        return prop;
+    }
+
+    public static PropositionBo createCompoundPropositionBoStub2(PropositionBo existing){
+        // create a simple proposition Bo
+        PropositionBo prop = new PropositionBo();
+        prop.setId(getNewPropId());
+        prop.setPropositionTypeCode(PropositionType.COMPOUND.code);
+        prop.setRuleId(existing.getRuleId());
+        prop.setTypeId(existing.getTypeId());
+        prop.setCompoundOpCode(LogicalOperator.AND.code);  // default to and
+        prop.setDescription("");
+        prop.setEditMode(true);
+
+        List <PropositionBo> components = new ArrayList<PropositionBo>();
+        components.add(existing);
         prop.setCompoundComponents(components);
         return prop;
     }

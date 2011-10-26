@@ -1219,40 +1219,35 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView goToEditProposition(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        // open the selected node for editing
         AgendaEditor agendaEditor = getAgendaEditor(form);
-        Node<RuleTreeNode, String> root =agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
-        editablePropositionTree(root);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+        // find parent
+        Node<RuleTreeNode,String> root = rule.getPropositionTree().getRootElement();
+        Node<RuleTreeNode,String> parent = findParentPropositionNode( root, selectedPropId);
+        if (parent != null){
+            List<Node<RuleTreeNode,String>> children = parent.getChildren();
+            for( int index=0; index< children.size(); index++){
+                Node<RuleTreeNode,String> child = children.get(index);
+                if (propIdMatches(child, selectedPropId)){
+                    PropositionBo prop = child.getData().getProposition();
+                    boolean editMode =  !prop.getEditMode();
+                    prop.setEditMode(editMode);
+                    // if compound node, set all children into same edit mode
+                    if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
+                       for ( PropositionBo compoundComponent : prop.getCompoundComponents() ){
+                           compoundComponent.setEditMode(editMode);
+                       }
+                    }
+                    //refresh the tree
+                    rule.refreshPropositionTree(null);
+                    break;
+                }
+            }
+        }
         return super.updateComponent(form, result, request, response);
-    }
-
-    private void editablePropositionTree(Node<RuleTreeNode, String> currentNode){
-        // if child node is a SimpleProposition
-        List<Node<RuleTreeNode,String>> children = currentNode.getChildren();
-        for (Node<RuleTreeNode,String> child : children){
-            RuleTreeNode theNode = child.getData();
-            if ((theNode != null) && (theNode instanceof SimplePropositionNode)){
-                SimplePropositionEditNode eNode = new SimplePropositionEditNode(theNode.getProposition());
-//                child.setNodeLabel("");
-                child.setNodeType(SimplePropositionEditNode.NODE_TYPE);
-                child.setData(eNode);
-            } else {
-                editablePropositionTree(child);
-            }
-        }
-    }
-
-    private void replaceWithEditNode(Node<RuleTreeNode, String> node){
-        if (node != null) {
-            RuleTreeNode oldChild = node.getData();
-            PropositionBo prop = oldChild.getProposition();
-
-            if (prop != null) {
-                // Simple Proposition
-                // add a node to edit the proposition parameters
-                SimplePropositionEditNode eNode = new SimplePropositionEditNode(prop);
-                node.setData(eNode);
-            }
-        }
     }
 
     @RequestMapping(params = "methodToCall=" + "addProposition")
@@ -1261,8 +1256,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
         RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
-
-        // get selected id
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
         // find parent
@@ -1289,7 +1282,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                         PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(child.getData().getProposition());
                         compound.setEditMode(true);
                         rule.setProposition(compound);
-                        rule.refreshPropositionTree(true);
+                        rule.refreshPropositionTree(null);
                     }
                     // handle regular case of adding a simple prop to an existing compound prop
                     else if(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()) ||
@@ -1487,7 +1480,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         Node<RuleTreeNode,String> parent = findParentPropositionNode(root, selectedPropId);
         if ((parent != null) && (RuleTreeNode.COMPOUND_NODE_TYPE.equalsIgnoreCase(parent.getNodeType()))){
             Node<RuleTreeNode,String> granny = findParentPropositionNode(root,parent.getData().getProposition().getId());
-            if (granny != null && granny != root){
+            if (granny != root){
                 int oldIndex = findChildIndex(parent, selectedPropId);
                 int newIndex = findChildIndex(granny, parent.getData().getProposition().getId());
                 if (oldIndex >= 0 && newIndex >= 0){
@@ -1495,6 +1488,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     granny.getData().getProposition().getCompoundComponents().add((newIndex/2)+1, prop);
                     rule.refreshPropositionTree(false);
                 }
+            } else {
+                // TODO: do we allow moving up to the root?
+                // we could add a new top level compound node, with current root as 1st child,
+                // and move the node to the second child.
             }
         }
         return super.updateComponent(form, result, request, response);
@@ -1572,7 +1569,20 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             Node<RuleTreeNode, String> root = rule.getPropositionTree().getRootElement();
 
             if (StringUtils.isNotBlank(selectedPropId) && StringUtils.isNotBlank(cutPropId)) {
-                PropositionBo newParent = findParentPropositionNode(root, selectedPropId).getData().getProposition();
+                Node<RuleTreeNode,String> parentNode = findParentPropositionNode(root, selectedPropId);
+                PropositionBo newParent;
+                if (parentNode == root){
+                    // special case
+                    // build new top level compound proposition,
+                    // add existing as first child
+                    // then paste cut node as 2nd child
+                    newParent = PropositionBo.createCompoundPropositionBoStub2(
+                            root.getChildren().get(0).getData().getProposition());
+                    newParent.setEditMode(true);
+                    rule.setProposition(newParent);
+                } else {
+                    newParent = parentNode.getData().getProposition();
+                }
                 PropositionBo oldParent = findParentPropositionNode(root, cutPropId).getData().getProposition();
 
                 PropositionBo workingProp = null;
@@ -1592,7 +1602,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     List <PropositionBo> children = newParent.getCompoundComponents();
                     for( int index=0; index< children.size(); index++){
                         if (selectedPropId.equalsIgnoreCase(children.get(index).getId())){
-                            newParent.getCompoundComponents().add(index+1, workingProp);
+                            children.add(index+1, workingProp);
                             break;
                         }
                     }
@@ -1602,7 +1612,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 rule.refreshPropositionTree(false);
             }
         }
-
+        agendaEditor.setSelectedPropositionId(cutPropId);
         agendaEditor.setCutPropositionId(null);
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);

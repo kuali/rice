@@ -190,6 +190,11 @@
             <bean parent="HiddenControl"/>
           </property>
         </bean>
+        <bean id="proposition_cut" parent="AttributeField" p:propertyName="cutPropositionId" p:showLabel="false">
+          <property name="control">
+            <bean parent="HiddenControl"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -197,25 +202,71 @@
   <bean id="RuleEditorView-RuleTreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
     <property name="items">
       <list>
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');" p:actionLabel="Add Proposition"
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');" p:actionLabel="Edit Proposition"
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');" p:actionLabel="Add">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/add.png"
+              p:altText="Add Proposition"/>
+          </property>
+        </bean>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');"
+              p:actionLabel="Edit">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
+              p:altText="Edit Proposition"/>
+          </property>
+        </bean>
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-Tree');"
-          p:actionLabel="&lt; Left" p:styleClasses-ref="buttonClasses" />
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-Tree');"
-          p:actionLabel="Right &gt;" p:styleClasses-ref="buttonClasses" />
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-Tree');" p:actionLabel="Up ^"
-          p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-Tree');"
-              p:actionLabel="v Down" p:styleClasses-ref="buttonClasses" />
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-Tree');"
+              p:actionLabel="Left">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
+                  p:altText="Left"/>
+          </property>
+        </bean>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-Tree');"
+              p:actionLabel="Right">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
+                  p:altText="Right"/>
+          </property>
+        </bean>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-Tree');"
+              p:actionLabel="Up">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
+                  p:altText="Up"/>
+          </property>
+        </bean>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-Tree');"
+              p:actionLabel="Down">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
+                  p:altText="Down"/>
+          </property>
+        </bean>
         <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('cutProposition', 'RuleEditorView-Tree');" p:actionLabel="Cut" p:styleClasses-ref="buttonClasses" p:style="margin-left: 15pt;"/>
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-Tree');" p:actionLabel="Paste" p:styleClasses-ref="buttonClasses"/>
-        <bean parent="ActionField" p:clientSideJs="ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-Tree');" p:actionLabel="Delete" p:styleClasses-ref="buttonClasses"
-          p:style="margin-right: 15pt;"/>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCutPropositionTree('cutProposition', 'RuleEditorView-Tree');"
+              p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
+                  p:altText="Cut"/>
+          </property>
+        </bean>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-Tree');"
+              p:actionLabel="Paste">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
+                  p:altText="Paste"/>
+          </property>
+        </bean>
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-Tree');"
+              p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
+                  p:altText="Delete"/>
+          </property>
+        </bean>
         <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
       </list>
     </property>

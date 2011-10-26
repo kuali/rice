@@ -98,7 +98,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
         this.propositionTree == tree;
        }
 
-   public Tree refreshPropositionTree(boolean editMode){
+   public Tree refreshPropositionTree(Boolean editMode){
        Tree myTree = new Tree<RuleTreeNode, String>();
 
        Node<RuleTreeNode, String> rootNode = new Node<RuleTreeNode, String>();
@@ -111,9 +111,20 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        return myTree;
    }
 
-   private void buildPropTree( Node sprout, PropositionBo prop, boolean editMode){
-       // This is a work in progress
-       // will need a recursive function to walk the tree in the compound proposition
+    /**
+     * This method builds a propositionTree recursively walking through the children of the proposition.
+     * @param sprout - parent tree node
+     * @param prop - PropositionBo for which to make the tree node
+     * @param editMode - Boolean determines the node type used to represent the proposition
+     *     false: create a view only node text control
+     *     true: create an editable node with multiple controls
+     *     null:  use the proposition.editMode property to determine the node type
+     */
+   private void buildPropTree( Node sprout, PropositionBo prop, Boolean editMode){
+       // Depending on the type of proposition (simple/compound), and the editMode,
+       // Create a treeNode of the appropriate type for the node and attach it to the
+       // sprout parameter passed in.
+       // If the prop is a compound proposition, calls itself for each of the compoundComponents
        if (prop != null) {
            if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
                // Simple Proposition
@@ -154,10 +165,12 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
                boolean first = true;
                List <PropositionBo> allMyChildren = prop.getCompoundComponents();
                for (PropositionBo child : allMyChildren){
+                   // add an opcode node in between each of the children.
                    if (!first){
                        addOpCodeNode(aNode, prop);
                    }
                    first = false;
+                   // call to build the childs node
                    buildPropTree(aNode, child, editMode);
                }
                propositionSummaryBuffer.append(" ) ");

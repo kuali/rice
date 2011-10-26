@@ -2,6 +2,10 @@ function getSelectedPropositionInput() {
     return jq('input[id="proposition_selected_attribute"]');
 }
 
+function getCutPropositionInput() {
+    return jq('input[id="proposition_cut_attribute"]');
+}
+
 function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
 
     var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
@@ -28,9 +32,34 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
     ajaxSubmitForm(controllerMethod, updateCollectionCallback,
             {reqComponentId: collectionGroupId, skipViewInit: 'true', selectedItemInputName: selectedItemId},
             elementToBlock);
-
 }
 
+function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {
+    jq('a.ruleTreeNode').each( function() {
+        var propositionId = jq(this.parentNode).find('input').attr('value');
+        var selectedItemTracker = getSelectedPropositionInput();
+        var selectedItemId = selectedItemTracker.val();
+        var cutItemTracker = getCutPropositionInput();
+
+        if (selectedItemId == propositionId) {
+            // simulate click, which will mark it
+            //jq(this).click();
+//            jq(this.parentNode).addClass('ruleCutSelected');
+//            jq(this.parentNode).removeClass('ruleBlockSelected');
+            cutItemTracker.val(propositionId);
+        }
+    });
+    ajaxCallPropositionTree(controllerMethod, collectionGroupId);
+}
+
+function ajaxPastePropositionTree(controllerMethod, collectionGroupId) {
+    jq('a.ruleTreeNode').each( function() {
+        jq(this.parentNode).removeClass('ruleCutSelected');
+    });
+    var cutItemTracker = getCutPropositionInput();
+    cutItemTracker.val(null);
+    ajaxCallPropositionTree(controllerMethod, collectionGroupId);
+}
 
 // binding to tree loaded event
 function initRuleTree(componentId){
@@ -48,7 +77,9 @@ jq('#' + componentId).bind('loaded.jstree', function (event, data) {
         jq('li').each( function() {
             jq(this).removeClass('ruleBlockSelected');
         });
-        jq(this.parentNode).addClass('ruleBlockSelected');
+        if (!jq(this.parentNode).hasClass('ruleCutSelected')){
+            jq(this.parentNode).addClass('ruleBlockSelected');
+        };
     });
 
     // set type to 'logic' on logic nodes -- this prevents them from being selected
@@ -65,6 +96,15 @@ jq('#' + componentId).bind('loaded.jstree', function (event, data) {
         if (selectedItemId == propositionId) {
             // simulate click, which will mark it
             jq(this).click();
+        }
+
+        var cutItemTracker = getCutPropositionInput();
+        var cutItemId = cutItemTracker.val();
+        if (cutItemId == propositionId) {
+            jq(this.parentNode).addClass('ruleCutSelected');
+            cutItemTracker.val(cutItemId);
+        } else {
+            jq(this.parentNode).removeClass('ruleCutSelected');
         }
     });
 

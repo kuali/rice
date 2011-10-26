@@ -62,7 +62,10 @@ public class SimplePropositionNode extends RuleTreeNode {
             //TODO: use termBoService
             String termId = prop.getValue();
             TermBo term = getBoService().findBySinglePrimaryKey(TermBo.class,termId);
-            return term.getSpecification().getName();
+            if (term!=null){
+                return term.getSpecification().getName();
+            }
+            return "";
         } else {
             return prop.getValue();
         }

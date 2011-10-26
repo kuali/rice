@@ -19,6 +19,7 @@ li a.agendaNode { text-decoration: none; }
 .jstree-krms .jstree-leaf > ins { background-position:-36px 0; }
 
 .jstree-krms .ruleBlockSelected { border: 1px dashed #69f; }
+.jstree-krms .ruleCutSelected { background:#F4E271; border: 1px dashed goldenrod; }
 
 /*
 .jstree-krms a { border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px; text-shadow:1px 1px 1px white; }

@@ -71,7 +71,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
 
         List<ParameterBo> parametersWithDerivedComponents = null;
 
-        if (fieldValues.containsKey(COMPONENT_NAME) && !StringUtils.isNotBlank(fieldValues.get(COMPONENT_NAME))) {
+        if (fieldValues.containsKey(COMPONENT_NAME) && StringUtils.isNotBlank(fieldValues.get(COMPONENT_NAME))) {
             // also search based on derived component name
             Map<String, String> derivedComponentFieldValues = new HashMap<String, String>(fieldValues);
             String componentName = derivedComponentFieldValues.remove(COMPONENT_NAME);

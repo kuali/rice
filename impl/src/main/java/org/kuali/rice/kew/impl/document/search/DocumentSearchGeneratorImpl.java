@@ -601,21 +601,26 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         documentTypeNamesToSearch.addAll(criteria.getAdditionalDocumentTypeNames());
         StringBuilder returnSql = new StringBuilder("");
         if (CollectionUtils.isNotEmpty(documentTypeNamesToSearch)) {
-            returnSql.append(whereClausePredicatePrefix).append("(");
+            int index = 0;
             for (String documentTypeName : documentTypeNamesToSearch) {
                 if (StringUtils.isNotBlank(documentTypeName)) {
+                    String clause = index++ == 0 ? "" : " or ";
                     DocumentTypeService docSrv = KEWServiceLocator.getDocumentTypeService();
                     DocumentType docType = docSrv.findByName(documentTypeName.trim());
                     if (docType != null) {
-                        addDocumentTypeNameToSearchOn(returnSql, documentTypeName.trim(), "");
+                        addDocumentTypeNameToSearchOn(returnSql, documentTypeName.trim(), clause);
                         if (docType.getChildrenDocTypes() != null) {
                             addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
                         }
                     } else{
-                        addDocumentTypeLikeNameToSearchOn(returnSql, documentTypeName.trim(), "");
+                        addDocumentTypeLikeNameToSearchOn(returnSql, documentTypeName.trim(), clause);
                     }
                 }
             }
+        }
+        if (returnSql.length() > 0) {
+            returnSql.insert(0, "(");
+            returnSql.insert(0, whereClausePredicatePrefix);
             returnSql.append(")");
         }
         return returnSql.toString();

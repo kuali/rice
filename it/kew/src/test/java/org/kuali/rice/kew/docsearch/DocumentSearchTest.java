@@ -50,7 +50,7 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class DocumentSearchTest extends KEWTestCase {
     private static final String KREW_DOC_HDR_T = "KREW_DOC_HDR_T";
     private static final String INITIATOR_COL = "INITR_PRNCPL_ID";
@@ -61,7 +61,6 @@ public class DocumentSearchTest extends KEWTestCase {
     @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
-
     }
 
     @Override
@@ -491,8 +490,22 @@ public class DocumentSearchTest extends KEWTestCase {
         String[] docIds = routeTestDocs();
         String docId2 = routeTestDoc2();
 
+        String principalId = getPrincipalId("bmcgough");
+
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName("SearchDocType");
+
         // TODO finish this test
-        
+        DocumentSearchResults results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(3, results.getSearchResults().size());
+
+        criteria.setDocumentTypeName("SearchDocType2");
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(1, results.getSearchResults().size());
+
+        criteria.getAdditionalDocumentTypeNames().add("SearchDocType");
+        results = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals(4, results.getSearchResults().size());
     }
 
 

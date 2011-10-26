@@ -58,8 +58,6 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.getSearchingRows()'
      */
     /*
-
-    TODO - Rice 2.0 - Resurrect these range-related tests...
     @Ignore("See KULRICE-2988")
     @Test public void testGetSearchingRowsUsingRangeSearches() {
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
@@ -256,8 +254,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
     }
 
-    */  // TODO - Rice 2.0 - end comment of tests that need to be resurrected
-
+    */
+    
     /**
      * Test searching by searchable attributes that use ranges
      */

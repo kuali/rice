@@ -1705,7 +1705,7 @@ public final class FieldUtils {
         }
         column.setColumnTitle(columnTitle);
         column.setSortable(Boolean.TRUE.toString());
-        // TODO - Rice 2.0 - maybe need this to be smaller than the actual attribute's max length?
+        // TODO - KULRICE-5743 - maybe need this to be smaller than the actual attribute's max length?
         if (attributeField.getMaxLength() != null) {
             column.setMaxLength(attributeField.getMaxLength());
         }

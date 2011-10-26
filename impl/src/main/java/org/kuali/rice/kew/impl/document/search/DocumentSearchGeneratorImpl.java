@@ -287,7 +287,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         documentBuilder.setTitle(title);
         documentBuilder.setApplicationDocumentStatus(applicationDocumentStatus);
 
-        // TODO - Rice 2.0 - should probably set as many properties on the document as we can
+        // TODO - KULRICE-5755 - should probably set as many properties on the document as we can
 
         if (isUsingAtLeastOneSearchAttribute(criteria)) {
             populateDocumentAttributesValues(resultBuilder, searchAttributeStatement);

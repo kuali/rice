@@ -230,7 +230,6 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
         }
 
-        // TODO - Rice 2.0 - Not sure if this is exactly right, need to do some more research to find the best way
         // can we use KualiConfigurationService?  It seemed to be used elsewhere...
         MessageResourcesFactory factory = MessageResourcesFactory.createFactory();
         MessageResources messageResources = factory.createResources(null);

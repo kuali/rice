@@ -74,9 +74,6 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
      * @throws Exception
      */
     /*
-
-    TODO - Rice 2.0 - need to resurrect and rewrite this test
-
     @Test
     public void testDocTypeSecurityAndResponsibilityAndVisibilityWorkgroupNames() throws Exception {
     	// Ensure that the document type called "DocumentType02" has the correct group defined for its responsibility on "TestRule1".

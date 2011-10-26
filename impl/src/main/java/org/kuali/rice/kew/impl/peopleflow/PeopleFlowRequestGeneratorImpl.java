@@ -83,7 +83,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             context.getActionRequestFactory().addKimRoleRequest(context.getActionRequested().getCode(), member.getPriority(),
                     role, memberships, null, member.getResponsibilityId(), true, actionRequestPolicyCode, null);
         }
-        // TODO - Rice 2.0 - still need to implement support for ignoring built-in kim delegates whenever peopleflow delegate(s) are defined
+        // TODO - KULRICE-5726 - still need to implement support for ignoring built-in kim delegates whenever peopleflow delegate(s) are defined
     }
 
     protected Map<String, String> loadRoleQualifiers(Context context, PeopleFlowMember member) {

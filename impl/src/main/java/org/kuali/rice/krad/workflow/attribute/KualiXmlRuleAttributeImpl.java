@@ -44,9 +44,6 @@ public class KualiXmlRuleAttributeImpl extends StandardGenericXMLRuleAttribute i
      */
     @Override
     public Element getConfigXML() {
-
-        // TODO - Rice 2.0 - keep this method around temporarily until we replace with the version that takes ExtensionDefinition
-
         Element root = super.getConfigXML();
         KualiXmlAttributeHelper attributeHelper = new KualiXmlAttributeHelper();
         // this adds the name and title to the xml based on the data dictionary

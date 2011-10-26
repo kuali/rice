@@ -588,43 +588,4 @@
     </property>
   </bean>
 
-  <bean parent="CollectionGroupTableLayout"
-    p:layoutManager.numberOfColumns="4">
-    <property name="title" value="Rule Attributes" />
-    <property name="collectionObjectClass"
-      value="org.kuali.rice.krms.impl.repository.RuleAttributeBo" />
-    <property name="propertyName" value="agendaItemLine.rule.attributeBos" />
-    <property name="layoutManager.renderSequenceField" value="false" />
-    <property name="items">
-      <list>
-        <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.id" />
-        <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.attributeDefinitionId" />
-        <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.attributeDefinition.name" />
-        <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.value" />
-      </list>
-    </property>
-  </bean>
-
-
-<!--  Table view of proposition parameters           
-        <bean parent="CollectionGroupTableLayout"
-          p:layoutManager.numberOfColumns="3" >
-          <property name="title" value="campusCode = &quot;BL&quot;" />
-          <property name="collectionObjectClass"
-            value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
-          <property name="propertyName" value="proposition.parameters" />
-          <property name="layoutManager.renderSequenceField"
-            value="false" />
-          <property name="accordion.defaultOpen" value="false" />
-          <property name="items">
-            <list>
-              <bean parent="AttributeField" p:propertyName="sequenceNumber" />
-              <bean parent="AttributeField" p:propertyName="value" />
-              <bean parent="AttributeField" p:propertyName="parameterType" />
-            </list>
-          </property>
-        </bean>
-        
- -->          
-
 </beans>

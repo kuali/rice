@@ -1,5 +1,7 @@
 alter table KREW_PPL_FLW_T modify(TYP_ID NULL)
 /
+alter table KREW_PPL_FLW_MBR_T drop constraint KREW_PPL_FLW_MBR_TC1
+/
 alter table KREW_PPL_FLW_MBR_T DROP COLUMN dlgt_frm_id
 /
 

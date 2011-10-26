@@ -9,16 +9,33 @@ import javax.xml.namespace.QName;
 /**
  * Contains utilities related to the loading of extension resources.
  *
- * TODO - Rice 2.0 - document the methods on this class!
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ExtensionUtils {
 
+    /**
+     * Loads the extension object for the given extension definition.
+     *
+     * @param extensionDefinition the definition of the extension to load
+     * @param <T> the type of the extension object which is to be loaded
+     *
+     * @return the loaded extension, or null if no extension was loaded for the given definition
+     */
     public static <T> T loadExtension(ExtensionDefinitionContract extensionDefinition) {
         return ExtensionUtils.<T>loadExtension(extensionDefinition, null);
     }
 
+    /**
+     * Loads the extension object for the given extension definition, using the default applicationId if the given
+     * extension definition has a null applicationId.
+     *
+     * @param extensionDefinition the definition of the extension to load
+     * @param defaultApplicationId the application id to use when attempting to loading the extension if the
+     * application id on the given definition is null
+     * @param <T> the type of the extension object which is to be loaded
+     *
+     * @return the loaded extension, or null if no extension was loaded for the given definition
+     */
     public static <T> T loadExtension(ExtensionDefinitionContract extensionDefinition, String defaultApplicationId) {
         T extensionService = null;
         // first check if the class name is a valid and available java class

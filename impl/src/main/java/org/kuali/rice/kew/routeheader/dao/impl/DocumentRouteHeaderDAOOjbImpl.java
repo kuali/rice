@@ -211,6 +211,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             int index = 0;
             for (String responsibilityId : responsibilityIds) {
                 respIds += responsibilityId + (index == responsibilityIds.size()-1 ? "" : ",");
+                index++;
             }
             respIds += ")";
             String query = "SELECT DISTINCT(doc_hdr_id) FROM KREW_ACTN_RQST_T "+

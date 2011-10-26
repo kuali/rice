@@ -168,7 +168,7 @@
 		  </tr>
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Delegation Type: </td>
-		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].delegationType" /></td>
+		    <td width="66%" class="datacell"><html-el:text property="routeHeader.docActionRequest[${ctr}].delegationTypeCode" /></td>
 		  </tr>     
 		  <tr>
 		    <td width="33%" align="right" class="thnormal">Current Indicator: </td>

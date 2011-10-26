@@ -162,7 +162,7 @@ public class ActionRequestValue implements Serializable {
 	private String ruleBaseValuesId;
 
     @Column(name="DLGN_TYP")
-    private String delegationType;
+    private String delegationTypeCode;
     @Column(name="APPR_PLCY")
 	private String approvePolicy;
 
@@ -731,11 +731,20 @@ public class ActionRequestValue implements Serializable {
     }
 
     public DelegationType getDelegationType() {
-        return DelegationType.fromCode(delegationType);
+        return DelegationType.fromCode(delegationTypeCode);
     }
 
     public void setDelegationType(DelegationType delegationPolicy) {
-        this.delegationType = delegationPolicy == null ? null : delegationPolicy.getCode();
+        this.delegationTypeCode = delegationPolicy == null ? null : delegationPolicy.getCode();
+    }
+
+
+    public String getDelegationTypeCode() {
+        return delegationTypeCode;
+    }
+
+    public void setDelegationTypeCode(String delegationTypeCode) {
+        this.delegationTypeCode = delegationTypeCode;
     }
 
     public String getRoleName() {
@@ -922,7 +931,7 @@ public class ActionRequestValue implements Serializable {
             .append("qualifiedRoleNameLabel", qualifiedRoleNameLabel)
             .append("displayStatus", displayStatus)
             .append("ruleBaseValuesId", ruleBaseValuesId)
-            .append("delegationType", delegationType)
+            .append("delegationType", delegationTypeCode)
             .append("approvePolicy", approvePolicy)
             .append("childrenRequests", childrenRequests == null ? null : childrenRequests.size())
             .append("actionTaken", actionTaken)

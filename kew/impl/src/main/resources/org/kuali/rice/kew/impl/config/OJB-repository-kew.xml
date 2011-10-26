@@ -262,7 +262,7 @@
     <field-descriptor column="FRC_ACTN" name="forceAction" jdbc-type="BIT" />
     <field-descriptor column="CUR_IND" name="currentIndicator" jdbc-type="BIT" />
     <field-descriptor column="APPR_PLCY" name="approvePolicy" jdbc-type="CHAR" />
-   	<field-descriptor column="DLGN_TYP" name="delegationType" jdbc-type="CHAR" />
+   	<field-descriptor column="DLGN_TYP" name="delegationTypeCode" jdbc-type="CHAR" />
    	<field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
     	class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" name="parentActionRequest">

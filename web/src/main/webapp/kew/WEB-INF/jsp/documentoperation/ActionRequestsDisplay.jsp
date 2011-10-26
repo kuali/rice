@@ -113,7 +113,7 @@
 		  </tr>
 		  <tr>
 		    <td width="33%" align=right class="thnormal">Delegation Type: </td>
-		    <td width="66%" class="datacell"><c:out value="${actionRequest.delegationType}" />&nbsp;</td>
+		    <td width="66%" class="datacell"><c:out value="${actionRequest.delegationTypeCode}" />&nbsp;</td>
 		  </tr>     
 		  <tr>
 		    <td width="33%" align=right class="thnormal">Current Indicator: </td>

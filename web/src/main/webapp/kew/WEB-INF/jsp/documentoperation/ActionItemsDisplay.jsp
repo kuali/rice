@@ -30,7 +30,7 @@
       <c:forEach var="actionItem" items="${DocumentOperationForm.routeHeader.actionItems}">
  	  <tr>
 	    <td width="33%" class="headercell3-b-l" align=right><b> Action Item ID: </b></td>
-	    <td width="66%" class="headercell3-b-l"><c:out value="${actionItem.actionItemId}" /> &nbsp;</td>
+	    <td width="66%" class="headercell3-b-l"><c:out value="${actionItem.id}" /> &nbsp;</td>
 	  </tr> 
 	  <tr>
 	    <td width="33%" class="thnormal" align=right> Document ID: </td>

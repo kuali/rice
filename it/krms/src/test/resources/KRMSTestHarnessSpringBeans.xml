@@ -273,8 +273,53 @@
       <property name="dbPlatform" ref="dbPlatform" />
     </bean>
 
+  <!--
     <bean id="criteriaLookupService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
       <property name="serviceName" value="criteriaLookupService" />
+    </bean>
+-->
+    <bean id="criteriaLookupService" class="org.kuali.rice.krad.criteria.CriteriaLookupServiceImpl">
+      <property name="criteriaLookupDao">
+          <ref bean="criterialookupDao"/>
+      </property>
+    </bean>
+
+    <bean id="criterialookupDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoProxy">
+        <property name="criteriaLookupDaoJpa" ref="criterialookupDaoJpa"/>
+        <property name="criteriaLookupDaoOjb" ref="criterialookupDaoOjb"/>
+    </bean>
+
+    <bean id="criterialookupDaoJpa" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoJpa">
+        <property name="entityManager" ref="kradApplicationEntityManager"/>
+    </bean>
+
+    <bean id="criterialookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.krad.criteria.CriteriaLookupDaoOjb" />
+
+
+    <bean id="kradApplicationEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="kradApplicationEntityManagerFactory"/>
+    </bean>
+
+    <bean id="kradApplicationEntityManagerFactory"
+          class="org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
+        <constructor-arg value="rice.krad.application"/>
+        <constructor-arg ref="kradApplicationDataSource"/>
+        <constructor-arg value="rice.krad"/>
+    </bean>
+
+    <bean id="kradApplicationDataSource"
+          class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+        <property name="preferredDataSourceParams">
+            <list>
+              <value>kradClient.datasource</value>
+            </list>
+        </property>
+        <property name="preferredDataSourceJndiParams">
+            <list>
+              <value>kradClient.datasource.jndi.location</value>
+            </list>
+        </property>
+        <property name="serverDataSource" value="false"/>
     </bean>
 
 

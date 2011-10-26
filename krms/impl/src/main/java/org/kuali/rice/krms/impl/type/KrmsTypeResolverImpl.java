@@ -26,6 +26,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.function.FunctionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
@@ -33,6 +34,7 @@ import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.framework.type.FunctionTypeService;
 import org.kuali.rice.krms.framework.type.PropositionTypeService;
+import org.kuali.rice.krms.framework.type.RuleTypeService;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
 
 /**
@@ -83,7 +85,16 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
         KrmsTypeDefinition typeDefinition = getTypeDefinition(agendaDefinition.getTypeId());
         return resolveTypeService(typeDefinition, AgendaTypeService.class);
     }
-	
+
+    @Override
+	public RuleTypeService getRuleTypeService(RuleDefinition ruleDefinition) {
+        if (ruleDefinition == null) {
+            throw new IllegalArgumentException("ruleDefinition was null");
+        }
+        KrmsTypeDefinition typeDefinition = getTypeDefinition(ruleDefinition.getTypeId());
+        return resolveTypeService(typeDefinition, RuleTypeService.class);
+    }
+
 	@Override
 	public TermResolverTypeService getTermResolverTypeService(TermResolverDefinition termResolverDefintion) {
 		if (termResolverDefintion == null) {

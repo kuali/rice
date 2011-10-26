@@ -17,7 +17,6 @@ package org.kuali.rice.krms.impl.provider.repository;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
@@ -32,7 +31,7 @@ final class LazyAction implements Action {
 
 	private final ActionDefinition actionDefinition;
 	private final KrmsTypeResolver typeResolver;
-	
+
 	private final Object mutex = new Object();
 	
 	// volatile for double-checked locking idiom

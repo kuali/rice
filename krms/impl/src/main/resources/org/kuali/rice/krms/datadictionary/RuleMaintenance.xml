@@ -375,7 +375,7 @@
             <bean parent="AttributeField" p:propertyName="proposition.parameterDisplayString"
                    p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="TextControl" p:size="100" p:style="border: 0"/>
+                <bean parent="TextControl" p:size="100" p:style="margin-left: 24pt; border: 0"/>
               </property>
             </bean>
           </list>
@@ -409,25 +409,6 @@
               <property name="layoutManager.orientation" value="HORIZONTAL"/>
               <property name="items">
                 <list>
-<!--
-                  <bean parent="AttributeField" abstract="true"
-        p:label="Select" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
-        p:labelField.renderColon="false">
-
-                    <property name="control">
-                      <bean parent="SelectControl">
-                        <property name="options">
-                          <list>
-                            <bean parent="KeyLabelPair" p:key="" p:value="default Category"/>
-                            <bean parent="KeyLabelPair" p:key="1" p:value="Notifications"/>
-                            <bean parent="KeyLabelPair" p:key="2" p:value="Validations"/>
-                            <bean parent="KeyLabelPair" p:key="3" p:value="Workflow"/>
-                          </list>
-                        </property>
-                      </bean>
-                    </property>
-                  </bean>
--->
                   <bean parent="AttributeField" p:propertyName="proposition.parameters[0].value"
                           p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="255">
                     <property name="control">
@@ -471,7 +452,7 @@
         <property name="items">
           <list>
             <bean parent="AttributeField" p:propertyName="proposition.compoundOpCode"
-                    p:style="margin-left: 12pt; padding: 0px" p:showLabel="false" p:label="operator" p:maxLength="20">
+                    p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="20">
               <property name="control">
                 <bean parent="SelectControl"/>
               </property>
@@ -500,7 +481,7 @@
               </property>
             </bean>
             <bean parent="AttributeField" p:propertyName="proposition.description"
-                    p:showLabel="false" p:label="description" p:maxLength="255" p:style="margin-left: 0pt">
+                    p:showLabel="false" p:label="description" p:maxLength="255" p:style="margin-left: 12pt">
               <property name="control">
                 <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Compound Proposition Description" />
               </property>

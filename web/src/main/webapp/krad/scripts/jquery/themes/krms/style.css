@@ -21,6 +21,9 @@ li a.agendaNode { text-decoration: none; }
 .jstree-krms .ruleBlockSelected { border: 1px dashed #69f; }
 .jstree-krms .ruleCutSelected { background:#F4E271; border: 1px dashed goldenrod; }
 
+.jstree-krms .boxLayoutHorizontalItem { padding-bottom: 0em;}
+.jstree-krms .boxLayoutVerticalItem { padding-bottom: 0em;padding-top: 0em;padding-left: 0em;padding-right: 0em;}
+.jstree-krms  > ins { display:none; }
 /*
 .jstree-krms a { border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px; text-shadow:1px 1px 1px white; }
 */

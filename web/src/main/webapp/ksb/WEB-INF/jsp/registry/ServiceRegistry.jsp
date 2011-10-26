@@ -104,10 +104,10 @@
 		    </display:column>
 		    <display:column class="datacell" sortable="true" title="<div>Endpoint URL</div>" >
 				<c:choose>
-				<c:when test='${result.class.name == "org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration"}'>
+				<c:when test='${result["class"].name == "org.kuali.rice.ksb.api.bus.support.SoapServiceConfiguration"}'>
 		    	<a href="${result.endpointUrl}?wsdl"><c:out value="${result.endpointUrl}"/></a>&nbsp;
 				</c:when>
-                <c:when test='${result.class.name == "org.kuali.rice.ksb.api.bus.support.RestServiceConfiguration"}'>
+                <c:when test='${result["class"].name == "org.kuali.rice.ksb.api.bus.support.RestServiceConfiguration"}'>
                 <a href="${result.endpointUrl}?_wadl&_type=xml"><c:out value="${result.endpointUrl}"/></a>&nbsp;
                 </c:when>
 				<c:otherwise>

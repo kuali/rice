@@ -42,18 +42,6 @@ public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase impleme
         return new ValidationActionTypeServiceImpl();
     }
 
-
-    /**
-     * @return the configured {@link org.kuali.rice.krms.framework.type.ValidationActionService}.
-     */
-    public ValidationActionService getValidationService() {
-        if (validationService == null) {
-            validationService = KRMSServiceLocatorInternal.getValidationActionService();
-        }
-
-        return validationService;
-    }
-
     @Override
     public Action loadAction(ActionDefinition validationActionDefinition) {
 

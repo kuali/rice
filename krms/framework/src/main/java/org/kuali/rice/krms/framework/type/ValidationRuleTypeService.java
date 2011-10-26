@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ValidationRuleTypeService extends RemotableAttributeOwner, ValidationRuleService, RuleTypeService {
+public interface ValidationRuleTypeService extends RuleTypeService {
     static final String ATTRIBUTE_FIELD_NAME = "validationId";
     public static final String VALIDATIONS_RULE_ATTRIBUTE = "validations";
     static final String VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE = "RuleTypeCode";
@@ -44,5 +44,4 @@ public interface ValidationRuleTypeService extends RemotableAttributeOwner, Vali
             value = MapStringStringAdapter.class) Map<String, String> oldAttributes) throws RiceIllegalArgumentException;
     public List<RemotableAttributeError> validateAttributes(@WebParam(name = "krmsTypeId") String krmsTypeId, @WebParam(name = "attributes") @XmlJavaTypeAdapter(
             value = MapStringStringAdapter.class) Map<String, String> attributes) throws RiceIllegalArgumentException;
-    public void setValidationRuleService(ValidationRuleService mockValidationService);
 }

@@ -17,24 +17,17 @@ package org.kuali.rice.krms.impl.validation;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.framework.type.ValidationRuleService;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
 import org.kuali.rice.krms.framework.type.ValidationRuleTypeService;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 import org.kuali.rice.krms.impl.type.KrmsTypeServiceBase;
-import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
-
-import javax.jws.WebParam;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase implements ValidationRuleTypeService {
-
-    private ValidationRuleService validationService;
 
     private RepositoryToEngineTranslator translator;
 
@@ -80,68 +73,6 @@ public final class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase imp
                     translator.translateActionDefinitions(validationRuleDefinition.getActions()));
         }
         return null;
-    }
-
-    /**
-     * @return the configured {@link org.kuali.rice.krms.framework.type.ValidationActionService}
-     */
-    public ValidationRuleService getValidationRuleService() {
-        if (validationService == null) {
-            validationService = KRMSServiceLocatorInternal.getValidationRuleService();
-        }
-
-        return validationService;
-    }
-
-    @Override
-    public void setValidationRuleService(ValidationRuleService validationService) {
-        if (validationService == null) {
-            throw new RiceIllegalArgumentException("validationService must not be null");
-        }
-        this.validationService = validationService;
-    }
-
-    @Override
-    public RuleDefinition getValidationRule(
-            @WebParam(name = "validationId") String validationId) throws RiceIllegalArgumentException {
-        return null;  //TODO EGHM
-    }
-
-    @Override
-    public RuleDefinition getValidationRuleByName(@WebParam(name = "namespaceCode") String namespaceCode,
-            @WebParam(name = "name") String name) throws RiceIllegalArgumentException {
-        return null;  //TODO EGHM
-    }
-
-    /**
-     * TODO EGHM
-     *
-     * @param validation
-     * @return
-     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if the given Validation definition is null
-     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if the given Validation definition has a
-     * non-null id.  When creating a new
-     * Validation definition, the ID will be generated.
-     * @throws org.kuali.rice.core.api.exception.RiceIllegalStateException if a Validation with the given namespace code
-     * and name already exists
-     */
-    @Override
-    public RuleDefinition createValidationRule(@WebParam(
-            name = "validation") RuleDefinition validation) throws RiceIllegalArgumentException, RiceIllegalStateException {
-        return null; //TODO EGHM
-    }
-
-    /**
-     * @param validation
-     * @return
-     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException
-     * @throws org.kuali.rice.core.api.exception.RiceIllegalStateException if the Validation does not exist in the system
-     * under the given validationId
-     */
-    @Override
-    public RuleDefinition updateValidationRule(@WebParam(
-            name = "validation") RuleDefinition validation) throws RiceIllegalArgumentException, RiceIllegalStateException {
-        return null;  //TODO EGHM
     }
 
     /**

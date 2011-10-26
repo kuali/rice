@@ -31,7 +31,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="HeaderFour"/>
       </property>
       <property name="accordion">
-        <bean parent="Accordion"/>
+        <bean parent="Accordion" p:render="false"/>
       </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
@@ -168,6 +168,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
       <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
       <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+      <property name="accordion.render" value="true"/>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>
@@ -188,7 +189,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="CollectionGroup" abstract="true" parent="CollectionGroup-parentBean"/>
   <bean id="CollectionGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Group">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/collectionGroup.jsp"/>
-      <property name="styleClasses" value="kr-collection-cntr"/>
+      <property name="styleClasses" value="kr-collection-cntr,kr-collectionStacked"/>
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
@@ -228,10 +229,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+    <property name="accordion.render" value="true"/>
   </bean>
 
   <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroupTableLayout-parentBean"/>
   <bean id="CollectionGroupTableLayout-parentBean" abstract="true" parent="CollectionGroup">
+      <property name="styleClasses" value="kr-collection-cntr,kr-collectionTable"/>
       <property name="layoutManager">
         <bean parent="TableLayoutManager"/>
       </property>
@@ -239,17 +242,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
   <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
-    <property name="styleClasses" value="wrap"/>
     <property name="header.headerLevel" value="h3"/>
     <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
     <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+    <property name="accordion.render" value="true"/>
   </bean>
 
   <bean id="ListGroup" abstract="true" parent="ListGroup-parentBean"/>
   <bean id="ListGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup"
         parent="Group">
-    <property name="styleClasses" value="kr-collection-cntr,kr-collection-list-cntr"/>
+    <property name="styleClasses" value="kr-collection-cntr, kr-collection-list-cntr"/>
     <property name="bindingInfo">
       <ref bean="BindingInfo"/>
     </property>

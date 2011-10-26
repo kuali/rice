@@ -162,7 +162,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
   <bean id="GroupSection-parentBean" abstract="true" parent="Group">
-      <property name="styleClasses" value="wrap"/>
       <property name="header">
         <bean parent="HeaderThree" p:styleClasses="grouping-header-expandable"/>
       </property>
@@ -224,7 +223,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
   <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
-    <property name="styleClasses" value="wrap"/>
     <property name="header.headerLevel" value="h3"/>
     <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
     <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>

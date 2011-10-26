@@ -225,7 +225,13 @@ public class GroupXmlParser {
 
         //Group members
 
-        List<Element> members = element.getChild(MEMBERS, GROUP_NAMESPACE).getChildren();
+        List<Element> members = null;
+        if(element.getChild(MEMBERS, GROUP_NAMESPACE) == null) {
+            members = new ArrayList<Element>();
+        }
+        else {
+            members = element.getChild(MEMBERS, GROUP_NAMESPACE).getChildren();
+        }
         for (Element member : members) {
             String elementName = member.getName().trim();
             if (elementName.equals(PRINCIPAL_NAME)) {

@@ -402,7 +402,7 @@
             <bean parent="AttributeField" p:propertyName="proposition.description"
                   p:style="margin-left: 1pt;" p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;" />
+                <bean parent="TextControl" p:size="140" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;" />
               </property>
             </bean>
             <bean parent="GroupBodyOnly" p:hidden="true" >
@@ -410,7 +410,7 @@
               <property name="items">
                 <list>
                   <bean parent="AttributeField" p:propertyName="proposition.categoryId"
-                          p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="255">
+                          p:style="margin-left: 12pt" p:showLabel="true" p:label="Category" p:labelPlacement="TOP" p:maxLength="40">
                     <property name="control">
                       <bean parent="SelectControl">
                         <property name="options">
@@ -425,7 +425,7 @@
                     </property>
                   </bean>
                   <bean parent="AttributeField" p:propertyName="proposition.parameters[0].value"
-                          p:showLabel="false" p:label="operator" p:maxLength="255">
+                          p:showLabel="true" p:label="Term" p:maxLength="255">
                     <property name="control">
                       <bean parent="SelectControl"/>
                     </property>
@@ -434,7 +434,7 @@
                     </property>
                   </bean>
                   <bean parent="AttributeField" p:propertyName="proposition.parameters[2].value"
-                          p:showLabel="false" p:label="operator" p:maxLength="20">
+                          p:showLabel="false" p:style="padding-bottom: 0em;padding-top: 0em;padding-left: 0em;padding-right: 0em;" p:label="Operator" p:maxLength="20">
                     <property name="control">
                       <bean parent="SelectControl"/>
                     </property>
@@ -443,9 +443,9 @@
                     </property>
                   </bean>
                   <bean parent="AttributeField" p:propertyName="proposition.parameters[1].value"
-                          p:showLabel="false" p:label="id" p:maxLength="255">
+                           p:showLabel="true" p:label="Value" p:maxLength="255">
                     <property name="control">
-                      <bean parent="TextControl" p:watermarkText="Enter a Literal Value" />
+                      <bean parent="TextControl" p:style="margin-top: 2px;" p:watermarkText="Enter a Literal Value" />
                     </property>
                   </bean>
                 </list>

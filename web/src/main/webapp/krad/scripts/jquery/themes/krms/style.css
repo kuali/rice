@@ -18,10 +18,10 @@ li a.agendaNode { text-decoration: none; }
 .jstree-krms .jstree-closed > ins { background-position:-54px 0; } 
 .jstree-krms .jstree-leaf > ins { background-position:-36px 0; }
 
-.jstree-krms .ruleBlockSelected { border: 1px dashed #69f; }
+.jstree-krms .ruleBlockSelected {background:#e7f4f9; border: 1px dashed #69f; }
 .jstree-krms .ruleCutSelected { background:#F4E271; border: 1px dashed goldenrod; }
 
-.jstree-krms .boxLayoutHorizontalItem { padding-bottom: 0em;}
+.jstree-krms .boxLayoutHorizontalItem {padding-bottom: 0em;padding-top: 0em;padding-left: 0em;padding-right: 0em;}
 .jstree-krms .boxLayoutVerticalItem { padding-bottom: 0em;padding-top: 0em;padding-left: 0em;padding-right: 0em;}
 .jstree-krms  > ins { display:none; }
 /*

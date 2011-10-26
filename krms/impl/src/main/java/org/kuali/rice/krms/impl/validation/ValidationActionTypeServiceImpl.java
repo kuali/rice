@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.validation;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.framework.type.ValidationActionService;
@@ -28,17 +29,17 @@ import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org).
  */
-public class ValidationWarningActionTypeServiceImpl extends KrmsTypeServiceBase implements ValidationActionTypeService {
+public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase implements ValidationActionTypeService {
     private ValidationActionService validationService;
 
-    private ValidationWarningActionTypeServiceImpl() {}
+    private ValidationActionTypeServiceImpl() {}
 
     /**
      * Factory method for getting a {@link ActionTypeService}
      * @return a {@link ActionTypeService}
      */
     public static ActionTypeService getInstance() {
-        return new ValidationWarningActionTypeServiceImpl();
+        return new ValidationActionTypeServiceImpl();
     }
 
 
@@ -54,16 +55,34 @@ public class ValidationWarningActionTypeServiceImpl extends KrmsTypeServiceBase 
     }
 
     @Override
-    public Action loadAction(ActionDefinition actionDefinition) {
-        // TODO EGHM translator?
-        return new ValidationAction(ValidationActionType.WARNING, actionDefinition.getDescription());
+    public Action loadAction(ActionDefinition validationActionDefinition) {
+
+        if (validationActionDefinition == null) { throw new RiceIllegalArgumentException("validationActionDefinition must not be null"); }
+        if (validationActionDefinition.getAttributes() == null) { throw new RiceIllegalArgumentException("validationActionDefinition must not be null");}
+        if (!validationActionDefinition.getAttributes().containsKey(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE)) {
+            throw new RiceIllegalArgumentException("validationActionDefinition does not contain an " +
+                    ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE + " attribute");
+        }
+        String validationActionTypeCode = validationActionDefinition.getAttributes().get(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE);
+
+        if (StringUtils.isBlank(validationActionTypeCode)) {
+            throw new RiceIllegalArgumentException(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE + " attribute must not be null or blank");
+        }
+
+        if (ValidationActionType.WARNING.getCode().equals(validationActionTypeCode)) {
+            return new ValidationAction(ValidationActionType.WARNING, validationActionDefinition.getDescription());
+        }
+        if (ValidationActionType.ERROR.getCode().equals(validationActionTypeCode)) {
+            return new ValidationAction(ValidationActionType.ERROR, validationActionDefinition.getDescription());
+        }
+        return null;
     }
 
     @Override
-    public void setValidationService(ValidationActionService validationService) {
-        if (validationService == null) {
+    public void setValidationService(ValidationActionService mockValidationService) {
+        if (mockValidationService == null) {
             throw new RiceIllegalArgumentException("validationService must not be null");
         }
-        this.validationService = validationService;
+        this.validationService = mockValidationService;
     }
 }

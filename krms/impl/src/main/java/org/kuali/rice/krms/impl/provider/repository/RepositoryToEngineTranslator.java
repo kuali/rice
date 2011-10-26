@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.krms.impl.provider.repository;
 
-import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.engine.AgendaTree;
@@ -30,6 +28,8 @@ import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
+
+import java.util.List;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
@@ -54,5 +54,6 @@ public interface RepositoryToEngineTranslator {
 	public Proposition translatePropositionDefinition(PropositionDefinition propositionDefinition);
 	
 	public Action translateActionDefinition(ActionDefinition actionDefinition);
-	
+
+    public List<Action> translateActionDefinitions(List<ActionDefinition> actions);
 }

@@ -28,6 +28,7 @@ public interface ValidationActionTypeService extends RemotableAttributeOwner, Ac
 
     static public final String VALIDATIONS_ACTION_ATTRIBUTE = "validations";
     static public final String ATTRIBUTE_FIELD_NAME = "validationId";
+    static final String VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE = "ActionTypeCode";
 
     @Override
 	public Action loadAction(ActionDefinition actionDefinition);
@@ -35,8 +36,8 @@ public interface ValidationActionTypeService extends RemotableAttributeOwner, Ac
     /**
      * Set the {@link ValidationActionService}.
      *
-     * @param validationService the {@link ValidationActionService} to use.
+     * @param mockValidationService the {@link ValidationActionService} to use.
      * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if the given Validation Service is null
      */
-    void setValidationService(ValidationActionService validationService);
+    void setValidationService(ValidationActionService mockValidationService);
 }

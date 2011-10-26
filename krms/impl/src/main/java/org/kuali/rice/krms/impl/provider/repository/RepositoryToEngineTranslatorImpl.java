@@ -42,17 +42,13 @@ import org.kuali.rice.krms.framework.engine.BasicAgenda;
 import org.kuali.rice.krms.framework.engine.BasicAgendaTree;
 import org.kuali.rice.krms.framework.engine.BasicAgendaTreeEntry;
 import org.kuali.rice.krms.framework.engine.BasicContext;
-import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.SubAgenda;
 import org.kuali.rice.krms.framework.type.TermResolverTypeService;
-import org.kuali.rice.krms.framework.type.ValidationRuleType;
-import org.kuali.rice.krms.framework.type.ValidationRuleTypeService;
 import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
-import org.kuali.rice.krms.impl.validation.ValidationRule;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -243,26 +239,13 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	
 	@Override
 	public Rule translateRuleDefinition(RuleDefinition ruleDefinition) {
-		Proposition condition = translatePropositionDefinition(ruleDefinition.getProposition());
 		List<Action> actions = new ArrayList<Action>();
 		if (ruleDefinition.getActions() != null) {
 			for (ActionDefinition actionDefinition : ruleDefinition.getActions()) {
 				actions.add(translateActionDefinition(actionDefinition));
 			}
 		}
-         // TODO EGHM implement RuleTypeServices
-         if (ruleDefinition.getAttributes() != null) {
-             Map<String, String> attribs = ruleDefinition.getAttributes();
-             String ruleTypeCode = attribs.get(ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE);
-             if (ValidationRuleType.VALID.getCode().equals(ruleTypeCode)) {
-                 return new ValidationRule(ValidationRuleType.VALID, ruleDefinition.getName(),
-                         condition, actions);
-             } else if (ValidationRuleType.INVALID.getCode().equals(ruleTypeCode)) {
-                 return new ValidationRule(ValidationRuleType.INVALID, ruleDefinition.getName(),
-                         condition, actions);
-             }
-         }
-		return new BasicRule(ruleDefinition.getName(), condition, actions);
+        return new LazyRule(ruleDefinition, typeResolver);
 	}
 	
 	@Override
@@ -277,8 +260,17 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		}
 		return new LazyAction(actionDefinition, typeResolver);
 	}
-	
-	@Override
+
+    @Override
+    public List<Action> translateActionDefinitions(List<ActionDefinition> actionDefinitions) {
+        List<Action> actions = new ArrayList<Action>();
+        for (ActionDefinition actionDefinition : actionDefinitions) {
+            actions.add(translateActionDefinition(actionDefinition));
+        }
+        return actions;
+    }
+
+    @Override
 	public SubAgenda translateAgendaTreeDefinitionToSubAgenda(AgendaTreeDefinition subAgendaDefinition) {
 		return new SubAgenda(translateAgendaTreeDefinition(subAgendaDefinition));
 	}

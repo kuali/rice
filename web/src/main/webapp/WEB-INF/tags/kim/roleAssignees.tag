@@ -125,7 +125,7 @@
                       <div align="center"> <kul:htmlControlAttribute property="member.qualifier(${qualifier.kimAttributeId}).attrVal"  attributeEntry="${attrEntry}" readOnly="${!canModifyAssignees}" />
 
                         <c:forEach var="widget" items="${KualiForm.document.definitions.attributeField.widgets}" >
-                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                          <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not readOnlyAssignees}">
     				       		    <kim:attributeLookup attributeDefinitions="${KualiForm.document.definitions}" pathPrefix="member" attr="${widget}" />
                           </c:if>

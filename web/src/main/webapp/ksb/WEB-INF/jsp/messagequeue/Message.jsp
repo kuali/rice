@@ -136,7 +136,7 @@
 
 							    <tr>
 									  <td class="thnormal" align="right" width="20%">Payload Class:</td>
-					  		    <td class="datacell"><c:out value="${methodCall.class}" /></td>
+					  		    <td class="datacell"><c:out value="${methodCall['class']}" /></td>
 				  		    </tr>
 					  		  <tr>
 										<td class="thnormal" align="right" width="20%">Method Name</td>
@@ -315,7 +315,7 @@
 														<td class="datacell">ServiceInfo.ServiceDefinition is null&nbsp;</td>
 													</c:when>
 													<c:otherwise>
-										  		  <td class="datacell"><c:out value="${methodCall.serviceInfo.serviceDefinition.service.class}" />&nbsp;</td>
+										  		  <td class="datacell"><c:out value="${methodCall.serviceInfo.serviceDefinition.service['class']}" />&nbsp;</td>
 													</c:otherwise>
 												</c:choose>
 											</c:otherwise>

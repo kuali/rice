@@ -132,9 +132,14 @@ th .kr-collection-cntr .summary {
 	color: #000000;
 	font-weight: bold;
  }
+label {
+    font-weight:bold;
+}
+input[type="radio"]+label, input[type="checkbox"]+label {     /* when label is sibling of checkbox or radio, font-weight is non-bold */
+    font-weight:normal;
+}
 .labelTop label {
     line-height:2em;
-    font-weight:bold;
     margin-right:1em;
 }
 
@@ -142,13 +147,10 @@ th .kr-collection-cntr .summary {
     font-weight:bold;
 }
 .kr-field-attribute>span:nth-child(1) label {
-    font-weight:bold;
     line-height:2em;
     margin-right:1em;
 }
-.Hey S>label {          /* this should go away, not sure what this is or why it's in the build */
-    font-weight:bold;
-}
+
 th.labelTop {
     display:inline;
 }
@@ -549,7 +551,6 @@ img.expand_collapse-buttons[alt="expand"]{
 	margin: 10px 15px 30px 20px;
 }
 .desc > label {
-    font-weight:bold;
     line-height:2em;
 }
 
@@ -927,7 +928,7 @@ a.h4.kr-section-subhead {
     color:#fff;
     background-color: #000;
     font-family: Arial, Helvetica, sans-serif ;
-    margin:  0.25em 0 0 0;
+    margin:  0;
     padding: 0.5em;
 }
 .kr-collection-cntr h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
@@ -956,12 +957,12 @@ a.h4.kr-section-subhead {
   background-color:#fff;
   margin: 0.5em;
   padding: 0.5em;
-  border: 1px solid #ccc;
 }
 .kr-subCollection>.kr-collection-cntr {
     background: #fff;
     margin-left:1em;
     margin-top:1em;
+    border: none;
 }
 .kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header, .kr-subCollection>.kr-collection-cntr h3.kr-collectionGroup-header {
     background-color:#eee;
@@ -981,4 +982,27 @@ table[role="presentation"] th {
 }
 table[role="presentation"] th h4, table[role="presentation"] th .summary, table[role="presentation"] th.kr-subCollection h3.kr-collectionGroup-header {
     text-align:left;
+}
+.kr-subCollection .kr-collection-cntr h4.kr-collectionGroup-header {
+    background-color:#ffffff;
+    color: #000;
+    border: 1px solid rgba(255,255,255,0);
+    border-bottom: 2px solid rgba(0,0,0,1);
+    padding: .25em .25em .25em 0;
+    margin-bottom:.5em;
+    margin-top:0;
+}
+.kr-subCollection .kr-collection-cntr a h4.kr-collectionGroup-header {
+    color: #3F7826;
+}
+.kr-subCollection a h4.kr-collectionGroup-header:hover {
+    background-color:#ECFCE8;
+    border: 1px solid #3F7826;
+    border-bottom: 2px solid #3F7826;
+}
+.kr-subCollection a h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+    background: url("../../images/h3_expand-back-ks.png") no-repeat scroll 0 0 transparent;
+}
+.kr-subCollection a h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+    background: url("../../images/h3_collapse-back-ks.png") no-repeat scroll 0 0 transparent;
 }

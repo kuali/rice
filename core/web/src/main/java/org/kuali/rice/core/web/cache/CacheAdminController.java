@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/core/admin/cache")
-public final class CacheAdminController extends UifControllerBase {
+public class CacheAdminController extends UifControllerBase {
 
     private CacheManagerRegistry registry;
 

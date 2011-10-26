@@ -154,9 +154,25 @@ public interface DocumentSearchCriteriaContract {
      * result to a valid document type.  This is because the document type itself defines information about custom
      * document attributes and the parameters around how searches against those attributes can be executed.</p>
      *
+     * <p>Note that searches against a document type name should be document type hierarchy-aware.  Meaning that the
+     * search should also return results for any documents that have document types that are children of the specified
+     * document type name (assuming that the specified document type name is valid and not wildcarded at all).</p>
+     *
      * @return the document type name criteria
      */
     String getDocumentTypeName();
+
+    /**
+     * Returns an optional list of additional document type name criteria against which to search.  The search should
+     * effectively return all documents that have a document type name within the set of the main document type name on
+     * the criteria as well as any additional document type names.
+     *
+     * <p>As with {@link #getDocumentTypeName()}, the additional document type name criteria is document type hierarchy
+     * aware.</p>
+     *
+     * @return the list of additional document type names to use on the search criteria
+     */
+    List<String> getAdditionalDocumentTypeNames();
 
     /**
      * Returns the inclusive lower end of the date created criteria to search against when executing the document search.

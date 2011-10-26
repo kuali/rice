@@ -4,8 +4,10 @@ import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -82,6 +84,22 @@ public class ModelObjectUtils {
             return Collections.emptySet();
         }
         return Collections.unmodifiableSet(new HashSet<T>(setToCopy));
+    }
+
+    /**
+     * Takes the given map and returns an unmodifiable copy of that map containing the same entries as the original
+     * map.  This method handles a null map being passed to it by returning an unmodifiable empty map.
+     *
+     * @param mapToCopy the map to copy
+     * @param <K, V> the type of the key and value elements in the given map
+     *
+     * @return an unmodifiable copy containing the same elements as the given set
+     */
+    public static <K, V> Map<K, V> createImmutableCopy(Map<K, V> mapToCopy) {
+        if (mapToCopy == null || mapToCopy.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return Collections.unmodifiableMap(new HashMap<K, V>(mapToCopy));
     }
 
 	/**

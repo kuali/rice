@@ -391,7 +391,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
             whereSQL.append(queryComponent.getWhereSql());
         }
 
-        whereSQL.append(getDocTypeFullNameWhereSql(criteria.getDocumentTypeName(), getGeneratedPredicatePrefix(whereSQL.length())));
+        whereSQL.append(getDocTypeFullNameWhereSql(criteria, getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getDocTitleSql(criteria.getTitle(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getDocumentStatusSql(criteria.getDocumentStatuses(), criteria.getDocumentStatusCategories(), getGeneratedPredicatePrefix(whereSQL.length())));
         whereSQL.append(getGeneratedPredicatePrefix(whereSQL.length())).append(" DOC_HDR.DOC_TYP_ID = DOC1.DOC_TYP_ID ");
@@ -592,24 +592,31 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         return returnSql;
     }
 
-    public String getDocTypeFullNameWhereSql(String docTypeFullName, String whereClausePredicatePrefix) {
+    public String getDocTypeFullNameWhereSql(DocumentSearchCriteria criteria, String whereClausePredicatePrefix) {
+        List<String> documentTypeNamesToSearch = new ArrayList<String>();
+        String primaryDocumentTypeName = criteria.getDocumentTypeName();
+        if (StringUtils.isNotBlank(primaryDocumentTypeName)) {
+            documentTypeNamesToSearch.add(primaryDocumentTypeName);
+        }
+        documentTypeNamesToSearch.addAll(criteria.getAdditionalDocumentTypeNames());
         StringBuilder returnSql = new StringBuilder("");
-        if (StringUtils.isNotBlank(docTypeFullName)) {
-            DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
-            DocumentType docType = docSrv.findByName(docTypeFullName.trim());
-            if (docType != null) {
-                returnSql.append(whereClausePredicatePrefix).append("(");
-                addDocumentTypeNameToSearchOn(returnSql,docType.getName(), "");
-                if (docType.getChildrenDocTypes() != null) {
-                    addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
+        if (CollectionUtils.isNotEmpty(documentTypeNamesToSearch)) {
+            returnSql.append(whereClausePredicatePrefix).append("(");
+            for (String documentTypeName : documentTypeNamesToSearch) {
+                if (StringUtils.isNotBlank(documentTypeName)) {
+                    DocumentTypeService docSrv = KEWServiceLocator.getDocumentTypeService();
+                    DocumentType docType = docSrv.findByName(documentTypeName.trim());
+                    if (docType != null) {
+                        addDocumentTypeNameToSearchOn(returnSql, documentTypeName.trim(), "");
+                        if (docType.getChildrenDocTypes() != null) {
+                            addChildDocumentTypes(returnSql, docType.getChildrenDocTypes());
+                        }
+                    } else{
+                        addDocumentTypeLikeNameToSearchOn(returnSql, documentTypeName.trim(), "");
+                    }
                 }
-                addExtraDocumentTypesToSearch(returnSql,docType);
-                returnSql.append(")");
-            }else{
-                returnSql.append(whereClausePredicatePrefix).append("(");
-                addDocumentTypeLikeNameToSearchOn(returnSql,docTypeFullName.trim(), "");
-                returnSql.append(")");
             }
+            returnSql.append(")");
         }
         return returnSql.toString();
     }
@@ -620,8 +627,6 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
             addChildDocumentTypes(whereSql, child.getChildrenDocTypes());
         }
     }
-
-    public void addExtraDocumentTypesToSearch(StringBuilder whereSql, DocumentType docType) {}
 
     public void addDocumentTypeNameToSearchOn(StringBuilder whereSql, String documentTypeName) {
         this.addDocumentTypeNameToSearchOn(whereSql, documentTypeName, " or ");

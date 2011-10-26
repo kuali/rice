@@ -6,6 +6,7 @@ import org.joda.time.DateTimeZone;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.mo.ModelObjectUtils;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.document.DocumentStatus;
@@ -50,6 +51,7 @@ import java.util.Map;
     DocumentSearchCriteria.Elements.ROUTE_NODE_NAME,
     DocumentSearchCriteria.Elements.ROUTE_NODE_LOOKUP_LOGIC,
     DocumentSearchCriteria.Elements.DOCUMENT_TYPE_NAME,
+    DocumentSearchCriteria.Elements.ADDITIONAL_DOCUMENT_TYPE_NAMES,
     DocumentSearchCriteria.Elements.DATE_CREATED_FROM,
     DocumentSearchCriteria.Elements.DATE_CREATED_TO,
     DocumentSearchCriteria.Elements.DATE_LAST_MODIFIED_FROM,
@@ -110,6 +112,11 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
 
     @XmlElement(name = Elements.DOCUMENT_TYPE_NAME, required = false)
     private final String documentTypeName;
+
+    @XmlElementWrapper(name = Elements.ADDITIONAL_DOCUMENT_TYPE_NAMES, required = false)
+    @XmlElement(name = Elements.ADDITIONAL_DOCUMENT_TYPE_NAME, required = false)
+    private final List<String> additionalDocumentTypeNames;
+
 
     @XmlElement(name = Elements.DATE_CREATED_FROM, required = false)
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
@@ -185,6 +192,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.routeNodeName = null;
         this.routeNodeLookupLogic = null;
         this.documentTypeName = null;
+        this.additionalDocumentTypeNames = null;
         this.dateCreatedFrom = null;
         this.dateCreatedTo = null;
         this.dateLastModifiedFrom = null;
@@ -203,16 +211,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
 
     private DocumentSearchCriteria(Builder builder) {
         this.documentId = builder.getDocumentId();
-        if (builder.getDocumentStatuses() == null) {
-            this.documentStatuses = Collections.emptyList();
-        } else {
-            this.documentStatuses = Collections.unmodifiableList(new ArrayList<DocumentStatus>(builder.getDocumentStatuses()));
-        }
-        if (builder.getDocumentStatusCategories() == null) {
-            this.documentStatusCategories = Collections.emptyList();
-        } else {
-            this.documentStatusCategories = Collections.unmodifiableList(new ArrayList<DocumentStatusCategory>(builder.getDocumentStatusCategories()));
-        }
+        this.documentStatuses = ModelObjectUtils.createImmutableCopy(builder.getDocumentStatuses());
+        this.documentStatusCategories = ModelObjectUtils.createImmutableCopy(builder.getDocumentStatusCategories());
         this.title = builder.getTitle();
         this.applicationDocumentId = builder.getApplicationDocumentId();
         this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
@@ -223,6 +223,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.routeNodeName = builder.getRouteNodeName();
         this.routeNodeLookupLogic = builder.getRouteNodeLookupLogic();
         this.documentTypeName = builder.getDocumentTypeName();
+        this.additionalDocumentTypeNames = ModelObjectUtils.createImmutableCopy(
+                builder.getAdditionalDocumentTypeNames());
         this.dateCreatedFrom = builder.getDateCreatedFrom();
         this.dateCreatedTo = builder.getDateCreatedTo();
         this.dateLastModifiedFrom = builder.getDateLastModifiedFrom();
@@ -233,11 +235,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.dateFinalizedTo = builder.getDateFinalizedTo();
         this.dateApplicationDocumentStatusChangedFrom = builder.getDateApplicationDocumentStatusChangedFrom();
         this.dateApplicationDocumentStatusChangedTo = builder.getDateApplicationDocumentStatusChangedTo();
-        if (builder.getDocumentAttributeValues() == null) {
-            this.documentAttributeValues = Collections.emptyMap();
-        } else {
-            this.documentAttributeValues = Collections.unmodifiableMap(new HashMap<String, List<String>>(builder.getDocumentAttributeValues()));
-        }
+        this.documentAttributeValues = ModelObjectUtils.createImmutableCopy(builder.getDocumentAttributeValues());
         this.saveName = builder.getSaveName();
         this.startAtIndex = builder.getStartAtIndex();
         this.maxResults = builder.getMaxResults();
@@ -306,6 +304,11 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
     @Override
     public String getDocumentTypeName() {
         return this.documentTypeName;
+    }
+
+    @Override
+    public List<String> getAdditionalDocumentTypeNames() {
+        return this.additionalDocumentTypeNames;
     }
 
     @Override
@@ -397,6 +400,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         private String routeNodeName;
         private RouteNodeLookupLogic routeNodeLookupLogic;
         private String documentTypeName;
+        private List<String> additionalDocumentTypeNames;
         private DateTime dateCreatedFrom;
         private DateTime dateCreatedTo;
         private DateTime dateLastModifiedFrom;
@@ -415,6 +419,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         private Builder() {
             setDocumentStatuses(new ArrayList<DocumentStatus>());
             setDocumentStatusCategories(new ArrayList<DocumentStatusCategory>());
+            setAdditionalDocumentTypeNames(new ArrayList<String>());
             setDocumentAttributeValues(new HashMap<String, List<String>>());
         }
 
@@ -458,6 +463,9 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             builder.setRouteNodeName(contract.getRouteNodeName());
             builder.setRouteNodeLookupLogic(contract.getRouteNodeLookupLogic());
             builder.setDocumentTypeName(contract.getDocumentTypeName());
+            if (contract.getAdditionalDocumentTypeNames() != null) {
+                builder.setAdditionalDocumentTypeNames(new ArrayList<String>(contract.getAdditionalDocumentTypeNames()));
+            }
             builder.setDateCreatedFrom(contract.getDateCreatedFrom());
             builder.setDateCreatedTo(contract.getDateCreatedTo());
             builder.setDateLastModifiedFrom(contract.getDateLastModifiedFrom());
@@ -545,6 +553,11 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         @Override
         public String getDocumentTypeName() {
             return this.documentTypeName;
+        }
+
+        @Override
+        public List<String> getAdditionalDocumentTypeNames() {
+            return additionalDocumentTypeNames;
         }
 
         @Override
@@ -669,6 +682,10 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             this.documentTypeName = documentTypeName;
         }
 
+        public void setAdditionalDocumentTypeNames(List<String> additionalDocumentTypeNames) {
+            this.additionalDocumentTypeNames = additionalDocumentTypeNames;
+        }
+
         public void setDateCreatedFrom(DateTime dateCreatedFrom) {
             this.dateCreatedFrom = dateCreatedFrom;
         }
@@ -784,6 +801,8 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         final static String ROUTE_NODE_NAME = "routeNodeName";
         final static String ROUTE_NODE_LOOKUP_LOGIC = "routeNodeLookupLogic";
         final static String DOCUMENT_TYPE_NAME = "documentTypeName";
+        final static String ADDITIONAL_DOCUMENT_TYPE_NAMES = "additionalDocumentTypeNames";
+        final static String ADDITIONAL_DOCUMENT_TYPE_NAME = "additionalDocumentTypeName";
         final static String DATE_CREATED_FROM = "dateCreatedFrom";
         final static String DATE_CREATED_TO = "dateCreatedTo";
         final static String DATE_LAST_MODIFIED_FROM = "dateLastModifiedFrom";

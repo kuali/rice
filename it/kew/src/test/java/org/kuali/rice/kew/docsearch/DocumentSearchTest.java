@@ -487,6 +487,15 @@ public class DocumentSearchTest extends KEWTestCase {
 
     }
 
+    @Test public void testAdditionalDocumentTypesCriteria() throws Exception {
+        String[] docIds = routeTestDocs();
+        String docId2 = routeTestDoc2();
+
+        // TODO finish this test
+        
+    }
+
+
     /**
      * Routes some test docs for searching
      * @return String[] of doc ids
@@ -512,6 +521,18 @@ public class DocumentSearchTest extends KEWTestCase {
         }
 
         return docIds;
+    }
+
+    /**
+     * "Saves" a single instance of a "SearchDocType2" document and returns it's id.
+     */
+    protected String routeTestDoc2() {
+        // Route some test documents.
+        String docTypeName = "SearchDocType2";
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId("ewestfal"), docTypeName);
+        workflowDocument.setTitle("Search Doc Type 2!");
+        workflowDocument.saveDocument("saving the document");
+        return workflowDocument.getDocumentId();
     }
 
     private String getPrincipalId(String principalName) {

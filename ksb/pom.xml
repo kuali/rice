@@ -11,7 +11,5 @@
   <name>Rice KSB</name>
   <modules>
   	<module>api</module>
-	<module>framework</module>
-	<module>impl</module>
   </modules>
 </project>

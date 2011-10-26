@@ -53,8 +53,6 @@
       <module fileurl="file://$PROJECT_DIR$/rice-krms-impl.iml" filepath="$PROJECT_DIR$/rice-krms-impl.iml" group="rice-krms and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ksb.iml" filepath="$PROJECT_DIR$/rice-ksb.iml" group="rice-ksb and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ksb-api.iml" filepath="$PROJECT_DIR$/rice-ksb-api.iml" group="rice-ksb and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ksb-framework.iml" filepath="$PROJECT_DIR$/rice-ksb-framework.iml" group="rice-ksb and modules" />
-      <module fileurl="file://$PROJECT_DIR$/rice-ksb-impl.iml" filepath="$PROJECT_DIR$/rice-ksb-impl.iml" group="rice-ksb and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ldap.iml" filepath="$PROJECT_DIR$/rice-ldap.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../location/rice-location.iml" filepath="$PROJECT_DIR$/../../../location/rice-location.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../../location/api/rice-location-api.iml" filepath="$PROJECT_DIR$/../../../location/api/rice-location-api.iml" />

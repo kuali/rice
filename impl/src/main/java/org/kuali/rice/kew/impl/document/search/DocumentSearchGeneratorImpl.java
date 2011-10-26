@@ -526,7 +526,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
     public String getGroupViewerSql(String groupId, String whereClausePredicatePrefix) {
         String sql = "";
         if (StringUtils.isNotBlank(groupId)) {
-            sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + groupId;
+            sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = '" + groupId + "'";
         }
         return sql;
     }

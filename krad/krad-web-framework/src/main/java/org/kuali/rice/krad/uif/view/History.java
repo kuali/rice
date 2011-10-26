@@ -120,8 +120,7 @@ public class History implements Serializable {
      * Takes in the encoded history query parameter string passed on the url and parses it to create
      * the list of historyEntries.  It will also append any homeward path if appendHomewardPath is true.  This
      * append will happen after the passedHistory entries are appended so it will not make sense to use both settings
-     * in
-     * most cases.
+     * in most cases.
      *
      * @param parameterString
      */
@@ -132,6 +131,7 @@ public class History implements Serializable {
             } catch (UnsupportedEncodingException e) {
                 LOG.error("Error decoding history param", e);
             }
+
             historyEntries = new ArrayList<HistoryEntry>();
             if (appendPassedHistory) {
                 String[] historyTokens = parameterString.split("\\" + ENTRY_TOKEN);
@@ -163,6 +163,7 @@ public class History implements Serializable {
                 historyString = historyString + ENTRY_TOKEN + e.toParam();
             }
         }
+
         // add current
         if (current != null) {
             if (historyString.equals("")) {
@@ -171,11 +172,13 @@ public class History implements Serializable {
                 historyString = historyString + ENTRY_TOKEN + current.toParam();
             }
         }
+
         try {
             historyString = URLEncoder.encode(historyString, "UTF-8");
         } catch (Exception e) {
             LOG.error("Error encoding history param", e);
         }
+
         return historyString;
     }
 
@@ -183,9 +186,8 @@ public class History implements Serializable {
      * Generates a list of HistoryEntries that can be used as breadcrumbs by the breadcrumb widget.  This
      * method appends the appropriate history information on the HistoryEntry url variables so when a view is requested
      * its history can be regenerated for use in its breadcrumbs.  It also sets the the passed showHome variable to
-     * false
-     * to prevent showing the homeward path more than once (as it is passed through the history variable backwards).
-     * This does not include the current HistoryEntry as a breadcrumb.
+     * false to prevent showing the homeward path more than once (as it is passed through the history
+     * variable backwards). This does not include the current HistoryEntry as a breadcrumb.
      *
      * @return
      */
@@ -223,7 +225,7 @@ public class History implements Serializable {
     }
 
     /**
-     * Gets the current HistoryEntry in the breadcrumb format described in getGeneratedBreadcrumbs.
+     * Gets the current HistoryEntry in the breadcrumb format described in getGeneratedBreadcrumbs
      *
      * @return
      */

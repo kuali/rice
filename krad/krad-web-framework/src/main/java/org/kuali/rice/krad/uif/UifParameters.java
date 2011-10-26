@@ -35,6 +35,7 @@ public class UifParameters {
     public static final String FORM_KEY = "formKey";
 	public static final String HEADER_BAR_ENABLED = "headerBarEnabled";
 	public static final String HIDE_RETURN_LINK = "hideReturnLink";
+    public static final String LIGHTBOX_CALL = "lightBoxCall";
 	public static final String LOOKUP_CRITERIA_ENABLED = "lookupCriteriaEnabled";
 	public static final String LOOKUP_PARAMETERS = "lookupParameters";
     public static final String LOOKUP_COLLECTION_NAME = "lookupCollectionName";

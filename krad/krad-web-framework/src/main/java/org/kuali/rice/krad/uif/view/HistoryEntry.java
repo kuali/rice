@@ -29,6 +29,7 @@ import java.io.Serializable;
  */
 public class HistoryEntry extends ConfigurableBase implements Serializable {
     private static final long serialVersionUID = -8310916657379268794L;
+
     private String viewId;
     private String pageId;
     private String title;

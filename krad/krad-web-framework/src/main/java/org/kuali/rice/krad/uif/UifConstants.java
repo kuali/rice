@@ -25,6 +25,7 @@ public class UifConstants {
     public static final String DEFAULT_MODEL_NAME = "KualiForm";
     public static final String DEFAULT_VIEW_NAME = "default";
     public static final String SPRING_VIEW_ID = "ApplicationView";
+    public static final String SPRING_REDIRECT_ID = "redirectURL";
 
     public static enum Position {
         BOTTOM, LEFT, RIGHT, TOP
@@ -53,6 +54,10 @@ public class UifConstants {
     public static enum ControlType {
         CHECKBOX, CHECKBOXGROUP, FILE, GROUP, HIDDEN, RADIOGROUP, SELECT,
         TEXTAREA, TEXT, USER
+    }
+
+    public static enum WorkflowAction {
+        SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE
     }
 
     public static class MethodToCallNames {

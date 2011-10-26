@@ -124,6 +124,7 @@ public final class RiceKeyConstants {
     public static final String WARNING_MAINTENANCE_LOCKED = "warning.maintenance.locked";
     public static final String ERROR_VERSION_MISMATCH = "error.version.mismatch";
 
+    public static final String MESSAGE_CANCELLED = "message.cancelled";
     public static final String MESSAGE_RELOADED = "message.document.reloaded";
     public static final String MESSAGE_ROUTE_SUCCESSFUL = "message.route.successful";
     public static final String MESSAGE_SAVED = "message.saved";

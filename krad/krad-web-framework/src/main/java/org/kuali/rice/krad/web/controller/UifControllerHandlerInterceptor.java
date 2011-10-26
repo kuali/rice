@@ -33,9 +33,8 @@ import javax.servlet.http.HttpServletResponse;
  * Spring controller intercepter for KRAD controllers
  * 
  * <p>
- * Provides infrastructure for preparing the form and view before and after the
- * controller is invoked. Included in this is form session management and
- * preparation of the view for rendering
+ * Provides infrastructure for preparing the form and view before and after the controller is invoked.
+ * Included in this is form session management and preparation of the view for rendering
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -86,7 +85,6 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
 
         return true;
     }
-    
 
 	public SessionDocumentService getSessionDocumentService() {
 		return KRADServiceLocatorWeb.getSessionDocumentService();

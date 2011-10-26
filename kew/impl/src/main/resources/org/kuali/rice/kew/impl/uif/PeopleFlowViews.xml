@@ -99,10 +99,9 @@
     <property name="title" value="PeopleFlow Summary"/>
   </bean>
 
-  <bean id="PeopleFlow-TypeAttributes" parent="GroupSectionGridLayout" p:progressiveRenderViaAJAX="true"
-        p:progressiveRender="document.newMaintainableObject.dataObject.typeId != ''"
+  <bean id="PeopleFlow-TypeAttributes" parent="GroupGridLayout"
         p:refreshWhenChanged="document.newMaintainableObject.dataObject.typeId"
-        p:refreshDiscloseMethodToCall="prepareTypeAttributes">
+        p:refreshDiscloseMethodToCall="prepareTypeAttributes" p:accordion.render="false">
     <property name="items">
       <list>
         <bean parent="RemoteFieldsHolder" p:propertyName="attributeValues"

@@ -143,6 +143,7 @@ public final class KRADConstants {
     public static final String DOC_HANDLER_ACTION = "DocHandler.do";
     public static final String DOCHANDLER_DO_URL = "/" + DOC_HANDLER_ACTION + "?docId=";
     public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";
+    public static final String SUPERUSER_ACTION = "SuperUser.do";
 
 //    public static final String DATABASE_REPOSITORY_FILES_LIST_NAME = "databaseRepositoryFilePaths";
     public static final String SCRIPT_CONFIGURATION_FILES_LIST_NAME = "scriptConfigurationFilePaths";

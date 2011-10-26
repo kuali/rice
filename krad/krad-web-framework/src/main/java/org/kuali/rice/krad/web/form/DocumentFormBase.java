@@ -130,15 +130,15 @@ public class DocumentFormBase extends UifFormBase {
 	 * 
 	 * @return String formatted document create date
 	 */
-	public String getDocumentCreateDate() {
-		String createDateStr = "";
-		if (getWorkflowDocument() != null && getWorkflowDocument().getDateCreated() != null) {
-			createDateStr = CoreApiServiceLocator.getDateTimeService().toString(getWorkflowDocument().getDateCreated().toDate(),
-					"hh:mm a MM/dd/yyyy");
-		}
+    public String getDocumentCreateDate() {
+        String createDateStr = "";
+        if (getWorkflowDocument() != null && getWorkflowDocument().getDateCreated() != null) {
+            createDateStr = CoreApiServiceLocator.getDateTimeService().toString(
+                    getWorkflowDocument().getDateCreated().toDate(), "hh:mm a MM/dd/yyyy");
+        }
 
-		return createDateStr;
-	}
+        return createDateStr;
+    }
 
 	/**
 	 * Retrieves the <code>WorkflowDocument</code> instance from the forms

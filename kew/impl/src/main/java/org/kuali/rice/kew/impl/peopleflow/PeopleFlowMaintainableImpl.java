@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
@@ -64,11 +65,18 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
     }
 
     /**
-     * Set the attribute bo list from the map of attribute key/value pairs before saving
+     * Set the attribute bo list from the map of attribute key/value pairs and then calls
+     * {@link org.kuali.rice.kew.api.peopleflow.PeopleFlowService} to save the people flow instance
      */
     @Override
     public void saveDataObject() {
         ((PeopleFlowBo) getDataObject()).updateAttributeBoValues();
-        super.saveDataObject();
+
+        PeopleFlowDefinition peopleFlowDefinition = PeopleFlowBo.to(((PeopleFlowBo) getDataObject()));
+        if (StringUtils.isNotBlank(peopleFlowDefinition.getId())) {
+            KewApiServiceLocator.getPeopleFlowService().updatePeopleFlow(peopleFlowDefinition);
+        } else {
+            KewApiServiceLocator.getPeopleFlowService().createPeopleFlow(peopleFlowDefinition);
+        }
     }
 }

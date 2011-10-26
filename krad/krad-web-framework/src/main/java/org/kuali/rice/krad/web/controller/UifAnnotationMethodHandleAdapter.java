@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -25,37 +23,24 @@ import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAda
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * This class is overloaded in order to hook in the UIF Binder classes. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * Overloaded in order to hook in the UIF Binder classes
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifAnnotationMethodHandleAdapter extends AnnotationMethodHandlerAdapter {
-    
-    protected ViewService viewService;
 
     @Override
-    protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object target, String objectName) throws Exception {
+    protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object target,
+            String objectName) throws Exception {
         if (target != null) {
             // only override for UifFormBase models so that non KRAD spring MVC
             // can be used in same dispatcher servlet.
             if (target instanceof UifFormBase) {
-                
                 return new UifServletRequestDataBinder(target, objectName);
             }
         }
+
         return super.createBinder(request, target, objectName);
-    }
-
-    public ViewService getViewService() {
-        if(viewService == null) {
-            viewService = KRADServiceLocatorWeb.getViewService();
-        }
-        return this.viewService;
-    }
-
-    public void setViewService(ViewService viewService) {
-        this.viewService = viewService;
     }
 
 }

@@ -419,8 +419,8 @@ public abstract class UifControllerBase {
             }
 
             // invoked view helper to populate the collection from lookup results
-            form.getPreviousView().getViewHelperService().processMultipleValueLookupResults(form.getPreviousView(), form,
-                    lookupCollectionName, selectedLineValues);
+            form.getPreviousView().getViewHelperService().processMultipleValueLookupResults(form.getPreviousView(),
+                    form, lookupCollectionName, selectedLineValues);
         }
 
         form.setRenderFullView(true);
@@ -634,12 +634,12 @@ public abstract class UifControllerBase {
 
         // If this is an Light Box call only return the redirectURL view with the URL
         // set this is to avoid automatic redirect when using light boxes
-        // TODO: add constant to UifParameters
-        if (urlParameters.get("lightBoxCall") != null && urlParameters.get("lightBoxCall").equals("true")) {
-            urlParameters.remove("lightBoxCall");
+        if (urlParameters.get(UifParameters.LIGHTBOX_CALL) != null &&
+                urlParameters.get(UifParameters.LIGHTBOX_CALL).equals("true")) {
+            urlParameters.remove(UifParameters.LIGHTBOX_CALL);
             String redirectUrl = UrlFactory.parameterizeUrl(baseUrl, urlParameters);
 
-            ModelAndView modelAndView = new ModelAndView("redirectURL");
+            ModelAndView modelAndView = new ModelAndView(UifConstants.SPRING_REDIRECT_ID);
             modelAndView.addObject("redirectUrl", redirectUrl);
             return modelAndView;
         }

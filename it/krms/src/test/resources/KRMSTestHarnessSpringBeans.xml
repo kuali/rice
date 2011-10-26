@@ -230,9 +230,13 @@
         </property>
     </bean>
 
-    <bean id="validationRuleTypeService" class="org.kuali.rice.krms.impl.validation.ValidationRuleTypeServiceImpl"/>
-    <bean id="validationWarningActionTypeService" class="org.kuali.rice.krms.impl.validation.ValidationWarningActionTypeServiceImpl"/>
-    <bean id="validationErrorActionTypeService" class="org.kuali.rice.krms.impl.validation.ValidationErrorActionTypeServiceImpl"/>
+    <bean id="validationRuleTypeService" class="org.kuali.rice.krms.impl.validation.ValidationRuleTypeServiceImpl">
+      <property name="repositoryToEngineTranslator">
+          <ref bean="repositoryToEngineTranslator" />
+      </property>
+    </bean>
+  
+    <bean id="validationActionTypeService" class="org.kuali.rice.krms.impl.validation.ValidationActionTypeServiceImpl"/>
 
     <!-- Wire up services for our tests -->
     

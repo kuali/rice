@@ -50,7 +50,7 @@
 				      		   <kul:htmlControlAttribute property="document.delegationMembers[${delegationMemberIdx}].qualifiers[${status1.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${readOnly}" />
 
                      			<c:forEach var="widget" items="${attrDefinition.attributeField.widgets}" >
-                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                          <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not readOnly}">
     				       		    <kim:attributeLookup attributeDefinitions="${delegationMember.attributesHelper.definitions}" pathPrefix="document.delegationMembers[${delegationMemberIdx}]" attr="${widget}" />
                           </c:if>

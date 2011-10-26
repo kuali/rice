@@ -41,7 +41,7 @@
 			      		   TODO: code does not handle multiple lookup/conversion parameters 
 			      		   --%>
                    			<c:forEach var="widget" items="${role.definitions.attributeField.widgets}" >
-                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                          <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not readOnlyRole}">
     				       		    <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].newRolePrncpl" attr="${widget}" />
                           </c:if>
@@ -99,7 +99,7 @@
 				                	<kul:htmlControlAttribute property="document.roles[${roleIdx}].rolePrncpls[${status1.index}].qualifiers[${status.index}].attrVal"  attributeEntry="${attrEntry}" readOnly="${attrReadOnly}" />
 
                         <c:forEach var="widget" items="${role.definitions.attributeField.widgets}" >
-                          <c:if test="${widget.class.name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
+                          <c:if test="${widget['class'].name == 'org.kuali.rice.core.api.uif.RemotableQuickFinder'}">
                                 <c:if test="${!empty widget.dataObjectClass and not attrReadOnly}">
     				       		    <kim:attributeLookup attributeDefinitions="${role.definitions}" pathPrefix="document.roles[${roleIdx}].rolePrncpls[${status1.index}]" attr="${widget}" />
                           </c:if>

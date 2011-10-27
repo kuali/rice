@@ -62,15 +62,15 @@ public class AttachmentServlet extends HttpServlet {
 			throw new ServletException("No 'attachmentId' was specified.");
 		}
 		
-		boolean secureChecks = true;
+		boolean secureChecks = false;
 		String secureAttachmentsParam = null;
 		try {
 			secureAttachmentsParam = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, "All", KewApiConstants.SECURE_ATTACHMENTS_PARAM);
 		} catch (Exception e) {
 			LOG.info("Attempted to retrieve parameter value, but could not. Defaulting to unsecured attachment retrieval. " + e.getMessage());
 		}
-		if (secureAttachmentsParam != null && secureAttachmentsParam.equals("N")) {
-			secureChecks = false;
+		if (secureAttachmentsParam != null && secureAttachmentsParam.equals("Y")) {
+			secureChecks = true;
 		}
 		try {
 			UserSession userSession = (UserSession) request.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
@@ -84,9 +84,13 @@ public class AttachmentServlet extends HttpServlet {
 				
 				if(!secureChecks || routeHeader != null){// If we can get a valid routeHeader based on the requested attachment ID
 					boolean authorized = KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(userSession.getPrincipalId(), routeHeader, new SecuritySession(userSession.getPrincipalId()));
-					
-					if(!secureChecks || authorized){// If this user can see this document, they can get the attachment(s)
-						response.setContentLength((int)file.length());
+                    boolean customAttributeAuthorized = false;
+                    if(routeHeader.getCustomNoteAttribute() != null){
+                        routeHeader.getCustomNoteAttribute().setUserSession(userSession);
+                        customAttributeAuthorized = routeHeader.getCustomNoteAttribute().isAuthorizedToRetrieveAttachments();
+                    }                    
+                    if(!secureChecks || (authorized && customAttributeAuthorized)){//If this user can see this document, they can get the attachment(s)						
+                    	response.setContentLength((int)file.length());
 						response.setContentType(attachment.getMimeType());
 						response.setHeader("Content-disposition", "attachment; filename="+attachment.getFileName());
 						FileInputStream attachmentFile = new FileInputStream(file);

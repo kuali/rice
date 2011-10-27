@@ -30,6 +30,7 @@ public interface CustomNoteAttribute {
 
     public boolean isAuthorizedToEditNote(Note note) throws Exception;
     public boolean isAuthorizedToAddNotes() throws Exception;
+    public boolean isAuthorizedToRetrieveAttachments() throws Exception;
     public Document getRouteHeaderVO();
     public void setRouteHeaderVO(Document routeHeaderVO);
     public UserSession getUserSession();

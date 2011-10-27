@@ -62,5 +62,9 @@ public class WorkflowNoteAttributeImpl implements CustomNoteAttribute {
 	public void setUserSession(UserSession userSession) {
 		this.userSession = userSession;
 	}
-
+	
+   @Override
+    public boolean isAuthorizedToRetrieveAttachments() throws Exception {
+        return true;
+    }
 }

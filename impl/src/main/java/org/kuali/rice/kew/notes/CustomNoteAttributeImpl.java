@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.notes;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.krad.UserSession;
 
@@ -29,6 +30,7 @@ public class CustomNoteAttributeImpl implements CustomNoteAttribute {
 
     private Document routeHeaderVO;
     private UserSession userSession;
+    private static final Logger LOG = Logger.getLogger(CustomNoteAttributeImpl.class);
 
     @Override
 	public boolean isAuthorizedToAddNotes() throws Exception {
@@ -62,6 +64,11 @@ public class CustomNoteAttributeImpl implements CustomNoteAttribute {
 	public void setUserSession(UserSession userSession) {
 		this.userSession = userSession;
 	}
-
+	
+    @Override
+    public boolean isAuthorizedToRetrieveAttachments() throws Exception {
+        LOG.info("CustomNoteAttribute override not found, defaulting attachment security result will be true.");
+        return true;
+    }
 
 }

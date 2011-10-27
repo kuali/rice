@@ -93,5 +93,10 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 	public void setUserSession(UserSession userSession) {
 		this.userSession = userSession;
 	}
+
+    @Override
+    public boolean isAuthorizedToRetrieveAttachments() throws Exception {
+        return true;
+    }
     
 }

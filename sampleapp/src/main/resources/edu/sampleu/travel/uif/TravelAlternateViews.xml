@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="additionalCssFiles" ref="kns-css"/>
       <property name="items">
         <list>
-          <bean parent="Page_Accordion" p:id="page1">
+          <bean parent="Page_Disclosure" p:id="page1">
              <property name="items">
                <list>
                  <ref bean="testSection1"/>

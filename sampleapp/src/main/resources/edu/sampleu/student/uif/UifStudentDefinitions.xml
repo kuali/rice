@@ -58,11 +58,11 @@
     </property>
   </bean>
 
-  <bean id="GenericGroup" parent="Group" p:accordion.render="false" p:header.styleClasses="group_header"/>
+  <bean id="GenericGroup" parent="Group" p:disclosure.render="false" p:header.styleClasses="group_header"/>
 
   <bean id="genericTextGroup" parent="Group"
         p:layoutManager.orientation="HORIZONTAL">
-    <property name="accordion.render" value="false"/>
+    <property name="disclosure.render" value="false"/>
     <property name="styleClasses" value="group_header"/>
     <property name="items">
       <list>
@@ -76,7 +76,7 @@
     </property>
   </bean>
 
-  <bean id="GenericCollectionGroup" parent="CollectionGroup" p:accordion.render="false"
+  <bean id="GenericCollectionGroup" parent="CollectionGroup" p:disclosure.render="false"
         p:header.styleClasses="group_header">
     <property name="layoutManager">
       <bean parent="StackedLayoutManagerBox"/>

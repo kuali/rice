@@ -30,8 +30,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="header">
         <bean parent="HeaderFour"/>
       </property>
-      <property name="accordion">
-        <bean parent="Accordion" p:render="false"/>
+      <property name="disclosure">
+        <bean parent="Disclosure" p:render="false"/>
       </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
@@ -53,8 +53,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="header">
         <bean parent="HeaderTwo"/>
       </property>
-      <property name="accordion">
-        <bean parent="Accordion"/>
+      <property name="disclosure">
+        <bean parent="Disclosure"/>
       </property>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
@@ -81,7 +81,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="GroupBodyOnly-parentBean" abstract="true" parent="Group">
       <property name="renderHeader" value="false"/>
       <property name="renderFooter" value="false"/>
-      <property name="accordion.render" value="false"/>
+      <property name="disclosure.render" value="false"/>
   </bean>
 
   <bean id="GroupGridBodyOnly" abstract="true" parent="GroupGridBodyOnly-parentBean"/>
@@ -99,8 +99,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="TabGroup" abstract="true" parent="TabGroup-parentBean"/>
   <bean id="TabGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
-	  <property name="accordion">
-        <bean parent="Accordion" p:render="false"/>
+	  <property name="disclosure">
+        <bean parent="Disclosure" p:render="false"/>
       </property>
 	  <property name="tabsWidget">
         <bean parent="Tabs"/>
@@ -165,9 +165,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="header">
         <bean parent="HeaderThree" p:styleClasses="grouping-header-expandable"/>
       </property>
-      <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
-      <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-      <property name="accordion.render" value="true"/>
+      <property name="disclosure.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
+      <property name="disclosure.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+      <property name="disclosure.render" value="true"/>
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>
@@ -225,9 +225,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
     <property name="header.headerLevel" value="h3"/>
     <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
-    <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
-    <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-    <property name="accordion.render" value="true"/>
+    <property name="disclosure.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
+    <property name="disclosure.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+    <property name="disclosure.render" value="true"/>
   </bean>
 
   <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroupTableLayout-parentBean"/>
@@ -242,9 +242,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
     <property name="header.headerLevel" value="h3"/>
     <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
-    <property name="accordion.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
-    <property name="accordion.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
-    <property name="accordion.render" value="true"/>
+    <property name="disclosure.collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_collapse.png"/>
+    <property name="disclosure.expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h2_expand.png"/>
+    <property name="disclosure.render" value="true"/>
   </bean>
 
   <bean id="ListGroup" abstract="true" parent="ListGroup-parentBean"/>
@@ -265,8 +265,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             <property name="header">
               <bean parent="HeaderFour" p:headerStyleClasses="kr-section-subhead kr-collection-header"/>
             </property>
-            <property name="accordion.renderImage" value="false"/>
-            <property name="accordion.defaultOpen" value="true"/>
+            <property name="disclosure.renderImage" value="false"/>
+            <property name="disclosure.defaultOpen" value="true"/>
           </bean>
         </property>
         <property name="subCollectionFieldGroupPrototype">
@@ -291,8 +291,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClasses" value="group_expandclose"/>
       <property name="items">
          <list>
-           <bean parent="ActionField_ExpandAccordions"/>
-           <bean parent="ActionField_CollapseAccordions"/>
+           <bean parent="ActionField_ExpandDisclosures"/>
+           <bean parent="ActionField_CollapseDisclosures"/>
          </list>
       </property>
       <property name="layoutManager.orientation" value="HORIZONTAL"/>
@@ -302,8 +302,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClasses" value="group_expandclose"/>
       <property name="items">
          <list>
-           <bean parent="ActionField_ExpandAccordions"/>
-           <bean parent="ActionField_CollapseAccordions"/>
+           <bean parent="ActionField_ExpandDisclosures"/>
+           <bean parent="ActionField_CollapseDisclosures"/>
            <bean parent="MessageField_RequiredIndicator"/>
          </list>
       </property>
@@ -413,7 +413,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			</list>
 		</property>
 		<property name="bindingInfo.bindingObjectPath" value="document" />
-		<property name="accordion.defaultOpen"
+		<property name="disclosure.defaultOpen"
 			value="@{!document.notes.empty or #component.defaultOpen}" />
 		<property name="errorsField.additionalKeysToMatch" value="attachmentFile" />
 	    <property name="addLineActionFields">
@@ -436,7 +436,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="items">
       <list>
         <bean id="CollectionGroup_AdHocPerson" parent="CollectionGroupTableLayout"
-              p:layoutManager.numberOfColumns="2" p:accordion.render="false">
+              p:layoutManager.numberOfColumns="2" p:disclosure.render="false">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRoutePerson"/>
           <property name="propertyName" value="adHocRoutePersons"/>
           <property name="bindingInfo.bindingObjectPath" value="document"/>
@@ -463,7 +463,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </property>
         </bean>
         <bean id="CollectionGroup_AdHocWorkgroup" parent="CollectionGroupTableLayout"
-              p:layoutManager.numberOfColumns="3" p:accordion.render="false">
+              p:layoutManager.numberOfColumns="3" p:disclosure.render="false">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.AdHocRouteWorkgroup"/>
           <property name="propertyName" value="adHocRouteWorkgroups"/>
           <property name="title" value="Ad Hoc Group Requests:"/>
@@ -543,7 +543,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="MaintenanceSubCollectionGroup" abstract="true" parent="MaintenanceSubCollectionGroup-parentBean"/>
   <bean id="MaintenanceSubCollectionGroup-parentBean" parent="MaintenanceCollectionGroupSection">
      <property name="header.render" value="false"/>
-     <property name="accordion.render" value="false"/>
+     <property name="disclosure.render" value="false"/>
   </bean>
 
   <bean id="LookupCriteriaGroup" parent="GroupGridLayout">
@@ -551,7 +551,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="title" value="Lookup Criteria"/>
     <property name="fieldBindingObjectPath" value="criteriaFields"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
-    <property name="accordion.render" value="false"/>
+    <property name="disclosure.render" value="false"/>
     <property name="footer">
       <bean parent="FooterLookup"/>
     </property>
@@ -565,7 +565,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="layoutManager.selectFieldPrototype.finalizeMethodToCall" value="setMultiValueLookupSelect"/>
     <property name="renderAddLine" value="false"/>
     <property name="readOnly" value="true"/>
-    <property name="accordion.render" value="false"/>
+    <property name="disclosure.render" value="false"/>
     <property name="renderSelectField" value="@{#view.multipleValuesSelect}"/>
     <property name="header.group">
       <bean parent="GroupBodyOnly"/>

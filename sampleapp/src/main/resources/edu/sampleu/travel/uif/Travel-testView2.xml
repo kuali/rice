@@ -134,7 +134,7 @@
     <bean id="testValidationSection1" parent="Group">
         <property name="id" value="testValidationSection1"/>
         <property name="title" value="Test Section 1"/>
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
@@ -150,7 +150,7 @@
     <bean id="testValidationSection2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
         <property name="title" value="Test Section 2"/>
         <property name="instructionalText" value="Horizontal Layout test"/>
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
@@ -188,7 +188,7 @@
     <bean id="testValidationSection4" parent="Group" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Test Section 3"/>
         <property name="instructionalText" value="Testing icons, highlighting off, allowMessageRepeat off"/>
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="errorsField">
             <bean parent="ErrorsField_Group">
@@ -241,7 +241,7 @@
     <bean id="testValidationSection3" parent="Group" p:layoutManager.orientation="VERTICAL">
         <property name="title" value="Test Section 3"/>
         <property name="instructionalText" value="Vertical layout test"/>
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
@@ -275,7 +275,7 @@
         <property name="id" value="testValidationGroup1"/>
         <property name="title" value="Validation Test Group 1"/>
         <property name="instructionalText" value="Constraint text will tell you what is being tested"/>
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
@@ -552,13 +552,13 @@
     </bean>
 
     <bean id="test2Section4" parent="testSection4">
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
     </bean>
 
     <bean id="test2Section6" parent="Group">
         <property name="title" value="Test Collections"/>
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
         <property name="items">
             <list>
@@ -568,7 +568,7 @@
     </bean>
 
     <bean id="test2Section3" parent="testSection3">
-        <property name="accordion.render" value="false"/>
+        <property name="disclosure.render" value="false"/>
         <property name="styleClasses" value="group_header"/>
     </bean>
 

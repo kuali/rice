@@ -101,7 +101,7 @@
 
   <bean id="PeopleFlow-TypeAttributes" parent="GroupGridLayout"
         p:refreshWhenChanged="document.newMaintainableObject.dataObject.typeId"
-        p:refreshDiscloseMethodToCall="prepareTypeAttributes" p:accordion.render="false">
+        p:refreshDiscloseMethodToCall="prepareTypeAttributes" p:disclosure.render="false">
     <property name="items">
       <list>
         <bean parent="RemoteFieldsHolder" p:propertyName="attributeValues"

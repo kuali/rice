@@ -38,7 +38,7 @@
   <bean id="mainGroup" parent="Group" p:header.render="false">
     <property name="items">
       <list>
-        <bean parent="TreeGroup" p:accordion.render="false" p:header.render="false">
+        <bean parent="TreeGroup" p:disclosure.render="false" p:header.render="false">
           <property name="propertyName" value="cacheTree"/>
 
           <property name="treeWidget">

@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Accordion"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Disclosure"/>
 <tiles:useAttribute name="parent" classname="org.kuali.rice.krad.uif.container.Group"/>
 
 <%--
@@ -25,6 +25,6 @@
 <c:set var="isOpen" value="${widget.defaultOpen}"/>
  
 <krad:script value="
-  createAccordion('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen},
+  createDisclosure('${parent.id}', '${parent.header.id}', '${widget.id}', ${isOpen},
   		          '${widget.collapseImageSrc}', '${widget.expandImageSrc}', ${widget.animationSpeed}, ${widget.renderImage});
 "/>

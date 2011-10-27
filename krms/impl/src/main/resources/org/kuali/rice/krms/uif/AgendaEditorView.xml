@@ -404,7 +404,7 @@
     </property> 
   </bean>
 
-  <bean id="AgendaEditorView-Tree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+  <bean id="AgendaEditorView-Tree" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="title" value="Agenda Items"/>
     <property name="propertyName" value="agendaRuleTree"/>
     <property name="treeWidget">

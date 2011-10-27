@@ -177,9 +177,9 @@
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
   
-  <bean id="Accordion" parent="Accordion-parentBean"/>
-  <bean id="Accordion-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Accordion" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/accordion.jsp"/>
+  <bean id="Disclosure" parent="Disclosure-parentBean"/>
+  <bean id="Disclosure-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Disclosure" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/disclosure.jsp"/>
       <property name="collapseImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h3_expand.png"/>
       <property name="expandImageSrc" value="@{#ConfigProperties['krad.externalizable.images.url']}h3_collapse.png"/>
       <property name="animationSpeed" value="500"/>

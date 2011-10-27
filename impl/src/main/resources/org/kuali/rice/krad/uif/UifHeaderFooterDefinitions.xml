@@ -97,13 +97,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      </property>
   </bean>
   
-  <bean id="HeaderPage_AccordionEdit" parent="HeaderPage">
+  <bean id="HeaderPage_DisclosureEdit" parent="HeaderPage">
      <property name="group">
        <bean parent="Group_ExpandCloseActionsRequired"/>
      </property>
   </bean>
   
-  <bean id="HeaderPage_AccordionReadOnly" parent="HeaderPage">
+  <bean id="HeaderPage_DisclosureReadOnly" parent="HeaderPage">
      <property name="group">
        <bean parent="Group_ExpandCloseActions"/>
      </property>

@@ -35,7 +35,7 @@
                                            Registration Page
   ********************************************************************************************************************
   -->
-  <bean id="RegistrationPage" parent="PageGroup" p:layoutManager.orientation="HORIZONTAL" p:accordion.render="false">
+  <bean id="RegistrationPage" parent="PageGroup" p:layoutManager.orientation="HORIZONTAL" p:disclosure.render="false">
     <property name="items">
       <list>
         <bean id="Registration-FindTabGroup" parent="TabGroup" p:styleClasses="registration-tabgroup">
@@ -111,7 +111,7 @@
   ********************************************************************************************************************
   -->
   <bean id="Registration-CourseListing" parent="ListGroup" p:readOnly="true"
-        p:instructionalMessageField.styleClasses="instructionalText-bold" p:accordion.render="false">
+        p:instructionalMessageField.styleClasses="instructionalText-bold" p:disclosure.render="false">
     <property name="instructionalText" value="Click a class to view details"/>
     <property name="collectionObjectClass" value="edu.sampleu.student.dataobject.Course"/>
     <property name="propertyName" value="courseListing"/>

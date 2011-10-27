@@ -43,5 +43,5 @@
 
 </krad:div>
 
-<%-- render group accordion --%>
-<krad:template component="${group.accordion}" parent="${group}"/>
+<%-- render group disclosure --%>
+<krad:template component="${group.disclosure}" parent="${group}"/>

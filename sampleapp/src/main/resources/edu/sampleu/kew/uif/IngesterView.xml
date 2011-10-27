@@ -39,7 +39,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		</property>
    </bean>
    
-   <bean id="uploadSection" parent="GroupGridLayout" p:accordion.render="false">
+   <bean id="uploadSection" parent="GroupGridLayout" p:disclosure.render="false">
       <property name="items">
         <list>
           <bean parent="uploadAttributeField" p:propertyName="files[0]"/>

@@ -40,7 +40,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    </property>
 </bean>
 
-   <bean id="aggregatesSection" parent="GroupGridLayout" p:accordion.render="false" p:layoutManager.numberOfColumns="4">
+   <bean id="aggregatesSection" parent="GroupGridLayout" p:disclosure.render="false" p:layoutManager.numberOfColumns="4">
       <property name="title" value="Aggregates"/>
       <property name="fieldBindByNamePrefix" value="stats"/>
       <property name="items">
@@ -50,7 +50,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	       <bean parent="AttributeField_Form" p:propertyName="numActionItems" p:labelField.align="right" p:label="Number of Active Items In All Action Lists" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2"/>
 	       <bean parent="LabelField" p:labelText="Number of Documents Initiated in the Last 30 Days" p:colSpan="2" p:align="right" p:requiredMessageField.render="false"/>
 	       
-	       <bean id="testSection4" parent="GroupSectionGridLayout" p:accordion.render="false" p:colSpan="2">
+	       <bean id="testSection4" parent="GroupSectionGridLayout" p:disclosure.render="false" p:colSpan="2">
       		 <property name="layoutManager">
         	 	<bean parent="GridLayoutManager"/>
       	     </property>
@@ -64,8 +64,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    	  </property>
   </bean>   
   
-  <bean id="docInfoCollection" parent="CollectionGroup" p:accordion.render="false" p:header.render="false">
-  <!-- <bean id="docInfoCollection" parent="CollectionGroupTableLayout" p:accordion.render="false" p:header.render="false" p:layoutManager.numberOfColumns="2"> -->
+  <bean id="docInfoCollection" parent="CollectionGroup" p:disclosure.render="false" p:header.render="false">
+  <!-- <bean id="docInfoCollection" parent="CollectionGroupTableLayout" p:disclosure.render="false" p:header.render="false" p:layoutManager.numberOfColumns="2"> -->
       <property name="collectionObjectClass" value="org.kuali.rice.core.api.util.ConcreteKeyValue"/>
       <property name="propertyName" value="stats.numInitiatedDocsByDocType"/>
       <property name="items">
@@ -80,7 +80,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="renderLineActions" value="false"/>
    </bean> 
    
-    <bean id="dateRangesSection" parent="GroupGridLayout" p:accordion.render="false" p:layoutManager.numberOfColumns="4">
+    <bean id="dateRangesSection" parent="GroupGridLayout" p:disclosure.render="false" p:layoutManager.numberOfColumns="4">
       <property name="title" value="Date Range"/>
       <property name="items">
         <list>

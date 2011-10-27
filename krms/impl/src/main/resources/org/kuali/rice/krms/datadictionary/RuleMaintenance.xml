@@ -58,8 +58,8 @@
   <bean id="ruleInfoSection-parent" parent="GroupSection">
     <property name="title" value="Rule" />
     <property name="renderHeader" value="true" />
-    <property name="accordion.render" value="true" />
-    <property name="accordion.defaultOpen" value="true" />
+    <property name="disclosure.render" value="true" />
+    <property name="disclosure.defaultOpen" value="true" />
     <property name="layoutManager">
       <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
         p:styleClasses="datatable display" />
@@ -79,7 +79,7 @@
   <bean id="loadRuleGroup-parent" parent="Group" p:style="padding-bottom: 1em;">
     <property name="title" value="Source" />
     <property name="renderHeader" value="false" />
-    <property name="accordion.render" value="false" />
+    <property name="disclosure.render" value="false" />
     <property name="layoutManager">
       <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
         p:styleClasses="datatable display" />
@@ -112,7 +112,7 @@
   <bean id="ruleInfoGrid" parent="GroupGridLayout"  p:style="padding-bottom: 1em;">
     <property name="title" value="Rule Information" />
     <property name="renderHeader" value="false" />
-    <property name="accordion.render" value="false" />
+    <property name="disclosure.render" value="false" />
     <property name="items">
       <list>
         <bean parent="AttributeField" p:propertyName="agendaItemLine.rule.name" />
@@ -131,12 +131,12 @@
   <bean name="propositionSection" parent="propositionSection-parent" />
   <bean name="propositionSection-parent" parent="GroupBodyOnly"  p:style="padding-bottom: 1em;">
     <property name="title" value="Proposition Tree" />
-    <property name="accordion.render" value="true" />
+    <property name="disclosure.render" value="true" />
     <property name="items">
       <list>
 
         <bean id="RuleEditorView-PropositionSummary" parent="GroupGridLayout" p:renderHeader="false" p:style="margin-bottom: 0em;">
-          <property name="accordion.render" value="false" />
+          <property name="disclosure.render" value="false" />
           <property name="layoutManager.numberOfColumns" value="8" />
           <property name="items">
             <list>
@@ -273,7 +273,7 @@
   </bean>
         
   <bean id="RuleEditorView-Tree" parent="ruleTree"/>        
-  <bean id="ruleTree" parent="TreeGroup" p:accordion.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+  <bean id="ruleTree" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="title" value="Rule Propositions"/>
     <property name="propertyName" value="agendaItemLine.rule.propositionTree"/>
     <property name="treeWidget">
@@ -514,8 +514,8 @@
     <property name="render"><value>false</value></property>
 
     <property name="title" value="Rule Attributes" />
-    <property name="accordion.render" value="true" />
-    <property name="accordion.defaultOpen" value="false" />
+    <property name="disclosure.render" value="true" />
+    <property name="disclosure.defaultOpen" value="false" />
     <property name="items">
       <list>
   <bean name="ruleAttributeTable" parent="CollectionGroupTableLayout"
@@ -526,7 +526,7 @@
     <property name="propertyName" value="agendaItemLine.rule.attributeBos" />
     <property name="renderAddLine" value="false" />
     <property name="renderLineActions" value="false" />
-    <property name="accordion.render" value="false" />
+    <property name="disclosure.render" value="false" />
     <property name="header.render" value="false" />
     <property name="layoutManager.renderSequenceField" value="false" />
     <property name="layoutManager.useShortLabels" value="true" />
@@ -555,7 +555,7 @@
   <bean name="ruleActionsSection" parent="ruleActionsSection-parent"/>
     <bean name="ruleActionsSection-parent" parent="Group">
       <property name="title" value="Actions"/>
-      <property name="accordion.defaultOpen" value="true"/>
+      <property name="disclosure.defaultOpen" value="true"/>
       <property name="items">
         <list>
           <bean parent="ruleActionTable"/>

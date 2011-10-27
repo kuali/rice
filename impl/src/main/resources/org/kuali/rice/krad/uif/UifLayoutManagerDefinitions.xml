@@ -100,7 +100,7 @@
   </bean>
 
   <bean id="StackedGroupPrototype" parent="StackedGroupPrototype-parentBean"/>
-  <bean id="StackedGroupPrototype-parentBean" abstract="true" parent="GroupGridLayout" p:accordion.render="false">
+  <bean id="StackedGroupPrototype-parentBean" abstract="true" parent="GroupGridLayout" p:disclosure.render="false">
     <property name="header">
       <bean parent="HeaderFour" p:headerStyleClasses="kr-section-subhead kr-collection-item-header"/>
     </property>

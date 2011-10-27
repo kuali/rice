@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
  *
  * <p>
  * Some components have state that can be altered on the client without making a server call. An
- * example of this is the open state for an <code>Accordion</code>. When the View is refreshed
+ * example of this is the open state for an <code>Disclosure</code>. When the View is refreshed
  * from the server, the refreshed state needs to reflect the last state before the refresh was made. The
  * framework supports this exposure of state in the client and syncing of the client state to the server
  * component by means of this annotation.

@@ -29,7 +29,7 @@
 							<ref bean="horizontal-Section3" />
 							<ref bean="horizontal-Section4" />
 							<ref bean="tabs-Section5" />
-							<ref bean="accordion-Section6" />
+							<ref bean="disclosure-Section6" />
 						</list>
 					</property>
 				</bean>
@@ -113,7 +113,7 @@
 		p:layoutManager.orientation="VERTICAL">
 		<property name="title" value="Section Title" />
 		<property name="instructionalText" value="Vertical Layout test" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -129,7 +129,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
 		<property name="instructionalText" value="Horizontal Layout test - 3 across" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -144,7 +144,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
 		<property name="instructionalText" value="Horizontal Layout test - 5 across" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -161,7 +161,7 @@
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Section Title" />
 		<property name="instructionalText" value="Horizontal Layout test - 8 across" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -189,10 +189,10 @@
 		</property>
 	</bean>
 
-	<bean id="accordion-Section6" parent="Group"
+	<bean id="disclosure-Section6" parent="Group"
 		p:layoutManager.orientation="VERTICAL">
 		<property name="title" value="Section Title" />
-		<property name="instructionalText" value="Accordion test" />
+		<property name="instructionalText" value="Disclosure test" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -247,7 +247,7 @@
 	<bean id="gridGroup-1" parent="GroupGridLayout">
 		<property name="title" value="Section Title" />
 		<property name="instructionalText" value="GroupGridLayout default settings" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -262,7 +262,7 @@
 		<property name="title" value="Section Title" />
 		<property name="layoutManager.numberOfColumns" value="4" />
 		<property name="instructionalText" value="GroupGridLayout number of columns = 4" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -281,7 +281,7 @@
 		<property name="layoutManager.numberOfColumns" value="4" />
 		<property name="instructionalText"
 			value="GroupGridLayout number of columns = 4, fields have colspan settings" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -306,7 +306,7 @@
 		<property name="layoutManager.numberOfColumns" value="2" />
 		<property name="instructionalText"
 			value="GroupGridLayout 2 columns with two nested groups" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -320,7 +320,7 @@
 		<property name="title" value="Section Title" />
 		<property name="instructionalText"
 			value="GroupGridLayout default settings, 2 nested groups" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>

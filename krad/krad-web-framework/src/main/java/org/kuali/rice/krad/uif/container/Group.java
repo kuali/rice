@@ -21,7 +21,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.Accordion;
+import org.kuali.rice.krad.uif.widget.Disclosure;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,7 +54,7 @@ public class Group extends ContainerBase {
 	private String fieldBindByNamePrefix;
 	private String fieldBindingObjectPath;
 
-	private Accordion accordion;
+	private Disclosure disclosure;
 
 	private List<? extends Component> items;
 
@@ -132,7 +132,7 @@ public class Group extends ContainerBase {
 	public List<Component> getComponentsForLifecycle() {
 		List<Component> components = super.getComponentsForLifecycle();
 
-		components.add(accordion);
+		components.add(disclosure);
 
 		return components;
 	}
@@ -212,22 +212,22 @@ public class Group extends ContainerBase {
 	}
 
 	/**
-	 * Accordion widget that provides collapse/expand functionality for the
+	 * Disclosure widget that provides collapse/expand functionality for the
 	 * group
 	 * 
 	 * @return Accordion instance
 	 */
-	public Accordion getAccordion() {
-		return this.accordion;
+	public Disclosure getDisclosure() {
+		return this.disclosure;
 	}
 
 	/**
-	 * Setter for the group's accordion instance
+	 * Setter for the group's disclosure instance
 	 * 
-	 * @param accordion
+	 * @param disclosure
 	 */
-	public void setAccordion(Accordion accordion) {
-		this.accordion = accordion;
+	public void setDisclosure(Disclosure disclosure) {
+		this.disclosure = disclosure;
 	}
 
 	/**

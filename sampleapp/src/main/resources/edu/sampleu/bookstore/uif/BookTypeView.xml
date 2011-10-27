@@ -29,7 +29,7 @@
     <property name="entryPageId" value="page1" />
     <property name="items">
       <list>
-        <bean parent="Page_Accordion" p:id="page1">
+        <bean parent="Page_Disclosure" p:id="page1">
           <property name="items">
             <list>
               <ref bean="BookType-InquiryView-Section1" />

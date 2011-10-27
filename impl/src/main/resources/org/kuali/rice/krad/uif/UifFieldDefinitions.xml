@@ -299,10 +299,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionLinkField_JumpToBottom" parent="ActionLinkField" p:clientSideJs="jumpToBottom();" 
         p:actionLabel="Bottom" p:id="bottom_action"/>
   
-  <bean id="ActionField_ExpandAccordions" parent="ActionField_SmallSecondary" p:clientSideJs="expandAccordions();" 
+  <bean id="ActionField_ExpandDisclosures" parent="ActionField_SmallSecondary" p:clientSideJs="expandDisclosures();"
         p:actionLabel="expand all" p:id="actn_expn"/>
                  
-  <bean id="ActionField_CollapseAccordions" parent="ActionField_SmallSecondary" p:clientSideJs="collapseAccordions();" 
+  <bean id="ActionField_CollapseDisclosures" parent="ActionField_SmallSecondary" p:clientSideJs="collapseDisclosures();"
         p:actionLabel="collapse all" p:id="actn_cllps"/>
         
   <bean id="AttributeField_DocumentNumber" parent="AttributeField" p:propertyName="documentNumber" 

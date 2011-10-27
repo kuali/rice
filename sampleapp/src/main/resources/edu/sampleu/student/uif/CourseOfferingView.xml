@@ -38,7 +38,7 @@
   -->
   <bean id="CourseOfferingPage" parent="PageGroup" p:title="Course Offering Information"
         p:layoutManager.orientation="HORIZONTAL" p:header.styleClasses="course-header"
-        p:accordion.render="false">
+        p:disclosure.render="false">
     <property name="items">
       <list>
         <ref bean="CourseOffering-CourseInfoSection"/>

@@ -17,7 +17,7 @@ import org.kuali.rice.krad.uif.component.ClientSideState;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class Accordion extends WidgetBase {
+public class Disclosure extends WidgetBase {
     private static final long serialVersionUID = 1238789480161901850L;
 
     private String collapseImageSrc;
@@ -30,7 +30,7 @@ public class Accordion extends WidgetBase {
 
     private boolean renderImage;
 
-    public Accordion() {
+    public Disclosure() {
         super();
 
         defaultOpen = true;

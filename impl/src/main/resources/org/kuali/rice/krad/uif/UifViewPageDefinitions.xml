@@ -171,7 +171,7 @@
       <bean parent="HeaderViewDocument"/>
     </property>
     <property name="page">
-      <bean parent="Page_Accordion"/>
+      <bean parent="Page_Disclosure"/>
     </property>
     <property name="footer">
       <bean parent="FooterDocument"/>
@@ -180,9 +180,9 @@
     <property name="items">
       <list>
         <bean parent="Group_DocumentOverview" p:order="10"/>
-        <bean parent="Group_DocumentNotes" p:accordion.defaultOpen="false" p:order="30"/>
-        <bean parent="Group_DocumentAdHocRecipients" p:accordion.defaultOpen="false" p:order="40"/>
-        <bean parent="Group_DocumentRouteLog" p:accordion.defaultOpen="false" p:order="50"/>
+        <bean parent="Group_DocumentNotes" p:disclosure.defaultOpen="false" p:order="30"/>
+        <bean parent="Group_DocumentAdHocRecipients" p:disclosure.defaultOpen="false" p:order="40"/>
+        <bean parent="Group_DocumentRouteLog" p:disclosure.defaultOpen="false" p:order="50"/>
       </list>
     </property>
   </bean>
@@ -227,7 +227,7 @@
 		<property name="instructionalText" value="Please use the Incident Report form below to report the problems" />
 	</bean>
 
-	<bean id="IncidentDetailGroup" parent="GroupGridLayout" p:accordion.render="false">
+	<bean id="IncidentDetailGroup" parent="GroupGridLayout" p:disclosure.render="false">
 		<property name="header.headerText" value="Incident Feedback" />
 		<property name="header.styleClasses" value="grouping-header-expandable" />
 		<property name="layoutManager.numberOfColumns" value="2" />
@@ -269,7 +269,7 @@
 	</bean>
 
 	<bean id="IncidentStackGroup" parent="GroupSection"
-		p:layoutManager.styleClasses="layout_center" p:render="@{devMode}" p:accordion.render="false">
+		p:layoutManager.styleClasses="layout_center" p:render="@{devMode}" p:disclosure.render="false">
 		<property name="header.headerText" value="Stacktrace (only in dev mode)" />
 		<property name="items">
 			<list>
@@ -298,22 +298,22 @@
 			<bean parent="BoxLayoutManager" p:orientation="VERTICAL" />
 		</property>
 		<property name="autoFocus" value="true" />
-		<property name="accordion.render" value="false" />
+		<property name="disclosure.render" value="false" />
 	</bean>
 
 	<!-- Common Pages -->
 
-	<bean id="Page_Accordion" parent="Page_Accordion-parentBean" />
-	<bean id="Page_Accordion-parentBean" abstract="true" parent="Page">
+	<bean id="Page_Disclosure" parent="Page_Disclosure-parentBean" />
+	<bean id="Page_Disclosure-parentBean" abstract="true" parent="Page">
 		<property name="header">
-			<ref bean="HeaderPage_AccordionEdit" />
+			<ref bean="HeaderPage_DisclosureEdit" />
 		</property>
 	</bean>
 
 	<bean id="PageInquiry" parent="PageInquiry-parentBean" />
 	<bean id="PageInquiry-parentBean" abstract="true" parent="Page">
 		<property name="header">
-			<ref bean="HeaderPage_AccordionReadOnly" />
+			<ref bean="HeaderPage_DisclosureReadOnly" />
 		</property>
 	</bean>
 

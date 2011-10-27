@@ -37,6 +37,8 @@ public class DataField extends FieldBase {
     private Formatter formatter;
     private AttributeSecurity attributeSecurity;
 
+    private boolean readOnlyHidden;
+
     // alternate and additional display properties
     protected String alternateDisplayPropertyName;
     protected String additionalDisplayPropertyName;
@@ -45,6 +47,7 @@ public class DataField extends FieldBase {
     private String additionalDisplayValue;
 
     private List<String> hiddenPropertyNames;
+    private List<String> informationalDisplayPropertyNames;
 
     private boolean escapeHtmlInPropertyValue;
 
@@ -57,7 +60,9 @@ public class DataField extends FieldBase {
     public DataField() {
         super();
 
+        readOnlyHidden = false;
         hiddenPropertyNames = new ArrayList<String>();
+        informationalDisplayPropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -77,6 +82,22 @@ public class DataField extends FieldBase {
 
         if (bindingInfo != null) {
             bindingInfo.setDefaults(view, getPropertyName());
+        }
+    }
+
+    /**
+     * The following updates are done here:
+     *
+     * <ul>
+     * <li>If readOnlyHidden set to true, set field to readonly and add to hidden property names</li>
+     * </ul>
+     */
+    public void performApplyModel(View view, Object model, Component parent) {
+        super.performApplyModel(view, model, parent);
+
+        if (isReadOnlyHidden()) {
+            setReadOnly(true);
+            getHiddenPropertyNames().add(getPropertyName());
         }
     }
 
@@ -105,9 +126,16 @@ public class DataField extends FieldBase {
         }
         this.hiddenPropertyNames = hiddenPropertyPaths;
 
+        // adjust paths on informational property names
+        List<String> informationalPropertyPaths = new ArrayList<String>();
+        for (String infoPropertyName : getInformationalDisplayPropertyNames()) {
+            String infoPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(infoPropertyName);
+            informationalPropertyPaths.add(infoPropertyPath);
+        }
+        this.informationalDisplayPropertyNames = informationalPropertyPaths;
+
         // Additional and Alternate display value
         setAlternateAndAdditionalDisplayValue(view, model);
-
     }
 
     /**
@@ -135,6 +163,11 @@ public class DataField extends FieldBase {
      * @param model - model instance
      */
     protected void setAlternateAndAdditionalDisplayValue(View view, Object model) {
+        // if alternate or additional display values set don't use property names
+        if (StringUtils.isNotBlank(alternateDisplayValue) || StringUtils.isNotBlank(additionalDisplayValue)) {
+            return;
+        }
+
         // check whether field value needs to be masked, and if so apply masking as alternateDisplayValue
         if (getAttributeSecurity() != null) {
             //TODO: Check authorization
@@ -466,6 +499,28 @@ public class DataField extends FieldBase {
     }
 
     /**
+     * Indicates the field should be read-only but also a hidden should be generated for the field
+     *
+     * <p>
+     * Useful for when a value is just displayed but is needed by script
+     * </p>
+     *
+     * @return boolean true if field should be readOnly hidden, false if not
+     */
+    public boolean isReadOnlyHidden() {
+        return readOnlyHidden;
+    }
+
+    /**
+     * Setter for the read-only hidden indicator
+     *
+     * @param readOnlyHidden
+     */
+    public void setReadOnlyHidden(boolean readOnlyHidden) {
+        this.readOnlyHidden = readOnlyHidden;
+    }
+
+    /**
      * Inquiry widget for the field
      *
      * <p>
@@ -543,7 +598,7 @@ public class DataField extends FieldBase {
      *
      * @param value
      */
-    protected void setAlternateDisplayValue(String value) {
+    public void setAlternateDisplayValue(String value) {
         this.alternateDisplayValue = value;
     }
 
@@ -561,7 +616,7 @@ public class DataField extends FieldBase {
      *
      * @param value
      */
-    protected void setAdditionalDisplayValue(String value) {
+    public void setAdditionalDisplayValue(String value) {
         this.additionalDisplayValue = value;
     }
 
@@ -582,6 +637,37 @@ public class DataField extends FieldBase {
      */
     public void setHiddenPropertyNames(List<String> hiddenPropertyNames) {
         this.hiddenPropertyNames = hiddenPropertyNames;
+    }
+
+    /**
+     * List of property names whose values should be displayed read-only under this field
+     *
+     * <p>
+     * In the attribute field template for each information property name given its values is
+     * outputted read-only. Informational property values can also be updated dynamically with
+     * the use of field attribute query
+     * </p>
+     *
+     * <p>
+     * Simple property names can be given if the property has the same binding parent as this
+     * field, in which case the binding path will be adjusted by the framework. If the property
+     * names starts with org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX, no binding
+     * prefix will be added.
+     * </p>
+     *
+     * @return List<String> informational property names
+     */
+    public List<String> getInformationalDisplayPropertyNames() {
+        return informationalDisplayPropertyNames;
+    }
+
+    /**
+     * Setter for the list of informational property names
+     *
+     * @param informationalDisplayPropertyNames
+     */
+    public void setInformationalDisplayPropertyNames(List<String> informationalDisplayPropertyNames) {
+        this.informationalDisplayPropertyNames = informationalDisplayPropertyNames;
     }
 
     /**

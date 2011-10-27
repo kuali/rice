@@ -67,7 +67,9 @@
     </c:choose>
 
     <%-- render field quickfinder --%>
-    <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
+    <c:if test="${!readOnly}">
+      <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
+    </c:if>
 
     <%-- render field direct inquiry if field is editable --%>
     <c:if test="${!readOnly && field.fieldDirectInquiry.render}">

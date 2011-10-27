@@ -104,7 +104,6 @@ public class AttributeField extends DataField implements DataBinding {
     private MessageField instructionalMessageField;
     private MessageField constraintMessageField;
 
-    private List<String> informationalDisplayPropertyNames;
     private AttributeQuery fieldAttributeQuery;
 
     // widgets
@@ -116,7 +115,6 @@ public class AttributeField extends DataField implements DataBinding {
         super();
 
         simpleConstraint = new SimpleConstraint();
-        informationalDisplayPropertyNames = new ArrayList<String>();
     }
 
     /**
@@ -169,6 +167,8 @@ public class AttributeField extends DataField implements DataBinding {
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
         if (isReadOnly()
                 && !fieldOptions.isEmpty()
+                && StringUtils.isBlank(getAlternateDisplayValue())
+                && StringUtils.isBlank(getAdditionalDisplayValue())
                 && StringUtils.isBlank(getAlternateDisplayPropertyName())
                 && StringUtils.isBlank(getAdditionalDisplayPropertyName())) {
 
@@ -195,14 +195,6 @@ public class AttributeField extends DataField implements DataBinding {
         if (StringUtils.isNotBlank(constraintText)) {
             constraintMessageField.setMessageText(constraintText);
         }
-
-        // adjust paths on informational property names
-        List<String> informationalPropertyPaths = new ArrayList<String>();
-        for (String infoPropertyName : getInformationalDisplayPropertyNames()) {
-            String infoPropertyPath = getBindingInfo().getPropertyAdjustedBindingPath(infoPropertyName);
-            informationalPropertyPaths.add(infoPropertyPath);
-        }
-        this.informationalDisplayPropertyNames = informationalPropertyPaths;
 
         // adjust paths on PrerequisiteConstraint property names
         adjustPrerequisiteConstraintBinding(dependencyConstraints);
@@ -866,37 +858,6 @@ public class AttributeField extends DataField implements DataBinding {
      */
     public DirectInquiry getFieldDirectInquiry() {
         return fieldDirectInquiry;
-    }
-
-    /**
-     * List of property names whose values should be displayed read-only under this field
-     *
-     * <p>
-     * In the attribute field template for each information property name given its values is
-     * outputted read-only. Informational property values can also be updated dynamically with
-     * the use of field attribute query
-     * </p>
-     *
-     * <p>
-     * Simple property names can be given if the property has the same binding parent as this
-     * field, in which case the binding path will be adjusted by the framework. If the property
-     * names starts with org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX, no binding
-     * prefix will be added.
-     * </p>
-     *
-     * @return List<String> informational property names
-     */
-    public List<String> getInformationalDisplayPropertyNames() {
-        return informationalDisplayPropertyNames;
-    }
-
-    /**
-     * Setter for the list of informational property names
-     *
-     * @param informationalDisplayPropertyNames
-     */
-    public void setInformationalDisplayPropertyNames(List<String> informationalDisplayPropertyNames) {
-        this.informationalDisplayPropertyNames = informationalDisplayPropertyNames;
     }
 
     /**

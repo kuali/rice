@@ -124,6 +124,7 @@ public class UILayoutTestForm extends UifFormBase {
     private String field89;
     private String field90;
     private String field91;
+    private String field92;
     
     private String gField1;
     private String gField2;
@@ -230,6 +231,7 @@ public class UILayoutTestForm extends UifFormBase {
 
         field88 = "Fruits";
         field91 = "Read only value";
+        field92 = "Value 92";
     }
 
     @Override
@@ -1693,5 +1695,13 @@ public class UILayoutTestForm extends UifFormBase {
 
     public void setField91(String field91) {
         this.field91 = field91;
+    }
+
+    public String getField92() {
+        return field92;
+    }
+
+    public void setField92(String field92) {
+        this.field92 = field92;
     }
 }

@@ -1835,12 +1835,20 @@
     <property name="title" value="Various configuration and feature examples"/>
     <property name="items">
       <list>
-				<bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
-                p:instructionalText="Field that is being set to read only by request">
-           <property name="control">
-             <bean parent="TextControl" p:size="30"/>
-           </property>
+        <bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
+              p:instructionalText="Field that is being set to read only by request">
+          <property name="control">
+            <bean parent="TextControl" p:size="30"/>
+          </property>
         </bean>
+        <bean parent="GenericTextField" p:label="Field 2" p:propertyName="field92" p:readOnlyHidden="true"
+              p:instructionalText="Field that is being set to readOnlyHidden">
+          <property name="control">
+            <bean parent="TextControl" p:size="30"/>
+          </property>
+        </bean>
+        <bean parent="DataField" p:label="Field 2" p:propertyName="field92" p:readOnly="true"
+              p:alternateDisplayValue="Val is : @{field88}"/>
       </list>
     </property>
   </bean>

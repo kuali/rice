@@ -48,7 +48,7 @@ import java.sql.Timestamp;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TableTools extends WidgetBase {
+public class RichTable extends WidgetBase {
     private static final long serialVersionUID = 4671589690877390070L;
 
     private String emptyTableMessage;
@@ -56,7 +56,7 @@ public class TableTools extends WidgetBase {
 
     private boolean showSearchAndExportOptions = true;
 
-    public TableTools() {
+    public RichTable() {
         super();
     }
 

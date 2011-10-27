@@ -57,4 +57,4 @@
 </c:if>
 
 <%-- invoke table tools widget --%>
-<krad:template component="${manager.tableTools}" componentId="${manager.id}"/>    
+<krad:template component="${manager.richTable}" componentId="${manager.id}"/>

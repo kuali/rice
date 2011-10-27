@@ -359,7 +359,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="styleClasses" value="tableborders wrap" />
 		<property name="collectionObjectClass" value="org.kuali.rice.krad.bo.Note" />
 		<property name="layoutManager.generateAutoSequence" value="true" />
-		<property name="layoutManager.tableTools.render" value="false" />
+		<property name="layoutManager.richTable.render" value="false" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
@@ -442,7 +442,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <property name="bindingInfo.bindingObjectPath" value="document"/>
           <property name="title" value="Person Requests:"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
-          <property name="layoutManager.tableTools.render" value="false"/>
+          <property name="layoutManager.richTable.render" value="false"/>
           <property name="styleClasses" value="tableborders wrap"/>
           <property name="items">
             <list>
@@ -469,7 +469,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <property name="title" value="Ad Hoc Group Requests:"/>
           <property name="bindingInfo.bindingObjectPath" value="document"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
-          <property name="layoutManager.tableTools.render" value="false"/>
+          <property name="layoutManager.richTable.render" value="false"/>
           <property name="styleClasses" value="tableborders wrap"/>
           <property name="items">
             <list>

@@ -1531,7 +1531,7 @@
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list1" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.tableTools.render" value="false" />
+		<property name="layoutManager.richTable.render" value="false" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"
@@ -1556,7 +1556,7 @@
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list2" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="layoutManager.richTable.render" value="true" />
     <property name="collectionLookup.render" value="true"/>
     <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
@@ -1634,7 +1634,7 @@
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="subList" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="layoutManager.richTable.render" value="true" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:propertyName="field1" p:label="SubField 1"
@@ -1716,7 +1716,7 @@
 		<property name="layoutManager.generateAutoSequence" value="false" />
     <property name="layoutManager.separateAddLine" value="true" />
     <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8" />
-		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="layoutManager.richTable.render" value="true" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"

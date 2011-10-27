@@ -70,8 +70,8 @@
         </property>
       </bean>
     </property>
-    <property name="tableTools">
-      <bean parent="TableTools-Paging"/>
+    <property name="richTable">
+      <bean parent="RichTable-Paging"/>
     </property>
   </bean>
 

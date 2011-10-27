@@ -533,9 +533,9 @@
     <property name="layoutManager.repeatHeader" value="false" />
     <property name="layoutManager.applyAlternatingRowStyles" value="true"/>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
-    <property name="layoutManager.tableTools.disableTableSort" value="true" />
-    <property name="layoutManager.tableTools">
-        <ref bean="TableTools-ScrollInfinite"/>
+    <property name="layoutManager.richTable.disableTableSort" value="true" />
+    <property name="layoutManager.richTable">
+        <ref bean="RichTable-ScrollInfinite"/>
     </property>   
     <property name="items">
       <list>
@@ -570,7 +570,7 @@
     <property name="propertyName" value="agendaItemLine.rule.actions"/>
     <property name="layoutManager.sequencePropertyName" value="sequenceNumber" />
     <!--<property name="layoutManager.renderSequenceField" value="false"/> // if you want to hide the sequence number in the table-->
-    <property name="layoutManager.tableTools.render" value="true"/>
+    <property name="layoutManager.richTable.render" value="true"/>
     <property name="collectionLookup.render" value="false"/>
     <property name="items">
       <list>

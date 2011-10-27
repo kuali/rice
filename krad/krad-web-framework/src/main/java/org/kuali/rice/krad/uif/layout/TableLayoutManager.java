@@ -31,7 +31,7 @@ import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.widget.TableTools;
+import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	private List<LabelField> headerFields;
 	private List<Field> dataFields;
 
-	private TableTools tableTools;
+	private RichTable richTable;
 	private boolean headerAdded = false;
 
 	public TableLayoutManager() {
@@ -428,7 +428,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	public List<Component> getComponentsForLifecycle() {
 		List<Component> components = super.getComponentsForLifecycle();
 
-		components.add(tableTools);
+		components.add(richTable);
         components.add(addLineGroup);
 		components.addAll(headerFields);
 		components.addAll(dataFields);
@@ -749,17 +749,17 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * 
 	 * @return TableTools instance
 	 */
-	public TableTools getTableTools() {
-		return this.tableTools;
+	public RichTable getRichTable() {
+		return this.richTable;
 	}
 
 	/**
 	 * Setter for the table tools widget
 	 * 
-	 * @param tableTools
+	 * @param richTable
 	 */
-	public void setTableTools(TableTools tableTools) {
-		this.tableTools = tableTools;
+	public void setRichTable(RichTable richTable) {
+		this.richTable = richTable;
 	}
 
 	/**

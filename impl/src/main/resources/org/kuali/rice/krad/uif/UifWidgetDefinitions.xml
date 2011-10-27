@@ -88,8 +88,8 @@
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/lightBoxPost.jsp"/>
   </bean>
 
-  <bean id="TableTools-Paging" parent="TableTools-Paging-parentBean"/>
-  <bean id="TableTools-Paging-parentBean" parent="TableTools-parentBean" scope="prototype">
+  <bean id="RichTable-Paging" parent="RichTable-Paging-parentBean"/>
+  <bean id="RichTable-Paging-parentBean" parent="RichTable-parentBean" scope="prototype">
     <property name="componentOptions">
       <map merge="true">
         <entry key="sScrollX" value="100%"/>
@@ -98,8 +98,8 @@
     </property>
   </bean>
 
-  <bean id="TableTools-ScrollInfinite" parent="TableTools-ScrollInfinite-parentBean"/>
-  <bean id="TableTools-ScrollInfinite-parentBean" parent="TableTools-parentBean" scope="prototype">
+  <bean id="RichTable-ScrollInfinite" parent="RichTable-ScrollInfinite-parentBean"/>
+  <bean id="RichTable-ScrollInfinite-parentBean" parent="RichTable-parentBean" scope="prototype">
     <property name="componentOptions">
       <map merge="true">
         <entry key="sDom" value="fTrt"/>
@@ -110,9 +110,9 @@
     </property>
   </bean>
 
-  <bean id="TableTools" parent="TableTools-parentBean"/>
-  <bean id="TableTools-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.TableTools" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/tableTools.jsp"/>
+  <bean id="RichTable" parent="RichTable-parentBean"/>
+  <bean id="RichTable-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.RichTable" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/widget/richTable.jsp"/>
       <property name="componentOptions">
           <map>
               <entry key="sDom" value="fTrtip"/>

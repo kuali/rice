@@ -315,7 +315,7 @@
                   <reportSet>
                     <reports>
                       <report>index</report>
-                      <report>dependenciest</report>
+                      <report>dependencies</report>
                       <report>dependency-management</report>
                       <report>dependency-convergence</report>
                       <report>distribution-management</report>

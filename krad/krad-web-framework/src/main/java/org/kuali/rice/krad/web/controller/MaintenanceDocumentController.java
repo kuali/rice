@@ -17,7 +17,7 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
@@ -74,7 +74,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
         // in all of the following cases we want to load the document
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, form.getCommand()) && form.getDocId() != null) {
             loadDocument(form);
-        } else if (KEWConstants.INITIATE_COMMAND.equals(form.getCommand())) {
+        } else if (KewApiConstants.INITIATE_COMMAND.equals(form.getCommand())) {
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");
@@ -82,10 +82,10 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
         }
         // * end copy/paste from the base
 
-        if (KEWConstants.ACTIONLIST_COMMAND.equals(form.getCommand()) ||
-                KEWConstants.DOCSEARCH_COMMAND.equals(form.getCommand()) ||
-                KEWConstants.SUPERUSER_COMMAND.equals(form.getCommand()) ||
-                KEWConstants.HELPDESK_ACTIONLIST_COMMAND.equals(form.getCommand()) && form.getDocId() != null) {
+        if (KewApiConstants.ACTIONLIST_COMMAND.equals(form.getCommand()) ||
+                KewApiConstants.DOCSEARCH_COMMAND.equals(form.getCommand()) ||
+                KewApiConstants.SUPERUSER_COMMAND.equals(form.getCommand()) ||
+                KewApiConstants.HELPDESK_ACTIONLIST_COMMAND.equals(form.getCommand()) && form.getDocId() != null) {
             // TODO: set state in view
             // form.setReadOnly(true);
             form.setMaintenanceAction((form.getDocument()).getNewMaintainableObject().getMaintenanceAction());
@@ -99,7 +99,7 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
                     request.setAttribute("fileName", bo.getFileName());
                 }
             }
-        } else if (KEWConstants.INITIATE_COMMAND.equals(form.getCommand())) {
+        } else if (KewApiConstants.INITIATE_COMMAND.equals(form.getCommand())) {
             // form.setReadOnly(false);
             setupMaintenance(form, request, KRADConstants.MAINTENANCE_NEW_ACTION);
         } else {

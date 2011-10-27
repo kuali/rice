@@ -43,7 +43,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -184,7 +184,7 @@ public class RoutingReportAction extends KewKualiAction {
                     WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
                     RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-                    if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+                    if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                         ((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
                     }
                     List attValidationErrors = workflowAttribute.validateRoutingData(routingForm.getFields());
@@ -205,7 +205,7 @@ public class RoutingReportAction extends KewKualiAction {
 
 		routeHeader.setDocContent(xmlDocumentContent);
 		routeHeader.setInitiatorWorkflowId(getUserSession(request).getPrincipalId());
-		routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
+		routeHeader.setDocRouteStatus(KewApiConstants.ROUTE_HEADER_INITIATED_CD);
 		routeHeader.setDocTitle("Routing Report");
 		routeHeader.setRoutingReport(true);
 		long magicCounter = 0;
@@ -382,7 +382,7 @@ public class RoutingReportAction extends KewKualiAction {
 			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+			if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 			for (Row row : workflowAttribute.getRoutingDataRows()) {

@@ -19,7 +19,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.role.RoleBo;
@@ -56,7 +56,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
     	// convert the UberResponsibilityBo class into a ReviewResponsibility object
-        if ( ((UberResponsibilityBo)businessObject).getTemplate().getName().equals( KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
+        if ( ((UberResponsibilityBo)businessObject).getTemplate().getName().equals( KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
         	ReviewResponsibilityBo reviewResp = new ReviewResponsibilityBo( (UberResponsibilityBo)businessObject );
         	businessObject = reviewResp;
 	        if (allowsMaintenanceEditAction(businessObject)) {

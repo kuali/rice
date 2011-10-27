@@ -38,7 +38,7 @@ import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -95,7 +95,7 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         
         LOG.info("NotificationPostProcessor detected end-user action " + event.getActionTaken().getActionTaken() + " on document " + event.getActionTaken().getDocumentId());
 
-        if(actionTakenCode.equals(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD) || actionTakenCode.equals(KEWConstants.ACTION_TAKEN_FYI_CD)) {
+        if(actionTakenCode.equals(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD) || actionTakenCode.equals(KewApiConstants.ACTION_TAKEN_FYI_CD)) {
             LOG.debug("User has taken either acknowledge or fy action (action code=" + actionTakenCode + 
                     ") for Notification action item with document ID: " + event.getDocumentId() + 
             ".  We are now changing the status of the associated NotificationMessageDelivery to REMOVED.");
@@ -109,9 +109,9 @@ public class NotificationPostProcessor implements PostProcessorRemote {
 
                 //get the id of the associated notification message delivery record
                 String cause;
-                if (KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
+                if (KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
                     cause = NotificationConstants.ACK_CAUSE;
-                } else if (KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
+                } else if (KewApiConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
                     cause = NotificationConstants.FYI_CAUSE;
                 } else {
                     cause = "unknown";

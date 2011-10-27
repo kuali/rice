@@ -128,7 +128,7 @@ public class MaintenanceUtils {
      *
      * @param lockedDocument
      * @return
-     * @throws org.kuali.rice.kew.exception.WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      *
      */
     private static boolean lockCanBeIgnored(WorkflowDocument lockedDocument) {

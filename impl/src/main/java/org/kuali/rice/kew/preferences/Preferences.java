@@ -18,7 +18,7 @@ package org.kuali.rice.kew.preferences;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * Model bean representing an individual user's Preferences within KEW.
@@ -378,7 +378,7 @@ public class Preferences implements Serializable {
         this.useOutbox = useOutbox;
     }
     public boolean isUsingOutbox() {
-	if (this.getUseOutbox() != null && this.getUseOutbox().equals(KEWConstants.PREFERENCES_YES_VAL)) {
+	if (this.getUseOutbox() != null && this.getUseOutbox().equals(KewApiConstants.PREFERENCES_YES_VAL)) {
 	    return true;
 	}
 	return false;

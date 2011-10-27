@@ -57,26 +57,18 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionInvocation;
-import org.kuali.rice.kew.api.action.ActionItemCustomization;
 import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.api.actionlist.DisplayParameters;
-import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
-import org.kuali.rice.kew.doctype.SecuritySession;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
-import org.kuali.rice.kew.framework.document.security.DocumentSecurityDirective;
-import org.kuali.rice.kew.framework.document.security.DocumentSecurityHandlerService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -120,8 +112,8 @@ public class ActionListAction extends KualiAction {
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm frm = (ActionListForm)actionForm;
-    	request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
-    	request.setAttribute("preferences", getUserSession().retrieveObject(KEWConstants.PREFERENCES));
+    	request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KewApiConstants"));
+    	request.setAttribute("preferences", getUserSession().retrieveObject(KewApiConstants.PREFERENCES));
     	frm.setHeaderButtons(getHeaderButtons());
     	return super.execute(mapping, actionForm, request, response);
     }
@@ -173,16 +165,16 @@ public class ActionListAction extends KualiAction {
         if (form.getDir() != null) {
         	sortOrder = parseSortOrder(form.getDir());
         }
-        else if ( !StringUtils.isEmpty((String) uSession.retrieveObject(KEWConstants.SORT_ORDER_ATTR_NAME)))     {
-        	sortOrder = parseSortOrder((String) uSession.retrieveObject(KEWConstants.SORT_ORDER_ATTR_NAME));
+        else if ( !StringUtils.isEmpty((String) uSession.retrieveObject(KewApiConstants.SORT_ORDER_ATTR_NAME)))     {
+        	sortOrder = parseSortOrder((String) uSession.retrieveObject(KewApiConstants.SORT_ORDER_ATTR_NAME));
         }
         // if both the page and the sort criteria are null, that means its the first entry into the page, use defaults
         if (page == null && sortCriterion == null) {
         	page = Integer.valueOf(1);
         	sortCriterion = ActionItemComparator.DOCUMENT_ID;
         }
-        else if ( !StringUtils.isEmpty((String) uSession.retrieveObject(KEWConstants.SORT_CRITERIA_ATTR_NAME)))     {
-        	sortCriterion = (String) uSession.retrieveObject(KEWConstants.SORT_CRITERIA_ATTR_NAME);
+        else if ( !StringUtils.isEmpty((String) uSession.retrieveObject(KewApiConstants.SORT_CRITERIA_ATTR_NAME)))     {
+        	sortCriterion = (String) uSession.retrieveObject(KewApiConstants.SORT_CRITERIA_ATTR_NAME);
         }
         // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
         if (page == null) {
@@ -206,22 +198,22 @@ public class ActionListAction extends KualiAction {
         try {
             //UserSession uSession = getUserSession(request);
             String principalId = null;
-            if (uSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME) == null) {
+            if (uSession.retrieveObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME) == null) {
                 ActionListFilter filter = new ActionListFilter();
                 filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 filter.setExcludeDelegationType(true);
-                uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
+                uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
             }
 
-            final ActionListFilter filter = (ActionListFilter) uSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+            final ActionListFilter filter = (ActionListFilter) uSession.retrieveObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
             /* 'forceListRefresh' variable used to signify that the action list filter has changed
              * any time the filter changes the action list must be refreshed or filter may not take effect on existing
              * list items... only exception is if action list has not loaded previous and fetching of the list has not
              * occurred yet
              */
             boolean forceListRefresh = request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null;
-            if (uSession.retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME) != null) {
-            	principalId = ((PrincipalContract) uSession.retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME)).getPrincipalId();
+            if (uSession.retrieveObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME) != null) {
+            	principalId = ((PrincipalContract) uSession.retrieveObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME)).getPrincipalId();
             } else {
                 if (!StringUtils.isEmpty(form.getDocType())) {
                 	filter.setDocumentType(form.getDocType());
@@ -231,26 +223,26 @@ public class ActionListAction extends KualiAction {
                 principalId = uSession.getPerson().getPrincipalId();
             }
 
-            final Preferences preferences = (Preferences) getUserSession().retrieveObject(KEWConstants.PREFERENCES);
+            final Preferences preferences = (Preferences) getUserSession().retrieveObject(KewApiConstants.PREFERENCES);
 
             if (!StringUtils.isEmpty(form.getDelegationId())) {
-            	if (!KEWConstants.DELEGATION_DEFAULT.equals(form.getDelegationId())) {
+            	if (!KewApiConstants.DELEGATION_DEFAULT.equals(form.getDelegationId())) {
             		// If the user can filter by both primary and secondary delegation, and both drop-downs have non-default values assigned,
             		// then reset the primary delegation drop-down's value when the primary delegation drop-down's value has remained unaltered
             		// but the secondary drop-down's value has been altered; but if one of these alteration situations does not apply, reset the
             		// secondary delegation drop-down.
-            		if (StringUtils.isNotBlank(form.getPrimaryDelegateId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId())){
+            		if (StringUtils.isNotBlank(form.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId())){
             			if (form.getPrimaryDelegateId().equals(request.getParameter("oldPrimaryDelegateId")) &&
             					!form.getDelegationId().equals(request.getParameter("oldDelegationId"))) {
-            				form.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
+            				form.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
             			} else {
-            				form.setDelegationId(KEWConstants.DELEGATION_DEFAULT);
+            				form.setDelegationId(KewApiConstants.DELEGATION_DEFAULT);
             			}
             		} else if (StringUtils.isNotBlank(filter.getPrimaryDelegateId()) &&
-            				!KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(filter.getPrimaryDelegateId())) {
+            				!KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(filter.getPrimaryDelegateId())) {
             			// If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
             			// drop-down has a non-default value selected, then reset the primary delegation filtering.
-            			filter.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
+            			filter.setPrimaryDelegateId(KewApiConstants.PRIMARY_DELEGATION_DEFAULT);
             		}
             	}
             	// Enable the secondary delegation filtering.
@@ -262,10 +254,10 @@ public class ActionListAction extends KualiAction {
             if (!StringUtils.isEmpty(form.getPrimaryDelegateId())) {
             	// If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
             	// drop-down has a non-default value selected, then reset the secondary delegation filtering.
-            	if (StringUtils.isBlank(form.getDelegationId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId()) && 
+            	if (StringUtils.isBlank(form.getDelegationId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId()) &&
             			StringUtils.isNotBlank(filter.getDelegatorId()) &&
-            					!KEWConstants.DELEGATION_DEFAULT.equals(filter.getDelegatorId())) {
-            		filter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
+            					!KewApiConstants.DELEGATION_DEFAULT.equals(filter.getDelegatorId())) {
+            		filter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
             	}
             	// Enable the primary delegation filtering.
             	filter.setPrimaryDelegateId(form.getPrimaryDelegateId());
@@ -296,7 +288,7 @@ public class ActionListAction extends KualiAction {
                     actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else {
-                	Boolean update = (Boolean) uSession.retrieveObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME);
+                	Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
                 	if (update == null || !update) {
                 		freshActionList = false;
                 	}
@@ -307,14 +299,14 @@ public class ActionListAction extends KualiAction {
             request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, null);
 
             // build the drop-down of delegators
-            if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
+            if (KewApiConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
                 Collection delegators = actionListSrv.findUserSecondaryDelegators(principalId);
                 form.setDelegators(ActionListUtil.getWebFriendlyRecipients(delegators));
                 form.setDelegationId(filter.getDelegatorId());
             }
 
             // Build the drop-down of primary delegates.
-            if (KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getPrimaryDelegateFilter())) {
+            if (KewApiConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getPrimaryDelegateFilter())) {
             	Collection<Recipient> pDelegates = actionListSrv.findUserPrimaryDelegations(principalId);
             	form.setPrimaryDelegates(ActionListUtil.getWebFriendlyRecipients(pDelegates));
             	form.setPrimaryDelegateId(filter.getPrimaryDelegateId());
@@ -346,10 +338,10 @@ public class ActionListAction extends KualiAction {
             			form.getCurrentDir(), pageSize, preferences, form);
             plog.log("done w/ buildCurrentPage");
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
-            uSession.addObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.FALSE);
-            uSession.addObject(KEWConstants.CURRENT_PAGE_ATTR_NAME, form.getCurrentPage());
-            uSession.addObject(KEWConstants.SORT_CRITERIA_ATTR_NAME, form.getSort());
-            uSession.addObject(KEWConstants.SORT_ORDER_ATTR_NAME, form.getCurrentDir());
+            uSession.addObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.FALSE);
+            uSession.addObject(KewApiConstants.CURRENT_PAGE_ATTR_NAME, form.getCurrentPage());
+            uSession.addObject(KewApiConstants.SORT_CRITERIA_ATTR_NAME, form.getSort());
+            uSession.addObject(KewApiConstants.SORT_ORDER_ATTR_NAME, form.getCurrentDir());
             plog.log("finished setting attributes, finishing action list fetch");
         } catch (Exception e) {
             LOG.error("Error loading action list.", e);
@@ -463,22 +455,22 @@ public class ActionListAction extends KualiAction {
     			actionItem.setActionItemIndex(Integer.valueOf(index));
     			actionItem.setRouteHeader(routeHeaderExtension);
     			//set background colors for document statuses
-    			if (KEWConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
-    			} else if (KEWConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));
-    			} else if (KEWConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
-    			} else if (KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
-    			} else if (KEWConstants.ROUTE_HEADER_FINAL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
-    			} else if (KEWConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
-    			} else if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProccessed()));
-    			} else if (KEWConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
+    			if (KewApiConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
+    			} else if (KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));
+    			} else if (KewApiConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
+    			} else if (KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
+    			} else if (KewApiConstants.ROUTE_HEADER_FINAL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
+    			} else if (KewApiConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
+    			} else if (KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProccessed()));
+    			} else if (KewApiConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
     			}
     			index++;
     		} catch (Exception e) {
@@ -562,24 +554,24 @@ public class ActionListAction extends KualiAction {
     				Map customActions = new LinkedHashMap();
     				customActions.put("NONE", "NONE");
     				ActionSet legalActions = customActionListAttribute.getLegalActions(getUserSession().getPrincipalId(), ActionItem.to(actionItem));
-    				if (legalActions != null && legalActions.hasApprove() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_APPROVED_CD)) {
-    					customActions.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasApprove() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_APPROVED_CD)) {
+    					customActions.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
     					itemHasApproves = true;
     				}
-    				if (legalActions != null && legalActions.hasDisapprove() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_DENIED_CD)) {
-    					customActions.put(KEWConstants.ACTION_TAKEN_DENIED_CD, KEWConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
+    				if (legalActions != null && legalActions.hasDisapprove() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_DENIED_CD)) {
+    					customActions.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, KewApiConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
     					itemHasDisapproves = true;
     				}
-    				if (legalActions != null && legalActions.hasCancel() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_CANCELED_CD)) {
-    					customActions.put(KEWConstants.ACTION_TAKEN_CANCELED_CD, KEWConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasCancel() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_CANCELED_CD)) {
+    					customActions.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, KewApiConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
     					itemHasCancels = true;
     				}
-    				if (legalActions != null && legalActions.hasAcknowledge() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD)) {
-    					customActions.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasAcknowledge() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD)) {
+    					customActions.put(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
     					itemHasAcknowledges = true;
     				}
-    				if (legalActions != null && legalActions.hasFyi() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_FYI_CD) && KEWConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
-    					customActions.put(KEWConstants.ACTION_TAKEN_FYI_CD, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+    				if (legalActions != null && legalActions.hasFyi() && isActionCompatibleRequest(actionItem, KewApiConstants.ACTION_TAKEN_FYI_CD) && KewApiConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
+    					customActions.put(KewApiConstants.ACTION_TAKEN_FYI_CD, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
     					itemHasFyis = true;
     				}
     				if (customActions.size() > 1) {
@@ -608,24 +600,24 @@ public class ActionListAction extends KualiAction {
     	Map defaultActions = new LinkedHashMap();
     	defaultActions.put("NONE", "NONE");
     	if (haveApproves) {
-    		defaultActions.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+    		defaultActions.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	if (haveDisapproves) {
-    		defaultActions.put(KEWConstants.ACTION_TAKEN_DENIED_CD, KEWConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
+    		defaultActions.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, KewApiConstants.ACTION_REQUEST_DISAPPROVE_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	if (haveCancels) {
-    		defaultActions.put(KEWConstants.ACTION_TAKEN_CANCELED_CD, KEWConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
+    		defaultActions.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, KewApiConstants.ACTION_REQUEST_CANCEL_REQ_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	if (haveAcknowledges) {
-    		defaultActions.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+    		defaultActions.put(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
     		form.setCustomActionList(Boolean.TRUE);
     	}
     	//clearing FYI's can be done in any action list not just a customized one
-    	if (haveFyis && KEWConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
-    		defaultActions.put(KEWConstants.ACTION_TAKEN_FYI_CD, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+    	if (haveFyis && KewApiConstants.PREFERENCES_YES_VAL.equalsIgnoreCase(preferences.getShowClearFyi())) {
+    		defaultActions.put(KewApiConstants.ACTION_TAKEN_FYI_CD, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
     	}
     	if (defaultActions.size() > 1) {
     		form.setDefaultActions(defaultActions);
@@ -653,7 +645,7 @@ public class ActionListAction extends KualiAction {
 //    			GlobalVariables.getErrorMap().putError(ROUTEHEADERID_PROP, ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY,actionItem.getId()+"");
 //    		}
     		
-    		if(!KEWConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
+    		if(!KewApiConstants.ACTION_REQUEST_CODES.containsKey(actionItem.getActionRequestCd())) {
     			GlobalVariables.getMessageMap().putError(ACTIONREQUESTCD_PROP,ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY,actionItem.getId()+"");
     		}
      	}
@@ -713,8 +705,8 @@ public class ActionListAction extends KualiAction {
         	final Principal helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(name);
         	final Person helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(name);
         	
-        	GlobalVariables.getUserSession().addObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME, helpDeskActionListPrincipal);
-        	GlobalVariables.getUserSession().addObject(KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME, helpDeskActionListPerson);
+        	GlobalVariables.getUserSession().addObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME, helpDeskActionListPrincipal);
+        	GlobalVariables.getUserSession().addObject(KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME, helpDeskActionListPerson);
         }
         catch (RiceRuntimeException rre)
         {
@@ -735,7 +727,7 @@ public class ActionListAction extends KualiAction {
     public ActionForward clearFilter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("clearFilter ActionListAction");
         final org.kuali.rice.krad.UserSession commonUserSession = getUserSession();
-        commonUserSession.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+        commonUserSession.removeObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         KEWServiceLocator.getActionListService().saveRefreshUserOption(commonUserSession.getPrincipalId());
         LOG.debug("end clearFilter ActionListAction");
@@ -744,8 +736,8 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward clearHelpDeskActionListUser(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("clearHelpDeskActionListUser ActionListAction");
-    	GlobalVariables.getUserSession().removeObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
-    	GlobalVariables.getUserSession().removeObject(KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME);
+    	GlobalVariables.getUserSession().removeObject(KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
+    	GlobalVariables.getUserSession().removeObject(KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME);
         LOG.debug("end clearHelpDeskActionListUser ActionListAction");
         return start(mapping, form, request, response);
     }
@@ -792,22 +784,22 @@ public class ActionListAction extends KualiAction {
         String requestCd = actionItem.getActionRequestCd();
 
         //FYI request matches FYI
-        if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(requestCd) && KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
+        if (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(requestCd) && KewApiConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode)) {
             actionCompatible = true || actionCompatible;
         }
 
         // ACK request matches ACK
-        if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(requestCd) && KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
+        if (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(requestCd) && KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode)) {
             actionCompatible = true || actionCompatible;
         }
 
         // APPROVE request matches all but FYI and ACK
-        if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(requestCd) && !(KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
+        if (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(requestCd) && !(KewApiConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
             actionCompatible = true || actionCompatible;
         }
 
         // COMPLETE request matches all but FYI and ACK
-        if (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(requestCd) && !(KEWConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
+        if (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(requestCd) && !(KewApiConstants.ACTION_TAKEN_FYI_CD.equals(actionTakenCode) || KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD.equals(actionTakenCode))) {
             actionCompatible = true || actionCompatible;
         }
 

@@ -64,7 +64,7 @@
     tr.over { background-color:#CCFFFF; }
     tr.actionlist_anyRow:hover { background-color:#CCFFFF; }
     tr.actionlist_anyRow { visibility:visible; }
-    <logic-el:iterate name="KEWConstants" id="colorEntry" property="ACTION_LIST_COLOR_PALETTE">
+    <logic-el:iterate name="KewApiConstants" id="colorEntry" property="ACTION_LIST_COLOR_PALETTE">
     tr.actionlist_${colorEntry.key} { background-color:${colorEntry.value}; }
     </logic-el:iterate>
   -->
@@ -113,7 +113,7 @@
 				</html-el:select>
 			</div>
 		</c:if>
-		<c:if test="${UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME] != null && UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterOn}">
+		<c:if test="${UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME] != null && UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterOn}">
 		<div style="float:left; width:70px">
 	   <a
          href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
@@ -130,11 +130,11 @@
             <div style="float:left">
             <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" styleClass="tinybutton" />
             </div>
-			<c:if test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] != null}">
+			<c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] != null}">
 				<a href="
 					<c:url value="ActionList.do">
 						<c:param name="methodToCall" value="clearHelpDeskActionListUser" />
-					</c:url>">Clear <c:out value="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME].name}"/>'s List</a>
+					</c:url>">Clear <c:out value="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME].name}"/>'s List</a>
 			</c:if>&nbsp;&nbsp;
 		</c:if>
 
@@ -145,7 +145,7 @@
 	<div align="right">
 	<br/>
          <c:if
-            test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
+            test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
               <c:set var="defaultActions" value="${ActionListForm.defaultActions}" scope="request" />
               <html-el:select styleId='defaultAction' property="defaultActionToTake">
                     <html-el:options collection="defaultActions" labelProperty="value" property="key" filter="false" />
@@ -215,11 +215,11 @@
 					<td></td>
 					</tr>
 			<c:if
-				test="${UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend != null && UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend != ''}">
+				test="${UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend != null && UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend != ''}">
 					<tr>
 				 	<td></td>
 					<td><strong><c:out
-					value="${UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend}" /></strong></td>
+					value="${UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend}" /></strong></td>
 					<td></td>
 					</tr>
 			 </c:if>
@@ -241,7 +241,7 @@
 					<display:setProperty name="export.banner" value="" />
 					<display:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display:setProperty name="css.tr.odd" value="actionlist_anyRow" />
-                    <c:if test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null} && ActionListForm.hasDisplayParameters}">
+                    <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null} && ActionListForm.hasDisplayParameters}">
   					  <display:column title="&nbsp;">
 						<c:choose>
 						   <c:when test="${result.displayParameters != null}">
@@ -264,7 +264,7 @@
 					<display:column sortable="true" title="${documentIdLabel}"
 						sortProperty="documentId">
 						<c:choose>
-							<c:when test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null}">
+							<c:when test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null}">
                                 <a
 									href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
                                      <c:param name="${Constants.DOCUMENT_ID_PARAMETER}" value="${result.documentId}"/>
@@ -380,7 +380,7 @@
 					</c:if>
 
 					<c:if
-						test="${! ActionListForm.viewOutbox && UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
+						test="${! ActionListForm.viewOutbox && UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
 						<display:column title="${actionsLabel}" class="infocell">
 							<c:if test="${! empty result.customActions}">
 								<c:set var="customActions" value="${result.customActions}"
@@ -429,7 +429,7 @@
 				</td>
 			</tr>
 			<c:if
-				test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null} && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListForm.customActionList)}">
+				test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null} && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListForm.customActionList)}">
 				<tr>
 					<td></td>
 					<td height="0" class="tinybutton">

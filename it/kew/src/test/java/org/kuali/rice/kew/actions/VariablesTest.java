@@ -26,9 +26,9 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**

@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.options;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.ArrayList;
@@ -34,9 +34,9 @@ public class ActionTypeValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> labels = new ArrayList<KeyValue>();
         labels.add(new ConcreteKeyValue("", ""));
-        labels.add(new ConcreteKeyValue(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL));
-        labels.add(new ConcreteKeyValue(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL));
-        labels.add(new ConcreteKeyValue(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL));
+        labels.add(new ConcreteKeyValue(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL));
+        labels.add(new ConcreteKeyValue(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL));
+        labels.add(new ConcreteKeyValue(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL));
         return labels;
     }    
 

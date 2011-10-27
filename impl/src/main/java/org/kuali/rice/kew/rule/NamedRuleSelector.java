@@ -22,7 +22,7 @@ import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 
 import java.sql.Timestamp;
@@ -49,7 +49,7 @@ public class NamedRuleSelector implements RuleSelector {
         String ruleName = null;
         RouteNode routeNodeDef = nodeInstance.getRouteNode();
         // first check to see if there is a rule name configured on the node instance
-        NodeState ns = nodeInstance.getNodeState(KEWConstants.RULE_NAME_NODE_STATE_KEY);
+        NodeState ns = nodeInstance.getNodeState(KewApiConstants.RULE_NAME_NODE_STATE_KEY);
         if (ns != null) {
             ruleName = ns.getValue();
         } else {

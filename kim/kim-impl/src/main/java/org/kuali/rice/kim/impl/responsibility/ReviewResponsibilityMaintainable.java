@@ -17,7 +17,7 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -111,7 +111,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	
 	private static synchronized void populateReviewTemplateInfo() {
 		if ( REVIEW_TEMPLATE == null ) {
-		    REVIEW_TEMPLATE = KimApiServiceLocator.getResponsibilityService().findRespTemplateByNamespaceCodeAndName(KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
+		    REVIEW_TEMPLATE = KimApiServiceLocator.getResponsibilityService().findRespTemplateByNamespaceCodeAndName(KewApiConstants.KEW_NAMESPACE, KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
         }
 	}
 

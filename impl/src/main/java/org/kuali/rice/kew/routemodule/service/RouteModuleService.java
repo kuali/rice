@@ -18,7 +18,7 @@ package org.kuali.rice.kew.routemodule.service;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routemodule.RouteModule;
 
 

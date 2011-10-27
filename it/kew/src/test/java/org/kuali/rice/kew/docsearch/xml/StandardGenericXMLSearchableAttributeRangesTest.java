@@ -114,9 +114,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 	            assertTrue("Upper and Lower Fields should be members of a range",field.isMemberOfRange());
 	            assertFalse("Upper and Lower Fields should not be inclusive",field.isInclusive());
 	            String labelValue = null;
-	            if (field.getPropertyName().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+	            if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
 	            	labelValue = "starting";
-	            } else if (field.getPropertyName().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) {
+	            } else if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) {
 	            	labelValue = "ending";
 	            } else {
 	            	fail("Field should have prefix consistent with upper or lower bound of a range");
@@ -146,11 +146,11 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 	            assertTrue("Invalid number of fields for search row", row.getFields().size() > 0);
 	            Field field = (Field)(row.getField(0));
 	            assertTrue("Field should be the member of a range search", field.isMemberOfRange());
-	            if (field.getPropertyName().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+	            if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
 	            	// this is the lower bound row
 	            	assertFalse("Upper Field should not be using datepicker field", field.isDatePicker());
 	            	assertFalse("Upper Field should not be inclusive", field.isInclusive());
-	            } else if (field.getPropertyName().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) {
+	            } else if (field.getPropertyName().startsWith(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) {
 	            	// this is the upper bound row
 	            	assertTrue("Upper Field should be using datepicker field", field.isDatePicker());
 	            	assertTrue("Upper Field should not be inclusive", field.isInclusive());
@@ -180,34 +180,34 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         Map<Object, Object> paramMap = new HashMap<Object, Object>();
         String documentTypeName = "SearchDocType";
         DocumentSearchContext context = DocSearchUtils.getDocumentSearchContext("", documentTypeName, "");
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack");
 
         List<WorkflowAttributeValidationError> validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack.jack");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack.jack");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         WorkflowAttributeValidationError error = validationErrors.get(0);
         assertEquals("Validation error should match xml attribute message", "Invalid first name", error.getMessage());
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack*jack");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack*jack");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 0, validationErrors.size());
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdLongRange");
         paramMap = new HashMap<Object, Object>();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString() + ".33");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString() + ".33");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "jack*jack");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "jack*jack");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = validationErrors.get(0);
@@ -215,17 +215,17 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdFloatRange");
         paramMap = new HashMap<Object, Object>();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "*");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "*");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = validationErrors.get(0);
@@ -233,21 +233,21 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdDateTimeRange");
         paramMap = new HashMap<Object, Object>();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "001/5/08");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "001/5/08");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "41/5/08");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "41/5/08");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         paramMap.clear();
-        paramMap.put(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "01/02/20*");
+        paramMap.put(KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "01/02/20*");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = validationErrors.get(0);

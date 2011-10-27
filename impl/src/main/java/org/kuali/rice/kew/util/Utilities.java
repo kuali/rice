@@ -19,6 +19,7 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 
 import java.util.Calendar;
@@ -73,7 +74,7 @@ public final class Utilities {
         if (namespaceAndNameCombo == null) {
             return null;
         }
-        String[] groupData = namespaceAndNameCombo.split(KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER);
+        String[] groupData = namespaceAndNameCombo.split(KewApiConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER);
         if (groupData.length == 1) {
             return KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE;
         } else if (groupData.length == 2) {
@@ -87,7 +88,7 @@ public final class Utilities {
         if (namespaceAndNameCombo == null) {
             return null;
         }
-        String[] groupData = namespaceAndNameCombo.split(KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER);
+        String[] groupData = namespaceAndNameCombo.split(KewApiConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER);
         if (groupData.length == 1) {
             return groupData[0].trim();
         } else if (groupData.length == 2) {

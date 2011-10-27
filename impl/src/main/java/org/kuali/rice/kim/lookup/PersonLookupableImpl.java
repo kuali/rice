@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.lookup;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
@@ -46,7 +46,7 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
 				&& getUiDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), null)){
 	        Properties parameters = new Properties();
 	        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
-	        parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KRADConstants.PARAMETER_COMMAND, KewApiConstants.INITIATE_COMMAND);
 	        parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
 	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());

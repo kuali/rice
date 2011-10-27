@@ -17,11 +17,11 @@
 package org.kuali.rice.kew.actionitem;
 
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -83,7 +83,7 @@ public class ActionItemActionListExtension extends ActionItem {
         	if (delegatorGroup !=null)
         		delegatorName = delegatorGroup.getName();
         }
-        if (KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
         	setLastApprovedDate(KEWServiceLocator.getActionTakenService().getLastApprovedDate(getDocumentId()));
         }
         isInitialized = true;

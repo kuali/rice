@@ -27,7 +27,7 @@ import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -63,7 +63,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         }
         
         if (skipOnApprovals != null && skipOnApprovals.booleanValue()
-                && actionItem.getActionRequestCd().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ)) {
+                && actionItem.getActionRequestCd().equals(KewApiConstants.ACTION_REQUEST_APPROVE_REQ)) {
             LOG.debug("As requested, skipping immediate reminder notification on action item approval for " + actionItem.getPrincipalId());
             return;
         }
@@ -91,9 +91,9 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
             return;
         }
         EmailContent content;
-        if (KEWConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
+        if (KewApiConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
             content = getEmailContentGenerator().generateDailyReminder(person, actionItems);
-        } else if (KEWConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
+        } else if (KewApiConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
             content = getEmailContentGenerator().generateWeeklyReminder(person, actionItems);
         } else {
             // else...refactor this...

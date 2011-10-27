@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.api.reflect.DataDefinition;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
@@ -59,7 +59,7 @@ public interface ActionRegistry {
 	 * Constructs and returns the ActionTakenEvent implementation which can be used to invoke the
 	 * Action with the given parameters.
 
-	 * @throws ResourceUnavailableException if the action class cannot be constructed
+	 * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException if the action class cannot be constructed
 	 * @throws IllegalArgumentException if the given actionCode has not been registered
 	 */
 	public ActionTakenEvent createAction(String actionCode, List<DataDefinition> parameters) throws ResourceUnavailableException;

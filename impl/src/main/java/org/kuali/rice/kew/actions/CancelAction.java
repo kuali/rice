@@ -19,11 +19,11 @@ package org.kuali.rice.kew.actions;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -41,11 +41,11 @@ public class CancelAction extends ActionTakenEvent {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(CancelAction.class);
 
     public CancelAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, principal);
+        super(KewApiConstants.ACTION_TAKEN_CANCELED_CD, rh, principal);
     }
 
     public CancelAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_CANCELED_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_CANCELED_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -61,7 +61,7 @@ public class CancelAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be cancelled";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible with the Cancel Action";
         }
@@ -92,8 +92,8 @@ public class CancelAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // APPROVE and COMPLETE request matches CANCEL Taken code
-            if ( (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                 (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                 (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -108,7 +108,7 @@ public class CancelAction extends ActionTakenEvent {
 
         LOG.debug("Canceling document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {

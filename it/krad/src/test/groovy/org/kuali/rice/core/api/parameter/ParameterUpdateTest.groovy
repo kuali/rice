@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator
 import org.kuali.rice.core.api.parameter.Parameter
 import org.kuali.rice.krad.util.KRADConstants
-import org.kuali.rice.kew.util.KEWConstants
+import org.kuali.rice.kew.api.KewApiConstants
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertNotNull
 import org.kuali.rice.core.framework.parameter.ParameterService
@@ -24,11 +24,11 @@ class ParameterUpdateTest extends KRADTestCase {
 
         ParameterService parameterService = CoreFrameworkServiceLocator.getParameterService();
         Parameter parameter = parameterService.getParameter(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-                KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+                KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KewApiConstants.SHOW_BACK_DOOR_LOGIN_IND);
 
 
         String value = parameterService.getParameterValueAsString(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-                KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+                KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KewApiConstants.SHOW_BACK_DOOR_LOGIN_IND);
         assertNotNull("parameter should not be Null", parameter)
 
         //loop and get the same parameter to test caching
@@ -36,7 +36,7 @@ class ParameterUpdateTest extends KRADTestCase {
         stopWatch.start();
         0.step(10000, 1) {
             parameter = parameterService.getParameter(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-                KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+                KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KewApiConstants.SHOW_BACK_DOOR_LOGIN_IND);
         }
         stopWatch.stop()
         LOG.info("loop time: " + stopWatch.getTime() + "ms");

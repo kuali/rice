@@ -21,7 +21,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import javax.servlet.ServletContext;
@@ -55,7 +55,7 @@ public class KualiInitializeListener implements ServletContextListener {
         LOG.info("Initializing Kuali Rice Application...");
 
         List<String> configLocations = new ArrayList<String>();
-        String additionalConfigLocations = System.getProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
+        String additionalConfigLocations = System.getProperty(KewApiConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
         if (!StringUtils.isBlank(additionalConfigLocations)) {
             String[] additionalConfigLocationArray = additionalConfigLocations.split(",");
             for (String additionalConfigLocation : additionalConfigLocationArray) {

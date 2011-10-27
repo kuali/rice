@@ -45,7 +45,7 @@ import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -219,7 +219,7 @@ public class ActionRequestValue implements Serializable {
         // this is for backward compatibility of requests which have not been converted
         if (CompatUtils.isRouteLevelRequest(this)) {
             int routeLevelInt = getRouteLevel();
-            if (routeLevelInt == KEWConstants.EXCEPTION_ROUTE_LEVEL) {
+            if (routeLevelInt == KewApiConstants.EXCEPTION_ROUTE_LEVEL) {
                 return "Exception";
             }
 
@@ -534,7 +534,7 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isApproveOrCompleteRequest() {
-        return KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested()) || KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
+        return KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested()) || KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
     }
 
     public boolean isDone() {
@@ -618,19 +618,19 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isAcknowledgeRequest() {
-        return KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(getActionRequested());
+        return KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(getActionRequested());
     }
 
     public boolean isApproveRequest() {
-        return KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
+        return KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(getActionRequested());
     }
 
     public boolean isCompleteRequst() {
-        return KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
+        return KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(getActionRequested());
     }
 
     public boolean isFYIRequest() {
-        return KEWConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequested());
+        return KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(getActionRequested());
     }
 
     /**
@@ -888,22 +888,22 @@ public class ActionRequestValue implements Serializable {
     }
 
     public boolean isAdHocRequest() {                                          
-    	return KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KewApiConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isGeneratedRequest() {
-    	return KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isExceptionRequest() {
-    	return KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
+    	return KewApiConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
     public boolean isRouteModuleRequest() {
     	// FIXME: KULRICE-5201 switched rsp_id to a varchar, so the comparison below is no longer valid
 //    	return getResponsibilityId() > 0;
     	// TODO: KULRICE-5329 Verify that this code below makes sense 
-    	return getResponsibilityId() != null && !KEWConstants.SPECIAL_RESPONSIBILITY_ID_SET.contains(getResponsibilityId());
+    	return getResponsibilityId() != null && !KewApiConstants.SPECIAL_RESPONSIBILITY_ID_SET.contains(getResponsibilityId());
     }
 
     public String toString() {
@@ -1008,7 +1008,7 @@ public class ActionRequestValue implements Serializable {
 		}
 		builder.setPrincipalId(actionRequestBo.getPrincipalId());
 		if (actionRequestBo.getPriority() == null) {
-			builder.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
+			builder.setPriority(KewApiConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
 		} else {
             builder.setPriority(actionRequestBo.getPriority().intValue());
         }

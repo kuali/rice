@@ -82,7 +82,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
     	assertEquals("There should be exactly one responsibility on TestRule1", 1, testRule.getResponsibilities().size());
     	RuleResponsibility testResp = testRule.getResponsibility(0);
     	assertNotNull("The responsibility on TestRule1 should not be null", testResp);
-    	assertEquals("The responsibility on TestRule1 has the wrong type", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, testResp.getRuleResponsibilityType());
+    	assertEquals("The responsibility on TestRule1 has the wrong type", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID, testResp.getRuleResponsibilityType());
     	Group testGroup = KimApiServiceLocator.getGroupService().getGroup(testResp.getRuleResponsibilityName());
     	assertGroupIsCorrect("<responsibility><workgroup>", "TestWorkgroup", "KR-WKFLW", testGroup);
     	// Ensure that the "DocumentType02" document type has a properly-working "isMemberOfWorkgroup" element on its attribute.

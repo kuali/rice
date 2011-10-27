@@ -23,7 +23,7 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.impl.document.search.DocumentSearchGenerator;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.dao.DataAccessException;
@@ -126,22 +126,22 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
      * @return the maximum number of results that should be returned from a document search
      */
     protected int getMaxResultCap(DocumentSearchCriteria criteria) {
-        int maxResults = KEWConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;
+        int maxResults = KewApiConstants.DOCUMENT_LOOKUP_DEFAULT_RESULT_CAP;
         if (criteria.getMaxResults() != null) {
             maxResults = criteria.getMaxResults().intValue();
         }
-        String resultCapValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP);
+        String resultCapValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KewApiConstants.DOC_SEARCH_RESULT_CAP);
         if (StringUtils.isNotBlank(resultCapValue)) {
             try {
                 Integer maxResultCap = Integer.parseInt(resultCapValue);
                 if (maxResults > maxResultCap) {
-                    LOG.warn("Result set cap of " + maxResults + " is greater than parameter " + KEWConstants.DOC_SEARCH_RESULT_CAP + " value of " + maxResultCap);
+                    LOG.warn("Result set cap of " + maxResults + " is greater than parameter " + KewApiConstants.DOC_SEARCH_RESULT_CAP + " value of " + maxResultCap);
                     maxResults = maxResultCap;
                 } else if (maxResultCap <= 0) {
-                    LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP + " was less than or equal to zero.  Please use a positive integer.");
+                    LOG.warn(KewApiConstants.DOC_SEARCH_RESULT_CAP + " was less than or equal to zero.  Please use a positive integer.");
                 }
             } catch (NumberFormatException e) {
-                LOG.warn(KEWConstants.DOC_SEARCH_RESULT_CAP + " is not a valid number.  Value was " + resultCapValue);
+                LOG.warn(KewApiConstants.DOC_SEARCH_RESULT_CAP + " is not a valid number.  Value was " + resultCapValue);
             }
         }
         return maxResults;
@@ -149,16 +149,16 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
 
     protected int getFetchMoreIterationLimit() {
         int fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
-        String fetchMoreLimitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
+        String fetchMoreLimitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KewApiConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT);
         if (!StringUtils.isBlank(fetchMoreLimitValue)) {
             try {
                 fetchMoreLimit = Integer.parseInt(fetchMoreLimitValue);
                 if (fetchMoreLimit < 0) {
-                    LOG.warn(KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT + " was less than zero.  Please use a value greater than or equal to zero.");
+                    LOG.warn(KewApiConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT + " was less than zero.  Please use a value greater than or equal to zero.");
                     fetchMoreLimit = DEFAULT_FETCH_MORE_ITERATION_LIMIT;
                 }
             } catch (NumberFormatException e) {
-                LOG.warn(KEWConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT + " is not a valid number.  Value was " + fetchMoreLimitValue);
+                LOG.warn(KewApiConstants.DOC_SEARCH_FETCH_MORE_ITERATION_LIMIT + " is not a valid number.  Value was " + fetchMoreLimitValue);
             }
         }
         return fetchMoreLimit;

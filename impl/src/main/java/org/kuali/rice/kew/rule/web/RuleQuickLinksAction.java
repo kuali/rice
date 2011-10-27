@@ -33,7 +33,7 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -328,7 +328,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 				QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
                 Predicate p = and(
                     equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
-                    equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+                    equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
                     equal("active", "Y"),
                     equal("attributes[documentTypeName]", getDocumentType().getName()),
                     equal("attributes[routeNodeName]", getRouteNodeName())

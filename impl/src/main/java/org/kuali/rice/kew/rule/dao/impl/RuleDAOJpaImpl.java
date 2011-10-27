@@ -25,7 +25,7 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -298,7 +298,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
                 // searching user wishes to search for rules specific to user
                 ruleResponsibilityNameCrit = new Criteria(RuleBaseValues.class.getName(), false);
                 ruleResponsibilityNameCrit.like("__JPA_ALIAS[['rr']]__.ruleResponsibilityName", workflowId);
-                ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
             }
             if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
                 // at least one workgroup id exists and user wishes to search on workgroups
@@ -307,19 +307,19 @@ public class RuleDAOJpaImpl implements RuleDAO {
                 }
                 Criteria workgroupCrit = new Criteria(RuleBaseValues.class.getName(), false);
                 workgroupCrit.in("__JPA_ALIAS[['rr']]__.ruleResponsibilityName", new ArrayList<String>(workgroupIds));
-                workgroupCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+                workgroupCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
                 ruleResponsibilityNameCrit.or(workgroupCrit);
             }
         } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
             // no user and one workgroup id
             ruleResponsibilityNameCrit = new Criteria(RuleBaseValues.class.getName(), false);
             ruleResponsibilityNameCrit.like("__JPA_ALIAS[['rr']]__.ruleResponsibilityName", workgroupIds.iterator().next());
-            ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
             // no user and more than one workgroup id
             ruleResponsibilityNameCrit = new Criteria(RuleBaseValues.class.getName(), false);
             ruleResponsibilityNameCrit.in("__JPA_ALIAS[['rr']]__.ruleResponsibilityName",  new ArrayList<String>(workgroupIds));
-            ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         }
 
         if (ruleResponsibilityNameCrit != null) {
@@ -421,7 +421,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 //	    	}
 //		Criteria responsibilityCrit = new Criteria(RuleResponsibility.class.getName());
 //		responsibilityCrit.in("ruleResponsibilityName", new ArrayList(workgroupIds));
-//		responsibilityCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+//		responsibilityCrit.eq("ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
 ////		ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
 ////		query.setAttributes(new String[] { "ruleBaseValuesId" });
 //		return responsibilityCrit;

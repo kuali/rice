@@ -20,7 +20,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -147,7 +147,7 @@ public class KewRoutingKualiForm extends KualiForm {
      * @return Returns the superUserSearch.
      */
     public boolean isSuperUserSearch() {
-        return (command != null && command.equals(KEWConstants.SUPERUSER_COMMAND));
+        return (command != null && command.equals(KewApiConstants.SUPERUSER_COMMAND));
     }
 
     public String getDocTypeName() {
@@ -255,20 +255,20 @@ public class KewRoutingKualiForm extends KualiForm {
                 	}
                 	else if (workflowDocument.isProcessed() || workflowDocument.isApproved() || workflowDocument.isDisapproved()) {
                         appSpecificRouteActionRequestCds.clear();
-                        appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
-                        appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+                        appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+                        appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
                 	}
                 	else {
                         appSpecificRouteActionRequestCds.clear();
-                        appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+                        appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
                 	}
                 } else if(workflowDocument.isFYIRequested()){
                     appSpecificRouteActionRequestCds.clear();
-                    appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+                    appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
                 } else if (workflowDocument.isAcknowledgeRequested()){
                     appSpecificRouteActionRequestCds.clear();
-                    appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
-                    appSpecificRouteActionRequestCds.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+                    appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+                    appSpecificRouteActionRequestCds.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
                 } else if(workflowDocument.isApprovalRequested() || workflowDocument.isCompletionRequested() || workflowDocument.isInitiated()){
                     appSpecificRouteActionRequestCds = CodeTranslator.arLabels;
                 }

@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.note.NoteContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -206,7 +206,7 @@ public class Note implements Serializable, NoteContract {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         Date date = calendar.getTime();
-        DateFormat dateFormat = new SimpleDateFormat(KEWConstants.TIMESTAMP_DATE_FORMAT_PATTERN2);
+        DateFormat dateFormat = new SimpleDateFormat(KewApiConstants.TIMESTAMP_DATE_FORMAT_PATTERN2);
         return dateFormat.format(date);
     }
 

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 
 import java.io.IOException;
@@ -398,32 +398,32 @@ public class RuleXmlParserTest extends KEWTestCase {
     	
     	RuleBaseValues rule = ruleService.getRuleByName("RespTypeTest1");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a principal responsibility", KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
     	assertEquals("Rule should have a principal id of user1", "user1", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest2");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a principal responsibility", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a principal responsibility", KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
     	assertEquals("Rule should have a principal id of user1", "user1", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
     	
     	rule = ruleService.getRuleByName("RespTypeTest3");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a group responsibility", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
     	assertEquals("Rule should have a group id of 3001", "3001", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest4");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a group responsibility", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a group responsibility", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
     	assertEquals("Rule should have a group id of 1", "1", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest5");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a role responsibility", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a role responsibility", KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
     	assertEquals("Invalid role name", "org.kuali.rice.kew.rule.TestRuleAttribute!TEST", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
 
     	rule = ruleService.getRuleByName("RespTypeTest6");
     	assertNotNull(rule);
-    	assertEquals("Rule should have a role responsibility", KEWConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
+    	assertEquals("Rule should have a role responsibility", KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID, rule.getRuleResponsibilities().get(0).getRuleResponsibilityType());
     	assertEquals("Invalid role name", "org.kuali.rice.kew.rule.TestRuleAttribute!TEST", rule.getRuleResponsibilities().get(0).getRuleResponsibilityName());
     }
 }

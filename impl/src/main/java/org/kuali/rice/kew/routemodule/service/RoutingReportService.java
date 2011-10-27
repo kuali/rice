@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.routemodule.service;
 
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 

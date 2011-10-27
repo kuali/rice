@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.engine.node;
 
 import org.kuali.rice.core.api.mo.common.Coded;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * Activation Type enum type which defines the two types of activation within the engine.
@@ -28,11 +28,11 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 public final class ActivationTypeEnum implements Coded {
     /** Routing should process the associated ActionRequests in sequence */
-    public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_SEQUENCE, KEWConstants.ROUTE_LEVEL_SEQUENTIAL_NAME, KEWConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
+    public static final ActivationTypeEnum SEQUENTIAL = new ActivationTypeEnum(KewApiConstants.ROUTE_LEVEL_SEQUENCE, KewApiConstants.ROUTE_LEVEL_SEQUENTIAL_NAME, KewApiConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
     /** Routing should process the associated ActionRequests in parallel */
-    public static final ActivationTypeEnum PARALLEL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_PARALLEL, KEWConstants.ROUTE_LEVEL_PARALLEL_NAME, KEWConstants.ROUTE_LEVEL_PARALLEL_LABEL);
+    public static final ActivationTypeEnum PARALLEL = new ActivationTypeEnum(KewApiConstants.ROUTE_LEVEL_PARALLEL, KewApiConstants.ROUTE_LEVEL_PARALLEL_NAME, KewApiConstants.ROUTE_LEVEL_PARALLEL_LABEL);
     /** Routing should process the associated ActionRequests in parallel according to priority */
-    public static final ActivationTypeEnum PRIORITY_PARALLEL = new ActivationTypeEnum(KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL, KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_NAME, KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_LABEL);
+    public static final ActivationTypeEnum PRIORITY_PARALLEL = new ActivationTypeEnum(KewApiConstants.ROUTE_LEVEL_PRIORITY_PARALLEL, KewApiConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_NAME, KewApiConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_LABEL);
 
     private final String code;
     private final String name;

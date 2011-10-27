@@ -43,7 +43,7 @@ import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springframework.util.LinkedMultiValueMap;
@@ -201,7 +201,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
             return false;
         }
         return KimApiServiceLocator.getPermissionService().isAuthorized(session.getPrincipalId(),
-                KEWConstants.KEW_NAMESPACE, KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH,
+                KewApiConstants.KEW_NAMESPACE, KewApiConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH,
                 new HashMap<String, String>(), new HashMap<String, String>());
     }
 
@@ -320,7 +320,7 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     protected boolean isGroupAuthenticated(String namespace, String groupName, SecuritySession session) {
-        String key = namespace.trim() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + groupName.trim();
+        String key = namespace.trim() + KewApiConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + groupName.trim();
         Boolean existingAuth = session.getAuthenticatedWorkgroups().get(key);
         if (existingAuth != null) {
             return existingAuth;

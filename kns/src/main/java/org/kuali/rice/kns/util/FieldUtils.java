@@ -40,7 +40,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
@@ -982,7 +982,7 @@ public final class FieldUtils {
             if (auths.hasRestriction(fieldName)) {
                 fieldAuth = auths.getFieldRestriction(fieldName);
                 if(KRADConstants.MAINTENANCE_NEW_ACTION.equals(maintenanceAction) || KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)){
-                	if((KEWConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus) || KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus))
+                	if((KewApiConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus) || KewApiConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus))
                 		&& user.getPrincipalId().equals(documentInitiatorPrincipalId)){
 
                 		//user should be able to see the unmark value

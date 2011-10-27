@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.lookup;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
@@ -42,7 +42,7 @@ public class RoleLookupableImpl extends KualiLookupableImpl {
             Properties parameters = new Properties();
             parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimTypeBo.class.getName());
             //parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, KRADConstants.PORTAL_ACTION);
-            parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+            parameters.put(KRADConstants.PARAMETER_COMMAND, KewApiConstants.INITIATE_COMMAND);
             parameters.put(KRADConstants.DOC_FORM_KEY, KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY);
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
 	        	parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());

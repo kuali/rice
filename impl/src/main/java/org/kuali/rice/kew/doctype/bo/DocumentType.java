@@ -33,6 +33,7 @@ import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
@@ -41,7 +42,6 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
@@ -52,7 +52,7 @@ import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -204,7 +204,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     private List<ProcessDefinitionBo> processes = new ArrayList();
     @Column(name = "RTE_VER_NBR")
-    private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;
+    private String routingVersion = KewApiConstants.CURRENT_ROUTING_VERSION;
 
     /* Workflow 2.2 Fields */
     @Column(name = "NOTIFY_ADDR")
@@ -311,7 +311,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type.
      */
     public DocumentTypePolicy getDocumentStatusPolicy() {
-        return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
+        return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
     }
 
     /**
@@ -338,10 +338,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      */
     public Boolean isKEWStatusInUse() {
         if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
-            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
             return (policyValue == null || "".equals(policyValue)
-                    || KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equalsIgnoreCase(policyValue)
-                    || KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+                    || KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equalsIgnoreCase(policyValue)
+                    || KewApiConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
         } else {
             return Boolean.TRUE;
         }
@@ -355,9 +355,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      */
     public Boolean isAppDocStatusInUse() {
         if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
-            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
-            return (KEWConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equalsIgnoreCase(policyValue)
-                    || KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+            return (KewApiConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equalsIgnoreCase(policyValue)
+                    || KewApiConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
         } else {
             return Boolean.FALSE;
         }
@@ -372,8 +372,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      */
     public Boolean areBothStatusesInUse() {
         if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
-            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
-            return (KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KewApiConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+            return (KewApiConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
         } else {
             return Boolean.FALSE;
         }
@@ -451,11 +451,11 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public List<DocumentTypeAttribute> getSearchableAttributes() {
-        return getDocumentTypeAttributes(KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE, KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE);
+        return getDocumentTypeAttributes(KewApiConstants.SEARCHABLE_ATTRIBUTE_TYPE, KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE);
     }
 
     public DocumentTypeAttribute getCustomizerAttribute() {
-        List<DocumentTypeAttribute> documentTypeAttributes = getDocumentTypeAttributes(KEWConstants.DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE);
+        List<DocumentTypeAttribute> documentTypeAttributes = getDocumentTypeAttributes(KewApiConstants.DOCUMENT_SEARCH_CUSTOMIZER_ATTRIBUTE_TYPE);
         if (documentTypeAttributes.size() > 1) {
             throw new IllegalStateException("Encountered more than one DocumentSearchCustomizer attribute on this document type: " + getName());
         }
@@ -527,7 +527,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public String getDocTypeActiveIndicatorDisplayValue() {
         if (getActive() == null) {
-            return KEWConstants.INACTIVE_LABEL_LOWER;
+            return KewApiConstants.INACTIVE_LABEL_LOWER;
         }
         return CodeTranslator.getActiveIndicatorLabel(getActive());
     }
@@ -695,7 +695,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             if (StringUtils.isNotBlank(parentValue)) {
                 // found a parent value set on the immediate parent object so return it
                 if (forDisplayPurposes) {
-                    parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                    parentValue += " " + KewApiConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
                 }
                 return parentValue;
             }
@@ -830,7 +830,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public PostProcessor getPostProcessor() {
         String pname = getPostProcessorName();
 
-        if (StringUtils.equals(pname, KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE)) {
+        if (StringUtils.equals(pname, KewApiConstants.POST_PROCESSOR_NON_DEFINED_VALUE)) {
             return new DefaultPostProcessor();
         }
         if (StringUtils.isBlank(pname)) {
@@ -878,7 +878,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             if (StringUtils.isNotBlank(parentValue)) {
                 // found a post processor class set on the immediate parent object so return it
                 if (forDisplayPurposes) {
-                    parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                    parentValue += " " + KewApiConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
                 }
                 return parentValue;
             }
@@ -1089,10 +1089,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public boolean isBlanketApprover(String principalId) {
-        if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE.equalsIgnoreCase(getBlanketApprovePolicy())) {
+        if (KewApiConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE.equalsIgnoreCase(getBlanketApprovePolicy())) {
             // no one can blanket approve this doc type
             return false;
-        } else if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY.equalsIgnoreCase(getBlanketApprovePolicy())) {
+        } else if (KewApiConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY.equalsIgnoreCase(getBlanketApprovePolicy())) {
             // anyone can blanket approve this doc type
             return true;
         }
@@ -1156,7 +1156,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
 
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {
 
-        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.ACTION_LIST_ATTRIBUTE_TYPE);
+        ObjectDefinition objDef = getAttributeObjectDefinition(KewApiConstants.ACTION_LIST_ATTRIBUTE_TYPE);
         if (objDef == null) {
             return null;
         }
@@ -1170,7 +1170,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public CustomEmailAttribute getCustomEmailAttribute() throws ResourceUnavailableException {
-        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.EMAIL_ATTRIBUTE_TYPE);
+        ObjectDefinition objDef = getAttributeObjectDefinition(KewApiConstants.EMAIL_ATTRIBUTE_TYPE);
         if (objDef == null) {
             return null;
         }
@@ -1199,7 +1199,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     public CustomNoteAttribute getCustomNoteAttribute() throws ResourceUnavailableException {
-        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.NOTE_ATTRIBUTE_TYPE);
+        ObjectDefinition objDef = getAttributeObjectDefinition(KewApiConstants.NOTE_ATTRIBUTE_TYPE);
         if (objDef == null) {
             String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
             if (defaultNoteClass == null) {
@@ -1405,7 +1405,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             if (StringUtils.isNotBlank(parentNotificationFromAddress)) {
                 // found an address set on the immediate parent object so return it
                 if (forDisplayPurposes) {
-                    parentNotificationFromAddress += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                    parentNotificationFromAddress += " " + KewApiConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
                 }
                 return parentNotificationFromAddress;
             }
@@ -1511,7 +1511,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             if (StringUtils.isNotBlank(parentValue)) {
                 // found a parent value set on the immediate parent object so return it
                 if (forDisplayPurposes) {
-                    parentValue += " " + KEWConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
+                    parentValue += " " + KewApiConstants.DOCUMENT_TYPE_INHERITED_VALUE_INDICATOR;
                 }
                 return parentValue;
             }
@@ -1520,7 +1520,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         }
         String defaultValue = CoreConfigHelper.getApplicationId();
         if (forDisplayPurposes) {
-            defaultValue += " " + KEWConstants.DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR;
+            defaultValue += " " + KewApiConstants.DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR;
         }
         return defaultValue;
     }

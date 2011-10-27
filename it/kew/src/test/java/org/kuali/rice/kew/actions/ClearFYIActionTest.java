@@ -21,7 +21,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 
 import static org.junit.Assert.assertTrue;
@@ -34,7 +34,7 @@ import static org.junit.Assert.fail;
 public class ClearFYIActionTest extends KEWTestCase {
 
     private String getSavedStatusDisplayValue() {
-        return (String) KEWConstants.DOCUMENT_STATUSES.get(KEWConstants.ROUTE_HEADER_SAVED_CD);
+        return (String) KewApiConstants.DOCUMENT_STATUSES.get(KewApiConstants.ROUTE_HEADER_SAVED_CD);
     }
 
     @Test public void testSavedDocumentAdhocRequest() throws Exception {

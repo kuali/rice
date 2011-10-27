@@ -19,8 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowException;
-
 
 /**
  * {@link Rule} implementation 

@@ -27,7 +27,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 public class ValidActionsTest extends KEWTestCase {
@@ -48,8 +48,8 @@ public class ValidActionsTest extends KEWTestCase {
 
         networkId = "rkirkend";
         document = this.checkActions(networkId, documentId, 
-                new String[]{KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD}, 
-                new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD},
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
         // check for super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -58,7 +58,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "pmckown";
         document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
-                new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -66,8 +66,8 @@ public class ValidActionsTest extends KEWTestCase {
 
         networkId = "user1";
         document = this.checkActions(networkId, documentId, 
-                new String[]{KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD}, 
-                new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD},
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD});
         // check for no blanket approve "B"
         // check for no super user actions "c", "a"
         // check for routable "O"
@@ -76,8 +76,8 @@ public class ValidActionsTest extends KEWTestCase {
 
         networkId = "rkirkend";
         document = this.checkActions(networkId, documentId, 
-                new String[]{KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD}, 
-                new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD},
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
         // check for super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -86,7 +86,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "pmckown";
         document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
-                new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no super user action "c", "a"
         // check for blanket approve "B"
         // check for no route "O"
@@ -94,8 +94,8 @@ public class ValidActionsTest extends KEWTestCase {
 
         networkId = "user1";
         document = this.checkActions(networkId, documentId, 
-                new String[]{KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD}, 
-                new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD},
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD});
         // check for no blanket approve "B"
         // check for no super user actions "c", "a"
         // check for routable "O"
@@ -106,7 +106,7 @@ public class ValidActionsTest extends KEWTestCase {
         networkId = "user1";
         document = this.checkActions(networkId, documentId, 
                 new String[]{}, 
-                new String[]{KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD,KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_CANCELED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD,KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_CANCELED_CD});
         // check for no blanket approve "B"
         // check for no super user actions "c", "a"
         // check for no routable "O"
@@ -114,8 +114,8 @@ public class ValidActionsTest extends KEWTestCase {
 
         networkId = "rkirkend";
         document = this.checkActions(networkId, documentId, 
-                new String[]{KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KEWConstants.ACTION_TAKEN_SU_CANCELED_CD,KEWConstants.ACTION_TAKEN_SU_APPROVED_CD,KEWConstants.ACTION_TAKEN_APPROVED_CD}, 
-                new String[]{KEWConstants.ACTION_TAKEN_SAVED_CD,KEWConstants.ACTION_TAKEN_ROUTED_CD});
+                new String[]{KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD,KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD,KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD,KewApiConstants.ACTION_TAKEN_APPROVED_CD},
+                new String[]{KewApiConstants.ACTION_TAKEN_SAVED_CD,KewApiConstants.ACTION_TAKEN_ROUTED_CD});
         // check for super user action "c", "a"
         // check for blanket approve "B"
         // check for approve "A"
@@ -145,14 +145,14 @@ public class ValidActionsTest extends KEWTestCase {
         for (int i = 0; i < validActionsAllowed.length; i++) {
             String actionAllowed = validActionsAllowed[i];
             if (!validActionsSet.contains(ActionType.fromCode(actionAllowed))) {
-                fail("Action '" + KEWConstants.ACTION_TAKEN_CD.get(actionAllowed) + "' should be allowed for user " + networkId);
+                fail("Action '" + KewApiConstants.ACTION_TAKEN_CD.get(actionAllowed) + "' should be allowed for user " + networkId);
             }
         }
 
         for (int j = 0; j < invalidActionsNotAllowed.length; j++) {
             String actionDisallowed = invalidActionsNotAllowed[j];
             if (validActionsSet.contains(actionDisallowed)) {
-                fail("Action '" + KEWConstants.ACTION_TAKEN_CD.get(actionDisallowed) + "' should not be allowed for user " + networkId);
+                fail("Action '" + KewApiConstants.ACTION_TAKEN_CD.get(actionDisallowed) + "' should not be allowed for user " + networkId);
             }
         }
 

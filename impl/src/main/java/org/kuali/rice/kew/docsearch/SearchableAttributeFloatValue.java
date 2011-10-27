@@ -26,7 +26,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -71,7 +71,7 @@ public class SearchableAttributeFloatValue implements SearchableAttributeValue, 
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
     private static final String DEFAULT_VALIDATION_REGEX_EXPRESSION = "[-+]?[0-9]*\\.?[0-9]+";
-    private static final String ATTRIBUTE_XML_REPRESENTATION = KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT;
+    private static final String ATTRIBUTE_XML_REPRESENTATION = KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT;
     private static final String DEFAULT_FORMAT_PATTERN = "";
 
     @Id

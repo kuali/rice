@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.rule.RuleResponsibilityContract;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -129,17 +129,17 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
 
     @Override
     public boolean isUsingRole() {
-    	return (ruleResponsibilityName != null && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID));
+    	return (ruleResponsibilityName != null && ruleResponsibilityType != null && ruleResponsibilityType.equals(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID));
     }
 
     @Override
     public boolean isUsingPrincipal() {
-    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
+    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID));
     }
 
     @Override
     public boolean isUsingGroup() {
-    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID));
+    	return (ruleResponsibilityName != null && !ruleResponsibilityName.trim().equals("") && ruleResponsibilityType != null && ruleResponsibilityType.equals(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID));
     }
 
     public String getRuleBaseValuesId() {
@@ -279,11 +279,11 @@ public class RuleResponsibilityBo extends PersistableBusinessObjectBase implemen
     // convenience methods for the web-tier
     
     public String getActionRequestedDisplayValue() {
-    	return KEWConstants.ACTION_REQUEST_CODES.get(getActionRequestedCd());
+    	return KewApiConstants.ACTION_REQUEST_CODES.get(getActionRequestedCd());
     }
     
     public String getRuleResponsibilityTypeDisplayValue() {
-    	return KEWConstants.RULE_RESPONSIBILITY_TYPES.get(getRuleResponsibilityType());
+    	return KewApiConstants.RULE_RESPONSIBILITY_TYPES.get(getRuleResponsibilityType());
     }
     
     public boolean equals(Object o) {

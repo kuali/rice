@@ -34,10 +34,10 @@ import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 
 import java.io.IOException;
@@ -441,9 +441,9 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         if (!StringUtils.isBlank(node.getRouteMethodName())) {
             String routeMethodCode = node.getRouteMethodCode();
             String elementName = null;
-            if (KEWConstants.ROUTE_LEVEL_FLEX_RM.equals(routeMethodCode)) {
+            if (KewApiConstants.ROUTE_LEVEL_FLEX_RM.equals(routeMethodCode)) {
                 elementName = RULE_TEMPLATE;
-            } else if (KEWConstants.ROUTE_LEVEL_ROUTE_MODULE.equals(routeMethodCode)) {
+            } else if (KewApiConstants.ROUTE_LEVEL_ROUTE_MODULE.equals(routeMethodCode)) {
                 elementName = ROUTE_MODULE;
             } else {
                 throw new WorkflowRuntimeException("Invalid route method code '"+routeMethodCode+"' for node " + node.getRouteNodeName());

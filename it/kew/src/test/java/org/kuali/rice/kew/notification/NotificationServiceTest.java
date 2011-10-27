@@ -29,7 +29,7 @@ import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 public class NotificationServiceTest extends KEWTestCase {
@@ -45,15 +45,15 @@ public class NotificationServiceTest extends KEWTestCase {
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "NotificationTest");
 		document.route("");
 
-		assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-		assertEquals("ewestfal should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-		assertEquals("jhopf should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("rkirkend should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("ewestfal should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jhopf should only have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 		// bmcgough is doing primary delegation so he should not recieve an email notification
-		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 		// jitrue should have no email because he is a secondary delegate and his default preferences should be set up to not send an email
-		assertEquals("jitrue should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jitrue should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 		// user1 took action so they should _not_ be sent any emails
-		assertEquals("user1 should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("user1 should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
 	}
 
@@ -82,26 +82,26 @@ public class NotificationServiceTest extends KEWTestCase {
 
 		// now turn on secondary notification for ewestfal and jitrue, turn off email notification for ewestfal
 		Preferences prefs = getPreferencesService().getPreferences(ewestfalPrincipalId);
-		prefs.setNotifySecondaryDelegation(KEWConstants.PREFERENCES_YES_VAL);
-		prefs.setEmailNotification(KEWConstants.EMAIL_RMNDR_NO_VAL);
+		prefs.setNotifySecondaryDelegation(KewApiConstants.PREFERENCES_YES_VAL);
+		prefs.setEmailNotification(KewApiConstants.EMAIL_RMNDR_NO_VAL);
 		getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
 		prefs = getPreferencesService().getPreferences(jitruePrincipalId);
-		prefs.setNotifySecondaryDelegation(KEWConstants.PREFERENCES_YES_VAL);
+		prefs.setNotifySecondaryDelegation(KewApiConstants.PREFERENCES_YES_VAL);
 		getPreferencesService().savePreferences(jitruePrincipalId, prefs);
 
 		// also turn off primary delegation notification for rkirkend
 		prefs = getPreferencesService().getPreferences(rkirkendPrincipalId);
-		prefs.setNotifyPrimaryDelegation(KEWConstants.PREFERENCES_NO_VAL);
+		prefs.setNotifyPrimaryDelegation(KewApiConstants.PREFERENCES_NO_VAL);
 		getPreferencesService().savePreferences(rkirkendPrincipalId, prefs);
 
 		// also turn notification to daily for bmcgough
 		prefs = getPreferencesService().getPreferences(bmcgoughPrincipalId);
-		prefs.setEmailNotification(KEWConstants.EMAIL_RMNDR_DAY_VAL);
+		prefs.setEmailNotification(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
 		getPreferencesService().savePreferences(bmcgoughPrincipalId, prefs);
 
 		// also turn off notification for jhopf
 		prefs = getPreferencesService().getPreferences(jhopfPrincipalId);
-		prefs.setEmailNotification(KEWConstants.EMAIL_RMNDR_NO_VAL);
+		prefs.setEmailNotification(KewApiConstants.EMAIL_RMNDR_NO_VAL);
 		getPreferencesService().savePreferences(jhopfPrincipalId, prefs);
 
 		// route the document
@@ -109,17 +109,17 @@ public class NotificationServiceTest extends KEWTestCase {
 		document.route("");
 
 		// both ewestfal and jitrue should have one email
-		assertEquals("ewestfal should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-		assertEquals("jitrue should have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("ewestfal should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jitrue should have one email.", 1, getMockEmailService().immediateReminderEmailsSent("jitrue", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// rkirkend (the primary delegate) should now have no emails
-		assertEquals("rkirkend should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("rkirkend should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// jhopf should now have no emails since his top-level requests are no longer notified
-		assertEquals("jhopf should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("jhopf should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// bmcgough should now have no emails since his notification preference is DAILY
-		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 	}
 
 	/**
@@ -151,16 +151,16 @@ public class NotificationServiceTest extends KEWTestCase {
 		document.route("");
 
 		// verify that ewestfal was sent an email
-		assertEquals("ewestfal should have an email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+		assertEquals("ewestfal should have an email.", 1, getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
 		// we currently have no way from this test to determine the email address used for notification
 	}
 
 	private void assertDefaultNotificationPreferences(String principalId) throws Exception {
 		Preferences prefs = getPreferencesService().getPreferences(principalId);
-		assertEquals(KEWConstants.EMAIL_RMNDR_IMMEDIATE, prefs.getEmailNotification());
-		assertEquals(KEWConstants.PREFERENCES_YES_VAL, prefs.getNotifyPrimaryDelegation());
-		assertEquals(KEWConstants.PREFERENCES_NO_VAL, prefs.getNotifySecondaryDelegation());
+		assertEquals(KewApiConstants.EMAIL_RMNDR_IMMEDIATE, prefs.getEmailNotification());
+		assertEquals(KewApiConstants.PREFERENCES_YES_VAL, prefs.getNotifyPrimaryDelegation());
+		assertEquals(KewApiConstants.PREFERENCES_NO_VAL, prefs.getNotifySecondaryDelegation());
 	}
 
 	private PreferencesService getPreferencesService() {

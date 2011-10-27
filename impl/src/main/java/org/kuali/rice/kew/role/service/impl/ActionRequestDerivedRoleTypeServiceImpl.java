@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -109,7 +109,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
                         qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER), null, principalId);
                 if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
-						if ( ar.getActionRequested().getCode().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )
+						if ( ar.getActionRequested().getCode().equals( KewApiConstants.ACTION_REQUEST_APPROVE_REQ )
 								&& ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || (NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) && !ar.isAdHocRequest());
 						}
@@ -118,7 +118,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 				}
 				if (ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
-						if ( ar.getActionRequested().getCode().equals( KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ )
+						if ( ar.getActionRequested().getCode().equals( KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ )
 							&& ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
 						}
@@ -127,7 +127,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 				}
 				if (FYI_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequest ar : actionRequests ) {
-						if ( ar.getActionRequested().getCode().equals( KEWConstants.ACTION_REQUEST_FYI_REQ )
+						if ( ar.getActionRequested().getCode().equals( KewApiConstants.ACTION_REQUEST_FYI_REQ )
 							&& ar.getStatus().getCode().equals( ActionRequestStatus.ACTIVATED.getCode() ) ) {
 							return true;
 						}

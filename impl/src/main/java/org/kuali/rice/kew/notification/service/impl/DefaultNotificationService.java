@@ -36,7 +36,7 @@ import org.kuali.rice.kew.notification.service.NotificationService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -82,11 +82,11 @@ public class DefaultNotificationService implements NotificationService {
 
 			Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
 			boolean sendEmail = false;
-			if (KEWConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
+			if (KewApiConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
 				if (DelegationType.PRIMARY.getCode().equals(actionItem.getDelegationType())) {
-					sendEmail = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
+					sendEmail = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
 				} else if (DelegationType.SECONDARY.getCode().equals(actionItem.getDelegationType())) {
-					sendEmail = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
+					sendEmail = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
 				} else {
 					sendEmail = true;
 				}
@@ -106,7 +106,7 @@ public class DefaultNotificationService implements NotificationService {
 	 * returns true if the document type policy
 	 */
 	protected boolean isItemOriginatingFromSave(ActionItem actionItem) {
-		return actionItem.getResponsibilityId() != null && actionItem.getResponsibilityId().equals(KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID);
+		return actionItem.getResponsibilityId() != null && actionItem.getResponsibilityId().equals(KewApiConstants.SAVED_REQUEST_RESPONSIBILITY_ID);
 	}
 
 	protected boolean shouldNotifyOnSave(ActionItem actionItem) {

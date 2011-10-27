@@ -30,7 +30,7 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -95,12 +95,12 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 	}
 
 	public WebRuleResponsibility() {
-		setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+		setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 		setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
 	}
 
 	public void initialize() throws Exception {
-		if (getDelegationRules().size() <= Integer.parseInt(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT))) {
+		if (getDelegationRules().size() <= Integer.parseInt(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KewApiConstants.RULE_DELEGATE_LIMIT))) {
 			showDelegations = true;
 		}
 		setNumberOfDelegations(getDelegationRules().size());
@@ -116,13 +116,13 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 
 	private void loadWebValues() throws Exception {
 		if (!org.apache.commons.lang.StringUtils.isEmpty(getRuleResponsibilityName())) {
-			if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
+			if (KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getUserService().getWorkflowUser(new
 				// WorkflowUserId(getRuleResponsibilityName())).getPrincipalName().getAuthenticationId());
 				Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(getRuleResponsibilityName());
 				setReviewer(principal.getPrincipalName());
 				setReviewerId(principal.getPrincipalId());
-			} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
+			} else if (KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
@@ -130,7 +130,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 	                  getGroup(getRuleResponsibilityName());
 				setReviewer(group.getName());
 				setReviewerId(group.getId());
-			} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
+			} else if (KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
 				setRoleReviewer(getRuleResponsibilityName());
 				setReviewer(getResolvedRoleName());
 			}
@@ -148,7 +148,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
         Object o = Proxy.newProxyInstance(delegationRulesClassLoader, delegationRulesInterfaces, delegationRulesProxy);
         //setDelegationRules((List) o);
 
-		if (Integer.parseInt(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
+		if (Integer.parseInt(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KewApiConstants.RULE_DELEGATE_LIMIT)) > getDelegationRules().size() || showDelegations) {
 			for (Iterator iterator = getDelegationRules().iterator(); iterator.hasNext();) {
 				RuleDelegationBo ruleDelegation = (RuleDelegationBo) iterator.next();
 				WebRuleBaseValues webRule = new WebRuleBaseValues();
@@ -268,19 +268,19 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 	}
 
 	public void establishRequiredState() throws Exception {
-		if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
+		if (KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 			reviewerStyle = DISPLAY_INLINE;
 			personLookupStyle = DISPLAY_INLINE;
 			workgroupLookupStyle = DISPLAY_NONE;
 			roleAreaStyle = DISPLAY_NONE;
 		}
-		if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
+		if (KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
 			reviewerStyle = DISPLAY_INLINE;
 			personLookupStyle = DISPLAY_NONE;
 			workgroupLookupStyle = DISPLAY_INLINE;
 			roleAreaStyle = DISPLAY_NONE;
 		}
-		if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
+		if (KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
 			reviewerStyle = DISPLAY_NONE;
 			personLookupStyle = DISPLAY_NONE;
 			workgroupLookupStyle = DISPLAY_NONE;
@@ -296,7 +296,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 	}
 
 	public void validateResponsibility(String keyPrefix, ActionErrors errors) {
-		if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
+		if (KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 			boolean invalidUser = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
 			if (!invalidUser)
 			{
@@ -314,7 +314,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 			if (invalidUser) {
 				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.user.invalid"));
 			}
-		} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
+		} else if (KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
 			boolean invalidWorkgroup = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
@@ -328,7 +328,7 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.workgroup.invalid"));
 			}
 
-		} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
+		} else if (KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(getRuleResponsibilityType())) {
 			setRuleResponsibilityName(getRoleReviewer());
 		}
 

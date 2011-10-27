@@ -33,7 +33,7 @@ import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -300,11 +300,11 @@ public class ActionTakenValue implements Serializable {
     }
 
     public boolean isApproval() {
-    	return KEWConstants.ACTION_TAKEN_APPROVED_CD.equals(getActionTaken());
+    	return KewApiConstants.ACTION_TAKEN_APPROVED_CD.equals(getActionTaken());
     }
 
     public boolean isCompletion() {
-    	return KEWConstants.ACTION_TAKEN_COMPLETED_CD.equals(getActionTaken());
+    	return KewApiConstants.ACTION_TAKEN_COMPLETED_CD.equals(getActionTaken());
     }
     
     public static ActionTaken to(ActionTakenValue actionTakenBo) {

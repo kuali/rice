@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.engine;
 
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class OrchestrationConfig {
     
     private final EngineCapability capability;
     private final boolean sendNotifications;
-    private final String notificationType = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
+    private final String notificationType = KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
     private final Set<String> destinationNodeNames;
     private final ActionTakenValue cause;
     private final boolean runPostProcessorLogic;

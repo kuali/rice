@@ -22,9 +22,9 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentStatus;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
@@ -94,12 +94,12 @@ public class WorkflowInfoTest extends KEWTestCase {
         assertNotNull(documentId);
 
         String status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentId);
-        assertEquals("Document should be INITIATED.", KEWConstants.ROUTE_HEADER_INITIATED_CD, status);
+        assertEquals("Document should be INITIATED.", KewApiConstants.ROUTE_HEADER_INITIATED_CD, status);
 
         // cancel the doc, it's status should be updated
         document.cancel("");
         status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentId);
-        assertEquals("Document should be CANCELED.", KEWConstants.ROUTE_HEADER_CANCEL_CD, status);
+        assertEquals("Document should be CANCELED.", KewApiConstants.ROUTE_HEADER_CANCEL_CD, status);
     }
 
     /**

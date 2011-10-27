@@ -27,7 +27,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -68,9 +68,9 @@ public class FYIByUniversityId extends RequestActivationNode {
                				throw new WorkflowRuntimeException("Failed to locate a Person with the given employee ID: " + employeeId);
                			}
                			if (!context.isSimulation()) {
-               				KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(person.getPrincipalId(), context.getDocument(), KEWConstants.ACTION_REQUEST_FYI_REQ, null, null, "Notification Request", person.getPrincipalId(), "Notification Request", true, null);
+               				KEWServiceLocator.getWorkflowDocumentService().adHocRouteDocumentToPrincipal(person.getPrincipalId(), context.getDocument(), KewApiConstants.ACTION_REQUEST_FYI_REQ, null, null, "Notification Request", person.getPrincipalId(), "Notification Request", true, null);
                			}
-               			//wfDoc.adHocRouteDocumentToPrincipal(KEWConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new EmplIdVO(field.getChildText("value")), "Notification Request", true);
+               			//wfDoc.adHocRouteDocumentToPrincipal(KewApiConstants.ACTION_REQUEST_FYI_REQ, "Notification Request", new EmplIdVO(field.getChildText("value")), "Notification Request", true);
                 		LOG.debug("Sent FYI using the adHocRouteDocumentToPrincipal function to UniversityID:  " + person.getEmployeeId());
                 		break;
                	}

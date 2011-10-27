@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 
 import org.kuali.rice.kew.useroptions.dao.ReloadActionListDAO;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -37,7 +37,7 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     private static final Properties defaultProperties = new Properties();
 
     static {
-        defaultProperties.setProperty(KEWConstants.EMAIL_RMNDR_KEY, KEWConstants.EMAIL_RMNDR_WEEK_VAL);
+        defaultProperties.setProperty(KewApiConstants.EMAIL_RMNDR_KEY, KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
     }
 
     private Long getNewOptionIdForActionList() {

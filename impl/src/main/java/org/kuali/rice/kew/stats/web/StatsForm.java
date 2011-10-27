@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.stats.Stats;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -143,10 +143,10 @@ public class StatsForm extends KualiForm {
     public Map makePerUnitOfTimeDropDownMap() {
 
         Map dropDownMap = new HashMap();
-        dropDownMap.put(DAY_TIME_UNIT, KEWConstants.DAILY_UNIT);
-        dropDownMap.put(WEEK_TIME_UNIT, KEWConstants.WEEKLY_UNIT);
-        dropDownMap.put(MONTH_TIME_UNIT, KEWConstants.MONTHLY_UNIT);
-        dropDownMap.put(YEAR_TIME_UNIT, KEWConstants.YEARLY_UNIT);
+        dropDownMap.put(DAY_TIME_UNIT, KewApiConstants.DAILY_UNIT);
+        dropDownMap.put(WEEK_TIME_UNIT, KewApiConstants.WEEKLY_UNIT);
+        dropDownMap.put(MONTH_TIME_UNIT, KewApiConstants.MONTHLY_UNIT);
+        dropDownMap.put(YEAR_TIME_UNIT, KewApiConstants.YEARLY_UNIT);
         return dropDownMap;
 
     }
@@ -181,35 +181,35 @@ public class StatsForm extends KualiForm {
     }
 
     public String getCanceledLabel() {
-        return KEWConstants.ROUTE_HEADER_CANCEL_LABEL;
+        return KewApiConstants.ROUTE_HEADER_CANCEL_LABEL;
     }
 
     public String getDisapprovedLabel() {
-        return KEWConstants.ROUTE_HEADER_DISAPPROVED_LABEL;
+        return KewApiConstants.ROUTE_HEADER_DISAPPROVED_LABEL;
     }
 
     public String getEnrouteLabel() {
-        return KEWConstants.ROUTE_HEADER_ENROUTE_LABEL;
+        return KewApiConstants.ROUTE_HEADER_ENROUTE_LABEL;
     }
 
     public String getExceptionLabel() {
-        return KEWConstants.ROUTE_HEADER_EXCEPTION_LABEL;
+        return KewApiConstants.ROUTE_HEADER_EXCEPTION_LABEL;
     }
 
     public String getFinalLabel() {
-        return KEWConstants.ROUTE_HEADER_FINAL_LABEL;
+        return KewApiConstants.ROUTE_HEADER_FINAL_LABEL;
     }
 
     public String getInitiatedLabel() {
-        return KEWConstants.ROUTE_HEADER_INITIATED_LABEL;
+        return KewApiConstants.ROUTE_HEADER_INITIATED_LABEL;
     }
 
     public String getProcessedLabel() {
-        return KEWConstants.ROUTE_HEADER_PROCESSED_LABEL;
+        return KewApiConstants.ROUTE_HEADER_PROCESSED_LABEL;
     }
 
     public String getSavedLabel() {
-        return KEWConstants.ROUTE_HEADER_SAVED_LABEL;
+        return KewApiConstants.ROUTE_HEADER_SAVED_LABEL;
     }
 
     public String getAvgActionsPerTimeUnit() {

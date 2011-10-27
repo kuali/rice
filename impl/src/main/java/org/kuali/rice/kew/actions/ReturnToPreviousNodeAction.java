@@ -22,6 +22,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
@@ -29,13 +30,12 @@ import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -63,17 +63,17 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private boolean sendNotifications = true;
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
+        super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal);
     }
 
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications) {
-        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
     
     public ReturnToPreviousNodeAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String nodeName, boolean sendNotifications, boolean runPostProcessorLogic) {
-        super(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessorLogic);
+        super(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, routeHeader, principal, annotation, runPostProcessorLogic);
         this.nodeName = nodeName;
         this.sendNotifications = sendNotifications;
     }
@@ -104,7 +104,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
         	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader());
-        	List<ActionRequestValue> notificationRequests = arFactory.generateNotifications(pendingRequests, getPrincipal(), delegator, KEWConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
+        	List<ActionRequestValue> notificationRequests = arFactory.generateNotifications(pendingRequests, getPrincipal(), delegator, KewApiConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
         	getActionRequestService().activateRequests(notificationRequests);
         }
     }
@@ -131,7 +131,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         if (newNodeInstance.getRouteNode().getRouteNodeId().equals(initialNode.getRouteNodeId())) {
             LOG.debug("Document was returned to initiator");
             ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), newNodeInstance);
-            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeader().getInitiatorPrincipal(), getActionTakenCode(), getPrincipal(), "Document initiator");
+            ActionRequestValue notificationRequest = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, getRouteHeader().getInitiatorPrincipal(), getActionTakenCode(), getPrincipal(), "Document initiator");
             getActionRequestService().activateRequest(notificationRequest);
         }
     }
@@ -147,9 +147,9 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             String docStatus = getRouteHeader().getDocRouteStatus();
-            return "Document of status '" + docStatus + "' cannot taken action '" + KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
+            return "Document of status '" + docStatus + "' cannot taken action '" + KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (! isActionCompatibleRequest(filteredActionRequests) && ! isSuperUserUsage()) {
             return "No request for the user is compatible with the RETURN TO PREVIOUS NODE action";
         }
@@ -164,7 +164,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         String actionTakenCode = getActionPerformedCode();
 
         // Move is always correct because the client application has authorized it
-        if (KEWConstants.ACTION_TAKEN_MOVE_CD.equals(actionTakenCode)) {
+        if (KewApiConstants.ACTION_TAKEN_MOVE_CD.equals(actionTakenCode)) {
             return true;
         }
 
@@ -188,17 +188,17 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 
             String request = actionRequest.getActionRequested();
 
-            if ( (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
-                 (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
-                 (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                 (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
+                 (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
+                 (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                 (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
 
             // RETURN_TO_PREVIOUS_ROUTE_LEVEL action available only if you've been routed a complete or approve request
-            if (KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD.equals(actionTakenCode) &&
-                    (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request) || KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request))) {
+            if (KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD.equals(actionTakenCode) &&
+                    (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request) || KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(request))) {
                 actionCompatible = true;
             }
         }
@@ -211,7 +211,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Returning document " + getRouteHeader().getDocumentId() + " to previous node: " + nodeName + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);

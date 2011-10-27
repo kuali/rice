@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.parameter.ParameterKey;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -53,9 +54,9 @@ public class ConfigStringLookup extends StrLookup {
         // check system parameters first
         if (StringUtils.isBlank(applicationId)) {
             paramValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                    KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
+                    KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
         } else {
-            ParameterKey parameterKey = ParameterKey.create(applicationId, KEWConstants.KEW_NAMESPACE,
+            ParameterKey parameterKey = ParameterKey.create(applicationId, KewApiConstants.KEW_NAMESPACE,
                     KRADConstants.DetailTypes.ALL_DETAIL_TYPE, propertyName);
             paramValue = CoreApiServiceLocator.getParameterRepositoryService().getParameterValueAsString(parameterKey);
         }

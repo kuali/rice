@@ -30,7 +30,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.persistence.EntityManager;
@@ -178,7 +178,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         boolean filterOn = false;
         String filteredByItems = "";
         
-        if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(KEWConstants.ALL_CODE)) {
+        if (filter.getActionRequestCd() != null && !"".equals(filter.getActionRequestCd().trim()) && !filter.getActionRequestCd().equals(KewApiConstants.ALL_CODE)) {
             if (filter.isExcludeActionRequestCd()) {
                 crit.ne("actionRequestCd", filter.getActionRequestCd());
             } else {
@@ -210,7 +210,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
             filteredByItems += "Date Created";
         }
 
-        if (filter.getDocRouteStatus() != null && !"".equals(filter.getDocRouteStatus().trim()) && !filter.getDocRouteStatus().equals(KEWConstants.ALL_CODE)) {
+        if (filter.getDocRouteStatus() != null && !"".equals(filter.getDocRouteStatus().trim()) && !filter.getDocRouteStatus().equals(KewApiConstants.ALL_CODE)) {
             if (filter.isExcludeRouteStatus()) {
                 crit.ne("routeHeader.docRouteStatus", filter.getDocRouteStatus());
             } else {
@@ -277,7 +277,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         }
 
         filter.setGroupId(null);
-        if (filter.getGroupIdString() != null && !"".equals(filter.getGroupIdString().trim()) && !filter.getGroupIdString().trim().equals(KEWConstants.NO_FILTERING)) {
+        if (filter.getGroupIdString() != null && !"".equals(filter.getGroupIdString().trim()) && !filter.getGroupIdString().trim().equals(KewApiConstants.NO_FILTERING)) {
             filter.setGroupId(filter.getGroupId());
             if (filter.isExcludeGroupId()) {
                 Criteria critNotEqual = new Criteria(objectsToRetrieve.getName());
@@ -304,7 +304,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         } else if ((StringUtils.isNotBlank(filter.getDelegationType()) && DelegationType.PRIMARY.getCode().equals(filter.getDelegationType()))
                 || StringUtils.isNotBlank(filter.getPrimaryDelegateId())) {
             // using a primary delegation
-            if ((StringUtils.isBlank(filter.getPrimaryDelegateId())) || (filter.getPrimaryDelegateId().trim().equals(KEWConstants.ALL_CODE))) {
+            if ((StringUtils.isBlank(filter.getPrimaryDelegateId())) || (filter.getPrimaryDelegateId().trim().equals(KewApiConstants.ALL_CODE))) {
                 // user wishes to see all primary delegations
                 Criteria userCrit = new Criteria(objectsToRetrieve.getName());
                 Criteria groupCrit = new Criteria(objectsToRetrieve.getName());
@@ -327,7 +327,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 addToFilterDescription(filteredByItems, "Primary Delegator Id");
                 addedDelegationCriteria = true;
                 filterOn = true;
-            } else if (!filter.getPrimaryDelegateId().trim().equals(KEWConstants.PRIMARY_DELEGATION_DEFAULT)) {
+            } else if (!filter.getPrimaryDelegateId().trim().equals(KewApiConstants.PRIMARY_DELEGATION_DEFAULT)) {
                 // user wishes to see primary delegation for a single user
                 crit.eq("principalId", filter.getPrimaryDelegateId());
                 Criteria userCrit = new Criteria(objectsToRetrieve.getName());
@@ -365,7 +365,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                     addedDelegationCriteria = true;
                     filterOn = true;
                 }
-            } else if (filter.getDelegatorId().trim().equals(KEWConstants.ALL_CODE)) {
+            } else if (filter.getDelegatorId().trim().equals(KewApiConstants.ALL_CODE)) {
                 // user wishes to see all secondary delegations
                 crit.eq("delegationType", DelegationType.SECONDARY.getCode());
                 filter.setDelegationType(DelegationType.SECONDARY.getCode());
@@ -374,7 +374,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 addedDelegationCriteria = true;
                 filterOn = true;
             } else if (!filter.getDelegatorId().trim().equals(
-                    KEWConstants.DELEGATION_DEFAULT)) {
+                    KewApiConstants.DELEGATION_DEFAULT)) {
                 // user has specified an id to see for secondary delegation
                 filter.setDelegationType(DelegationType.SECONDARY.getCode());
                 filter.setExcludeDelegationType(false);

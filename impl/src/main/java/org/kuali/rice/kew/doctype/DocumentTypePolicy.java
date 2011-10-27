@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.doctype;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -91,15 +91,15 @@ public class DocumentTypePolicy extends PersistableBusinessObjectBase {
     }
     
     public boolean isAllowUnrequestedAction() {
-        return KEWConstants.ALLOW_UNREQUESTED_ACTION_POLICY.equals(this.getPolicyName());
+        return KewApiConstants.ALLOW_UNREQUESTED_ACTION_POLICY.equals(this.getPolicyName());
     }
 
     public boolean isDefaultApprove() {
-        return KEWConstants.DEFAULT_APPROVE_POLICY.equals(this.getPolicyName());
+        return KewApiConstants.DEFAULT_APPROVE_POLICY.equals(this.getPolicyName());
     }
 
     public boolean isDisApprove() {
-        return KEWConstants.DISAPPROVE_POLICY.equals(this.getPolicyName());
+        return KewApiConstants.DISAPPROVE_POLICY.equals(this.getPolicyName());
     }
 
     public String getDocumentTypeId() {

@@ -37,7 +37,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -119,7 +119,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
 
         if (routeHeader.getDocRouteStatus() == null || routeHeader.getDocRouteStatus().trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("RouteHeader route status null.", "routeheader.routestatus.empty"));
-        } else if (!KEWConstants.DOCUMENT_STATUSES.containsKey(routeHeader.getDocRouteStatus())){
+        } else if (!KewApiConstants.DOCUMENT_STATUSES.containsKey(routeHeader.getDocRouteStatus())){
             errors.add(new WorkflowServiceErrorImpl("RouteHeader route status invalid.", "routeheader.routestatus.invalid"));
         }
 

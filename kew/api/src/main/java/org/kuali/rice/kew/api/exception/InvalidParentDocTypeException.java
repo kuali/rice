@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.exception;
+package org.kuali.rice.kew.api.exception;
 
 import org.kuali.rice.core.api.util.xml.XmlException;
 

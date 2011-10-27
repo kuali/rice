@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.bo;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -60,7 +60,7 @@ public class AdHocRouteRecipient extends PersistableBusinessObjectBase {
 
     public AdHocRouteRecipient() {
         // set some defaults that can be overridden
-        this.actionRequested = KEWConstants.ACTION_REQUEST_APPROVE_REQ;
+        this.actionRequested = KewApiConstants.ACTION_REQUEST_APPROVE_REQ;
         this.versionNumber = new Long(1);
     }
 

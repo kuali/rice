@@ -76,14 +76,14 @@
     <property name="serviceName" value="parameterService" />
   </bean>
 
-  <bean id="KEWConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
-    <property name="constantClass" value="org.kuali.rice.kew.util.KEWConstants"/>
+  <bean id="KewApiConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
+    <property name="constantClass" value="org.kuali.rice.kew.api.KewApiConstants"/>
   </bean>
 
   <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
     <property name="attributes">
       <map>
-        <entry key="KEWConstants" value-ref="KEWConstants"/>
+        <entry key="KewApiConstants" value-ref="KewApiConstants"/>
       </map>
     </property>
   </bean>

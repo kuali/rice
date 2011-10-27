@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.quicklinks;
 
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * Represents a document that is being watched from the Quick Links.
@@ -42,7 +42,7 @@ public class WatchedDocument {
      * @param documentTitle
      */
     public WatchedDocument(Long documentHeaderId, String documentStatusShortCode, String documentTitle) {
-        this(documentHeaderId.toString(), KEWConstants.DOCUMENT_STATUSES.get(documentStatusShortCode), documentTitle);
+        this(documentHeaderId.toString(), KewApiConstants.DOCUMENT_STATUSES.get(documentStatusShortCode), documentTitle);
     }
 
     public String getDocumentHeaderId() {

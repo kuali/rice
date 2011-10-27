@@ -33,7 +33,7 @@ import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -191,7 +191,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
             WorkflowRuleAttribute workflowAttribute = ruleExtension.getRuleTemplateAttribute().getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleExtension.getRuleTemplateAttribute().getRuleAttribute();
-            /*if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+            /*if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
             }*/
             for (Row row : workflowAttribute.getRuleRows()) {
@@ -493,7 +493,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
             WorkflowRuleAttribute routingAttribute = (WorkflowRuleAttribute) ruleTemplateAttribute.getWorkflowAttribute();
 
             RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-            if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+            if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                 ((GenericXMLRuleAttribute) routingAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
             }
             String className = ruleAttribute.getResourceDescriptor();
@@ -513,7 +513,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
     public RuleResponsibilityBo findResponsibility(String roleName) {
         for (Iterator iter = getRuleResponsibilities().iterator(); iter.hasNext();) {
             RuleResponsibilityBo resp = (RuleResponsibilityBo) iter.next();
-            if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(resp.getRuleResponsibilityType())
+            if (KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(resp.getRuleResponsibilityType())
                     && roleName.equals(resp.getRuleResponsibilityName())) {
                 return resp;
             }

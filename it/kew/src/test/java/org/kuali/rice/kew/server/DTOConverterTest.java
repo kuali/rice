@@ -25,7 +25,7 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -37,10 +37,10 @@ import static org.junit.Assert.*;
 
 public class DTOConverterTest extends KEWTestCase {
 
-    private static final String DOCUMENT_CONTENT = KEWConstants.DOCUMENT_CONTENT_ELEMENT;
-    private static final String ATTRIBUTE_CONTENT = KEWConstants.ATTRIBUTE_CONTENT_ELEMENT;
-    private static final String SEARCHABLE_CONTENT = KEWConstants.SEARCHABLE_CONTENT_ELEMENT;
-    private static final String APPLICATION_CONTENT = KEWConstants.APPLICATION_CONTENT_ELEMENT;
+    private static final String DOCUMENT_CONTENT = KewApiConstants.DOCUMENT_CONTENT_ELEMENT;
+    private static final String ATTRIBUTE_CONTENT = KewApiConstants.ATTRIBUTE_CONTENT_ELEMENT;
+    private static final String SEARCHABLE_CONTENT = KewApiConstants.SEARCHABLE_CONTENT_ELEMENT;
+    private static final String APPLICATION_CONTENT = KewApiConstants.APPLICATION_CONTENT_ELEMENT;
 
     /**
      * Tests the conversion of a String into a DocumentContentVO object which should split the
@@ -115,9 +115,9 @@ public class DTOConverterTest extends KEWTestCase {
         // test no content, this should return empty document content
         DocumentContentUpdate contentUpdate = DocumentContentUpdate.Builder.create().build();
         //routeHeaderVO.setDocumentContent(contentVO);
-        String content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdate,
+        String content = DTOConverter.buildUpdatedDocumentContent(KewApiConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdate,
                 null);
-        assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(KEWConstants.DEFAULT_DOCUMENT_CONTENT), StringUtils.deleteWhitespace(content));
+        assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(KewApiConstants.DEFAULT_DOCUMENT_CONTENT), StringUtils.deleteWhitespace(content));
 
         // test simple case, no attributes
         String attributeContent = "<attribute1><id value=\"3\"/></attribute1>";
@@ -125,7 +125,7 @@ public class DTOConverterTest extends KEWTestCase {
         DocumentContentUpdate.Builder contentUpdateBuilder = DocumentContentUpdate.Builder.create();
         contentUpdateBuilder.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
         contentUpdateBuilder.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
-        content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdateBuilder.build(), null);
+        content = DTOConverter.buildUpdatedDocumentContent(KewApiConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdateBuilder.build(), null);
         String fullContent = startContent+"\n"+constructContent(ATTRIBUTE_CONTENT, attributeContent)+"\n"+constructContent(SEARCHABLE_CONTENT, searchableContent)+"\n"+endContent;
         assertEquals("Invalid content conversion.", StringUtils.deleteWhitespace(fullContent), StringUtils.deleteWhitespace(content));
 
@@ -133,7 +133,7 @@ public class DTOConverterTest extends KEWTestCase {
         String testAttributeContent = new TestRuleAttribute().getDocContent();
         WorkflowAttributeDefinition attributeDefinition = WorkflowAttributeDefinition.Builder.create("TestRuleAttribute").build();
         contentUpdateBuilder.getAttributeDefinitions().add(attributeDefinition);
-        content = DTOConverter.buildUpdatedDocumentContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdateBuilder.build(), null);
+        content = DTOConverter.buildUpdatedDocumentContent(KewApiConstants.DEFAULT_DOCUMENT_CONTENT, contentUpdateBuilder.build(), null);
         fullContent = startContent+
             constructContent(ATTRIBUTE_CONTENT, attributeContent+testAttributeContent)+
             constructContent(SEARCHABLE_CONTENT, searchableContent)+
@@ -185,7 +185,7 @@ public class DTOConverterTest extends KEWTestCase {
                 testWorkgroup.getId()).size() > 0);
         String workflowId = KimApiServiceLocator.getGroupService().getDirectMemberPrincipalIds(testWorkgroup.getId()).get(0);
         assertNotNull("User from workgroup should not be null", workflowId);
-        String actionRequestCd = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
+        String actionRequestCd = KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
         String actionRequestId = "4";
         String docName = "dummy";
         String roleName = "fakeRole";

@@ -53,10 +53,10 @@
                 <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${actionRequest.principalId}" render="true"><c:out value="${actionRequest.displayName}" /></kul:inquiry>
                 &nbsp;
                 <c:choose>
-                  <c:when test="${actionRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
+                  <c:when test="${actionRequest.delegationType == KewApiConstants.DELEGATION_SECONDARY}">
                     <bean-el:message key="routeLog.ActionRequests.actionRequest.label.secondaryDelegate"/>
                   </c:when>
-                  <c:when test="${actionRequest.delegationType == KEWConstants.DELEGATION_PRIMARY}">
+                  <c:when test="${actionRequest.delegationType == KewApiConstants.DELEGATION_PRIMARY}">
                     <bean-el:message key="routeLog.ActionRequests.actionRequest.label.primaryDelegate"/>
                   </c:when>
                 </c:choose>
@@ -64,10 +64,10 @@
             <c:when test="${actionRequest.groupRequest}">
                 <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${actionRequest.groupId}" render="true"><c:out value="${actionRequest.groupName}" /></kul:inquiry>
                 <c:choose>
-                  <c:when test="${actionRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
+                  <c:when test="${actionRequest.delegationType == KewApiConstants.DELEGATION_SECONDARY}">
                     <bean-el:message key="routeLog.ActionRequests.actionRequest.label.secondaryDelegate"/>
                   </c:when>
-                  <c:when test="${actionRequest.delegationType == KEWConstants.DELEGATION_PRIMARY}">
+                  <c:when test="${actionRequest.delegationType == KewApiConstants.DELEGATION_PRIMARY}">
                     <bean-el:message key="routeLog.ActionRequests.actionRequest.label.primaryDelegate"/>
                   </c:when>
                 </c:choose>
@@ -102,10 +102,10 @@
                           <kul:inquiry boClassName="org.kuali.rice.kim.impl.group.GroupBo" keyValues="id=${roleRequest.groupId}" render="true"><c:out value="${roleRequest.groupName}" /></kul:inquiry>
                           &nbsp;
                             <c:choose>
-                              <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
+                              <c:when test="${roleRequest.delegationType == KewApiConstants.DELEGATION_SECONDARY}">
                                 <bean-el:message key="routeLog.ActionRequests.actionRequest.label.secondaryDelegate"/>
                               </c:when>
-                              <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_PRIMARY}">
+                              <c:when test="${roleRequest.delegationType == KewApiConstants.DELEGATION_PRIMARY}">
                                 <bean-el:message key="routeLog.ActionRequests.actionRequest.label.primaryDelegate"/>
                               </c:when>
                             </c:choose>
@@ -118,10 +118,10 @@
                             <kul:inquiry boClassName="org.kuali.rice.kim.api.identity.Person" keyValues="principalId=${roleRequest.principalId}" render="true"><c:out value="${roleRequest.displayName}" /></kul:inquiry>
                             &nbsp;
                             <c:choose>
-                              <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
+                              <c:when test="${roleRequest.delegationType == KewApiConstants.DELEGATION_SECONDARY}">
                                 <bean-el:message key="routeLog.ActionRequests.actionRequest.label.secondaryDelegate"/>
                               </c:when>
-                              <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_PRIMARY}">
+                              <c:when test="${roleRequest.delegationType == KewApiConstants.DELEGATION_PRIMARY}">
                                 <bean-el:message key="routeLog.ActionRequests.actionRequest.label.primaryDelegate"/>
                               </c:when>
                             </c:choose>

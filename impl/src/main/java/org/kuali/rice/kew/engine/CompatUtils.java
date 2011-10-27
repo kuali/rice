@@ -23,7 +23,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public final class CompatUtils {
         if (isRouteLevelCompatible(documentType)) {
             return getLevelForNode(documentType.getPrimaryProcess().getInitialRouteNode(), nodeName, new Integer(0));
         }
-        return new Integer(KEWConstants.INVALID_ROUTE_LEVEL);
+        return new Integer(KewApiConstants.INVALID_ROUTE_LEVEL);
     }
     
     private static Integer getLevelForNode(RouteNode node, String nodeName, Integer currentLevel) {
@@ -102,7 +102,7 @@ public final class CompatUtils {
     }
 
     public static boolean isRouteLevelCompatible(DocumentType documentType) {
-        return KEWConstants.ROUTING_VERSION_ROUTE_LEVEL.equals(documentType.getRoutingVersion());
+        return KewApiConstants.ROUTING_VERSION_ROUTE_LEVEL.equals(documentType.getRoutingVersion());
     }
     
     public static boolean isRouteLevelCompatible(DocumentRouteHeaderValue document) {

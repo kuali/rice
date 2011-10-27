@@ -29,7 +29,7 @@ import org.kuali.rice.kcb.service.MessagingService;
 import org.kuali.rice.kcb.util.KCBConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionItem;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -42,7 +42,7 @@ public class KCBNotificationService extends DefaultNotificationService {
     protected void sendNotification(ActionItem actionItem) {
         super.sendNotification(actionItem);
 
-        String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ENABLE_KEN_NOTIFICATION);
+        String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KewApiConstants.ENABLE_KEN_NOTIFICATION);
         boolean enableKENNotification = Boolean.parseBoolean(enableKENNotificationValue);
         // we only send per-user messages to KCB
         if (!enableKENNotification || actionItem.getPrincipalId() != null)
@@ -78,7 +78,7 @@ public class KCBNotificationService extends DefaultNotificationService {
 
     @Override
     public void removeNotification(List<ActionItem> actionItems) {
-    	String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ENABLE_KEN_NOTIFICATION);
+    	String enableKENNotificationValue = ConfigContext.getCurrentContextConfig().getProperty(KewApiConstants.ENABLE_KEN_NOTIFICATION);
         boolean enableKENNotification = Boolean.parseBoolean(enableKENNotificationValue);
         if (!enableKENNotification) {
         	return;

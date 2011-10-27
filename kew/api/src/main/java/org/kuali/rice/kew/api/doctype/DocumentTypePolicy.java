@@ -41,8 +41,8 @@ public enum DocumentTypePolicy implements Coded {
     /**
      * This policy determines whether to use the internal KEW Super User document handler URL when opening a document from
      * super user search. If set to false the client must implement a custom super user screen to be used when the doc
-     * handler URL has a post variable of the name defined by {@link KEWConstants#COMMAND_PARAMETER} and a value of
-     * {@link KEWConstants#SUPERUSER_COMMAND}. The default is 'true'.
+     * handler URL has a post variable of the name defined by {@link KewApiConstants#COMMAND_PARAMETER} and a value of
+     * {@link KewApiConstants#SUPERUSER_COMMAND}. The default is 'true'.
      */
     @XmlEnumValue(Codes.USE_KEW_SUPERUSER_DOCHANDLER) USE_KEW_SUPERUSER_DOCHANDLER(Codes.USE_KEW_SUPERUSER_DOCHANDLER),
 

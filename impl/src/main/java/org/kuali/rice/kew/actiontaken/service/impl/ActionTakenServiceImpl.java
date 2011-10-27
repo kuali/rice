@@ -25,7 +25,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -159,7 +159,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         String actionTakenCd = actionTaken.getActionTaken();
         if(actionTakenCd == null || actionTakenCd.trim().equals("")){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken cd null.", "actiontaken.actiontaken.empty", actionTaken.getActionTakenId().toString()));
-        } else if(!KEWConstants.ACTION_TAKEN_CD.containsKey(actionTakenCd)){
+        } else if(!KewApiConstants.ACTION_TAKEN_CD.containsKey(actionTakenCd)){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken invalid.", "actiontaken.actiontaken.invalid", actionTaken.getActionTakenId().toString()));
         }
         if(actionTaken.getActionDate() == null){
@@ -186,7 +186,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     public Timestamp getLastApprovedDate(String documentId)
     {
     	Timestamp dateLastApproved = null;
-    	Collection<ActionTakenValue> actionsTaken= getActionTakenDAO().findByDocIdAndAction(documentId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
+    	Collection<ActionTakenValue> actionsTaken= getActionTakenDAO().findByDocIdAndAction(documentId, KewApiConstants.ACTION_TAKEN_APPROVED_CD);
         for (ActionTakenValue actionTaken : actionsTaken)
         {
             // search for the most recent approval action

@@ -29,6 +29,7 @@ import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
@@ -37,11 +38,10 @@ import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -56,7 +56,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     private Set<String> nodeNames;
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal);
+        super(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal);
 
         setQueueDocumentAfterAction(false);
 
@@ -72,7 +72,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation, Set<String> nodeNames) {
-        super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation);
         this.nodeNames = (nodeNames == null ? new HashSet<String>() : nodeNames);
         setQueueDocumentAfterAction(false);
     }
@@ -108,7 +108,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be approved";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible with the BlanketApprove Action";
         }
@@ -137,7 +137,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
         MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
 
-        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);

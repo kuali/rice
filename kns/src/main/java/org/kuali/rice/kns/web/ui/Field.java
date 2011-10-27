@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.ui;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.krad.datadictionary.mask.Mask;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -108,7 +108,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     private boolean isColumnVisible = true;
 
     //FIXME: this one definitely seems iffy, could be confused with regular fieldType, is there another better name or can this go away?
-    private String fieldDataType = KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
+    private String fieldDataType = KewApiConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
 
     //used by multibox/select etc
     private String[] propertyValues;

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
@@ -180,7 +180,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
         	isValid &= false;
         } else {
             for (RuleResponsibilityBo responsibility : ruleBaseValues.getRuleResponsibilities()) {
-                if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+                if (responsibility.getRuleResponsibilityName() != null && KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                     if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     	this.putFieldError("Groups", "routetemplate.ruleservice.workgroup.invalid");
                     	isValid &= false;

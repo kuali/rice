@@ -29,9 +29,9 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.RouteManagerException;
 import org.kuali.rice.kew.exception.WorkflowDocumentExceptionRoutingService;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
@@ -40,7 +40,7 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.ksb.messaging.PersistedMessageBO;
@@ -109,8 +109,8 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             if (errorMessage == null) {
             	errorMessage = "";
             }
-            if (errorMessage.length() > KEWConstants.MAX_ANNOTATION_LENGTH) {
-                errorMessage = errorMessage.substring(0, KEWConstants.MAX_ANNOTATION_LENGTH);
+            if (errorMessage.length() > KewApiConstants.MAX_ANNOTATION_LENGTH) {
+                errorMessage = errorMessage.substring(0, KewApiConstants.MAX_ANNOTATION_LENGTH);
             }
             List<ActionRequestValue> exceptionRequests = new ArrayList<ActionRequestValue>();
             if (nodeInstance.getRouteNode().isExceptionGroupDefined()) {
@@ -148,14 +148,14 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     protected List<ActionRequestValue> generateExceptionGroupRequests(RouteContext routeContext) {
     	RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
     	ActionRequestFactory arFactory = new ActionRequestFactory(routeContext.getDocument(), null);
-    	ActionRequestValue exceptionRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), new KimGroupRecipient(nodeInstance.getRouteNode().getExceptionWorkgroup()), "Exception Workgroup for route node " + nodeInstance.getName(), KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, "");
+    	ActionRequestValue exceptionRequest = arFactory.createActionRequest(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), new KimGroupRecipient(nodeInstance.getRouteNode().getExceptionWorkgroup()), "Exception Workgroup for route node " + nodeInstance.getName(), KewApiConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, "");
     	return Collections.singletonList(exceptionRequest);
     }
     
     protected List<ActionRequestValue> generateKimExceptionRequests(RouteContext routeContext) throws Exception {
     	RoleRouteModule roleRouteModule = new RoleRouteModule();
     	roleRouteModule.setNamespace(KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
-    	roleRouteModule.setResponsibilityTemplateName(KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
+    	roleRouteModule.setResponsibilityTemplateName(KewApiConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
     	List<ActionRequestValue> requests = roleRouteModule.findActionRequests(routeContext);
     	processExceptionRequests(requests);
     	return requests;
@@ -198,9 +198,9 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	// TODO is there a reason we reload the document here?
     	DocumentRouteHeaderValue rh = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeContext.getDocument().getDocumentId());
     	String oldStatus = rh.getDocRouteStatus();
-    	rh.setDocRouteStatus(KEWConstants.ROUTE_HEADER_EXCEPTION_CD);
+    	rh.setDocRouteStatus(KewApiConstants.ROUTE_HEADER_EXCEPTION_CD);
     	if (invokePostProcessor) {
-    		notifyStatusChange(rh, KEWConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
+    		notifyStatusChange(rh, KewApiConstants.ROUTE_HEADER_EXCEPTION_CD, oldStatus);
     	}
     	KEWServiceLocator.getRouteHeaderService().saveRouteHeader(rh);
     	KEWServiceLocator.getActionRequestService().activateRequests(exceptionRequests);

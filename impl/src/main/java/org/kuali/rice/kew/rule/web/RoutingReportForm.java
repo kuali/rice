@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -277,7 +277,7 @@ public class RoutingReportForm extends KualiForm {
     }
 
     public boolean isDisplayCloseButton() {
-        return (KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE.equals(getShowCloseButton()));
+        return (KewApiConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE.equals(getShowCloseButton()));
     }
 
     public String getShowCloseButton() {

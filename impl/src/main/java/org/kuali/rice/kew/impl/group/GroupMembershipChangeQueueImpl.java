@@ -30,7 +30,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.group.GroupMembershipChangeQueue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -74,9 +74,9 @@ public class GroupMembershipChangeQueueImpl implements GroupMembershipChangeQueu
         if (group == null) {
             throw new RiceRuntimeException("Could not locate the group with the given id '" + groupId + "'");
         }
-        if (KEWConstants.GroupMembershipChangeOperations.ADDED.equalsIgnoreCase(operation)) {
+        if (KewApiConstants.GroupMembershipChangeOperations.ADDED.equalsIgnoreCase(operation)) {
             updateActionListForUserAddedToGroup(principalId, groupId);
-        } else if (KEWConstants.GroupMembershipChangeOperations.REMOVED.equalsIgnoreCase(operation)) {
+        } else if (KewApiConstants.GroupMembershipChangeOperations.REMOVED.equalsIgnoreCase(operation)) {
             updateActionListForUserRemovedFromGroup(principalId, groupId);
         } else {
             throw new WorkflowRuntimeException("Did not understand requested group membership change operation '" + operation + "'");

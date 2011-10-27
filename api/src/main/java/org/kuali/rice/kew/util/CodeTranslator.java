@@ -19,6 +19,7 @@ package org.kuali.rice.kew.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 
@@ -40,46 +41,46 @@ public class CodeTranslator {
 
     private static Map<String, String> getAtLabels() {
     	Map<String, String> newAtLabels = new HashMap<String, String>();
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KEWConstants.ACTION_TAKEN_ACKNOWLEDGED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_ADHOC_CD, KEWConstants.ACTION_TAKEN_ADHOC);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, KEWConstants.ACTION_TAKEN_ADHOC_REVOKED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, KEWConstants.ACTION_TAKEN_APPROVED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, KEWConstants.ACTION_TAKEN_BLANKET_APPROVE);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_CANCELED_CD, KEWConstants.ACTION_TAKEN_CANCELED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_COMPLETED_CD, KEWConstants.ACTION_TAKEN_COMPLETED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_ROUTED_CD, KEWConstants.ACTION_TAKEN_ROUTED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_DENIED_CD, KEWConstants.ACTION_TAKEN_DENIED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_FYI_CD, KEWConstants.ACTION_TAKEN_FYI);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SAVED_CD, KEWConstants.ACTION_TAKEN_SAVED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_MOVE_CD, KEWConstants.ACTION_TAKEN_MOVE);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, KEWConstants.ACTION_TAKEN_SU_APPROVED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, KEWConstants.ACTION_TAKEN_SU_CANCELED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, KEWConstants.ACTION_TAKEN_SU_DISAPPROVED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD, KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD, KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD, KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD, KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY);
-        newAtLabels.put(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_ADHOC_CD, KewApiConstants.ACTION_TAKEN_ADHOC);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, KewApiConstants.ACTION_TAKEN_APPROVED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, KewApiConstants.ACTION_TAKEN_CANCELED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_COMPLETED_CD, KewApiConstants.ACTION_TAKEN_COMPLETED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_ROUTED_CD, KewApiConstants.ACTION_TAKEN_ROUTED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, KewApiConstants.ACTION_TAKEN_DENIED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_FYI_CD, KewApiConstants.ACTION_TAKEN_FYI);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SAVED_CD, KewApiConstants.ACTION_TAKEN_SAVED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, KewApiConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_MOVE_CD, KewApiConstants.ACTION_TAKEN_MOVE);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD, KewApiConstants.ACTION_TAKEN_SU_APPROVED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, KewApiConstants.ACTION_TAKEN_SU_CANCELED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD, KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD, KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD, KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD, KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY);
+        newAtLabels.put(KewApiConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, KewApiConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY);
         return newAtLabels;
     }
 
     private static Map<String, String> getArLabels() {
     	Map<String, String> newArLabels = new HashMap<String, String>();
-        newArLabels.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
-        newArLabels.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
-        newArLabels.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, KEWConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
-        newArLabels.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+        newArLabels.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+        newArLabels.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+        newArLabels.put(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
+        newArLabels.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
         return newArLabels;
     }
 
     private static Map<String, String> getArStatusLabels() {
         Map<String, String> newArStatusLabels = new HashMap<String, String>();
-        newArStatusLabels.put(ActionRequestStatus.ACTIVATED.getCode(), KEWConstants.ACTIVE_LABEL);
+        newArStatusLabels.put(ActionRequestStatus.ACTIVATED.getCode(), KewApiConstants.ACTIVE_LABEL);
         newArStatusLabels.put(ActionRequestStatus.INITIALIZED.getCode(), ActionRequestStatus.INITIALIZED.getLabel());
         newArStatusLabels.put(ActionRequestStatus.DONE.getCode(), ActionRequestStatus.DONE.getLabel());
         return newArStatusLabels;
@@ -87,37 +88,37 @@ public class CodeTranslator {
 
     private static Map<String, String> getRouteStatusLabels() {
     	Map<String, String> newRouteStatusLabels = new HashMap<String, String>();
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_CANCEL_CD, KEWConstants.ROUTE_HEADER_CANCEL_LABEL);
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD, KEWConstants.ROUTE_HEADER_DISAPPROVED_LABEL);
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_ENROUTE_CD, KEWConstants.ROUTE_HEADER_ENROUTE_LABEL);
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_EXCEPTION_CD, KEWConstants.ROUTE_HEADER_EXCEPTION_LABEL);
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_FINAL_CD, KEWConstants.ROUTE_HEADER_FINAL_LABEL);
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ROUTE_HEADER_INITIATED_LABEL);
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_PROCESSED_CD, KEWConstants.ROUTE_HEADER_PROCESSED_LABEL);
-        newRouteStatusLabels.put(KEWConstants.ROUTE_HEADER_SAVED_CD, KEWConstants.ROUTE_HEADER_SAVED_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_CANCEL_CD, KewApiConstants.ROUTE_HEADER_CANCEL_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD, KewApiConstants.ROUTE_HEADER_DISAPPROVED_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, KewApiConstants.ROUTE_HEADER_ENROUTE_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_EXCEPTION_CD, KewApiConstants.ROUTE_HEADER_EXCEPTION_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_FINAL_CD, KewApiConstants.ROUTE_HEADER_FINAL_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_INITIATED_CD, KewApiConstants.ROUTE_HEADER_INITIATED_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_PROCESSED_CD, KewApiConstants.ROUTE_HEADER_PROCESSED_LABEL);
+        newRouteStatusLabels.put(KewApiConstants.ROUTE_HEADER_SAVED_CD, KewApiConstants.ROUTE_HEADER_SAVED_LABEL);
         return newRouteStatusLabels;
     }
 
     private static Map<Boolean, String> getActiveIndicatorLabels() {
     	Map<Boolean, String> newActiveIndicatorLabels = new HashMap<Boolean, String>();
-        newActiveIndicatorLabels.put(Boolean.TRUE, KEWConstants.ACTIVE_LABEL_LOWER);
-        newActiveIndicatorLabels.put(Boolean.FALSE, KEWConstants.INACTIVE_LABEL_LOWER);
+        newActiveIndicatorLabels.put(Boolean.TRUE, KewApiConstants.ACTIVE_LABEL_LOWER);
+        newActiveIndicatorLabels.put(Boolean.FALSE, KewApiConstants.INACTIVE_LABEL_LOWER);
         return newActiveIndicatorLabels;
     }
 
     private static Map<String, String> getPolicyLabels() {
     	Map<String, String> newDocTypeActiveIndicatorLabels = new HashMap<String, String>();
-        newDocTypeActiveIndicatorLabels.put(KEWConstants.TRUE_CD, KEWConstants.YES_LABEL);
-        newDocTypeActiveIndicatorLabels.put(KEWConstants.FALSE_CD, KEWConstants.NO_LABEL);
-        newDocTypeActiveIndicatorLabels.put(KEWConstants.INHERITED_CD, KEWConstants.INHERITED_LABEL);
+        newDocTypeActiveIndicatorLabels.put(KewApiConstants.TRUE_CD, KewApiConstants.YES_LABEL);
+        newDocTypeActiveIndicatorLabels.put(KewApiConstants.FALSE_CD, KewApiConstants.NO_LABEL);
+        newDocTypeActiveIndicatorLabels.put(KewApiConstants.INHERITED_CD, KewApiConstants.INHERITED_LABEL);
         return newDocTypeActiveIndicatorLabels;
     }
 
     private static Map<String, String> getActivationPolicyLabels() {
     	Map<String, String> newActivationPolicyLabels = new HashMap<String, String>();
-        newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_PARALLEL, KEWConstants.ROUTE_LEVEL_PARALLEL_LABEL);
-        newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_SEQUENCE, KEWConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
-        newActivationPolicyLabels.put(KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL, KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_LABEL);
+        newActivationPolicyLabels.put(KewApiConstants.ROUTE_LEVEL_PARALLEL, KewApiConstants.ROUTE_LEVEL_PARALLEL_LABEL);
+        newActivationPolicyLabels.put(KewApiConstants.ROUTE_LEVEL_SEQUENCE, KewApiConstants.ROUTE_LEVEL_SEQUENCE_LABEL);
+        newActivationPolicyLabels.put(KewApiConstants.ROUTE_LEVEL_PRIORITY_PARALLEL, KewApiConstants.ROUTE_LEVEL_PRIORITY_PARALLEL_LABEL);
         return newActivationPolicyLabels;
     }
 

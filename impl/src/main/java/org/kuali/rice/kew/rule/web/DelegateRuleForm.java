@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -144,25 +144,25 @@ public class DelegateRuleForm extends KualiForm {
 		
 		if (getParentRule() != null) {
 			for (RuleResponsibilityBo responsibility : getParentRule().getRuleResponsibilities()) {
-				if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType())) {
+				if (KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(responsibility.getRuleResponsibilityType())) {
 					Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(responsibility.getRuleResponsibilityName());
 					if (principal != null) {
 					    reviewers.add(principal.getPrincipalName());
 					}
-					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL);
-				} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+					responsibilityTypes.add(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID_LABEL);
+				} else if (KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
 					Group group = KimApiServiceLocator.getGroupService().getGroup(responsibility.getRuleResponsibilityName());
 					if (group != null) {
 					    reviewers.add(group.getNamespaceCode() + " " + group.getName());
 					}
-					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID_LABEL);
-				} else if (KEWConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(responsibility.getRuleResponsibilityType())) {
+					responsibilityTypes.add(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID_LABEL);
+				} else if (KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID.equals(responsibility.getRuleResponsibilityType())) {
 					reviewers.add(responsibility.getResolvedRoleName());
-					responsibilityTypes.add(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID_LABEL);
+					responsibilityTypes.add(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID_LABEL);
 				} else {
 					throw new RiceRuntimeException("Encountered a responsibility with an invalid type, type value was " + responsibility.getRuleResponsibilityType());
 				}
-				actionRequestCodes.add(KEWConstants.ACTION_REQUEST_CODES.get(responsibility.getActionRequestedCd()));
+				actionRequestCodes.add(KewApiConstants.ACTION_REQUEST_CODES.get(responsibility.getActionRequestedCd()));
 			}
 		}
 		

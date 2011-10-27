@@ -27,7 +27,7 @@ package org.kuali.rice.kew.rule.bo;
  import org.kuali.rice.kew.rule.RoleAttribute;
  import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
  import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
- import org.kuali.rice.kew.util.KEWConstants;
+ import org.kuali.rice.kew.api.KewApiConstants;
  import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
  import javax.persistence.CascadeType;
@@ -69,12 +69,12 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
      * A list of default rule template option keys.
      */
     public static final String[] DEFAULT_OPTION_KEYS = {
-        //KEWConstants.RULE_INSTRUCTIONS_CD,
-        KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,
-        KEWConstants.ACTION_REQUEST_APPROVE_REQ,
-        KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
-        KEWConstants.ACTION_REQUEST_FYI_REQ,
-        KEWConstants.ACTION_REQUEST_DEFAULT_CD
+        //KewApiConstants.RULE_INSTRUCTIONS_CD,
+        KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,
+        KewApiConstants.ACTION_REQUEST_APPROVE_REQ,
+        KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,
+        KewApiConstants.ACTION_REQUEST_FYI_REQ,
+        KewApiConstants.ACTION_REQUEST_DEFAULT_CD
     };
     
     @Id
@@ -310,69 +310,69 @@ public class RuleTemplateBo extends PersistableBusinessObjectBase implements Rul
     }
 /*
     public void setInstructions(RuleTemplateOption instructions) {
-        RuleTemplateOption option = getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
+        RuleTemplateOption option = getRuleTemplateOption(KewApiConstants.RULE_INSTRUCTIONS_CD);
         option.setValue(instructions.getValue());
         option.setId(instructions.getId());
         option.setLockVerNbr(instructions.getLockVerNbr());
     }
 */
     public void setAcknowledge(RuleTemplateOptionBo acknowledge) {
-        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        RuleTemplateOptionBo option = getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         option.setValue(acknowledge.getValue());
         option.setId(acknowledge.getId());
         option.setVersionNumber(acknowledge.getVersionNumber());
     }
 
     public void setComplete(RuleTemplateOptionBo complete) {
-        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        RuleTemplateOptionBo option = getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         option.setValue(complete.getValue());
         option.setId(complete.getId());
         option.setVersionNumber(complete.getVersionNumber());
     }
 
     public void setApprove(RuleTemplateOptionBo approve) {
-        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        RuleTemplateOptionBo option = getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         option.setValue(approve.getValue());
         option.setId(approve.getId());
         option.setVersionNumber(approve.getVersionNumber());
     }
 
     public void setFyi(RuleTemplateOptionBo fyi) {
-        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_FYI_REQ);
+        RuleTemplateOptionBo option = getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_FYI_REQ);
         option.setValue(fyi.getValue());
         option.setId(fyi.getId());
         option.setVersionNumber(fyi.getVersionNumber());
     }
 
     public void setDefaultActionRequestValue(RuleTemplateOptionBo defaultActionRequestValue) {
-        RuleTemplateOptionBo option = getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
+        RuleTemplateOptionBo option = getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_DEFAULT_CD);
         option.setValue(defaultActionRequestValue.getValue());
         option.setId(defaultActionRequestValue.getId());
         option.setVersionNumber(defaultActionRequestValue.getVersionNumber());
     }
 /*
     public RuleTemplateOption getInstructions() {
-        return getRuleTemplateOption(KEWConstants.RULE_INSTRUCTIONS_CD);
+        return getRuleTemplateOption(KewApiConstants.RULE_INSTRUCTIONS_CD);
     }
 */
     public RuleTemplateOptionBo getAcknowledge() {
-        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        return getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
     }
 
     public RuleTemplateOptionBo getComplete() {
-        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        return getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
     }
 
     public RuleTemplateOptionBo getApprove() {
-        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        return getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
     }
 
     public RuleTemplateOptionBo getFyi() {
-        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_FYI_REQ);
+        return getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_FYI_REQ);
     }
 
     public RuleTemplateOptionBo getDefaultActionRequestValue() {
-        return getRuleTemplateOption(KEWConstants.ACTION_REQUEST_DEFAULT_CD);
+        return getRuleTemplateOption(KewApiConstants.ACTION_REQUEST_DEFAULT_CD);
     }
     
     /**

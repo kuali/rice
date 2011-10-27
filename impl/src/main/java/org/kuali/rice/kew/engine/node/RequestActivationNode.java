@@ -27,13 +27,12 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 
@@ -129,11 +128,11 @@ public class RequestActivationNode extends RequestActivationNodeBase {
         String activationType = nodeInstance.getRouteNode().getActivationType();
         if (StringUtils.isBlank(activationType)) {
             // not sure if this is really necessary, but preserves behavior prior to introduction of priority-parallel activation
-            activationType = KEWConstants.ROUTE_LEVEL_SEQUENCE;
+            activationType = KewApiConstants.ROUTE_LEVEL_SEQUENCE;
         }
-        boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
-        boolean isPriorityParallel = KEWConstants.ROUTE_LEVEL_PRIORITY_PARALLEL.equals(activationType);
-        boolean isSequential = KEWConstants.ROUTE_LEVEL_SEQUENCE.equals(activationType);
+        boolean isParallel = KewApiConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
+        boolean isPriorityParallel = KewApiConstants.ROUTE_LEVEL_PRIORITY_PARALLEL.equals(activationType);
+        boolean isSequential = KewApiConstants.ROUTE_LEVEL_SEQUENCE.equals(activationType);
 
         boolean activatedApproveRequest = false;
         if (CollectionUtils.isNotEmpty(requests)) {

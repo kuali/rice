@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -58,12 +58,12 @@ public class RuleMaintenanceActionRequestCodeValuesFinder extends ActionRequestC
 		// get the options to check for, as well as their related KEW constants.
 		final RuleTemplateOptionBo[] ruleOpts = {ruleTemplate.getAcknowledge(), ruleTemplate.getComplete(),
 				ruleTemplate.getApprove(), ruleTemplate.getFyi()};
-		final String[] ruleConsts = {KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
-				KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ};
+		final String[] ruleConsts = {KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,
+				KewApiConstants.ACTION_REQUEST_APPROVE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ};
 		// Add the rule options to the list if they are not defined (true by default) or if they are explicitly set to true.
 		for (int i = 0; i < ruleOpts.length; i++) {
 			if (ruleOpts[i] == null || ruleOpts[i].getValue() == null || "true".equals(ruleOpts[i].getValue())) {
-				actionRequestCodes.add(new ConcreteKeyValue(ruleConsts[i], KEWConstants.ACTION_REQUEST_CODES.get(ruleConsts[i])));
+				actionRequestCodes.add(new ConcreteKeyValue(ruleConsts[i], KewApiConstants.ACTION_REQUEST_CODES.get(ruleConsts[i])));
 			}
 		}
 		return actionRequestCodes;

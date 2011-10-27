@@ -8,7 +8,7 @@ import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertEquals
 import org.joda.time.DateTime
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic
-import org.kuali.rice.kew.util.KEWConstants
+import org.kuali.rice.kew.api.KewApiConstants
 
 import org.junit.Before
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
@@ -69,7 +69,7 @@ class DocumentSearchCriteriaTranslatorTest {
         // document attrs
         def docattrs = [ attr1: [ "val1" ], attr2: [ "val2" ] ] // attr3: [ "mult0", "mult1" ] ] Note: translator does not support multiple values
         docattrs.each { k, v ->
-            fields.put(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + k, v.join(','))
+            fields.put(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + k, v.join(','))
         }
 
         def crit = documentSearchCriteriaTranslator.translateFieldsToCriteria(fields)
@@ -116,7 +116,7 @@ class DocumentSearchCriteriaTranslatorTest {
         assertEquals(RouteNodeLookupLogic.BEFORE.toString(), fields["routeNodeLookupLogic"][0])
 
         builder.documentAttributeValues.each { k, v ->
-            assertEquals(v as Set, fields[KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + k] as Set)
+            assertEquals(v as Set, fields[KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + k] as Set)
         }
     }
 }

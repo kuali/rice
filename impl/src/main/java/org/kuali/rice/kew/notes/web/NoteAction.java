@@ -31,7 +31,7 @@ import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -208,7 +208,7 @@ public class NoteAction extends KewKualiAction {
         if (! "workflowReport".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "add".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "cancel".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "edit".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "delete".equalsIgnoreCase(noteForm.getMethodToCall()) && ! "save".equalsIgnoreCase(noteForm.getMethodToCall())) {
             retrieveNoteList(request, noteForm);
         }
-        boolean showAttachments = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS_IND);
+        boolean showAttachments = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.SHOW_ATTACHMENTS_IND);
         noteForm.setShowAttachments(new Boolean(showAttachments));
         return null;
     }
@@ -245,11 +245,11 @@ public class NoteAction extends KewKualiAction {
                 }
             }
             if (noteForm.getSortNotes() != null && noteForm.getSortNotes().booleanValue()) {
-                if (KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(noteForm.getSortOrder())) {
-                    noteForm.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_ASC);
+                if (KewApiConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(noteForm.getSortOrder())) {
+                    noteForm.setSortOrder(KewApiConstants.Sorting.SORT_SEQUENCE_ASC);
                     noteForm.setSortNotes(Boolean.FALSE);
                 } else {
-                    noteForm.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_DSC);
+                    noteForm.setSortOrder(KewApiConstants.Sorting.SORT_SEQUENCE_DSC);
                     noteForm.setSortNotes(Boolean.FALSE);
                 }
             } else {
@@ -292,7 +292,7 @@ public class NoteAction extends KewKualiAction {
     }
 
     private List<Note> sortNotes(List<Note> allNotes, String sortOrder) {
-        final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;
+        final int returnCode = KewApiConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;
 
         try {
           Collections.sort(allNotes,

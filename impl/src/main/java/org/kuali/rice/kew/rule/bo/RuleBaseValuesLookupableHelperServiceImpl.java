@@ -234,7 +234,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 /*WorkflowRuleAttribute attribute = (WorkflowRuleAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor(), ruleTemplateAttribute.getRuleAttribute().getApplicationId()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
                 RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
                 ExtensionDefinition extensionDefinition = RuleAttribute.to(ruleAttribute);
-                if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+                if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                     ((GenericXMLRuleAttribute) attribute).setExtensionDefinition(extensionDefinition);
                 }
                 attribute.setRequired(false);*/

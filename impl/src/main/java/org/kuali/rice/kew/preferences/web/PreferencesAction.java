@@ -27,7 +27,7 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -51,7 +51,7 @@ public class PreferencesAction extends KewKualiAction {
     @Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         initForm(request, form);
-        request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
+        request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KewApiConstants"));
         return super.execute(mapping, form, request, response);
     }
 
@@ -72,8 +72,8 @@ public class PreferencesAction extends KewKualiAction {
             prefSrv.savePreferences(getUserSession().getPrincipalId(), prefForm.getPreferences());
         }
         
-        GlobalVariables.getUserSession().addObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.TRUE);
-        GlobalVariables.getUserSession().removeObject(KEWConstants.PREFERENCES);
+        GlobalVariables.getUserSession().addObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.TRUE);
+        GlobalVariables.getUserSession().removeObject(KewApiConstants.PREFERENCES);
         
         if (! StringUtils.isEmpty(prefForm.getReturnMapping())) {
             return mapping.findForward(prefForm.getReturnMapping());
@@ -82,7 +82,7 @@ public class PreferencesAction extends KewKualiAction {
     }
 
     public ActionMessages initForm(HttpServletRequest request, ActionForm form) throws Exception {
-        request.setAttribute("actionListContent", KEWConstants.ACTION_LIST_CONTENT);
+        request.setAttribute("actionListContent", KewApiConstants.ACTION_LIST_CONTENT);
         getDelegatorFilterChoices(request);
         getPrimaryDelegateFilterChoices(request);
         PreferencesForm prefForm = (PreferencesForm)form;
@@ -92,15 +92,15 @@ public class PreferencesAction extends KewKualiAction {
 
     public void getDelegatorFilterChoices(HttpServletRequest request) {
         List<KeyValue> delegatorFilterChoices = new ArrayList<KeyValue>();
-        delegatorFilterChoices.add(new ConcreteKeyValue(KEWConstants.DELEGATORS_ON_FILTER_PAGE, KEWConstants.DELEGATORS_ON_FILTER_PAGE));
-        delegatorFilterChoices.add(new ConcreteKeyValue(KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
+        delegatorFilterChoices.add(new ConcreteKeyValue(KewApiConstants.DELEGATORS_ON_FILTER_PAGE, KewApiConstants.DELEGATORS_ON_FILTER_PAGE));
+        delegatorFilterChoices.add(new ConcreteKeyValue(KewApiConstants.DELEGATORS_ON_ACTION_LIST_PAGE, KewApiConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
         request.setAttribute("delegatorFilter", delegatorFilterChoices);
     }
     
     public void getPrimaryDelegateFilterChoices(HttpServletRequest request) {
     	List<KeyValue> primaryDelegateFilterChoices = new ArrayList<KeyValue>();
-    	primaryDelegateFilterChoices.add(new ConcreteKeyValue(KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE));
-        primaryDelegateFilterChoices.add(new ConcreteKeyValue(KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE));
+    	primaryDelegateFilterChoices.add(new ConcreteKeyValue(KewApiConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE, KewApiConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE));
+        primaryDelegateFilterChoices.add(new ConcreteKeyValue(KewApiConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, KewApiConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE));
         request.setAttribute("primaryDelegateFilter", primaryDelegateFilterChoices);
     }
 

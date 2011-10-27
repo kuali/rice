@@ -21,14 +21,14 @@ import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -59,12 +59,12 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
 
     public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal);
-        this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
+        this.superUserAction = KewApiConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
     }
 
     public SuperUserActionRequestApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String actionRequestId, String annotation, boolean runPostProcessor) {
         super(UNDEFINED_ACTION_TAKEN_CODE, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KEWConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
+        this.superUserAction = KewApiConstants.SUPER_USER_ACTION_REQUEST_APPROVE;
         this.actionRequestId = actionRequestId;
     }
 
@@ -77,14 +77,14 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
 
         actionRequestCode = actionRequest.getActionRequested();
         //This has been set up for all of the actions, but this class only does approvals
-        if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD);
-        } else if (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD);
-        } else if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD);
-        } else if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequestCode)) {
-            this.setActionTakenCode(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD);
+        if (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionRequestCode)) {
+            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD);
+        } else if (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequestCode)) {
+            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD);
+        } else if (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequestCode)) {
+            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD);
+        } else if (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequestCode)) {
+            this.setActionTakenCode(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD);
         } else {
             //TODO this should be checked
             LOG.error("Invalid SU delegation action request code: " + actionRequestCode);
@@ -129,11 +129,11 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         getActionRequestService().deactivateRequest(actionTaken, request);
         if (docType.getSuperUserApproveNotificationPolicy().getPolicyValue() && request.isApproveOrCompleteRequest()) {
         	KEWServiceLocator.getActionRequestService().activateRequest(
-        	new ActionRequestFactory(this.getRouteHeader()).createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getPrincipal(), this.getActionTakenCode(), getPrincipal(), null));
+        	new ActionRequestFactory(this.getRouteHeader()).createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getPrincipal(), this.getActionTakenCode(), getPrincipal(), null));
         }
         notifyActionTaken(actionTaken);
 
-        if (!(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD.equals(this.getActionTakenCode()) && KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD.equals(this.getActionTakenCode()))) {
+        if (!(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD.equals(this.getActionTakenCode()) && KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD.equals(this.getActionTakenCode()))) {
             if (getRouteHeader().isInException()) {
                 LOG.debug("Moving document back to Enroute from Exception");
 
@@ -145,7 +145,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
                 KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
             }
             else if (getRouteHeader().isStateSaved()) {
-        	if (KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID.equals(request.getResponsibilityId())) {
+        	if (KewApiConstants.SAVED_REQUEST_RESPONSIBILITY_ID.equals(request.getResponsibilityId())) {
                     LOG.debug("Moving document to Enroute from Saved because action request was request generated by save action");
             	
                     String oldStatus = getRouteHeader().getDocRouteStatus();

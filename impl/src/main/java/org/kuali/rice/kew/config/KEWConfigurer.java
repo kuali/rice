@@ -31,7 +31,7 @@ import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants.ClientProtocol;
+import org.kuali.rice.kew.api.KewApiConstants.ClientProtocol;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;

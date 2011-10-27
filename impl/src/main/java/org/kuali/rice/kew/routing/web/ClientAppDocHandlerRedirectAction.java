@@ -30,7 +30,7 @@ import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -50,7 +50,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
 
         String docHandler = null;
 
-        if (request.getParameter(KEWConstants.DOCUMENT_ID_PARAMETER) != null) {
+        if (request.getParameter(KewApiConstants.DOCUMENT_ID_PARAMETER) != null) {
             RouteHeaderService rhSrv = (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
             DocumentRouteHeaderValue routeHeader = rhSrv.getRouteHeader(docHandlerForm.getDocId());
 
@@ -66,8 +66,8 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             } else {
                 docHandler += "&";
             }
-            docHandler += KEWConstants.DOCUMENT_ID_PARAMETER + "=" + docHandlerForm.getDocId();
-        } else if (request.getParameter(KEWConstants.DOCTYPE_PARAMETER) != null) {
+            docHandler += KewApiConstants.DOCUMENT_ID_PARAMETER + "=" + docHandlerForm.getDocId();
+        } else if (request.getParameter(KewApiConstants.DOCTYPE_PARAMETER) != null) {
             DocumentTypeService documentTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = documentTypeService.findByName(docHandlerForm.getDocTypeName());
             docHandler = documentType.getDocHandlerUrl();
@@ -79,15 +79,15 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             } else {
                 docHandler += "&";
             }
-            docHandler += KEWConstants.DOCTYPE_PARAMETER + "=" + docHandlerForm.getDocTypeName();
+            docHandler += KewApiConstants.DOCTYPE_PARAMETER + "=" + docHandlerForm.getDocTypeName();
         } else {
 //TODO what should happen here if parms are missing; no proper ActionForward from here
             throw new RuntimeException ("Cannot determine document handler");
         }
 
-        docHandler += "&" + KEWConstants.COMMAND_PARAMETER + "=" + docHandlerForm.getCommand();
+        docHandler += "&" + KewApiConstants.COMMAND_PARAMETER + "=" + docHandlerForm.getCommand();
         if (getUserSession(request).isBackdoorInUse()) {
-            docHandler += "&" + KEWConstants.BACKDOOR_ID_PARAMETER + "=" + getUserSession(request).getPrincipalName();
+            docHandler += "&" + KewApiConstants.BACKDOOR_ID_PARAMETER + "=" + getUserSession(request).getPrincipalName();
         }
         return new ActionForward(docHandler, true);
     }

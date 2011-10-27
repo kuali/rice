@@ -55,7 +55,7 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -89,11 +89,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      */
     protected Map<String, String> getActionsRequested(String principalId, List<ActionRequestValue> actionRequests, boolean completeAndApproveTheSame) {
     	Map<String, String> actionsRequested = new HashMap<String, String>();
-        actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
-        actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
-        actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "false");
-        actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
-    	String topActionRequested = KEWConstants.ACTION_REQUEST_FYI_REQ;
+        actionsRequested.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
+        actionsRequested.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        actionsRequested.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "false");
+        actionsRequested.put(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+    	String topActionRequested = KewApiConstants.ACTION_REQUEST_FYI_REQ;
         for (ActionRequestValue actionRequest : actionRequests) {
             // we are getting the full list of requests here, so no need to look at role requests, if we did this then
             // we could get a "false positive" for "all approve" roles where only part of the request graph is marked
@@ -102,23 +102,23 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                     actionRequest.isRecipientRoutedRequest(principalId) && actionRequest.isActive()) {
                 int actionRequestComparison = ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), topActionRequested, completeAndApproveTheSame);
                 if (actionRequest.isFYIRequest() && actionRequestComparison >= 0) {
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "true");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, "true");
                 } else if (actionRequest.isAcknowledgeRequest() && actionRequestComparison >= 0) {
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
                     topActionRequested = actionRequest.getActionRequested();
                 } else if (actionRequest.isApproveRequest() && actionRequestComparison >= 0) {
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
                     topActionRequested = actionRequest.getActionRequested();
                 } else if (actionRequest.isCompleteRequst() && actionRequestComparison >= 0) {
-                	actionsRequested.put(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "true");
-                	actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "false");
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
-                    actionsRequested.put(KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
+                	actionsRequested.put(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, "true");
+                	actionsRequested.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "false");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+                    actionsRequested.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
                 	if (completeAndApproveTheSame) {
-                		actionsRequested.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+                		actionsRequested.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "true");
                 	}
                     topActionRequested = actionRequest.getActionRequested();
                 }
@@ -585,8 +585,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     		performanceLogger = new PerformanceLogger();
     	}
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
-        String cacheWaitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
-        Long cacheWait = KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME;
+        String cacheWaitValue = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KewApiConstants.RULE_CACHE_REQUEUE_DELAY);
+        Long cacheWait = KewApiConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME;
         if (!org.apache.commons.lang.StringUtils.isEmpty(cacheWaitValue)) {
             try {
                 cacheWait = Long.valueOf(cacheWaitValue);
@@ -833,7 +833,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public Recipient findDelegator(List actionRequests) {
         Recipient delegator = null;
-        String requestCode = KEWConstants.ACTION_REQUEST_FYI_REQ;
+        String requestCode = KewApiConstants.ACTION_REQUEST_FYI_REQ;
         for (Object actionRequest1 : actionRequests)
         {
             ActionRequestValue actionRequest = (ActionRequestValue) actionRequest1;
@@ -883,7 +883,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest cd null.", "actionrequest.actionrequestcd.empty",
                     actionRequest.getActionRequestId().toString()));
-        } else if (!KEWConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
+        } else if (!KewApiConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest cd invalid.", "actionrequest.actionrequestcd.invalid",
                     actionRequest.getActionRequestId().toString()));
         }
@@ -944,7 +944,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
         String recipientType = actionRequest.getRecipientTypeCd();
         if (recipientType != null && !recipientType.trim().equals("")) {
-            if (recipientType.equals(KEWConstants.WORKGROUP)) {
+            if (recipientType.equals(KewApiConstants.WORKGROUP)) {
                 String workgroupId = actionRequest.getGroupId();
                 if (workgroupId == null) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest workgroup null.",
@@ -955,7 +955,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 }
 
             }
-            if (recipientType.equals(KEWConstants.PERSON)) {
+            if (recipientType.equals(KewApiConstants.PERSON)) {
                 String principalId = actionRequest.getPrincipalId();
                 if (principalId == null || principalId.trim().equals("")) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest person id null.", "actionrequest.persosn.empty",
@@ -968,7 +968,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 	}
                 }
 
-                if (recipientType.equals(KEWConstants.ROLE)
+                if (recipientType.equals(KewApiConstants.ROLE)
                         && (actionRequest.getRoleName() == null || actionRequest.getRoleName().trim().equals(""))) {
                     errors.add(new WorkflowServiceErrorImpl("ActionRequest role name null.", "actionrequest.rolename.null",
                             actionRequest.getActionRequestId().toString()));
@@ -1003,7 +1003,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public boolean isValidActionRequestCode(String actionRequestCode) {
-        return actionRequestCode != null && KEWConstants.ACTION_REQUEST_CODES.containsKey(actionRequestCode);
+        return actionRequestCode != null && KewApiConstants.ACTION_REQUEST_CODES.containsKey(actionRequestCode);
     }
 
     public boolean doesPrincipalHaveRequest(String principalId, String documentId) {

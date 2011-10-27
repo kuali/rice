@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentService;

@@ -38,7 +38,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 
 import javax.xml.xpath.XPath;
@@ -144,7 +144,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
         for (Object o: root.getChildren("responsibility", XmlConstants.RULE_NAMESPACE)) {
             Element e = (Element) o;
             RuleResponsibilityBo responsibility = parser.parseResponsibility(e, fakeRule);
-            responsibility.setResponsibilityId(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID);
+            responsibility.setResponsibilityId(KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID);
             responsibilities.add(org.kuali.rice.kew.api.rule.RuleResponsibility.Builder.create(responsibility).build());
         }
         if (responsibilities.isEmpty()) {
@@ -171,10 +171,10 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
     
     private WorkflowRuleAttribute materializeRuleAttribute(RuleAttribute ruleAttribute) {
         if (ruleAttribute != null) {
-            if (KEWConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+            if (KewApiConstants.RULE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
                 return (WorkflowRuleAttribute) GlobalResourceLoader.getObject(objDef);
-            } else if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+            } else if (KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
                 ObjectDefinition objDef = new ObjectDefinition(ruleAttribute.getResourceDescriptor(), ruleAttribute.getApplicationId());
                 WorkflowRuleAttribute workflowAttribute = (WorkflowRuleAttribute) GlobalResourceLoader.getObject(objDef);
                 //required to make it work because ruleAttribute XML is required to construct custom columns

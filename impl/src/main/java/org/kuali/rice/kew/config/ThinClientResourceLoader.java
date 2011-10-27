@@ -42,7 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -117,12 +117,12 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	    	if (cachedService != null) {
 	    	    return cachedService;
 	    	}
-		if (serviceName.equals(KEWConstants.WORKFLOW_UTILITY_SERVICE)) {
+		if (serviceName.equals(KewApiConstants.WORKFLOW_UTILITY_SERVICE)) {
 		    throw new UnsupportedOperationException("Reimplement me! - see KULRICE-5061");
 //			WorkflowUtility utility = getWorkflowUtility();
 //			services.put(serviceName, utility);
 //			return utility;
-//		} else if (serviceName.equals(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
+//		} else if (serviceName.equals(KewApiConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE)) {
 //			WorkflowDocumentActions documentActions = getWorkflowDocument();
 //			services.put(serviceName, documentActions);
 //			return documentActions;

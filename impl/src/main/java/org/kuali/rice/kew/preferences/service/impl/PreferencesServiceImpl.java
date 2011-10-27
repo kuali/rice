@@ -25,7 +25,7 @@ import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String COLUMN_WORKGROUP_REQUEST_KEY = "WORKGROUP_REQUEST_COL_SHOW_NEW";
     private static final String COLUMN_CLEAR_FYI_KEY = "CLEAR_FYI_COL_SHOW_NEW";
     private static final String ACTION_LIST_SIZE_KEY = "ACTION_LIST_SIZE_NEW";
-    private static final String EMAIL_REMINDER_KEY = KEWConstants.EMAIL_RMNDR_KEY;
+    private static final String EMAIL_REMINDER_KEY = KewApiConstants.EMAIL_RMNDR_KEY;
     private static final String EMAIL_NOTIFY_PRIMARY_KEY = "EMAIL_NOTIFY_PRIMARY";
     private static final String EMAIL_NOTIFY_SECONDARY_KEY = "EMAIL_NOTIFY_SECONDARY";
     private static final String DEFAULT_COLOR = "white";
@@ -118,7 +118,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         String defaultPrimaryDelegatorFilterOnActionList = kcs.getPropertyValueAsString(
                 "userOptions.default.primaryDelegatorFilterOnActionList");
 
-        final String defaultUseOutBox = kcs.getPropertyValueAsString(KEWConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM);
+        final String defaultUseOutBox = kcs.getPropertyValueAsString(KewApiConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM);
                                                                                                                                                                                     
         Preferences preferences = new Preferences();                                                                                                                                
         preferences.setColorApproved(getOption(optionMap,APPROVED_DOC_COLOR, defaultColor, principalId, preferences).getOptionVal());                                               

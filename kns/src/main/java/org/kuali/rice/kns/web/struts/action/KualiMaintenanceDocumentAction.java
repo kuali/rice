@@ -34,7 +34,7 @@ import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
@@ -464,7 +464,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		super.docHandler(mapping, form, request, response);
 		KualiMaintenanceForm kualiMaintenanceForm = (KualiMaintenanceForm) form;
 
-		if (KEWConstants.ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KEWConstants.DOCSEARCH_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KEWConstants.SUPERUSER_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KEWConstants.HELPDESK_ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) && kualiMaintenanceForm.getDocId() != null) {
+		if (KewApiConstants.ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KewApiConstants.DOCSEARCH_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KewApiConstants.SUPERUSER_COMMAND.equals(kualiMaintenanceForm.getCommand()) || KewApiConstants.HELPDESK_ACTIONLIST_COMMAND.equals(kualiMaintenanceForm.getCommand()) && kualiMaintenanceForm.getDocId() != null) {
 			if (kualiMaintenanceForm.getDocument() instanceof MaintenanceDocument) {
 				kualiMaintenanceForm.setReadOnly(true);
 				kualiMaintenanceForm.setMaintenanceAction(((MaintenanceDocument) kualiMaintenanceForm.getDocument()).getNewMaintainableObject().getMaintenanceAction());
@@ -482,7 +482,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 				throw new IllegalStateException("Document is not a maintenance document");
 			}
 		}
-		else if (KEWConstants.INITIATE_COMMAND.equals(kualiMaintenanceForm.getCommand())) {
+		else if (KewApiConstants.INITIATE_COMMAND.equals(kualiMaintenanceForm.getCommand())) {
 			kualiMaintenanceForm.setReadOnly(false);
 			return setupMaintenance(mapping, form, request, response, KRADConstants.MAINTENANCE_NEW_ACTION);
 		}

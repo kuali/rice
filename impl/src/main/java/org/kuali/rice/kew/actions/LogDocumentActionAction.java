@@ -19,9 +19,9 @@ package org.kuali.rice.kew.actions;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param principal User taking the action.
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal);
+        super(KewApiConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal);
     }
 
     /**
@@ -50,7 +50,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
      * @param annotation User comment on the action taken
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)

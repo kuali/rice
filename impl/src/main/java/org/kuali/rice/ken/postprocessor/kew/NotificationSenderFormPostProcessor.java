@@ -35,7 +35,7 @@ import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -98,7 +98,7 @@ public class NotificationSenderFormPostProcessor implements PostProcessorRemote 
     public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO arg0) throws RemoteException {
 	LOG.debug("ENTERING NotificationSenderFormPostProcessor.doRouteStatusChange() for Notification Sender Form with document ID: " + arg0.getDocumentId());
 	
-	if(arg0.getNewRouteStatus().equals(KEWConstants.ROUTE_HEADER_PROCESSED_CD)) {
+	if(arg0.getNewRouteStatus().equals(KewApiConstants.ROUTE_HEADER_PROCESSED_CD)) {
 	    LOG.debug("Workflow status has changed to RESOLVED for Notification Sender Form with document ID: " + arg0.getDocumentId() + 
 		    ".  We are now calling the NotificationService.sendNotification() service.");
 	    

@@ -21,15 +21,14 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -48,7 +47,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 
     public String getApplicationEmailAddress() {
         // first check the configured value
-        String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+        String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.MAILER_DETAIL_TYPE, KewApiConstants.EMAIL_REMINDER_FROM_ADDRESS);
         // if there's no value configured, use the default
         if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
             fromAddress = defaultEmailFromAddress;
@@ -76,7 +75,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     	DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId());
         CustomEmailAttribute customEmailAttribute = routeHeader.getCustomEmailAttribute();
         if (customEmailAttribute != null) {
-            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, user.getPrincipalId());
+            Document routeHeaderVO = DocumentRouteHeaderValue.to(routeHeader);
             ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
             ActionRequest actionRequestVO = ActionRequestValue.to(actionRequest);
             customEmailAttribute.setRouteHeaderVO(routeHeaderVO);

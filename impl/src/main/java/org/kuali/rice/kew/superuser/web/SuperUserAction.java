@@ -42,13 +42,13 @@ import org.kuali.rice.kew.api.action.ReturnPoint;
 import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -92,9 +92,9 @@ public class SuperUserAction extends KewKualiAction {
     public ActionForward displaySuperUserDocument(ActionMapping mapping, ActionForm form, HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         SuperUserForm superUserForm = (SuperUserForm) form;
-        superUserForm.setDocHandlerUrl(KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?docId="
-                + superUserForm.getDocumentId() + "&" + KEWConstants.COMMAND_PARAMETER + "="
-                + KEWConstants.SUPERUSER_COMMAND);
+        superUserForm.setDocHandlerUrl(KewApiConstants.DOC_HANDLER_REDIRECT_PAGE + "?docId="
+                + superUserForm.getDocumentId() + "&" + KewApiConstants.COMMAND_PARAMETER + "="
+                + KewApiConstants.SUPERUSER_COMMAND);
         return defaultDispatch(mapping, form, request, response);
     }
 
@@ -261,7 +261,7 @@ public class SuperUserAction extends KewKualiAction {
     }
 
     public ActionForward initForm(HttpServletRequest request, ActionForm form) throws Exception {
-        request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
+        request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KewApiConstants"));
         SuperUserForm superUserForm = (SuperUserForm) form;
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
                 superUserForm.getDocumentId());
@@ -283,7 +283,7 @@ public class SuperUserAction extends KewKualiAction {
         Iterator requestIterator = actionRequests.iterator();
         while (requestIterator.hasNext()) {
             ActionRequestValue req = (ActionRequestValue) requestIterator.next();
-            // if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equalsIgnoreCase(req.getActionRequested())) {
+            // if (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equalsIgnoreCase(req.getActionRequested())) {
             superUserForm.getActionRequests().add(req);
             // }
         }
@@ -317,7 +317,7 @@ public class SuperUserAction extends KewKualiAction {
                 (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE),
                 KRADConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KRADConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
         AppSpecificRouteRecipient recipient = null;
-        if (KEWConstants.PERSON.equals(routeType)) {
+        if (KewApiConstants.PERSON.equals(routeType)) {
             recipient = superUserForm.getAppSpecificRouteRecipient();
             recipient.setActionRequested(superUserForm.getAppSpecificRouteActionRequestCd());
             superUserForm.setAppSpecificPersonId(recipient.getId());
@@ -333,7 +333,7 @@ public class SuperUserAction extends KewKualiAction {
         superUserForm.establishVisibleActionRequestCds();
         if (superUserForm.getAppSpecificRouteActionRequestCds().get(recipient.getActionRequested()) == null) {
             GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient" +
-                    ((KEWConstants.WORKGROUP.equals(recipient.getType())) ? "2" : "") + ".id",
+                    ((KewApiConstants.WORKGROUP.equals(recipient.getType())) ? "2" : "") + ".id",
                     "appspecificroute.actionrequested.invalid");
 
             throw new ValidationException("The requested action of '" + recipient.getActionRequested()
@@ -342,8 +342,8 @@ public class SuperUserAction extends KewKualiAction {
 
         try {
             String routeNodeName = getAdHocRouteNodeName(superUserForm.getWorkflowDocument().getDocumentId());
-            //if (KEWConstants.PERSON.equals(recipient.getType())) {
-            if (KEWConstants.PERSON.equals(routeType)) {
+            //if (KewApiConstants.PERSON.equals(recipient.getType())) {
+            if (KewApiConstants.PERSON.equals(routeType)) {
                 String recipientPrincipalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(
                         recipient.getId());
                 superUserForm.getWorkflowDocument().adHocToPrincipal(
@@ -458,7 +458,7 @@ public class SuperUserAction extends KewKualiAction {
         } else {
             AdHocRevoke adHocRevoke = null;
             // Set the ID according to whether the recipient is a person or a group.
-            if (KEWConstants.PERSON.equals(removedRec.getType())) {
+            if (KewApiConstants.PERSON.equals(removedRec.getType())) {
                 adHocRevoke = AdHocRevoke.createRevokeFromPrincipal(KEWServiceLocator.getIdentityHelperService()
                         .getIdForPrincipalName(removedRec.getId()));
             } else {
@@ -490,10 +490,10 @@ public class SuperUserAction extends KewKualiAction {
     protected void validateAppSpecificRoute(AppSpecificRouteRecipient recipient) {
         if (recipient.getId() == null || recipient.getId().trim().equals("")) {
             GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient" +
-                    ((KEWConstants.WORKGROUP.equals(recipient.getType())) ? "2" : "") + ".id",
+                    ((KewApiConstants.WORKGROUP.equals(recipient.getType())) ? "2" : "") + ".id",
                     "appspecificroute.recipient.required");
         } else {
-            if (KEWConstants.PERSON.equals(recipient.getType())) {
+            if (KewApiConstants.PERSON.equals(recipient.getType())) {
                 Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
                         recipient.getId());
                 if (principal == null) {
@@ -501,7 +501,7 @@ public class SuperUserAction extends KewKualiAction {
                     GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient.id",
                             "appspecificroute.user.invalid");
                 }
-            } else if (KEWConstants.WORKGROUP.equals(recipient.getType())) {
+            } else if (KewApiConstants.WORKGROUP.equals(recipient.getType())) {
                 //if (getIdentityManagementService().getGroup(recipient.getId()) == null) {
                 if (getGroupService().getGroupByNameAndNamespaceCode(recipient.getNamespaceCode(), recipient.getId()) == null) {
                     GlobalVariables.getMessageMap().putError("appSpecificRouteRecipient2.id",

@@ -37,6 +37,7 @@ import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -46,14 +47,13 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.engine.simulation.SimulationWorkflowEngine;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -1035,7 +1035,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         }
         DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(documentType.getDocumentTypeId(), nodeName);
-        return routeNodeHasApproverActionRequest(documentType, docContent, routeNode, new Integer(KEWConstants.INVALID_ROUTE_LEVEL));
+        return routeNodeHasApproverActionRequest(documentType, docContent, routeNode, new Integer(KewApiConstants.INVALID_ROUTE_LEVEL));
     }
 
     /**
@@ -1069,7 +1069,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         /*if (node.getRuleTemplate() != null && node.isFlexRM()) {
             String ruleTemplateName = node.getRuleTemplate().getName();
             builder.setXmlContent(docContent);
-            routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
+            routeHeader.setDocRouteStatus(KewApiConstants.ROUTE_HEADER_INITIATED_CD);
             FlexRM flexRM = new FlexRM();
     		RouteContext context = RouteContext.getCurrentRouteContext();
     		context.setDocument(routeHeader);
@@ -1101,12 +1101,12 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         // attempting to deactivate them, this is in order to address the force action issue reported by EPIC in issue
         // http://fms.dfa.cornell.edu:8080/browse/KULWF-366
         Boolean activateFirst = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KewApiConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         if (activateFirst == null) {
             activateFirst = Boolean.FALSE;
         }
 
-        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDocRequestCdNodeName(documentId, KEWConstants.ACTION_REQUEST_APPROVE_REQ, nodeName);
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDocRequestCdNodeName(documentId, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, nodeName);
         if (requests == null || requests.isEmpty()) {
             return false;
         }
@@ -1293,7 +1293,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
      * "WorkflowException"
      */
     private void translateException(WorkflowException e) {
-        if (e instanceof org.kuali.rice.kew.exception.InvalidActionTakenException) {
+        if (e instanceof org.kuali.rice.kew.api.exception.InvalidActionTakenException) {
             throw new InvalidActionTakenException(e.getMessage(), e);
         }
         throw new WorkflowRuntimeException(e.getMessage(), e);

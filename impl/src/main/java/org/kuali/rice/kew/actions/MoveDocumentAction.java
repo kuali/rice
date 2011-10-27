@@ -28,14 +28,14 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.document.DocumentOrchestrationQueue;
 import org.kuali.rice.kew.api.document.DocumentProcessingOptions;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -54,11 +54,11 @@ public class MoveDocumentAction extends ActionTakenEvent {
     private MovePoint movePoint;
 
     public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal);
+        super(KewApiConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal);
     }
 
     public MoveDocumentAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, MovePoint movePoint) {
-        super(KEWConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_MOVE_CD, routeHeader, principal, annotation);
         this.movePoint = movePoint;
     }
 
@@ -82,7 +82,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
         if (activeNodes.isEmpty()) {
             return "Document has no active nodes.";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible with the MOVE action";
         }
@@ -103,7 +103,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
         updateSearchableAttributesIfPossible();
         LOG.debug("Moving document " + getRouteHeader().getDocumentId() + " to point: " + displayMovePoint(movePoint) + ", annotation: " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         Collection activeNodes = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getDocumentId());
         String errorMessage = validateActionRules(actionRequests,activeNodes);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
@@ -132,7 +132,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
                 orchestrationQueue.orchestrateDocument(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(), orchestrationConfig, options);
             } else {
                 String targetNodeName = determineReturnNodeName(startNodeInstance, movePoint);
-                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(KEWConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getPrincipal(), annotation, targetNodeName, false);
+                ReturnToPreviousNodeAction returnAction = new ReturnToPreviousNodeAction(KewApiConstants.ACTION_TAKEN_MOVE_CD, getRouteHeader(), getPrincipal(), annotation, targetNodeName, false);
                 
                 returnAction.recordAction();
             }

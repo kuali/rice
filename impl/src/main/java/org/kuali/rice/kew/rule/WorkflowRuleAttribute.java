@@ -20,7 +20,7 @@ import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.web.ui.Row;
 
 import java.io.Serializable;
@@ -64,7 +64,7 @@ import java.util.Map;
  *       (those associated with the Rule Template associated with the rule) which are WorkflowAttributes are enumerated and for each:
  *       <ol>
  *         <li>A special case is made for attributes defined in XML as
- *             of "RuleXmlAttribute" type ({@link KEWConstants#RULE_XML_ATTRIBUTE_TYPE}): the attribute is cast to {@link GenericXMLRuleAttribute}
+ *             of "RuleXmlAttribute" type ({@link KewApiConstants#RULE_XML_ATTRIBUTE_TYPE}): the attribute is cast to {@link GenericXMLRuleAttribute}
  *             and RuleAttribute business object is set on it ({@link GenericXMLRuleAttribute#setRuleAttribute(org.kuali.rice.kew.rule.RuleAttribute)}
  *             before proceeding with isMatch invocation. (what about a RuleAttributeAware interface so this can be done generically for all worklfow attribute
  *             implementations?)</li>

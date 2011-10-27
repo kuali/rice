@@ -18,7 +18,7 @@ package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -38,7 +38,7 @@ public class DailyEmailJob implements Job {
 	}
 
 	protected boolean shouldExecute() {
-		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.DAILY_EMAIL_ACTIVE));
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KewApiConstants.DAILY_EMAIL_ACTIVE));
 	}
 
 }

@@ -29,7 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -98,7 +98,7 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 
 	private void extractElements(Document document) {
 		// this handles backward compatibility in document content
-		if (!document.getDocumentElement().getNodeName().equals(KEWConstants.DOCUMENT_CONTENT_ELEMENT)) {
+		if (!document.getDocumentElement().getNodeName().equals(KewApiConstants.DOCUMENT_CONTENT_ELEMENT)) {
 			// if the root element is the flexdoc element (pre Workflow 2.0)
 			// then designate that as attribute content
 			if (document.getDocumentElement().getNodeName().equals(LEGACY_FLEXDOC_ELEMENT)) {
@@ -110,7 +110,7 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 			NodeList nodes = document.getDocumentElement().getChildNodes();
 			for (int index = 0; index < nodes.getLength(); index++) {
 				Node node = nodes.item(index);
-				if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(KEWConstants.APPLICATION_CONTENT_ELEMENT)) {
+				if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(KewApiConstants.APPLICATION_CONTENT_ELEMENT)) {
 					int numChildElements = 0;
 					for (int childIndex = 0; childIndex < node.getChildNodes().getLength(); childIndex++) {
 						Node child = (Node) node.getChildNodes().item(childIndex);
@@ -123,9 +123,9 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 					if (numChildElements > 1) {
 						applicationContent = (Element) node;
 					}
-				} else if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT)) {
+				} else if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(KewApiConstants.ATTRIBUTE_CONTENT_ELEMENT)) {
 					attributeContent = (Element) node;
-				} else if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(KEWConstants.SEARCHABLE_CONTENT_ELEMENT)) {
+				} else if (node.getNodeType() == Node.ELEMENT_NODE && node.getNodeName().equals(KewApiConstants.SEARCHABLE_CONTENT_ELEMENT)) {
 					searchableContent = (Element) node;
 				}
 			}

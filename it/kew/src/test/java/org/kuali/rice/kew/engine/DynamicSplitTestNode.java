@@ -25,7 +25,7 @@ import org.kuali.rice.kew.engine.node.DynamicNode;
 import org.kuali.rice.kew.engine.node.DynamicResult;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 
 
 public class DynamicSplitTestNode implements DynamicNode {

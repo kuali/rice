@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -141,8 +141,8 @@ public class RuleAttributeXmlParser {
 			label = name;
 		}
 		if (org.apache.commons.lang.StringUtils.isEmpty(type)) {
-			LOG.debug("No type specified, default to " + KEWConstants.RULE_ATTRIBUTE_TYPE);
-			type = KEWConstants.RULE_ATTRIBUTE_TYPE;
+			LOG.debug("No type specified, default to " + KewApiConstants.RULE_ATTRIBUTE_TYPE);
+			type = KewApiConstants.RULE_ATTRIBUTE_TYPE;
 			//throw new XmlException("RuleAttribute must have an attribute type");
 		}
         type = type.trim();
@@ -167,9 +167,9 @@ public class RuleAttributeXmlParser {
 		if(xmlConfig != null){
 		    ruleAttribute.setXmlConfigData(XmlJotter.jotNode(xmlConfig));
 		} else {
-			if(KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(type)){
+			if(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(type)){
 				throw new XmlException("A routing config must be present to be of type: "+type);
-			} else if(KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(type)){
+			} else if(KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(type)){
 				throw new XmlException("A searching config must be present to be of type: "+type);
 			}
 		}

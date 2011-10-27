@@ -28,10 +28,10 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -171,10 +171,10 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         Class boClass = DocumentHeader.class;
 
         Field descriptionField = FieldUtils.getPropertyField(boClass, "documentDescription", true);
-        descriptionField.setFieldDataType(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING);
+        descriptionField.setFieldDataType(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_STRING);
 
         Field orgDocNumberField = FieldUtils.getPropertyField(boClass, "organizationDocumentNumber", true);
-        orgDocNumberField.setFieldDataType(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING);
+        orgDocNumberField.setFieldDataType(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_STRING);
 
         List<Field> fieldList = new ArrayList<Field>();
         fieldList.add(descriptionField);
@@ -286,13 +286,13 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
             String fieldDataType = propertyResolutionService.determineFieldDataType(boClass, attributeName);
             if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN)) {
-                fieldDataType = KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING;
+                fieldDataType = KewApiConstants.SearchableAttributeConstants.DATA_TYPE_STRING;
             }
 
             // Allow inline range searching on dates and numbers
-            if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) ||
-                fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG) ||
-                fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE)) {
+            if (fieldDataType.equals(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) ||
+                fieldDataType.equals(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_LONG) ||
+                fieldDataType.equals(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_DATE)) {
 
                 searchField.setAllowInlineRange(true);
             }

@@ -25,7 +25,7 @@ import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
@@ -160,7 +160,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 	
 	public Principal getSystemPrincipal() {
-		return getPrincipalByPrincipalName(KEWConstants.SYSTEM_USER);
+		return getPrincipalByPrincipalName(KewApiConstants.SYSTEM_USER);
 	}
 
 }

@@ -17,11 +17,11 @@ package org.kuali.rice.krad.document.authorization;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.authorization.BusinessObjectAuthorizerBase;
@@ -108,18 +108,18 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		}
 		if (documentActions.contains(KRADConstants.KUALI_ACTION_CAN_ACKNOWLEDGE)
 				&& !canTakeRequestedAction(document,
-				KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)) {
+				KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)) {
 			documentActions.remove(KRADConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
 		}
 		if (documentActions.contains(KRADConstants.KUALI_ACTION_CAN_FYI) &&
-				!canTakeRequestedAction(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
+				!canTakeRequestedAction(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, user)) {
 			documentActions.remove(KRADConstants.KUALI_ACTION_CAN_FYI);
 		}
 		if (documentActions.contains(KRADConstants.KUALI_ACTION_CAN_APPROVE)
 				|| documentActions
 						.contains(KRADConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
 			if (!canTakeRequestedAction(document,
-					KEWConstants.ACTION_REQUEST_APPROVE_REQ, user)) {
+					KewApiConstants.ACTION_REQUEST_APPROVE_REQ, user)) {
 				documentActions.remove(KRADConstants.KUALI_ACTION_CAN_APPROVE);
 				documentActions
 						.remove(KRADConstants.KUALI_ACTION_CAN_DISAPPROVE);
@@ -134,7 +134,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		
 		if(documentActions
 				.contains(KRADConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI)
-				&& !canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)){
+				&& !canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, user)){
 			documentActions.remove(KRADConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
 		}
 				
@@ -235,7 +235,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	}
 	
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
-		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
+		if(canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, user)) {
 		    RoutePath routePath = KewApiServiceLocator.getDocumentTypeService().getRoutePathForDocumentTypeName(document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
 		    ProcessDefinition processDefinition = routePath.getPrimaryProcess();
 		    if (processDefinition != null) {
@@ -246,10 +246,10 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 		        return false;
 		    }
 			return true;
-		} else if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)){
+		} else if(canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)){
 			return true;
 		}
-		return canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, user);
+		return canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, user);
 	}
 
 	protected boolean canTakeRequestedAction(Document document,

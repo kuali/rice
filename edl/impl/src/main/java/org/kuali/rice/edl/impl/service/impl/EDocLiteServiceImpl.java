@@ -40,7 +40,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -159,7 +159,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stream);
         } catch (Exception e) {
-            WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing EDocLite XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", KEWConstants.XML_FILE_PARSE_ERROR));
+            WorkflowServiceErrorException wsee = new WorkflowServiceErrorException("Error parsing EDocLite XML file", new WorkflowServiceErrorImpl("Error parsing XML file.", KewApiConstants.XML_FILE_PARSE_ERROR));
             wsee.initCause(e);
             throw wsee;
         }

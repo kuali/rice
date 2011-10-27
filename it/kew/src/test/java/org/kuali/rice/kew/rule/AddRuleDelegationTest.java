@@ -23,7 +23,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -109,7 +109,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		assertTrue("delegate rule should be flagged as a delegate", newRuleDelegation.getDelegationRule().getDelegateRule());
 		assertEquals("Should have 1 responsibility", 1, newRuleDelegation.getDelegationRule().getRuleResponsibilities().size());
 		assertEquals("Incorrect responsibility name", principal2.getPrincipalId(), newRuleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityName());
-		assertEquals("Incorrect responsibility type", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, newRuleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityType());
+		assertEquals("Incorrect responsibility type", KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, newRuleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityType());
 		assertEquals("Incorrect delegation type", DelegationType.PRIMARY.getCode(), newRuleDelegation.getDelegationType());
 
 
@@ -137,7 +137,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 				assertTrue("delegate rule should be flagged as a delegate", ruleDelegation.getDelegationRule().getDelegateRule());
 				assertEquals("Should have 1 responsibility", 1, ruleDelegation.getDelegationRule().getRuleResponsibilities().size());
 				assertEquals("Incorrect responsibility name", delegatePrincipal.getPrincipalId(), ruleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityName());
-				assertEquals("Incorrect responsibility type", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, ruleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityType());
+				assertEquals("Incorrect responsibility type", KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, ruleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityType());
 			}
 		}
 		assertTrue("Failed to find the first delegate rule", foundFirstDelegateRule);

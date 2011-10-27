@@ -26,9 +26,9 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 import java.util.ArrayList;
@@ -49,31 +49,31 @@ public class ActionRegistryImpl implements ActionRegistry {
 
 	private static Map<String, String> actionMap = new HashMap<String, String>();
 	static {
-		actionMap.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, AcknowledgeAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_ADHOC_CD, AdHocAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, RevokeAdHocAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, ApproveAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, BlanketApproveAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_CANCELED_CD, CancelAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_COMPLETED_CD, CompleteAction.class.getName());
-        actionMap.put(KEWConstants.ACTION_TAKEN_ROUTED_CD, RouteDocumentAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_DENIED_CD, DisapproveAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_FYI_CD, ClearFYIAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, LogDocumentActionAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_MOVE_CD, MoveDocumentAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, TakeWorkgroupAuthority.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, ReleaseWorkgroupAuthority.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, ReturnToPreviousNodeAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_SAVED_CD, SaveActionEvent.class.getName());
-		//actionMap.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD, SuperUserActionRequestAcknowledgeEvent.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD, SuperUserActionRequestApproveEvent.class.getName());
-		//actionMap.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD, SuperUserActionRequestCompleteEvent.class.getName());
-		//actionMap.put(KEWConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD, SuperUserActionRequestFYIEvent.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, SuperUserApproveEvent.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, SuperUserCancelEvent.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, SuperUserDisapproveEvent.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, SuperUserReturnToPreviousNodeAction.class.getName());
-		actionMap.put(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, SuperUserNodeApproveEvent.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, AcknowledgeAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_ADHOC_CD, AdHocAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, RevokeAdHocAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_APPROVED_CD, ApproveAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, BlanketApproveAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_CANCELED_CD, CancelAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_COMPLETED_CD, CompleteAction.class.getName());
+        actionMap.put(KewApiConstants.ACTION_TAKEN_ROUTED_CD, RouteDocumentAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_DENIED_CD, DisapproveAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_FYI_CD, ClearFYIAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, LogDocumentActionAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_MOVE_CD, MoveDocumentAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, TakeWorkgroupAuthority.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, ReleaseWorkgroupAuthority.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD, ReturnToPreviousNodeAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_SAVED_CD, SaveActionEvent.class.getName());
+		//actionMap.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_ACKNOWLEDGED_CD, SuperUserActionRequestAcknowledgeEvent.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_APPROVED_CD, SuperUserActionRequestApproveEvent.class.getName());
+		//actionMap.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_COMPLETED_CD, SuperUserActionRequestCompleteEvent.class.getName());
+		//actionMap.put(KewApiConstants.ACTION_TAKEN_SU_ACTION_REQUEST_FYI_CD, SuperUserActionRequestFYIEvent.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD, SuperUserApproveEvent.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, SuperUserCancelEvent.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, SuperUserDisapproveEvent.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_SU_RETURNED_TO_PREVIOUS_CD, SuperUserReturnToPreviousNodeAction.class.getName());
+		actionMap.put(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, SuperUserNodeApproveEvent.class.getName());
 	}
 
 	public void registerAction(String actionCode, String actionClass) {

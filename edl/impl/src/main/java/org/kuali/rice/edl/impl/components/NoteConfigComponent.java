@@ -47,7 +47,7 @@ import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.w3c.dom.Document;
@@ -92,7 +92,7 @@ public class NoteConfigComponent implements EDLModelComponent {
     private List<String> cc = new ArrayList<String>();
     private List<String> bc = new ArrayList<String>();
     private static final String DEFAULT_EMAIL_FROM_ADDRESS = CoreFrameworkServiceLocator.getParameterService()
-            .getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
+            .getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
 
     public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
         NoteForm noteForm = new NoteForm(edlContext.getRequestParser());
@@ -174,11 +174,11 @@ public class NoteConfigComponent implements EDLModelComponent {
                 }
             }
             if (form.getSortNotes() != null && form.getSortNotes().booleanValue()) {
-                if (KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(form.getSortOrder())) {
-                    form.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_ASC);
+                if (KewApiConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(form.getSortOrder())) {
+                    form.setSortOrder(KewApiConstants.Sorting.SORT_SEQUENCE_ASC);
                     form.setSortNotes(Boolean.FALSE);
                 } else {
-                    form.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_DSC);
+                    form.setSortOrder(KewApiConstants.Sorting.SORT_SEQUENCE_DSC);
                     form.setSortNotes(Boolean.FALSE);
                 }
             } else {
@@ -815,7 +815,7 @@ public class NoteConfigComponent implements EDLModelComponent {
      */
 
     private List sortNotes(List allNotes, String sortOrder) {
-        final int returnCode = KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;
+        final int returnCode = KewApiConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(sortOrder) ? -1 : 1;
 
         try {
             Collections.sort(allNotes,

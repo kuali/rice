@@ -40,7 +40,7 @@ import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -150,7 +150,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         String activeParam = fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
         String delegationParam = fieldValues.get(DELEGATION_PROPERTY_NAME);
         String ruleIdParam = fieldValues.get(RULE_ID_PROPERTY_NAME);
-        fieldValues.get(KEWConstants.DELEGATION_WIZARD);
+        fieldValues.get(KewApiConstants.DELEGATION_WIZARD);
         String ruleDescription = fieldValues.get(RULE_DESC_PROPERTY_NAME);
 
         String docTypeSearchName = null;
@@ -222,7 +222,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 /*WorkflowRuleAttribute attribute = (WorkflowRuleAttribute)GlobalResourceLoader.getObject(new ObjectDefinition(ruleTemplateAttribute.getRuleAttribute().getResourceDescriptor(), ruleTemplateAttribute.getRuleAttribute().getApplicationId()));//SpringServiceLocator.getExtensionService().getWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getClassName());
                 RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
                 ExtensionDefinition extensionDefinition = RuleAttribute.to(ruleAttribute);
-                if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+                if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                     ((GenericXMLRuleAttribute) attribute).setExtensionDefinition(extensionDefinition);
                 }
                 attribute.setRequired(false);*/
@@ -281,7 +281,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             RuleBaseValues record = ruleDelegation.getDelegationRule();
 
             if (org.apache.commons.lang.StringUtils.isEmpty(record.getDescription())) {
-                record.setDescription(KEWConstants.HTML_NON_BREAKING_SPACE);
+                record.setDescription(KewApiConstants.HTML_NON_BREAKING_SPACE);
             }
 
             if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
@@ -292,7 +292,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                     if (record.getRuleExtensionValue(pair.getKey(), pair.getKey().toString()) != null) {
                     	newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(pair.getValue(), pair.getKey().toString()).getValue());
                     } else {
-                    	newPair = new ConcreteKeyValue(pair.getKey(), KEWConstants.HTML_NON_BREAKING_SPACE);
+                    	newPair = new ConcreteKeyValue(pair.getKey(), KewApiConstants.HTML_NON_BREAKING_SPACE);
                     }
                     myNewColumns.getColumns().add(newPair);
                     record.getFieldValues().put(newPair.getKey(), newPair.getValue());

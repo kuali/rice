@@ -14,32 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.exception;
+package org.kuali.rice.kew.api.exception;
 
 
 /**
- * The exception used from the Simulation Engine when it has problems routing a
- * document
- * 
+ * Thrown when a resource is not available.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentSimulatedRouteException extends WorkflowException {
+public class ResourceUnavailableException extends WorkflowException {
 
-    private static final long serialVersionUID = 8521549957308984549L;
+	private static final long serialVersionUID = -6217074085963406965L;
 
-    public DocumentSimulatedRouteException() {
+	public ResourceUnavailableException() {
         super();
     }
 
-    public DocumentSimulatedRouteException(String s) {
-        super(s);
+    public ResourceUnavailableException(String message) {
+        super(message);
     }
 
-    public DocumentSimulatedRouteException(String message, Throwable throwable) {
+    public ResourceUnavailableException(String message, Throwable throwable) {
         super(message, throwable);
     }
 
-    public DocumentSimulatedRouteException(Throwable throwable) {
+    public ResourceUnavailableException(Throwable throwable) {
         super(throwable);
     }
 

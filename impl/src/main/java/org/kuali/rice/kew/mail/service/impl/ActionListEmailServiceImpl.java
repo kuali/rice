@@ -16,16 +16,6 @@
 
 package org.kuali.rice.kew.mail.service.impl;
 
-import java.text.FieldPosition;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
@@ -39,9 +29,8 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.DailyEmailJob;
 import org.kuali.rice.kew.mail.WeeklyEmailJob;
@@ -51,7 +40,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -62,6 +51,16 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+
+import java.text.FieldPosition;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ActionListeEmailService which generates messages whose body and subject can be customized via KEW
@@ -107,8 +106,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     public String getApplicationEmailAddress() {
         // first check the configured value
         String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.MAILER_DETAIL_TYPE,
-                KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
+                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.MAILER_DETAIL_TYPE,
+                KewApiConstants.EMAIL_REMINDER_FROM_ADDRESS);
         // if there's no value configured, use the default
         if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
             fromAddress = DEFAULT_EMAIL_FROM_ADDRESS;
@@ -163,8 +162,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                 mailer.sendEmail(
                         getEmailFrom(documentType),
                         new EmailTo(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                                KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
+                                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                                KewApiConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
                         subject,
                         body,
                         false);
@@ -186,7 +185,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         }
 
         if (skipOnApprovals != null && skipOnApprovals.booleanValue()
-                && actionItem.getActionRequestCd().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ)) {
+                && actionItem.getActionRequestCd().equals(KewApiConstants.ACTION_REQUEST_APPROVE_REQ)) {
             LOG.debug("As requested, skipping immediate reminder notification on action item approval for " + actionItem.getPrincipalId());
             return;
         }
@@ -205,12 +204,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             try {
                 CustomEmailAttribute customEmailAttribute = document.getCustomEmailAttribute();
                 if (customEmailAttribute != null) {
-                    RouteHeaderDTO routeHeaderVO = DTOConverter
-                            .convertRouteHeader(document,
-                                    actionItem.getPrincipalId());
+                    Document routeHeaderVO = DocumentRouteHeaderValue.to(document);
                     ActionRequestValue actionRequest = KEWServiceLocator
-                            .getActionRequestService().findByActionRequestId(
-                                    actionItem.getActionRequestId());
+                            .getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
                     ActionRequest actionRequestVO = ActionRequestValue.to(actionRequest);
                     customEmailAttribute.setRouteHeaderVO(routeHeaderVO);
                     customEmailAttribute.setActionRequestVO(actionRequestVO);
@@ -245,14 +241,14 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
     public void sendDailyReminder() {
         if (sendActionListEmailNotification()) {
-            Collection<Person> users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_DAY_VAL);
+            Collection<Person> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
             for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
                 Person user = userIter.next();
                 try {
                     Collection actionItems = getActionListService().getActionList(user.getPrincipalId(), null);
                     if (actionItems != null && actionItems.size() > 0) {
                         sendPeriodicReminder(user, actionItems,
-                                KEWConstants.EMAIL_RMNDR_DAY_VAL);
+                                KewApiConstants.EMAIL_RMNDR_DAY_VAL);
                     }
                 } catch (Exception e) {
                     LOG.error(
@@ -266,7 +262,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
     public void sendWeeklyReminder() {
         if (sendActionListEmailNotification()) {
-            List<Person> users = getUsersWithEmailSetting(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
+            List<Person> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
             for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
                 Person user = userIter.next();
                 try {
@@ -274,7 +270,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                             .getActionList(user.getPrincipalId(), null);
                     if (actionItems != null && actionItems.size() > 0) {
                         sendPeriodicReminder(user, actionItems,
-                                KEWConstants.EMAIL_RMNDR_WEEK_VAL);
+                                KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
                     }
                 } catch (Exception e) {
                     LOG.error(
@@ -294,9 +290,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         if (actionItems.isEmpty()) {
             return;
         }
-        if (KEWConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
+        if (KewApiConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
             emailBody = buildDailyReminderBody(user, actionItems);
-        } else if (KEWConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
+        } else if (KewApiConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
             emailBody = buildWeeklyReminderBody(user, actionItems);
         }
         sendEmail(user, getEmailSubject(), new EmailBody(emailBody));
@@ -320,9 +316,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             }
             boolean includeItem = true;
             if (DelegationType.PRIMARY.getCode().equals(actionItem.getDelegationType())) {
-                includeItem = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
+                includeItem = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
             } else if (DelegationType.SECONDARY.getCode().equals(actionItem.getDelegationType())) {
-                includeItem = KEWConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
+                includeItem = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
             }
             if (includeItem) {
                 filteredItems.add(actionItem);
@@ -334,7 +330,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     protected List<Person> getUsersWithEmailSetting(String setting) {
         List users = new ArrayList();
         Collection userOptions = getUserOptionsService().findByOptionValue(
-                KEWConstants.EMAIL_RMNDR_KEY, setting);
+                KewApiConstants.EMAIL_RMNDR_KEY, setting);
         for (Iterator iter = userOptions.iterator(); iter.hasNext();) {
             String workflowId = ((UserOptions) iter.next()).getWorkflowId();
             try {
@@ -413,10 +409,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             } else {
                 docHandlerUrl += "&";
             }
-            docHandlerUrl += KEWConstants.DOCUMENT_ID_PARAMETER + "="
+            docHandlerUrl += KewApiConstants.DOCUMENT_ID_PARAMETER + "="
                     + actionItem.getDocumentId();
-            docHandlerUrl += "&" + KEWConstants.COMMAND_PARAMETER + "="
-                    + KEWConstants.ACTIONLIST_COMMAND;
+            docHandlerUrl += "&" + KewApiConstants.COMMAND_PARAMETER + "="
+                    + KewApiConstants.ACTIONLIST_COMMAND;
         }
         StringBuffer sf = new StringBuffer();
 
@@ -587,19 +583,19 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         if (LOG.isDebugEnabled())
             LOG.debug("actionlistsendconstant: "
                     + CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                            KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                            KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+                            KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                            KewApiConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
 
-        return KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
+        return KewApiConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE
                 .equals(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                        KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                        KEWConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
+                        KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                        KewApiConstants.ACTION_LIST_SEND_EMAIL_NOTIFICATION_IND));
     }
 
     public void scheduleBatchEmailReminders() throws Exception {
         String emailBatchGroup = "Email Batch";
         String dailyCron = ConfigContext.getCurrentContextConfig()
-                .getProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION);
+                .getProperty(KewApiConstants.DAILY_EMAIL_CRON_EXPRESSION);
         if (!StringUtils.isBlank(dailyCron)) {
             LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
             CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
@@ -609,12 +605,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             addJobToScheduler(dailyJobDetail);
             addTriggerToScheduler(dailyTrigger);
         } else {
-            LOG.warn("No " + KEWConstants.DAILY_EMAIL_CRON_EXPRESSION
+            LOG.warn("No " + KewApiConstants.DAILY_EMAIL_CRON_EXPRESSION
                     + " parameter was configured.  Daily Email batch was not scheduled!");
         }
 
         String weeklyCron = ConfigContext.getCurrentContextConfig().getProperty(
-                KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
+                KewApiConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
         if (!StringUtils.isBlank(weeklyCron)) {
             LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
             CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
@@ -624,7 +620,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             addJobToScheduler(weeklyJobDetail);
             addTriggerToScheduler(weeklyTrigger);
         } else {
-            LOG.warn("No " + KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION
+            LOG.warn("No " + KewApiConstants.WEEKLY_EMAIL_CRON_EXPRESSION
                     + " parameter was configured.  Weekly Email batch was not scheduled!");
         }
     }

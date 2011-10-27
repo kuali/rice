@@ -17,7 +17,7 @@
 package org.kuali.rice.edl.framework.extract;
 
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -100,7 +100,7 @@ public class DumpDTO implements Serializable {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         Date date = calendar.getTime();
-        DateFormat dateFormat = new SimpleDateFormat(KEWConstants.TIMESTAMP_DATE_FORMAT_PATTERN2);
+        DateFormat dateFormat = new SimpleDateFormat(KewApiConstants.TIMESTAMP_DATE_FORMAT_PATTERN2);
         return dateFormat.format(date);
     }
 

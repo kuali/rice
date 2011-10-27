@@ -28,7 +28,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -73,7 +73,7 @@ public class SearchableAttributeDateTimeValue implements SearchableAttributeValu
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = false;
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
-    private static final String ATTRIBUTE_XML_REPRESENTATION = KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE;
+    private static final String ATTRIBUTE_XML_REPRESENTATION = KewApiConstants.SearchableAttributeConstants.DATA_TYPE_DATE;
 
     @Id
     @GeneratedValue(generator="KREW_SRCH_ATTR_S")

@@ -18,7 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
@@ -46,7 +46,7 @@ public class DelegationTypeValuesFinder extends KeyValuesBase {
 			delegationTypesForMaintDocs.add(new ConcreteKeyValue(delegationType.getCode(), delegationType.getLabel()));
 		}
 		// for non maintenance documents, add a "both" option
-		delegationTypes.add(new ConcreteKeyValue(KEWConstants.DELEGATION_BOTH, KEWConstants.DELEGATION_BOTH_LABEL));
+		delegationTypes.add(new ConcreteKeyValue(KewApiConstants.DELEGATION_BOTH, KewApiConstants.DELEGATION_BOTH_LABEL));
 		
 		C_DELEGATION_TYPES = Collections.unmodifiableList(delegationTypes);
 		C_DELEGATION_TYPES_FOR_MAIN_DOCS = Collections.unmodifiableList(delegationTypesForMaintDocs);

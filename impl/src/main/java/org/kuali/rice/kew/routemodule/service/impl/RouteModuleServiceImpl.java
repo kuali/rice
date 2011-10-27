@@ -21,13 +21,13 @@ import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.routemodule.FlexRMAdapter;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.routemodule.service.RouteModuleService;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -75,7 +75,7 @@ public class RouteModuleServiceImpl implements RouteModuleService, BeanFactoryAw
     private RouteModule getRouteModule(String routeMethodName) throws ResourceUnavailableException {
         if (routeMethodName == null) {
             return null;
-        } else if ("".equals(routeMethodName.trim()) || KEWConstants.ROUTE_LEVEL_NO_ROUTE_MODULE.equals(routeMethodName)) {
+        } else if ("".equals(routeMethodName.trim()) || KewApiConstants.ROUTE_LEVEL_NO_ROUTE_MODULE.equals(routeMethodName)) {
                 return null;
         }
         Object routeModule = GlobalResourceLoader.getObject(new ObjectDefinition(routeMethodName));//SpringServiceLocator.getExtensionService().getRouteModule(routeMethodName);

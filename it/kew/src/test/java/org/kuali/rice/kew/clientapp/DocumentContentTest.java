@@ -33,7 +33,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * Tests that client interaction with document content behaves approriately.
@@ -42,10 +42,10 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 public class DocumentContentTest extends KEWTestCase {
 
-    private static final String DOCUMENT_CONTENT = KEWConstants.DOCUMENT_CONTENT_ELEMENT;
-    private static final String ATTRIBUTE_CONTENT = KEWConstants.ATTRIBUTE_CONTENT_ELEMENT;
-    private static final String SEARCHABLE_CONTENT = KEWConstants.SEARCHABLE_CONTENT_ELEMENT;
-    private static final String APPLICATION_CONTENT = KEWConstants.APPLICATION_CONTENT_ELEMENT;
+    private static final String DOCUMENT_CONTENT = KewApiConstants.DOCUMENT_CONTENT_ELEMENT;
+    private static final String ATTRIBUTE_CONTENT = KewApiConstants.ATTRIBUTE_CONTENT_ELEMENT;
+    private static final String SEARCHABLE_CONTENT = KewApiConstants.SEARCHABLE_CONTENT_ELEMENT;
+    private static final String APPLICATION_CONTENT = KewApiConstants.APPLICATION_CONTENT_ELEMENT;
     
     @Test public void testDocumentContent() throws Exception {
         String startContent = "<"+DOCUMENT_CONTENT+">";
@@ -196,8 +196,8 @@ public class DocumentContentTest extends KEWTestCase {
     	
     	// fetch it from WorkflowInfo
     	DocumentContent content = KewApiServiceLocator.getWorkflowDocumentService().getDocumentContent(document.getDocumentId());
-    	assertTrue("Should contain default content, was " + content.getFullContent(), KEWConstants.DEFAULT_DOCUMENT_CONTENT.equals(content.getFullContent()) ||
-    			KEWConstants.DEFAULT_DOCUMENT_CONTENT2.equals(content.getFullContent()));
+    	assertTrue("Should contain default content, was " + content.getFullContent(), KewApiConstants.DEFAULT_DOCUMENT_CONTENT.equals(content.getFullContent()) ||
+    			KewApiConstants.DEFAULT_DOCUMENT_CONTENT2.equals(content.getFullContent()));
     	
     	String appContent = "<abcdefg>hijklm n o p</abcdefg>";
     	DocumentContentUpdate.Builder contentUpdate = DocumentContentUpdate.Builder.create(content);

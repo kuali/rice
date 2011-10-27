@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.actions;
 
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -32,17 +32,17 @@ import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 public class SuperUserCancelEvent extends SuperUserActionTakenEvent {
     
     public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal);
-        this.superUserAction = KEWConstants.SUPER_USER_CANCEL;
+        super(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal);
+        this.superUserAction = KewApiConstants.SUPER_USER_CANCEL;
     }
 
     public SuperUserCancelEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
-        super(KEWConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KEWConstants.SUPER_USER_CANCEL;
+        super(KewApiConstants.ACTION_TAKEN_SU_CANCELED_CD, routeHeader, principal, annotation, runPostProcessor);
+        this.superUserAction = KewApiConstants.SUPER_USER_CANCEL;
     }
 
     protected void markDocument() throws WorkflowException {
-        //this.event = new DocumentRouteStatusChange(this.documentId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KEWConstants.ROUTE_HEADER_CANCEL_CD);
+        //this.event = new DocumentRouteStatusChange(this.documentId, this.getRouteHeader().getAppDocId(), this.getRouteHeader().getDocRouteStatus(), KewApiConstants.ROUTE_HEADER_CANCEL_CD);
         getRouteHeader().markDocumentCanceled();
         KEWServiceLocator.getRouteHeaderService().saveRouteHeader(getRouteHeader());
     }

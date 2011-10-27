@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.notes;
 
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.krad.UserSession;
 
 
@@ -30,8 +30,8 @@ public interface CustomNoteAttribute {
 
     public boolean isAuthorizedToEditNote(Note note) throws Exception;
     public boolean isAuthorizedToAddNotes() throws Exception;
-    public RouteHeaderDTO getRouteHeaderVO();
-    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO);
+    public Document getRouteHeaderVO();
+    public void setRouteHeaderVO(Document routeHeaderVO);
     public UserSession getUserSession();
     public void setUserSession(UserSession workflowUserSession);
     

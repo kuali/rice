@@ -25,9 +25,9 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -44,16 +44,16 @@ public class RevokeAdHocAction extends ActionTakenEvent {
     private AdHocRevoke revoke;
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal);
+        super(KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal);
     }
 
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String actionRequestId, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
         this.actionRequestId = actionRequestId;
     }
     
     public RevokeAdHocAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, AdHocRevoke revoke, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD, routeHeader, principal, annotation);
         this.revoke = revoke;
     }
 

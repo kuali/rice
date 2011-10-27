@@ -20,7 +20,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypePermissionService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -48,7 +48,7 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
 		Principal ewestfalPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
 		assertNotNull(testDocType);
-		assertTrue("ewestfal should be a blanket approver", service.canBlanketApprove(ewestfalPrincipal.getPrincipalId(), testDocType, KEWConstants.ROUTE_HEADER_INITIATED_CD, ewestfalPrincipal.getPrincipalId()));
+		assertTrue("ewestfal should be a blanket approver", service.canBlanketApprove(ewestfalPrincipal.getPrincipalId(), testDocType, KewApiConstants.ROUTE_HEADER_INITIATED_CD, ewestfalPrincipal.getPrincipalId()));
 		
 		// TODO set up actual KIM permissions in DB and verify this permission works
 	}

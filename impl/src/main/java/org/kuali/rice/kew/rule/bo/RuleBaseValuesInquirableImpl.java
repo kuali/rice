@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule.bo;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.web.ui.Section;
@@ -81,8 +81,8 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 			link.setDisplayText(documentId+"");
 
 			String href = ConfigContext.getCurrentContextConfig().getKEWBaseURL() + "/" +
-			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" +
-			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.DOCUMENT_ID_PARAMETER + "=" + documentId;
+			KewApiConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KewApiConstants.COMMAND_PARAMETER + "=" +
+			KewApiConstants.DOCSEARCH_COMMAND + "&" + KewApiConstants.DOCUMENT_ID_PARAMETER + "=" + documentId;
 
 			link.setHref(href);
 

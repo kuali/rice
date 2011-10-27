@@ -40,7 +40,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -112,7 +112,7 @@ public class ActionRequestFactory {
      * @return ActionRequestValue
 	 */
 	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean forceAction, String annotation) {
-		return createActionRequest(actionRequested, 0, recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
+		return createActionRequest(actionRequested, 0, recipient, description, KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
 	}
 
 	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, String responsibilityId, Boolean forceAction, String annotation) {
@@ -167,9 +167,9 @@ public class ActionRequestFactory {
     public List<ActionRequestValue> generateNotifications(List requests, PrincipalContract principal, Recipient delegator,
             String notificationRequestCode, String actionTakenCode)
     {
-        String groupName =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE,
+        String groupName =  CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE,
                 KRADConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
-                KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
+                KewApiConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
         
         
         Group notifyExclusionWorkgroup = null;
@@ -233,7 +233,7 @@ public class ActionRequestFactory {
     private ActionRequestValue createNotificationRequest(ActionRequestValue actionRequest, PrincipalContract reasonPrincipal, String notificationRequestCode, String actionTakenCode) {
 
     	String annotation = generateNotificationAnnotation(reasonPrincipal, notificationRequestCode, actionTakenCode, actionRequest);
-        ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
+        ActionRequestValue request = createActionRequest(notificationRequestCode, actionRequest.getPriority(), actionRequest.getRecipient(), actionRequest.getResponsibilityDesc(), KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, Boolean.TRUE, annotation);
 
         request.setDocVersion(actionRequest.getDocVersion());
         request.setApprovePolicy(actionRequest.getApprovePolicy());
@@ -396,7 +396,7 @@ public class ActionRequestFactory {
 	    	        actionTypeCode, 
 	    	        priority, roleResponsibilityRecipient,
 	    	        "", // description 
-	    	        KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, 
+	    	        KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID,
 	    	        forceAction, 
 	    	        approvePolicy, 
 	    	        null, // ruleId
@@ -675,7 +675,7 @@ public class ActionRequestFactory {
     	// FIXME: KULRICE-5201 switched rsp_id to a varchar, so the comparison below is no longer valid
 //    	if (request.getResponsibilityId() != null && request.getResponsibilityId() != 0) {
     	// TODO: KULRICE-5329 Verify that this code below makes sense and is sufficient
-    	if (request.getResponsibilityId() != null && !KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(request.getResponsibilityId())) {
+    	if (request.getResponsibilityId() != null && !KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(request.getResponsibilityId())) {
     		notification += " Responsibility " + request.getResponsibilityId();
     	}
     	if (request.getRuleBaseValuesId() != null) {

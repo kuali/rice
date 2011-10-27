@@ -19,10 +19,10 @@ package org.kuali.rice.kew.actions;
 import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.kew.actionrequest.*;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.group.Group;
 
@@ -154,7 +154,7 @@ public class AdHocAction extends ActionTakenEvent {
                 if (!forValidationOnly) {
                     ActionRequestFactory arFactory = new ActionRequestFactory(routeHeader, routeNode);
                     adhocRequest = arFactory.createActionRequest(actionRequested, recipient, responsibilityDesc, forceAction, annotation);
-                    adhocRequest.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
+                    adhocRequest.setResponsibilityId(KewApiConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
                     adhocRequest.setRequestLabel(requestLabel);
                     if (priority != null) {
                         adhocRequest.setPriority(priority);

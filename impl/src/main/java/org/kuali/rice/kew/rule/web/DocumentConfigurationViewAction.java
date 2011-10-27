@@ -28,7 +28,7 @@ import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
@@ -196,7 +196,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
             QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
             Predicate p = and(
                 equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
-                equal("template.name", KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME),
+                equal("template.name", KewApiConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME),
                 equal("active", "Y"),
                 equal("attributes[documentTypeName]", docType.getName())
             );
@@ -298,7 +298,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
             QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
             Predicate p = and(
                 equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
-                equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+                equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
                 equal("active", "Y"),
                 equal("attributes[documentTypeName]", docType.getName())
             );

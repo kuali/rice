@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestFile;
 
@@ -47,19 +47,19 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
     @Test public void testEmailCreationPerformance() throws Exception {
         getMockEmailService().resetReminderCounts();
         assertEquals("total number of reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent());
-        assertEquals("total number of daily reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL));
-        assertEquals("total number of weekly reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL));
+        assertEquals("total number of daily reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_DAY_VAL));
+        assertEquals("total number of weekly reminders sent should be 0", Integer.valueOf(0), getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_WEEK_VAL));
 
         String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
         String jhopfPrincpalId = getPrincipalIdForName("jhopf");
         
         long totalStartTimeInMills = System.currentTimeMillis();
-        setupPreferences(Arrays.asList(new String[]{rkirkendPrincipalId, jhopfPrincpalId}), KEWConstants.WEEKLY);
+        setupPreferences(Arrays.asList(new String[]{rkirkendPrincipalId, jhopfPrincpalId}), KewApiConstants.WEEKLY);
         long weeklyStartTimeInMills = System.currentTimeMillis();
         getMockEmailService().sendWeeklyReminder();
         assertTrue("Style content service should have been called but was not", getMockEmailService().wasStyleServiceAccessed());
         long weeklyEndTimeInMills = System.currentTimeMillis();
-        setupPreferences(Arrays.asList(new String[]{rkirkendPrincipalId, jhopfPrincpalId}), KEWConstants.DAILY);
+        setupPreferences(Arrays.asList(new String[]{rkirkendPrincipalId, jhopfPrincpalId}), KewApiConstants.DAILY);
         long dailyStartTimeInMills = System.currentTimeMillis();
         getMockEmailService().sendDailyReminder();
         assertTrue("Style content service should have been called but was not", getMockEmailService().wasStyleServiceAccessed());
@@ -68,19 +68,19 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
 
         // check performance
         LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent() + " weekly and daily reminder messages was " + (totalEndTimeInMills - totalStartTimeInMills) + " milliseconds");
-        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL) + " weekly reminder messages was " + (weeklyEndTimeInMills - weeklyStartTimeInMills) + " milliseconds");
-        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL) + " daily reminder messages was " + (dailyEndTimeInMills - dailyStartTimeInMills) + " milliseconds");
-        assertTrue("total number of daily reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL));
-        assertTrue("total number of weekly reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL));
+        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_WEEK_VAL) + " weekly reminder messages was " + (weeklyEndTimeInMills - weeklyStartTimeInMills) + " milliseconds");
+        LOG.info("Total time to process " + getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_DAY_VAL) + " daily reminder messages was " + (dailyEndTimeInMills - dailyStartTimeInMills) + " milliseconds");
+        assertTrue("total number of daily reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_DAY_VAL));
+        assertTrue("total number of weekly reminders sent should be greater than 0", Integer.valueOf(0) < getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_WEEK_VAL));
 
         // each action item should take less than 1 second
         Integer totalSent = getMockEmailService().getTotalPeriodicRemindersSent();
         int expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
         assertTrue("Total time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (totalEndTimeInMills - totalStartTimeInMills));
-        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_WEEK_VAL);
+        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
         expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
         assertTrue("Weekly Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (weeklyEndTimeInMills - weeklyStartTimeInMills));
-        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KEWConstants.EMAIL_RMNDR_DAY_VAL);
+        totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
         expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
         assertTrue("Daily Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (dailyEndTimeInMills - dailyStartTimeInMills));
     }

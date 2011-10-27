@@ -33,7 +33,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
@@ -199,7 +199,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertNull("original date created from should have been null", criteria.getDateCreatedFrom());
         assertNotNull("modified date created from should be non-null", results.getCriteria().getDateCreatedFrom());
         assertEquals("Criteria date minus today's date should equal the constant value",
-                KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.intValue(),
+                KewApiConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.intValue(),
                 getDifferenceInDays(results.getCriteria().getDateCreatedFrom()));
 
         // now set some attributes which should still result in modified criteria since they don't count toward
@@ -216,7 +216,7 @@ public class DocumentSearchTest extends KEWTestCase {
         assertTrue("criteria should have been modified", results.isCriteriaModified());
         assertNotNull("modified date created from should be non-null", results.getCriteria().getDateCreatedFrom());
         assertEquals("Criteria date minus today's date should equal the constant value",
-                Math.abs(KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO.intValue()),
+                Math.abs(KewApiConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO.intValue()),
                 getDifferenceInDays(results.getCriteria().getDateCreatedFrom()));
 
         // now set another field on the criteria, modification should *not* occur

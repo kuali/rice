@@ -27,7 +27,7 @@ import org.kuali.rice.kew.rule.RuleDelegationBo;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -86,7 +86,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, String workflowIdDirective) {
         Criteria crit = new Criteria(); //getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegationType, activeInd, extensionValues);
 
-        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_BOTH)) {
+        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KewApiConstants.DELEGATION_BOTH)) {
         	crit.addEqualTo("delegationType", delegationType);
         }
         
@@ -117,7 +117,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = new Criteria();
         
-        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KEWConstants.DELEGATION_BOTH)) {
+        if (StringUtils.isNotBlank(delegationType) && !delegationType.equals(KewApiConstants.DELEGATION_BOTH)) {
         	crit.addEqualTo("delegationType", delegationType);
         }
         
@@ -151,7 +151,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             }
         Criteria responsibilityCrit = new Criteria();
         responsibilityCrit.addIn("ruleResponsibilityName", workgroupIds);
-        responsibilityCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+        responsibilityCrit.addEqualTo("ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibilityBo.class, responsibilityCrit);
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         return query;
@@ -241,7 +241,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                 // searching user wishes to search for rules specific to user
                 ruleResponsibilityNameCrit = new Criteria();
                 ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workflowId);
-                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
             }
             if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
                 // at least one workgroup id exists and user wishes to search on workgroups
@@ -250,19 +250,19 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                 }
                 Criteria workgroupCrit = new Criteria();
                 workgroupCrit.addIn("ruleResponsibilityName", workgroupIds);
-                workgroupCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+                workgroupCrit.addEqualTo("ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
                 ruleResponsibilityNameCrit.addOrCriteria(workgroupCrit);
             }
         } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
             // no user and one workgroup id
             ruleResponsibilityNameCrit = new Criteria();
             ruleResponsibilityNameCrit.addLike("ruleResponsibilityName", workgroupIds.iterator().next());
-            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
             // no user and more than one workgroup id
             ruleResponsibilityNameCrit = new Criteria();
             ruleResponsibilityNameCrit.addIn("ruleResponsibilityName", workgroupIds);
-            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            ruleResponsibilityNameCrit.addEqualTo("ruleResponsibilityType", KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         }
         if (ruleResponsibilityNameCrit != null) {
             responsibilityCrit.addAndCriteria(ruleResponsibilityNameCrit);

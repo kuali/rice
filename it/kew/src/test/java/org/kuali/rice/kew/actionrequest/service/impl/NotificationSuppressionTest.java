@@ -45,7 +45,7 @@ import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in.
@@ -158,7 +158,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
 
         assertTrue("the responsible party should have been notified",
                 1 == getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(),
-                        KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+                        KewApiConstants.ACTION_REQUEST_COMPLETE_REQ));
 
         getMockEmailService().resetReminderCounts();
 
@@ -200,7 +200,7 @@ public class NotificationSuppressionTest extends KEWTestCase {
         rule.getRuleResponsibilities().add(delegationResponsibility);
         delegationResponsibility.setRuleBaseValues(rule);
         delegationResponsibility.setRuleResponsibilityName("user2");
-        delegationResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+        delegationResponsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 
         // reset mock service test data
         getMockEmailService().resetReminderCounts();
@@ -214,10 +214,10 @@ public class NotificationSuppressionTest extends KEWTestCase {
 
         assertTrue("should have notified user2",
                 1 == getMockEmailService().immediateReminderEmailsSent("user2", document.getDocumentId(),
-                        KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+                        KewApiConstants.ACTION_REQUEST_COMPLETE_REQ));
         assertTrue("the responsible party that is delegating should not be notified",
                 0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(),
-                        KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+                        KewApiConstants.ACTION_REQUEST_COMPLETE_REQ));
 
         getMockEmailService().resetReminderCounts();
 
@@ -231,10 +231,10 @@ public class NotificationSuppressionTest extends KEWTestCase {
 
         assertTrue("nobody should have been notified",
                 0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getDocumentId(),
-                        KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+                        KewApiConstants.ACTION_REQUEST_COMPLETE_REQ));
         assertTrue("nobody should have been notified",
                 0 == getMockEmailService().immediateReminderEmailsSent("user1", document.getDocumentId(),
-                        KEWConstants.ACTION_REQUEST_COMPLETE_REQ));
+                        KewApiConstants.ACTION_REQUEST_COMPLETE_REQ));
 
         getMockEmailService().resetReminderCounts();
     }

@@ -20,7 +20,7 @@ package org.kuali.rice.kns.web.format;
 
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * begin Kuali Foundation modification
@@ -38,7 +38,7 @@ public class DelegationTypeFormatter extends Formatter {
         String stringValue = target.getClass().isArray() ? unwrapString(target) : (String) target;
         stringValue = stringValue.trim().toUpperCase();
 
-        return KEWConstants.DELEGATION_TYPES.get(stringValue);
+        return KewApiConstants.DELEGATION_TYPES.get(stringValue);
         if (TRUE_VALUES.contains(stringValue))
             return Boolean.TRUE;
         if (FALSE_VALUES.contains(stringValue))
@@ -60,7 +60,7 @@ public class DelegationTypeFormatter extends Formatter {
         	if (delegationType != null) {
         		return delegationType.getLabel();
         	} else {
-        		return KEWConstants.DELEGATION_BOTH_LABEL;
+        		return KewApiConstants.DELEGATION_BOTH_LABEL;
         	}
         } else {
             return "";

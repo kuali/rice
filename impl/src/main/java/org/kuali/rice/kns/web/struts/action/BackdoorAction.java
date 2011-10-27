@@ -21,7 +21,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.form.BackdoorForm;
@@ -128,7 +128,7 @@ public class BackdoorAction extends KualiAction {
     	// based on whether or not they have permission to use the fictional "AdministrationAction", kind of a hack for now since I don't have time to
     	// split this single action up and I can't pass the methodToCall to the permission check
     	Map<String, String> permissionDetails = new HashMap<String, String>();
-    	permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, KEWConstants.KEW_NAMESPACE);
+    	permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, KewApiConstants.KEW_NAMESPACE);
     	permissionDetails.put(KimConstants.AttributeConstants.ACTION_CLASS, "org.kuali.rice.kew.web.backdoor.AdministrationAction");
     	boolean isAdmin = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KRADConstants.KRAD_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new HashMap<String, String>());
         backdoorForm.setIsAdmin(isAdmin);
@@ -137,7 +137,7 @@ public class BackdoorAction extends KualiAction {
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
 
-    	Boolean showBackdoorLogin = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+    	Boolean showBackdoorLogin = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KewApiConstants.SHOW_BACK_DOOR_LOGIN_IND);
         backdoorForm.setShowBackdoorLogin(showBackdoorLogin);
         setFormGroupPermission(backdoorForm, request);
         if (backdoorForm.getGraphic() != null) {

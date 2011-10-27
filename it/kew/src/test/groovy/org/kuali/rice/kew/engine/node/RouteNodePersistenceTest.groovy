@@ -8,7 +8,7 @@ import org.junit.Before
 import org.kuali.rice.kew.test.KEWTestCase
 import org.kuali.rice.kew.service.KEWServiceLocator
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO
-import org.kuali.rice.kew.util.KEWConstants
+import org.kuali.rice.kew.api.KewApiConstants
 
 /**
  * Tests persisting RouteNode
@@ -31,7 +31,7 @@ class RouteNodePersistenceTest extends KEWTestCase {
             documentTypeId: "1", // OJB mapping is VARCHAR?
             routeNodeName: "name",
             routeMethodName: "routeMethodName",
-            routeMethodCode: KEWConstants.ROUTE_LEVEL_ROUTE_MODULE,
+            routeMethodCode: KewApiConstants.ROUTE_LEVEL_ROUTE_MODULE,
             finalApprovalInd: false,
             mandatoryRouteInd: false,
             exceptionWorkgroupId: "exceptionWorkgroupId",

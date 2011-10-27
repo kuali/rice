@@ -16,7 +16,7 @@
 package org.kuali.rice.ken.util;
 
 import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -269,8 +269,8 @@ public final class NotificationConstants {
         public static final String NOTIFICATION_SYSTEM_USER = "notsys";
         public static final String NOTIFICATION_SYSTEM_USER_NAME = "Notification System";
         public static final String NOTIFICATION_SYSTEM_USER_PARAM = "ken.system.user";
-        public static final String FYI_AD_HOC_ROUTE = KEWConstants.ACTION_REQUEST_FYI_REQ;
-        public static final String ACK_AD_HOC_ROUTE = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
+        public static final String FYI_AD_HOC_ROUTE = KewApiConstants.ACTION_REQUEST_FYI_REQ;
+        public static final String ACK_AD_HOC_ROUTE = KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
         public static final String GENERIC_DELIVERY_ANNOTATION = "The notification message has been delivered by the Notification System.";
         public static final String GENERIC_AUTO_REMOVE_ANNOTATION = "The notification message has been auto-removed by the Notification System.";
         public static final String NOTIFICATION_ADMIN_GROUP_NAME = "NotificationAdmin";

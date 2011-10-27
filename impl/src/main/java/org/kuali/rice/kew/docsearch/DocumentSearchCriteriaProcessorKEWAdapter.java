@@ -19,7 +19,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -167,7 +167,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                     fixedDocumentAttributeRows.addAll(FieldUtils.wrapFields(newFields));
                 }
                 // prepend all document attribute field names with "documentAttribute."
-                field.setPropertyName(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + field.getPropertyName());
+                field.setPropertyName(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + field.getPropertyName());
             }
             fixedDocumentAttributeRows.add(row);
         }

@@ -29,16 +29,15 @@ import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RoutingReportCriteria;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstanceState;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
-import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
@@ -349,7 +348,7 @@ public class RouteLogAction extends KewKualiAction {
 		}
 		
 		/**
-		 * helper method for {@link #importRouteNodeInstanceDTO(RouteNodeInstance)} which does all
+		 * helper method for {@link #importRouteNodeInstanceDTO(org.kuali.rice.kew.api.document.node.RouteNodeInstance)} which does all
 		 * the work.  The public method just wraps this one but hides the returned RouteNodeInstance,
 		 * which is used for the recursive call to populate the nextNodeInstanceS inside our 
 		 * RouteNodeInstanceS.
@@ -390,7 +389,6 @@ public class RouteLogAction extends KewKualiAction {
     		nodeInstance.setProcess(process);
 
     		nodeInstance.setRouteNodeInstanceId(nodeInstanceDTO.getId());
-    		DTOConverter.convertState(null);
 
     		List<NodeState> nodeState = new ArrayList<NodeState>();
     		if (nodeInstanceDTO.getState() != null) {

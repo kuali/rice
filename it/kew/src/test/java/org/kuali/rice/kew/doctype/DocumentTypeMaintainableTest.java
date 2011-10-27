@@ -33,7 +33,7 @@ import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -70,7 +70,7 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
     private void turnOnOutboxForUser(final String principalId) {
         new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                KEWServiceLocator.getUserOptionsService().save(principalId, PreferencesServiceImpl.USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL);
+                KEWServiceLocator.getUserOptionsService().save(principalId, PreferencesServiceImpl.USE_OUT_BOX, KewApiConstants.PREFERENCES_YES_VAL);
                 return null;
             }
         });

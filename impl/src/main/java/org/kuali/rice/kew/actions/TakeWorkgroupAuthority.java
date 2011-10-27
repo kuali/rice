@@ -20,10 +20,10 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -49,7 +49,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @param principal
      */
     public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal);
+        super(KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal);
     }
 
     /**
@@ -59,7 +59,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      * @param groupId
      */
     public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, String groupId) {
-        super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
         this.groupId = groupId;
     }
 

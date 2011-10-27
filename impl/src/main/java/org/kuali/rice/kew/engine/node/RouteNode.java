@@ -48,12 +48,12 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.kew.api.doctype.RouteNodeConfigurationParameterContract;
 import org.kuali.rice.kew.api.doctype.RouteNodeContract;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -321,15 +321,15 @@ public class RouteNode implements Serializable, RouteNodeContract {
     }
 
     public boolean isFlexRM() {
-        return routeMethodCode != null && routeMethodCode.equals(KEWConstants.ROUTE_LEVEL_FLEX_RM);
+        return routeMethodCode != null && routeMethodCode.equals(KewApiConstants.ROUTE_LEVEL_FLEX_RM);
     }
 
     public boolean isRulesEngineNode() {
-        return StringUtils.equals(routeMethodCode, KEWConstants.ROUTE_LEVEL_RULES_ENGINE);
+        return StringUtils.equals(routeMethodCode, KewApiConstants.ROUTE_LEVEL_RULES_ENGINE);
     }
 
     public boolean isPeopleFlowNode() {
-        return StringUtils.equals(routeMethodCode, KEWConstants.ROUTE_LEVEL_PEOPLE_FLOW);
+        return StringUtils.equals(routeMethodCode, KewApiConstants.ROUTE_LEVEL_PEOPLE_FLOW);
     }
     
     public boolean isRoleNode() {

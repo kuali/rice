@@ -40,7 +40,7 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -98,7 +98,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					}
 					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 					}
 					for (Object element : workflowAttribute.getRuleRows()) {
@@ -131,7 +131,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					}
 					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 					}
 					for (Object element : workflowAttribute.getRuleRows()) {
@@ -168,7 +168,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 					}
 					workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getId()+""));
@@ -487,7 +487,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+			if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 
@@ -542,16 +542,16 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 			if (ruleTemplate != null) {
 				if (ruleTemplate.getAcknowledge() != null && "false".equals(ruleTemplate.getAcknowledge().getValue())) {
-					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+					actionRequestCodes.remove(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
 				}
 				if (ruleTemplate.getComplete() != null && "false".equals(ruleTemplate.getComplete().getValue())) {
-					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+					actionRequestCodes.remove(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
 				}
 				if (ruleTemplate.getApprove() != null && "false".equals(ruleTemplate.getApprove().getValue())) {
-					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+					actionRequestCodes.remove(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
 				}
 				if (ruleTemplate.getFyi() != null && "false".equals(ruleTemplate.getFyi().getValue())) {
-					actionRequestCodes.remove(KEWConstants.ACTION_REQUEST_FYI_REQ);
+					actionRequestCodes.remove(KewApiConstants.ACTION_REQUEST_FYI_REQ);
 				}
 			}
 		}

@@ -19,7 +19,6 @@ package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.document.Document;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 
 
 /**
@@ -29,7 +28,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttribute {
 
     private ActionRequest actionRequestVO;
-    private RouteHeaderDTO routeHeaderVO;
+    private Document routeHeaderVO;
     
     public ActionRequest getActionRequestVO() {
         return this.actionRequestVO;
@@ -43,7 +42,7 @@ public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttr
         return "CUSTOM EMAIL SUBJECT";
     }
 
-    public RouteHeaderDTO getRouteHeaderVO() {
+    public Document getRouteHeaderVO() {
         return this.routeHeaderVO;
     }
 
@@ -53,8 +52,10 @@ public class EmailMessageTestCaseCustomEmailAttribute implements CustomEmailAttr
         this.actionRequestVO = builder.build();
     }
 
-    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
+    public void setRouteHeaderVO(Document routeHeaderVO) {
         this.routeHeaderVO = routeHeaderVO;
-        this.routeHeaderVO.setAppDocId("setByEmailComp");
+        Document.Builder builder = Document.Builder.create(routeHeaderVO);
+        builder.setApplicationDocumentId("setByEmailComp");
+        this.routeHeaderVO = builder.build();
     }
 }

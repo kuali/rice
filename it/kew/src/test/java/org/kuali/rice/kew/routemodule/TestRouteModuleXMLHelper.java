@@ -28,8 +28,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.kuali.rice.kew.api.action.DelegationType;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;

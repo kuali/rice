@@ -21,11 +21,10 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -53,7 +52,7 @@ public class ApproveAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public ApproveAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal);
+        super(KewApiConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal);
     }
 
     /**
@@ -65,7 +64,7 @@ public class ApproveAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public ApproveAction(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_APPROVED_CD, routeHeader, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -80,7 +79,7 @@ public class ApproveAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be approved";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the APPROVE action";
         }
@@ -111,10 +110,10 @@ public class ApproveAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // Approve action matches Complete, Approve, FYI, and ACK requests
-            if ( (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
-                    (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
-                    (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                    (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
+                    (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
+                    (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                    (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -130,14 +129,14 @@ public class ApproveAction extends ActionTakenEvent {
      * - Records the action
      *
      * @throws InvalidActionTakenException
-     * @throws ResourceUnavailableException
+     * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException
      */
     public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
         LOG.debug("Approving document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         if (actionRequests == null || actionRequests.isEmpty()) {
             DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
             if (allowUnrequested != null) {
@@ -164,7 +163,7 @@ public class ApproveAction extends ActionTakenEvent {
         boolean isSaved = getRouteHeader().isStateSaved();
         if (isException || isSaved) {
             String oldStatus = getRouteHeader().getDocRouteStatus();
-            LOG.debug("Moving document back to Enroute from "+KEWConstants.DOCUMENT_STATUSES.get(oldStatus));
+            LOG.debug("Moving document back to Enroute from "+KewApiConstants.DOCUMENT_STATUSES.get(oldStatus));
             getRouteHeader().markDocumentEnroute();
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);

@@ -207,8 +207,8 @@ public class SimpleHierarchyProvider implements HierarchyProvider {
     public void setStop(RouteNodeInstance requestNodeInstance, Stop stop) {
         SimpleStop ss = (SimpleStop) stop;
         requestNodeInstance.addNodeState(new NodeState("id", getStopIdentifier(stop)));
-        //requestNodeInstance.addNodeState(new NodeState(KEWConstants.RULE_SELECTOR_NODE_STATE_KEY, "named"));
-        //requestNodeInstance.addNodeState(new NodeState(KEWConstants.RULE_NAME_NODE_STATE_KEY, "NodeInstanceRecipientRule"));
+        //requestNodeInstance.addNodeState(new NodeState(KewApiConstants.RULE_SELECTOR_NODE_STATE_KEY, "named"));
+        //requestNodeInstance.addNodeState(new NodeState(KewApiConstants.RULE_NAME_NODE_STATE_KEY, "NodeInstanceRecipientRule"));
         if (ss.recipient != null) {
             requestNodeInstance.addNodeState(new NodeState("recipient", ((SimpleStop) stop).recipient));
         }

@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * Tests a new document being spawned from the post processing of an existing document
@@ -50,7 +50,7 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
         // should have generated a request to "bmcgough"
     	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue("Document should be enroute", document.isEnroute());
-        assertEquals("Document should be enroute.", KEWConstants.ROUTE_HEADER_ENROUTE_CD, document.getStatus().getCode());
+        assertEquals("Document should be enroute.", KewApiConstants.ROUTE_HEADER_ENROUTE_CD, document.getStatus().getCode());
         assertTrue(document.isApprovalRequested());
         document.approve("Test approve by bmcgough");
         
@@ -61,10 +61,10 @@ public class PostProcessorSpawnedDocumentTest extends KEWTestCase {
         
     	// get spawned document (should be next document id)
     	document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), spawnedDocumentId);
-        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getStatus().getCode());
+        assertEquals("Document should be final.", KewApiConstants.ROUTE_HEADER_FINAL_CD, document.getStatus().getCode());
 
     	// get original document
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), originalDocumentId);
-        assertEquals("Document should be final.", KEWConstants.ROUTE_HEADER_FINAL_CD, document.getStatus().getCode());
+        assertEquals("Document should be final.", KewApiConstants.ROUTE_HEADER_FINAL_CD, document.getStatus().getCode());
     }
 }

@@ -4060,8 +4060,8 @@ if (parameterService.parameterExists(document.getClass(), "EXAMPLE_VALUE")) {
                 but application specific constants as well. There is also a <emphasis role="bold"
                     >RiceConstants</emphasis> variable which holds the constants in <emphasis
                     role="bold">org.kuali.rice.core.api.util.RiceConstants</emphasis>, a <emphasis
-                    role="bold">KEWConstants</emphasis> which holds all of the constants in
-                    <emphasis role="bold">org.kuali.rice.kew.util.KEWConstants</emphasis>, and a
+                    role="bold">KewApiConstants</emphasis> which holds all of the constants in
+                    <emphasis role="bold">org.kuali.rice.kew.util.KewApiConstants</emphasis>, and a
                     <emphasis role="bold">PropertyConstants</emphasis> which holds the values in
                     <emphasis role="bold"
                 >org.kuali.rice.kns.util.KNSPropertyConstants</emphasis>.</para>

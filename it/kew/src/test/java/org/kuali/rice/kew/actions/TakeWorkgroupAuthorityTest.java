@@ -25,7 +25,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionTaken;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class TakeWorkgroupAuthorityTest extends KEWTestCase {
         boolean rkirkendATFound = false;
         for (ActionTaken at : actionsTaken) {
             if (at.getPrincipalId().equals(getPrincipalIdForName("rkirkend"))) {
-                assertEquals("Incorrect action code recorded", KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken().getCode());
+                assertEquals("Incorrect action code recorded", KewApiConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, at.getActionTaken().getCode());
                 rkirkendATFound = true;
             }
         }

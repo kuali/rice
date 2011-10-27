@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 
@@ -38,7 +37,7 @@ public interface RuleSelector {
      * @param selectionCriterion an implementation-specific criterion passed in from the calling context
      * @param effectiveDate an optional criterion that indicates that the rules selected should be active on the given date 
      * @return a list of applicable rules, if any (null or empty list otherwise)
-     * @throws WorkflowException if anything goes awry...
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException if anything goes awry...
      */
     /* inputs taken from FlexRM getActionRequests/makeActionRequests */
     public List<Rule> selectRules(RouteContext context, DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, String selectionCriterion, Timestamp effectiveDate);

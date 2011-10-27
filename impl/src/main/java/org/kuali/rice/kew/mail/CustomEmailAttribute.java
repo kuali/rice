@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.mail;
 
 import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.api.document.Document;
 
 /**
  * Application areas can implement this interface to generate custom email content.
@@ -44,8 +44,8 @@ public interface CustomEmailAttribute {
      * Gets the RouteHeaderVO bean which has document data 
      * @return
      */
-    public RouteHeaderDTO getRouteHeaderVO();
-    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO);
+    public Document getRouteHeaderVO();
+    public void setRouteHeaderVO(Document routeHeaderVO);
     public ActionRequest getActionRequestVO();
     public void setActionRequestVO(ActionRequest actionRequestVO);
     

@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -30,15 +30,15 @@ public final class DocumentTypePolicyEnum {
 	/**
      * FIXME: needs docs
      */
-    public static final DocumentTypePolicyEnum DISAPPROVE = new DocumentTypePolicyEnum(KEWConstants.DISAPPROVE_POLICY);
+    public static final DocumentTypePolicyEnum DISAPPROVE = new DocumentTypePolicyEnum(KewApiConstants.DISAPPROVE_POLICY);
     
     /**
      * This policy determines whether to use the internal KEW Super User document handler URL when opening a document from
      * super user search. If set to false the client must implement a custom super user screen to be used when the doc
-     * handler URL has a post variable of the name defined by {@link KEWConstants#COMMAND_PARAMETER} and a value of
-     * {@link KEWConstants#SUPERUSER_COMMAND}. The default is 'true'.
+     * handler URL has a post variable of the name defined by {@link KewApiConstants#COMMAND_PARAMETER} and a value of
+     * {@link KewApiConstants#SUPERUSER_COMMAND}. The default is 'true'.
      */
-    public static final DocumentTypePolicyEnum USE_KEW_SUPERUSER_DOCHANDLER = new DocumentTypePolicyEnum(KEWConstants.USE_KEW_SUPERUSER_DOCHANDLER);
+    public static final DocumentTypePolicyEnum USE_KEW_SUPERUSER_DOCHANDLER = new DocumentTypePolicyEnum(KewApiConstants.USE_KEW_SUPERUSER_DOCHANDLER);
 
     /**
      * determines how to handle the situation where the user has initiated an action but there is not a corresponding pending request. This policy has a default of true.
@@ -47,7 +47,7 @@ public final class DocumentTypePolicyEnum {
      * When set to false, this will result in one of the users getting an error message if 2 users attempt to submit the same action
      * at the same time (this can happen in workgroup situtations). 
      */
-    public static final DocumentTypePolicyEnum ALLOW_UNREQUESTED_ACTION = new DocumentTypePolicyEnum(KEWConstants.ALLOW_UNREQUESTED_ACTION_POLICY);
+    public static final DocumentTypePolicyEnum ALLOW_UNREQUESTED_ACTION = new DocumentTypePolicyEnum(KewApiConstants.ALLOW_UNREQUESTED_ACTION_POLICY);
     
     /**
      * determines whether a document will go processed without any approval requests.  If
@@ -56,48 +56,48 @@ public final class DocumentTypePolicyEnum {
      * workgroup defined in the 'defaultExceptionGroupName'.  This policy if not defined in this or a parent
      * document type defaults to true
      */
-    public static final DocumentTypePolicyEnum DEFAULT_APPROVE = new DocumentTypePolicyEnum(KEWConstants.DEFAULT_APPROVE_POLICY);
+    public static final DocumentTypePolicyEnum DEFAULT_APPROVE = new DocumentTypePolicyEnum(KewApiConstants.DEFAULT_APPROVE_POLICY);
     /**
      * determines if the user that initiated a document must 'route' the document when it is
      * in the initiated state.  Defaults to true.
      */
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_ROUTE = new DocumentTypePolicyEnum(KEWConstants.INITIATOR_MUST_ROUTE_POLICY);
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_ROUTE = new DocumentTypePolicyEnum(KewApiConstants.INITIATOR_MUST_ROUTE_POLICY);
     /**
      * determines if the user that initiated a document must 'route' the document when it is
      * in the initiated state.  Defaults to true.
      */
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_SAVE = new DocumentTypePolicyEnum(KEWConstants.INITIATOR_MUST_SAVE_POLICY);
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_CANCEL = new DocumentTypePolicyEnum(KEWConstants.INITIATOR_MUST_CANCEL_POLICY);
-    public static final DocumentTypePolicyEnum INITIATOR_MUST_BLANKET_APPROVE = new DocumentTypePolicyEnum(KEWConstants.INITIATOR_MUST_BLANKET_APPROVE_POLICY);
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_SAVE = new DocumentTypePolicyEnum(KewApiConstants.INITIATOR_MUST_SAVE_POLICY);
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_CANCEL = new DocumentTypePolicyEnum(KewApiConstants.INITIATOR_MUST_CANCEL_POLICY);
+    public static final DocumentTypePolicyEnum INITIATOR_MUST_BLANKET_APPROVE = new DocumentTypePolicyEnum(KewApiConstants.INITIATOR_MUST_BLANKET_APPROVE_POLICY);
 
     /**
      * determines whether the document can be brought into a simulated route from the route log.  A
      * simulation of where the document would end up if it where routed to completion now.  Defaults to false.
      */
     // determines if route log will show the look into the future link
-    public static final DocumentTypePolicyEnum LOOK_FUTURE = new DocumentTypePolicyEnum(KEWConstants.LOOK_INTO_FUTURE_POLICY);
+    public static final DocumentTypePolicyEnum LOOK_FUTURE = new DocumentTypePolicyEnum(KewApiConstants.LOOK_INTO_FUTURE_POLICY);
 
-    public static final DocumentTypePolicyEnum SEND_NOTIFICATION_ON_SU_APPROVE = new DocumentTypePolicyEnum(KEWConstants.SEND_NOTIFICATION_ON_SU_APPROVE_POLICY);
+    public static final DocumentTypePolicyEnum SEND_NOTIFICATION_ON_SU_APPROVE = new DocumentTypePolicyEnum(KewApiConstants.SEND_NOTIFICATION_ON_SU_APPROVE_POLICY);
 
-    public static final DocumentTypePolicyEnum SUPPORTS_QUICK_INITIATE = new DocumentTypePolicyEnum(KEWConstants.SUPPORTS_QUICK_INITIATE_POLICY);
+    public static final DocumentTypePolicyEnum SUPPORTS_QUICK_INITIATE = new DocumentTypePolicyEnum(KewApiConstants.SUPPORTS_QUICK_INITIATE_POLICY);
 
-    public static final DocumentTypePolicyEnum NOTIFY_ON_SAVE = new DocumentTypePolicyEnum(KEWConstants.NOTIFY_ON_SAVE_POLICY);
+    public static final DocumentTypePolicyEnum NOTIFY_ON_SAVE = new DocumentTypePolicyEnum(KewApiConstants.NOTIFY_ON_SAVE_POLICY);
     
     /**
      * The Document Status Policy determines whether the KEW Route Status or the Application Document Status (or both) 
      * are to be used for a specific document type.
      */
-    public static final DocumentTypePolicyEnum DOCUMENT_STATUS_POLICY = new DocumentTypePolicyEnum(KEWConstants.DOCUMENT_STATUS_POLICY);
+    public static final DocumentTypePolicyEnum DOCUMENT_STATUS_POLICY = new DocumentTypePolicyEnum(KewApiConstants.DOCUMENT_STATUS_POLICY);
 
     /**
      * This document type policy allows us to configure if the "Perform Post Processor Logic" for the super user action on action requests is displayed.  
      * KULRICE-3584
      */
-    public static final DocumentTypePolicyEnum ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY = new DocumentTypePolicyEnum(KEWConstants.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY);
+    public static final DocumentTypePolicyEnum ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY = new DocumentTypePolicyEnum(KewApiConstants.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY);
 
-    public static final DocumentTypePolicyEnum FAIL_ON_INACTIVE_GROUP = new DocumentTypePolicyEnum(KEWConstants.FAIL_ON_INACTIVE_GROUP_POLICY);
+    public static final DocumentTypePolicyEnum FAIL_ON_INACTIVE_GROUP = new DocumentTypePolicyEnum(KewApiConstants.FAIL_ON_INACTIVE_GROUP_POLICY);
 
-    public static final DocumentTypePolicyEnum REGENERATE_ACTION_REQUESTS_ON_CHANGE = new DocumentTypePolicyEnum(KEWConstants.REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY);
+    public static final DocumentTypePolicyEnum REGENERATE_ACTION_REQUESTS_ON_CHANGE = new DocumentTypePolicyEnum(KewApiConstants.REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY);
 
     private final String name;
 

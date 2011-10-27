@@ -21,12 +21,12 @@ import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -47,11 +47,11 @@ public class SaveActionEvent extends ActionTakenEvent {
     private static final String RESPONSIBILITY_DESCRIPTION = "Initiator needs to complete document.";
 
     public SaveActionEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal);
+	super(KewApiConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal);
     }
 
     public SaveActionEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation) {
-	super(KEWConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal, annotation);
+	super(KewApiConstants.ACTION_TAKEN_SAVED_CD, routeHeader, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -134,8 +134,8 @@ public class SaveActionEvent extends ActionTakenEvent {
     	}
         //RouteNodeInstance initialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getDocumentId()).get(0);
     	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), initialNode);
-    	ActionRequestValue saveRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
-                0, new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
+    	ActionRequestValue saveRequest = arFactory.createActionRequest(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,
+                0, new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KewApiConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
     		Boolean.TRUE, annotation);
     	//      this.getActionRequestService().saveActionRequest(saveRequest);
     	this.getActionRequestService().activateRequest(saveRequest);

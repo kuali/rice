@@ -17,7 +17,7 @@ package org.kuali.rice.kim.impl.responsibility;
 
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityQueryResults;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -63,8 +63,8 @@ public class ReviewResponsibilityMaintenanceDocumentRule extends MaintenanceDocu
 	protected boolean checkForDuplicateResponsibility( ReviewResponsibilityBo resp ) {
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         Predicate p = and(
-            equal("template.namespaceCode", KEWConstants.KEW_NAMESPACE ),
-            equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+            equal("template.namespaceCode", KewApiConstants.KEW_NAMESPACE ),
+            equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
             equal("attributes[documentTypeName]", resp.getDocumentTypeName()),
             equal("attributes[routeNodeName]", resp.getRouteNodeName())
         );

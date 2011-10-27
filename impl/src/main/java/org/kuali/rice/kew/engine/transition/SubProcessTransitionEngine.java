@@ -23,7 +23,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.SubProcessNode;
 import org.kuali.rice.kew.engine.node.SubProcessResult;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 
 import java.util.ArrayList;
 import java.util.List;

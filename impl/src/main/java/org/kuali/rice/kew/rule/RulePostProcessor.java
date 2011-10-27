@@ -26,7 +26,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -42,7 +42,7 @@ public class RulePostProcessor extends DefaultPostProcessor {
     public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
         DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(statusChangeEvent.getDocumentId());
         
-        if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(routeHeader.getDocRouteStatus())) {
+        if (KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equals(routeHeader.getDocRouteStatus())) {
             getRuleService().makeCurrent(routeHeader.getDocumentId());
         }
         return new ProcessDocReport(true, "");

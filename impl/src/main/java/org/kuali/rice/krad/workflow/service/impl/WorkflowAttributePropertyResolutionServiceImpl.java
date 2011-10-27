@@ -23,7 +23,7 @@ import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -268,10 +268,10 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     public DocumentAttribute buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value) {
         if (value == null) return null;
         final String fieldDataType = determineFieldDataType(businessObjectClass, attributeKey);
-        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING)) return buildSearchableStringAttribute(attributeKey, value); // our most common case should go first
-        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) && DataTypeUtil.isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
-        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE) && DataTypeUtil.isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
-        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG) && DataTypeUtil.isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
+        if (fieldDataType.equals(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_STRING)) return buildSearchableStringAttribute(attributeKey, value); // our most common case should go first
+        if (fieldDataType.equals(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) && DataTypeUtil.isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
+        if (fieldDataType.equals(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_DATE) && DataTypeUtil.isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
+        if (fieldDataType.equals(KewApiConstants.SearchableAttributeConstants.DATA_TYPE_LONG) && DataTypeUtil.isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
         if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN) && DataTypeUtil.isBooleanable(value.getClass())) return buildSearchableYesNoAttribute(attributeKey, value);
         return buildSearchableStringAttribute(attributeKey, value);
     }

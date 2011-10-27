@@ -16,11 +16,10 @@
  */
 package org.kuali.rice.kew.engine.transition;
 
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
-
 
 /**
  * Factory which creates a {@link TransitionEngine} for the given {@link RouteNodeInstance}.  The 

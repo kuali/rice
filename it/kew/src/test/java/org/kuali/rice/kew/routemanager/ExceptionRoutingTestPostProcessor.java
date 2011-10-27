@@ -27,7 +27,7 @@ import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.ProcessDocReport;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 public class ExceptionRoutingTestPostProcessor implements PostProcessor {
@@ -46,15 +46,15 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
 	        // defend against re-entrancy by only throwing the route status change exception if the status change we are undergoing is not a transition into exception state!
 	        // if we don't do this, this postprocessor will blow up when it is subsequently notified about the transition into exception state that it previously caused
 	        // which will result in the document never actually transitioning into exception state
-	        boolean transitioningIntoException = !KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getOldRouteStatus()) &&
-                                                      KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getNewRouteStatus()); 
+	        boolean transitioningIntoException = !KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getOldRouteStatus()) &&
+                                                      KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getNewRouteStatus());
 		if (THROW_ROUTE_STATUS_CHANGE_EXCEPTION && !transitioningIntoException) {
 			throw new RuntimeException("I am the doRouteStatusChange exploder");
 		}
 		if (BLOW_UP_ON_TRANSITION_INTO_EXCEPTION && transitioningIntoException) {
 			throw new RuntimeException("Throwing an exception when transitioning into exception status.");
 		}
-		if (KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getOldRouteStatus())) {
+		if (KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getOldRouteStatus())) {
 			TRANSITIONED_OUT_OF_EXCEPTION_ROUTING = true;
 		}
 		return new ProcessDocReport(true, "");

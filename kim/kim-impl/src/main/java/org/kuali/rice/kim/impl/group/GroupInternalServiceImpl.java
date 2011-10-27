@@ -18,7 +18,7 @@ package org.kuali.rice.kim.impl.group;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -77,7 +77,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	if(getGroupService().isMemberOfGroup(principalId, groupId))
     	{
     	    KewApiServiceLocator.getGroupMembershipChangeQueue()
-    	        .notifyMembershipChange(KEWConstants.GroupMembershipChangeOperations.ADDED, groupId, principalId);
+    	        .notifyMembershipChange(KewApiConstants.GroupMembershipChangeOperations.ADDED, groupId, principalId);
     	}
     }
 
@@ -87,7 +87,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	if(!getGroupService().isMemberOfGroup(principalId, groupId))
     	{
             KewApiServiceLocator.getGroupMembershipChangeQueue()
-                .notifyMembershipChange(KEWConstants.GroupMembershipChangeOperations.REMOVED, groupId, principalId);
+                .notifyMembershipChange(KewApiConstants.GroupMembershipChangeOperations.REMOVED, groupId, principalId);
     	}
 
     }

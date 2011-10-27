@@ -43,7 +43,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -219,7 +219,7 @@ public class ActionListServiceImpl implements ActionListService {
         if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd empty.",
                     "actionitem.actionrequestcd.empty", actionItem.getId().toString()));
-        } else if (!KEWConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
+        } else if (!KewApiConstants.ACTION_REQUEST_CD.containsKey(actionRequestCd)) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem action request cd invalid.",
                     "actionitem.actionrequestcd.invalid", actionItem.getId().toString()));
         }
@@ -328,7 +328,7 @@ public class ActionListServiceImpl implements ActionListService {
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
     	UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
     	Boolean isUsingOutBox = true;
-    	List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), KEWConstants.USE_OUT_BOX);
+    	List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), KewApiConstants.USE_OUT_BOX);
     	if (options == null || options.isEmpty()){
     		isUsingOutBox = true;
     	} else {
@@ -344,7 +344,7 @@ public class ActionListServiceImpl implements ActionListService {
             && ConfigContext.getCurrentContextConfig().getOutBoxOn()
             && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getDocumentId(), actionItem.getPrincipalId()) == null
             && !KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()).getDocRouteStatus().equals(
-                    		KEWConstants.ROUTE_HEADER_SAVED_CD)) {
+                    		KewApiConstants.ROUTE_HEADER_SAVED_CD)) {
 
     		// only create an outbox item if this user has taken action on the document
     		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(

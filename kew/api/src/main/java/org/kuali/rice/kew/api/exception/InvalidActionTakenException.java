@@ -14,15 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.dto;
+package org.kuali.rice.kew.api.exception;
 
-import java.io.Serializable;
 
 /**
- * A common superclass for user and group ids.
+ * The exception thrown whenever an ActionTaken can not be procesed for some reason.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RecipientIdDTO implements Serializable {
-	private static final long serialVersionUID = -6938158347498838618L;
+public class InvalidActionTakenException extends WorkflowException {
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1138782665042887434L;
+
+public InvalidActionTakenException() {
+    super();
+  }
+
+  public InvalidActionTakenException(String s) {
+    super(s);
+  }
+  
+  public InvalidActionTakenException(String message, Throwable throwable) {
+      super(message, throwable);
+  }
+  
+  public InvalidActionTakenException(Throwable throwable) {
+      super(throwable);
+  }
+  
 }

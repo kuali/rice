@@ -22,9 +22,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-
 
 /**
  * Implements the KRA meta-rule processing and state machine engine 

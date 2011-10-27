@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.displaytag.decorator.DisplaytagColumnDecorator;
 import org.displaytag.exception.DecoratorException;
 import org.displaytag.properties.MediaTypeEnum;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -35,10 +35,10 @@ public class LookupColumnDecorator implements DisplaytagColumnDecorator {
 
 	public Object decorate(Object columnValue, PageContext pageContext, MediaTypeEnum media) throws DecoratorException {
 		if (columnValue == null) {
-			return KEWConstants.HTML_NON_BREAKING_SPACE;
+			return KewApiConstants.HTML_NON_BREAKING_SPACE;
 		}
 		if (columnValue instanceof String && StringUtils.isEmpty(((String)columnValue).trim())) {
-			return KEWConstants.HTML_NON_BREAKING_SPACE;
+			return KewApiConstants.HTML_NON_BREAKING_SPACE;
 		}
 		return columnValue;
 	}

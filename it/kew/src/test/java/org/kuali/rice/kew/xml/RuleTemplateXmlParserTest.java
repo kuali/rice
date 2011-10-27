@@ -33,7 +33,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -220,11 +220,11 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOptionBo> options = template.getRuleTemplateOptions();
         assertEquals(5, options.size());
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_DEFAULT_CD, "A");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_DEFAULT_CD, "A");
 
         // test those set in the default/template rule
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getId());
@@ -247,11 +247,11 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOptionBo> options = template.getRuleTemplateOptions();
         assertEquals(5, options.size());
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_DEFAULT_CD, "A");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_DEFAULT_CD, "A");
 
         // test those set in the default/template rule
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getId());
@@ -277,11 +277,11 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOptionBo> options = template.getRuleTemplateOptions();
         assertEquals(5, options.size());
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_DEFAULT_CD, "A");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_DEFAULT_CD, "A");
 
         // test those set in the default/template rule
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getId());
@@ -300,7 +300,7 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // value
         options = template.getRuleTemplateOptions();
         assertEquals(1, options.size());
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "true");
 
         // test those set in the default/template rule
         ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getId());
@@ -328,11 +328,11 @@ public class RuleTemplateXmlParserTest extends KEWTestCase {
         // test the rule template options
         List<RuleTemplateOptionBo> options = template.getRuleTemplateOptions();
         assertEquals(5, options.size());
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_APPROVE_REQ, "true");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_FYI_REQ, "false");
-        assertOptionValue(template, KEWConstants.ACTION_REQUEST_DEFAULT_CD, "A");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "true");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_FYI_REQ, "false");
+        assertOptionValue(template, KewApiConstants.ACTION_REQUEST_DEFAULT_CD, "A");
 
         // test those set in the default/template rule
         RuleBaseValues ruleDefaults = KEWServiceLocator.getRuleService().findDefaultRuleByRuleTemplateId(template.getId());

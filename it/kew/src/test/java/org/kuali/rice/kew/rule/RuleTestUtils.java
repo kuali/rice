@@ -18,7 +18,7 @@ package org.kuali.rice.kew.rule;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -106,7 +106,7 @@ public final class RuleTestUtils {
 	 * @param delegatePrincipal
 	 */
 	public static RuleDelegationBo createRuleDelegationToUser(RuleBaseValues parentRule, RuleResponsibilityBo parentResponsibility, PrincipalContract delegatePrincipal) {
-		return createRuleDelegation(parentRule, parentResponsibility, delegatePrincipal.getPrincipalId(), KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+		return createRuleDelegation(parentRule, parentResponsibility, delegatePrincipal.getPrincipalId(), KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 	}
 	
 	/**
@@ -119,7 +119,7 @@ public final class RuleTestUtils {
 	 * @param delegateGroup
 	 */
 	public static RuleDelegationBo createRuleDelegationToGroup(RuleBaseValues parentRule, RuleResponsibilityBo parentResponsibility, Group delegateGroup) {
-		return createRuleDelegation(parentRule, parentResponsibility, delegateGroup.getId(), KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+		return createRuleDelegation(parentRule, parentResponsibility, delegateGroup.getId(), KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
 	}
 	
 	/**

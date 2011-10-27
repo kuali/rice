@@ -85,6 +85,12 @@ public final class CoreConstants {
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE";
     public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
+
+    public static final String DATA_TYPE_STRING = "string";
+    public static final String DATA_TYPE_DATE = "datetime";
+    public static final String DATA_TYPE_LONG = "long";
+    public static final String DATA_TYPE_FLOAT = "float";
+    public static final String DATA_TYPE_BOOLEAN = "boolean";
     
     public static final class Config {
     	public static final String APPLICATION_ID = "application.id";

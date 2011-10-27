@@ -38,7 +38,7 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     
@@ -71,7 +71,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             if (request.getPrincipalId().equals(getPrincipalIdForName("ewestfal"))) {
-                assertEquals("Should be approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
+                assertEquals("Should be approve request.", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 isApproveToEwestfal = true;
             }
         }
@@ -112,12 +112,12 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             String netId = getPrincipalNameForId(request.getPrincipalId()); 
             if (netId.equals("rkirkend")) {
-                assertEquals("Should be approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
+                assertEquals("Should be approve request.", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 isApproveToRkirkend = true;
             } else if (netId.equals("bmcgough")) {
-                if (request.getActionRequested().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ)) {
+                if (request.getActionRequested().equals(KewApiConstants.ACTION_REQUEST_APPROVE_REQ)) {
                     isApproveToBmcgough = true;
-                } else if (request.getActionRequested().equals(KEWConstants.ACTION_REQUEST_FYI_REQ)) {
+                } else if (request.getActionRequested().equals(KewApiConstants.ACTION_REQUEST_FYI_REQ)) {
                     isFyiToBmcgough = true;
                 }
                 

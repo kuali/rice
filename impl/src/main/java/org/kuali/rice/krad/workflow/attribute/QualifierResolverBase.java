@@ -17,7 +17,7 @@ package org.kuali.rice.krad.workflow.attribute;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.role.QualifierResolver;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.krad.document.Document;

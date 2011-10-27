@@ -33,7 +33,7 @@ import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 public class SubProcessRoutingTest extends KEWTestCase {
     
@@ -65,7 +65,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
             assertNotNull("Node instance should be non null.", nodeInstance);
             if (request.getPrincipalId().equals(getPrincipalIdForName("bmcgough"))) {
                 isAck = true;
-                assertEquals("Wrong request type.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getActionRequested());
+                assertEquals("Wrong request type.", KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getActionRequested());
                 assertEquals("Wrong node.", ACKNOWLEDGE_NODE, nodeInstance.getRouteNode().getRouteNodeName());
                 assertNotNull("Should be in a sub process.", nodeInstance.getProcess());
                 assertEquals("Wrong sub process.", SUB_PROCESS_NODE, nodeInstance.getProcess().getRouteNode().getRouteNodeName());
@@ -74,7 +74,7 @@ public class SubProcessRoutingTest extends KEWTestCase {
                 assertFalse("Sub process should be non-complete.", nodeInstance.getProcess().isComplete());
             } else if (request.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 isApprove = true;
-                assertEquals("Wrong request type.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
+                assertEquals("Wrong request type.", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, request.getActionRequested());
                 assertEquals("Wrong node.", APPROVE_NODE, request.getNodeInstance().getRouteNode().getRouteNodeName());
                 assertNotNull("Should be in a sub process.", request.getNodeInstance().getProcess());
                 assertEquals("Wrong sub process.", SUB_PROCESS_NODE, request.getNodeInstance().getProcess().getRouteNode().getRouteNodeName());

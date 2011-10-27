@@ -18,6 +18,8 @@ package org.kuali.rice.kew.actions;
 
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
@@ -25,7 +27,7 @@ import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.exception.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -47,13 +49,13 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
     private String nodeName;
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal);
-        this.superUserAction = KEWConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
+        super(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal);
+        this.superUserAction = KewApiConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
     }
 
     public SuperUserNodeApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor, String nodeName) {
-        super(KEWConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KEWConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
+        super(KewApiConstants.ACTION_TAKEN_SU_ROUTE_LEVEL_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
+        this.superUserAction = KewApiConstants.SUPER_USER_ROUTE_LEVEL_APPROVE;
         this.nodeName = nodeName;
     }
 

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.AfterProcessEventDTO;
 import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
@@ -24,8 +25,7 @@ import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentService;
@@ -62,7 +62,7 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             establishGlobalVariables();
             Document document = documentService.getByDocumentHeaderId(statusChangeEvent.getDocumentId());
             if (document == null) {
-                if (!KEWConstants.ROUTE_HEADER_CANCEL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+                if (!KewApiConstants.ROUTE_HEADER_CANCEL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
                     throw new RuntimeException("unable to load document " + statusChangeEvent.getDocumentId());
                 }
             }
@@ -138,9 +138,9 @@ public class PostProcessorServiceImpl implements PostProcessorService {
             Document document = documentService.getByDocumentHeaderId(event.getDocumentId());
             if (ObjectUtils.isNull(document)) {
                 // only throw an exception if we are not cancelling
-                if (!KEWConstants.ACTION_TAKEN_CANCELED.equals(event.getActionTaken())) {
+                if (!KewApiConstants.ACTION_TAKEN_CANCELED.equals(event.getActionTaken())) {
                     LOG.warn("doActionTaken() Unable to load document with id " + event.getDocumentId() + 
-                            " using action taken code '" + KEWConstants.ACTION_TAKEN_CD.get(event.getActionTaken().getActionTaken()));
+                            " using action taken code '" + KewApiConstants.ACTION_TAKEN_CD.get(event.getActionTaken().getActionTaken()));
 //                    throw new RuntimeException("unable to load document " + event.getDocumentId());
                 }
             } else {

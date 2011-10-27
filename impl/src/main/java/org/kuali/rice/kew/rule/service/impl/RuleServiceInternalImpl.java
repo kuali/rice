@@ -57,7 +57,7 @@ import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleXmlExporter;
@@ -152,9 +152,9 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KewApiConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
-            isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+            isGenerateRuleArs = KewApiConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
         Set<String> responsibilityIds = new HashSet<String>();
         Map<String, RuleBaseValues> rulesToSave = new HashMap<String, RuleBaseValues>();
@@ -241,9 +241,9 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         PerformanceLogger performanceLogger = new PerformanceLogger();
 
         boolean isGenerateRuleArs = true;
-        String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KewApiConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         if (!StringUtils.isBlank(generateRuleArs)) {
-            isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+            isGenerateRuleArs = KewApiConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         }
         Set<String> responsibilityIds = new HashSet<String>();
         Map<String, RuleBaseValues> rulesToSave = new HashMap<String, RuleBaseValues>();
@@ -319,9 +319,9 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         boolean isGenerateRuleArs = false;
         if (isRetroactiveUpdatePermitted) {
         	isGenerateRuleArs = true;
-        	String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_GENERATE_ACTION_REQESTS_IND);
+        	String generateRuleArs = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KewApiConstants.RULE_GENERATE_ACTION_REQESTS_IND);
         	if (!StringUtils.isBlank(generateRuleArs)) {
-        		isGenerateRuleArs = KEWConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
+        		isGenerateRuleArs = KewApiConstants.YES_RULE_CHANGE_AR_GENERATION_VALUE.equalsIgnoreCase(generateRuleArs);
         	}
         }
         Set<String> responsibilityIds = new HashSet<String>();
@@ -546,7 +546,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         } else {
             for (Object element : ruleBaseValues.getRuleResponsibilities()) {
                 RuleResponsibilityBo responsibility = (RuleResponsibilityBo) element;
-                if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+                if (responsibility.getRuleResponsibilityName() != null && KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                     if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     }
@@ -591,7 +591,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 
         for (Object element : ruleBaseValues.getRuleResponsibilities()) {
             RuleResponsibilityBo responsibility = (RuleResponsibilityBo) element;
-            if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
+            if (responsibility.getRuleResponsibilityName() != null && KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                 if (getGroupService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
                     LOG.error("Workgroup is invalid");
@@ -862,7 +862,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
             ruleDocTypeName = parentRulesDocTypeName;
         }
         if (ruleDocTypeName == null) {
-            ruleDocTypeName = KEWConstants.DEFAULT_RULE_DOCUMENT_NAME;
+            ruleDocTypeName = KewApiConstants.DEFAULT_RULE_DOCUMENT_NAME;
         }
         return ruleDocTypeName;
     }
@@ -1084,7 +1084,7 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         private List configs = new ArrayList();
         public static RuleRoutingConfig parse() {
             RuleRoutingConfig config = new RuleRoutingConfig();
-            String constant = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CUSTOM_DOC_TYPES);
+            String constant = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.RULE_DETAIL_TYPE, KewApiConstants.RULE_CUSTOM_DOC_TYPES);
             if (!StringUtils.isEmpty(constant)) {
                 String[] ruleConfigs = constant.split(",");
                 for (String ruleConfig : ruleConfigs) {

@@ -53,19 +53,19 @@ import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.MovePoint;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -241,10 +241,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
 		routeHeader.setInitiatorWorkflowId(principalId);
 		if (routeHeader.getDocRouteStatus() == null) {
-			routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_INITIATED_CD);
+			routeHeader.setDocRouteStatus(KewApiConstants.ROUTE_HEADER_INITIATED_CD);
 		}
 		if (routeHeader.getDocRouteLevel() == null) {
-			routeHeader.setDocRouteLevel(Integer.valueOf(KEWConstants.ADHOC_ROUTE_LEVEL));
+			routeHeader.setDocRouteLevel(Integer.valueOf(KewApiConstants.ADHOC_ROUTE_LEVEL));
 		}
 		if (routeHeader.getCreateDate() == null) {
 			routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
@@ -253,7 +253,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 			routeHeader.setDocVersion(Integer.valueOf(KewApiConstants.DocumentContentVersions.CURRENT));
 		}
 		if (routeHeader.getDocContent() == null) {
-			routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
+			routeHeader.setDocContent(KewApiConstants.DEFAULT_DOCUMENT_CONTENT);
 		}
 		routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
 		KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
@@ -311,7 +311,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		
 		// save routing data should invoke the post processor doActionTaken for SAVE
  	 	ActionTakenValue val = new ActionTakenValue();
- 	 	val.setActionTaken(KEWConstants.ACTION_TAKEN_SAVED_CD);
+ 	 	val.setActionTaken(KewApiConstants.ACTION_TAKEN_SAVED_CD);
  	 	val.setDocumentId(routeHeader.getDocumentId());
         val.setPrincipalId(principalId);
  	 	PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();

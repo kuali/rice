@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.test.FakeService;
 import org.kuali.rice.kew.test.FakeServiceImpl.Invocation;
 import org.kuali.rice.kew.test.KEWTestCase;

@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 public class EdlServiceLocator {
 	
@@ -47,7 +47,7 @@ public class EdlServiceLocator {
 		}
 		return GlobalResourceLoader.getResourceLoader().getService(
 				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(EDL_RUN_MODE_PROPERTY)))) ?
-						new QName(KEWConstants.KEW_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
+						new QName(KewApiConstants.KEW_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
 
 }

@@ -29,7 +29,7 @@ import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
 import org.kuali.rice.kew.quicklinks.WatchedDocument;
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.persistence.EntityManager;
@@ -69,7 +69,7 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
     @Override
 	@SuppressWarnings("unchecked")
     public List<InitiatedDocumentType> getInitiatedDocumentTypesList(final String principalId) {
-        String documentNames = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
+        String documentNames = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KewApiConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
         if (documentNames != null) {
             documentNames = documentNames.trim();
         }

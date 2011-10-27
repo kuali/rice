@@ -45,7 +45,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
         String dummyData = "testing this stuff";
         Integer testServerPort = Integer.valueOf(getJettyServerPort() + 1);
         WorkflowDocument document = new WorkflowDocument(getPrincipalIdForName("ewestfal"), "TestDocumentType");
-        String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
+        String applicationContent = "<data><edlContent><edl><eventNotificationURL>" + ConfigContext.getCurrentContextConfig().getProperty(KewApiConstants.KEW_URL_HOST) + ":" + testServerPort + CONTEXT_NAME + "</eventNotificationURL><testThisData>" + dummyData + "</testThisData></edl></edlContent></data>";
         document.setApplicationContent(applicationContent);
         document.saveDocumentData();
 
@@ -67,7 +67,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
             testPostProcessorMethod(document.getDocumentId(), dummyData, eventType);
 
             postProcessor = new EDocLitePostProcessor();
-            postProcessor.doRouteStatusChange(new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), KEWConstants.ROUTE_HEADER_INITIATED_CD, KEWConstants.ROUTE_HEADER_ENROUTE_CD));
+            postProcessor.doRouteStatusChange(new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), KewApiConstants.ROUTE_HEADER_INITIATED_CD, KewApiConstants.ROUTE_HEADER_ENROUTE_CD));
             eventType = EDocLitePostProcessor.EVENT_TYPE_ROUTE_STATUS_CHANGE;
             testPostProcessorMethod(document.getDocumentId(), dummyData, eventType);
 

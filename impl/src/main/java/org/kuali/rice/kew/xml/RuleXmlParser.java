@@ -33,7 +33,7 @@ import org.kuali.rice.kew.rule.RuleExpressionDef;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -77,7 +77,7 @@ public class RuleXmlParser {
     /**
      * Default action requested, if omitted; defaults to "A"pprove
      */
-    private static final String DEFAULT_ACTION_REQUESTED = KEWConstants.ACTION_REQUEST_APPROVE_REQ;
+    private static final String DEFAULT_ACTION_REQUESTED = KewApiConstants.ACTION_REQUEST_APPROVE_REQ;
 
     public List<RuleDelegationBo> parseRuleDelegations(InputStream input) throws IOException, XmlException {
     	try {
@@ -381,7 +381,7 @@ public class RuleXmlParser {
         if (actionRequested == null) {
             throw new XmlException("actionRequested is required on responsibility");
         }
-        if (!actionRequested.equals(KEWConstants.ACTION_REQUEST_COMPLETE_REQ) && !actionRequested.equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ) && !actionRequested.equals(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ) && !actionRequested.equals(KEWConstants.ACTION_REQUEST_FYI_REQ)) {
+        if (!actionRequested.equals(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ) && !actionRequested.equals(KewApiConstants.ACTION_REQUEST_APPROVE_REQ) && !actionRequested.equals(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ) && !actionRequested.equals(KewApiConstants.ACTION_REQUEST_FYI_REQ)) {
             throw new XmlException("Invalid action requested code '" + actionRequested + "'");
         }
         if (StringUtils.isBlank(approvePolicy)) {
@@ -399,7 +399,7 @@ public class RuleXmlParser {
         if (responsibilityNameAndType == null) {
         	throw new XmlException("Could not locate a valid responsibility declaration on a responsibility on rule with description '" + rule.getDescription() + "'");
         }
-        if (responsibilityNameAndType.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)
+        if (responsibilityNameAndType.getRuleResponsibilityType().equals(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID)
         		&& responsibility.getApprovePolicy().equals(ActionRequestPolicy.ALL.getCode())) {
         	throw new XmlException("Invalid approve policy '" + approvePolicy + "'.  This policy is not supported with Groups.");
         }
@@ -435,7 +435,7 @@ public class RuleXmlParser {
             	throw new XmlException("Could not locate principal with the given id: " + principalId);
             }
             responsibility.setRuleResponsibilityName(principalId);
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(principalName)) {
         	principalName = Utilities.substituteConfigParameters(principalName);
         	Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
@@ -443,7 +443,7 @@ public class RuleXmlParser {
             	throw new XmlException("Could not locate principal with the given name: " + principalName);
             }
             responsibility.setRuleResponsibilityName(principal.getPrincipalId());
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(groupId)) {
             groupId = Utilities.substituteConfigParameters(groupId);
             Group group = KimApiServiceLocator.getGroupService().getGroup(groupId);
@@ -451,7 +451,7 @@ public class RuleXmlParser {
                 throw new XmlException("Could not locate group with the given id: " + groupId);
             }
             responsibility.setRuleResponsibilityName(groupId);
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if (groupNameElement != null) {
         	String groupName = groupNameElement.getText();
         	String groupNamespace = groupNameElement.getAttributeValue(NAMESPACE);
@@ -469,11 +469,11 @@ public class RuleXmlParser {
                 throw new XmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
             }
             responsibility.setRuleResponsibilityName(group.getId());
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if (!StringUtils.isBlank(role)) {
         	role = Utilities.substituteConfigParameters(role);
         	responsibility.setRuleResponsibilityName(role);
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
+            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID);
         } else if (roleNameElement != null) {
         	String roleName = roleNameElement.getText();
         	String attributeClassName = roleNameElement.getAttributeValue(ATTRIBUTE_CLASS_NAME);
@@ -486,7 +486,7 @@ public class RuleXmlParser {
         	roleName = Utilities.substituteConfigParameters(roleName);
         	attributeClassName = Utilities.substituteConfigParameters(attributeClassName);
         	responsibility.setRuleResponsibilityName(RoleName.constructRoleValue(attributeClassName, roleName));
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
+            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID);
         } else if (!StringUtils.isBlank(workgroup)) {
         	LOG.warn("Rule XML is using deprecated element 'workgroup', please use 'groupName' instead.");
             workgroup = Utilities.substituteConfigParameters(workgroup);
@@ -499,7 +499,7 @@ public class RuleXmlParser {
                 throw new XmlException("Could not locate workgroup: " + workgroup);
             }
             responsibility.setRuleResponsibilityName(workgroupObject.getId());
-            responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            responsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else {
         	return null;
         }

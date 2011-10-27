@@ -31,7 +31,7 @@ import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DeleteEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Document;
 
 import java.rmi.RemoteException;
@@ -64,7 +64,7 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
         super.postEvent(documentId, event, "actionTaken");
 
         // if the action requested is a save, go ahead and update the database with the most current information. -grpatter
-        if (KEWConstants.ACTION_TAKEN_SAVED_CD.equals(event.getActionTaken().getActionTaken())) {
+        if (KewApiConstants.ACTION_TAKEN_SAVED_CD.equals(event.getActionTaken().getActionTaken())) {
             Document doc = getEDLContent(documentId);
             extractEDLData(documentId, getNodeNames(event.getDocumentId()), doc);
         }

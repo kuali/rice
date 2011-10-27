@@ -43,7 +43,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -586,7 +586,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
             returnSql = whereClausePredicatePrefix +
             " DOC_HDR.DOC_HDR_ID = KREW_ACTN_TKN_T.DOC_HDR_ID and upper(KREW_ACTN_TKN_T.ACTN_CD) in ('" +
-            KEWConstants.ACTION_TAKEN_APPROVED_CD + "','" + KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + "')" +
+            KewApiConstants.ACTION_TAKEN_APPROVED_CD + "','" + KewApiConstants.ACTION_TAKEN_BLANKET_APPROVE_CD + "')" +
             " and " + crit.buildWhere();
         }
         return returnSql;

@@ -32,8 +32,8 @@ import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -118,10 +118,10 @@ public class KualiDocumentActionBase extends KualiAction {
 
     // COMMAND constants which cause docHandler to load an existing document instead of creating a new one
     protected static final String[] DOCUMENT_LOAD_COMMANDS = {
-            KEWConstants.ACTIONLIST_COMMAND,
-            KEWConstants.DOCSEARCH_COMMAND,
-            KEWConstants.SUPERUSER_COMMAND,
-            KEWConstants.HELPDESK_ACTIONLIST_COMMAND};
+            KewApiConstants.ACTIONLIST_COMMAND,
+            KewApiConstants.DOCSEARCH_COMMAND,
+            KewApiConstants.SUPERUSER_COMMAND,
+            KewApiConstants.HELPDESK_ACTIONLIST_COMMAND};
 
     private DataDictionaryService dataDictionaryService;
     private DocumentHelperService documentHelperService;
@@ -331,7 +331,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // in all of the following cases we want to load the document
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && kualiDocumentFormBase.getDocId() != null) {
             loadDocument(kualiDocumentFormBase);
-        } else if (KEWConstants.INITIATE_COMMAND.equals(command)) {
+        } else if (KewApiConstants.INITIATE_COMMAND.equals(command)) {
             createDocument(kualiDocumentFormBase);
         } else {
             LOG.error("docHandler called with invalid parameters");
@@ -346,7 +346,7 @@ public class KualiDocumentActionBase extends KualiAction {
             KNSDocumentEntry docEntry = (KNSDocumentEntry) getDataDictionaryService().getDataDictionary().getDocumentEntry(kualiDocumentFormBase.getDocument().getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
             kualiDocumentFormBase.getAdditionalScriptFiles().addAll(docEntry.getWebScriptFiles());
         }
-        if (KEWConstants.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {
+        if (KewApiConstants.SUPERUSER_COMMAND.equalsIgnoreCase(command)) {
             kualiDocumentFormBase.setSuppressAllButtons(true);
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -357,7 +357,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * in children if the need arises.
      *
      * @param kualiDocumentFormBase
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     protected void loadDocument(KualiDocumentFormBase kualiDocumentFormBase) throws WorkflowException {
         String docId = kualiDocumentFormBase.getDocId();
@@ -726,21 +726,21 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // setup route report form variables
         request.setAttribute("workflowRouteReportUrl", getKualiConfigurationService().getPropertyValueAsString(
-                KRADConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
+                KRADConstants.WORKFLOW_URL_KEY) + "/" + KewApiConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyValue> generalRouteReportFormParameters = new ArrayList<KeyValue>();
-        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocument().getInitiatorPrincipalId()));
-        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KewApiConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocument().getInitiatorPrincipalId()));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KewApiConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName()));
         // prepareForRouteReport() method should populate document header workflow document application content xml
         String xml = document.getXmlForRouteReport();
         if (LOG.isDebugEnabled()) {
             LOG.debug("XML being used for Routing Report is: " + xml);
         }
-        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME, xml));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KewApiConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME, xml));
 
         // set up the variables for the form if java script is working (includes a close button variable and no back url)
         List<KeyValue> javaScriptFormParameters = new ArrayList<KeyValue>();
         javaScriptFormParameters.addAll(generalRouteReportFormParameters);
-        javaScriptFormParameters.add(new ConcreteKeyValue(KEWConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
+        javaScriptFormParameters.add(new ConcreteKeyValue(KewApiConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, KewApiConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
         request.setAttribute("javaScriptFormVariables", javaScriptFormParameters);
 
         // set up the variables for the form if java script is NOT working (includes a back url but no close button)
@@ -750,7 +750,7 @@ public class KualiDocumentActionBase extends KualiAction {
         for (KeyValue pair : backFormParameters) {
             parameters.put(pair.getKey(), pair.getValue());
         }
-        noJavaScriptFormParameters.add(new ConcreteKeyValue(KEWConstants.RETURN_URL_ATTRIBUTE_NAME, UrlFactory.parameterizeUrl(backUrlBase, parameters)));
+        noJavaScriptFormParameters.add(new ConcreteKeyValue(KewApiConstants.RETURN_URL_ATTRIBUTE_NAME, UrlFactory.parameterizeUrl(backUrlBase, parameters)));
         request.setAttribute("noJavaScriptFormVariables", noJavaScriptFormParameters);
 
         return mapping.findForward(KRADConstants.MAPPING_ROUTE_REPORT);
@@ -1508,7 +1508,7 @@ public class KualiDocumentActionBase extends KualiAction {
      *
      * @param request
      * @param note
-     * @return a value from {@link KEWConstants}
+     * @return a value from {@link KewApiConstants}
      */
     protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
         return getParameterService().getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KRADConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
@@ -1715,14 +1715,14 @@ public class KualiDocumentActionBase extends KualiAction {
         DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
         Map<String, String> adHocActionRequestCodes = new HashMap<String, String>();
 
-        if (documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, GlobalVariables.getUserSession().getPerson())) {
-            adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+        if (documentAuthorizer.canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, GlobalVariables.getUserSession().getPerson())) {
+            adHocActionRequestCodes.put(KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ_LABEL);
         }
-        if (!document.getDocumentHeader().getWorkflowDocument().isFinal() && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
-            adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+        if (!document.getDocumentHeader().getWorkflowDocument().isFinal() && documentAuthorizer.canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, GlobalVariables.getUserSession().getPerson())) {
+            adHocActionRequestCodes.put(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
         }
-        if (!(document.getDocumentHeader().getWorkflowDocument().isApproved() || document.getDocumentHeader().getWorkflowDocument().isProcessed() || document.getDocumentHeader().getWorkflowDocument().isFinal()) && documentAuthorizer.canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
-            adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+        if (!(document.getDocumentHeader().getWorkflowDocument().isApproved() || document.getDocumentHeader().getWorkflowDocument().isProcessed() || document.getDocumentHeader().getWorkflowDocument().isFinal()) && documentAuthorizer.canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, GlobalVariables.getUserSession().getPerson())) {
+            adHocActionRequestCodes.put(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
         }
 
         formBase.setAdHocActionRequestCodes(adHocActionRequestCodes);

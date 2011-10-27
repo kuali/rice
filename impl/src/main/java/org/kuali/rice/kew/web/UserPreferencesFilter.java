@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -70,9 +70,9 @@ public class UserPreferencesFilter implements Filter {
 		
 		final String principalId = session.getPrincipalId();
 		
-		if (session.retrieveObject(KEWConstants.PREFERENCES) == null) {
+		if (session.retrieveObject(KewApiConstants.PREFERENCES) == null) {
 			final Preferences preferences = retrievePreferences(principalId);
-			session.addObject(KEWConstants.PREFERENCES, preferences);
+			session.addObject(KewApiConstants.PREFERENCES, preferences);
 		}
 		chain.doFilter(request, response);
 	}

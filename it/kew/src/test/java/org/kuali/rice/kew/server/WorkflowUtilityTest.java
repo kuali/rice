@@ -40,6 +40,7 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.rule.Rule;
 import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
@@ -49,11 +50,10 @@ import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -383,52 +383,52 @@ public class WorkflowUtilityTest extends KEWTestCase {
         builder.setXmlContent(doc.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument2");
         builder.setRoutingPrincipalId(getPrincipalIdForName("bmcgough"));
-        assertTrue("Document should have at least one unfulfilled approve/complete request",wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertTrue("Document should have at least one unfulfilled approve/complete request",wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
         builder.setTargetPrincipalIds(Collections.singletonList(getPrincipalIdForName("bmcgough")));
-        assertFalse("Document should not have any unfulfilled approve/complete requests",wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests",wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(doc.getDocumentId());
         builder.setXmlContent(doc.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument4");
         builder.setRoutingPrincipalId(getPrincipalIdForName("bmcgough"));
         List<RoutingReportActionToTake.Builder> actionsToTake = new ArrayList<RoutingReportActionToTake.Builder>();
-        actionsToTake.add(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument3"));
-        actionsToTake.add(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD,
+        actionsToTake.add(RoutingReportActionToTake.Builder.create(KewApiConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument3"));
+        actionsToTake.add(RoutingReportActionToTake.Builder.create(KewApiConstants.ACTION_TAKEN_APPROVED_CD,
                 getPrincipalIdForName("jitrue"), "WorkflowDocument4"));
 
         builder.setActionsToTake(actionsToTake);
         assertFalse("Document should not have any unfulfilled approve/complete requests",
                 wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(
-                        new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,
-                                KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+                        new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,
+                                KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(doc.getDocumentId());
         builder.setXmlContent(doc.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument4");
         actionsToTake = new ArrayList<RoutingReportActionToTake.Builder>();
-        actionsToTake.add(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument3"));
-        actionsToTake.add(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("jitrue"),"WorkflowDocument4"));
+        actionsToTake.add(RoutingReportActionToTake.Builder.create(KewApiConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument3"));
+        actionsToTake.add(RoutingReportActionToTake.Builder.create(KewApiConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("jitrue"),"WorkflowDocument4"));
         builder.setActionsToTake(actionsToTake);
-        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), documentType);
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setRoutingPrincipalId(getPrincipalIdForName("rkirkend"));
         builder.setTargetNodeName("WorkflowDocument");
-        assertFalse("Document should not have any approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setRoutingPrincipalId(getPrincipalIdForName("rkirkend"));
         builder.setTargetNodeName("WorkflowDocument2");
-        assertFalse("Document should not have any approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setRoutingPrincipalId(getPrincipalIdForName("rkirkend"));
         builder.setTargetPrincipalIds(Collections.singletonList(getPrincipalIdForName("rkirkend")));
-        assertFalse("Document should not have any approve/complete requests for user rkirkend", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any approve/complete requests for user rkirkend", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         document.route("");
         assertEquals("Document should be enroute", DocumentStatus.ENROUTE, document.getStatus());
@@ -436,17 +436,17 @@ public class WorkflowUtilityTest extends KEWTestCase {
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument4");
-        assertTrue("At least one unfulfilled approve/complete request should have been generated", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertTrue("At least one unfulfilled approve/complete request should have been generated", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetPrincipalIds(Collections.singletonList(getPrincipalIdForName("rkirkend")));
-        assertTrue("At least one unfulfilled approve/complete request should have been generated for rkirkend", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertTrue("At least one unfulfilled approve/complete request should have been generated for rkirkend", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument4");
-        assertTrue("At least one unfulfilled approve/complete request should have been generated", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertTrue("At least one unfulfilled approve/complete request should have been generated", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         // if rkirkend approvers the document here it will move to last route node and no more simulations need to be run
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
@@ -474,29 +474,29 @@ public class WorkflowUtilityTest extends KEWTestCase {
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument2");
         builder.setRoutingPrincipalId(getPrincipalIdForName("bmcgough"));
-        assertTrue("Document should have one unfulfilled approve/complete request", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertTrue("Document should have one unfulfilled approve/complete request", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
         builder.setTargetPrincipalIds(Collections.singletonList(getPrincipalIdForName("bmcgough")));
-        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument2");
         builder.setRoutingPrincipalId(getPrincipalIdForName("bmcgough"));
         List<RoutingReportActionToTake.Builder> actionsToTake = new ArrayList<RoutingReportActionToTake.Builder>();
-//        actionsToTake[0] = new ReportActionToTakeDTO(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument");
-        actionsToTake.add(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("pmckown"),"WorkflowDocument2"));
+//        actionsToTake[0] = new ReportActionToTakeDTO(KewApiConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument");
+        actionsToTake.add(RoutingReportActionToTake.Builder.create(KewApiConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("pmckown"),"WorkflowDocument2"));
         builder.setActionsToTake(actionsToTake);
-        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument2");
         actionsToTake = new ArrayList<RoutingReportActionToTake.Builder>();
-        actionsToTake.add(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("bmcgough"),"WorkflowDocument"));
-        actionsToTake.add(RoutingReportActionToTake.Builder.create(KEWConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument"));
+        actionsToTake.add(RoutingReportActionToTake.Builder.create(KewApiConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("bmcgough"),"WorkflowDocument"));
+        actionsToTake.add(RoutingReportActionToTake.Builder.create(KewApiConstants.ACTION_TAKEN_APPROVED_CD,getPrincipalIdForName("rkirkend"),"WorkflowDocument"));
         builder.setActionsToTake(actionsToTake);
         builder.setRoutingPrincipalId(getPrincipalIdForName("pmckown"));
-        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), documentType);
         document.route("");
@@ -511,7 +511,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("WorkflowDocument2");
-        assertTrue("Document should have one unfulfilled approve/complete request", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertTrue("Document should have one unfulfilled approve/complete request", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         document.approve("");
@@ -520,14 +520,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("Acknowledge1");
-        assertFalse("Document should not have any unfulfilled approve/complete requests when in processed status", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
+        assertFalse("Document should not have any unfulfilled approve/complete requests when in processed status", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}), false));
 
         builder = RoutingReportCriteria.Builder.createByDocumentId(document.getDocumentId());
         builder.setXmlContent(document.getDocumentContent().getApplicationContent());
         builder.setTargetNodeName("Acknowledge1");
-        assertTrue("Document should have one unfulfilled Ack request when in final status", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}), false));
+        assertTrue("Document should have one unfulfilled Ack request when in final status", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}), false));
         if (generator.isCriteriaRouteHeaderBased()) {
-            assertFalse("Document should have no unfulfilled Ack request generated when in final status", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}), true));
+            assertFalse("Document should have no unfulfilled Ack request generated when in final status", wdas.documentWillHaveAtLeastOneActionRequest(builder.build(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ}), true));
         }
 
         // if temay acknowledges the document here it will move to processed and no more simulations would need to be tested
@@ -586,14 +586,14 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
     /**
      * This method tests how the isLastApproverAtNode method deals with force action requests, there is an app constant
-     * with the value specified in KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST which dictates whether or not to simulate
+     * with the value specified in KewApiConstants.IS_LAST_APPROVER_ACTIVATE_FIRST which dictates whether or not to simulate
      * activation of initialized requests before running the method.
      *
      * Tests the fix to issue http://fms.dfa.cornell.edu:8080/browse/KULWF-366
      */
     @Test public void testIsLastApproverActivation() throws Exception {
         // first test without the parameter set
-        Parameter lastApproverActivateParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        Parameter lastApproverActivateParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KewApiConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
         assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getValue()));
         String originalParameterValue = lastApproverActivateParameter.getValue();
@@ -683,7 +683,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         b.setValue(parameterValue);
         CoreFrameworkServiceLocator.getParameterService().updateParameter(b.build());
 
-        lastApproverActivateParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        lastApproverActivateParameter = CoreFrameworkServiceLocator.getParameterService().getParameter(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.FEATURE_DETAIL_TYPE, KewApiConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
         assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getValue());
 
@@ -979,7 +979,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         rules = null;
         ruleReportCriteria = RuleReportCriteria.Builder.create();
-        ruleReportCriteria.setActionRequestCodes(Collections.singletonList(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        ruleReportCriteria.setActionRequestCodes(Collections.singletonList(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         ruleReportCriteria.setConsiderGroupMembership(Boolean.FALSE.booleanValue());
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE.booleanValue());
@@ -989,7 +989,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         rules = null;
         ruleReportCriteria = RuleReportCriteria.Builder.create();
-        ruleReportCriteria.setActionRequestCodes(Collections.singletonList(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        ruleReportCriteria.setActionRequestCodes(Collections.singletonList(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         ruleReportCriteria.setConsiderGroupMembership(Boolean.FALSE.booleanValue());
         ruleReportCriteria.setDocumentTypeName(RuleTestGeneralSetup.DOCUMENT_TYPE_NAME);
         ruleReportCriteria.setIncludeDelegations(Boolean.FALSE.booleanValue());
@@ -1008,11 +1008,11 @@ public class WorkflowUtilityTest extends KEWTestCase {
             if ("temay".equals(responsibilityPrincipalName)) {
                 assertEquals("Rule user is not correct","temay",responsibilityPrincipalName);
                 assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibility.getPriority());
-                assertEquals("Rule should be Ack Request",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibility.getActionRequestedCd());
+                assertEquals("Rule should be Ack Request",KewApiConstants.ACTION_REQUEST_APPROVE_REQ,responsibility.getActionRequestedCd());
             } else if ("ewestfal".equals(responsibilityPrincipalName)) {
                 assertEquals("Rule user is not correct","ewestfal",responsibilityPrincipalName);
                 assertEquals("Rule priority is incorrect",Integer.valueOf(2),responsibility.getPriority());
-                assertEquals("Rule should be Ack Request",KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,responsibility.getActionRequestedCd());
+                assertEquals("Rule should be Ack Request",KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,responsibility.getActionRequestedCd());
             } else {
                 fail("Network ID of user for this responsibility is neither temay or ewestfal");
             }
@@ -1037,7 +1037,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
                 responsibilityVO = rule.getRuleResponsibilities().get(0);
                 assertEquals("Rule user is incorrect","temay",getPrincipalNameForId(responsibilityVO.getPrincipalId()));
                 assertEquals("Rule priority is incorrect",Integer.valueOf(3),responsibilityVO.getPriority());
-                assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
+                assertEquals("Rule action request is incorrect",KewApiConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
             } else if (RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2.equals(rule.getRuleTemplateName())) {
                 assertEquals("Rule Document Type is not " + RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,RuleTestGeneralSetup.DOCUMENT_TYPE_NAME,rule.getDocTypeName());
                 assertEquals("Rule Template Named returned is not " + RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2,RuleTestGeneralSetup.RULE_TEST_TEMPLATE_2,rule.getRuleTemplateName());
@@ -1049,11 +1049,11 @@ public class WorkflowUtilityTest extends KEWTestCase {
                     if ("temay".equals(responsibilityPrincipalName)) {
                         assertEquals("Rule user is not correct","temay",responsibilityPrincipalName);
                         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibility.getPriority());
-                        assertEquals("Rule should be Ack Request",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibility.getActionRequestedCd());
+                        assertEquals("Rule should be Ack Request",KewApiConstants.ACTION_REQUEST_APPROVE_REQ,responsibility.getActionRequestedCd());
                     } else if ("ewestfal".equals(responsibilityPrincipalName)) {
                         assertEquals("Rule user is not correct","ewestfal",responsibilityPrincipalName);
                         assertEquals("Rule priority is incorrect",Integer.valueOf(2),responsibility.getPriority());
-                        assertEquals("Rule should be Ack Request",KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,responsibility.getActionRequestedCd());
+                        assertEquals("Rule should be Ack Request",KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,responsibility.getActionRequestedCd());
                     } else {
                         fail("Network ID of user for this responsibility is neither temay or ewestfal");
                     }
@@ -1081,7 +1081,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         Group ruleTestGroup = KimApiServiceLocator.getGroupService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup id is incorrect",RuleTestGeneralSetup.RULE_TEST_GROUP_ID, ruleTestGroup.getId());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
-        assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
+        assertEquals("Rule action request is incorrect",KewApiConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
 
         rules = null;
         ruleVO = null;
@@ -1101,7 +1101,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         responsibilityVO = ruleVO.getRuleResponsibilities().get(0);
         assertEquals("Rule workgroup id is incorrect",RuleTestGeneralSetup.RULE_TEST_GROUP_ID, ruleTestGroup.getId());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
-        assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
+        assertEquals("Rule action request is incorrect",KewApiConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
     }
 
     /**
@@ -1165,7 +1165,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         Group ruleTestGroup2 = KimApiServiceLocator.getGroupService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP2,ruleTestGroup2.getName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(4),responsibilityVO.getPriority());
-        assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
+        assertEquals("Rule action request is incorrect",KewApiConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
         ruleExtensions = ruleVO.getRuleExtensionMap();
         assertEquals("Number of Rule Extensions Returned Should be 2",2,ruleExtensions.size());
         for (Map.Entry<String, String> entry : ruleExtensions.entrySet()) {
@@ -1217,7 +1217,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         ruleTestGroup2 = KimApiServiceLocator.getGroupService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP, ruleTestGroup2.getName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
-        assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
+        assertEquals("Rule action request is incorrect",KewApiConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());
     }
 
     @Test public void testGetUserActionItemCount() throws Exception {
@@ -1304,7 +1304,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         List<ActionItem> actionItems = als.getAllActionItems(document.getDocumentId());
         assertEquals("Incorrect number of action items returned",2,actionItems.size());
         for (ActionItem actionItem : actionItems) {
-            assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+            assertEquals("Action Item should be Approve request", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }
@@ -1320,10 +1320,10 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Incorrect number of action items returned",2,actionItems.size());
         for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
-            assertTrue("Action Items should be Approve or FYI requests only", KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
-            if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
+            assertTrue("Action Items should be Approve or FYI requests only", KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
+            if (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
                 assertTrue("User should be '" + initiatorNetworkId + "'", initiatorPrincipalId.equals(actionItem.getPrincipalId()));
-            } else if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd())) {
+            } else if (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd())) {
                 assertTrue("User should be  '" + user1NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()));
             }
         }
@@ -1338,7 +1338,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         actionItems = als.getAllActionItems(document.getDocumentId());
         assertEquals("Incorrect number of action items returned",2,actionItems.size());
         for (ActionItem actionItem : actionItems) {
-            assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+            assertEquals("Action Item should be Approve request", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }
@@ -1359,12 +1359,12 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue(document.isEnroute());
 
         ActionListService als = KewApiServiceLocator.getActionListService();
-        List<ActionItem> actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}));
+        List<ActionItem> actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}));
         verifyEmptyCollection("Action Item", actionItems);
-        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ}));
         assertEquals("Incorrect number of action items returned",2,actionItems.size());
         for (ActionItem actionItem : actionItems) {
-            assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+            assertEquals("Action Item should be Approve request", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }
@@ -1376,26 +1376,26 @@ public class WorkflowUtilityTest extends KEWTestCase {
         document.returnToPreviousNode("", "AdHoc");
         TestUtilities.assertAtNode(document, "AdHoc");
         // verify count after return to previous
-        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}));
+        actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(new String[]{KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}));
         verifyEmptyCollection("Action Item", actionItems);
         actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
-                new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+                new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ}));
         assertEquals("Incorrect number of action items returned",1,actionItems.size());
         actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
-                new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ}));
+                new String[]{KewApiConstants.ACTION_REQUEST_FYI_REQ}));
         assertEquals("Incorrect number of action items returned",1,actionItems.size());
         actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
-                new String[]{KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+                new String[]{KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ}));
         assertEquals("Incorrect number of action items returned",2,actionItems.size());
         for (ActionItem actionItem : actionItems) {
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
-            assertTrue("Action Items should be Approve or FYI requests only", KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
-            if (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
+            assertTrue("Action Items should be Approve or FYI requests only", KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd()) || KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd()));
+            if (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(actionItem.getActionRequestCd())) {
                 assertTrue("User should be '" + initiatorNetworkId + "'", initiatorPrincipalId.equals(actionItem.getPrincipalId()));
-            } else if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd())) {
+            } else if (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(actionItem.getActionRequestCd())) {
                 assertTrue("User should be  '" + user1NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()));
             } else {
-                fail("Should not have found action request with requested action '" + KEWConstants.ACTION_REQUEST_CD.get(actionItem.getActionRequestCd()) + "'");
+                fail("Should not have found action request with requested action '" + KewApiConstants.ACTION_REQUEST_CD.get(actionItem.getActionRequestCd()) + "'");
             }
         }
 
@@ -1407,13 +1407,13 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // we should be back where we were
         actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
-                new String[]{KEWConstants.ACTION_REQUEST_COMPLETE_REQ}));
+                new String[]{KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}));
         verifyEmptyCollection("Action Item", actionItems);
         actionItems = als.getActionItems(document.getDocumentId(), Arrays.asList(
-                new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}));
+                new String[]{KewApiConstants.ACTION_REQUEST_APPROVE_REQ}));
         assertEquals("Incorrect number of action items returned",2,actionItems.size());
         for (ActionItem actionItem : actionItems) {
-            assertEquals("Action Item should be Approve request", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+            assertEquals("Action Item should be Approve request", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
             assertEquals("Action Item has incorrect doc title", docTitle, actionItem.getDocTitle());
             assertTrue("User should be one of '" + user1NetworkId + "' or '" + user2NetworkId + "'", user1PrincipalId.equals(actionItem.getPrincipalId()) || user2PrincipalId.equals(actionItem.getPrincipalId()));
         }

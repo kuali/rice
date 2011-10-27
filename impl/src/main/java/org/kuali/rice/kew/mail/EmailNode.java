@@ -29,14 +29,12 @@ import org.kuali.rice.core.mail.EmailSubject;
 import org.kuali.rice.core.mail.EmailTo;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SimpleResult;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.w3c.dom.Document;
@@ -90,7 +88,7 @@ public class EmailNode implements SimpleNode {
         Element emailNodeElem = doc.createElement("emailNode");
         doc.appendChild(emailNodeElem);
         String principalId = null;  // Added to the convertRouteHeader is not ambigious.
-        RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(context.getDocument(), principalId);
+        org.kuali.rice.kew.api.document.Document routeHeaderVO = DocumentRouteHeaderValue.to(context.getDocument());
         RouteNodeInstance routeNodeInstanceVO = org.kuali.rice.kew.engine.node.RouteNodeInstance.to(context.getNodeInstance());
         Document documentContent = context.getDocumentContent().getDocument();
         XStream xstream = new XStream();

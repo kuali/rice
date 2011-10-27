@@ -27,7 +27,7 @@ import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.mail.service.EmailContentService;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -61,7 +61,7 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
     @Override
     public void sendImmediateReminder(ActionItem actionItem, Boolean skipOnApprovals) {
         if (skipOnApprovals != null && skipOnApprovals.booleanValue()
-                && actionItem.getActionRequestCd().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ)) {
+                && actionItem.getActionRequestCd().equals(KewApiConstants.ACTION_REQUEST_APPROVE_REQ)) {
             LOG.debug("As requested, skipping immediate reminder notification on action item approval for " + actionItem.getPrincipalId());
             return;
         }

@@ -18,13 +18,12 @@ package org.kuali.rice.kew.engine.node;
 
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 
@@ -149,7 +148,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
     /**
      * Activates any pending requests and returns whether there are outstanding blocking requests
      * @param context the RouteContext
-     * @throws WorkflowException if anything goes wrong...
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException if anything goes wrong...
      * @return whether there are outstanding blocking requests
      */
     protected boolean activateRequests(RouteContext routeContext) throws WorkflowException {
@@ -199,8 +198,8 @@ public class IteratedRequestActivationNode implements SimpleNode {
      * @param document the document we are processing
      * @param nodeInstance the node instance we are processing
      * @return True if the any blocking actions requests (approve or complete) were activated.
-     * @throws ResourceUnavailableException
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     private boolean activateRequests(RouteContext context, DocumentRouteHeaderValue document, RouteNodeInstance nodeInstance) throws WorkflowException {
         MDC.put("docId", document.getDocumentId());
@@ -216,7 +215,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         Collections.sort(requests, new Utilities.PrioritySorter());
         LOG.info("Pending Root Requests " + requests.size());
         String activationType = nodeInstance.getRouteNode().getActivationType();
-        boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
+        boolean isParallel = KewApiConstants.ROUTE_LEVEL_PARALLEL.equals(activationType);
         boolean activatedApproveRequest = false;
         for (Iterator iter = requests.iterator(); iter.hasNext();) {
             if (activatedApproveRequest && !isParallel) {

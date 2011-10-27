@@ -20,7 +20,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -65,21 +65,21 @@ public class StatsDaoJpaImpl implements StatsDAO {
         for (Object[] result : resultList) {
             String actionType = result[1].toString();
             String number = result[0].toString();
-            if (actionType.equals(KEWConstants.ROUTE_HEADER_CANCEL_CD)) {
+            if (actionType.equals(KewApiConstants.ROUTE_HEADER_CANCEL_CD)) {
                 stats.setCanceledNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_DISAPPROVED_CD)) {
+            } else if (actionType.equals(KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD)) {
                 stats.setDisapprovedNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_ENROUTE_CD)) {
+            } else if (actionType.equals(KewApiConstants.ROUTE_HEADER_ENROUTE_CD)) {
                 stats.setEnrouteNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_EXCEPTION_CD)) {
+            } else if (actionType.equals(KewApiConstants.ROUTE_HEADER_EXCEPTION_CD)) {
                 stats.setExceptionNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_FINAL_CD)) {
+            } else if (actionType.equals(KewApiConstants.ROUTE_HEADER_FINAL_CD)) {
                 stats.setFinalNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_INITIATED_CD)) {
+            } else if (actionType.equals(KewApiConstants.ROUTE_HEADER_INITIATED_CD)) {
                 stats.setInitiatedNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_PROCESSED_CD)) {
+            } else if (actionType.equals(KewApiConstants.ROUTE_HEADER_PROCESSED_CD)) {
                 stats.setProcessedNumber(number);
-            } else if (actionType.equals(KEWConstants.ROUTE_HEADER_SAVED_CD)) {
+            } else if (actionType.equals(KewApiConstants.ROUTE_HEADER_SAVED_CD)) {
                 stats.setSavedNumber(number);
             }
         }

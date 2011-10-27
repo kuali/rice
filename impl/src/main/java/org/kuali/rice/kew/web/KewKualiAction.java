@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 
 /**
@@ -39,7 +39,7 @@ public abstract class KewKualiAction extends KualiAction {
     {
     	String mappingPath = mapping.getPath();
     	String basePath = getApplicationBaseUrl();
-        return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
+        return basePath + KewApiConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
     }
 
 	@Override

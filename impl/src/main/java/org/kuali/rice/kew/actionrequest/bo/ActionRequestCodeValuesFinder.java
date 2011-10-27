@@ -17,7 +17,7 @@ package org.kuali.rice.kew.actionrequest.bo;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.ArrayList;
@@ -34,8 +34,8 @@ public class ActionRequestCodeValuesFinder extends KeyValuesBase {
 	private static final List<KeyValue> ACTION_REQUEST_CODES;
 	static {
 		final List<KeyValue> temp = new ArrayList<KeyValue>();
-		for (String actionRequestCode : KEWConstants.ACTION_REQUEST_CODES.keySet()) {
-			temp.add(new ConcreteKeyValue(actionRequestCode, KEWConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
+		for (String actionRequestCode : KewApiConstants.ACTION_REQUEST_CODES.keySet()) {
+			temp.add(new ConcreteKeyValue(actionRequestCode, KewApiConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
 		}
 		
 		ACTION_REQUEST_CODES = Collections.unmodifiableList(temp);

@@ -18,8 +18,8 @@ package org.kuali.rice.kew.rule;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowException;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;

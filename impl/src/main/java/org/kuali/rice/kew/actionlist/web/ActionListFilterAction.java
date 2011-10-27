@@ -27,7 +27,7 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -53,8 +53,8 @@ public class ActionListFilterAction extends KualiAction {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-    	request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
-    	request.setAttribute("preferences", this.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
+    	request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KewApiConstants"));
+    	request.setAttribute("preferences", this.getUserSession().retrieveObject(KewApiConstants.PREFERENCES));
 		initForm(request, form);
 		return super.execute(mapping, form, request, response);
 	}
@@ -70,17 +70,17 @@ public class ActionListFilterAction extends KualiAction {
 	{
     	String mappingPath = mapping.getPath();
     	String basePath = getApplicationBaseUrl();
-        return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
+        return basePath + KewApiConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
 	}
 
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         final UserSession uSession = getUserSession();
-        final ActionListFilter filter = (ActionListFilter) uSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+        final ActionListFilter filter = (ActionListFilter) uSession.retrieveObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
         if (filter != null) {
             if (filterForm.getDocTypeFullName() != null && ! "".equals(filterForm.getDocTypeFullName())) {
             	filter.setDocumentType(filterForm.getDocTypeFullName());
-            	uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
+            	uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
                 filterForm.setFilter(filter);
             } else {
                 filterForm.setFilter(filter);
@@ -95,13 +95,13 @@ public class ActionListFilterAction extends KualiAction {
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
         final UserSession uSession = getUserSession();
         ActionListFilter alFilter = filterForm.getLoadedFilter();
-        if (StringUtils.isNotBlank(alFilter.getDelegatorId()) && !KEWConstants.DELEGATION_DEFAULT.equals(alFilter.getDelegatorId()) &&
-        		StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
+        if (StringUtils.isNotBlank(alFilter.getDelegatorId()) && !KewApiConstants.DELEGATION_DEFAULT.equals(alFilter.getDelegatorId()) &&
+        		StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KewApiConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
         	// If the primary and secondary delegation drop-downs are both visible and are both set to non-default values,
         	// then reset the secondary delegation drop-down to its default value.
-        	alFilter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
+        	alFilter.setDelegatorId(KewApiConstants.DELEGATION_DEFAULT);
         }
-        uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
+        uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession().getPrincipalId());
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
             return mapping.findForward("viewActionList");
@@ -118,7 +118,7 @@ public class ActionListFilterAction extends KualiAction {
         filterForm.setLastAssignedDateTo("");
         filterForm.setDocTypeFullName("");
         UserSession session = getUserSession();
-        session.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+        session.removeObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME);
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession().getPrincipalId());
         return mapping.findForward("viewFilter");
     }
@@ -146,7 +146,7 @@ public class ActionListFilterAction extends KualiAction {
 
         List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
     	KeyValue keyValue = null;
-    	keyValue = new ConcreteKeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
+    	keyValue = new ConcreteKeyValue(KewApiConstants.NO_FILTERING, KewApiConstants.NO_FILTERING);
     	sortedUserWorkgroups.add(keyValue);
     	if (userGroupsToSort != null && userGroupsToSort.size() > 0) {
     		Collections.sort(userGroupsToSort);

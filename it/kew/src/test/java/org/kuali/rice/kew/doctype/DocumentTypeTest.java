@@ -38,7 +38,7 @@ import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -549,7 +549,7 @@ public class DocumentTypeTest extends KEWTestCase {
         if (ObjectUtils.isNull(group)) {
             return null;
         }
-        return group.getNamespaceCode() + KEWConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName();
+        return group.getNamespaceCode() + KewApiConstants.KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER + group.getName();
     }
 
     protected void verifyDocumentTypeLinking() throws Exception {

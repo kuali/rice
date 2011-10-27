@@ -20,6 +20,8 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
@@ -30,9 +32,7 @@ import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.transition.Transition;
 import org.kuali.rice.kew.engine.transition.TransitionEngine;
 import org.kuali.rice.kew.engine.transition.TransitionEngineFactory;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.RouteManagerException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
 import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
@@ -44,7 +44,7 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -415,7 +415,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			checkDefaultApprovalPolicy(document);
 
 			LOG.debug("Marking document processed");
-			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_PROCESSED_CD);
+			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KewApiConstants.ROUTE_HEADER_PROCESSED_CD);
 			document.markDocumentProcessed();
 			// saveDocument(context);
 			notifyPostProcessor(context, event);
@@ -424,7 +424,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// if document is processed and no pending action requests put the
 		// document into the finalized state.
 		if (document.isProcessed()) {
-			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KEWConstants.ROUTE_HEADER_FINAL_CD);
+			DocumentRouteStatusChange event = new DocumentRouteStatusChange(document.getDocumentId(), document.getAppDocId(), document.getDocRouteStatus(), KewApiConstants.ROUTE_HEADER_FINAL_CD);
 			List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
 			if (actionRequests.isEmpty()) {
 				document.markDocumentFinalized();
@@ -434,7 +434,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				boolean markFinalized = true;
 				for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
 					ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-					if (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequest.getActionRequested())) {
+					if (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(actionRequest.getActionRequested())) {
 						markFinalized = false;
 					}
 				}
@@ -465,7 +465,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			for (Iterator iter = requests.iterator(); iter.hasNext();) {
 				ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
 				if (actionRequest.isApproveOrCompleteRequest() && actionRequest.isDone()) { // &&
-																							// !(actionRequest.getRouteMethodName().equals(KEWConstants.ADHOC_ROUTE_MODULE_NAME)
+																							// !(actionRequest.getRouteMethodName().equals(KewApiConstants.ADHOC_ROUTE_MODULE_NAME)
 																							// &&
 																							// actionRequest.isReviewerUser()
 																							// &&
@@ -511,14 +511,14 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			processReport = postProc.doRouteStatusChange(event);
 		} catch (Exception e) {
 			LOG.error("Error notifying post processor", e);
-			throw new RouteManagerException(KEWConstants.POST_PROCESSOR_FAILURE_MESSAGE, e);
+			throw new RouteManagerException(KewApiConstants.POST_PROCESSOR_FAILURE_MESSAGE, e);
 		} finally {
 			performanceLogger.log("Time to notifyPostProcessor of event " + event.getDocumentEventCode() + ".");
 		}
 
 		if (!processReport.isSuccess()) {
 			LOG.warn("PostProcessor failed to process document: " + processReport.getMessage());
-			throw new RouteManagerException(KEWConstants.POST_PROCESSOR_FAILURE_MESSAGE + processReport.getMessage());
+			throw new RouteManagerException(KewApiConstants.POST_PROCESSOR_FAILURE_MESSAGE + processReport.getMessage());
 		}
 		return document;
 	}
@@ -538,10 +538,10 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		// the state
 		Branch rootBranch = context.getDocument().getRootBranch();
 		String key = null;
-		if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(event.getNewRouteStatus())) {
-			key = KEWConstants.POST_PROCESSOR_PROCESSED_KEY;
-		} else if (KEWConstants.ROUTE_HEADER_FINAL_CD.equals(event.getNewRouteStatus())) {
-			key = KEWConstants.POST_PROCESSOR_FINAL_KEY;
+		if (KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equals(event.getNewRouteStatus())) {
+			key = KewApiConstants.POST_PROCESSOR_PROCESSED_KEY;
+		} else if (KewApiConstants.ROUTE_HEADER_FINAL_CD.equals(event.getNewRouteStatus())) {
+			key = KewApiConstants.POST_PROCESSOR_FINAL_KEY;
 		} else {
 			return false;
 		}
@@ -715,13 +715,13 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		}
 		RouteNodeInstance nodeInstance = helper.getNodeFactory().createRouteNodeInstance(document.getDocumentId(), process.getInitialRouteNode());
 		nodeInstance.setActive(true);
-		helper.getNodeFactory().createBranch(KEWConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
+		helper.getNodeFactory().createBranch(KewApiConstants.PRIMARY_BRANCH_NAME, null, nodeInstance);
 		document.getInitialRouteNodeInstances().add(nodeInstance);
 		saveNode(context, nodeInstance);
 	}
 
     private boolean isRunawayProcessDetected(EngineState engineState) throws NumberFormatException {
-	    String maxNodesConstant = getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
+	    String maxNodesConstant = getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.MAX_NODES_BEFORE_RUNAWAY_PROCESS);
 	    int maxNodes = (org.apache.commons.lang.StringUtils.isEmpty(maxNodesConstant)) ? 50 : Integer.valueOf(maxNodesConstant);
 	    return engineState.getCompleteNodeInstances().size() > maxNodes;
 	}

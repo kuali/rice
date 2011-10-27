@@ -32,7 +32,7 @@ import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.rule.RuleDelegationContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 

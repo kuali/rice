@@ -17,15 +17,14 @@ package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.parameter.ParameterConstants;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Attachment;
@@ -47,7 +46,7 @@ import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.NoteService;
-import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifConstants.WorkflowAction;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -60,7 +59,6 @@ import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krad.uif.UifConstants.WorkflowAction;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -98,8 +96,8 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     // COMMAND constants which cause docHandler to load an existing document
     // instead of creating a new one
     protected static final String[] DOCUMENT_LOAD_COMMANDS =
-            {KEWConstants.ACTIONLIST_COMMAND, KEWConstants.DOCSEARCH_COMMAND, KEWConstants.SUPERUSER_COMMAND,
-                    KEWConstants.HELPDESK_ACTIONLIST_COMMAND};
+            {KewApiConstants.ACTIONLIST_COMMAND, KewApiConstants.DOCSEARCH_COMMAND, KewApiConstants.SUPERUSER_COMMAND,
+                    KewApiConstants.HELPDESK_ACTIONLIST_COMMAND};
 
     private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
@@ -128,7 +126,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         // in all of the following cases we want to load the document
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && form.getDocId() != null) {
             loadDocument(form);
-        } else if (KEWConstants.INITIATE_COMMAND.equals(command)) {
+        } else if (KewApiConstants.INITIATE_COMMAND.equals(command)) {
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");

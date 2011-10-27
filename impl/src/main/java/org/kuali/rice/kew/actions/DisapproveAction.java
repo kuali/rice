@@ -23,12 +23,12 @@ import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
@@ -56,7 +56,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param principal User taking the action.
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, principal);
+        super(KewApiConstants.ACTION_TAKEN_DENIED_CD, rh, principal);
     }
 
     /**
@@ -65,7 +65,7 @@ public class DisapproveAction extends ActionTakenEvent {
      * @param annotation User comment on the action taken
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_DENIED_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -80,7 +80,7 @@ public class DisapproveAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be disapproved";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the DISAPPROVE or DENY action";
         }
@@ -106,8 +106,8 @@ public class DisapproveAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // APPROVE request matches all but FYI and ACK
-            if ( (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                 (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                 (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -119,7 +119,7 @@ public class DisapproveAction extends ActionTakenEvent {
     /**
      * Records the disapprove action. - Checks to make sure the document status allows the action. - Checks that the user has not taken a previous action. - Deactivates the pending requests for this user - Records the action
      *
-     * @throws InvalidActionTakenException
+     * @throws org.kuali.rice.kew.api.exception.InvalidActionTakenException
      */
     public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getDocumentId());
@@ -127,7 +127,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
         LOG.debug("Disapproving document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
@@ -168,9 +168,9 @@ public class DisapproveAction extends ActionTakenEvent {
     private void generateNotifications(RouteNodeInstance notificationNodeInstance)
     {
         String groupName = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                KEWConstants.KEW_NAMESPACE,
+                KewApiConstants.KEW_NAMESPACE,
                 KRADConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
-                KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
+                KewApiConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
 
         Set<String> systemPrincipalIds = new HashSet<String>();
 
@@ -201,7 +201,7 @@ public class DisapproveAction extends ActionTakenEvent {
             {
                 if (!systemPrincipalIds.contains(action.getPrincipalId()))
                 {
-                    ActionRequestValue request = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
+                    ActionRequestValue request = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
                     KEWServiceLocator.getActionRequestService().activateRequest(request);
                     usersNotified.add(request.getPrincipalId());
                 }

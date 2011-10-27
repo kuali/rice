@@ -23,14 +23,14 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeUtils;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityAction;
@@ -52,10 +52,10 @@ import java.util.Map;
 public class RoleRouteModule implements RouteModule {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleRouteModule.class);
 	
-	protected static final String QUALIFIER_RESOLVER_ELEMENT = KEWConstants.ROLEROUTE_QUALIFIER_RESOLVER_ELEMENT;
-	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = KEWConstants.ROLEROUTE_QUALIFIER_RESOLVER_CLASS_ELEMENT;
-	protected static final String RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = KEWConstants.ROLEROUTE_RESPONSIBILITY_TEMPLATE_NAME_ELEMENT;
-	protected static final String NAMESPACE_ELEMENT = KEWConstants.ROLEROUTE_NAMESPACE_ELEMENT;
+	protected static final String QUALIFIER_RESOLVER_ELEMENT = KewApiConstants.ROLEROUTE_QUALIFIER_RESOLVER_ELEMENT;
+	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = KewApiConstants.ROLEROUTE_QUALIFIER_RESOLVER_CLASS_ELEMENT;
+	protected static final String RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = KewApiConstants.ROLEROUTE_RESPONSIBILITY_TEMPLATE_NAME_ELEMENT;
+	protected static final String NAMESPACE_ELEMENT = KewApiConstants.ROLEROUTE_NAMESPACE_ELEMENT;
 	
 	private static ResponsibilityService responsibilityService;
 	
@@ -195,8 +195,8 @@ public class RoleRouteModule implements RouteModule {
 		String documentTypeName = context.getDocument().getDocumentType().getName();
 		String nodeName = context.getNodeInstance().getName();
 		Map<String, String> responsibilityDetails = new HashMap<String, String>();
-		responsibilityDetails.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentTypeName);
-		responsibilityDetails.put(KEWConstants.ROUTE_NODE_NAME_DETAIL, nodeName);
+		responsibilityDetails.put(KewApiConstants.DOCUMENT_TYPE_NAME_DETAIL, documentTypeName);
+		responsibilityDetails.put(KewApiConstants.ROUTE_NODE_NAME_DETAIL, nodeName);
 		return responsibilityDetails;
 	}
 	
@@ -205,7 +205,7 @@ public class RoleRouteModule implements RouteModule {
 			this.responsibilityTemplateName = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), RESPONSIBILITY_TEMPLATE_NAME_ELEMENT);
 		}
 		if (StringUtils.isBlank(responsibilityTemplateName)) {
-			this.responsibilityTemplateName = KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME;
+			this.responsibilityTemplateName = KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME;
 		}
 		return responsibilityTemplateName;
 	}
@@ -215,7 +215,7 @@ public class RoleRouteModule implements RouteModule {
 			this.namespace = RouteNodeUtils.getValueOfCustomProperty(context.getNodeInstance().getRouteNode(), NAMESPACE_ELEMENT);
 		}
 		if (StringUtils.isBlank(namespace)) {
-			this.namespace = KEWConstants.KEW_NAMESPACE;
+			this.namespace = KewApiConstants.KEW_NAMESPACE;
 		}
 		return namespace;
 	}

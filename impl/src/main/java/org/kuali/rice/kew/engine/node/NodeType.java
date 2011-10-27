@@ -19,7 +19,7 @@ package org.kuali.rice.kew.engine.node;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 
 import java.util.ArrayList;
 import java.util.Collections;

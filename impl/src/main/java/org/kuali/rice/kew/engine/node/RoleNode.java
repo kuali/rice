@@ -25,15 +25,14 @@ import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.RouteManagerException;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.ClassDumper;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
@@ -124,7 +123,7 @@ public class RoleNode extends RequestsNode {
 			QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
             Predicate p = and(
                 equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
-                equal("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+                equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
                 equal("active", "Y"),
                 equal("attributes[documentTypeName]", docType.getName()),
                 equal("attributes[routeNodeName]", node.getRouteNodeName())
@@ -164,7 +163,7 @@ public class RoleNode extends RequestsNode {
 	 * Exception routing and adhoc routing are processed slightly differently.
 	 * 
 	 * @return True if the any approval actions were activated.
-	 * @throws ResourceUnavailableException
+	 * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException
 	 * @throws WorkflowException
 	 */
 	@SuppressWarnings("unchecked")
@@ -242,7 +241,7 @@ public class RoleNode extends RequestsNode {
 			throws WorkflowException {
 		Collections.sort( requests, ROLE_REQUEST_SORTER );
 		String activationType = nodeInstance.getRouteNode().getActivationType();
-		boolean isParallel = KEWConstants.ROUTE_LEVEL_PARALLEL.equals( activationType );
+		boolean isParallel = KewApiConstants.ROUTE_LEVEL_PARALLEL.equals( activationType );
 		boolean requestActivated = false;
 		String groupToActivate = null;
 		Integer priorityToActivate = null;

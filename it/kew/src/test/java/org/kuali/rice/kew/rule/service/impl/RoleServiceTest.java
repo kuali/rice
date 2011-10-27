@@ -42,7 +42,7 @@ import org.kuali.rice.kew.routemodule.TestRouteModuleXMLHelper;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 
 /**
@@ -87,7 +87,7 @@ public class RoleServiceTest extends KEWTestCase {
 
 	@Test public void testReResolveQualifiedRole() throws Exception {
 		DocumentRouteHeaderValue loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		List requests = getTestRoleRequests(loadedDocument);
 		assertEquals("Incorrect number of role control requests.", 2, requests.size());
 		assertRequestGraphs(requests);
@@ -100,7 +100,7 @@ public class RoleServiceTest extends KEWTestCase {
 		TestRuleAttribute.setRecipientPrincipalIds(TEST_ROLE, TEST_GROUP_1, newGroup1Recipients);
 		roleService.reResolveQualifiedRole(loadedDocument, TEST_ROLE, TEST_GROUP_1);
 		loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		requests = getTestRoleRequests(loadedDocument);
         // rkirkend is the initiator so his action should count for the TEST_GROUP_1 role after re-resolving, leaving only a single role request
 		assertEquals("Incorrect number of role control requests.", 1, requests.size());
@@ -147,7 +147,7 @@ public class RoleServiceTest extends KEWTestCase {
 
 	@Test public void testReResolveRole() throws Exception {
 		DocumentRouteHeaderValue loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		List requests = getTestRoleRequests(loadedDocument);
 		assertEquals("Incorrect number of role control requests.", 2, requests.size());
 		assertRequestGraphs(requests);
@@ -163,7 +163,7 @@ public class RoleServiceTest extends KEWTestCase {
 		// re-resolve entire role
 		roleService.reResolveRole(loadedDocument, TEST_ROLE);
 		loadedDocument = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		assertEquals(KEWConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
+		assertEquals(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, loadedDocument.getDocRouteStatus());
 		requests = getTestRoleRequests(loadedDocument);
 		// should be 1 because group 1 has no members
 		assertEquals("Incorrect number of role control requests.", 1, requests.size());
@@ -286,7 +286,7 @@ public class RoleServiceTest extends KEWTestCase {
 		List responsibilities = new ArrayList();
 		routeLevel1.setResponsibilities(responsibilities);
 		TestResponsibility responsibility1 = new TestResponsibility();
-		responsibility1.setActionRequested(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+		responsibility1.setActionRequested(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
 		responsibility1.setPriority(1);
 		TestRecipient recipient1 = new TestRecipient();
 		recipient1.setId(getPrincipalIdForName("rkirkend"));

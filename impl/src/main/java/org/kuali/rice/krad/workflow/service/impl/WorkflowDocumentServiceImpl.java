@@ -25,9 +25,9 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -128,7 +128,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("acknowleding document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
-        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ }));
+        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ }));
         workflowDocument.acknowledge(annotation);
     }
 
@@ -138,7 +138,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("approving document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
-        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ }));
+        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ }));
         workflowDocument.approve(annotation);
     }
 
@@ -171,7 +171,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("blanket approving document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
-        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ }));
+        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ }));
         workflowDocument.blanketApprove(annotation);
     }
 
@@ -190,7 +190,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("clearing FYI for document(" + workflowDocument.getDocumentId() + ")");
         }
 
-        handleAdHocRouteRequests(workflowDocument, "", filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_FYI_REQ }));
+        handleAdHocRouteRequests(workflowDocument, "", filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_FYI_REQ }));
         workflowDocument.fyi();
     }
 
@@ -223,7 +223,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             LOG.debug("routing document(" + workflowDocument.getDocumentId() + ",'" + annotation + "')");
         }
 
-        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ }));
+        handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_REQUEST_FYI_REQ, KewApiConstants.ACTION_REQUEST_APPROVE_REQ }));
         workflowDocument.route(annotation);
     }
 

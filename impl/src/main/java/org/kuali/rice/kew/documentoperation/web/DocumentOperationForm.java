@@ -28,7 +28,7 @@ import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
@@ -57,9 +57,9 @@ public class DocumentOperationForm extends KualiForm {
     private String routeLevelDate;
     private String lookupableImplServiceName;
     private String lookupType;
-    private Map docStatuses = KEWConstants.DOCUMENT_STATUSES;
-    private Map actionRequestCds = KEWConstants.ACTION_REQUEST_CD;
-    private Map actionTakenCds = KEWConstants.ACTION_TAKEN_CD;
+    private Map docStatuses = KewApiConstants.DOCUMENT_STATUSES;
+    private Map actionRequestCds = KewApiConstants.ACTION_REQUEST_CD;
+    private Map actionTakenCds = KewApiConstants.ACTION_TAKEN_CD;
     private List routeModules;
     private String routeModuleName;
 
@@ -142,35 +142,35 @@ public class DocumentOperationForm extends KualiForm {
 
     public DocOperationIndexedParameter getActionRequestOp(int index) {
         while (actionRequestOps.size() <= index) {
-            actionRequestOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
+            actionRequestOps.add(new DocOperationIndexedParameter(new Integer(index), KewApiConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getActionRequestOps().get(index);
     }
 
     public DocOperationIndexedParameter getActionTakenOp(int index) {
         while (actionTakenOps.size() <= index) {
-            actionTakenOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
+            actionTakenOps.add(new DocOperationIndexedParameter(new Integer(index), KewApiConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getActionTakenOps().get(index);
     }
 
     public DocOperationIndexedParameter getRouteNodeInstanceOp(int index) {
         while (routeNodeInstanceOps.size() <= index) {
-        	routeNodeInstanceOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
+        	routeNodeInstanceOps.add(new DocOperationIndexedParameter(new Integer(index), KewApiConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getRouteNodeInstanceOps().get(index);
     }
 
     public DocOperationIndexedParameter getBranchOp(int index) {
         while (branchOps.size() <= index) {
-        	branchOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
+        	branchOps.add(new DocOperationIndexedParameter(new Integer(index), KewApiConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getBranchOps().get(index);
     }
 
     public DocOperationIndexedParameter getActionItemOp(int index) {
         while (actionItemOps.size() <= index) {
-            actionItemOps.add(new DocOperationIndexedParameter(new Integer(index), KEWConstants.NOOP));
+            actionItemOps.add(new DocOperationIndexedParameter(new Integer(index), KewApiConstants.NOOP));
         }
         return (DocOperationIndexedParameter) getActionItemOps().get(index);
     }

@@ -17,10 +17,10 @@
 package org.kuali.rice.kew.actionlist;
 
 import org.kuali.rice.kew.api.action.ActionItem;
-import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionSet;
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;
@@ -33,7 +33,7 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 
 	private static final long serialVersionUID = -7212208304658959134L;
 
-	private RouteHeaderDTO routeHeaderVO;
+	private Document routeHeaderVO;
     private ActionRequest actionRequestVO;
     private UserSession userSession;
     
@@ -70,11 +70,11 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
         return DisplayParameters.Builder.create(new Integer(300)).build();
 	}
     
-    public RouteHeaderDTO getRouteHeaderVO() {
+    public Document getRouteHeaderVO() {
         return routeHeaderVO;
     }
 
-    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
+    public void setRouteHeaderVO(Document routeHeaderVO) {
         this.routeHeaderVO = routeHeaderVO;
     }
 

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.actionlist.web;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionToTake;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -333,38 +333,38 @@ public class ActionListForm extends KualiForm {
         request.setAttribute(KRADConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
 
         //refactor actionlist.jsp not to be dependent on this
-        request.setAttribute("preferences", GlobalVariables.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
+        request.setAttribute("preferences", GlobalVariables.getUserSession().retrieveObject(KewApiConstants.PREFERENCES));
 
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
         final Principal hdalPrinc = (Principal) GlobalVariables.getUserSession().retrieveObject(
-                KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
+                KewApiConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
         if (hdalPrinc != null) {
             setHelpDeskActionListUserName(hdalPrinc.getPrincipalName());
         }
         boolean isHelpDeskAuthorized = KimApiServiceLocator.getPermissionService().isAuthorized(principalId,
-                KEWConstants.KEW_NAMESPACE, KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST,
+                KewApiConstants.KEW_NAMESPACE, KewApiConstants.PermissionNames.VIEW_OTHER_ACTION_LIST,
                 new HashMap<String, String>(), new HashMap<String, String>());
         if (isHelpDeskAuthorized) {
             request.setAttribute("helpDeskActionList", "true");
         }
         //String routeLogPopup = "false";
-        //boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
+        //boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KewApiConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
         //if (routeLogPopupInd) {
         //	routeLogPopup = "true";
         //}
         //String documentPopup = "false";
-        //boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND);
+        //boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KewApiConstants.ACTION_LIST_DOCUMENT_POPUP_IND);
         //if (documentPopupInd) {
         //    documentPopup = "true";
         //}
         setRouteLogPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
+                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                KewApiConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
         setDocumentPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
+                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                KewApiConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
         request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(
-                KEWConstants.ACTION_LIST_NO_REFRESH)));
+                KewApiConstants.ACTION_LIST_NO_REFRESH)));
         super.populate(request);
     }
 

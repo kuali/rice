@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleRepositoryService;
 import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.xml.transform.Templates;
@@ -68,7 +68,7 @@ public class StyleServiceImpl implements StyleService {
             return null;
         }
 
-        boolean useXSLTC = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_USE_XSLTC_IND);
+        boolean useXSLTC = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KewApiConstants.EDL_USE_XSLTC_IND);
         if (useXSLTC) {
             LOG.info("using xsltc to compile stylesheet");
             String key = "javax.xml.transform.TransformerFactory";
@@ -84,7 +84,7 @@ public class StyleServiceImpl implements StyleService {
         if (useXSLTC) {
             factory.setAttribute("translet-name",name);
             factory.setAttribute("generate-translet",Boolean.TRUE);
-            String debugTransform = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KEWConstants.EDL_DEBUG_TRANSFORM_IND);
+            String debugTransform = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KewApiConstants.EDL_DEBUG_TRANSFORM_IND);
             if (debugTransform.trim().equals("Y")) {
                 factory.setAttribute("debug", Boolean.TRUE);
             }

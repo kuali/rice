@@ -14,32 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.exception;
-
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
+package org.kuali.rice.kew.api.exception;
 
 /**
- * An exception which is thrown when a pessimistic lock fails to be aquired.
- * 
+ * A generic checked exception thrown from KEW.  Acts as the superclass for all checked
+ * exceptions in KEW.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LockingException extends WorkflowRuntimeException {
+public class WorkflowException extends Exception {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8604582895083027695L;
-	public LockingException() {
-        super();
-   }
-    public LockingException(String message) {
-        super(message);
-    }
-    public LockingException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public LockingException(Throwable cause) {
-        super(cause);
-    }
-    
+	private static final long serialVersionUID = 4377433160795253501L;
+
+	public WorkflowException() {
+		super();
+	}
+
+	public WorkflowException(String message) {
+		super(message);
+	}
+
+	public WorkflowException(String message, Throwable throwable) {
+		super(message, throwable);
+	}
+
+	public WorkflowException(Throwable throwable) {
+		super(throwable);
+	}
+
 }

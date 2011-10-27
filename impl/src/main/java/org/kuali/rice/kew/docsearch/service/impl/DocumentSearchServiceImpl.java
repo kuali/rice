@@ -53,7 +53,7 @@ import org.kuali.rice.kew.impl.document.search.DocumentSearchGeneratorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -251,11 +251,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             Integer defaultCreateDateDaysAgoValue = null;
             if (isCriteriaEmpty) {
                 // if they haven't set any criteria, default the from created date to today minus days from constant variable
-                defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
+                defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO;
             } else if (isTitleOnly) {
                 // If the document title is the only field which was entered, we want to set the "from" date to be X
                 // days ago.  This will allow for a more efficient query.
-                defaultCreateDateDaysAgoValue = KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
+                defaultCreateDateDaysAgoValue = KewApiConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO;
             }
             if (defaultCreateDateDaysAgoValue != null) {
                 // add a default create date
@@ -295,7 +295,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     public DocumentSearchGenerator getStandardDocumentSearchGenerator() {
-	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
+	String searchGeneratorClass = ConfigContext.getCurrentContextConfig().getProperty(KewApiConstants.STANDARD_DOC_SEARCH_GENERATOR_CLASS_CONFIG_PARM);
 	if (searchGeneratorClass == null){
 	    return new DocumentSearchGeneratorImpl();
 	}

@@ -25,7 +25,7 @@ import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.role.Role;
 import org.kuali.rice.kim.api.role.RoleMembership;
@@ -65,7 +65,7 @@ import static org.junit.Assert.*;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class RoleRouteModuleTest extends KEWTestCase {
 
-    private static final String NAMESPACE = KEWConstants.KEW_NAMESPACE;
+    private static final String NAMESPACE = KewApiConstants.KEW_NAMESPACE;
     private static final String ROLE_NAME = "RoleRouteModuleTestRole";
 
     private static boolean suiteDataInitialized = false;
@@ -274,7 +274,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         Long documentTypeAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo documentTypeAttribute = new KimAttributeBo();
         documentTypeAttribute.setId("" + documentTypeAttributeId);
-        documentTypeAttribute.setAttributeName(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
+        documentTypeAttribute.setAttributeName(KewApiConstants.DOCUMENT_TYPE_NAME_DETAIL);
         documentTypeAttribute.setNamespaceCode(NAMESPACE);
         documentTypeAttribute.setAttributeLabel("documentType");
         documentTypeAttribute.setActive(true);
@@ -284,7 +284,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         Long nodeNameAttributeId = KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ATTR_DEFN_ID_S");
         KimAttributeBo nodeNameAttribute = new KimAttributeBo();
         nodeNameAttribute.setId("" + nodeNameAttributeId);
-        nodeNameAttribute.setAttributeName(KEWConstants.ROUTE_NODE_NAME_DETAIL);
+        nodeNameAttribute.setAttributeName(KewApiConstants.ROUTE_NODE_NAME_DETAIL);
         nodeNameAttribute.setNamespaceCode(NAMESPACE);
         nodeNameAttribute.setAttributeLabel("nodeName");
         nodeNameAttribute.setActive(true);
@@ -409,7 +409,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setId(roleResponsibilityActionId);
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
-        roleResponsibilityAction1.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        roleResponsibilityAction1.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
         roleResponsibilityAction1 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
@@ -419,7 +419,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setId(roleResponsibilityActionId);
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
-        roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        roleResponsibilityAction2.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
         roleResponsibilityAction2 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
@@ -429,7 +429,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setId(roleResponsibilityActionId);
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
-        roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        roleResponsibilityAction3.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);
@@ -520,7 +520,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction1.setId(roleResponsibilityActionId);
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
-        roleResponsibilityAction1.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        roleResponsibilityAction1.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
         roleResponsibilityAction1 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction1);
@@ -530,7 +530,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction2.setId(roleResponsibilityActionId);
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
-        roleResponsibilityAction2.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        roleResponsibilityAction2.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
         roleResponsibilityAction2 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction2);
@@ -540,7 +540,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         roleResponsibilityAction3.setId(roleResponsibilityActionId);
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
         roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
-        roleResponsibilityAction3.setActionTypeCode(KEWConstants.ACTION_REQUEST_APPROVE_REQ);
+        roleResponsibilityAction3.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
         roleResponsibilityAction3 = KRADServiceLocator.getBusinessObjectService().save(roleResponsibilityAction3);

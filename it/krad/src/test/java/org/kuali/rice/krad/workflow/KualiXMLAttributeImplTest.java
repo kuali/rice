@@ -105,7 +105,7 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
 //                        if (KualiXmlAttribute.class.isAssignableFrom(Class.forName(className))) {
 //                            LOG.debug("Adding attribute to test with class name " + className);
 //                            String attributeType = dbAnswer.getString("RULE_ATTRIB_TYP");
-//                            if (KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(attributeType)) {
+//                            if (KewApiConstants.RULE_XML_ATTRIBUTE_TYPE.equals(attributeType)) {
 //                                ruleAttributeXml = ruleAttributeXml + "<ruleAttribute>\n\t<name>";
 //                                ruleAttributeXml = ruleAttributeXml + dbAnswer.getString("RULE_ATTRIB_NM");
 //                                ruleAttributeXml = ruleAttributeXml + "</name>\n\t<className>";
@@ -119,7 +119,7 @@ public class KualiXMLAttributeImplTest extends KRADTestCase {
 //                                ruleAttributeXml = ruleAttributeXml + "</type>\n\t" + dbAnswer.getString("RULE_ATTRIB_XML_RTE_TXT") + "\n</ruleAttribute>\n";
 //
 //                            }
-//                            else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(attributeType)) {
+//                            else if (KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(attributeType)) {
 //                                searchAttributeXml = searchAttributeXml + "<ruleAttribute>\n\t<name>";
 //                                searchAttributeXml = searchAttributeXml + dbAnswer.getString("RULE_ATTRIB_NM");
 //                                searchAttributeXml = searchAttributeXml + "</name>\n\t<className>";

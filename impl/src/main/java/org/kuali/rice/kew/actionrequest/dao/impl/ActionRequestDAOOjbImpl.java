@@ -33,7 +33,7 @@ import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 
@@ -108,7 +108,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
             actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
         }
         if (actionRequest.getPriority() == null) {
-            actionRequest.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
+            actionRequest.setPriority(KewApiConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
         }
         if (actionRequest.getCurrentIndicator() == null) {
             actionRequest.setCurrentIndicator(true);

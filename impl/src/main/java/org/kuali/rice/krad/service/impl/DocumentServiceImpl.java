@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -805,7 +805,7 @@ public class DocumentServiceImpl implements DocumentService {
      * Sets the title and app document id in the flex document
      *
      * @param document
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     @Override
     public void prepareWorkflowDocument(Document document) throws WorkflowException {
@@ -825,7 +825,7 @@ public class DocumentServiceImpl implements DocumentService {
      * workflow when routed.
      *
      * @param document
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     private void populateDocumentTitle(Document document) throws WorkflowException {
         String documentTitle = document.getDocumentTitle();

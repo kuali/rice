@@ -18,7 +18,6 @@ package org.kuali.rice.ken.document.kew;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.exception.WorkflowException;
 
 /**
  * This class extends the KEW WorkflowDocument object and becomes our gateway for get a handle on
@@ -33,7 +32,7 @@ public final class NotificationWorkflowDocument {
      * Constructs a NotificationWorkflowDocument instance - this essentially creates a new routable
      * document in KEW for the given user.
      * @param principalId
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     public static WorkflowDocument createNotificationDocument(String principalId) {
         return WorkflowDocumentFactory.createDocument(principalId,
@@ -45,7 +44,7 @@ public final class NotificationWorkflowDocument {
      * document in KEW for the given user and document type name.
      * @param user
      * @param documentTypeName
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     public static WorkflowDocument createNotificationDocument(String principalId, String documentTypeName) {
         return WorkflowDocumentFactory.createDocument(principalId, documentTypeName, null);
@@ -56,7 +55,7 @@ public final class NotificationWorkflowDocument {
      * workflow document that was already created in the system.
      * @param user
      * @param documentId
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     public static WorkflowDocument loadNotificationDocument(String principalId, String documentId) {
         return WorkflowDocumentFactory.loadDocument(principalId, documentId);

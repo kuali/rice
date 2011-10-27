@@ -18,7 +18,6 @@ package org.kuali.rice.kns.web.struts.form;
 import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.util.TableRenderUtil;
 
 import java.util.Collections;
@@ -311,7 +310,7 @@ public class KualiTableRenderFormMetadata {
      * @param memberTableMetadata
      * @param items
      * @param maxRowsPerPage
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     public void sort(List<?> items, int maxRowsPerPage) {
 

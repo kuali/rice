@@ -30,7 +30,7 @@ import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
 import org.kuali.rice.kew.quicklinks.WatchedDocument;
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -133,7 +133,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectDistinctDocumentTypes.setString(1, principalId);
                     selectedDistinctDocumentTypes = selectDistinctDocumentTypes.executeQuery();
 
-                    String documentNames = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
+                    String documentNames = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KewApiConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
                     if (documentNames != null) {
                         // TODO Should this happen???
                         documentNames = documentNames.trim();
@@ -208,11 +208,11 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                 ResultSet selectedWatchedDocuments = null;
                 try {
                     Connection connection = broker.serviceConnectionManager().getConnection();
-                    selectWatchedDocuments = connection.prepareStatement("select DOC_HDR_ID, DOC_HDR_STAT_CD, TTL, CRTE_DT from KREW_DOC_HDR_T where INITR_PRNCPL_ID = ? and DOC_HDR_STAT_CD in ('"+ KEWConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KEWConstants.ROUTE_HEADER_EXCEPTION_CD +"') order by CRTE_DT desc");
+                    selectWatchedDocuments = connection.prepareStatement("select DOC_HDR_ID, DOC_HDR_STAT_CD, TTL, CRTE_DT from KREW_DOC_HDR_T where INITR_PRNCPL_ID = ? and DOC_HDR_STAT_CD in ('"+ KewApiConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KewApiConstants.ROUTE_HEADER_EXCEPTION_CD +"') order by CRTE_DT desc");
                     selectWatchedDocuments.setString(1, principalId);
                     selectedWatchedDocuments = selectWatchedDocuments.executeQuery();
                     while (selectedWatchedDocuments.next()) {
-                        watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), KEWConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
+                        watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), KewApiConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
                     }
                     return watchedDocuments;
                 } catch (Exception e) {

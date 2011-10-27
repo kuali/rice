@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.edl.framework.extract.DumpDTO;
 import org.kuali.rice.edl.framework.extract.FieldDTO;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import javax.persistence.CascadeType;
@@ -142,7 +142,7 @@ public class Dump {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         Date date = calendar.getTime();
-        DateFormat dateFormat = new SimpleDateFormat(KEWConstants.TIMESTAMP_DATE_FORMAT_PATTERN2);
+        DateFormat dateFormat = new SimpleDateFormat(KewApiConstants.TIMESTAMP_DATE_FORMAT_PATTERN2);
         return dateFormat.format(date);
     }
 

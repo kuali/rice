@@ -33,7 +33,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -227,11 +227,11 @@ public class RuleTemplateXmlParser {
             //    the existing rule template options on this template if it is a delegation template (which of course will be overwritten
             //    by this very same code if they subsequently upload without the delegation flag)
             // This is a minor point, but the second implementation is chosen as it preserved the current behavior
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_DEFAULT_CD, defaultActionRequested);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_APPROVE_REQ, supportsApprove);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, supportsAcknowledge);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_FYI_REQ, supportsFYI);
-            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KEWConstants.ACTION_REQUEST_COMPLETE_REQ, supportsComplete);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KewApiConstants.ACTION_REQUEST_DEFAULT_CD, defaultActionRequested);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, supportsApprove);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, supportsAcknowledge);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KewApiConstants.ACTION_REQUEST_FYI_REQ, supportsFYI);
+            updateOrDeleteRuleTemplateOption(updatedRuleTemplate, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, supportsComplete);
         }
 
     }
@@ -317,7 +317,7 @@ public class RuleTemplateXmlParser {
                 ruleDelegationDefaults = new RuleDelegationBo();
                 ruleDelegationDefaults.setDelegationRule(ruleDefaults);
                 ruleDelegationDefaults.setDelegationType(delegationType);
-                ruleDelegationDefaults.setResponsibilityId(KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
+                ruleDelegationDefaults.setResponsibilityId(KewApiConstants.ADHOC_REQUEST_RESPONSIBILITY_ID);
             }
 
             // explicitly save the new rule delegation defaults and default rule

@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.krad.UserSession;
@@ -188,11 +188,11 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     public WorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
         @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
                 (Map<String, WorkflowDocument>) userSession
-                        .retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
+                        .retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
 
         if (workflowDocMap == null) {
             workflowDocMap = new HashMap<String, WorkflowDocument>();
-            userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
+            userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
             return null;
         }
         return workflowDocMap.get(docId);
@@ -206,12 +206,12 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     public void addDocumentToUserSession(UserSession userSession, WorkflowDocument document) {
         @SuppressWarnings("unchecked") Map<String, WorkflowDocument> workflowDocMap =
                 (Map<String, WorkflowDocument>) userSession
-                        .retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
+                        .retrieveObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
         if (workflowDocMap == null) {
             workflowDocMap = new HashMap<String, WorkflowDocument>();
         }
         workflowDocMap.put(document.getDocumentId(), document);
-        userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
+        userSession.addObject(KewApiConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
     }
 
     /**

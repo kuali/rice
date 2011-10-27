@@ -39,7 +39,7 @@
       </html:form>
     </c:when>
     <c:otherwise> 
-      <c:set var="backboorEnabled" value="<%=org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(org.kuali.rice.kew.util.KEWConstants.KEW_NAMESPACE, org.kuali.rice.krad.util.KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, org.kuali.rice.kew.util.KEWConstants.SHOW_BACK_DOOR_LOGIN_IND)%>"/>
+      <c:set var="backboorEnabled" value="<%=org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(org.kuali.rice.kew.api.KewApiConstants.KEW_NAMESPACE, org.kuali.rice.krad.util.KRADConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, org.kuali.rice.kew.api.KewApiConstants.SHOW_BACK_DOOR_LOGIN_IND)%>"/>
       <c:if test="${backboorEnabled}">
         <html:form action="/backdoorlogin.do" method="post" style="margin:0; display:inline">
           <input name="backdoorId" type="text" class="searchbox" size="10" title="Enter your backdoor ID here.">

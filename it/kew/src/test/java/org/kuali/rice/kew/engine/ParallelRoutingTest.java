@@ -34,7 +34,7 @@ import org.kuali.rice.kew.api.action.ActionRequestStatus;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 public class ParallelRoutingTest extends KEWTestCase {
     
@@ -84,21 +84,21 @@ public class ParallelRoutingTest extends KEWTestCase {
             if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 isToTemay = true;
                 assertEquals("Request should be activated.", ActionRequestStatus.ACTIVATED.getCode(), actionRequest.getStatus());
-                assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
+                assertEquals("Wrong action requested.", KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", ACKNOWLEDGE_1_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }
             if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("rkirkend"))) {
                 isToRkirkend = true;
                 assertEquals("Request should be activated.", ActionRequestStatus.ACTIVATED.getCode(), actionRequest.getStatus());
-                assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
+                assertEquals("Wrong action requested.", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", WORKFLOW_DOCUMENT_2_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }
             if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("pmckown"))) {
                 isToPmckown = true;
                 assertEquals("Request should be activated.", ActionRequestStatus.ACTIVATED.getCode(), actionRequest.getStatus());
-                assertEquals("Wrong action requested.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
+                assertEquals("Wrong action requested.", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionRequest.getActionRequested());
                 assertNotNull("Should have been routed through node instance.", actionRequest.getNodeInstance());
                 assertEquals("Invalid node.", WORKFLOW_DOCUMENT_3_NODE, actionRequest.getNodeInstance().getRouteNode().getRouteNodeName());
             }

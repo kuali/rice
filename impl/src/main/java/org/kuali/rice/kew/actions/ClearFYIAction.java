@@ -19,11 +19,11 @@ package org.kuali.rice.kew.actions;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -52,7 +52,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public ClearFYIAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, principal);
+        super(KewApiConstants.ACTION_TAKEN_FYI_CD, rh, principal);
     }
 
     /**
@@ -64,7 +64,7 @@ public class ClearFYIAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public ClearFYIAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_FYI_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_FYI_CD, rh, principal, annotation);
     }
     
     /**
@@ -79,7 +79,7 @@ public class ClearFYIAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to have FYI processed";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_FYI_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_FYI_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the ClearFYI action";
         }
@@ -101,7 +101,7 @@ public class ClearFYIAction extends ActionTakenEvent {
             actionRequest = (ActionRequestValue) ars.next();
 
             //FYI request matches all but deny and cancel
-            if (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequest.getActionRequested())) {
+            if (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(actionRequest.getActionRequested())) {
                 actionCompatible = true;
                 break;
             }
@@ -123,7 +123,7 @@ public class ClearFYIAction extends ActionTakenEvent {
         LOG.debug("Clear FYI for document : " + annotation);
         LOG.debug("Checking to see if the action is legal");
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_FYI_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_FYI_REQ);
         if (actionRequests == null || actionRequests.isEmpty()) {
         	DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
         	if (allowUnrequested != null) {

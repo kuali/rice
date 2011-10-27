@@ -31,8 +31,8 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
-import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleDelegation;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.rule.RuleService;
@@ -41,11 +41,10 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
@@ -108,7 +107,7 @@ public class FlexRM {
 		// first see if there ruleselector is configured on a nodeinstance basis
 		NodeState ns = null;
 		if (nodeInstance != null) {
-			ns = nodeInstance.getNodeState(KEWConstants.RULE_SELECTOR_NODE_STATE_KEY);
+			ns = nodeInstance.getNodeState(KewApiConstants.RULE_SELECTOR_NODE_STATE_KEY);
 		}
 		String ruleSelectorName = null;
 		if (ns != null) {
@@ -384,7 +383,7 @@ public class FlexRM {
 
 	/**
 	 * Generates action requests for a non-role responsibility, either a user or workgroup
-     * @throws org.kuali.rice.kew.exception.WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
 	private void makeActionRequest(ActionRequestFactory arFactory, RouteContext context, org.kuali.rice.kew.api.rule.Rule rule, DocumentRouteHeaderValue routeHeader, org.kuali.rice.kew.api.rule.RuleResponsibility resp, ActionRequestValue parentRequest,
 			RuleDelegation ruleDelegation) {

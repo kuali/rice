@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.role.service;
 
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 

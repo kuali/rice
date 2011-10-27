@@ -26,7 +26,7 @@ import org.kuali.rice.core.api.resourceloader.ServiceLocator;
 import org.kuali.rice.core.impl.resourceloader.BaseWrappingResourceLoader;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.plugin.PluginRegistry;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -100,7 +100,7 @@ public class CoreResourceLoader extends BaseWrappingResourceLoader {
 	}
 		
 	protected boolean useRemoteEmailServices() {
-	    String useRemoteEmailServicesValue = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.USE_REMOTE_EMAIL_SERVICES);
+	    String useRemoteEmailServicesValue = ConfigContext.getCurrentContextConfig().getProperty(KewApiConstants.USE_REMOTE_EMAIL_SERVICES);
 	    if (!StringUtils.isBlank(useRemoteEmailServicesValue)) {
 	        return new Boolean(useRemoteEmailServicesValue.trim());
 	    }

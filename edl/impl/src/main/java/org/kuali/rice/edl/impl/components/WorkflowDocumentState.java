@@ -31,8 +31,8 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -84,7 +84,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			style.appendChild(dom.createTextNode(styleName));
 
 			Element showAttachments = EDLXmlUtils.getOrCreateChildElement(documentState, "showAttachments", true);
-			boolean showConstants = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.SHOW_ATTACHMENTS_IND);
+			boolean showConstants = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KewApiConstants.SHOW_ATTACHMENTS_IND);
 
 			showAttachments.appendChild(dom.createTextNode(Boolean.valueOf(showConstants).toString()));
 

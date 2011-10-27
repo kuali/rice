@@ -26,7 +26,7 @@ import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -87,8 +87,8 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
                         PropertyUtils.setNestedProperty(criteria, field.getKey(), field.getValue());
                     } else if (DATE_RANGE_TRANSLATE_FIELD_NAMES_SET.contains(field.getKey())) {
                         applyDateRangeField(criteria, field.getKey(), field.getValue());
-                    } else if (field.getKey().startsWith(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
-                        String documentAttributeName = field.getKey().substring(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX.length());
+                    } else if (field.getKey().startsWith(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
+                        String documentAttributeName = field.getKey().substring(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX.length());
                         applyDocumentAttribute(criteria, documentAttributeName, field.getValue());
                     }
 
@@ -138,7 +138,7 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
 
         Map<String, List<String>> docAttrValues = criteria.getDocumentAttributeValues();
         for (Map.Entry<String, List<String>> entry: docAttrValues.entrySet()) {
-            values.put(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey(), entry.getValue().toArray(new String[0]));
+            values.put(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey(), entry.getValue().toArray(new String[0]));
         }
 
         RouteNodeLookupLogic lookupLogic = criteria.getRouteNodeLookupLogic();

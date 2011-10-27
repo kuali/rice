@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.util;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -43,8 +44,8 @@ public class FutureRequestDocumentStateManager {
     private boolean clearFutureRequestState;
 
 
-    public static final String FUTURE_REQUESTS_VAR_KEY = BranchState.VARIABLE_PREFIX + KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY;
-    public static final String DEACTIVATED_REQUESTS_VARY_KEY = BranchState.VARIABLE_PREFIX + KEWConstants.DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY;
+    public static final String FUTURE_REQUESTS_VAR_KEY = BranchState.VARIABLE_PREFIX + KewApiConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_KEY;
+    public static final String DEACTIVATED_REQUESTS_VARY_KEY = BranchState.VARIABLE_PREFIX + KewApiConstants.DEACTIVATED_FUTURE_REQUESTS_BRANCH_STATE_KEY;
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, String principalId)
     {
@@ -110,16 +111,16 @@ public class FutureRequestDocumentStateManager {
     }
 
     protected boolean isReceiveFutureRequests(BranchState state) {
-        return state.getValue().equals(KEWConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+        return state.getValue().equals(KewApiConstants.RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
 
 
     protected boolean isDoNotReceiveFutureRequests(BranchState state) {
-        return state.getValue().equals(KEWConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+        return state.getValue().equals(KewApiConstants.DONT_RECEIVE_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
 
     protected boolean isClearFutureRequests(BranchState state) {
-        return state.getValue().equals(KEWConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
+        return state.getValue().equals(KewApiConstants.CLEAR_FUTURE_REQUESTS_BRANCH_STATE_VALUE);
     }
 
     public boolean isClearFutureRequestState() {

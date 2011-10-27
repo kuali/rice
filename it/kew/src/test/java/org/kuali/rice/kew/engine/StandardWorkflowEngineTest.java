@@ -39,7 +39,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
@@ -67,8 +67,8 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
 		Branch rootBranch = routeHeader.getRootBranch();
 		assertNotNull(rootBranch);
-		BranchState processedBranchState = rootBranch.getBranchState(KEWConstants.POST_PROCESSOR_PROCESSED_KEY);
-		BranchState finalBranchState = rootBranch.getBranchState(KEWConstants.POST_PROCESSOR_FINAL_KEY);
+		BranchState processedBranchState = rootBranch.getBranchState(KewApiConstants.POST_PROCESSOR_PROCESSED_KEY);
+		BranchState finalBranchState = rootBranch.getBranchState(KewApiConstants.POST_PROCESSOR_FINAL_KEY);
 		assertNotNull(processedBranchState);
 		assertNotNull(finalBranchState);
 		assertEquals("true", processedBranchState.getValue());
@@ -140,9 +140,9 @@ public class StandardWorkflowEngineTest extends KEWTestCase {
 		public static int processedCount = 0;
 
 		public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
-			if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+			if (KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equals(statusChangeEvent.getNewRouteStatus())) {
 				processedCount++;
-			} else if (KEWConstants.ROUTE_HEADER_FINAL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
+			} else if (KewApiConstants.ROUTE_HEADER_FINAL_CD.equals(statusChangeEvent.getNewRouteStatus())) {
 				finalCount++;
 			}
 			return new ProcessDocReport(true);

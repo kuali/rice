@@ -22,6 +22,8 @@ import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.exception.InvalidParentDocTypeException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -35,8 +37,6 @@ import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RoleNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
-import org.kuali.rice.kew.exception.InvalidParentDocTypeException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.role.RoleRouteModule;
 import org.kuali.rice.kew.rule.FlexRM;
@@ -44,7 +44,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -392,7 +392,7 @@ public class DocumentTypeXmlParser {
                 LOG.error("Error obtaining routePath start name attribute", xpee);
                 throw xpee;
             }
-            String processName = KEWConstants.PRIMARY_PROCESS_NAME;
+            String processName = KewApiConstants.PRIMARY_PROCESS_NAME;
             if (org.apache.commons.lang.StringUtils.isEmpty(startName)) {
                 try {
                     startName = (String) getXPath().evaluate("./@" + INITIAL_NODE, processNode, XPathConstants.STRING);
@@ -477,7 +477,7 @@ public class DocumentTypeXmlParser {
                 label = previousDocumentType.getLabel();
             } else {
                 // otherwise set it to undefined
-                label = KEWConstants.DEFAULT_DOCUMENT_TYPE_LABEL;
+                label = KewApiConstants.DEFAULT_DOCUMENT_TYPE_LABEL;
             }
             documentType.setLabel(label);
         }
@@ -492,7 +492,7 @@ public class DocumentTypeXmlParser {
             if (XmlHelper.pathExists(xpath, "./" + POST_PROCESSOR_NAME, documentTypeNode)) {
                 String postProcessor = (String) getXPath().evaluate("./" + POST_PROCESSOR_NAME, documentTypeNode, XPathConstants.STRING);
                 if (StringUtils.isEmpty(postProcessor)) {
-                    documentType.setPostProcessorName(KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE);
+                    documentType.setPostProcessorName(KewApiConstants.POST_PROCESSOR_NON_DEFINED_VALUE);
                 } else {
                     documentType.setPostProcessorName((String) getXPath().evaluate("./" + POST_PROCESSOR_NAME, documentTypeNode, XPathConstants.STRING));
                 }    
@@ -803,7 +803,7 @@ public class DocumentTypeXmlParser {
                     throw xpee;
                 }
                 // verify that the routing version is one of the two valid values
-                if (!(version.equals(KEWConstants.ROUTING_VERSION_ROUTE_LEVEL) || version.equals(KEWConstants.ROUTING_VERSION_NODAL))) {
+                if (!(version.equals(KewApiConstants.ROUTING_VERSION_ROUTE_LEVEL) || version.equals(KewApiConstants.ROUTING_VERSION_NODAL))) {
                     throw new WorkflowRuntimeException("Invalid routing version on document type: " + version);
                 }
                 documentType.setRoutingVersion(version);
@@ -964,7 +964,7 @@ public class DocumentTypeXmlParser {
             ProcessDefinitionBo process = new ProcessDefinitionBo();
             if (org.apache.commons.lang.StringUtils.isEmpty(processName)) {
                 process.setInitial(true);
-                process.setName(KEWConstants.PRIMARY_PROCESS_NAME);
+                process.setName(KewApiConstants.PRIMARY_PROCESS_NAME);
             } else {
                 process.setInitial(false);
                 process.setName(processName);
@@ -978,7 +978,7 @@ public class DocumentTypeXmlParser {
             ProcessDefinitionBo process = new ProcessDefinitionBo();
             
             process.setInitial(true);
-            process.setName(KEWConstants.PRIMARY_PROCESS_NAME);
+            process.setName(KewApiConstants.PRIMARY_PROCESS_NAME);
 
             process.setDocumentType(documentType);
             documentType.addProcess(process);
@@ -1267,12 +1267,12 @@ public class DocumentTypeXmlParser {
                 throw new XmlException("Rule template for node '" + routeNode.getRouteNodeName() + "' not found: " + ruleTemplateName);
             }
             routeNode.setRouteMethodName(ruleTemplateName);
-            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_FLEX_RM);
+            routeNode.setRouteMethodCode(KewApiConstants.ROUTE_LEVEL_FLEX_RM);
         } else if (((Boolean) getXPath().evaluate("./routeModule", node, XPathConstants.BOOLEAN)).booleanValue()) {
             routeNode.setRouteMethodName((String) getXPath().evaluate("./routeModule", node, XPathConstants.STRING));
-            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_ROUTE_MODULE);
+            routeNode.setRouteMethodCode(KewApiConstants.ROUTE_LEVEL_ROUTE_MODULE);
         } else if (((Boolean) getXPath().evaluate("./peopleFlows", node, XPathConstants.BOOLEAN)).booleanValue()) {
-            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_PEOPLE_FLOW);
+            routeNode.setRouteMethodCode(KewApiConstants.ROUTE_LEVEL_PEOPLE_FLOW);
         } else if (((Boolean) getXPath().evaluate("./rulesEngine", node, XPathConstants.BOOLEAN)).booleanValue()) {
             // validate that the element has at least one of the two required attributes, XML schema does not provide a way for us to
             // check this so we must do so programatically
@@ -1284,7 +1284,7 @@ public class DocumentTypeXmlParser {
             } else if (StringUtils.isNotBlank(executorName) && StringUtils.isNotBlank(executorClass)) {
                 throw new XmlException("Only one of 'executorName' or 'executorClass' may be declared on rulesEngine configuration, but both were declared.");
             }
-            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_RULES_ENGINE);
+            routeNode.setRouteMethodCode(KewApiConstants.ROUTE_LEVEL_RULES_ENGINE);
         }
 
         String nodeType = null;
@@ -1320,7 +1320,7 @@ public class DocumentTypeXmlParser {
             context.branch = splitNode.getBranch();
         } else if (NodeType.ROLE.getName().equalsIgnoreCase(localName)) {
             routeNode.setRouteMethodName(RoleRouteModule.class.getName());
-            routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_ROUTE_MODULE);
+            routeNode.setRouteMethodCode(KewApiConstants.ROUTE_LEVEL_ROUTE_MODULE);
         }
         routeNode.setBranch(context.branch);
 
@@ -1366,10 +1366,10 @@ public class DocumentTypeXmlParser {
             		policy.setPolicyStringValue(policyStringValue.toUpperCase());
             		policy.setPolicyValue(Boolean.TRUE);
             		// if DocumentStatusPolicy, check against allowable values
-            		if (KEWConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
             			boolean found = false;
-            			for (int index=0; index<KEWConstants.DOCUMENT_STATUS_POLICY_VALUES.length; index++) {
-            				if (KEWConstants.DOCUMENT_STATUS_POLICY_VALUES[index].equalsIgnoreCase(policyStringValue)){
+            			for (int index=0; index<KewApiConstants.DOCUMENT_STATUS_POLICY_VALUES.length; index++) {
+            				if (KewApiConstants.DOCUMENT_STATUS_POLICY_VALUES[index].equalsIgnoreCase(policyStringValue)){
             					found = true;
             					break;
             				}            					
@@ -1381,7 +1381,7 @@ public class DocumentTypeXmlParser {
             		
             	} else {
             		//DocumentStatusPolicy requires a <stringValue> tag
-            		if (KEWConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
+            		if (KewApiConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
             			throw new XmlException("Application Document Status Policy requires a <stringValue>");
             		}
             	}

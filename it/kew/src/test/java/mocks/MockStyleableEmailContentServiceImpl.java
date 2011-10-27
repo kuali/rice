@@ -26,7 +26,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 
 /**
@@ -76,7 +76,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
         }
         if (routeHeader == null) {
         	routeHeader = new DocumentRouteHeaderValue();
-        	routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+        	routeHeader.setDocRouteStatus(KewApiConstants.ROUTE_HEADER_ENROUTE_CD);
         	routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
         }
         return routeHeader;
@@ -89,7 +89,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
     	for (ActionItem actionItem : actionItems) {
     		if (routeHeaders.get(actionItem.getDocumentId()) == null) {
     			routeHeader = new DocumentRouteHeaderValue();
-            	routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+            	routeHeader.setDocRouteStatus(KewApiConstants.ROUTE_HEADER_ENROUTE_CD);
             	routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
             	routeHeaders.put(actionItem.getDocumentId(), routeHeader);
     		}

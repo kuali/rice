@@ -22,7 +22,7 @@ import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.document.RoutingRuleMaintainable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.maintenance.Maintainable;
@@ -82,10 +82,10 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 	private Set<String> createExpectedKeysSet(boolean hasAcknowledge, boolean hasComplete, boolean hasApprove, boolean hasFyi) {
 		final Set<String> expectedKeys = new HashSet<String>();
 		// Insert the desired expected options into the set.
-		if (hasAcknowledge) { expectedKeys.add(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ); }
-		if (hasComplete) { expectedKeys.add(KEWConstants.ACTION_REQUEST_COMPLETE_REQ); }
-		if (hasApprove) { expectedKeys.add(KEWConstants.ACTION_REQUEST_APPROVE_REQ); }
-		if (hasFyi) { expectedKeys.add(KEWConstants.ACTION_REQUEST_FYI_REQ); }
+		if (hasAcknowledge) { expectedKeys.add(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ); }
+		if (hasComplete) { expectedKeys.add(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ); }
+		if (hasApprove) { expectedKeys.add(KewApiConstants.ACTION_REQUEST_APPROVE_REQ); }
+		if (hasFyi) { expectedKeys.add(KewApiConstants.ACTION_REQUEST_FYI_REQ); }
 		return expectedKeys;
 	}
 	
@@ -143,8 +143,8 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 		final String[] ruleTemplates = {"RuleTemplate_With_Valid_Defaults", "RuleTemplate_With_More_Valid_Defaults"};
 		final boolean[][] kSetBools = { {false, false, true, false}, {true, true, false, false} };
 		final String[][] defaultActions = {
-			{KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_APPROVE_REQ,KEWConstants.ACTION_REQUEST_APPROVE_REQ},
-			{KEWConstants.ACTION_REQUEST_COMPLETE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ,KEWConstants.ACTION_REQUEST_COMPLETE_REQ}};
+			{KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_APPROVE_REQ,KewApiConstants.ACTION_REQUEST_APPROVE_REQ},
+			{KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ,KewApiConstants.ACTION_REQUEST_COMPLETE_REQ}};
 		// Test each rule template from the given file.
 		for (int i = 0; i < ruleTemplates.length; i++) {
 			createNewKualiMaintenanceForm(ruleTemplates[i]);

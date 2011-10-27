@@ -19,7 +19,7 @@ package org.kuali.rice.kew.routeheader;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.web.RoutingReportAction;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import java.util.Iterator;
 import java.util.List;
@@ -45,14 +45,14 @@ public class AttributeDocumentContent extends StandardDocumentContent {
     
     private static String generateDocContent(List attributes) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("<").append(KEWConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
-        buffer.append("<").append(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
+        buffer.append("<").append(KewApiConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        buffer.append("<").append(KewApiConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
         for (Iterator iterator = attributes.iterator(); iterator.hasNext();) {
             WorkflowRuleAttribute attribute = (WorkflowRuleAttribute) iterator.next();
             buffer.append(attribute.getDocContent());
         }
-        buffer.append("</").append(KEWConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
-        buffer.append("</").append(KEWConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
+        buffer.append("</").append(KewApiConstants.ATTRIBUTE_CONTENT_ELEMENT).append(">");
+        buffer.append("</").append(KewApiConstants.DOCUMENT_CONTENT_ELEMENT).append(">");
         return buffer.toString();
     }
 

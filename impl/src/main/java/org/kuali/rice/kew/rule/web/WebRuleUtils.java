@@ -39,7 +39,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kns.web.ui.Field;
@@ -290,7 +290,7 @@ public final class WebRuleUtils {
 					}
 					WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 					RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+					if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(
                                 ruleAttribute));
 					}
@@ -398,7 +398,7 @@ public final class WebRuleUtils {
 			}
 			String principalId = KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(responsibility.getPrincipalName());
 			ruleResponsibility.setRuleResponsibilityName(principalId);
-			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+			ruleResponsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
 			// default the approve policy to First Approve
 			ruleResponsibility.setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
 			rule.getRuleResponsibilities().add(ruleResponsibility);
@@ -413,7 +413,7 @@ public final class WebRuleUtils {
 			}
 			Group group = KEWServiceLocator.getIdentityHelperService().getGroupByName(responsibility.getNamespaceCode(), responsibility.getName());
 			ruleResponsibility.setRuleResponsibilityName(group.getId());
-			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+			ruleResponsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID);
 			ruleResponsibility.setApprovePolicy(ActionRequestPolicy.FIRST.getCode());
 			rule.getRuleResponsibilities().add(ruleResponsibility);
 		}
@@ -426,7 +426,7 @@ public final class WebRuleUtils {
 				ruleResponsibility.setResponsibilityId(KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId());
 			}
 			ruleResponsibility.setRuleResponsibilityName(responsibility.getRoleName());
-			ruleResponsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID);
+			ruleResponsibility.setRuleResponsibilityType(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID);
 			ruleResponsibility.setApprovePolicy(responsibility.getApprovePolicy());
 			rule.getRuleResponsibilities().add(ruleResponsibility);
 		}
@@ -445,7 +445,7 @@ public final class WebRuleUtils {
 			WorkflowRuleAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
 
 			RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
+			if (ruleAttribute.getType().equals(KewApiConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 
@@ -543,20 +543,20 @@ public final class WebRuleUtils {
 	
 	public static void translateResponsibilitiesForLoad(RuleBaseValues rule) {
 		for (RuleResponsibilityBo responsibility : rule.getRuleResponsibilities()) {
-			if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)) {
+			if (responsibility.getRuleResponsibilityType().equals(KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID)) {
 				PersonRuleResponsibility personResponsibility = new PersonRuleResponsibility();
 				copyResponsibility(responsibility, personResponsibility);
 				Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(personResponsibility.getRuleResponsibilityName());
 				personResponsibility.setPrincipalName(principal.getPrincipalName());
 				rule.getPersonResponsibilities().add(personResponsibility);
-			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)) {
+			} else if (responsibility.getRuleResponsibilityType().equals(KewApiConstants.RULE_RESPONSIBILITY_GROUP_ID)) {
 				GroupRuleResponsibility groupResponsibility = new GroupRuleResponsibility();
 				copyResponsibility(responsibility, groupResponsibility);
 				Group group = KEWServiceLocator.getIdentityHelperService().getGroup(groupResponsibility.getRuleResponsibilityName());
 				groupResponsibility.setNamespaceCode(group.getNamespaceCode());
 				groupResponsibility.setName(group.getName());
 				rule.getGroupResponsibilities().add(groupResponsibility);
-			} else if (responsibility.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_ROLE_ID)) {
+			} else if (responsibility.getRuleResponsibilityType().equals(KewApiConstants.RULE_RESPONSIBILITY_ROLE_ID)) {
 				RoleRuleResponsibility roleResponsibility = new RoleRuleResponsibility();
 				copyResponsibility(responsibility, roleResponsibility);
 				rule.getRoleResponsibilities().add(roleResponsibility);

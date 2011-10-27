@@ -51,7 +51,7 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -77,7 +77,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
 
     protected StyleService styleService;
     protected EmailStyleHelper styleHelper = new EmailStyleHelper();
-    protected String globalEmailStyleSheet = KEWConstants.EMAIL_STYLESHEET_NAME;
+    protected String globalEmailStyleSheet = KewApiConstants.EMAIL_STYLESHEET_NAME;
 
     protected RouteHeaderService routeHeaderService;
 

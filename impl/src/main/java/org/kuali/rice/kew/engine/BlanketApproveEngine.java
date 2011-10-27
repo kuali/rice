@@ -25,16 +25,16 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.NotificationContext;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -96,7 +96,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             context.setEngineState(new EngineState());
             NotificationContext notifyContext = null;
             if (config.isSendNotifications()) {
-                notifyContext = new NotificationContext(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getPrincipal(), config.getCause().getActionTaken());
+                notifyContext = new NotificationContext(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, config.getCause().getPrincipal(), config.getCause().getActionTaken());
             }
             lockAdditionalDocuments(document);
             try {

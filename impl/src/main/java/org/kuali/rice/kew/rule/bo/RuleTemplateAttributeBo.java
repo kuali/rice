@@ -27,7 +27,7 @@ import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -131,7 +131,7 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
 
     public boolean isRuleValidationAttribute() {
         // just check the type here to avoid having to load the class from the class loader if it's not actually there
-        return KEWConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(getRuleAttribute().getType());
+        return KewApiConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(getRuleAttribute().getType());
     }
 
     /**

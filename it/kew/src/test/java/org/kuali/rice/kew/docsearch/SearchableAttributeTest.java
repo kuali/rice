@@ -31,14 +31,13 @@ import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -276,7 +275,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
     /**
      * Tests searching documents with searchable attributes
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     @Test public void testSearchAttributesAcrossDocumentTypeVersions() throws Exception {
         // first test searching for an initial version of the doc which does not have a searchable attribute
@@ -569,7 +568,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId("ewestfal"), "SearchDoc", null, documentContentUpdateBuilder.build());
         workflowDocument.route("");
         assertTrue(workflowDocument.isFinal());
-        assertEquals(StringUtils.deleteWhitespace("<" + KEWConstants.SEARCHABLE_CONTENT_ELEMENT + ">" + MockSearchableAttribute.SEARCH_CONTENT + "</" + KEWConstants.SEARCHABLE_CONTENT_ELEMENT + ">"),
+        assertEquals(StringUtils.deleteWhitespace("<" + KewApiConstants.SEARCHABLE_CONTENT_ELEMENT + ">" + MockSearchableAttribute.SEARCH_CONTENT + "</" + KewApiConstants.SEARCHABLE_CONTENT_ELEMENT + ">"),
                 StringUtils.deleteWhitespace(workflowDocument.getDocumentContent().getSearchableContent()));
     }
     

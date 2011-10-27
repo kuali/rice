@@ -32,7 +32,7 @@ import org.kuali.rice.kew.framework.document.search.StandardResultField;
 import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaBo;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
@@ -178,7 +178,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         }
         Map<String, String> documentAttributeFieldValues = new HashMap<String, String>();
         for (String parameterName : parameters.keySet()) {
-            if (parameterName.contains(KEWConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
+            if (parameterName.contains(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
                 String[] value = parameters.get(parameterName);
                 if (ArrayUtils.isNotEmpty(value)) {
                     documentAttributeFieldValues.put(parameterName, StringUtils.join(value, " " + SearchOperator.OR.op() + " "));
@@ -454,17 +454,17 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             if (documentType.getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue().booleanValue()) {
                 url += "SuperUser.do?methodToCall=displaySuperUserDocument&documentId=" + documentId;
             } else {
-                url = KEWConstants.DOC_HANDLER_REDIRECT_PAGE
-                        + "?" + KEWConstants.COMMAND_PARAMETER + "="
-                        + KEWConstants.SUPERUSER_COMMAND + "&"
-                        + KEWConstants.DOCUMENT_ID_PARAMETER + "="
+                url = KewApiConstants.DOC_HANDLER_REDIRECT_PAGE
+                        + "?" + KewApiConstants.COMMAND_PARAMETER + "="
+                        + KewApiConstants.SUPERUSER_COMMAND + "&"
+                        + KewApiConstants.DOCUMENT_ID_PARAMETER + "="
                         + documentId;
             }
         } else {
-            url += KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?"
-                    + KEWConstants.COMMAND_PARAMETER + "="
-                    + KEWConstants.DOCSEARCH_COMMAND + "&"
-                    + KEWConstants.DOCUMENT_ID_PARAMETER + "="
+            url += KewApiConstants.DOC_HANDLER_REDIRECT_PAGE + "?"
+                    + KewApiConstants.COMMAND_PARAMETER + "="
+                    + KewApiConstants.DOCSEARCH_COMMAND + "&"
+                    + KewApiConstants.DOCUMENT_ID_PARAMETER + "="
                     + documentId;
         }
         link.setHref(url);
@@ -489,9 +489,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     protected boolean isDocumentHandlerPopup() {
         return BooleanUtils.toBooleanDefaultIfNull(
                 CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                    KEWConstants.KEW_NAMESPACE,
+                    KewApiConstants.KEW_NAMESPACE,
                     KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
-                    KEWConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND),
+                    KewApiConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND),
                 DOCUMENT_HANDLER_POPUP_DEFAULT);
     }
 
@@ -500,9 +500,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      */
     public boolean isRouteLogPopup() {
         return BooleanUtils.toBooleanDefaultIfNull(
-                CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KEWConstants.KEW_NAMESPACE,
+                CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE,
                         KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
-                        KEWConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND), ROUTE_LOG_POPUP_DEFAULT);
+                        KewApiConstants.DOCUMENT_SEARCH_ROUTE_LOG_POPUP_IND), ROUTE_LOG_POPUP_DEFAULT);
     }
 
     /**
@@ -637,15 +637,15 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         // to mimic previous behavior, basic search button is shown both when currently rendering detailed search AND super user search
         // as super user search is essentially a detailed search
         String type = advancedSearch ? "basic" : "detailed";
-        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleAdvancedSearch", KEWConstants.WEBAPP_DIRECTORY, type, type));
+        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleAdvancedSearch", KewApiConstants.WEBAPP_DIRECTORY, type, type));
 
         // Add the superuser-search-toggling button.
         suppMenuBar.append("&nbsp;");
-        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleSuperUserSearch", KEWConstants.WEBAPP_DIRECTORY, superUserSearch ? "nonsupu" : "superuser", superUserSearch ? "non-superuser" : "superuser"));
+        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleSuperUserSearch", KewApiConstants.WEBAPP_DIRECTORY, superUserSearch ? "nonsupu" : "superuser", superUserSearch ? "non-superuser" : "superuser"));
 
         // Add the "clear saved searches" button.
         suppMenuBar.append("&nbsp;");
-        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, KEWConstants.WEBAPP_DIRECTORY, "clearsaved", "clear saved searches"));
+        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, KewApiConstants.WEBAPP_DIRECTORY, "clearsaved", "clear saved searches"));
 
         return suppMenuBar.toString();
     }

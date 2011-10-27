@@ -41,7 +41,7 @@ import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -108,30 +108,30 @@ public class BlanketApproveTest extends KEWTestCase {
         boolean isAck2 = false;
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-            assertEquals("Should only be acknowledges.", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
+            assertEquals("Should only be acknowledges.", KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, actionRequest.getActionRequested());
             RouteNodeInstance nodeInstance = actionRequest.getNodeInstance();
             assertNotNull(nodeInstance);
             String nodeName = nodeInstance.getRouteNode().getRouteNodeName();
             if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("bmcgough"))) {
                 isNotification1 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_NODE, nodeName);
-                assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
+                assertEquals(KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
             } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("rkirkend"))) {
                 isNotification2 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_NODE, nodeName);
-                assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
+                assertEquals(KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
             } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("pmckown"))) {
                 isNotification3 = true;
                 assertEquals(SequentialSetup.WORKFLOW_DOCUMENT_2_NODE, nodeName);
-                assertEquals(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
+                assertEquals(KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, actionRequest.getResponsibilityId());
             } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("temay"))) {
                 isAck1 = true;
                 assertEquals(SequentialSetup.ACKNOWLEDGE_1_NODE, nodeName);
-                assertFalse(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
+                assertFalse(KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
             } else if (actionRequest.getPrincipalId().equals(getPrincipalIdForName("jhopf"))) {
                 isAck2 = true;
                 assertEquals(SequentialSetup.ACKNOWLEDGE_2_NODE, nodeName);
-                assertFalse(KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
+                assertFalse(KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID.equals(actionRequest.getResponsibilityId()));
             }
         }
         assertTrue(isNotification1);
@@ -142,34 +142,34 @@ public class BlanketApproveTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("bmcgough should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("bmcgough should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));        
-        assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("rkirkend should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("rkirkend should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("rkirkend", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("pmckown"), document.getDocumentId());
         assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getDocumentId(), KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("pmckown should not have been sent an approve email", 0, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("pmckown should not have been sent an ack email", 1, getMockEmailService().immediateReminderEmailsSent("pmckown", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("temay"), document.getDocumentId());
         assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));        
+        assertEquals("rkirkend should have been sent an temay", 1, getMockEmailService().immediateReminderEmailsSent("temay", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
         assertTrue(document.isProcessed());
         assertTrue(document.isAcknowledgeRequested());
-        assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("rkirkend should have been sent an jhopf", 1, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
         document.acknowledge("");
         
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());

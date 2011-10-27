@@ -17,7 +17,7 @@ package org.kuali.rice.kew.rule.bo;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.ArrayList;
@@ -36,8 +36,8 @@ public class RuleAttributeTypeValuesFinder extends KeyValuesBase {
 	
 	static {
 		final List<KeyValue> ruleAttributeTypes = new ArrayList<KeyValue>();
-		for (String ruleAttributeType : KEWConstants.RULE_ATTRIBUTE_TYPES) {
-			ruleAttributeTypes.add(new ConcreteKeyValue(ruleAttributeType, KEWConstants.RULE_ATTRIBUTE_TYPE_MAP.get(ruleAttributeType)));
+		for (String ruleAttributeType : KewApiConstants.RULE_ATTRIBUTE_TYPES) {
+			ruleAttributeTypes.add(new ConcreteKeyValue(ruleAttributeType, KewApiConstants.RULE_ATTRIBUTE_TYPE_MAP.get(ruleAttributeType)));
 		}
 		RULE_ATTRIBUTE_TYPES = Collections.unmodifiableList(ruleAttributeTypes);
 	}

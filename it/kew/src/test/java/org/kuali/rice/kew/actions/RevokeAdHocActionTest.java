@@ -24,11 +24,11 @@ import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.AdHocRevoke;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 
 import java.util.Collection;
@@ -225,7 +225,7 @@ public class RevokeAdHocActionTest extends KEWTestCase {
     	assertEquals("There should be no pending requests.", 0, actionRequests.size());
 
     	// check that the "ActionTakens" have been properly recorded
-    	Collection actionTakens = KEWServiceLocator.getActionTakenService().findByDocIdAndAction(docId, KEWConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
+    	Collection actionTakens = KEWServiceLocator.getActionTakenService().findByDocIdAndAction(docId, KewApiConstants.ACTION_TAKEN_ADHOC_REVOKED_CD);
     	assertEquals("There should be 2 'AdHocRevoked' action takens", 2, actionTakens.size());
 
     	// now check that the document is still intiated

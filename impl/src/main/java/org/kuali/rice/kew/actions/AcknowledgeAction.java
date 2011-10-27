@@ -20,11 +20,11 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
+import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -53,7 +53,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public AcknowledgeAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, principal);
+        super(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, principal);
     }
 
     /**
@@ -65,7 +65,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public AcknowledgeAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, rh, principal, annotation);
     }
     
     /**
@@ -80,7 +80,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be acknowledged";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the ACKNOWLEDGE action";
         }
@@ -112,7 +112,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // Acknowledge Taken Code matches Fyi and Ack
-            if ( (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) || (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ) {
+            if ( (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) || (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -134,7 +134,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
         LOG.debug("Acknowledging document : " + annotation);
 
         LOG.debug("Checking to see if the action is legal");
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getDocumentId(), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), routeHeader.getDocumentId(), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
         if (actionRequests == null || actionRequests.isEmpty()) {
             DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
             if (allowUnrequested != null) {

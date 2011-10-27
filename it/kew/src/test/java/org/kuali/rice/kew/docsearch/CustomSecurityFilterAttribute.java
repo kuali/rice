@@ -23,7 +23,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.framework.document.security.DocumentSecurityAttribute;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 /**
@@ -38,10 +38,10 @@ public class CustomSecurityFilterAttribute implements DocumentSecurityAttribute 
 
     public static final Map<String,String> VIEWERS_BY_STATUS = new HashMap<String,String>();
     static {
-        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_SAVED_CD, "user3");
-        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_ENROUTE_CD, "dewey");
-        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_PROCESSED_CD, "jitrue");
-        VIEWERS_BY_STATUS.put(KEWConstants.ROUTE_HEADER_FINAL_CD, "user2");
+        VIEWERS_BY_STATUS.put(KewApiConstants.ROUTE_HEADER_SAVED_CD, "user3");
+        VIEWERS_BY_STATUS.put(KewApiConstants.ROUTE_HEADER_ENROUTE_CD, "dewey");
+        VIEWERS_BY_STATUS.put(KewApiConstants.ROUTE_HEADER_PROCESSED_CD, "jitrue");
+        VIEWERS_BY_STATUS.put(KewApiConstants.ROUTE_HEADER_FINAL_CD, "user2");
     }
 
     @Override

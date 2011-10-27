@@ -19,12 +19,11 @@ package org.kuali.rice.kew.actions;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -52,7 +51,7 @@ public class CompleteAction extends ActionTakenEvent {
      *            User taking the action.
      */
     public CompleteAction(DocumentRouteHeaderValue rh, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal);
+        super(KewApiConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal);
     }
 
     /**
@@ -64,7 +63,7 @@ public class CompleteAction extends ActionTakenEvent {
      *            User comment on the action taken
      */
     public CompleteAction(DocumentRouteHeaderValue rh, PrincipalContract principal, String annotation) {
-        super(KEWConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal, annotation);
+        super(KewApiConstants.ACTION_TAKEN_COMPLETED_CD, rh, principal, annotation);
     }
 
     /* (non-Javadoc)
@@ -79,7 +78,7 @@ public class CompleteAction extends ActionTakenEvent {
         if (!getRouteHeader().isValidActionToTake(getActionPerformedCode())) {
             return "Document is not in a state to be completed";
         }
-        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List<ActionRequestValue> filteredActionRequests = filterActionRequestsByCode(actionRequests, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (!isActionCompatibleRequest(filteredActionRequests)) {
             return "No request for the user is compatible " + "with the COMPLETE action";
         }
@@ -110,10 +109,10 @@ public class CompleteAction extends ActionTakenEvent {
             String request = actionRequest.getActionRequested();
 
             // Complete action matches Complete, Approve, FYI, and ACK requests
-            if ( (KEWConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
-                    (KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
-                    (KEWConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
-                    (KEWConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
+            if ( (KewApiConstants.ACTION_REQUEST_FYI_REQ.equals(request)) ||
+                    (KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ.equals(request)) ||
+                    (KewApiConstants.ACTION_REQUEST_APPROVE_REQ.equals(request)) ||
+                    (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(request)) ) {
                 actionCompatible = true;
                 break;
             }
@@ -124,15 +123,15 @@ public class CompleteAction extends ActionTakenEvent {
     /**
      * Records the complete action. - Checks to make sure the document status allows the action. - Checks that the user has not taken a previous action. - Deactivates the pending requests for this user - Records the action
      *
-     * @throws InvalidActionTakenException
-     * @throws ResourceUnavailableException
+     * @throws org.kuali.rice.kew.api.exception.InvalidActionTakenException
+     * @throws org.kuali.rice.kew.api.exception.ResourceUnavailableException
      */
-    public void recordAction() throws org.kuali.rice.kew.exception.InvalidActionTakenException {
+    public void recordAction() throws InvalidActionTakenException {
         MDC.put("docId", getRouteHeader().getDocumentId());
         updateSearchableAttributesIfPossible();
         LOG.debug("Completing document : " + annotation);
 
-        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
+        List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getDocumentId(), KewApiConstants.ACTION_REQUEST_COMPLETE_REQ);
         if (actionRequests == null || actionRequests.isEmpty()) {
             DocumentTypePolicy allowUnrequested = getRouteHeader().getDocumentType().getAllowUnrequestedActionPolicy();
             if (allowUnrequested != null) {
@@ -158,7 +157,7 @@ public class CompleteAction extends ActionTakenEvent {
         boolean isSaved = getRouteHeader().isStateSaved();
         if (isException || isSaved) {
             String oldStatus = getRouteHeader().getDocRouteStatus();
-            LOG.debug("Moving document back to Enroute from "+KEWConstants.DOCUMENT_STATUSES.get(oldStatus));
+            LOG.debug("Moving document back to Enroute from "+KewApiConstants.DOCUMENT_STATUSES.get(oldStatus));
             getRouteHeader().markDocumentEnroute();
             String newStatus = getRouteHeader().getDocRouteStatus();
             notifyStatusChange(newStatus, oldStatus);

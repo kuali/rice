@@ -36,7 +36,7 @@ import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -57,7 +57,7 @@ public class OutboxTest extends KEWTestCase {
     private void turnOnOutboxForUser(final String principalId) {
         new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                KEWServiceLocator.getUserOptionsService().save(principalId, PreferencesServiceImpl.USE_OUT_BOX, KEWConstants.PREFERENCES_YES_VAL);
+                KEWServiceLocator.getUserOptionsService().save(principalId, PreferencesServiceImpl.USE_OUT_BOX, KewApiConstants.PREFERENCES_YES_VAL);
                 return null;
             }
         });
@@ -238,7 +238,7 @@ public class OutboxTest extends KEWTestCase {
 
         //TODO: this can no longer be set on the fly and grabbed through the preference service (default values are set at startup)
         //TODO: this is a prime candidate for a mocking tool
-        /*ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM, "false");
+        /*ConfigContext.getCurrentContextConfig().putProperty(KewApiConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM, "false");
         final String natjohnsPrincipalId = getPrincipalIdForName("natjohns");
         prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohnsPrincipalId);
         assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());*/

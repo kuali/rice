@@ -14,6 +14,7 @@
  */
 package org.kuali.rice.krad.util;
 
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.Config;
 
 import java.util.ArrayList;
@@ -568,12 +569,11 @@ public final class KRADConstants {
   	public static final String EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME = "EditablePropertiesHistoryHolder";
 
     // TODO: new krad constants, previous needs to be cleaned up
-
-    public static final String DATA_TYPE_STRING = "string";
-    public static final String DATA_TYPE_DATE = "datetime";
-    public static final String DATA_TYPE_LONG = "long";
-    public static final String DATA_TYPE_FLOAT = "float";
-    public static final String DATA_TYPE_BOOLEAN = "boolean";
+    public static final String DATA_TYPE_STRING = CoreConstants.DATA_TYPE_STRING;
+    public static final String DATA_TYPE_DATE = CoreConstants.DATA_TYPE_DATE;
+    public static final String DATA_TYPE_LONG = CoreConstants.DATA_TYPE_LONG;
+    public static final String DATA_TYPE_FLOAT = CoreConstants.DATA_TYPE_FLOAT;
+    public static final String DATA_TYPE_BOOLEAN = CoreConstants.DATA_TYPE_BOOLEAN;
 
     public static final class Maintenance {
         public static final String REQUEST_MAPPING_MAINTENANCE = "maintenance";

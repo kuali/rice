@@ -27,7 +27,7 @@ import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
  * This test case verifies that the the ImmediateEmailReminderQueue can be retrieved from teh KewApiServiceLocator and that calling it
@@ -54,29 +54,29 @@ public class ImmediateEmailReminderQueueImplTest extends KEWTestCase {
     
     @Test
     public void test() {  
-        ActionItem actionItem = ActionItem.Builder.create("124", KEWConstants.ACTION_REQUEST_APPROVE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
+        ActionItem actionItem = ActionItem.Builder.create("124", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
         immediateEmailReminderQueue.sendReminder(actionItem, Boolean.FALSE);
         
-        assertEquals("user1 should have 1 email", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
-        assertEquals("user2 should have no emails", 0, getMockEmailService().immediateReminderEmailsSent("user2", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("user1 should have 1 email", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("user2 should have no emails", 0, getMockEmailService().immediateReminderEmailsSent("user2", "124", KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
         getMockEmailService().resetReminderCounts();
 
         immediateEmailReminderQueue.sendReminder(actionItem, Boolean.TRUE);
-        assertEquals("user1 should have no emails", 0, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("user1 should have no emails", 0, getMockEmailService().immediateReminderEmailsSent("user1", "124", KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
         getMockEmailService().resetReminderCounts();
 
         // ensure that skip on approvals defaults to false
         immediateEmailReminderQueue.sendReminder(actionItem, null);
-        assertEquals("user1 should have 1 email", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_APPROVE_REQ));
+        assertEquals("user1 should have 1 email", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
         getMockEmailService().resetReminderCounts();
 
         // try sending an ack and make sure it doesn't get filtered out when skipOnApprovals is true
-        actionItem = ActionItem.Builder.create("124", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
+        actionItem = ActionItem.Builder.create("124", KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, "123", new DateTime(), "Test", "http://www.test.com", "Test", "125", "user1").build();
         immediateEmailReminderQueue.sendReminder(actionItem, Boolean.TRUE);
-        assertEquals("user1 should have 1 emails", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
+        assertEquals("user1 should have 1 emails", 1, getMockEmailService().immediateReminderEmailsSent("user1", "124", KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ));
 
 
 

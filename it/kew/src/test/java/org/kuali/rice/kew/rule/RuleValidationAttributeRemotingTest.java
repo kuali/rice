@@ -28,7 +28,7 @@ import org.kuali.rice.kew.framework.validation.RuleValidationAttributeExporterSe
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.validation.RuleValidationAttributeResolver;
 import org.kuali.rice.ksb.messaging.resourceloader.ServiceBusResourceLoader;
 
@@ -79,7 +79,7 @@ public class RuleValidationAttributeRemotingTest extends KEWTestCase {
     private static final Predicate RULE_VALIDATION_ATTRIB_PREDICATE = new Predicate() {
         @Override
         public boolean evaluate(Object attrib) {
-            return KEWConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(((RuleAttribute) attrib).getType());
+            return KewApiConstants.RULE_VALIDATION_ATTRIBUTE_TYPE.equals(((RuleAttribute) attrib).getType());
         }
     };
 

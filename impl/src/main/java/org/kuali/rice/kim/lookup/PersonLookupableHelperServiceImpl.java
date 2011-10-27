@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.lookup;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
@@ -62,7 +62,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 			String href = "";
 			Properties parameters = new Properties();
 	        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.DOC_HANDLER_METHOD);
-	        parameters.put(KRADConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KRADConstants.PARAMETER_COMMAND, KewApiConstants.INITIATE_COMMAND);
 	        parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
 	        parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((PersonImpl)bo).getPrincipalId());
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
@@ -82,7 +82,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 	public HtmlData getInquiryUrl(BusinessObject bo, String propertyName) {
 		HtmlData inqUrl = super.getInquiryUrl(bo, propertyName);
 		Properties parameters = new Properties();
-        parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
+        parameters.put(KewApiConstants.COMMAND_PARAMETER, KewApiConstants.INITIATE_COMMAND);
         parameters.put(KRADConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((Person)bo).getPrincipalId());
         String href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+ KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION, parameters);

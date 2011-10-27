@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.notes;
 
-import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.krad.UserSession;
 
 
@@ -27,7 +27,7 @@ import org.kuali.rice.krad.UserSession;
  */
 public class CustomNoteAttributeImpl implements CustomNoteAttribute {
 
-    private RouteHeaderDTO routeHeaderVO;
+    private Document routeHeaderVO;
     private UserSession userSession;
 
     @Override
@@ -44,12 +44,12 @@ public class CustomNoteAttributeImpl implements CustomNoteAttribute {
     }
 
     @Override
-	public RouteHeaderDTO getRouteHeaderVO() {
+	public Document getRouteHeaderVO() {
         return routeHeaderVO;
     }
 
     @Override
-	public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
+	public void setRouteHeaderVO(Document routeHeaderVO) {
         this.routeHeaderVO = routeHeaderVO;
     }
 

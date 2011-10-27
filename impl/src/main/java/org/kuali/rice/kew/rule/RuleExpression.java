@@ -16,8 +16,6 @@
 package org.kuali.rice.kew.rule;
 
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.WorkflowException;
-
 
 /**
  * A rule is an entity that can be evaluated at runtime to generate a list of {@link RuleResponsibilityBo}s
@@ -32,7 +30,7 @@ public interface RuleExpression {
      * @param rule the rule that this rule expression applies to
      * @param context the RouteContext under which the expression is being evaluated
      * @return the result of the rule evaluation
-     * @throws WorkflowException
+     * @throws org.kuali.rice.kew.api.exception.WorkflowException
      */
     public RuleExpressionResult evaluate(Rule rule, RouteContext context);
 }

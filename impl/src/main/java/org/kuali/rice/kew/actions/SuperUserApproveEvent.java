@@ -20,19 +20,19 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RequestsNode;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 
 
@@ -52,13 +52,13 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 	private static final Logger LOG = Logger.getLogger(SuperUserApproveEvent.class);
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
-        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal);
-        this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
+        super(KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal);
+        this.superUserAction = KewApiConstants.SUPER_USER_APPROVE;
     }
 
     public SuperUserApproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
-        super(KEWConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
-        this.superUserAction = KEWConstants.SUPER_USER_APPROVE;
+        super(KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD, routeHeader, principal, annotation, runPostProcessor);
+        this.superUserAction = KewApiConstants.SUPER_USER_APPROVE;
     }
 
 	public void recordAction() throws InvalidActionTakenException {
@@ -104,13 +104,13 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 
 	@SuppressWarnings("unchecked")
 	protected void completeAnyOutstandingCompleteApproveRequests(ActionTakenValue actionTaken, boolean sendNotifications) throws Exception {
-		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_APPROVE_REQ, getDocumentId());
-		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, getDocumentId()));
+		List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KewApiConstants.ACTION_REQUEST_APPROVE_REQ, getDocumentId());
+		actionRequests.addAll(KEWServiceLocator.getActionRequestService().findPendingByActionRequestedAndDocId(KewApiConstants.ACTION_REQUEST_COMPLETE_REQ, getDocumentId()));
 		for (ActionRequestValue actionRequest : actionRequests) {
 			KEWServiceLocator.getActionRequestService().deactivateRequest(actionTaken, actionRequest);
 		}
 		if (sendNotifications) {
-			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, getPrincipal(), this.findDelegatorForActionRequests(actionRequests), KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_TAKEN_SU_APPROVED_CD);
+			new ActionRequestFactory(this.getRouteHeader()).generateNotifications(actionRequests, getPrincipal(), this.findDelegatorForActionRequests(actionRequests), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KewApiConstants.ACTION_TAKEN_SU_APPROVED_CD);
 		}
 	}
 

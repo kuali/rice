@@ -44,7 +44,7 @@ import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -179,7 +179,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     				try {
                         fieldDataType = (String) xpath.evaluate(findDataTypeXpathExpression, getConfigXML(extensionDefinition), XPathConstants.STRING);
     					if (org.apache.commons.lang.StringUtils.isEmpty(fieldDataType)) {
-    						fieldDataType = KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
+    						fieldDataType = KewApiConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
     					}
     				    xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(extensionDefinition), XPathConstants.STRING);
     					if (!org.apache.commons.lang.StringUtils.isEmpty(xpathExpression)) {
@@ -396,13 +396,13 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     private DataType convertValueToDataType(String dataTypeValue) {
         if (StringUtils.isBlank(dataTypeValue)) {
             return DataType.STRING;
-        } else if (KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING.equals(dataTypeValue)) {
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_STRING.equals(dataTypeValue)) {
             return DataType.STRING;
-        } else if (KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE.equals(dataTypeValue)) {
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_DATE.equals(dataTypeValue)) {
             return DataType.DATE;
-        } else if (KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG.equals(dataTypeValue)) {
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_LONG.equals(dataTypeValue)) {
             return DataType.LONG;
-        } else if (KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT.equals(dataTypeValue)) {
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT.equals(dataTypeValue)) {
             return DataType.FLOAT;
         }
         throw new IllegalArgumentException("Invalid dataTypeValue was given: " + dataTypeValue);
@@ -432,8 +432,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     private void applyAttributeRange(RemotableAttributeLookupSettings.Builder attributeLookupSettings, RemotableAttributeField.Builder fieldBuilder, Node searchDefinitionNode) {
         NamedNodeMap searchDefAttributes = searchDefinitionNode.getAttributes();
         Node rangeDefinitionNode = getPotentialChildNode(searchDefinitionNode, "rangeDefinition");
-        String lowerBoundDefaultName = KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
-        String upperBoundDefaultName = KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
+        String lowerBoundDefaultName = KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
+        String upperBoundDefaultName = KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
         attributeLookupSettings.setRanged(true);
         attributeLookupSettings.setLowerBoundName(lowerBoundDefaultName);
         attributeLookupSettings.setUpperBoundName(upperBoundDefaultName);
@@ -637,8 +637,8 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
                         // TODO - KULRICE-5630 - I'm pretty sure this *won't* work because we don't store lower and upper bound keys in the document attributes
 
-                        String lowerBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName;
-                        String upperBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName;
+                        String lowerBoundFieldDefName = KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName;
+                        String upperBoundFieldDefName = KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName;
                         List<String> lowerBoundValues = documentAttributeValues.get(lowerBoundFieldDefName);
                         rangeMemberInSearchParams |= CollectionUtils.isNotEmpty(lowerBoundValues) && StringUtils.isNotBlank(lowerBoundValues.get(0));
                         List<String> upperBoundValues = documentAttributeValues.get(upperBoundFieldDefName);
@@ -682,7 +682,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
         					}
         					if (org.apache.commons.lang.StringUtils.isEmpty(fieldDataType)) {
-        						fieldDataType = KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
+        						fieldDataType = KewApiConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
         					}
         					// get the searchable attribute value by using the data type
         					SearchableAttributeValue attributeValue = DocumentSearchInternalUtils
@@ -730,7 +730,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                     if (rangeValid != null && !rangeValid) {
                                         String lowerLabel = getPotentialRangeBoundLabelFromAttributes(lowerBoundRangeAttributes);
                                         String upperLabel = getPotentialRangeBoundLabelFromAttributes(upperBoundRangeAttributes);
-                                        String errorMsg = "The " + fieldDefTitle + " range is incorrect.  The " + (StringUtils.isNotBlank(lowerLabel) ? lowerLabel : KEWConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL) + " value entered must come before the " + (StringUtils.isNotBlank(upperLabel) ? upperLabel : KEWConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL) + " value";
+                                        String errorMsg = "The " + fieldDefTitle + " range is incorrect.  The " + (StringUtils.isNotBlank(lowerLabel) ? lowerLabel : KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL) + " value entered must come before the " + (StringUtils.isNotBlank(upperLabel) ? upperLabel : KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL) + " value";
                                         LOG.debug("validateUserSearchInputs() " + errorMsg + " :: field type '" + attributeValue.getAttributeDataType() + "'");
                                         errors.add(RemotableAttributeError.Builder.create(fieldDefName, errorMsg).build());
                                     }
@@ -775,7 +775,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
 		XPath xpath = XPathHelper.newXPath();
 		if ( attributeValue.allowsWildcards()) {
-			enteredValue = enteredValue.replaceAll(KEWConstants.SearchableAttributeConstants.SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED, "");
+			enteredValue = enteredValue.replaceAll(KewApiConstants.SearchableAttributeConstants.SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED, "");
 		}
 		if (!attributeValue.isPassesDefaultValidation(enteredValue)) {
             errorMessagePrefix = (StringUtils.isNotBlank(errorMessagePrefix)) ? errorMessagePrefix : "Field";

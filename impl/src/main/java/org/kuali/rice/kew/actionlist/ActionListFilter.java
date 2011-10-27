@@ -19,7 +19,7 @@ package org.kuali.rice.kew.actionlist;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
@@ -36,12 +36,12 @@ public class ActionListFilter implements Serializable {
 	private String filterLegend;
     private String documentTitle = "";
     private boolean excludeDocumentTitle;
-    private String docRouteStatus = KEWConstants.ALL_CODE;
+    private String docRouteStatus = KewApiConstants.ALL_CODE;
     private boolean excludeRouteStatus;
-    private String actionRequestCd = KEWConstants.ALL_CODE;
+    private String actionRequestCd = KewApiConstants.ALL_CODE;
     private boolean excludeActionRequestCd;
     private String groupId;
-    private String groupIdString = KEWConstants.NO_FILTERING;
+    private String groupIdString = KewApiConstants.NO_FILTERING;
     private String groupName = "";
     private boolean excludeGroupId;
     private String documentType = "";

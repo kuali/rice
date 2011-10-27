@@ -61,7 +61,7 @@
 							lookupParameters="appSpecificRouteRecipient.id:principalName" />
 				</td>
 				<td class="datacell" align="center">
-					<html:image property="methodToCall.routeToAppSpecificRecipient.(((${KEWConstants.PERSON})))" src="${resourcePath}images/tinybutton-routerecpt.gif" title="Route to Recipient" alt="Route to Recipient" styleClass="tinybutton"/>
+					<html:image property="methodToCall.routeToAppSpecificRecipient.(((${KewApiConstants.PERSON})))" src="${resourcePath}images/tinybutton-routerecpt.gif" title="Route to Recipient" alt="Route to Recipient" styleClass="tinybutton"/>
 				</td>
 			</tr>
 			
@@ -99,7 +99,7 @@
 						lookupParameters="appSpecificRouteRecipient2.namespaceCode:namespaceCode,appSpecificRouteRecipient2.id:groupName" />
 				</td>
 				<td class="datacell" align="center">
-					<html:image property="methodToCall.routeToAppSpecificRecipient.(((${KEWConstants.WORKGROUP})))" src="${resourcePath}images/tinybutton-routerecpt.gif" title="Route to Recipient" alt="Route to Recipient" styleClass="tinybutton"/>
+					<html:image property="methodToCall.routeToAppSpecificRecipient.(((${KewApiConstants.WORKGROUP})))" src="${resourcePath}images/tinybutton-routerecpt.gif" title="Route to Recipient" alt="Route to Recipient" styleClass="tinybutton"/>
 				</td>
 			</tr>
 			<tr><td class="headercell1" colspan="4" align="center">&nbsp;</td></tr>

@@ -14,34 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.exception;
+package org.kuali.rice.kew.api.exception;
 
+import org.kuali.rice.kew.api.WorkflowRuntimeException;
 
 /**
- * The exception thrown whenever an ActionTaken can not be procesed for some reason.
+ * An exception which is thrown when a pessimistic lock fails to be aquired.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InvalidActionTakenException extends WorkflowException {
-  /**
+public class LockingException extends WorkflowRuntimeException {
+
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1138782665042887434L;
-
-public InvalidActionTakenException() {
-    super();
-  }
-
-  public InvalidActionTakenException(String s) {
-    super(s);
-  }
-  
-  public InvalidActionTakenException(String message, Throwable throwable) {
-      super(message, throwable);
-  }
-  
-  public InvalidActionTakenException(Throwable throwable) {
-      super(throwable);
-  }
-  
+	private static final long serialVersionUID = -8604582895083027695L;
+	public LockingException() {
+        super();
+   }
+    public LockingException(String message) {
+        super(message);
+    }
+    public LockingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+    public LockingException(Throwable cause) {
+        super(cause);
+    }
+    
 }

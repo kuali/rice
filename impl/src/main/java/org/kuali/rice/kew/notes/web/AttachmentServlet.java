@@ -23,7 +23,7 @@ import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -51,7 +51,7 @@ public class AttachmentServlet extends HttpServlet {
 	private static final long serialVersionUID = -1918858512573502697L;
 	public static final String ATTACHMENT_ID_KEY = "attachmentId";
 
-	// TODO This should probably be put into KEWConstants when contributed back
+	// TODO This should probably be put into KewApiConstants when contributed back
 	// to Rice 1.0.3
 	private static final Logger LOG = Logger.getLogger(AttachmentServlet.class);
 			
@@ -65,7 +65,7 @@ public class AttachmentServlet extends HttpServlet {
 		boolean secureChecks = true;
 		String secureAttachmentsParam = null;
 		try {
-			secureAttachmentsParam = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KEWConstants.KEW_NAMESPACE, "All", KEWConstants.SECURE_ATTACHMENTS_PARAM);
+			secureAttachmentsParam = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, "All", KewApiConstants.SECURE_ATTACHMENTS_PARAM);
 		} catch (Exception e) {
 			LOG.info("Attempted to retrieve parameter value, but could not. Defaulting to unsecured attachment retrieval. " + e.getMessage());
 		}

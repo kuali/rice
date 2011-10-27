@@ -42,7 +42,6 @@
         <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->
     <maven.surefire.skip>true</maven.surefire.skip>
     <maven.failsafe.skip>true</maven.failsafe.skip>
-    <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
 
   <profiles>

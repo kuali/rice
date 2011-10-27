@@ -43,7 +43,6 @@
   </ciManagement>
 
   <properties>
-    <kuali.generate.reports>true</kuali.generate.reports>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
@@ -712,14 +711,6 @@
 
     <plugins>
 
-      <plugin>
-        <inherited>true</inherited>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <generateReports>${kuali.generate.reports}</generateReports>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>

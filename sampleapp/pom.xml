@@ -24,7 +24,6 @@
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
-    <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
 
   <build>

@@ -27,7 +27,6 @@
 
   <properties>
     <bootstrap.spring.file>classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml</bootstrap.spring.file>
-    <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
 
   <build>

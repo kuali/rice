@@ -65,10 +65,6 @@
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>${oracle.jdbc.artifactId}</artifactId>
-    </dependency>
-    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <scope>provided</scope>

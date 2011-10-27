@@ -24,6 +24,7 @@
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
+    <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
 
   <build>
@@ -44,29 +45,8 @@
         </excludes>
       </resource>
     </resources>
-  
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${kuali.site.plugin.version}</version>
-          <configuration>
-            <generateReports>${kuali.generate.reports}</generateReports>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  
+    
     <plugins> 
-      <plugin>
-        <inherited>true</inherited>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <generateReports>${kuali.generate.reports}</generateReports>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>

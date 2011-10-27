@@ -35,17 +35,10 @@
   </repositories>
   <properties>
     <kuali.testjar.phase>none</kuali.testjar.phase>
+    <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
   <build>
     <plugins>
-      <plugin>
-        <inherited>true</inherited>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <generateReports>${kuali.generate.reports}</generateReports>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.gmaven</groupId>
         <artifactId>gmaven-plugin</artifactId>

@@ -24,6 +24,7 @@
   </modules>
   <properties>
     <kuali.testjar.phase>none</kuali.testjar.phase>
+    <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
   <build>
     <plugins>

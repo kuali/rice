@@ -25,25 +25,33 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="Field-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase">
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
+
+  <bean id="DataField" abstract="true" parent="DataField-parentBean"/>
+  <bean id="DataField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField" parent="Field">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
+    <property name="styleClasses" value="kr-data-fld"/>
+    <property name="readOnly" value="true"/>
+    <property name="bindingInfo">
+      <ref bean="BindingInfo"/>
+    </property>
+    <property name="labelField">
+      <bean parent="LabelField"/>
+    </property>
+    <property name="fieldInquiry">
+      <bean parent="Inquiry"/>
+    </property>
+  </bean>
   
   <bean id="AttributeField" parent="AttributeField-parentBean"/>
-  <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" parent="Field" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/templates/field/attributeField.jsp"/>
+  <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" parent="DataField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
       <property name="styleClasses" value="kr-field-attribute"/>
+      <property name="readOnly" value="@{#parent.readOnly}"/>
 	    <property name="errorsField">
         <bean parent="ErrorsField"/>
       </property>
-      <property name="bindingInfo">
-        <ref bean="BindingInfo"/>
-      </property>
-      <property name="labelField">
-        <bean parent="LabelField"/>
-      </property>
       <property name="fieldLookup">
         <bean parent="QuickFinder"/>
-      </property> 
-      <property name="fieldInquiry">
-        <bean parent="Inquiry"/>
       </property> 
       <property name="fieldDirectInquiry">
         <bean parent="DirectInquiry"/>

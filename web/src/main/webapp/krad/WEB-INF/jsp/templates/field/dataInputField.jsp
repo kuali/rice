@@ -15,7 +15,12 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.AttributeField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.DataField"/>
+
+<c:set var="readOnly" value="${field.readOnly}"/>
+<c:if test="${field.class.name eq 'org.kuali.rice.krad.uif.field.DataField'}">
+  <c:set var="readOnly" value="true"/>
+</c:if>
 
 <krad:span component="${field}">
 
@@ -23,7 +28,7 @@
 
     <%-- render field value (if read-only) or control (if edit) --%>
     <c:choose>
-      <c:when test="${field.readOnly}">
+      <c:when test="${readOnly}">
         <c:set var="readOnlyDisplay">
           <%-- display alternate display value if set --%>
           <c:if test="${not empty field.alternateDisplayValue}">
@@ -65,7 +70,7 @@
     <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
 
     <%-- render field direct inquiry if field is editable --%>
-    <c:if test="${field.fieldDirectInquiry.render && !field.readOnly}">
+    <c:if test="${!readOnly && field.fieldDirectInquiry.render}">
       <krad:template component="${field.fieldDirectInquiry}" componentId="${field.id}"/>
     </c:if>
 
@@ -75,7 +80,7 @@
   <span id="${field.id}_markers"></span>
 
   <%-- render field constraint if field is editable --%>
-  <c:if test="${!field.readOnly}">
+  <c:if test="${!readOnly}">
     <krad:template component="${field.constraintMessageField}"/>
   </c:if>
 
@@ -95,7 +100,7 @@
   <%-- render field help --%>
 
   <%-- render field suggest if field is editable --%>
-  <c:if test="${!field.readOnly}">
+  <c:if test="${!readOnly}">
     <krad:template component="${field.fieldSuggest}" parent="${field}"/>
   </c:if>
 
@@ -107,11 +112,11 @@
 </krad:span>
 
 <%-- Transform all text on attribute field to uppercase--%>
-<c:if test="${field.performUppercase}">
+<c:if test="${!readOnly && field.performUppercase}">
   <krad:script value="jq('#${field.control.id}').css('text-transform', 'uppercase');"/>
 </c:if>
 
 <%-- render error container for field --%>
-<c:if test="${(empty field.errorsField.alternateContainer) || (!field.errorsField.alternateContainer)}">
+<c:if test="${!readOnly && ((empty field.errorsField.alternateContainer) || (!field.errorsField.alternateContainer))}">
   <krad:template component="${field.errorsField}"/>
 </c:if>

@@ -11,6 +11,7 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.field.AttributeField;
 import org.springframework.beans.PropertyValue;
@@ -100,7 +101,7 @@ public class ViewModelUtils {
         return propertyType;
     }
 
-    public static String getParentObjectPath(AttributeField field) {
+    public static String getParentObjectPath(DataField field) {
         String parentObjectPath = "";
 
         String objectPath = field.getBindingInfo().getBindingObjectPath();
@@ -121,13 +122,13 @@ public class ViewModelUtils {
         return parentObjectPath;
     }
 
-    public static Class<?> getParentObjectClassForMetadata(View view, AttributeField field) {
+    public static Class<?> getParentObjectClassForMetadata(View view, DataField field) {
         String parentObjectPath = getParentObjectPath(field);
 
         return getPropertyTypeByClassAndView(view, parentObjectPath);
     }
 
-    public static Class<?> getParentObjectClassForMetadata(View view, Object model, AttributeField field) {
+    public static Class<?> getParentObjectClassForMetadata(View view, Object model, DataField field) {
         String parentObjectPath = getParentObjectPath(field);
 
         return getObjectClassForMetadata(view, model, parentObjectPath);
@@ -144,7 +145,7 @@ public class ViewModelUtils {
         return getPropertyTypeByClassAndView(view, propertyPath);
     }
 
-    public static Object getParentObjectForMetadata(View view, Object model, AttributeField field) {
+    public static Object getParentObjectForMetadata(View view, Object model, DataField field) {
         // default to model as parent
         Object parentObject = model;
 

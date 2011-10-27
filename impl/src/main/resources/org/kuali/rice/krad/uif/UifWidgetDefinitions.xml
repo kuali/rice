@@ -300,5 +300,7 @@
       <bean parent="BindingInfo"/>
     </property>
   </bean>
+
+  <bean id="ELCollectionFilter" class="org.kuali.rice.krad.uif.container.ELCollectionFilter" scope="prototype"/>
   
 </beans>

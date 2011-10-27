@@ -25,6 +25,7 @@ import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
@@ -74,6 +75,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private boolean showHideInactiveButton;
     private boolean showInactive;
     private CollectionFilter activeCollectionFilter;
+    private List<CollectionFilter> filters;
 
     private List<CollectionGroup> subCollections;
     private String subCollectionSuffix;
@@ -87,6 +89,7 @@ public class CollectionGroup extends Group implements DataBinding {
         showHideInactiveButton = true;
         renderSelectField = false;
 
+        filters = new ArrayList<CollectionFilter>();
         actionFields = new ArrayList<ActionField>();
         addLineFields = new ArrayList<Field>();
         addLineActionFields = new ArrayList<ActionField>();
@@ -214,24 +217,6 @@ public class CollectionGroup extends Group implements DataBinding {
         for (ActionField actionField : actionFields) {
             actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH,
                     this.getBindingInfo().getBindingPath());
-        }
-    }
-
-    /**
-     * Performs any filtering necessary on the collection before building the collection fields
-     *
-     * <p>
-     * If showInactive is set to false and the collection line type implements <code>Inactivatable</code>,
-     * invokes the active collection filer
-     * </p>
-     *
-     * @param model - object containing the views data, from which the collection will be pulled
-     */
-    protected List<Integer> performCollectionFiltering(View view, Object model) {
-        if (Inactivatable.class.isAssignableFrom(this.collectionObjectClass) && !showInactive) {
-            return this.activeCollectionFilter.filter(view, model, this);
-        } else {
-            return null;
         }
     }
 
@@ -660,6 +645,25 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     public void setActiveCollectionFilter(CollectionFilter activeCollectionFilter) {
         this.activeCollectionFilter = activeCollectionFilter;
+    }
+
+    /**
+     * List of {@link CollectionFilter} instances that should be invoked to filter the collection before
+     * displaying
+     *
+     * @return List<CollectionFilter>
+     */
+    public List<CollectionFilter> getFilters() {
+        return filters;
+    }
+
+    /**
+     * Setter for the List of collection filters for which the collection will be filtered against
+     *
+     * @param filters
+     */
+    public void setFilters(List<CollectionFilter> filters) {
+        this.filters = filters;
     }
 
     /**

@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -37,6 +39,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,19 +85,18 @@ public class CollectionGroupBuilder implements Serializable {
         List<Object> modelCollection = ObjectPropertyUtils.getPropertyValue(model, ((DataBinding) collectionGroup)
                 .getBindingInfo().getBindingPath());
 
-        // filter inactive model
-        List<Integer> showIndexes = collectionGroup.performCollectionFiltering(view, model);
-        
-        // for each collection row build the line fields
         if (modelCollection != null) {
+            // filter inactive model
+            List<Integer> showIndexes = performCollectionFiltering(view, model, collectionGroup, modelCollection);
+
+            // for each collection row build the line fields
             for (int index = 0; index < modelCollection.size(); index++) {
-                
-                // Display only records that passed filtering
-                if (showIndexes == null || showIndexes.contains(index)) {
+                // display only records that passed filtering
+                if (showIndexes.contains(index)) {
                     String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
                     if (StringUtils.isNotBlank(collectionGroup.getBindingInfo().getBindByNamePrefix())) {
-                        bindingPathPrefix = collectionGroup.getBindingInfo().getBindByNamePrefix() + "."
-                                + bindingPathPrefix;
+                        bindingPathPrefix =
+                                collectionGroup.getBindingInfo().getBindByNamePrefix() + "." + bindingPathPrefix;
                     }
 
                     Object currentLine = modelCollection.get(index);
@@ -104,6 +106,46 @@ public class CollectionGroupBuilder implements Serializable {
                 }
             }
         }
+    }
+
+    /**
+     * Performs any filtering necessary on the collection before building the collection fields
+     *
+     * <p>
+     * If showInactive is set to false and the collection line type implements <code>Inactivatable</code>,
+     * invokes the active collection filter. Then any {@link CollectionFilter} instances configured for the collection
+     * group are invoked to filter the collection. Collections lines must pass all filters in order to be
+     * displayed
+     * </p>
+     *
+     * @param view - view instance that contains the collection
+     * @param model - object containing the views data
+     * @param collectionGroup - collection group component instance that will display the collection
+     * @param collection - collection instance that will be filtered
+     */
+    protected List<Integer> performCollectionFiltering(View view, Object model, CollectionGroup collectionGroup,
+            Collection<?> collection) {
+        List<Integer> filteredIndexes = new ArrayList<Integer>();
+        for (int i = 0; i < collection.size(); i++) {
+            filteredIndexes.add(new Integer(i));
+        }
+
+        if (Inactivatable.class.isAssignableFrom(collectionGroup.getCollectionObjectClass()) && !collectionGroup
+                .isShowInactive()) {
+            List<Integer> activeIndexes = collectionGroup.getActiveCollectionFilter().filter(view, model,
+                    collectionGroup);
+            filteredIndexes = ListUtils.intersection(filteredIndexes, activeIndexes);
+        }
+
+        for (CollectionFilter collectionFilter : collectionGroup.getFilters()) {
+            List<Integer> indexes = collectionFilter.filter(view, model, collectionGroup);
+            filteredIndexes = ListUtils.intersection(filteredIndexes, indexes);
+            if (filteredIndexes.isEmpty()) {
+                break;
+            }
+        }
+
+        return filteredIndexes;
     }
 
 	/**

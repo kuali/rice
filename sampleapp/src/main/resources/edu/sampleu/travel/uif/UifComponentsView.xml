@@ -1546,8 +1546,7 @@
 		</property>
 	</bean>
 
-	<bean id="collection2" parent="CollectionGroupSectionTableLayout"
-		p:layoutManager.numberOfColumns="4">
+	<bean id="collection2" parent="CollectionGroupSectionTableLayout"	p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
 		<property name="instructionalText"
@@ -1572,6 +1571,11 @@
 					p:required="true" />
 			</list>
 		</property>
+    <property name="filters">
+      <list>
+        <bean parent="ELCollectionFilter" p:expression="#line.field1 ne 'a'"/>
+      </list>
+    </property>
 	</bean>
 
 	<bean id="collection3" parent="CollectionGroupSection">

@@ -1,6 +1,5 @@
 package org.kuali.rice.krad.uif.container;
 
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.view.View;
 
 import java.io.Serializable;

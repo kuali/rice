@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational 
-	Community License, Version 2.0 (the "License"); you may not use this file 
-	except in compliance with the License. You may obtain a copy of the License 
-	at http://www.opensource.org/licenses/ecl2.php Unless required by applicable 
-	law or agreed to in writing, software distributed under the License is distributed 
-	on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
-	express or implied. See the License for the specific language governing permissions 
-	and limitations under the License. -->
+<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational
+  Community License, Version 2.0 (the "License"); you may not use this file
+  except in compliance with the License. You may obtain a copy of the License
+  at http://www.opensource.org/licenses/ecl2.php Unless required by applicable
+  law or agreed to in writing, software distributed under the License is distributed
+  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  express or implied. See the License for the specific language governing permissions
+  and limitations under the License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>Rice Impex</name>
   <modelVersion>4.0.0</modelVersion>
@@ -19,6 +19,8 @@
   <packaging>pom</packaging>
   <modules>
     <module>master</module>
+    <module>demo</module>
+    <module>bootstrap</module>
   </modules>
   <properties>
     <sql.plugin.escapeProcessing>false</sql.plugin.escapeProcessing>
@@ -72,10 +74,10 @@
       SELECT 1
     </impex.mysql.sql.validate>
     <!--
-      MySQL does not have DROP USER IF EXISTS.  So we grant permissions on *.*
+      MySQL does not have DROP USER IF EXISTS. So we grant permissions on *.*
       This creates a user if they don't exist (but doesn't error out if they already do),
       Then immediately drop them
-     -->
+    -->
     <impex.mysql.sql.drop>
       DROP DATABASE IF EXISTS ${impex.database}
       /
@@ -90,7 +92,8 @@
       CREATE DATABASE IF NOT EXISTS ${impex.database}
       DEFAULT CHARACTER SET
       '${sql.mysql.character.set}'
-      DEFAULT COLLATE '${sql.mysql.collate}'
+      DEFAULT COLLATE
+      '${sql.mysql.collate}'
       /
 
       CREATE USER '${impex.username}'@'%' IDENTIFIED
@@ -114,7 +117,8 @@
       EXECUTE IMMEDIATE 'DROP USER ${impex.username} CASCADE';
       EXCEPTION WHEN OTHERS THEN
       IF
-      SQLCODE != ${sql.oracle.error.userDoesNotExist} THEN
+      SQLCODE !=
+      ${sql.oracle.error.userDoesNotExist} THEN
       RAISE;
       END IF;
       END;
@@ -127,7 +131,8 @@
       IDENTIFIED BY ${impex.password}
       DEFAULT TABLESPACE
       ${impex.oracle.defaultTablespace}
-      TEMPORARY TABLESPACE ${impex.oracle.temporaryTablespace}
+      TEMPORARY
+      TABLESPACE ${impex.oracle.temporaryTablespace}
       QUOTA
       ${impex.oracle.quota} ON ${impex.oracle.defaultTablespace}
       /
@@ -163,7 +168,7 @@
         <plugin>
           <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>sql-maven-plugin</artifactId>
-          <version>1.6</version>
+          <version>1.7</version>
           <configuration>
             <username>${impex.username}</username>
             <password>${impex.password}</password>
@@ -259,7 +264,7 @@
         <plugin>
           <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>maven-impex-plugin</artifactId>
-          <version>1.0.23</version>
+          <version>1.0.24</version>
           <dependencies>
             <dependency>
               <groupId>mysql</groupId>
@@ -341,6 +346,38 @@
   </build>
   <profiles>
     <profile>
+      <id>export</id>
+      <properties>
+        <impex.generate.phase>none</impex.generate.phase>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>maven-impex-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>export</id>
+                <phase>none</phase>
+                <goals>
+                  <goal>exportschema</goal>
+                  <goal>exportdata</goal>
+                  <goal>datadtd</goal>
+                </goals>
+                <configuration>
+                  <schemaXMLFile>${basedir}/src/main/resources/schema.xml</schemaXMLFile>
+                  <dataXMLDir>${basedir}/src/main/resources</dataXMLDir>
+                  <copyToFile>${basedir}/src/main/resources/data.dtd</copyToFile>
+                  <schema>${impex.database}</schema>
+                  <antCompatibilityMode>true</antCompatibilityMode>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
       <id>mysql</id>
       <properties>
         <db.vendor>mysql</db.vendor>
@@ -379,6 +416,17 @@
           ${impex.oracle.sql.grants}
         </impex.sql.initialize>
         <impex.generate.sql.mysql.phase>none</impex.generate.sql.mysql.phase>
+      </properties>
+    </profile>
+    <profile>
+      <id>rds</id>
+      <properties>
+        <!-- Override for JDK6 and to match up with Amazon RDS -->
+        <oracle.jdbc.artifactId>ojdbc6_g</oracle.jdbc.artifactId>
+        <oracle.jdbc.version>11.2.0.2</oracle.jdbc.version>
+        <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
+        <impex.dba.url>${impex.url}</impex.dba.url>
+        <impex.dba.username>master</impex.dba.username>
       </properties>
     </profile>
     <profile>
@@ -424,6 +472,82 @@
               <execution>
                 <id>validate</id>
                 <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>commit</id>
+      <properties>
+        <impex.generate.phase>none</impex.generate.phase>
+        <impex.invalid.phase>initialize</impex.invalid.phase>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>maven-impex-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>id-invalid</id>
+                <phase>${impex.invalid.phase}</phase>
+                <goals>
+                  <goal>id-invalid-data-files</goal>
+                </goals>
+                <configuration>
+                  <schemaXMLFile>${project.basedir}/src/main/resources/schema.xml</schemaXMLFile>
+                  <dataDir>${project.basedir}/src/main/resources</dataDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <version>1.6</version>
+            <configuration>
+              <message>Automated Impex update</message>
+            </configuration>
+            <executions>
+              <execution>
+                <id>add</id>
+                <phase>${scm.phase}</phase>
+                <goals>
+                  <goal>add</goal>
+                  <goal>checkin</goal>
+                </goals>
+                <configuration>
+                  <includes>**/src/main/resources/*.xml,**/src/main/resources/*.dtd</includes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>remove-from-scm</id>
+                <phase>${scm.phase}</phase>
+                <configuration>
+                  <target name="impex-remove" if="impex.found.invalid">
+                    <exec executable="svn">
+                      <arg value="rm" />
+                      <arg value="--targets" />
+                      <arg value="target/impex/invalid.txt" />
+                    </exec>
+                    <exec executable="svn">
+                      <arg value="commit" />
+                      <arg value="-m" />
+                      <arg value="Automated Impex Update" />
+                    </exec>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>

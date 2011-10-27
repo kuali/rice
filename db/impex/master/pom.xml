@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational 
-	Community License, Version 2.0 (the "License"); you may not use this file 
-	except in compliance with the License. You may obtain a copy of the License 
-	at http://www.opensource.org/licenses/ecl2.php Unless required by applicable 
-	law or agreed to in writing, software distributed under the License is distributed 
-	on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
-	express or implied. See the License for the specific language governing permissions 
-	and limitations under the License. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<!-- Copyright 2007-2009 The Kuali Foundation Licensed under the Educational
+  Community License, Version 2.0 (the "License"); you may not use this file
+  except in compliance with the License. You may obtain a copy of the License
+  at http://www.opensource.org/licenses/ecl2.php Unless required by applicable
+  law or agreed to in writing, software distributed under the License is distributed
+  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  express or implied. See the License for the specific language governing permissions
+  and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>Rice Impex Master</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -20,4 +21,96 @@
     <impex.username>RICE</impex.username>
     <impex.password>RICE</impex.password>
   </properties>
+  <profiles>
+    <profile>
+      <id>commit</id>
+      <properties>
+        <impex.invalid.phase>none</impex.invalid.phase>
+      </properties>
+    </profile>
+    <profile>
+      <id>master</id>
+      <properties>
+        <impex.username>RICEMASTER</impex.username>
+        <impex.password>RICEMASTER</impex.password>
+        <impex.database>RICEMASTER</impex.database>
+      </properties>
+    </profile>
+    <profile>
+      <id>demo</id>
+      <properties>
+        <impex.username>RICEDEMO</impex.username>
+        <impex.password>RICEDEMO</impex.password>
+        <impex.database>RICEDEMO</impex.database>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>sql-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>cleanup</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <resourceLocations>
+                    <resourceLocation>classpath:demo-server-dataset-cleanup.sql</resourceLocation>
+                  </resourceLocations>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.kuali.rice</groupId>
+                <artifactId>rice-sql</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>bootstrap</id>
+      <properties>
+        <impex.username>RICEBOOTSTRAP</impex.username>
+        <impex.password>RICEBOOTSTRAP</impex.password>
+        <impex.database>RICEBOOTSTRAP</impex.database>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>sql-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>cleanup</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <orderFile>descending</orderFile>
+                  <resourceLocations>
+                    <resourceLocation>classpath:demo-server-dataset-cleanup.sql</resourceLocation>
+                    <resourceLocation>classpath:bootstrap-server-dataset-cleanup.sql</resourceLocation>
+                  </resourceLocations>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.kuali.rice</groupId>
+                <artifactId>rice-sql</artifactId>
+                <version>${project.version}</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

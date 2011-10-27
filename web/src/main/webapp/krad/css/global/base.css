@@ -311,9 +311,9 @@ li label.kr-error {
 	display: block;
 }
 
-.boxLayoutVerticalItem{
-	padding-bottom: 20px;
-	display: block;
+boxLayoutVerticalItem {
+    display: block;
+    margin-bottom: 20px;
 }
 tr.kr-addLine {
     background-color: #F2F2F2 !important;

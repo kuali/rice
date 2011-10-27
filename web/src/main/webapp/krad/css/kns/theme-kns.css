@@ -72,9 +72,7 @@ h7 {
 	font-family: arial, helvetica, sans-serif;
 	text-transform: uppercase;
 }
-.wrap {
-	border: none;
-}
+
 .kr-breadcrumbs {
 	border-bottom: 1px solid #000000;
 	border-top: 1px solid #000000;
@@ -857,9 +855,13 @@ span .fieldLine.boxLayoutVerticalItem.clearfix a {
     }
 	
 	
-	table td, table th {
+table td, table th {
 	vertical-align: middle;
 	text-align:left;
+}
+
+table th.kr-label {
+   text-align : right;
 }
 
 #AgendaEditorView-TreeControls_span .boxLayoutHorizontalItem {

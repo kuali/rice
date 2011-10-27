@@ -141,8 +141,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             </property>
         </bean>
       </property>
-      <property name="treeWidget">
-        <bean parent="TreeWidget"/>
+      <property name="tree">
+        <bean parent="Tree"/>
       </property>
   </bean>
 
@@ -470,7 +470,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <property name="bindingInfo.bindingObjectPath" value="document"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
-          <property name="styleClasses" value="tableborders wrap"/>
+          <property name="styleClasses" value="tableborders"/>
           <property name="items">
             <list>
               <bean parent="AttributeField" p:propertyName="actionRequested">

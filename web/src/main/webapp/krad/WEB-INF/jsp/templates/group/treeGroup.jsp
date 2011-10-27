@@ -27,6 +27,6 @@
   </div>
 
   <%-- invoke tree widget --%>
-  <krad:template component="${group.treeWidget}" componentId="${group.id}_tree"/>
+  <krad:template component="${group.tree}" componentId="${group.id}_tree"/>
 
 </krad:group>

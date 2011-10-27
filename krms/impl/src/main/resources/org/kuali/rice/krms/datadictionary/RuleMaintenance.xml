@@ -17,7 +17,7 @@
     </property>
   </bean>
   
-  <bean id="RuleTreeWidget" parent="TreeWidget">
+  <bean id="RuleTreeWidget" parent="Tree">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/ruleTree.jsp"/>
   </bean>
   
@@ -276,7 +276,7 @@
   <bean id="ruleTree" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="title" value="Rule Propositions"/>
     <property name="propertyName" value="agendaItemLine.rule.propositionTree"/>
-    <property name="treeWidget">
+    <property name="tree">
       <bean parent="RuleTreeWidget">
         <property name="componentOptions">
           <map>

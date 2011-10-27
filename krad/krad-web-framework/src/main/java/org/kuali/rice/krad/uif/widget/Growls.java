@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.uif.widget;
 
 /**
- * GrowlsWidget sets up settings for growls global to the current view and its pages
+ * Growls sets up settings for growls global to the current view and its pages
  * Some basic options of the plugin are exposed through this class, however additional options
  * can be passed through setComponentOptions as usual.
  * However, the header and theme option is set by the growl processing in PageGroup
@@ -25,7 +25,7 @@ package org.kuali.rice.krad.uif.widget;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GrowlsWidget extends WidgetBase {
+public class Growls extends WidgetBase {
     private static final long serialVersionUID = -8701090110933484411L;
 
     private boolean sticky;

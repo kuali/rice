@@ -41,8 +41,8 @@
         <bean parent="TreeGroup" p:disclosure.render="false" p:header.render="false">
           <property name="propertyName" value="cacheTree"/>
 
-          <property name="treeWidget">
-            <bean parent="TreeWidget">
+          <property name="tree">
+            <bean parent="Tree">
               <property name="componentOptionsJSString">
                 <value>
                   {"themes": {"theme": "default", "dots": true, "icons": false},

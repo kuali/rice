@@ -32,7 +32,7 @@ import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.widget.BreadCrumbs;
-import org.kuali.rice.krad.uif.widget.GrowlsWidget;
+import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ public class View extends ContainerBase {
     private boolean breadcrumbsInApplicationHeader;
 
     // Growls support
-    private GrowlsWidget growlsWidget;
+    private Growls growls;
     private boolean growlMessagingEnabled;
 
     private String entryPageId;
@@ -272,7 +272,7 @@ public class View extends ContainerBase {
         components.add(applicationFooter);
         components.add(navigation);
         components.add(breadcrumbs);
-        components.add(growlsWidget);
+        components.add(growls);
         components.add(viewMenuLink);
 
         // remove all pages that are not the current page
@@ -1103,17 +1103,17 @@ public class View extends ContainerBase {
      * Growls widget which sets up global settings for the growls used in this
      * view and its pages
      *
-     * @return the growlsWidget
+     * @return the growls
      */
-    public GrowlsWidget getGrowlsWidget() {
-        return this.growlsWidget;
+    public Growls getGrowls() {
+        return this.growls;
     }
 
     /**
-     * @param growlsWidget the growlsWidget to set
+     * @param growls the growls to set
      */
-    public void setGrowlsWidget(GrowlsWidget growlsWidget) {
-        this.growlsWidget = growlsWidget;
+    public void setGrowls(Growls growls) {
+        this.growls = growls;
     }
 
     /**

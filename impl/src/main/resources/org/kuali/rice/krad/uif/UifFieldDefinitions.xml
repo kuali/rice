@@ -72,7 +72,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="LabelField" parent="LabelField-parentBean"/>
   <bean id="LabelField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LabelField" scope="prototype">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
-    <property name="styleClasses" value="Hey S"/>
+    <property name="styleClasses" value="kr-label"/>
     <property name="requiredMessageField">
       <bean class="org.kuali.rice.krad.uif.field.MessageField" parent="Field" p:messageText="*"
             p:messageType="REQUIRED" p:styleClasses="required" p:template="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>

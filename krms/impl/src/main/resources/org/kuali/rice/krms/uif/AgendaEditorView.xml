@@ -50,7 +50,7 @@
       <constructor-arg><list><value>/krms/css/agendaTree.css</value></list></constructor-arg>
   </bean>
 
-  <bean id="AgendaTreeWidget" parent="TreeWidget">
+  <bean id="AgendaTreeWidget" parent="Tree">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
@@ -407,7 +407,7 @@
   <bean id="AgendaEditorView-Tree" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="title" value="Agenda Items"/>
     <property name="propertyName" value="agendaRuleTree"/>
-    <property name="treeWidget">
+    <property name="tree">
       <bean parent="AgendaTreeWidget">
         <property name="componentOptions">
           <map>

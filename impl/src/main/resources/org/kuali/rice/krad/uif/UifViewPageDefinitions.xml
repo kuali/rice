@@ -31,8 +31,8 @@
 		</property>
 		<property name="appendOption" value="dash" />
 		<property name="growlMessagingEnabled" value="true" />
-		<property name="growlsWidget">
-			<bean parent="GrowlsWidget" />
+		<property name="growls">
+			<bean parent="Growls" />
 		</property>
 		<property name="header">
 			<bean parent="HeaderView" />

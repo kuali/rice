@@ -5,10 +5,10 @@ package org.kuali.rice.krad.uif.widget;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TreeWidget extends WidgetBase {
+public class Tree extends WidgetBase {
     private static final long serialVersionUID = -6852455590809381513L;
 
-    public TreeWidget() {
+    public Tree() {
         super();
     }
 }

@@ -10,7 +10,6 @@ import org.kuali.rice.krad.uif.field.MessageField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.TreeWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class TreeGroup extends Group implements DataBinding{
 
     private Tree<Group, MessageField> treeGroups;
 
-    private TreeWidget treeWidget;
+    private org.kuali.rice.krad.uif.widget.Tree tree;
 
     public TreeGroup() {
         super();
@@ -203,7 +202,7 @@ public class TreeGroup extends Group implements DataBinding{
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.add(treeWidget);
+        components.add(tree);
         addNodeComponents(treeGroups.getRootElement(), components);
 
         return components;
@@ -304,11 +303,11 @@ public class TreeGroup extends Group implements DataBinding{
         this.treeGroups = treeGroups;
     }
 
-    public TreeWidget getTreeWidget() {
-        return treeWidget;
+    public org.kuali.rice.krad.uif.widget.Tree getTree() {
+        return tree;
     }
 
-    public void setTreeWidget(TreeWidget treeWidget) {
-        this.treeWidget = treeWidget;
+    public void setTree(org.kuali.rice.krad.uif.widget.Tree tree) {
+        this.tree = tree;
     }
 }

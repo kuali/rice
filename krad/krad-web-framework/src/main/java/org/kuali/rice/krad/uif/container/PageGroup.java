@@ -15,7 +15,7 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.uif.widget.GrowlsWidget;
+import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
@@ -52,7 +52,7 @@ public class PageGroup extends Group {
         // settings are global to the view
         String growlScript = "";
         if (view.isGrowlMessagingEnabled()) {
-            GrowlsWidget gw = view.getGrowlsWidget();
+            Growls gw = view.getGrowls();
 
             //Setup defaults
             if (!gw.getComponentOptions().isEmpty()) {

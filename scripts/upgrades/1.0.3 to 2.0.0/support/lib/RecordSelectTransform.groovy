@@ -2,6 +2,9 @@ import java.sql.Connection
 import java.text.MessageFormat
 import java.sql.ResultSet
 
+/**
+ * A DbCommand that selects and then emits sql that modifies table rows
+ */
 abstract class RecordSelectTransform extends DbCommand {
     String table
     String pk_col
@@ -16,7 +19,7 @@ abstract class RecordSelectTransform extends DbCommand {
     def abstract String generateSelectSql()
 
     def String generateUpdateSql(Map row, Map updated) {
-        "update " + this.table + " set " + updated.collect { k, v -> k + "=" + v }.join(',') + " where " + this.pk_col + "=" + row[this.pk_col]
+        "update ${this.table} set ${updated.collect { k, v -> "${k}='${v}'"}.join(',')} where ${this.pk_col}='${row[this.pk_col]}';"
     }
 
     def void performSql(sql) {
@@ -35,6 +38,9 @@ abstract class RecordSelectTransform extends DbCommand {
         def sql = generateSelectSql()
         println "Executing: " + sql
         ResultSet rs = c.createStatement().executeQuery(sql)
+        println()
+        println "Generating transformation SQL:"
+        println()
         while (rs.next()) {
             def row = getRow(rs)
             Map transformed = this.transform.call(this, row)
@@ -42,5 +48,7 @@ abstract class RecordSelectTransform extends DbCommand {
                 performSql(generateUpdateSql(row, transformed))
             }
         }
+        println()
+        println "Done."
     }
 }

@@ -2,6 +2,10 @@ import java.sql.Connection
 import java.text.MessageFormat
 import java.sql.ResultSet
 
+/**
+ * A DbCommand that selects duplicate rows based on specified columns, and emits
+ * sql to "uniquify" the row
+ */
 abstract class RecordUniquifier extends RecordSelectTransform {
     def static SELECT_DUPLICATES = """
         select * from {1} where ({0}) in (

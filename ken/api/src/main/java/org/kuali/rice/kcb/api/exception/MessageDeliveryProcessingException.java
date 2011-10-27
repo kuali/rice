@@ -13,16 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb.service;
+package org.kuali.rice.kcb.api.exception;
 
 /**
- * Defines service name constants 
+ * Base exception for message delivery and dismissal
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KCBServiceNames {
-    public static final String KCB_MESSAGING = "KCB-MessagingService";
-    public static final String KCB_MESSAGEDELIVERERREGISTRY = "KCB-MessageDelivererRegistryAPI";
-    
-    private KCBServiceNames() {}
+public class MessageDeliveryProcessingException extends KCBCheckedException {
+    public MessageDeliveryProcessingException() {
+        super();
+    }
+
+    public MessageDeliveryProcessingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public MessageDeliveryProcessingException(String message) {
+         super(message);
+     }
+
+    public MessageDeliveryProcessingException(Throwable cause) {
+        super(cause);
+    }
 }

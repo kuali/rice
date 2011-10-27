@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../shareddata/api/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../shareddata/api/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../location/api/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../location/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../location/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../shareddata/api/target/generated-sources/wsdl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/api/src/main/java" isTestSource="false" />

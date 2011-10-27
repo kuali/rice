@@ -18,6 +18,7 @@ package org.kuali.rice.kcb.service;
 import java.util.Collection;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kcb.api.service.MessageDelivererRegistryAPI;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 

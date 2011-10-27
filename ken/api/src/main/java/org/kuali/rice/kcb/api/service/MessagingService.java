@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb.service;
+package org.kuali.rice.kcb.api.service;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.kcb.dto.MessageDTO;
-import org.kuali.rice.kcb.exception.MessageDeliveryException;
-import org.kuali.rice.kcb.exception.MessageDismissalException;
+import org.kuali.rice.kcb.api.message.MessageDTO;
+import org.kuali.rice.kcb.api.exception.MessageDeliveryException;
+import org.kuali.rice.kcb.api.exception.MessageDismissalException;
 
 /**
  * The KCB MessagingService provides an API to deliver messages

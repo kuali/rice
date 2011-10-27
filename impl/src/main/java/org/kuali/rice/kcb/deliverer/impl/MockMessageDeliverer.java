@@ -22,8 +22,8 @@ import java.util.Map;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
 import org.kuali.rice.kcb.exception.ErrorList;
-import org.kuali.rice.kcb.exception.MessageDeliveryException;
-import org.kuali.rice.kcb.exception.MessageDismissalException;
+import org.kuali.rice.kcb.api.exception.MessageDeliveryException;
+import org.kuali.rice.kcb.api.exception.MessageDismissalException;
 
 /**
  * A mock message deliverer that does nothing 

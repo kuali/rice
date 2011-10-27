@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kcb.exception;
+package org.kuali.rice.kcb.api.exception;
 
 /**
  * This class represents a dismissal exception - when notifications are not properly dismissed 

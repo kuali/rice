@@ -20,14 +20,16 @@
     <output-test url="file://$MODULE_DIR$/../../../edl/impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../edl/impl">
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/resources" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../edl/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -74,6 +76,7 @@
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
+    <orderEntry type="module" module-name="rice-ken-api" />
     <orderEntry type="module" module-name="rice-kew-impl" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
@@ -128,9 +131,7 @@
     <orderEntry type="library" name="Maven: displaytag:displaytag:1.2" level="project" />
     <orderEntry type="library" name="Maven: com.lowagie:itext:1.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" level="project" />
-    <orderEntry type="library" name="Maven: org.directwebremoting:dwr:3.0.M1" level="project" />
-    <orderEntry type="library" name="Maven: org.mortbay.jetty:cometd:6.1.4" level="project" />
-    <orderEntry type="library" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" level="project" />
+    <orderEntry type="library" name="Maven: org.directwebremoting:dwr:3.0.RC2" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.6" level="project" />
@@ -176,7 +177,6 @@
     <orderEntry type="module" module-name="rice-location-framework" />
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />
-    <orderEntry type="module" module-name="rice-ksb-framework" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:3.0.7.RELEASE" level="project" />

@@ -5,14 +5,17 @@
     <output-test url="file://$MODULE_DIR$/../../../kew/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kew/api">
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/target/generated-sources/wsdl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kew/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kew/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kew/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/api/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/api/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kew/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

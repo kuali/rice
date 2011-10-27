@@ -17,6 +17,7 @@
 package org.kuali.rice.kcb.service;
 
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
+import org.kuali.rice.kcb.api.service.MessagingService;
 import org.quartz.JobDetail;
 import org.springframework.transaction.PlatformTransactionManager;
 

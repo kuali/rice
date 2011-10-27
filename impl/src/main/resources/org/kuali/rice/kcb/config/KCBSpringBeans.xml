@@ -238,7 +238,7 @@
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                 <property name="priority" value="1"/>
-                <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessagingService</value></property>
+                <property name="serviceInterface"><value>org.kuali.rice.kcb.api.service.MessagingService</value></property>
                 <property name="service"><ref bean="messagingService" /></property>
                 <property name="localServiceName" value="KCB-MessagingService" />
                 <property name="serviceNameSpaceURI" value="KCB"/>
@@ -252,7 +252,7 @@
         <property name="serviceDefinition">
             <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
                 <property name="priority" value="1"/>
-                <property name="serviceInterface"><value>org.kuali.rice.kcb.service.MessageDelivererRegistryAPI</value></property>
+                <property name="serviceInterface"><value>org.kuali.rice.kcb.api.service.MessageDelivererRegistryAPI</value></property>
                 <property name="service"><ref bean="messageDelivererRegistryService" /></property>
                 <property name="localServiceName" value="KCB-MessageDelivererRegistryAPI" />
                 <property name="serviceNameSpaceURI" value="KCB"/>

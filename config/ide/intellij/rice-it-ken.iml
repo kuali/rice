@@ -20,13 +20,13 @@
     <output url="file://$MODULE_DIR$/../../../it/ken/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/ken/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../it/ken">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -74,6 +74,7 @@
     <orderEntry type="module" module-name="rice-kew-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
+    <orderEntry type="module" module-name="rice-ken-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-framework" scope="TEST" />
@@ -128,9 +129,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: displaytag:displaytag:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.lowagie:itext:1.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.directwebremoting:dwr:3.0.M1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:cometd:6.1.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.directwebremoting:dwr:3.0.RC2" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.6" level="project" />
@@ -176,7 +175,6 @@
     <orderEntry type="module" module-name="rice-location-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />
-    <orderEntry type="module" module-name="rice-ksb-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" scope="TEST" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.0.7.RELEASE" level="project" />
@@ -205,7 +203,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.17" level="project" />
-    <orderEntry type="library" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" level="project" />
   </component>
 </module>
 

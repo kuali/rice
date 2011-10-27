@@ -19,13 +19,13 @@
     <output url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../it/krad">
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/classes" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/test-annotations" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/krad/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -74,6 +74,7 @@
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
+    <orderEntry type="module" module-name="rice-ken-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
@@ -128,9 +129,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: displaytag:displaytag:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.lowagie:itext:1.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.directwebremoting:dwr:3.0.M1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:cometd:6.1.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.directwebremoting:dwr:3.0.RC2" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.6" level="project" />
@@ -176,7 +175,6 @@
     <orderEntry type="module" module-name="rice-location-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />
-    <orderEntry type="module" module-name="rice-ksb-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-core:3.0.7.RELEASE" level="project" />

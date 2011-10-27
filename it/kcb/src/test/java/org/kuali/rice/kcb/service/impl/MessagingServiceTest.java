@@ -20,7 +20,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
-import org.kuali.rice.kcb.dto.MessageDTO;
+import org.kuali.rice.kcb.api.message.MessageDTO;
 import org.kuali.rice.kcb.quartz.MessageProcessingJob;
 import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.ksb.service.KSBServiceLocator;

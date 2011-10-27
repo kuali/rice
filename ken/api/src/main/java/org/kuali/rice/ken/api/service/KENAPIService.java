@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ken.service;
+package org.kuali.rice.ken.api.service;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 

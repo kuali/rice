@@ -6,8 +6,8 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target/classes" />
-    <output-test url="file://$MODULE_DIR$/../../../shareddata/rice-shareddata-web/target/test-classes" />
+    <output url="file://$MODULE_DIR$/../../../location/web/target/classes" />
+    <output-test url="file://$MODULE_DIR$/../../../location/web/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../location/web">
       <sourceFolder url="file://$MODULE_DIR$/../../../location/web/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/web/src/main/groovy" isTestSource="false" />

@@ -23,7 +23,7 @@ import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
 import org.kuali.rice.kcb.deliverer.BulkMessageDeliverer;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
-import org.kuali.rice.kcb.exception.MessageDeliveryProcessingException;
+import org.kuali.rice.kcb.api.exception.MessageDeliveryProcessingException;
 import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageDelivererRegistryService;

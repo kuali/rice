@@ -4,14 +4,15 @@
     <output url="file://$MODULE_DIR$/../../../kim/kim-framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../kim/kim-framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kim/kim-framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kim/kim-framework/target/surefire" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

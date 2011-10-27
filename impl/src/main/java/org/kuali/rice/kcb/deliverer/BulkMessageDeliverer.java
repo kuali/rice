@@ -18,8 +18,8 @@ package org.kuali.rice.kcb.deliverer;
 import java.util.Collection;
 
 import org.kuali.rice.kcb.bo.MessageDelivery;
-import org.kuali.rice.kcb.exception.MessageDeliveryException;
-import org.kuali.rice.kcb.exception.MessageDismissalException;
+import org.kuali.rice.kcb.api.exception.MessageDeliveryException;
+import org.kuali.rice.kcb.api.exception.MessageDismissalException;
 
 /**
  * A NotificationMessageDeliverer interface specialization that should be implemented

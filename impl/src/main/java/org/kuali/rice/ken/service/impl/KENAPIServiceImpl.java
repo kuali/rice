@@ -21,7 +21,7 @@ import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.service.KENAPIService;
+import org.kuali.rice.ken.api.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationChannelService;
 import org.kuali.rice.ken.service.UserPreferenceService;
 import org.springframework.beans.factory.annotation.Required;

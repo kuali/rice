@@ -106,8 +106,7 @@ delete from krew_rule_t where TMPL_RULE_IND=0 and doc_typ_nm not in (select doc_
 /
 
 
--- ^jcaddel^ update krew_rule_t set RULE_VER_NBR=0, PREV_RULE_VER_NBR=NULL, VER_NBR=0
-update krew_rule_t set RULE_VER_NBR=0, VER_NBR=0
+update krew_rule_t set RULE_VER_NBR=0, PREV_VER_RULE_ID=NULL, VER_NBR=0
 /
 delete from krew_rule_ext_t where rule_id not in (select rule_id from krew_rule_t)
 /
@@ -156,8 +155,6 @@ delete from krew_usr_optn_t where PRSN_OPTN_ID like 'RELOAD_ACTION_LIST%'
 
 -- Service Registry - table should be emptied, will be re-populated on startup 
 
--- ^jcaddel^ delete from krsb_flt_svc_def_t
--- /
 delete from krsb_svc_def_t
 /
 

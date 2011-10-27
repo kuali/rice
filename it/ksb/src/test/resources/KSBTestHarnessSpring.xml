@@ -104,23 +104,6 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-    <bean id="coreConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
-        <property name="configLocations">
-            <list>
-                <value>classpath:org/kuali/rice/core/config/core-config-defaults.xml</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-        <property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize"/>
-        <property name="arguments">
-            <list>
-                <ref bean="coreConfig"/>
-            </list>
-        </property>
-    </bean>
-
     <bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
         <property name="moduleName" value="CORE"/>
         <property name="hasWebInterface" value="false"/>

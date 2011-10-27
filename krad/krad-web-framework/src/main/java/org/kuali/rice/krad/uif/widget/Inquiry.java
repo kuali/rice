@@ -24,10 +24,10 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -86,7 +86,7 @@ public class Inquiry extends WidgetBase {
         // set render to false until we find an inquiry class
         setRender(false);
 
-        AttributeField field = (AttributeField) parent;
+        DataField field = (DataField) parent;
 
         // check if field value is null, if so no inquiry
         Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, field.getBindingInfo().getBindingPath());
@@ -106,7 +106,7 @@ public class Inquiry extends WidgetBase {
      * @param model - model
      * @param field - The parent Attribute field
      */
-    public void setupLink(View view, Object model, AttributeField field) {
+    public void setupLink(View view, Object model, DataField field) {
         String propertyName = field.getBindingInfo().getBindingName();
 
         // if class and parameters configured, build link from those

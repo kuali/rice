@@ -311,7 +311,7 @@ li label.kr-error {
 	display: block;
 }
 
-boxLayoutVerticalItem {
+.boxLayoutVerticalItem {
     display: block;
     margin-bottom: 20px;
 }

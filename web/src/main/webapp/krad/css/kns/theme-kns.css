@@ -7,6 +7,15 @@ a {
 	color:#900000;
 	text-decoration:none;
 }
+
+label {
+    font-weight:bold;
+}
+
+.fieldLine {
+	padding-top:4px;
+	padding-bottom:4px;
+}
 input[type="text"], textarea {
 	border:  1px solid #aaaaaa;
 	padding: 3px 3px;
@@ -449,8 +458,7 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
 #viewpage_div {
 	padding-left: 20px;
 	padding-right:20px;
-	
-	width: 95%;
+	/* [disabled]width: 95%; */
 	margin-left:0px;
 	margin-right:0px
 }
@@ -819,13 +827,7 @@ table.datatable {
 .sorting_desc_disabled {
 	background: url('../../images/kns/sort_desc_disabled.png') no-repeat center right;
 }
-.boxLayoutVerticalItem {
-	/* [disabled]padding-bottom: 0px; */
-	display: block;
-}
-.fieldLine.boxLayoutVerticalItem.clearfix {
-background-color:
-}
+
 .fieldLine.boxLayoutVerticalItem.clearfix:last-child {
 	margin-bottom: 20px;
 }
@@ -834,7 +836,7 @@ background-color:
 }
 span.labelTop {
 	display:block;
-	padding-top:12px;
+	/* [disabled]padding-top:12px; */
 }
 span .fieldLine.boxLayoutVerticalItem.clearfix a {
 	text-decoration:none;
@@ -885,3 +887,5 @@ div.kr-addLine, span.kr-addLine{
 
 
 .kr-collection-cntr .kr-collection-item {margin-left:50px}
+
+

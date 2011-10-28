@@ -22,6 +22,7 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -219,6 +220,9 @@ public class KualiLookupAction extends KualiAction {
         } else {
             request.setAttribute("reqSearchResultsActualSize", displayList.size() );
         }
+        
+        int resultsLimit = LookupUtils.getSearchResultsLimit(Class.forName(lookupForm.getBusinessObjectClassName()));
+        request.setAttribute("reqSearchResultsLimitedSize", resultsLimit);
 
         // Determine if at least one table entry has an action available. If any non-breaking space (&nbsp; or '\u00A0') characters
         // exist in the URL's value, they will be converted to regular whitespace ('\u0020').

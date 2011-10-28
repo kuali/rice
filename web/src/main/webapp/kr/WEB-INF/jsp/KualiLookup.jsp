@@ -187,7 +187,7 @@
 			<br>
 			<br>
 
-			<c:if test="${reqSearchResultsActualSize>0}">
+			<c:if test="${reqSearchResultsActualSize > reqSearchResultsLimitedSize && reqSearchResultsLimitedSize>0}">
 				<c:out value="${reqSearchResultsActualSize}" /> items found.  Please refine your search criteria to narrow down your search.
             </c:if>
 			<c:if test="${!empty reqSearchResultsActualSize }">

@@ -18,7 +18,7 @@ package org.kuali.rice.kew.preferences.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -37,7 +37,7 @@ public class PreferencesForm extends KualiForm {
     private static final long serialVersionUID = 4536869031291955777L;
     private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.refreshRate";
     private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.pageSize";
-	private Preferences preferences;
+	private Preferences.Builder preferences;
     private String methodToCall = "";
     private String returnMapping;
     private boolean showOutbox = true;
@@ -52,7 +52,7 @@ public class PreferencesForm extends KualiForm {
         this.returnMapping = returnMapping;
     }
     public PreferencesForm() {
-        preferences = new Preferences();
+        preferences = Preferences.Builder.create();
     }
     public String getMethodToCall() {
         return methodToCall;
@@ -60,10 +60,10 @@ public class PreferencesForm extends KualiForm {
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
     }
-    public Preferences getPreferences() {
+    public Preferences.Builder getPreferences() {
         return preferences;
     }
-    public void setPreferences(Preferences preferences) {
+    public void setPreferences(Preferences.Builder preferences) {
         this.preferences = preferences;
     }
     public boolean isShowOutbox() {
@@ -105,7 +105,6 @@ public class PreferencesForm extends KualiForm {
         }
 
         try {
-            new Integer(preferences.getPageSize().trim());
             if(new Integer(preferences.getPageSize().trim()) == 0){
             	 GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be non-zero ");
             }    

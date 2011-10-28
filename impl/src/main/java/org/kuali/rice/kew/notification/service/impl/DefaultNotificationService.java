@@ -33,7 +33,7 @@ import org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.notification.service.NotificationService;
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -80,7 +80,7 @@ public class DefaultNotificationService implements NotificationService {
 	protected boolean shouldNotify(ActionItem actionItem) {
 		try {
 
-			Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
+			Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
 			boolean sendEmail = false;
 			if (KewApiConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
 				if (DelegationType.PRIMARY.getCode().equals(actionItem.getDelegationType())) {

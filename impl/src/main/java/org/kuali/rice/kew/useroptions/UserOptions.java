@@ -25,7 +25,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.Preferences;
 
 
 /**

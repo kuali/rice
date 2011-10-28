@@ -16,20 +16,21 @@
  */
 package org.kuali.rice.kew.notification;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import mocks.MockEmailNotificationService;
-
 import org.junit.Test;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.api.KewApiConstants;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 public class NotificationServiceTest extends KEWTestCase {
@@ -82,27 +83,32 @@ public class NotificationServiceTest extends KEWTestCase {
 
 		// now turn on secondary notification for ewestfal and jitrue, turn off email notification for ewestfal
 		Preferences prefs = getPreferencesService().getPreferences(ewestfalPrincipalId);
-		prefs.setNotifySecondaryDelegation(KewApiConstants.PREFERENCES_YES_VAL);
-		prefs.setEmailNotification(KewApiConstants.EMAIL_RMNDR_NO_VAL);
-		getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
+        Preferences.Builder preferencesBuilder = Preferences.Builder.create(prefs);
+		preferencesBuilder.setNotifySecondaryDelegation(KewApiConstants.PREFERENCES_YES_VAL);
+		preferencesBuilder.setEmailNotification(KewApiConstants.EMAIL_RMNDR_NO_VAL);
+		getPreferencesService().savePreferences(ewestfalPrincipalId, preferencesBuilder.build());
 		prefs = getPreferencesService().getPreferences(jitruePrincipalId);
-		prefs.setNotifySecondaryDelegation(KewApiConstants.PREFERENCES_YES_VAL);
-		getPreferencesService().savePreferences(jitruePrincipalId, prefs);
+        preferencesBuilder = Preferences.Builder.create(prefs);
+		preferencesBuilder.setNotifySecondaryDelegation(KewApiConstants.PREFERENCES_YES_VAL);
+		getPreferencesService().savePreferences(jitruePrincipalId, preferencesBuilder.build());
 
 		// also turn off primary delegation notification for rkirkend
 		prefs = getPreferencesService().getPreferences(rkirkendPrincipalId);
-		prefs.setNotifyPrimaryDelegation(KewApiConstants.PREFERENCES_NO_VAL);
-		getPreferencesService().savePreferences(rkirkendPrincipalId, prefs);
+        preferencesBuilder = Preferences.Builder.create(prefs);
+		preferencesBuilder.setNotifyPrimaryDelegation(KewApiConstants.PREFERENCES_NO_VAL);
+		getPreferencesService().savePreferences(rkirkendPrincipalId, preferencesBuilder.build());
 
 		// also turn notification to daily for bmcgough
 		prefs = getPreferencesService().getPreferences(bmcgoughPrincipalId);
-		prefs.setEmailNotification(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
-		getPreferencesService().savePreferences(bmcgoughPrincipalId, prefs);
+        preferencesBuilder = Preferences.Builder.create(prefs);
+		preferencesBuilder.setEmailNotification(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
+		getPreferencesService().savePreferences(bmcgoughPrincipalId, preferencesBuilder.build());
 
 		// also turn off notification for jhopf
 		prefs = getPreferencesService().getPreferences(jhopfPrincipalId);
-		prefs.setEmailNotification(KewApiConstants.EMAIL_RMNDR_NO_VAL);
-		getPreferencesService().savePreferences(jhopfPrincipalId, prefs);
+        preferencesBuilder = Preferences.Builder.create(prefs);
+		preferencesBuilder.setEmailNotification(KewApiConstants.EMAIL_RMNDR_NO_VAL);
+		getPreferencesService().savePreferences(jhopfPrincipalId, preferencesBuilder.build());
 
 		// route the document
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(user1PrincipalId, "NotificationTest");
@@ -118,7 +124,7 @@ public class NotificationServiceTest extends KEWTestCase {
 		// jhopf should now have no emails since his top-level requests are no longer notified
 		assertEquals("jhopf should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("jhopf", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 
-		// bmcgough should now have no emails since his notification preference is DAILY
+		// bmcgough should now have no emails since his notification preferences is DAILY
 		assertEquals("bmcgough should have no emails.", 0, getMockEmailService().immediateReminderEmailsSent("bmcgough", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ));
 	}
 
@@ -164,7 +170,7 @@ public class NotificationServiceTest extends KEWTestCase {
 	}
 
 	private PreferencesService getPreferencesService() {
-		return KEWServiceLocator.getPreferencesService();
+		return KewApiServiceLocator.getPreferencesService();
 	}
 
 	private MockEmailNotificationService getMockEmailService() {

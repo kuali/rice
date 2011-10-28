@@ -160,7 +160,6 @@
         <idref local="enDocumentSearchService" />
         <idref local="enDocumentTypeService" />
         <idref local="enDocumentTypePermissionService" />
-        <idref local="enPreferencesService" />
         <idref local="enActionTakenService" />
         <idref local="enActionRequestService" />
         <idref local="enResponsibilityIdService" />
@@ -190,6 +189,7 @@
         <idref local="rice.kew.workflowDocumentService" />
         <idref local="rice.kew.documentTypeService" />
         <idref local="rice.kew.noteService" />
+        <idref local="rice.kew.preferencesService"/>
         <idref local="rice.kew.ruleService" />
         <idref local="rice.kew.documentSearchCustomizationHandlerService" />
         <idref local="rice.kew.documentSecurityHandlerService" />
@@ -379,17 +379,15 @@
   <!-- Exception routing service -->
   <bean id="enExceptionRoutingService" class="org.kuali.rice.kew.messaging.exceptionhandling.ExceptionRoutingServiceImpl"  lazy-init="true"/>
 
-  <!--  PreferencesService -->
-  <bean id="enPreferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true" />
-  <!--  UserOptionsService -->
-  <bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
-    <property name="userOptionsDAO">
-      <ref bean="enUserOptionsDAO" />
-    </property>
-    <property name="reloadActionListDAO">
-      <ref bean="reloadActionListDAO" />
-    </property>
-  </bean>
+	<!--  UserOptionsService -->
+	<bean id="enUserOptionsService" class="org.kuali.rice.kew.useroptions.UserOptionsServiceImpl" lazy-init="true">
+		<property name="userOptionsDAO">
+            <ref bean="enUserOptionsDAO" />
+		</property>
+        <property name="reloadActionListDAO">
+            <ref bean="reloadActionListDAO" />
+        </property>
+	</bean>
 
 
   <!--  ActionTakenService -->
@@ -826,9 +824,7 @@
 
   <bean id="rice.kew.workflowDocumentService" class="org.kuali.rice.kew.impl.document.WorkflowDocumentServiceImpl" />
 
-  <bean id="rice.kew.workflowDocumentPrototype" class="org.kuali.rice.kew.impl.document.WorkflowDocumentImpl" scope="prototype"
-        p:workflowDocumentActionsService-ref="rice.kew.workflowDocumentActionsService"
-        p:workflowDocumentService-ref="rice.kew.workflowDocumentService" />
+  <bean id="rice.kew.preferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true"/>
 
   <bean id="rice.kew.noteService" class="org.kuali.rice.kew.impl.note.NoteServiceImpl">
     <property name="noteDao" ref="enNoteDAO" />

@@ -25,7 +25,7 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 /**
  * A factory bean which is used to produce an instance id for the service bus.
  * 
- * <p>The value for the instance id is determined in the following order of preference:
+ * <p>The value for the instance id is determined in the following order of preferences:
  * 
  * <ol>
  *   <li>If {@code instanceId} is set on this factory bean, that value will be used.</li> 

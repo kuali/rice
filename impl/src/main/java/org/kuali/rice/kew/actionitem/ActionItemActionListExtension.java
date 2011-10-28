@@ -18,7 +18,7 @@ package org.kuali.rice.kew.actionitem;
 
 import org.kuali.rice.kew.api.actionlist.DisplayParameters;
 import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;

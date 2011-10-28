@@ -46,7 +46,6 @@ import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.notification.service.NotificationService;
-import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -115,8 +114,6 @@ public final class KEWServiceLocator {
 	public static final String ROUTE_LEVEL_SERVICE = "enRouteLevelService";
 
 	public static final String CONSTANTS_SERVICE = "enApplicationConstantsService";
-
-	public static final String PREFERENCES_SERVICE = "enPreferencesService";
 
 	public static final String ROUTE_LOG_SERVICE = "enRouteLogService";
 
@@ -296,10 +293,6 @@ public final class KEWServiceLocator {
 
 	public static RoutingReportService getRoutingReportService() {
 		return (RoutingReportService) getBean(ROUTING_REPORT_SERVICE);
-	}
-
-	public static PreferencesService getPreferencesService() {
-		return (PreferencesService) getBean(PREFERENCES_SERVICE);
 	}
 
 	public static XmlPollerService getXmlPollerService() {

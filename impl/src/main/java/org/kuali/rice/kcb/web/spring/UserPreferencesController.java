@@ -148,7 +148,7 @@ public class UserPreferencesController extends MultiActionController {
         // Get DeliveryType classes.  loop through each deliverer type to 
         // to obtain preferenceKeys.  Check to see if a matching request
         // parameter was provided, then save a record for the userID, channelID, and 
-        // preference setting
+        // preferences setting
         Collection<MessageDeliverer> deliveryTypes = this.messageDelivererRegistryService.getAllDeliverers();
 
         // first remove all configured user delivers for this user

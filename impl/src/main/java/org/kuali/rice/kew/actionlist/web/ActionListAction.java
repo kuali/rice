@@ -64,7 +64,9 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
 import org.kuali.rice.kew.framework.actionlist.ActionListCustomizationHandlerService;
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.framework.document.security.DocumentSecurityDirective;
+import org.kuali.rice.kew.framework.document.security.DocumentSecurityHandlerService;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -458,7 +460,7 @@ public class ActionListAction extends KualiAction {
     			if (KewApiConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
     				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
     			} else if (KewApiConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDisapproved()));
     			} else if (KewApiConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
     				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
     			} else if (KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
@@ -468,7 +470,7 @@ public class ActionListAction extends KualiAction {
     			} else if (KewApiConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
     				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
     			} else if (KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProccessed()));
+    				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProcessed()));
     			} else if (KewApiConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
     				actionItem.setRowStyleClass(KewApiConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
     			}

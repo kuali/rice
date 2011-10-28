@@ -16,21 +16,20 @@
 
 package org.kuali.rice.kew.mail;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import mocks.MockEmailNotificationService;
 import mocks.MockEmailNotificationServiceImpl;
-
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.api.KewApiConstants;
+
+import static org.junit.Assert.*;
 
 public class EmailReminderLifecycleTest extends KEWTestCase {
 
@@ -62,9 +61,10 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
 		
 		// setup ewestfal to recieve daily emails
-		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfalPrincipalId);
-		prefs.setEmailNotification(KewApiConstants.DAILY);
-		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
+		Preferences prefs = KewApiServiceLocator.getPreferencesService().getPreferences(ewestfalPrincipalId);
+        Preferences.Builder builder = Preferences.Builder.create(prefs);
+		builder.setEmailNotification(KewApiConstants.DAILY);
+		KewApiServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, builder.build());
 
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
 		document.adHocToPrincipal(ActionRequestType.APPROVE, "", ewestfalPrincipalId, "", Boolean.TRUE);
@@ -110,9 +110,10 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
 		
 		// setup ewestfal to recieve weekly emails
-		Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(ewestfalPrincipalId);
-		prefs.setEmailNotification(KewApiConstants.WEEKLY);
-		KEWServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, prefs);
+		Preferences prefs = KewApiServiceLocator.getPreferencesService().getPreferences(ewestfalPrincipalId);
+        Preferences.Builder builder = Preferences.Builder.create(prefs);
+		builder.setEmailNotification(KewApiConstants.WEEKLY);
+		KewApiServiceLocator.getPreferencesService().savePreferences(ewestfalPrincipalId, builder.build());
 
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(rkirkendPrincipalId, "TestDocumentType");
 		document.adHocToPrincipal(ActionRequestType.APPROVE, "", ewestfalPrincipalId, "", Boolean.TRUE);

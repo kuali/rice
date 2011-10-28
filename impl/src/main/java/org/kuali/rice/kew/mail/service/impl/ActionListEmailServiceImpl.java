@@ -27,15 +27,16 @@ import org.kuali.rice.core.mail.EmailTo;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.DailyEmailJob;
 import org.kuali.rice.kew.mail.WeeklyEmailJob;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
-import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
@@ -305,7 +306,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
      */
     protected Collection filterActionItemsToNotify(String principalId, Collection actionItems) {
         List filteredItems = new ArrayList();
-        Preferences preferences = KEWServiceLocator.getPreferencesService().getPreferences(principalId);
+        Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(principalId);
         for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
             ActionItem actionItem = (ActionItem) iterator.next();
             if (!actionItem.getPrincipalId().equals(principalId)) {

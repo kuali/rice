@@ -478,6 +478,7 @@
   <param name="rice.kew.actionListServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.documentTypeServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.noteServiceSoap.secure" override="false">true</param>
+  <param name="rice.kew.preferencesServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.ruleServiceSoap.secure" override="false">true</param>
   <param name="rice.kew.documentAttributeIndexingQueueSoap.secure" override="false">true</param>
   <param name="rice.kew.documentSearchCustomizationHandlerServiceSoap.secure" override="false">true</param>

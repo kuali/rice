@@ -26,7 +26,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kew.preferences.service.PreferencesService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
@@ -43,7 +45,7 @@ public class PreferencesServiceTest extends KEWTestCase {
     /**
      * Test that the preferences are saved by default when going through the preferences service.  This
      * means that the preferences service will persist any user option that was not in the db when it went
-     * to fetch that preference.
+     * to fetch that preferences.
      */
 	@Test public void testPreferencesDefaultSave() throws Exception {
        //verify that user doesn't have any preferences in the db.
@@ -53,7 +55,7 @@ public class PreferencesServiceTest extends KEWTestCase {
        Collection userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
        assertTrue("UserOptions should be empty", userOptions.isEmpty());
 
-       PreferencesService preferencesService = KEWServiceLocator.getPreferencesService();
+       PreferencesService preferencesService = KewApiServiceLocator.getPreferencesService();
        Preferences preferences = preferencesService.getPreferences(principal.getPrincipalId());
        assertTrue("Preferences should require a save.", preferences.isRequiresSave());
 
@@ -105,7 +107,7 @@ public class PreferencesServiceTest extends KEWTestCase {
        Collection userOptions = userOptionsService.findByWorkflowUser(principal.getPrincipalId());
        assertTrue("UserOptions should be empty", userOptions.isEmpty());
 
-       final PreferencesService preferencesService = KEWServiceLocator.getPreferencesService();
+       final PreferencesService preferencesService = KewApiServiceLocator.getPreferencesService();
        Runnable getPrefRunnable = new Runnable() {
            public void run() {
                Preferences preferences = preferencesService.getPreferences(principal.getPrincipalId());

@@ -66,7 +66,7 @@ public class ReloadActionListDaoJdbcImpl implements ReloadActionListDAO {
 			int result = preparedStatement.executeUpdate();
 			
 		} catch (SQLException e) {
-			// this is normal if the preference is already set.
+			// this is normal if the preferences is already set.
 		} finally {
 			if (preparedStatement != null) {
 				try {
@@ -104,7 +104,7 @@ public class ReloadActionListDaoJdbcImpl implements ReloadActionListDAO {
 			updatedCount = preparedStatement.executeUpdate();
 			
 		} catch (SQLException e) {
-			LOG.error("unable to delete RELOAD_ACTION_LIST preference", e);
+			LOG.error("unable to delete RELOAD_ACTION_LIST preferences for " + userId, e);
 		} finally {
 			if (preparedStatement != null) {
 				try {

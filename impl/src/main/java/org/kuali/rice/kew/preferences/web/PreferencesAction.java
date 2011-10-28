@@ -24,8 +24,9 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.service.PreferencesService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.preferences.PreferencesService;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
@@ -57,19 +58,21 @@ public class PreferencesAction extends KewKualiAction {
 
     @Override
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PreferencesService preferencesService = (PreferencesService) KEWServiceLocator.getService(KEWServiceLocator.PREFERENCES_SERVICE);
+        PreferencesService preferencesService = (PreferencesService) KEWServiceLocator.getService(KewApiServiceLocator.PREFERENCES_SERVICE);
         PreferencesForm preferencesForm = (PreferencesForm) form;
-        preferencesForm.setPreferences(preferencesService.getPreferences(getUserSession().getPrincipalId()));
+        org.kuali.rice.kew.api.preferences.Preferences preferences = preferencesService.getPreferences(
+                getUserSession().getPrincipalId());
+        preferencesForm.setPreferences(org.kuali.rice.kew.api.preferences.Preferences.Builder.create(preferences));
         return mapping.findForward("basic");
     }
 
     public ActionForward save(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getService(KEWServiceLocator.PREFERENCES_SERVICE);
+        PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getService(KewApiServiceLocator.PREFERENCES_SERVICE);
         PreferencesForm prefForm = (PreferencesForm) form;
 
         prefForm.validatePreferences();
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
-            prefSrv.savePreferences(getUserSession().getPrincipalId(), prefForm.getPreferences());
+            prefSrv.savePreferences(getUserSession().getPrincipalId(), prefForm.getPreferences().build());
         }
         
         GlobalVariables.getUserSession().addObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.TRUE);

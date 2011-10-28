@@ -24,8 +24,9 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.service.PreferencesService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -37,7 +38,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -126,7 +126,7 @@ public class ActionListFilterAction extends KualiAction {
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession().getPrincipalId()));
-        PreferencesService prefSrv = KEWServiceLocator.getPreferencesService();
+        PreferencesService prefSrv = KewApiServiceLocator.getPreferencesService();
         Preferences preferences = prefSrv.getPreferences(getUserSession().getPrincipalId());
         request.setAttribute("preferences", preferences);
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();

@@ -1,5 +1,5 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<%--<%@ page import="org.kuali.rice.kew.preferences.service.PreferencesService" %>--%>
+<%--<%@ page import="org.kuali.rice.kew.api.preferences.PreferencesService" %>--%>
 <kul:page headerTitle="Workflow Preferences" lookup="false"
   headerMenuBar="" transactionalDocument="false" showDocumentInfo="false"
   htmlFormAction="Preferences" docTitle="Workflow Preferences">
@@ -196,7 +196,7 @@
               <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio  styleClass="nobord" property="preferences.colorDissaproved" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio  styleClass="nobord" property="preferences.colorDisapproved" value="${colorType.key}" /></div></td>
                   </c:forEach>
 			    </tr>
               </tbody>
@@ -252,7 +252,7 @@
                 <tbody>
 			    <tr>
                   <c:forEach items="${Constants.ACTION_LIST_COLOR_PALETTE}" var="colorType">
-		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorProccessed" value="${colorType.key}" /></div></td>
+		            <td bgcolor='<c:out value="${colorType.value}"/>' style=" border:none; background-color:${colorType.value}"><div align="center"><html-el:radio styleClass="nobord" property="preferences.colorProcessed" value="${colorType.key}" /></div></td>
                   </c:forEach>
 				</tr>
                 </tbody>

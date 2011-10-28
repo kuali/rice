@@ -26,6 +26,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
@@ -70,7 +71,7 @@ public class DocumentTypeMaintainableTest extends KEWTestCase {
     private void turnOnOutboxForUser(final String principalId) {
         new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                KEWServiceLocator.getUserOptionsService().save(principalId, PreferencesServiceImpl.USE_OUT_BOX, KewApiConstants.PREFERENCES_YES_VAL);
+                KEWServiceLocator.getUserOptionsService().save(principalId, Preferences.KEYS.USE_OUT_BOX, KewApiConstants.PREFERENCES_YES_VAL);
                 return null;
             }
         });

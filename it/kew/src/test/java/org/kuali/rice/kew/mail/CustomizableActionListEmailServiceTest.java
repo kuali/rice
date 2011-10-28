@@ -24,7 +24,8 @@ import java.util.List;
 import mocks.MockEmailNotificationService;
 
 import org.junit.Test;
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -87,9 +88,10 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
 
     private void setupPreferences(List<String> users, String emailNotificationPreference) throws Exception {
     	for (String principalId : users) {
-            Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(principalId);
-            prefs.setEmailNotification(emailNotificationPreference);
-            KEWServiceLocator.getPreferencesService().savePreferences(principalId, prefs);
+            Preferences prefs = KewApiServiceLocator.getPreferencesService().getPreferences(principalId);
+            Preferences.Builder builder = Preferences.Builder.create(prefs);
+            builder.setEmailNotification(emailNotificationPreference);
+            KewApiServiceLocator.getPreferencesService().savePreferences(principalId, builder.build());
         }
     }
 

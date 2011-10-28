@@ -25,7 +25,7 @@ import javax.persistence.Version;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * This class represents a recipient preference in the system.  This is a generic Key/Value structure 
+ * This class represents a recipient preferences in the system.  This is a generic Key/Value structure
  * that is used by the system to store preferences that the user has set up. This will be 
  * used by the tickler plugins which will need a generic and dynamic structure for user specific settings.
  * @author Kuali Rice Team (rice.collab@kuali.org)

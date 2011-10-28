@@ -76,7 +76,7 @@ public class UserPreferencesController extends MultiActionController {
    }
    
    /**
-    * This method displays the actionList preference screen.
+    * This method displays the actionList preferences screen.
     * @param request
     * @param response
     * @return

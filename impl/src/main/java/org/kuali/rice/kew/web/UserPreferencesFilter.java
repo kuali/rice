@@ -28,8 +28,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.preferences.service.PreferencesService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.UserSession;
@@ -96,7 +97,7 @@ public class UserPreferencesFilter implements Filter {
     
     private PreferencesService getPreferenceService() {
     	if (this.preferencesService == null) {
-    		this.preferencesService = KEWServiceLocator.getPreferencesService();
+    		this.preferencesService = KewApiServiceLocator.getPreferencesService();
     	}
     	
     	return this.preferencesService;

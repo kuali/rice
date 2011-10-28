@@ -16,22 +16,15 @@
 
 package org.kuali.rice.kew.actionlist;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.action.ActionInvocation;
+import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestType;
-import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -41,6 +34,12 @@ import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests Outbox functionality
@@ -57,7 +56,7 @@ public class OutboxTest extends KEWTestCase {
     private void turnOnOutboxForUser(final String principalId) {
         new TransactionTemplate(KEWServiceLocator.getPlatformTransactionManager()).execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                KEWServiceLocator.getUserOptionsService().save(principalId, PreferencesServiceImpl.USE_OUT_BOX, KewApiConstants.PREFERENCES_YES_VAL);
+                KEWServiceLocator.getUserOptionsService().save(principalId, Preferences.KEYS.USE_OUT_BOX, KewApiConstants.PREFERENCES_YES_VAL);
                 return null;
             }
         });
@@ -233,10 +232,10 @@ public class OutboxTest extends KEWTestCase {
     @Test
     public void testOutBoxDefaultPreferenceOnConfigParam() throws Exception {
     	final String user1PrincipalId = getPrincipalIdForName("user1");
-        Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1PrincipalId);
-        assertTrue("By default the user's pref should be outbox on", prefs.isUsingOutbox());
+        Preferences prefs = KewApiServiceLocator.getPreferencesService().getPreferences(user1PrincipalId);
+        assertTrue("By default the user's pref should be outbox on", Boolean.valueOf(prefs.getUseOutbox()));
 
-        //TODO: this can no longer be set on the fly and grabbed through the preference service (default values are set at startup)
+        //TODO: this can no longer be set on the fly and grabbed through the preferences service (default values are set at startup)
         //TODO: this is a prime candidate for a mocking tool
         /*ConfigContext.getCurrentContextConfig().putProperty(KewApiConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM, "false");
         final String natjohnsPrincipalId = getPrincipalIdForName("natjohns");

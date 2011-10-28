@@ -27,6 +27,7 @@ import org.kuali.rice.kew.api.group.GroupMembershipChangeQueue;
 import org.kuali.rice.kew.api.mail.ImmediateEmailReminderQueue;
 import org.kuali.rice.kew.api.note.NoteService;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
+import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService;
 import org.kuali.rice.kew.api.rule.RuleService;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
@@ -49,6 +50,7 @@ public class KewApiServiceLocator {
     public static final String RULE_SERVICE = "rice.kew.ruleService";
     public static final String KEW_TYPE_REPOSITORY_SERVICE = "rice.kew.kewTypeRepositoryService";
     public static final String PEOPLE_FLOW_SERVICE = "rice.kew.peopleFlowService";
+    public static final String PREFERENCES_SERVICE = "rice.kew.preferencesService";
 
     public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
     public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
@@ -114,5 +116,9 @@ public class KewApiServiceLocator {
     
     public static ImmediateEmailReminderQueue getImmediateEmailReminderQueue() {
         return KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(IMMEDIATE_EMAIL_REMINDER_QUEUE);
+    }
+
+    public static PreferencesService getPreferencesService() {
+        return getService(PREFERENCES_SERVICE);
     }
 }

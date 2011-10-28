@@ -125,7 +125,20 @@
 		</property>
 	</bean>
 
-  <bean id="rice.kew.documentSearchCustomizationHandlerService.exporter" parent="kewEmbeddedServiceExporter">
+  <bean id="rice.kew.preferencesService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewService">
+				<property name="service">
+					<ref bean="rice.kew.preferencesService" />
+				</property>
+				<property name="localServiceName" value="preferencesServiceSoap" />
+				<property name="busSecurity" value="${rice.kew.preferencesServiceSoap.secure}" />
+			</bean>
+		</property>
+	</bean>
+
+  <bean id="rice.kew.documentLookupCustomizationHandlerService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="kewService">

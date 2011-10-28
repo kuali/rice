@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.preferences.service;
+package org.kuali.rice.kew.api.preferences;
 
-import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.api.preferences.Preferences;
 
 
 /**
@@ -26,9 +26,16 @@ import org.kuali.rice.kew.preferences.Preferences;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@WebService(name = "preferencesServiceSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PreferencesService {
 
-    public void savePreferences(String principalId, Preferences actionListPreferences);
-    public Preferences getPreferences(String principal);
+    @WebMethod(operationName = "savePreferences")
+    public void savePreferences(@WebParam(name="principalId") String principalId, @WebParam(name="preferences") Preferences actionListPreferences);
+
+    @WebMethod(operationName = "getPreferences")
+    @WebResult(name = "preferences")
+    @Cacheable(value= Preferences.Cache.NAME, key="'principalId=' + #principalId")
+    public Preferences getPreferences(@WebParam(name="principalId") String principalId);
 
 }

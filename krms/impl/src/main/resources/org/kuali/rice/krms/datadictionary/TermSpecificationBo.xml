@@ -12,7 +12,6 @@
         <ref bean="TermSpecificationBo-id"/>
         <ref bean="TermSpecificationBo-name"/>
         <ref bean="TermSpecificationBo-namespace"/>
-        <ref bean="TermSpecificationBo-name"/>
         <ref bean="TermSpecificationBo-type"/>
         <ref bean="TermSpecificationBo-description"/>
       </list>

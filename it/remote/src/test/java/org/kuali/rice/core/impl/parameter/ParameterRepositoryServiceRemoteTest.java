@@ -3,6 +3,7 @@ package org.kuali.rice.core.impl.parameter;
 import org.junit.After;
 import org.junit.Before;
 import org.kuali.rice.core.api.parameter.ParameterRepositoryService;
+import org.kuali.rice.core.impl.parameter.ParameterRepositoryServiceImplTest;
 import org.kuali.rice.test.remote.RemoteTestHarness;
 
 public class ParameterRepositoryServiceRemoteTest extends ParameterRepositoryServiceImplTest {

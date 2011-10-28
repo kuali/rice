@@ -793,4 +793,17 @@ public class WebUtils {
 		}
 		return configurationService;
 	}
+	
+    /**
+     * Takes a string an converts the whitespace which would be ignored in an
+     * HTML document into HTML elements so the whitespace is preserved
+     * 
+     * @param startingString The string to preserve whitespace in
+     * @return A string whose whitespace has been converted to HTML elements to preserve the whitespace in an HTML document
+     */
+    public static String preserveWhitespace(String startingString) {
+    	String convertedString = startingString.replaceAll("\n", "<br />");
+    	convertedString = convertedString.replaceAll("  ", "&nbsp;&nbsp;").replaceAll("(&nbsp; | &nbsp;)", "&nbsp;&nbsp;");
+    	return convertedString;
+    }
 }

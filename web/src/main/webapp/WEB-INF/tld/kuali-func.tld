@@ -137,4 +137,11 @@
         <function-signature>boolean isProductionEnvironment()</function-signature>
         <example>${kfunc:isProductionEnvironment()}</example>
     </function>
+    <function>
+    	<description>Converts whitespace which would be ignored by HTML into HTML elements.  This converts newlines in the given string to HTML breaks and multiple spaces into multiple nbsp</description>
+    	<name>preserveWhitespace</name>
+    	<function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+    	<function-signature>java.lang.String preserveWhitespace(java.lang.String)</function-signature>
+    	<example>${kfunc:preserveWhitespace("foo\n\nbar")}</example>
+    </function>
 </taglib>

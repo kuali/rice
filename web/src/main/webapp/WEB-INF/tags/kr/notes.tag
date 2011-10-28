@@ -19,6 +19,7 @@
 <%@ attribute name="attachmentTypesValuesFinderClass" required="false" description="A finder class to give options for the types of attachments allowed as as note attachments on this document." %>
 <%@ attribute name="transparentBackground" required="false" description="Whether the tab should render as having the background transparent around the corners of the tab." %>
 <%@ attribute name="defaultOpen" required="false" description="Whether the tab for the notes is rendered as open." %>
+<%@ attribute name="preserveWhitespace" required="false" description="Whether to preserve the whitespace contained inside the text of the notes" %>
 
 <c:set var="noteColSpan" value="6" />
 
@@ -128,8 +129,19 @@
                           <bean:write name="KualiForm" property="${propPrefix}note[${status.index}].noteTopicText"/></td>
                         </c:if>
 
-                        <td class="datacell center"><bean:write name="KualiForm" property="${propPrefix}note[${status.index}].noteText"/></td>
-
+                        <td class="datacell center">
+                        <%-- 
+     					 * Modified the display of the contents of a note to preserve the
+     					 * whitespace by default.  If the preserveWhitespace attribute is 
+     					 * set to false then this behavior is suppressed. 
+     					 --%>
+     					 <c:if test="${empty preserveWhitespace or preserveWhitespace}">
+                           <kul:preserveWhitespace><bean:write name="KualiForm" property="${propPrefix}note[${status.index}].noteText" /></kul:preserveWhitespace>
+                         </c:if>
+                         <c:if test="${not empty preserveWhitespace and not preserveWhitespace}">
+                           <bean:write name="KualiForm" property="${propPrefix}note[${status.index}].noteText" />
+                         </c:if></td>
+                         
             <%-- use caution if you rename either of these two variables.  It seems that the properties are not read in sequentially
                  but instead in some other arbitrary way (sorted alphabetically?) and therefore you may end up with a reference to a null authorUniversal object --%>
                         <%--<html:hidden property="${propPrefix}boNote[${status.index}].authorUniversal.principalId" />--%>

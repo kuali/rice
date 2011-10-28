@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.apache.commons.digester.Rule;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -25,18 +24,21 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
-import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
+import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
+import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
-import org.kuali.rice.krms.impl.repository.PropositionParameterBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
+import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,8 +48,11 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Controller for the Test UI Page
@@ -123,20 +128,24 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param agendaItem
      */
     private void setAgendaItemLine(UifFormBase form, AgendaItemBo agendaItem) {
-        AgendaEditor editorDocument = getAgendaEditor(form);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
-            if (StringUtils.isBlank(editorDocument.getAgenda().getContextId())) {
+            if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");
             } else {
-                rule.setNamespace(getContextBoService().getContextByContextId(editorDocument.getAgenda().getContextId()).getNamespace());
+                rule.setNamespace(getContextBoService().getContextByContextId(agendaEditor.getAgenda().getContextId()).getNamespace());
             }
             agendaItem = new AgendaItemBo();
             agendaItem.setRule(rule);
-            editorDocument.setAgendaItemLine(agendaItem);
+            agendaEditor.setAgendaItemLine(agendaItem);
         } else {
             // TODO: Add a copy not the reference
-            editorDocument.setAgendaItemLine((AgendaItemBo) ObjectUtils.deepCopy(agendaItem));
+            agendaEditor.setAgendaItemLine((AgendaItemBo) ObjectUtils.deepCopy(agendaItem));
+        }
+
+        if (agendaEditor.getAgendaItemLine().getRule() != null && agendaEditor.getAgendaItemLine().getRule().getAction() != null) {
+            agendaEditor.setCustomRuleActionAttributesMap(agendaEditor.getAgendaItemLine().getRule().getAction().getAttributes());
         }
     }
 
@@ -147,8 +156,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return agendaItem
      */
     private AgendaItemBo getAgendaItemLine(UifFormBase form) {
-        AgendaEditor editorDocument = getAgendaEditor(form);
-        return editorDocument.getAgendaItemLine();
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        return agendaEditor.getAgendaItemLine();
     }
 
     /**
@@ -158,8 +167,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param selectedAgendaItemId
      */
     private void setSelectedAgendaItemId(UifFormBase form, String selectedAgendaItemId) {
-        AgendaEditor editorDocument = getAgendaEditor(form);
-        editorDocument.setSelectedAgendaItemId(selectedAgendaItemId);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        agendaEditor.setSelectedAgendaItemId(selectedAgendaItemId);
     }
 
     /**
@@ -169,8 +178,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return selectedAgendaItemId
      */
     private String getSelectedAgendaItemId(UifFormBase form) {
-        AgendaEditor editorDocument = getAgendaEditor(form);
-        return editorDocument.getSelectedAgendaItemId();
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        return agendaEditor.getSelectedAgendaItemId();
     }
 
     /**
@@ -180,8 +189,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param cutAgendaItemId
      */
     private void setCutAgendaItemId(UifFormBase form, String cutAgendaItemId) {
-        AgendaEditor editorDocument = getAgendaEditor(form);
-        editorDocument.setCutAgendaItemId(cutAgendaItemId);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        agendaEditor.setCutAgendaItemId(cutAgendaItemId);
     }
 
     /**
@@ -191,8 +200,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return cutAgendaItemId
      */
     private String getCutAgendaItemId(UifFormBase form) {
-        AgendaEditor editorDocument = getAgendaEditor(form);
-        return editorDocument.getCutAgendaItemId();
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        return agendaEditor.getCutAgendaItemId();
     }
 
     /**
@@ -222,9 +231,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView addRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        AgendaEditor editorDocument = getAgendaEditor(form);
-        AgendaBo agenda = editorDocument.getAgenda();
-        AgendaItemBo newAgendaItem = editorDocument.getAgendaItemLine();
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        AgendaBo agenda = agendaEditor.getAgenda();
+        AgendaItemBo newAgendaItem = agendaEditor.getAgendaItemLine();
 
         if (agenda.getItems() == null) {
             agenda.setItems(new ArrayList<AgendaItemBo>());
@@ -234,6 +243,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (rule.processAddAgendaItemBusinessRules(newAgendaItem, agenda)) {
             newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
+            updateRuleActionAttributes(agendaEditor, newAgendaItem.getRule().getAction());
             if (agenda.getFirstItemId() == null) {
                 agenda.setFirstItemId(newAgendaItem.getId());
             } else {
@@ -276,17 +286,61 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
         return agenda.getId();
     }
+
+    private void updateRuleActionAttributes(AgendaEditor agendaEditor, ActionBo action) {
+        Set<ActionAttributeBo> attributes = new HashSet<ActionAttributeBo>();
+
+        Map<String, KrmsAttributeDefinition> attributeDefinitionMap = buildAttributeDefinitionMap(action.getTypeId());
+
+        for (Map.Entry<String, String> entry : agendaEditor.getCustomRuleActionAttributesMap().entrySet()) {
+            KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey()); // get the definition from our map
+
+            if (attrDef != null) {
+                ActionAttributeBo attributeBo = new ActionAttributeBo();
+                attributeBo.setActionId(action.getId());
+                attributeBo.setAttributeDefinitionId(attrDef.getId());
+                attributeBo.setValue(entry.getValue());
+                attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attrDef));
+                attributes.add(attributeBo);
+            }
+        }
+        action.setAttributeBos(attributes);
+    }
+
+    /**
+     * Build a map from attribute name to attribute definition from all the defined attribute definitions for the
+     * specified rule action type
+     * @param actionTypeId
+     * @return
+     */
+    private Map<String, KrmsAttributeDefinition> buildAttributeDefinitionMap(String actionTypeId) {
+        KrmsAttributeDefinitionService attributeDefinitionService =
+            KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+
+        // build a map from attribute name to definition
+        Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();
+
+        List<KrmsAttributeDefinition> attributeDefinitions =
+                attributeDefinitionService.findAttributeDefinitionsByType(actionTypeId);
+
+        for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
+            attributeDefinitionMap.put(attributeDefinition.getName(), attributeDefinition);
+        }
+        return attributeDefinitionMap;
+    }
+
     /**
      * This method updates the existing rule in the agenda.
      */
     @RequestMapping(params = "methodToCall=" + "editRule")
     public ModelAndView editRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AgendaBo agenda = getAgenda(form);
+        AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agenda);
+        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
         AgendaItemBo agendaItemLine = getAgendaItemLine(form);
+        updateRuleActionAttributes(agendaEditor, agendaItemLine.getRule().getAction());
         node.setRule(agendaItemLine.getRule());
 
         form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
@@ -874,8 +928,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return
      */
     private AgendaBo getAgenda(UifFormBase form) {
-        AgendaEditor editorDocument = getAgendaEditor((MaintenanceForm) form);
-        AgendaBo agenda = editorDocument.getAgenda();
+        AgendaEditor agendaEditor = getAgendaEditor((MaintenanceForm) form);
+        AgendaBo agenda = agendaEditor.getAgenda();
         return agenda;
     }
 

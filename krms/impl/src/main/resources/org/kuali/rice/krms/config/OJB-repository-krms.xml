@@ -224,9 +224,9 @@
 		<field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="sequenceNumber" column="SEQ_NO" jdbc-type="INTEGER"  />		
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-	    <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.ActionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
-      		<inverse-foreignkey field-ref="actionId" />
-    	</collection-descriptor>
+	  <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.ActionAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+    		<inverse-foreignkey field-ref="actionId" />
+    </collection-descriptor>
 	</class-descriptor>
 
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.ActionAttributeBo" table="KRMS_ACTN_ATTR_T">

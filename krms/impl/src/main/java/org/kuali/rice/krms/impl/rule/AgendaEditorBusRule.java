@@ -247,17 +247,19 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
             }
         }
 
-        // check database for rules used with other agendas
-        RuleDefinition ruleFromDatabase = getRuleBoService().getRuleByNameAndNamespace(rule.getName(), rule.getNamespace());
-        try {
-            if ((ruleFromDatabase != null) && ruleFromDatabase.getId().equals(rule.getId())) {
-                this.putFieldError(KRMSPropertyConstants.Rule.NAME, "error.rule.duplicateName");
+        // check database for rules used with other agendas - the namespace might not yet be specified on new agendas.
+        if (StringUtils.isNotBlank(rule.getNamespace())) {
+            RuleDefinition ruleFromDatabase = getRuleBoService().getRuleByNameAndNamespace(rule.getName(), rule.getNamespace());
+            try {
+                if ((ruleFromDatabase != null) && ruleFromDatabase.getId().equals(rule.getId())) {
+                    this.putFieldError(KRMSPropertyConstants.Rule.NAME, "error.rule.duplicateName");
+                    return false;
+                }
+            }
+            catch (IllegalArgumentException e) {
+                this.putFieldError(KRMSPropertyConstants.Rule.NAME, "error.rule.invalidName");
                 return false;
             }
-        }
-        catch (IllegalArgumentException e) {
-            this.putFieldError(KRMSPropertyConstants.Rule.NAME, "error.rule.invalidName");
-            return false;
         }
         return true;
     }

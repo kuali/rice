@@ -18,10 +18,7 @@ package org.kuali.rice.krms.impl.ui;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
-import org.kuali.rice.core.api.exception.RiceIllegalStateException;
-import org.kuali.rice.core.api.mo.ModelObjectUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
@@ -34,22 +31,18 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
+import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaAttributeBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
-import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -122,6 +115,53 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         if (agendaTypeService == null) { agendaTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
 
         return agendaTypeService;
+    }
+
+    /**
+     *  This only supports a single action within a rule.
+     */
+    public List<RemotableAttributeField> retrieveRuleActionCustomAttributes(View view, Object model, Container container) {
+        List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
+
+        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
+        AgendaEditor agendaEditor = (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
+
+        // if we have an rule action w/ a typeId set on it
+        if (agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
+                && agendaEditor.getAgendaItemLine().getRule().getAction() != null
+                && !StringUtils.isBlank(agendaEditor.getAgendaItemLine().getRule().getAction().getTypeId())) {
+
+            String krmsTypeId = agendaEditor.getAgendaItemLine().getRule().getAction().getTypeId();
+
+            ActionTypeService actionTypeService = getActionTypeService(krmsTypeId);
+            results.addAll(actionTypeService.getAttributeFields(krmsTypeId));
+        }
+
+        return results;
+    }
+
+    private ActionTypeService getActionTypeService(String krmsTypeId) {
+        //
+        // Get the ActionTypeService by hook or by crook
+        //
+
+        KrmsTypeDefinition krmsType =
+                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
+                            getTypeById(krmsTypeId);
+
+        ActionTypeService actionTypeService = null;
+
+        if (!StringUtils.isBlank(krmsTypeId)) {
+            String serviceName = krmsType.getServiceName();
+
+            if (!StringUtils.isBlank(serviceName)) {
+                actionTypeService = KrmsRepositoryServiceLocator.getService(serviceName);
+            }
+        }
+
+//        if (actionTypeService == null) { actionTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
+
+        return actionTypeService;
     }
 
     @Override
@@ -208,12 +248,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         if (agendaBo != null) { // apply custom attributes to agendaBo
 
             Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
-
-            ContextBo context = agendaEditor.getContext();
-
-            if (context == null) {
-                context = getBoService().findBySinglePrimaryKey(ContextBo.class, agendaBo.getContextId());
-            }
 
             Map<String, KrmsAttributeDefinition> attributeDefinitionMap = buildAttributeDefinitionMap(agendaBo.getTypeId());
 

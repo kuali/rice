@@ -22,7 +22,11 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	public Map<String, String> getAttributes() {
 		HashMap<String, String> attributes = new HashMap<String, String>();
 		for (attr in attributeBos) {
-			attributes.put( attr.attributeDefinition.name, attr.value )
+            if (attr.attributeDefinition == null) {
+                attributes.put("", "");
+            } else {
+			  attributes.put( attr.attributeDefinition.name, attr.value )
+            }
 		}
 		return attributes;
 	}

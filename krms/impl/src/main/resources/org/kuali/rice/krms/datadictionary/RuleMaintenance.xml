@@ -50,6 +50,7 @@
     <property name="items">
       <list>
         <ref bean="ruleInfoSection" />
+        <ref bean="ruleActionsSection" />
       </list>
     </property>
   </bean>
@@ -70,7 +71,6 @@
         <ref bean="ruleInfoGrid"/>
         <ref bean="ruleAttributesSection"/>
         <ref bean="propositionSection" />
-        <ref bean="ruleActionsSection" />
       </list>
     </property>
   </bean>
@@ -553,16 +553,20 @@
   </bean>
  
   <bean name="ruleActionsSection" parent="ruleActionsSection-parent"/>
-    <bean name="ruleActionsSection-parent" parent="Group">
+    <bean name="ruleActionsSection-parent" parent="GroupSection">
       <property name="title" value="Actions"/>
+      <property name="renderHeader" value="true" />
+      <property name="disclosure.render" value="true" />
       <property name="disclosure.defaultOpen" value="true"/>
       <property name="items">
         <list>
-          <bean parent="ruleActionTable"/>
+    <!-- Enable the ruleActionTable and disable/remove firstRuleAction to support multiple actions -->
+          <!--<bean parent="ruleActionTable"/>-->
+          <bean parent="firstRuleAction"/>
+          <bean parent="firstRuleActionCustomAttributes"/>
         </list>
       </property>
     </bean>
-  <!--  This section below are pieces that are works in progress and not yet attached to the main body -->
 
   <bean name="ruleActionTable" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3">
     <property name="header.render" value="false"/>
@@ -584,6 +588,33 @@
         </bean>
         <bean parent="InputField" p:propertyName="name" p:label="Name" p:required="true"/>
         <bean parent="InputField" p:propertyName="description" p:label="Description" p:required="true"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean name="firstRuleAction" parent="GroupGridLayout" p:layoutManager.numberOfColumns="2">
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.action.typeId" p:label="Type" p:required="true">
+          <property name="control">
+            <bean parent="SelectControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="true"/>
+          </property>
+        </bean>
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.action.name" p:label="Name" p:required="true"/>
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.action.description" p:label="Description" p:required="true"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean name="firstRuleActionCustomAttributes" parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2"
+         p:refreshWhenChanged="document.newMaintainableObject.dataObject.agendaItemLine.rule.action.typeId">
+    <property name="items">
+      <list>
+        <bean parent="RemoteFieldsHolder" p:propertyName="customRuleActionAttributesMap"
+              p:fetchingMethodToCall="retrieveRuleActionCustomAttributes"/>
       </list>
     </property>
   </bean>

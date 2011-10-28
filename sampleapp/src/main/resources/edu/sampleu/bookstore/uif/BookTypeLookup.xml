@@ -23,15 +23,15 @@
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeCode" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="typeCode" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="typeCode" />
-        <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="description" />
+        <bean parent="InputField" p:propertyName="typeCode" />
+        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="description" />
       </list>
     </property>
   </bean>

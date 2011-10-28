@@ -20,9 +20,9 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.CssConstants.Padding;
 import org.kuali.rice.krad.uif.UifConstants.Orientation;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.AttributeField;
 
 /**
  * Layout manager that organizes components in a single row (horizontal) or
@@ -93,15 +93,15 @@ public class BoxLayoutManager extends LayoutManagerBase {
                 if (orientation.equals(Orientation.HORIZONTAL)) {
                     // in a horizontal box layout errors are placed in a div next to all fields,
                     // set the errorsField to know that we are using an alternate container for them
-                    if (c instanceof AttributeField) {
-                        ((AttributeField) c).getErrorsField().setAlternateContainer(true);
+                    if (c instanceof InputField) {
+                        ((InputField) c).getErrorsField().setAlternateContainer(true);
                         layoutFieldErrors = true;
                     }
                 }
 
                 if (container.isFieldContainer()) {
-                    if (c instanceof AttributeField) {
-                        ((AttributeField) c).getErrorsField().setAlternateContainer(true);
+                    if (c instanceof InputField) {
+                        ((InputField) c).getErrorsField().setAlternateContainer(true);
                         layoutFieldErrors = true;
                     }
                 }

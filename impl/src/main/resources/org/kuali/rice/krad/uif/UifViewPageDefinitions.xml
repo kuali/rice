@@ -236,26 +236,26 @@
 		</property>
 		<property name="items">
 			<list>
-				<bean parent="AttributeField_Form" p:propertyName="incidentDocId"
+				<bean parent="InputField_Form" p:propertyName="incidentDocId"
 					p:label="Document Id" p:readOnly="true" p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="50" />
 					</property>
 				</bean>
-				<bean parent="AttributeField_Form" p:propertyName="incidentViewId"
+				<bean parent="InputField_Form" p:propertyName="incidentViewId"
 					p:label="View Id" p:readOnly="true" p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="50" />
 					</property>
 				</bean>
-				<bean parent="AttributeField_Form" p:propertyName="errorMessage"
+				<bean parent="InputField_Form" p:propertyName="errorMessage"
 					p:style="color : RED;" p:label="Error Message" p:readOnly="true"
 					p:width="auto">
 					<property name="control">
 						<bean parent="TextControl" p:size="50" />
 					</property>
 				</bean>
-				<bean parent="AttributeField_Form" p:propertyName="userInput"
+				<bean parent="InputField_Form" p:propertyName="userInput"
 					p:label="User Feedback">
 					<property name="control">
 						<bean parent="TextAreaControl" p:rows="8" p:cols="65"
@@ -273,7 +273,7 @@
 		<property name="header.headerText" value="Stacktrace (only in dev mode)" />
 		<property name="items">
 			<list>
-				<bean parent="AttributeField" p:propertyName="exceptionStackTrace" p:labelPlacement="TOP"
+				<bean parent="InputField" p:propertyName="exceptionStackTrace" p:labelPlacement="TOP"
               p:labelField.styleClasses="kr-labelTop" p:labelField.renderColon="false" p:label="" p:readOnly="true"
 				    	p:width="auto">
 					<property name="control">

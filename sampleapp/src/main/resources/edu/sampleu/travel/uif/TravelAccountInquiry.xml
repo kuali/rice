@@ -28,14 +28,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="AttributeField" p:propertyName="number"/>
-                <bean parent="AttributeField" p:propertyName="name"/>
-                <bean parent="AttributeField" p:propertyName="extension.accountType.codeAndDescription"/>
-                <bean parent="AttributeField" p:propertyName="subAccount"/>
-                <bean parent="AttributeField" p:propertyName="subAccountName"/>
-                <bean parent="AttributeField" p:propertyName="createDate"/>
-                <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
-                <bean parent="AttributeField" p:propertyName="foId"/>
+                <bean parent="InputField" p:propertyName="number"/>
+                <bean parent="InputField" p:propertyName="name"/>
+                <bean parent="InputField" p:propertyName="extension.accountType.codeAndDescription"/>
+                <bean parent="InputField" p:propertyName="subAccount"/>
+                <bean parent="InputField" p:propertyName="subAccountName"/>
+                <bean parent="InputField" p:propertyName="createDate"/>
+                <bean parent="InputField" p:propertyName="subsidizedPercent"/>
+                <bean parent="InputField" p:propertyName="foId"/>
                </list>
              </property>
              <property name="title" value="Account Information"/>
@@ -46,9 +46,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="items">
                 <list>
-                  <bean parent="AttributeField" p:propertyName="number"/>
-                  <bean parent="AttributeField" p:propertyName="name"/>
-                  <bean parent="AttributeField" p:propertyName="foId"/>
+                  <bean parent="InputField" p:propertyName="number"/>
+                  <bean parent="InputField" p:propertyName="name"/>
+                  <bean parent="InputField" p:propertyName="foId"/>
                 </list>
               </property>      
               <property name="layoutManager.summaryTitle" value="Travel Account"/> 
@@ -65,11 +65,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <property name="layoutManager.renderSequenceField" value="false"/>
               <property name="items">
                 <list>
-                  <bean parent="AttributeField" p:propertyName="number"/>
-                  <bean parent="AttributeField" p:propertyName="name"/>
-                  <bean parent="AttributeField" p:propertyName="foId"/>
-                  <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
-                  <bean parent="AttributeField" p:propertyName="createDate"/>
+                  <bean parent="InputField" p:propertyName="number"/>
+                  <bean parent="InputField" p:propertyName="name"/>
+                  <bean parent="InputField" p:propertyName="foId"/>
+                  <bean parent="InputField" p:propertyName="subsidizedPercent"/>
+                  <bean parent="InputField" p:propertyName="createDate"/>
                  </list>
               </property>      
            </bean>                

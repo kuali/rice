@@ -28,11 +28,11 @@
         <bean parent="MaintenanceGroupSectionGridLayout">
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="id" p:label="Id"/>
-              <bean parent="AttributeField" p:propertyName="name" p:label="Name"/>
-              <bean parent="AttributeField" p:propertyName="namespace" p:label="Namespace"/>
-              <bean parent="AttributeField" p:propertyName="typeId" p:label="Type"/>
-              <bean parent="AttributeField" p:propertyName="description" p:label="Description"/>
+              <bean parent="InputField" p:propertyName="id" p:label="Id"/>
+              <bean parent="InputField" p:propertyName="name" p:label="Name"/>
+              <bean parent="InputField" p:propertyName="namespace" p:label="Namespace"/>
+              <bean parent="InputField" p:propertyName="typeId" p:label="Type"/>
+              <bean parent="InputField" p:propertyName="description" p:label="Description"/>
             </list>
           </property>
           <property name="title" value="Context"/>

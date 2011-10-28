@@ -28,11 +28,11 @@
     </property>  
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="className" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="applicationId" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="type" p:optionsFinderClass="org.kuali.rice.kew.rule.bo.RuleAttributeTypeValuesFinder">
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="className" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="applicationId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="type" p:optionsFinderClass="org.kuali.rice.kew.rule.bo.RuleAttributeTypeValuesFinder">
         	 <property name="control">
               <bean parent="SelectControl"/>
             </property>
@@ -42,11 +42,11 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="className" />
-        <bean parent="AttributeField" p:propertyName="type" />
-        <bean parent="AttributeField" p:propertyName="applicationId" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="className" />
+        <bean parent="InputField" p:propertyName="type" />
+        <bean parent="InputField" p:propertyName="applicationId" />
       </list>
     </property>
   </bean>

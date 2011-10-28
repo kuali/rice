@@ -22,10 +22,10 @@
           <property name="title" value="Add/Edit Author"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="authorName"/>
-              <bean parent="AttributeField" p:propertyName="email"/>
-              <bean parent="AttributeField" p:propertyName="phoneNbr"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="authorName"/>
+              <bean parent="InputField" p:propertyName="email"/>
+              <bean parent="InputField" p:propertyName="phoneNbr"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>
@@ -33,8 +33,8 @@
           <property name="title" value="Account Information"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="extension.accountNumber"/>
-              <bean parent="AttributeField" p:propertyName="extension.bankName"/>
+              <bean parent="InputField" p:propertyName="extension.accountNumber"/>
+              <bean parent="InputField" p:propertyName="extension.bankName"/>
             </list>
           </property>
         </bean>
@@ -45,13 +45,13 @@
           <property name="items">
             <list>
               
-              <bean parent="AttributeField" p:propertyName="type"/>
-              <bean parent="AttributeField" p:propertyName="street1"/>
-              <bean parent="AttributeField" p:propertyName="street2"/>
-              <bean parent="AttributeField" p:propertyName="city"/>
-              <bean parent="AttributeField" p:propertyName="province"/>
-              <bean parent="AttributeField" p:propertyName="country"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="type"/>
+              <bean parent="InputField" p:propertyName="street1"/>
+              <bean parent="InputField" p:propertyName="street2"/>
+              <bean parent="InputField" p:propertyName="city"/>
+              <bean parent="InputField" p:propertyName="province"/>
+              <bean parent="InputField" p:propertyName="country"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
           <property name="layoutManager.summaryTitle" value="Address"/>

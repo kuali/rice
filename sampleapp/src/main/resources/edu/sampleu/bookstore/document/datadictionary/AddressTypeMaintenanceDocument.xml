@@ -22,9 +22,9 @@
           <property name="title" value="Add/Edit Address Type"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="type"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="type"/>
+              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>

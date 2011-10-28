@@ -23,14 +23,14 @@
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.FiscalOfficer" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="userName" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="userName" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="userName" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="userName" />
       </list>
     </property>
   </bean>

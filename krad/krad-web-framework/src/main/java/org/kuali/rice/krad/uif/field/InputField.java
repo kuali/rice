@@ -33,6 +33,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.control.MultiValueControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.Control;
@@ -67,19 +68,15 @@ import java.util.List;
  * render an HTML control element(s). The attribute field also contains a
  * <code>LabelField</code>, summary, and widgets such as a quickfinder (for
  * looking up values) and inquiry (for getting more information on the value).
- * <code>AttributeField</code> instances can have associated messages (errors)
+ * <code>InputField</code> instances can have associated messages (errors)
  * due to invalid input or business rule failures. Security can also be
  * configured to restrict who may view the fields value.
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeField extends DataField implements DataBinding {
+public class InputField extends DataField {
     private static final long serialVersionUID = -3703656713706343840L;
-
-    // value props
-    private String defaultValue;
-    private Class<? extends ValueFinder> defaultValueFinderClass;
 
     // constraint variables
     private String customValidatorClass;
@@ -111,7 +108,7 @@ public class AttributeField extends DataField implements DataBinding {
     private DirectInquiry fieldDirectInquiry;
     private Suggest fieldSuggest;
 
-    public AttributeField() {
+    public InputField() {
         super();
 
         simpleConstraint = new SimpleConstraint();
@@ -296,7 +293,7 @@ public class AttributeField extends DataField implements DataBinding {
     }
 
     /**
-     * Defaults the properties of the <code>AttributeField</code> to the
+     * Defaults the properties of the <code>InputField</code> to the
      * corresponding properties of its <code>AttributeDefinition</code>
      * retrieved from the dictionary (if such an entry exists). If the field
      * already contains a value for a property, the definitions value is not
@@ -380,49 +377,6 @@ public class AttributeField extends DataField implements DataBinding {
         components.add(fieldSuggest);
 
         return components;
-    }
-
-    /**
-     * Default value for the model property the field points to
-     *
-     * <p>
-     * When a new <code>View</code> instance is requested, the corresponding
-     * model will be newly created. During this initialization process the value
-     * for the model property will be set to the given default value (if set)
-     * </p>
-     *
-     * @return String default value
-     */
-    public String getDefaultValue() {
-        return this.defaultValue;
-    }
-
-    /**
-     * Setter for the fields default value
-     *
-     * @param defaultValue
-     */
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
-    /**
-     * Gives Class that should be invoked to produce the default value for the
-     * field
-     *
-     * @return Class<? extends ValueFinder> default value finder class
-     */
-    public Class<? extends ValueFinder> getDefaultValueFinderClass() {
-        return this.defaultValueFinderClass;
-    }
-
-    /**
-     * Setter for the default value finder class
-     *
-     * @param defaultValueFinderClass
-     */
-    public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
-        this.defaultValueFinderClass = defaultValueFinderClass;
     }
 
     /**

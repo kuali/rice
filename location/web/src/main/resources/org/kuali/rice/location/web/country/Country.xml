@@ -186,11 +186,11 @@
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="AttributeField" p:propertyName="code"/>
-                <bean parent="AttributeField" p:propertyName="name"/>
-                <bean parent="AttributeField" p:propertyName="alternateCode"/>
-                <bean parent="AttributeField" p:propertyName="postalCountryRestrictedIndicator"/>
-                <bean parent="AttributeField" p:propertyName="active"/>
+                <bean parent="InputField" p:propertyName="code"/>
+                <bean parent="InputField" p:propertyName="name"/>
+                <bean parent="InputField" p:propertyName="alternateCode"/>
+                <bean parent="InputField" p:propertyName="postalCountryRestrictedIndicator"/>
+                <bean parent="InputField" p:propertyName="active"/>
                </list>
              </property>
              <property name="title" value="Country Information"/>

@@ -16,7 +16,7 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="control" classname="org.kuali.rice.krad.uif.control.FileControl"/>
-<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.AttributeField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.InputField"/>
 
 <form:input id="${field.id}" path="${field.bindingInfo.bindingPath}" type="file" disabled="${control.disabled}"
             size="${control.size}" class="${control.styleClassesAsString}" tabIndex="${control.tabIndex}"/>

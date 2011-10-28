@@ -68,7 +68,7 @@ import java.util.List;
  * a list of {@link RemotableAttributeField} instances. The view, model instance, and parent container will be sent
  * to the method as arguments.
  *
- * The returned fields will be translated to {@link AttributeField} instances that bind to a map property named
+ * The returned fields will be translated to {@link InputField} instances that bind to a map property named
  * 'remoteFieldValuesMap' on the model.
  * </p>
  *
@@ -98,7 +98,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
      * @return List<AttributeField> list of attribute fields that should be placed into container, if no remotable
      * fields were returned from the fetching method the list will be empty
      */
-    public List<AttributeField> fetchAndTranslateRemoteFields(View view, Object model, Container parent) {
+    public List<InputField> fetchAndTranslateRemoteFields(View view, Object model, Container parent) {
         if (StringUtils.isBlank(fetchingMethodToCall) && (fetchingMethodInvoker == null)) {
             throw new RuntimeException("");
         }
@@ -138,7 +138,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
         }
 
         // do translation
-        List<AttributeField> attributeFields = new ArrayList<AttributeField>();
+        List<InputField> attributeFields = new ArrayList<InputField>();
         if ((remotableFields != null) && !remotableFields.isEmpty()) {
             attributeFields = ComponentFactory.translateRemotableFields(remotableFields);
         }
@@ -152,7 +152,7 @@ public class RemoteFieldsHolder extends ComponentBase implements DataBinding {
         bindingInfo.addToBindByNamePrefix(propertyName);
         bindingInfo.setBindToMap(true);
 
-        for (AttributeField field : attributeFields) {
+        for (InputField field : attributeFields) {
             BindingInfo fieldBindingInfo = CloneUtils.deepClone(bindingInfo);
             fieldBindingInfo.setDefaults(view, field.getPropertyName());
             field.setBindingInfo(fieldBindingInfo);

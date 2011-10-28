@@ -109,18 +109,18 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" p:label="Context Type" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="typeId" p:label="Context Type" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="namespace" />
-        <bean parent="AttributeField" p:propertyName="typeId" p:label="Context Type" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="namespace" />
+        <bean parent="InputField" p:propertyName="typeId" p:label="Context Type" />
       </list>
     </property>
   </bean>
@@ -138,11 +138,11 @@
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
 					        <list>
-					          <bean parent="AttributeField" p:propertyName="id"/>
-					          <bean parent="AttributeField" p:propertyName="name"/>
-					          <bean parent="AttributeField" p:propertyName="namespace"/>
-                    <bean parent="AttributeField" p:propertyName="typeId" p:label="Context Type"/>
-                    <bean parent="AttributeField" p:propertyName="description"/>
+					          <bean parent="InputField" p:propertyName="id"/>
+					          <bean parent="InputField" p:propertyName="name"/>
+					          <bean parent="InputField" p:propertyName="namespace"/>
+                    <bean parent="InputField" p:propertyName="typeId" p:label="Context Type"/>
+                    <bean parent="InputField" p:propertyName="description"/>
 					        </list>
 					      </property>
 					      <property name="title" value="Context Attributes"/>
@@ -154,9 +154,9 @@
                 <property name="layoutManager.renderSequenceField" value="false"/>
                 <property name="items">
                   <list>
-                    <bean parent="AttributeField" p:propertyName="id"/>
-                    <bean parent="AttributeField" p:propertyName="name"/>
-                    <bean parent="AttributeField" p:propertyName="typeId" p:label="Agenda Type"/>
+                    <bean parent="InputField" p:propertyName="id"/>
+                    <bean parent="InputField" p:propertyName="name"/>
+                    <bean parent="InputField" p:propertyName="typeId" p:label="Agenda Type"/>
                    </list>
                 </property>
               </bean>

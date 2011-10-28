@@ -160,21 +160,21 @@
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Address"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="addressType.type"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="city"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="province"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="country"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="addressType.type"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="city"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="province"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="country"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="addressId"/>
-        <bean parent="AttributeField" p:propertyName="addressType.type"/>
-        <bean parent="AttributeField" p:propertyName="street1"/>
-        <bean parent="AttributeField" p:propertyName="street2"/>
-        <bean parent="AttributeField" p:propertyName="city"/>
-        <bean parent="AttributeField" p:propertyName="province"/>
-        <bean parent="AttributeField" p:propertyName="country"/>
+        <bean parent="InputField" p:propertyName="addressId"/>
+        <bean parent="InputField" p:propertyName="addressType.type"/>
+        <bean parent="InputField" p:propertyName="street1"/>
+        <bean parent="InputField" p:propertyName="street2"/>
+        <bean parent="InputField" p:propertyName="city"/>
+        <bean parent="InputField" p:propertyName="province"/>
+        <bean parent="InputField" p:propertyName="country"/>
       </list>
     </property>
   </bean>
@@ -187,13 +187,13 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="addressId"/>
-              <bean parent="AttributeField" p:propertyName="addressType.type"/>
-              <bean parent="AttributeField" p:propertyName="street1"/>
-              <bean parent="AttributeField" p:propertyName="street2"/>
-              <bean parent="AttributeField" p:propertyName="city"/>
-              <bean parent="AttributeField" p:propertyName="province"/>
-              <bean parent="AttributeField" p:propertyName="country"/>
+              <bean parent="InputField" p:propertyName="addressId"/>
+              <bean parent="InputField" p:propertyName="addressType.type"/>
+              <bean parent="InputField" p:propertyName="street1"/>
+              <bean parent="InputField" p:propertyName="street2"/>
+              <bean parent="InputField" p:propertyName="city"/>
+              <bean parent="InputField" p:propertyName="province"/>
+              <bean parent="InputField" p:propertyName="country"/>
             </list>
           </property>
         </bean>

@@ -111,21 +111,21 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="description" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeId" />        
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="description" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="typeId" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="namespace" />
-        <bean parent="AttributeField" p:propertyName="description" />
-        <bean parent="AttributeField" p:propertyName="propId" />
-        <bean parent="AttributeField" p:propertyName="typeId" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="namespace" />
+        <bean parent="InputField" p:propertyName="description" />
+        <bean parent="InputField" p:propertyName="propId" />
+        <bean parent="InputField" p:propertyName="typeId" />
       </list>
     </property>
   </bean>
@@ -144,11 +144,11 @@
 				  <property name="layoutManager.numberOfColumns" value="2" />
 				  <property name="items">
 					<list>
-						<bean parent="AttributeField" p:propertyName="id" />
-						<bean parent="AttributeField" p:propertyName="name" />
-						<bean parent="AttributeField" p:propertyName="namespace" />
-						<bean parent="AttributeField" p:propertyName="description" />
-						<bean parent="AttributeField" p:propertyName="typeId" />
+						<bean parent="InputField" p:propertyName="id" />
+						<bean parent="InputField" p:propertyName="name" />
+						<bean parent="InputField" p:propertyName="namespace" />
+						<bean parent="InputField" p:propertyName="description" />
+						<bean parent="InputField" p:propertyName="typeId" />
 					</list>
 				  </property>
 			    </bean>
@@ -159,8 +159,8 @@
 				  <property name="layoutManager.renderSequenceField" value="false" />
 				  <property name="items">
 				    <list>
-					  <bean parent="AttributeField" p:propertyName="attributeDefinition.name" />
-					  <bean parent="AttributeField" p:propertyName="value" />
+					  <bean parent="InputField" p:propertyName="attributeDefinition.name" />
+					  <bean parent="InputField" p:propertyName="value" />
 				    </list>
 				   </property>
 			    </bean>
@@ -175,9 +175,9 @@
 				  <property name="layoutManager.numberOfColumns" value="2" />
 				  <property name="items">
 			  		<list>
-					  <bean parent="AttributeField" p:propertyName="proposition.id" />
-				      <bean parent="AttributeField" p:propertyName="proposition.description" />
-				      <bean parent="AttributeField" p:propertyName="proposition.propositionTypeCode" />
+					  <bean parent="InputField" p:propertyName="proposition.id" />
+				      <bean parent="InputField" p:propertyName="proposition.description" />
+				      <bean parent="InputField" p:propertyName="proposition.propositionTypeCode" />
 			        </list>
 			      </property>
                   <property name="title" value="Proposition"/>
@@ -189,9 +189,9 @@
 				  <property name="layoutManager.renderSequenceField" value="false" />
 				  <property name="items">
 				    <list>
-					  <bean parent="AttributeField" p:propertyName="sequenceNumber" />
-					  <bean parent="AttributeField" p:propertyName="value" />
-					  <bean parent="AttributeField" p:propertyName="parameterType" />
+					  <bean parent="InputField" p:propertyName="sequenceNumber" />
+					  <bean parent="InputField" p:propertyName="value" />
+					  <bean parent="InputField" p:propertyName="parameterType" />
 				    </list>
 				   </property>
 			    </bean>
@@ -205,10 +205,10 @@
 				  <property name="layoutManager.renderSequenceField" value="false" />
 				  <property name="items">
 				    <list>
-					  <bean parent="AttributeField" p:propertyName="id" />
-					  <bean parent="AttributeField" p:propertyName="name" />
-					  <bean parent="AttributeField" p:propertyName="description" />
-					  <bean parent="AttributeField" p:propertyName="typeId" />
+					  <bean parent="InputField" p:propertyName="id" />
+					  <bean parent="InputField" p:propertyName="name" />
+					  <bean parent="InputField" p:propertyName="description" />
+					  <bean parent="InputField" p:propertyName="typeId" />
 				    </list>
 				   </property>
 			    </bean>

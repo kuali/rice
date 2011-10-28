@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.uif.control;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.widget.DatePicker;
 
 import java.util.List;
@@ -70,8 +70,8 @@ public class TextControl extends ControlBase implements SizedControl {
     public void performFinalize(View view, Object model, Component parent) {
         super.performFinalize(view, model, parent);
 
-        if (parent instanceof AttributeField) {
-            AttributeField field = (AttributeField) parent;
+        if (parent instanceof InputField) {
+            InputField field = (InputField) parent;
             if (getMaxLength() == null) {
                 setMaxLength(field.getMaxLength());
             }

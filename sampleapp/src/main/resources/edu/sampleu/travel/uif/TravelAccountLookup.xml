@@ -24,14 +24,14 @@
     <property name="criteriaFields">
       <list>
 <!-- p:dictionaryObjectEntry=edu.sampleu.travel.bo.TravelAccount -->
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="number" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="subAccount" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="subAccountName" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="createDate" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="subsidizedPercent" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="foId" /> <!-- p:forceLookup="true" -->
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="extension.accountTypeCode">
+        <bean parent="LookupCriteriaInputField" p:propertyName="number" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="subAccount" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="subAccountName" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="createDate" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="subsidizedPercent" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="foId" /> <!-- p:forceLookup="true" -->
+        <bean parent="LookupCriteriaInputField" p:propertyName="extension.accountTypeCode">
           <property name="control">
             <bean parent="SelectControl" />
           </property>
@@ -43,25 +43,25 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="number" /> <!-- p:forceInquiry="true" -->
-        <bean parent="AttributeField" p:propertyName="name" /> <!-- p:forceInquiry="true" -->
+        <bean parent="InputField" p:propertyName="number" /> <!-- p:forceInquiry="true" -->
+        <bean parent="InputField" p:propertyName="name" /> <!-- p:forceInquiry="true" -->
 <!--
         <bean parent="FieldGroup" p:label="Sub Account">
           <property name="readOnly" value="true"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="subAccount" p:readOnly="true" p:showLabel="false"/>
-              <bean parent="AttributeField" p:propertyName="subAccountName" p:readOnly="true" p:showLabel="false"/>
+              <bean parent="InputField" p:propertyName="subAccount" p:readOnly="true" p:showLabel="false"/>
+              <bean parent="InputField" p:propertyName="subAccountName" p:readOnly="true" p:showLabel="false"/>
             </list>
           </property>
         </bean>
 -->
-        <bean parent="AttributeField" p:propertyName="subAccount" />
-        <bean parent="AttributeField" p:propertyName="subAccountName" />
-        <bean parent="AttributeField" p:propertyName="subsidizedPercent" />
-        <bean parent="AttributeField" p:propertyName="createDate" />
-        <!--bean parent="AttributeField" p:propertyName="extension.accountType.codeAndDescription" -->
-        <bean parent="AttributeField" p:propertyName="foId" /> <!-- p:forceInquiry="true" -->
+        <bean parent="InputField" p:propertyName="subAccount" />
+        <bean parent="InputField" p:propertyName="subAccountName" />
+        <bean parent="InputField" p:propertyName="subsidizedPercent" />
+        <bean parent="InputField" p:propertyName="createDate" />
+        <!--bean parent="InputField" p:propertyName="extension.accountType.codeAndDescription" -->
+        <bean parent="InputField" p:propertyName="foId" /> <!-- p:forceInquiry="true" -->
       </list>
     </property>
   </bean>

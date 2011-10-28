@@ -23,17 +23,17 @@
     <property name="dataObjectClassName" value="edu.sampleu.financial.bo.OwnershipType" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorOwnershipCode" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorOwnershipDescription" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorOwnershipCode" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorOwnershipDescription" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="vendorOwnershipCode" />
-        <bean parent="AttributeField" p:propertyName="vendorOwnershipDescription" />
-        <bean parent="AttributeField" p:propertyName="vendorOwnershipCategoryAllowedIndicator" />
-        <bean parent="AttributeField" p:propertyName="active" />
+        <bean parent="InputField" p:propertyName="vendorOwnershipCode" />
+        <bean parent="InputField" p:propertyName="vendorOwnershipDescription" />
+        <bean parent="InputField" p:propertyName="vendorOwnershipCategoryAllowedIndicator" />
+        <bean parent="InputField" p:propertyName="active" />
       </list>
     </property>
   </bean>

@@ -81,7 +81,7 @@
     <property name="title" value="Bank Information"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField_Form" p:propertyName="field1" p:label="Bank Id" p:maxLength="4" p:minLength="2"
+        <bean parent="InputField_Form" p:propertyName="field1" p:label="Bank Id" p:maxLength="4" p:minLength="2"
               p:instructionalText="Please provide the established federal Id" p:constraintText="Must be 4 chars" p:readOnly="false"
               p:alternateDisplayPropertyName="field2">
           <property name="control">
@@ -94,19 +94,19 @@
             </map>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field2" p:label="Bank Name" p:required="true"
+        <bean parent="InputField_Form" p:propertyName="field2" p:label="Bank Name" p:required="true"
               p:maxLength="25" p:readOnly="true" p:additionalDisplayPropertyName="field1">
           <property name="control">
             <bean parent="TextControl" p:size="26"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field3" p:label="Account Open Date" p:maxLength="9"
+        <bean parent="InputField_Form" p:propertyName="field3" p:label="Account Open Date" p:maxLength="9"
               p:hiddenPropertyNames="hidden1,hidden2">
           <property name="control">
             <bean parent="DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field4" p:label="Bank Type Code">
+        <bean parent="InputField_Form" p:propertyName="field4" p:label="Bank Type Code">
           <property name="control">
             <bean parent="SelectControl"/>
           </property>
@@ -136,7 +136,7 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="AttributeField_Form" p:propertyName="field5" p:readOnly="true" p:label="Field 5" p:width="auto"
+        <bean parent="InputField_Form" p:propertyName="field5" p:readOnly="true" p:label="Field 5" p:width="auto"
               p:maxLength="4">
           <property name="control">
             <bean parent="TextControl" p:size="5"/>
@@ -148,13 +148,13 @@
             </map>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field6" p:label="Field 6" p:readOnly="true" p:required="true"
+        <bean parent="InputField_Form" p:propertyName="field6" p:label="Field 6" p:readOnly="true" p:required="true"
               p:width="auto" p:maxLength="25">
           <property name="control">
             <bean parent="CurrencyControl" p:size="26" p:maxLength="20"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="vField1" p:label="Field 8" p:width="auto" p:maxLength="9">
+        <bean parent="InputField_Form" p:propertyName="vField1" p:label="Field 8" p:width="auto" p:maxLength="9">
           <property name="control">
             <bean parent="TextControl" p:size="10"/>
           </property>
@@ -163,7 +163,7 @@
           <property name="fieldSuggest.suggestQuery.dataObjectClassName"
                     value="edu.sampleu.travel.bo.TravelAccountType"/>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field34" p:label="Field 34" p:width="auto">
+        <bean parent="InputField_Form" p:propertyName="field34" p:label="Field 34" p:width="auto">
           <property name="control">
             <bean parent="CheckboxGroupControl"/>
           </property>
@@ -201,22 +201,22 @@
     <property name="layoutManager.sequencePropertyName" value="number"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="name" p:defaultValue="sub-name"/>
+        <bean parent="InputField" p:propertyName="number" p:required="true"/>
+        <bean parent="InputField" p:propertyName="name" p:defaultValue="sub-name"/>
         <bean parent="FieldGroup" p:label="Sub Account" p:progressiveRender="!#empty(#line?.number)"
               p:progressiveRenderViaAJAX="true">
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="subAccount" p:showLabel="false"/>
-              <bean parent="AttributeField" p:propertyName="subAccountName"
+              <bean parent="InputField" p:propertyName="subAccount" p:showLabel="false"/>
+              <bean parent="InputField" p:propertyName="subAccountName"
                     p:readOnly="true" p:showLabel="false" p:render="@{#line?.subAccount eq 'i84n'}"/>
             </list>
           </property>
         </bean>
-        <bean parent="AttributeField" p:propertyName="subsidizedPercent"
+        <bean parent="InputField" p:propertyName="subsidizedPercent"
               p:readOnly="@{#line?.number ne null and #line?.number ne ''}" p:refreshWhenChanged="#line?.number"/>
-        <bean parent="AttributeField" p:propertyName="createDate"/>
-        <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
+        <bean parent="InputField" p:propertyName="createDate"/>
+        <bean parent="InputField" p:propertyName="foId" p:required="true"/>
       </list>
     </property>
     <property name="propertyReplacers">
@@ -240,9 +240,9 @@
     <property name="bindingInfo.bindingObjectPath" value="travelAccount2"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="number"/>
-        <bean parent="AttributeField" p:propertyName="name" p:readOnly="@{#index eq 1}"/>
-        <bean parent="AttributeField" p:propertyName="foId" p:defaultValue="1"/>
+        <bean parent="InputField" p:propertyName="number"/>
+        <bean parent="InputField" p:propertyName="name" p:readOnly="@{#index eq 1}"/>
+        <bean parent="InputField" p:propertyName="foId" p:defaultValue="1"/>
       </list>
     </property>
     <property name="addLineLabel" value="New @{#component.title}"/>
@@ -263,9 +263,9 @@
     <property name="bindingInfo.bindingObjectPath" value="travelAccount4"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="number"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="foId"/>
+        <bean parent="InputField" p:propertyName="number"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="foId"/>
       </list>
     </property>
     <property name="addLineLabel" value="New Account"/>
@@ -295,20 +295,20 @@
        <property name="layoutManager.sequencePropertyName" value="number"/>
        <property name="items">
          <list>
-           <bean parent="AttributeField" p:propertyName="number" p:required="true"/>
-           <bean parent="AttributeField" p:propertyName="name"/>
+           <bean parent="InputField" p:propertyName="number" p:required="true"/>
+           <bean parent="InputField" p:propertyName="name"/>
            <bean parent="FieldGroup" p:label="Sub Account">
              <property name="items">
                <list>
-                <bean parent="AttributeField" p:propertyName="subAccount" p:showLabel="false"/>
-                <bean parent="AttributeField" p:propertyName="subAccountName"
+                <bean parent="InputField" p:propertyName="subAccount" p:showLabel="false"/>
+                <bean parent="InputField" p:propertyName="subAccountName"
                       p:readOnly="true" p:showLabel="false"/>
                </list>
              </property>
            </bean>
-           <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
-           <bean parent="AttributeField" p:propertyName="createDate"/>
-           <bean parent="AttributeField" p:propertyName="foId" p:required="true"/>
+           <bean parent="InputField" p:propertyName="subsidizedPercent"/>
+           <bean parent="InputField" p:propertyName="createDate"/>
+           <bean parent="InputField" p:propertyName="foId" p:required="true"/>
          </list>
        </property>
        <property name="instructionalText" value="Group with sub-collection and table layout"/>
@@ -331,47 +331,47 @@
     </property>
     <property name="items">
       <list>
-        <bean parent="AttributeField_Form" p:propertyName="field33" p:label="@{field18}">
+        <bean parent="InputField_Form" p:propertyName="field33" p:label="@{field18}">
           <property name="control">
             <bean parent="TextControl" p:size="5"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field13" p:label="Bank Name" p:required="true">
+        <bean parent="InputField_Form" p:propertyName="field13" p:label="Bank Name" p:required="true">
           <property name="control">
             <bean parent="TextControl" p:size="26"/>
           </property>
           <property name="defaultValue" value="Def VAL"/>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field14" p:label="Bank Route Number" p:colSpan="2"
+        <bean parent="InputField_Form" p:propertyName="field14" p:label="Bank Route Number" p:colSpan="2"
               p:labelField.colSpan="2" p:maxLength="29">
           <property name="control">
             <bean parent="TextControl" p:size="30" p:watermarkText="XXXXYYYYC"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field15" p:label="Bank Address" p:colSpan="3"
+        <bean parent="InputField_Form" p:propertyName="field15" p:label="Bank Address" p:colSpan="3"
               p:labelField.colSpan="1" p:maxLength="69">
           <property name="control">
             <bean parent="TextControl" p:size="70"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field16" p:label="Bank Zip" p:colSpan="2"
+        <bean parent="InputField_Form" p:propertyName="field16" p:label="Bank Zip" p:colSpan="2"
               p:labelField.colSpan="2" p:maxLength="4">
           <property name="control">
             <bean parent="TextControl" p:size="5" p:watermarkText="00000"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field17" p:label="Bank Description" p:rowSpan="2"
+        <bean parent="InputField_Form" p:propertyName="field17" p:label="Bank Description" p:rowSpan="2"
               p:labelField.rowSpan="2">
           <property name="control">
             <bean parent="TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="Key in bank description here..."/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field18" p:label="Bank Type" p:maxLength="9">
+        <bean parent="InputField_Form" p:propertyName="field18" p:label="Bank Type" p:maxLength="9">
           <property name="control">
             <bean parent="DateControl" p:size="10"/>
           </property>
         </bean>
-        <bean parent="AttributeField_Form" p:propertyName="field19" p:label="Bank Rating" p:maxLength="9">
+        <bean parent="InputField_Form" p:propertyName="field19" p:label="Bank Rating" p:maxLength="9">
           <property name="control">
             <bean parent="DateControl" p:size="10"/>
           </property>
@@ -409,7 +409,7 @@
     <property name="fieldBindingObjectPath" value="travelAccount3"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="number" p:labelPlacement="TOP"
+        <bean parent="InputField" p:propertyName="number" p:labelPlacement="TOP"
               p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
           <property name="informationalDisplayPropertyNames" value="name,subAccountName"/>
           <property name="fieldAttributeQuery">
@@ -417,7 +417,7 @@
                   p:queryFieldMapping="number:number" p:returnFieldMapping="name:name,subAccountName:subAccountName"/>
           </property>
         </bean>
-        <bean parent="AttributeField" p:propertyName="name" p:labelPlacement="TOP"
+        <bean parent="InputField" p:propertyName="name" p:labelPlacement="TOP"
               p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"/>
       </list>
     </property>
@@ -444,24 +444,24 @@
         <bean parent="FieldGroup" p:label="Field Group 1" p:width="40%" p:labelField.width="10%">
           <property name="items">
             <list>
-              <bean parent="AttributeField_Form" p:propertyName="field20" p:label="Field 11" p:maxLength="4"
+              <bean parent="InputField_Form" p:propertyName="field20" p:label="Field 11" p:maxLength="4"
                     p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="5"/>
                 </property>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field21" p:label="Field 12" p:maxLength="20">
+              <bean parent="InputField_Form" p:propertyName="field21" p:label="Field 12" p:maxLength="20">
                 <property name="control">
                   <bean parent="TextControl" p:size="21"/>
                 </property>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field22" p:label="Field 13">
+              <bean parent="InputField_Form" p:propertyName="field22" p:label="Field 13">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
                 <property name="defaultValue" value="true"/>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field23" p:label="Field 14" p:maxLength="9">
+              <bean parent="InputField_Form" p:propertyName="field23" p:label="Field 14" p:maxLength="9">
                 <property name="control">
                   <bean parent="TextControl" p:size="10"/>
                 </property>
@@ -472,17 +472,17 @@
         <bean parent="FieldGroup" p:label="Currency Type" p:width="40%" p:labelField.width="10%">
           <property name="items">
             <list>
-              <bean parent="AttributeField_Form" p:propertyName="field24" p:label="Checks" p:labelPlacement="RIGHT">
+              <bean parent="InputField_Form" p:propertyName="field24" p:label="Checks" p:labelPlacement="RIGHT">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field25" p:label="Dollars" p:labelPlacement="RIGHT">
+              <bean parent="InputField_Form" p:propertyName="field25" p:label="Dollars" p:labelPlacement="RIGHT">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field26" p:label="Coins" p:labelPlacement="RIGHT">
+              <bean parent="InputField_Form" p:propertyName="field26" p:label="Coins" p:labelPlacement="RIGHT">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
@@ -495,13 +495,13 @@
           <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField_Form" p:propertyName="field28" p:label="Field 11" p:showLabel="false"
+              <bean parent="InputField_Form" p:propertyName="field28" p:label="Field 11" p:showLabel="false"
                     p:maxLength="4" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="5"/>
                 </property>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field32" p:label="Field 12" p:showLabel="false"
+              <bean parent="InputField_Form" p:propertyName="field32" p:label="Field 12" p:showLabel="false"
                     p:maxLength="20" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="21"/>
@@ -514,17 +514,17 @@
           <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField_Form" p:propertyName="field29" p:label="Field 8" p:labelPlacement="RIGHT">
+              <bean parent="InputField_Form" p:propertyName="field29" p:label="Field 8" p:labelPlacement="RIGHT">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field30" p:label="Field 9" p:labelPlacement="RIGHT">
+              <bean parent="InputField_Form" p:propertyName="field30" p:label="Field 9" p:labelPlacement="RIGHT">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
               </bean>
-              <bean parent="AttributeField_Form" p:propertyName="field31" p:label="Field 10" p:labelPlacement="RIGHT">
+              <bean parent="InputField_Form" p:propertyName="field31" p:label="Field 10" p:labelPlacement="RIGHT">
                 <property name="control">
                   <bean parent="CheckboxControl"/>
                 </property>
@@ -542,7 +542,7 @@
     <property name="fieldBindingObjectPath" value="travelAccount3"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="number" p:required="true">
+        <bean parent="InputField" p:propertyName="number" p:required="true">
           <property name="control">
             <bean parent="RadioGroupControl"/>
           </property>
@@ -550,7 +550,7 @@
             <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"/>
           </property>
         </bean>
-        <bean parent="AttributeField" p:propertyName="name" p:label="Account File" p:required="true">
+        <bean parent="InputField" p:propertyName="name" p:label="Account File" p:required="true">
           <property name="control">
             <bean parent="FileControl" p:size="30"/>
           </property>

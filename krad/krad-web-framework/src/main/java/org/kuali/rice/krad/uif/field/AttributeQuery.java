@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Holds configuration for executing a dynamic query on an <code>AttributeField</code> to
+ * Holds configuration for executing a dynamic query on an <code>InputField</code> to
  * pull data for updating the UI
  *
  * <p>

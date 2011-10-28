@@ -69,7 +69,7 @@ public class Group extends ContainerBase {
 	 * The following actions are performed:
 	 * 
 	 * <ul>
-	 * <li>Sets the bindByNamePrefix if blank on any AttributeField and
+	 * <li>Sets the bindByNamePrefix if blank on any InputField and
 	 * FieldGroup instances within the items List</li>
 	 * </ul>
 	 * 
@@ -159,7 +159,7 @@ public class Group extends ContainerBase {
 
 	/**
 	 * Binding prefix string to set on each of the groups
-	 * <code>AttributeField</code> instances
+	 * <code>InputField</code> instances
 	 * <p>
 	 * As opposed to setting the bindingPrefix on each attribute field instance,
 	 * it can be set here for the group. During initialize the string will then
@@ -168,7 +168,7 @@ public class Group extends ContainerBase {
 	 * </p>
 	 * 
 	 * @return String binding prefix to set
-	 * @see org.kuali.rice.krad.uif.field.AttributeField#getBindByNamePrefix
+	 * @see org.kuali.rice.krad.uif.field.InputField#getBindByNamePrefix
 	 */
 	public String getFieldBindByNamePrefix() {
 		return this.fieldBindByNamePrefix;
@@ -185,7 +185,7 @@ public class Group extends ContainerBase {
 
 	/**
 	 * Object binding path to set on each of the group's
-	 * <code>AttributeField</code> instances
+	 * <code>InputField</code> instances
 	 * 
 	 * <p>
 	 * When the attributes of the group belong to a object whose path is

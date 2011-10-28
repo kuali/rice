@@ -14,18 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
@@ -134,8 +132,8 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         for (Component item : getItems()) {
-            if (item instanceof AttributeField) {
-                AttributeField field = (AttributeField) item;
+            if (item instanceof InputField) {
+                InputField field = (InputField) item;
 
                 if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
                     field.setDictionaryObjectEntry(collectionObjectClass.getName());
@@ -162,9 +160,9 @@ public class CollectionGroup extends Group implements DataBinding {
         }
         collectionPath += getBindingInfo().getBindingName();
 
-        List<AttributeField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(),
-                AttributeField.class);
-        for (AttributeField collectionField : collectionFields) {
+        List<InputField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(),
+                InputField.class);
+        for (InputField collectionField : collectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 

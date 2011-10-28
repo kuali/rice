@@ -101,19 +101,19 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.PropositionParameterBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupAttributeField" p:propertyName="id" />
-        <bean parent="LookupAttributeField" p:propertyName="description" />
-        <bean parent="LookupAttributeField" p:propertyName="ruleId" />
-        <bean parent="LookupAttributeField" p:propertyName="typeId" />
+        <bean parent="LookupInputField" p:propertyName="id" />
+        <bean parent="LookupInputField" p:propertyName="description" />
+        <bean parent="LookupInputField" p:propertyName="ruleId" />
+        <bean parent="LookupInputField" p:propertyName="typeId" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="description" />
-        <bean parent="AttributeField" p:propertyName="ruleId" />
-        <bean parent="AttributeField" p:propertyName="typeId" />
-        <bean parent="AttributeField" p:propertyName="propositionTypeCode" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="description" />
+        <bean parent="InputField" p:propertyName="ruleId" />
+        <bean parent="InputField" p:propertyName="typeId" />
+        <bean parent="InputField" p:propertyName="propositionTypeCode" />
       </list>
     </property>
   </bean>
@@ -131,11 +131,11 @@
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
 					        <list>
-					          <bean parent="AttributeField" p:propertyName="id"/>
-					          <bean parent="AttributeField" p:propertyName="description"/>
-					          <bean parent="AttributeField" p:propertyName="ruleId"/>
-					          <bean parent="AttributeField" p:propertyName="typeId"/>
-					          <bean parent="AttributeField" p:propertyName="propositionTypeCode"/>
+					          <bean parent="InputField" p:propertyName="id"/>
+					          <bean parent="InputField" p:propertyName="description"/>
+					          <bean parent="InputField" p:propertyName="ruleId"/>
+					          <bean parent="InputField" p:propertyName="typeId"/>
+					          <bean parent="InputField" p:propertyName="propositionTypeCode"/>
 					        </list>
 					      </property>
 					      <property name="title" value="Proposition Attributes"/>

@@ -581,7 +581,7 @@ public class UifFormBase implements ViewModel {
      *
      * <p>
      * For FormView, it's necessary to validate when the user tries to navigate out of the form. If set, all the
-     * AttributeFields will be validated on refresh, navigate, cancel or close Action or on form
+     * InputFields will be validated on refresh, navigate, cancel or close Action or on form
      * unload and if dirty, displays a message and user can decide whether to continue with
      * the action or stay on the form
      * </p>

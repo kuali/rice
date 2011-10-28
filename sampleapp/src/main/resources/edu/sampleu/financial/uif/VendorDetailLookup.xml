@@ -24,22 +24,22 @@
       <property name="dataObjectClassName" value="edu.sampleu.financial.bo.VendorDetail" />
       <property name="criteriaFields">
          <list>
-            <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorName" />
-            <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorHeader.vendorTaxNumber" />
-            <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorNumber" />
-            <bean parent="LookupCriteriaAttributeField" p:propertyName="activeIndicator" />
-            <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorHeader.vendorTypeCode" />
+            <bean parent="LookupCriteriaInputField" p:propertyName="vendorName" />
+            <bean parent="LookupCriteriaInputField" p:propertyName="vendorHeader.vendorTaxNumber" />
+            <bean parent="LookupCriteriaInputField" p:propertyName="vendorNumber" />
+            <bean parent="LookupCriteriaInputField" p:propertyName="activeIndicator" />
+            <bean parent="LookupCriteriaInputField" p:propertyName="vendorHeader.vendorTypeCode" />
          </list>
       </property>
       <property name="resultFields">
          <list>
-            <bean parent="AttributeField" p:propertyName="vendorName" />
-            <bean parent="AttributeField" p:propertyName="vendorNumber" />
-            <bean parent="AttributeField" p:propertyName="vendorDunsNumber" />
-            <bean parent="AttributeField" p:propertyName="vendorPaymentTermsCode" />
-            <bean parent="AttributeField" p:propertyName="vendorShippingPaymentTermsCode" />
-            <bean parent="AttributeField" p:propertyName="vendorMinimumOrderAmount" />
-            <bean parent="AttributeField" p:propertyName="activeIndicator" />
+            <bean parent="InputField" p:propertyName="vendorName" />
+            <bean parent="InputField" p:propertyName="vendorNumber" />
+            <bean parent="InputField" p:propertyName="vendorDunsNumber" />
+            <bean parent="InputField" p:propertyName="vendorPaymentTermsCode" />
+            <bean parent="InputField" p:propertyName="vendorShippingPaymentTermsCode" />
+            <bean parent="InputField" p:propertyName="vendorMinimumOrderAmount" />
+            <bean parent="InputField" p:propertyName="activeIndicator" />
          </list>
       </property>
    </bean>

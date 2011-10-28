@@ -88,7 +88,7 @@
 		</property>
 	</bean>
 
-	<bean id="TextAreaTestField" parent="AttributeField_Form"
+	<bean id="TextAreaTestField" parent="InputField_Form"
 		abstract="true" p:label="Field Label" p:labelPlacement="TOP"
 		p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
 		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
@@ -99,7 +99,7 @@
 		</property>
 	</bean>
 
-	<bean id="TextTestField" parent="AttributeField_Form" abstract="true"
+	<bean id="TextTestField" parent="InputField_Form" abstract="true"
 		p:label="Field Label" p:labelPlacement="TOP"
 		p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
 		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"

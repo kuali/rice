@@ -24,19 +24,19 @@
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="items">
              <list>
-              <bean parent="AttributeField" p:propertyName="docTypeParentId"/>
-              <bean parent="AttributeField" p:propertyName="parentDocType.name"/>
-              <bean parent="AttributeField" p:propertyName="documentTypeId"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="label"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
-              <bean parent="AttributeField" p:propertyName="displayableUnresolvedDocHandlerUrl"/>
-              <bean parent="AttributeField" p:propertyName="unresolvedHelpDefinitionUrl"/>
-              <bean parent="AttributeField" p:propertyName="unresolvedDocSearchHelpUrl"/>
-              <bean parent="AttributeField" p:propertyName="displayablePostProcessorName"/>
-              <bean parent="AttributeField" p:propertyName="displayableNotificationFromAddress"/>
-              <bean parent="AttributeField" p:propertyName="displayableApplicationId"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="docTypeParentId"/>
+              <bean parent="InputField" p:propertyName="parentDocType.name"/>
+              <bean parent="InputField" p:propertyName="documentTypeId"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="label"/>
+              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="displayableUnresolvedDocHandlerUrl"/>
+              <bean parent="InputField" p:propertyName="unresolvedHelpDefinitionUrl"/>
+              <bean parent="InputField" p:propertyName="unresolvedDocSearchHelpUrl"/>
+              <bean parent="InputField" p:propertyName="displayablePostProcessorName"/>
+              <bean parent="InputField" p:propertyName="displayableNotificationFromAddress"/>
+              <bean parent="InputField" p:propertyName="displayableApplicationId"/>
+              <bean parent="InputField" p:propertyName="active"/>
              </list>
            </property>
          </bean>

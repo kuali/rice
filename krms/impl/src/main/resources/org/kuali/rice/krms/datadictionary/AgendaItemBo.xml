@@ -153,22 +153,22 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaItemBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="ruleId" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="subAgendaId" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="whenTrueId" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="whenFalseId" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="alwaysId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="ruleId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="subAgendaId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="whenTrueId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="whenFalseId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="alwaysId" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="ruleId" />
-        <bean parent="AttributeField" p:propertyName="subAgendaId" />
-        <bean parent="AttributeField" p:propertyName="whenTrueId" />
-        <bean parent="AttributeField" p:propertyName="whenFalseId" />
-        <bean parent="AttributeField" p:propertyName="alwaysId" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="ruleId" />
+        <bean parent="InputField" p:propertyName="subAgendaId" />
+        <bean parent="InputField" p:propertyName="whenTrueId" />
+        <bean parent="InputField" p:propertyName="whenFalseId" />
+        <bean parent="InputField" p:propertyName="alwaysId" />
       </list>
     </property>
   </bean>
@@ -186,8 +186,8 @@
                           <property name="layoutManager.numberOfColumns" value="2"/>
                           <property name="items">
                             <list>
-                              <bean parent="AttributeField" p:propertyName="id"/>
-                              <bean parent="AttributeField" p:propertyName="ruleId"/>
+                              <bean parent="InputField" p:propertyName="id"/>
+                              <bean parent="InputField" p:propertyName="ruleId"/>
                             </list>
                           </property>
                           <property name="title" value="Agenda Item Attributes"/>
@@ -198,8 +198,8 @@
 						              <property name="propertyName" value="alwaysList"/>
 						              <property name="items">
 						                <list>
-						                  <bean parent="AttributeField" p:propertyName="id"/>
-						                  <bean parent="AttributeField" p:propertyName="ruleId"/>
+						                  <bean parent="InputField" p:propertyName="id"/>
+						                  <bean parent="InputField" p:propertyName="ruleId"/>
 						                </list>
 						              </property>      
 						              <property name="layoutManager.summaryTitle" value="Agenda Item"/> 

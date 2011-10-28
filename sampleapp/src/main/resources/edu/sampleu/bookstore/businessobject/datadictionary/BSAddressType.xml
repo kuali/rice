@@ -80,9 +80,9 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="type"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="type"/>
+              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>
@@ -94,16 +94,16 @@
 		<property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BSAddressType" />
 		<property name="criteriaFields">
 			<list>
-				<bean parent="LookupCriteriaAttributeField" p:propertyName="type" />
-				<bean parent="LookupCriteriaAttributeField" p:propertyName="description" />
-				<bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+				<bean parent="LookupCriteriaInputField" p:propertyName="type" />
+				<bean parent="LookupCriteriaInputField" p:propertyName="description" />
+				<bean parent="LookupCriteriaInputField" p:propertyName="active" />
 			</list>
 		</property>
 		<property name="resultFields">
 			<list>
-				<bean parent="AttributeField" p:propertyName="type" />
-				<bean parent="AttributeField" p:propertyName="description" />
-				<bean parent="AttributeField" p:propertyName="active" />
+				<bean parent="InputField" p:propertyName="type" />
+				<bean parent="InputField" p:propertyName="description" />
+				<bean parent="InputField" p:propertyName="active" />
 			</list>
 		</property>
 	</bean>

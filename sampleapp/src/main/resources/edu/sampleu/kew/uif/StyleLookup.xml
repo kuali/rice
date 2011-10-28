@@ -28,16 +28,16 @@
     </property>   -->
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="styleId" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="styleId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="styleId" />
-        <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="active" />
+        <bean parent="InputField" p:propertyName="styleId" />
+        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="active" />
       </list>
     </property>
   </bean>

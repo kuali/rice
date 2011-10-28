@@ -24,10 +24,10 @@
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="items">
              <list>
-              <bean parent="AttributeField" p:propertyName="id"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
-              <bean parent="AttributeField" p:propertyName="delegationTemplate.name"/>
+              <bean parent="InputField" p:propertyName="id"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="delegationTemplate.name"/>
              </list>
            </property>
          </bean>
@@ -43,9 +43,9 @@
              </property>
              <property name="items">
                <list>
-                 <bean parent="AttributeField" p:propertyName="ruleAttribute.name"/>
-                 <bean parent="AttributeField" p:propertyName="ruleAttribute.type"/>
-                 <bean parent="AttributeField" p:propertyName="required"/>
+                 <bean parent="InputField" p:propertyName="ruleAttribute.name"/>
+                 <bean parent="InputField" p:propertyName="ruleAttribute.type"/>
+                 <bean parent="InputField" p:propertyName="required"/>
                </list>
              </property>      
           </bean> -->

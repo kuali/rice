@@ -100,21 +100,21 @@
           <property name="items">
             <list>
 
-              <bean parent="AttributeField" p:propertyName="description" p:label="Description" p:required="true">
+              <bean parent="InputField" p:propertyName="description" p:label="Description" p:required="true">
                 <!-- property name="control">
                   <bean parent="TextAreaControl"/>
                 </property -->
 
               </bean>
 
-              <bean parent="AttributeField" p:propertyName="specification.namespace" p:label="Namespace" p:required="true">
+              <bean parent="InputField" p:propertyName="specification.namespace" p:label="Namespace" p:required="true">
                 <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
                 <property name="control">
                   <bean parent="SelectControl"/>
                 </property>
               </bean>
 
-              <bean parent="AttributeField" p:propertyName="specification.id" p:label="Specification ID" p:required="true">
+              <bean parent="InputField" p:propertyName="specification.id" p:label="Specification ID" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30"/>
                 </property>
@@ -138,19 +138,19 @@
                 </property>
               </bean>
 
-              <bean parent="AttributeField" p:propertyName="specification.name" p:label="Name" p:required="true">
+              <bean parent="InputField" p:propertyName="specification.name" p:label="Name" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30"/>
                 </property>
               </bean>
 
-              <bean parent="AttributeField" p:propertyName="specification.type" p:label="Value Class" p:readOnly="true">
+              <bean parent="InputField" p:propertyName="specification.type" p:label="Value Class" p:readOnly="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30"/>
                 </property>
               </bean>
 
-              <bean parent="AttributeField" p:propertyName="specification.description" p:label="Specification Description" p:readOnly="true">
+              <bean parent="InputField" p:propertyName="specification.description" p:label="Specification Description" p:readOnly="true">
                 <property name="control">
                   <bean parent="TextAreaControl" p:cols="80" p:rows="3"/>
                 </property>
@@ -181,8 +181,8 @@
                 <property name="items">
                   <list>
 
-                    <!-- bean parent="AttributeField" p:propertyName="id" / -->
-                    <bean parent="AttributeField" p:propertyName="id" p:required="true">
+                    <!-- bean parent="InputField" p:propertyName="id" / -->
+                    <bean parent="InputField" p:propertyName="id" p:required="true">
                       <property name="control">
                         <bean parent="TextControl" p:size="40"/>
                       </property>
@@ -204,13 +204,13 @@
                       </property>
                     </bean>
 
-                    <bean parent="AttributeField" p:propertyName="namespace" p:required="true">
+                    <bean parent="InputField" p:propertyName="namespace" p:required="true">
                       <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
                       <property name="control">
                         <bean parent="SelectControl"/>
                       </property>
                     </bean>
-                    <bean parent="AttributeField" p:propertyName="name" p:readOnly="true">
+                    <bean parent="InputField" p:propertyName="name" p:readOnly="true">
                       <property name="control">
                         <bean parent="TextControl" p:size="80"/>
                       </property>
@@ -272,7 +272,7 @@
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="id"/>
+        <bean parent="InputField" p:propertyName="id"/>
       </list>
     </property>
   </bean>
@@ -285,9 +285,9 @@
      <property name="layoutManager.renderSequenceField" value="false"/>
      <property name="items">
        <list>
-         <bean parent="AttributeField" p:propertyName="id"/>
-         <bean parent="AttributeField" p:propertyName="name"/>
-         <bean parent="AttributeField" p:propertyName="value"/>
+         <bean parent="InputField" p:propertyName="id"/>
+         <bean parent="InputField" p:propertyName="name"/>
+         <bean parent="InputField" p:propertyName="value"/>
         </list>
      </property>
   </bean>
@@ -297,10 +297,10 @@
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="specification.id"/>
-        <bean parent="AttributeField" p:propertyName="specification.name"/>
-        <bean parent="AttributeField" p:propertyName="specification.namespace"/>
-        <bean parent="AttributeField" p:propertyName="specification.type"/>
+        <bean parent="InputField" p:propertyName="specification.id"/>
+        <bean parent="InputField" p:propertyName="specification.name"/>
+        <bean parent="InputField" p:propertyName="specification.namespace"/>
+        <bean parent="InputField" p:propertyName="specification.type"/>
       </list>
     </property>
     <property name="title" value="Term Specification"/>
@@ -315,19 +315,19 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="specification.namespace"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="specification.name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="specification.type"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="specification.namespace"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="specification.name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="specification.type"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id"/>
-        <bean parent="AttributeField" p:propertyName="specification.id"/>
-        <bean parent="AttributeField" p:propertyName="specification.namespace"/>
-        <bean parent="AttributeField" p:propertyName="specification.name"/>
-        <bean parent="AttributeField" p:propertyName="specification.type"/>
+        <bean parent="InputField" p:propertyName="id"/>
+        <bean parent="InputField" p:propertyName="specification.id"/>
+        <bean parent="InputField" p:propertyName="specification.namespace"/>
+        <bean parent="InputField" p:propertyName="specification.name"/>
+        <bean parent="InputField" p:propertyName="specification.type"/>
       </list>
     </property>
   </bean>

@@ -13,11 +13,11 @@ package org.kuali.rice.krad.uif.widget;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.util.UrlFactory;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class DirectInquiry extends Inquiry {
         // set render to false until we find an inquiry class
         setRender(false);
 
-        AttributeField field = (AttributeField) parent;
+        InputField field = (InputField) parent;
 
         // determine whether inquiry parameters will need adjusted
         if (StringUtils.isBlank(getDataObjectClassName())

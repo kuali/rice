@@ -106,8 +106,8 @@
       <property name="layoutManager.numberOfColumns" value="2"/>
       <property name="items">
         <list>
-          <bean parent="AttributeField" p:propertyName="id"/>
-          <bean parent="AttributeField" p:propertyName="userName"/>
+          <bean parent="InputField" p:propertyName="id"/>
+          <bean parent="InputField" p:propertyName="userName"/>
         </list>
       </property>
       <property name="title" value="Fiscal Officer Information"/>
@@ -121,9 +121,9 @@
       <property name="layoutManager.sequencePropertyName" value="number"/>
       <property name="items">
         <list>
-          <bean parent="AttributeField" p:propertyName="number"/>
-          <bean parent="AttributeField" p:propertyName="name"/>
-          <bean parent="AttributeField" p:propertyName="createDate"/>
+          <bean parent="InputField" p:propertyName="number"/>
+          <bean parent="InputField" p:propertyName="name"/>
+          <bean parent="InputField" p:propertyName="createDate"/>
         </list>
       </property>           
   </bean>   
@@ -184,14 +184,14 @@
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="userName" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="userName" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="userName" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="userName" />
       </list>
     </property>
   </bean>
@@ -204,13 +204,13 @@
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="userName" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="userName" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="userName" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="userName" />
       </list>
     </property>
   </bean>
@@ -222,13 +222,13 @@
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.FiscalOfficerInfoLookupViewHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="userName" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="userName" />
       </list>
     </property>
   </bean>
@@ -242,8 +242,8 @@
         <bean parent="MaintenanceGroupSectionGridLayout">
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="id" />
-              <bean parent="AttributeField" p:propertyName="userName" />
+              <bean parent="InputField" p:propertyName="id" />
+              <bean parent="InputField" p:propertyName="userName" />
             </list>
           </property>
           <property name="title" value="Fiscal Officer Information" />
@@ -257,9 +257,9 @@
           <property name="layoutManager.sequencePropertyName" value="number"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="number"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="createDate"/>
+              <bean parent="InputField" p:propertyName="number"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="createDate"/>
             </list>
           </property>        
         </bean>
@@ -270,8 +270,8 @@
             <property name="propertyName" value="accounts"/>
             <property name="items">
               <list>
-                <bean parent="AttributeField" p:propertyName="number"/>
-                <bean parent="AttributeField" p:propertyName="name"/>
+                <bean parent="InputField" p:propertyName="number"/>
+                <bean parent="InputField" p:propertyName="name"/>
               </list>
             </property>   
             <property name="layoutManager.summaryTitle" value="Travel Account"/> 

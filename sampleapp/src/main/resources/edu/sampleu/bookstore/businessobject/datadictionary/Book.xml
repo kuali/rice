@@ -189,12 +189,12 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="id"/>
-              <bean parent="AttributeField" p:propertyName="title"/>
-              <bean parent="AttributeField" p:propertyName="isbn"/>
-              <bean parent="AttributeField" p:propertyName="bookType.name"/>
-              <bean parent="AttributeField" p:propertyName="price"/>
-              <bean parent="AttributeField" p:propertyName="rating"/>
+              <bean parent="InputField" p:propertyName="id"/>
+              <bean parent="InputField" p:propertyName="title"/>
+              <bean parent="InputField" p:propertyName="isbn"/>
+              <bean parent="InputField" p:propertyName="bookType.name"/>
+              <bean parent="InputField" p:propertyName="price"/>
+              <bean parent="InputField" p:propertyName="rating"/>
             </list>
           </property>
         </bean>
@@ -203,8 +203,8 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="publisher"/>
-              <bean parent="AttributeField" p:propertyName="publicationDate"/>
+              <bean parent="InputField" p:propertyName="publisher"/>
+              <bean parent="InputField" p:propertyName="publicationDate"/>
             </list>
           </property>
         </bean>
@@ -214,12 +214,12 @@
           <property name="propertyName" value="authors"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="authorName"/>
-              <bean parent="AttributeField" p:propertyName="email"/>
-              <bean parent="AttributeField" p:propertyName="phoneNbr"/>
-              <bean parent="AttributeField" p:propertyName="extension.accountNumber"/>
-              <bean parent="AttributeField" p:propertyName="extension.bankName"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="authorName"/>
+              <bean parent="InputField" p:propertyName="email"/>
+              <bean parent="InputField" p:propertyName="phoneNbr"/>
+              <bean parent="InputField" p:propertyName="extension.accountNumber"/>
+              <bean parent="InputField" p:propertyName="extension.bankName"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
           <property name="layoutManager.summaryFields">
@@ -237,22 +237,22 @@
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Book"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="title"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="bookType.name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="isbn"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="publisher"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="publicationDate"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="rating"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="title"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="bookType.name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="isbn"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="publisher"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="publicationDate"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="rating"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id"/>
-        <bean parent="AttributeField" p:propertyName="title"/>
-        <bean parent="AttributeField" p:propertyName="bookType.name"/>
-        <bean parent="AttributeField" p:propertyName="isbn"/>
-        <bean parent="AttributeField" p:propertyName="publisher"/>
-        <bean parent="AttributeField" p:propertyName="price"/>
+        <bean parent="InputField" p:propertyName="id"/>
+        <bean parent="InputField" p:propertyName="title"/>
+        <bean parent="InputField" p:propertyName="bookType.name"/>
+        <bean parent="InputField" p:propertyName="isbn"/>
+        <bean parent="InputField" p:propertyName="publisher"/>
+        <bean parent="InputField" p:propertyName="price"/>
       </list>
     </property>
   </bean>

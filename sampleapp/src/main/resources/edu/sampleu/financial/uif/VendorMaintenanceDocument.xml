@@ -45,26 +45,26 @@
                <property name="items">
                   <list>
                      <bean parent="HeaderFour" p:headerText="General Information" p:colSpan="2"/>
-                     <bean parent="AttributeField" p:propertyName="vendorHeaderGeneratedIdentifier" />
-                     <bean parent="AttributeField" p:propertyName="vendorDetailAssignedIdentifier" />
-                     <bean parent="AttributeField" p:propertyName="vendorNumber" p:readOnly="true"/>
-                     <bean parent="AttributeField" p:propertyName="vendorParentIndicator" p:defaultValue="true"/>
-                     <bean parent="AttributeField" p:propertyName="vendorParentName" p:readOnly="true"/>
-                     <bean parent="AttributeField" p:propertyName="vendorName" />
-                     <bean parent="AttributeField" p:propertyName="vendorLastName" />
-                     <bean parent="AttributeField" p:propertyName="vendorFirstName" />
+                     <bean parent="InputField" p:propertyName="vendorHeaderGeneratedIdentifier" />
+                     <bean parent="InputField" p:propertyName="vendorDetailAssignedIdentifier" />
+                     <bean parent="InputField" p:propertyName="vendorNumber" p:readOnly="true"/>
+                     <bean parent="InputField" p:propertyName="vendorParentIndicator" p:defaultValue="true"/>
+                     <bean parent="InputField" p:propertyName="vendorParentName" p:readOnly="true"/>
+                     <bean parent="InputField" p:propertyName="vendorName" />
+                     <bean parent="InputField" p:propertyName="vendorLastName" />
+                     <bean parent="InputField" p:propertyName="vendorFirstName" />
                      <bean parent="HeaderFour" p:headerText="Corporate Information" p:colSpan="2"/>
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorTypeCode" p:required="true"/>
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorForeignIndicator" p:defaultValue="No" p:required="true"/>
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorTaxNumber" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorTaxTypeCode" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorOwnershipCode" p:required="true"/>
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorOwnershipCategoryCode" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorW9ReceivedIndicator" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorW8BenReceivedIndicator" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorFederalWithholdingTaxBeginningDate" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorFederalWithholdingTaxEndDate" />
-                     <bean parent="AttributeField" p:propertyName="vendorHeader.vendorDebarredIndicator" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorTypeCode" p:required="true"/>
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorForeignIndicator" p:defaultValue="No" p:required="true"/>
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorTaxNumber" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorTaxTypeCode" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorOwnershipCode" p:required="true"/>
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorOwnershipCategoryCode" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorW9ReceivedIndicator" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorW8BenReceivedIndicator" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorFederalWithholdingTaxBeginningDate" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorFederalWithholdingTaxEndDate" />
+                     <bean parent="InputField" p:propertyName="vendorHeader.vendorDebarredIndicator" />
                   </list>
                </property>
                <property name="title" value="Vendor" />
@@ -75,21 +75,21 @@
                <property name="propertyName" value="vendorAddresses" />
                <property name="items">
                   <list>
-                     <bean parent="AttributeField" p:propertyName="vendorAddressGeneratedIdentifier" />
-                     <bean parent="AttributeField" p:propertyName="vendorAddressTypeCode" />
-                     <bean parent="AttributeField" p:propertyName="vendorLine1Address" />
-                     <bean parent="AttributeField" p:propertyName="vendorLine2Address" />
-                     <bean parent="AttributeField" p:propertyName="vendorCityName" />
-                     <bean parent="AttributeField" p:propertyName="vendorStateCode" />
-                     <bean parent="AttributeField" p:propertyName="vendorZipCode" />
-                     <bean parent="AttributeField" p:propertyName="vendorAddressInternationalProvinceName" />
-                     <bean parent="AttributeField" p:propertyName="vendorCountryCode" />
-                     <bean parent="AttributeField" p:propertyName="vendorAttentionName" />
-                     <bean parent="AttributeField" p:propertyName="vendorBusinessToBusinessUrlAddress" />
-                     <bean parent="AttributeField" p:propertyName="vendorFaxNumber" />
-                     <bean parent="AttributeField" p:propertyName="vendorAddressEmailAddress" p:constraintText="must be valid email address"/>
-                     <bean parent="AttributeField" p:propertyName="vendorDetailAssignedIdentifier" />
-                     <bean parent="AttributeField" p:propertyName="active" />
+                     <bean parent="InputField" p:propertyName="vendorAddressGeneratedIdentifier" />
+                     <bean parent="InputField" p:propertyName="vendorAddressTypeCode" />
+                     <bean parent="InputField" p:propertyName="vendorLine1Address" />
+                     <bean parent="InputField" p:propertyName="vendorLine2Address" />
+                     <bean parent="InputField" p:propertyName="vendorCityName" />
+                     <bean parent="InputField" p:propertyName="vendorStateCode" />
+                     <bean parent="InputField" p:propertyName="vendorZipCode" />
+                     <bean parent="InputField" p:propertyName="vendorAddressInternationalProvinceName" />
+                     <bean parent="InputField" p:propertyName="vendorCountryCode" />
+                     <bean parent="InputField" p:propertyName="vendorAttentionName" />
+                     <bean parent="InputField" p:propertyName="vendorBusinessToBusinessUrlAddress" />
+                     <bean parent="InputField" p:propertyName="vendorFaxNumber" />
+                     <bean parent="InputField" p:propertyName="vendorAddressEmailAddress" p:constraintText="must be valid email address"/>
+                     <bean parent="InputField" p:propertyName="vendorDetailAssignedIdentifier" />
+                     <bean parent="InputField" p:propertyName="active" />
                   </list>
                </property>
                <property name="layoutManager.summaryTitle" value="Address" />
@@ -106,10 +106,10 @@
                         <property name="propertyName" value="vendorDefaultAddresses" />
                         <property name="items">
                            <list>
-                              <bean parent="AttributeField" p:propertyName="vendorCampusCode" />
-                              <bean parent="AttributeField" p:propertyName="vendorAddressGeneratedIdentifier" />
-                              <bean parent="AttributeField" p:propertyName="vendorDefaultAddressGeneratedIdentifier" />
-                              <bean parent="AttributeField" p:propertyName="active" />
+                              <bean parent="InputField" p:propertyName="vendorCampusCode" />
+                              <bean parent="InputField" p:propertyName="vendorAddressGeneratedIdentifier" />
+                              <bean parent="InputField" p:propertyName="vendorDefaultAddressGeneratedIdentifier" />
+                              <bean parent="InputField" p:propertyName="active" />
                            </list>
                         </property>
                         <property name="layoutManager.summaryTitle" value="Default Address" />

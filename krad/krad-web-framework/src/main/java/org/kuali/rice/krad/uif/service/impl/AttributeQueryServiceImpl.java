@@ -8,7 +8,7 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
@@ -46,12 +46,12 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         AttributeQueryResult queryResult = new AttributeQueryResult();
 
         // retrieve attribute field from view index
-        AttributeField attributeField = (AttributeField) view.getViewIndex().getComponentById(fieldId);
-        if (attributeField == null) {
+        InputField inputField = (InputField) view.getViewIndex().getComponentById(fieldId);
+        if (inputField == null) {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
 
-        Suggest fieldSuggest = attributeField.getFieldSuggest();
+        Suggest fieldSuggest = inputField.getFieldSuggest();
         AttributeQuery suggestQuery = fieldSuggest.getSuggestQuery();
 
         // add term as a like criteria
@@ -96,12 +96,12 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         AttributeQueryResult queryResult = new AttributeQueryResult();
 
         // retrieve attribute field from view index
-        AttributeField attributeField = (AttributeField) view.getViewIndex().getComponentById(fieldId);
-        if (attributeField == null) {
+        InputField inputField = (InputField) view.getViewIndex().getComponentById(fieldId);
+        if (inputField == null) {
             throw new RuntimeException("Unable to find attribute field instance for id: " + fieldId);
         }
 
-        AttributeQuery fieldQuery = attributeField.getFieldAttributeQuery();
+        AttributeQuery fieldQuery = inputField.getFieldAttributeQuery();
         if (fieldQuery == null) {
             throw new RuntimeException("Field query not defined for field instance with id: " + fieldId);
         }
@@ -162,7 +162,7 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 String messageTemplate =
                         getConfigurationService().getPropertyValueAsString(
                                 UifConstants.MessageKeys.QUERY_DATA_NOT_FOUND);
-                String message = MessageFormat.format(messageTemplate, attributeField.getLabel());
+                String message = MessageFormat.format(messageTemplate, inputField.getLabel());
                 fieldQuery.setReturnMessageText(message.toLowerCase());
             }
         }

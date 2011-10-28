@@ -25,9 +25,9 @@
            <property name="instructionalText" value="Style"/>
            <property name="items">
              <list>
-              <bean parent="AttributeField" p:propertyName="styleId"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="styleId"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="active"/>
              </list>
            </property>
          </bean>

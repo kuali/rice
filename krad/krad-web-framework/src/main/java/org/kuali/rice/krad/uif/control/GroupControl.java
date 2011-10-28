@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.control;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 
 /**
  * Represents a group control, which is a special control to handle
@@ -40,11 +40,11 @@ public class GroupControl extends TextControl {
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
 
-        if (!(parent instanceof AttributeField)) {
+        if (!(parent instanceof InputField)) {
             return;
         }
 
-        AttributeField field = (AttributeField) parent;
+        InputField field = (InputField) parent;
 
         if (StringUtils.isNotBlank(groupIdPropertyName)) {
             field.getHiddenPropertyNames().add(groupIdPropertyName);

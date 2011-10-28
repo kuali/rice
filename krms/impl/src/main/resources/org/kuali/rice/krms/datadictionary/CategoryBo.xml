@@ -59,14 +59,14 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespace"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="namespace"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="namespace"/>
+        <bean parent="InputField" p:propertyName="name"/>
       </list>
     </property>
   </bean>

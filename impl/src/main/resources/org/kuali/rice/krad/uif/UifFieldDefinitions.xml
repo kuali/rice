@@ -42,8 +42,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>
   </bean>
   
-  <bean id="AttributeField" parent="AttributeField-parentBean"/>
-  <bean id="AttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AttributeField" parent="DataField" scope="prototype">
+  <bean id="InputField" parent="InputField-parentBean"/>
+  <bean id="InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField" parent="DataField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
       <property name="styleClasses" value="kr-field-attribute"/>
       <property name="readOnly" value="@{#parent.readOnly}"/>
@@ -67,13 +67,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
   </bean>
   
-  <bean id="AttributeField_Form" parent="AttributeField_Form-parentBean"/>
-  <bean id="AttributeField_Form-parentBean" abstract="true" parent="AttributeField">
+  <bean id="InputField_Form" parent="InputField_Form-parentBean"/>
+  <bean id="InputField_Form-parentBean" abstract="true" parent="InputField">
       <property name="bindingInfo.bindToForm" value="true"/>
   </bean>
   
-  <bean id="LookupCriteriaAttributeField" parent="LookupCriteriaAttributeField-parentBean"/>
-  <bean id="LookupCriteriaAttributeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupAttributeField" parent="AttributeField">
+  <bean id="LookupCriteriaInputField" parent="LookupCriteriaInputField-parentBean"/>
+  <bean id="LookupCriteriaInputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupInputField" parent="InputField">
       <property name="bindingInfo.bindToMap" value="true"/>
   </bean>
 
@@ -313,28 +313,28 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="ActionField_CollapseDisclosures" parent="ActionField_SmallSecondary" p:clientSideJs="collapseDisclosures();"
         p:actionLabel="collapse all" p:id="actn_cllps"/>
         
-  <bean id="AttributeField_DocumentNumber" parent="AttributeField" p:propertyName="documentNumber" 
+  <bean id="InputField_DocumentNumber" parent="InputField" p:propertyName="documentNumber"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
         
-  <bean id="AttributeField_DocumentStatus" parent="AttributeField" p:propertyName="documentHeader.workflowDocument.status"
+  <bean id="InputField_DocumentStatus" parent="InputField" p:propertyName="documentHeader.workflowDocument.status"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="workflowDocumentStatus"/>
         
-  <bean id="AttributeField_FormDocumentInitiatorNetworkId" parent="AttributeField_Form" p:propertyName="documentInitiatorNetworkId" 
+  <bean id="InputField_FormDocumentInitiatorNetworkId" parent="InputField_Form" p:propertyName="documentInitiatorNetworkId"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="initiatorNetworkId"/>
         
-  <bean id="AttributeField_FormDocumentCreateDate" parent="AttributeField_Form" p:propertyName="documentCreateDate" 
+  <bean id="InputField_FormDocumentCreateDate" parent="InputField_Form" p:propertyName="documentCreateDate"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.AttributeReferenceDummy" p:dictionaryAttributeName="createDate"/>
         
-  <bean id="AttributeField_DocumentTemplateNumber" parent="AttributeField" p:propertyName="documentTemplateNumber" 
+  <bean id="InputField_DocumentTemplateNumber" parent="InputField" p:propertyName="documentTemplateNumber"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
         
-  <bean id="AttributeField_DocumentDescription" parent="AttributeField" p:propertyName="documentDescription" 
+  <bean id="InputField_DocumentDescription" parent="InputField" p:propertyName="documentDescription"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
         
-  <bean id="AttributeField_Explanation" parent="AttributeField" p:propertyName="explanation" 
+  <bean id="InputField_Explanation" parent="InputField" p:propertyName="explanation"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
         
-  <bean id="AttributeField_OrganizationDocumentNumber" parent="AttributeField" p:propertyName="organizationDocumentNumber" 
+  <bean id="InputField_OrganizationDocumentNumber" parent="InputField" p:propertyName="organizationDocumentNumber"
         p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"/>
         
   <bean id="QuickFinderImageField" parent="ImageField" p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"

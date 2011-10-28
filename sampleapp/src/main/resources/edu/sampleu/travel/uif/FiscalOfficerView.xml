@@ -49,8 +49,8 @@
     <property name="fieldBindByNamePrefix" value="dataObject" />
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="userName" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="userName" />
       </list>
     </property>
   </bean> 

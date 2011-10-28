@@ -32,7 +32,8 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.control.Control;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
@@ -248,7 +249,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * <ul>
      * <li>If component id not set, assigns to next available int for view</li>
-     * <li>For <code>AttributeField</code> instances, set defaults from the data
+     * <li>For <code>InputField</code> instances, set defaults from the data
      * dictionary.</li>
      * <li>Invoke the initialize method on the component. Here the component can
      * setup defaults and do other initialization that is specific to that
@@ -285,8 +286,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         component.performInitialization(view, model);
 
         // for attribute fields, set defaults from dictionary entry
-        if (component instanceof AttributeField) {
-            initializeAttributeFieldFromDataDictionary(view, (AttributeField) component);
+        if (component instanceof DataField) {
+            initializeDataFieldFromDataDictionary(view, (DataField) component);
         }
 
         // add initial state to the view index for component refreshes
@@ -342,7 +343,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // translated fields are placed into the container item list at the position of the holder
         for (Component item : container.getItems()) {
             if (item instanceof RemoteFieldsHolder) {
-                List<AttributeField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(view,
+                List<InputField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(view,
                         model, container);
                 processedItems.addAll(translatedFields);
             } else {
@@ -355,13 +356,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Sets properties of the <code>AttributeField</code> (if blank) to the
+     * Sets properties of the <code>InputField</code> (if blank) to the
      * corresponding attribute entry in the data dictionary
      *
      * @param view - view instance containing the field
-     * @param field - field instance to initialize
+     * @param field - data field instance to initialize
      */
-    protected void initializeAttributeFieldFromDataDictionary(View view, AttributeField field) {
+    protected void initializeDataFieldFromDataDictionary(View view, DataField field) {
         AttributeDefinition attributeDefinition = null;
 
         String dictionaryAttributeName = field.getDictionaryAttributeName();
@@ -398,12 +399,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             field.copyFromAttributeDefinition(view, attributeDefinition);
         }
 
-        if (field.getControl() == null) {
-            Control control = ComponentFactory.getTextControl();
-            control.setId(view.getNextId());
-            control.setFactoryId(control.getId());
+        // if control still null, assign default
+        if (field instanceof InputField) {
+            InputField inputField = (InputField) field;
+            if (inputField.getControl() == null) {
+                Control control = ComponentFactory.getTextControl();
+                control.setId(view.getNextId());
+                control.setFactoryId(control.getId());
 
-            field.setControl(control);
+                inputField.setControl(control);
+            }
         }
     }
 
@@ -432,7 +437,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * dictionary attribute and to drill down on
      * @return AttributeDefinition if found, or Null
      */
-    protected AttributeDefinition findNestedDictionaryAttribute(View view, AttributeField field, String parentPath,
+    protected AttributeDefinition findNestedDictionaryAttribute(View view, DataField field, String parentPath,
             String propertyPath) {
         AttributeDefinition attributeDefinition = null;
 
@@ -490,13 +495,13 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
     /**
      * Determines the dictionary class that is associated with the given
-     * <code>AttributeField</code>
+     * <code>InputField</code>
      *
      * @param view - view instance for field
      * @param field - field instance to determine dictionary class for
      * @return Class<?> dictionary class or null if not found
      */
-    protected Class<?> getDictionaryModelClass(View view, AttributeField field) {
+    protected Class<?> getDictionaryModelClass(View view, InputField field) {
         return ViewModelUtils.getParentObjectClassForMetadata(view, field);
     }
 
@@ -831,9 +836,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
 
         // apply default value if needed
-        if ((component instanceof AttributeField) && !((ViewModel) model).isDefaultsApplied()) {
-            populateDefaultValueForField(view, model, (AttributeField) component,
-                    ((AttributeField) component).getBindingInfo().getBindingPath());
+        if ((component instanceof InputField) && !((ViewModel) model).isDefaultsApplied()) {
+            populateDefaultValueForField(view, model, (InputField) component,
+                    ((InputField) component).getBindingInfo().getBindingPath());
         }
 
         // get components children and recursively update state
@@ -1212,17 +1217,17 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line) {
-        // retrieve all attribute fields for the collection line
-        List<AttributeField> attributeFields = ComponentUtils.getComponentsOfTypeDeep(
-                collectionGroup.getAddLineFields(), AttributeField.class);
-        for (AttributeField attributeField : attributeFields) {
+        // retrieve all data fields for the collection line
+        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(
+                collectionGroup.getAddLineFields(), DataField.class);
+        for (DataField dataField : dataFields) {
             String bindingPath = "";
-            if (StringUtils.isNotBlank(attributeField.getBindingInfo().getBindByNamePrefix())) {
-                bindingPath = attributeField.getBindingInfo().getBindByNamePrefix() + ".";
+            if (StringUtils.isNotBlank(dataField.getBindingInfo().getBindByNamePrefix())) {
+                bindingPath = dataField.getBindingInfo().getBindByNamePrefix() + ".";
             }
-            bindingPath += attributeField.getBindingInfo().getBindingName();
+            bindingPath += dataField.getBindingInfo().getBindingName();
 
-            populateDefaultValueForField(view, line, attributeField, bindingPath);
+            populateDefaultValueForField(view, line, dataField, bindingPath);
         }
     }
 
@@ -1239,15 +1244,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * @param view - view instance the field belongs to
      * @param object - object that should be populated
-     * @param attributeField - field to check for configured default value
+     * @param dataField - field to check for configured default value
      * @param bindingPath - path to the property on the object that should be populated
      */
-    protected void populateDefaultValueForField(View view, Object object, AttributeField attributeField,
+    protected void populateDefaultValueForField(View view, Object object, DataField dataField,
             String bindingPath) {
         // check for configured default value
-        String defaultValue = attributeField.getDefaultValue();
-        if (StringUtils.isBlank(defaultValue) && (attributeField.getDefaultValueFinderClass() != null)) {
-            ValueFinder defaultValueFinder = ObjectUtils.newInstance(attributeField.getDefaultValueFinderClass());
+        String defaultValue = dataField.getDefaultValue();
+        if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {
+            ValueFinder defaultValueFinder = ObjectUtils.newInstance(dataField.getDefaultValueFinderClass());
             defaultValue = defaultValueFinder.getValue();
         }
 

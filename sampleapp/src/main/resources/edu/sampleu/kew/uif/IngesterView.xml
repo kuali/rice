@@ -56,7 +56,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
    </bean>   
    
-   <bean id="uploadAttributeField" p:label="XML File" parent="AttributeField_Form">
+   <bean id="uploadAttributeField" p:label="XML File" parent="InputField_Form">
       <property name="control">
         <bean parent="FileControl"/>
       </property>

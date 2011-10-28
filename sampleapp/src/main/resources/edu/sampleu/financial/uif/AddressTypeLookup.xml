@@ -23,18 +23,18 @@
     <property name="dataObjectClassName" value="edu.sampleu.financial.bo.AddressType" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorAddressTypeCode" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorAddressTypeDescription" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorDefaultIndicator" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorAddressTypeCode" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorAddressTypeDescription" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorDefaultIndicator" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="vendorAddressTypeCode" />
-        <bean parent="AttributeField" p:propertyName="vendorAddressTypeDescription" />
-        <bean parent="AttributeField" p:propertyName="vendorDefaultIndicator" />
-        <bean parent="AttributeField" p:propertyName="active" />
+        <bean parent="InputField" p:propertyName="vendorAddressTypeCode" />
+        <bean parent="InputField" p:propertyName="vendorAddressTypeDescription" />
+        <bean parent="InputField" p:propertyName="vendorDefaultIndicator" />
+        <bean parent="InputField" p:propertyName="active" />
       </list>
     </property>
   </bean>

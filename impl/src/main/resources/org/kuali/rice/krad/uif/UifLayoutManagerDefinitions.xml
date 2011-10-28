@@ -52,7 +52,7 @@
       <bean parent="LabelField" p:renderColon="false" p:styleClasses="infoline"/>
     </property>
     <property name="sequenceFieldPrototype">
-      <bean parent="AttributeField" p:readOnly="true" p:label=" " p:shortLabel=" "/>
+      <bean parent="InputField" p:readOnly="true" p:label=" " p:shortLabel=" "/>
     </property>
     <property name="actionFieldPrototype">
       <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
@@ -64,7 +64,7 @@
       <bean parent="FieldGroup" p:labelField.render="false"/>
     </property>
     <property name="selectFieldPrototype">
-      <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?">
+      <bean parent="InputField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?">
         <property name="control">
           <bean parent="CheckboxControl"/>
         </property>
@@ -91,7 +91,7 @@
             p:styleClasses="kr-subCollection"/>
     </property>
     <property name="selectFieldPrototype">
-      <bean parent="AttributeField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?">
+      <bean parent="InputField" p:readOnly="false" p:label="Select?" p:shortLabel="Select?">
         <property name="control">
           <bean parent="CheckboxControl"/>
         </property>

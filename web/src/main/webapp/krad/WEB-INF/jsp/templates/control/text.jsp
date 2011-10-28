@@ -16,7 +16,7 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="control" classname="org.kuali.rice.krad.uif.control.TextControl"/>
-<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.AttributeField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.InputField"/>
 
 <%--
     Standard HTML Text Input

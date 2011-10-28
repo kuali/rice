@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Field that displays error, warning, and info messages for the keys that are
  * matched. By default, an ErrorsField will match on id and bindingPath (if this
- * ErrorsField is for an AttributeField), but can be set to match on
+ * ErrorsField is for an InputField), but can be set to match on
  * additionalKeys and nested components keys (of the its parentComponent).
  * 
  * In addition, there are a variety of options which can be toggled to effect
@@ -240,9 +240,8 @@ public class ErrorsField extends FieldBase {
 						message = MessageFormat.format(message,
 								(Object[]) e.getMessageParameters());
 					}
-					if (displayFieldLabelWithMessages) {
-						AttributeField field = view.getViewIndex()
-								.getAttributeFieldByPath(key);
+                    if (displayFieldLabelWithMessages) {
+                        InputField field = (InputField) view.getViewIndex().getDataFieldByPath(key);
 						if (field != null && field.getLabel() != null) {
 							label = field.getLabel();
 						}
@@ -288,7 +287,7 @@ public class ErrorsField extends FieldBase {
 	/**
 	 * Gets all the keys associated to this ErrorsField. This includes the id of
 	 * the parent component, additional keys to match, and the bindingPath if
-	 * this is an ErrorsField for an AttributeField. These are the keys that are
+	 * this is an ErrorsField for an InputField. These are the keys that are
 	 * used to match errors with their component and display them as part of its
 	 * ErrorsField.
 	 * 
@@ -302,15 +301,15 @@ public class ErrorsField extends FieldBase {
 		if (StringUtils.isNotBlank(parent.getId())) {
 			keyList.add(parent.getId());
 		}
-		if (parent instanceof AttributeField) {
-			if (((AttributeField) parent).getBindingInfo() != null
-					&& StringUtils.isNotEmpty(((AttributeField) parent)
+		if (parent instanceof InputField) {
+			if (((InputField) parent).getBindingInfo() != null
+					&& StringUtils.isNotEmpty(((InputField) parent)
 							.getBindingInfo().getBindingPath())) {
-				keyList.add(((AttributeField) parent).getBindingInfo()
+				keyList.add(((InputField) parent).getBindingInfo()
 						.getBindingPath());
 			}
 		}
-		// Will there be additional components to check beyond AttributeField?
+		// Will there be additional components to check beyond InputField?
 
 		return keyList;
 	}
@@ -327,8 +326,8 @@ public class ErrorsField extends FieldBase {
 	private void addNestedKeys(List<String> keyList, Component component) {
 		for (Component c : component.getComponentsForLifecycle()) {
 			ErrorsField ef = null;
-			if (c instanceof AttributeField) {
-				ef = ((AttributeField) c).getErrorsField();
+			if (c instanceof InputField) {
+				ef = ((InputField) c).getErrorsField();
 			} else if (c instanceof ContainerBase) {
 				ef = ((ContainerBase) c).getErrorsField();
 			}
@@ -536,10 +535,10 @@ public class ErrorsField extends FieldBase {
 	}
 
 	/**
-	 * If true, the error messages will display the an AttributeField's title
+	 * If true, the error messages will display the an InputField's title
 	 * alongside the error, warning, and info messages related to it. This
 	 * setting has no effect on messages which do not relate directly to a
-	 * single AttributeField.
+	 * single InputField.
 	 * 
 	 * @return the displayFieldLabelWithMessages
 	 */
@@ -747,7 +746,7 @@ public class ErrorsField extends FieldBase {
 	 * set through css for the message containers will still appear and this
 	 * only relates to the icon directly to the right of an input field.
 	 * 
-	 * This flag should only be set on AttributeField ErrorsFields.
+	 * This flag should only be set on InputField ErrorsFields.
 	 * 
 	 * @return the displayFieldErrorIcon
 	 */

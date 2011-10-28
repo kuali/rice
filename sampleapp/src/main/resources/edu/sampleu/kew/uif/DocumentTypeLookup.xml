@@ -28,21 +28,21 @@
     </property>  
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="parentDocType.name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="label" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="documentTypeId" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="parentDocType.name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="label" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="documentTypeId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="documentTypeId" />
-        <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="parentDocType.name" />
-        <bean parent="AttributeField" p:propertyName="label" />
-        <bean parent="AttributeField" p:propertyName="active" />
-        <bean parent="AttributeField" p:propertyName="displayableApplicationId" />
+        <bean parent="InputField" p:propertyName="documentTypeId" />
+        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="parentDocType.name" />
+        <bean parent="InputField" p:propertyName="label" />
+        <bean parent="InputField" p:propertyName="active" />
+        <bean parent="InputField" p:propertyName="displayableApplicationId" />
       </list>
     </property>
   </bean>

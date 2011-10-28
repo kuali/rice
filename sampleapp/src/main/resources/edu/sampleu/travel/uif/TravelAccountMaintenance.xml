@@ -27,14 +27,14 @@
         <bean parent="MaintenanceGroupSectionGridLayout">
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="number"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="extension.accountTypeCode">
+              <bean parent="InputField" p:propertyName="number"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="extension.accountTypeCode">
                 <property name="fieldLookup">
                   <bean parent="QuickFinderByScript"/>
                 </property>
               </bean>
-              <bean parent="AttributeField" p:propertyName="subAccount">
+              <bean parent="InputField" p:propertyName="subAccount">
                 <property name="fieldLookup">
                   <bean parent="QuickFinderByScript"/>
                 </property>
@@ -47,10 +47,10 @@
                 </property>
                 <property name="fieldLookup.lookupParameters" value="subAccountName:name"/>
               </bean>
-              <bean parent="AttributeField" p:propertyName="subAccountName"/>
-              <bean parent="AttributeField" p:propertyName="createDate"/>
-              <bean parent="AttributeField" p:propertyName="subsidizedPercent"/>
-              <bean parent="AttributeField" p:propertyName="foId" >
+              <bean parent="InputField" p:propertyName="subAccountName"/>
+              <bean parent="InputField" p:propertyName="createDate"/>
+              <bean parent="InputField" p:propertyName="subsidizedPercent"/>
+              <bean parent="InputField" p:propertyName="foId" >
                 <property name="fieldLookup">
                   <bean parent="QuickFinderByScript"/>
                 </property>
@@ -65,9 +65,9 @@
           <property name="propertyName" value="fiscalOfficer.accounts"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="number"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="foId">
+              <bean parent="InputField" p:propertyName="number"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="foId">
                 <property name="fieldLookup">
                   <bean parent="QuickFinderByScript"/>
                 </property>

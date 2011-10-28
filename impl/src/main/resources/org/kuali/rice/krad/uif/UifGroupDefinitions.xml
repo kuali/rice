@@ -325,10 +325,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="id" value="group_docheader"/>
       <property name="items">
          <list>
-           <bean parent="AttributeField_DocumentNumber"/>
-           <bean parent="AttributeField_DocumentStatus"/>
-           <bean parent="AttributeField_FormDocumentInitiatorNetworkId"/>
-           <bean parent="AttributeField_FormDocumentCreateDate"/>
+           <bean parent="InputField_DocumentNumber"/>
+           <bean parent="InputField_DocumentStatus"/>
+           <bean parent="InputField_FormDocumentInitiatorNetworkId"/>
+           <bean parent="InputField_FormDocumentCreateDate"/>
          </list>
       </property>
       <property name="layoutManager">
@@ -343,92 +343,95 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Document Overview"/>
       <property name="items">
          <list>
-           <bean parent="AttributeField_DocumentDescription" p:required="true" p:label="Description"/>
-           <bean parent="AttributeField_Explanation" p:rowSpan="2" p:labelField.rowSpan="2"/>
-           <bean parent="AttributeField_OrganizationDocumentNumber"/>
+           <bean parent="InputField_DocumentDescription" p:required="true" p:label="Description"/>
+           <bean parent="InputField_Explanation" p:rowSpan="2" p:labelField.rowSpan="2"/>
+           <bean parent="InputField_OrganizationDocumentNumber"/>
          </list>
       </property>
       <property name="fieldBindingObjectPath" value="document.documentHeader"/>
   </bean>
 
-	<bean id="Group_DocumentNotes" parent="CollectionGroupSectionTableLayout" p:layoutManager.suppressLineWrapping="true">
-		<property name="id" value="group_docnotes" />
-		<property name="title"
-			value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})" />
-		<property name="propertyName" value="notes" />
-		<property name="styleClasses" value="tableborders wrap" />
-		<property name="collectionObjectClass" value="org.kuali.rice.krad.bo.Note" />
-		<property name="layoutManager.generateAutoSequence" value="true" />
-		<property name="layoutManager.richTable.render" value="false" />
-		<property name="items">
-			<list>
-				<bean parent="AttributeField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
-				<bean parent="AttributeField" p:propertyName="authorUniversal.principalName" p:readOnly="true"/>
-				<bean parent="AttributeField" p:propertyName="noteTopicText" p:render="@{#DocumentEntry.displayTopicFieldInNotes}" />
-				<bean parent="AttributeField" p:propertyName="noteText" />
-				<bean parent="FieldGroup" p:label="Attached File" p:render="@{#DocumentEntry.allowsNoteAttachments}">
-					<property name="items">
-						<list>
-							<bean parent="AttributeField_Form" p:propertyName="attachmentFile"
-							      p:bindingInfo.bindingPath="attachmentFile" p:labelField.render="false">
-							  <property name="control">
-							    <bean parent="FileControl" p:size="15"/>
-							  </property>
-							</bean>
-							<bean parent="ActionField_Small" p:methodToCall="cancelAttachment"
-								p:actionLabel="cancel" p:title="Cancel Attachment" />
-						</list>
-					</property>
-					 <property name="propertyReplacers">
-						<list>
-							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and #line.attachment != null and #line.attachment.complete" >
-								<property name="replacement">
-								   <list>
-						            <bean parent="ActionField_Small" p:methodToCall="downloadAttachment"
-								          p:actionLabel="download attachment" p:title="download attachment"
-								           p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
+  <bean id="Group_DocumentNotes" parent="CollectionGroupSectionTableLayout" p:layoutManager.suppressLineWrapping="true">
+    <property name="id" value="group_docnotes"/>
+    <property name="title"
+              value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})"/>
+    <property name="propertyName" value="notes"/>
+    <property name="styleClasses" value="tableborders wrap"/>
+    <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.Note"/>
+    <property name="layoutManager.generateAutoSequence" value="true"/>
+    <property name="layoutManager.richTable.render" value="false"/>
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="notePostedTimestamp" p:readOnly="true"/>
+        <bean parent="InputField" p:propertyName="authorUniversal.principalName" p:readOnly="true"/>
+        <bean parent="InputField" p:propertyName="noteTopicText" p:render="@{#DocumentEntry.displayTopicFieldInNotes}"/>
+        <bean parent="InputField" p:propertyName="noteText"/>
+        <bean parent="FieldGroup" p:label="Attached File" p:render="@{#DocumentEntry.allowsNoteAttachments}">
+          <property name="items">
+            <list>
+              <bean parent="InputField_Form" p:propertyName="attachmentFile"
+                    p:bindingInfo.bindingPath="attachmentFile" p:labelField.render="false">
+                <property name="control">
+                  <bean parent="FileControl" p:size="15"/>
+                </property>
+              </bean>
+              <bean parent="ActionField_Small" p:methodToCall="cancelAttachment"
+                    p:actionLabel="cancel" p:title="Cancel Attachment"/>
+            </list>
+          </property>
+          <property name="propertyReplacers">
+            <list>
+              <bean parent="PropertyReplacer" p:propertyName="items"
+                    p:condition="!#isAddLine and #line.attachment != null and #line.attachment.complete">
+                <property name="replacement">
+                  <list>
+                    <bean parent="ActionField_Small" p:methodToCall="downloadAttachment"
+                          p:actionLabel="download attachment" p:title="download attachment"
+                          p:onClickScript="writeHiddenToForm(&quot;unblockUIOnLoading&quot;, &quot;true&quot;);writeHiddenToForm(&quot;actionParameters[selectedLineIndex]&quot;, &quot;@{#index}&quot;);"/>
 
-								    <bean parent="MessageField" p:messageText="@{#line.attachment?.attachmentFileName}" />
-                                    <bean parent="MessageField"
-                                          p:messageText="(@{#line.attachment?.attachmentFileSizeWithUnits}, @{#line.attachment?.attachmentMimeTypeCode})" />
+                    <bean parent="MessageField" p:messageText="@{#line.attachment?.attachmentFileName}"/>
+                    <bean parent="MessageField"
+                          p:messageText="(@{#line.attachment?.attachmentFileSizeWithUnits}, @{#line.attachment?.attachmentMimeTypeCode})"/>
 
-						         </list>
-								</property>
-							</bean>
-							<bean parent="PropertyReplacer" p:propertyName="items" p:condition="!#isAddLine and (#line.attachment == null or !#line.attachment.complete)" >
-								<property name="replacement">
-								  <list>
-								    <bean parent="BlankField" />
-								  </list>
-								</property>
-							</bean>
-
-						</list>
-					</property>
-				</bean>
-				<!-- TODO: field needs translation to options label when read-only -->
-				<bean parent="AttributeField" p:propertyName="attachment.attachmentTypeCode" p:render="@{#DocumentEntry.allowsNoteAttachments}" />
-				<bean parent="AttributeField" p:propertyName="adHocRouteRecipient.id"  p:readOnly="@{!#isAddLine}"
-				      p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}" />
-			</list>
-		</property>
-		<property name="bindingInfo.bindingObjectPath" value="document" />
-		<property name="disclosure.defaultOpen"
-			value="@{!document.notes.empty or #component.defaultOpen}" />
-		<property name="errorsField.additionalKeysToMatch" value="attachmentFile" />
-	    <property name="addLineActionFields">
-		   <list>
-			   <bean parent="ActionField_Small" p:methodToCall="insertNote" p:actionLabel="add" p:title="Add a Note" />
-		   </list>
-	    </property>
-	    <property name="actionFields">
-	  	   <list>
-			  <bean parent="ActionField_Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:title="Delete a Note"/>
-			  <bean parent="ActionField_Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send" p:title="Send FYI"
-			        p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
-		   </list>
-	    </property>
-	</bean>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="PropertyReplacer" p:propertyName="items"
+                    p:condition="!#isAddLine and (#line.attachment == null or !#line.attachment.complete)">
+                <property name="replacement">
+                  <list>
+                    <bean parent="BlankField"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- TODO: field needs translation to options label when read-only -->
+        <bean parent="InputField" p:propertyName="attachment.attachmentTypeCode"
+              p:render="@{#DocumentEntry.allowsNoteAttachments}"/>
+        <bean parent="InputField" p:propertyName="adHocRouteRecipient.id" p:readOnly="@{!#isAddLine}"
+              p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
+      </list>
+    </property>
+    <property name="bindingInfo.bindingObjectPath" value="document"/>
+    <property name="disclosure.defaultOpen"
+              value="@{!document.notes.empty or #component.defaultOpen}"/>
+    <property name="errorsField.additionalKeysToMatch" value="attachmentFile"/>
+    <property name="addLineActionFields">
+      <list>
+        <bean parent="ActionField_Small" p:methodToCall="insertNote" p:actionLabel="add" p:title="Add a Note"/>
+      </list>
+    </property>
+    <property name="actionFields">
+      <list>
+        <bean parent="ActionField_Small" p:methodToCall="deleteNote" p:actionLabel="delete" p:title="Delete a Note"/>
+        <bean parent="ActionField_Small" p:methodToCall="sendNoteWorkflowNotification" p:actionLabel="send"
+              p:title="Send FYI"
+              p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
+      </list>
+    </property>
+  </bean>
 
   <bean id="Group_DocumentAdHocRecipients" parent="GroupSection">
     <property name="id" value="group_docadhocrecipients"/>
@@ -446,7 +449,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <property name="styleClasses" value="tableborders wrap"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="actionRequested">
+              <bean parent="InputField" p:propertyName="actionRequested">
                 <property name="control">
                   <bean parent="SelectControl"/>
                 </property>
@@ -454,7 +457,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                   <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                 </property>
               </bean>
-              <bean parent="AttributeField" p:propertyName="name" p:label="Person" p:required="true">
+              <bean parent="InputField" p:propertyName="name" p:label="Person" p:required="true">
                 <property name="control">
                   <bean parent="UserControl" p:principalIdPropertyName="id" p:personNamePropertyName="person.name"/>
                 </property>
@@ -473,7 +476,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <property name="styleClasses" value="tableborders"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="actionRequested">
+              <bean parent="InputField" p:propertyName="actionRequested">
                 <property name="control">
                   <bean parent="SelectControl"/>
                 </property>
@@ -481,8 +484,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                   <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                 </property>
               </bean>
-              <bean parent="AttributeField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code"/>
-              <bean parent="AttributeField" p:propertyName="recipientName" p:label="Name">
+              <bean parent="InputField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code"/>
+              <bean parent="InputField" p:propertyName="recipientName" p:label="Name">
                 <property name="control">
                   <bean parent="GroupControl" p:groupIdPropertyName="id"
                         p:namespaceCodePropertyName="recipientNamespaceCode"/>

@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
@@ -70,13 +70,13 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             return;
         }
 
-        AttributeField af = null;
+        DataField af = null;
         if (form.getView().getViewIndex() != null) {
-            af = form.getView().getViewIndex().getAttributeFieldByPath(propertyName);
+            af = form.getView().getViewIndex().getDataFieldByPath(propertyName);
         }
 
         if ((af == null) && (form.getPreviousView() != null) && (form.getPreviousView().getViewIndex() != null)) {
-            af = form.getPreviousView().getViewIndex().getAttributeFieldByPath(propertyName);
+            af = form.getPreviousView().getViewIndex().getDataFieldByPath(propertyName);
         }
 
         boolean requiresEncryption = false;

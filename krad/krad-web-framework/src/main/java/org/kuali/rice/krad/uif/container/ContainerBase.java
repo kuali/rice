@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.HeaderField;
 import org.kuali.rice.krad.uif.field.MessageField;
@@ -413,14 +413,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * 
 	 * @return
 	 */
-	public List<AttributeField> getAttributeFields(){
-		List<AttributeField> attributeFields = new ArrayList<AttributeField>();
+	public List<InputField> getInputFields(){
+		List<InputField> inputFields = new ArrayList<InputField>();
 		for(Component c: this.getComponentsForLifecycle()){
-			if(c instanceof AttributeField){
-				attributeFields.add((AttributeField)c);
+			if(c instanceof InputField){
+				inputFields.add((InputField)c);
 			}
 		}
-		return attributeFields;
+		return inputFields;
 		
 	}
 

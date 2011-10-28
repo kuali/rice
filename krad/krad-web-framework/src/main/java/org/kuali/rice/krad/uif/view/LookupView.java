@@ -177,8 +177,8 @@ public class LookupView extends FormView {
 //			 (hiddenFields != null && !hiddenFields.isEmpty())
 //			) {
 //			for (Field field : getResultsGroup().getItems()) {
-//				if (AttributeField.class.isAssignableFrom(field.getClass())) {
-//					AttributeField attributeField = (AttributeField) field;
+//				if (InputField.class.isAssignableFrom(field.getClass())) {
+//					InputField attributeField = (InputField) field;
 //					if (readOnlyFields != null && readOnlyFields.contains(attributeField.getBindingInfo().getBindingName())) {
 //						attributeField.setReadOnly(true);
 //					}

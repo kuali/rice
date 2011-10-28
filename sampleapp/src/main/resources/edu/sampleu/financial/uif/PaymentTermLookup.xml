@@ -27,14 +27,14 @@
            <bean parent="GroupSectionGridLayout">
              <property name="items">
                <list>
-                <bean parent="AttributeField" p:propertyName="vendorPaymentTermsCode"/>
-                <bean parent="AttributeField" p:propertyName="vendorPaymentTermsDescription"/>
-                <bean parent="AttributeField" p:propertyName="vendorPaymentTermsPercent"/>
-                <bean parent="AttributeField" p:propertyName="vendorDiscountDueNumber"/>
-                <bean parent="AttributeField" p:propertyName="vendorDiscountDueTypeDescription"/>
-                <bean parent="AttributeField" p:propertyName="vendorNetDueNumber"/>
-                <bean parent="AttributeField" p:propertyName="vendorNetDueTypeDescription"/>
-                <bean parent="AttributeField" p:propertyName="active"/>
+                <bean parent="InputField" p:propertyName="vendorPaymentTermsCode"/>
+                <bean parent="InputField" p:propertyName="vendorPaymentTermsDescription"/>
+                <bean parent="InputField" p:propertyName="vendorPaymentTermsPercent"/>
+                <bean parent="InputField" p:propertyName="vendorDiscountDueNumber"/>
+                <bean parent="InputField" p:propertyName="vendorDiscountDueTypeDescription"/>
+                <bean parent="InputField" p:propertyName="vendorNetDueNumber"/>
+                <bean parent="InputField" p:propertyName="vendorNetDueTypeDescription"/>
+                <bean parent="InputField" p:propertyName="active"/>
                </list>
              </property>
              <property name="title" value="Payment Type Information"/>
@@ -48,26 +48,26 @@
     <property name="dataObjectClassName" value="edu.sampleu.financial.bo.PaymentTermType" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorPaymentTermsCode" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorPaymentTermsDescription" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorPaymentTermsPercent" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorDiscountDueNumber" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorDiscountDueTypeDescription" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorNetDueNumber" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="vendorNetDueTypeDescription" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorPaymentTermsCode" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorPaymentTermsDescription" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorPaymentTermsPercent" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorDiscountDueNumber" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorDiscountDueTypeDescription" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorNetDueNumber" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="vendorNetDueTypeDescription" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="vendorPaymentTermsCode" />
-        <bean parent="AttributeField" p:propertyName="vendorPaymentTermsDescription" />
-        <bean parent="AttributeField" p:propertyName="vendorPaymentTermsPercent" />
-        <bean parent="AttributeField" p:propertyName="vendorDiscountDueNumber" />
-        <bean parent="AttributeField" p:propertyName="vendorDiscountDueTypeDescription" />
-        <bean parent="AttributeField" p:propertyName="vendorNetDueNumber" />
-        <bean parent="AttributeField" p:propertyName="vendorNetDueTypeDescription" />
-        <bean parent="AttributeField" p:propertyName="active" />
+        <bean parent="InputField" p:propertyName="vendorPaymentTermsCode" />
+        <bean parent="InputField" p:propertyName="vendorPaymentTermsDescription" />
+        <bean parent="InputField" p:propertyName="vendorPaymentTermsPercent" />
+        <bean parent="InputField" p:propertyName="vendorDiscountDueNumber" />
+        <bean parent="InputField" p:propertyName="vendorDiscountDueTypeDescription" />
+        <bean parent="InputField" p:propertyName="vendorNetDueNumber" />
+        <bean parent="InputField" p:propertyName="vendorNetDueTypeDescription" />
+        <bean parent="InputField" p:propertyName="active" />
       </list>
     </property>
   </bean>

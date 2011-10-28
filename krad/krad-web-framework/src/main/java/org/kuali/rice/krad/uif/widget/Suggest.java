@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.widget;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 
 /**
@@ -62,7 +62,7 @@ public class Suggest extends WidgetBase {
             return;
         }
 
-        AttributeField field = (AttributeField) parent;
+        InputField field = (InputField) parent;
         BindingInfo bindingInfo = field.getBindingInfo();
 
         // adjust from side on query field mapping to match parent fields path

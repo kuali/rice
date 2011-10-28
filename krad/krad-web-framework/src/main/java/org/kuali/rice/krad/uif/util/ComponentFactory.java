@@ -49,7 +49,7 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.BlankField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -89,7 +89,7 @@ public class ComponentFactory {
     protected static final String USER_CONTROL = "UserControl";
     protected static final String GROUP_CONTROL = "GroupControl";
 
-    protected static final String ATTRIBUTE_FIELD = "AttributeField";
+    protected static final String INPUT_FIELD = "InputField";
     protected static final String ERRORS_FIELD = "ErrorsField";
     protected static final String ACTION_FIELD = "ActionField";
     protected static final String ACTION_LINK_FIELD = "ActionLinkField";
@@ -209,12 +209,12 @@ public class ComponentFactory {
         return (TextControl) getNewComponentInstance(GROUP_CONTROL);
     }
 
-    public static AttributeField getAttributeField() {
-        return (AttributeField) getNewComponentInstance(ATTRIBUTE_FIELD);
+    public static InputField getInputField() {
+        return (InputField) getNewComponentInstance(INPUT_FIELD);
     }
 
-    public static AttributeField getAttributeField(String propertyName, String label) {
-        AttributeField field = (AttributeField) getNewComponentInstance(ATTRIBUTE_FIELD);
+    public static InputField getInputField(String propertyName, String label) {
+        InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
         field.setPropertyName(propertyName);
         field.setLabel(label);
@@ -222,9 +222,8 @@ public class ComponentFactory {
         return field;
     }
 
-    public static AttributeField getAttributeField(String propertyName, String label,
-            UifConstants.ControlType controlType) {
-        AttributeField field = (AttributeField) getNewComponentInstance(ATTRIBUTE_FIELD);
+    public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType) {
+        InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
         field.setPropertyName(propertyName);
         field.setLabel(label);
@@ -233,9 +232,9 @@ public class ComponentFactory {
         return field;
     }
 
-    public static AttributeField getAttributeField(String propertyName, String label,
-            UifConstants.ControlType controlType, String defaultValue) {
-        AttributeField field = (AttributeField) getNewComponentInstance(ATTRIBUTE_FIELD);
+    public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
+            String defaultValue) {
+        InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
         field.setPropertyName(propertyName);
         field.setLabel(label);
@@ -245,9 +244,9 @@ public class ComponentFactory {
         return field;
     }
 
-    public static AttributeField getAttributeField(String propertyName, String label,
-            UifConstants.ControlType controlType, Class<? extends KeyValuesFinder> optionsFinderClass) {
-        AttributeField field = (AttributeField) getNewComponentInstance(ATTRIBUTE_FIELD);
+    public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
+            Class<? extends KeyValuesFinder> optionsFinderClass) {
+        InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
         field.setPropertyName(propertyName);
         field.setLabel(label);
@@ -257,9 +256,9 @@ public class ComponentFactory {
         return field;
     }
 
-    public static AttributeField getAttributeField(String propertyName, String label,
-            UifConstants.ControlType controlType, List<KeyValue> options) {
-        AttributeField field = (AttributeField) getNewComponentInstance(ATTRIBUTE_FIELD);
+    public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
+            List<KeyValue> options) {
+        InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
         field.setPropertyName(propertyName);
         field.setLabel(label);
@@ -274,9 +273,9 @@ public class ComponentFactory {
         return field;
     }
 
-    public static AttributeField getAttributeField(String propertyName, String label,
-            UifConstants.ControlType controlType, int size, int maxLength, int minLength) {
-        AttributeField field = (AttributeField) getNewComponentInstance(ATTRIBUTE_FIELD);
+    public static InputField getInputField(String propertyName, String label, UifConstants.ControlType controlType,
+            int size, int maxLength, int minLength) {
+        InputField field = (InputField) getNewComponentInstance(INPUT_FIELD);
 
         field.setPropertyName(propertyName);
         field.setLabel(label);
@@ -295,47 +294,47 @@ public class ComponentFactory {
     }
 
     /**
-     * Builds a new <code>AttributeField</code> from the properties set on the
+     * Builds a new <code>InputField</code> from the properties set on the
      * given <code>RemotableAttributeField</code>
      *
      * <p>
-     * Note the returned AttributeField will not be initialized yet. Its state will be that of the initial
+     * Note the returned InputField will not be initialized yet. Its state will be that of the initial
      * object returned from the UIF dictionary with the properties set from the remotable attribute field, thus it
      * is really just a more configuration complete field
      * </p>
      *
      * @return AttributeField instance built from remotable field
      */
-    public static AttributeField translateRemotableField(RemotableAttributeField remotableField) {
-        AttributeField attributeField = getAttributeField();
+    public static InputField translateRemotableField(RemotableAttributeField remotableField) {
+        InputField inputField = getInputField();
 
-        attributeField.setPropertyName(remotableField.getName());
-        attributeField.setShortLabel(remotableField.getShortLabel());
-        attributeField.setLabel(remotableField.getLongLabel());
-        attributeField.setHelpSummary(remotableField.getHelpSummary());
-        attributeField.setHelpDescription(remotableField.getHelpDescription());
-        attributeField.setConstraintText(remotableField.getHelpConstraint());
-        attributeField.setPerformUppercase(remotableField.isForceUpperCase());
-        attributeField.setMinLength(remotableField.getMinLength());
-        attributeField.setMaxLength(remotableField.getMaxLength());
+        inputField.setPropertyName(remotableField.getName());
+        inputField.setShortLabel(remotableField.getShortLabel());
+        inputField.setLabel(remotableField.getLongLabel());
+        inputField.setHelpSummary(remotableField.getHelpSummary());
+        inputField.setHelpDescription(remotableField.getHelpDescription());
+        inputField.setConstraintText(remotableField.getHelpConstraint());
+        inputField.setPerformUppercase(remotableField.isForceUpperCase());
+        inputField.setMinLength(remotableField.getMinLength());
+        inputField.setMaxLength(remotableField.getMaxLength());
 
         // why are exclusive min and max strings?
         if (remotableField.getMinValue() != null) {
-            attributeField.setExclusiveMin(remotableField.getMinValue().toString());
+            inputField.setExclusiveMin(remotableField.getMinValue().toString());
         }
         if (remotableField.getMaxValue() != null) {
-            attributeField.setInclusiveMax(remotableField.getMaxValue().toString());
+            inputField.setInclusiveMax(remotableField.getMaxValue().toString());
         }
-        attributeField.setRequired(remotableField.isRequired());
+        inputField.setRequired(remotableField.isRequired());
 
         if ((remotableField.getDefaultValues() != null) && !remotableField.getDefaultValues().isEmpty()) {
-            attributeField.setDefaultValue(remotableField.getDefaultValues().iterator().next());
+            inputField.setDefaultValue(remotableField.getDefaultValues().iterator().next());
         }
 
         if (StringUtils.isNotBlank(remotableField.getRegexConstraint())) {
             ValidCharactersConstraint constraint = new ValidCharactersConstraint();
             constraint.setValue(remotableField.getRegexConstraint());
-            attributeField.setValidCharactersConstraint(constraint);
+            inputField.setValidCharactersConstraint(constraint);
             // TODO: how to deal with remotable field regexContraintMsg?
         }
 
@@ -353,10 +352,10 @@ public class ComponentFactory {
         }
 
         if (remotableQuickFinder != null) {
-            attributeField.getFieldLookup().setBaseLookupUrl(remotableQuickFinder.getBaseLookupUrl());
-            attributeField.getFieldLookup().setDataObjectClassName(remotableQuickFinder.getDataObjectClass());
-            attributeField.getFieldLookup().setLookupParameters(remotableQuickFinder.getLookupParameters());
-            attributeField.getFieldLookup().setFieldConversions(remotableQuickFinder.getFieldConversions());
+            inputField.getFieldLookup().setBaseLookupUrl(remotableQuickFinder.getBaseLookupUrl());
+            inputField.getFieldLookup().setDataObjectClassName(remotableQuickFinder.getDataObjectClass());
+            inputField.getFieldLookup().setLookupParameters(remotableQuickFinder.getLookupParameters());
+            inputField.getFieldLookup().setFieldConversions(remotableQuickFinder.getFieldConversions());
         }
 
         if (remotableField.getControl() != null) {
@@ -418,27 +417,27 @@ public class ComponentFactory {
                 ((TextControl) control).setWatermarkText(remotableTextInput.getWatermark());
             }
 
-            attributeField.setControl(control);
+            inputField.setControl(control);
         }
 
-        return attributeField;
+        return inputField;
     }
 
     /**
-     * For each remotable field in the given list creates a new {@link AttributeField} instance and sets the
+     * For each remotable field in the given list creates a new {@link org.kuali.rice.krad.uif.field.InputField} instance and sets the
      * corresponding properties from the remotable instance
      *
      * @param remotableFields - list of remotable fields to translate
      * @return List<AttributeField> list of attribute fields built from the remotable field properties
      */
-    public static List<AttributeField> translateRemotableFields(List<RemotableAttributeField> remotableFields) {
-        List<AttributeField> attributeFields = new ArrayList<AttributeField>();
+    public static List<InputField> translateRemotableFields(List<RemotableAttributeField> remotableFields) {
+        List<InputField> inputFields = new ArrayList<InputField>();
 
         for (RemotableAttributeField remotableField : remotableFields) {
-            attributeFields.add(translateRemotableField(remotableField));
+            inputFields.add(translateRemotableField(remotableField));
         }
 
-        return attributeFields;
+        return inputFields;
     }
 
     protected static List<KeyValue> buildKeyValuePairs(Map<String, String> optionsMap) {

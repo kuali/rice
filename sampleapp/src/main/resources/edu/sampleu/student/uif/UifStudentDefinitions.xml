@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="GenericTextArea" parent="AttributeField_Form" abstract="true"
+  <bean id="GenericTextArea" parent="InputField_Form" abstract="true"
         p:label="Field Label" p:labelPlacement="TOP"
         p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
     <property name="control">
@@ -12,7 +12,7 @@
     </property>
   </bean>
 
-  <bean id="GenericTextField" parent="AttributeField_Form" abstract="true"
+  <bean id="GenericTextField" parent="InputField_Form" abstract="true"
         p:label="Field Label" p:labelPlacement="TOP"
         p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
     <property name="control">
@@ -39,7 +39,7 @@
     </property>
   </bean>
 
-  <bean id="GenericSelection" parent="AttributeField_Form" abstract="true"
+  <bean id="GenericSelection" parent="InputField_Form" abstract="true"
         p:label="Select" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
         p:labelField.renderColon="false">
     <property name="control">
@@ -103,7 +103,7 @@
     </property>
   </bean>
 
-  <bean id="GenericRadio" parent="AttributeField_Form" abstract="true"
+  <bean id="GenericRadio" parent="InputField_Form" abstract="true"
         p:label="Radio" p:labelPlacement="TOP" p:labelField.styleClasses="labelTop"
         p:labelField.renderColon="false">
     <property name="control">
@@ -119,7 +119,7 @@
     </property>
   </bean>
 
-  <bean id="GenericCheckbox" parent="AttributeField_Form" abstract="true"
+  <bean id="GenericCheckbox" parent="InputField_Form" abstract="true"
         p:labelPlacement="RIGHT"
         p:labelField.styleClasses="labelRight" p:labelField.renderColon="false">
     <property name="control">

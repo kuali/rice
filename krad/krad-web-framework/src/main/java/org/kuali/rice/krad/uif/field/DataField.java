@@ -9,12 +9,14 @@ import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.Inquiry;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DataField extends FieldBase {
+public class DataField extends FieldBase implements DataBinding {
     private static final long serialVersionUID = -4129678891948564724L;
 
     // binding
@@ -33,6 +35,10 @@ public class DataField extends FieldBase {
 
     private String dictionaryAttributeName;
     private String dictionaryObjectEntry;
+
+    // value props
+    private String defaultValue;
+    private Class<? extends ValueFinder> defaultValueFinderClass;
 
     private Formatter formatter;
     private AttributeSecurity attributeSecurity;
@@ -438,6 +444,49 @@ public class DataField extends FieldBase {
      */
     public void setDictionaryObjectEntry(String dictionaryObjectEntry) {
         this.dictionaryObjectEntry = dictionaryObjectEntry;
+    }
+
+    /**
+     * Default value for the model property the field points to
+     *
+     * <p>
+     * When a new <code>View</code> instance is requested, the corresponding
+     * model will be newly created. During this initialization process the value
+     * for the model property will be set to the given default value (if set)
+     * </p>
+     *
+     * @return String default value
+     */
+    public String getDefaultValue() {
+        return this.defaultValue;
+    }
+
+    /**
+     * Setter for the fields default value
+     *
+     * @param defaultValue
+     */
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    /**
+     * Gives Class that should be invoked to produce the default value for the
+     * field
+     *
+     * @return Class<? extends ValueFinder> default value finder class
+     */
+    public Class<? extends ValueFinder> getDefaultValueFinderClass() {
+        return this.defaultValueFinderClass;
+    }
+
+    /**
+     * Setter for the default value finder class
+     *
+     * @param defaultValueFinderClass
+     */
+    public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
+        this.defaultValueFinderClass = defaultValueFinderClass;
     }
 
     /**

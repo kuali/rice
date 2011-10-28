@@ -39,13 +39,13 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
+import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.LookupInputField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.view.LookupView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.HiddenControl;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.LinkField;
-import org.kuali.rice.krad.uif.field.LookupAttributeField;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -107,7 +107,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
     /**
      * Initialization of Lookupable requires that the business object class be set for the {@link
-     * #initializeAttributeFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.AttributeField)} method
+     * #initializeAttributeFieldFromDataDictionary(View, org.kuali.rice.krad.uif.field.InputField)} method
      *
      * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
@@ -214,7 +214,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     protected Map<String, String> processSearchCriteria(LookupForm lookupForm, Map<String, String> searchCriteria) {
-        Map<String, AttributeField> criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(),
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(),
                 lookupForm);
 
         Map<String, String> nonBlankSearchCriteria = new HashMap<String, String>();
@@ -223,8 +223,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             // don't add hidden criteria
             LookupView lookupView = (LookupView) lookupForm.getView();
-            AttributeField attributeField = criteriaFields.get(fieldName);
-            if (attributeField.getControl() instanceof HiddenControl) {
+            InputField inputField = criteriaFields.get(fieldName);
+            if (inputField.getControl() instanceof HiddenControl) {
                 continue;
             }
 
@@ -399,13 +399,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     @Override
     public Map<String, String> performClear(LookupForm form, Map<String, String> searchCriteria) {
-        Map<String, AttributeField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
+        Map<String, InputField> criteriaFieldMap = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
         Map<String, String> clearedSearchCriteria = new HashMap<String, String>();
         for (Map.Entry<String, String> searchKeyValue : searchCriteria.entrySet()) {
             String searchPropertyName = searchKeyValue.getKey();
 
-            AttributeField attributeField = criteriaFieldMap.get(searchPropertyName);
-            if (attributeField != null) {
+            InputField inputField = criteriaFieldMap.get(searchPropertyName);
+            if (inputField != null) {
                 // TODO: check secure fields
 //                                if (field.isSecure()) {
 //                    field.setSecure(false);
@@ -415,7 +415,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
                 // TODO: need formatting on default value and make sure it works when control converts
                 // from checkbox to radio
-                clearedSearchCriteria.put(searchPropertyName, attributeField.getDefaultValue());
+                clearedSearchCriteria.put(searchPropertyName, inputField.getDefaultValue());
             } else {
                 throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
             }
@@ -435,7 +435,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             throw new RuntimeException("Lookup not defined for data object " + getDataObjectClass());
         }
 
-        Map<String, AttributeField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(), form);
 
         // validate required
         // TODO: this will be done by the uif validation service at some point
@@ -444,15 +444,15 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             String searchPropertyValue = searchKeyValue.getValue();
 
             LookupView lookupView = (LookupView) form.getView();
-            AttributeField attributeField = criteriaFields.get(searchPropertyName);
-            if (attributeField != null) {
-                if (StringUtils.isBlank(searchPropertyValue) && BooleanUtils.isTrue(attributeField.getRequired())) {
+            InputField inputField = criteriaFields.get(searchPropertyName);
+            if (inputField != null) {
+                if (StringUtils.isBlank(searchPropertyValue) && BooleanUtils.isTrue(inputField.getRequired())) {
                     GlobalVariables.getMessageMap()
-                            .putError(attributeField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
-                                    attributeField.getLabel());
+                            .putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,
+                                    inputField.getLabel());
                 }
 
-                validateSearchParameterWildcardAndOperators(attributeField, searchPropertyValue);
+                validateSearchParameterWildcardAndOperators(inputField, searchPropertyValue);
             } else {
                 throw new RuntimeException("Invalid search field sent for property name: " + searchPropertyName);
             }
@@ -465,14 +465,14 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         return valid;
     }
 
-    protected Map<String, AttributeField> getCriteriaFieldsForValidation(LookupView lookupView, LookupForm form) {
-        Map<String, AttributeField> criteriaFieldMap = new HashMap<String, AttributeField>();
+    protected Map<String, InputField> getCriteriaFieldsForValidation(LookupView lookupView, LookupForm form) {
+        Map<String, InputField> criteriaFieldMap = new HashMap<String, InputField>();
 
         // TODO; need hooks for code generated components and also this doesn't have lifecycle which
         // could change fields
-        List<AttributeField> fields = ComponentUtils.getComponentsOfTypeDeep(lookupView.getCriteriaFields(),
-                AttributeField.class);
-        for (AttributeField field : fields) {
+        List<InputField> fields = ComponentUtils.getComponentsOfTypeDeep(lookupView.getCriteriaFields(),
+                InputField.class);
+        for (InputField field : fields) {
             criteriaFieldMap.put(field.getPropertyName(), field);
         }
 
@@ -483,10 +483,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * Validates that any wildcards contained within the search value are valid wilcards and allowed for the
      * property type for which the field is searching
      *
-     * @param attributeField - attribute field instance for the field that is being searched
+     * @param inputField - attribute field instance for the field that is being searched
      * @param searchPropertyValue - value given for field to search for
      */
-    protected void validateSearchParameterWildcardAndOperators(AttributeField attributeField,
+    protected void validateSearchParameterWildcardAndOperators(InputField inputField,
             String searchPropertyValue) {
         if (StringUtils.isBlank(searchPropertyValue))
             return;
@@ -505,9 +505,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return;
         }
 
-        String attributeLabel = attributeField.getLabel();
-        if ((LookupAttributeField.class.isAssignableFrom(attributeField.getClass())) &&
-                (((LookupAttributeField) attributeField).isTreatWildcardsAndOperatorsAsLiteral())) {
+        String attributeLabel = inputField.getLabel();
+        if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) &&
+                (((LookupInputField) inputField).isTreatWildcardsAndOperatorsAsLiteral())) {
             Object dataObjectExample = null;
             try {
                 dataObjectExample = getDataObjectClass().newInstance();
@@ -517,21 +517,21 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             }
 
             Class<?> propertyType =
-                    ObjectPropertyUtils.getPropertyType(getDataObjectClass(), attributeField.getPropertyName());
+                    ObjectPropertyUtils.getPropertyType(getDataObjectClass(), inputField.getPropertyName());
             if (TypeUtils.isIntegralClass(propertyType) || TypeUtils.isDecimalClass(propertyType) ||
                     TypeUtils.isTemporalClass(propertyType)) {
-                GlobalVariables.getMessageMap().putError(attributeField.getPropertyName(),
+                GlobalVariables.getMessageMap().putError(inputField.getPropertyName(),
                         RiceKeyConstants.ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD, attributeLabel);
             }
 
             if (TypeUtils.isStringClass(propertyType)) {
-                GlobalVariables.getMessageMap().putInfo(attributeField.getPropertyName(),
+                GlobalVariables.getMessageMap().putInfo(inputField.getPropertyName(),
                         RiceKeyConstants.INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY, attributeLabel);
             }
         } else {
             if (getDataObjectAuthorizationService()
                     .attributeValueNeedsToBeEncryptedOnFormsAndLinks(getDataObjectClass(),
-                            attributeField.getPropertyName())) {
+                            inputField.getPropertyName())) {
                 if (!searchPropertyValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
                     // encrypted values usually come from the DB, so we don't
                     // need to filter for wildcards
@@ -540,7 +540,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                     // decrypting every row, which is currently not supported by KRAD
 
                     GlobalVariables.getMessageMap()
-                            .putError(attributeField.getPropertyName(), RiceKeyConstants.ERROR_SECURE_FIELD,
+                            .putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_SECURE_FIELD,
                                     attributeLabel);
                 }
             }
@@ -789,14 +789,14 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * @see org.kuali.rice.krad.lookup.LookupableImpl#setMultiValueLookupSelect
      */
     @Override
-    public void setMultiValueLookupSelect(AttributeField selectField, Object model) {
+    public void setMultiValueLookupSelect(InputField selectField, Object model) {
         LookupForm lookupForm = (LookupForm) model;
         Object lineDataObject = selectField.getContext().get(UifConstants.ContextVariableNames.LINE);
         if (lineDataObject == null) {
             throw new RuntimeException("Unable to get data object for line from component: " + selectField.getId());
         }
 
-        Control selectControl = ((AttributeField) selectField).getControl();
+        Control selectControl = ((InputField) selectField).getControl();
         if ((selectControl != null) && (selectControl instanceof ValueConfiguredControl)) {
             String lineIdentifier = "";
 

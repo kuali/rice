@@ -311,12 +311,12 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="id"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="kimTypeId"/>
-              <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="id"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="kimTypeId"/>
+              <bean parent="InputField" p:propertyName="namespaceCode"/>
+              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
           <property name="title" value="Role Information"/>
@@ -329,11 +329,11 @@
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="roleMemberId"/>
-              <bean parent="AttributeField" p:propertyName="memberTypeCode"/>
-              <bean parent="AttributeField" p:propertyName="memberId"/>
-              <bean parent="AttributeField" p:propertyName="activeFromDate"/>
-              <bean parent="AttributeField" p:propertyName="activeToDate"/>
+              <bean parent="InputField" p:propertyName="roleMemberId"/>
+              <bean parent="InputField" p:propertyName="memberTypeCode"/>
+              <bean parent="InputField" p:propertyName="memberId"/>
+              <bean parent="InputField" p:propertyName="activeFromDate"/>
+              <bean parent="InputField" p:propertyName="activeToDate"/>
             </list>
           </property>
         </bean>
@@ -347,33 +347,33 @@
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.role.RoleLookupableImpl" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="kimTypeId"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="principalName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="groupNamespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="groupName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="permNamespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="permName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="permTmplNamespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="permTmplName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="respNamespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="respName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="respTmplNamespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="respTmplName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="kimTypeId"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="principalName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="groupNamespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="groupName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="permNamespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="permName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="permTmplNamespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="permTmplName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="respNamespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="respName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="respTmplNamespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="respTmplName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="kimRoleType.name"/>
-        <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-        <bean parent="AttributeField" p:propertyName="name">
+        <bean parent="InputField" p:propertyName="kimRoleType.name"/>
+        <bean parent="InputField" p:propertyName="namespaceCode"/>
+        <bean parent="InputField" p:propertyName="name">
            <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
            <property name="fieldInquiry.inquiryParameters" value="id:id"/>
         </bean>
-        <bean parent="AttributeField" p:propertyName="description"/>
+        <bean parent="InputField" p:propertyName="description"/>
       </list>
     </property>
   </bean>

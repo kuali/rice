@@ -22,10 +22,10 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.field.MessageField;
@@ -549,8 +549,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * @return String sequence property name
 	 */
     public String getSequencePropertyName() {
-        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof AttributeField)) {
-            return ((AttributeField) sequenceFieldPrototype).getPropertyName();
+        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof InputField)) {
+            return ((InputField) sequenceFieldPrototype).getPropertyName();
         }
 
         return null;
@@ -562,8 +562,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param sequencePropertyName
      */
     public void setSequencePropertyName(String sequencePropertyName) {
-        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof AttributeField)) {
-            ((AttributeField) sequenceFieldPrototype).setPropertyName(sequencePropertyName);
+        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof InputField)) {
+            ((InputField) sequenceFieldPrototype).setPropertyName(sequencePropertyName);
         }
     }
 	

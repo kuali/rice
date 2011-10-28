@@ -45,9 +45,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="fieldBindByNamePrefix" value="stats"/>
       <property name="items">
         <list>
-        	<bean parent="AttributeField_Form" p:propertyName="numDocTypes" p:labelField.align="right" p:label="Number of Document Types" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	       <bean parent="AttributeField_Form" p:propertyName="numUsers" p:label="Number of Users" p:labelField.align="right" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2"/>
-	       <bean parent="AttributeField_Form" p:propertyName="numActionItems" p:labelField.align="right" p:label="Number of Active Items In All Action Lists" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2"/>
+        	<bean parent="InputField_Form" p:propertyName="numDocTypes" p:labelField.align="right" p:label="Number of Document Types" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	       <bean parent="InputField_Form" p:propertyName="numUsers" p:label="Number of Users" p:labelField.align="right" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2"/>
+	       <bean parent="InputField_Form" p:propertyName="numActionItems" p:labelField.align="right" p:label="Number of Active Items In All Action Lists" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2"/>
 	       <bean parent="LabelField" p:labelText="Number of Documents Initiated in the Last 30 Days" p:colSpan="2" p:align="right" p:requiredMessageField.render="false"/>
 	       
 	       <bean id="testSection4" parent="GroupSectionGridLayout" p:disclosure.render="false" p:colSpan="2">
@@ -72,8 +72,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <list>
           <!-- <bean parent="LabelField" p:labelText="#line.key"/>
           <bean parent="LabelField" p:labelText="#line.value"/> -->
-          <bean parent="AttributeField_Form" p:propertyName="key"  p:showLabel="false" p:readOnly="true"/>
-	       <bean parent="AttributeField_Form" p:propertyName="value"  p:showLabel="false" p:readOnly="true"/>
+          <bean parent="InputField_Form" p:propertyName="key"  p:showLabel="false" p:readOnly="true"/>
+	       <bean parent="InputField_Form" p:propertyName="value"  p:showLabel="false" p:readOnly="true"/>
         </list>
       </property>  
       <property name="renderAddLine" value="false"/>
@@ -84,28 +84,28 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Date Range"/>
       <property name="items">
         <list>
-        	<bean parent="AttributeField_Form" p:propertyName="begDate" p:label="Begin Date">
+        	<bean parent="InputField_Form" p:propertyName="begDate" p:label="Begin Date">
 	           <property name="control">
               		<bean parent="DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
                </property>
 	        </bean>
-	        <bean parent="AttributeField_Form" p:propertyName="endDate" p:label="End Date">
+	        <bean parent="InputField_Form" p:propertyName="endDate" p:label="End Date">
 	           <property name="control">
               		<bean parent="DateControl" p:size="10" p:watermarkText="mm/dd/yyyy"/>
                </property>
 	        </bean>
 	        <bean parent="LabelField" p:labelText="Routing Status" p:colSpan="2" p:requiredMessageField.render="false" p:align="center" p:renderColon="false"/>
             <bean parent="LabelField" p:labelText="Number of Documents for Date Range" p:colSpan="2" p:requiredMessageField.render="false" p:align="center" p:renderColon="false"/>
-        	<!-- <bean parent="AttributeField_Form" p:propertyName="stats.approvedNumber" p:labelField.align="right" p:label="APPROVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" /> -->
-	        <bean parent="AttributeField_Form" p:propertyName="stats.canceledNumber" p:labelField.align="right" p:label="CANCELED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="AttributeField_Form" p:propertyName="stats.disapprovedNumber" p:labelField.align="right" p:label="DISAPPROVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+        	<!-- <bean parent="InputField_Form" p:propertyName="stats.approvedNumber" p:labelField.align="right" p:label="APPROVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" /> -->
+	        <bean parent="InputField_Form" p:propertyName="stats.canceledNumber" p:labelField.align="right" p:label="CANCELED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="InputField_Form" p:propertyName="stats.disapprovedNumber" p:labelField.align="right" p:label="DISAPPROVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
 	        
-	        <bean parent="AttributeField_Form" p:propertyName="stats.enrouteNumber" p:labelField.align="right" p:label="ENROUTE" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="AttributeField_Form" p:propertyName="stats.exceptionNumber" p:labelField.align="right" p:label="EXCEPTION" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="AttributeField_Form" p:propertyName="stats.finalNumber" p:labelField.align="right" p:label="FINAL" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="AttributeField_Form" p:propertyName="stats.initiatedNumber" p:labelField.align="right" p:label="INITIATED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="AttributeField_Form" p:propertyName="stats.processedNumber" p:labelField.align="right" p:label="PROCESSED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
-	        <bean parent="AttributeField_Form" p:propertyName="stats.savedNumber" p:labelField.align="right" p:label="SAVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="InputField_Form" p:propertyName="stats.enrouteNumber" p:labelField.align="right" p:label="ENROUTE" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="InputField_Form" p:propertyName="stats.exceptionNumber" p:labelField.align="right" p:label="EXCEPTION" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="InputField_Form" p:propertyName="stats.finalNumber" p:labelField.align="right" p:label="FINAL" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="InputField_Form" p:propertyName="stats.initiatedNumber" p:labelField.align="right" p:label="INITIATED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="InputField_Form" p:propertyName="stats.processedNumber" p:labelField.align="right" p:label="PROCESSED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
+	        <bean parent="InputField_Form" p:propertyName="stats.savedNumber" p:labelField.align="right" p:label="SAVED" p:readOnly="true" p:colSpan="2" p:labelField.colSpan="2" />
    		</list>
    	  </property>
   </bean>   

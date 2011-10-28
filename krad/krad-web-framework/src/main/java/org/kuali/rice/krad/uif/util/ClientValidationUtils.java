@@ -27,9 +27,9 @@ import org.kuali.rice.krad.datadictionary.validation.constraint.ValidCharactersC
 import org.kuali.rice.krad.datadictionary.validation.constraint.WhenConstraint;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.TextControl;
-import org.kuali.rice.krad.uif.field.AttributeField;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ import java.util.List;
 
 /**
  * This class contains all the methods necessary for generating the js required to perform validation client side.
- * The processAndApplyConstraints(AttributeField field, View view) is the key method of this class used by
- * AttributeField to setup its client side validation mechanisms.
+ * The processAndApplyConstraints(InputField field, View view) is the key method of this class used by
+ * InputField to setup its client side validation mechanisms.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -152,7 +152,7 @@ public class ClientValidationUtils {
 	 * @param validCharactersConstraint
 	 * @return js validator.addMethod script
 	 */
-	public static String getRegexMethod(AttributeField field, ValidCharactersConstraint validCharactersConstraint) {
+	public static String getRegexMethod(InputField field, ValidCharactersConstraint validCharactersConstraint) {
 		String message = generateMessageFromLabelKey(validCharactersConstraint.getValidationMessageParams(), validCharactersConstraint.getLabelKey());
 		String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
 		
@@ -179,7 +179,7 @@ public class ClientValidationUtils {
      * @param validCharactersConstraint
      * @return js validator.addMethod script
      */
-    public static String getRegexMethodWithBooleanCheck(AttributeField field, ValidCharactersConstraint validCharactersConstraint) {
+    public static String getRegexMethodWithBooleanCheck(InputField field, ValidCharactersConstraint validCharactersConstraint) {
         String message = generateMessageFromLabelKey(validCharactersConstraint.getValidationMessageParams(), validCharactersConstraint.getLabelKey());
         String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
         
@@ -210,7 +210,7 @@ public class ClientValidationUtils {
 	 *            the boolean logic to be anded when determining if this case is
 	 *            satisfied (used for nested CaseConstraints)
 	 */
-	public static void processCaseConstraint(AttributeField field, View view, CaseConstraint constraint, String andedCase) {
+	public static void processCaseConstraint(InputField field, View view, CaseConstraint constraint, String andedCase) {
 		if (constraint.getOperator() == null) {
 			constraint.setOperator("equals");
 		}
@@ -261,7 +261,7 @@ public class ClientValidationUtils {
 	 * @param operator
 	 * @param andedCase
 	 */
-	private static void processWhenConstraint(AttributeField field, View view, CaseConstraint caseConstraint, WhenConstraint wc, String fieldPath,
+	private static void processWhenConstraint(InputField field, View view, CaseConstraint caseConstraint, WhenConstraint wc, String fieldPath,
 			String operator, String andedCase) {
 		String ruleString = "";
 		// prerequisite constraint
@@ -317,7 +317,7 @@ public class ClientValidationUtils {
 	 * @param view
 	 * @param script
 	 */
-	public static void addScriptToPage(View view, AttributeField field, String script) {
+	public static void addScriptToPage(View view, InputField field, String script) {
         String prefixScript = "";
         
         if (field.getOnDocumentReadyScript() != null) {
@@ -363,7 +363,7 @@ public class ClientValidationUtils {
 	 * @return
 	 */
 	@SuppressWarnings("boxing")
-	private static String createRule(AttributeField field, Constraint constraint, String booleanStatement, View view) {
+	private static String createRule(InputField field, Constraint constraint, String booleanStatement, View view) {
 		String rule = "";
 		int constraintCount = 0;
 		if (constraint instanceof BaseConstraint && ((BaseConstraint) constraint).getApplyClientSide()) {
@@ -453,11 +453,11 @@ public class ClientValidationUtils {
 	/**
 	 * This method is a simpler version of processPrerequisiteConstraint
 	 * 
-	 * @see ClientValidationUtils#processPrerequisiteConstraint(AttributeField, PrerequisiteConstraint, View, String)
+	 * @see ClientValidationUtils#processPrerequisiteConstraint(org.kuali.rice.krad.uif.field.InputField, PrerequisiteConstraint, View, String)
 	 * @param constraint
 	 * @param view
 	 */
-	public static void processPrerequisiteConstraint(AttributeField field, PrerequisiteConstraint constraint, View view) {
+	public static void processPrerequisiteConstraint(InputField field, PrerequisiteConstraint constraint, View view) {
 		processPrerequisiteConstraint(field, constraint, view, "true");
 	}
 
@@ -472,7 +472,7 @@ public class ClientValidationUtils {
 	 *            the booleanstatement in js - should return true when the
 	 *            validation rule should be applied
 	 */
-	public static void processPrerequisiteConstraint(AttributeField field, PrerequisiteConstraint constraint, View view, String booleanStatement) {
+	public static void processPrerequisiteConstraint(InputField field, PrerequisiteConstraint constraint, View view, String booleanStatement) {
 		if (constraint != null && constraint.getApplyClientSide().booleanValue()) {
 		    String dependsClass = "dependsOn-" + constraint.getPropertyName();
 		    String addClass = "jq('[name=\""+ field.getBindingInfo().getBindingPath() + "\"]').addClass('" + dependsClass + "');" +
@@ -499,7 +499,7 @@ public class ClientValidationUtils {
 	 *            validation rule should be applied
 	 * @return
 	 */
-	private static String getPrerequisiteStatement(AttributeField field, View view, PrerequisiteConstraint constraint, String booleanStatement) {
+	private static String getPrerequisiteStatement(InputField field, View view, PrerequisiteConstraint constraint, String booleanStatement) {
 		methodKey++;
 		String message = "";
 		if(StringUtils.isEmpty(constraint.getLabelKey())){
@@ -512,7 +512,7 @@ public class ClientValidationUtils {
 			message = "prerequisite - No message";
 		}
 		else{
-			AttributeField requiredField = view.getViewIndex().getAttributeFieldByPath(constraint.getPropertyName());
+			InputField requiredField = (InputField) view.getViewIndex().getDataFieldByPath(constraint.getPropertyName());
 			if(requiredField != null && StringUtils.isNotEmpty(requiredField.getLabel())){
 				message = MessageFormat.format(message, requiredField.getLabel());
 			}
@@ -546,7 +546,7 @@ public class ClientValidationUtils {
 	 *            validation rule should be applied
 	 * @return
 	 */
-	private static String getPostrequisiteStatement(AttributeField field, PrerequisiteConstraint constraint, String booleanStatement) {
+	private static String getPostrequisiteStatement(InputField field, PrerequisiteConstraint constraint, String booleanStatement) {
 		// field occurs after case
 		String message = "";
 		if(StringUtils.isEmpty(constraint.getLabelKey())){
@@ -589,7 +589,7 @@ public class ClientValidationUtils {
 	 *            the booleanstatement in js - should return true when the
 	 *            validation rule should be applied
 	 */
-	public static void processMustOccurConstraint(AttributeField field, View view, MustOccurConstraint mc, String booleanStatement) {
+	public static void processMustOccurConstraint(InputField field, View view, MustOccurConstraint mc, String booleanStatement) {
 		methodKey++;
 		mustOccursPathNames = new ArrayList<List<String>>();
 		// TODO make this show the fields its requiring
@@ -612,7 +612,7 @@ public class ClientValidationUtils {
 	 * @return
 	 */
 	@SuppressWarnings("boxing")
-	private static String getMustOccurStatement(AttributeField field, MustOccurConstraint constraint) {
+	private static String getMustOccurStatement(InputField field, MustOccurConstraint constraint) {
 		String statement = "";
 		List<String> attributePaths = new ArrayList<String>();
 		if (constraint != null && constraint.getApplyClientSide()) {
@@ -698,7 +698,7 @@ public class ClientValidationUtils {
 					String min = paths.get(paths.size()-2);
 					String max = paths.get(paths.size()-1);
 					for(int j=0; j<paths.size()-2;j++){
-						AttributeField field = view.getViewIndex().getAttributeFieldByPath(paths.get(j).trim());
+						InputField field = (InputField) view.getViewIndex().getDataFieldByPath(paths.get(j).trim());
 						String label = genericLabel;
 						if(field != null && StringUtils.isNotEmpty(field.getLabel())){
 							label = field.getLabel();
@@ -757,15 +757,15 @@ public class ClientValidationUtils {
 	}
 
 	/**
-	 * This method processes all the constraints on the AttributeField passed in and adds all the necessary
+	 * This method processes all the constraints on the InputField passed in and adds all the necessary
 	 * jQuery and js required (validator's rules, methods, and messages) to the View's onDocumentReady call.
-	 * The result is js that will validate all the constraints contained on an AttributeField during user interaction
+	 * The result is js that will validate all the constraints contained on an InputField during user interaction
 	 * with the field using the jQuery validation plugin and custom code.
 	 * 
 	 * @param field
 	 */
 	@SuppressWarnings("boxing")
-	public static void processAndApplyConstraints(AttributeField field, View view) {
+	public static void processAndApplyConstraints(InputField field, View view) {
 		methodKey = 0;
 		if ((field.getRequired() != null) && (field.getRequired().booleanValue())) {
 			field.getControl().addStyleClass("required");

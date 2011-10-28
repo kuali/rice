@@ -23,7 +23,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -64,8 +64,8 @@ public class CollectionLayoutUtils {
     }
 
     protected static void setControlValueToLineIdentifier(Field selectField, Object line) {
-        if (selectField instanceof AttributeField) {
-            Control selectControl = ((AttributeField) selectField).getControl();
+        if (selectField instanceof InputField) {
+            Control selectControl = ((InputField) selectField).getControl();
 
             selectControl.addStyleClass("kr-select-line");
 

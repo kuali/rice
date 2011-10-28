@@ -212,11 +212,11 @@
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="AttributeField" p:propertyName="code"/>
-                <bean parent="AttributeField" p:propertyName="name"/>
-                <bean parent="AttributeField" p:propertyName="shortName"/>
-                <bean parent="AttributeField" p:propertyName="campusTypeCode"/>
-                <bean parent="AttributeField" p:propertyName="active"/>
+                <bean parent="InputField" p:propertyName="code"/>
+                <bean parent="InputField" p:propertyName="name"/>
+                <bean parent="InputField" p:propertyName="shortName"/>
+                <bean parent="InputField" p:propertyName="campusTypeCode"/>
+                <bean parent="InputField" p:propertyName="active"/>
                </list>
              </property>
              <property name="title" value="Campus Information"/>
@@ -232,20 +232,20 @@
     <property name="dataObjectClassName" value="org.kuali.rice.location.impl.campus.CampusBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="code" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="shortName" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="campusTypeCode" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="code" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="shortName" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="campusTypeCode" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="code"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="shortName"/>
-        <bean parent="AttributeField" p:propertyName="campusTypeCode"/>
-        <bean parent="AttributeField" p:propertyName="active"/>
+        <bean parent="InputField" p:propertyName="code"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="shortName"/>
+        <bean parent="InputField" p:propertyName="campusTypeCode"/>
+        <bean parent="InputField" p:propertyName="active"/>
       </list>
     </property>
   </bean>

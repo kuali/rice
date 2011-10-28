@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.lookup;
 
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.LookupForm;
@@ -130,5 +130,5 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      */
     public void getMaintenanceActionLink(LinkField actionLinkField, Object model, String maintenanceMethodToCall);
 
-    public void setMultiValueLookupSelect(AttributeField selectField, Object model);
+    public void setMultiValueLookupSelect(InputField selectField, Object model);
 }

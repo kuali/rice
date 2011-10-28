@@ -15,11 +15,11 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -97,8 +97,8 @@ public class QuickFinder extends WidgetBase {
             return;
         }
 
-        if (parent instanceof AttributeField) {
-            AttributeField field = (AttributeField) parent;
+        if (parent instanceof InputField) {
+            InputField field = (InputField) parent;
 
             // determine lookup class, field conversions and lookup parameters in
             // not set
@@ -197,7 +197,7 @@ public class QuickFinder extends WidgetBase {
         }
     }
 
-    protected DataObjectRelationship getRelationshipForField(View view, Object model, AttributeField field) {
+    protected DataObjectRelationship getRelationshipForField(View view, Object model, InputField field) {
         String propertyName = field.getBindingInfo().getBindingName();
 
         // get object instance and class for parent
@@ -212,7 +212,7 @@ public class QuickFinder extends WidgetBase {
                 parentObjectClass, propertyName, "", true, true, false);
     }
 
-    protected void generateFieldConversions(AttributeField field, DataObjectRelationship relationship) {
+    protected void generateFieldConversions(InputField field, DataObjectRelationship relationship) {
         fieldConversions = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
             String fromField = entry.getValue();
@@ -226,7 +226,7 @@ public class QuickFinder extends WidgetBase {
         }
     }
 
-    protected void generateLookupParameters(AttributeField field, DataObjectRelationship relationship) {
+    protected void generateLookupParameters(InputField field, DataObjectRelationship relationship) {
         lookupParameters = new HashMap<String, String>();
         for (Map.Entry<String, String> entry : relationship.getParentToChildReferences().entrySet()) {
             String fromField = entry.getKey();

@@ -28,11 +28,11 @@
           <property name="title" value="Edit Document Type" />
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="parentDocType.name"/>
-              <bean parent="AttributeField" p:propertyName="name" />
-              <bean parent="AttributeField" p:propertyName="unresolvedDocHandlerUrl" />
-              <bean parent="AttributeField" p:propertyName="actualNotificationFromAddress" />
-              <bean parent="AttributeField" p:propertyName="active" p:defaultValue="true">
+              <bean parent="InputField" p:propertyName="parentDocType.name"/>
+              <bean parent="InputField" p:propertyName="name" />
+              <bean parent="InputField" p:propertyName="unresolvedDocHandlerUrl" />
+              <bean parent="InputField" p:propertyName="actualNotificationFromAddress" />
+              <bean parent="InputField" p:propertyName="active" p:defaultValue="true">
               	<property name="control">
       				<bean parent="CheckboxControl"/>
     			</property>
@@ -44,15 +44,15 @@
           <property name="title" value="Fields Available for Retroactive Application" />
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="label"/>
-              <bean parent="AttributeField" p:propertyName="description" >
+              <bean parent="InputField" p:propertyName="label"/>
+              <bean parent="InputField" p:propertyName="description" >
               	<property name="control">
         			<bean parent="TextAreaControl" p:rows="3" p:cols="80"/>
     			</property>
     		  </bean>
-              <bean parent="AttributeField" p:propertyName="unresolvedHelpDefinitionUrl" />
-              <bean parent="AttributeField" p:propertyName="unresolvedDocSearchHelpUrl" />
-              <bean parent="AttributeField" p:propertyName="applyRetroactively" p:defaultValue="false">
+              <bean parent="InputField" p:propertyName="unresolvedHelpDefinitionUrl" />
+              <bean parent="InputField" p:propertyName="unresolvedDocSearchHelpUrl" />
+              <bean parent="InputField" p:propertyName="applyRetroactively" p:defaultValue="false">
               	<property name="control">
       				<bean parent="CheckboxControl"/>
     			</property>

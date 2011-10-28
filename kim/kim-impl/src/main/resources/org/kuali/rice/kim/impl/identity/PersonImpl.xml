@@ -299,20 +299,20 @@
         <bean parent="GroupSectionGridLayout">
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="principalName"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="firstName"/>
-              <bean parent="AttributeField" p:propertyName="middleName"/>
-              <bean parent="AttributeField" p:propertyName="lastName"/>
-              <bean parent="AttributeField" p:propertyName="principalId"/>
-              <bean parent="AttributeField" p:propertyName="entityId"/>
-              <bean parent="AttributeField" p:propertyName="campusCode"/>
-              <bean parent="AttributeField" p:propertyName="emailAddress"/>
-              <bean parent="AttributeField" p:propertyName="phoneNumber"/>
-              <bean parent="AttributeField" p:propertyName="primaryDepartmentCode"/>
-              <bean parent="AttributeField" p:propertyName="employeeStatusCode"/>
-              <bean parent="AttributeField" p:propertyName="employeeTypeCode"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="principalName"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="firstName"/>
+              <bean parent="InputField" p:propertyName="middleName"/>
+              <bean parent="InputField" p:propertyName="lastName"/>
+              <bean parent="InputField" p:propertyName="principalId"/>
+              <bean parent="InputField" p:propertyName="entityId"/>
+              <bean parent="InputField" p:propertyName="campusCode"/>
+              <bean parent="InputField" p:propertyName="emailAddress"/>
+              <bean parent="InputField" p:propertyName="phoneNumber"/>
+              <bean parent="InputField" p:propertyName="primaryDepartmentCode"/>
+              <bean parent="InputField" p:propertyName="employeeStatusCode"/>
+              <bean parent="InputField" p:propertyName="employeeTypeCode"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
           <property name="title" value="Person Attributes"/>
@@ -328,33 +328,33 @@
     <property name="defaultSortAttributeNames" value="principalName"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="principalName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="principalId"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="entityId"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="firstName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="middleName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="lastName"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="emailAddress"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="phoneNumber"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="employeeId"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="campusCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="primaryDepartmentCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="employeeStatusCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="employeeTypeCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" p:defaultValue="Y"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="lookupRoleNamespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="lookupRoleName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="principalName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="principalId"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="entityId"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="firstName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="middleName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="lastName"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="emailAddress"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="phoneNumber"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="employeeId"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="campusCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="primaryDepartmentCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="employeeStatusCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="employeeTypeCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="lookupRoleNamespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="lookupRoleName"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="principalId"/>
-        <bean parent="AttributeField" p:propertyName="principalName"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="entityId"/>
-        <bean parent="AttributeField" p:propertyName="campusCode"/>
-        <bean parent="AttributeField" p:propertyName="primaryDepartmentCode"/>
-        <bean parent="AttributeField" p:propertyName="employeeId"/>
+        <bean parent="InputField" p:propertyName="principalId"/>
+        <bean parent="InputField" p:propertyName="principalName"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="entityId"/>
+        <bean parent="InputField" p:propertyName="campusCode"/>
+        <bean parent="InputField" p:propertyName="primaryDepartmentCode"/>
+        <bean parent="InputField" p:propertyName="employeeId"/>
       </list>
     </property>
   </bean>

@@ -19,10 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.AttributeQuery;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 
@@ -47,11 +47,11 @@ public class UserControl extends TextControl {
     public void performApplyModel(View view, Object model, Component parent) {
         super.performApplyModel(view, model, parent);
 
-        if (!(parent instanceof AttributeField)) {
+        if (!(parent instanceof InputField)) {
             return;
         }
 
-        AttributeField field = (AttributeField) parent;
+        InputField field = (InputField) parent;
         field.getHiddenPropertyNames().add(principalIdPropertyName);
 
         if (!field.isReadOnly()) {

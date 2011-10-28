@@ -102,10 +102,10 @@
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="typeCode"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="typeCode"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>
@@ -115,12 +115,12 @@
           <property name="propertyName" value="books"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="title"/>
-              <bean parent="AttributeField" p:propertyName="isbn"/>
-              <bean parent="AttributeField" p:propertyName="price"/>
-              <bean parent="AttributeField" p:propertyName="rating"/>
-              <bean parent="AttributeField" p:propertyName="publisher"/>
-              <bean parent="AttributeField" p:propertyName="publicationDate"/>
+              <bean parent="InputField" p:propertyName="title"/>
+              <bean parent="InputField" p:propertyName="isbn"/>
+              <bean parent="InputField" p:propertyName="price"/>
+              <bean parent="InputField" p:propertyName="rating"/>
+              <bean parent="InputField" p:propertyName="publisher"/>
+              <bean parent="InputField" p:propertyName="publicationDate"/>
             </list>
           </property>
           <property name="layoutManager.summaryFields">
@@ -138,17 +138,17 @@
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.BookType"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="typeCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="typeCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="typeCode"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="description"/>
-        <bean parent="AttributeField" p:propertyName="active"/>
+        <bean parent="InputField" p:propertyName="typeCode"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="description"/>
+        <bean parent="InputField" p:propertyName="active"/>
       </list>
     </property>
   </bean>  

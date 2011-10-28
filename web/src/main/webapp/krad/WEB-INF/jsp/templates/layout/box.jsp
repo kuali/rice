@@ -72,7 +72,7 @@
   --%>
   <c:if test="${manager.layoutFieldErrors}">
 	   <span id="${manager.id}_errors_block" class="kr-errorsField" style="float:left;">
-	   		<c:forEach items="${container.attributeFields}" var="item">
+	   		<c:forEach items="${container.inputFields}" var="item">
            <krad:template component="${item.errorsField}"/>
          </c:forEach>
 	   </span>

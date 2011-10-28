@@ -33,7 +33,7 @@ import java.util.Map;
  * <p>
  * Property replacers can be used to change out an entire Component or List/Map of Components. For example, based on a
  * condition you might want to display a <code>TextControl</code> or <code>RadioControl</code> for an
- * <code>AttributeField</code>. You can define the field with a text control, then include a property replacer as
+ * <code>InputField</code>. You can define the field with a text control, then include a property replacer as
  * follows:
  * <pre>
         <bean parent="PropertyReplacer" p:propertyName="control"

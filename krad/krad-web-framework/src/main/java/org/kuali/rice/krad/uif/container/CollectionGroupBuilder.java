@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
@@ -225,10 +225,10 @@ public class CollectionGroupBuilder implements Serializable {
 
 		if(lineIndex == -1 && !lineFields.isEmpty()){
     		for(Field f: lineFields){
-    		    if(f instanceof AttributeField){
+    		    if(f instanceof InputField){
     		        //sets up - skipping these fields in add area during standard form validation calls
     		        //custom addLineToCollection js call will validate these fields manually on an add
-    		    	Control control = ((AttributeField) f).getControl();
+    		    	Control control = ((InputField) f).getControl();
     		    	if (control != null) {
     		    	    control.addStyleClass(collectionGroup.getFactoryId() + "-addField");
     		    		control.addStyleClass("ignoreValid");

@@ -18,7 +18,7 @@ package org.kuali.rice.krad.uif.view;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.AttributeField;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 
 import java.io.Serializable;
@@ -34,7 +34,7 @@ public class ViewIndex implements Serializable {
     private static final long serialVersionUID = 4700818801272201371L;
 
     private Map<String, Component> index;
-    private Map<String, AttributeField> attributeFieldIndex;
+    private Map<String, DataField> dataFieldIndex;
     private Map<String, CollectionGroup> collectionsIndex;
 
     private Map<String, Component> initialComponentStates;
@@ -44,7 +44,7 @@ public class ViewIndex implements Serializable {
      */
     public ViewIndex() {
         index = new HashMap<String, Component>();
-        attributeFieldIndex = new HashMap<String, AttributeField>();
+        dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
         initialComponentStates = new HashMap<String, Component>();
     }
@@ -54,8 +54,8 @@ public class ViewIndex implements Serializable {
      * are indexed by their IDs with the special indexing done for certain components
      *
      * <p>
-     * <code>AttributeField</code> instances are indexed by the attribute path.
-     * This is useful for retrieving the AttributeField based on the incoming
+     * <code>DataField</code> instances are indexed by the attribute path.
+     * This is useful for retrieving the InputField based on the incoming
      * request parameter
      * </p>
      *
@@ -67,7 +67,7 @@ public class ViewIndex implements Serializable {
      */
     protected void index(View view) {
         index = new HashMap<String, Component>();
-        attributeFieldIndex = new HashMap<String, AttributeField>();
+        dataFieldIndex = new HashMap<String, DataField>();
         collectionsIndex = new HashMap<String, CollectionGroup>();
 
         indexComponent(view);
@@ -75,7 +75,7 @@ public class ViewIndex implements Serializable {
 
     /**
      * Adds an entry to the main index for the given component. If the component
-     * is of type <code>AttributeField</code> or <code>CollectionGroup</code> an
+     * is of type <code>DataField</code> or <code>CollectionGroup</code> an
      * entry is created in the corresponding indexes for those types as well. Then
      * the #indexComponent method is called for each of the component's children
      *
@@ -92,9 +92,9 @@ public class ViewIndex implements Serializable {
 
         index.put(component.getId(), component);
 
-        if (component instanceof AttributeField) {
-            AttributeField field = (AttributeField) component;
-            attributeFieldIndex.put(field.getBindingInfo().getBindingPath(), field);
+        if (component instanceof DataField) {
+            DataField field = (DataField) component;
+            dataFieldIndex.put(field.getBindingInfo().getBindingPath(), field);
         } else if (component instanceof CollectionGroup) {
             CollectionGroup collectionGroup = (CollectionGroup) component;
             collectionsIndex.put(collectionGroup.getBindingInfo().getBindingPath(), collectionGroup);
@@ -116,44 +116,44 @@ public class ViewIndex implements Serializable {
     }
 
     /**
-     * Retrieves a <code>AttributeField</code> instance from the index
+     * Retrieves a <code>DataField</code> instance from the index
      *
      * @param attributePath - full path of the attribute (from the form)
-     * @return AttributeField instance for the path or Null if not found
+     * @return DataField instance for the path or Null if not found
      */
-    public AttributeField getAttributeFieldByPath(String attributePath) {
-        return attributeFieldIndex.get(attributePath);
+    public DataField getDataFieldByPath(String attributePath) {
+        return dataFieldIndex.get(attributePath);
     }
 
     /**
-     * Retrieves a <code>AttributeField</code> instance that has the given property name
+     * Retrieves a <code>DataField</code> instance that has the given property name
      * specified (note this is not the full binding path and first match is returned)
      *
      * @param propertyName - property name for field to retrieve
-     * @return AttributeField instance found or null if not found
+     * @return DataField instance found or null if not found
      */
-    public AttributeField getAttributeFieldByPropertyName(String propertyName) {
-        AttributeField attributeField = null;
+    public DataField getDataFieldByPropertyName(String propertyName) {
+        DataField dataField = null;
 
-        for (AttributeField field : attributeFieldIndex.values()) {
+        for (DataField field : dataFieldIndex.values()) {
             if (StringUtils.equals(propertyName, field.getPropertyName())) {
-                attributeField = field;
+                dataField = field;
                 break;
             }
         }
 
-        return attributeField;
+        return dataField;
     }
 
     /**
      * Gets the Map that contains attribute field indexing information. The Map
      * key points to an attribute binding path, and the Map value is the
-     * <code>AttributeField</code> instance
+     * <code>DataField</code> instance
      *
-     * @return Map<String, AttributeField> attribute fields index map
+     * @return Map<String, DataField> data fields index map
      */
-    public Map<String, AttributeField> getAttributeFieldIndex() {
-        return this.attributeFieldIndex;
+    public Map<String, DataField> getDataFieldIndex() {
+        return this.dataFieldIndex;
     }
 
     /**

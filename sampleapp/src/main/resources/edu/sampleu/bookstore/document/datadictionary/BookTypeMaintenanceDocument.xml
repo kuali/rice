@@ -22,10 +22,10 @@
           <property name="title" value="Add/Edit Book Type"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="typeCode"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
-              <bean parent="AttributeField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="typeCode"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>

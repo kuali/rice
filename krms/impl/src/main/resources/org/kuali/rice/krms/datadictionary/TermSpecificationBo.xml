@@ -10,6 +10,7 @@
     <property name="attributes">
       <list>
         <ref bean="TermSpecificationBo-id"/>
+        <ref bean="TermSpecificationBo-name"/>
         <ref bean="TermSpecificationBo-namespace"/>
         <ref bean="TermSpecificationBo-name"/>
         <ref bean="TermSpecificationBo-type"/>
@@ -107,11 +108,11 @@
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="id"/>
-        <bean parent="AttributeField" p:propertyName="namespace"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="type"/>
-        <bean parent="AttributeField" p:propertyName="description"/>
+        <bean parent="InputField" p:propertyName="id"/>
+        <bean parent="InputField" p:propertyName="namespace"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="type"/>
+        <bean parent="InputField" p:propertyName="description"/>
       </list>
     </property>
   </bean>
@@ -124,9 +125,9 @@
      <property name="layoutManager.renderSequenceField" value="false"/>
      <property name="items">
        <list>
-         <bean parent="AttributeField" p:propertyName="id"/>
-         <bean parent="AttributeField" p:propertyName="namespace"/>
-         <bean parent="AttributeField" p:propertyName="name"/>
+         <bean parent="InputField" p:propertyName="id"/>
+         <bean parent="InputField" p:propertyName="namespace"/>
+         <bean parent="InputField" p:propertyName="name"/>
         </list>
      </property>
   </bean>
@@ -140,18 +141,18 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="type"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespace"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="type"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="namespace"/>
-        <bean parent="AttributeField" p:propertyName="type"/>
+        <bean parent="InputField" p:propertyName="id"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="namespace"/>
+        <bean parent="InputField" p:propertyName="type"/>
       </list>
     </property>
   </bean>

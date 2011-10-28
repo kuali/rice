@@ -23,14 +23,14 @@
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccountType" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="accountTypeCode" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="accountTypeCode" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="accountTypeCode" />
-        <bean parent="AttributeField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="accountTypeCode" />
+        <bean parent="InputField" p:propertyName="name" />
       </list>
     </property>
   </bean>

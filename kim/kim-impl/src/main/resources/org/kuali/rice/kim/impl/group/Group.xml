@@ -267,15 +267,15 @@
           <property name="layoutManager.numberOfColumns" value="4"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="id"/>
-              <bean parent="AttributeField" p:propertyName="kimTypeInfo.name"/>
-              <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-              <bean parent="AttributeField" p:propertyName="name">
+              <bean parent="InputField" p:propertyName="id"/>
+              <bean parent="InputField" p:propertyName="kimTypeInfo.name"/>
+              <bean parent="InputField" p:propertyName="namespaceCode"/>
+              <bean parent="InputField" p:propertyName="name">
                 <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
                 <property name="fieldInquiry.inquiryParameters" value="id:id"/>
               </bean>
-              <bean parent="AttributeField" p:propertyName="active"/>
-              <bean parent="AttributeField" p:propertyName="description"/>
+              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="InputField" p:propertyName="description"/>
             </list>
           </property>
           <property name="title" value="Group Information"/>
@@ -288,12 +288,12 @@
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="items">
             <list>
-              <bean parent="AttributeField" p:propertyName="principalName"/>
-              <bean parent="AttributeField" p:propertyName="name"/>
-              <bean parent="AttributeField" p:propertyName="firstName"/>
-              <bean parent="AttributeField" p:propertyName="middleName"/>
-              <bean parent="AttributeField" p:propertyName="lastName"/>
-              <bean parent="AttributeField" p:propertyName="principalId"/>
+              <bean parent="InputField" p:propertyName="principalName"/>
+              <bean parent="InputField" p:propertyName="name"/>
+              <bean parent="InputField" p:propertyName="firstName"/>
+              <bean parent="InputField" p:propertyName="middleName"/>
+              <bean parent="InputField" p:propertyName="lastName"/>
+              <bean parent="InputField" p:propertyName="principalId"/>
             </list>
           </property>
         </bean>
@@ -307,23 +307,23 @@
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.group.GroupLookupableImpl"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="description"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="kimTypeId"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="description"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="kimTypeId"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="kimTypeInfo.name"/>
-        <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-        <bean parent="AttributeField" p:propertyName="name">
+        <bean parent="InputField" p:propertyName="kimTypeInfo.name"/>
+        <bean parent="InputField" p:propertyName="namespaceCode"/>
+        <bean parent="InputField" p:propertyName="name">
           <property name="fieldInquiry.dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
           <property name="fieldInquiry.inquiryParameters" value="id:id"/>
         </bean>
-        <bean parent="AttributeField" p:propertyName="description"/>
+        <bean parent="InputField" p:propertyName="description"/>
       </list>
     </property>
   </bean>

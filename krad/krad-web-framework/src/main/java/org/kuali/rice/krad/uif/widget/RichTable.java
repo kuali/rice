@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
@@ -29,7 +30,6 @@ import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.SelectControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.field.AttributeField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.TableLayoutManager;
@@ -150,8 +150,8 @@ public class RichTable extends WidgetBase {
                     component = ((FieldGroup) component).getItems().get(0);
                 }
 
-                if (component instanceof AttributeField) {
-                    AttributeField field = (AttributeField) component;
+                if (component instanceof InputField) {
+                    InputField field = (InputField) component;
 
                     String sortType = null;
                     if (collectionGroup.isReadOnly() || (field.getControl() == null)) {
@@ -168,7 +168,7 @@ public class RichTable extends WidgetBase {
                     }
 
                     Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
-                            collectionGroup.getCollectionObjectClass(), ((AttributeField) component).getPropertyName());
+                            collectionGroup.getCollectionObjectClass(), ((InputField) component).getPropertyName());
                     String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
                     tableToolsColumnOptions.append(colOptions + " , ");
                 } else {

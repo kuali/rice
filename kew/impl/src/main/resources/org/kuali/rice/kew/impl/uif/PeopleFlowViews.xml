@@ -29,16 +29,16 @@
     <property name="dataObjectClassName" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespaceCode"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="active"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="namespaceCode"/>
-        <bean parent="AttributeField" p:propertyName="name"/>
-        <bean parent="AttributeField" p:propertyName="active"/>
+        <bean parent="InputField" p:propertyName="namespaceCode"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="active"/>
       </list>
     </property>
   </bean>
@@ -88,12 +88,12 @@
     <property name="layoutManager.numberOfColumns" value="4"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="namespaceCode" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="description" p:required="true" p:rowSpan="2"
+        <bean parent="InputField" p:propertyName="namespaceCode" p:required="true"/>
+        <bean parent="InputField" p:propertyName="description" p:required="true" p:rowSpan="2"
               p:labelField.rowSpan="2"/>
-        <bean parent="AttributeField" p:propertyName="name" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="typeId" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="active" p:defaultValue="true"/>
+        <bean parent="InputField" p:propertyName="name" p:required="true"/>
+        <bean parent="InputField" p:propertyName="typeId" p:required="true"/>
+        <bean parent="InputField" p:propertyName="active" p:defaultValue="true"/>
       </list>
     </property>
     <property name="title" value="PeopleFlow Summary"/>
@@ -125,10 +125,10 @@
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="priority" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
+        <bean parent="InputField" p:propertyName="priority" p:required="true"/>
+        <bean parent="InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean parent="PeopleFlow-Member" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="actionRequestPolicyCode"
+        <bean parent="InputField" p:propertyName="actionRequestPolicyCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
@@ -153,10 +153,10 @@
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="AttributeField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
+        <bean parent="InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean id="PeopleFlow-MemberDelegate" parent="PeopleFlow-Member" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="delegationTypeCode" p:required="true"/>
-        <bean parent="AttributeField" p:propertyName="actionRequestPolicyCode"
+        <bean parent="InputField" p:propertyName="delegationTypeCode" p:required="true"/>
+        <bean parent="InputField" p:propertyName="actionRequestPolicyCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
@@ -167,7 +167,7 @@
                                            PeopleFlow Member Field
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-Member" parent="AttributeField" p:propertyName="memberName" p:label="Member"
+  <bean id="PeopleFlow-Member" parent="InputField" p:propertyName="memberName" p:label="Member"
         p:refreshWhenChanged="#line.memberTypeCode" p:readOnly="@{#line.memberTypeCode ne 'P'}"
         p:fieldLookup.render="true">
     <property name="control">

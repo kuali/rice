@@ -407,7 +407,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	/**
 	 * Default <code>Control</code> to use when the attribute is to be rendered
 	 * for the UI. Used by the UIF when a control is not defined for an
-	 * <code>AttributeField</code>
+	 * <code>InputField</code>
 	 * 
 	 * @return Control instance
 	 */

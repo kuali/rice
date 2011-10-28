@@ -100,20 +100,20 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="id" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="name" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace" />
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="label" />        
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="componentName" />        
+        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="label" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="componentName" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="AttributeField" p:propertyName="id" />
-        <bean parent="AttributeField" p:propertyName="name" />
-        <bean parent="AttributeField" p:propertyName="namespace" />
-        <bean parent="AttributeField" p:propertyName="label" />
-        <bean parent="AttributeField" p:propertyName="componentName" />
+        <bean parent="InputField" p:propertyName="id" />
+        <bean parent="InputField" p:propertyName="name" />
+        <bean parent="InputField" p:propertyName="namespace" />
+        <bean parent="InputField" p:propertyName="label" />
+        <bean parent="InputField" p:propertyName="componentName" />
       </list>
     </property>
   </bean>
@@ -131,9 +131,9 @@
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
 					        <list>
-					          <bean parent="AttributeField" p:propertyName="id"/>
-					          <bean parent="AttributeField" p:propertyName="name"/>
-					          <bean parent="AttributeField" p:propertyName="namespace"/>
+					          <bean parent="InputField" p:propertyName="id"/>
+					          <bean parent="InputField" p:propertyName="name"/>
+					          <bean parent="InputField" p:propertyName="namespace"/>
 					        </list>
 					      </property>
 					      <property name="title" value="KRMS Attributes"/>
@@ -142,7 +142,7 @@
                           <property name="layoutManager.numberOfColumns" value="2"/>
                           <property name="items">
                             <list>
-                              <bean parent="AttributeField" p:propertyName="label"/>
+                              <bean parent="InputField" p:propertyName="label"/>
                             </list>
                           </property>
                           <property name="title" value="Attribute Label"/>

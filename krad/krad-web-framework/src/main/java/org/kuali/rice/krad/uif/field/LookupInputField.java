@@ -33,16 +33,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom <code>AttributeField</code> for search fields within a lookup view
+ * Custom <code>InputField</code> for search fields within a lookup view
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LookupAttributeField extends AttributeField {
+public class LookupInputField extends InputField {
     private static final long serialVersionUID = -8294275596836322699L;
 
     protected boolean treatWildcardsAndOperatorsAsLiteral = false;
 
-    public LookupAttributeField() {
+    public LookupInputField() {
         super();
     }
 
@@ -61,11 +61,11 @@ public class LookupAttributeField extends AttributeField {
     }
 
     /**
-     * Override of AttributeField copy to setup properties necessary to make the field usable for inputting
+     * Override of InputField copy to setup properties necessary to make the field usable for inputting
      * search criteria
      *
      * @param attributeDefinition - AttributeDefinition instance the property values should be copied from
-     * @see org.kuali.rice.krad.uif.field.AttributeField#copyFromAttributeDefinition(org.kuali.rice.krad.datadictionary.AttributeDefinition)
+     * @see InputField#copyFromAttributeDefinition(org.kuali.rice.krad.datadictionary.AttributeDefinition)
      */
     @Override
     public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {

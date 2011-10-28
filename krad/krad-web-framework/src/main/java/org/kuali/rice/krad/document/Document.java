@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
@@ -96,12 +96,12 @@ public interface Document extends PersistableBusinessObject {
     /**
      * method to integrate with workflow, where we will actually handle the transitions of levels for documents
      */
-    public void doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent);
+    public void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent);
     
     /**
      * method to integrate with workflow where we will be able to perform logic for an action taken being performed on a document
      */
-    public void doActionTaken(ActionTakenEventDTO event);
+    public void doActionTaken(ActionTakenEvent event);
     
     /**
      * This method will be called after the Workflow engine has completely finished processing a document.
@@ -118,7 +118,7 @@ public interface Document extends PersistableBusinessObject {
     /**
      * This method will be called before the Workflow engine has begun processing a document.
      */
-    public List<Long> getWorkflowEngineDocumentIdsToLock();
+    public List<String> getWorkflowEngineDocumentIdsToLock();
 
     /**
      * Getter method to get the document title as it will appear in and be searchable in workflow.
@@ -213,7 +213,7 @@ public interface Document extends PersistableBusinessObject {
      * Handle the doRouteStatusChange event from the post processor
      * 
      */
-    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent);
+    public void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent);
     
     /**
      * Returns the note type which should be used for notes associated with this document.

@@ -269,7 +269,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
      * @see org.kuali.rice.krad.maintenance.Maintainable#getWorkflowEngineDocumentIdsToLock
      */
     @Override
-    public List<Long> getWorkflowEngineDocumentIdsToLock() {
+    public List<String> getWorkflowEngineDocumentIdsToLock() {
         return null;
     }
 

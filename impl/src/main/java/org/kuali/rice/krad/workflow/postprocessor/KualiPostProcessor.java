@@ -16,18 +16,19 @@
 
 package org.kuali.rice.krad.workflow.postprocessor;
 
-import java.rmi.RemoteException;
-
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.AfterProcessEventDTO;
-import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
-import org.kuali.rice.kew.dto.DeleteEventDTO;
-import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+
+import java.util.List;
 
 
 /**
@@ -45,62 +46,68 @@ import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
  * in here.
  * 
  */
-public class KualiPostProcessor implements PostProcessorRemote {
+public class KualiPostProcessor implements PostProcessor {
 
     private static Logger LOG = Logger.getLogger(KualiPostProcessor.class);
 
     /**
      * 
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
      */
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException {
+    @Override
+    public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
         return KRADServiceLocatorInternal.getPostProcessorService().doRouteStatusChange(statusChangeEvent);
     }
 
     /**
      * 
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
-    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
+    @Override
+    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
         return KRADServiceLocatorInternal.getPostProcessorService().doActionTaken(event);
     }
 
     /**
      * 
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doDeleteRouteHeader(org.kuali.rice.kew.framework.postprocessor.DeleteEvent)
      */
-    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
+    @Override
+    public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
         return KRADServiceLocatorInternal.getPostProcessorService().doDeleteRouteHeader(event);
     }
 
     /**
      * 
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
      */
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) throws RemoteException {
+    @Override
+    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
         return KRADServiceLocatorInternal.getPostProcessorService().doRouteLevelChange(levelChangeEvent);
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#beforeProcess(org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent)
      */
-    public boolean beforeProcess(BeforeProcessEventDTO beforeProcessEvent) throws Exception {
+    @Override
+    public ProcessDocReport beforeProcess(BeforeProcessEvent beforeProcessEvent) throws Exception {
         return KRADServiceLocatorInternal.getPostProcessorService().beforeProcess(beforeProcessEvent);
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterProcess(org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent)
      */
-    public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
+    @Override
+    public ProcessDocReport afterProcess(AfterProcessEvent afterProcessEvent) throws Exception {
         return KRADServiceLocatorInternal.getPostProcessorService().afterProcess(afterProcessEvent);
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#getDocumentIdsToLock(org.kuali.rice.kew.dto.DocumentLockingEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#getDocumentIdsToLock(org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent)
      */
-	public String[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
+    @Override
+	public List<String> getDocumentIdsToLock(DocumentLockingEvent documentLockingEvent) throws Exception {
 		return KRADServiceLocatorInternal.getPostProcessorService().getDocumentIdsToLock(documentLockingEvent);
 	}
-    
-    
- }
+
+}

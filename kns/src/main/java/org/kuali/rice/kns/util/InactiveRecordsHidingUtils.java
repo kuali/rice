@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * Inquiry screens and maintenance documents may render a collection of BOs on a screen.  These
- * BOs may implement {@link org.kuali.rice.krad.bo.MutableInactivatable}, which means that the BO has an active
+ * BOs may implement {@link org.kuali.rice.core.api.mo.common.active.MutableInactivatable}, which means that the BO has an active
  * flag of true or false.  Some screens may give the user the ability to not render (i.e. hide) inactive
  * collection elements.  This class has several utilities to control that behavior. 
  * 

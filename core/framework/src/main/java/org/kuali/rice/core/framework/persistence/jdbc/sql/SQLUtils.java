@@ -16,8 +16,8 @@
 package org.kuali.rice.core.framework.persistence.jdbc.sql;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.search.SearchOperator;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -335,11 +335,11 @@ public final class SQLUtils {
   		   lRet = new ArrayList<String>();
   		   for(String val: lTemp){
   			   // Clean the wildcards appropriately, depending on the field's data type.
-  			   if (KRADConstants.DATA_TYPE_STRING.equals(propertyDataType)) {
+  			   if (CoreConstants.DATA_TYPE_STRING.equals(propertyDataType)) {
   				   lRet.add(clean(val));
-  			   } else if (KRADConstants.DATA_TYPE_FLOAT.equals(propertyDataType) || KRADConstants.DATA_TYPE_LONG.equals(propertyDataType)) {
+  			   } else if (CoreConstants.DATA_TYPE_FLOAT.equals(propertyDataType) || CoreConstants.DATA_TYPE_LONG.equals(propertyDataType)) {
   				   lRet.add(SQLUtils.cleanNumericOfValidOperators(val));
-  			   } else if (KRADConstants.DATA_TYPE_DATE.equals(propertyDataType)) {
+  			   } else if (CoreConstants.DATA_TYPE_DATE.equals(propertyDataType)) {
   				   lRet.add(SQLUtils.cleanDate(val));
   			   } else {
   				   lRet.add(clean(val));
@@ -407,7 +407,7 @@ public final class SQLUtils {
      */
     private static String clean(String string) {
         for (SearchOperator op : SearchOperator.QUERY_CHARACTERS) {
-            string = StringUtils.replace(string, op.op(), KRADConstants.EMPTY_STRING);
+            string = StringUtils.replace(string, op.op(), CoreConstants.EMPTY_STRING);
         }
         return string;
     }

@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.api.KewApiConstants;
 
@@ -46,7 +45,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
  *       resolution.</li>
  *   <li>{@link #resolveQualifiedRole(RouteContext, String, String)} is immediately called for each of the qualified role names
  *       returned in the previous step, and it returns a {@link ResolvedQualifiedRole} containing the
- *       list of concrete recipients ({@link Id}s).</li>
+ *       list of concrete recipients ({@link org.kuali.rice.kew.api.identity.Id}s).</li>
  *   <li>({@link org.kuali.rice.kew.rule.UnqualifiedRoleAttribute} base class can be used to simplify this
  *       two-step process)</li>
  * </ol>

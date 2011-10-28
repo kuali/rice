@@ -19,7 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import org.kuali.rice.krad.workflow.SearchAttributeIndexRequestTest;
 
@@ -87,10 +87,10 @@ public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase 
 	/**
 	 * Overridden to make the document state change as route levels occur
 	 * 
-	 * @see org.kuali.rice.krad.document.DocumentBase#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+	 * @see org.kuali.rice.krad.document.DocumentBase#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
 	 */
 	@Override
-	public void doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) {
+	public void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) {
 		super.doRouteLevelChange(levelChangeEvent);
 		routeLevelCount += 1;
 		if (routedString == null) {

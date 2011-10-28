@@ -1,6 +1,6 @@
 package org.kuali.rice.kew.api.rule;
 
-import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.core.api.delegation.DelegationType;
 
 public interface RuleDelegationContract {
 

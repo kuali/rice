@@ -19,7 +19,7 @@ package org.kuali.rice.kew.api.peopleflow
 import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
-import org.kuali.rice.kew.api.action.DelegationType
+import org.kuali.rice.core.api.delegation.DelegationType
 import org.kuali.rice.kew.api.action.ActionRequestPolicy
 import org.kuali.rice.core.api.membership.MemberType
 

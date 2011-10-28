@@ -24,12 +24,12 @@ import javax.persistence.IdClass
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
-import javax.persistence.Transient
+
 import org.hibernate.annotations.Type
 import org.kuali.rice.core.api.component.Component
 import org.kuali.rice.core.api.component.ComponentContract
 import org.kuali.rice.core.impl.namespace.NamespaceBo
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 @IdClass(ComponentId.class)

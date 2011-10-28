@@ -2,7 +2,7 @@ package org.kuali.rice.kew.impl.type
 
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinitionContract
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 public class KewAttributeDefinitionBo extends PersistableBusinessObjectBase implements KewAttributeDefinitionContract, MutableInactivatable{

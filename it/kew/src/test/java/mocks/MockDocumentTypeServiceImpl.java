@@ -26,7 +26,7 @@ import org.jdom.Element;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 

@@ -42,6 +42,7 @@ import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
@@ -50,7 +51,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
-import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -218,7 +218,8 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         addTextElement(doc, root, "docRouteStatus", routeHeader.getDocRouteStatus());
         addCDataElement(doc, root, "routeStatusLabel", routeHeader.getRouteStatusLabel());
         addTextElement(doc, root, "actionRequestCd", actionItem.getActionRequestCd());
-        addTextElement(doc, root, "actionRequestLabel", CodeTranslator.getActionRequestLabel(actionItem.getActionRequestCd()));
+        addTextElement(doc, root, "actionRequestLabel", CodeTranslator.getActionRequestLabel(
+                actionItem.getActionRequestCd()));
         addDelegatorElement(doc, root, actionItem);
         addTimestampElement(doc, root, "createDate", routeHeader.getCreateDate());
         addWorkgroupRequestElement(doc, root, actionItem);

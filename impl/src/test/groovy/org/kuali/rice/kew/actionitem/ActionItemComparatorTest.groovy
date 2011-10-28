@@ -3,7 +3,7 @@ package org.kuali.rice.kew.actionitem
 import org.junit.Test
 import org.kuali.rice.kew.api.action.ActionRequestType
 import static org.junit.Assert.assertTrue
-import org.kuali.rice.kew.api.action.DelegationType
+import org.kuali.rice.core.api.delegation.DelegationType
 import static org.junit.Assert.assertEquals
 
 /**

@@ -3,7 +3,7 @@ package org.kuali.rice.krms.impl.repository
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttributeContract
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 public class KrmsTypeAttributeBo extends PersistableBusinessObjectBase implements MutableInactivatable, KrmsTypeAttributeContract {
 

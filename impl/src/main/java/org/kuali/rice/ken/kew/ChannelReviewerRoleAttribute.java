@@ -24,14 +24,14 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.identity.PrincipalName;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
 import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 

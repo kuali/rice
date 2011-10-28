@@ -21,11 +21,12 @@ import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.document.DocumentContent;
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.DeleteEventDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.postprocessor.DefaultPostProcessorRemote;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -54,7 +55,7 @@ import java.util.TimerTask;
  * PostProcessor responsible for posting events to a url defined in the EDL doc definition.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EDocLitePostProcessor extends DefaultPostProcessorRemote {
+public class EDocLitePostProcessor extends DefaultPostProcessor {
     private static final Logger LOG = Logger.getLogger(EDocLitePostProcessor.class);
     private static final Timer TIMER = new Timer();
     public static final int SUBMIT_URL_MILLISECONDS_WAIT = 60000;
@@ -221,28 +222,28 @@ public class EDocLitePostProcessor extends DefaultPostProcessorRemote {
     	}
     }
 
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO event) throws RemoteException {
+    public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange event) throws RemoteException {
         LOG.debug("doRouteStatusChange: " + event);
         postEvent(event.getDocumentId(), event, EVENT_TYPE_ROUTE_STATUS_CHANGE);
-        return true;
+        return new ProcessDocReport(true, "");
     }
 
-    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
+    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws RemoteException {
         LOG.debug("doActionTaken: " + event);
         postEvent(event.getDocumentId(), event, EVENT_TYPE_ACTION_TAKEN);
-        return true;
+        return new ProcessDocReport(true, "");
     }
 
-    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
+    public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws RemoteException {
         LOG.debug("doDeleteRouteHeader: " + event);
         postEvent(event.getDocumentId(), event, EVENT_TYPE_DELETE_ROUTE_HEADER);
-        return false;
+        return new ProcessDocReport(true, "");
     }
 
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO event) throws RemoteException {
+    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange event) throws RemoteException {
         LOG.debug("doRouteLevelChange: " + event);
         postEvent(event.getDocumentId(), event, EVENT_TYPE_ROUTE_LEVEL_CHANGE);
-        return true;
+        return new ProcessDocReport(true, "");
     }
 
     public static Document getEDLContent(String documentId) {

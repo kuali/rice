@@ -15,47 +15,27 @@
  */
 package org.kuali.rice.ksb.messaging
 
-import org.junit.Test
-import org.kuali.rice.ksb.messaging.remotedservices.EchoService
-import javax.xml.namespace.QName
-import org.kuali.rice.ksb.messaging.remotedservices.SOAPService
-import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService
-import org.apache.cxf.frontend.ClientProxyFactoryBean
-import org.apache.cxf.aegis.databinding.AegisDatabinding
-import org.apache.cxf.interceptor.LoggingInInterceptor
-import org.apache.cxf.interceptor.LoggingOutInterceptor
-import org.apache.cxf.endpoint.dynamic.DynamicClientFactory
-import org.apache.cxf.endpoint.Client
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.httpclient.URI;
-import org.apache.cxf.aegis.databinding.AegisDatabinding;
-import org.apache.cxf.binding.soap.SoapFault;
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.endpoint.dynamic.DynamicClientFactory;
-import org.apache.cxf.frontend.ClientProxyFactoryBean;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
-import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
+
+
 import org.kuali.rice.ksb.test.KSBTestCase
-import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningOutInterceptor
+
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder
 import org.kuali.rice.core.api.config.property.Config
 import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningHelper
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard
-import org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

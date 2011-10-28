@@ -1,6 +1,6 @@
 package org.kuali.rice.kew.impl.peopleflow
 
-import org.kuali.rice.kew.api.action.DelegationType
+import org.kuali.rice.core.api.delegation.DelegationType
 import org.kuali.rice.core.api.membership.MemberType
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate
 
@@ -12,7 +12,7 @@ import org.kuali.rice.kim.api.identity.Person
 import org.kuali.rice.kim.framework.group.GroupEbo
 import org.kuali.rice.kim.framework.role.RoleEbo
 import org.kuali.rice.kim.api.services.KimApiServiceLocator
-import org.kuali.rice.kim.api.KimConstants
+
 import org.kuali.rice.krad.service.ModuleService
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 

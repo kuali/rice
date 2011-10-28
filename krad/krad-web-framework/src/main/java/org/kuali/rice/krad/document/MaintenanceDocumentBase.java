@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DocumentAttachment;
 import org.kuali.rice.krad.bo.DocumentHeader;
@@ -420,10 +420,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
 
     /**
-     * @see org.kuali.rice.krad.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.krad.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
      */
     @Override
-    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
+    public void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) {
         super.doRouteStatusChange(statusChangeEvent);
 
         WorkflowDocument workflowDocument = getDocumentHeader().getWorkflowDocument();
@@ -471,7 +471,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     /**
      * @see org.kuali.rice.krad.document.DocumentBase#getWorkflowEngineDocumentIdsToLock()
      */
-    public List<Long> getWorkflowEngineDocumentIdsToLock() {
+    public List<String> getWorkflowEngineDocumentIdsToLock() {
         if (newMaintainableObject != null) {
             return newMaintainableObject.getWorkflowEngineDocumentIdsToLock();
         }

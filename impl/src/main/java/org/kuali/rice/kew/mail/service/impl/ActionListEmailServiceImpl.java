@@ -18,6 +18,7 @@ package org.kuali.rice.kew.mail.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.mail.EmailBody;
 import org.kuali.rice.core.mail.EmailFrom;
@@ -28,7 +29,6 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequest;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;

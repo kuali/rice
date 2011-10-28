@@ -21,7 +21,7 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject
 import org.kuali.rice.location.api.state.State
 import org.kuali.rice.location.api.state.StateContract
 import org.kuali.rice.location.framework.country.CountryEbo
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 //@ToString
 class StateEbo implements MutableInactivatable, StateContract, ExternalizableBusinessObject {

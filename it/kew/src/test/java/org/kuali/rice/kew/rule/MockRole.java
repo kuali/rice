@@ -20,10 +20,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.identity.PrincipalName;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 

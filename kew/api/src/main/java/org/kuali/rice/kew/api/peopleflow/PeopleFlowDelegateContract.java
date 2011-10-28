@@ -1,8 +1,8 @@
 package org.kuali.rice.kew.api.peopleflow;
 
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
-import org.kuali.rice.kew.api.action.DelegationType;
 
 public interface PeopleFlowDelegateContract {
 

@@ -23,7 +23,7 @@ import org.kuali.rice.location.api.postalcode.PostalCodeContract
 import org.kuali.rice.location.framework.country.CountryEbo
 import org.kuali.rice.location.framework.county.CountyEbo
 import org.kuali.rice.location.framework.state.StateEbo
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 //@ToString
 class PostalCodeEbo implements MutableInactivatable, PostalCodeContract, ExternalizableBusinessObject {

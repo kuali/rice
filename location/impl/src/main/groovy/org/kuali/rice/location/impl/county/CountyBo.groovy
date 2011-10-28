@@ -31,7 +31,7 @@ import org.kuali.rice.location.api.county.County
 import org.kuali.rice.location.api.county.CountyContract
 import org.kuali.rice.location.impl.country.CountryBo
 import org.kuali.rice.location.impl.state.StateBo
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 @IdClass(CountyId.class)
 @Entity

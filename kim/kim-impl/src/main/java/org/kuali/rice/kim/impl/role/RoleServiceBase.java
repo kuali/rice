@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;

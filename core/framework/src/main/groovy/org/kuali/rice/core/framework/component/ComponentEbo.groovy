@@ -19,7 +19,7 @@ package org.kuali.rice.core.framework.component
 import org.kuali.rice.core.api.component.Component
 import org.kuali.rice.core.api.component.ComponentContract
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 //@ToString
 class ComponentEbo implements ComponentContract, MutableInactivatable, ExternalizableBusinessObject {

@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
@@ -139,10 +139,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+	 * @see org.kuali.rice.krad.document.DocumentBase#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
 	 */
 	@Override
-	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
+	public void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) {
 		super.doRouteStatusChange(statusChangeEvent);
 		if (getDocumentHeader().getWorkflowDocument().isProcessed()) {
 			KIMServiceLocatorInternal.getUiDocumentService().saveGroup(this);

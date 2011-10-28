@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.workgroup;
 
-import org.kuali.rice.kew.identity.Id;
+import org.kuali.rice.kew.api.identity.Id;
 
 /**
  * A marker interface for Id implementations for groups.

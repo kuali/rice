@@ -17,7 +17,7 @@
 package org.kuali.rice.location.framework.county
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.location.api.county.County
 import org.kuali.rice.location.api.county.CountyContract
 import org.kuali.rice.location.framework.country.CountryEbo

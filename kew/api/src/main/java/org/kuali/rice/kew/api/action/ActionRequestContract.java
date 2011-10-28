@@ -18,6 +18,7 @@ package org.kuali.rice.kew.api.action;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.mo.common.Identifiable;
 
 public interface ActionRequestContract extends Identifiable {

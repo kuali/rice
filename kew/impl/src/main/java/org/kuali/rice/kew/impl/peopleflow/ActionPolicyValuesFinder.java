@@ -17,7 +17,7 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class ActionPolicyValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> labels = new ArrayList<KeyValue>();
         for (Object key : CodeTranslator.approvePolicyLabels.keySet()) {
-        	labels.add(new ConcreteKeyValue((String)key,(String)CodeTranslator.approvePolicyLabels.get(key)));
+        	labels.add(new ConcreteKeyValue((String)key,(String) CodeTranslator.approvePolicyLabels.get(key)));
         }
         return labels;
     }    

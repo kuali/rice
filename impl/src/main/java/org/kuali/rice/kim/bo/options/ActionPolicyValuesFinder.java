@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.options;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ActionPolicyValuesFinder extends KeyValuesBase {
         List<KeyValue> labels = new ArrayList<KeyValue>();
         labels.add(new ConcreteKeyValue("", ""));
         for (Object key : CodeTranslator.approvePolicyLabels.keySet()) {
-        	labels.add(new ConcreteKeyValue((String)key,(String)CodeTranslator.approvePolicyLabels.get(key)));
+        	labels.add(new ConcreteKeyValue((String)key,(String) CodeTranslator.approvePolicyLabels.get(key)));
         }
         return labels;
     }    

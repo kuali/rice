@@ -38,6 +38,7 @@ import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaEbo;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
@@ -55,8 +56,6 @@ import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttributeImpl;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
@@ -699,7 +698,8 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             setDocRouteStatus(newStatus);
         } else {
             LOG.debug("unable to change status");
-            throw new InvalidActionTakenException("Document status " + CodeTranslator.getRouteStatusLabel(getDocRouteStatus()) + " cannot transition to status " + CodeTranslator.getRouteStatusLabel(newStatus));
+            throw new InvalidActionTakenException("Document status " + CodeTranslator.getRouteStatusLabel(getDocRouteStatus()) + " cannot transition to status " + CodeTranslator
+                    .getRouteStatusLabel(newStatus));
         }
         setStatusModDate(new Timestamp(System.currentTimeMillis()));
         if (finalState) {

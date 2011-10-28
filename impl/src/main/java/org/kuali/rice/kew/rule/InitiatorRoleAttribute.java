@@ -20,10 +20,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.kew.api.identity.PrincipalId;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.identity.PrincipalId;
-
 
 /**
  * RoleAttribute that exposes an INITIATOR abstract role which resolves to the

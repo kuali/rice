@@ -18,10 +18,9 @@ package org.kuali.rice.kew.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.identity.PrincipalName;
 import org.kuali.rice.kew.api.rule.RoleName;
-import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.identity.PrincipalName;
-
 
 /**
  * A generic Role Attribute that can be used to route to a Network ID.  Can take as configuration the

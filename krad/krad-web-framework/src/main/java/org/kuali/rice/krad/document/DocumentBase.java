@@ -20,9 +20,9 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
@@ -203,17 +203,17 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * The the default implementation for RouteLevelChange does nothing, but is meant to provide a hook for documents to implement
      * for other needs.
      *
-     * @see org.kuali.rice.krad.document.Document#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.krad.document.Document#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
      */
-    public void doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) {
+    public void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) {
         // do nothing
     }
     
     /**
-     * @see org.kuali.rice.krad.document.Document#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
+     * @see org.kuali.rice.krad.document.Document#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
-    public void doActionTaken(ActionTakenEventDTO event) {
-        if ( (KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken())) ) {
+    public void doActionTaken(ActionTakenEvent event) {
+        if ( (KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken().getCode())) ) {
             //DocumentAuthorizer documentAuthorizer = KRADServiceLocatorInternal.getDocumentAuthorizationService().getDocumentAuthorizer(this);
             //documentAuthorizer.establishWorkflowPessimisticLocking(this);
         	KRADServiceLocatorWeb.getPessimisticLockService().establishWorkflowPessimisticLocking(this);
@@ -264,7 +264,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * 
      * @see org.kuali.rice.krad.document.Document#getWorkflowEngineDocumentIdsToLock()
      */
-    public List<Long> getWorkflowEngineDocumentIdsToLock() {
+    public List<String> getWorkflowEngineDocumentIdsToLock() {
 		return null;
 	}
 
@@ -540,9 +540,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see org.kuali.rice.krad.document.Document#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.krad.document.Document#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
      */
-    public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
+    public void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) {
         // do nothing
     }
     

@@ -15,7 +15,7 @@ import org.kuali.rice.kim.api.common.delegate.DelegateType
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.springframework.util.AutoPopulatingList
-import org.kuali.rice.kew.api.action.DelegationType
+import org.kuali.rice.core.api.delegation.DelegationType
 
 @Entity
 @Table(name = "KRIM_DLGN_T")

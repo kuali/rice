@@ -17,7 +17,7 @@
 package edu.sampleu.financial.bo;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.kuali.rice.krad.bo.MutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
 

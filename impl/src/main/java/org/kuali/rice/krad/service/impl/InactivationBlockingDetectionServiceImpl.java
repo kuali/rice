@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
-import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.InactivationBlockingDetectionService;
@@ -46,11 +46,11 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
     
     /**
      * Note we are checking the active getting after retrieving potential blocking records instead of setting criteria on the
-	 * active field. This is because some implementations of {@link org.kuali.rice.krad.bo.MutableInactivatable} might not have the active field, for example
+	 * active field. This is because some implementations of {@link org.kuali.rice.core.api.mo.common.active.MutableInactivatable} might not have the active field, for example
 	 * instances of {@link InactivateableFromTo}
 	 * 
      * @see org.kuali.rice.krad.service.InactivationBlockingDetectionService#listAllBlockerRecords(org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition)
-     * @see org.kuali.rice.krad.bo.MutableInactivatable
+     * @see org.kuali.rice.core.api.mo.common.active.MutableInactivatable
      */
     @SuppressWarnings("unchecked")
 	public Collection<BusinessObject> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
@@ -79,12 +79,12 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
 
 	/**
 	 * Note we are checking the active getting after retrieving potential blocking records instead of setting criteria on the
-	 * active field. This is because some implementations of {@link org.kuali.rice.krad.bo.MutableInactivatable} might not have the active field, for example
+	 * active field. This is because some implementations of {@link org.kuali.rice.core.api.mo.common.active.MutableInactivatable} might not have the active field, for example
 	 * instances of {@link InactivateableFromTo}
 	 * 
 	 * @see org.kuali.rice.krad.service.InactivationBlockingDetectionService#hasABlockingRecord(org.kuali.rice.krad.bo.BusinessObject,
 	 *      org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata)
-	 * @see org.kuali.rice.krad.bo.MutableInactivatable
+	 * @see org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 	 */
 	public boolean hasABlockingRecord(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
 		boolean hasBlockingRecord = false;

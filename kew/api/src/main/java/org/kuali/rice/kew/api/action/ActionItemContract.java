@@ -1,6 +1,7 @@
 package org.kuali.rice.kew.api.action;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.delegation.DelegationType;
 
 public interface ActionItemContract {
     String getId();

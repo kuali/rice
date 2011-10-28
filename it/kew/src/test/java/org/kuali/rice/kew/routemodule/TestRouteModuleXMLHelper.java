@@ -27,7 +27,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -181,7 +181,8 @@ public class TestRouteModuleXMLHelper {
     private static TestDelegation parseDelegation(Node delegationNode) {
         TestDelegation delegation = new TestDelegation();
         NamedNodeMap attributes = delegationNode.getAttributes();
-        delegation.setType(DelegationType.fromCode(attributes.getNamedItem(TestRouteModuleConstants.TYPE_ATTRIBUTE).getNodeValue()));
+        delegation.setType(DelegationType.fromCode(attributes.getNamedItem(TestRouteModuleConstants.TYPE_ATTRIBUTE)
+                .getNodeValue()));
         NodeList childNodes = delegationNode.getChildNodes();
         for (int index = 0; index < childNodes.getLength(); index++) {
             Node node = childNodes.item(index);

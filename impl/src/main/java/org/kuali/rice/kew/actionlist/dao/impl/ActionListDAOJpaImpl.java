@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.actionlist.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
@@ -25,7 +26,6 @@ import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;

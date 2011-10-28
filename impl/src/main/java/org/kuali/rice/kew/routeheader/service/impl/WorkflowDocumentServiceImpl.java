@@ -60,12 +60,11 @@ import org.kuali.rice.kew.engine.OrchestrationConfig;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.OrchestrationConfig.EngineCapability;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -316,7 +315,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         val.setPrincipalId(principalId);
  	 	PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
  	 	try {
- 	 		postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), val));
+ 	 		postProcessor.doActionTaken(new org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), ActionTakenValue.to(val)));
  	 	} catch (Exception e) {
  	 		if (e instanceof RuntimeException) {
  	 			throw (RuntimeException)e;

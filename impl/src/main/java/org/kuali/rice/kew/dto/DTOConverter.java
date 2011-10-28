@@ -39,13 +39,13 @@ import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
-import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
-import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
@@ -267,89 +267,6 @@ public class DTOConverter {
         RouteNodeInstance load(String routeNodeInstanceID);
     }
 
-    public static DocumentRouteStatusChangeDTO convertDocumentRouteStatusChange(
-            DocumentRouteStatusChange statusChange) {
-        if (statusChange == null) {
-            return null;
-        }
-        DocumentRouteStatusChangeDTO statusChangeVO = new DocumentRouteStatusChangeDTO();
-        statusChangeVO.setDocumentId(statusChange.getDocumentId());
-        statusChangeVO.setAppDocId(statusChange.getAppDocId());
-        statusChangeVO.setOldRouteStatus(statusChange.getOldRouteStatus());
-        statusChangeVO.setNewRouteStatus(statusChange.getNewRouteStatus());
-        return statusChangeVO;
-    }
-
-    public static DocumentRouteLevelChangeDTO convertDocumentRouteLevelChange(
-            DocumentRouteLevelChange routeLevelChange) {
-        if (routeLevelChange == null) {
-            return null;
-        }
-        DocumentRouteLevelChangeDTO routeLevelChangeVO = new DocumentRouteLevelChangeDTO();
-        routeLevelChangeVO.setDocumentId(routeLevelChange.getDocumentId());
-        routeLevelChangeVO.setAppDocId(routeLevelChange.getAppDocId());
-        routeLevelChangeVO.setOldRouteLevel(routeLevelChange.getOldRouteLevel());
-        routeLevelChangeVO.setNewRouteLevel(routeLevelChange.getNewRouteLevel());
-        routeLevelChangeVO.setOldNodeName(routeLevelChange.getOldNodeName());
-        routeLevelChangeVO.setNewNodeName(routeLevelChange.getNewNodeName());
-        routeLevelChangeVO.setOldNodeInstanceId(routeLevelChange.getOldNodeInstanceId());
-        routeLevelChangeVO.setNewNodeInstanceId(routeLevelChange.getNewNodeInstanceId());
-        return routeLevelChangeVO;
-    }
-
-    public static DeleteEventDTO convertDeleteEvent(DeleteEvent deleteEvent) {
-        if (deleteEvent == null) {
-            return null;
-        }
-        DeleteEventDTO deleteEventVO = new DeleteEventDTO();
-        deleteEventVO.setDocumentId(deleteEvent.getDocumentId());
-        deleteEventVO.setAppDocId(deleteEvent.getAppDocId());
-        return deleteEventVO;
-    }
-
-    public static ActionTakenEventDTO convertActionTakenEvent(ActionTakenEvent actionTakenEvent) {
-        if (actionTakenEvent == null) {
-            return null;
-        }
-        ActionTakenEventDTO actionTakenEventVO = new ActionTakenEventDTO();
-        actionTakenEventVO.setDocumentId(actionTakenEvent.getDocumentId());
-        actionTakenEventVO.setAppDocId(actionTakenEvent.getAppDocId());
-        actionTakenEventVO.setActionTaken(ActionTakenValue.to(actionTakenEvent.getActionTaken()));
-        return actionTakenEventVO;
-    }
-
-    public static BeforeProcessEventDTO convertBeforeProcessEvent(BeforeProcessEvent event) {
-        if (event == null) {
-            return null;
-        }
-        BeforeProcessEventDTO beforeProcessEvent = new BeforeProcessEventDTO();
-        beforeProcessEvent.setDocumentId(event.getDocumentId());
-        beforeProcessEvent.setAppDocId(event.getAppDocId());
-        beforeProcessEvent.setNodeInstanceId(event.getNodeInstanceId());
-        return beforeProcessEvent;
-    }
-
-    public static AfterProcessEventDTO convertAfterProcessEvent(AfterProcessEvent event) {
-        if (event == null) {
-            return null;
-        }
-        AfterProcessEventDTO afterProcessEvent = new AfterProcessEventDTO();
-        afterProcessEvent.setDocumentId(event.getDocumentId());
-        afterProcessEvent.setAppDocId(event.getAppDocId());
-        afterProcessEvent.setNodeInstanceId(event.getNodeInstanceId());
-        afterProcessEvent.setSuccessfullyProcessed(event.isSuccessfullyProcessed());
-        return afterProcessEvent;
-    }
-
-    public static DocumentLockingEventDTO convertDocumentLockingEvent(DocumentLockingEvent event) {
-        if (event == null) {
-            return null;
-        }
-        DocumentLockingEventDTO documentLockingEvent = new DocumentLockingEventDTO();
-        documentLockingEvent.setDocumentId(event.getDocumentId());
-        documentLockingEvent.setAppDocId(event.getAppDocId());
-        return documentLockingEvent;
-    }
 
     public static DocumentDetail convertDocumentDetailNew(DocumentRouteHeaderValue routeHeader) {
         if (routeHeader == null) {

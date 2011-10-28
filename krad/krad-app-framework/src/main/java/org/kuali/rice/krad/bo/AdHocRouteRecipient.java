@@ -17,7 +17,7 @@ package org.kuali.rice.krad.bo;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

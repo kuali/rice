@@ -19,7 +19,6 @@ import java.net.URL;
 import java.util.Map;
 import java.lang.SuppressWarnings;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -30,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.api.bus.support.RestServiceConfiguration;
+import org.kuali.rice.ksb.api.messaging.ResourceFacade;
 import org.kuali.rice.ksb.messaging.BusClientFailureProxy;
 import org.kuali.rice.ksb.messaging.bam.BAMClientProxy;
 import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
@@ -63,7 +63,7 @@ public class ResourceFacadeImpl implements ResourceFacade {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade#getResource(java.lang.Class)
+	 * @see org.kuali.rice.ksb.api.messaging.ResourceFacade#getResource(java.lang.Class)
 	 */
 	public <R> R getResource(Class<R> resourceClass) {
 		if (resourceClass == null) throw new IllegalArgumentException("resourceClass argument must not be null");
@@ -79,7 +79,7 @@ public class ResourceFacadeImpl implements ResourceFacade {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade#getResource(java.lang.String)
+	 * @see org.kuali.rice.ksb.api.messaging.ResourceFacade#getResource(java.lang.String)
 	 */
 	public <R> R getResource(String resourceName) {
 

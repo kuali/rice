@@ -2,6 +2,7 @@ package org.kuali.rice.kew.impl.peopleflow;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -9,7 +10,6 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.action.ActionRequestStatus;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDelegate;

@@ -26,7 +26,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 import org.hibernate.annotations.Type
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.location.api.country.Country
 import org.kuali.rice.location.api.country.CountryContract

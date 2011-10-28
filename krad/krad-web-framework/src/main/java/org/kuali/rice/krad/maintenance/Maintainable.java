@@ -152,9 +152,9 @@ public interface Maintainable extends ViewHelperService, java.io.Serializable {
      * Return an array of document ids to lock prior to processing this document
      * in the workflow engine
      *
-     * @return List<Long> list of document ids
+     * @return List<String> list of document ids
      */
-    public List<Long> getWorkflowEngineDocumentIdsToLock();
+    public List<String> getWorkflowEngineDocumentIdsToLock();
 
     /**
      * Indicates whether or not this maintainable supports custom lock

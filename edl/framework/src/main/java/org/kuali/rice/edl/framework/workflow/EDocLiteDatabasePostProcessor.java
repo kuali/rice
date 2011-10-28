@@ -24,14 +24,15 @@ import org.kuali.rice.edl.framework.extract.DumpDTO;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.edl.framework.extract.FieldDTO;
 import org.kuali.rice.edl.framework.services.EdlFrameworkServiceLocator;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.DeleteEventDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.w3c.dom.Document;
 
 import java.rmi.RemoteException;
@@ -46,7 +47,8 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
             .getLogger(EDocLiteDatabasePostProcessor.class);
 
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO event) throws RemoteException {
+    @Override
+    public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange event) throws RemoteException {
         LOG.debug("doRouteStatusChange: " + event);
         String documentId = event.getDocumentId();
         super.postEvent(documentId, event, "statusChange");
@@ -58,7 +60,8 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
         return super.doRouteStatusChange(event);
     }
 
-    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
+    @Override
+    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws RemoteException {
         LOG.debug("doActionTaken: " + event);
         String documentId = event.getDocumentId();
         super.postEvent(documentId, event, "actionTaken");
@@ -72,13 +75,15 @@ public class EDocLiteDatabasePostProcessor extends EDocLitePostProcessor {
         return super.doActionTaken(event);
     }
 
-    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
+    @Override
+    public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws RemoteException {
         LOG.debug("doDeleteRouteHeader: " + event);
         super.postEvent(event.getDocumentId(), event, "deleteRouteHeader");
         return super.doDeleteRouteHeader(event);
     }
 
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO event) throws RemoteException {
+    @Override
+    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange event) throws RemoteException {
         LOG.debug("doRouteLevelChange: " + event);
         String documentId = event.getDocumentId();
         super.postEvent(documentId, event, "routeLevelChange");

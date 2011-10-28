@@ -18,6 +18,7 @@ package org.kuali.rice.kew.rule.bo;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
@@ -28,7 +29,6 @@ import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;

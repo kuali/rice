@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.parameter.ParameterType
 import org.kuali.rice.core.api.parameter.ParameterTypeContract
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 
 @Entity
 @Table(name="KRCR_PARM_TYP_T")

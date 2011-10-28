@@ -30,11 +30,11 @@ import java.util.List;
 import mocks.MockEmailNotificationService;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;

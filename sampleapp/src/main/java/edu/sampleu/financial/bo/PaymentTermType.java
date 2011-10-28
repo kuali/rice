@@ -16,7 +16,7 @@
 
 package edu.sampleu.financial.bo;
 
-import org.kuali.rice.krad.bo.MutableInactivatable;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 import java.math.BigDecimal;

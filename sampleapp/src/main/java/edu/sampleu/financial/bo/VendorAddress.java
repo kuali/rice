@@ -18,8 +18,8 @@ package edu.sampleu.financial.bo;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.location.api.country.Country;

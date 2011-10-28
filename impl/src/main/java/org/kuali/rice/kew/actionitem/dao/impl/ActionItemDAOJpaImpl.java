@@ -14,6 +14,7 @@
 package org.kuali.rice.kew.actionitem.dao.impl;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
@@ -22,7 +23,6 @@ import org.kuali.rice.kew.actionitem.OutboxItemActionListExtension;
 import org.kuali.rice.kew.actionitem.dao.ActionItemDAO;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 

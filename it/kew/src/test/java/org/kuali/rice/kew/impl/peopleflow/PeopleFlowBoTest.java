@@ -1,9 +1,9 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.impl.type.KewAttributeDefinitionBo;
 import org.kuali.rice.kew.impl.type.KewTypeAttributeBo;
 import org.kuali.rice.kew.impl.type.KewTypeBo;

@@ -16,10 +16,10 @@
 package org.kuali.rice.kew.web;
 
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;

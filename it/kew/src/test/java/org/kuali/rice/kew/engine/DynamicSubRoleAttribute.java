@@ -19,9 +19,9 @@ package org.kuali.rice.kew.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.identity.PrincipalName;
 import org.kuali.rice.kew.engine.node.NodeState;
-import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;

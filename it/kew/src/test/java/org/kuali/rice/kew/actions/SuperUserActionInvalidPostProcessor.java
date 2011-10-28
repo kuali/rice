@@ -19,15 +19,14 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
-import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
-import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.framework.postprocessor.*;
+import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
     /**
      * THIS METHOD WILL THROW AN EXCEPTION IF OLD ROUTE NODE IS 'WorkflowTemplate'
      */
-    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
+    public ProcessDocReport doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent event) throws Exception {
         if (isDocumentPostProcessable(WorkflowDocumentFactory.loadDocument(getPrincipalId(USER_AUTH_ID), event.getDocumentId()))) {
             return new ProcessDocReport(true, "");
         }
@@ -110,7 +109,7 @@ public class SuperUserActionInvalidPostProcessor implements PostProcessor {
     }
     
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessor#getDocumentIdsToLock(org.kuali.rice.kew.postprocessor.DocumentLockingEvent)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#getDocumentIdsToLock(org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent)
      */
     public List<String> getDocumentIdsToLock(DocumentLockingEvent lockingEvent) throws Exception {
 		return null;

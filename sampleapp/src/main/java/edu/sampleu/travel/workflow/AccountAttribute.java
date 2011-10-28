@@ -16,13 +16,13 @@
 package edu.sampleu.travel.workflow;
 
 import edu.sampleu.travel.bo.TravelAccount;
+import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.identity.PrincipalName;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.workflow.WorkflowUtils;
 import org.w3c.dom.Node;

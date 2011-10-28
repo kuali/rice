@@ -25,16 +25,19 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.doctype.DocumentTypeContract;
 import org.kuali.rice.kew.api.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -43,21 +46,16 @@ import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
-import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.bo.MutableInactivatable;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.util.ObjectUtils;
 
@@ -847,9 +845,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
         if (postProcessor == null) {
             throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at application id " + getApplicationId() + ": " + pname);
         }
-        if (postProcessor instanceof PostProcessorRemote) {
-            postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote) postProcessor);
-        }
 
         return (PostProcessor) postProcessor;
     }
@@ -1585,7 +1580,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
-     * @see org.kuali.rice.krad.bo.MutableInactivatable#isActive()
+     * @see org.kuali.rice.core.api.mo.common.active.MutableInactivatable#isActive()
      */
     public boolean isActive() {
         boolean bRet = false;
@@ -1598,7 +1593,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     }
 
     /**
-     * @see org.kuali.rice.krad.bo.MutableInactivatable#setActive(boolean)
+     * @see org.kuali.rice.core.api.mo.common.active.MutableInactivatable#setActive(boolean)
      */
     public void setActive(boolean active) {
         this.active = Boolean.valueOf(active);

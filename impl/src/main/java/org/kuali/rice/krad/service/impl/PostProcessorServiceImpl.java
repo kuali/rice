@@ -17,15 +17,16 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.kew.api.exception.WorkflowException;
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.AfterProcessEventDTO;
-import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
-import org.kuali.rice.kew.dto.DeleteEventDTO;
-import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentService;
@@ -35,7 +36,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
 
@@ -52,9 +52,10 @@ public class PostProcessorServiceImpl implements PostProcessorService {
     private DocumentService documentService;
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
      */
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) throws RemoteException {
+    @Override
+    public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
         try {
         	if ( LOG.isInfoEnabled() ) {
         		LOG.info(new StringBuffer("started handling route status change from ").append(statusChangeEvent.getOldRouteStatus()).append(" to ").append(statusChangeEvent.getNewRouteStatus()).append(" for document ").append(statusChangeEvent.getDocumentId()));
@@ -87,13 +88,13 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         catch (Exception e) {
             logAndRethrow("route status", e);
         }
-        return true;
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
      */
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO levelChangeEvent) throws RemoteException {
+    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
         // on route level change we'll serialize the XML for the document. we
         // are doing this here cause it's a heavy hitter, and we
         // want to avoid the user waiting for this during sync processing
@@ -116,20 +117,22 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         catch (Exception e) {
             logAndRethrow("route level", e);
         }
-        return true;
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doDeleteRouteHeader(org.kuali.rice.kew.framework.postprocessor.DeleteEvent)
      */
-    public boolean doDeleteRouteHeader(DeleteEventDTO event) throws RemoteException {
-        return true;
+    @Override
+    public ProcessDocReport doDeleteRouteHeader(DeleteEvent event) throws Exception {
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
-    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
+    @Override
+    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
         try {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug(new StringBuffer("started doing action taken for action taken code").append(event.getActionTaken().getActionTaken()).append(" for document ").append(event.getDocumentId()));
@@ -153,16 +156,17 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         catch (Exception e) {
             logAndRethrow("do action taken", e);
         }
-        return true;
+        return new ProcessDocReport(true, "");
     }
 
     /**
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#afterWorkflowEngineProcess(boolean)} method will be invoked on it
      * 
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterProcess(org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent)
      */
-    public boolean afterProcess(AfterProcessEventDTO event) throws Exception {
+    @Override
+    public ProcessDocReport afterProcess(AfterProcessEvent event) throws Exception {
         try {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug(new StringBuffer("started after process method for document ").append(event.getDocumentId()));
@@ -182,16 +186,17 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         catch (Exception e) {
             logAndRethrow("after process", e);
         }
-        return true;
+        return new ProcessDocReport(true, "");
     }
 
     /**
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
      * 
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#beforeProcess(org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent)
      */
-    public boolean beforeProcess(BeforeProcessEventDTO event) throws Exception {
+    @Override
+    public ProcessDocReport beforeProcess(BeforeProcessEvent event) throws Exception {
         try {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug(new StringBuffer("started before process method for document ").append(event.getDocumentId()));
@@ -211,16 +216,16 @@ public class PostProcessorServiceImpl implements PostProcessorService {
         catch (Exception e) {
             logAndRethrow("before process", e);
         }
-        return true;
+        return new ProcessDocReport(true, "");
     }
     
     /**
      * This method first checks to see if the document can be retrieved by the {@link DocumentService}. If the document is
      * found the {@link Document#beforeWorkflowEngineProcess()} method will be invoked on it
      * 
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#beforeProcess(org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent)
      */
-    public String[] getDocumentIdsToLock(DocumentLockingEventDTO event) throws Exception {
+    public List<String> getDocumentIdsToLock(DocumentLockingEvent event) throws Exception {
         try {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug(new StringBuffer("started get document ids to lock method for document ").append(event.getDocumentId()));
@@ -231,14 +236,14 @@ public class PostProcessorServiceImpl implements PostProcessorService {
                 // no way to verify if this is the processing as a result of a cancel so assume null document is ok to process
                 LOG.warn("getDocumentIdsToLock() Unable to load document with id " + event.getDocumentId() + "... ignoring post processing");
             } else {
-                List<Long> documentIdsToLock = document.getWorkflowEngineDocumentIdsToLock();
+                List<String> documentIdsToLock = document.getWorkflowEngineDocumentIdsToLock();
                 if ( LOG.isDebugEnabled() ) {
                 	LOG.debug(new StringBuffer("finished get document ids to lock method for document ").append(event.getDocumentId()));
                 }
                 if (documentIdsToLock == null) {
                 	return null;
                 }
-                return documentIdsToLock.toArray(new String[0]);                
+                return documentIdsToLock;                
             }
         }
         catch (Exception e) {

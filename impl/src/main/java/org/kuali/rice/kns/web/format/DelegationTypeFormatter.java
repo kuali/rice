@@ -18,8 +18,8 @@
 package org.kuali.rice.kns.web.format;
 // end Kuali Foundation modification
 
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.kuali.rice.kew.api.KewApiConstants;
 
 /**
@@ -56,7 +56,7 @@ public class DelegationTypeFormatter extends Formatter {
         }
         // begin Kuali Foundation modification
         if (target instanceof String) {
-        	DelegationType delegationType = DelegationType.fromCode(((String)target).trim().toUpperCase());
+        	DelegationType delegationType = DelegationType.fromCode(((String) target).trim().toUpperCase());
         	if (delegationType != null) {
         		return delegationType.getLabel();
         	} else {

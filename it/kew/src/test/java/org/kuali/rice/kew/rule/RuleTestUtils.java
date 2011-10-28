@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;

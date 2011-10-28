@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 
 /**
  * This interface is a KFS-local wrapper for the Workflow postprocessor interface.
  */
-public interface PostProcessorService extends PostProcessorRemote {
+public interface PostProcessorService extends PostProcessor {
 
 }

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.identity.Id;
 import org.kuali.rice.kew.api.rule.RoleName;
-import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 

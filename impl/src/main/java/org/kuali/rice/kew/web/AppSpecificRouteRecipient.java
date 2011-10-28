@@ -19,8 +19,7 @@ package org.kuali.rice.kew.web;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.kuali.rice.kew.util.CodeTranslator;
-
+import org.kuali.rice.kew.api.util.CodeTranslator;
 
 /**
  * A bean for the web-tier when represents the recipient of an Ad Hoc request.

@@ -9,10 +9,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.action.DelegationType;
 import org.w3c.dom.Element;
 
 @XmlRootElement(name = RuleDelegation.Constants.ROOT_ELEMENT_NAME)

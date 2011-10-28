@@ -18,17 +18,17 @@ package edu.sampleu.travel.workflow;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.identity.PrincipalId;
+import org.kuali.rice.kew.api.identity.PrincipalName;
 import org.kuali.rice.kew.api.rule.RoleName;
+import org.kuali.rice.kew.api.user.UserId;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
@@ -136,7 +136,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 
         /* EMPLOYEE role routes to traveler */
         if (StringUtils.equals(EMPLOYEE_ROLE.getBaseName(), roleName)) {
-            roleUserId = new WorkflowUserId(roleTraveler);
+            roleUserId = new PrincipalId(roleTraveler);
 
         /* SUPERVISOR role routes to... supervisor */
         } else if (StringUtils.equals(SUPERVISOR_ROLE.getBaseName(), roleName)) {

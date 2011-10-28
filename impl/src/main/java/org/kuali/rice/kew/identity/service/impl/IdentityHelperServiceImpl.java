@@ -20,12 +20,12 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.identity.PrincipalName;
-import org.kuali.rice.kew.identity.service.IdentityHelperService;
-import org.kuali.rice.kew.user.EmplId;
-import org.kuali.rice.kew.user.UserId;
-import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.identity.EmployeeId;
+import org.kuali.rice.kew.api.identity.PrincipalId;
+import org.kuali.rice.kew.api.identity.PrincipalName;
+import org.kuali.rice.kew.api.user.UserId;
+import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kew.workgroup.WorkflowGroupId;
@@ -145,14 +145,14 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	public Principal getPrincipal(UserId userId) {
 		if (userId == null) {
 			return null;
-		} else if (userId instanceof WorkflowUserId) {
-			String principalId = ((WorkflowUserId)userId).getWorkflowId();
+		} else if (userId instanceof PrincipalId) {
+			String principalId = ((PrincipalId)userId).getPrincipalId();
 			return KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
 		} else if (userId instanceof PrincipalName) {
 			String principalName = ((PrincipalName)userId).getId();
 			return KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
-		} else if (userId instanceof EmplId) {
-			String employeeId = ((EmplId)userId).getEmplId();
+		} else if (userId instanceof EmployeeId) {
+			String employeeId = ((EmployeeId)userId).getEmployeeId();
 			Person person = getPersonByEmployeeId(employeeId);
 			return getPrincipal(person.getPrincipalId());
 		}

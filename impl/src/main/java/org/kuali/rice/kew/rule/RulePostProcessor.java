@@ -16,12 +16,11 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
@@ -30,7 +29,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 
 
 /**
- * The {@link PostProcessor} implementation for rules.  Delegates to the
+ * The {@link org.kuali.rice.kew.framework.postprocessor.PostProcessor} implementation for rules.  Delegates to the
  * {@link org.kuali.rice.kew.rule.service.RuleServiceInternal#makeCurrent(Long)} method.
  *
  * @see org.kuali.rice.kew.rule.service.RuleServiceInternal#makeCurrent(Long)

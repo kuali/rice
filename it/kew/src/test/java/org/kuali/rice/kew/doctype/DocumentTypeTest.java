@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
@@ -32,13 +33,11 @@ import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.postprocessor.PostProcessorRemoteAdapter;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -472,8 +471,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestParent2.getPostProcessor().getClass());
     	assertEquals("Incorrect PostProcessor", MockPostProcessor.class, ppTestChild1.getPostProcessor().getClass());
     	PostProcessor testChild2PP = ppTestChild2.getPostProcessor();
-    	assertEquals("Incorrect PostProcessor", PostProcessorRemoteAdapter.class, testChild2PP.getClass());
-    	assertEquals("Incorrect PostProcessorRemote", EDocLitePostProcessor.class, ((PostProcessorRemoteAdapter)testChild2PP).getPostProcessorRemote().getClass());
+    	assertEquals("Incorrect PostProcessorRemote", EDocLitePostProcessor.class, testChild2PP.getClass());
     	assertEquals("Incorrect PostProcessor", DefaultPostProcessor.class, ppTestChild3.getPostProcessor().getClass());
     }
 

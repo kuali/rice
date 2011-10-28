@@ -27,13 +27,13 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ksb.api.messaging.ResourceFacade;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService;
 import org.kuali.rice.ksb.messaging.remotedservices.Inbox;
 import org.kuali.rice.ksb.messaging.remotedservices.InboxResource;
 import org.kuali.rice.ksb.messaging.remotedservices.Message;
 import org.kuali.rice.ksb.messaging.remotedservices.MessageResource;
-import org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 

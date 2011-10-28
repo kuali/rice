@@ -91,6 +91,7 @@ public final class CoreConstants {
     public static final String DATA_TYPE_LONG = "long";
     public static final String DATA_TYPE_FLOAT = "float";
     public static final String DATA_TYPE_BOOLEAN = "boolean";
+    public static final String EMPTY_STRING = "";
     
     public static final class Config {
     	public static final String APPLICATION_ID = "application.id";

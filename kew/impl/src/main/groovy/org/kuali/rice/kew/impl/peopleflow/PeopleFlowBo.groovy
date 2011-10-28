@@ -1,7 +1,7 @@
 package org.kuali.rice.kew.impl.peopleflow
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowContract
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember
@@ -10,8 +10,7 @@ import org.kuali.rice.kew.api.repository.type.KewTypeDefinition
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
 
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
-import org.kuali.rice.kew.api.peopleflow.PeopleFlowMemberContract
-import org.apache.commons.collections.CollectionUtils
+
 import org.kuali.rice.kew.impl.type.KewTypeBo
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute
 import org.kuali.rice.krad.util.BeanPropertyComparator

@@ -13,12 +13,12 @@
         <!-- Rice Deps -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>rice-api</artifactId>
+            <artifactId>rice-kim-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
+      <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>rice-kim-api</artifactId>
+            <artifactId>rice-kew-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

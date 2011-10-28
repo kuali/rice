@@ -19,9 +19,9 @@ package org.kuali.rice.kew.engine;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 

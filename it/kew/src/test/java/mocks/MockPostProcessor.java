@@ -18,16 +18,15 @@ package mocks;
 
 import java.util.List;
 
-import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
-import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
-import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
-
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 
 public class MockPostProcessor implements PostProcessor {
 

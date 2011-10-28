@@ -19,7 +19,7 @@
 package org.kuali.rice.location.framework.campus
 
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject
-import org.kuali.rice.krad.bo.MutableInactivatable
+import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
 import org.kuali.rice.location.api.campus.CampusContract
 
 //@ToString

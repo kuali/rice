@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.routemodule;
 
-import org.kuali.rice.kew.api.action.DelegationType;
+import org.kuali.rice.core.api.delegation.DelegationType;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

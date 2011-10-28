@@ -30,10 +30,10 @@ import org.kuali.rice.kew.api.document.DocumentProcessingQueue;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeIndexingQueue;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.messaging.MessageServiceNames;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
@@ -184,7 +184,7 @@ public abstract class ActionTakenEvent {
 		try {
 			LOG.debug("Notifying post processor of action taken");
 			PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
-			ProcessDocReport report = postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), actionTaken));
+			ProcessDocReport report = postProcessor.doActionTaken(new org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent(routeHeader.getDocumentId(), routeHeader.getAppDocId(), ActionTakenValue.to(actionTaken)));
 			if (!report.isSuccess()) {
 				LOG.warn(report.getMessage(), report.getProcessException());
 				throw new InvalidActionTakenException(report.getMessage());

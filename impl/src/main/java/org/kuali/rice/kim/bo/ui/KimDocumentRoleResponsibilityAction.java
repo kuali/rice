@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
@@ -151,7 +151,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	 * @return
 	 */
 	public String getActionTypeDescription() {
-		return (String)CodeTranslator.arLabels.get(this.actionTypeCode);
+		return (String) CodeTranslator.arLabels.get(this.actionTypeCode);
 	}
 	/**
 	 * @return the roleResponsibility

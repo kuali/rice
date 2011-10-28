@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.ken.postprocessor.kew;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.rmi.RemoteException;
-import java.util.Properties;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
@@ -28,17 +23,23 @@ import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.dto.ActionTakenEventDTO;
-import org.kuali.rice.kew.dto.AfterProcessEventDTO;
-import org.kuali.rice.kew.dto.BeforeProcessEventDTO;
-import org.kuali.rice.kew.dto.DeleteEventDTO;
-import org.kuali.rice.kew.dto.DocumentLockingEventDTO;
-import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
-import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kew.postprocessor.PostProcessorRemote;
-import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
+import org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent;
+import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
+import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
+import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -48,7 +49,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
  * in the KEW Action List.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NotificationPostProcessor implements PostProcessorRemote {
+public class NotificationPostProcessor implements PostProcessor {
     private static final Logger LOG = Logger.getLogger(NotificationPostProcessor.class);
 
     NotificationService notificationService;
@@ -65,9 +66,9 @@ public class NotificationPostProcessor implements PostProcessorRemote {
     /**
      * Need to intercept ACKNOWLEDGE or FYI actions taken on notification workflow documents and set the local state of the 
      * Notification to REMOVED as well.
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doActionTaken(org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent)
      */
-    public boolean doActionTaken(ActionTakenEventDTO event) throws RemoteException {
+    public ProcessDocReport doActionTaken(ActionTakenEvent event) throws Exception {
         LOG.debug("ENTERING NotificationPostProcessor.doActionTaken() for Notification action item with document ID: " + event.getDocumentId());
 
         // NOTE: this action could be happening because the user initiated it via KEW, OR because a dismiss or autoremove action
@@ -88,9 +89,9 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         }
         String internalCommand = p.getProperty(KEWActionListMessageDeliverer.INTERNAL_COMMAND_FLAG);
 
-        if (Boolean.valueOf(internalCommand)) {
+        if (Boolean.valueOf(internalCommand).booleanValue()) {
             LOG.info("Internal command detected by NotificationPostProcessor - will not invoke KEN");
-            return true;
+            return new ProcessDocReport(true, "");
         }
         
         LOG.info("NotificationPostProcessor detected end-user action " + event.getActionTaken().getActionTaken() + " on document " + event.getActionTaken().getDocumentId());
@@ -127,48 +128,48 @@ public class NotificationPostProcessor implements PostProcessorRemote {
         }
 
         LOG.debug("LEAVING NotificationPostProcessor.doActionTaken() for Notification action item with document ID: " + event.getDocumentId());
-        return true;
+        return new ProcessDocReport(true);
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doDeleteRouteHeader(org.kuali.rice.kew.dto.DeleteEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doDeleteRouteHeader(org.kuali.rice.kew.framework.postprocessor.DeleteEvent)
      */
-    public boolean doDeleteRouteHeader(DeleteEventDTO arg0) throws RemoteException {
-        return true;
+    public ProcessDocReport doDeleteRouteHeader(DeleteEvent arg0) throws Exception {
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteLevelChange(org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteLevelChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange)
      */
-    public boolean doRouteLevelChange(DocumentRouteLevelChangeDTO arg0) throws RemoteException {
-        return true;
+    public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange arg0) throws Exception {
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#doRouteStatusChange(org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#doRouteStatusChange(org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange)
      */
-    public boolean doRouteStatusChange(DocumentRouteStatusChangeDTO arg0) throws RemoteException {
-        return true;
+    public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange arg0) throws Exception {
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#beforeProcess(org.kuali.rice.kew.dto.BeforeProcessEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#beforeProcess(org.kuali.rice.kew.framework.postprocessor.BeforeProcessEvent)
      */
-    public boolean beforeProcess(BeforeProcessEventDTO beforeProcessEvent) throws Exception {
-        return true;
+    public ProcessDocReport beforeProcess(BeforeProcessEvent beforeProcessEvent) throws Exception {
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#afterProcess(org.kuali.rice.kew.dto.AfterProcessEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#afterProcess(org.kuali.rice.kew.framework.postprocessor.AfterProcessEvent)
      */
-    public boolean afterProcess(AfterProcessEventDTO afterProcessEvent) throws Exception {
-        return true;
+    public ProcessDocReport afterProcess(AfterProcessEvent afterProcessEvent) throws Exception {
+        return new ProcessDocReport(true, "");
     }
 
     /**
-     * @see org.kuali.rice.kew.postprocessor.PostProcessorRemote#getDocumentIdsToLock(org.kuali.rice.kew.dto.DocumentLockingEventDTO)
+     * @see org.kuali.rice.kew.framework.postprocessor.PostProcessor#getDocumentIdsToLock(org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent)
      */
-	public String[] getDocumentIdsToLock(DocumentLockingEventDTO documentLockingEvent) throws Exception {
+	public List<String> getDocumentIdsToLock(DocumentLockingEvent documentLockingEvent) throws Exception {
 		return null;
 	}
     

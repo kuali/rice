@@ -21,11 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kew.api.identity.Id;
+import org.kuali.rice.kew.api.identity.PrincipalId;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.user.WorkflowUserId;
 
 
 /**
@@ -119,7 +119,7 @@ public class TestRuleAttribute implements WorkflowRuleAttribute, RoleAttribute, 
 	private static List<Id> convertPrincipalIdList(List<String> principalIds) {
 		List<Id> idList = new ArrayList<Id>();
 		for (String principalId : principalIds) {
-			idList.add(new WorkflowUserId(principalId));
+			idList.add(new PrincipalId(principalId));
 		}
 		return idList;
 	}

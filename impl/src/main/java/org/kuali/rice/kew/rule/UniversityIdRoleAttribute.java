@@ -18,10 +18,9 @@ package org.kuali.rice.kew.rule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.kew.api.identity.EmployeeId;
+import org.kuali.rice.kew.api.identity.Id;
 import org.kuali.rice.kew.api.rule.RoleName;
-import org.kuali.rice.kew.identity.EmployeeId;
-import org.kuali.rice.kew.identity.Id;
-
 
 /**
  * A generic Role Attribute that can be used to route to an Empl ID.  Can take as configuration the

@@ -330,7 +330,7 @@ function createDatePicker(controlId, options) {
  * @param renderImage -
  *          boolean that indicates whether the expanded or collapsed image should be rendered
  */
-function createAccordion(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
+function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
     jq(document).ready(function() {
         var groupToggleLinkId = groupId + "_toggle";
 
@@ -390,14 +390,14 @@ function createAccordion(groupId, headerId, widgetId, defaultOpen, collapseImgSr
 /**
  * Expands all the accordion divs on the page
  */
-function expandAccordions() {
+function expandDisclosure() {
     jq('img[alt="collapse"]').click();
 }
 
 /**
  * Collapses all the accordion divs on the page
  */
-function collapseAccordions() {
+function collapseDisclosure() {
     jq('img[alt="expand"]').click();
 }
 

@@ -96,7 +96,7 @@
 						</list>
 					</property>
           <property name="header">
-            <bean parent="HeaderPage_DisclosureEdit"/>
+            <bean parent="HeaderPage_AccordionEdit"/>
           </property>
 				</bean>
 				<bean parent="Page" p:id="uifpage7" p:title="Errors"
@@ -159,7 +159,7 @@
 
 	<bean id="textFields-Section1" parent="Group"
 		p:layoutManager.orientation="VERTICAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -174,7 +174,7 @@
 	<bean id="textControls1" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="title" value="Attribute Field Options" />
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField_Form" abstract="true" p:label="Field Label"
@@ -207,7 +207,7 @@
 
 	<bean id="textControls2" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="Attribute Field Options 2" />
 		<property name="items">
 			<list>
@@ -239,7 +239,7 @@
 
 	<bean id="textControls3" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="TextControl options" />
 		<property name="items">
 			<list>
@@ -276,7 +276,7 @@
 	</bean>
 
 	<bean id="textAreas" parent="Group" p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="TextAreaControl options" />
 		<property name="instructionalText"
 			value="TextAreas have basically the same options as text controls, so only a couple examples" />
@@ -311,7 +311,7 @@
 		<property name="title" value="Date Control" />
 		<property name="instructionalText"
 			value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info" />
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -355,7 +355,7 @@
 		<property name="title" value="Selection Controls" />
 		<property name="instructionalText"
 			value="Controls used for selection of 1 or multiple items" />
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -367,7 +367,7 @@
 	</bean>
 
 	<bean id="checkboxes" parent="Group" p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -423,7 +423,7 @@
 
 	<bean id="radiobuttons" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -457,7 +457,7 @@
 
 	<bean id="otherSelection" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -494,7 +494,7 @@
 
 	<bean id="fieldGroups-Section4" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="GroupFields" />
 		<property name="instructionalText"
 			value="GroupFields(ie FieldGroups) can have multiple controls but appear to the user as one logical field grouping.
@@ -558,7 +558,7 @@
 
 	<bean id="tree-Section6" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="Trees" />
 		<property name="instructionalText" value="Trees of data" />
 		<property name="styleClasses" value="group_header" />
@@ -574,7 +574,7 @@
 
 	<bean id="misc-Section7" parent="Group"
 		p:layoutManager.orientation="VERTICAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="Miscellaneous widgets" />
 		<property name="instructionalText" value="A variety of other widgets" />
 		<property name="styleClasses" value="group_header" />
@@ -691,7 +691,7 @@
 
 	<bean id="requiredSection" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="Required constraint" />
 		<property name="instructionalText"
 			value="An attribute field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk." />
@@ -713,7 +713,7 @@
 
 	<bean id="preReqSection" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="PreRequisite constraint" />
 		<property name="instructionalText"
 			value="When a field is filled out, it can require another field to be filled out as a result.  This is called a PrerequisiteConstraint.
@@ -754,7 +754,7 @@
 
 	<bean id="minMaxSection" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="MinMax length and value" />
 		<property name="instructionalText"
 			value="You can set the min and max length of a field and the min and max value of a field.  Min and
@@ -781,7 +781,7 @@
 
 	<bean id="mustOccursSection" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="MustOccursConstraint" />
 		<property name="instructionalText"
 			value="Must Occurs constraint is used to identify fields that are required before this field can be filled out.
@@ -798,7 +798,7 @@
 	</bean>
 
 	<bean id="moGroup1" parent="Group" p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -850,7 +850,7 @@
 	</bean>
 
 	<bean id="moGroup2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -896,7 +896,7 @@
 	</bean>
 
 	<bean id="moGroup3" parent="Group" p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -950,7 +950,7 @@
 
 	<bean id="caseConstraintSection" parent="Group"
 		p:layoutManager.orientation="VERTICAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="title" value="CaseConstraint" />
 		<property name="instructionalText"
 			value="A case constraint can make a constraint applicable only when a certain case is satisfied." />
@@ -985,7 +985,7 @@
 	</bean>
 
 	<bean id="ccSection1" parent="Group" p:layoutManager.orientation="VERTICAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1024,7 +1024,7 @@
 	</bean>
 
 	<bean id="ccSection2" parent="Group" p:layoutManager.orientation="VERTICAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1055,7 +1055,7 @@
 	</bean>
 
 	<bean id="ccSection3" parent="Group" p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1085,7 +1085,7 @@
 	</bean>
 
 	<bean id="ccSection4" parent="Group" p:layoutManager.orientation="HORIZONTAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1134,7 +1134,7 @@
 
 	<bean id="prog1" parent="Group" p:layoutManager.orientation="VERTICAL"
 		p:title="Progressive Disclosure of Fields">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1180,7 +1180,7 @@
 
 	<bean id="prog2" parent="Group" p:layoutManager.orientation="VERTICAL"
 		p:title="Progressive Disclosure of Groups">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1202,7 +1202,7 @@
 				</bean>
 				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
 					p:progressiveRender="field38 eq 'show1'" p:title="Group 1"
-					p:disclosure.render="false">
+					p:accordion.render="false">
 					<property name="items">
 						<list>
 							<bean parent="GenericTextField" p:label="Field 1A"
@@ -1216,7 +1216,7 @@
 				</bean>
 				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
 					p:progressiveRenderViaAJAX="true" p:progressiveRender="field38 eq 'show2'"
-					p:title="Group 2" p:disclosure.render="false">
+					p:title="Group 2" p:accordion.render="false">
 					<property name="items">
 						<list>
 							<bean parent="GenericTextField" p:label="Field 1B"
@@ -1232,7 +1232,7 @@
 
 	<bean id="prog3" parent="Group" p:layoutManager.orientation="VERTICAL"
 		p:title="Conditional Refresh">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1288,7 +1288,7 @@
 	</bean>
 
 	<bean id="regex1" parent="Group" p:layoutManager.orientation="VERTICAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1456,7 +1456,7 @@
 	</bean>
 
 	<bean id="lookups1" parent="Group" p:layoutManager.orientation="VERTICAL">
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1536,7 +1536,7 @@
 		</property>
 	</bean>
 
-	<bean id="collection1" parent="CollectionGroupSectionTableLayout"
+	<bean id="collection1" parent="CollectionGroupTableLayout"
 		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 1 - CollectionGroupTableLayout" />
@@ -1546,7 +1546,7 @@
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list1" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.richTable.render" value="false" />
+		<property name="layoutManager.tableTools.render" value="false" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"
@@ -1561,7 +1561,8 @@
 		</property>
 	</bean>
 
-	<bean id="collection2" parent="CollectionGroupSectionTableLayout"	p:layoutManager.numberOfColumns="4">
+	<bean id="collection2" parent="CollectionGroupTableLayout"
+		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
 		<property name="instructionalText"
@@ -1570,7 +1571,7 @@
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list2" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.richTable.render" value="true" />
+		<property name="layoutManager.tableTools.render" value="true" />
     <property name="collectionLookup.render" value="true"/>
     <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
@@ -1586,14 +1587,9 @@
 					p:required="true" />
 			</list>
 		</property>
-    <property name="filters">
-      <list>
-        <bean parent="ELCollectionFilter" p:expression="#line.field1 ne 'a'"/>
-      </list>
-    </property>
 	</bean>
 
-	<bean id="collection3" parent="CollectionGroupSection">
+	<bean id="collection3" parent="CollectionGroup">
 		<property name="title" value="Collection Group 3 - Stacked" />
 		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
@@ -1616,7 +1612,7 @@
 		</property>
 	</bean>
 
-	<bean id="collection4" parent="CollectionGroupSection">
+	<bean id="collection4" parent="CollectionGroup">
 		<property name="title"
 			value="Collection Group 4 - Stacked Collection with a Table subcollection" />
 		<property name="instructionalText"
@@ -1644,7 +1640,7 @@
 		</property>
 	</bean>
 
-	<bean id="subCollection1" parent="CollectionGroupSectionTableLayout"
+	<bean id="subCollection1" parent="CollectionGroupTableLayout"
 		p:layoutManager.numberOfColumns="4">
 		<property name="title" value="SubCollection" />
 		<property name="instructionalText"
@@ -1653,7 +1649,7 @@
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="subList" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.richTable.render" value="true" />
+		<property name="layoutManager.tableTools.render" value="true" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:propertyName="field1" p:label="SubField 1"
@@ -1668,7 +1664,7 @@
 		</property>
 	</bean>
 
-	<bean id="collection5" parent="CollectionGroupSection">
+	<bean id="collection5" parent="CollectionGroup">
 		<property name="title"
 			value="Collection Group 5 - Stacked Collection with a Stacked subcollection" />
 		<property name="instructionalText"
@@ -1701,7 +1697,7 @@
 		<property name="title" value="SubCollection" />
 		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
-		<property name="disclosure.render" value="false" />
+		<property name="accordion.render" value="false" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="subList" />
@@ -1722,7 +1718,7 @@
 	</bean>
 
 
-	<bean id="collection6" parent="CollectionGroupSectionTableLayout"
+	<bean id="collection6" parent="CollectionGroupTableLayout"
 		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />
@@ -1735,7 +1731,7 @@
 		<property name="layoutManager.generateAutoSequence" value="false" />
     <property name="layoutManager.separateAddLine" value="true" />
     <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8" />
-		<property name="layoutManager.richTable.render" value="true" />
+		<property name="layoutManager.tableTools.render" value="true" />
 		<property name="items">
 			<list>
 				<bean parent="AttributeField" p:label="Field 1" p:propertyName="field1"
@@ -1834,7 +1830,7 @@
 		</property>
   </bean>
 
-  <bean id="remotableFieldsGroup" parent="Group" p:disclosure.render="false">
+  <bean id="remotableFieldsGroup" parent="Group" p:accordion.render="false">
     <property name="title" value="Fields created by Fetching Remotable Fields"/>
     <property name="items">
       <list>
@@ -1850,24 +1846,16 @@
     </property>
   </bean>
 
-  <bean id="miscGroup" parent="Group" p:disclosure.render="false">
+  <bean id="miscGroup" parent="Group" p:accordion.render="false">
     <property name="title" value="Various configuration and feature examples"/>
     <property name="items">
       <list>
-        <bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
-              p:instructionalText="Field that is being set to read only by request">
-          <property name="control">
-            <bean parent="TextControl" p:size="30"/>
-          </property>
+				<bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
+                p:instructionalText="Field that is being set to read only by request">
+           <property name="control">
+             <bean parent="TextControl" p:size="30"/>
+           </property>
         </bean>
-        <bean parent="GenericTextField" p:label="Field 2" p:propertyName="field92" p:readOnlyHidden="true"
-              p:instructionalText="Field that is being set to readOnlyHidden">
-          <property name="control">
-            <bean parent="TextControl" p:size="30"/>
-          </property>
-        </bean>
-        <bean parent="DataField" p:label="Field 2" p:propertyName="field92" p:readOnly="true"
-              p:alternateDisplayValue="Val is : @{field88}"/>
       </list>
     </property>
   </bean>

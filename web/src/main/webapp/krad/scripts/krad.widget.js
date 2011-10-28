@@ -311,7 +311,7 @@ function createDatePicker(controlId, options) {
 }
 
 /**
- * Sets up the script necessary to toggle a group as a disclosure
+ * Sets up the script necessary to toggle a group as a accordion
  *
  * @param groupId -
  *          id for the group to be toggled
@@ -330,7 +330,7 @@ function createDatePicker(controlId, options) {
  * @param renderImage -
  *          boolean that indicates whether the expanded or collapsed image should be rendered
  */
-function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
+function createAccordion(groupId, headerId, widgetId, defaultOpen, collapseImgSrc, expandImgSrc, animationSpeed, renderImage) {
     jq(document).ready(function() {
         var groupToggleLinkId = groupId + "_toggle";
 
@@ -388,16 +388,16 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
 }
 
 /**
- * Expands all the disclosure divs on the page
+ * Expands all the accordion divs on the page
  */
-function expandDisclosures() {
+function expandAccordions() {
     jq('img[alt="collapse"]').click();
 }
 
 /**
- * Collapses all the disclosure divs on the page
+ * Collapses all the accordion divs on the page
  */
-function collapseDisclosures() {
+function collapseAccordions() {
     jq('img[alt="expand"]').click();
 }
 

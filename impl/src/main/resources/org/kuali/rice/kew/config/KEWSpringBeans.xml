@@ -824,6 +824,10 @@
 
   <bean id="rice.kew.workflowDocumentService" class="org.kuali.rice.kew.impl.document.WorkflowDocumentServiceImpl" />
 
+  <bean id="rice.kew.workflowDocumentPrototype" class="org.kuali.rice.kew.impl.document.WorkflowDocumentImpl" scope="prototype"
+        p:workflowDocumentActionsService-ref="rice.kew.workflowDocumentActionsService"
+        p:workflowDocumentService-ref="rice.kew.workflowDocumentService" />
+
   <bean id="rice.kew.preferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" lazy-init="true"/>
 
   <bean id="rice.kew.noteService" class="org.kuali.rice.kew.impl.note.NoteServiceImpl">

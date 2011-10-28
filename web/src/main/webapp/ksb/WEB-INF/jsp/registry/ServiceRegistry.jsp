@@ -80,7 +80,9 @@
   <tr>
     <td width="20" height="20">&nbsp;</td>
   	<td><input type="button" value="Refresh Service Registry" onclick="refreshServiceRegistry()"/>
-  	<input type="button" value="Delete localhost Entries" onclick="deleteLocalhostEntries()"/></td>
+  	<input type="button" value="Delete localhost Entries" onclick="deleteLocalhostEntries()"/>
+  	<input type="button" value="Delete Entries by Application ID:" onclick="deleteApplicationIdEntries()"/>
+  	<html-el:text name="ServiceRegistryForm" property="removedApplicationId" /></td>
   	<td width="20" height="20">&nbsp;</td>
   <tr>
   	<td colspan="3">&nbsp;</td>

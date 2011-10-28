@@ -16,6 +16,8 @@
 
 package org.kuali.rice.ksb.messaging.web;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -47,6 +49,9 @@ import java.util.Map;
  */
 public class ServiceRegistryAction extends KSBAction {
 
+	private static final String REMOVED_APPLICATION_ID_PARAM = "removedApplicationId";
+    private static final Logger LOG = Logger.getLogger(ServiceRegistryAction.class);
+
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, ServletException {
 	return mapping.findForward("basic");
@@ -77,6 +82,27 @@ public class ServiceRegistryAction extends KSBAction {
 		return mapping.findForward("basic");
     }
 
+    public ActionForward deleteApplicationIdEntries(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
+        
+        final String applicationId = request.getParameter(REMOVED_APPLICATION_ID_PARAM);
+        if(StringUtils.isNotBlank(applicationId)) {
+            ServiceRegistry serviceRegistry = KsbApiServiceLocator.getServiceRegistry();
+            List<ServiceInfo> serviceInfos = serviceRegistry.getAllOnlineServices();
+            List<String> serviceEndpointsToDelete = new ArrayList<String>();
+            for (ServiceInfo serviceInfo : serviceInfos) {
+                if (serviceInfo.getApplicationId().equals(applicationId)) {
+                    serviceEndpointsToDelete.add(serviceInfo.getServiceId());
+                }
+            }
+            serviceRegistry.removeServiceEndpoints(serviceEndpointsToDelete);
+            KsbApiServiceLocator.getServiceBus().synchronize();
+        } else {
+            LOG.info("No rows were deleted from the KRSB_SVC_DEF_T table because the application ID was null or blank.");
+        }
+
+        return mapping.findForward("basic");
+    }
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {
 	ServiceRegistryForm form = (ServiceRegistryForm)actionForm;

@@ -41,6 +41,7 @@ public class ServiceRegistryForm extends ActionForm {
     private String myApplicationId;
     private String myInstanceId;
     private Boolean devMode;
+    private String removedApplicationId;
 
     public String getMethodToCall() {
         return this.methodToCall;
@@ -83,6 +84,12 @@ public class ServiceRegistryForm extends ActionForm {
     }
     public void setDevMode(Boolean devMode) {
         this.devMode = devMode;
+    }
+    public String getRemovedApplicationId() {
+        return this.removedApplicationId;
+    }
+    public void setRemovedApplicationId(String removedApplicationId) {
+        this.removedApplicationId = removedApplicationId;
     }
 
 }

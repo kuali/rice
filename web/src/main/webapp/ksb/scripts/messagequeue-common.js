@@ -43,3 +43,8 @@ function deleteLocalhostEntries()
    	document.forms[0].submit();
 }
 
+function deleteApplicationIdEntries()
+{
+	document.forms[0].elements['methodToCall'].value = 'deleteApplicationIdEntries';
+   	document.forms[0].submit();
+}

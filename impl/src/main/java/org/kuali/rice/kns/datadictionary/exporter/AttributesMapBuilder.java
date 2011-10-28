@@ -115,7 +115,9 @@ public class AttributesMapBuilder {
         ExportMap keyLabelMap = new ExportMap("keyLabelMap");
 
         for (Map.Entry<String, String> entry : attribute.getOptionsFinder().getKeyLabelMap().entrySet()) {
-            keyLabelMap.set(entry.getKey(), entry.getValue());
+            if (StringUtils.isNotBlank(entry.getKey())) {
+                keyLabelMap.set(entry.getKey(), entry.getValue());
+            }
         }
         return keyLabelMap;
     }

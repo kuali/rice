@@ -23,7 +23,7 @@
     
  --%>
  
-<form:radiobuttons id="${field.id}" path="${field.bindingInfo.bindingPath}" 
+<form:radiobuttons id="${field.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
                    items="${control.options}" itemValue="key" itemLabel="value"
                    cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"
                    tabindex="${control.tabIndex}"/>

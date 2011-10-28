@@ -49,13 +49,16 @@ public class ActionField extends FieldBase {
     private Map<String, String> actionParameters;
 
     private LightBox lightBoxLookup;
-
     private LightBox lightBoxDirectInquiry;
 
     private boolean blockValidateDirty;
+    private boolean disabled;
+    private String disabledReason;
 
     public ActionField() {
         super();
+
+        disabled = false;
         actionParameters = new HashMap<String, String>();
     }
 
@@ -571,6 +574,44 @@ public class ActionField extends FieldBase {
      */
     public boolean isBlockValidateDirty() {
         return blockValidateDirty;
+    }
+
+    /**
+     * Indicates whether the action (input or button) is disabled (doesn't allow interaction)
+     *
+     * @return boolean true if the action field is disabled, false if not
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    /**
+     * If the action field is disabled, gives a reason for why which will be displayed as a tooltip
+     * on the action field (button)
+     *
+     * @return String disabled reason text
+     * @see {@link #isDisabled()}
+     */
+    public String getDisabledReason() {
+        return disabledReason;
+    }
+
+    /**
+     * Setter for the disabled reason text
+     *
+     * @param disabledReason
+     */
+    public void setDisabledReason(String disabledReason) {
+        this.disabledReason = disabledReason;
+    }
+
+    /**
+     * Setter for the disabled indicator
+     *
+     * @param disabled
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
     public String getActionImageLocation() {

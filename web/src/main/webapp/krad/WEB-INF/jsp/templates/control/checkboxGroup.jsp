@@ -22,8 +22,8 @@
     Group of HTML Checkbox Inputs
     
  --%>
- 
-<form:checkboxes id="${field.id}" path="${field.bindingInfo.bindingPath}" 
+
+<form:checkboxes id="${field.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
                    items="${control.options}" itemValue="key" itemLabel="value"
                    cssClass="${control.styleClassesAsString}" delimiter="${control.delimiter}"
                    tabindex="${control.tabIndex}"/>

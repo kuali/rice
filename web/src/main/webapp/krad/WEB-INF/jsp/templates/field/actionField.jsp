@@ -36,6 +36,10 @@
   </c:if>
 </c:if>
 
+<c:if test="${field.disabled}">
+  <c:set var="disabled" value="disabled=\"true\""/>
+</c:if>
+
 <c:choose>
 
   <c:when test="${(field.actionImage != null) && field.actionImage.render && (empty field.actionImageLocation)}">
@@ -44,7 +48,7 @@
     <span id="${field.id}_span">
       <krad:fieldLabel field="${field}">
 
-        <input type="image" id="${field.id}"
+        <input type="image" id="${field.id}" ${disabled}
                src="${field.actionImage.source}"
                alt="${field.actionImage.altText}" ${height} ${width} ${style} ${styleClass} ${title} ${tabindex} />
 
@@ -59,7 +63,7 @@
 
         <c:choose>
           <c:when test="${(field.actionImageLocation eq 'TOP')}">
-            <button id="${field.id}" ${style} ${styleClass} ${title}><span
+            <button id="${field.id}" ${style} ${styleClass} ${title} ${disabled}><span
                     class="topBottomSpan"><img ${height} ${width}
                     class="actionImage topActionImage ${field.actionImage.styleClassesAsString}"
                     style="${field.actionImage.style}"
@@ -68,7 +72,7 @@
             </button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'BOTTOM')}">
-            <button id="${field.id}" ${style} ${styleClass} ${title}>${field.actionLabel}<span
+            <button id="${field.id}" ${style} ${styleClass} ${title} ${disabled}>${field.actionLabel}<span
                     class="topBottomSpan"><img ${height} ${width}
                     style="${field.actionImage.style}"
                     class="actionImage bottomActionImage ${field.actionImage.styleClassesAsString}"
@@ -76,13 +80,13 @@
                     alt="${field.actionImage.altText}"/></span></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'RIGHT')}">
-            <button id="${field.id}" ${style} ${styleClass} ${title}>${field.actionLabel}<img ${height} ${width}
+            <button id="${field.id}" ${style} ${styleClass} ${title} ${disabled}>${field.actionLabel}<img ${height} ${width}
                     style="${field.actionImage.style}"
                     class="actionImage rightActionImage ${field.actionImage.styleClassesAsString}"
                     src="${field.actionImage.source}" alt="${field.actionImage.altText}"/></button>
           </c:when>
           <c:when test="${(field.actionImageLocation eq 'LEFT')}">
-            <button id="${field.id}" ${style} ${styleClass} ${title}><img ${height} ${width}
+            <button id="${field.id}" ${style} ${styleClass} ${title} ${disabled}><img ${height} ${width}
                     style="${field.actionImage.style}"
                     class="actionImage leftActionImage ${field.actionImage.styleClassesAsString}"
                     src="${field.actionImage.source}"
@@ -90,12 +94,12 @@
             </button>
           </c:when>
           <c:otherwise>
-            <button id="${field.id}" ${style} ${styleClass} ${title}>${field.actionLabel}</button>
+            <button id="${field.id}" ${style} ${styleClass} ${title} ${disabled}>${field.actionLabel}</button>
           </c:otherwise>
         </c:choose>
       </c:when>
       <c:otherwise>
-        <button id="${field.id}" ${style} ${styleClass} ${title}>${field.actionLabel}</button>
+        <button id="${field.id}" ${style} ${styleClass} ${title} ${disabled}>${field.actionLabel}</button>
       </c:otherwise>
     </c:choose>
 

@@ -23,7 +23,7 @@
     
  --%>
 
-<form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" 
+<form:textarea id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
                rows="${control.rows}" cols="${control.cols}" readonly="${control.readOnly}"
                cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
                tabindex="${control.tabIndex}" maxLength="${control.maxLength}" minLength="${control.minLength}"/>

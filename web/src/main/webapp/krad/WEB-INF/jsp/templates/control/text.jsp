@@ -23,7 +23,7 @@
     
  --%>
 
-<form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" 
+<form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" disabled="${control.disabled}"
             size="${control.size}" maxlength="${control.maxLength}" readonly="${control.readOnly}"
             cssClass="${control.styleClassesAsString}" cssStyle="${control.style}"
             tabindex="${control.tabIndex}" minLength="${control.minLength}"/>

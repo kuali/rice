@@ -28,11 +28,15 @@ public abstract class ControlBase extends ComponentBase implements Control {
 	private static final long serialVersionUID = -7898244978136312663L;
 	
 	private int tabIndex;
-    private String ariaHTML;
 
-	public ControlBase() {
-      super();
-	}
+    private boolean disabled;
+    private String disabledReason;
+
+    public ControlBase() {
+        super();
+
+        disabled = false;
+    }
 
 	/**
 	 * @see org.kuali.rice.krad.uif.component.Component#getComponentTypeName()
@@ -42,13 +46,47 @@ public abstract class ControlBase extends ComponentBase implements Control {
 		return "control";
 	}
 
+    /**
+     * @see Control#getTabIndex()
+     */
 	public int getTabIndex() {
 		return this.tabIndex;
 	}
 
+    /**
+     * @see Control#setTabIndex(int)
+     */
 	public void setTabIndex(int tabIndex) {
 		this.tabIndex = tabIndex;
 	}
+
+    /**
+     * @see Control#isDisabled()
+     */
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    /**
+     * @see Control#setDisabled(boolean)
+     */
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+    }
+
+    /**
+     * @see Control#getDisabledReason()
+     */
+    public String getDisabledReason() {
+        return disabledReason;
+    }
+
+    /**
+     * @see Control#setDisabledReason(java.lang.String)
+     */
+    public void setDisabledReason(String disabledReason) {
+        this.disabledReason = disabledReason;
+    }
 
     @Override
     public boolean getSupportsOnChange() {

@@ -27,22 +27,61 @@ import org.kuali.rice.krad.uif.component.Component;
  * initiate an action. HTML controls must be rendered within a <code>Form</code>
  * element.
  * </p>
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Control extends Component {
 
-	/**
-	 * Unique index of the control within the tab order
-	 * <p>
-	 * Tab index provides a way to set the order users will tab through the
-	 * controls. The control with index 1 will receive focus when the page is
-	 * rendered. Tabing from the field will then take the user to the control
-	 * with index 2, then index 3, and so on.
-	 * </p>
-	 * 
-	 * @return int the tab index for the control
-	 */
-	public int getTabIndex();
+    /**
+     * Unique index of the control within the tab order
+     *
+     * <p>
+     * Tab index provides a way to set the order users will tab through the
+     * controls. The control with index 1 will receive focus when the page is
+     * rendered. Tabing from the field will then take the user to the control
+     * with index 2, then index 3, and so on.
+     * </p>
+     *
+     * @return int the tab index for the control
+     */
+    public int getTabIndex();
 
+    /**
+     * Setter for the controls tab order index
+     *
+     * @param tabIndex
+     */
+    public void setTabIndex(int tabIndex);
+
+    /**
+     * Indicates whether the control is disabled (doesn't allow input)
+     *
+     * @return boolean true if the control is disabled, false if not
+     */
+    public boolean isDisabled();
+
+    /**
+     * Setter for the disabled indicator
+     *
+     * @param disabled
+     */
+    public void setDisabled(boolean disabled);
+
+    /**
+     * If the control is disabled, gives a reason for why which will be displayed as a tooltip
+     * on the control
+     *
+     * @return String disabled reason text
+     * @see {@link #isDisabled()}
+     */
+    public String getDisabledReason();
+
+    /**
+     * Setter for the disabled reason text
+     *
+     * @param disabledReason
+     */
+    public void setDisabledReason(String disabledReason);
 }
+
+

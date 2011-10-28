@@ -25,7 +25,7 @@
  
 <form:select id="${field.id}" path="${field.bindingInfo.bindingPath}" 
              size="${control.size}" multiple="${control.multiple}"
-             cssClass="${control.styleClassesAsString}" 
+             cssClass="${control.styleClassesAsString}" disabled="${control.disabled}"
              tabindex="${control.tabIndex}">
       
   <%-- TODO: need htmlSpacePadding that was removed from KeyValuePair --%>           

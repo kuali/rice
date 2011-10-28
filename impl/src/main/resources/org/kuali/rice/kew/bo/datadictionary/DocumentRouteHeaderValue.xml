@@ -43,7 +43,7 @@
     <property name="shortLabel" value="Id" />
     <property name="maxLength" value="30" />
     <property name="validationPattern" >
-      <bean parent="NumericValidationPattern" />
+      <bean parent="AnyCharacterValidationPattern" />
     </property>
     <property name="control" >
       <bean parent="TextControlDefinition" p:size="30"/>

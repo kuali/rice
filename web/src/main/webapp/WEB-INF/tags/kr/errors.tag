@@ -50,7 +50,8 @@
               <%-- for each error, try to match with one of the match strings given, either by exact 
                    match or like match if wildcard is given --%>
               <c:forEach items="${fn:split(keyMatch,',')}" var="prefix">
-                <c:if test="${(fn:endsWith(prefix,'*') && fn:startsWith(key,fn:replace(prefix,'*',''))) || (key == prefix)}">
+                <c:if test="${(fn:endsWith(fn:trim(prefix),'*') && fn:startsWith(key,fn:replace(fn:trim(prefix),'*',''))) || (key == fn:trim(prefix))}">
+                
                  
                   <%-- render title if this is the first error --%>
                   <c:if test="${!errorTitleRendered}">

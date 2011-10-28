@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/rice.iml" filepath="$PROJECT_DIR$/rice.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-api.iml" filepath="$PROJECT_DIR$/rice-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-checkstyle.iml" filepath="$PROJECT_DIR$/rice-checkstyle.iml" group="rice-config and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-client-contrib.iml" filepath="$PROJECT_DIR$/rice-client-contrib.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-config.iml" filepath="$PROJECT_DIR$/rice-config.iml" group="rice-config and modules" />
@@ -37,6 +36,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-it-krms.iml" filepath="$PROJECT_DIR$/rice-it-krms.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-ksb.iml" filepath="$PROJECT_DIR$/rice-it-ksb.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-it-location.iml" filepath="$PROJECT_DIR$/rice-it-location.iml" group="rice-it and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rice-it-remote.iml" filepath="$PROJECT_DIR$/rice-it-remote.iml" group="rice-it and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ken.iml" filepath="$PROJECT_DIR$/rice-ken.iml" group="rice-ken and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-ken-api.iml" filepath="$PROJECT_DIR$/rice-ken-api.iml" group="rice-ken and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-kew.iml" filepath="$PROJECT_DIR$/rice-kew.iml" group="rice-kew and modules" />

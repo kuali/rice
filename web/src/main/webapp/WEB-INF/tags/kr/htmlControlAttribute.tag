@@ -1,4 +1,5 @@
 <%@ tag import="java.util.Map" %>
+<%@ tag import="org.kuali.rice.kns.util.ActionFormUtilMap" %>
 <%--
  Copyright 2005-2007 The Kuali Foundation
 
@@ -148,10 +149,6 @@ if (attributeEntry == null) {
 				 <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 				   	     
 				 <c:choose>
-                <c:when test="${not empty attributeEntry.keyLabelMap}">
-                  <c:set var="keyLabelMapEntries" value='<%= ((Map) jspContext.findAttribute("attributeEntry.keyLabelMap")).entrySet() %>'/>
-                  <c:set var="methodAndParms" value="keyLabelMapEntries" />
-                </c:when>
 	               <c:when test="${not empty businessObjectClass}">
 	                 <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
 	               </c:when>
@@ -235,11 +232,7 @@ if (attributeEntry == null) {
 
             <html:select styleId="${property}" property="${property}" title="${accessibleTitle}" tabindex="${tabindex}" style="${textStyle}" disabled="${disableField}" onblur="${onblur}" onchange="${onchange}" styleClass="${styleClass}">
               <c:choose>
-                <c:when test="${not empty attributeEntry.keyLabelMap}">
-                  <c:set var="keyLabelMapEntries" value='<%= ((Map) jspContext.findAttribute("attributeEntry.keyLabelMap")).entrySet() %>'/>
-                  <c:set var="methodAndParms" value="keyLabelMapEntries" />
-                </c:when>
-              	<c:when test="${not empty businessObjectClass}">
+                <c:when test="${not empty businessObjectClass}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
               	</c:when>
               	<c:otherwise>
@@ -256,10 +249,6 @@ if (attributeEntry == null) {
             <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 			<html:select styleId="${property}" property="${property}" title="${accessibleTitle}" tabindex="${tabindex}" style="${textStyle}" size="${attributeEntry.control.size}" disabled="${disableField}" onblur="${onblur}" onchange="${onchange}" styleClass="${styleClass}" multiple="multiple" >
 			  <c:choose>
-                <c:when test="${not empty attributeEntry.keyLabelMap}">
-                  <c:set var="keyLabelMapEntries" value='<%= ((Map) jspContext.findAttribute("attributeEntry.keyLabelMap")).entrySet() %>'/>
-                  <c:set var="methodAndParms" value="keyLabelMapEntries" />
-                </c:when>
               	<c:when test="${not empty businessObjectClass}">
                   <c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
               	</c:when>
@@ -280,10 +269,6 @@ if (attributeEntry == null) {
         <c:set var="businessObjectClass" value="${fn:replace(attributeEntry.control.businessObject,'.','|')}"/>
 
 		<c:choose>
-          <c:when test="${not empty attributeEntry.keyLabelMap}">
-            <c:set var="keyLabelMapEntries" value='<%= ((Map) jspContext.findAttribute("attributeEntry.keyLabelMap")).entrySet() %>'/>
-            <c:set var="methodAndParms" value="keyLabelMapEntries" />
-          </c:when>
       		<c:when test="${not empty businessObjectClass}">
             	<c:set var="methodAndParms" value="actionFormUtilMap.getOptionsMap${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${finderClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${businessObjectClass}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.keyAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.labelAttribute}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeBlankRow}${Constants.ACTION_FORM_UTIL_MAP_METHOD_PARM_DELIMITER}${attributeEntry.control.includeKeyInLabel}"/>
       	  	</c:when>

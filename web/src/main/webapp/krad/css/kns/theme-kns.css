@@ -3,6 +3,7 @@ body {
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:.85em;
 }
+
 a {
 	color:#900000;
 	text-decoration:none;
@@ -455,13 +456,17 @@ h4 img.expand_collapse-buttons[alt="collapse"] {
 	background: url(../../images/h3_collapse-back-kns.png);
 	background-repeat:no-repeat;
 }
+
+
 #viewpage_div {
 	padding-left: 20px;
 	padding-right:20px;
-	/* [disabled]width: 95%; */
+	width: 95%;
+	width: 80%\9;
 	margin-left:0px;
 	margin-right:0px
 }
+
 .desc > label {
 	font-weight:bold;
 }
@@ -796,21 +801,36 @@ th, th.labelTop {
 	background: -ms-linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* IE10+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#e5e5e5', GradientType=0 ); /* IE6-9 */
 	background: linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%);
-	border-bottom: 1px solid #CCCCCC;
-	border-left: 1px solid #CCCCCC;
+	
 	font-weight: bold;
 	text-align:right;
-	padding:.5em;
+	padding:0.5em;
+	border-width: 1px;
+	
+	border-style: inset;
+	border-color:#ccc;
+	
+	
 }
 td.col2, td.col4 {
-	border-bottom: 1px solid #CCCCCC;
-	border-left: 1px solid #CCCCCC;
-	padding:.5em;
+	
+	padding:0.5em;
+	
+	
+	border-width: 1px;
+	
+	border-style: inset;
+	border-color:#ccc;
+	
+	
 }
 table.datatable {
-	/* [disabled]border-top:1px solid #CCC; */
-	/* [disabled]border-right: 1px solid #CCC; */
 	width: 100%;
+	border-width: 1px;
+	border-spacing: 0px;
+	border-style: solid;
+	border-color:#ccc;
+	border-collapse: collapse;
 }
 .sorting_asc {
 	background: url('../../images/kns/sort_asc.png') no-repeat right center;

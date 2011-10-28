@@ -21,10 +21,13 @@ import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
+import org.kuali.rice.krms.impl.repository.TermBo;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 /**
@@ -37,13 +40,19 @@ public class ValidTermsValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
-        //TODO: get the list of valid terms for this context.
-
+        //TODO: get the list of valid terms for this context. (currently gets all)
         Collection<ContextValidTermBo> contextValidTerms = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidTermBo.class);
+        List<String> termSpecIds = new ArrayList();
         for (ContextValidTermBo validTerm : contextValidTerms) {
-            keyValues.add(new ConcreteKeyValue(validTerm.getTermSpecification().getId(), validTerm.getTermSpecification().getName()));
+            termSpecIds.add(validTerm.getTermSpecificationId());
+        }
+        Map<String,Object> criteria = new HashMap<String,Object>();
+        criteria.put("term_spec_id", termSpecIds);
+        Collection<TermBo> terms = KRADServiceLocator.getBusinessObjectService().findMatching(TermBo.class, criteria);
+
+        for (TermBo term : terms) {
+            keyValues.add(new ConcreteKeyValue(term.getId(), term.getDescription()));
         }
         return keyValues;
     }
-
 }

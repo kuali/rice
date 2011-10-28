@@ -173,7 +173,7 @@
 
 	<bean id="textControls1" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
-		<property name="title" value="Attribute Field Options" />
+		<property name="title" value="Input Field Options" />
 		<property name="disclosure.render" value="false" />
 		<property name="items">
 			<list>
@@ -208,7 +208,7 @@
 	<bean id="textControls2" parent="Group"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="disclosure.render" value="false" />
-		<property name="title" value="Attribute Field Options 2" />
+		<property name="title" value="Input Field Options 2" />
 		<property name="items">
 			<list>
 				<bean parent="InputField_Form" abstract="true" p:label="Field Label"
@@ -672,6 +672,7 @@
                     p:altText="Image Only button"/>
           </property>
         </bean>
+        <bean parent="ActionField" p:actionLabel="Disabled Button" p:methodToCall="foo" p:disabled="true"/>
 				<bean parent="LinkField" p:linkLabel="Kuali Website"
 					p:hrefText="http://www.kuali.org" p:label="LinkField is used for href links" />
         <bean parent="LinkGroup" p:title="LinkGroup" p:instructionalText="LinkGroup with | delimiter and [] begin and end delimiter"
@@ -699,7 +700,7 @@
 		<property name="disclosure.render" value="false" />
 		<property name="title" value="Required constraint" />
 		<property name="instructionalText"
-			value="An attribute field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk." />
+			value="An input field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk." />
 		<property name="styleClasses" value="group_header" />
 		<property name="items">
 			<list>
@@ -1564,12 +1565,12 @@
 		<property name="title"
 			value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
 		<property name="instructionalText"
-			value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery tableTools and multi-value lookup" />
+			value="This is a table based layout of a collection - CollectionGroupTableLayout - using jquery richTable and multi-value lookup" />
 		<property name="collectionObjectClass"
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="list2" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="layoutManager.richTable.render" value="true" />
     <property name="collectionLookup.render" value="true"/>
     <property name="collectionLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
     <property name="collectionLookup.fieldConversions" value="number:field1,name:field2,subAccount:field3,subAccountName:field4"/>
@@ -1647,7 +1648,7 @@
 			value="edu.sampleu.travel.krad.form.UITestListObject" />
 		<property name="propertyName" value="subList" />
 		<property name="layoutManager.sequencePropertyName" value="field1" />
-		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="layoutManager.richTable.render" value="true" />
 		<property name="items">
 			<list>
 				<bean parent="InputField" p:propertyName="field1" p:label="SubField 1"
@@ -1729,7 +1730,7 @@
 		<property name="layoutManager.generateAutoSequence" value="false" />
     <property name="layoutManager.separateAddLine" value="true" />
     <property name="layoutManager.addLineGroup.layoutManager.numberOfColumns" value="8" />
-		<property name="layoutManager.tableTools.render" value="true" />
+		<property name="layoutManager.richTable.render" value="true" />
 		<property name="items">
 			<list>
 				<bean parent="InputField" p:label="Field 1" p:propertyName="field1"

@@ -46,6 +46,55 @@
 -- delete from  krms_typ_t where typ_id not in ('1000','1001');
 -- delete from  krms_cntxt_t ;
 
+
+-- KRMS test namespace
+
+insert into krcr_nmspc_t (nmspc_cd, obj_id, nm, appl_id) values ('KRMS_TEST', '123xyz456pdq789', 'KRMS Test', 'RICE')
+
+
+-- misc category
+insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd) values ('CAT01', 'misc', 'KRMS_TEST');
+
+
+--
+-- TermResolver taking 1 campus code parameter
+--
+
+insert into krms_term_spec_t
+(term_spec_id, nmspc_cd, nm, typ, actv, ver_nbr)
+values ('TERMSPEC_999', 'KRMS_TEST', 'campusSize', 'java.lang.Integer', 'Y', 1)
+;
+
+insert into krms_typ_t
+(typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
+values ('T999', 'TermResolver', 'KRMS_TEST', null, 'Y', 1)
+;
+
+insert into krms_term_rslvr_t
+(term_rslvr_id, nmspc_cd, nm, typ_id, output_term_spec_id, actv, ver_nbr)
+values ('TERMRSLVR_999', 'KRMS_TEST', 'campusSizeResolver', 'T999','TERMSPEC_999', 'Y', 1)
+;
+
+insert into krms_term_rslvr_parm_spec_t
+(term_rslvr_parm_spec_id, term_rslvr_id, nm, ver_nbr)
+values ('TRPARM_999', 'TERMRSLVR_999', 'Campus Code', 1)
+;
+
+insert into krms_term_t
+(term_id, term_spec_id, desc_txt, ver_nbr)
+values ('TERM_999', 'TERMSPEC_999', 'Bloomington Campus Size', 1);
+
+insert into krms_term_parm_t
+(term_parm_id, term_id, nm, val, ver_nbr)
+values ('TPARM_999', 'TERM_999', 'Campus Code', 'BL', 1)
+;
+
+
+
+
+
+
+
 insert into krms_attr_defn_t
 (attr_defn_id, nm, nmspc_cd, lbl, actv, ver_nbr)
 values('Q44001', 'Context1Qualifier', 'KRMS_TEST', 'Context 1 Qualifier', 'Y', 1)

@@ -10,7 +10,11 @@
     <property name="attributes">
       <list>
         <ref bean="TermBo-id"/>
+        <ref bean="TermBo-description"/>
         <ref bean="TermBo-specificationId"/>
+        <ref bean="TermBo-specificationNamespace"/>
+        <ref bean="TermBo-specificationName"/>
+        <ref bean="TermBo-specificationType"/>
       </list>
     </property>
     <property name="objectLabel" value="Term"/>
@@ -22,18 +26,222 @@
   <bean id="TermBo-id" parent="TermBo-id-parentBean"/>
   <bean id="TermBo-id-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
-    <property name="shortLabel" value="Term Id"/>
+    <property name="shortLabel" value="ID"/>
     <property name="controlField">
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
-    <property name="label" value="Term Id"/>
+    <property name="label" value="ID"/>
+  </bean>
+
+  <bean id="TermBo-description" parent="TermBo-description-parentBean"/>
+  <bean id="TermBo-description-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false"/>
+    <property name="shortLabel" value="Description"/>
+    <property name="controlField">
+      <bean parent="TextAreaControl" p:cols="40" p:rows="1" p:textExpand="true" />
+    </property>
+    <property name="name" value="description"/>
+    <property name="label" value="Description"/>
   </bean>
 
   <bean id="TermBo-specificationId" parent="TermBo-specificationId-parentBean"/>
   <bean id="TermBo-specificationId-parentBean" abstract="true" parent="TermSpecificationBo-id">
-    <property name="name" value="specificationId"/>
+    <property name="name" value="specification.id"/>
   </bean>
+
+  <bean id="TermBo-specificationName" parent="TermBo-specificationName-parentBean"/>
+  <bean id="TermBo-specificationName-parentBean" abstract="true" parent="TermSpecificationBo-name">
+    <property name="name" value="specification.name"/>
+  </bean>
+
+  <bean id="TermBo-specificationNamespace" parent="TermBo-specificationNamespace-parentBean"/>
+  <bean id="TermBo-specificationNamespace-parentBean" abstract="true" parent="TermSpecificationBo-namespace">
+    <property name="name" value="specification.namespace"/>
+  </bean>
+
+  <bean id="TermBo-specificationType" parent="TermBo-specificationType-parentBean"/>
+  <bean id="TermBo-specificationType-parentBean" abstract="true" parent="TermSpecificationBo-type">
+    <property name="name" value="specification.type"/>
+  </bean>
+
+
+  <!-- Maintenance View -->
+
+  <bean id="TermMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.TermBo"/>
+    <property name="maintainableClass" value="org.kuali.rice.krms.impl.ui.TermMaintainable"/>
+    <property name="documentTypeName" value="TermMaintenanceDocument"/>
+    <!-- property name="documentAuthorizerClass" value="org.kuali.rice.krms.impl.authorization.AgendaEditorAuthorizer"/ -->
+    <!-- property name="businessRulesClass" value="org.kuali.rice.krms.impl.rule.AgendaEditorBusRule" / -->
+    <property name="lockingKeys">
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Term-MaintenanceView" parent="MaintenanceView">
+    <property name="title" value="Term"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.ui.TermMaintainable"/>
+    <property name="items">
+      <list>
+        <ref bean="Term-MainSection"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Term-MainSection" parent="MaintenanceGroupSection">
+    <property name="title" value="Term" />
+    <property name="items">
+      <list>
+        <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2">
+          <property name="items">
+            <list>
+
+              <bean parent="AttributeField" p:propertyName="description" p:label="Description" p:required="true">
+                <!-- property name="control">
+                  <bean parent="TextAreaControl"/>
+                </property -->
+
+              </bean>
+
+              <bean parent="AttributeField" p:propertyName="specification.namespace" p:label="Namespace" p:required="true">
+                <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+                <property name="control">
+                  <bean parent="SelectControl"/>
+                </property>
+              </bean>
+
+              <bean parent="AttributeField" p:propertyName="specification.id" p:label="Specification ID" p:required="true">
+                <property name="control">
+                  <bean parent="TextControl" p:size="30"/>
+                </property>
+
+                <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
+                <property name="fieldLookup.fieldConversions">
+                  <map>
+                    <entry key="id" value="specification.id"/>
+                    <entry key="name" value="specification.name"/>
+                    <entry key="namespace" value="specification.namespace"/>
+                    <entry key="type" value="specification.type"/>
+                    <entry key="description" value="specification.description"/>
+                  </map>
+                </property>
+                <property name="fieldLookup.lookupParameters">
+                  <map>
+                    <entry key="specification.namespace" value="namespace"/>
+                    <entry key="specification.name" value="name"/>
+                    <entry key="specification.id" value="id"/>
+                  </map>
+                </property>
+              </bean>
+
+              <bean parent="AttributeField" p:propertyName="specification.name" p:label="Name" p:required="true">
+                <property name="control">
+                  <bean parent="TextControl" p:size="30"/>
+                </property>
+              </bean>
+
+              <bean parent="AttributeField" p:propertyName="specification.type" p:label="Value Class" p:readOnly="true">
+                <property name="control">
+                  <bean parent="TextControl" p:size="30"/>
+                </property>
+              </bean>
+
+              <bean parent="AttributeField" p:propertyName="specification.description" p:label="Specification Description" p:readOnly="true">
+                <property name="control">
+                  <bean parent="TextAreaControl" p:cols="80" p:rows="3"/>
+                </property>
+              </bean>
+
+              <bean parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" p:colSpan="2"
+                    p:refreshWhenChanged="document.newMaintainableObject.dataObject.specification.id"
+
+                    p:title="Term Parameters" >
+
+          <!--
+          p:renderHeader="@{document.newMaintainableObject.dataObject.agenda.typeId != null and document.newMaintainableObject.dataObject.agenda.typeId != ''}">
+          -->
+
+                <property name="items">
+                  <list>
+                    <bean parent="RemoteFieldsHolder" p:propertyName="parametersMap"
+                          p:fetchingMethodToCall="retrieveCustomAttributes"/>
+                  </list>
+                </property>
+              </bean>
+
+              <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="3" p:colSpan="2">
+                <property name="title" value="Categories" />
+                <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo" />
+                <property name="propertyName" value="specification.categories" />
+                <property name="layoutManager.renderSequenceField" value="false" />
+                <property name="items">
+                  <list>
+
+                    <!-- bean parent="AttributeField" p:propertyName="id" / -->
+                    <bean parent="AttributeField" p:propertyName="id" p:required="true">
+                      <property name="control">
+                        <bean parent="TextControl" p:size="40"/>
+                      </property>
+
+                      <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+                      <property name="fieldLookup.fieldConversions">
+                        <map>
+                          <entry key="id" value="id"/>
+                          <entry key="name" value="name"/>
+                          <entry key="namespace" value="namespace"/>
+                        </map>
+                      </property>
+                      <property name="fieldLookup.lookupParameters">
+                        <map>
+                          <entry key="namespace" value="namespace"/>
+                          <entry key="name" value="name"/>
+                          <entry key="id" value="id"/>
+                        </map>
+                      </property>
+                    </bean>
+
+                    <bean parent="AttributeField" p:propertyName="namespace" p:required="true">
+                      <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+                      <property name="control">
+                        <bean parent="SelectControl"/>
+                      </property>
+                    </bean>
+                    <bean parent="AttributeField" p:propertyName="name" p:readOnly="true">
+                      <property name="control">
+                        <bean parent="TextControl" p:size="80"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+            </list>
+          </property>
+        </bean>
+
+        <!-- custom attributes on term -->
+        <!--
+        <bean parent="GroupGridLayout" p:layoutManager.numberOfColumns="2"
+              p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId"
+              p:title="Type Attributes"
+              p:renderHeader="@{document.newMaintainableObject.dataObject.agenda.typeId != null and document.newMaintainableObject.dataObject.agenda.typeId != ''}">
+
+          <property name="items">
+            <list>
+              <bean parent="RemoteFieldsHolder" p:propertyName="customAttributesMap"
+                    p:fetchingMethodToCall="retrieveCustomAttributes"/>
+            </list>
+          </property>
+        </bean>
+        -->
+      </list>
+    </property>
+  </bean>
+
 
   <!-- Inquiry View -->
 
@@ -108,13 +316,18 @@
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaAttributeField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaAttributeField" p:propertyName="specificationId"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="specification.namespace"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="specification.name"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="specification.type"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
         <bean parent="AttributeField" p:propertyName="id"/>
         <bean parent="AttributeField" p:propertyName="specification.id"/>
+        <bean parent="AttributeField" p:propertyName="specification.namespace"/>
+        <bean parent="AttributeField" p:propertyName="specification.name"/>
+        <bean parent="AttributeField" p:propertyName="specification.type"/>
       </list>
     </property>
   </bean>

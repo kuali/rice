@@ -302,7 +302,7 @@
         <field-descriptor name="specificationId" column="TERM_SPEC_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-        <reference-descriptor name="specification" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">
+        <reference-descriptor name="specification" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <foreignkey field-ref="specificationId" />
         </reference-descriptor>
         <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.TermParameterBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object">
@@ -347,10 +347,11 @@
             <inverse-foreignkey field-ref="id" />
         </collection-descriptor>
         <collection-descriptor name="parameterSpecifications" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo" 
-            collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object">
+            collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
             <inverse-foreignkey field-ref="termResolverId" />
         </collection-descriptor>
-        <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
+        <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.TermResolverAttributeBo"
+            collection-class="org.apache.ojb.broker.util.collections.ManageableHashSet" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
             <inverse-foreignkey field-ref="termResolverId" />
         </collection-descriptor>
     </class-descriptor>

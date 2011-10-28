@@ -3,7 +3,9 @@ package org.kuali.rice.krms.impl.repository
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 
 import org.kuali.rice.krms.api.repository.term.TermDefinition;
-import org.kuali.rice.krms.api.repository.term.TermDefinitionContract;
+import org.kuali.rice.krms.api.repository.term.TermDefinitionContract
+import java.util.Map.Entry
+import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
 
 
 public class TermBo extends PersistableBusinessObjectBase implements TermDefinitionContract {
@@ -12,7 +14,9 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	def String specificationId
     def String description
 
-	def TermSpecificationBo specification
+    // new-ing up an empty one allows the TermBo lookup to work on fields in the term specification:
+	def TermSpecificationBo specification = new TermSpecificationBo()
+
 	def List<TermParameterBo> parameters
 
 	/**
@@ -52,6 +56,24 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 
    public List<TermParameterBo> getParameters(){
 	   return parameters
+   }
+
+   public Map<String, String> getParametersMap() {
+       HashMap<String, String> results = new HashMap<String, String>()
+       if (parameters != null) for (TermParameterBo param : parameters) {
+           results.put(param.name, param.value);
+       }
+       return results;
+   }
+
+   public void setParametersMap(HashMap<String, String> paramsMap) {
+       parameters.clear();
+       if (paramsMap != null) {
+           for (Entry<String, String> paramEntry : paramsMap.entrySet()) {
+               TermParameterDefinition termDef = TermParameterDefinition.Builder.create(null, id, paramEntry.key, paramEntry.value).build();
+               parameters.add(TermParameterBo.from(termDef));
+           }
+       }
    }
 
 } 

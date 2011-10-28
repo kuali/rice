@@ -28,7 +28,7 @@
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
-    <property name="label" value="Category Id"/>
+    <property name="label" value="ID"/>
   </bean>
 
   <bean id="CategoryBo-name" parent="CategoryBo-name-parentBean"/>
@@ -36,10 +36,10 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="255"/>
+      <bean parent="TextControl" p:size="128"/>
     </property>
     <property name="name" value="name"/>
-    <property name="label" value="Category Name"/>
+    <property name="label" value="Name"/>
   </bean>
   
   <bean id="CategoryBo-namespace" parent="CategoryBo-namespace-parentBean"/>
@@ -50,7 +50,25 @@
       <bean parent="TextControl" p:size="40"/>
     </property>
     <property name="name" value="namespace"/>
-    <property name="label" value="Category Namespace"/>
+    <property name="label" value="Namespace"/>
+  </bean>
+
+  <bean id="CategoryBo-LookupView" parent="CategoryBo-LookupView-parentBean" />
+  <bean id="CategoryBo-LookupView-parentBean" abstract="true" parent="LookupView">
+    <property name="title" value="Category Lookup"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="namespace"/>
+        <bean parent="LookupCriteriaAttributeField" p:propertyName="name"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="AttributeField" p:propertyName="namespace"/>
+        <bean parent="AttributeField" p:propertyName="name"/>
+      </list>
+    </property>
   </bean>
 
 </beans>

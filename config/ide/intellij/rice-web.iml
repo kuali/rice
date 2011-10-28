@@ -9,42 +9,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../web/src/main/webapp" relative="/" />
         </webroots>
-      </configuration>
-      <facet type="struts" name="Struts">
-        <configuration>
-          <option name="myStrutsValidationEnabled" value="true" />
-          <option name="myTilesValidationEnabled" value="true" />
-          <option name="myValidatorValidationEnabled" value="true" />
-          <option name="myReportErrorsAsWarnings" value="true" />
-          <option name="mySuppressPropertiesValidation" value="false" />
-        </configuration>
-      </facet>
-    </facet>
-    <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="fileset1" name="Rice Spring Beans" removed="false">
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/kns/config/KNSSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/COREConfigSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/CORESpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/CommonOJBSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/CommonSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/config/CoreOjbSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../core/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/config/KRADConfigSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/config/KRADServiceBusSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/config/KRADSpringBeans.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/kew/config/KEWSpringBeans.xml</file>
-        </fileset>
-        <fileset id="fileset2" name="UIF Dictionary" removed="false">
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifGroupDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifControlDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifFieldDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifMiscDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</file>
-        </fileset>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../web/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../web/src/main/resources" />
+        </sourceRoots>
       </configuration>
     </facet>
   </component>
@@ -59,19 +27,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-krms-impl" />
     <orderEntry type="module" module-name="rice-core-impl" />
     <orderEntry type="module" module-name="rice-api" />

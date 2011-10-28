@@ -3,43 +3,15 @@
   <component name="FacetManager">
     <facet type="web" name="Web">
       <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../sampleapp/src/main/webapp/WEB-INF/web.xml" />
-        </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/webapp" relative="/" />
         </webroots>
-      </configuration>
-      <facet type="struts" name="Struts">
-        <configuration>
-          <option name="myStrutsValidationEnabled" value="true" />
-          <option name="myTilesValidationEnabled" value="true" />
-          <option name="myValidatorValidationEnabled" value="true" />
-          <option name="myReportErrorsAsWarnings" value="true" />
-          <option name="mySuppressPropertiesValidation" value="false" />
-        </configuration>
-      </facet>
-    </facet>
-    <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="fileset1" name="Krad-Uif" removed="false">
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/uif/UifComponentsView.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/Note.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/NoteType.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifControlDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifFieldDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifGroupDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</file>
-          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/travel/datadictionary/TravelAccount.xml</file>
-        </fileset>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
+        </sourceRoots>
       </configuration>
     </facet>
   </component>
@@ -47,36 +19,15 @@
     <output url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../sampleapp">
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-b1-SNAPSHOT" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-impex-master" />
     <orderEntry type="module" module-name="rice-web" />
     <orderEntry type="module" module-name="rice-impl" />

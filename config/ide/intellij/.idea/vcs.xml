@@ -5,6 +5,7 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
+    <mapping directory="$PROJECT_DIR$/../../.." vcs="svn" />
   </component>
 </project>
 

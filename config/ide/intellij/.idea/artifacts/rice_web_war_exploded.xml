@@ -153,9 +153,7 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" />
           <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.2.2" />
           <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.3.4.O" />
-          <element id="library" level="project" name="Maven: org.directwebremoting:dwr:3.0.M1" />
-          <element id="library" level="project" name="Maven: org.mortbay.jetty:cometd:6.1.4" />
-          <element id="library" level="project" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" />
+          <element id="library" level="project" name="Maven: org.directwebremoting:dwr:3.0.RC2" />
           <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:1.8.4" />
           <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.2.2" />
           <element id="library" level="project" name="Maven: org.javassist:javassist:3.15.0-GA" />
@@ -177,6 +175,9 @@
           <element id="archive" name="rice-impl-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-impl" />
           </element>
+          <element id="archive" name="rice-ken-api-2.0.0-b1-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ken-api" />
+          </element>
           <element id="archive" name="rice-kim-impl-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-impl" />
           </element>
@@ -188,9 +189,6 @@
           </element>
           <element id="archive" name="rice-location-framework-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-framework" />
-          </element>
-          <element id="archive" name="rice-ksb-framework-2.0.0-b1-SNAPSHOT.jar">
-            <element id="module-output" name="rice-ksb-framework" />
           </element>
           <element id="archive" name="rice-edl-framework-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />
@@ -204,7 +202,6 @@
           <element id="archive" name="rice-edl-impl-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-impl" />
           </element>
-          <element id="library" level="project" name="Maven: com.oracle:ojdbc14:10.2.0.3.0" />
         </element>
       </element>
     </root>

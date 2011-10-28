@@ -8,23 +8,10 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../location/framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/framework/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../location/framework/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../location/framework/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../location/framework/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../location/framework/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../location/framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../location/framework/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />

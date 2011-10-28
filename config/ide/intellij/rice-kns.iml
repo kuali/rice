@@ -4,38 +4,14 @@
     <output url="file://$MODULE_DIR$/../../../kns/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../kns/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../kns">
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kns/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/surefire-reports" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kns/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.reflections:reflections:0.9.5-RC2" level="project" />
-    <orderEntry type="library" name="Maven: com.google.collections:google-collections:1.0" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:1.4" level="project" />
-    <orderEntry type="library" name="Maven: commons-digester:commons-digester:1.8" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />

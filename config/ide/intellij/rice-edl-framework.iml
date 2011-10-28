@@ -4,33 +4,15 @@
     <output url="file://$MODULE_DIR$/../../../edl/framework/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../edl/framework/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../edl/framework">
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/resources" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../edl/framework/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../edl/framework/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />

@@ -4,26 +4,15 @@
     <output url="file://$MODULE_DIR$/../../../ksb/api/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../ksb/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../ksb/api">
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/target/generated-sources/wsdl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/target/generated-sources/test-annotations" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/target/generated-sources/annotations" isTestSource="false" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/classes" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/surefire-reports" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />

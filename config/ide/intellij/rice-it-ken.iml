@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="FacetManager">
-    <facet type="Spring" name="Spring">
-      <configuration />
-    </facet>
-    <facet type="web" name="Web">
-      <configuration>
-        <descriptors>
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../../it/ken/src/test/webapp/WEB-INF/web.xml" />
-        </descriptors>
-        <webroots>
-          <root url="file://$MODULE_DIR$/../../../it/ken/src/test/webapp" relative="/" />
-        </webroots>
-        <sourceRoots />
-      </configuration>
-    </facet>
-  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../it/ken/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../it/ken/target/test-classes" />
@@ -24,26 +8,10 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/src/test/resources/META-INF" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../it/ken/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target/test-classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/ken/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.4.2.v20110526" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-tx:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-orm:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-jdbc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-webmvc:3.0.5.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-context-support:3.0.5.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-core-api" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />

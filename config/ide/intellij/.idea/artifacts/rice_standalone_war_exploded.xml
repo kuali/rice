@@ -49,6 +49,9 @@
           <element id="archive" name="rice-impl-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-impl" />
           </element>
+          <element id="archive" name="rice-ken-api-2.0.0-b1-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ken-api" />
+          </element>
           <element id="archive" name="rice-kew-impl-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-impl" />
           </element>
@@ -122,9 +125,7 @@
           <element id="library" level="project" name="Maven: displaytag:displaytag:1.2" />
           <element id="library" level="project" name="Maven: com.lowagie:itext:1.3" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" />
-          <element id="library" level="project" name="Maven: org.directwebremoting:dwr:3.0.M1" />
-          <element id="library" level="project" name="Maven: org.mortbay.jetty:cometd:6.1.4" />
-          <element id="library" level="project" name="Maven: org.mortbay.jetty:jetty-util:6.1.4" />
+          <element id="library" level="project" name="Maven: org.directwebremoting:dwr:3.0.RC2" />
           <element id="archive" name="rice-core-impl-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-impl" />
           </element>
@@ -179,9 +180,6 @@
           </element>
           <element id="archive" name="rice-location-web-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-web" />
-          </element>
-          <element id="archive" name="rice-ksb-framework-2.0.0-b1-SNAPSHOT.jar">
-            <element id="module-output" name="rice-ksb-framework" />
           </element>
           <element id="archive" name="rice-edl-framework-2.0.0-b1-SNAPSHOT.jar">
             <element id="module-output" name="rice-edl-framework" />

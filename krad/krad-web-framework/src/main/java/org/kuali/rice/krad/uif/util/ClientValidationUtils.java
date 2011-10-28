@@ -184,9 +184,13 @@ public class ClientValidationUtils {
         String key = "validChar-" + field.getBindingInfo().getBindingPath() + methodKey;
         
         String regex = validCharactersConstraint.getValue();
+        //replace characters known to cause issues if not escaped
         if(regex.contains("\\\\")){
-            regex.replaceAll("\\\\", "\\\\\\\\");
+            regex = regex.replaceAll("\\\\", "\\\\\\\\");
         }
+        if(regex.contains("/")){
+		    regex = regex.replace("/", "\\/");
+		}
         
         return "\njQuery.validator.addMethod(\"" + key
                 + "\", function(value, element, doCheck) {\n if(doCheck === false){return true;}else{"

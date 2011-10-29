@@ -5,8 +5,8 @@
         NMSPC_CD="KRMS"
         SRVC_NM="notificationPeopleFlowActionTypeService" TYP_ID="1000" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="approvalPeopleFlowActionType"
-        NMSPC_CD="KRMS_TEST"
-        SRVC_NM="approvalPeopleFlowActionTypeService" TYP_ID="1001" VER_NBR="1"/>
+        NMSPC_CD="KRMS" SRVC_NM="approvalPeopleFlowActionTypeService"
+        TYP_ID="1001" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="CAMPUS" NMSPC_CD="KRMS_TEST"
         SRVC_NM="myCampusService" TYP_ID="T2" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="KrmsActionResolverType"
@@ -15,4 +15,6 @@
     <KRMS_TYP_T ACTV="Y" NM="AGENDA" NMSPC_CD="KRMS_TEST" TYP_ID="T5" VER_NBR="1"/>
     <KRMS_TYP_T ACTV="Y" NM="CampusAgendaType" NMSPC_CD="KRMS_TEST"
         SRVC_NM="campusAgendaTypeService" TYP_ID="T6" VER_NBR="1"/>
+    <KRMS_TYP_T ACTV="Y" NM="TermResolver" NMSPC_CD="KRMS_TEST"
+        TYP_ID="T999" VER_NBR="1"/>
 </dataset>

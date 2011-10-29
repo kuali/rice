@@ -20,4 +20,8 @@
         TYP="T1" VER_NBR="1"/>
     <KRMS_TERM_SPEC_T ACTV="Y" DESC_TXT="Special Event" NM="Occasion"
         NMSPC_CD="KRMS_TEST" TERM_SPEC_ID="TERMSPEC_006" TYP="T1" VER_NBR="1"/>
+    <KRMS_TERM_SPEC_T ACTV="Y"
+        DESC_TXT="Size in # of students of the campus" NM="campusSize"
+        NMSPC_CD="KRMS_TEST" TERM_SPEC_ID="TERMSPEC_999"
+        TYP="java.lang.Integer" VER_NBR="1"/>
 </dataset>

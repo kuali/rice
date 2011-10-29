@@ -63,6 +63,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
 
     private String refreshWhenChanged;
     private List<String> refreshWhenChangedControlNames;
+    private boolean refreshedByAction;
 
     private String refreshDiscloseMethodToCall;
 
@@ -130,6 +131,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         selfRendered = false;
         progressiveRenderViaAJAX = false;
         progressiveRenderAndRefresh = false;
+        refreshedByAction = false;
 
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
@@ -1436,6 +1438,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public List<String> getRefreshWhenChangedControlNames() {
         return this.refreshWhenChangedControlNames;
+    }
+
+    /**
+     * @see Component#isRefreshedByAction()
+     */
+    public boolean isRefreshedByAction() {
+        return refreshedByAction;
+    }
+
+    /**
+     * @see Component#setRefreshedByAction(boolean)
+     */
+    public void setRefreshedByAction(boolean refreshedByAction) {
+        this.refreshedByAction = refreshedByAction;
     }
 
     /**

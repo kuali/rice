@@ -90,4 +90,11 @@ public class UIComponentsTestController extends UifControllerBase {
 
         return getUIFModelAndView(form, pageId);
     }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshProgGroup")
+	public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UILayoutTestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		return updateComponent(uiTestForm, result, request, response);
+	}
 }

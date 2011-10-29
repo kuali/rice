@@ -311,7 +311,7 @@ function createDatePicker(controlId, options) {
 }
 
 /**
- * Sets up the script necessary to toggle a group as a accordion
+ * Sets up the script necessary to toggle a group as a disclosure
  *
  * @param groupId -
  *          id for the group to be toggled
@@ -388,14 +388,14 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
 }
 
 /**
- * Expands all the accordion divs on the page
+ * Expands all the disclosure divs on the page
  */
 function expandDisclosure() {
     jq('img[alt="collapse"]').click();
 }
 
 /**
- * Collapses all the accordion divs on the page
+ * Collapses all the disclosure divs on the page
  */
 function collapseDisclosure() {
     jq('img[alt="expand"]').click();

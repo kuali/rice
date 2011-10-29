@@ -82,6 +82,7 @@ public class ActionField extends FieldBase {
 
     /**
      * The following finalization is performed:
+     *
      * <ul>
      * <li>Add methodToCall action parameter if set and setup event code for
      * setting action parameters</li>

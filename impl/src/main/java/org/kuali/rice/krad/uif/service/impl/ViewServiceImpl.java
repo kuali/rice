@@ -149,7 +149,11 @@ public class ViewServiceImpl implements ViewService {
         LOG.info("performing apply model phase for view: " + view.getId());
         helperService.performApplyModel(view, model);
 
-        // Update State Phase
+        // do indexing
+        LOG.info("reindexing after apply model for view: " + view.getId());
+        view.index();
+
+        // Finalize Phase
         LOG.info("performing finalize phase for view: " + view.getId());
         helperService.performFinalize(view, model);
 

@@ -1289,6 +1289,17 @@
             </list>
           </property>
         </bean>
+        <bean parent="GenericHorizontalFieldGroup" p:label="Refresh Buttons">
+          <property name="items">
+            <list>
+              <bean parent="AjaxActionField" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
+                    p:refreshId="prog3"/>
+              <bean parent="AjaxActionField" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
+                    p:refreshPropertyName="field45"/>
+              <bean parent="AjaxActionField" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
+            </list>
+          </property>
+        </bean>
 			</list>
 		</property>
 	</bean>

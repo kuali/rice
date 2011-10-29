@@ -777,6 +777,30 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setRefreshWhenChanged(String refreshWhenChanged);
 
     /**
+     * Indicates the component can be refreshed by an action
+     *
+     * <p>
+     * This is set by the framework for configured ajax action buttons, should not be set in
+     * configuration
+     * </p>
+     *
+     * @return boolean true if the component is refreshed by an action, false if not
+     */
+    public boolean isRefreshedByAction();
+
+    /**
+     * Setter for the refresjed by action indicator
+     *
+     * <p>
+     * This is set by the framework for configured ajax action buttons, should not be set in
+     * configuration
+     * </p>
+     *
+     * @param refreshedByAction
+     */
+    public void setRefreshedByAction(boolean refreshedByAction);
+
+    /**
      * Result of the conditionalRefresh expression, true if satisfied, otherwise false.
      * Note: not currently used for any processing, required by the expression evaluator.
      *

@@ -267,7 +267,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     }
 
     /**
-     * @param selectedPropositionId the selectedPropositionId to set
+     * @param cutPropositionId the cutPropositionId to set
      */
     public void setCutPropositionId(String cutPropositionId) {
         this.cutPropositionId = cutPropositionId;

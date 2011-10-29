@@ -38,7 +38,6 @@ import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
-import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -75,10 +74,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ModelAndView modelAndView = super.refresh(form, result, request, response);
 
-        // handle return from context lookup
+        // handle return from context lookup and update the namespace on all agenda related objects if the contest has been changed
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
-        String refreshCaller = request.getParameter("refreshCaller");
         if (!StringUtils.equals(agendaEditor.getOldContextId(), agendaEditor.getAgenda().getContextId())) {
             agendaEditor.setOldContextId(agendaEditor.getAgenda().getContextId());
 
@@ -103,16 +101,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     @RequestMapping(params = "methodToCall=" + "goToAddRule")
     public ModelAndView goToAddRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AgendaEditor agendaEditor = getAgendaEditor(form);
-        // this is the root of the tree:
-        AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
-        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
-
-        if (StringUtils.isEmpty(selectedItemId)) {
-            setSelectedAgendaItemId(form, null);
-        } else {
-            setSelectedAgendaItemId(form, selectedItemId);
-        }
         setAgendaItemLine(form, null);
 
         form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
@@ -161,17 +149,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     /**
-     * This method sets the id of the selected agendaItem.
-     *
-     * @param form
-     * @param selectedAgendaItemId
-     */
-    private void setSelectedAgendaItemId(UifFormBase form, String selectedAgendaItemId) {
-        AgendaEditor agendaEditor = getAgendaEditor(form);
-        agendaEditor.setSelectedAgendaItemId(selectedAgendaItemId);
-    }
-
-    /**
      * This method returns the id of the selected agendaItem.
      *
      * @param form
@@ -217,7 +194,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
 
-        setSelectedAgendaItemId(form, selectedItemId);
         setAgendaItemLine(form, node);
 
         form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
@@ -918,19 +894,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         } 
         return result;
-    }
-
-    /**
-     * This method gets the agenda from the form
-     * 
-     *
-     * @param form
-     * @return
-     */
-    private AgendaBo getAgenda(UifFormBase form) {
-        AgendaEditor agendaEditor = getAgendaEditor((MaintenanceForm) form);
-        AgendaBo agenda = agendaEditor.getAgenda();
-        return agenda;
     }
 
     /**
@@ -1666,7 +1629,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 rule.refreshPropositionTree(false);
             }
         }
-        agendaEditor.setSelectedPropositionId(cutPropId);
         agendaEditor.setCutPropositionId(null);
         // call the super method to avoid the agenda tree being reloaded from the db
         return super.updateComponent(form, result, request, response);

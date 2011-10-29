@@ -67,21 +67,6 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 	private static final long serialVersionUID = 6790121225857950019L;
 	private KSBHttpInvokerHandler httpInvokerHandler;
 	private ServletController cxfServletController;
-
-	/**
-	 * Instantiate the WebApplicationContext for this servlet, either a default
-	 * XmlWebApplicationContext or a custom context class if set. This implementation
-	 * expects custom contexts to implement ConfigurableWebApplicationContext.
-	 * Can be overridden in subclasses.
-	 * @param parent the parent ApplicationContext to use, or <code>null</code> if none
-	 * @return the WebApplicationContext for this servlet
-	 * @throws BeansException if the context couldn't be initialized
-	 * @see #setContextClass
-	 * @see org.springframework.web.context.support.XmlWebApplicationContext
-	 */
-	protected WebApplicationContext initWebApplicationContext() throws BeansException {
-        return null; //we want to start spring all by ourselves
-    }
 	
 	protected void initFrameworkServlet() throws ServletException, BeansException {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();

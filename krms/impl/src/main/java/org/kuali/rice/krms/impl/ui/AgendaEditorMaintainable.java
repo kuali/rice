@@ -184,6 +184,10 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             // set custom attributes map in AgendaEditor
             agendaEditor.setCustomAttributesMap(agenda.getAttributes());
 
+            // set extra fields on AgendaEditor
+            agendaEditor.setNamespace(agenda.getContext().getNamespace());
+            agendaEditor.setContextName(agenda.getContext().getName());
+
             dataObject = agendaEditor;
         } catch (ClassNotPersistenceCapableException ex) {
             if (!document.getOldMaintainableObject().isExternalBusinessObject()) {

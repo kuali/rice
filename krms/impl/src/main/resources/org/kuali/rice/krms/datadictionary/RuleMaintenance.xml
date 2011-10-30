@@ -61,60 +61,46 @@
     <property name="renderHeader" value="true" />
     <property name="disclosure.render" value="true" />
     <property name="disclosure.defaultOpen" value="true" />
-    <property name="layoutManager">
-      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
+    <!-- property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="VERTICAL"
         p:styleClasses="datatable display" />
-    </property>
+    </property -->
     <property name="items">
       <list>
-        <ref bean="loadRuleGroup"/>
         <ref bean="ruleInfoGrid"/>
+        <!--
         <ref bean="ruleAttributesSection"/>
+        -->
         <ref bean="propositionSection" />
       </list>
     </property>
   </bean>
-  
-  <bean id="loadRuleGroup" parent="loadRuleGroup-parent" />
-  <bean id="loadRuleGroup-parent" parent="Group" p:style="padding-bottom: 1em;">
-    <property name="title" value="Source" />
-    <property name="renderHeader" value="false" />
-    <property name="disclosure.render" value="false" />
-    <property name="layoutManager">
-      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"
-        p:styleClasses="datatable display" />
-    </property>
-    <property name="items">
-      <list>
-        <bean parent="InputField" p:propertyName="copyRuleName" p:style="font-size: smaller;">
-          <property name="label" value="Copy from Existing Rule" />
-          <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
-          <property name="control">
-            <bean parent="TextControl" p:size="40"
-              p:watermarkText="Existing Rule Name" />
-            </property>
-        </bean>
-        <bean parent="ActionField" p:methodToCall="copyRule" p:actionLabel="Copy Rule"  p:clientSideJs="alert('Not Yet Implemented');"
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
 
-<!--         
-        <bean parent="LabelField" p:labelText="or " p:style="padding: 10px;" 
-          p:requiredMessageField="" p:renderColon="false" />
-        <bean parent="ActionField" p:actionLabel="Create New Rule"
-          p:methodToCall="foo" p:styleClasses="ui-button  ui-widget" />
- -->          
-      </list>
-    </property>
-  </bean>
-
-  
-  
-  <bean id="ruleInfoGrid" parent="GroupGridLayout"  p:style="padding-bottom: 1em;">
+  <bean id="ruleInfoGrid" parent="GroupGridLayout">
     <property name="title" value="Rule Information" />
     <property name="renderHeader" value="false" />
     <property name="disclosure.render" value="false" />
     <property name="items">
       <list>
+
+        <bean parent="FieldGroup" p:label="Copy from Existing Rule">
+          <property name="items">
+            <list>
+              <bean parent="InputField" p:propertyName="copyRuleName" p:style="font-size: smaller;" p:showLabel="false">
+                <property name="label" value="Copy from Existing Rule" />
+                <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
+                <property name="control">
+                  <bean parent="TextControl" p:size="40"
+                    p:watermarkText="Existing Rule Name" />
+                  </property>
+              </bean>
+              <bean parent="ActionField" p:methodToCall="copyRule" p:actionLabel="Copy Rule"  p:clientSideJs="alert('Not Yet Implemented');"
+                p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt; float: right;"/>
+
+            </list>
+          </property>
+        </bean>
+
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" />
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.namespace" p:readOnly="true" />
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.typeId" p:readOnly="true" />
@@ -129,7 +115,7 @@
   
 
   <bean name="propositionSection" parent="propositionSection-parent" />
-  <bean name="propositionSection-parent" parent="GroupBodyOnly"  p:style="padding-bottom: 1em;">
+  <bean name="propositionSection-parent" parent="GroupBodyOnly">
     <property name="title" value="Proposition Tree" />
     <property name="disclosure.render" value="true" />
     <property name="items">
@@ -145,7 +131,7 @@
                 <property name="label" value="Proposition Summary" />
                 <property name="control">
 <!--                  <bean parent="TextControl" p:size="90" p:readOnly="true" p:style="border: 0px"/> -->
-                  <bean parent="TextAreaControl" p:rows="2" p:cols="250" p:readOnly="true" />
+                  <bean parent="TextAreaControl" p:rows="3" p:cols="120" p:readOnly="true" />
 
                 </property>
               </bean>
@@ -508,7 +494,7 @@
   </bean>
 
   <bean name="ruleAttributesSection" parent="ruleAttributesSection-parent" />
-  <bean name="ruleAttributesSection-parent" parent="Group"  p:style="padding-bottom: 1em;">
+  <bean name="ruleAttributesSection-parent" parent="Group">
 
     <!-- TODO: temporarily disabling attribute group rendering: -->
     <property name="render"><value>false</value></property>

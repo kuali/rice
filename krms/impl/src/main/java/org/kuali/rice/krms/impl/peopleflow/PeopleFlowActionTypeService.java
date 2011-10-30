@@ -14,6 +14,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
+import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
@@ -42,6 +43,9 @@ import java.util.Map;
  *
  */
 public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements ActionTypeService {
+
+    // TODO: where should this constant really go?
+    static final String PEOPLE_FLOW_BO_CLASS_NAME = "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo";
 
     /**
      * enum used to specify the action type to be specified in the vended actions.
@@ -152,15 +156,16 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
     public RemotableAttributeField createPeopleFlowField() {
 
-        // TODO: real params here.  At the time this was written, lookups didn't exist for PeopleFlows yet.
+        String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
+
         RemotableQuickFinder.Builder quickFinderBuilder =
-                RemotableQuickFinder.Builder.create("http://TODO.kuali.org/TODO/",
-                        "org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo");
-        // TODO: field conversions, etc
-//        quickFinderBuilder.setFieldConversions();
+                RemotableQuickFinder.Builder.create(baseLookupUrl, PEOPLE_FLOW_BO_CLASS_NAME);
+
+        quickFinderBuilder.setFieldConversions(Collections.singletonMap("id", ATTRIBUTE_FIELD_NAME));
 
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
         controlBuilder.setSize(Integer.valueOf(40));
+        controlBuilder.setWatermark("PeopleFlow ID");
 
         RemotableAttributeLookupSettings.Builder lookupSettingsBuilder = RemotableAttributeLookupSettings.Builder.create();
         lookupSettingsBuilder.setCaseSensitive(Boolean.TRUE);

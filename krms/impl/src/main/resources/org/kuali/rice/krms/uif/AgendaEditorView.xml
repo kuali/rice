@@ -145,7 +145,7 @@
 
               <bean parent="InputField" p:propertyName="agenda.name" p:label="Name" p:required="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30" p:watermarkText="agenda name"/>
+                  <bean parent="TextControl" p:size="30" p:watermarkText="The Agenda`s parent Context"/>
                 </property>
               </bean>
 
@@ -158,26 +158,56 @@
                 <property name="hiddenPropertyNames" value="agenda.contextId" />
 
                 <!-- configure context quickfinder button -->
+                <!-- property name="fieldLookup">
+                  <bean parent="QuickFinderByScript"/>
+                </property -->
                 <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
                 <property name="fieldLookup.fieldConversions">
                   <map>
                     <entry key="id" value="agenda.contextId"/>
                     <entry key="name" value="contextName"/>
+                    <entry key="namespace" value="namespace"/>
+                  </map>
+                </property>
+                <property name="fieldLookup.lookupParameters">
+                  <map>
+                    <entry key="agenda.contextId" value="id"/>
+                    <entry key="contextName" value="name"/>
+                    <entry key="namespace" value="namespace"/>
                   </map>
                 </property>
 
                 <!-- suggest context names -->
-                <!-- TODO: only suggest for the selected namespace -->
+                <!--
                 <property name="fieldSuggest.render" value="true" />
                 <property name="fieldSuggest.sourcePropertyName" value="name" />
-                <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+                <property name="fieldSuggest.suggestQuery.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
+                <property name="fieldSuggest.suggestQuery.queryFieldMapping" value="namespace:namespace" />
+                <property name="fieldSuggest.suggestQuery.additionalCriteria">
+                  <map>
+                    <entry key="active" value="true" />
+                  </map>
+                </property>
+                -->
 
                 <!-- populate context id field on tab out based on namespace and contextName-->
                 <property name="fieldAttributeQuery">
                     <bean parent="FieldAttributeQuery" p:dataObjectClassName="org.kuali.rice.krms.impl.repository.ContextBo"
-                        p:queryFieldMapping="namespace:namespace,contextName:name" p:returnFieldMapping="name:contextName,id:agenda.contextId"/>
+                        p:queryFieldMapping="namespace:namespace,contextName:name" p:returnFieldMapping="name:contextName,id:agenda.contextId">
+                      <property name="additionalCriteria">
+                        <map>
+                          <entry key="active" value="true" />
+                        </map>
+                      </property>
+                    </bean>
                 </property>
 
+              </bean>
+
+              <bean parent="InputField" p:propertyName="agenda.name" p:label="Agenda Name" p:required="true">
+                <property name="control">
+                  <bean parent="TextControl" p:size="30" p:watermarkText="name for the new Agenda"/>
+                </property>
               </bean>
 
               <bean parent="InputField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"
@@ -204,8 +234,10 @@
         </bean>
 
         <!-- custom attributes on agenda -->
-        <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2"
-               p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId">
+        <bean parent="GroupGridLayout" p:layoutManager.numberOfColumns="2"
+               p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId"
+               p:title="Type Attributes"
+               p:renderHeader="@{document.newMaintainableObject.dataObject.agenda.typeId != null and document.newMaintainableObject.dataObject.agenda.typeId.trim() != ''}">
 
           <property name="items">
             <list>

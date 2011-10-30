@@ -148,6 +148,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </list>
       </property>  
   </bean>
+
+  <bean id="FooterInquiryNoResult" parent="Footer">
+      <property name="items">
+        <list>
+          <bean parent="ActionField" p:actionLabel="Close"
+                p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
+        </list>
+      </property>
+  </bean>
   
   <bean id="FooterLookup" parent="Footer">
       <property name="items">

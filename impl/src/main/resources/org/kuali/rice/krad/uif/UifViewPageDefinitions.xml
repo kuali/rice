@@ -85,6 +85,33 @@
     </property>
   </bean>
 
+  <bean id="InquiryNoResultView" parent="InquiryNoResultView-parentBean"/>
+  <bean id="InquiryNoResultView-parentBean" abstract="true" parent="KNSFormView">
+    <property name="title" value="No records found"/>
+    <property name="readOnly" value="true"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Page"/>
+    </property>
+    <property name="items">
+			<list>
+				<ref bean="InquiryNoResultView-Message-Group" />
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="FooterInquiryNoResult"/>
+    </property>
+  </bean>
+
+  <bean id="InquiryNoResultView-Message-Group" parent="Group"
+		p:layoutManager.orientation="VERTICAL">
+   <property name="items">
+     <list>
+       <bean parent="MessageField" p:messageText="No records found for the given parameters."/>
+     </list>
+   </property>
+  </bean>
+
   <bean id="LookupView" abstract="true" parent="LookupView-parentBean"/>
   <bean id="LookupView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.LookupView" parent="KNSFormView">

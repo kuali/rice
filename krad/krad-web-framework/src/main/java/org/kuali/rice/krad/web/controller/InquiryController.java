@@ -85,7 +85,8 @@ public class InquiryController extends UifControllerBase {
 
         if (dataObject == null && GlobalVariables.getMessageMap().hasNoMessages()) {
             LOG.error("The record you have inquired on does not exist.");
-            throw new UnsupportedOperationException("The record you have inquired on does not exist.");
+            inquiryForm.setView(getViewService().getViewById("InquiryNoResultView"));
+//            throw new UnsupportedOperationException("The record you have inquired on does not exist.");
         }
         inquiryForm.setDataObject(dataObject);
 

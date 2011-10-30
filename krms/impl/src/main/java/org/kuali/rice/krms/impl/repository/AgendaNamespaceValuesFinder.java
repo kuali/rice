@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.impl.namespace.NamespaceBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -28,6 +29,7 @@ import org.kuali.rice.krms.impl.ui.AgendaEditor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -46,19 +48,27 @@ public class AgendaNamespaceValuesFinder extends UifKeyValuesFinderBase {
 
         Collection<ContextBo> contexts = KRADServiceLocator.getBusinessObjectService().findAll(ContextBo.class);
 
-        List<String> namespaces = new ArrayList<String>();
+        Collection<NamespaceBo> namespaceBos = KRADServiceLocator.getBusinessObjectService().findAll(NamespaceBo.class);
+        Map<String, String> namespaceCodeToName = new HashMap<String, String>();
+        if (!CollectionUtils.isEmpty(namespaceBos)) for (NamespaceBo namespaceBo : namespaceBos) {
+            namespaceCodeToName.put(namespaceBo.getCode(), namespaceBo.getName());
+        }
+
+        List<String> namespaceCodes = new ArrayList<String>();
 
         if (!CollectionUtils.isEmpty(contexts)) for (ContextBo context : contexts) {
-            if (!namespaces.contains(context.getNamespace())) {
+            if (!namespaceCodes.contains(context.getNamespace())) {
                 // add if not already there
-                namespaces.add(context.getNamespace());
+                namespaceCodes.add(context.getNamespace());
             }
         }
 
-        Collections.sort(namespaces);
+        Collections.sort(namespaceCodes);
 
-        for (String namespace : namespaces) {
-            keyValues.add(new ConcreteKeyValue(namespace, namespace));
+        for (String namespaceCode : namespaceCodes) {
+            String namespaceName = namespaceCode;
+            if (namespaceCodeToName.containsKey(namespaceCode)) { namespaceName = namespaceCodeToName.get(namespaceCode); }
+            keyValues.add(new ConcreteKeyValue(namespaceCode, namespaceName));
         }
 
         return keyValues;

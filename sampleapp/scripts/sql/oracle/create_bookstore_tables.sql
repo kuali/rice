@@ -28,8 +28,8 @@ END;
 /
 DECLARE temp NUMBER;
 BEGIN
-	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'BK_ORDER_ENTRY_S';
-	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE BK_ORDER_ENTRY_S CASCADE CONSTRAINTS PURGE'; END IF;
+	SELECT COUNT(*) INTO temp FROM user_sequences WHERE sequence_name = 'BK_ORDER_ENTRY_S';
+	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP SEQUENCE BK_ORDER_ENTRY_S'; END IF;
 END;
 /
 DECLARE temp NUMBER;
@@ -52,8 +52,8 @@ END;
 /
 DECLARE temp NUMBER;
 BEGIN
-	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'BK_BOOK_ID_S';
-	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE BK_BOOK_ID_S CASCADE CONSTRAINTS PURGE'; END IF;
+	SELECT COUNT(*) INTO temp FROM user_sequences WHERE sequence_name = 'BK_BOOK_ID_S';
+	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP SEQUENCE BK_BOOK_ID_S'; END IF;
 END;
 /
 DECLARE temp NUMBER;
@@ -70,8 +70,8 @@ END;
 /
 DECLARE temp NUMBER;
 BEGIN
-	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'BK_AUTHOR_ID_S';
-	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE BK_AUTHOR_ID_S CASCADE CONSTRAINTS PURGE'; END IF;
+	SELECT COUNT(*) INTO temp FROM user_sequences WHERE sequence_name = 'BK_AUTHOR_ID_S';
+	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP SEQUENCE BK_AUTHOR_ID_S'; END IF;
 END;
 /
 DECLARE temp NUMBER;
@@ -94,8 +94,8 @@ END;
 /
 DECLARE temp NUMBER;
 BEGIN
-	SELECT COUNT(*) INTO temp FROM user_tables WHERE table_name = 'BK_ADDRESS_ID_S';
-	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP TABLE BK_ADDRESS_ID_S CASCADE CONSTRAINTS PURGE'; END IF;
+	SELECT COUNT(*) INTO temp FROM user_sequences WHERE sequence_name = 'BK_ADDRESS_ID_S';
+	IF temp > 0 THEN EXECUTE IMMEDIATE 'DROP SEQUENCE BK_ADDRESS_ID_S'; END IF;
 END;
 /
 
@@ -118,16 +118,9 @@ CREATE TABLE bk_order_entry_t
 /
 
 
-CREATE  SEQUENCE  bk_order_entry_s_id_SEQ
+CREATE  SEQUENCE  bk_order_entry_s
 	START WITH 1
 	INCREMENT BY 1
-/
-
-CREATE TABLE bk_order_entry_s  
-(
-	id INTEGER  NOT NULL , 
-	PRIMARY KEY (id) 
-)
 /
 
 CREATE TABLE bk_order_doc_t  
@@ -168,18 +161,9 @@ CREATE TABLE bk_book_t
 )
 /
 
-
-CREATE  SEQUENCE  bk_book_id_s_id_SEQ
+CREATE  SEQUENCE  bk_book_id_s
 	START WITH 1
 	INCREMENT BY 1
-/
-
-
-CREATE TABLE bk_book_id_s  
-(
-	id INTEGER  NOT NULL , 
-	PRIMARY KEY (id) 
-)
 /
 
 CREATE TABLE bk_book_author_t  
@@ -205,18 +189,9 @@ CREATE TABLE bk_author_t
 )
 /
 
-
-CREATE  SEQUENCE  bk_author_id_s_id_SEQ
+CREATE  SEQUENCE  bk_author_id_s
 	START WITH 1
 	INCREMENT BY 1
-/
-
-
-CREATE TABLE bk_author_id_s  
-(
-	id INTEGER  NOT NULL , 
-	PRIMARY KEY (id) 
-)
 /
 
 CREATE TABLE bk_author_account_t  
@@ -257,17 +232,9 @@ CREATE TABLE bk_address_t
 )
 /
 
-
-CREATE  SEQUENCE  bk_address_id_s_id_SEQ
+CREATE  SEQUENCE  bk_address_id_s
 	START WITH 1
 	INCREMENT BY 1
-/
-
-CREATE TABLE bk_address_id_s  
-(
-	id INTEGER  NOT NULL , 
-	PRIMARY KEY (id) 
-)
 /
 
 --  Create Foreign Key Constraints 

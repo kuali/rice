@@ -156,23 +156,9 @@
                 </property>
               </bean>
 
-              <bean parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" p:colSpan="2"
-                    p:refreshWhenChanged="document.newMaintainableObject.dataObject.specificationId"
-                    p:renderHeader="@{document.newMaintainableObject.dataObject.specificationId != null and document.newMaintainableObject.dataObject.specificationId.trim() != ''}"
-                    p:title="Term Parameters" >
 
-          <!--
-          -->
 
-                <property name="items">
-                  <list>
-                    <bean parent="RemoteFieldsHolder" p:propertyName="parametersMap"
-                          p:fetchingMethodToCall="retrieveCustomAttributes"/>
-                  </list>
-                </property>
-              </bean>
-
-              <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="3" p:colSpan="2">
+              <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3" p:colSpan="2" p:readOnly="true">
                 <property name="title" value="Categories" />
                 <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo" />
                 <property name="propertyName" value="specification.categories" />
@@ -214,6 +200,21 @@
                         <bean parent="TextControl" p:size="80"/>
                       </property>
                     </bean>
+                  </list>
+                </property>
+              </bean>
+
+
+
+              <bean parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" p:colSpan="2"
+                    p:refreshWhenChanged="document.newMaintainableObject.dataObject.specificationId"
+                    p:renderHeader="@{document.newMaintainableObject.dataObject.specificationId != null and document.newMaintainableObject.dataObject.specificationId.trim() != ''}"
+                    p:title="Term Parameters" >
+
+                <property name="items">
+                  <list>
+                    <bean parent="RemoteFieldsHolder" p:propertyName="parametersMap"
+                          p:fetchingMethodToCall="retrieveCustomAttributes"/>
                   </list>
                 </property>
               </bean>

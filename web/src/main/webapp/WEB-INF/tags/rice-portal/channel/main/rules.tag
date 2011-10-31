@@ -30,9 +30,5 @@
     <li><portal:portalLink displayTitle="true" title="Term Specification Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.TermSpecificationBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
     <li><portal:portalLink displayTitle="true" title="Category Lookup" url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.repository.CategoryBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
   </ul>
-  <strong>Views</strong>
-  <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Test Data Utilites" url="${ConfigProperties.application.url}/spring/krmsTestData?viewId=TestDataView&methodToCall=start"/></li> 
-  </ul>
 </div>
 <channel:portalChannelBottom />

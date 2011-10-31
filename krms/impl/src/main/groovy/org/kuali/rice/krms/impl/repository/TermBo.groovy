@@ -18,6 +18,7 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	def TermSpecificationBo specification = new TermSpecificationBo()
 
 	def List<TermParameterBo> parameters
+    def Map<String, String> parametersMap = new HashMap<String, String>()
 
 	/**
 	* Converts a mutable bo to it's immutable counterpart
@@ -58,22 +59,28 @@ public class TermBo extends PersistableBusinessObjectBase implements TermDefinit
 	   return parameters
    }
 
-   public Map<String, String> getParametersMap() {
-       HashMap<String, String> results = new HashMap<String, String>()
+   public void exportToParametersMap() {
+
+       // merge in TermParameterBo values
        if (parameters != null) for (TermParameterBo param : parameters) {
-           results.put(param.name, param.value);
+           parametersMap.put(param.name, param.value);
        }
-       return results;
+
    }
 
-   public void setParametersMap(HashMap<String, String> paramsMap) {
-       parameters.clear();
-       if (paramsMap != null) {
-           for (Entry<String, String> paramEntry : paramsMap.entrySet()) {
-               TermParameterDefinition termDef = TermParameterDefinition.Builder.create(null, id, paramEntry.key, paramEntry.value).build();
-               parameters.add(TermParameterBo.from(termDef));
-           }
+   public void importFromParametersMap() {
+
+       if (parameters == null) {
+           parameters = new ArrayList<TermParameterBo>()
+       } else {
+           parameters.clear();
        }
+
+       for (Entry<String, String> paramEntry : parametersMap.entrySet()) {
+           TermParameterDefinition termDef = TermParameterDefinition.Builder.create(null, id, paramEntry.key, paramEntry.value).build();
+           parameters.add(TermParameterBo.from(termDef));
+       }
+
    }
 
 } 

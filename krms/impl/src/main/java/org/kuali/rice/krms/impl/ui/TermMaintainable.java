@@ -16,12 +16,9 @@
 package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.BusinessObjectService;
@@ -29,33 +26,19 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.impl.repository.ActionBo;
-import org.kuali.rice.krms.impl.repository.AgendaAttributeBo;
-import org.kuali.rice.krms.impl.repository.AgendaBo;
-import org.kuali.rice.krms.impl.repository.ContextBo;
-import org.kuali.rice.krms.impl.repository.ContextBoService;
-import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
-import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.repository.CategoryBo;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermResolverBo;
 import org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo;
-import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
-import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * {@link org.kuali.rice.krad.maintenance.Maintainable} for the {@link org.kuali.rice.krms.impl.ui.AgendaEditor}
@@ -75,6 +58,8 @@ public class TermMaintainable extends MaintainableImpl {
 	public BusinessObjectService getBoService() {
 		return KRADServiceLocator.getBusinessObjectService();
 	}
+
+
 
     public List<RemotableAttributeField> retrieveCustomAttributes(View view, Object model, Container container) {
 
@@ -142,6 +127,16 @@ public class TermMaintainable extends MaintainableImpl {
 //        return agendaTypeService;
 //    }
 
+    @Override
+    public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
+
+        TermBo termBo = (TermBo)document.getNewMaintainableObject().getDataObject();
+        termBo.exportToParametersMap();
+
+        return super.retrieveObjectForEditOrCopy(document,
+                dataObjectKeys);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
     /**
 	 * {@inheritDoc}
 	 */
@@ -154,23 +149,23 @@ public class TermMaintainable extends MaintainableImpl {
 
 	}
 
+    @Override
+    public void saveDataObject() {
+        TermBo term = (TermBo) getDataObject();
+        term.importFromParametersMap();
 
+        super.saveDataObject();    //To change body of overridden methods use File | Settings | File Templates.
+    }
 
     @Override
     public Class getDataObjectClass() {
         return TermBo.class;
     }
 
-    /*
     @Override
     protected void processBeforeAddLine(View view, CollectionGroup collectionGroup, Object model, Object addLine) {
-        MaintenanceForm form = (MaintenanceForm) model;
-        AgendaEditor agendaEditor = (AgendaEditor) form.getDocument().getNewMaintainableObject().getDataObject();
-        if (addLine instanceof ActionBo) {
-            ((ActionBo) addLine).setNamespace(agendaEditor.getAgendaItemLine().getRule().getNamespace());
-        }
-
         super.processBeforeAddLine(view, collectionGroup, model, addLine);
     }
-    */
+
+
 }

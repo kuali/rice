@@ -17,6 +17,9 @@
 -- ---- If you should want to clean out your KRMS tables:
 -- delete from  krms_cntxt_vld_rule_t ;
 -- delete from  krms_cntxt_vld_func_t ;
+-- delete from  krms_ctgry_t ;
+-- delete from  krms_term_spec_ctgry_t ;
+-- delete from  krms_func_ctgry_t ;
 -- delete from  krms_func_parm_t ;
 -- delete from  krms_func_t ;
 -- delete from  krms_term_parm_t ;
@@ -45,15 +48,25 @@
 -- delete from  krms_rule_t ;
 -- delete from  krms_typ_t where typ_id not in ('1000','1001');
 -- delete from  krms_cntxt_t ;
-
-
--- KRMS test namespace
-
-insert into krcr_nmspc_t (nmspc_cd, obj_id, nm, appl_id) values ('KRMS_TEST', '123xyz456pdq789', 'KRMS Test', 'RICE')
+-- delete from krcr_nmspc_t where obj_id = '5a83c912-94b9-4b4d-ac3f-88c53380a4a3';
+--
+-- ---- KRMS test namespace
+-- insert into krcr_nmspc_t (nmspc_cd, obj_id, nm, appl_id) values ('KRMS_TEST', '5a83c912-94b9-4b4d-ac3f-88c53380a4a3', 'Kuali Rules Test', 'RICE');
 
 
 -- misc category
 insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd) values ('CAT01', 'misc', 'KRMS_TEST');
+
+
+
+-- add a PeopleFlow attribute to the PeopleFlow types
+insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL, CMPNT_NM, DESC_TXT)
+values ('1000', 'PeopleFlow', 'KR-RULE', 'PeopleFlow', null,
+'An identifier for a PeopleFlow')
+;
+insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('1000', 1, '1000', '1000');
+insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('1001', 1, '1001', '1000');
+
 
 
 --
@@ -61,8 +74,8 @@ insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd) values ('CAT01', 'misc', 'KRMS
 --
 
 insert into krms_term_spec_t
-(term_spec_id, nmspc_cd, nm, typ, actv, ver_nbr)
-values ('TERMSPEC_999', 'KRMS_TEST', 'campusSize', 'java.lang.Integer', 'Y', 1)
+(term_spec_id, nmspc_cd, nm, typ, desc_txt, actv, ver_nbr)
+values ('TERMSPEC_999', 'KRMS_TEST', 'campusSize', 'java.lang.Integer', 'Size in # of students of the campus', 'Y', 1)
 ;
 
 insert into krms_typ_t

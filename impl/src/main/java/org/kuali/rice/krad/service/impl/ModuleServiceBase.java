@@ -331,15 +331,16 @@ public class ModuleServiceBase implements ModuleService {
 			throw new IllegalStateException("Module configuration has not been initialized for the module service.");
 		}
 		int classModifiers = externalizableBusinessObjectInterface.getModifiers();
-		if (!Modifier.isInterface(classModifiers) && !Modifier.isAbstract(classModifiers)) {
-			// the interface is really a non-abstract class
+        Map<Class, Class> ebos = getModuleConfiguration().getExternalizableBusinessObjectImplementations();
+
+		if (ebos.containsValue(externalizableBusinessObjectInterface)) {
 			return externalizableBusinessObjectInterface;
 		}
 		if (getModuleConfiguration().getExternalizableBusinessObjectImplementations() == null) {
 			return null;
 		}
 		else {
-			Class<E> implementationClass = getModuleConfiguration().getExternalizableBusinessObjectImplementations().get(externalizableBusinessObjectInterface);
+			Class<E> implementationClass = ebos.get(externalizableBusinessObjectInterface);
 			int implClassModifiers = implementationClass.getModifiers();
 			if (Modifier.isInterface(implClassModifiers) || Modifier.isAbstract(implClassModifiers)) {
 				throw new RuntimeException("Implementation class must be non-abstract class: ebo interface: " + externalizableBusinessObjectInterface.getName() + " impl class: "

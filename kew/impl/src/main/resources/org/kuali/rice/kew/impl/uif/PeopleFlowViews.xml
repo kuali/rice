@@ -29,15 +29,19 @@
     <property name="dataObjectClassName" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
     <property name="criteriaFields">
       <list>
+        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="typeId"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
+        <bean parent="InputField" p:propertyName="id"/>
         <bean parent="InputField" p:propertyName="namespaceCode"/>
         <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="typeId"/>
         <bean parent="InputField" p:propertyName="active"/>
       </list>
     </property>
@@ -53,7 +57,21 @@
     <property name="dataObjectClassName" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
     <property name="Items">
       <list>
-        <bean parent="PeopleFlow-Summary" p:layoutManager.numberOfColumns="1"/>
+        <bean parent="GroupSectionGridLayout">
+          <property name="layoutManager.numberOfColumns" value="2"/>
+          <property name="items">
+            <list>
+              <bean parent="DataField" p:propertyName="id"/>
+              <bean parent="DataField" p:propertyName="namespaceCode"/>
+              <bean parent="DataField" p:propertyName="name"/>
+              <bean parent="DataField" p:propertyName="typeId"/>
+              <bean parent="DataField" p:propertyName="description"/>
+              <bean parent="DataField" p:propertyName="active"/>
+            </list>
+          </property>
+          <property name="title" value="PeopleFlow Summary"/>
+        </bean>
+        <bean parent="PeopleFlow-TypeAttributes"/>
         <bean parent="PeopleFlow-Detail"/>
       </list>
     </property>

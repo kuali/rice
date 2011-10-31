@@ -134,7 +134,7 @@
   <bean id="PeopleFlowMaintenanceDocument" parent="PeopleFlowMaintenanceDocument-parentBean"/>
   <bean id="PeopleFlowMaintenanceDocument-parentBean" abstract="true" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
-    <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
+    <property name="maintainableClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMaintainableImpl"/>
     <property name="defaultExistenceChecks">
       <list>
         <bean parent="ReferenceDefinition" p:attributeName="typeBo" p:attributeToHighlightOnFail="typeId"/>

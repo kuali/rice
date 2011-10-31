@@ -43,25 +43,13 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="number" /> <!-- p:forceInquiry="true" -->
-        <bean parent="InputField" p:propertyName="name" /> <!-- p:forceInquiry="true" -->
-<!--
-        <bean parent="FieldGroup" p:label="Sub Account">
-          <property name="readOnly" value="true"/>
-          <property name="items">
-            <list>
-              <bean parent="InputField" p:propertyName="subAccount" p:readOnly="true" p:showLabel="false"/>
-              <bean parent="InputField" p:propertyName="subAccountName" p:readOnly="true" p:showLabel="false"/>
-            </list>
-          </property>
-        </bean>
--->
-        <bean parent="InputField" p:propertyName="subAccount" />
-        <bean parent="InputField" p:propertyName="subAccountName" />
-        <bean parent="InputField" p:propertyName="subsidizedPercent" />
-        <bean parent="InputField" p:propertyName="createDate" />
-        <!--bean parent="InputField" p:propertyName="extension.accountType.codeAndDescription" -->
-        <bean parent="InputField" p:propertyName="foId" /> <!-- p:forceInquiry="true" -->
+        <bean parent="DataField" p:propertyName="number" />
+        <bean parent="DataField" p:propertyName="name" />
+        <bean parent="DataField" p:propertyName="subAccount" />
+        <bean parent="DataField" p:propertyName="subAccountName" />
+        <bean parent="DataField" p:propertyName="subsidizedPercent" />
+        <bean parent="DataField" p:propertyName="createDate" />
+        <bean parent="DataField" p:propertyName="foId" />
       </list>
     </property>
   </bean>

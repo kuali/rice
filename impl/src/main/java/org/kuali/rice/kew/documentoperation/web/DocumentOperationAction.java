@@ -300,8 +300,15 @@ public class DocumentOperationAction extends KewKualiAction {
 				}
 			}
 			if (KewApiConstants.DELETE.equals(opValue)) {
-				getActionListService().deleteActionItem(actionItem);
-				change = true;
+                try {
+                    actionItem.setDateAssigned(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(dateAssignedParamName)).getTime()));
+                    actionItem.setDateAssignedString(RiceConstants.getDefaultDateFormat().format(actionItem.getDateAssigned()));
+                    actionItem.setDocumentId(docForm.getRouteHeader().getDocumentId());
+                    getActionListService().deleteActionItem(actionItem);
+                    change = true;
+                } catch (ParseException pe) {
+                    throw new WorkflowServiceErrorException("Action item date assigned parsing error", new WorkflowServiceErrorImpl("Action item date assigned parse error", "docoperation.actionitem.dateassignedparsing.error", actionItem.getId().toString()));
+                }
 			}
 		}
 

@@ -26,6 +26,7 @@
   <packaging>war</packaging>
 
   <properties>
+    <web.launch.context.path>/standalone</web.launch.context.path>
     <bootstrap.spring.file>classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml</bootstrap.spring.file>
   </properties>
 
@@ -64,6 +65,15 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>standalone</id>
+      <properties>
+        <appserver.port>9090</appserver.port>
+      </properties>
+    </profile>
+  </profiles>
 
   <dependencies>
     <dependency>

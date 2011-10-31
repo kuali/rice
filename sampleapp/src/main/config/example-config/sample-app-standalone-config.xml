@@ -24,7 +24,7 @@
   <param name="rice.ksb.batch.mode">false</param>
   <param name="rice.standalone">true</param>
   <param name="rice.url">${rice.server.url}/kr</param>
-  <param name="rice.server.url">${appserver.url}/standalone</param>
+  <param name="rice.server.url">http://localhost:9090/standalone</param>
   <param name="krad.url">${rice.server.url}/kr-krad</param>
   <param name="kr.url">${rice.server.url}/kr</param>
   <param name="kew.url">${rice.server.url}/kew</param>

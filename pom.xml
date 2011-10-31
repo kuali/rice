@@ -44,6 +44,7 @@
   </ciManagement>
 
   <properties>
+    <appserver.port>8080</appserver.port>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
@@ -566,6 +567,7 @@
           <artifactId>tomcat-maven-plugin</artifactId>
           <version>1.1</version>
           <configuration>
+            <port>${appserver.port}</port>
             <path>${web.launch.context.path}</path>
             <systemProperties>
               <web.bootstrap.spring.file>${bootstrap.spring.file}</web.bootstrap.spring.file>

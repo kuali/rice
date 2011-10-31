@@ -189,9 +189,9 @@ public class ActionRequestFactory {
             String actionTakenCode, Group notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
-        for (Object request : requests)
+        for (Iterator iter = requests.iterator(); iter.hasNext();) 
         {
-            ActionRequestValue actionRequest = (ActionRequestValue) request;
+            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             if (!(actionRequest.isRecipientRoutedRequest(principal.getPrincipalId()) || actionRequest.isRecipientRoutedRequest(delegator)))
             {
                 // skip user requests to system users

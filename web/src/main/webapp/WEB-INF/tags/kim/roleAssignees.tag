@@ -213,20 +213,20 @@
                     	<kul:htmlControlAttribute property="document.members[${statusMember.index}].memberNamespaceCode"  attributeEntry="${roleMemberAttributes.memberNamespaceCode}" readOnly="true"  /> 	
                     </div>
                 </td>
-                <td align="left" valign="middle">
-                    <kul:inquiry boClassName="${inquiryClass}" keyValues="${keyValue}=${member.memberId}" render="true">
-                        <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberName"  attributeEntry="${roleMemberAttributes.memberName}" readOnly="true"  />
-                        </div>
-                    </kul:inquiry>    
+                <td align="left" valign="middle">				
+                	<div align="center">
+                    	<kul:inquiry boClassName="${inquiryClass}" keyValues="${keyValue}=${member.memberId}" render="true">
+                        	<kul:htmlControlAttribute property="document.members[${statusMember.index}].memberName"  attributeEntry="${roleMemberAttributes.memberName}" readOnly="true"  />
+	                    </kul:inquiry>  
+                    </div>
                 </td>
                 <td align="left" valign="middle">
-                    <kul:inquiry boClassName="${inquiryClass}" keyValues="${keyValue}=${member.memberId}" render="true">
-                        	<div align="center"> 
+                	<div align="center">               
+                    	<kul:inquiry boClassName="${inquiryClass}" keyValues="${keyValue}=${member.memberId}" render="true">
 <%--                         		<a href="javascript:document.forms[0].sortMethodToCallPlaceholder=methodToCall.sort.memberFullName${roleMemberAttributes.memberFullName[fieldName]}"></a> --%>
                         		<kul:htmlControlAttribute property="document.members[${statusMember.index}].memberFullName"  attributeEntry="${roleMemberAttributes.memberFullName}" readOnly="true"  />
-							</div>
-                    </kul:inquiry>
-                    
+                    	</kul:inquiry>
+					</div>                   
                 </td>
                 <td align="left" valign="middle">
                     <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeFromDate"  attributeEntry="${roleMemberAttributes.activeFromDate}" readOnly="${!canModifyAssignees}" datePicker="true" />

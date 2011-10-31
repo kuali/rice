@@ -64,7 +64,7 @@
     </c:choose>
 
     <%-- render field quickfinder --%>
-    <c:if test="${!readOnly}">
+    <c:if test="${field.inputAllowed}">
       <krad:template component="${field.fieldLookup}" componentId="${field.id}"/>
     </c:if>
 
@@ -91,7 +91,7 @@
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'[','-lbrak-')}"/>
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,']','-rbrak-')}"/>
     <c:set var="infoPropertyId" value="${fn:replace(infoPropertyId,'\\\'','-quot-')}"/>
-     <span id="${field.id}_info_${infoPropertyId}" class="info-field">
+     <span id="${field.id}_info_${infoPropertyId}" class="kr-info">
         <s:bind path="${infoPropertyPath}">${status.value}</s:bind>
      </span>
   </c:forEach>

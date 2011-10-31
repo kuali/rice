@@ -19,11 +19,13 @@
   <packaging>war</packaging>
 
   <properties>
+    <web.launch.context.path>/sample-app</web.launch.context.path>
     <bootstrap.spring.file>classpath:SampleAppBeans.xml</bootstrap.spring.file>
     <maven.surefire.skip>true</maven.surefire.skip>
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <kuali.testjar.phase>none</kuali.testjar.phase>
+    <kuali.generate.reports>false</kuali.generate.reports>
   </properties>
 
   <build>
@@ -144,6 +146,12 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>standalone</id>
+      <properties>
+        <web.launch.context.path>/sample-app-standalone</web.launch.context.path>
+      </properties>
+    </profile>
   </profiles>
 
   <dependencies>
@@ -152,7 +160,6 @@
       <artifactId>rice-impex-master</artifactId>
       <version>${project.version}</version>
     </dependency>
-
 
     <dependency>
       <groupId>${project.groupId}</groupId>

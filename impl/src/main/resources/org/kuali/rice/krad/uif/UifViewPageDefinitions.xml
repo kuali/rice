@@ -99,7 +99,7 @@
       </list>
     </property>
     <property name="footer">
-      <bean parent="FooterInquiryNoResult"/>
+      <bean parent="FooterInquiry"/>
     </property>
   </bean>
 

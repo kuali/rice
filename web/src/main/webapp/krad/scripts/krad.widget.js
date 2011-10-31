@@ -235,6 +235,22 @@ function createLightBoxPost(controlId, options, actionParameterMapString, lookup
     });
 }
 
+/*
+ * Function that returns lookup results by script
+ */
+function returnLookupResultByScript(fieldName, value) {
+    var returnField;
+    if (parent.jq == null) {
+        returnField = parent.$('#iframeportlet').contents().find('[name="' + fieldName + '"]');
+    }else{
+        returnField = parent.jq('[name="' + fieldName + '"]');
+    }
+    returnField.val(value);
+    returnField.focus();
+    returnField.blur();
+    returnField.focus();
+}
+
 /**
  * Opens the inquiry window
  * Is called from the onclick event on the direct inquiry
@@ -272,7 +288,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 
             // If this is not the top frame, then create the lightbox
             // on the top frame to put overlay over whole window
-            queryString = queryString + "&showHistory=false";
+            queryString = queryString + "&showHistory=false&dialogMode=true";
             if (top == self) {
                 lightBoxOptions['href'] = url + queryString;
                 jq.fancybox(lightBoxOptions);
@@ -283,12 +299,23 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
         } else {
 
             // If this is already in a lightbox just open in current lightbox
-            queryString = queryString + "&showHistory=true";
+            queryString = queryString + "&showHistory=true&dialogMode=true";
             window.open(url + queryString, "_self");
         }
     } else {
         queryString = queryString + "&showHistory=false";
         window.open(url + queryString, "_blank", "width=640, height=600, scrollbars=yes");
+    }
+}
+
+/**
+ * Closes the lightbox window
+*/
+function closeLightbox() {
+    if (top.jq == null) {
+        top.$.fancybox.close();
+    }else {
+        top.jq.fancybox.close();
     }
 }
 

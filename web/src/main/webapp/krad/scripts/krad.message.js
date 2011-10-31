@@ -72,7 +72,7 @@ function createLoading(showLoading) {
                 jq.unblockUI();
             }
         }
-        else {
+        else if (top.jq == null) {
             if (showLoading) {
                 if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
                     top.$.blockUI({message: savingMessage});
@@ -83,6 +83,19 @@ function createLoading(showLoading) {
             }
             else {
                 top.$.unblockUI();
+            }
+        }
+        else {
+            if (showLoading) {
+                if (methodToCall && methodToCall.toUpperCase() == "save".toUpperCase()) {
+                    top.jq.blockUI({message: savingMessage});
+                }
+                else {
+                    top.jq.blockUI({message: loadingMessage});
+                }
+            }
+            else {
+                top.jq.unblockUI();
             }
         }
     }

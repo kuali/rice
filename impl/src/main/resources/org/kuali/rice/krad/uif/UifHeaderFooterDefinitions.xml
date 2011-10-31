@@ -142,7 +142,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="ActionField" p:methodToCall="returnToHub" p:actionLabel="Home"
                 p:render="@{#view.dialogMode and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
           <bean parent="ActionField" p:actionLabel="Close" p:render="@{#view.dialogMode}"
-                p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
+                p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
           <bean parent="ActionField" p:actionLabel="Close" p:render="@{!#view.dialogMode}"
                 p:onClickScript="e.preventDefault();window.close();return false;"/>
         </list>
@@ -153,7 +153,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="items">
         <list>
           <bean parent="ActionField" p:actionLabel="Close"
-                p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
+                p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
         </list>
       </property>
   </bean>
@@ -169,7 +169,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <bean parent="ActionField" p:methodToCall="returnToHub" p:actionLabel="Home"
                 p:render="@{#view.dialogMode and formHistory != null and (formHistory?.historyEntries?.size() > 1)}"/>
           <bean parent="ActionField" p:actionLabel="Close" p:render="@{#view.dialogMode}"
-                p:onClickScript="e.preventDefault();parent.$.fancybox.close();return false;"/>
+                p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
         </list>
       </property>  
   </bean>
@@ -185,7 +185,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 p:clientSideJs="selectAllLines('@{#collectionGroup.id}');"/>
           <bean parent="ActionField" p:methodToCall="deselectAllPage" p:actionLabel="deselect all from this page"
                 p:clientSideJs="deselectAllLines('@{#collectionGroup.id}');"/>
-          <bean parent="ActionField" p:onClickScript="jq('#kualiForm').attr('target',parent.$('#iframeportlet').attr('name'));parent.$.fancybox.close();"
+          <bean parent="ActionField" p:onClickScript="jq('#kualiForm').attr('target',parent.$('#iframeportlet').attr('name'));closeLightbox();"
                 p:methodToCall="returnSelected" p:actionLabel="return selected"/>
         </list>
       </property>

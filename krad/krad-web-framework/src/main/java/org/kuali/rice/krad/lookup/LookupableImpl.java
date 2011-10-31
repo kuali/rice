@@ -588,7 +588,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             returnLinkField.setTarget(returnTarget);
 
             //  Add the close script if lookup is in a light box
-            if (!returnTarget.equals("_self") && !returnTarget.equals("_parent")) {
+            if (!returnTarget.equals("_self")) {
 
                 // Add the return script if the returnByScript flag is set
                 if (lookupView.isReturnByScript()) {
@@ -600,20 +600,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                         if (props.containsKey(returnField)) {
                             Object fieldName = returnField.replace("'", "\\'");
                             Object value = props.get(returnField);
-                            script = script.append("var returnField = parent.$('#iframeportlet').contents().find("
-                                    + "'[name=\""
-                                    + fieldName
-                                    + "\"]');"
-                                    + "returnField.val('"
-                                    + value
-                                    + "');"
-                                    + "returnField.focus();returnField.blur();returnField.focus();");
+                            script = script.append("returnLookupResultByScript('" + returnField + "', '" + value + "');");
                         }
                     }
-                    returnLinkField.setOnClickScript(script.append("parent.$.fancybox.close();").toString());
+                    returnLinkField.setOnClickScript(script.append("closeLightbox();").toString());
                 }  else{
                     // Close the light box if return target is not _self or _parent
-                    returnLinkField.setOnClickScript("e.preventDefault();parent.$.fancybox.close();createLoading(true);window.open(jq(this).attr('href'), jq(this).attr('target'));");
+                    returnLinkField.setOnClickScript("e.preventDefault();closeLightbox();createLoading(true);window.open(jq(this).attr('href'), jq(this).attr('target'));");
                 }
             }
         } else {

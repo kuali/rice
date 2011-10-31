@@ -58,6 +58,7 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 /**
@@ -265,6 +266,9 @@ public class SuperUserAction extends KewKualiAction {
         SuperUserForm superUserForm = (SuperUserForm) form;
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
                 superUserForm.getDocumentId());
+        if(ObjectUtils.isNull(routeHeader)) {
+            throw new ValidationException("No route header ID found.  Try searching for the document again using the super user document search.");
+        }
         superUserForm.setRouteHeader(routeHeader);
         String principalId = getUserSession(request).getPrincipalId();
         boolean isAuthorized = KEWServiceLocator.getDocumentTypePermissionService().canAdministerRouting(principalId,

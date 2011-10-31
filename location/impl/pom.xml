@@ -7,7 +7,7 @@
     <version>2.0.0-b1-SNAPSHOT</version>
   </parent>
   <artifactId>rice-location-impl</artifactId>
-  <name>Rice Shared Data Impl</name>
+  <name>Rice Location Impl</name>
 
   <dependencies>
     <dependency>

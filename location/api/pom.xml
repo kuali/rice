@@ -7,7 +7,7 @@
         <version>2.0.0-b1-SNAPSHOT</version>
     </parent>
     <artifactId>rice-location-api</artifactId>
-    <name>Rice Shared Data API</name>
+    <name>Rice Location API</name>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>

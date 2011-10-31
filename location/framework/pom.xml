@@ -7,7 +7,7 @@
         <version>2.0.0-b1-SNAPSHOT</version>
     </parent>
     <artifactId>rice-location-framework</artifactId>
-    <name>Rice Shared Data Framework</name>
+    <name>Rice Location Framework</name>
 
     <dependencies>
         <dependency>

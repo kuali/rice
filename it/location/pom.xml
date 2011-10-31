@@ -7,7 +7,7 @@
         <version>2.0.0-b1-SNAPSHOT</version>
     </parent>
     <artifactId>rice-it-location</artifactId>
-    <name>Rice Integration Test Shared Data</name>
+    <name>Rice Integration Test Location</name>
 
     <dependencies>
         <dependency>

@@ -376,7 +376,7 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10" p:datePicker="true"/>
     </property>
-    <property name="formatterClass" value="org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter"/>
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.DateViewDateObjectFormatter"/>
   </bean>
 
   <bean id="RuleBaseValues-toDateValue" parent="RuleBaseValues-toDateValue-parentBean"/>
@@ -393,7 +393,7 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10" p:datePicker="true"/>
     </property>
-    <property name="formatterClass" value="org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter"/>
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.DateViewDateObjectFormatter"/>
   </bean>
 
   <bean id="RuleBaseValues-active" parent="RuleBaseValues-active-parentBean"/>

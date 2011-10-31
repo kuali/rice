@@ -1,9 +1,8 @@
 package org.kuali.rice.kew.api.preferences;
 
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,9 +10,11 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Map;
+
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.w3c.dom.Element;
 
 /**
  * An immutable data transfer object implementing {@link PreferencesContract}.
@@ -28,8 +29,7 @@ import java.util.Map;
 @XmlRootElement(name = Preferences.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = Preferences.Constants.TYPE_NAME)
-public final class Preferences
-        extends AbstractDataTransferObject implements PreferencesContract {
+public final class Preferences extends AbstractDataTransferObject implements PreferencesContract {
 
     private static final long serialVersionUID = 642820621349964439L;
 
@@ -97,6 +97,14 @@ public final class Preferences
     private final String showCurrentNode;
     @XmlElement(name = Elements.PRIMARY_DELEGATE_FILTER)
     private final String primaryDelegateFilter;
+    @XmlElement(name = Elements.NOTIFY_ACKNOWLEDGE)
+    private final String notifyAcknowledge;
+    @XmlElement(name = Elements.NOTIFY_APPROVE)
+    private final String notifyApprove;
+    @XmlElement(name = Elements.NOTIFY_COMPLETE)
+    private final String notifyComplete;
+    @XmlElement(name = Elements.NOTIFY_FYI)
+    private final String notifyFYI;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -134,6 +142,11 @@ public final class Preferences
         this.showDateApproved = null;
         this.showCurrentNode = null;
         this.primaryDelegateFilter = null;
+        this.notifyAcknowledge = null;
+        this.notifyApprove =  null;
+        this.notifyComplete = null;
+        this.notifyFYI = null;
+        
         this.requiresSave = false;
     }
 
@@ -170,6 +183,10 @@ public final class Preferences
         this.showCurrentNode = builder.getShowCurrentNode();
         this.primaryDelegateFilter = builder.getPrimaryDelegateFilter();
         this.requiresSave = builder.isRequiresSave();
+        this.notifyAcknowledge = builder.getNotifyAcknowledge();
+        this.notifyApprove = builder.getNotifyApprove();
+        this.notifyComplete = builder.getNotifyComplete();
+        this.notifyFYI = builder.getNotifyFYI();
     }
 
     public boolean isRequiresSave() {
@@ -300,6 +317,22 @@ public final class Preferences
         return primaryDelegateFilter;
     }
 
+    public String getNotifyComplete() {
+        return this.notifyComplete;
+    }
+
+    public String getNotifyApprove() {
+        return this.notifyApprove;
+    }
+
+    public String getNotifyAcknowledge() {
+        return this.notifyAcknowledge;
+    }
+
+    public String getNotifyFYI() {
+        return this.notifyFYI;
+    }
+
     public boolean isUsingOutbox() {
         if (this.getUseOutbox() != null && this.getUseOutbox().equals(Constants.PREFERENCES_YES_VAL)) {
             return true;
@@ -344,6 +377,10 @@ public final class Preferences
         private String showDateApproved;
         private String showCurrentNode;
         private String primaryDelegateFilter;
+        private String notifyAcknowledge;
+        private String notifyApprove;
+        private String notifyComplete;
+        private String notifyFYI;
 
         private Builder() {
 
@@ -356,7 +393,8 @@ public final class Preferences
                 String colorSaved, String colorInitiated, String colorDissaproved, String colorEnroute,
                 String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProccessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
-                String showDateApproved, String showCurrentNode, String primaryDelegateFilter, boolean requiresSave) {
+                String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
+                String notifyApprove, String notifyComplete, String notifyFYI, boolean requiresSave) {
             this.emailNotification = emailNotification;
             this.notifyPrimaryDelegation = notifyPrimaryDelegation;
             this.notifySecondaryDelegation = notifySecondaryDelegation;
@@ -389,6 +427,10 @@ public final class Preferences
             this.showCurrentNode = showCurrentNode;
             this.primaryDelegateFilter = primaryDelegateFilter;
             this.requiresSave = requiresSave;
+            this.notifyAcknowledge = notifyAcknowledge;
+            this.notifyApprove = notifyApprove;
+            this.notifyComplete = notifyComplete;
+            this.notifyFYI = notifyFYI;
         }
 
         public Preferences build() {
@@ -406,11 +448,13 @@ public final class Preferences
                 String colorSaved, String colorInitiated, String colorDissaproved, String colorEnroute,
                 String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProccessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
-                String showDateApproved, String showCurrentNode, String primaryDelegateFilter, boolean requiresSave) {
+                String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
+                String notifyApprove, String notifyComplete, String notifyFYI, boolean requiresSave) {
             return new Builder(emailNotification, notifyPrimaryDelegation, notifySecondaryDelegation, openNewWindow, showActionRequested, showDateCreated,
                     showDocumentStatus, showAppDocStatus, showDocType, showInitiator, showDocTitle, showWorkgroupRequest,  showDelegator, showClearFyi,
                     pageSize, refreshRate, colorSaved, colorInitiated, colorDissaproved, colorEnroute, colorApproved, colorFinal, colorDissapproveCancel,
-                    colorProccessed, colorException, colorCanceled, delegatorFilter, useOutbox, showDateApproved, showCurrentNode, primaryDelegateFilter, requiresSave);
+                    colorProccessed, colorException, colorCanceled, delegatorFilter, useOutbox, showDateApproved, showCurrentNode, primaryDelegateFilter,
+                    notifyAcknowledge, notifyApprove, notifyComplete, notifyFYI, requiresSave);
         }
 
         public static Builder create(PreferencesContract contract) {
@@ -423,7 +467,8 @@ public final class Preferences
                     contract.getPageSize(), contract.getRefreshRate(), contract.getColorSaved(), contract.getColorInitiated(), contract.getColorDisapproved(),
                     contract.getColorEnroute(), contract.getColorApproved(), contract.getColorFinal(), contract.getColorDisapproveCancel(), contract.getColorProcessed(),
                     contract.getColorException(), contract.getColorCanceled(), contract.getDelegatorFilter(), contract.getUseOutbox(), contract.getShowDateApproved(),
-                    contract.getShowCurrentNode(), contract.getPrimaryDelegateFilter(), contract.isRequiresSave());
+                    contract.getShowCurrentNode(), contract.getPrimaryDelegateFilter(), contract.getNotifyAcknowledge(), contract.getNotifyApprove(), contract.getNotifyComplete(),
+                    contract.getNotifyFYI(), contract.isRequiresSave());
             return builder;
         }
 
@@ -434,7 +479,8 @@ public final class Preferences
                     map.get(KEYS.PAGE_SIZE), map.get(KEYS.REFRESH_RATE), map.get(KEYS.COLOR_SAVED), map.get(KEYS.COLOR_INITIATED), map.get(KEYS.COLOR_DISAPPROVED),
                     map.get(KEYS.COLOR_ENROUTE), map.get(KEYS.COLOR_APPROVED), map.get(KEYS.COLOR_FINAL), map.get(KEYS.COLOR_DISAPPROVE_CANCEL), map.get(KEYS.COLOR_PROCESSED),
                     map.get(KEYS.COLOR_EXCEPTION), map.get(KEYS.COLOR_CANCELED), map.get(KEYS.DELEGATOR_FILTER), map.get(KEYS.USE_OUT_BOX), map.get(KEYS.SHOW_DATE_APPROVED),
-                    map.get(KEYS.SHOW_CURRENT_NODE), map.get(KEYS.PRIMARY_DELEGATE_FILTER), requiresSave);
+                    map.get(KEYS.SHOW_CURRENT_NODE), map.get(KEYS.PRIMARY_DELEGATE_FILTER), map.get(KEYS.NOTIFY_ACKNOWLEDGE), map.get(KEYS.NOTIFY_APPROVE), map.get(KEYS.NOTIFY_COMPLETE),
+                    map.get(KEYS.NOTIFY_FYI), requiresSave);
             return builder;
         }
 
@@ -694,6 +740,37 @@ public final class Preferences
             this.primaryDelegateFilter = primaryDelegateFilter;
         }
 
+        public synchronized String getNotifyAcknowledge() {
+            return this.notifyAcknowledge;
+        }
+
+        public synchronized void setNotifyAcknowledge(String notifyAcknowledge) {
+            this.notifyAcknowledge = notifyAcknowledge;
+        }
+
+        public synchronized String getNotifyApprove() {
+            return this.notifyApprove;
+        }
+
+        public synchronized void setNotifyApprove(String notifyApprove) {
+            this.notifyApprove = notifyApprove;
+        }
+
+        public synchronized String getNotifyComplete() {
+            return this.notifyComplete;
+        }
+
+        public synchronized void setNotifyComplete(String notifyComplete) {
+            this.notifyComplete = notifyComplete;
+        }
+
+        public synchronized String getNotifyFYI() {
+            return this.notifyFYI;
+        }
+
+        public synchronized void setNotifyFYI(String notifyFYI) {
+            this.notifyFYI = notifyFYI;
+        }
     }
 
     static class Constants {
@@ -740,6 +817,10 @@ public final class Preferences
         static final String SHOW_DATE_APPROVED = "showDateApproved";
         static final String SHOW_CURRENT_NODE = "showCurrentNode";
         static final String PRIMARY_DELEGATE_FILTER = "primaryDelegateFilter";
+        static final String NOTIFY_ACKNOWLEDGE = "notifyAcknowledge";
+        static final String NOTIFY_APPROVE = "notifyApprove";
+        static final String NOTIFY_COMPLETE = "notifyCompelte";
+        static final String NOTIFY_FYI = "notifyFYI";
     }
 
     public static class KEYS {
@@ -779,6 +860,10 @@ public final class Preferences
         public static final String USE_OUT_BOX = "USE_OUT_BOX";
         public static final String SHOW_DATE_APPROVED = "LAST_APPROVED_DATE_COL_SHOW_NEW";
         public static final String SHOW_CURRENT_NODE = "CURRENT_NODE_COL_SHOW_NEW";
+        public static final String NOTIFY_ACKNOWLEDGE = "NOTIFY_ACKNOWLEDGE";
+        public static final String NOTIFY_APPROVE = "NOTIFY_APPROVE";
+        public static final String NOTIFY_COMPLETE = "NOTIFY_COMPLETE";
+        public static final String NOTIFY_FYI = "NOTIFY_FYI";
     }
 
     public static class Cache {

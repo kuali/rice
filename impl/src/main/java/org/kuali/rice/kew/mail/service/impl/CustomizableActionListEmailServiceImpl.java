@@ -68,6 +68,11 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
             return;
         }
         
+        if(suppressImmediateReminder(actionItem, actionItem.getPrincipalId())) {
+            LOG.debug("Email suppressed due to the user's preferences");
+            return;
+        }
+        
         if (!sendActionListEmailNotification()) {
             LOG.debug("not sending immediate reminder");
             return;

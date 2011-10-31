@@ -72,5 +72,13 @@ public interface PreferencesContract {
     String getShowCurrentNode();
 
     String getPrimaryDelegateFilter();
+    
+    String getNotifyAcknowledge();
+    
+    String getNotifyApprove();
+    
+    String getNotifyComplete();
+    
+    String getNotifyFYI();
 
 }

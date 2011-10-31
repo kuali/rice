@@ -362,6 +362,10 @@
 	<!-- delegatorFilterOnActionList: "Secondary Delegators on Action List Page" or "Secondary Delegators only on Filter Page" -->
 	<param name="userOptions.default.delegatorFilterOnActionList" override="false">Secondary Delegators on Action List Page</param>
 	<param name="userOptions.default.primaryDelegatorFilterOnActionList" override="false">Primary Delegates on Action List Page</param>
+	<param name="userOptions.default.notifyComplete" override="false">yes</param>
+	<param name="userOptions.default.notifyApprove" override="false">yes</param>
+ 	<param name="userOptions.default.notifyAcknowledge" override="false">yes</param>
+ 	<param name="userOptions.default.notifyFYI" override="false">yes</param>
 
 
 	<!-- additonal params extracted from Configurers -->

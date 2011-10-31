@@ -77,6 +77,10 @@ public class PreferencesServiceImpl implements PreferencesService {
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.SHOW_DATE_APPROVED, "userOptions.default.showLastApprovedDate");
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.SHOW_CURRENT_NODE, "userOptions.default.showCurrentNode");
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.USE_OUT_BOX, KewApiConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM);
+        USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.NOTIFY_ACKNOWLEDGE, "userOptions.default.notifyAcknowledge");
+        USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.NOTIFY_APPROVE, "userOptions.default.notifyApprove");
+        USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.NOTIFY_COMPLETE, "userOptions.default.notifyComplete");
+        USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.NOTIFY_FYI, "userOptions.default.notifyFYI");
     }
 
 
@@ -178,6 +182,10 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionsMap.put(Preferences.KEYS.PRIMARY_DELEGATE_FILTER, preferences.getPrimaryDelegateFilter());
         optionsMap.put(Preferences.KEYS.SHOW_DATE_APPROVED, preferences.getShowDateApproved());
         optionsMap.put(Preferences.KEYS.SHOW_CURRENT_NODE, preferences.getShowCurrentNode());
+        optionsMap.put(Preferences.KEYS.NOTIFY_ACKNOWLEDGE, preferences.getNotifyAcknowledge());
+        optionsMap.put(Preferences.KEYS.NOTIFY_APPROVE, preferences.getNotifyApprove());
+        optionsMap.put(Preferences.KEYS.NOTIFY_COMPLETE, preferences.getNotifyComplete());
+        optionsMap.put(Preferences.KEYS.NOTIFY_FYI, preferences.getNotifyFYI());
         if (ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
             optionsMap.put(Preferences.KEYS.USE_OUT_BOX, preferences.getUseOutbox());
         }

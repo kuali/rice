@@ -60,6 +60,17 @@
           </td>
         </tr>
         <tr>
+          <th><div align="right">Send Email Notifications For</div></th>
+          <td class="datacell">
+            <ul style="padding-left: 0;">
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyComplete" value="${Constants.PREFERENCES_YES_VAL}"/> Complete</li>
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyApprove" value="${Constants.PREFERENCES_YES_VAL}"/> Approve</li>
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyAcknowledge" value="${Constants.PREFERENCES_YES_VAL}"/> Acknowledge</li>
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyFYI" value="${Constants.PREFERENCES_YES_VAL}"/> FYI</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
           <th><div align="right">Receive Primary Delegate Emails</div></th>
           <td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/></td>
         </tr>

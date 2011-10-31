@@ -174,6 +174,29 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         }
     }
 
+    /**
+     * 
+     * This method checks the given principal's preferences and returns true or
+     * false based on the type of action requested and whether the user wishes
+     * to receive immediate notifications for that type of request.
+     * 
+     * @return Whether the immediate reminder should be suppressed based on the
+     * principal's preferences
+     */
+    protected boolean suppressImmediateReminder(ActionItem actionItem, String principalId) {
+        Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(principalId);
+        String actionRequestCd = actionItem.getActionRequestCd();
+        return
+        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ) && 
+                StringUtils.equals(preferences.getNotifyAcknowledge(), KewApiConstants.PREFERENCES_YES_VAL)) ||
+        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_APPROVE_REQ) && 
+                StringUtils.equals(preferences.getNotifyApprove(), KewApiConstants.PREFERENCES_YES_VAL)) ||
+        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ) && 
+                StringUtils.equals(preferences.getNotifyComplete(), KewApiConstants.PREFERENCES_YES_VAL)) ||
+        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_FYI_REQ) && 
+                StringUtils.equals(preferences.getNotifyFYI(), KewApiConstants.PREFERENCES_YES_VAL));
+    }
+    
     public void sendImmediateReminder(ActionItem actionItem, Boolean skipOnApprovals) {
         if (actionItem == null) {
             LOG.warn("Request to send immediate reminder to recipient of a null action item... aborting.");
@@ -188,6 +211,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         if (skipOnApprovals != null && skipOnApprovals.booleanValue()
                 && actionItem.getActionRequestCd().equals(KewApiConstants.ACTION_REQUEST_APPROVE_REQ)) {
             LOG.debug("As requested, skipping immediate reminder notification on action item approval for " + actionItem.getPrincipalId());
+            return;
+        }
+        
+        if(suppressImmediateReminder(actionItem, actionItem.getPrincipalId())) {
+            LOG.debug("Email suppressed due to the user's preferences");
             return;
         }
 

@@ -36,8 +36,10 @@ th, td {
 
 
 #viewpage_div {
-
-	float:left;
+    margin-left: 25px;
+    margin-right: 20px;
+    width: 100%;
+	/*float:left;        are we removing this? (David) */
 }
 
 .constraint {                  /* NOT RENAMED - changing this classname will break some javascript functionality  */
@@ -46,8 +48,8 @@ th, td {
     font-weight:normal;
 	color: gray;
 	margin-bottom: 5px;
-	margin-top: 5px;
 	display: block;
+    /* KNS can add padding to inputs */
 }
 
 /* headers */
@@ -96,17 +98,21 @@ td.kr-clientError {
 	clear:left;/*float:left;       removing for non-table display, but may possibly break elsewhere - David */
     }
 .kr-field-attribute input, .kr-field-attribute textarea {			/* was .field_attribute input */ /* renamed in xml and/or jsp */
-    margin:  0.25em 0;
+    margin:  0.3em 0;
     }
+.summary {
+    max-width: 50em;
+}
 .kr-field-attribute .summary {		/* was .field_attribute .summary */ /* renamed in xml and/or jsp */
-	line-height: 1.125em;
+	line-height: 1.25em;
 	/* begin styles brought over from kuali-stacked.css  */
 	margin-bottom: auto;
-	padding-bottom: 0.25em;
+}
+#viewheader_div {
+    margin:  10px 15px 30px 25px;
 }
 .kr-view-header {          /* was .view_header /* remove background image for lightbox headers */ /* renamed in xml and/or jsp */
 	background: none;
-    margin-left:0.384615em;
 }
 .kr-labelTop, .labelTop {						/* was .labelTop */ /* renamed in xml and/or jsp */
 	float:none;
@@ -130,6 +136,7 @@ td.kr-clientError {
 }
 span.kr-clientError, div.kr-clientError, td.kr-clientError, span.kr-serverError, div.kr-serverError, td.kr-serverError {
 	background-color: #FFE0E9 !important;
+    padding: 0.5em;
 }
 span.kr-information, div.kr-information, td.kr-information {
     background-color:#AFDCED;
@@ -157,6 +164,8 @@ li label.kr-error {
 	float: none;
 	zoom:1;
  *display:inline;
+    width:100%;
+    margin-bottom:1em;
 }
 
 .kr-warningMessages {		/* was .warningMessages */ /* renamed in xml and/or jsp */
@@ -177,11 +186,11 @@ li label.kr-error {
 .kr-errorsFieldForContainer .kr-errorMessages, .kr-errorsFieldForContainer .kr-warningMessages, .kr-errorsFieldForContainer .kr-infoMessages{
     margin: 3px 0;
     padding: 5px 10px 5px 25px;
-    width:50%;
     background-position: 3px 4px;
+    /* note: KNS can overrride width if necessary */
 }
 .kr-errorsFieldForContainer .kr-errorMessages {		/* was .errorsFieldForContainer .errorMessages */ /* .errorsFieldForContainer renamed in xml; .errorMessages NOT renamed, as this will break js functionality   */
-	border: 1px solid red;
+	border: 1px solid #f99;
 	background-color: #FFE0E9;
 }
 .kr-errorsFieldForContainer .kr-warningMessages {	/* was .errorsFieldForContainer .warningMessages *//* renamed in xml and/or jsp */
@@ -619,7 +628,9 @@ th label {
 th, td {
     padding-right:1em;
 }
-
+table.datatable {
+    width: 100%;
+}
 .datatable tbody tr.even:hover, #example tbody tr.even td.highlighted {
 	background-color: #F1F1F1;
 }

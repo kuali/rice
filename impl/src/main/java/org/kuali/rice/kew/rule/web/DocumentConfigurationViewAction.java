@@ -253,26 +253,28 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	protected RouteNode flattenRouteNodes( RouteNode node, Map<String,RouteNode> nodes ) {
 		RouteNode lastProcessedNode = null;
-		// if we've seen the node before - skip, avoids infinite loop
-		if ( nodes.containsKey(node.getRouteNodeName()) ) {
-			return node;
-		}
+        if (node != null) {
+            // if we've seen the node before - skip, avoids infinite loop
+            if ( nodes.containsKey(node.getRouteNodeName()) ) {
+                return node;
+            }
 		
-		if ( node.getNodeType().contains( "SplitNode" ) ) { // Hacky - but only way when the class may not be present in the KEW JVM
-			lastProcessedNode = flattenSplitNode(node, nodes); // special handling to process all split children before continuing
-			// now, process the join node's children
-			for ( RouteNode nextNode : lastProcessedNode.getNextNodes() ) {
-				lastProcessedNode = flattenRouteNodes(nextNode, nodes);
-			}
-		} else if ( node.getNodeType().contains( "JoinNode" ) ) {
-			lastProcessedNode = node; // skip, handled by the split node
-		} else {
-			// normal node, add to list and process all children
-			nodes.put(node.getRouteNodeName(), node);
-			for ( RouteNode nextNode : node.getNextNodes() ) {
-				lastProcessedNode = flattenRouteNodes(nextNode, nodes);
-			}
-		}
+            if ( node.getNodeType().contains( "SplitNode" ) ) { // Hacky - but only way when the class may not be present in the KEW JVM
+                lastProcessedNode = flattenSplitNode(node, nodes); // special handling to process all split children before continuing
+                // now, process the join node's children
+                for ( RouteNode nextNode : lastProcessedNode.getNextNodes() ) {
+                    lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+                }
+            } else if ( node.getNodeType().contains( "JoinNode" ) ) {
+                lastProcessedNode = node; // skip, handled by the split node
+            } else {
+                // normal node, add to list and process all children
+                nodes.put(node.getRouteNodeName(), node);
+                for ( RouteNode nextNode : node.getNextNodes() ) {
+                    lastProcessedNode = flattenRouteNodes(nextNode, nodes);
+                }
+            }
+        }
 		return lastProcessedNode;
 	}
 	
@@ -282,57 +284,60 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		// merge the data and attach to route levels
 		// pull the route levels and store on form
 		//List<RouteNode> routeNodes = getRouteNodeService().getFlattenedNodes(form.getDocumentType(), true);
-		RouteNode rootNode = ((List<ProcessDefinitionBo>)form.getDocumentType().getProcesses()).get(0).getInitialRouteNode();
-		LinkedHashMap<String, RouteNode> routeNodeMap = new LinkedHashMap<String, RouteNode>();
-		flattenRouteNodes(rootNode, routeNodeMap);
+        Map<String,List<Role>> respToRoleMap = new HashMap<String, List<Role>>();
+        List<ProcessDefinitionBo> processes = (List<ProcessDefinitionBo>)form.getDocumentType().getProcesses();
+        if (!(processes.isEmpty())) {
+            RouteNode rootNode = processes.get(0).getInitialRouteNode();
+            LinkedHashMap<String, RouteNode> routeNodeMap = new LinkedHashMap<String, RouteNode>();
+            flattenRouteNodes(rootNode, routeNodeMap);
 		
-		form.setRouteNodes( new ArrayList<RouteNode>( routeNodeMap.values() ) );
-		// pull all the responsibilities and store into a map for use by the JSP
+            form.setRouteNodes( new ArrayList<RouteNode>( routeNodeMap.values() ) );
+            // pull all the responsibilities and store into a map for use by the JSP
 		
-		// FILTER TO THE "Review" template only
-		// pull responsibility roles
-		DocumentType docType = form.getDocumentType();
-		Set<Responsibility> responsibilities = new HashSet<Responsibility>();
-		Map<String,List<ResponsibilityForDisplay>> nodeToRespMap = new LinkedHashMap<String, List<ResponsibilityForDisplay>>();
-		while ( docType != null) {
-            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-            Predicate p = and(
-                equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
-                equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
-                equal("active", "Y"),
-                equal("attributes[documentTypeName]", docType.getName())
-            );
-            builder.setPredicates(p);
-			List<Responsibility> resps = getResponsibilityService().findResponsibilities(builder.build()).getResults();
+            // FILTER TO THE "Review" template only
+            // pull responsibility roles
+            DocumentType docType = form.getDocumentType();
+            Set<Responsibility> responsibilities = new HashSet<Responsibility>();
+            Map<String,List<ResponsibilityForDisplay>> nodeToRespMap = new LinkedHashMap<String, List<ResponsibilityForDisplay>>();
+            while ( docType != null) {
+                QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
+                Predicate p = and(
+                        equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
+                        equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
+                        equal("active", "Y"),
+                        equal("attributes[documentTypeName]", docType.getName())
+                );
+                builder.setPredicates(p);
+                List<Responsibility> resps = getResponsibilityService().findResponsibilities(builder.build()).getResults();
 			
-			for ( Responsibility r : resps ) {
-				String routeNodeName = r.getAttributes().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME);
-				if ( StringUtils.isNotBlank(routeNodeName) ) {
-					if ( !nodeToRespMap.containsKey( routeNodeName ) ) {
-						nodeToRespMap.put(routeNodeName, new ArrayList<ResponsibilityForDisplay>() );
-						nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, false ) );
-					} else {
-						// check if the responsibility in the existing list is for the current document
-						// if so, OK to add.  Otherwise, a lower level document has overridden this
-						// responsibility (since we are walking up the hierarchy
-						if ( nodeToRespMap.get(routeNodeName).get(0).getDetails().get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME ).equals(docType.getName() ) ) {
-							nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, false ) );
-						} else { // doc type name did not match, mark as overridden
-							nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, true ) );
-						}
-					}
-					responsibilities.add(r);
-				}
-			}
-			docType = docType.getParentDocType();			
-		}
-		form.setResponsibilityMap( nodeToRespMap );
+                for ( Responsibility r : resps ) {
+                    String routeNodeName = r.getAttributes().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME);
+                    if ( StringUtils.isNotBlank(routeNodeName) ) {
+                        if ( !nodeToRespMap.containsKey( routeNodeName ) ) {
+                            nodeToRespMap.put(routeNodeName, new ArrayList<ResponsibilityForDisplay>() );
+                            nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, false ) );
+                        } else {
+                            // check if the responsibility in the existing list is for the current document
+                            // if so, OK to add.  Otherwise, a lower level document has overridden this
+                            // responsibility (since we are walking up the hierarchy
+                            if ( nodeToRespMap.get(routeNodeName).get(0).getDetails().get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME ).equals(docType.getName() ) ) {
+                                nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, false ) );
+                            } else { // doc type name did not match, mark as overridden
+                                nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, true ) );
+                            }
+                        }
+                        responsibilities.add(r);
+                    }
+                }
+                docType = docType.getParentDocType();			
+            }
+            form.setResponsibilityMap( nodeToRespMap );
 		
-		Map<String,List<Role>> respToRoleMap = new HashMap<String, List<Role>>();
-		for (Responsibility responsibility : responsibilities ) {
-			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getId(), null);
-			respToRoleMap.put( responsibility.getId(), getRoleService().getRoles(roleIds) );
-		}
+		    for (Responsibility responsibility : responsibilities ) {
+		        List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getId(), null);
+		        respToRoleMap.put( responsibility.getId(), getRoleService().getRoles(roleIds) );
+		    }
+        }
 		form.setResponsibilityRoles( respToRoleMap );
 	}
 

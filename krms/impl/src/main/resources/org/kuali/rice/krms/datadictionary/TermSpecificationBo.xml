@@ -141,16 +141,17 @@
     <property name="criteriaFields">
       <list>
         <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="namespace"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="type"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
         <bean parent="InputField" p:propertyName="id"/>
-        <bean parent="InputField" p:propertyName="name"/>
         <bean parent="InputField" p:propertyName="namespace"/>
+        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="InputField" p:propertyName="description"/>
         <bean parent="InputField" p:propertyName="type"/>
       </list>
     </property>

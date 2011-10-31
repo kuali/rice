@@ -114,7 +114,7 @@
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="specification.id" p:label="Specification ID" p:required="true">
+              <bean parent="InputField" p:propertyName="specificationId" p:label="Specification ID" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30"/>
                 </property>
@@ -122,7 +122,7 @@
                 <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
                 <property name="fieldLookup.fieldConversions">
                   <map>
-                    <entry key="id" value="specification.id"/>
+                    <entry key="id" value="specificationId"/>
                     <entry key="name" value="specification.name"/>
                     <entry key="namespace" value="specification.namespace"/>
                     <entry key="type" value="specification.type"/>
@@ -138,7 +138,7 @@
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="specification.name" p:label="Name" p:required="true">
+              <bean parent="InputField" p:propertyName="specification.name" p:label="Name" p:readOnly="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30"/>
                 </property>
@@ -157,12 +157,11 @@
               </bean>
 
               <bean parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" p:colSpan="2"
-                    p:refreshWhenChanged="document.newMaintainableObject.dataObject.specification.id"
-
+                    p:refreshWhenChanged="document.newMaintainableObject.dataObject.specificationId"
+                    p:renderHeader="@{document.newMaintainableObject.dataObject.specificationId != null and document.newMaintainableObject.dataObject.specificationId.trim() != ''}"
                     p:title="Term Parameters" >
 
           <!--
-          p:renderHeader="@{document.newMaintainableObject.dataObject.agenda.typeId != null and document.newMaintainableObject.dataObject.agenda.typeId != ''}">
           -->
 
                 <property name="items">

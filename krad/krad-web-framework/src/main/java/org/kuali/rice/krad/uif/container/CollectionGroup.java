@@ -20,6 +20,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
@@ -132,8 +133,8 @@ public class CollectionGroup extends Group implements DataBinding {
         }
 
         for (Component item : getItems()) {
-            if (item instanceof InputField) {
-                InputField field = (InputField) item;
+            if (item instanceof DataField) {
+                DataField field = (DataField) item;
 
                 if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
                     field.setDictionaryObjectEntry(collectionObjectClass.getName());
@@ -160,9 +161,8 @@ public class CollectionGroup extends Group implements DataBinding {
         }
         collectionPath += getBindingInfo().getBindingName();
 
-        List<InputField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(),
-                InputField.class);
-        for (InputField collectionField : collectionFields) {
+        List<DataField> collectionFields = ComponentUtils.getComponentsOfTypeDeep(getItems(), DataField.class);
+        for (DataField collectionField : collectionFields) {
             collectionField.getBindingInfo().setCollectionPath(collectionPath);
         }
 

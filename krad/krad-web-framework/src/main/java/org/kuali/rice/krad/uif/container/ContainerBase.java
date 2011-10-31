@@ -408,8 +408,8 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * Gets only the attribute fields that are nested in this container.  This is a subset of
-	 * what getComponentsForLifecycle() returns.
+	 * Gets only the data fields that are nested in this container.  This is a subset of
+	 * what getComponentsForLifecycle() returns
 	 * 
 	 * @return
 	 */

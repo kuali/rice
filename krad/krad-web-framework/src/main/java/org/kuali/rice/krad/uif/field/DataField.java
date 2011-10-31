@@ -324,6 +324,16 @@ public class DataField extends FieldBase implements DataBinding {
     }
 
     /**
+     * Indicates whether the data field instance allows input, subclasses should override and set to
+     * true if input is allowed
+     *
+     * @return boolean true if input is allowed, false if read only
+     */
+    public boolean isInputAllowed() {
+        return false;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.component.DataBinding#getPropertyName()
      */
     public String getPropertyName() {

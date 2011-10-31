@@ -21,6 +21,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
@@ -549,8 +550,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	 * @return String sequence property name
 	 */
     public String getSequencePropertyName() {
-        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof InputField)) {
-            return ((InputField) sequenceFieldPrototype).getPropertyName();
+        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof DataField)) {
+            return ((DataField) sequenceFieldPrototype).getPropertyName();
         }
 
         return null;
@@ -562,8 +563,8 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
      * @param sequencePropertyName
      */
     public void setSequencePropertyName(String sequencePropertyName) {
-        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof InputField)) {
-            ((InputField) sequenceFieldPrototype).setPropertyName(sequencePropertyName);
+        if ((sequenceFieldPrototype != null) && (sequenceFieldPrototype instanceof DataField)) {
+            ((DataField) sequenceFieldPrototype).setPropertyName(sequencePropertyName);
         }
     }
 	

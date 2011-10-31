@@ -494,18 +494,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     }
 
     /**
-     * Determines the dictionary class that is associated with the given
-     * <code>InputField</code>
-     *
-     * @param view - view instance for field
-     * @param field - field instance to determine dictionary class for
-     * @return Class<?> dictionary class or null if not found
-     */
-    protected Class<?> getDictionaryModelClass(View view, InputField field) {
-        return ViewModelUtils.getParentObjectClassForMetadata(view, field);
-    }
-
-    /**
      * @see org.kuali.rice.krad.uif.service.ViewHelperService#performApplyModel(org.kuali.rice.krad.uif.view.View,
      *      java.lang.Object)
      */
@@ -836,9 +824,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
 
         // apply default value if needed
-        if ((component instanceof InputField) && !((ViewModel) model).isDefaultsApplied()) {
-            populateDefaultValueForField(view, model, (InputField) component,
-                    ((InputField) component).getBindingInfo().getBindingPath());
+        if ((component instanceof DataField) && !((ViewModel) model).isDefaultsApplied()) {
+            populateDefaultValueForField(view, model, (DataField) component,
+                    ((DataField) component).getBindingInfo().getBindingPath());
         }
 
         // get components children and recursively update state

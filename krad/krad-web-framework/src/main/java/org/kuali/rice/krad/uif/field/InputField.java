@@ -380,6 +380,14 @@ public class InputField extends DataField {
     }
 
     /**
+     * @see DataField#isInputAllowed()
+     */
+    @Override
+    public boolean isInputAllowed() {
+        return true;
+    }
+
+    /**
      * <code>Control</code> instance that should be used to input data for the
      * field
      *

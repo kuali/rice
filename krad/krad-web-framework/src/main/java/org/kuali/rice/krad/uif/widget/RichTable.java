@@ -22,6 +22,8 @@ import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
@@ -120,7 +122,7 @@ public class RichTable extends WidgetBase {
             setDisableTableSort(true);
         }
 
-       // if (!isDisableTableSort()) {
+       if (!isDisableTableSort()) {
             // if rendering add line, skip that row from col sorting
             if (collectionGroup.isRenderAddLine()
                     && !collectionGroup.isReadOnly()
@@ -150,25 +152,28 @@ public class RichTable extends WidgetBase {
                     component = ((FieldGroup) component).getItems().get(0);
                 }
 
-                if (component instanceof InputField) {
-                    InputField field = (InputField) component;
+                if (component instanceof DataField) {
+                    DataField field = (DataField) component;
 
                     String sortType = null;
-                    if (collectionGroup.isReadOnly() || (field.getControl() == null)) {
+                    if (!collectionGroup.isReadOnly() && (field instanceof InputField)
+                            && ((InputField) field).getControl() != null) {
+                        Control control = ((InputField) field).getControl();
+                        if (control instanceof SelectControl) {
+                            sortType = UifConstants.TableToolsValues.DOM_SELECT;
+                        } else if (control instanceof CheckboxControl || control instanceof CheckboxGroupControl) {
+                            sortType = UifConstants.TableToolsValues.DOM_CHECK;
+                        } else if (control instanceof RadioGroupControl) {
+                            sortType = UifConstants.TableToolsValues.DOM_RADIO;
+                        } else {
+                            sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                        }
+                    } else {
                         sortType = UifConstants.TableToolsValues.DOM_TEXT;
-                    } else if (field.getControl() instanceof TextControl) {
-                        sortType = UifConstants.TableToolsValues.DOM_TEXT;
-                    } else if (field.getControl() instanceof SelectControl) {
-                        sortType = UifConstants.TableToolsValues.DOM_SELECT;
-                    } else if (field.getControl() instanceof CheckboxControl || field
-                            .getControl() instanceof CheckboxGroupControl) {
-                        sortType = UifConstants.TableToolsValues.DOM_CHECK;
-                    } else if (field.getControl() instanceof RadioGroupControl) {
-                        sortType = UifConstants.TableToolsValues.DOM_RADIO;
                     }
 
                     Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
-                            collectionGroup.getCollectionObjectClass(), ((InputField) component).getPropertyName());
+                            collectionGroup.getCollectionObjectClass(), field.getPropertyName());
                     String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
                     tableToolsColumnOptions.append(colOptions + " , ");
                 } else {
@@ -188,7 +193,7 @@ public class RichTable extends WidgetBase {
             tableToolsColumnOptions.append("]");
 
             getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
-       // }
+       }
     }
 
     /**

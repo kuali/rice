@@ -17,10 +17,7 @@
 
 <tiles:useAttribute name="field" classname="org.kuali.rice.krad.uif.field.DataField"/>
 
-<c:set var="readOnly" value="${field.readOnly}"/>
-<c:if test="${field.class.name eq 'org.kuali.rice.krad.uif.field.DataField'}">
-  <c:set var="readOnly" value="true"/>
-</c:if>
+<c:set var="readOnly" value="${field.readOnly || !field.inputAllowed}"/>
 
 <krad:span component="${field}">
 

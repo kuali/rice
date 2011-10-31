@@ -17,7 +17,6 @@ package org.kuali.rice.krad.web.bind;
 
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;

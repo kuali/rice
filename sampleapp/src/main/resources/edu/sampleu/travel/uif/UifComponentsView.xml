@@ -1571,8 +1571,7 @@
     </property>
   </bean>
 
-	<bean id="collection2" parent="CollectionGroupTableLayout"
-		p:layoutManager.numberOfColumns="4">
+	<bean id="collection2" parent="CollectionGroupSectionTableLayout"	p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 2 - CollectionGroupTableLayout with jQuery table features on" />
 		<property name="instructionalText"
@@ -1599,7 +1598,7 @@
 		</property>
 	</bean>
 
-	<bean id="collection3" parent="CollectionGroup">
+	<bean id="collection3" parent="CollectionGroupSection">
 		<property name="title" value="Collection Group 3 - Stacked" />
 		<property name="instructionalText"
 			value="This is a stacked layout of a collection - CollectionGroup" />
@@ -1622,7 +1621,7 @@
 		</property>
 	</bean>
 
-	<bean id="collection4" parent="CollectionGroup">
+	<bean id="collection4" parent="CollectionGroupSection">
 		<property name="title"
 			value="Collection Group 4 - Stacked Collection with a Table subcollection" />
 		<property name="instructionalText"
@@ -1674,7 +1673,7 @@
 		</property>
 	</bean>
 
-	<bean id="collection5" parent="CollectionGroup">
+	<bean id="collection5" parent="CollectionGroupSection">
 		<property name="title"
 			value="Collection Group 5 - Stacked Collection with a Stacked subcollection" />
 		<property name="instructionalText"
@@ -1728,7 +1727,7 @@
 	</bean>
 
 
-	<bean id="collection6" parent="CollectionGroupTableLayout"
+	<bean id="collection6" parent="CollectionGroupSectionTableLayout"
 		p:layoutManager.numberOfColumns="4">
 		<property name="title"
 			value="Collection Group 6 - CollectionGroupTableLayout with jQuery table features on" />

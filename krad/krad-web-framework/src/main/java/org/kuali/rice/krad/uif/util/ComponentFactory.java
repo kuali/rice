@@ -49,6 +49,7 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.BlankField;
 import org.kuali.rice.krad.uif.field.ErrorsField;
@@ -89,6 +90,7 @@ public class ComponentFactory {
     protected static final String USER_CONTROL = "UserControl";
     protected static final String GROUP_CONTROL = "GroupControl";
 
+    protected static final String DATA_FIELD = "DataField";
     protected static final String INPUT_FIELD = "InputField";
     protected static final String ERRORS_FIELD = "ErrorsField";
     protected static final String ACTION_FIELD = "ActionField";
@@ -207,6 +209,19 @@ public class ComponentFactory {
 
     public static TextControl getGroupControl() {
         return (TextControl) getNewComponentInstance(GROUP_CONTROL);
+    }
+
+    public static DataField getDataField() {
+        return (DataField) getNewComponentInstance(DATA_FIELD);
+    }
+
+    public static DataField getDataField(String propertyName, String label) {
+        DataField field = (DataField) getNewComponentInstance(DATA_FIELD);
+
+        field.setPropertyName(propertyName);
+        field.setLabel(label);
+
+        return field;
     }
 
     public static InputField getInputField() {
@@ -424,7 +439,8 @@ public class ComponentFactory {
     }
 
     /**
-     * For each remotable field in the given list creates a new {@link org.kuali.rice.krad.uif.field.InputField} instance and sets the
+     * For each remotable field in the given list creates a new {@link org.kuali.rice.krad.uif.field.InputField}
+     * instance and sets the
      * corresponding properties from the remotable instance
      *
      * @param remotableFields - list of remotable fields to translate

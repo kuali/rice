@@ -16,7 +16,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.container.Group;
-import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.HeaderField;
@@ -194,8 +194,8 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     protected void performValueComparison(Group group, Component compareItem, Object model,
             String compareValueObjectBindingPath) {
         // get any attribute fields for the item so we can compare the values
-        List<InputField> itemFields = ComponentUtils.getComponentsOfTypeDeep(compareItem, InputField.class);
-        for (InputField field : itemFields) {
+        List<DataField> itemFields = ComponentUtils.getComponentsOfTypeDeep(compareItem, DataField.class);
+        for (DataField field : itemFields) {
             String fieldBindingPath = field.getBindingInfo().getBindingPath();
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, fieldBindingPath);
 

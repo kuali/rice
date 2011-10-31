@@ -55,6 +55,7 @@ import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -335,8 +336,8 @@ public class ActionRequestFactory {
     	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	if (role != null && role.getResolvedQualifiedRole() != null && role.getResolvedQualifiedRole().getRecipients() != null) {
     	    int legitimateTargets = 0;
-            for (Id recipientId : role.getResolvedQualifiedRole().getRecipients())
-            {
+            for (Iterator<Id> iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext();) {
+                Id recipientId = (Id) iter.next();
                 if (recipientId.isEmpty())
                 {
                     throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
@@ -344,7 +345,9 @@ public class ActionRequestFactory {
                 if (recipientId instanceof UserId)
                 {
                     Principal principal = getIdentityHelperService().getPrincipal((UserId) recipientId);
-                    role.setTarget(new KimPrincipalRecipient(principal));
+                    if(ObjectUtils.isNotNull(principal)) {
+                        role.setTarget(new KimPrincipalRecipient(principal));
+                    }
                 } else if (recipientId instanceof GroupId)
                 {
                     role.setTarget(new KimGroupRecipient(getIdentityHelperService().getGroup((GroupId) recipientId)));

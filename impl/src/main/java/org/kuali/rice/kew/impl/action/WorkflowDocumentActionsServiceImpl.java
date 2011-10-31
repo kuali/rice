@@ -1180,7 +1180,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
         	authorized = true;
         }
 
-        if (!lookFuture) {
+        if (!lookFuture || authorized) {
         	return authorized;
         }
 

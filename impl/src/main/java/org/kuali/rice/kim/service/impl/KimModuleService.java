@@ -184,14 +184,14 @@ public class KimModuleService extends ModuleServiceBase {
 		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)getPersonService().findPeople( (Map)fieldValues );
 		}
-        else if ( Role.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
+        else if ( RoleContract.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
             List<Role> roles = getKimRoleService().findRoles(toQuery(fieldValues)).getResults();
             List<RoleEbo> roleEbos = new ArrayList<RoleEbo>(roles.size());
             for (Role role : roles) {
                 roleEbos.add(RoleEbo.from(role));
             }
             return (List<T>)roleEbos;
-		} else if ( Group.class.isAssignableFrom(externalizableBusinessObjectClass) ) {
+		} else if ( GroupContract.class.isAssignableFrom(externalizableBusinessObjectClass) ) {
 			List<Group> groups = getGroupService().findGroups(toQuery(fieldValues)).getResults();
             List<GroupEbo> groupEbos = new ArrayList<GroupEbo>(groups.size());
             for (Group group : groups) {
@@ -223,14 +223,14 @@ public class KimModuleService extends ModuleServiceBase {
 		// for Person objects (which are not real PersistableBOs) pull them through the person service
 		if ( Person.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			return (List)getPersonService().findPeople( (Map)fieldValues, unbounded );
-		} else if ( RoleEbo.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
+		} else if ( RoleContract.class.isAssignableFrom( externalizableBusinessObjectClass ) ) {
 			List<Role> roles = getKimRoleService().findRoles(toQuery(fieldValues)).getResults();
             List<RoleEbo> roleEbos = new ArrayList<RoleEbo>(roles.size());
             for (Role role : roles) {
                 roleEbos.add(RoleEbo.from(role));
             }
             return (List<T>)roleEbos;
-		} else if (GroupEbo.class.isAssignableFrom( externalizableBusinessObjectClass)) {
+		} else if (GroupContract.class.isAssignableFrom( externalizableBusinessObjectClass)) {
             List<Group> groups = getGroupService().findGroups(toQuery(fieldValues)).getResults();
             List<GroupEbo> groupEbos = new ArrayList<GroupEbo>(groups.size());
             for (Group group : groups) {

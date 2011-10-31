@@ -158,9 +158,8 @@ public class ModuleServiceBase implements ModuleService {
 	 */
 	public BusinessObjectEntry getExternalizableBusinessObjectDictionaryEntry(
 			Class businessObjectInterfaceClass) {
-		Class boClass = businessObjectInterfaceClass;
-		if(businessObjectInterfaceClass.isInterface())
-			boClass = getExternalizableBusinessObjectImplementation(businessObjectInterfaceClass);
+		Class boClass = getExternalizableBusinessObjectImplementation(businessObjectInterfaceClass);
+
 		return boClass==null?null:
 			KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntryForConcreteClass(boClass.getName());
 	}
@@ -170,17 +169,13 @@ public class ModuleServiceBase implements ModuleService {
 	        return KRADConstants.EMPTY_STRING;
 		}
 		String businessObjectClassAttribute;
-		if(inquiryBusinessObjectClass.isInterface()){
-			Class implementationClass = getExternalizableBusinessObjectImplementation(inquiryBusinessObjectClass);
-			if (implementationClass == null) {
-				LOG.error("Can't find ExternalizableBusinessObject implementation class for interface " + inquiryBusinessObjectClass.getName());
-				throw new RuntimeException("Can't find ExternalizableBusinessObject implementation class for interface " + inquiryBusinessObjectClass.getName());
-			}
-			businessObjectClassAttribute = implementationClass.getName();
-		}else{
-			LOG.warn("Inquiry was invoked with a non-interface class object " + inquiryBusinessObjectClass.getName());
-			businessObjectClassAttribute = inquiryBusinessObjectClass.getName();
-		}
+
+        Class implementationClass = getExternalizableBusinessObjectImplementation(inquiryBusinessObjectClass);
+        if (implementationClass == null) {
+            LOG.error("Can't find ExternalizableBusinessObject implementation class for " + inquiryBusinessObjectClass.getName());
+            throw new RuntimeException("Can't find ExternalizableBusinessObject implementation class for interface " + inquiryBusinessObjectClass.getName());
+        }
+        businessObjectClassAttribute = implementationClass.getName();
         return UrlFactory.parameterizeUrl(
         		getInquiryUrl(inquiryBusinessObjectClass),
         		getUrlParameters(businessObjectClassAttribute, parameters));

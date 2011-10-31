@@ -112,7 +112,7 @@ public class ActionRequestFactory {
      * @return ActionRequestValue
 	 */
 	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean forceAction, String annotation) {
-		return createActionRequest(actionRequested, 0, recipient, description, KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
+		return createActionRequest(actionRequested, new Integer(0), recipient, description, KewApiConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
 	}
 
 	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, String responsibilityId, Boolean forceAction, String annotation) {
@@ -256,7 +256,7 @@ public class ActionRequestFactory {
         if (routeNode != null) {
         	actionRequest.setNodeInstance(routeNode);
         }
-        actionRequest.setJrfVerNbr(0);
+        actionRequest.setJrfVerNbr(new Integer(0));
         actionRequest.setStatus(ActionRequestStatus.INITIALIZED.getCode());
         actionRequest.setRouteHeader(document);
         actionRequest.setDocumentId(document.getDocumentId());

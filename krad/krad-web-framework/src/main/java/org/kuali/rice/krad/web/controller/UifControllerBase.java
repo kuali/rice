@@ -104,7 +104,7 @@ public abstract class UifControllerBase {
                         request.getRemoteAddr());
             }
         } else {
-            form = createInitialForm();
+            form = createInitialForm(request);
         }
 
         return form;
@@ -117,22 +117,7 @@ public abstract class UifControllerBase {
      * overridden when extending a controller and using a different form type
      * than the superclass.
      */
-    protected abstract Class<? extends UifFormBase> formType();
-
-    /**
-     * Called to create a new model(form) object when
-     * necessary. This usually occurs on the initial request in a conversation
-     * (when the model is not present in the session).
-     */
-    protected UifFormBase createInitialForm() {
-        try {
-            return formType().newInstance();
-        } catch (InstantiationException e) {
-            throw new RiceRuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RiceRuntimeException(e);
-        }
-    }
+    protected abstract UifFormBase createInitialForm(HttpServletRequest request);
 
     private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
 

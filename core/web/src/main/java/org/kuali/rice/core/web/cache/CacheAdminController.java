@@ -1,5 +1,13 @@
 package org.kuali.rice.core.web.cache;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.core.impl.cache.CacheManagerRegistry;
@@ -15,13 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 @Controller
 @RequestMapping(value = "/core/admin/cache")
 public class CacheAdminController extends UifControllerBase {
@@ -35,9 +36,12 @@ public class CacheAdminController extends UifControllerBase {
         return registry;
     }
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<CacheAdminForm> formType() {
-        return CacheAdminForm.class;
+    protected CacheAdminForm createInitialForm(HttpServletRequest request) {
+        return new CacheAdminForm();
     }
 
     @Override
@@ -145,4 +149,5 @@ public class CacheAdminController extends UifControllerBase {
                     getRegistry().getCacheManagerName(o2));
         }
     }
+
 }

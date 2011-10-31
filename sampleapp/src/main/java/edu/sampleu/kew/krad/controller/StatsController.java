@@ -15,7 +15,9 @@
  */
 package edu.sampleu.kew.krad.controller;
 
-import edu.sampleu.kew.krad.form.StatsForm;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.stats.service.StatsService;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -26,8 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import edu.sampleu.kew.krad.form.StatsForm;
 
 /**
  * This is a description of what this class does - Venkat don't forget to fill this in. 
@@ -39,9 +40,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/stats")
 public class StatsController extends UifControllerBase {
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<StatsForm> formType() {
-        return StatsForm.class;
+    protected StatsForm createInitialForm(HttpServletRequest request) {
+        return new StatsForm();
     }
 
 	@Override

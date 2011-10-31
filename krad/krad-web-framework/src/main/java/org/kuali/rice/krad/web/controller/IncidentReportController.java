@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
 import org.kuali.rice.krad.web.form.IncidentReportForm;
@@ -26,9 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Handler for incident reports
  * 
@@ -38,9 +38,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/incidentReport")
 public class IncidentReportController extends UifControllerBase {
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<IncidentReportForm> formType() {
-        return IncidentReportForm.class;
+    protected IncidentReportForm createInitialForm(HttpServletRequest request) {
+        return new IncidentReportForm();
     }
 
     /**

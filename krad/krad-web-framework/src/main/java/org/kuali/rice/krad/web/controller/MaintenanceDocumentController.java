@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -38,9 +41,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Controller for <code>MaintenanceView</code> screens which operate on
  * <code>MaintenanceDocument</code> instances
@@ -52,9 +52,12 @@ import javax.servlet.http.HttpServletResponse;
 public class MaintenanceDocumentController extends DocumentControllerBase {
     protected static final Logger LOG = Logger.getLogger(MaintenanceDocumentController.class);
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<? extends MaintenanceForm> formType() {
-        return MaintenanceForm.class;
+    protected MaintenanceForm createInitialForm(HttpServletRequest request) {
+        return new MaintenanceForm();
     }
 
     /**

@@ -38,9 +38,12 @@ import edu.sampleu.travel.krad.form.UILayoutTestForm;
 @RequestMapping(value = "/uilayouttest")
 public class UILayoutTestController extends UifControllerBase {
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<UILayoutTestForm> formType() {
-        return UILayoutTestForm.class;
+    protected UILayoutTestForm createInitialForm(HttpServletRequest request) {
+        return new UILayoutTestForm();
     }
 
 	@Override

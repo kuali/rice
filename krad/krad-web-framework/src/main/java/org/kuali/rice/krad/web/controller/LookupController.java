@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
@@ -38,13 +46,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.Set;
-
 /**
  * Controller that handles requests coming from a <code>LookupView</code>
  *
@@ -55,9 +56,12 @@ import java.util.Set;
 public class LookupController extends UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupController.class);
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<? extends LookupForm> formType() {
-        return LookupForm.class;
+    protected LookupForm createInitialForm(HttpServletRequest request) {
+        return new LookupForm();
     }
 
     protected void suppressActionsIfNeeded(LookupForm lookupForm) {

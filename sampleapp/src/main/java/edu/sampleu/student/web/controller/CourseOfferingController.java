@@ -15,10 +15,12 @@
  */
 package edu.sampleu.student.web.controller;
 
-import edu.sampleu.student.dataobject.Course;
-import edu.sampleu.student.dataobject.CourseInstructor;
-import edu.sampleu.student.dataobject.CourseSection;
-import edu.sampleu.student.web.form.CourseOfferingForm;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -29,10 +31,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import edu.sampleu.student.dataobject.Course;
+import edu.sampleu.student.dataobject.CourseInstructor;
+import edu.sampleu.student.dataobject.CourseSection;
+import edu.sampleu.student.web.form.CourseOfferingForm;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,9 +43,12 @@ import java.util.GregorianCalendar;
 @RequestMapping(value = "/courseOffering")
 public class CourseOfferingController extends UifControllerBase {
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<CourseOfferingForm> formType() {
-        return CourseOfferingForm.class;
+    protected CourseOfferingForm createInitialForm(HttpServletRequest request) {
+        return new CourseOfferingForm();
     }
 
     /**

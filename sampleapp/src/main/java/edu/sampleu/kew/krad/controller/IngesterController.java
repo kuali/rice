@@ -15,8 +15,16 @@
  */
 package edu.sampleu.kew.krad.controller;
 
-import edu.sampleu.kew.krad.KEWConstants;
-import edu.sampleu.kew.krad.form.IngesterForm;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -36,14 +44,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import edu.sampleu.kew.krad.KEWConstants;
+import edu.sampleu.kew.krad.form.IngesterForm;
 
 /**
  * This is a description of what this class does - Venkat don't forget to fill this in. 
@@ -55,9 +57,12 @@ import java.util.List;
 @RequestMapping(value = "/ingester")
 public class IngesterController extends UifControllerBase {
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<IngesterForm> formType() {
-        return IngesterForm.class;
+    protected IngesterForm createInitialForm(HttpServletRequest request) {
+        return new IngesterForm();
     }
 
 	@Override

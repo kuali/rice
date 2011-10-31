@@ -15,9 +15,12 @@
  */
 package edu.sampleu.travel.krad.controller;
 
-import edu.sampleu.travel.bo.FiscalOfficer;
-import edu.sampleu.travel.bo.TravelAccount;
-import edu.sampleu.travel.krad.form.UITestForm;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -29,10 +32,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import edu.sampleu.travel.bo.FiscalOfficer;
+import edu.sampleu.travel.bo.TravelAccount;
+import edu.sampleu.travel.krad.form.UITestForm;
 
 /**
  * Controller for the Test UI Page
@@ -43,9 +45,12 @@ import java.util.List;
 @RequestMapping(value = "/uitest")
 public class UITestController extends UifControllerBase {
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<UITestForm> formType() {
-        return UITestForm.class;
+    protected UITestForm createInitialForm(HttpServletRequest request) {
+        return new UITestForm();
     }
 
 	@Override

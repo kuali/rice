@@ -15,12 +15,12 @@
  */
 package edu.sampleu.student.web.controller;
 
-import edu.sampleu.student.dataobject.Course;
-import edu.sampleu.student.dataobject.CourseSection;
-import edu.sampleu.student.web.form.RegistrationForm;
-import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.krad.uif.util.CloneUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -30,10 +30,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import edu.sampleu.student.dataobject.Course;
+import edu.sampleu.student.dataobject.CourseSection;
+import edu.sampleu.student.web.form.RegistrationForm;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,9 +41,12 @@ import java.util.List;
 @RequestMapping(value = "/registration")
 public class RegistrationController extends UifControllerBase {
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<RegistrationForm> formType() {
-        return RegistrationForm.class;
+    protected RegistrationForm createInitialForm(HttpServletRequest request) {
+        return new RegistrationForm();
     }
 
     /**

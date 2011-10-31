@@ -106,8 +106,12 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     private AttachmentService attachmentService;
     private NoteService noteService;
 
+    
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected abstract Class<? extends DocumentFormBase> formType();
+    protected abstract DocumentFormBase createInitialForm(HttpServletRequest request);
 
     /**
      * Used to funnel all document handling through, we could do useful things

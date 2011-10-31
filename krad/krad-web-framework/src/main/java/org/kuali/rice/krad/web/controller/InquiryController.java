@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.krad.web.controller;
 
+import java.util.Collections;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -29,10 +34,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
-
 /**
  * Controller for <code>InquiryView</code> screens which handle
  * initial requests for the inquiry and actions coming from the
@@ -45,9 +46,12 @@ import java.util.Collections;
 public class InquiryController extends UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryController.class);
 
+    /**
+     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     */
     @Override
-    protected Class<InquiryForm> formType() {
-        return InquiryForm.class;
+    protected InquiryForm createInitialForm(HttpServletRequest request) {
+        return new InquiryForm();
     }
 
     /**

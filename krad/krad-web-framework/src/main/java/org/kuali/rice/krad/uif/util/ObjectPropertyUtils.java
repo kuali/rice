@@ -62,13 +62,15 @@ public class ObjectPropertyUtils {
 
 	public static void initializeProperty(Object object, String propertyPath) {
 		Class<?> propertyType = getPropertyType(object, propertyPath);
-		try {
-			setPropertyValue(object, propertyPath, propertyType.newInstance());
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Unable to set new instance for property: " + propertyPath, e);
-		}
-	}
+        try {
+            setPropertyValue(object, propertyPath, propertyType.newInstance());
+        } catch (InstantiationException e) {
+            // just set the value to null
+            setPropertyValue(object, propertyPath, null);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Unable to set new instance for property: " + propertyPath, e);
+        }
+    }
 
 	public static void setPropertyValue(Object object, String propertyPath, Object propertyValue) {
 		wrapObject(object).setPropertyValue(propertyPath, propertyValue);

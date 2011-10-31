@@ -204,6 +204,18 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     ((CollectionGroup) origComponent).getSubCollectionSuffix());
         }
 
+        // reset data if needed
+        if (component.isResetDataOnRefresh()) {
+            // TODO: this should handle groups as well, going through nested data fields
+            if (component instanceof DataField) {
+                // TODO: should check default value
+
+                // clear value
+                ObjectPropertyUtils.initializeProperty(model,
+                        ((DataField) component).getBindingInfo().getBindingPath());
+            }
+        }
+
         performComponentInitialization(view, model, component);
         performComponentApplyModel(view, component, model);
 

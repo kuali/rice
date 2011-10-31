@@ -17,7 +17,8 @@ import org.kuali.rice.kim.framework.group.GroupEbo
 import org.kuali.rice.kim.framework.role.RoleEbo
 
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
-import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.service.ModuleService
+import org.apache.commons.lang.StringUtils;
 
 /**
  * mapped entity for PeopleFlow members
@@ -42,30 +43,74 @@ class PeopleFlowMemberBo extends PersistableBusinessObjectBase implements People
 
     public Person getPerson() {
         if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
-            if ((this.person == null) || !person.getPrincipalId().equals(memberId)) {
-                this.person = KimApiServiceLocator.personService.getPerson(memberId);
+            if ((this.person == null) || !person.getPrincipalId().equals(memberId) || !person.getPrincipalName().equals(memberName)) {
+                // use member name first
+                if (StringUtils.isNotBlank(memberName)) {
+                    this.person = KimApiServiceLocator.personService.getPersonByPrincipalName(memberName);
+                } else {
+                    this.person = KimApiServiceLocator.personService.getPerson(memberId);
+                }
             }
-        }
 
-        if (this.person != null) {
-            return this.person;
+            if (this.person != null) {
+                memberId = person.getPrincipalId();
+                memberName = person.getPrincipalName();
+
+                return this.person;
+            }
         }
 
         return KimApiServiceLocator.personService.personImplementationClass.newInstance();
     }
 
     public GroupEbo getGroup() {
-        ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(GroupEbo.class);
-        group = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, group, "group");
+        if (MemberType.GROUP.getCode().equals(memberTypeCode)) {
+            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(GroupEbo.class);
+            group = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, group, "group");
+
+            if (group != null) {
+                memberId = group.id;
+                memberName = group.namespaceCode + " : " + group.name;
+            }
+        }
 
         return group;
     }
 
     public RoleEbo getRole() {
-        ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(RoleEbo.class);
-        role = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, role, "role");
+        if (MemberType.ROLE.getCode().equals(memberTypeCode)) {
+            ModuleService eboModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(RoleEbo.class);
+            role = eboModuleService.retrieveExternalizableBusinessObjectIfNecessary(this, role, "role");
+
+            if (role != null) {
+                memberId = role.id;
+                memberName = role.namespaceCode + " : " + role.name;
+            }
+        }
 
         return role;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+
+        // trigger update of related object (only person can be updated by name)
+        if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
+            getPerson();
+        }
+    }
+
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+
+        // trigger update of related object
+        if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
+            getPerson();
+        } else if (MemberType.GROUP.getCode().equals(memberTypeCode)) {
+            getGroup();
+        } else if (MemberType.ROLE.getCode().equals(memberTypeCode)) {
+            getRole();
+        }
     }
 
     @Override

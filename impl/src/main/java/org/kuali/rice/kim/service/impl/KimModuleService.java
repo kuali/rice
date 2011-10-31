@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.IdentityService;
@@ -28,6 +29,7 @@ import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierType;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleContract;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -93,12 +95,12 @@ public class KimModuleService extends ModuleServiceBase {
 				return (T) getPersonService().getPersonByPrincipalName( (String)fieldValues.get( KIMPropertyConstants.Person.PRINCIPAL_NAME ) );
 			}
 			// otherwise, fall through since critieria is not known
-		} else if(Role.class.isAssignableFrom(businessObjectClass)){
+		} else if(RoleContract.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID)){
 				Role role = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
 				return (T) RoleEbo.from(role);
 			}
-		} else if(Group.class.isAssignableFrom(businessObjectClass)){
+		} else if(GroupContract.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID)) {
                 Group group = getGroupService().getGroup((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
 				return (T) GroupEbo.from(group);

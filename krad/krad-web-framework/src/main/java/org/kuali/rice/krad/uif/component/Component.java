@@ -801,6 +801,21 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setRefreshedByAction(boolean refreshedByAction);
 
     /**
+     * Indicates whether data contained within the component should be reset (set to default) when the
+     * component is refreshed
+     *
+     * @return boolean true if data should be refreshed, false if data should remain as is
+     */
+    public boolean isResetDataOnRefresh();
+
+    /**
+     * Setter for the reset data on refresh indicator
+     *
+     * @param resetDataOnRefresh
+     */
+    public void setResetDataOnRefresh(boolean resetDataOnRefresh);
+
+    /**
      * Result of the conditionalRefresh expression, true if satisfied, otherwise false.
      * Note: not currently used for any processing, required by the expression evaluator.
      *

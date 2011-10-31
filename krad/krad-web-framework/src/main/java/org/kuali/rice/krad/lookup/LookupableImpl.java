@@ -657,7 +657,7 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         }
 
         props.put(KRADConstants.REFRESH_CALLER, lookupView.getId());
-        props.put(KRADConstants.REFRESH_DATA_OBJECT_CLASS, getDataObjectClass());
+        props.put(KRADConstants.REFRESH_DATA_OBJECT_CLASS, getDataObjectClass().getName());
 
         if (StringUtils.isNotBlank(lookupForm.getDocNum())) {
             props.put(UifParameters.DOC_NUM, lookupForm.getDocNum());

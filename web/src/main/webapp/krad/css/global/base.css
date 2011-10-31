@@ -670,3 +670,7 @@ table.datatable {
 .datatable tr.odd:hover td.sorting_3 {
 	background-color: #F1F1F1;
 }
+
+.kr-info {
+    display : block;
+}

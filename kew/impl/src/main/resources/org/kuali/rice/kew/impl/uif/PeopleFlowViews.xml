@@ -169,7 +169,7 @@
   -->
   <bean id="PeopleFlow-Member" parent="InputField" p:propertyName="memberName" p:label="Member"
         p:refreshWhenChanged="#line.memberTypeCode" p:readOnly="@{#line.memberTypeCode ne 'P'}"
-        p:fieldLookup.render="true">
+        p:fieldLookup.render="true" p:resetDataOnRefresh="true">
     <property name="control">
       <bean parent="UserControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name"/>
     </property>
@@ -182,13 +182,13 @@
         </bean>
         <bean parent="PropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'R'">
           <property name="replacement">
-            <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.framework.role.RoleEbo"
+            <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo"
                   p:fieldConversions="id:memberId" p:render="true"/>
           </property>
         </bean>
         <bean parent="PropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'G'">
           <property name="replacement">
-            <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.framework.group.GroupEbo"
+            <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
                   p:fieldConversions="id:memberId" p:render="true"/>
           </property>
         </bean>

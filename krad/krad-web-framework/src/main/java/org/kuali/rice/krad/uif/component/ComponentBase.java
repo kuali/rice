@@ -65,6 +65,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private List<String> refreshWhenChangedControlNames;
     private boolean refreshedByAction;
 
+    private boolean resetDataOnRefresh;
     private String refreshDiscloseMethodToCall;
 
     private boolean hidden;
@@ -132,6 +133,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         progressiveRenderViaAJAX = false;
         progressiveRenderAndRefresh = false;
         refreshedByAction = false;
+        resetDataOnRefresh = false;
 
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
@@ -1452,6 +1454,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setRefreshedByAction(boolean refreshedByAction) {
         this.refreshedByAction = refreshedByAction;
+    }
+
+    /**
+     * @see Component#isResetDataOnRefresh()
+     */
+    public boolean isResetDataOnRefresh() {
+        return resetDataOnRefresh;
+    }
+
+    /**
+     * @see Component#setResetDataOnRefresh(boolean)
+     */
+    public void setResetDataOnRefresh(boolean resetDataOnRefresh) {
+        this.resetDataOnRefresh = resetDataOnRefresh;
     }
 
     /**

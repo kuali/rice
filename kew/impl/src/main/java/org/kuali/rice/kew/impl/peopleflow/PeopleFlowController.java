@@ -38,4 +38,5 @@ public class PeopleFlowController extends MaintenanceDocumentController {
 
         return super.updateComponent(form, result, request, response);
     }
+
 }

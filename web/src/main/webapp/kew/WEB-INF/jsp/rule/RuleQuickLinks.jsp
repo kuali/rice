@@ -64,5 +64,5 @@
 		<c:if test="${empty KualiForm.documentTypeQuickLinksStructures}">
 			No Documents Match			
 		</c:if>
-
+	</div>
 </kul:page>

@@ -31,6 +31,7 @@ public enum SearchOperator {
 	BETWEEN(".."),
     BETWEEN_EXCLUSIVE_UPPER("..."),
 	NULL("NULL"), 
+	NOT_NULL("!NULL"),
 	LIKE_ONE("?"),
 	LIKE_MANY("*"),
 	LIKE_MANY_P("%"),

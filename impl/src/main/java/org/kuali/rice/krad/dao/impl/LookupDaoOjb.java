@@ -323,7 +323,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             return;
         }
 
-        if (StringUtils.containsIgnoreCase(propertyValue, SearchOperator.NULL.op())) {
+        if (StringUtils.equalsIgnoreCase(propertyValue, SearchOperator.NULL.op()) || StringUtils.equalsIgnoreCase(propertyValue, SearchOperator.NOT_NULL.op())) {
         	if (StringUtils.contains(propertyValue, SearchOperator.NOT.op())) {
         		criteria.addColumnNotNull(propertyName);
         	}

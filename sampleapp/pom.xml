@@ -150,6 +150,7 @@
       <id>standalone</id>
       <properties>
         <web.launch.context.path>/sample-app-standalone</web.launch.context.path>
+        <bootstrap.spring.file>classpath:SampleAppStandaloneBeans.xml</bootstrap.spring.file>
       </properties>
     </profile>
   </profiles>

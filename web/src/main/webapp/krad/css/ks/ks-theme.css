@@ -25,6 +25,7 @@ select[multiple="multiple"] option {
 select[multiple="multiple"] option:hover {
     background: none repeat scroll 0 0 #ECFCEB;
 }
+
 h1 {
     font-size:1.61538462em !important;
     font-weight:bold;
@@ -65,6 +66,9 @@ h7 {
 	font-size: 0.92307692em; /* 12px */
     font-family: arial, helvetica, sans-serif;
 	text-transform: uppercase;
+}
+td.col2, td.col4, th.col1, th.col3 {
+    padding:  .5em;
 }
 
 .watermark {
@@ -139,7 +143,6 @@ input[type="radio"]+label, input[type="checkbox"]+label {     /* when label is s
     font-weight:normal;
 }
 .labelTop label {
-    line-height:2em;
     margin-right:1em;
 }
 
@@ -147,7 +150,6 @@ input[type="radio"]+label, input[type="checkbox"]+label {     /* when label is s
     font-weight:bold;
 }
 .kr-field-attribute>span:nth-child(1) label {
-    line-height:2em;
     margin-right:1em;
 }
 
@@ -543,10 +545,7 @@ img.expand_collapse-buttons[alt="expand"]{
     background-repeat:no-repeat;
     padding-right: .25em;
 }
-#viewpage_div {				/* was #viewpage_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, as this will break js functionality   */
-	margin-left: 120px;
-	margin-right: 20px;
-}
+
 #viewheader_div {			/* was #viewheader_div - I'm not sure this should be changed */ /* NOT renamed in xml and/or jsp, even though there's no impact on js functionality   */
 	margin: 10px 15px 30px 20px;
 }
@@ -848,10 +847,9 @@ ul.animated-navigation li.animated-element a.current {
 }
 
 a#controlbtn {
-	color: #333;
 	text-decoration: none;
 	display: inline-block;
-	padding-left: 20px;
+	padding-left: 5px;
 }
 
 #controlbtn.slideLink {
@@ -921,23 +919,25 @@ a.h4.kr-section-subhead {
 }
 
 /* messing with collections */
-.kr-collection-cntr a h4.kr-collectionGroup-header:hover{
+
+.kr-collectionStacked a h3.kr-collectionGroup-header:hover{
     background-color:#666;
+    border: 1px solid #eee;
 }
-.kr-collection-cntr h4.kr-collectionGroup-header {
+.kr-collectionStacked h3.kr-collectionGroup-header {
     color:#fff;
     background-color: #000;
     font-family: Arial, Helvetica, sans-serif ;
     margin:  0;
     padding: 0.5em;
 }
-.kr-collection-cntr h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+.kr-collectionStacked h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
     background: url("../../images/h3_expand-back-white-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-collection-cntr h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+.kr-collectionStacked h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
     background: url("../../images/h3_collapse-back-white-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-collection-cntr{
+.kr-collection-cntr.kr-collectionStacked{
     background: url(../../images/pattern_dotted.png) repeat;
     border: 1px solid #ccc;
 }
@@ -948,6 +948,8 @@ a.h4.kr-section-subhead {
 }
 .kr-collection-item.kr-addLine>div:nth-child(2) {
     padding:1em 0.5em 0 0.5em;
+    overflow-x:auto;
+    overflow-y:hidden;
 }
 /*.kr-collection-cntr > div {
     background-color:#fff;
@@ -957,10 +959,15 @@ a.h4.kr-section-subhead {
   background-color:#fff;
   margin: 0.5em;
   padding: 0.5em;
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+.kr-collection-cntr .kr-collection-cntr>div:nth-child(2){
+    padding: 0;
+    margin: 0;
 }
 .kr-subCollection>.kr-collection-cntr {
     background: #fff;
-    margin-left:1em;
     margin-top:1em;
     border: none;
 }

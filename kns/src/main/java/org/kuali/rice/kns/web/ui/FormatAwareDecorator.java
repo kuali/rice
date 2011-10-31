@@ -87,7 +87,7 @@ public class FormatAwareDecorator implements DisplaytagColumnDecorator {
      * @return true if a Collection
      */
     private static boolean isCollection(Object cellValue) {
-    	return cellValue != null && cellValue.toString().indexOf("[") == 0 && cellValue.toString().indexOf("]") > 0;
+        return cellValue != null && (cellValue.toString().indexOf("[") == 0 && cellValue.toString().indexOf("]") > 0 && ((cellValue.toString().length() -1) == cellValue.toString().indexOf("]"))); 
     }
     
     /**

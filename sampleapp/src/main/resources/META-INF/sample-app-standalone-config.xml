@@ -14,11 +14,31 @@
   ~ limitations under the License.
   -->
 <config>
-  <param name="module.name">sample-app</param>
+  <param name="module.name">sample-app-standalone</param>
   <param name="application.id">TRAVEL</param>
 
   <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
   <param name="filtermapping.login.1">/*</param>
+
+  <param name="dev.mode">false</param>
+  <param name="rice.ksb.batch.mode">false</param>
+  <param name="rice.standalone">true</param>
+  <param name="rice.url">${rice.server.url}/kr</param>
+  <param name="rice.server.url">http://localhost:9090/standalone</param>
+  <param name="krad.url">${rice.server.url}/kr-krad</param>
+  <param name="kr.url">${rice.server.url}/kr</param>
+  <param name="kew.url">${rice.server.url}/kew</param>
+  <param name="kcb.url">${rice.server.url}/kcb</param>
+  <param name="kim.url">${rice.server.url}/kim</param>
+  <param name="ksb.url">${rice.server.url}/ksb</param>
+  <param name="ken.url">${rice.server.url}/ken</param>
+
+  <!-- Sample Oracle Datasource -->
+  <!--
+  <param name="rice.server.datasource.url">jdbc:oracle:thin:@localhost:1521:RICE</param>
+  <param name="rice.server.datasource.username"></param>
+  <param name="rice.server.datasource.password"></param>
+  -->
 
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
   <param name="config.location">classpath:META-INF/common-config-locations.xml</param>

@@ -17,6 +17,7 @@ package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -216,7 +217,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
-        if (rule.processAddAgendaItemBusinessRules(newAgendaItem, agenda)) {
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocument document = maintenanceForm.getDocument();
+        if (rule.processAgendaItemBusinessRules(document)) {
             newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
             updateRuleActionAttributes(agendaEditor, newAgendaItem.getRule().getAction());
@@ -317,9 +320,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
         AgendaItemBo agendaItemLine = getAgendaItemLine(form);
         updateRuleActionAttributes(agendaEditor, agendaItemLine.getRule().getAction());
-        node.setRule(agendaItemLine.getRule());
 
-        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+        AgendaEditorBusRule rule = new AgendaEditorBusRule();
+        MaintenanceForm maintenanceForm = (MaintenanceForm) form;
+        MaintenanceDocument document = maintenanceForm.getDocument();
+        if (rule.processAgendaItemBusinessRules(document)) {
+            node.setRule(agendaItemLine.getRule());
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
+        } else {
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
+        }
         return super.navigate(form, result, request, response);
     }
 

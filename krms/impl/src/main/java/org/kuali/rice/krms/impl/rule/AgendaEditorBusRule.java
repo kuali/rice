@@ -29,6 +29,7 @@ import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
@@ -211,7 +212,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         try {
             AgendaDefinition agendaFromDataBase = getAgendaBoService().getAgendaByNameAndContextId(agenda.getAgenda().getName(),
                     agenda.getAgenda().getContextId());
-            if ((agendaFromDataBase != null) && !agendaFromDataBase.getId().equals(agenda.getAgenda().getId())) {
+            if ((agendaFromDataBase != null) && !StringUtils.equals(agendaFromDataBase.getId(), agenda.getAgenda().getId())) {
                 this.putFieldError(KRMSPropertyConstants.Agenda.NAME, "error.agenda.duplicateName");
                 return false;
             }
@@ -223,11 +224,14 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return true;
     }
 
-    public boolean processAddAgendaItemBusinessRules(AgendaItemBo agendaItem, AgendaBo agenda) {
+    public boolean processAgendaItemBusinessRules(MaintenanceDocument document) {
         boolean isValid = true;
 
-        RuleBo rule = agendaItem.getRule();
-        isValid &= validateRuleName(rule, agenda);
+        AgendaEditor newAgendaEditor = (AgendaEditor) document.getNewMaintainableObject().getDataObject();
+        AgendaEditor oldAgendaEditor = (AgendaEditor) document.getOldMaintainableObject().getDataObject();
+        RuleBo rule = newAgendaEditor.getAgendaItemLine().getRule();
+        isValid &= validateRuleName(rule, newAgendaEditor.getAgenda());
+        isValid &= validRuleActionAttributes(oldAgendaEditor,newAgendaEditor);
 
         return isValid;
     }
@@ -239,9 +243,14 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
      * @return true if rule name is unique, false otherwise
      */
     private boolean validateRuleName(RuleBo rule, AgendaBo agenda) {
+        if (StringUtils.isBlank(rule.getName())) {
+            this.putFieldError(KRMSPropertyConstants.Rule.NAME, "error.rule.invalidName");
+            return false;
+        }
         // check current bo for rules (including ones that aren't persisted to the database)
         for (AgendaItemBo agendaItem : agenda.getItems()) {
-            if (agendaItem.getRule().getName().equals(rule.getName()) && agendaItem.getRule().getNamespace().equals(rule.getNamespace())) {
+            if (!StringUtils.equals(agendaItem.getRule().getId(), rule.getId()) && StringUtils.equals(agendaItem.getRule().getName(), rule.getName())
+                    && StringUtils.equals(agendaItem.getRule().getNamespace(), rule.getNamespace())) {
                 this.putFieldError(KRMSPropertyConstants.Rule.NAME, "error.rule.duplicateName");
                 return false;
             }
@@ -251,7 +260,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         if (StringUtils.isNotBlank(rule.getNamespace())) {
             RuleDefinition ruleFromDatabase = getRuleBoService().getRuleByNameAndNamespace(rule.getName(), rule.getNamespace());
             try {
-                if ((ruleFromDatabase != null) && ruleFromDatabase.getId().equals(rule.getId())) {
+                if ((ruleFromDatabase != null) && !StringUtils.equals(ruleFromDatabase.getId(), rule.getId())) {
                     this.putFieldError(KRMSPropertyConstants.Rule.NAME, "error.rule.duplicateName");
                     return false;
                 }
@@ -262,6 +271,52 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
             }
         }
         return true;
+    }
+
+    private boolean validRuleActionAttributes(AgendaEditor oldAgenda, AgendaEditor newAgenda) {
+        boolean isValid = true;
+
+        String typeId = newAgenda.getAgendaItemLine().getRule().getAction().getTypeId();
+
+        if (!StringUtils.isEmpty(typeId)) {
+            KrmsTypeDefinition typeDefinition =
+                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(typeId);
+
+            if (typeDefinition == null) {
+                throw new IllegalStateException("action typeId must match the id of a valid krms type");
+            } else if (StringUtils.isBlank(typeDefinition.getServiceName())) {
+                throw new IllegalStateException("action type definition must have a non-blank service name");
+            } else {
+                ActionTypeService actionTypeService =
+                        (ActionTypeService)KrmsRepositoryServiceLocator.getService(typeDefinition.getServiceName());
+
+                if (actionTypeService == null) {
+                    throw new IllegalStateException("typeDefinition must have a valid serviceName");
+                } else {
+
+                    List<RemotableAttributeError> errors;
+                    if (oldAgenda == null) {
+                        errors = actionTypeService.validateAttributes(typeId, newAgenda.getCustomRuleActionAttributesMap());
+                    } else {
+                        errors = actionTypeService.validateAttributesAgainstExisting(typeId, newAgenda.getCustomRuleActionAttributesMap(), oldAgenda.getCustomRuleActionAttributesMap());
+                    }
+
+                    if (!CollectionUtils.isEmpty(errors)) {
+                        isValid = false;
+                        for (RemotableAttributeError error : errors) {
+                            for (String errorStr : error.getErrors()) {
+                                this.putFieldError(
+                                        KRMSPropertyConstants.AgendaEditor.CUSTOM_RULE_ACTION_ATTRIBUTES_MAP +
+                                                "['" + error.getAttributeName() + "']",
+                                        errorStr
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return isValid;
     }
 
     public ContextBoService getContextBoService() {

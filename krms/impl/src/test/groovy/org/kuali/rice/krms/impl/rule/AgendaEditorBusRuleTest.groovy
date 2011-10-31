@@ -7,13 +7,15 @@ import groovy.mock.interceptor.MockFor
 import org.kuali.rice.krms.impl.repository.RuleBoService
 import org.kuali.rice.krms.impl.repository.RuleBo
 import org.junit.Assert
+import org.kuali.rice.krad.document.MaintenanceDocument
+import org.kuali.rice.krms.impl.ui.AgendaEditor
+import org.kuali.rice.krms.impl.ui.AgendaEditorMaintainable
 
 class AgendaEditorBusRuleTest {
 
     def agendaEditorBusRule
     def mockRuleBoService = new MockFor(RuleBoService)
     def mockRuleBoServiceInstance
-
 
     void setup() {
         mockRuleBoServiceInstance = mockRuleBoService.proxyDelegateInstance()
@@ -25,10 +27,9 @@ class AgendaEditorBusRuleTest {
      */
     @Test
     void test_processAddAgendaItemBusinessRule_validateRuleName() {
-        AgendaItemBo agendaItem = getAgendaItem();
         mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
         setup()
-        Assert.assertTrue(agendaEditorBusRule.processAddAgendaItemBusinessRules(agendaItem, getAgenda(null)))
+        Assert.assertTrue(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getAgenda(null), getAgenda(null))))
         mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
    }
 
@@ -40,7 +41,7 @@ class AgendaEditorBusRuleTest {
         AgendaItemBo agendaItem = getAgendaItem();
         mockRuleBoService.demand.getRuleByNameAndNamespace(0) {name, namespace -> RuleBo.to(agendaItem.getRule()) }
         setup()
-        Assert.assertFalse(agendaEditorBusRule.processAddAgendaItemBusinessRules(getAgendaItem(), getAgenda(agendaItem)))
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getAgenda(agendaItem), getAgenda(null))))
         mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
     }
 
@@ -50,10 +51,30 @@ class AgendaEditorBusRuleTest {
     @Test
     void test_processAddAgendaItemBusinessRule_validateRuleName_duplicateInDatabase() {
         AgendaItemBo agendaItem = getAgendaItem();
-        mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> RuleBo.to(agendaItem.getRule()) }
+        AgendaItemBo existingAgendaItem = getAgendaItem();
+        existingAgendaItem.getRule().setId ("existingRule");
+        mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> RuleBo.to(existingAgendaItem.getRule()) }
         setup()
-        Assert.assertFalse(agendaEditorBusRule.processAddAgendaItemBusinessRules(agendaItem, getAgenda(null)))
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(agendaItem, getAgenda(null), getAgenda(null))))
         mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
+    }
+
+    private MaintenanceDocument getMaintenanceDocument(AgendaItemBo newAgendaItem, AgendaBo newAgenda, AgendaBo oldAgenda) {
+        MaintenanceDocument document = new AgendaEditorMaintenanceDocumentDummy();
+
+        AgendaEditorMaintainable newMaintainable = new AgendaEditorMaintainable();
+        document.setNewMaintainableObject(newMaintainable);
+        AgendaEditor newAgendaEditor = new AgendaEditor();
+        newAgendaEditor.setAgendaItemLine(newAgendaItem);
+        newAgendaEditor.setAgenda(newAgenda);
+        document.getNewMaintainableObject().setDataObject(newAgendaEditor);
+
+        AgendaEditorMaintainable oldMaintainable = new AgendaEditorMaintainable();
+        document.setOldMaintainableObject(oldMaintainable);
+        AgendaEditor oldAgendaEditor = new AgendaEditor();
+        oldAgendaEditor.setAgenda(oldAgenda);
+        document.getOldMaintainableObject().setDataObject(oldAgendaEditor);
+        return document;
     }
 
     private AgendaItemBo getAgendaItem() {
@@ -70,6 +91,7 @@ class AgendaEditorBusRuleTest {
         AgendaBo agenda = new AgendaBo()
         agenda.setItems(new ArrayList())
         if (agendaItem != null) {
+            agendaItem.getRule().setId("existingRule");
             agenda.getItems().add(agendaItem)
         }
 

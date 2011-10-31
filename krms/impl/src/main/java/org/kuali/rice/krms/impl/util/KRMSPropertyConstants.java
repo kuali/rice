@@ -39,6 +39,7 @@ public final class KRMSPropertyConstants {
     public static final class AgendaEditor {
         // used for building binding paths to the custom attributes map
         public static final String CUSTOM_ATTRIBUTES_MAP = "dataObject.customAttributesMap";
+        public static final String CUSTOM_RULE_ACTION_ATTRIBUTES_MAP = "dataObject.customRuleActionAttributesMap";
     }
 	
 	public static final class Context {

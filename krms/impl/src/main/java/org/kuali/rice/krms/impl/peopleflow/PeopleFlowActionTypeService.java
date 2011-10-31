@@ -212,7 +212,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         RemotableAttributeError.Builder errorBuilder =
                 RemotableAttributeError.Builder.create(ATTRIBUTE_FIELD_NAME);
 
-        if (attributes != null && attributes.containsKey(ATTRIBUTE_FIELD_NAME)) {
+        if (attributes != null && attributes.containsKey(ATTRIBUTE_FIELD_NAME) && StringUtils.isNotBlank(attributes.get(ATTRIBUTE_FIELD_NAME))) {
             PeopleFlowDefinition peopleFlowDefinition = null;
 
             try {
@@ -226,13 +226,16 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
             }
 
             if (peopleFlowDefinition == null) {
-
-                errorBuilder.addErrors("The " + ATTRIBUTE_FIELD_NAME +
-                        " must be a valid ID for an existing PeopleFlow");
-
+                // TODO: include the ATTRIBUTE_FIELD_NAME in an error message like
+                //       "The " + ATTRIBUTE_FIELD_NAME + " must be a valid ID for an existing PeopleFlow".
+                //       Currently the RemotableAttributeError doesn't support arguments in the error messages.
+                errorBuilder.addErrors("peopleFlow.peopleFlowId.invalid");
             }
         } else {
-            errorBuilder.addErrors(ATTRIBUTE_FIELD_NAME + " is required");
+            // TODO: include the ATTRIBUTE_FIELD_NAME in an error message like
+            //       ATTRIBUTE_FIELD_NAME + " is required".
+            //       Currently the RemotableAttributeError doesn't support arguments in the error messages.
+            errorBuilder.addErrors("peopleFlow.peopleFlowId.required");
         }
 
         if (errorBuilder.getErrors().size() > 0) {

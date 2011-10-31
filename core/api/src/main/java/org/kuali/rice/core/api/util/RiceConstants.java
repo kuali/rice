@@ -62,6 +62,9 @@ public final class RiceConstants {
 	
     // Default struts mapping forward key
     public static final String MAPPING_BASIC = "basic";
+    
+    // Struts mapping forward key for use when a module is locked
+    public static final String MODULE_LOCKED_MAPPING = "moduleLocked";
 
     // Default date formatting
     public static final String SIMPLE_DATE_FORMAT_FOR_DATE = "MM/dd/yyyy";

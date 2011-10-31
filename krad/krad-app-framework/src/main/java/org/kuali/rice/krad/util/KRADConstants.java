@@ -14,11 +14,10 @@
  */
 package org.kuali.rice.krad.util;
 
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.config.property.Config;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.kuali.rice.core.api.CoreConstants;
 
 /**
  * Defines Global Constants for the KRAD Module
@@ -93,6 +92,7 @@ public final class KRADConstants {
         public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
         public static final String WORKGROUP_DETAIL_TYPE = "Notification";
+        public static final String OLTP_LOCKOUT_DETAIL_TYPE = "OLTPLockout";
         
     	private DetailTypes() {
     		throw new UnsupportedOperationException("do not call");
@@ -166,6 +166,7 @@ public final class KRADConstants {
     public static final String LOGOFF_REDIRECT_URL_PROPERTY = "rice.portal.logout.redirectUrl";
 //    public static final String BLANKET_APPROVE_METHOD = "blanketApprove";
     public static final String BUSINESS_OBJECT_CLASS_ATTRIBUTE = "businessObjectClassName";
+    public static final String DATA_OBJECT_CLASS_ATTRIBUTE = "dataObjectClassName";
     public static final String CALLING_METHOD = "caller";
     public static final String CONFIRMATION_QUESTION = "confirmationQuestion";
     public static final String CONVERSION_FIELDS_PARAMETER = "conversionFields";
@@ -513,6 +514,10 @@ public final class KRADConstants {
                 
         public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
         public static final String SENSITIVE_DATA_PATTERNS_WARNING_IND = "SENSITIVE_DATA_PATTERNS_WARNING_IND";
+        
+        public static final String OLTP_LOCKOUT_ACTIVE_IND = "OLTP_LOCKOUT_ACTIVE_IND";
+        public static final String OLTP_LOCKOUT_MESSAGE_PARM = "OLTP_LOCKOUT_MESSAGE";
+        public static final String OLTP_LOCKOUT_DEFAULT_MESSAGE = "OLTP_LOCKOUT_DEFAULT_MESSAGE";
         
     	private SystemGroupParameterNames() {
     		throw new UnsupportedOperationException("do not call");

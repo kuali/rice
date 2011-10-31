@@ -66,6 +66,7 @@
        	<!-- End required KNS forwards -->
        	<forward name="NotAuthorized" path="/WEB-INF/jsp/NotAuthorized.jsp" />
        	<forward name="WorkflowError" path="/WEB-INF/jsp/Error.jsp" />
+       	<forward name="moduleLocked" path="/../WEB-INF/jsp/moduleLocked.jsp" />
     </global-forwards>
 
 

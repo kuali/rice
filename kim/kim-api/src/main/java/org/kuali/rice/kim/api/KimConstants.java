@@ -148,6 +148,7 @@ public final class KimConstants {
 		public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
 		public static final String OVERRIDE_ENTITY_PRIVACY_PREFERENCES = "Override Entity Privacy Preferences";
     	public static final String MODIFY_ENTITY = "Modify Entity";
+    	public static final String ACCESS_LOCKED_MODULE = "Access Locked Module";
     	
 		private PermissionNames() {
 			throw new UnsupportedOperationException("do not call");

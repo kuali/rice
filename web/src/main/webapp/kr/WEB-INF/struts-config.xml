@@ -54,6 +54,7 @@
         -->
         <forward name="exceptionIncidentHandler" path="/kualiExceptionIncidentReport.do" />
         <forward name="authorizationExceptionHandler" path="/authorizationExceptionReport.do" />
+        <forward name="moduleLocked" path="/../WEB-INF/jsp/moduleLocked.jsp" />
     </global-forwards>
 
     <action-mappings>

@@ -192,5 +192,10 @@ public interface ModuleService extends InitializingBean, ApplicationContextAware
      * For a given ExternalizableBusinessObject interface, return the implementation class provided by this module.
      */
     public <E extends ExternalizableBusinessObject> Class<E> getExternalizableBusinessObjectImplementation(Class<E> externalizableBusinessObjectInterface);
+    
+    /**
+     * This method determines whether or not this module is currently locked
+     */
+    public boolean isLocked();
 }
 

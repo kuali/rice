@@ -51,6 +51,7 @@
         
 		<forward name="authorizationExceptionHandler" path="/kr/authorizationExceptionReport.do"/>
 		<!-- End required KNS forwards -->
+		<forward name="moduleLocked" path="/../WEB-INF/jsp/moduleLocked.jsp" />
 	</global-forwards>
 
 	<action-mappings>

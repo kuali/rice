@@ -15,26 +15,41 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.print.attribute.AttributeSet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.kns.web.struts.action.KualiAction;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * An abstract super class for all Struts Actions in KEW.  Adds some custom
@@ -50,6 +65,10 @@ public abstract class KSBAction extends DispatchAction {
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		checkAuthorization(form, "");
+		
+		if(isModuleLocked(form, findMethodToCall(form, request), request)) {
+		    return mapping.findForward(RiceConstants.MODULE_LOCKED_MAPPING);
+		}
 		
 		try {
 
@@ -150,5 +169,52 @@ public abstract class KSBAction extends DispatchAction {
 	protected static KualiModuleService getKualiModuleService() {
         return KRADServiceLocatorWeb.getKualiModuleService();
     }
+	
+	protected String findMethodToCall(ActionForm form, HttpServletRequest request) throws Exception {
+	    String methodToCall;
+	    if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getMethodToCall())) {
+	        methodToCall = ((KualiForm) form).getMethodToCall();
+	    }
+	    else {
+	        // call utility method to parse the methodToCall from the request.
+	        methodToCall = WebUtils.parseMethodToCall(form, request);
+	    }
+	    return methodToCall;
+	}
 
+	protected boolean isModuleLocked(ActionForm form, String methodToCall, HttpServletRequest request) {
+	    String boClass = request.getParameter(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+	    ModuleService moduleService = null;
+	    if(StringUtils.isNotBlank(boClass)) {
+	        try {
+	            moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(Class.forName(boClass));
+	        } catch (ClassNotFoundException e) {
+	            LOG.warn("Module locking mechanism experienced a class not found exception while trying to load " + boClass, e);
+	        }
+	    } else {
+	        moduleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(this.getClass());
+	    }
+	    if(moduleService != null && moduleService.isLocked()) {
+	        String principalId = GlobalVariables.getUserSession().getPrincipalId();
+	        String namespaceCode = KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE;
+            String permissionName = KimConstants.PermissionNames.ACCESS_LOCKED_MODULE;
+	        Map<String, String> permissionDetails = new HashMap<String, String>();
+	        Map<String, String> qualification = new HashMap<String, String>(getRoleQualification(form, methodToCall));
+	        if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, qualification)) {
+                ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
+                String messageParamNamespaceCode = moduleService.getModuleConfiguration().getNamespaceCode();
+                String messageParamComponentCode = KRADConstants.DetailTypes.OLTP_LOCKOUT_DETAIL_TYPE;
+                String messageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_MESSAGE_PARM;
+                String lockoutMessage = parameterSerivce.getParameterValueAsString(messageParamNamespaceCode, messageParamComponentCode, messageParamName);
+                
+                if(StringUtils.isBlank(lockoutMessage)) {
+                    String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
+                    lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
+                }
+                request.setAttribute(KualiAction.MODULE_LOCKED_MESSAGE, lockoutMessage);
+                return true;
+            }
+	    }
+	    return false;
+	}
 }

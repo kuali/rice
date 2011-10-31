@@ -16,6 +16,17 @@
 
 package org.kuali.rice.kns.web.struts.action;
 
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
@@ -25,6 +36,8 @@ import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -48,16 +61,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 /**
  * <p>The base {@link org.apache.struts.action.Action} class for all KNS-based Actions. Extends from the standard 
@@ -92,7 +95,7 @@ public abstract class KualiAction extends DispatchAction {
     /**
      * Entry point to all actions.
      *
-     * NOTE: No need to hook into execute for handling framwork setup anymore. Just implement the methodToCall for the framework
+     * NOTE: No need to hook into execute for handling framework setup anymore. Just implement the methodToCall for the framework
      * setup, Constants.METHOD_REQUEST_PARAMETER will contain the full parameter, which can be sub stringed for getting framework
      * parameters.
      *
@@ -103,6 +106,11 @@ public abstract class KualiAction extends DispatchAction {
         ActionForward returnForward = null;
 
         String methodToCall = findMethodToCall(form, request);
+        
+        if(isModuleLocked(form, methodToCall, request)) {
+        	return mapping.findForward(RiceConstants.MODULE_LOCKED_MAPPING);
+        }
+        
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getMethodToCall())) {
             if (StringUtils.isNotBlank(getImageContext(request, KRADConstants.ANCHOR))) {
                 ((KualiForm) form).setAnchor(getImageContext(request, KRADConstants.ANCHOR));
@@ -947,6 +955,12 @@ public abstract class KualiAction extends DispatchAction {
      * <p>Value is forwardNext
     */
     public static final String FORWARD_NEXT="forwardNext";
+    
+    /**
+     * Constant defined to match with method call in module-locked.jsp which is
+     * set to a message that is displayed when the module is locked.
+     */
+    public static final String MODULE_LOCKED_MESSAGE = "moduleLockedMessage";
 
     /**
      * This method is invoked when Java Script is turned off from the web browser. It
@@ -1124,5 +1138,44 @@ public abstract class KualiAction extends DispatchAction {
                     KRADConstants.APPLICATION_URL_KEY);
 		}
 		return applicationBaseUrl;
+	}
+	
+	protected boolean isModuleLocked(ActionForm form, String methodToCall, HttpServletRequest request) {
+		String boClass = request.getParameter(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
+		ModuleService moduleService = null;
+		if(StringUtils.isNotBlank(boClass)) {
+			try {
+				moduleService = getKualiModuleService().getResponsibleModuleService(Class.forName(boClass));
+			} catch (ClassNotFoundException classNotFoundException) {
+				LOG.warn("BO class not found: " + boClass, classNotFoundException);
+			}
+		} else {
+			moduleService = getKualiModuleService().getResponsibleModuleService(this.getClass());
+		}
+		if(moduleService != null && moduleService.isLocked()) {
+			String principalId = GlobalVariables.getUserSession().getPrincipalId();
+			String namespaceCode = KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE;
+			String permissionName = KimConstants.PermissionNames.ACCESS_LOCKED_MODULE;
+			Map<String, String> permissionDetails = new HashMap<String, String>();
+			Map<String, String> qualification = getRoleQualification(form, methodToCall);
+			if(!KimApiServiceLocator.getPermissionService().isAuthorized(principalId, namespaceCode, permissionName, permissionDetails, qualification)) {
+				ParameterService parameterSerivce = CoreFrameworkServiceLocator.getParameterService();
+				String messageParamNamespaceCode = moduleService.getModuleConfiguration().getNamespaceCode();
+				String messageParamComponentCode = KRADConstants.DetailTypes.OLTP_LOCKOUT_DETAIL_TYPE;
+				String messageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_MESSAGE_PARM;
+				String lockoutMessage = parameterSerivce.getParameterValueAsString(messageParamNamespaceCode, messageParamComponentCode, messageParamName);
+				
+				if(StringUtils.isBlank(lockoutMessage)) {
+					String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
+					lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
+				}
+				request.setAttribute(MODULE_LOCKED_MESSAGE, lockoutMessage);
+				return true;
+			}
+		}
+		if(moduleService != null) {
+			System.out.println("BENNETT: module = " + moduleService.getModuleConfiguration().getNamespaceCode());
+		}
+		return false;
 	}
 }

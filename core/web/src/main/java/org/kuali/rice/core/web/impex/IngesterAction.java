@@ -16,6 +16,18 @@
 
 package org.kuali.rice.core.web.impex;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -28,6 +40,7 @@ import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.XmlDoc;
 import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
 import org.kuali.rice.core.api.impex.xml.ZipXmlDocCollection;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -35,17 +48,6 @@ import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Struts action that accepts uploaded files and feeds them to the XmlIngesterService
@@ -65,6 +67,10 @@ public class IngesterAction extends KualiAction {
             throws Exception {
 
     	checkAuthorization(form, "");
+    	
+    	if(isModuleLocked(form, "", request)) {
+    	    return mapping.findForward(RiceConstants.MODULE_LOCKED_MAPPING);
+    	}
 
         LOG.debug(request.getMethod());
         if (!"post".equals(request.getMethod().toLowerCase())) {

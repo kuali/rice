@@ -54,11 +54,23 @@
   
   <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
     <property name="interceptors">
-      <ref bean="uifControllerHandlerInterceptor"/>
+    	<list>
+            <ref bean="uifControllerHandlerInterceptor"/>
+      	    <ref bean="moduleLockingHandlerInterceptor"/>
+    	</list>
     </property>
   </bean>
 
   <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor" />
+  
+  <bean id="moduleLockingHandlerInterceptor" class="org.kuali.rice.krad.web.controller.ModuleLockingHandlerInterceptor">
+    <property name="moduleLockedMapping" value="module-locked" />
+    <property name="kualiModuleService" ref="kualiModuleService" />
+  </bean>
+  
+  <bean id="kualiModuleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiModuleService" />
+  </bean>
   
   <bean id="exceptionResolver" class="org.kuali.rice.krad.web.bind.UifHandlerExceptionResolver"/>
   

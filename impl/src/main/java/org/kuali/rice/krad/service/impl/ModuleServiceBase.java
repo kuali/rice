@@ -15,9 +15,18 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -40,13 +49,6 @@ import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
-
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 
 /**
  * This class implements ModuleService interface.
@@ -464,5 +466,27 @@ public class ModuleServiceBase implements ModuleService {
 		return null;
 	}
 
+
+
+    /**
+     * This method determines whether or not this module is currently locked
+     * 
+     * @see org.kuali.rice.krad.service.ModuleService#isLocked()
+     */
+    @Override
+    public boolean isLocked() {
+        ModuleConfiguration configuration = this.getModuleConfiguration();
+        if(configuration != null) {
+            String namespaceCode = configuration.getNamespaceCode();
+            String componentCode = KRADConstants.DetailTypes.OLTP_LOCKOUT_DETAIL_TYPE;
+            String parameterName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_ACTIVE_IND;
+            ParameterService parameterService = CoreFrameworkServiceLocator.getParameterService();
+            String shouldLockout = parameterService.getParameterValueAsString(namespaceCode, componentCode, parameterName);
+            if(StringUtils.isNotBlank(shouldLockout)) {
+                return parameterService.getParameterValueAsBoolean(namespaceCode, componentCode, parameterName);
+            }
+        }
+        return false;
+    }
 }
 

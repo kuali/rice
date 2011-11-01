@@ -35,9 +35,9 @@ public final class KimApiConstants {
 
     public static final class ServiceNames {
 
-        public static final String ROLE_SERVICE_SOAP = "roleServiceSoap";
-        public static final String GROUP_SERVICE_SOAP = "groupServiceSoap";
-        public static final String IDENTITY_SERVICE_SOAP = "identityServiceSoap";
+        public static final String ROLE_SERVICE_SOAP = "roleService";
+        public static final String GROUP_SERVICE_SOAP = "groupService";
+        public static final String IDENTITY_SERVICE_SOAP = "identityService";
     }
 
     public static final class RestrictedMasks {

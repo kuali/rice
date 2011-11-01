@@ -52,10 +52,10 @@ public class KewApiServiceLocator {
     public static final String PEOPLE_FLOW_SERVICE = "rice.kew.peopleFlowService";
     public static final String PREFERENCES_SERVICE = "rice.kew.preferencesService";
 
-    public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueueSoap");
-    public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueueSoap");
-    public static final QName IMMEDIATE_EMAIL_REMINDER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "immediateEmailReminderQueueSoap");
-    public static final QName RESPONSIBILITY_CHANGE_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeQueueSoap");
+    public static final QName DOCUMENT_ATTRIBUTE_INDEXING_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentAttributeIndexingQueue");
+    public static final QName GROUP_MEMBERSHIP_CHANGE_QUEUE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "groupMembershipChangeQueue");
+    public static final QName IMMEDIATE_EMAIL_REMINDER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "immediateEmailReminderQueue");
+    public static final QName RESPONSIBILITY_CHANGE_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "responsibilityChangeQueue");
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);

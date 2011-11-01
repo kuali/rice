@@ -40,10 +40,6 @@
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
-    <orderEntry type="module" module-name="rice-api" />
-    <orderEntry type="module" module-name="rice-kew-api" />
-    <orderEntry type="module" module-name="rice-ksb-api" />
-    <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -52,6 +48,9 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" level="project" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
+    <orderEntry type="module" module-name="rice-kew-api" />
+    <orderEntry type="module" module-name="rice-ksb-api" />
+    <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
@@ -84,6 +83,18 @@
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.8.5" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.5" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" />
+    <orderEntry type="module" module-name="rice-kns" />
+    <orderEntry type="library" name="Maven: org.apache.struts:struts-core:1.3.10" level="project" />
+    <orderEntry type="library" name="Maven: commons-chain:commons-chain:1.2" level="project" />
+    <orderEntry type="library" name="Maven: commons-validator:commons-validator:1.3.1" level="project" />
+    <orderEntry type="library" name="Maven: oro:oro:2.0.8" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.struts:struts-extras:1.3.10" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.struts:struts-el:1.3.10" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.struts:struts-taglib:1.3.10" level="project" />
+    <orderEntry type="library" name="Maven: displaytag:displaytag:1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.lowagie:itext:1.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.directwebremoting:dwr:3.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:2.3.6" level="project" />
     <orderEntry type="library" name="Maven: xml-resolver:xml-resolver:1.2" level="project" />
@@ -117,21 +128,10 @@
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: javax.resource:connector-api:1.5" level="project" />
-    <orderEntry type="library" name="Maven: commons-validator:commons-validator:1.3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-httpclient:commons-httpclient:3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.struts:struts-core:1.3.10" level="project" />
-    <orderEntry type="library" name="Maven: commons-chain:commons-chain:1.2" level="project" />
-    <orderEntry type="library" name="Maven: oro:oro:2.0.8" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.struts:struts-el:1.3.10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.struts:struts-taglib:1.3.10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.struts:struts-extras:1.3.10" level="project" />
-    <orderEntry type="library" name="Maven: displaytag:displaytag:1.2" level="project" />
-    <orderEntry type="library" name="Maven: com.lowagie:itext:1.3" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: com.thoughtworks.xstream:xstream:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: xpp3:xpp3_min:1.1.3.4.O" level="project" />
-    <orderEntry type="library" name="Maven: org.directwebremoting:dwr:3.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:1.8.4" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />

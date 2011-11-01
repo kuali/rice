@@ -35,7 +35,7 @@ import java.util.Collection;
 /**
  * Service for interacting with {@link Parameter Parameters}.
  */
-@WebService(name = "parameterServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
+@WebService(name = "parameterService", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ParameterRepositoryService {
 

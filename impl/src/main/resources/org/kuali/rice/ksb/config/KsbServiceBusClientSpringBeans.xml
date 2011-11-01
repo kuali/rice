@@ -109,7 +109,7 @@
     <property name="retryAttempts" value="0"/>
     <property name="busSecurity" value="${ksb.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
-    <property name="servicePath" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants).SERVICE_PATH }"/>
+    <property name="servicePath" value="#{ T(org.kuali.rice.ksb.api.KsbApiConstants).SERVICE_PATH_SOAP }"/>
     <property name="cacheManager" value="ksbLocalCacheManager"/>
   </bean>
 

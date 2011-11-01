@@ -28,7 +28,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "groupMembershipChangeQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@WebService(name = "groupMembershipChangeQueue", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface GroupMembershipChangeQueue {
 

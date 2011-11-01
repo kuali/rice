@@ -29,7 +29,7 @@ import org.kuali.rice.ksb.api.KsbApiConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@WebService(name = "busAdminServiceSoap", targetNamespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0)
+@WebService(name = "busAdminService", targetNamespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface BusAdminService {
 

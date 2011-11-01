@@ -30,7 +30,7 @@ import javax.jws.soap.SOAPBinding;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "rolePokerQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@WebService(name = "rolePokerQueue", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RolePokerQueue {
 

@@ -57,7 +57,7 @@
 		<property name="priority" value="3" />
 		<property name="retryAttempts" value="0" />
 		<property name="serviceVersion" value="${rice.version}" />
-    <property name="servicePath" value="#{ T(org.kuali.rice.kew.api.KewApiConstants).SERVICE_PATH }" />
+    <property name="servicePath" value="#{ T(org.kuali.rice.kew.api.KewApiConstants).SERVICE_PATH_SOAP }" />
 	</bean>
 
 	<bean id="rice.kew.workflowDocumentActionService.exporter" parent="kewEmbeddedServiceExporter">
@@ -67,8 +67,8 @@
 				<property name="service">
 					<ref bean="rice.kew.workflowDocumentActionsService" />
 				</property>
-				<property name="localServiceName" value="workflowDocumentActionsServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.workflowDocumentActionsServiceSoap.secure}" />
+				<property name="localServiceName" value="workflowDocumentActionsService" />
+				<property name="busSecurity" value="${rice.kew.workflowDocumentActionsService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -80,8 +80,8 @@
 				<property name="service">
 					<ref bean="rice.kew.actionListService" />
 				</property>
-				<property name="localServiceName" value="actionListServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.actionListServiceSoap.secure}" />
+				<property name="localServiceName" value="actionListService" />
+				<property name="busSecurity" value="${rice.kew.actionListService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -93,8 +93,8 @@
 				<property name="service">
 					<ref bean="rice.kew.ruleService" />
 				</property>
-				<property name="localServiceName" value="ruleServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.ruleServiceSoap.secure}" />
+				<property name="localServiceName" value="ruleService" />
+				<property name="busSecurity" value="${rice.kew.ruleService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -106,8 +106,8 @@
 				<property name="service">
 					<ref bean="rice.kew.documentTypeService" />
 				</property>
-				<property name="localServiceName" value="documentTypeServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.documentTypeServiceSoap.secure}" />
+				<property name="localServiceName" value="documentTypeService" />
+				<property name="busSecurity" value="${rice.kew.documentTypeService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -119,8 +119,8 @@
 				<property name="service">
 					<ref bean="rice.kew.noteService" />
 				</property>
-				<property name="localServiceName" value="noteServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.noteServiceSoap.secure}" />
+				<property name="localServiceName" value="noteService" />
+				<property name="busSecurity" value="${rice.kew.noteService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -132,8 +132,8 @@
 				<property name="service">
 					<ref bean="rice.kew.preferencesService" />
 				</property>
-				<property name="localServiceName" value="preferencesServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.preferencesServiceSoap.secure}" />
+				<property name="localServiceName" value="preferencesService" />
+				<property name="busSecurity" value="${rice.kew.preferencesService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -145,8 +145,8 @@
 				<property name="service">
 					<ref bean="rice.kew.documentSearchCustomizationHandlerService" />
 				</property>
-				<property name="localServiceName" value="documentSearchCustomizationHandlerServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.documentSearchCustomizationHandlerServiceSoap.secure}" />
+				<property name="localServiceName" value="documentSearchCustomizationHandlerService" />
+				<property name="busSecurity" value="${rice.kew.documentSearchCustomizationHandlerService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -158,8 +158,8 @@
 				<property name="service">
 					<ref bean="rice.kew.documentSecurityHandlerService" />
 				</property>
-				<property name="localServiceName" value="documentSecurityHandlerServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.documentSecurityHandlerServiceSoap.secure}" />
+				<property name="localServiceName" value="documentSecurityHandlerService" />
+				<property name="busSecurity" value="${rice.kew.documentSecurityHandlerService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -171,8 +171,8 @@
 				<property name="service">
 					<ref bean="rice.kew.ruleValidationAttributeExporterService" />
 				</property>
-				<property name="localServiceName" value="ruleValidationAttributeExporterServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.ruleValidationAttributeExporterServiceSoap.secure}" />
+				<property name="localServiceName" value="ruleValidationAttributeExporterService" />
+				<property name="busSecurity" value="${rice.kew.ruleValidationAttributeExporterService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -184,14 +184,14 @@
 				<property name="service">
 					<ref bean="rice.kew.workflowRuleAttributeHandlerService" />
 				</property>
-				<property name="localServiceName" value="workflowRuleAttributeHandlerServiceSoap" />
-				<property name="busSecurity" value="${rice.kew.workflowRuleAttributeHandlerServiceSoap.secure}" />
+				<property name="localServiceName" value="workflowRuleAttributeHandlerService" />
+				<property name="busSecurity" value="${rice.kew.workflowRuleAttributeHandlerService.secure}" />
 			</bean>
 		</property>
 	</bean>
 
 
-	<bean id="rice.kew.rice.kew.groupMembershipChangeQueueSoap.exporter"
+	<bean id="rice.kew.rice.kew.groupMembershipChangeQueue.exporter"
 		parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
@@ -199,9 +199,8 @@
 				<property name="service">
 					<ref bean="rice.kew.groupMembershipChangeQueue" />
 				</property>
-				<property name="localServiceName" value="groupMembershipChangeQueueSoap" />
-				<property name="busSecurity"
-					value="${rice.kew.groupMembershipChangeQueueSoap.secure}" />
+				<property name="localServiceName" value="groupMembershipChangeQueue" />
+				<property name="busSecurity" value="${rice.kew.groupMembershipChangeQueue.secure}" />
 				<property name="priority" value="10" />
 			</bean>
 		</property>
@@ -212,14 +211,14 @@
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
 
-	<bean id="rice.kew.documentProcessingQueueSoap.exporter" parent="kewEmbeddedServiceExporter">
+	<bean id="rice.kew.documentProcessingQueue.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.documentProcessingQueue" />
 				</property>
-				<property name="localServiceName" value="documentProcessingQueueSoap" />
+				<property name="localServiceName" value="documentProcessingQueue" />
 				<property name="priority" value="5" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
@@ -234,7 +233,7 @@
 				<property name="service">
 					<ref bean="rice.kew.documentOrchestrationQueue" />
 				</property>
-				<property name="localServiceName" value="documentOrchestrationQueueSoap" />
+				<property name="localServiceName" value="documentOrchestrationQueue" />
 				<property name="priority" value="4" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
@@ -242,15 +241,15 @@
 		</property>
 	</bean>
 
-  <bean id="rice.kew.documentAttributeIndexingQueueSoap.exporter" parent="kewEmbeddedServiceExporter">
+  <bean id="rice.kew.documentAttributeIndexingQueue.exporter" parent="kewEmbeddedServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="rice.kew.documentAttributeIndexingQueue" />
         </property>
-        <property name="localServiceName" value="documentAttributeIndexingQueueSoap" />
-        <property name="busSecurity" value="${rice.kew.documentAttributeIndexingQueueSoap.secure}" />
+        <property name="localServiceName" value="documentAttributeIndexingQueue" />
+        <property name="busSecurity" value="${rice.kew.documentAttributeIndexingQueue.secure}" />
       </bean>
     </property>
   </bean>
@@ -262,104 +261,104 @@
 				<property name="service">
 					<ref bean="rice.kew.documentRefreshQueue" />
 				</property>
-				<property name="localServiceName" value="documentRefreshQueueSoap" />
+				<property name="localServiceName" value="documentRefreshQueue" />
 				<property name="priority" value="10" />
 			</bean>
 		</property>
 	</bean>
 
-  <bean id="rice.kew.responsibilityChangeQueueSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.responsibilityChangeQueue.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="rice.kew.responsibilityChangeQueue" />
         </property>
-        <property name="localServiceName" value="responsibilityChangeQueueSoap" />
-        <property name="busSecurity" value="${rice.kew.responsibilityChangeQueueSoap.secure}" />
+        <property name="localServiceName" value="responsibilityChangeQueue" />
+        <property name="busSecurity" value="${rice.kew.responsibilityChangeQueue.secure}" />
         <property name="queue" value="false" />
       </bean>
     </property>
   </bean>
 
-	<bean id="rice.kew.immediateEmailReminderQueueSoap.exporter" parent="kewLocalServiceExporter">
+	<bean id="rice.kew.immediateEmailReminderQueue.exporter" parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.immediateEmailReminderQueue" />
 				</property>
-				<property name="localServiceName" value="immediateEmailReminderQueueSoap" />
-				<property name="busSecurity" value="${rice.kew.immediateEmailReminderQueueSoap.secure}" />
+				<property name="localServiceName" value="immediateEmailReminderQueue" />
+				<property name="busSecurity" value="${rice.kew.immediateEmailReminderQueue.secure}" />
 			</bean>
 		</property>
 	</bean>
 
-  <bean id="rice.kew.actionRequestDerivedRoleTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.actionRequestDerivedRoleTypeService.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="actionRequestDerivedRoleTypeService" />
         </property>
-        <property name="localServiceName" value="actionRequestDerivedRoleTypeServiceSoap" />
-        <property name="busSecurity" value="${rice.kew.actionRequestDerivedRoleTypeServiceSoap.secure}" />
+        <property name="localServiceName" value="actionRequestDerivedRoleTypeService" />
+        <property name="busSecurity" value="${rice.kew.actionRequestDerivedRoleTypeService.secure}" />
         <property name="queue" value="false" />
       </bean>
     </property>
   </bean>
 
-  <bean id="rice.kew.adhocReviewPermissionTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.adhocReviewPermissionTypeService.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="adhocReviewPermissionTypeService" />
         </property>
-        <property name="localServiceName" value="adhocReviewPermissionTypeServiceSoap" />
-        <property name="busSecurity" value="${rice.kew.adhocReviewPermissionTypeServiceSoap.secure}" />
+        <property name="localServiceName" value="adhocReviewPermissionTypeService" />
+        <property name="busSecurity" value="${rice.kew.adhocReviewPermissionTypeService.secure}" />
         <property name="queue" value="false" />
       </bean>
     </property>
   </bean>
 
-  <bean id="rice.kew.documentTypeResponsibilityTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.documentTypeResponsibilityTypeService.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="documentTypeResponsibilityTypeService" />
         </property>
-        <property name="localServiceName" value="documentTypeResponsibilityTypeServiceSoap" />
-        <property name="busSecurity" value="${rice.kew.documentTypeResponsibilityTypeServiceSoap.secure}" />
+        <property name="localServiceName" value="documentTypeResponsibilityTypeService" />
+        <property name="busSecurity" value="${rice.kew.documentTypeResponsibilityTypeService.secure}" />
         <property name="queue" value="false" />
       </bean>
     </property>
   </bean>
 
-  <bean id="rice.kew.reviewResponsibilityTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.reviewResponsibilityTypeService.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="reviewResponsibilityTypeService" />
         </property>
-        <property name="localServiceName" value="reviewResponsibilityTypeServiceSoap" />
-        <property name="busSecurity" value="${rice.kew.reviewResponsibilityTypeServiceSoap.secure}" />
+        <property name="localServiceName" value="reviewResponsibilityTypeService" />
+        <property name="busSecurity" value="${rice.kew.reviewResponsibilityTypeService.secure}" />
         <property name="queue" value="false" />
       </bean>
     </property>
   </bean>
 
-  <bean id="rice.kew.routeLogDerivedRoleTypeServiceSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.routeLogDerivedRoleTypeService.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="routeLogDerivedRoleTypeService" />
         </property>
-        <property name="localServiceName" value="routeLogDerivedRoleTypeServiceSoap" />
-        <property name="busSecurity" value="${rice.kew.routeLogDerivedRoleTypeServiceSoap.secure}" />
+        <property name="localServiceName" value="routeLogDerivedRoleTypeService" />
+        <property name="busSecurity" value="${rice.kew.routeLogDerivedRoleTypeService.secure}" />
         <property name="queue" value="false" />
       </bean>
     </property>
@@ -372,7 +371,7 @@
 				<property name="service">
           <ref bean="rice.kew.rolePokerQueue" />
 				</property>
-				<property name="localServiceName" value="rolePokerQueueSoap" />
+				<property name="localServiceName" value="rolePokerQueue" />
 				<property name="priority" value="10" />
 			</bean>
 		</property>
@@ -385,7 +384,7 @@
 				<property name="service">
 					<ref bean="rice.kew.actionInvocationQueue" />
 				</property>
-				<property name="localServiceName" value="actionInvocationQueueSoap" />
+				<property name="localServiceName" value="actionInvocationQueue" />
 				<property name="priority" value="10" />
 				<property name="messageExceptionHandler"
 					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
@@ -393,28 +392,28 @@
 		</property>
 	</bean>
 
-	<bean id="rice.kew.kewTypeRepositoryServiceSoap.exporter" parent="kewLocalServiceExporter">
+	<bean id="rice.kew.kewTypeRepositoryService.exporter" parent="kewLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
 			<bean parent="kewService">
 				<property name="service">
 					<ref bean="rice.kew.kewTypeRepositoryService" />
 				</property>
-				<property name="localServiceName" value="kewTypeRepositoryServiceSoap" />
-        <property name="busSecurity" value="${rice.kew.kewTypeRepositoryServiceSoap.secure}" />
+				<property name="localServiceName" value="kewTypeRepositoryService" />
+        <property name="busSecurity" value="${rice.kew.kewTypeRepositoryService.secure}" />
 			</bean>
 		</property>
 	</bean>
 
-  <bean id="rice.kew.peopleFlowServiceSoap.exporter" parent="kewLocalServiceExporter">
+  <bean id="rice.kew.peopleFlowService.exporter" parent="kewLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus" />
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
           <ref bean="rice.kew.peopleFlowService" />
         </property>
-        <property name="localServiceName" value="peopleFlowServiceSoap" />
-        <property name="busSecurity" value="${rice.kew.peopleFlowServiceSoap.secure}" />
+        <property name="localServiceName" value="peopleFlowService" />
+        <property name="busSecurity" value="${rice.kew.peopleFlowService.secure}" />
       </bean>
     </property>
   </bean>
@@ -424,9 +423,9 @@
     <property name="serviceDefinition">
       <bean parent="kewService"
             p:service-ref="kewCacheService"
-            p:localServiceName="kewCacheServiceSoap"/>
+            p:localServiceName="kewCacheService"/>
     </property>
-    <property name="exportIf" value="kewCacheServiceSOAP.expose"/>
+    <property name="exportIf" value="kewCacheService.expose"/>
   </bean>
 
 </beans>

@@ -235,8 +235,8 @@
 
     <!-- KSB -->
 
-	  <param name="rice.ksb.registry.serviceUrl" override="false">${rice.server.url}/remoting/serviceRegistrySoap</param>
-	  <param name="rice.ksb.serviceRegistrySoap.security" override="false">true</param>
+	  <param name="rice.ksb.registry.serviceUrl" override="false">${rice.server.url}/remoting/soap/ksb/v2_0/serviceRegistry</param>
+	  <param name="rice.ksb.serviceRegistry.security" override="false">true</param>
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>
 	  <param name="rice.ksb.loadModuleConfiguration" override="false">true</param>
 
@@ -428,12 +428,12 @@
 	<param name="rice.kim.expose.services.on.bus" override="false">true</param>
 	<param name="rice.kim.include.user.interface.components" override="false">true</param>
 
-  <!-- rice.kew.workflowDocumentActionsServiceSoap.secure KRMS -->
+  <!-- KRMS -->
   <param name="krms.mode" override="false">LOCAL</param>
-  <param name="rice.krms.ruleRepositoryServiceSoap.secure" override="false">true</param>
-  <param name="rice.krms.krmsTypeRepositoryServiceSoap.secure" override="false">true</param>
-  <param name="rice.krms.notificationPeopleFlowActionTypeServiceSoap.secure" override="false">true</param>
-  <param name="rice.krms.approvalPeopleFlowActionTypeServiceSoap.secure" override="false">true</param>
+  <param name="rice.krms.ruleRepositoryService.secure" override="false">true</param>
+  <param name="rice.krms.krmsTypeRepositoryService.secure" override="false">true</param>
+  <param name="rice.krms.notificationPeopleFlowActionTypeService.secure" override="false">true</param>
+  <param name="rice.krms.approvalPeopleFlowActionTypeService.secure" override="false">true</param>
   <param name="rice.krms.expose.services.on.bus" override="false">true</param>
 
   <!-- LOCATION -->
@@ -478,32 +478,27 @@
   <!--<param name="weeklyEmail.cronExpression" override="false">0 0 2 ? * 2</param>-->
   <param name="weeklyEmail.active" override="false">true</param>
 
-  <param name="rice.kew.workflowDocumentActionsServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.actionListServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.documentTypeServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.noteServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.preferencesServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.ruleServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.documentAttributeIndexingQueueSoap.secure" override="false">true</param>
-  <param name="rice.kew.documentSearchCustomizationHandlerServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.documentSecurityHandlerServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.ruleValidationAttributeExporterServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.workflowRuleAttributeHandlerServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.groupMembershipChangeQueueSoap.secure" override="false">true</param>
-  <param name="rice.kew.responsibilityChangeQueueSoap.secure" override="false">true</param>
-  <param name="rice.kew.kewTypeRepositoryServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.peopleFlowServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.immediateEmailReminderQueueSoap.secure" override="false">true</param>
-  <param name="rice.kew.actionRequestDerivedRoleTypeServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.adhocReviewPermissionTypeServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.documentTypeResponsibilityTypeServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.reviewResponsibilityTypeServiceSoap.secure" override="false">true</param>
-  <param name="rice.kew.routeLogDerivedRoleTypeServiceSoap.secure" override="false">true</param>
-
-  <param name="secure.workflowutility.javaservice.endpoint" override="false">true</param>
-  <param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>
-  <param name="secure.identity.javaservice.endpoint" override="false">true</param>
-  <param name="secure.group.javaservice.endpoint" override="false">true</param>
+  <param name="rice.kew.workflowDocumentActionsService.secure" override="false">true</param>
+  <param name="rice.kew.actionListService.secure" override="false">true</param>
+  <param name="rice.kew.documentTypeService.secure" override="false">true</param>
+  <param name="rice.kew.noteService.secure" override="false">true</param>
+  <param name="rice.kew.preferencesService.secure" override="false">true</param>
+  <param name="rice.kew.ruleService.secure" override="false">true</param>
+  <param name="rice.kew.documentAttributeIndexingQueue.secure" override="false">true</param>
+  <param name="rice.kew.documentSearchCustomizationHandlerService.secure" override="false">true</param>
+  <param name="rice.kew.documentSecurityHandlerService.secure" override="false">true</param>
+  <param name="rice.kew.ruleValidationAttributeExporterService.secure" override="false">true</param>
+  <param name="rice.kew.workflowRuleAttributeHandlerService.secure" override="false">true</param>
+  <param name="rice.kew.groupMembershipChangeQueue.secure" override="false">true</param>
+  <param name="rice.kew.responsibilityChangeQueue.secure" override="false">true</param>
+  <param name="rice.kew.kewTypeRepositoryService.secure" override="false">true</param>
+  <param name="rice.kew.peopleFlowService.secure" override="false">true</param>
+  <param name="rice.kew.immediateEmailReminderQueue.secure" override="false">true</param>
+  <param name="rice.kew.actionRequestDerivedRoleTypeService.secure" override="false">true</param>
+  <param name="rice.kew.adhocReviewPermissionTypeService.secure" override="false">true</param>
+  <param name="rice.kew.documentTypeResponsibilityTypeService.secure" override="false">true</param>
+  <param name="rice.kew.reviewResponsibilityTypeService.secure" override="false">true</param>
+  <param name="rice.kew.routeLogDerivedRoleTypeService.secure" override="false">true</param>
 
   <param name="rice.resourceloader.servicesToCache" override="false">
       userTransaction,

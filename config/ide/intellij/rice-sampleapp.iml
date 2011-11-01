@@ -10,7 +10,6 @@
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" />
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" />
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" />
-          <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -62,7 +61,6 @@
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="module" module-name="rice-ken-api" />
     <orderEntry type="module" module-name="rice-kew-impl" />
-    <orderEntry type="module" module-name="rice-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />

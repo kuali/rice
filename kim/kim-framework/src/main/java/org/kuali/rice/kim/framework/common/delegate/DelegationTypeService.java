@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * A {@link KimTypeService} with specific methods for Delegations.
  */
-@WebService(name = "delegationTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@WebService(name = "delegationTypeService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface DelegationTypeService extends KimTypeService {
 

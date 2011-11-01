@@ -67,7 +67,7 @@
     <property name="retryAttempts" value="0"/>
     <property name="busSecurity" value="${kim.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
-    <property name="servicePath" value="#{ T(org.kuali.rice.kim.api.KimConstants).SERVICE_PATH }" />
+    <property name="servicePath" value="#{ T(org.kuali.rice.kim.api.KimConstants).SERVICE_PATH_SOAP }" />
   </bean>
 
   <bean id="kimLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
@@ -85,7 +85,7 @@
     <property name="serviceDefinition">
       <bean parent="kimService"
             p:service-ref="kimTypeInfoService"
-            p:localServiceName="typeInfoServiceSoap"
+            p:localServiceName="typeInfoService"
             p:serviceInterface="org.kuali.rice.kim.api.type.KimTypeInfoService"/>
     </property>
     <property name="exportIf" value="kimTypeInfoServiceSOAP.expose"/>
@@ -96,7 +96,7 @@
     <property name="serviceDefinition">
       <bean parent="kimService"
             p:service-ref="kimIdentityService"
-            p:localServiceName="identityServiceSoap"
+            p:localServiceName="identityService"
             p:serviceInterface="org.kuali.rice.kim.api.identity.IdentityService"/>
     </property>
     <property name="exportIf" value="kimIdentityServiceSOAP.expose"/>
@@ -107,7 +107,7 @@
     <property name="serviceDefinition">
       <bean parent="kimService"
             p:service-ref="kimRoleService"
-            p:localServiceName="roleServiceSoap"
+            p:localServiceName="roleService"
             p:serviceInterface="org.kuali.rice.kim.api.role.RoleService"/>
     </property>
     <property name="exportIf" value="kimRoleServiceSOAP.expose"/>
@@ -118,10 +118,10 @@
     <property name="serviceDefinition">
       <bean parent="kimService"
             p:service-ref="kimGroupService"
-            p:localServiceName="groupServiceSoap"
+            p:localServiceName="groupService"
             p:serviceInterface="org.kuali.rice.kim.api.group.GroupService"/>
     </property>
-    <property name="exportIf" value="groupServiceSoap.expose"/>
+    <property name="exportIf" value="groupService.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">
@@ -129,10 +129,10 @@
     <property name="serviceDefinition">
       <bean parent="kimService"
             p:service-ref="kimPermissionService"
-            p:localServiceName="permissionServiceSoap"
+            p:localServiceName="permissionService"
             p:serviceInterface="org.kuali.rice.kim.api.permission.PermissionService"/>
     </property>
-    <property name="exportIf" value="permissionServiceSoap.expose"/>
+    <property name="exportIf" value="permissionService.expose"/>
   </bean>
 
   <bean parent="kimLocalServiceExporter">
@@ -140,10 +140,10 @@
     <property name="serviceDefinition">
       <bean parent="kimService"
             p:service-ref="kimResponsibilityService"
-            p:localServiceName="responsibilityServiceSoap"
+            p:localServiceName="responsibilityService"
             p:serviceInterface="org.kuali.rice.kim.api.responsibility.ResponsibilityService"/>
     </property>
-    <property name="exportIf" value="responsibilityServiceSoap.expose"/>
+    <property name="exportIf" value="responsibilityService.expose"/>
   </bean>
 
   <bean parent="kimRemoteServiceExporter">
@@ -151,9 +151,9 @@
     <property name="serviceDefinition">
       <bean parent="kimService"
             p:service-ref="kimCacheService"
-            p:localServiceName="kimCacheServiceSoap"/>
+            p:localServiceName="kimCacheService"/>
     </property>
-    <property name="exportIf" value="kimCacheServiceSOAP.expose"/>
+    <property name="exportIf" value="kimCacheService.expose"/>
   </bean>
 
 </beans>

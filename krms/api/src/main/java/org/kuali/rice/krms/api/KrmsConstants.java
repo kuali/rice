@@ -22,7 +22,7 @@ public final class KrmsConstants {
     public static final String KRMS_NAMESPACE = "KR-RULE";
     public static final String MAINTAIN_KRMS_AGENDA = "Maintain KRMS Agenda";
 
-    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
+    public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 
 	public final static class Namespaces {
 		public static final String MODULE_NAME = "krms";

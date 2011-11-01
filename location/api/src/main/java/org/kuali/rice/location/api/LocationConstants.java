@@ -35,7 +35,7 @@ public final class LocationConstants {
 		}
     }
 
-    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
+    public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 
     public static final class Namespaces {
     	public static final String MODULE_NAME = "location";

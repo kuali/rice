@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * A {@link KimTypeService} with specific methods for Permissions.
  */
-@WebService(name = "permissionTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@WebService(name = "permissionTypeService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface PermissionTypeService extends KimTypeService {
 

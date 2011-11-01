@@ -74,7 +74,7 @@
   <!-- the distributed cache manager that calls into the kimCacheService on the ksb -->
   <bean id="kimDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="kimLocalCacheManager" />
-    <property name="serviceName" value="{http://rice.kuali.org/kim/v2_0}kimCacheServiceSoap" />
+    <property name="serviceName" value="{http://rice.kuali.org/kim/v2_0}kimCacheService" />
   </bean>
 
   <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">

@@ -66,7 +66,7 @@
     <property name="retryAttempts" value="0"/>
     <property name="busSecurity" value="${location.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
-    <property name="servicePath" value="#{ T(org.kuali.rice.location.api.LocationConstants).SERVICE_PATH }"/>
+    <property name="servicePath" value="#{ T(org.kuali.rice.location.api.LocationConstants).SERVICE_PATH_SOAP }"/>
     <property name="cacheManager" value="locationLocalCacheManager"/>
   </bean>
 
@@ -85,10 +85,10 @@
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="postalCodeService"
-            p:localServiceName="postalCodeServiceSoap"
+            p:localServiceName="postalCodeService"
             p:serviceInterface="org.kuali.rice.location.api.postalcode.PostalCodeService"/>
     </property>
-    <property name="exportIf" value="postalCodeServiceSOAP.expose"/>
+    <property name="exportIf" value="postalCodeService.expose"/>
   </bean>
 
   <bean parent="locationLocalServiceExporter">
@@ -96,10 +96,10 @@
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="countyService"
-            p:localServiceName="countyServiceSoap"
+            p:localServiceName="countyService"
             p:serviceInterface="org.kuali.rice.location.api.county.CountyService"/>
     </property>
-    <property name="exportIf" value="countyServiceSOAP.expose"/>
+    <property name="exportIf" value="countyService.expose"/>
   </bean>
 
     <bean parent="locationLocalServiceExporter">
@@ -107,10 +107,10 @@
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="stateService"
-            p:localServiceName="stateServiceSoap"
+            p:localServiceName="stateService"
             p:serviceInterface="org.kuali.rice.location.api.state.StateService"/>
     </property>
-    <property name="exportIf" value="stateServiceSOAP.expose"/>
+    <property name="exportIf" value="stateService.expose"/>
   </bean>
 
   <bean parent="locationLocalServiceExporter">
@@ -118,10 +118,10 @@
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="countryService"
-            p:localServiceName="countryServiceSoap"
+            p:localServiceName="countryService"
             p:serviceInterface="org.kuali.rice.location.api.country.CountryService"/>
     </property>
-    <property name="exportIf" value="countryServiceSOAP.expose"/>
+    <property name="exportIf" value="countryService.expose"/>
   </bean>
 
     <bean parent="locationLocalServiceExporter">
@@ -129,10 +129,10 @@
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="campusService"
-            p:localServiceName="campusServiceSoap"
+            p:localServiceName="campusService"
             p:serviceInterface="org.kuali.rice.location.api.campus.CampusService"/>
     </property>
-    <property name="exportIf" value="campusServiceSOAP.expose"/>
+    <property name="exportIf" value="campusService.expose"/>
   </bean>
 
   <bean parent="locationRemoteServiceExporter">
@@ -140,9 +140,9 @@
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="locationCacheService"
-            p:localServiceName="locationCacheServiceSoap"/>
+            p:localServiceName="locationCacheService"/>
     </property>
-    <property name="exportIf" value="locationCacheServiceSOAP.expose"/>
+    <property name="exportIf" value="locationCacheService.expose"/>
   </bean>
 
 </beans>

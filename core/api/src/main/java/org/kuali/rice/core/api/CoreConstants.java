@@ -34,7 +34,7 @@ public final class CoreConstants {
     	}
 	}
 
-    public final static String SERVICE_PATH = Namespaces.MODULE_NAME + "/" + Versions.VERSION_2_0;
+    public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + Versions.VERSION_2_0;
     
     public static final class Versions {
     	    	

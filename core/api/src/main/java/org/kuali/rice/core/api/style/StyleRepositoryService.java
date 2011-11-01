@@ -37,7 +37,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "styleRepositoryServiceSoap", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
+@WebService(name = "styleRepositoryService", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface StyleRepositoryService {
 

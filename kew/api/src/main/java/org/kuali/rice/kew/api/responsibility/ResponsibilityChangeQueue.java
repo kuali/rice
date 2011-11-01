@@ -23,7 +23,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.Set;
 
-@WebService(name = "responsibilityChangeQueueSoap", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
+@WebService(name = "responsibilityChangeQueue", targetNamespace = KewApiConstants.Namespaces.KEW_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityChangeQueue {
 

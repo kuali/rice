@@ -25,7 +25,7 @@ import org.kuali.rice.core.api.CoreConstants;
 public final class KENServiceConstants {
     public static final String KENAPI_SERVICE = "KEN-KENAPIService";
 
-    public final static String SERVICE_PATH = "ken" + "/" + CoreConstants.Versions.VERSION_2_0;
+    public final static String SERVICE_PATH_SOAP = "soap/ken" + "/" + CoreConstants.Versions.VERSION_2_0;
 
 	private KENServiceConstants() {
 		throw new UnsupportedOperationException("do not call");

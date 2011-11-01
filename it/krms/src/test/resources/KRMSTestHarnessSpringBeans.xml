@@ -155,7 +155,7 @@
         </property>
     </bean>
     
-    <bean id="krmsTypeRepositoryServiceSoap" class="org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl"/>
+    <bean id="krmsTypeRepositoryService" class="org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl"/>
 
     <bean id="ruleRepositoryService" class="org.kuali.rice.krms.impl.repository.RuleRepositoryServiceImpl">
         <property name="criteriaLookupService">

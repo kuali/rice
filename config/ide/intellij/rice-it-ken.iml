@@ -44,7 +44,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="module" module-name="rice-ken-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-krad-web-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-krad-app-framework" scope="TEST" />

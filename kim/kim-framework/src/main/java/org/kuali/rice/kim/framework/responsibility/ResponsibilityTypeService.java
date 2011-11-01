@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * A {@link KimTypeService} with specific methods for Responsibilities.
  */
-@WebService(name = "responsibilityTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@WebService(name = "responsibilityTypeService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ResponsibilityTypeService extends KimTypeService {
 

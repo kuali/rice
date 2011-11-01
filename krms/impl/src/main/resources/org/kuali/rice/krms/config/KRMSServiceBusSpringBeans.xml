@@ -59,13 +59,13 @@
     <property name="serviceName" value="rice.ksb.serviceBus" />
   </bean>
 
-  <bean id="krmsJaxWsSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
+  <bean id="krmsService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
      <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.krms.api.KrmsConstants$Namespaces).KRMS_NAMESPACE_2_0 }" />
      <property name="jaxWsService" value="true"/>
      <property name="priority" value="3" />
      <property name="retryAttempts" value="0" />
      <property name="serviceVersion" value="${rice.version}" />
-     <property name="servicePath" value="#{ T(org.kuali.rice.krms.api.KrmsConstants).SERVICE_PATH }" />
+     <property name="servicePath" value="#{ T(org.kuali.rice.krms.api.KrmsConstants).SERVICE_PATH_SOAP }" />
   </bean>
 
   <bean id="krmsLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
@@ -76,12 +76,12 @@
 	<bean id="rice.krms.ruleRepositoryService.exporter" parent="krmsLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="krmsJaxWsSoapService">
+			<bean parent="krmsService">
 				<property name="service">
 					<ref bean="ruleRepositoryService" />
 				</property>
-				<property name="localServiceName" value="ruleRepositoryServiceSoap" />
-				<property name="busSecurity" value="${rice.krms.ruleRepositoryServiceSoap.secure}" />
+				<property name="localServiceName" value="ruleRepositoryService" />
+				<property name="busSecurity" value="${rice.krms.ruleRepositoryService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -89,12 +89,12 @@
   <bean id="rice.krms.krmsTypeRepositoryService.exporter" parent="krmsLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="krmsJaxWsSoapService">
+			<bean parent="krmsService">
 				<property name="service">
 					<ref bean="krmsTypeRepositoryService" />
 				</property>
-				<property name="localServiceName" value="krmsTypeRepositoryServiceSoap" />
-				<property name="busSecurity" value="${rice.krms.krmsTypeRepositoryServiceSoap.secure}" />
+				<property name="localServiceName" value="krmsTypeRepositoryService" />
+				<property name="busSecurity" value="${rice.krms.krmsTypeRepositoryService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -102,12 +102,12 @@
   <bean id="rice.krms.notificationPeopleFlowActionTypeService.exporter" parent="krmsLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="krmsJaxWsSoapService">
+			<bean parent="krmsService">
 				<property name="service">
 					<ref bean="notificationPeopleFlowActionTypeService" />
 				</property>
-				<property name="localServiceName" value="notificationPeopleFlowActionTypeServiceSoap" />
-				<property name="busSecurity" value="${rice.krms.notificationPeopleFlowActionTypeServiceSoap.secure}" />
+				<property name="localServiceName" value="notificationPeopleFlowActionTypeService" />
+				<property name="busSecurity" value="${rice.krms.notificationPeopleFlowActionTypeService.secure}" />
 			</bean>
 		</property>
 	</bean>
@@ -115,12 +115,12 @@
   <bean id="rice.krms.approvalPeopleFlowActionTypeService.exporter" parent="krmsLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">
-			<bean parent="krmsJaxWsSoapService">
+			<bean parent="krmsService">
 				<property name="service">
 					<ref bean="approvalPeopleFlowActionTypeService" />
 				</property>
-				<property name="localServiceName" value="approvalPeopleFlowActionTypeServiceSoap" />
-				<property name="busSecurity" value="${rice.krms.approvalPeopleFlowActionTypeServiceSoap.secure}" />
+				<property name="localServiceName" value="approvalPeopleFlowActionTypeService" />
+				<property name="busSecurity" value="${rice.krms.approvalPeopleFlowActionTypeService.secure}" />
 			</bean>
 		</property>
 	</bean>

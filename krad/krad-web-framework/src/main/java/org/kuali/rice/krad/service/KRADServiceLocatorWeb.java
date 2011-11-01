@@ -56,8 +56,6 @@ public class KRADServiceLocatorWeb {
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
     public static final String ATTRIBUTE_QUERY_SERVICE = "attributeQueryService";
 
-    public static final QName APPLICATION_CONFIGURATION_SERVICE = new QName(Namespaces.KRAD_NAMESPACE_2_0, "applicationConfigurationServiceSoap");
-
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }

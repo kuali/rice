@@ -27,7 +27,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="rice-web" />
-    <orderEntry type="module" module-name="rice-api" />
+    <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />
     <orderEntry type="library" name="Maven: asm:asm:3.3.1" level="project" />
@@ -57,7 +57,6 @@
     <orderEntry type="module" module-name="rice-kew-api" />
     <orderEntry type="module" module-name="rice-ksb-api" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
-    <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-ken-api" />
     <orderEntry type="module" module-name="rice-kew-impl" />
     <orderEntry type="module" module-name="rice-kew-framework" />

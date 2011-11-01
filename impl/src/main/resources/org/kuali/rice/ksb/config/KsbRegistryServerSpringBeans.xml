@@ -75,19 +75,19 @@
 	<bean id="rice.ksb.serviceRegistry" class="org.kuali.rice.ksb.impl.registry.ServiceRegistryImpl"
 		p:serviceRegistryDao-ref="rice.ksb.serviceRegistryDao" />
                       		
-	<bean id="rice.ksb.serviceRegistrySoap.serviceDefinition" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
+	<bean id="rice.ksb.serviceRegistry.serviceDefinition" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition"
 		p:serviceNameSpaceURI="#{ T(org.kuali.rice.ksb.api.KsbApiConstants$Namespaces).KSB_NAMESPACE_2_0 }"
-		p:localServiceName="serviceRegistrySoap"
+		p:localServiceName="serviceRegistry"
 		p:jaxWsService="true"
-		p:busSecurity="${rice.ksb.serviceRegistrySoap.security}"
+		p:busSecurity="${rice.ksb.serviceRegistry.security}"
 		p:service-ref="rice.ksb.serviceRegistry"
 		p:serviceVersion="${rice.version}"
-    p:servicePath="#{ T(org.kuali.rice.ksb.api.KsbApiConstants).SERVICE_PATH }" />
+    p:servicePath="#{ T(org.kuali.rice.ksb.api.KsbApiConstants).SERVICE_PATH_SOAP }" />
 	
-	<bean id="rice.ksb.serviceRegistrySoap.exporter" class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
+	<bean id="rice.ksb.serviceRegistry.exporter" class="org.kuali.rice.ksb.api.bus.support.PropertyConditionalServiceBusExporter"
 		p:serviceBus-ref="rice.ksb.serviceBus"
-		p:serviceDefinition-ref="rice.ksb.serviceRegistrySoap.serviceDefinition"
-		p:exportIf="rice.ksb.serviceRegistrySoap.expose" />
+		p:serviceDefinition-ref="rice.ksb.serviceRegistry.serviceDefinition"
+		p:exportIf="rice.ksb.serviceRegistry.expose" />
 	
     <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator" lazy-init="true">
 		<property name="interceptorNames">

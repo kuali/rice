@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2006-2007 The Kuali Foundation
-
-  Licensed under the Educational Community License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-  http://www.opensource.org/licenses/ecl2.php
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
@@ -66,7 +66,7 @@
     <property name="retryAttempts" value="0"/>
     <property name="busSecurity" value="${core.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
-    <property name="servicePath" value="#{ T(org.kuali.rice.core.api.CoreConstants).SERVICE_PATH }" />
+    <property name="servicePath" value="#{ T(org.kuali.rice.core.api.CoreConstants).SERVICE_PATH_SOAP }" />
     <property name="cacheManager" value="coreLocalCacheManager"/>
   </bean>
 
@@ -85,7 +85,7 @@
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="parameterRepositoryService"
-            p:localServiceName="parameterRepositoryServiceSoap"
+            p:localServiceName="parameterRepositoryService"
             p:serviceInterface="org.kuali.rice.core.api.parameter.ParameterRepositoryService"/>
     </property>
   </bean>
@@ -95,7 +95,7 @@
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="namespaceService"
-            p:localServiceName="namespaceServiceSoap"
+            p:localServiceName="namespaceService"
             p:serviceInterface="org.kuali.rice.core.api.namespace.NamespaceService"/>
     </property>
   </bean>
@@ -105,7 +105,7 @@
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="componentService"
-            p:localServiceName="componentServiceSoap"
+            p:localServiceName="componentService"
             p:serviceInterface="org.kuali.rice.core.api.component.ComponentService"/>
     </property>
   </bean>
@@ -115,7 +115,7 @@
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="coreCacheService"
-            p:localServiceName="coreCacheServiceSoap"/>
+            p:localServiceName="coreCacheService"/>
     </property>
   </bean>
 

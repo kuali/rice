@@ -254,7 +254,7 @@
 	<bean id="kenSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/ken"/>
        <property name="serviceVersion" value="${rice.version}" />
-       <property name="servicePath" value="#{ T(org.kuali.rice.ken.api.service.KENServiceConstants).SERVICE_PATH }" />
+       <property name="servicePath" value="#{ T(org.kuali.rice.ken.api.service.KENServiceConstants).SERVICE_PATH_SOAP }" />
     </bean>
     
 	<bean id="rice.ksb.serviceBus"

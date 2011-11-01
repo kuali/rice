@@ -799,7 +799,7 @@
 
   <bean id="coreDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
     <property name="cacheManager" ref="coreLocalCacheManager" />
-    <property name="serviceName" value="{http://rice.kuali.org/core/v2_0}coreCacheServiceSoap" />
+    <property name="serviceName" value="{http://rice.kuali.org/core/v2_0}coreCacheService" />
   </bean>
 
   <bean id="coreCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="coreLocalCacheManager" />

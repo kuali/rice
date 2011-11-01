@@ -31,11 +31,11 @@ import javax.xml.namespace.QName;
  */
 public class KewFrameworkServiceLocator {
 
-    public static final String DOCUMENT_SEARCH_CUSTOMIZATION_HANDLER_SERVICE = "documentSearchCustomizationHandlerServiceSoap";
-    public static final String DOCUMENT_SECURITY_HANDLER_SERVICE = "documentSecurityHandlerServiceSoap";
-    public static final String RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE = "ruleValidationAttributeExporterServiceSoap";
-    public static final String ACTION_LIST_CUSTOMIZATION_HANDLER_SERVICE = "actionListCustomizationHandlerSoap";
-    public static final String WORKFLOW_RULE_ATTRIBUTE_HANDLER_SERVICE = "workflowRuleAttributeHandlerServiceSoap";
+    public static final String DOCUMENT_SEARCH_CUSTOMIZATION_HANDLER_SERVICE = "documentSearchCustomizationHandlerService";
+    public static final String DOCUMENT_SECURITY_HANDLER_SERVICE = "documentSecurityHandlerService";
+    public static final String RULE_VALIDATION_ATTRIBUTE_EXPORTER_SERVICE = "ruleValidationAttributeExporterService";
+    public static final String ACTION_LIST_CUSTOMIZATION_HANDLER_SERVICE = "actionListCustomizationHandler";
+    public static final String WORKFLOW_RULE_ATTRIBUTE_HANDLER_SERVICE = "workflowRuleAttributeHandlerService";
 
 
     static <T> T getService(String serviceName) {

@@ -41,7 +41,7 @@ class ParameterUpdateTest extends KRADTestCase {
         stopWatch.stop()
         LOG.info("loop time: " + stopWatch.getTime() + "ms");
 
-        //CacheService cacheService = GlobalResourceLoader.getService(new QName("http://rice.kuali.org/core/v2_0", "coreCacheServiceSoap"))
+        //CacheService cacheService = GlobalResourceLoader.getService(new QName("http://rice.kuali.org/core/v2_0", "coreCacheService"))
 
         //Cache cache = cacheService.getCache()
 

@@ -46,7 +46,7 @@ public class RuleValidationAttributeRemotingTest extends KEWTestCase {
 
     private static RuleValidationAttributeResolver resolver;
     private static ServiceBusResourceLoader bus;
-    private static final QName EXPORTER_SOAP_SERVICE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0,  "ruleValidationAttributeExporterServiceSoap");
+    private static final QName EXPORTER_SOAP_SERVICE_NAME = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0,  "ruleValidationAttributeExporterService");
 
     private static final ServiceBusResourceLoader getServiceBusResourceLoader(ResourceLoader loader) {
         if (loader instanceof ServiceBusResourceLoader) {

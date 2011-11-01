@@ -15,8 +15,8 @@ import javax.xml.namespace.QName;
 public class KrmsApiServiceLocator {
 
 	public static final String ENGINE = "rice.krms.engine";
-	public static final QName RULE_REPOSITORY_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "ruleRepositoryServiceSoap");
-    public static final QName KRMS_TYPE_REPOSITORY_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "krmsTypeRepositoryServiceSoap");
+	public static final QName RULE_REPOSITORY_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "ruleRepositoryService");
+    public static final QName KRMS_TYPE_REPOSITORY_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "krmsTypeRepositoryService");
 
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);

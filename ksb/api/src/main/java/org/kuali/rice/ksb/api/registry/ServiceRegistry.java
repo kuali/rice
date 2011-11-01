@@ -49,7 +49,7 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@WebService(name = "serviceRegistrySoap", targetNamespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0)
+@WebService(name = "serviceRegistry", targetNamespace = KsbApiConstants.Namespaces.KSB_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface ServiceRegistry {
 	

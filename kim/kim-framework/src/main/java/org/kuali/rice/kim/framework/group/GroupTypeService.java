@@ -24,7 +24,7 @@ import javax.jws.soap.SOAPBinding;
 /**
  * A {@link KimTypeService} with specific methods for Groups.
  */
-@WebService(name = "groupTypeServiceSoap", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
+@WebService(name = "groupTypeService", targetNamespace = KimConstants.Namespaces.KIM_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface GroupTypeService extends KimTypeService {
 

@@ -36,15 +36,15 @@ import org.kuali.rice.ksb.api.KsbApiServiceLocator;
  */
 public class MessageServiceNames {
 
-	private static final QName DOCUMENT_PROCESSING_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentProcessingQueueSoap");
+	private static final QName DOCUMENT_PROCESSING_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentProcessingQueue");
 
-	private static final QName DOCUMENT_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentOrchestrationQueueSoap");
+	private static final QName DOCUMENT_ORCHESTRATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentOrchestrationQueue");
 
-	private static final QName DOCUMENT_REFRESH_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentRefreshQueueSoap");
+	private static final QName DOCUMENT_REFRESH_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "documentRefreshQueue");
 
-	private static final QName ROLE_POKER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "rolePokerQueueSoap");
+	private static final QName ROLE_POKER_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "rolePokerQueue");
 
-    private static final QName ACTION_INVOCATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "actionInvocationQueueSoap");
+    private static final QName ACTION_INVOCATION_QUEUE = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "actionInvocationQueue");
 
 	private static QName getQName(String baseServiceName, DocumentRouteHeaderValue document) {
 		if (document != null) {

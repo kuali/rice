@@ -60,7 +60,7 @@
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
   <!-- caching start -->
-  <cache:annotation-driven cache-manager="kewDistributedCacheManager" />
+  <cache:annotation-driven cache-manager="globalCacheManager" />
 
   <!-- DAO's are located in KEWOJBSpringBeans.xml and KEWJPASpringBeans.xml -->
 
@@ -74,6 +74,11 @@
   <bean id="parameterService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="parameterService" />
+  </bean>
+
+  <bean id="globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="globalCacheManager" />
   </bean>
 
   <bean id="KewApiConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
@@ -220,13 +225,13 @@
   <!-- WorkflowDocument -->
   <bean id="enWorkflowDocumentService" class="org.kuali.rice.kew.routeheader.service.impl.WorkflowDocumentServiceImpl" lazy-init="true" />
 
-  <bean id="roleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+  <bean id="kimRoleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kimRoleService" />
   </bean>
 
   <bean id="peopleFlowRequestGenerator" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRequestGeneratorImpl">
     <property name="typeRepositoryService" ref="rice.kew.kewTypeRepositoryService"/>
-    <property name="roleService" ref="roleService" />
+    <property name="roleService" ref="kimRoleService" />
   </bean>
 
   <bean id="peopleFlowRouteModule" class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRouteModule" lazy-init="true">

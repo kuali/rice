@@ -47,7 +47,7 @@
   <import resource="classpath:org/kuali/rice/location/config/LocationOjbSpringBeans.xml" />
 
   <!-- caching start -->
-  <cache:annotation-driven cache-manager="locationDistributedCacheManager" />
+  <cache:annotation-driven cache-manager="globalCacheManager" />
 
   <bean id="rice.ksb.messageHelper" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="rice.ksb.messageHelper"/>
@@ -72,6 +72,11 @@
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
   <bean id="locationCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
+
+  <bean id="globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="globalCacheManager" />
+  </bean>
   <!-- caching end -->
 
   <bean id="businessObjectService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

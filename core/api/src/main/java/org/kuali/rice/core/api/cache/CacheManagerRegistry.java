@@ -1,4 +1,4 @@
-package org.kuali.rice.core.impl.cache;
+package org.kuali.rice.core.api.cache;
 
 import org.springframework.cache.CacheManager;
 
@@ -31,4 +31,13 @@ public interface CacheManagerRegistry {
      * @throws IllegalArgumentException if the cm is null
      */
     String getCacheManagerName(CacheManager cm);
+
+    /**
+     * Gets a cache manager for a given cache name.  Name cannot be null or blank.
+     *
+     * @param cacheName the  name of a Cache in a CacheManager.
+     * @return the CacheManager
+     * @throws IllegalArgumentException if the name is null or blank
+     */
+    CacheManager getCacheManagerByCacheName(String cacheName);
 }

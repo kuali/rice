@@ -191,6 +191,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 }
                 searchResults.setSearchResults(finalResults);
                 searchResults.setNumberOfSecurityFilteredResults(numFiltered);
+            } else {
+                searchResults.setNumberOfSecurityFilteredResults(searchResults.getSearchResults().size());
+                searchResults.setSearchResults(Collections.<DocumentSearchResult.Builder>emptyList());
             }
         }
         saveSearch(principalId, builtCriteria);

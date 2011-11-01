@@ -8,9 +8,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kuali.rice.core.api.cache.CacheManagerRegistry;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
-import org.kuali.rice.core.impl.cache.CacheManagerRegistry;
 import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;

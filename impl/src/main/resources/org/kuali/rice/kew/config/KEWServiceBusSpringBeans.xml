@@ -58,6 +58,7 @@
 		<property name="retryAttempts" value="0" />
 		<property name="serviceVersion" value="${rice.version}" />
     <property name="servicePath" value="#{ T(org.kuali.rice.kew.api.KewApiConstants).SERVICE_PATH_SOAP }" />
+    <property name="cacheManager" value="kewLocalCacheManager"/>
 	</bean>
 
 	<bean id="rice.kew.workflowDocumentActionService.exporter" parent="kewEmbeddedServiceExporter">

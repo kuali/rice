@@ -786,7 +786,7 @@
     <property name="applicationId" value="${application.id}"/>
   </bean>
 
-  <cache:annotation-driven cache-manager="coreDistributedCacheManager" />
+  <cache:annotation-driven cache-manager="globalCacheManager" />
 
   <bean id="coreLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
     <property name="cacheManager">
@@ -795,6 +795,10 @@
   </bean>
   <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
     <property name="cacheManager" ref="coreDistributedCacheManager" />
+  </bean>
+
+  <bean id="globalCacheManager" class="org.kuali.rice.core.impl.cache.GlobalCacheManager">
+    <property name="cacheManagerRegistry" ref="cacheManagerRegistry" />
   </bean>
 
   <bean id="coreDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">

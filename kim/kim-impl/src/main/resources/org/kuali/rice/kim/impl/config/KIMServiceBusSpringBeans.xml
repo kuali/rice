@@ -68,6 +68,7 @@
     <property name="busSecurity" value="${kim.soapExposedService.jaxws.security}"/>
     <property name="serviceVersion" value="${rice.version}"/>
     <property name="servicePath" value="#{ T(org.kuali.rice.kim.api.KimConstants).SERVICE_PATH_SOAP }" />
+    <property name="cacheManager" value="kimLocalCacheManager"/>
   </bean>
 
   <bean id="kimLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">

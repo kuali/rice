@@ -209,11 +209,11 @@ public class DocumentTypeSecurity implements Serializable {
         			}
         		}
         		
-              if ( KimApiServiceLocator.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails())) {
+              //if ( KimApiServiceLocator.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails())) {
             	  permissions.add(securityPermission); 
-              } else {
-            	  LOG.warn("Could not find permission with name '" + securityPermission.getPermissionName() + "' and namespace '" + securityPermission.getPermissionNamespaceCode() + "' which was defined on Document Type security");
-              }
+              //} else {
+            	//  LOG.warn("Could not find permission with name '" + securityPermission.getPermissionName() + "' and namespace '" + securityPermission.getPermissionNamespaceCode() + "' which was defined on Document Type security");
+              //}
             }
           }
         }

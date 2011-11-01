@@ -2,13 +2,18 @@ package org.kuali.rice.core.impl.cache;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.cache.CacheManagerRegistry;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.springframework.beans.factory.NamedBean;
 import org.springframework.cache.CacheManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -20,6 +25,7 @@ public final class CacheManagerRegistryImpl implements CacheManagerRegistry {
     private static final String GET_NAME_MSG = "unable to get the getName method on the cache manager";
 
     private static final List<CacheManager> CACHE_MANAGERS = new CopyOnWriteArrayList<CacheManager>();
+    private static final Map<String, CacheManager> CACHE_MANAGER_MAP = new ConcurrentHashMap<String, CacheManager> ();
 
     public void setCacheManager(CacheManager c) {
         if (c == null) {
@@ -27,6 +33,11 @@ public final class CacheManagerRegistryImpl implements CacheManagerRegistry {
         }
 
         CACHE_MANAGERS.add(c);
+
+        //keep map as well
+        for (String cacheName : c.getCacheNames()) {
+            CACHE_MANAGER_MAP.put(cacheName, c);
+        }
     }
 
     @Override
@@ -65,5 +76,14 @@ public final class CacheManagerRegistryImpl implements CacheManagerRegistry {
         }
 
         return v;
+    }
+
+    @Override
+    public CacheManager getCacheManagerByCacheName(String cacheName) {
+        CacheManager cm = CACHE_MANAGER_MAP.get(cacheName);
+        if (cm != null) {
+            return cm;
+        }
+        throw new RiceIllegalArgumentException("Cache not found : " + cacheName);
     }
 }

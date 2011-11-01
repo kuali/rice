@@ -58,7 +58,7 @@
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
   <!-- caching start -->
-  <cache:annotation-driven cache-manager="kimDistributedCacheManager" />
+  <cache:annotation-driven cache-manager="globalCacheManager" />
 
   <bean id="rice.ksb.messageHelper" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="rice.ksb.messageHelper"/>
@@ -79,6 +79,11 @@
 
   <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
     <property name="cacheManager" ref="kimDistributedCacheManager" />
+  </bean>
+
+  <bean id="globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="globalCacheManager" />
   </bean>
 
   <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->

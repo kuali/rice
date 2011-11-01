@@ -167,7 +167,7 @@
 			<label>SecurityDoc_PermissionOnly</label>
 			<docHandler>_blank</docHandler>
 			<security>
-			   <permission name="Log In" namespace="KUALI">
+			   <permission name="Log In Kuali Portal" namespace="KUALI">
 			     <qualification name="principalId">${document.initiatorPrincipalId}</qualification>
 			     <qualification name="documentTypeName">${document.docTypeName}</qualification>
 			     <qualification name="documentId">${document.documentId}</qualification>

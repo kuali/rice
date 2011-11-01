@@ -128,7 +128,7 @@
         DOC_TYP_DESC="Parent Document Type for all Rice Documents"
         DOC_TYP_ID="2681" DOC_TYP_NM="RiceDocument" DOC_TYP_VER_NBR="0"
         LBL="Rice Document" OBJ_ID="6166CBA1BA82644DE0404F8189D86C09"
-        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="4"/>
+        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="7"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/travelDocument2.do?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Travel Request" DOC_TYP_ID="2683"
@@ -313,5 +313,31 @@
         DOC_TYP_ID="3002" DOC_TYP_NM="PeopleFlowMaintenanceDocument"
         DOC_TYP_VER_NBR="0" LBL="PeopleFlowMaintenanceDocument"
         OBJ_ID="2c0a1333-f60b-47c4-a9b0-76f32f1ed97d" PARNT_ID="2681"
+        RTE_VER_NBR="2" VER_NBR="1"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+        DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
+        DOC_TYP_DESC="Create a KRMS Context" DOC_TYP_ID="3003"
+        DOC_TYP_NM="ContextMaintenanceDocument" DOC_TYP_VER_NBR="0"
+        GRP_ID="1" LBL="KRMS Context Maintenance Document"
+        OBJ_ID="87413487-8306-4130-b2df-a5d0e42243f9" PARNT_ID="2681"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
+        RTE_VER_NBR="2" VER_NBR="1"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+        DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
+        DOC_TYP_DESC="Create a KRMS Term" DOC_TYP_ID="3004"
+        DOC_TYP_NM="TermMaintenanceDocument" DOC_TYP_VER_NBR="0"
+        GRP_ID="1" LBL="KRMS Term Maintenance Document"
+        OBJ_ID="bc83f80b-85c4-40fd-998c-ef53fdd97e3f" PARNT_ID="2681"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
+        RTE_VER_NBR="2" VER_NBR="1"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+        DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
+        DOC_TYP_DESC="Create a KRMS Term Specification"
+        DOC_TYP_ID="3005"
+        DOC_TYP_NM="TermSpecificationMaintenanceDocument"
+        DOC_TYP_VER_NBR="0" GRP_ID="1"
+        LBL="KRMS Term Specification Maintenance Document"
+        OBJ_ID="57e7ee1d-e44a-4154-9ba4-ee562c434c98" PARNT_ID="2681"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
 </dataset>

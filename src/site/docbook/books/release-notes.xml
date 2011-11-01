@@ -3,10 +3,6 @@
     <info>
         <title>Kuali Rice ${project.version} Release Notes</title>
         <edition>${project.version}</edition>
-        <author>
-            <personname>Kuali Rice Team</personname>
-            <email>rice.collab@kuali.org</email>
-        </author>
         <pubdate>${reldate}</pubdate>
         <releaseinfo>This document contains a cumulative list of work accomplished between versions
             ${previous.version} and ${project.version}. It also contains the steps necessary in

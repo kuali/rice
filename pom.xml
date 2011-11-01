@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
-  ~ Copyright 2006-2011 The Kuali Foundation
-  ~
-  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~ http://www.opensource.org/licenses/ecl2.php
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
--->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    Copyright 2006-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>19</version>
+    <version>21</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -31,9 +30,11 @@
   <version>2.0.0-b1-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
-    both Kuali and non-Kuali applications to be built in an agile fashion, such that developers will be able to
+    both Kuali and non-Kuali applications
+    to be built in an agile fashion, such that developers will be able to
     react to
-    end-user business requirements in an efficient and productive manner, so that they can produce high
+    end-user business requirements in an efficient and productive manner, so
+    that they can produce high
     quality business
     applications.
   </description>
@@ -48,15 +49,11 @@
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
-    <kuali.cm.tools.version>1.5</kuali.cm.tools.version>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.17</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.build.timestamp.format>yyyy-MM-dd HH:mm z</maven.build.timestamp.format>
-    <kuali.build.timestamp>${maven.build.timestamp}</kuali.build.timestamp>
     <maven.skip.packaging>false</maven.skip.packaging>
     <maven.failsafe.forkmode>once</maven.failsafe.forkmode>
     <maven.failsafe.forkedProcessTimeoutInSeconds>7200</maven.failsafe.forkedProcessTimeoutInSeconds>
@@ -174,7 +171,66 @@
     <!-- Turn off Clover for now -->
     <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
     <kuali.release.goals>package assembly:assembly deploy site-deploy</kuali.release.goals>
+    <enforcer.phase>validate</enforcer.phase>
+    <failsafe.phase>integration-test</failsafe.phase>
   </properties>
+
+  <profiles>
+    <profile>
+      <id>license</id>
+      <properties>
+        <kuali.testjar.phase>none</kuali.testjar.phase>
+        <gmaven.stubs.phase>none</gmaven.stubs.phase>
+        <gmaven.compile.phase>none</gmaven.compile.phase>
+        <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
+        <maven.test.skip>true</maven.test.skip>
+        <enforcer.phase>none</enforcer.phase>
+        <failsafe.phase>none</failsafe.phase>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila.maven-license-plugin</groupId>
+            <artifactId>maven-license-plugin</artifactId>
+            <configuration>
+              <aggregate>true</aggregate>
+              <includes>
+                <include>config/**</include>
+              </includes>
+              <excludes>
+                <!-- Directory excludes -->
+                <exclude>db/impex/**</exclude>
+                <exclude>config/ide/**</exclude>
+
+                <!-- File excludes -->
+                <exclude>LICENSE.txt</exclude>
+                <exclude>NOTICE.txt</exclude>
+                <exclude>README.txt</exclude>
+
+                <!-- File type excludes -->
+                <exclude>**/*.pdf</exclude>
+                <exclude>**/*.swf</exclude>
+                <exclude>**/*.launch</exclude>
+                <exclude>**/.gitignore</exclude>
+                <exclude>**/rice.cer</exclude>
+                <exclude>**/rice.keystore</exclude>
+                <exclude>**/ricekeystore</exclude>
+                <exclude>**/*.template</exclude>
+                <exclude>**/clover.license</exclude>
+                <exclude>**/*.psd</exclude>
+                <exclude>**/.springBeans</exclude>
+                <exclude>**/*.tag</exclude>
+                <exclude>**/Thumbs.db</exclude>
+                <exclude>**/README</exclude>
+                <exclude>**/ChangeLog</exclude>
+                <exclude>**/org.apache.cxf.Logger</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <build>
     <testResources>
@@ -277,6 +333,7 @@
               <goals>
                 <goal>enforce</goal>
               </goals>
+              <phase>${enforcer.phase}</phase>
               <configuration>
                 <rules>
                   <requireJavaVersion>
@@ -510,17 +567,6 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>com.atlassian.maven.plugins</groupId>
-          <artifactId>maven-licenses-plugin</artifactId>
-          <version>0.3-kuali</version>
-          <configuration>
-            <licenses.repositoryId>kr-repo</licenses.repositoryId>
-            <licenses.repositoryUrl>https://test.kuali.org/maven</licenses.repositoryUrl>
-            <locateJarDirectory>${basedir}/web/target/rice-web-${project.version}/WEB-INF/lib</locateJarDirectory>
-            <locateOutputFile>locate.out</locateOutputFile>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
           <version>1.6</version>
@@ -643,6 +689,7 @@
           <executions>
             <execution>
               <id>integration-test</id>
+              <phase>${failsafe.phase}</phase>
               <goals>
                 <goal>integration-test</goal>
               </goals>
@@ -668,7 +715,8 @@
             <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}</forkedProcessTimeoutInSeconds>
             <reportFormat>plain</reportFormat>
             <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
-              -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</argLine>
+              -XX:+UseConcMarkSweepGC
+              -XX:+CMSClassUnloadingEnabled</argLine>
           </configuration>
           <dependencies>
             <dependency>
@@ -854,11 +902,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>com.atlassian.maven.plugins</groupId>
-        <artifactId>maven-licenses-plugin</artifactId>
       </plugin>
 
       <plugin>

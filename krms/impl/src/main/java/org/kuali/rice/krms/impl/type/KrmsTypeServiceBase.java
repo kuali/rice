@@ -97,7 +97,7 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
         return results;
     }
 
-    private void sortFields(List<RemotableAttributeField> results,
+    protected void sortFields(List<RemotableAttributeField> results,
             final Map<String, Integer> sortCodeMap) {// sort the results
         Collections.sort(results, new Comparator<RemotableAttributeField>() {
             @Override

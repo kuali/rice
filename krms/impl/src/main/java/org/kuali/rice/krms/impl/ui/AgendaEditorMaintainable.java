@@ -34,13 +34,16 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
+import org.kuali.rice.krms.framework.type.RuleTypeService;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaAttributeBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.type.ActionTypeServiceBase;
 import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
+import org.kuali.rice.krms.impl.type.RuleTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,6 +143,25 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         return results;
     }
 
+    public List<RemotableAttributeField> retrieveRuleCustomAttributes(View view, Object model, Container container) {
+        List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
+
+        MaintenanceForm maintenanceForm = (MaintenanceForm)model;
+        AgendaEditor agendaEditor = (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
+
+        // if we have an rule w/ a typeId set on it
+        if (agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
+                && !StringUtils.isBlank(agendaEditor.getAgendaItemLine().getRule().getTypeId())) {
+
+            String krmsTypeId = agendaEditor.getAgendaItemLine().getRule().getTypeId();
+
+            RuleTypeService ruleTypeService = getRuleTypeService(krmsTypeId);
+            results.addAll(ruleTypeService.getAttributeFields(krmsTypeId));
+        }
+
+        return results;
+    }
+
     private ActionTypeService getActionTypeService(String krmsTypeId) {
         //
         // Get the ActionTypeService by hook or by crook
@@ -158,10 +180,38 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                 actionTypeService = KrmsRepositoryServiceLocator.getService(serviceName);
             }
         }
+        if (actionTypeService == null) {
+            actionTypeService = ActionTypeServiceBase.defaultActionTypeService;
+        }
 
 //        if (actionTypeService == null) { actionTypeService = AgendaTypeServiceBase.defaultAgendaTypeService; }
 
         return actionTypeService;
+    }
+
+    private RuleTypeService getRuleTypeService(String krmsTypeId) {
+        RuleTypeService ruleTypeService = null;
+        String serviceName = getRuleTypeServiceName(krmsTypeId);
+
+        if (!StringUtils.isBlank(serviceName)) {
+            ruleTypeService = KrmsRepositoryServiceLocator.getService(serviceName);
+        }
+        if (ruleTypeService == null) {
+            ruleTypeService = RuleTypeServiceBase.defaultRuleTypeService;
+        }
+        return ruleTypeService;
+    }
+
+    private String getRuleTypeServiceName(String krmsTypeId) {
+        String serviceName = null;
+        KrmsTypeDefinition krmsType =
+                KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().
+                        getTypeById(krmsTypeId);
+
+        if (!StringUtils.isBlank(krmsTypeId)) {
+            serviceName = krmsType.getServiceName();
+        }
+        return serviceName;
     }
 
     @Override

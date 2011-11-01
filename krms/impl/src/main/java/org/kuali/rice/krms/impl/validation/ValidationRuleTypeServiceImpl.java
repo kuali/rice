@@ -17,12 +17,16 @@ package org.kuali.rice.krms.impl.validation;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
 import org.kuali.rice.krms.framework.type.ValidationRuleTypeService;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 import org.kuali.rice.krms.impl.type.KrmsTypeServiceBase;
+
+import javax.jws.WebParam;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -73,6 +77,12 @@ public final class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase imp
                     translator.translateActionDefinitions(validationRuleDefinition.getActions()));
         }
         return null;
+    }
+
+    @Override
+    public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId) throws RiceIllegalArgumentException {
+        RadioButtonTypeServiceUtil radioButtonTypeServiceUtil = new RadioButtonTypeServiceUtil();
+        return radioButtonTypeServiceUtil.getAttributeFields(krmsTypeId);
     }
 
     /**

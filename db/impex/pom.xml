@@ -250,6 +250,11 @@
           </executions>
           <dependencies>
             <dependency>
+              <groupId>org.kuali.rice</groupId>
+              <artifactId>rice-sql</artifactId>
+              <version>${project.version}</version>
+            </dependency>
+            <dependency>
               <groupId>mysql</groupId>
               <artifactId>${mysql.jdbc.artifactId}</artifactId>
               <version>${mysql.jdbc.version}</version>

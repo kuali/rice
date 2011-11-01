@@ -62,13 +62,6 @@
                 </configuration>
               </execution>
             </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.kuali.rice</groupId>
-                <artifactId>rice-sql</artifactId>
-                <version>${project.version}</version>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>
@@ -101,13 +94,6 @@
                 </configuration>
               </execution>
             </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.kuali.rice</groupId>
-                <artifactId>rice-sql</artifactId>
-                <version>${project.version}</version>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>

@@ -25,7 +25,7 @@ public interface DocumentSecurityHandlerService {
 
     /**
      * Returns a list of document ids from the given list of document security directives for which the principal with
-     * the given principal is allowed to view.  Any document which is passed to this method as part of a document
+     * the given principal id is allowed to view.  Any document which is passed to this method as part of a document
      * security directive which is not included in the list of document ids that is returned from this method should
      * <strong>not</strong> be presented to the principal with the given principal id.
      *
@@ -40,7 +40,8 @@ public interface DocumentSecurityHandlerService {
      * execute the authorization check.
      *
      * @return the list of document ids from the given document security directives for which the given principal is
-     * authorized
+     * authorized, if a null or empty list is returned, that means that the given principal is not authorized to view
+     * information about any of the documents
      *
      * @throws RiceIllegalArgumentException if the given principalId is a null or blank value
      * @throws RiceIllegalArgumentException if any of the security attributes defined in the given list of security

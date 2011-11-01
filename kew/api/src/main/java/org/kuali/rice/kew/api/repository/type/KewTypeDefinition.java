@@ -143,14 +143,14 @@ public final class KewTypeDefinition extends AbstractDataTransferObject implemen
      * @return the KewTypeAttribute or null
      * @throws IllegalArgumentException if the name is blank
      */
-	public KewTypeAttribute getAttributeDefinitionByName(String name) {
+	public KewAttributeDefinition getAttributeDefinitionByName(String name) {
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name was a null or blank value");
         }
         if (CollectionUtils.isNotEmpty(getAttributes())) {
             for (KewTypeAttribute attribute : getAttributes()) {
                 if (name.equals(attribute.getAttributeDefinition().getName())) {
-                    return attribute;
+                    return attribute.getAttributeDefinition();
                 }
             }
         }

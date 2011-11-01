@@ -31,7 +31,7 @@
       <list>
         <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="name" p:fieldDirectInquiry.render="false"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="typeId"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
       </list>
@@ -75,6 +75,8 @@
         <bean parent="PeopleFlow-Detail"/>
       </list>
     </property>
+    <property name="viewHelperServiceClassName"
+              value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowInquirableImpl"/>
   </bean>
 
   <!--
@@ -186,8 +188,8 @@
   ********************************************************************************************************************
   -->
   <bean id="PeopleFlow-Member" parent="InputField" p:propertyName="memberName" p:label="Member"
-        p:refreshWhenChanged="#line.memberTypeCode" p:readOnly="@{#line.memberTypeCode ne 'P'}"
-        p:fieldLookup.render="true" p:resetDataOnRefresh="true">
+        p:refreshWhenChanged="#line.memberTypeCode" p:readOnly="@{(#line.memberTypeCode ne 'P') or #view.readOnly}"
+        p:fieldLookup.render="@{!view.readOnly}" p:resetDataOnRefresh="true">
     <property name="control">
       <bean parent="UserControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name"/>
     </property>
@@ -201,13 +203,13 @@
         <bean parent="PropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'R'">
           <property name="replacement">
             <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo"
-                  p:fieldConversions="id:memberId" p:render="true"/>
+                  p:fieldConversions="id:memberId" p:render="@{!view.readOnly}"/>
           </property>
         </bean>
         <bean parent="PropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'G'">
           <property name="replacement">
             <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
-                  p:fieldConversions="id:memberId" p:render="true"/>
+                  p:fieldConversions="id:memberId" p:render="@{!view.readOnly}"/>
           </property>
         </bean>
       </list>

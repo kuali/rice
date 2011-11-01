@@ -73,7 +73,11 @@ public class UserControl extends TextControl {
         }
 
         if (field.isReadOnly() && StringUtils.isBlank(field.getAdditionalDisplayPropertyName())) {
-            field.setAdditionalDisplayPropertyName(personObjectPropertyName + ".name");
+            if (StringUtils.isNotBlank(personNamePropertyName)) {
+                field.setAdditionalDisplayPropertyName(personNamePropertyName);
+            } else {
+                field.setAdditionalDisplayPropertyName(personObjectPropertyName + ".name");
+            }
         }
 
         // setup field query for displaying name

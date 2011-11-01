@@ -52,18 +52,4 @@
     <enforcer.phase>none</enforcer.phase>
     <failsafe.phase>none</failsafe.phase>
   </properties>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>gmaven-generate-stubs</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>

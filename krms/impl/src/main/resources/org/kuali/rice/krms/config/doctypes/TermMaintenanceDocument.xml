@@ -4,7 +4,7 @@
     <documentType>
       <name>TermMaintenanceDocument</name>
       <parent>RiceDocument</parent>
-      <description>Create a KRMS Term1</description>
+      <description>Create a KRMS Term</description>
       <label>KRMS Term Maintenance Document</label>
       <postProcessorName>org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor</postProcessorName>
       <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>

@@ -72,8 +72,7 @@
     <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.TermBo"/>
     <property name="maintainableClass" value="org.kuali.rice.krms.impl.ui.TermMaintainable"/>
     <property name="documentTypeName" value="TermMaintenanceDocument"/>
-    <!-- property name="documentAuthorizerClass" value="org.kuali.rice.krms.impl.authorization.AgendaEditorAuthorizer"/ -->
-    <!-- property name="businessRulesClass" value="org.kuali.rice.krms.impl.rule.AgendaEditorBusRule" / -->
+    <property name="businessRulesClass" value="org.kuali.rice.krms.impl.rule.TermBusRule" />
     <property name="lockingKeys">
       <list>
         <value>id</value>
@@ -156,55 +155,7 @@
                 </property>
               </bean>
 
-
-
-              <bean parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3" p:colSpan="2" p:readOnly="true">
-                <property name="title" value="Categories" />
-                <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo" />
-                <property name="propertyName" value="specification.categories" />
-                <property name="layoutManager.renderSequenceField" value="false" />
-                <property name="items">
-                  <list>
-
-                    <!-- bean parent="InputField" p:propertyName="id" / -->
-                    <bean parent="InputField" p:propertyName="id" p:required="true">
-                      <property name="control">
-                        <bean parent="TextControl" p:size="40"/>
-                      </property>
-
-                      <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
-                      <property name="fieldLookup.fieldConversions">
-                        <map>
-                          <entry key="id" value="id"/>
-                          <entry key="name" value="name"/>
-                          <entry key="namespace" value="namespace"/>
-                        </map>
-                      </property>
-                      <property name="fieldLookup.lookupParameters">
-                        <map>
-                          <entry key="namespace" value="namespace"/>
-                          <entry key="name" value="name"/>
-                          <entry key="id" value="id"/>
-                        </map>
-                      </property>
-                    </bean>
-
-                    <bean parent="InputField" p:propertyName="namespace" p:required="true">
-                      <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
-                      <property name="control">
-                        <bean parent="SelectControl"/>
-                      </property>
-                    </bean>
-                    <bean parent="InputField" p:propertyName="name" p:readOnly="true">
-                      <property name="control">
-                        <bean parent="TextControl" p:size="80"/>
-                      </property>
-                    </bean>
-                  </list>
-                </property>
-              </bean>
-
-
+              <bean parent="TermSpec-Categories" p:readOnly="true" p:propertyName="specification.categories" />
 
               <bean parent="GroupSectionGridLayout" p:layoutManager.numberOfColumns="2" p:colSpan="2"
                     p:refreshWhenChanged="document.newMaintainableObject.dataObject.specificationId"

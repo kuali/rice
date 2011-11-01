@@ -14,7 +14,8 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
 	def String type
     def String description
 
-    def List<CategoryBo> categories
+    def List<CategoryBo> categories = new ArrayList<CategoryBo>()
+    def List<ContextBo> contexts = new ArrayList<ContextBo>()
 
 	/**
 	* Converts a mutable bo to it's immutable counterpart

@@ -70,13 +70,160 @@
   <bean id="TermSpecificationBo-type" parent="TermSpecificationBo-type-parentBean"/>
   <bean id="TermSpecificationBo-type-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
-    <property name="shortLabel" value="Type"/>
+    <property name="shortLabel" value="Data Type"/>
     <property name="controlField">
       <bean parent="TextControl" p:size="128"/>
     </property>
     <property name="name" value="type"/>
-    <property name="label" value="Type"/>
+    <property name="label" value="Data Type"/>
   </bean>
+
+
+  <!-- Maintenance View -->
+
+  <bean id="TermSpecificationMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
+    <property name="dataObjectClass" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
+    <property name="maintainableClass" value="org.kuali.rice.krms.impl.ui.TermSpecificationMaintainable"/>
+    <property name="documentTypeName" value="TermSpecificationMaintenanceDocument"/>
+    <property name="businessRulesClass" value="org.kuali.rice.krms.impl.rule.TermSpecBusRule" />
+    <property name="lockingKeys">
+      <list>
+        <value>id</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TermSpec-MaintenanceView" parent="MaintenanceView">
+    <property name="title" value="Term Specification"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.TermSpecificationBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.ui.TermSpecificationMaintainable"/>
+    <property name="items">
+      <list>
+        <ref bean="TermSpec-MainSection"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TermSpec-MainSection" parent="MaintenanceGroupSection">
+    <property name="title" value="Term Specification" />
+    <property name="items">
+      <list>
+        <bean parent="GroupGridBodyOnly" p:layoutManager.numberOfColumns="2">
+          <property name="items">
+            <list>
+              <bean parent="InputField" p:propertyName="id" p:readOnly="true" />
+              <bean parent="InputField" p:propertyName="namespace" />
+              <bean parent="InputField" p:propertyName="name" />
+              <bean parent="InputField" p:propertyName="type" />
+              <bean parent="InputField" p:propertyName="description" />
+              <ref bean="TermSpec-Contexts" />
+              <ref bean="TermSpec-Categories" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TermSpec-Categories" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="3" p:colSpan="2">
+    <property name="title" value="Categories" />
+    <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.CategoryBo" />
+    <property name="propertyName" value="categories" />
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="items">
+      <list>
+
+        <!-- bean parent="InputField" p:propertyName="id" / -->
+        <bean parent="InputField" p:propertyName="id" p:required="true">
+          <property name="control">
+            <bean parent="TextControl" p:size="40"/>
+          </property>
+
+          <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
+          <property name="fieldLookup.fieldConversions">
+            <map>
+              <entry key="id" value="id"/>
+              <entry key="name" value="name"/>
+              <entry key="namespace" value="namespace"/>
+            </map>
+          </property>
+          <property name="fieldLookup.lookupParameters">
+            <map>
+              <entry key="namespace" value="namespace"/>
+              <entry key="name" value="name"/>
+              <entry key="id" value="id"/>
+            </map>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="namespace" p:required="true">
+          <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+          <property name="control">
+            <bean parent="SelectControl"/>
+          </property>
+        </bean>
+        <bean parent="InputField" p:propertyName="name" p:readOnly="true">
+          <property name="control">
+            <bean parent="TextControl" p:size="80"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TermSpec-Contexts" parent="CollectionGroupTableLayout" p:layoutManager.numberOfColumns="4" p:colSpan="2">
+    <property name="title" value="Contexts" />
+    <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.ContextBo" />
+    <property name="propertyName" value="contexts" />
+    <property name="layoutManager.renderSequenceField" value="false" />
+    <property name="items">
+      <list>
+
+        <!-- bean parent="InputField" p:propertyName="id" / -->
+        <bean parent="InputField" p:propertyName="id" p:required="true">
+          <property name="control">
+            <bean parent="TextControl" p:size="40"/>
+          </property>
+
+          <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+          <property name="fieldLookup.fieldConversions">
+            <map>
+              <entry key="id" value="id"/>
+              <entry key="name" value="name"/>
+              <entry key="namespace" value="namespace"/>
+              <entry key="description" value="description" />
+            </map>
+          </property>
+          <property name="fieldLookup.lookupParameters">
+            <map>
+              <entry key="namespace" value="namespace"/>
+              <entry key="name" value="name"/>
+              <entry key="id" value="id"/>
+            </map>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="namespace" p:required="true">
+          <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+          <property name="control">
+            <bean parent="SelectControl"/>
+          </property>
+        </bean>
+        <bean parent="InputField" p:propertyName="name" p:readOnly="true">
+          <property name="control">
+            <bean parent="TextControl" p:size="100"/>
+          </property>
+        </bean>
+        <bean parent="InputField" p:propertyName="description" p:readOnly="true">
+          <property name="control">
+            <bean parent="TextAreaControl" p:cols="80" p:rows="3"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+
 
 
   <!-- Inquiry View -->

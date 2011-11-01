@@ -36,11 +36,13 @@ public final class KrmsRepositoryServiceLocator {
     public static final String CRITERIA_LOOKUP_SERVICE = "criteriaLookupService";
     public static final String KRMS_CONTEXT_BO_SERVICE = "contextBoService";
     public static final String KRMS_AGENDA_BO_SERVICE = "agendaBoService";
+    public static final String KRMS_TERM_BO_SERVICE = "termBoService";
     public static final String KRMS_RULE_BO_SERVICE = "ruleBoService";
     public static final String KRMS_AGENDA_AUTHORIZATION_SERVICE = "agendaAuthorizationService";
 
 	private static KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private static ContextBoService contextBoService;
+    private static TermBoService termBoService;
     private static AgendaBoService agendaBoService;
     private static RuleBoService ruleBoService;
     private static AgendaAuthorizationService agendaAuthorizationService;
@@ -77,6 +79,13 @@ public final class KrmsRepositoryServiceLocator {
             contextBoService = getService(KRMS_CONTEXT_BO_SERVICE);
         }
         return contextBoService;
+    }
+
+    public static TermBoService getTermBoService() {
+        if (termBoService == null) {
+            termBoService = getService(KRMS_TERM_BO_SERVICE);
+        }
+        return termBoService;
     }
 
     public static AgendaBoService getAgendaBoService() {

@@ -154,8 +154,10 @@ public abstract class KrmsTypeServiceBase implements RemotableAttributeOwner {
 
             builder.setLongLabel(attributeDefinition.getName());
             builder.setName(attributeDefinition.getName());
-            builder.setHelpSummary("helpSummary: " + attributeDefinition.getDescription());
-            builder.setHelpDescription("helpDescription: " + attributeDefinition.getDescription());
+
+//            builder.setHelpSummary("helpSummary: " + attributeDefinition.getDescription());
+//            builder.setHelpDescription("helpDescription: " + attributeDefinition.getDescription());
+
             builder.setControl(controlBuilder);
             builder.setMaxLength(400);
 

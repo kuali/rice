@@ -49,6 +49,16 @@ public final class KRMSPropertyConstants {
 		public static final String ATTRIBUTE_BOS = "attributeBos";
 	}
 
+    public static final class Term {
+        public static final String TERM_ID ="dataObject.id";
+        public static final String DESCRIPTION = "dataObject.description";
+    }
+
+    public static final class TermSpecification {
+        public static final String TERM_SPECIFICATION_ID ="dataObject.id";
+        public static final String NAME = "dataObject.name";
+    }
+
 	public static final class Rule {
 		public static final String RULE_ID ="ruleId";
         public static final String NAME = "dataObject.agendaItemLine.rule.name";

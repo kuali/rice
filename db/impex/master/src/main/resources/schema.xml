@@ -14,6 +14,88 @@
         <column name="ACCT_UPDATE_DT_TM" type="DATE"/>
         <column name="ACCT_AWAKE" size="1" type="VARCHAR"/>
     </table>
+    <table name="BK_ADDRESS_T">
+        <column name="ADDRESS_ID" primaryKey="true" size="22" type="DECIMAL"/>
+        <column name="AUTHOR_ID" size="22" type="DECIMAL"/>
+        <column name="ADDR_TYP" size="40" type="VARCHAR"/>
+        <column name="STREET1" size="50" type="VARCHAR"/>
+        <column name="STREET2" size="50" type="VARCHAR"/>
+        <column name="CITY" size="50" type="VARCHAR"/>
+        <column name="PROVIENCE" size="50" type="VARCHAR"/>
+        <column name="COUNTRY" size="50" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
+    <table name="BK_ADDRESS_TYP_T">
+        <column name="ADDR_TYP" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="DESC_TXT" size="255" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
+    <table name="BK_AUTHOR_ACCOUNT_T">
+        <column name="AUTHOR_ID" primaryKey="true" size="22" type="DECIMAL"/>
+        <column name="ACCOUNT_NUMBER" size="50" type="VARCHAR"/>
+        <column name="BANK_NAME" size="100" type="VARCHAR"/>
+    </table>
+    <table name="BK_AUTHOR_T">
+        <column name="AUTHOR_ID" primaryKey="true" size="22" type="DECIMAL"/>
+        <column name="NM" size="100" type="VARCHAR"/>
+        <column name="ADDRESS" size="200" type="VARCHAR"/>
+        <column name="EMAIL" size="50" type="VARCHAR"/>
+        <column name="PHONE_NBR" size="20" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
+    <table name="BK_BOOK_AUTHOR_T">
+        <column name="BOOK_ID" primaryKey="true" size="22" type="DECIMAL"/>
+        <column name="AUTHOR_ID" primaryKey="true" size="22" type="DECIMAL"/>
+    </table>
+    <table name="BK_BOOK_T">
+        <column name="BOOK_ID" primaryKey="true" size="22" type="DECIMAL"/>
+        <column name="TITLE" size="100" type="VARCHAR"/>
+        <column name="AUTHOR" size="100" type="VARCHAR"/>
+        <column name="TYP_CD" size="40" type="VARCHAR"/>
+        <column name="ISBN" size="17" type="VARCHAR"/>
+        <column name="PUBLISHER" size="100" type="VARCHAR"/>
+        <column name="PUB_DATE" type="DATE"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column name="PRICE" scale="2" size="15" type="DECIMAL"/>
+        <column name="RATING" size="22" type="DECIMAL"/>
+    </table>
+    <table name="BK_BOOK_TYP_T">
+        <column name="TYP_CD" primaryKey="true" size="40" type="VARCHAR"/>
+        <column name="NM" size="100" type="VARCHAR"/>
+        <column name="DESC_TXT" size="255" type="VARCHAR"/>
+        <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
+    <table name="BK_ORDER_DOC_T">
+        <column name="DOC_HDR_ID" primaryKey="true" size="22" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+    </table>
+    <table name="BK_ORDER_ENTRY_T">
+        <column name="BK_ORDER_ENTRY_ID" primaryKey="true" size="22" type="DECIMAL"/>
+        <column name="DOC_HDR_ID" required="true" size="14" type="VARCHAR"/>
+        <column name="BOOK_ID" required="true" size="22" type="DECIMAL"/>
+        <column name="QUANTITY" required="true" size="22" type="DECIMAL"/>
+        <column name="UNIT_PRICE" scale="2" size="15" type="DECIMAL"/>
+        <column name="DISCOUNT" scale="2" size="5" type="DECIMAL"/>
+        <column name="TOTAL_PRICE" scale="2" size="15" type="DECIMAL"/>
+        <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
+        <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <foreign-key foreignTable="KRNS_DOC_HDR_T" name="BK_ORDER_ENTRY_T_KRNS_DO_ADV1">
+            <reference foreign="DOC_HDR_ID" local="DOC_HDR_ID"/>
+        </foreign-key>
+        <foreign-key foreignTable="BK_BOOK_T" name="BK_ORDER_ENTRY_T_BK_BOOK_T">
+            <reference foreign="BOOK_ID" local="BOOK_ID"/>
+        </foreign-key>
+    </table>
     <table name="KRCR_CMPNT_SET_T">
         <column name="CMPNT_SET_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="LAST_UPDT_TS" required="true" type="DATE"/>
@@ -3673,6 +3755,10 @@
     <view name="KRIM_RSP_ATTR_V" viewdefinition="SELECT&#xa;krim_typ_t.NM AS responsibility_type_name&#xa;, KRIM_rsp_TMPL_T.NM AS rsp_TEMPLATE_NAME&#xa;, KRIM_rsp_T.nmspc_cd AS rsp_namespace_code&#xa;, KRIM_rsp_T.NM AS rsp_NAME&#xa;, krim_rsp_t.RSP_ID AS rsp_id&#xa;, KRIM_ATTR_DEFN_T.NM AS attribute_name&#xa;, KRIM_rsp_ATTR_DATA_T.ATTR_VAL AS attribute_value&#xa;FROM KRIM_rsp_T KRIM_rsp_T&#xa;INNER JOIN KRIM_rsp_ATTR_DATA_T KRIM_rsp_ATTR_DATA_T&#xa;ON KRIM_rsp_T.rsp_ID = KRIM_rsp_ATTR_DATA_T.rsp_id&#xa;INNER JOIN KRIM_ATTR_DEFN_T KRIM_ATTR_DEFN_T&#xa;ON KRIM_rsp_ATTR_DATA_T.KIM_ATTR_DEFN_ID = KRIM_ATTR_DEFN_T.KIM_ATTR_DEFN_ID&#xa;INNER JOIN KRIM_rsp_TMPL_T KRIM_rsp_TMPL_T&#xa;ON KRIM_rsp_T.rsp_TMPL_ID = KRIM_rsp_TMPL_T.rsp_TMPL_ID&#xa;INNER JOIN KRIM_TYP_T KRIM_TYP_T&#xa;ON KRIM_rsp_TMPL_T.KIM_TYP_ID = KRIM_TYP_T.KIM_TYP_ID&#xa;ORDER BY rsp_TEMPLATE_NAME, rsp_NAME, attribute_name&#xa;&#xa;&#xa; &#xa; "/>
     <view name="KRIM_RSP_ROLE_ACTN_V" viewdefinition="select&#xa;rsp.nmspc_cd as rsp_nmspc_cd&#xa;, rsp.rsp_id&#xa;, r.NMSPC_CD&#xa;, r.ROLE_NM&#xa;, rr.ROLE_ID&#xa;, rm.MBR_ID&#xa;, rm.MBR_TYP_CD&#xa;, rm.ROLE_MBR_ID&#xa;, actn.ACTN_TYP_CD&#xa;, actn.ACTN_PLCY_CD&#xa;, actn.FRC_ACTN&#xa;, actn.PRIORITY_NBR&#xa;from krim_rsp_t rsp&#xa;left join krim_rsp_tmpl_t rspt&#xa;on rsp.rsp_tmpl_id = rspt.rsp_tmpl_id&#xa;left outer join krim_role_rsp_t rr&#xa;on rr.rsp_id = rsp.rsp_id&#xa;left outer join KRIM_ROLE_MBR_T rm&#xa;ON rm.ROLE_ID = rr.ROLE_ID&#xa;left outer join KRIM_ROLE_RSP_ACTN_T actn&#xa;ON actn.ROLE_RSP_ID = rr.ROLE_RSP_ID&#xa;AND (actn.ROLE_MBR_ID = rm.ROLE_MBR_ID OR actn.ROLE_MBR_ID = '*')&#xa;left outer join krim_role_t r&#xa;on rr.role_id = r.role_id&#xa;order by rsp_nmspc_cd&#xa;, rsp_id&#xa;, role_id&#xa;, role_mbr_id&#xa;&#xa;&#xa; &#xa; "/>
     <view name="KRIM_RSP_ROLE_V" viewdefinition="select&#xa;rspt.nmspc_cd as rsp_tmpl_nmspc_cd&#xa;, rspt.nm as rsp_tmpl_nm&#xa;, rsp.nmspc_cd as rsp_nmspc_cd&#xa;, rsp.nm as rsp_nm&#xa;, rsp.rsp_id&#xa;, a.nm as attr_nm&#xa;, d.attr_val&#xa;, r.NMSPC_CD&#xa;, r.ROLE_NM&#xa;, rr.ROLE_ID&#xa;from krim_rsp_t rsp&#xa;left join krim_rsp_tmpl_t rspt&#xa;on rsp.rsp_tmpl_id = rspt.rsp_tmpl_id&#xa;left outer join krim_rsp_attr_data_t d&#xa;on rsp.rsp_id = d.rsp_id&#xa;left outer join krim_attr_defn_t a&#xa;on d.kim_attr_defn_id = a.kim_attr_defn_id&#xa;left outer join krim_role_rsp_t rr&#xa;on rr.rsp_id = rsp.rsp_id&#xa;left outer join krim_role_t r&#xa;on rr.role_id = r.role_id&#xa;order by rsp_tmpl_nmspc_cd, rsp_tmpl_nm, rsp_nmspc_cd, rsp_nm, rsp_id, attr_nm, attr_val&#xa;&#xa;&#xa; &#xa; "/>
+    <sequence name="BK_ADDRESS_ID_S" nextval="1"/>
+    <sequence name="BK_AUTHOR_ID_S" nextval="1"/>
+    <sequence name="BK_BOOK_ID_S" nextval="1"/>
+    <sequence name="BK_ORDER_ENTRY_S" nextval="1"/>
     <sequence name="KREN_CHNL_S" nextval="1000"/>
     <sequence name="KREN_CHNL_SUBSCRP_S" nextval="1020"/>
     <sequence name="KREN_CNTNT_TYP_S" nextval="1000"/>

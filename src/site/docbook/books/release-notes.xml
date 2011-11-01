@@ -15,35 +15,271 @@
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
         <para>This Release Notes documentation includes information on the list of changes between
-            Rice ${previous.version} (released ${previous.reldate}) and Rice ${project.version}. There
-            are no upgrade instructions from Rice ${previous.version} to Rice ${project.version} because
-            should be a pure drop in replacement. There have been no database changes.</para>
-        <para>If you encounter any difficulty, please don't hesitate to contact the Rice team on our
-            public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
+            Rice ${previous.version} (released ${previous.reldate}) and Rice ${project.version}.  </para>
+        <para>&lt;TODO: motivation for 2.0 goes here></para>
         <itemizedlist>
             <title>Highlights of this release include:</title>
             <listitem>
-                <simpara>Numerous bug fixes</simpara>
+                <simpara>Middleware version compatibility and versioned services</simpara>
+            </listitem>
+            <listitem>
+                <simpara>Increased Modularity</simpara>
+            </listitem>
+            <listitem>
+                <simpara>New module Kuali Rules Management System (KRMS) for building business
+                    rules</simpara>
+            </listitem>
+            <listitem>
+                <simpara>New module Kuali Rapid Application Development (KRAD), the next revision of
+                    the KNS which includes rich UI features</simpara>
+            </listitem>
+            <listitem>
+                <simpara>A full feature list of Rice 2.0 can be found at &lt;insert link
+                    here>.</simpara>
             </listitem>
         </itemizedlist>
-        <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
-        <para>There are three differient distributions of Rice available: source, binary and server.
-            Please read the Installation Guide for more details on each of these
-            distributions.</para>
-        <para>Documentation for this release can be found at at <link xlink:href="http://kuali.org/rice/docs/${project.version}">http://kuali.org/rice/docs/${project.version}</link>.</para>
-        </sect1>
+        <sect2>
+            <title>What's Not Complete for this Release </title>
+            <para>Rice ${project.version} is the first beta release and the goal of this release was
+                to ensure that approximately 95% of the functionality was complete prior to the
+                public beta test. Below is a list of what's<orderedlist>
+                    <listitem>
+                        <para><emphasis role="bold">Remote/embedded client configurations</emphasis><itemizedlist>
+                                <listitem>
+                                    <para>Rice ${project.version} can only be used to set up
+                                        "bundled" applications.  None of the remote or embedded
+                                        client configurations will work properly.</para>
+                                </listitem>
+                                <listitem>
+                                    <para>We will continue through future beta work to make remote
+                                        and embedded clients available again.</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Configuration Changes</emphasis> - The way in
+                            which you configure Rice may change quite a bit in future beta releases,
+                            so we are going to be looking at fairly inpactful beta releases coming
+                            down in the future.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Caching</emphasis> - There is still some work to
+                            do on the new caching layer and that will be cleaned up during
+                            beta.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Documentation</emphasis> is in a rudimentary
+                            state. During the course of beta releases, it will be reviewed and
+                            augmented.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Upgrade guide/upgrade scripts</emphasis> are not
+                            complete, but will be available before final release. Rough versions of
+                            scripts are available on the <link
+                                xlink:href="https://wiki.kuali.org/x/xSaREg">beta test
+                            site</link>.</para>
+                    </listitem>
+                </orderedlist></para>
+        </sect2>
+        <sect2>
+            <title>Download</title>
+            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link
+                    xlink:href="http://kuali.org/rice/download"
+                    >http://kuali.org/rice/download</link>.</para>
+            <para>There are three differient distributions of Rice available: source, binary and
+                server. Please read the Installation Guide for more details on each of these
+                distributions.</para>
+        </sect2>
+        <sect2>
+            <title>Documentation</title>
+            <para>For the beta test, we have a <link xlink:href="https://wiki.kuali.org/x/xSaREg"
+                    >wiki space to collect and maintain for beta testers</link>.</para>
+            <para>Formal documentation for this release can be found at at <link
+                    xlink:href="http://kuali.org/rice/docs/${project.version}"
+                    >http://kuali.org/rice/docs/${project.version}</link>.</para>
+        </sect2>
+        <sect2>
+            <title>Contact</title>
+            <para>If you encounter any difficulty, please don't hesitate to contact the Rice team on
+                our public collaboration mailing list at <email>rice.collab@kuali.org</email>.
+                Please indicate that you are using the ${project.version} version of Rice.</para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="major-changes" xreflabel="Major Changes">
+        <title>Major Changes</title>            
+        <para>While implementing modularity and version compatibility changes, there were many
+            structural improvements and refactoring changes to Rice to set a stronger foundation for
+            future releases. Below is a summary of the major changes.</para>
+        <sect2>
+            <title>Middleware Version Compatibility</title>
+            <para>In Rice 2.0, we are providing Middleware Version Compatibility. More info on this
+                and also Framework Version Compatibility can be found in our <link
+                    xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version Compatibility
+                    Statement</link>.</para>
+            <para>The Rice team implemented this feature with the recommendations found at <link
+                    xlink:href="https://wiki.kuali.org/x/P4AZD">Kuali Rice Version Compatibility
+                    Recommendations</link>.</para>
+            <sect3>
+                <title>General Purpose Lookup APIs</title>
+                <para>&lt;TODO: List what solution was chosen. It's not clear at <link
+                        xlink:href="https://wiki.kuali.org/x/PR9yEg"
+                        >https://wiki.kuali.org/x/PR9yEg</link>.</para>
+            </sect3>
+            <sect3>
+                <title>Parameter Service</title>
+                <para>See <link xlink:href="https://wiki.kuali.org/x/tg5yEg"
+                        >https://wiki.kuali.org/x/tg5yEg</link></para>
+            </sect3>
+            <sect3>
+                <title>Kuali Service Bus</title>
+                <para>See <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
+                        >https://wiki.kuali.org/x/T3dyEg</link></para>
+            </sect3>
+            <sect3>
+                <title>Kuali Enterprise Workflow</title>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>See <link xlink:href="https://wiki.kuali.org/x/fwuREg"
+                                    >https://wiki.kuali.org/x/fwuREg</link></para>
+                        </listitem>
+                        <listitem>
+                            <para>Addition of Priority parallel activation type (KRDOC-380)</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+            </sect3>
+            <sect3>
+                <title>Caching Infrastructure</title>
+                <para>See <link xlink:href="https://wiki.kuali.org/x/XgmWEg"
+                        >https://wiki.kuali.org/x/XgmWEg</link></para>
+            </sect3>
+            <sect3>
+                <title>RiceApplicationConfigurationService</title>
+                <para>See <link xlink:href="https://wiki.kuali.org/x/vA6tEg"
+                        >https://wiki.kuali.org/x/vA6tEg</link></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>New Modules: KRMS and KRAD</title>
+            <para>View the following analysis pages for information on KRMS and KRAD:<itemizedlist>
+                <listitem>
+                    <para><link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
+                        Analysis</link></para>
+                </listitem>
+                <listitem>
+                    <para><link xlink:href="https://wiki.kuali.org/x/UwHuE">KRAD
+                        Analysis</link></para>
+                </listitem>
+            </itemizedlist></para>
+        </sect2>
+        <sect2>
+            <title>Increased Modularity</title>
+            <para>See the following notes: <itemizedlist>
+                    <listitem>
+                        <para><link xlink:href="https://wiki.kuali.org/x/AgDYE">Modularity
+                                Analysis</link></para>
+                    </listitem>
+                    <listitem>
+                        <para>the running <link
+                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw/edit?hl=en_US"
+                                >list of modularity changes</link>.</para>
+                    </listitem>
+                    <listitem>
+                        <para><link
+                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8/edit?hl=en_US"
+                                >KEW Refactoring Notes</link></para>
+                    </listitem>
+                    <listitem>
+                        <para>TODO Document Search Framework Changes <link
+                                xlink:href="(https://jira.kuali.org/browse/KRDOC-383"
+                                >(https://jira.kuali.org/browse/KRDOC-383</link>)</para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        <sect2>
+            <title>Configuration Changes</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>XAPool/Bitronix Configuration Changes (KRDOC-382 )</para>
+                    </listitem>
+                    <listitem>
+                        <para>New configuration Parameters related to component publishing
+                            (KRDOC-386)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Drop support of Tomcat 5.5, servlet spec 2.4,jsp 2.0) -
+                            KRDOC-223</para>
+                    </listitem>
+                    <listitem>
+                        <para>Changes to configurers and run modes (KRDOC-389)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removal of </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Library Changes</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>TODO</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Other Changes</title>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Removal of DateUtils and NumberUtils (KRDOC-232)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Changes in how unit tests and integration tests are run
+                            (KRDOC-367)</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="upgrade-guide" xreflabel="Upgrade Guide">
+        <title>Upgrade Guide</title>
+        <sect2>
+            <title>Database Changes</title>
+            <para>TODO: add links to scripts &amp; how to run (Jeff?)</para>
+        </sect2>
+    </sect1>
         <sect1 xml:id="bug-fix" xreflabel="Bug Fix">
-            <title>Bug Fix</title>            
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-3831">KULRICE-3831</link>: person inquiry displays too much information</para>
+            <title>Jiras</title>
+        <para>There were over 750 Jira issues addressed in Rice 2.0. Below are links to Jira filters
+            for the items addressed.</para>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+order+by+priority"
+                            >All Rice 2.0 Jiras</link></para>
+                </listitem>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Bug+Fix%22+order+by+priority"
+                            >Bug Fixes</link></para>
+                </listitem>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Improvement%22+order+by+priority"
+                            >Improvements</link></para>
+                </listitem>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+&quot;2.0&quot;+AND+status+IN+('Resolved'%2C'Closed')+AND+type+IN+(&quot;Task&quot;%2C&quot;Sub+Task&quot;)+order+by+priority"
+                            >Tasks &amp; SubTasks</link></para>
+                </listitem>
+            </itemizedlist>
+        </para>
          </sect1>
-        <sect1 xml:id="improvement" xreflabel="Improvement">
-            <title>Improvement</title>        
-            <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4558">
-                    KULRICE-4558</link>: Group document: add text indicating a namespace must be chosen before group members can be added</para>
-        </sect1>
-        <sect1 xml:id="task" xreflabel="Task">
-            <title>Task</title>
-                <para><link xlink:href="https://jira.kuali.org/browse/KULRICE-4601">KULRICE-4601</link>: Query to KREW_RIA_DOCTYPE_MAP_T happening
-                    for each search result row</para>
-        </sect1>
 </article>

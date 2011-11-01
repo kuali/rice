@@ -1,21 +1,18 @@
 package org.kuali.rice.kew.impl.peopleflow
 
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable
+import org.kuali.rice.kew.api.KEWPropertyConstants
+import org.kuali.rice.kew.api.KewApiServiceLocator
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowContract
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowMember
-
-import org.kuali.rice.kew.api.repository.type.KewTypeDefinition
-import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
-
 import org.kuali.rice.kew.api.repository.type.KewAttributeDefinition
-
-import org.kuali.rice.kew.impl.type.KewTypeBo
 import org.kuali.rice.kew.api.repository.type.KewTypeAttribute
+import org.kuali.rice.kew.api.repository.type.KewTypeDefinition
+import org.kuali.rice.kew.impl.type.KewTypeBo
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.util.BeanPropertyComparator
-import org.kuali.rice.kew.api.KewApiServiceLocator
-import org.kuali.rice.kew.api.KEWPropertyConstants
 
 /**
  * Mapped entity for PeopleFlows
@@ -49,15 +46,15 @@ class PeopleFlowBo extends PersistableBusinessObjectBase implements MutableInact
         return results;
     }
 
-    public static PeopleFlowBo from(PeopleFlowContract peopleFlow, KewTypeDefinition kewTypeDefinition) {
+    public static PeopleFlowBo from(PeopleFlowDefinition peopleFlow, KewTypeDefinition kewTypeDefinition) {
         return PeopleFlowBo.fromAndUpdate(peopleFlow, kewTypeDefinition, null);
     }
 
     /**
-     * Translates from the given PeopleFlowContract to a PeopleFlowBo, optionally updating the given "toUpdate" parameter
+     * Translates from the given PeopleFlowDefinition to a PeopleFlowBo, optionally updating the given "toUpdate" parameter
      * instead of creating a new PeopleFlowBo.  If it's not passed then a new PeopleFlowBo will be created.
      */
-    public static PeopleFlowBo fromAndUpdate(PeopleFlowContract peopleFlow, KewTypeDefinition kewTypeDefinition, PeopleFlowBo toUpdate) {
+    public static PeopleFlowBo fromAndUpdate(PeopleFlowDefinition peopleFlow, KewTypeDefinition kewTypeDefinition, PeopleFlowBo toUpdate) {
         PeopleFlowBo result = toUpdate;
         if (toUpdate == null) {
             result = new PeopleFlowBo();

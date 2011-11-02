@@ -1533,7 +1533,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         try {
             KewApiServiceLocator.getWorkflowDocumentService().documentSearch(principalId, criteria.build());
             fail("Exception should have been thrown when specifying a route node name but no document type name");
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
 
@@ -1542,9 +1542,11 @@ public class WorkflowUtilityTest extends KEWTestCase {
         criteria.setDocumentTypeName(documentTypeName);
         criteria.setRouteNodeName("This is an invalid route node name!!!");
         try {
-            KewApiServiceLocator.getWorkflowDocumentService().documentSearch(principalId, criteria.build());
-            fail("Exception should have been thrown when specifying a route node name that does not exist on the specified document type name");
-        } catch (Exception e) {}
+            DocumentSearchResults results = KewApiServiceLocator.getWorkflowDocumentService().documentSearch(principalId, criteria.build());
+            assertTrue("No results should have been returned for route node name that does not exist on the specified documentType.", results.getSearchResults().isEmpty());
+        } catch (Exception e) {
+            fail("Exception should not have been thrown when specifying a route node name that does not exist on the specified document type name");
+        }
 
         runPerformDocumentSearch_RouteNodeSearch(principalId, SeqSetup.ADHOC_NODE, documentTypeName, 0, 0, 2);
         runPerformDocumentSearch_RouteNodeSearch(principalId, SeqSetup.WORKFLOW_DOCUMENT_NODE, documentTypeName, 0, 2, 0);

@@ -650,7 +650,9 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         // render the node choices on the form.
         String returnSql = "";
         if (StringUtils.isNotBlank(routeNodeName)) {
-
+            if (docRouteLevelLogic == null) {
+                docRouteLevelLogic = RouteNodeLookupLogic.EXACTLY;
+            }
             StringBuilder routeNodeCriteria = new StringBuilder("and " + ROUTE_NODE_TABLE + ".NM ");
             if (RouteNodeLookupLogic.EXACTLY == docRouteLevelLogic) {
         		routeNodeCriteria.append("= '" + getDbPlatform().escapeString(routeNodeName) + "' ");

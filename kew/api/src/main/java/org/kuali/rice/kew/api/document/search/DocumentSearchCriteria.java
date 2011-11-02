@@ -487,6 +487,9 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
 
         @Override
         public DocumentSearchCriteria build() {
+            if (StringUtils.isNotBlank(routeNodeName) && StringUtils.isBlank(documentTypeName)) {
+                throw new IllegalStateException("documentTypeName must be set if routeNodeName is set.");
+            }
             return new DocumentSearchCriteria(this);
         }
 

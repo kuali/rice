@@ -192,10 +192,10 @@ public class ActionListTest extends KEWTestCase {
     	assertEquals("bmcgough should have 1 item in his secondary action list.", 1, actionItems.size());
         actionItem = actionItems.iterator().next();
         assertEquals("Should be an approve request.", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-        assertEquals("Should be a secondary delegation request.", DelegationType.SECONDARY.getCode(), actionItem.getDelegationType());
+        assertEquals("Should be a secondary delegation request.", DelegationType.SECONDARY, actionItem.getDelegationType());
     	actionItem = actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KewApiConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-    	assertEquals("Should be a secondary delegation request.", DelegationType.SECONDARY.getCode(), actionItem.getDelegationType());
+    	assertEquals("Should be a secondary delegation request.", DelegationType.SECONDARY, actionItem.getDelegationType());
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, noFilter);
     	assertEquals("bmcgough should have 1 item in his entire action list.", 1, actionItems.size());
 

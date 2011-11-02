@@ -344,9 +344,9 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                 continue;
             }
             boolean includeItem = true;
-            if (DelegationType.PRIMARY.getCode().equals(actionItem.getDelegationType())) {
+            if (DelegationType.PRIMARY.equals(actionItem.getDelegationType())) {
                 includeItem = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-            } else if (DelegationType.SECONDARY.getCode().equals(actionItem.getDelegationType())) {
+            } else if (DelegationType.SECONDARY.equals(actionItem.getDelegationType())) {
                 includeItem = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
             }
             if (includeItem) {

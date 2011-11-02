@@ -732,7 +732,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
                 ewestfalHasRequest = true;
                 if (actionRequest.getParentActionRequestId() != null) {
                     ewestfalHasDelegateRequest = true;
-                    assertEquals("Delegation type should been PRIMARY", DelegationType.PRIMARY.getCode(), actionRequest.getDelegationType());
+                    assertEquals("Delegation type should been PRIMARY", DelegationType.PRIMARY, actionRequest.getDelegationType());
                 }
             }
         }

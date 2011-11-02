@@ -853,7 +853,7 @@ public class ActionRequestValue implements Serializable {
         boolean primaryDelegator = false;
         for (Iterator<ActionRequestValue> iter = childrenRequests.iterator(); iter.hasNext();) {
             ActionRequestValue childRequest = iter.next();
-            primaryDelegator = DelegationType.PRIMARY.getCode().equals(childRequest.getDelegationType()) || primaryDelegator;
+            primaryDelegator = DelegationType.PRIMARY.equals(childRequest.getDelegationType()) || primaryDelegator;
         }
         return primaryDelegator;
     }
@@ -869,7 +869,7 @@ public class ActionRequestValue implements Serializable {
         List<ActionRequestValue> primaryDelegateRequests = new ArrayList<ActionRequestValue>();
         for (ActionRequestValue childRequest : childrenRequests)
         {
-            if (DelegationType.PRIMARY.getCode().equals(childRequest.getDelegationType()))
+            if (DelegationType.PRIMARY.equals(childRequest.getDelegationType()))
             {
                 if (childRequest.isRoleRequest())
                 {

@@ -83,9 +83,9 @@ public class DefaultNotificationService implements NotificationService {
 			Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
 			boolean sendEmail = false;
 			if (KewApiConstants.EMAIL_RMNDR_IMMEDIATE.equals(preferences.getEmailNotification())) {
-				if (DelegationType.PRIMARY.getCode().equals(actionItem.getDelegationType())) {
+				if (DelegationType.PRIMARY.equals(actionItem.getDelegationType())) {
 					sendEmail = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-				} else if (DelegationType.SECONDARY.getCode().equals(actionItem.getDelegationType())) {
+				} else if (DelegationType.SECONDARY.equals(actionItem.getDelegationType())) {
 					sendEmail = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
 				} else {
 					sendEmail = true;

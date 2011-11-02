@@ -9,9 +9,9 @@
         <column name="ACCT_NUM" required="true" size="14" type="DECIMAL"/>
         <column name="ACCT_OWNR" required="true" size="50" type="VARCHAR"/>
         <column name="ACCT_BAL" required="true" scale="2" size="16" type="DECIMAL"/>
-        <column name="ACCT_OPN_DAT" required="true" type="TIMESTAMP"/>
+        <column name="ACCT_OPN_DAT" required="true" type="DATE"/>
         <column name="ACCT_STAT" required="true" size="30" type="VARCHAR"/>
-        <column name="ACCT_UPDATE_DT_TM" type="TIMESTAMP"/>
+        <column name="ACCT_UPDATE_DT_TM" type="DATE"/>
         <column name="ACCT_AWAKE" size="1" type="VARCHAR"/>
     </table>
     <table name="BK_ADDRESS_T">
@@ -60,7 +60,7 @@
         <column name="TYP_CD" size="40" type="VARCHAR"/>
         <column name="ISBN" size="17" type="VARCHAR"/>
         <column name="PUBLISHER" size="100" type="VARCHAR"/>
-        <column name="PUB_DATE" type="TIMESTAMP"/>
+        <column name="PUB_DATE" type="DATE"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="PRICE" scale="2" size="15" type="DECIMAL"/>
@@ -98,7 +98,7 @@
     </table>
     <table name="KRCR_CMPNT_SET_T">
         <column name="CMPNT_SET_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column name="LAST_UPDT_TS" required="true" type="TIMESTAMP"/>
+        <column name="LAST_UPDT_TS" required="true" type="DATE"/>
         <column name="CHKSM" required="true" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
     </table>
@@ -237,7 +237,7 @@
         <column name="SYS_ID" size="300" type="VARCHAR"/>
         <column name="STAT_CD" required="true" size="15" type="VARCHAR"/>
         <column default="0" name="PROC_CNT" required="true" size="4" type="DECIMAL"/>
-        <column name="LOCKD_DTTM" type="TIMESTAMP"/>
+        <column name="LOCKD_DTTM" type="DATE"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <foreign-key foreignTable="KREN_MSG_T" name="KREN_MSG_DELIV_FK1">
             <reference foreign="MSG_ID" local="MSG_ID"/>
@@ -254,7 +254,7 @@
         <column name="MSG_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column name="ORGN_ID" size="128" type="VARCHAR"/>
         <column name="DELIV_TYP" required="true" size="500" type="VARCHAR"/>
-        <column name="CRTE_DTTM" required="true" type="TIMESTAMP"/>
+        <column name="CRTE_DTTM" required="true" type="DATE"/>
         <column name="TTL" size="255" type="VARCHAR"/>
         <column name="CHNL" required="true" size="300" type="VARCHAR"/>
         <column name="PRODCR" size="300" type="VARCHAR"/>
@@ -273,7 +273,7 @@
         <column name="RECIP_ID" required="true" size="40" type="VARCHAR"/>
         <column name="STAT_CD" required="true" size="15" type="VARCHAR"/>
         <column name="SYS_ID" size="300" type="VARCHAR"/>
-        <column name="LOCKD_DTTM" type="TIMESTAMP"/>
+        <column name="LOCKD_DTTM" type="DATE"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
         <foreign-key foreignTable="KREN_NTFCTN_T" name="KREN_NTFCTN_MSG_DELIV_FK1">
@@ -290,9 +290,9 @@
     <table name="KREN_NTFCTN_T">
         <column name="NTFCTN_ID" primaryKey="true" size="8" type="DECIMAL"/>
         <column name="DELIV_TYP" required="true" size="3" type="VARCHAR"/>
-        <column name="CRTE_DTTM" required="true" type="TIMESTAMP"/>
-        <column name="SND_DTTM" type="TIMESTAMP"/>
-        <column name="AUTO_RMV_DTTM" type="TIMESTAMP"/>
+        <column name="CRTE_DTTM" required="true" type="DATE"/>
+        <column name="SND_DTTM" type="DATE"/>
+        <column name="AUTO_RMV_DTTM" type="DATE"/>
         <column name="PRIO_ID" required="true" size="8" type="DECIMAL"/>
         <column name="TTL" size="255" type="VARCHAR"/>
         <column name="CNTNT" required="true" type="CLOB"/>
@@ -300,7 +300,7 @@
         <column name="CHNL_ID" required="true" size="8" type="DECIMAL"/>
         <column name="PRODCR_ID" required="true" size="8" type="DECIMAL"/>
         <column name="PROCESSING_FLAG" required="true" size="15" type="VARCHAR"/>
-        <column name="LOCKD_DTTM" type="TIMESTAMP"/>
+        <column name="LOCKD_DTTM" type="DATE"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
         <foreign-key foreignTable="KREN_PRODCR_T" name="KREN_NTFCTN_FK4">
@@ -442,7 +442,7 @@
     <table name="KREW_ACTN_ITM_T">
         <column name="ACTN_ITM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="ASND_DT" required="true" type="TIMESTAMP"/>
+        <column name="ASND_DT" required="true" type="DATE"/>
         <column name="RQST_CD" required="true" size="1" type="CHAR"/>
         <column name="ACTN_RQST_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
@@ -493,7 +493,7 @@
         <column name="RTE_NODE_INSTN_ID" size="40" type="VARCHAR"/>
         <column name="ACTN_TKN_ID" size="40" type="VARCHAR"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="CRTE_DT" required="true" type="TIMESTAMP"/>
+        <column name="CRTE_DT" required="true" type="DATE"/>
         <column name="RSP_DESC_TXT" size="200" type="VARCHAR"/>
         <column default="0" name="FRC_ACTN" size="1" type="DECIMAL"/>
         <column name="ACTN_RQST_ANNOTN_TXT" size="2000" type="VARCHAR"/>
@@ -536,7 +536,7 @@
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DLGTR_PRNCPL_ID" size="40" type="VARCHAR"/>
         <column name="ACTN_CD" required="true" size="1" type="CHAR"/>
-        <column name="ACTN_DT" required="true" type="TIMESTAMP"/>
+        <column name="ACTN_DT" required="true" type="DATE"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="ANNOTN" size="2000" type="VARCHAR"/>
         <column default="1" name="CUR_IND" size="1" type="DECIMAL"/>
@@ -566,7 +566,7 @@
         <column name="DOC_HDR_ID" size="40" type="VARCHAR"/>
         <column name="APP_DOC_STAT_FROM" size="64" type="VARCHAR"/>
         <column name="APP_DOC_STAT_TO" size="64" type="VARCHAR"/>
-        <column name="STAT_TRANS_DATE" type="TIMESTAMP"/>
+        <column name="STAT_TRANS_DATE" type="DATE"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <unique name="KREW_APP_DOC_STAT_TRAN_TC0">
@@ -629,7 +629,7 @@
         <column name="DOC_HDR_EXT_DT_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="KEY_CD" required="true" size="256" type="VARCHAR"/>
-        <column name="VAL" type="TIMESTAMP"/>
+        <column name="VAL" type="DATE"/>
         <index name="KREW_DOC_HDR_EXT_DT_TI1">
             <index-column name="KEY_CD"/>
             <index-column name="VAL"/>
@@ -694,12 +694,12 @@
         <column name="DOC_TYP_ID" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_STAT_CD" required="true" size="1" type="CHAR"/>
         <column name="RTE_LVL" required="true" size="8" type="DECIMAL"/>
-        <column name="STAT_MDFN_DT" required="true" type="TIMESTAMP"/>
-        <column name="CRTE_DT" required="true" type="TIMESTAMP"/>
-        <column name="APRV_DT" type="TIMESTAMP"/>
-        <column name="FNL_DT" type="TIMESTAMP"/>
-        <column name="RTE_STAT_MDFN_DT" type="TIMESTAMP"/>
-        <column name="RTE_LVL_MDFN_DT" type="TIMESTAMP"/>
+        <column name="STAT_MDFN_DT" required="true" type="DATE"/>
+        <column name="CRTE_DT" required="true" type="DATE"/>
+        <column name="APRV_DT" type="DATE"/>
+        <column name="FNL_DT" type="DATE"/>
+        <column name="RTE_STAT_MDFN_DT" type="DATE"/>
+        <column name="RTE_LVL_MDFN_DT" type="DATE"/>
         <column name="TTL" size="255" type="VARCHAR"/>
         <column name="APP_DOC_ID" size="255" type="VARCHAR"/>
         <column name="DOC_VER_NBR" required="true" size="8" type="DECIMAL"/>
@@ -709,7 +709,7 @@
         <column name="DTYPE" size="50" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column name="APP_DOC_STAT" size="64" type="VARCHAR"/>
-        <column name="APP_DOC_STAT_MDFN_DT" type="TIMESTAMP"/>
+        <column name="APP_DOC_STAT_MDFN_DT" type="DATE"/>
         <unique name="KREW_DOC_HDR_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -759,7 +759,7 @@
         <column name="DOC_NTE_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
         <column name="AUTH_PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="CRT_DT" required="true" type="TIMESTAMP"/>
+        <column name="CRT_DT" required="true" type="DATE"/>
         <column name="TXT" size="4000" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <index name="KREW_DOC_NTE_TI1">
@@ -895,8 +895,8 @@
         <column name="DOC_HDR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DOC_TYP_NM" required="true" size="64" type="VARCHAR"/>
         <column name="DOC_HDR_STAT_CD" required="true" size="1" type="CHAR"/>
-        <column name="DOC_HDR_MDFN_DT" required="true" type="TIMESTAMP"/>
-        <column name="DOC_HDR_CRTE_DT" required="true" type="TIMESTAMP"/>
+        <column name="DOC_HDR_MDFN_DT" required="true" type="DATE"/>
+        <column name="DOC_HDR_CRTE_DT" required="true" type="DATE"/>
         <column name="DOC_HDR_TTL" size="255" type="VARCHAR"/>
         <column name="DOC_HDR_INITR_PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <column name="CRNT_NODE_NM" required="true" size="30" type="VARCHAR"/>
@@ -936,7 +936,7 @@
     <table name="KREW_OUT_BOX_ITM_T">
         <column name="ACTN_ITM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="ASND_DT" required="true" type="TIMESTAMP"/>
+        <column name="ASND_DT" required="true" type="DATE"/>
         <column name="RQST_CD" required="true" size="1" type="CHAR"/>
         <column name="ACTN_RQST_ID" required="true" size="40" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="40" type="VARCHAR"/>
@@ -1269,14 +1269,14 @@
         <column name="DOC_TYP_NM" required="true" size="64" type="VARCHAR"/>
         <column name="DOC_HDR_ID" size="40" type="VARCHAR"/>
         <column name="TMPL_RULE_IND" size="1" type="DECIMAL"/>
-        <column name="FRM_DT" type="TIMESTAMP"/>
-        <column name="TO_DT" type="TIMESTAMP"/>
-        <column name="DACTVN_DT" type="TIMESTAMP"/>
+        <column name="FRM_DT" type="DATE"/>
+        <column name="TO_DT" type="DATE"/>
+        <column name="DACTVN_DT" type="DATE"/>
         <column default="0" name="CUR_IND" size="1" type="DECIMAL"/>
         <column default="0" name="RULE_VER_NBR" size="8" type="DECIMAL"/>
         <column name="DLGN_IND" size="1" type="DECIMAL"/>
         <column name="PREV_VER_RULE_ID" size="40" type="VARCHAR"/>
-        <column name="ACTVN_DT" type="TIMESTAMP"/>
+        <column name="ACTVN_DT" type="DATE"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <foreign-key foreignTable="KREW_RULE_EXPR_T" name="KREW_RULE_TR1">
@@ -1390,7 +1390,7 @@
         <column name="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_ADDR_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1406,7 +1406,7 @@
         <column default="N" name="EMP_AFLTN_TYP_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_AFLTN_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1434,7 +1434,7 @@
         <column name="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_CTZNSHP_STAT_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1467,9 +1467,9 @@
         <column name="DLGN_ID" size="40" type="VARCHAR"/>
         <column name="MBR_ID" size="40" type="VARCHAR"/>
         <column default="P" name="MBR_TYP_CD" size="1" type="CHAR"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <column name="ROLE_MBR_ID" size="40" type="VARCHAR"/>
         <foreign-key foreignTable="KRIM_DLGN_T" name="KRIM_DLGN_MBR_TR2">
             <reference foreign="DLGN_ID" local="DLGN_ID"/>
@@ -1503,7 +1503,7 @@
         <column name="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_EMAIL_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1518,7 +1518,7 @@
         <column name="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_EMP_STAT_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1533,7 +1533,7 @@
         <column name="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_EMP_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1557,11 +1557,11 @@
         <column name="POSTAL_CNTRY_CD" size="2" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <column name="ATTN_LINE" size="45" type="VARCHAR"/>
         <column name="ADDR_FMT" size="256" type="VARCHAR"/>
-        <column default="SYSDATE" name="MOD_DT" type="TIMESTAMP"/>
-        <column name="VALID_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="MOD_DT" type="DATE"/>
+        <column name="VALID_DT" type="DATE"/>
         <column name="VALID_IND" size="1" type="VARCHAR"/>
         <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
         <foreign-key foreignTable="KRIM_ENTITY_ENT_TYP_T"
@@ -1588,7 +1588,7 @@
         <column name="CAMPUS_CD" size="2" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENTITY_T"
             name="KRIM_ENTITY_AFLTN_TR1" onDelete="cascade">
             <reference foreign="ENTITY_ID" local="ENTITY_ID"/>
@@ -1607,10 +1607,10 @@
         <column name="ENTITY_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
-        <column name="BIRTH_DT" type="TIMESTAMP"/>
+        <column name="BIRTH_DT" type="DATE"/>
         <column name="GNDR_CD" required="true" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
-        <column name="DECEASED_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
+        <column name="DECEASED_DT" type="DATE"/>
         <column name="MARITAL_STATUS" size="40" type="VARCHAR"/>
         <column name="PRIM_LANG_CD" size="40" type="VARCHAR"/>
         <column name="SEC_LANG_CD" size="40" type="VARCHAR"/>
@@ -1636,7 +1636,7 @@
         <column name="CAMPUS_CD" size="40" type="VARCHAR"/>
         <column name="PRMRY_DEPT_CD" size="40" type="VARCHAR"/>
         <column name="EMP_ID" size="40" type="VARCHAR"/>
-        <column name="LAST_UPDT_TS" type="TIMESTAMP"/>
+        <column name="LAST_UPDT_TS" type="DATE"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <unique name="KRIM_ENTITY_CACHE_TC0">
             <unique-column name="OBJ_ID"/>
@@ -1652,10 +1652,10 @@
         <column name="ENTITY_ID" size="40" type="VARCHAR"/>
         <column name="POSTAL_CNTRY_CD" size="2" type="VARCHAR"/>
         <column name="CTZNSHP_STAT_CD" size="40" type="VARCHAR"/>
-        <column name="STRT_DT" type="TIMESTAMP"/>
-        <column name="END_DT" type="TIMESTAMP"/>
+        <column name="STRT_DT" type="DATE"/>
+        <column name="END_DT" type="DATE"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENTITY_T"
             name="KRIM_ENTITY_CTZNSHP_TR1" onDelete="cascade">
             <reference foreign="ENTITY_ID" local="ENTITY_ID"/>
@@ -1677,7 +1677,7 @@
         <column name="EMAIL_ADDR" size="200" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENTITY_ENT_TYP_T"
             name="KRIM_ENTITY_EMAIL_TR1" onDelete="cascade">
             <reference foreign="ENT_TYP_CD" local="ENT_TYP_CD"/>
@@ -1701,7 +1701,7 @@
         <column name="BASE_SLRY_AMT" scale="2" size="15" type="DECIMAL"/>
         <column name="PRMRY_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <column name="PRMRY_DEPT_CD" size="40" type="VARCHAR"/>
         <column name="EMP_ID" size="40" type="VARCHAR"/>
         <column name="EMP_REC_ID" size="40" type="VARCHAR"/>
@@ -1734,7 +1734,7 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENT_TYP_T" name="KRIM_ENTITY_ENT_TYP_TR2">
             <reference foreign="ENT_TYP_CD" local="ENT_TYP_CD"/>
         </foreign-key>
@@ -1770,7 +1770,7 @@
         <column name="ENTITY_ID" size="40" type="VARCHAR"/>
         <column name="EXT_ID_TYP_CD" size="40" type="VARCHAR"/>
         <column name="EXT_ID" size="100" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_EXT_ID_TYP_T" name="KRIM_ENTITY_EXT_ID_TR2">
             <reference foreign="EXT_ID_TYP_CD" local="EXT_ID_TYP_CD"/>
         </foreign-key>
@@ -1798,10 +1798,10 @@
         <column name="PREFIX_NM" size="20" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <column name="TITLE_NM" size="20" type="VARCHAR"/>
         <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
-        <column name="NM_CHNG_DT" type="TIMESTAMP"/>
+        <column name="NM_CHNG_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENTITY_T"
             name="KRIM_ENTITY_NM_TR1" onDelete="cascade">
             <reference foreign="ENTITY_ID" local="ENTITY_ID"/>
@@ -1825,7 +1825,7 @@
         <column name="POSTAL_CNTRY_CD" size="2" type="VARCHAR"/>
         <column default="N" name="DFLT_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENTITY_ENT_TYP_T"
             name="KRIM_ENTITY_PHONE_TR1" onDelete="cascade">
             <reference foreign="ENT_TYP_CD" local="ENT_TYP_CD"/>
@@ -1850,7 +1850,7 @@
         <column default="Y" name="SUPPRESS_ADDR_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="SUPPRESS_PHONE_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="SUPPRESS_PRSNL_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_ENTITY_PRIV_PREF_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1874,7 +1874,7 @@
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_ENTITY_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1901,7 +1901,7 @@
         <column name="NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_ENT_NM_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1931,7 +1931,7 @@
         <column default="N" name="ENCR_REQ_IND" size="1" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_EXT_ID_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -1980,9 +1980,9 @@
         <column name="GRP_ID" size="40" type="VARCHAR"/>
         <column name="MBR_ID" size="40" type="VARCHAR"/>
         <column default="P" name="MBR_TYP_CD" size="1" type="CHAR"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_GRP_T" name="KRIM_GRP_MBR_TR1" onDelete="cascade">
             <reference foreign="GRP_ID" local="GRP_ID"/>
         </foreign-key>
@@ -2002,7 +2002,7 @@
         <column name="GRP_DESC" size="4000" type="VARCHAR"/>
         <column name="KIM_TYP_ID" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_TYP_T" name="KRIM_GRP_TR1">
             <reference foreign="KIM_TYP_ID" local="KIM_TYP_ID"/>
         </foreign-key>
@@ -2098,7 +2098,7 @@
         <column name="PHONE_TYP_NM" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column name="DISPLAY_SORT_CD" size="2" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <unique name="KRIM_PHONE_TYP_TC0">
             <unique-column name="OBJ_ID"/>
         </unique>
@@ -2125,8 +2125,8 @@
         <column default="N" name="EDIT_FLAG" size="1" type="VARCHAR"/>
         <column name="ATTN_LINE" size="45" type="VARCHAR"/>
         <column name="ADDR_FMT" size="256" type="VARCHAR"/>
-        <column default="SYSDATE" name="MOD_DT" type="TIMESTAMP"/>
-        <column name="VALID_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="MOD_DT" type="DATE"/>
+        <column name="VALID_DT" type="DATE"/>
         <column name="VALID_IND" size="1" type="VARCHAR"/>
         <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
     </table>
@@ -2152,8 +2152,8 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="POSTAL_CNTRY_CD" size="2" type="VARCHAR"/>
         <column name="CTZNSHP_STAT_CD" size="40" type="VARCHAR"/>
-        <column name="STRT_DT" type="TIMESTAMP"/>
-        <column name="END_DT" type="TIMESTAMP"/>
+        <column name="STRT_DT" type="DATE"/>
+        <column name="END_DT" type="DATE"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
         <column default="N" name="EDIT_FLAG" size="1" type="VARCHAR"/>
     </table>
@@ -2179,8 +2179,8 @@
         <column name="MBR_NM" size="40" type="VARCHAR"/>
         <column name="MBR_TYP_CD" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
         <column name="ROLE_MBR_ID" size="40" type="VARCHAR"/>
     </table>
     <table name="KRIM_PND_DLGN_T">
@@ -2242,8 +2242,8 @@
         <column name="MBR_ID" size="40" type="VARCHAR"/>
         <column name="MBR_NM" size="40" type="VARCHAR"/>
         <column name="MBR_TYP_CD" required="true" size="40" type="VARCHAR"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
     </table>
     <table name="KRIM_PND_GRP_PRNCPL_MT">
         <column name="GRP_MBR_ID" primaryKey="true" size="40" type="VARCHAR"/>
@@ -2257,8 +2257,8 @@
         <column name="GRP_TYPE" size="80" type="VARCHAR"/>
         <column name="KIM_TYP_ID" size="40" type="VARCHAR"/>
         <column name="NMSPC_CD" size="40" type="VARCHAR"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
         <column default="N" name="EDIT_FLAG" size="1" type="VARCHAR"/>
     </table>
     <table name="KRIM_PND_NM_MT">
@@ -2277,7 +2277,7 @@
         <column default="N" name="EDIT_FLAG" size="1" type="VARCHAR"/>
         <column name="TITLE_NM" size="20" type="VARCHAR"/>
         <column name="NOTE_MSG" size="1024" type="VARCHAR"/>
-        <column name="NM_CHNG_DT" type="TIMESTAMP"/>
+        <column name="NM_CHNG_DT" type="DATE"/>
     </table>
     <table name="KRIM_PND_PHONE_MT">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
@@ -2325,8 +2325,8 @@
         <column name="MBR_ID" size="40" type="VARCHAR"/>
         <column name="MBR_TYP_CD" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
         <column default="N" name="EDIT_FLAG" size="1" type="VARCHAR"/>
     </table>
     <table name="KRIM_PND_ROLE_MT">
@@ -2381,7 +2381,7 @@
         <column name="ENTITY_ID" size="40" type="VARCHAR"/>
         <column name="PRNCPL_PSWD" size="400" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ENTITY_T" name="KRIM_PRNCPL_TR1" onDelete="cascade">
             <reference foreign="ENTITY_ID" local="ENTITY_ID"/>
         </foreign-key>
@@ -2432,9 +2432,9 @@
         <column name="ROLE_ID" size="40" type="VARCHAR"/>
         <column name="MBR_ID" size="40" type="VARCHAR"/>
         <column default="P" name="MBR_TYP_CD" size="1" type="CHAR"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_ROLE_T" name="KRIM_ROLE_MBR_TR1" onDelete="cascade">
             <reference foreign="ROLE_ID" local="ROLE_ID"/>
         </foreign-key>
@@ -2506,7 +2506,7 @@
         <column name="DESC_TXT" size="4000" type="VARCHAR"/>
         <column name="KIM_TYP_ID" required="true" size="40" type="VARCHAR"/>
         <column default="Y" name="ACTV_IND" size="1" type="VARCHAR"/>
-        <column default="SYSDATE" name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column default="SYSDATE" name="LAST_UPDT_DT" type="DATE"/>
         <foreign-key foreignTable="KRIM_TYP_T" name="KRIM_ROLE_TR1">
             <reference foreign="KIM_TYP_ID" local="KIM_TYP_ID"/>
         </foreign-key>
@@ -3311,7 +3311,7 @@
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="LOOKUP_DT" required="true" type="TIMESTAMP"/>
+        <column name="LOOKUP_DT" required="true" type="DATE"/>
         <column name="SERIALZD_RSLTS" type="CLOB"/>
         <unique name="KRNS_LOOKUP_RSLT_TC0">
             <unique-column name="OBJ_ID"/>
@@ -3323,7 +3323,7 @@
             size="36" type="VARCHAR"/>
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="LOOKUP_DT" required="true" type="TIMESTAMP"/>
+        <column name="LOOKUP_DT" required="true" type="DATE"/>
         <column name="SEL_OBJ_IDS" type="CLOB"/>
         <unique name="KRNS_LOOKUP_SEL_TC0">
             <unique-column name="OBJ_ID"/>
@@ -3375,7 +3375,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="RMT_OBJ_ID" required="true" size="36" type="VARCHAR"/>
         <column name="AUTH_PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
-        <column name="POST_TS" required="true" type="TIMESTAMP"/>
+        <column name="POST_TS" required="true" type="DATE"/>
         <column name="NTE_TYP_CD" required="true" size="4" type="VARCHAR"/>
         <column name="TXT" size="800" type="VARCHAR"/>
         <column name="PRG_CD" size="1" type="VARCHAR"/>
@@ -3405,7 +3405,7 @@
         <column default="1" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="LOCK_DESC_TXT" size="4000" type="VARCHAR"/>
         <column name="DOC_HDR_ID" required="true" size="14" type="VARCHAR"/>
-        <column name="GNRT_DT" required="true" type="TIMESTAMP"/>
+        <column name="GNRT_DT" required="true" type="DATE"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
         <unique name="KRNS_PESSIMISTIC_LOCK_TC0">
             <unique-column name="OBJ_ID"/>
@@ -3423,7 +3423,7 @@
         <column name="PRNCPL_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="IP_ADDR" primaryKey="true" size="60" type="VARCHAR"/>
         <column name="SERIALZD_DOC_FRM" type="BLOB"/>
-        <column name="LAST_UPDT_DT" type="TIMESTAMP"/>
+        <column name="LAST_UPDT_DT" type="DATE"/>
         <column default="N" name="CONTENT_ENCRYPTED_IND" size="1" type="CHAR"/>
         <column name="OBJ_ID" size="36" type="VARCHAR"/>
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
@@ -3445,7 +3445,7 @@
         <column name="SVC_URL" required="true" size="500" type="VARCHAR"/>
         <column name="MTHD_NM" required="true" size="2000" type="VARCHAR"/>
         <column name="THRD_NM" required="true" size="500" type="VARCHAR"/>
-        <column name="CALL_DT" required="true" type="TIMESTAMP"/>
+        <column name="CALL_DT" required="true" type="DATE"/>
         <column name="TGT_TO_STR" required="true" size="2000" type="VARCHAR"/>
         <column name="SRVR_IND" required="true" size="1" type="DECIMAL"/>
         <column name="EXCPN_TO_STR" size="2000" type="VARCHAR"/>
@@ -3464,8 +3464,8 @@
     </table>
     <table name="KRSB_MSG_QUE_T">
         <column name="MSG_QUE_ID" primaryKey="true" size="14" type="DECIMAL"/>
-        <column name="DT" required="true" type="TIMESTAMP"/>
-        <column name="EXP_DT" type="TIMESTAMP"/>
+        <column name="DT" required="true" type="DATE"/>
+        <column name="EXP_DT" type="DATE"/>
         <column name="PRIO" required="true" size="8" type="DECIMAL"/>
         <column name="STAT_CD" required="true" size="1" type="CHAR"/>
         <column name="RTRY_CNT" required="true" size="8" type="DECIMAL"/>
@@ -3686,7 +3686,7 @@
         <column default="0" name="VER_NBR" size="8" type="DECIMAL"/>
         <column name="SUB_ACCT" size="10" type="VARCHAR"/>
         <column name="SUB_ACCT_NAME" size="50" type="VARCHAR"/>
-        <column name="CREATE_DT" type="TIMESTAMP"/>
+        <column name="CREATE_DT" type="DATE"/>
         <column name="SUBSIDIZED_PCT" type="FLOAT"/>
         <foreign-key foreignTable="TRV_ACCT_FO" name="TRV_ACCT_FK1">
             <reference foreign="ACCT_FO_ID" local="ACCT_FO_ID"/>
@@ -3714,8 +3714,8 @@
         <column name="ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="ACCT_NUM" required="true" size="10" type="VARCHAR"/>
         <column name="RATE" required="true" size="8" type="DECIMAL"/>
-        <column name="ACTV_FRM_DT" type="TIMESTAMP"/>
-        <column name="ACTV_TO_DT" type="TIMESTAMP"/>
+        <column name="ACTV_FRM_DT" type="DATE"/>
+        <column name="ACTV_TO_DT" type="DATE"/>
     </table>
     <table name="TRV_DOC_2">
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>

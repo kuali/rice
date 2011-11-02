@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2006-2011 The Kuali Foundation
+    Copyright 2005-2011 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,12 +21,13 @@
   <parent>
     <groupId>org.kuali</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>21</version>
+    <version>22</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
   <packaging>pom</packaging>
   <name>Rice</name>
+  <inceptionYear>2005</inceptionYear>
   <version>2.0.0-b1-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
@@ -194,9 +195,6 @@
             <artifactId>maven-license-plugin</artifactId>
             <configuration>
               <aggregate>true</aggregate>
-              <includes>
-                <include>config/**</include>
-              </includes>
               <excludes>
                 <!-- Directory excludes -->
                 <exclude>db/impex/**</exclude>
@@ -204,8 +202,6 @@
 
                 <!-- File excludes -->
                 <exclude>LICENSE.txt</exclude>
-                <exclude>NOTICE.txt</exclude>
-                <exclude>README.txt</exclude>
 
                 <!-- File type excludes -->
                 <exclude>**/*.pdf</exclude>
@@ -222,6 +218,8 @@
                 <exclude>**/*.tag</exclude>
                 <exclude>**/Thumbs.db</exclude>
                 <exclude>**/README</exclude>
+                <exclude>**/*.readme</exclude>
+                <exclude>**/*.tmp</exclude>
                 <exclude>**/ChangeLog</exclude>
                 <exclude>**/org.apache.cxf.Logger</exclude>
               </excludes>

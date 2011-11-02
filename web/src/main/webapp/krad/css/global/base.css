@@ -11,6 +11,10 @@ a{
 a:hover {
 	text-decoration:underline;
 }
+input[type="text"], textarea {
+    padding: 3px 3px;
+		_padding: 3px 0;         /* a hack to please IE */
+}
 :focus{
 	outline: 1px dotted #000;
 }
@@ -155,8 +159,9 @@ li label.kr-error {
 }
 
 .kr-errorsField {					/* was .errorsField */  /* renamed in xml and/or jsp */
-	overflow: hidden;
-	float:left;
+	/*overflow: hidden;          turning off, at least for short term */
+	/*float:left;                 turning off, at least for short term */
+    clear:left;                   /* forcing to new line so validation displays consistently */
     *zoom: 1;
     color: #DF0000;
 }

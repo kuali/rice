@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>Rice Impex</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -261,7 +262,7 @@
         <plugin>
           <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>maven-impex-plugin</artifactId>
-          <version>1.0.24</version>
+          <version>1.0.25</version>
           <dependencies>
             <dependency>
               <groupId>mysql</groupId>
@@ -286,6 +287,12 @@
             <dateFormat>${impex.date.format}</dateFormat>
             <includeVersionInComment>${impex.include.version.in.comment}</includeVersionInComment>
             <antCompatibilityMode>${impex.ant.compatibility.mode}</antCompatibilityMode>
+            <driverProperties>
+              <property>
+                <name>oracle.jdbc.mapDateToTimestamp</name>
+                <value>false</value>
+              </property>
+            </driverProperties>
           </configuration>
           <executions>
             <execution>

@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.actionlist;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionType;
@@ -233,7 +234,7 @@ public class OutboxTest extends KEWTestCase {
     public void testOutBoxDefaultPreferenceOnConfigParam() throws Exception {
     	final String user1PrincipalId = getPrincipalIdForName("user1");
         Preferences prefs = KewApiServiceLocator.getPreferencesService().getPreferences(user1PrincipalId);
-        assertTrue("By default the user's pref should be outbox on", Boolean.valueOf(prefs.getUseOutbox()));
+        assertTrue("By default the user's pref should be outbox on", Truth.strToBooleanIgnoreCase(prefs.getUseOutbox()));
 
         //TODO: this can no longer be set on the fly and grabbed through the preferences service (default values are set at startup)
         //TODO: this is a prime candidate for a mocking tool

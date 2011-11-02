@@ -86,6 +86,7 @@ public class DocumentContentTest extends KEWTestCase {
         contentVO.setAttributeContent(constructContent(ATTRIBUTE_CONTENT, attributeContent));
         contentVO.setSearchableContent(constructContent(SEARCHABLE_CONTENT, searchableContent));
         document.updateDocumentContent(contentVO.build());
+        document.saveDocumentData();
         // now reload the document
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
         String expectedContent = startContent+constructContent(ATTRIBUTE_CONTENT, attributeContent)+constructContent(SEARCHABLE_CONTENT, searchableContent)+endContent;
@@ -94,7 +95,7 @@ public class DocumentContentTest extends KEWTestCase {
         
         // now, add an attribute and then clear it, document content should remain the same
         String testAttributeContent = new TestRuleAttribute().getDocContent();
-        WorkflowAttributeDefinition attributeDefinition = WorkflowAttributeDefinition.Builder.create(TestRuleAttribute.class.getName()).build();
+        WorkflowAttributeDefinition attributeDefinition = WorkflowAttributeDefinition.Builder.create("TestRuleAttribute").build();
         document.addAttributeDefinition(attributeDefinition);
         document.clearAttributeDefinitions();
         document.saveDocumentData();
@@ -203,6 +204,7 @@ public class DocumentContentTest extends KEWTestCase {
     	DocumentContentUpdate.Builder contentUpdate = DocumentContentUpdate.Builder.create(content);
     	contentUpdate.setApplicationContent(appContent);
     	document.updateDocumentContent(contentUpdate.build());
+        document.saveDocumentData();
     	
     	// test that the content on the document is the same as the content we just set
     	XMLAssert.assertXMLEqual(appContent, document.getApplicationContent());

@@ -145,7 +145,7 @@
 
               <bean parent="InputField" p:propertyName="agenda.name" p:label="Name" p:required="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30" p:watermarkText="The Agenda`s parent Context"/>
+                  <bean parent="TextControl" p:size="30" p:watermarkText="The Agenda`s name"/>
                 </property>
               </bean>
 
@@ -202,12 +202,6 @@
                     </bean>
                 </property>
 
-              </bean>
-
-              <bean parent="InputField" p:propertyName="agenda.name" p:label="Agenda Name" p:required="true">
-                <property name="control">
-                  <bean parent="TextControl" p:size="30" p:watermarkText="name for the new Agenda"/>
-                </property>
               </bean>
 
               <bean parent="InputField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"

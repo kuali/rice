@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
 
 /**
  * A radio button group control type.
@@ -71,8 +72,12 @@ public final class RemotableRadioButtonGroup extends RemotableAbstractControl im
             if (keyLabels == null || keyLabels.isEmpty()) {
                 throw new IllegalArgumentException("keyLabels must be non-null & non-empty");
             }
-
-            this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
+            // keep previously SortedMaps (such as by sequence number) sorted. 
+            if (keyLabels instanceof SortedMap) {
+                this.keyLabels = Collections.unmodifiableSortedMap((SortedMap)keyLabels);
+            } else {
+                this.keyLabels = Collections.unmodifiableMap(new HashMap<String, String>(keyLabels));
+            }
         }
 
         @Override

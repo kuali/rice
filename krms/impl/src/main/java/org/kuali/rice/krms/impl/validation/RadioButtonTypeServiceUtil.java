@@ -28,9 +28,11 @@ import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 
 import javax.jws.WebParam;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,10 +59,8 @@ public class RadioButtonTypeServiceUtil {
             // translate attributes
 
             List<KrmsTypeAttribute> typeAttributes = krmsType.getAttributes();
-            Map<KrmsTypeAttribute, KrmsAttributeDefinition> typeDefMap = new HashMap<KrmsTypeAttribute, KrmsAttributeDefinition>();
-            Map<String, String> keyValueMap = new HashMap<String, String>();
-
-            List<RemotableAttributeField> typeAttributeFields = new ArrayList<RemotableAttributeField>(10);
+            Map<String, Integer> attribDefIdSequenceNumbers = new TreeMap<String, Integer>();
+            Map<String, String> unsortedIdLables = new TreeMap<String, String>();
             if (!CollectionUtils.isEmpty(typeAttributes)) {
                 // translate the attribute and store the sort code in our map
                 for (KrmsTypeAttribute typeAttribute : typeAttributes) {
@@ -70,18 +70,17 @@ public class RadioButtonTypeServiceUtil {
                     KrmsAttributeDefinition attributeDefinition =
                             typeRepositoryService.getAttributeDefinitionById(typeAttribute.getAttributeDefinitionId());
 
-                    typeDefMap.put(typeAttribute, attributeDefinition);
-                    keyValueMap.put(typeAttribute.getId(), attributeDefinition.getLabel());
-
+                    attribDefIdSequenceNumbers.put(attributeDefinition.getId(), typeAttribute.getSequenceNumber());
+                    unsortedIdLables.put(attributeDefinition.getId(), attributeDefinition.getLabel());
                 }
-                RemotableAttributeField attributeField = translateTypeAttribute(krmsType, keyValueMap);
-                // TODO EGHM Sort via sequence number
+
+                Map<String, String> sortedKeyLabelMap = new TreeMap<String, String>(new LabelSequenceComparator(attribDefIdSequenceNumbers));
+                sortedKeyLabelMap.putAll(unsortedIdLables);
+
+                RemotableAttributeField attributeField = translateTypeAttribute(krmsType, sortedKeyLabelMap);
                 results.add(attributeField);
             }
         }
-
-//        sortFields(results, sortCodeMap);
-
         return results;
     }
 
@@ -96,7 +95,7 @@ public class RadioButtonTypeServiceUtil {
         builder.setName(krmsType.getName());
         builder.setRequired(true);
         List<String> defaultValue = new ArrayList<String>();
-        defaultValue.add((String)keyLabels.keySet().toArray()[0]);
+        defaultValue.add(keyLabels.get(keyLabels.keySet().toArray()[0]));
         builder.setDefaultValues(defaultValue);
 
 //            builder.setHelpSummary("helpSummary: " + krmsType.getDescription());
@@ -107,5 +106,21 @@ public class RadioButtonTypeServiceUtil {
         return builder.build();
     }
 
-
+    /**
+     * Sort the keys by their sequence number
+     */
+    class LabelSequenceComparator implements Comparator {
+        Map<String, Integer> keySequences = new TreeMap<String, Integer>();
+        public LabelSequenceComparator(Map<String, Integer> labelSequence) {
+            this.keySequences.putAll(labelSequence);
+        }
+        @Override
+        public int compare(Object o, Object o1) {
+            if (keySequences.get(o) != null && keySequences.get(o1) != null) {
+                int compare = keySequences.get(o).compareTo(keySequences.get(o1));
+                return compare;
+            }
+            return 1; // don't throw anything away (ie return 0)
+        }
+    }
 }

@@ -74,6 +74,9 @@ public class MessageFetcherTest extends KSBTestCase {
             sendMessage();
         }
 
+        // make sure all async calls land in the db
+        Thread.sleep(5000);
+
         messages = KSBServiceLocator.getMessageQueueService().getNextDocuments(null);
         assertEquals("Should have 500 messages in the queue.", 500, messages.size());
     

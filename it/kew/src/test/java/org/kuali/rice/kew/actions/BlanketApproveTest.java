@@ -431,7 +431,7 @@ public class BlanketApproveTest extends KEWTestCase {
                assertEquals("Should be 1 delegate role requests", 1, delegateRoleRequests.size());
                ActionRequestValue delegateRoleRequest = (ActionRequestValue)delegateRoleRequests.get(0);
                assertEquals("Should be NotifyDelegate role", "NotifyDelegate", delegateRoleRequest.getRoleName());
-               assertEquals("Should be secondary delegation", DelegationType.SECONDARY.getCode(), delegateRoleRequest.getDelegationType());
+               assertEquals("Should be secondary delegation", DelegationType.SECONDARY, delegateRoleRequest.getDelegationType());
                List delegateRequests = arService.getTopLevelRequests(delegateRoleRequest);
                assertEquals("Should be 2 delegate requests", 2, delegateRequests.size());
                boolean foundNatjohnsDelegate = false;

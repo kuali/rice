@@ -76,10 +76,6 @@ class DocSearchSavingTest {
         docSearchService.setUserOptionsService(userOptionsService)
     }
 
-    @Test(expected=IllegalArgumentException)
-    void testIllegalArgument() {
-        docSearchService.saveSearch(null, DocumentSearchCriteriaTest.create())
-    }
 
     @Test
     void testConsumesExceptions() {

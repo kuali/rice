@@ -280,7 +280,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
-    public RemotableAbstractControl getControl() {
+    public Control getControl() {
         return control;
     }
 
@@ -290,7 +290,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
-    public RemotableAttributeLookupSettings getAttributeLookupSettings() {
+    public AttributeLookupSettings getAttributeLookupSettings() {
         return attributeLookupSettings;
     }
 

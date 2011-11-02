@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
+import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.core.api.uif.Control;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
@@ -1480,7 +1481,7 @@ public final class FieldUtils {
         List<Field> fields = new ArrayList<Field>();
         if (remotableAttributeField.getAttributeLookupSettings() != null && remotableAttributeField.getAttributeLookupSettings().isRanged()) {
             // create two fields, one for the "from" and one for the "to"
-            RemotableAttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
+            AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
             String lowerBoundName = lookupSettings.getLowerBoundName();
             String upperBoundName = lookupSettings.getUpperBoundName();
             String lowerBoundLabel = lookupSettings.getLowerBoundLabel();
@@ -1656,7 +1657,7 @@ public final class FieldUtils {
     }
 
     private static void applyLookupAttributes(RemotableAttributeField remotableField, Field field) {
-        RemotableAttributeLookupSettings lookupSettings = remotableField.getAttributeLookupSettings();
+        AttributeLookupSettings lookupSettings = remotableField.getAttributeLookupSettings();
         if (lookupSettings != null) {
             field.setColumnVisible(lookupSettings.isInResults());
             if (!lookupSettings.isInCriteria()) {

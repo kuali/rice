@@ -73,6 +73,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals(0, results.getNumberOfSecurityFilteredResults());
         assertEquals("Search returned invalid number of documents", 1, results.getSearchResults().size());
     }
     

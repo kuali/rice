@@ -385,7 +385,16 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     }
 
     private String getRouteHeaderVariableValue(Document document, String variableName) throws Exception {
-        Field field = document.getClass().getDeclaredField(variableName);
+        Field field;
+        try {
+            field = document.getClass().getDeclaredField(variableName);
+        } catch (NoSuchFieldException nsfe) {
+            LOG.error("Field '" + variableName + "' not found on Document object.");
+            // instead of raising an exception, return null as a value
+            // this leaves it up to proper permission configuration to fail the check if a field value
+            // is required
+            return null;
+        }
         field.setAccessible(true);
         Object fieldValue = field.get(document);
         Class<?> clazzType = field.getType();

@@ -110,7 +110,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		assertEquals("Should have 1 responsibility", 1, newRuleDelegation.getDelegationRule().getRuleResponsibilities().size());
 		assertEquals("Incorrect responsibility name", principal2.getPrincipalId(), newRuleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityName());
 		assertEquals("Incorrect responsibility type", KewApiConstants.RULE_RESPONSIBILITY_WORKFLOW_ID, newRuleDelegation.getDelegationRule().getRuleResponsibilities().get(0).getRuleResponsibilityType());
-		assertEquals("Incorrect delegation type", DelegationType.PRIMARY.getCode(), newRuleDelegation.getDelegationType());
+		assertEquals("Incorrect delegation type", DelegationType.PRIMARY, newRuleDelegation.getDelegationType());
 
 
 		/**

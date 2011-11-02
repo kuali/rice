@@ -129,10 +129,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 
     @Override
     public DocumentSearchResults documentSearch(String principalId, DocumentSearchCriteria criteria) {
-        if (StringUtils.isEmpty(principalId)) {
-            throw new RiceIllegalArgumentException("principalId was blank or null");
-        }
-
         if (criteria == null) {
             throw new RiceIllegalArgumentException("criteria was null");
         }

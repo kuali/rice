@@ -478,7 +478,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
      */
     private void saveSearch(String principalId, DocumentSearchCriteria criteria) {
         if (StringUtils.isBlank(principalId)) {
-            throw new IllegalArgumentException("principalId was null or blank");
+            return;
         }
 
         // TODO - KULRICE-5832 - need to add support for whether or not the saved search is a detailed/advanced search, this was originally stored with savedSearchString in Rice 1.x

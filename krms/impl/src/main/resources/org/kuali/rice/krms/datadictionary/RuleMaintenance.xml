@@ -101,8 +101,8 @@
           </property>
         </bean>
 
-        <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" />
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.namespace" p:readOnly="true" />
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" p:required="true"/>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.typeId" p:label="Type" p:required="true">
           <property name="control">
             <bean parent="SelectControl"/>
@@ -120,7 +120,6 @@
             </list>
           </property>
         </bean>
-        <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" p:label="Name" p:required="true"/>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.description" p:labelField.colSpan="1" p:colSpan="5">
           <property name="control">
             <bean parent="TextAreaControl" p:rows="4" p:cols="100"/>

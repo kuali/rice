@@ -23,30 +23,30 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 
 
 public class TestHarnessSharedTopic implements KSBJavaService {
-	
-	public static int CALL_COUNT = 0;
-	public static int CALL_COUNT_NOTIFICATION_THRESHOLD = 0;
-	public static Object LOCK = new Object();
 
-	public void invoke(Serializable payLoad) {
-	    	CALL_COUNT++;
-		System.out.println("!!!TestHarnessSharedTopic called with M.E " + CoreConfigHelper.getApplicationId() + " !!! ");
-		ServiceCallInformationHolder.stuff.put("TestHarnessCalled", Boolean.TRUE);
-		if (CALL_COUNT_NOTIFICATION_THRESHOLD > 0) {
-		    if (CALL_COUNT == CALL_COUNT_NOTIFICATION_THRESHOLD) {
-			notifyOnLock();
-		    }
-		} else {
-		    notifyOnLock();
-		}
-		
-		
-	}
-	
-	public void notifyOnLock() {
-	    synchronized (LOCK) {
-		    LOCK.notifyAll();    
-		}
-	}
+    public static int CALL_COUNT = 0;
+    public static int CALL_COUNT_NOTIFICATION_THRESHOLD = 0;
+    public static Object LOCK = new Object();
+
+    public synchronized void invoke(Serializable payLoad) {
+            CALL_COUNT++;
+        System.out.println("!!!TestHarnessSharedTopic called with M.E " + CoreConfigHelper.getApplicationId() + " !!! ");
+        ServiceCallInformationHolder.stuff.put("TestHarnessCalled", Boolean.TRUE);
+        if (CALL_COUNT_NOTIFICATION_THRESHOLD > 0) {
+            if (CALL_COUNT == CALL_COUNT_NOTIFICATION_THRESHOLD) {
+            notifyOnLock();
+            }
+        } else {
+            notifyOnLock();
+        }
+
+
+    }
+    
+    public void notifyOnLock() {
+        synchronized (LOCK) {
+            LOCK.notifyAll();
+        }
+    }
 
 }

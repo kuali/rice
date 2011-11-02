@@ -150,6 +150,9 @@ label {
 input[type="radio"]+label, input[type="checkbox"]+label {     /* when label is sibling of checkbox or radio, font-weight is non-bold */
     font-weight:normal;
 }
+input[disabled="disabled"]+label{
+    color:#999999;
+}
 .labelTop label {
     margin-right:0em;      /* was 1em */
 }
@@ -242,7 +245,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
    text-shadow: 0px 1px 0px #83d485;
    filter: dropshadow(color=#83d485, offX=0, offY=1);
    }
-button.kr-button-primary[disabled="disabled"] {
+button.kr-button-primary[disabled="true"] {
 		background-color:#C8EABC;
 		border: 1px solid #abdea5;
 		color:#7FA393;
@@ -461,7 +464,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
    }
 
 
-.ui-icon { width: 16px; height: 16px; background-image: url(/images/ui-icons_0078ae_256x240.png); }
+.ui-icon { width: 16px; height: 16px; background-image: url(/krad/images/jquery/ui-icons_004b2a_256x240.png); }
 /* states and images */
 
 /* fixing image references in jquery-ui-1.8.11.css */

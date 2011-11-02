@@ -287,12 +287,6 @@
             <dateFormat>${impex.date.format}</dateFormat>
             <includeVersionInComment>${impex.include.version.in.comment}</includeVersionInComment>
             <antCompatibilityMode>${impex.ant.compatibility.mode}</antCompatibilityMode>
-            <driverProperties>
-              <property>
-                <name>oracle.jdbc.mapDateToTimestamp</name>
-                <value>false</value>
-              </property>
-            </driverProperties>
           </configuration>
           <executions>
             <execution>
@@ -369,6 +363,12 @@
                   <goal>datadtd</goal>
                 </goals>
                 <configuration>
+                  <driverProperties>
+                    <property>
+                      <name>oracle.jdbc.mapDateToTimestamp</name>
+                      <value>false</value>
+                    </property>
+                  </driverProperties>
                   <schemaXMLFile>${basedir}/src/main/resources/schema.xml</schemaXMLFile>
                   <dataXMLDir>${basedir}/src/main/resources</dataXMLDir>
                   <copyToFile>${basedir}/src/main/resources/data.dtd</copyToFile>

@@ -19,9 +19,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * Tests the generation of Action Requests from RoleAttributes
@@ -46,6 +49,7 @@ public class RoleAttributeTest extends KEWTestCase {
 		loadXmlFile("BadWorkgroupRoleAttributeTestConfig.xml");
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "BadWorkgroupRoleAttributeDocument");
 
+        ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ALLOW_SYNC_EXCEPTION_ROUTING, "false");
 		try {
 			document.route("");
 			fail("Should have thrown an error because we had some bad ids.");

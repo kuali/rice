@@ -280,18 +280,9 @@ button.kr-button-primary[disabled="true"] {
 
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#abdea5', endColorstr='#c8eabc',GradientType=0 ); /* IE6-9 */
 
+        cursor: text;
 		}	 
-/* IE 8 does not accept pseudo class "disabled", and the following hoses the page in IE8. Commenting out until a workaround comes forth */
-/*button.kr-button-primary:disabled {
-				border: 1px solid #abdea5;
-				/*defines gradient background */
-				/*background-image: -moz-linear-gradient(top, #abdea5, #c8eabc);
-				background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #abdea5, color-stop(1, #c8eabc));
-				background-image: -o-linear-gradient(top, #abdea5, #c8eabc);
-				filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#abdea5, endColorstr=#c8eabc); /* IE7 and older */
-				/*-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#abdea5, endColorStr=#c8eabc); /*IE8 */
-				/*background: linear-gradient(top, #abdea5, #c8eabc); /* for the future */
-/*}*/
+
 
 .kr-button-secondary1{				/* was .button-secondary1 */ /* renamed in xml and/or jsp */
 	border: 1px solid #62D255;
@@ -341,7 +332,7 @@ button.kr-button-primary[disabled="true"] {
 }
 
 
-.kr-button-secondary2:hover, .fg-button.button-secondary1:hover { /* was .button-secondary2:hover */ /* NOT FOUND in xml and/or jsp */
+.kr-button-secondary2:hover, .fg-button.button-secondary1:hover, { /* was .button-secondary2:hover */ /* NOT FOUND in xml and/or jsp */
     background: rgb(153,153,153);
 	background: #999999; /* Old browsers */
 
@@ -368,7 +359,7 @@ button.kr-button-primary[disabled="true"] {
 	color: #eeeeee;
 }
 
-.kr-button-primary:hover, .kr-button-secondary1:hover {		/* was .button-primary:hover, .button-secondary1:hover */ /* renamed in xml and/or jsp */
+.kr-button-primary:hover, .button-primary:hover, .kr-button-secondary1:hover {		/* was .button-primary:hover, .button-secondary1:hover */ /* renamed in xml and/or jsp */
 	border-color:#07662a;
 	/*defines gradient background*/
 	background: #07662a; /* Old browsers */
@@ -623,7 +614,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07662a', end
 	background-color:#060;
 }
 .ui-datepicker-prev.ui-state-hover, .ui-datepicker-next.ui-state-hover {
-    background:rgba(225,225,225,0.5);
+    background: #B2DDA8;
 }
  .ui-datepicker .ui-state-active {      /* the selected date */
    border: 1px solid #62D255;
@@ -1194,6 +1185,7 @@ a.h4.kr-section-subhead {
 .grouping-header-expandable a h3.kr-page-section-title:hover {
     background-color:#ECFCE8;
     border: 1px solid #3F7826;
+    text-decoration:none;
 }
 
 /* messing with collections */

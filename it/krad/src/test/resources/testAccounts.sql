@@ -1,18 +1,19 @@
 --
--- Copyright 2008-2009 The Kuali Foundation
--- 
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
+--
+
 insert into TRV_ACCT values ('b101', 'b101', 'CAT', 101, '5EA45238F5528846E0404F8189D840B0', 1, null, null, null, null);
 insert into TRV_ACCT values ('b102', 'b102', 'EAT', 102, '5EA45238F5528846E0404F8189D840B1', 1, null, null, null, null);
 insert into TRV_ACCT values ('b103', 'b103', 'IAT', 103, '5EA45238F5528846E0404F8189D840B2', 1, null, null, null, null);

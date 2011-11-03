@@ -1,17 +1,17 @@
-/*!
- * jQuery JavaScript Library v1.6.3
- * http://jquery.com/
+/*
+ * Copyright 2005-2011 The Kuali Foundation
  *
- * Copyright 2011, John Resig
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://jquery.org/license
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Includes Sizzle.js
- * http://sizzlejs.com/
- * Copyright 2011, The Dojo Foundation
- * Released under the MIT, BSD, and GPL Licenses.
+ * http://www.opensource.org/licenses/ecl2.php
  *
- * Date: Wed Aug 31 10:35:15 2011 -0400
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 (function( window, undefined ) {
 

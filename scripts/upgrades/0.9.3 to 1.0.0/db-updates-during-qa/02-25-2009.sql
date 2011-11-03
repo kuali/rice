@@ -1,29 +1,18 @@
--- 
--- Copyright 2009 The Kuali Foundation
--- 
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
-alter table KREN_MSG_DELIV_T modify (LOCKD_DTTM date)
-/
-alter table KREN_MSG_T modify (CRTE_DTTM date)
-/
-alter table KREN_NTFCTN_MSG_DELIV_T modify (LOCKD_DTTM date)
-/
-alter table KREN_NTFCTN_T modify (CRTE_DTTM date,
-SND_DTTM date,
-AUTO_RMV_DTTM date,
-LOCKD_DTTM date)
-/
+--
 
 create table KRIM_PRSN_CACHE_T_bak as select * from KRIM_PRSN_CACHE_T
 /
@@ -76,7 +65,7 @@ INSERT INTO KRIM_TYP_T (KIM_TYP_ID, OBJ_ID, VER_NBR, NM, SRVC_NM, ACTV_IND, NMSP
 commit
 /
 
--- Enhancement from uu to person doc that we did not get around to implementingÉ
+-- Enhancement from uu to person doc that we did not get around to implementingï¿½
 
 delete from krim_role_perm_t where perm_id in  ('153', '154')
 /

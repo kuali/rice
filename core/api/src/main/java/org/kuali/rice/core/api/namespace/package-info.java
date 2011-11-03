@@ -1,5 +1,5 @@
-/*
- * Copyright 2006-2011 The Kuali Foundation
+/**
+ * Copyright 2005-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @javax.xml.bind.annotation.XmlSchema(namespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
 package org.kuali.rice.core.api.namespace;
 import org.kuali.rice.core.api.CoreConstants;

@@ -1,5 +1,5 @@
 --
--- Copyright 2008-2009 The Kuali Foundation
+-- Copyright 2005-2011 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,20 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
-alter table kcb_msg_delivs modify DELIVERER_SYSTEM_ID varchar2(255)
-/
-alter table kcb_recip_delivs modify RECIPIENT_ID varchar2(255)
-/
-alter table kcb_recip_delivs modify CHANNEL varchar2(255)
-/
-alter table kcb_recip_delivs modify DELIVERER_NAME varchar2(255)
-/
-alter table KCB_RECIP_PREFS modify RECIPIENT_ID varchar2(255)
-/
-alter table KCB_RECIP_PREFS modify PROPERTY varchar2(255)
-/
-alter table KCB_RECIP_PREFS modify VALUE varchar2(255)
-/
 
 -- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 -- !!! STOP!  Don't put anymore SQL in this file for Rice 1.0. Instead, create files in the !!!

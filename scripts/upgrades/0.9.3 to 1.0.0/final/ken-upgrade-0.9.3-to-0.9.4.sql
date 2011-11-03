@@ -1,5 +1,5 @@
 --
--- Copyright 2008-2009 The Kuali Foundation
+-- Copyright 2005-2011 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
--- update various reference tables so that we can build maintenance docs on top of them
 
 alter table KREN_CHNL_T add (OBJ_ID VARCHAR2(36) DEFAULT SYS_GUID() NOT NULL, VER_NBR NUMBER(8) DEFAULT 0 NOT NULL)
 /

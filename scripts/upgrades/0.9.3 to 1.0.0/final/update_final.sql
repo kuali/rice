@@ -1,5 +1,5 @@
 --
--- Copyright 2009 The Kuali Foundation
+-- Copyright 2005-2011 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,17 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
-alter table KREN_MSG_DELIV_T modify (LOCKD_DTTM date)
-/
-alter table KREN_MSG_T modify (CRTE_DTTM date)
-/
-alter table KREN_NTFCTN_MSG_DELIV_T modify (LOCKD_DTTM date)
-/
-alter table KREN_NTFCTN_T modify (CRTE_DTTM date,
-SND_DTTM date,
-AUTO_RMV_DTTM date,
-LOCKD_DTTM date)
-/
 
 --
 -- Copyright 2009 The Kuali Foundation

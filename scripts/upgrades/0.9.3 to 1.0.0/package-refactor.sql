@@ -1,5 +1,5 @@
 --
--- Copyright 2008-2009 The Kuali Foundation
+-- Copyright 2005-2011 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,46 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessorImpl' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.docsearch.xml.DocumentSearchXMLResultProcessorImpl'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.InitiatorRoleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.RemoveReplaceRuleRoutingAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.RemoveReplaceRuleRoutingAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.RemoveReplaceWorkgroupTypeRoutingAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.RemoveReplaceWorkgroupTypeRoutingAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.RoutedByUserRoleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.RoutedByUserRoleAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.RuleRoutingAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.RuleRoutingAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kns.workflow.attribute.KualiXMLBooleanTranslatorSearchableAttributeImpl' WHERE RULE_ATTRIB_CLS_NM='org.kuali.workflow.attribute.KualiXMLBooleanTranslatorSearchableAttributeImpl'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl' WHERE RULE_ATTRIB_CLS_NM='org.kuali.workflow.attribute.KualiXmlRuleAttributeImpl'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kns.workflow.attribute.KualiXmlSearchableAttributeImpl' WHERE RULE_ATTRIB_CLS_NM='org.kuali.workflow.attribute.KualiXmlSearchableAttributeImpl'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.docsearch.xml.StandardGenericXMLSearchableAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.NetworkIdRoleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.NetworkIdRoleAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.UniversityIdRoleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.UniversityIdRoleAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.xmlrouting.StandardGenericXMLRuleAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.ken.kew.ChannelReviewerRoleAttribute' WHERE RULE_ATTRIB_CLS_NM='org.kuali.notification.kew.ChannelReviewerRoleAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.ken.kew.NotificationCustomActionListAttribute' WHERE RULE_ATTRIB_CLS_NM='org.kuali.notification.kew.NotificationCustomActionListAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.rule.WorkgroupTypeRoutingAttribute' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.routetemplate.WorkgroupTypeRoutingAttribute'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.mail.CustomEmailAttributeImpl' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.mail.CustomEmailAttributeImpl'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.notes.CustomNoteAttributeImpl' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.notes.CustomNoteAttributeImpl'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.docsearch.StandardDocumentSearchGenerator'
-/
-UPDATE EN_RULE_ATTRIB_T SET RULE_ATTRIB_CLS_NM='org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor' WHERE RULE_ATTRIB_CLS_NM='edu.iu.uis.eden.docsearch.StandardDocumentSearchCriteriaProcessor'
-/
 
 UPDATE EN_RULE_RSP_T SET RULE_RSP_NM='org.kuali.rice.kew.rule.InitiatorRoleAttribute!INITIATOR' WHERE RULE_RSP_NM='edu.iu.uis.eden.routetemplate.InitiatorRoleAttribute!INITIATOR'
 /

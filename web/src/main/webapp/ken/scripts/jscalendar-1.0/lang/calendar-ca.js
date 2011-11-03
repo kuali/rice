@@ -1,12 +1,12 @@
 /*
- * Copyright 2007-2009 The Kuali Foundation
- * 
+ * Copyright 2005-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -62,7 +62,7 @@ Calendar._SDN = new Array
 Calendar._MN = new Array
 ("Gener",
  "Febrer",
- "Març",
+ "Marï¿½",
  "Abril",
  "Maig",
  "Juny",
@@ -98,21 +98,21 @@ Calendar._TT["ABOUT"] =
 "For latest version visit: http://www.dynarch.com/projects/calendar/\n" +
 "Distributed under GNU LGPL.  See http://gnu.org/licenses/lgpl.html for details." +
 "\n\n" +
-"Sel.lecció de Dates:\n" +
+"Sel.lecciï¿½ de Dates:\n" +
 "- Fes servir els botons \xab, \xbb per sel.leccionar l'any\n" +
 "- Fes servir els botons " + String.fromCharCode(0x2039) + ", " + String.fromCharCode(0x203a) + " per se.lecciconar el mes\n" +
-"- Manté el ratolí apretat en qualsevol dels anteriors per sel.lecció ràpida.";
+"- Mantï¿½ el ratolï¿½ apretat en qualsevol dels anteriors per sel.lecciï¿½ rï¿½pida.";
 Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "Time selection:\n" +
 "- claca en qualsevol de les parts de la hora per augmentar-les\n" +
 "- o Shift-click per decrementar-la\n" +
-"- or click and arrastra per sel.lecció ràpida.";
+"- or click and arrastra per sel.lecciï¿½ rï¿½pida.";
 
 Calendar._TT["PREV_YEAR"] = "Any anterior (Mantenir per menu)";
 Calendar._TT["PREV_MONTH"] = "Mes anterior (Mantenir per menu)";
 Calendar._TT["GO_TODAY"] = "Anar a avui";
-Calendar._TT["NEXT_MONTH"] = "Mes següent (Mantenir per menu)";
-Calendar._TT["NEXT_YEAR"] = "Any següent (Mantenir per menu)";
+Calendar._TT["NEXT_MONTH"] = "Mes segï¿½ent (Mantenir per menu)";
+Calendar._TT["NEXT_YEAR"] = "Any segï¿½ent (Mantenir per menu)";
 Calendar._TT["SEL_DATE"] = "Sel.leccionar data";
 Calendar._TT["DRAG_TO_MOVE"] = "Arrastrar per moure";
 Calendar._TT["PART_TODAY"] = " (avui)";

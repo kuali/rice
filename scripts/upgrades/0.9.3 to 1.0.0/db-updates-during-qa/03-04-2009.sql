@@ -1,44 +1,18 @@
--- 
--- Copyright 2009 The Kuali Foundation
--- 
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
--- Update kim group table so kim type is set to the default value instead of null
--- Alter tables so null kim_type_ids are not allowed
-UPDATE KRIM_GRP_T SET KIM_TYP_ID = '1' WHERE KIM_TYP_ID IS NULL
-/
-ALTER TABLE KRIM_DLGN_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_DLGN_MBR_ATTR_DATA_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_GRP_ATTR_DATA_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_GRP_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_PERM_ATTR_DATA_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_PERM_TMPL_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_ROLE_MBR_ATTR_DATA_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_ROLE_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_RSP_ATTR_DATA_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_RSP_TMPL_T MODIFY KIM_TYP_ID NOT NULL
-/
-ALTER TABLE KRIM_TYP_ATTR_T MODIFY KIM_TYP_ID NOT NULL
-/
+--
 
 -- Add a new column to the namespace table
 

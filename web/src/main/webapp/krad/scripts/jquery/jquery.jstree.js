@@ -1,17 +1,18 @@
 /*
- * jsTree 1.0-rc3
- * http://jstree.com/
+ * Copyright 2005-2011 The Kuali Foundation
  *
- * Copyright (c) 2010 Ivan Bozhanov (vakata.com)
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * Licensed same as jquery - under the terms of either the MIT License or the GPL Version 2 License
- *   http://www.opensource.org/licenses/mit-license.php
- *   http://www.gnu.org/licenses/gpl.html
+ * http://www.opensource.org/licenses/ecl2.php
  *
- * $Date: 2011-02-09 01:17:14 +0200 (ср, 09 февр 2011) $
- * $Revision: 236 $
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 /*jslint browser: true, onevar: true, undef: true, bitwise: true, strict: true */
 /*global window : false, clearInterval: false, clearTimeout: false, document: false, setInterval: false, setTimeout: false, jQuery: false, navigator: false, XSLTProcessor: false, DOMParser: false, XMLSerializer: false*/
 

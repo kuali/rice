@@ -1,18 +1,19 @@
--- 
--- Copyright 2008-2009 The Kuali Foundation
--- 
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
+--
+
 insert into KREW_ACTN_ITM_T (ACTN_ITM_ID, PRNCPL_ID, ASND_DT, RQST_CD, ACTN_RQST_ID, DOC_HDR_ID, DOC_HDR_TTL, DOC_TYP_LBL, DOC_HDLR_URL, DOC_TYP_NM, RSP_ID, VER_NBR) 
 values (1000, '2003', {d '2006-06-07'}, 'A', 1000, 1000, 'Document Title', 'Document Type Label', 'http://localhost:8080/', 'TestDocumentType2', 1000, 0)
 ;

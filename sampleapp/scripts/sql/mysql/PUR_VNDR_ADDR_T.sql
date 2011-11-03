@@ -1,3 +1,19 @@
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
+-- Licensed under the Educational Community License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+-- http://www.opensource.org/licenses/ecl2.php
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+--
+
 TRUNCATE TABLE PUR_VNDR_ADDR_T
 /
 INSERT INTO PUR_VNDR_ADDR_T (DOBJ_MAINT_CD_ACTV_IND,OBJ_ID,VER_NBR,VNDR_ADDR_GNRTD_ID,VNDR_ADDR_TYP_CD,VNDR_ATTN_NM,VNDR_CNTRY_CD,VNDR_CTY_NM,VNDR_DFLT_ADDR_IND,VNDR_DTL_ASND_ID,VNDR_FAX_NBR,VNDR_HDR_GNRTD_ID,VNDR_LN1_ADDR,VNDR_ST_CD,VNDR_ZIP_CD)

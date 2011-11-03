@@ -1,5 +1,5 @@
 --
--- Copyright 2008-2009 The Kuali Foundation
+-- Copyright 2005-2011 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
--- Note: some of these tables were already dropped in previous versions of Rice, so they may or may not be in your database
 
 DROP TABLE EN_SERVICE_DEF_T
 /

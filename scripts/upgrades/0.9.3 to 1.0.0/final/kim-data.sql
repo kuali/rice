@@ -1,5 +1,5 @@
 --
--- Copyright 2008-2009 The Kuali Foundation
+-- Copyright 2005-2011 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
--- inserts default values
 
 INSERT INTO KRIM_ADDR_TYP_T (ACTV_IND,ADDR_TYP_CD,DISPLAY_SORT_CD,LAST_UPDT_DT,NM,OBJ_ID,VER_NBR)
   VALUES ('Y','HM','b',TO_DATE( '20081113140629', 'YYYYMMDDHH24MISS' ),'Home','5B97C50B03706110E0404F8189D85213',1)

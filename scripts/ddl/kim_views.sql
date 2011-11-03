@@ -1,55 +1,18 @@
--- 
--- Copyright 2008-2009 The Kuali Foundation
--- 
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
-CREATE OR REPLACE VIEW krim_grp_v AS
-SELECT g.NMSPC_CD AS namespace_code
-     , g.grp_nm   AS group_name
-     , t.NM       AS group_type_name
-	 , a.NM       AS attribute_name
-	 , d.ATTR_VAL AS attribute_value 
-  FROM krim_grp_t g
-  LEFT OUTER JOIN KRIM_ROLE_MBR_ATTR_DATA_T d
-    ON d.TARGET_PRIMARY_KEY = g.GRP_ID
-  LEFT OUTER JOIN KRIM_ATTR_DEFN_T a
-    ON a.KIM_ATTR_DEFN_ID = d.KIM_ATTR_DEFN_ID 
-  LEFT OUTER JOIN KRIM_TYP_T t
-    ON g.KIM_TYP_ID = t.KIM_TYP_ID
-/
-CREATE OR REPLACE VIEW krim_grp_mbr_v AS
-SELECT g.NMSPC_CD AS namespace_code
-     , g.grp_nm AS group_name
-     , g.GRP_ID AS group_id
-     , p.PRNCPL_NM AS principal_name
-     , p.PRNCPL_ID AS principal_id
-     , mg.GRP_NM AS member_group_name
-     , mg.GRP_ID AS member_group_id
-    FROM KRIM_GRP_MBR_T gm
-    LEFT JOIN krim_grp_t g
-      ON g.GRP_ID = gm.GRP_ID
-    LEFT OUTER JOIN krim_grp_t mg
-      ON mg.GRP_ID = gm.MBR_ID
-      AND gm.MBR_TYP_CD = 'G'
-    LEFT OUTER JOIN krim_prncpl_t p
-      ON p.PRNCPL_ID = gm.MBR_ID
-      AND gm.MBR_TYP_CD = 'P'
-    LEFT OUTER JOIN krim_entity_nm_t en
-      ON en.ENTITY_ID = p.ENTITY_ID
-      AND en.DFLT_IND = 'Y'
-      AND en.ACTV_IND = 'Y'
-ORDER BY namespace_code, group_name
-/
+--
 
 CREATE OR REPLACE VIEW krim_perm_v AS
 SELECT 

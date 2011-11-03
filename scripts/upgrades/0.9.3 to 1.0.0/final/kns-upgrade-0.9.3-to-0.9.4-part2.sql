@@ -1,5 +1,5 @@
 --
--- Copyright 2008-2009 The Kuali Foundation
+-- Copyright 2005-2011 The Kuali Foundation
 --
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
@@ -13,14 +13,6 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 --
-CREATE TABLE KR_COUNTRY_T
-    (POSTAL_CNTRY_CD VARCHAR2(2) NOT NULL,
-    OBJ_ID VARCHAR2(36) NOT NULL,
-    VER_NBR NUMBER(8,0) DEFAULT 1 NOT NULL,
-    POSTAL_CNTRY_NM VARCHAR2(40),
-    PSTL_CNTRY_RSTRC_IND VARCHAR2(1) NOT NULL,
-    ACTV_IND VARCHAR2(1) DEFAULT 'Y' NOT NULL)
-/
 
 CREATE TABLE KR_COUNTY_T
     (COUNTY_CD VARCHAR2(10) NOT NULL,

@@ -1,18 +1,19 @@
--- 
--- Copyright 2009 The Kuali Foundation
--- 
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
+--
+
 INSERT INTO KREW_ACTN_ITM_T (ACTN_ITM_ID,ACTN_RQST_ID,ASND_DT,DOC_HDLR_URL,DOC_HDR_ID,DOC_HDR_TTL,DOC_TYP_LBL,DOC_TYP_NM,DTYPE,GRP_ID,PRNCPL_ID,RQST_CD,RSP_ID,VER_NBR)
   VALUES (10000,2040,{d '2008-08-11'},'http://localhost:8080/kr-dev/en/Workgroup.do?methodToCall=docHandler',2121,'Routing workgroup CreatinAGroup321','Add/modify EDEN workgroup','EDENSERVICE-DOCS.WKGRPREQ','ActionItem','1','admin','C',-2,1);
 INSERT INTO KREW_ACTN_ITM_T (ACTN_ITM_ID,ACTN_RQST_ID,ASND_DT,DOC_HDLR_URL,DOC_HDR_ID,DOC_HDR_TTL,DOC_TYP_LBL,DOC_TYP_NM,DTYPE,GRP_ID,PRNCPL_ID,RQST_CD,RSP_ID,VER_NBR)

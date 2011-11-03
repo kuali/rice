@@ -1,12 +1,12 @@
 /*
- * Copyright 2008-2009 The Kuali Foundation
- * 
+ * Copyright 2005-2011 The Kuali Foundation
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,17 +63,17 @@ Calendar._SDN = new Array
 // full month names
 Calendar._MN = new Array
 ("Janvier",
- "Février",
+ "Fï¿½vrier",
  "Mars",
  "Avril",
  "Mai",
  "Juin",
  "Juillet",
- "Août",
+ "Aoï¿½t",
  "Septembre",
  "Octobre",
  "Novembre",
- "Décembre");
+ "Dï¿½cembre");
 
 // short month names
 Calendar._SMN = new Array
@@ -98,7 +98,7 @@ Calendar._TT["ABOUT"] =
 "DHTML Date/Heure Selecteur\n" +
 "(c) dynarch.com 2002-2005 / Author: Mihai Bazon\n" + // don't translate this this ;-)
 "Pour la derniere version visitez : http://www.dynarch.com/projects/calendar/\n" +
-"Distribué par GNU LGPL.  Voir http://gnu.org/licenses/lgpl.html pour les details." +
+"Distribuï¿½ par GNU LGPL.  Voir http://gnu.org/licenses/lgpl.html pour les details." +
 "\n\n" +
 "Selection de la date :\n" +
 "- Utiliser les bouttons \xab, \xbb  pour selectionner l\'annee\n" +
@@ -110,13 +110,13 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- ou Maj-clic pour decrementer\n" +
 "- ou clic et glisser-deplacer pour une selection plus rapide";
 
-Calendar._TT["PREV_YEAR"] = "Année préc. (maintenir pour menu)";
-Calendar._TT["PREV_MONTH"] = "Mois préc. (maintenir pour menu)";
+Calendar._TT["PREV_YEAR"] = "Annï¿½e prï¿½c. (maintenir pour menu)";
+Calendar._TT["PREV_MONTH"] = "Mois prï¿½c. (maintenir pour menu)";
 Calendar._TT["GO_TODAY"] = "Atteindre la date du jour";
 Calendar._TT["NEXT_MONTH"] = "Mois suiv. (maintenir pour menu)";
-Calendar._TT["NEXT_YEAR"] = "Année suiv. (maintenir pour menu)";
-Calendar._TT["SEL_DATE"] = "Sélectionner une date";
-Calendar._TT["DRAG_TO_MOVE"] = "Déplacer";
+Calendar._TT["NEXT_YEAR"] = "Annï¿½e suiv. (maintenir pour menu)";
+Calendar._TT["SEL_DATE"] = "Sï¿½lectionner une date";
+Calendar._TT["DRAG_TO_MOVE"] = "Dï¿½placer";
 Calendar._TT["PART_TODAY"] = " (Aujourd'hui)";
 
 // the following is to inform that "%s" is to be the first day of week

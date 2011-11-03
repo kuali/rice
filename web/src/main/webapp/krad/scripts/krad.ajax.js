@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2007 The Kuali Foundation
+ * Copyright 2005-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 //Submits the form through an ajax submit, the response is the new page html
 //runs all hidden scripts passed back (this is to get around a bug with pre mature
 //script evaluation)

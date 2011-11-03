@@ -1,18 +1,19 @@
--- 
--- Copyright 2009 The Kuali Foundation
--- 
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
+--
+
 INSERT INTO KREW_DOC_HDR_T (APRV_DT,CRTE_DT,DOC_HDR_ID,DOC_HDR_STAT_CD,DOC_TYP_ID,DOC_VER_NBR,DTYPE,FNL_DT,INITR_PRNCPL_ID,RTE_LVL,RTE_STAT_MDFN_DT,STAT_MDFN_DT,TTL,VER_NBR,OBJ_ID)
   VALUES ({d '2008-08-01'},{d '2008-08-01'},2036,'F',2013,1,'DocumentRouteHeaderValue',{d '2008-08-01'},'admin',1,{d '2008-08-01'},{d '2008-08-01'},'Routing workgroup TestRouteAGroup123',9,'DE65997C80CB41F6B1B8CEFCAF7A9913');
 INSERT INTO KREW_DOC_HDR_T (CRTE_DT,DOC_HDR_ID,DOC_HDR_STAT_CD,DOC_TYP_ID,DOC_VER_NBR,DTYPE,INITR_PRNCPL_ID,RTE_LVL,STAT_MDFN_DT,VER_NBR,OBJ_ID)

@@ -1,22 +1,18 @@
--- 
--- Copyright 2009 The Kuali Foundation
--- 
+--
+-- Copyright 2005-2011 The Kuali Foundation
+--
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
 -- you may not use this file except in compliance with the License.
 -- You may obtain a copy of the License at
--- 
+--
 -- http://www.opensource.org/licenses/ecl2.php
--- 
+--
 -- Unless required by applicable law or agreed to in writing, software
 -- distributed under the License is distributed on an "AS IS" BASIS,
 -- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
--- 
-ALTER TABLE KRIM_DLGN_MBR_T DROP CONSTRAINT KRIM_DLGN_MBR_TR1
-/
-INSERT INTO KRIM_ROLE_PERM_T(ROLE_PERM_ID, OBJ_ID, VER_NBR, ROLE_ID, PERM_ID, ACTV_IND) VALUES('683', sys_guid(), 1, '59', '334', 'Y')
-/
+--
 
 -- this row doesn't do anything, but it is possible that it could cause a potential problem
 delete from krim_perm_attr_data_t where perm_id = '163' AND kim_typ_id = '16' AND kim_attr_defn_id = '4' AND attr_val = 'KR-SYS'

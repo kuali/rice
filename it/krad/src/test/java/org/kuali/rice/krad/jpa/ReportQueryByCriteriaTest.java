@@ -33,7 +33,7 @@ public class ReportQueryByCriteriaTest extends KRADTestCase {
     
     @Test
     public void testCriteriaToReportQuery_emptySelect() throws Exception {
-        Criteria criteria = new Criteria(Account.class.getName(), "a");
+        Criteria criteria = new Criteria(Account.class.getName().substring(Account.class.getPackage().getName().length()+1), "a");
         
         String query = criteria.toQuery(QueryByCriteriaType.SELECT, new String[0]);
         assertTrue(StringUtils.equalsIgnoreCase(query, "select a from Account as a"));
@@ -41,7 +41,7 @@ public class ReportQueryByCriteriaTest extends KRADTestCase {
 
     @Test
     public void testCriteriaToReportQuery_singleFieldSelect() throws Exception {
-        Criteria criteria = new Criteria(Account.class.getName(), "a");
+        Criteria criteria = new Criteria(Account.class.getName().substring(Account.class.getPackage().getName().length()+1), "a");
         
         String[] attr = new String[1];
         attr[0] = "number";
@@ -52,7 +52,7 @@ public class ReportQueryByCriteriaTest extends KRADTestCase {
     
     @Test
     public void testCriteriaToReportQuery_multipleFieldSelect() throws Exception {
-        Criteria criteria = new Criteria(Account.class.getName(), "a");
+        Criteria criteria = new Criteria(Account.class.getName().substring(Account.class.getPackage().getName().length()+1), "a");
         
         String[] attr = new String[3];
         attr[0] = "number";

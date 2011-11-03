@@ -868,6 +868,9 @@ public class DocumentTypeXmlParser {
     }
 
     private Group retrieveValidKimGroupUsingProcessedGroupNameAndNamespace(String groupName, String groupNamespace) throws GroupNotFoundException {
+        if (StringUtils.isBlank(groupNamespace) || StringUtils.isBlank(groupName)) {
+            throw new GroupNotFoundException("Valid Workgroup could not be found... Namespace: " + groupNamespace + "  Name: " + groupName);
+        }
         Group workgroup = getGroupService().getGroupByNameAndNamespaceCode(groupNamespace, groupName);
         if (workgroup == null) {
             throw new GroupNotFoundException("Valid Workgroup could not be found... Namespace: " + groupNamespace + "  Name: " + groupName);
@@ -1218,10 +1221,15 @@ public class DocumentTypeXmlParser {
                 exceptionWorkgroupNamespace = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getNamespaceCode();
             }
         }
-        if (!org.apache.commons.lang.StringUtils.isEmpty(exceptionWorkgroupName)) {
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(exceptionWorkgroupName)
+                && org.apache.commons.lang.StringUtils.isNotEmpty(exceptionWorkgroupNamespace)) {
             exceptionWorkgroup = getGroupService().getGroupByNameAndNamespaceCode(exceptionWorkgroupNamespace,
                     exceptionWorkgroupName);
             if (exceptionWorkgroup == null) {
+                throw new GroupNotFoundException("Could not locate exception workgroup with namespace '" + exceptionWorkgroupNamespace + "' and name '" + exceptionWorkgroupName + "'");
+            }
+        } else {
+            if (StringUtils.isEmpty(exceptionWorkgroupName) ^ StringUtils.isEmpty(exceptionWorkgroupNamespace)) {
                 throw new GroupNotFoundException("Could not locate exception workgroup with namespace '" + exceptionWorkgroupNamespace + "' and name '" + exceptionWorkgroupName + "'");
             }
         }

@@ -72,7 +72,7 @@ public class KualiLookupableTest extends KRADTestCase {
         // check url goes back to our back location
         checkURLContains("Lookup return url does not go back to back location", TestConstants.BASE_PATH + "ib.do", returnUrl);
 
-        assertEquals(returnUrl, "<a title=\"return valueAccount Number=a1 \" href=\"http://localhost:8080/ib.do?refreshCaller=kualiLookupable&number=a1&methodToCall=refresh&docFormKey=8888888\">return value</a>");
+        assertEquals(returnUrl, "<a title=\"return valueAccount Number=a1 \" href=\"http://localhost:8080/ib.do?refreshCaller=kualiLookupable&number=a1&methodToCall=refresh&docFormKey=8888888\"  >return value</a>");
 
         // check that field conversions are working correctly for keys
         fieldConversions.put("number", "myAccount[0].chartCode");

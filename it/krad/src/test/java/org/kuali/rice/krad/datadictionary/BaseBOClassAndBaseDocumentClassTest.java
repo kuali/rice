@@ -68,18 +68,18 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
-		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/identity/PersonImpl.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/group/Group.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/role/RoleBo.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/impl/type/KimType.xml");
-		dd.addConfigFileLocation("classpath:org/kuali/rice/krad/test/document");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/rice-location-web/src/main/resources/org/kuali/rice/location/web/campus/Campus.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/rice-location-web/src/main/resources/org/kuali/rice/location/web/campus/CampusType.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/rice-location-web/src/main/resources/org/kuali/rice/location/web/country/Country.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/rice-location-web/src/main/resources/org/kuali/rice/location/web/state/State.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/rice-location-web/src/main/resources/org/kuali/rice/location/web/county/County.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/rice-location-web/src/main/resources/org/kuali/rice/location/web/postalcode/PostalCode.xml");
+		dd.addConfigFileLocation("classpath:org/kuali/rice/krad/test/document/");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/campus/Campus.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/campus/CampusType.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/country/Country.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/state/State.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/county/County.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/postalcode/PostalCode.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/Parameter.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/ParameterType.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/namespace/Namespace.xml");
@@ -143,8 +143,8 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 		}
 		
 		// Test the ability to retrieve a DocumentEntry by "base" class, using both the full name and the simple name.
-		baseClassNames = new String[] {"RiceTestTransactionalDocument2Parent", "RiceTestTransactionalDocument2Parent"};
-		actualClassNames = new String[] {"RiceTestTransactionalDocument2", "RiceTestTransactionalDocument2"};
+		baseClassNames = new String[] {"org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent", "org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent"};
+		actualClassNames = new String[] {"org.kuali.rice.krad.impls.RiceTestTransactionalDocument2", "org.kuali.rice.krad.impls.RiceTestTransactionalDocument2"};
 		for (int i = 0; i < baseClassNames.length; i++) {
 			// Attempt to retrieve a DocumentEntry indexed under RiceTestTransactionalDocument2Parent, the "base" class of RiceTestTransactionalDocument2.
 			assertDocumentEntryIsRiceTestTransactionalDocument2(dd.getDocumentEntry(baseClassNames[i]));
@@ -155,7 +155,7 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 		// Test the ability to retrieve a BusinessObjectEntry by JSTL key, where the "base" class's simple name is the JSTL key if it is defined. However,
 		// the getDictionaryObjectEntry could still find the object even if the JSTL key map doesn't have it, since it checks the other maps for the
 		// entry if it cannot be found in the entriesByJstlKey map.
-		DataDictionaryEntry ddEntry = dd.getDictionaryObjectEntry("AccountType2Parent");
+		DataDictionaryEntry ddEntry = dd.getDictionaryObjectEntry("AccountType2");
 		assertNotNull("The AccountType2 DD entry from the entriesByJstlKey map should not be null", ddEntry);
 		assertTrue("The DD entry should have been a BusinessObjectEntry", ddEntry instanceof BusinessObjectEntry);
 		assertBusinessObjectEntryIsAccountType2((BusinessObjectEntry) ddEntry);

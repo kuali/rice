@@ -107,7 +107,7 @@ public class RadioButtonTypeServiceUtil {
     }
 
     /**
-     * Sort the keys by their sequence number
+     * Sort the keys by their sequence number, if the sequence numbers are the same then fall back to the regular natural key order.
      */
     class LabelSequenceComparator implements Comparator {
         Map<String, Integer> keySequences = new TreeMap<String, Integer>();
@@ -118,6 +118,9 @@ public class RadioButtonTypeServiceUtil {
         public int compare(Object o, Object o1) {
             if (keySequences.get(o) != null && keySequences.get(o1) != null) {
                 int compare = keySequences.get(o).compareTo(keySequences.get(o1));
+                if (compare == 0) { // if the sequence number is the same, fall back to key natural order
+                    return ((String)o).compareTo((String)o1);
+                }
                 return compare;
             }
             return 1; // don't throw anything away (ie return 0)

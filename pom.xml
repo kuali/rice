@@ -199,6 +199,7 @@
                 <!-- Directory excludes -->
                 <exclude>db/impex/**</exclude>
                 <exclude>config/ide/**</exclude>
+                <exclude>it/**</exclude>
 
                 <!-- File excludes -->
                 <exclude>LICENSE.txt</exclude>

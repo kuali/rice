@@ -148,10 +148,12 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             if ((results != null) && !results.isEmpty()) {
                 // expect only one returned row for field query
                 if (results.size() > 1) {
-                    throw new RuntimeException("");
+                    //finding too many results in a not found message (not specific enough)
+                    resultObject = null;
                 }
-
-                resultObject = results.iterator().next();
+                else{
+                    resultObject = results.iterator().next();
+                }
             }
         }
 

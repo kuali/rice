@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+  Copyright 2006-2011 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -41,6 +41,15 @@
     </repository>
   </repositories>
   <properties>
+    <!-- Turn off a bunch of stuff -->
+    <kuali.testjar.phase>none</kuali.testjar.phase>
+    <gmaven.stubs.phase>none</gmaven.stubs.phase>
+    <gmaven.compile.phase>none</gmaven.compile.phase>
+    <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
+    <maven.test.skip>true</maven.test.skip>
+    <enforcer.phase>none</enforcer.phase>
+    <failsafe.phase>none</failsafe.phase>
+
     <private.key>kr-key.pem</private.key>
     <deploy.auth>${user.home}/${private.key}</deploy.auth>
     <maven.test.skip>true</maven.test.skip>
@@ -56,7 +65,9 @@
     <impex.oracle.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.oracle.url>
     <impex.mysql.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.mysql.dba.url>
     <impex.mysql.url>${impex.mysql.dba.url}/${impex.database}</impex.mysql.url>
-    <deploy.operation>reset</deploy.operation>
+    <ant.target>reset</ant.target>
+    <ant.phase>install</ant.phase>
+    <antrun.version>1.7</antrun.version>
     <db.vendor>oracle</db.vendor>
     <impex.url>${impex.oracle.url}</impex.url>
     <impex.dba.url>${impex.oracle.url}</impex.dba.url>
@@ -81,42 +92,22 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <version>2.3</version>
         </plugin>
+        <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>${antrun.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant-jsch</artifactId>
+              <version>1.8.2</version>
+            </dependency>
+          </dependencies>
+        </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>gmaven-compile-stubs</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>gmaven-generate-stubs</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>gmaven-test-compile-stubs</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-banned-dependencies</id>
-            <phase>none</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
   </build>
   <profiles>
     <profile>
@@ -229,19 +220,18 @@
           </plugin>
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.6</version>
             <executions>
               <execution>
                 <id>antrun</id>
                 <phase>install</phase>
-                <configuration>
-                  <target>
-                    <ant antfile="build.xml" target="${deploy.operation}" />
-                  </target>
-                </configuration>
                 <goals>
                   <goal>run</goal>
                 </goals>
+                <configuration>
+                  <target>
+                    <ant antfile="build.xml" target="reset" />
+                  </target>
+                </configuration>
               </execution>
             </executions>
           </plugin>
@@ -352,26 +342,18 @@
           </plugin>
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.6</version>
             <executions>
               <execution>
                 <id>checkout</id>
                 <phase>initialize</phase>
-                <configuration>
-                  <target>
-                    <property name="manifest.svn.url" value="${deploy.impex.location}@${manifest.SVN-Revision}" />
-                    <property name="checkout.dir" value="target/checkout/impex" />
-                    <echo>Checking out ${manifest.svn.url}</echo>
-                    <exec executable="svn">
-                      <arg value="checkout" />
-                      <arg value="${manifest.svn.url}" />
-                      <arg value="${checkout.dir}" />
-                    </exec>
-                  </target>
-                </configuration>
                 <goals>
                   <goal>run</goal>
                 </goals>
+                <configuration>
+                  <target>
+                    <ant antfile="build.xml" target="checkout" />
+                  </target>
+                </configuration>
               </execution>
             </executions>
           </plugin>

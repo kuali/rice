@@ -99,8 +99,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 		);
 		
 		assertDDSearchableAttributesWork(docType,principalId,"routedString",
-				new String[] {"routing","","hippo"},
-				new int[] {1, 1, 0}
+				new String[] {"routing","hippo"},
+				new int[] {1, 0}
 		);
 		
 		GlobalVariables.setUserSession(new UserSession("user1"));
@@ -120,8 +120,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 		);
 		
 		assertDDSearchableAttributesWork(docType,principalId,"routedString",
-				new String[] {"routing","","hippo"},
-				new int[] {1, 1, 0}
+				new String[] {"routing","hippo"},
+				new int[] {1, 0}
 		);
 		
 		LOG.info("Read Access Count not at expected value: "+document.getReadAccessCount());
@@ -143,8 +143,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 		);
 		
 		assertDDSearchableAttributesWork(docType,principalId,"routedString",
-				new String[] {"routing","","hippo"},
-				new int[] {1, 1, 0}
+				new String[] {"routing","hippo"},
+				new int[] {1, 0}
 		);
 		
 		LOG.info("Read Access Count not at expected value: "+document.getReadAccessCount());
@@ -166,8 +166,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 		);
 		
 		assertDDSearchableAttributesWork(docType,principalId,"routedString",
-				new String[] {"routing","","hippo"},
-				new int[] {1, 1, 0}
+				new String[] {"routing","hippo"},
+				new int[] {1, 0}
 		);
 		
 		LOG.info("Read Access Count not at expected value: "+document.getReadAccessCount());
@@ -209,8 +209,8 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 		);
 		
 		assertDDSearchableAttributesWork(docType,principalId,"routedString",
-				new String[] {"routing","","hippo"},
-				new int[] {1, 1, 0}
+				new String[] {"routing","hippo"},
+				new int[] {1, 0}
 		);
 		
 		LOG.info("Read Access Count not at expected value: "+document.getReadAccessCount());

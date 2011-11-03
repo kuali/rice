@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2005-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-﻿/*!
+/*!
  * jQuery blockUI plugin
  * Version 2.38 (29-MAR-2011)
  * @requires jQuery v1.2.3 or later

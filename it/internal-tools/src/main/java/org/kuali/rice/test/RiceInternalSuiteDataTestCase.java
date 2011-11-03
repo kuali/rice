@@ -28,6 +28,8 @@ import java.io.InputStreamReader;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
+    private static final String HASH_PREFIX = "#";
+    private static final String SLASH_PREFIX = "//";
 
 	/**
 	 * Loads the suite test data from the shared DefaultSuiteTestData.sql
@@ -43,7 +45,7 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(resourceLoader.getResource(getKIMDataLoadOrderFile()).getInputStream()));
 		String line = null;
 		while ((line = reader.readLine()) != null) {
-			if (!StringUtils.isBlank(line)) {
+			if (!StringUtils.isBlank(line) && !line.startsWith(HASH_PREFIX) && !line.startsWith(SLASH_PREFIX)) {
 				new SQLDataLoader(getKIMSqlFileBaseLocation() + "/" + line, "/").runSql();
 			}
 		}

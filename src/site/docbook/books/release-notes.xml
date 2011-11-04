@@ -119,7 +119,7 @@
         </sect2>
     </sect1>
     <sect1 xml:id="major-changes" xreflabel="Major Changes">
-        <title>Major Changes</title>            
+        <title>Major Changes</title>
         <para>While implementing modularity and version compatibility changes, there were many
             structural improvements and refactoring changes to Rice to set a stronger foundation for
             future releases. Below is a summary of the major changes.</para>
@@ -176,15 +176,51 @@
         <sect2>
             <title>New Modules: KRMS and KRAD</title>
             <para>View the following analysis pages for information on KRMS and KRAD:<itemizedlist>
-                <listitem>
-                    <para><link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
-                        Analysis</link></para>
-                </listitem>
-                <listitem>
-                    <para><link xlink:href="https://wiki.kuali.org/x/UwHuE">KRAD
-                        Analysis</link></para>
-                </listitem>
-            </itemizedlist></para>
+                    <listitem>
+                        <para><link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
+                            Analysis</link></para>
+                    </listitem>
+                </itemizedlist>
+                <title>Kuali Rapid Application Development Framework</title> KRAD (Kuali Rapid
+                Application Development) is a framework that eases the development of enterprise web
+                applications by providing reusable solutions and tooling that enable developers to
+                build in a rapid and agile fashion. KRAD is a complete framework for web development
+                that provides infrastructure in all major areas of an application (client, business,
+                and data) and integrates with other modules of the Rice middleware project. KRAD is
+                the next generation of the Rice Kuali Nervous System (KNS) and Kuali Student
+                development frameworks. It expands on the ability to rapidly create user interfaces
+                with XML while providing more flexibility with layouts and user experience. In
+                addition, KRAD allows for the creation of modern, rich UIs using the jQuery and
+                Fluid frameworks. <para><emphasis role="bold">How does KRAD improve on the KNS?
+                    </emphasis> See <link
+                        xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf"
+                        >Benefits of KRAD</link></para> To learn more about KRAD, please visit the
+                following pages:<itemizedlist>
+                    <listitem>
+                        <para><link
+                                xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell"
+                                >KRAD in a nutshell</link></para>
+                    </listitem>
+                    <listitem>
+                        <para><link
+                                xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views"
+                                >UIF Architecture</link></para>
+                    </listitem>
+                    <listitem>
+                        <para><link
+                                xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases"
+                                >View Tutorial</link></para>
+                    </listitem>
+                    <listitem>
+                        <para><link
+                                xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial"
+                                >Creating a component</link></para>
+                    </listitem>
+                </itemizedlist> In addition, see various analysis pages here (Note: some of the
+                information might be incomplete or out of date): <link
+                    xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis"
+                    >KRAD Analysis</link>
+            </para>
         </sect2>
         <sect2>
             <title>Increased Modularity</title>

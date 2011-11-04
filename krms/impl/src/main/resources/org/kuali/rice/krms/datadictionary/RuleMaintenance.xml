@@ -113,13 +113,21 @@
               </bean>
               <bean parent="ActionField" p:methodToCall="copyRule" p:actionLabel="Copy Rule"  p:clientSideJs="alert('Not Yet Implemented');"
                 p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt; float: right;"/>
-
             </list>
           </property>
         </bean>
-
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.namespace" p:readOnly="true" />
+        <ref bean="firstRuleCustomAttributes"/>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" p:required="true"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean name="firstRuleCustomAttributes" parent="GroupGridLayout" p:colSpan="2" p:layoutManager.numberOfColumns="2"
+         p:refreshWhenChanged="document.newMaintainableObject.dataObject.agendaItemLine.rule.typeId"
+         p:style="padding: 0px; border-style: hidden;">
+    <property name="items">
+      <list>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.typeId" p:label="Type" p:required="true">
           <property name="control">
             <bean parent="SelectControl"/>
@@ -128,23 +136,18 @@
             <bean class="org.kuali.rice.krms.impl.repository.RuleTypeValuesFinder" p:blankOption="true"/>
           </property>
         </bean>
-        <bean name="firstRuleCustomAttributes" parent="GroupGridLayout" p:colSpan="2"
-               p:refreshWhenChanged="document.newMaintainableObject.dataObject.agendaItemLine.rule.typeId">
-          <property name="items">
-            <list>
-              <bean parent="RemoteFieldsHolder" p:propertyName="customRuleAttributesMap"
-                    p:fetchingMethodToCall="retrieveRuleCustomAttributes"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="InputField" p:propertyName="agendaItemLine.rule.description" p:labelField.colSpan="1" p:colSpan="5">
-          <property name="control">
-            <bean parent="TextAreaControl" p:rows="4" p:cols="60"/>
-          </property>
-        </bean>
+        <bean parent="RemoteFieldsHolder" p:propertyName="customRuleAttributesMap"
+              p:fetchingMethodToCall="retrieveRuleCustomAttributes"/>
       </list>
     </property>
   </bean>
+
+  <bean parent="InputField" p:propertyName="agendaItemLine.rule.description" p:labelField.colSpan="1" p:colSpan="5">
+    <property name="control">
+      <bean parent="TextAreaControl" p:rows="4" p:cols="60"/>
+    </property>
+  </bean>
+
 
   <bean name="propositionSection" parent="propositionSection-parent" />
   <bean name="propositionSection-parent" parent="GroupBodyOnly">

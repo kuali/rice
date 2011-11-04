@@ -49,7 +49,7 @@ public class DocumentSearchInternalUtils {
 
     private static final Logger LOG = Logger.getLogger(DocumentSearchInternalUtils.class);
 
-    private static final boolean CASE_SENSITIVE_DEFAULT = true;
+    private static final boolean CASE_SENSITIVE_DEFAULT = false;
 
     private static final String STRING_ATTRIBUTE_TABLE_NAME = "KREW_DOC_HDR_EXT_T";
     private static final String DATE_TIME_ATTRIBUTE_TABLE_NAME = "KREW_DOC_HDR_EXT_DT_T";

@@ -40,9 +40,11 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -205,7 +207,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException e) {}
+        } catch (RuntimeException e) {}
 
         criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
@@ -226,7 +228,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException e) {}
+        } catch (RuntimeException e) {}
 
         criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
@@ -247,7 +249,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException e) {}
+        } catch (RuntimeException e) {}
 
         criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
@@ -269,7 +271,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException e) {}
+        } catch (RuntimeException e) {}
     }
 
     /**

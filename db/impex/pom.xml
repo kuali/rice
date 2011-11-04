@@ -457,7 +457,7 @@
             <executions>
               <execution>
                 <id>pre-integration-test</id>
-                <phase>verify</phase>
+                <phase>process-test-resources</phase>
                 <configuration>
                   <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
                 </configuration>

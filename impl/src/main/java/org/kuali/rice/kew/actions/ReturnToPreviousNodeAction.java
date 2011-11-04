@@ -228,13 +228,11 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             LOG.debug("Finding requests in return path and setting current indicator to FALSE");
             List<ActionRequestValue> doneRequests = new ArrayList<ActionRequestValue>();
             List<ActionRequestValue> pendingRequests = new ArrayList<ActionRequestValue>();
-            for (Iterator iterator = result.getPath().iterator(); iterator.hasNext();) {
-            	RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+            for (RouteNodeInstance nodeInstance : (List<RouteNodeInstance>)result.getPath()) {
             	// mark the node instance as having been revoked
             	KEWServiceLocator.getRouteNodeService().revokeNodeInstance(getRouteHeader(), nodeInstance);
-                List nodeRequests = getActionRequestService().findRootRequestsByDocIdAtRouteNode(getRouteHeader().getDocumentId(), nodeInstance.getRouteNodeInstanceId());
-                for (Iterator requestIt = nodeRequests.iterator(); requestIt.hasNext();) {
-                    ActionRequestValue request = (ActionRequestValue) requestIt.next();
+                List<ActionRequestValue> nodeRequests = getActionRequestService().findRootRequestsByDocIdAtRouteNode(getRouteHeader().getDocumentId(), nodeInstance.getRouteNodeInstanceId());
+                for (ActionRequestValue request : nodeRequests) {
                     if (request.isDone()) {
                         doneRequests.add(request);
                     } else {

@@ -24,6 +24,7 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.doctype.RouteNode;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.DocumentContent;
 import org.kuali.rice.kew.api.document.DocumentDetail;
@@ -44,6 +45,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -374,34 +376,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	
 	@Override
 	public List<String> getPreviousRouteNodeNames(String documentId) {
+
 		if (StringUtils.isBlank(documentId)) {
             throw new RiceIllegalArgumentException("documentId was null or blank");
         }
         if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching previous node names [documentId=" + documentId + "]");
 		}
-		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
-		
-		// TODO validate that the doc is null or not instead of just throwing NPE?
-		
-		//going conservative for now.  if the doc isn't enroute or exception nothing will be returned.
-		if (document.isEnroute() || document.isInException()) {
-
-			// TODO: KULRICE-5329 verify that the rewrite of the numeric logic below is reasonable -- I'm guessing it's not -- this one's a fairly radical change since I had to throw
-			// away the whole premise of using the longValue of the id as a strategy, so I think I'm massively oversimplifying the original goal of the logic
-			List<org.kuali.rice.kew.engine.node.RouteNodeInstance> routeNodeInstances = KEWServiceLocator.getRouteNodeService().getFlattenedNodeInstances(document, false);
-			Set<String> routeNodeNames = new LinkedHashSet<String>();
-			if (routeNodeInstances != null) {
-				for (org.kuali.rice.kew.engine.node.RouteNodeInstance routeNodeInstance : routeNodeInstances) {
-					if (routeNodeInstance.isComplete()) {
-						routeNodeNames.add(routeNodeInstance.getName());
-					}
-				}
-			}
-			return Collections.unmodifiableList(new ArrayList<String>(routeNodeNames));
-		} else {
-			return Collections.emptyList();
-		}
+        return new ArrayList<String>(KEWServiceLocator.getRouteNodeService().findPreviousNodeNames(documentId));
 	}
 
     @Override

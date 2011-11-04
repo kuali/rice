@@ -35,6 +35,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -186,19 +187,31 @@ public class RouteNodeServiceImpl implements RouteNodeService {
        return this.routeNodeDAO.findProcessNodeInstances(process);
     }
     
-    public Set findPreviousNodeNames(String documentId) {
-        List currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId);
+    public List<String> findPreviousNodeNames(String documentId) {
+        DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+        List<String> revokedIds = Collections.emptyList();
+
+        String revoked = document.getRootBranch().getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY) == null ? null : document.getRootBranch().getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY).getValue();
+        if (revoked != null) {
+            revokedIds = Arrays.asList(revoked.split(","));
+        }
+        List <RouteNodeInstance> currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId);
         List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
-        for (Iterator iterator = currentNodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance nodeInstance : currentNodeInstances) {
             nodeInstances.addAll(nodeInstance.getPreviousNodeInstances());
         }
-        Set<String> nodeNames = new HashSet<String>();
+        List<String> nodeNames = new ArrayList<String>();
         while (!nodeInstances.isEmpty()) {
             RouteNodeInstance nodeInstance = nodeInstances.remove(0);
-            nodeNames.add(nodeInstance.getName());
+            if (!revokedIds.contains(nodeInstance.getRouteNodeInstanceId())) {
+                nodeNames.add(nodeInstance.getName());
+            }
             nodeInstances.addAll(nodeInstance.getPreviousNodeInstances());
         }
+
+        //reverse the order, because it was built last to first
+        Collections.reverse(nodeNames);
+
         return nodeNames;
     }
     

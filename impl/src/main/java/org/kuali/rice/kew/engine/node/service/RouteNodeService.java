@@ -26,7 +26,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -96,7 +95,7 @@ public interface RouteNodeService {
     public boolean isNodeInPath(DocumentRouteHeaderValue document, String nodeName);
     public List findRouteNodeInstances(String documentId);
     public List findProcessNodeInstances(RouteNodeInstance process);
-    public Set findPreviousNodeNames(String documentId);
+    public List<String> findPreviousNodeNames(String documentId);
     
     /**
      * Returns a List of the distinct node names through which this document might pass in it's future 

@@ -33,8 +33,7 @@ public class PropositionBoServiceTest extends AbstractBoTest {
 	
 	@Before
 	public void setup() {
-		super.setup();
-		
+
 		krmsTypeRepository = new KrmsTypeBoServiceImpl();
 		((KrmsTypeBoServiceImpl) krmsTypeRepository).setBusinessObjectService(getBoService());
 		

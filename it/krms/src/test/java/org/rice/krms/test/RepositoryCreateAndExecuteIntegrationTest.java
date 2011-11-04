@@ -28,14 +28,12 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.engine.EngineResults;
 import org.kuali.rice.krms.api.engine.ExecutionFlag;
 import org.kuali.rice.krms.api.engine.ExecutionOptions;
 import org.kuali.rice.krms.api.engine.Facts;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.SelectionCriteria;
-import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
@@ -55,9 +53,6 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
-import org.kuali.rice.krms.framework.engine.ResultLogger;
-import org.kuali.rice.krms.framework.engine.result.EngineResultListener;
-import org.kuali.rice.krms.framework.engine.result.Log4jResultListener;
 import org.kuali.rice.krms.impl.provider.repository.CompoundPropositionTypeService;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl;
@@ -71,7 +66,6 @@ import org.kuali.rice.krms.impl.repository.ContextAttributeBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.ContextBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
-import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.PropositionBoService;
@@ -111,8 +105,6 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 
 	@Before
 	public void setup() {
-		super.setup();
-
 		// wire up BO services for creation
 
 		termBoService = new TermBoServiceImpl();
@@ -291,18 +283,10 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
         ExecutionOptions xOptions1 = new ExecutionOptions();
         xOptions1.setFlag(ExecutionFlag.LOG_EXECUTION, true);
 
-	    // Need to initialize ResultLogger to get results.
-	    // TODO: I'm concerned about how this will deal w/ concurrency.
-	    ResultLogger resultLogger = ResultLogger.getInstance();
-        EngineResultListener engineResultListener = new EngineResultListener();
-	    resultLogger.addListener(engineResultListener);
-        resultLogger.addListener(new Log4jResultListener());
-
         PerformanceLogger perfLog = new PerformanceLogger();
         perfLog.log("starting rule execution");
         EngineResults eResults1 = engine.execute(sc1, factsBuilder1.build(), xOptions1);
         perfLog.log("finished rule execution", true);
-        resultLogger.removeListener(engineResultListener);
         List<ResultEvent> rEvents1 = eResults1.getAllResults();
 
         List<ResultEvent> ruleEvaluationResults1 = eResults1.getResultsOfType(ResultEvent.RuleEvaluated.toString());
@@ -314,7 +298,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
     private RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String nameSpace) {
         // Rule 1
         RuleDefinition.Builder ruleDefBuilder1 =
-            RuleDefinition.Builder.create(null, "Rule1", nameSpace, createKrmsCampusTypeDefinition(nameSpace).getId(), null);
+            RuleDefinition.Builder.create(null, "Rule1", nameSpace, null, null);
         RuleDefinition ruleDef1 = ruleBoService.createRule(ruleDefBuilder1.build());
 
 
@@ -398,19 +382,11 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractBoTest {
 	    ExecutionOptions xOptions2 = new ExecutionOptions();
 	    xOptions2.setFlag(ExecutionFlag.LOG_EXECUTION, true);
 
-	    // Need to initialize ResultLogger to get results.
-	    // TODO: I'm concerned about how this will deal w/ concurrency.
-	    ResultLogger resultLogger = ResultLogger.getInstance();
-        EngineResultListener engineResultListener = new EngineResultListener();
-	    resultLogger.addListener(engineResultListener);
-        resultLogger.addListener(new Log4jResultListener());
 
         PerformanceLogger perfLog = new PerformanceLogger();
         perfLog.log("starting rule execution");
 	    EngineResults eResults2 = engine.execute(sc2, factsBuilder2.build(), xOptions2);
         perfLog.log("finished rule execution", true);
-
-        resultLogger.removeListener(engineResultListener);
 
         List<ResultEvent> rEvents2 = eResults2.getAllResults();
 

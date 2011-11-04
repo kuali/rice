@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2011 The Kuali Foundation
+/*
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.krms.impl.type;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.type.RuleTypeService;
+import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 
 /**
  * Base class for {@link org.kuali.rice.krms.framework.type.RuleTypeService} implementations, providing
@@ -27,8 +32,26 @@ public class RuleTypeServiceBase extends KrmsTypeServiceBase implements RuleType
 
     public static final RuleTypeService defaultRuleTypeService = new RuleTypeServiceBase();
 
+    private RepositoryToEngineTranslator translator;
+
     @Override
     public Rule loadRule(RuleDefinition ruleDefinition) {
-        throw new UnsupportedOperationException("RuleTypeServiceBase.defaultRuleTypeService");
+            if (ruleDefinition == null) { throw new RiceIllegalArgumentException("ruleDefinition must not be null"); }
+            if (ruleDefinition.getAttributes() == null) { throw new RiceIllegalArgumentException("ruleDefinition must not be null");}
+
+        return new BasicRule(ruleDefinition.getName(),
+                getTranslator().translatePropositionDefinition(ruleDefinition.getProposition()),
+                getTranslator().translateActionDefinitions(ruleDefinition.getActions()));
+    }
+
+    public RepositoryToEngineTranslator getTranslator() {
+        if (translator == null) {
+            translator = KrmsRepositoryServiceLocator.getKrmsRepositoryToEngineTranslator();
+        }
+        return translator;
+    }
+
+    public void setTranslator(RepositoryToEngineTranslator translator) {
+        this.translator = translator;
     }
 }

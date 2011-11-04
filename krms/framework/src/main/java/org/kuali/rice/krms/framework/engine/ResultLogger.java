@@ -45,16 +45,7 @@ public class ResultLogger {
 	public void removeListener(ResultListener l){
 		listenerList.remove(ResultListener.class, l);
 	}
-	
-	/**
-	 * This method is just for the POC.
-	 * In the real world, adding listeners will be performed elsewhere.
-	 */
-	public void init(){
-		addListener(new EngineResultListener());
-		addListener(new Log4jResultListener());
-	}
-	
+
 	public void logResult(ResultEvent event){
 		if (isEnabled(event.getEnvironment())){
 			// fire event to listeners

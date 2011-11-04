@@ -42,9 +42,6 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
-import org.kuali.rice.krms.framework.engine.ResultLogger;
-import org.kuali.rice.krms.framework.engine.result.EngineResultListener;
-import org.kuali.rice.krms.framework.engine.result.Log4jResultListener;
 import org.kuali.rice.krms.framework.type.ValidationActionType;
 import org.kuali.rice.krms.framework.type.ValidationActionTypeService;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
@@ -120,7 +117,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 
 	@Before
 	public void setup() {
-		super.setup();
+
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
         krmsTypeRepositoryService = new KrmsTypeBoServiceImpl();
         ((KrmsTypeBoServiceImpl)krmsTypeRepositoryService).setBusinessObjectService(getBoService());
@@ -347,13 +344,6 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 
         SelectionCriteria sc1 = SelectionCriteria.createCriteria(new DateTime(),
                 contextQualifiers, Collections.singletonMap(AgendaDefinition.Constants.EVENT, EVENT_ATTRIBUTE));
-
-	    // Need to initialize ResultLogger to get results.
-	    // TODO: I'm concerned about how this will deal w/ concurrency.
-	    ResultLogger resultLogger = ResultLogger.getInstance();
-        EngineResultListener engineResultListener = new EngineResultListener();
-	    resultLogger.addListener(engineResultListener);
-        resultLogger.addListener(new Log4jResultListener());
 
         Facts.Builder factsBuilder1 = Facts.Builder.create();
 //        factsBuilder1.addFact(TERM_NAME, 49999);

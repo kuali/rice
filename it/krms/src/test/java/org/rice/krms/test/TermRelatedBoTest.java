@@ -43,8 +43,7 @@ public class TermRelatedBoTest extends AbstractBoTest {
 	
 	@Before
 	public void setup() {
-		super.setup();
-		
+
 		// wire up BO services
 
 		termBoService = new TermBoServiceImpl();

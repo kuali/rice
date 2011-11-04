@@ -192,7 +192,6 @@ public class AgendaTest {
 		// Set execution options to log execution
 		ExecutionOptions executionOptions = new ExecutionOptions().setFlag(ExecutionFlag.LOG_EXECUTION, true);
 		
-		LOG.init();
 		EngineResults results = engine.execute(selectionCriteria, Facts.EMPTY_FACTS, executionOptions);
 		assertNotNull(results);
 	}

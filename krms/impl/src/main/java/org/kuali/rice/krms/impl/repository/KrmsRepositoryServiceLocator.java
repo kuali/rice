@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.criteria.CriteriaLookupService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
+import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslator;
 
 /**
  * This class keeps track of the KRMS Repository Services
@@ -28,6 +29,10 @@ import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
  *
  */
 public final class KrmsRepositoryServiceLocator {
+
+    private KrmsRepositoryServiceLocator() {
+        // private constructor since this is class is all static utility methods
+    }
 
 	private static final Logger LOG = Logger.getLogger(KrmsRepositoryServiceLocator.class);
 
@@ -39,6 +44,7 @@ public final class KrmsRepositoryServiceLocator {
     public static final String KRMS_TERM_BO_SERVICE = "termBoService";
     public static final String KRMS_RULE_BO_SERVICE = "ruleBoService";
     public static final String KRMS_AGENDA_AUTHORIZATION_SERVICE = "agendaAuthorizationService";
+    public static final String KRMS_REPOSITORY_TO_ENGINE_TRANSLATOR = "repositoryToEngineTranslator";
 
 	private static KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private static ContextBoService contextBoService;
@@ -47,6 +53,7 @@ public final class KrmsRepositoryServiceLocator {
     private static RuleBoService ruleBoService;
     private static AgendaAuthorizationService agendaAuthorizationService;
     private static KrmsTypeRepositoryService krmsTypeRepositoryService;
+    private static RepositoryToEngineTranslator krmsRepositoryToEngineTranslator;
 
     public static <T extends Object> T getService(String serviceName) {
 		return KrmsRepositoryServiceLocator.<T>getBean(serviceName);
@@ -116,4 +123,10 @@ public final class KrmsRepositoryServiceLocator {
         return krmsTypeRepositoryService;
     }
 
+    public static RepositoryToEngineTranslator getKrmsRepositoryToEngineTranslator() {
+        if (krmsRepositoryToEngineTranslator == null) {
+            krmsRepositoryToEngineTranslator = getService(KRMS_REPOSITORY_TO_ENGINE_TRANSLATOR);
+        }
+        return krmsRepositoryToEngineTranslator;
+    }
 }

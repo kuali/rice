@@ -92,6 +92,9 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
             throw new IllegalArgumentException("ruleDefinition was null");
         }
         KrmsTypeDefinition typeDefinition = getTypeDefinition(ruleDefinition.getTypeId());
+
+        if (typeDefinition == null) { return RuleTypeServiceBase.defaultRuleTypeService; }
+
         return resolveTypeService(typeDefinition, RuleTypeService.class);
     }
 
@@ -115,7 +118,7 @@ public class KrmsTypeResolverImpl implements KrmsTypeResolver {
 	
 	protected KrmsTypeDefinition getTypeDefinition(String typeId) {
 		if (StringUtils.isBlank(typeId)) {
-			throw new IllegalArgumentException("The given typeId was null.");
+			return null;
 		}
 		KrmsTypeDefinition typeDefinition = typeRepositoryService.getTypeById(typeId);
 		if (typeDefinition == null) {

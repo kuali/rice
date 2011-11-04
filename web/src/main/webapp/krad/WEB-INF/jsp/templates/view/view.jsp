@@ -19,8 +19,8 @@
 
 <tiles:useAttribute name="view"	classname="org.kuali.rice.krad.uif.view.View" />
 
-<!-- begin of view render -->
 <krad:html view="${view}">
+<!-- begin of view render -->
 <!----------------------------------- #Resize notification --------------------------------------->
 <c:if test="${!view.dialogMode}">
 <krad:script value="

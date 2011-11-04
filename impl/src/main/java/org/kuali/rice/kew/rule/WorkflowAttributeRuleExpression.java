@@ -69,8 +69,8 @@ class WorkflowAttributeRuleExpression implements RuleExpression {
                 ((GenericXMLRuleAttribute) routingAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
             }
             String className = ruleAttribute.getResourceDescriptor();
-            List<RuleExtension> editedRuleExtensions = new ArrayList();
-            for (RuleExtension extension : rule.getRuleExtensions()) {
+            List<RuleExtensionBo> editedRuleExtensions = new ArrayList();
+            for (RuleExtensionBo extension : rule.getRuleExtensions()) {
                 if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(className)) {
                     editedRuleExtensions.add(extension);
                 }

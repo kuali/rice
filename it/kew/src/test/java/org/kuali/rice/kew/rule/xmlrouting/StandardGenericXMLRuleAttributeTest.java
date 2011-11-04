@@ -23,7 +23,7 @@ import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
@@ -229,7 +229,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 	 * Test method for 'org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute.isMatch(DocumentContent, List)'
 	 */
 	@Test public void testIsMatch() {
-		RuleExtension extension = new RuleExtension();
+		RuleExtensionBo extension = new RuleExtensionBo();
 
 		List<RuleExtensionValue> values = new ArrayList<RuleExtensionValue>();
 		RuleExtensionValue value = new RuleExtensionValue();
@@ -255,7 +255,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		ruleTemplateAttribute.setRuleAttribute(ruleAttribute);
 		extension.setRuleTemplateAttribute(ruleTemplateAttribute);
-		RuleExtension extension2 = new RuleExtension();
+		RuleExtensionBo extension2 = new RuleExtensionBo();
 
 		List values2 = new ArrayList();
 		RuleExtensionValue valueNew = new RuleExtensionValue();
@@ -288,7 +288,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		assertTrue("Givenname did not match Dave, gender did not match female, or color did not match green", attribute.isMatch(docContent, extensions));
 
-		extension = new RuleExtension();
+		extension = new RuleExtensionBo();
 		values = new ArrayList();
 		RuleExtensionValue value4 = new RuleExtensionValue();
 		value4.setKey("givenname");
@@ -337,7 +337,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		///////
 
-		extension = new RuleExtension();
+		extension = new RuleExtensionBo();
 		values = new ArrayList();
 
 		RuleExtensionValue value7 = new RuleExtensionValue();

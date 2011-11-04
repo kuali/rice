@@ -25,11 +25,10 @@ import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Element;
@@ -336,7 +335,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                     String fieldName = fieldAttribute.getNodeValue();
                     boolean foundExtension = false;
                     outer:for (Iterator iterator = ruleExtensions.iterator(); iterator.hasNext();) {
-                        RuleExtension ruleExtension = (RuleExtension) iterator.next();
+                        RuleExtensionBo ruleExtension = (RuleExtensionBo) iterator.next();
                         if (ruleExtension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(extensionDefinition.getName())) {
                             for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
                                 if (fieldName.equals(ruleExtensionValue.getKey())) {

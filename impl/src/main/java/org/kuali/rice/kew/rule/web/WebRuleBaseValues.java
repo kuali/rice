@@ -28,7 +28,7 @@ import org.kuali.rice.kew.rule.KeyValueId;
 import org.kuali.rice.kew.rule.RoleAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
@@ -496,7 +496,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			} else {
 				List ruleExtensionValues = workflowAttribute.getRuleExtensionValues();
 				if (ruleExtensionValues != null && !ruleExtensionValues.isEmpty()) {
-					RuleExtension ruleExtension = new RuleExtension();
+					RuleExtensionBo ruleExtension = new RuleExtensionBo();
 					ruleExtension.setRuleTemplateAttributeId(ruleTemplateAttribute.getId());
 
 					ruleExtension.setExtensionValues(ruleExtensionValues);
@@ -508,7 +508,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		setRuleTemplate(ruleTemplate);
 
 		for (Object element : getRuleExtensions()) {
-			RuleExtension ruleExtension = (RuleExtension) element;
+			RuleExtensionBo ruleExtension = (RuleExtensionBo) element;
 			ruleExtension.setRuleBaseValues(this);
 
 			for (Object element2 : ruleTemplate.getActiveRuleTemplateAttributes()) {

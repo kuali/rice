@@ -110,11 +110,18 @@ public interface RuleContract extends Identifiable {
     List<? extends RuleResponsibilityContract> getRuleResponsibilities();
 
     /**
-     * rule Extensions are a key, value representation provided in a Map that extend a normal Rule
+     * List of rule extensions associated with the Rule
      *
      * @return ruleExtensions
      */
-    Map<String, String> getRuleExtensionMap();
+    List<? extends RuleExtensionContract> getRuleExtensions();
+
+    /**
+     * rule Extensions are a key, value representation provided in a Map that extend a normal Rule
+     *
+     * @return ruleExtensionMap
+     */
+    //Map<String, String> getRuleExtensionMap();
 
     /**
      * Template Name of the Rule.
@@ -127,5 +134,14 @@ public interface RuleContract extends Identifiable {
      */
     String getRuleTemplateName();
 
+    /**
+     * Expression for rule to evaluate.
+     *
+     * <p>
+     * This is expression definition of the rule
+     * </p>
+     *
+     * @return ruleExpressionDef
+     */
     RuleExpressionContract getRuleExpressionDef();
 }

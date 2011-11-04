@@ -29,11 +29,8 @@ import javax.persistence.PersistenceException;
 
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.WorkflowDocumentFactory;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -62,7 +59,7 @@ public class RuleServiceTest extends KEWTestCase {
         rbv.setDocTypeName("TestDocumentType");
         rbv.setForceAction(Boolean.FALSE);
 
-        RuleExtension ext = new RuleExtension();
+        RuleExtensionBo ext = new RuleExtensionBo();
         RuleExtensionValue val = new RuleExtensionValue();
         val.setKey("emptyvalue");
         val.setValue("");

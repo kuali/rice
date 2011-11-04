@@ -349,9 +349,8 @@ public class RuleXmlParser {
         }
         List<RuleResponsibilityBo> existingResponsibilities = rule.getRuleResponsibilities();
         List<RuleResponsibilityBo> responsibilities = new ArrayList<RuleResponsibilityBo>();
-        List responsibilityElements = element.getChildren(RESPONSIBILITY, element.getNamespace());
-        for (Iterator iterator = responsibilityElements.iterator(); iterator.hasNext();) {
-            Element responsibilityElement = (Element) iterator.next();
+        List<Element> responsibilityElements = (List<Element>)element.getChildren(RESPONSIBILITY, element.getNamespace());
+        for (Element responsibilityElement : responsibilityElements) {
             RuleResponsibilityBo responsibility = parseResponsibility(responsibilityElement, rule);
             reconcileWithExistingResponsibility(responsibility, existingResponsibilities);
             responsibilities.add(responsibility);

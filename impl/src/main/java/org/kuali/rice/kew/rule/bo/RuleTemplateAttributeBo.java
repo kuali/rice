@@ -21,7 +21,7 @@ import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.extension.ExtensionUtils;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleValidationAttribute;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
@@ -84,7 +84,7 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
 	@JoinColumn(name="RULE_ATTR_ID")
 	private RuleAttribute ruleAttribute;
     @OneToMany(fetch=FetchType.LAZY,mappedBy="ruleTemplateAttribute")
-	private List<RuleExtension> ruleExtensions;
+	private List<RuleExtensionBo> ruleExtensions;
     
     
     public RuleTemplateAttributeBo() {
@@ -168,14 +168,14 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
         }
     }
 
-    public List<RuleExtension> getRuleExtensions() {
+    public List<RuleExtensionBo> getRuleExtensions() {
         return ruleExtensions;
     }
 
     public Map<String, String> getRuleExtensionMap() {
         Map<String, String> extensions = new HashMap<String, String>();
         if (this.getRuleExtensions() != null) {
-            for (RuleExtension ext : this.getRuleExtensions()) {
+            for (RuleExtensionBo ext : this.getRuleExtensions()) {
                 for (RuleExtensionValue value : ext.getExtensionValues()) {
                     extensions.put(value.getKey(), value.getValue());
                 }
@@ -184,7 +184,7 @@ public class RuleTemplateAttributeBo extends PersistableBusinessObjectBase
         return extensions;
     }
 
-    public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
+    public void setRuleExtensions(List<RuleExtensionBo> ruleExtensions) {
         this.ruleExtensions = ruleExtensions;
     }
 

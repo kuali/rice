@@ -29,7 +29,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
@@ -412,6 +414,18 @@ public final class RuleResponsibility
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) { return false; }
+        if (!(o instanceof RuleResponsibilityContract)) { return false; }
+        RuleResponsibilityContract resp = (RuleResponsibilityContract) o;
+        return StringUtils.equals(getPrincipalId(),  resp.getPrincipalId()) &&
+               StringUtils.equals(getRoleName(), resp.getRoleName()) &&
+               StringUtils.equals(getGroupId(), resp.getGroupId()) &&
+               StringUtils.equals(getActionRequestedCd(), resp.getActionRequestedCd()) &&
+               ObjectUtils.equals(getPriority(), resp.getPriority()) &&
+               StringUtils.equals(getApprovePolicy(), resp.getApprovePolicy());
+    }
 
     /**
      * Defines some internal constants used on this class.

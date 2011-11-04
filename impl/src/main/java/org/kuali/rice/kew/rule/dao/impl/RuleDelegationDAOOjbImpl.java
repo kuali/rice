@@ -23,7 +23,7 @@ import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -310,7 +310,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
                     // extensionCrit.addOrCriteria(extensionCrit2);
                     // extensionCrit.addOrCriteria(extensionCrit3);
-                    ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleExtension.class, extensionCrit2);
+                    ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleExtensionBo.class, extensionCrit2);
                     query.setAttributes(new String[] { "ruleBaseValuesId" });
                     crit.addIn("ruleExtensions.ruleBaseValuesId", query);
                 }

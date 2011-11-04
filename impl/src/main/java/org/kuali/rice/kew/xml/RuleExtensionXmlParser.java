@@ -20,7 +20,7 @@ import org.jdom.Namespace;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
@@ -34,9 +34,9 @@ import java.util.List;
 
 
 /**
- * Parses {@link RuleExtension}s from XML.
+ * Parses {@link org.kuali.rice.kew.rule.RuleExtensionBo}s from XML.
  *
- * @see RuleExtension
+ * @see org.kuali.rice.kew.rule.RuleExtensionBo
  * @see RuleExtensionValue
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -61,7 +61,7 @@ public class RuleExtensionXmlParser {
 	return ruleExtensions;
     }
 
-    private RuleExtension parseRuleExtension(Element element, RuleBaseValues rule) throws XmlException {
+    private RuleExtensionBo parseRuleExtension(Element element, RuleBaseValues rule) throws XmlException {
 	String attributeName = element.getChildText(ATTRIBUTE, NAMESPACE);
 	String templateName = element.getChildText(RULE_TEMPLATE, NAMESPACE);
 	Element valuesElement = element.getChild(RULE_EXTENSION_VALUES, NAMESPACE);
@@ -79,7 +79,7 @@ public class RuleExtensionXmlParser {
 	if (ruleTemplate == null) {
 	    throw new XmlException("Could not locate rule template for the given name '" + templateName + "'");
 	}
-	RuleExtension extension = new RuleExtension();
+	RuleExtensionBo extension = new RuleExtensionBo();
 	extension.setRuleBaseValues(rule);
 	boolean attributeFound = false;
 	for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
@@ -101,7 +101,7 @@ public class RuleExtensionXmlParser {
 	return extension;
     }
 
-    private List parseRuleExtensionValues(Element element, RuleExtension ruleExtension) throws XmlException {
+    private List parseRuleExtensionValues(Element element, RuleExtensionBo ruleExtension) throws XmlException {
 	List values = new ArrayList();
 	if (element == null) {
 	    return values;
@@ -114,7 +114,7 @@ public class RuleExtensionXmlParser {
 	return values;
     }
 
-    private RuleExtensionValue parseRuleExtensionValue(Element element, RuleExtension ruleExtension) throws XmlException {
+    private RuleExtensionValue parseRuleExtensionValue(Element element, RuleExtensionBo ruleExtension) throws XmlException {
 	String key = element.getChildText(KEY, NAMESPACE);
 	String value = element.getChildText(VALUE, NAMESPACE);
 	if (org.apache.commons.lang.StringUtils.isEmpty(key)) {

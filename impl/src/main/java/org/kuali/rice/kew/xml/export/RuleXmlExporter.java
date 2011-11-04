@@ -26,7 +26,7 @@ import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
@@ -138,7 +138,7 @@ public class RuleXmlExporter implements XmlExporter {
         if (!ruleExtensions.isEmpty()) {
             Element extsElement = renderer.renderElement(parent, RULE_EXTENSIONS);
             for (Iterator iterator = ruleExtensions.iterator(); iterator.hasNext();) {
-                RuleExtension extension = (RuleExtension) iterator.next();
+                RuleExtensionBo extension = (RuleExtensionBo) iterator.next();
                 Element extElement = renderer.renderElement(extsElement, RULE_EXTENSION);
                 RuleTemplateAttributeBo attribute = extension.getRuleTemplateAttribute();
                 renderer.renderTextElement(extElement, ATTRIBUTE, attribute.getRuleAttribute().getName());

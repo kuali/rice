@@ -31,6 +31,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.rule.Rule;
+import org.kuali.rice.kew.api.rule.RuleExtension;
 import org.kuali.rice.kew.api.rule.RuleResponsibility;
 import org.kuali.rice.kew.api.validation.RuleValidationContext;
 import org.kuali.rice.kew.api.validation.ValidationResults;
@@ -43,7 +44,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.RuleRoutingDefinition;
@@ -366,7 +367,8 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
         	getRuleDelegationService().save(ruleDelegation);
         }
         
-        if (isGenerateRuleArs) {
+        if (isGenerateRuleArs
+                && org.apache.commons.collections.CollectionUtils.isNotEmpty(responsibilityIds)) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         }
         performanceLogger.log("Time to make current");
@@ -1051,10 +1053,10 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
 //            }
         }
         rule.setRuleExtensions(new ArrayList());
-        for (RuleExtension existingExtension : (List<RuleExtension>)existingRule.getRuleExtensions()) {
-            RuleExtension extension = new RuleExtension();
+        for (RuleExtensionBo existingExtension : (List<RuleExtensionBo>)existingRule.getRuleExtensions()) {
+            RuleExtensionBo extension = new RuleExtensionBo();
             PropertyUtils.copyProperties(extension, existingExtension);
-            extension.setLockVerNbr(0);
+            extension.setVersionNumber(new Long(0));
             extension.setRuleBaseValues(rule);
             extension.setRuleBaseValuesId(null);
             extension.setRuleExtensionId(null);
@@ -1126,21 +1128,26 @@ public class RuleServiceInternalImpl implements RuleServiceInternal {
     	// TODO: this method is extremely slow, if we could implement a more optimized query here, that would help tremendously
         Rule baseRule = RuleBaseValues.to(rule);
     	List<RuleResponsibility> responsibilities = baseRule.getRuleResponsibilities();
-    	Map<String, String> extensions = baseRule.getRuleExtensionMap();
+    	List<RuleExtension> extensions = baseRule.getRuleExtensions();
     	String docTypeName = baseRule.getDocTypeName();
     	String ruleTemplateName = baseRule.getRuleTemplateName();
         //use api service to take advantage of caching
         List<Rule> rules = KewApiServiceLocator.getRuleService().getRulesByTemplateNameAndDocumentTypeName(
-                baseRule.getRuleTemplateName(), baseRule.getDocTypeName());
+                ruleTemplateName, docTypeName);
         for (Rule r : rules) {
             if (ObjectUtils.equals(rule.isActive(), r.isActive()) &&
-        	ObjectUtils.equals(docTypeName, r.getDocTypeName()) &&
+        	        ObjectUtils.equals(docTypeName, r.getDocTypeName()) &&
                     ObjectUtils.equals(ruleTemplateName, r.getRuleTemplateName()) &&
-                    ObjectUtils.equals(baseRule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
                     CollectionUtils.collectionsEquivalent(responsibilities, r.getRuleResponsibilities()) &&
-                    CollectionUtils.collectionsEquivalent(extensions.entrySet(), r.getRuleExtensionMap().entrySet())) {
+                    CollectionUtils.collectionsEquivalent(extensions, r.getRuleExtensions())) {
+
+                if (ObjectUtils.equals(baseRule.getRuleExpressionDef(), r.getRuleExpressionDef()) ||
+                    (baseRule.getRuleExpressionDef() != null && r.getRuleExpressionDef() != null) &&
+                      ObjectUtils.equals(baseRule.getRuleExpressionDef().getType(), r.getRuleExpressionDef().getType()) &&
+                      ObjectUtils.equals(baseRule.getRuleExpressionDef().getExpression(), r.getRuleExpressionDef().getExpression())) {
                 // we have a duplicate
-                return r.getId();
+                    return r.getId();
+                }
             }
         }
         return null;

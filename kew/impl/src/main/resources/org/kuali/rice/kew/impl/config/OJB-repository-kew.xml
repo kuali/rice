@@ -563,7 +563,7 @@
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleTemplateId" target-field-ref="id" />
     </reference-descriptor>
-    <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.rule.RuleExtension"
+    <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.rule.RuleExtensionBo"
         auto-delete="false" auto-retrieve="false" auto-update="false" proxy="true">
       <inverse-foreignkey field-ref="ruleTemplateAttributeId" target-field-ref="id" />
     </collection-descriptor>
@@ -602,7 +602,7 @@
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
       <inverse-foreignkey field-ref="ruleBaseValuesId" target-field-ref="id" />
     </collection-descriptor>
-    <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.rule.RuleExtension"
+    <collection-descriptor name="ruleExtensions" element-class-ref="org.kuali.rice.kew.rule.RuleExtensionBo"
         auto-delete="true" auto-retrieve="true" auto-update="true" proxy="false">
       <inverse-foreignkey field-ref="ruleBaseValuesId" target-field-ref="id"/>
     </collection-descriptor>
@@ -659,12 +659,12 @@
 
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.rule.RuleExtension" table="KREW_RULE_EXT_T">
+  <class-descriptor class="org.kuali.rice.kew.rule.RuleExtensionBo" table="KREW_RULE_EXT_T">
     <field-descriptor column="RULE_EXT_ID" name="ruleExtensionId" jdbc-type="VARCHAR" primarykey="true"
         autoincrement="true" sequence-name="KREW_RTE_TMPL_S" />
     <field-descriptor column="RULE_TMPL_ATTR_ID" name="ruleTemplateAttributeId" jdbc-type="VARCHAR" />
     <field-descriptor column="RULE_ID" name="ruleBaseValuesId" jdbc-type="VARCHAR" />
-    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleBaseValues" name="ruleBaseValues"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleBaseValuesId" target-field-ref="id" />
@@ -686,7 +686,7 @@
     <field-descriptor column="VAL" name="value" jdbc-type="VARCHAR" />
     <field-descriptor column="KEY_CD" name="key" jdbc-type="VARCHAR" />
     <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true" />
-    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleExtension" name="extension"
+    <reference-descriptor class-ref="org.kuali.rice.kew.rule.RuleExtensionBo" name="extension"
       auto-delete="false" auto-retrieve="true" auto-update="false">
       <foreignkey field-ref="ruleExtensionId" />
     </reference-descriptor>

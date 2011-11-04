@@ -31,7 +31,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 
@@ -64,7 +64,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
      * @see org.kuali.rice.kew.rule.GenericRoleAttribute#isMatch(org.kuali.rice.kew.routeheader.DocumentContent, java.util.List)
      */
     @Override
-    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
+    public boolean isMatch(DocumentContent docContent, List<RuleExtensionBo> ruleExtensions) {
         LOG.info("CHANNEL REVIEWER ROLE ATTRIBUTE IS MATCH");
         return super.isMatch(docContent, ruleExtensions);
     }

@@ -15,29 +15,28 @@
  */
 package org.kuali.rice.kew.api.rule;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @XmlRootElement(name = Rule.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -53,7 +52,7 @@ import org.w3c.dom.Element;
     Rule.Elements.FORCE_ACTION,
     Rule.Elements.PREVIOUS_VERSION_ID,
     Rule.Elements.RULE_RESPONSIBILITIES,
-    Rule.Elements.RULE_EXTENSION_MAP,
+    Rule.Elements.RULE_EXTENSIONS,
     Rule.Elements.RULE_TEMPLATE_NAME,
     Rule.Elements.RULE_EXPRESSION_DEF,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -84,9 +83,8 @@ public final class Rule
     private final String previousRuleId;
     @XmlElement(name = Elements.RULE_RESPONSIBILITIES, required = false)
     private final List<RuleResponsibility> ruleResponsibilities;
-    @XmlElement(name = Elements.RULE_EXTENSION_MAP, required = false)
-    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-    private final Map<String, String> ruleExtensions;
+    @XmlElement(name = Elements.RULE_EXTENSIONS, required = false)
+    private final List<RuleExtension> ruleExtensions;
     @XmlElement(name = Elements.RULE_TEMPLATE_NAME, required = false)
     private final String ruleTemplateName;
     @XmlElement(name = Elements.RULE_EXPRESSION_DEF, required = false)
@@ -135,7 +133,15 @@ public final class Rule
         } else {
             this.ruleResponsibilities = Collections.emptyList();
         }
-        this.ruleExtensions = builder.getRuleExtensionMap();
+        if (CollectionUtils.isNotEmpty(builder.getRuleExtensions())) {
+            List<RuleExtension> extensions = new ArrayList<RuleExtension>();
+            for (RuleExtension.Builder b : builder.getRuleExtensions()) {
+                extensions.add(b.build());
+            }
+            this.ruleExtensions = extensions;
+        } else {
+            this.ruleExtensions = Collections.emptyList();
+        }
         this.ruleTemplateName = builder.getRuleTemplateName();
         this.ruleExpressionDef = builder.getRuleExpressionDef() == null ? null : builder.getRuleExpressionDef().build();
         this.previousRuleId = builder.getPreviousRuleId();
@@ -197,8 +203,16 @@ public final class Rule
     }
 
     @Override
-    public Map<String, String> getRuleExtensionMap() {
+    public List<RuleExtension> getRuleExtensions() {
         return this.ruleExtensions;
+    }
+
+    public Map<String, String> getRuleExtensionMap() {
+        Map<String, String> extensions = new HashMap<String, String>();
+        for (RuleExtension ext : this.getRuleExtensions()) {
+            extensions.putAll(ext.getExtensionValuesMap());
+        }
+        return Collections.unmodifiableMap(extensions);
     }
 
     @Override
@@ -229,7 +243,7 @@ public final class Rule
         private DateTime toDate;
         private boolean forceAction;
         private List<RuleResponsibility.Builder> ruleResponsibilities = Collections.<RuleResponsibility.Builder>emptyList();
-        private Map<String, String> ruleExtensions = Collections.<String,String>emptyMap();
+        private List<RuleExtension.Builder> ruleExtensions = Collections.emptyList();
         private String ruleTemplateName;
         private String previousRuleId;
         private RuleExpression.Builder ruleExpressionDef;
@@ -267,7 +281,15 @@ public final class Rule
             } else {
                 builder.setRuleResponsibilities(Collections.<RuleResponsibility.Builder>emptyList());
             }
-            builder.setRuleExtensions(contract.getRuleExtensionMap());
+            if (CollectionUtils.isNotEmpty(contract.getRuleExtensions())) {
+                List<RuleExtension.Builder> extensionBuilders = new ArrayList<RuleExtension.Builder>();
+                for (RuleExtensionContract c : contract.getRuleExtensions()) {
+                    extensionBuilders.add(RuleExtension.Builder.create(c));
+                }
+                builder.setRuleExtensions(extensionBuilders);
+            } else {
+                builder.setRuleExtensions(Collections.<RuleExtension.Builder>emptyList());
+            }
             builder.setRuleTemplateName(contract.getRuleTemplateName());
             if (contract.getRuleExpressionDef() != null) {
                 builder.setRuleExpressionDef(RuleExpression.Builder.create(contract.getRuleExpressionDef()));
@@ -335,7 +357,7 @@ public final class Rule
         }
 
         @Override
-        public Map<String, String> getRuleExtensionMap() {
+        public List<RuleExtension.Builder> getRuleExtensions() {
             return this.ruleExtensions;
         }
 
@@ -395,8 +417,8 @@ public final class Rule
             this.ruleResponsibilities = Collections.unmodifiableList(ruleResponsibilities);
         }
 
-        public void setRuleExtensions(Map<String, String> ruleExtensions) {
-            this.ruleExtensions = Collections.unmodifiableMap(ruleExtensions);
+        public void setRuleExtensions(List<RuleExtension.Builder> ruleExtensions) {
+            this.ruleExtensions = Collections.unmodifiableList(ruleExtensions);
         }
 
         public void setRuleTemplateName(String ruleTemplateName) {
@@ -437,7 +459,7 @@ public final class Rule
         final static String TO_DATE = "toDate";
         final static String FORCE_ACTION = "forceAction";
         final static String RULE_RESPONSIBILITIES = "ruleResponsibilities";
-        final static String RULE_EXTENSION_MAP = "ruleExtensions";
+        final static String RULE_EXTENSIONS = "ruleExtensions";
         final static String RULE_TEMPLATE_NAME = "ruleTemplateName";
         final static String RULE_EXPRESSION_DEF = "ruleExpressionDef";
         final static String PREVIOUS_VERSION_ID = "previousRuleId";

@@ -114,7 +114,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 	private List<RuleResponsibilityBo> ruleResponsibilities;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
-	private List<RuleExtension> ruleExtensions;
+	private List<RuleExtensionBo> ruleExtensions;
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_TMPL_ID")
 	private RuleTemplateBo ruleTemplate;
@@ -160,7 +160,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 
     public RuleBaseValues() {
         ruleResponsibilities = new ArrayList<RuleResponsibilityBo>();
-        ruleExtensions = new ArrayList<RuleExtension>();
+        ruleExtensions = new ArrayList<RuleExtensionBo>();
         /*personResponsibilities = new AutoPopulatingList<PersonRuleResponsibility>(PersonRuleResponsibility.class);
         groupResponsibilities = new AutoPopulatingList<GroupRuleResponsibility>(GroupRuleResponsibility.class);
         roleResponsibilities = new AutoPopulatingList<RoleRuleResponsibility>(RoleRuleResponsibility.class);*/
@@ -183,7 +183,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 
     public Map getRuleExtensionValueLabels() {
         Map extensionLabels = new HashMap();
-        for (RuleExtension ruleExtension : getRuleExtensions()) {
+        for (RuleExtensionBo ruleExtension : getRuleExtensions()) {
             if (!ruleExtension.getRuleTemplateAttribute().isWorkflowAttribute()) {
                 continue;
             }
@@ -230,16 +230,16 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         return (RuleResponsibilityBo) getRuleResponsibilities().get(index);
     }
 
-    public RuleExtension getRuleExtension(int index) {
+    public RuleExtensionBo getRuleExtension(int index) {
         while (getRuleExtensions().size() <= index) {
-            getRuleExtensions().add(new RuleExtension());
+            getRuleExtensions().add(new RuleExtensionBo());
         }
-        return (RuleExtension) getRuleExtensions().get(index);
+        return (RuleExtensionBo) getRuleExtensions().get(index);
     }
 
     public RuleExtensionValue getRuleExtensionValue(String key) {
         for (Iterator iter = getRuleExtensions().iterator(); iter.hasNext();) {
-            RuleExtension ruleExtension = (RuleExtension) iter.next();
+            RuleExtensionBo ruleExtension = (RuleExtensionBo) iter.next();
             for (Iterator iterator = ruleExtension.getExtensionValues().iterator(); iterator.hasNext();) {
                 RuleExtensionValue ruleExtensionValue = (RuleExtensionValue) iterator.next();
                 if (ruleExtensionValue.getKey().equals(key)) {
@@ -252,7 +252,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
 
     public RuleExtensionValue getRuleExtensionValue(String ruleTemplateAttributeId, String key) {
         for (Iterator iter = getRuleExtensions().iterator(); iter.hasNext();) {
-            RuleExtension ruleExtension = (RuleExtension) iter.next();
+            RuleExtensionBo ruleExtension = (RuleExtensionBo) iter.next();
             if (ruleExtension.getRuleTemplateAttributeId().equals(ruleTemplateAttributeId)) {
                 for (Iterator iterator = ruleExtension.getExtensionValues().iterator(); iterator.hasNext();) {
                     RuleExtensionValue ruleExtensionValue = (RuleExtensionValue) iterator.next();
@@ -329,13 +329,13 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         this.docTypeName = docTypeName;
     }
 
-    public List<RuleExtension> getRuleExtensions() {
+    public List<RuleExtensionBo> getRuleExtensions() {
         return ruleExtensions;
     }
 
     public Map<String, String> getRuleExtensionMap() {
         Map<String, String> extensions = new HashMap<String, String>();
-        for (RuleExtension ext : this.getRuleExtensions()) {
+        for (RuleExtensionBo ext : this.getRuleExtensions()) {
             for (RuleExtensionValue value : ext.getExtensionValues()) {
                 extensions.put(value.getKey(), value.getValue());
             }
@@ -343,7 +343,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
         return extensions;
     }
 
-    public void setRuleExtensions(List<RuleExtension> ruleExtensions) {
+    public void setRuleExtensions(List<RuleExtensionBo> ruleExtensions) {
         this.ruleExtensions = ruleExtensions;
     }
 
@@ -496,8 +496,8 @@ public class RuleBaseValues extends PersistableBusinessObjectBase implements Rul
                 ((GenericXMLRuleAttribute) routingAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
             }
             String className = ruleAttribute.getResourceDescriptor();
-            List<RuleExtension> editedRuleExtensions = new ArrayList<RuleExtension>();
-            for (RuleExtension extension : getRuleExtensions()) {
+            List<RuleExtensionBo> editedRuleExtensions = new ArrayList<RuleExtensionBo>();
+            for (RuleExtensionBo extension : getRuleExtensions()) {
                 if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(className)) {
                     editedRuleExtensions.add(extension);
                 }

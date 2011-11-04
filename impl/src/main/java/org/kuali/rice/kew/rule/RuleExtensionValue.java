@@ -31,7 +31,7 @@ import java.io.Serializable;
  * it's value.
  * 
  * @see RuleBaseValues
- * @see RuleExtension
+ * @see RuleExtensionBo
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -61,7 +61,7 @@ public class RuleExtensionValue implements Serializable {
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="RULE_EXT_ID")
-	private RuleExtension extension;
+	private RuleExtensionBo extension;
     
     public RuleExtensionValue() {
     }
@@ -76,10 +76,10 @@ public class RuleExtensionValue implements Serializable {
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
     
-    public RuleExtension getExtension() {
+    public RuleExtensionBo getExtension() {
         return extension;
     }
-    public void setExtension(RuleExtension extension) {
+    public void setExtension(RuleExtensionBo extension) {
         this.extension = extension;
     }
     public Integer getLockVerNbr() {

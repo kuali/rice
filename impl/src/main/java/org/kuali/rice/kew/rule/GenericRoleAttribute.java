@@ -63,7 +63,7 @@ public abstract class GenericRoleAttribute extends GenericWorkflowAttribute impl
         super(uniqueName);
     }
 
-    public boolean isMatch(DocumentContent docContent, List<RuleExtension> ruleExtensions) {
+    public boolean isMatch(DocumentContent docContent, List<RuleExtensionBo> ruleExtensions) {
         // FIXME: ok, this MUST return true, as it IS evaluated (don't know why)
         // maybe investigate only calling isMatch on rule attributes as it doesn't seem that
         // matching is relevant for role attributes...is it?

@@ -20,7 +20,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -110,7 +109,7 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
 
     protected String getRuleDocumentTypeFromRuleExtensions(List ruleExtensions) {
 	for (Iterator extensionsIterator = ruleExtensions.iterator(); extensionsIterator.hasNext();) {
-            RuleExtension extension = (RuleExtension) extensionsIterator.next();
+            RuleExtensionBo extension = (RuleExtensionBo) extensionsIterator.next();
             if (extension.getRuleTemplateAttribute().getRuleAttribute().getResourceDescriptor().equals(getClass().getName())) {
                 for (Iterator valuesIterator = extension.getExtensionValues().iterator(); valuesIterator.hasNext();) {
                     RuleExtensionValue extensionValue = (RuleExtensionValue) valuesIterator.next();

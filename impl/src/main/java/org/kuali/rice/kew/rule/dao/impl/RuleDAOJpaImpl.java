@@ -21,7 +21,7 @@ import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.Criteria;
 import org.kuali.rice.core.framework.persistence.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -366,7 +366,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
                     // extensionCrit.addLike("extensionValues.value",
                     // "%"+(String) entry.getValue()+"%");
 
-                    Criteria extensionCrit2 = new Criteria(RuleExtension.class.getName());
+                    Criteria extensionCrit2 = new Criteria(RuleExtensionBo.class.getName());
                     extensionCrit2.distinct(true);
                     extensionCrit2.join("extensionValues", "extval", false, true);
                     extensionCrit2.eq("__JPA_ALIAS[['extval']]__.key", entry.getKey());

@@ -24,13 +24,10 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.framework.KewFrameworkServiceLocator;
-import org.kuali.rice.kew.framework.rule.attribute.WorkflowRuleAttributeHandlerService;
 import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -117,7 +114,7 @@ public class InlineRequestsRouteModule extends FlexRMAdapter {
         }
         for (WorkflowRuleAttribute workflowAttribute : attributes) {
             // no rule extensions to pass in below because we have no rule... simple attribute matching only
-            match &= workflowAttribute.isMatch(context.getDocumentContent(), new ArrayList<RuleExtension>());
+            match &= workflowAttribute.isMatch(context.getDocumentContent(), new ArrayList<RuleExtensionBo>());
         }
         
         if (match.booleanValue()) {

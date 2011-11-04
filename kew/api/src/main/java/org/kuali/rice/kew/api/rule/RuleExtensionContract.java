@@ -13,22 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.rule;
 
-import java.util.List;
+package org.kuali.rice.kew.api.rule;
 
-import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.core.api.mo.common.Versioned;
 
+import java.util.Map;
 
-/**
- * Abstract base class for {@link RoleAttribute}s.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
-public abstract class AbstractRoleAttribute extends AbstractWorkflowAttribute implements RoleAttribute {
-
-    public boolean isMatch(DocumentContent docContent, List<RuleExtensionBo> ruleExtensions) {
-        //throw new UnsupportedOperationException("Role attributes do not implement isMatch");
-        return true;
-    }
+public interface RuleExtensionContract extends Versioned {
+    RuleTemplateAttributeContract getRuleTemplateAttribute();
+    Map<String, String> getExtensionValuesMap();
 }

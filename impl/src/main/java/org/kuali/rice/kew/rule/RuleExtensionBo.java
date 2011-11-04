@@ -22,6 +22,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.api.util.collect.CollectionUtils;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.rule.RuleExtension;
+import org.kuali.rice.kew.api.rule.RuleExtensionContract;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
@@ -38,8 +40,9 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 /**
  * An extension of a {@link RuleBaseValues}.  Provides attribute-specific data
@@ -55,7 +58,7 @@ import java.util.List;
 @Entity
 @Table(name="KREW_RULE_EXT_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionId")
-public class RuleExtension implements Serializable {
+public class RuleExtensionBo implements RuleExtensionContract, Serializable {
 
 	private static final long serialVersionUID = 8178135296413950516L;
 
@@ -76,7 +79,7 @@ public class RuleExtension implements Serializable {
 
 	@Version
 	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+	private Long versionNumber;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RULE_ID")
@@ -90,7 +93,7 @@ public class RuleExtension implements Serializable {
 	@Fetch(value = FetchMode.SELECT)
 	private List<RuleExtensionValue> extensionValues;
 
-	public RuleExtension() {
+	public RuleExtensionBo() {
 		extensionValues = new ArrayList<RuleExtensionValue>();
 	}
 
@@ -107,11 +110,21 @@ public class RuleExtension implements Serializable {
 		this.extensionValues = extensionValues;
 	}
 
+    @Override
 	public RuleTemplateAttributeBo getRuleTemplateAttribute() {
 		return ruleTemplateAttribute;
 	}
 
-	public void setRuleTemplateAttribute(RuleTemplateAttributeBo ruleTemplateAttribute) {
+    @Override
+    public Map<String, String> getExtensionValuesMap() {
+        Map<String, String> extensions = new HashMap<String, String>();
+        for (RuleExtensionValue value : getExtensionValues()) {
+            extensions.put(value.getKey(), value.getValue());
+        }
+        return extensions;
+    }
+
+    public void setRuleTemplateAttribute(RuleTemplateAttributeBo ruleTemplateAttribute) {
 		this.ruleTemplateAttribute = ruleTemplateAttribute;
 	}
 
@@ -130,12 +143,12 @@ public class RuleExtension implements Serializable {
 		this.ruleBaseValues = ruleBaseValues;
 	}
 
-	public Integer getLockVerNbr() {
-		return lockVerNbr;
+	public Long getVersionNumber() {
+		return versionNumber;
 	}
 
-	public void setLockVerNbr(Integer lockVerNbr) {
-		this.lockVerNbr = lockVerNbr;
+	public void setVersionNumber(Long versionNumber) {
+		this.versionNumber = versionNumber;
 	}
 
 	public String getRuleBaseValuesId() {
@@ -164,8 +177,8 @@ public class RuleExtension implements Serializable {
 
     public boolean equals(Object o) {
         if (o == null) return false;
-        if (!(o instanceof RuleExtension)) return false;
-        RuleExtension pred = (RuleExtension) o;
+        if (!(o instanceof RuleExtensionBo)) return false;
+        RuleExtensionBo pred = (RuleExtensionBo) o;
         return ObjectUtils.equals(ruleBaseValues.getRuleTemplate(), pred.getRuleBaseValues().getRuleTemplate()) &&
                ObjectUtils.equals(ruleTemplateAttribute, pred.getRuleTemplateAttribute()) &&
                CollectionUtils.collectionsEquivalent(extensionValues, pred.getExtensionValues());
@@ -179,8 +192,20 @@ public class RuleExtension implements Serializable {
                + ", ruleBaseValues=" + ruleBaseValues
                + ", ruleTemplateAttribute=" + ruleTemplateAttribute
                + ", extensionValues=" + extensionValues
-               + ", lockVerNbr=" + lockVerNbr
+               + ", versionNumber=" + versionNumber
                + "]";
+    }
+
+    /**
+     * Converts a mutable bo to its immutable counterpart
+     * @param bo the mutable business object
+     * @return the immutable object
+     */
+    public static RuleExtension to(RuleExtensionBo bo) {
+        if (bo == null) {
+            return null;
+        }
+        return RuleExtension.Builder.create(bo).build();
     }
 
 }

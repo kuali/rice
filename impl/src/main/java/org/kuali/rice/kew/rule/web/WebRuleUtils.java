@@ -28,7 +28,7 @@ import org.kuali.rice.kew.rule.PersonRuleResponsibility;
 import org.kuali.rice.kew.rule.RoleRuleResponsibility;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
@@ -461,7 +461,7 @@ public final class WebRuleUtils {
 			
 			List ruleExtensionValues = workflowAttribute.getRuleExtensionValues();
 			if (ruleExtensionValues != null && !ruleExtensionValues.isEmpty()) {
-				RuleExtension ruleExtension = new RuleExtension();
+				RuleExtensionBo ruleExtension = new RuleExtensionBo();
 				ruleExtension.setRuleTemplateAttributeId(ruleTemplateAttribute.getId());
 
 				ruleExtension.setExtensionValues(ruleExtensionValues);
@@ -472,7 +472,7 @@ public final class WebRuleUtils {
 		rule.setRuleExtensions(extensions);
 
 		for (Iterator iterator = rule.getRuleExtensions().iterator(); iterator.hasNext();) {
-			RuleExtension ruleExtension = (RuleExtension) iterator.next();
+			RuleExtensionBo ruleExtension = (RuleExtensionBo) iterator.next();
 			ruleExtension.setRuleBaseValues(rule);
 
 			for (Iterator iterator2 = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator2.hasNext();) {
@@ -576,7 +576,7 @@ public final class WebRuleUtils {
 	}
 	
 	public static void translateRuleExtensionsForLoad(RuleBaseValues rule) {
-		for (RuleExtension ruleExtension : rule.getRuleExtensions()) {
+		for (RuleExtensionBo ruleExtension : rule.getRuleExtensions()) {
 			String ruleTemplateAttributeId = ruleExtension.getRuleTemplateAttributeId();
 			for (RuleExtensionValue ruleExtensionValue : ruleExtension.getExtensionValues()) {
 				String fieldMapKey = ruleTemplateAttributeId + ID_SEPARATOR + ruleExtensionValue.getKey();

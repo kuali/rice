@@ -36,7 +36,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-
 public class RuleXmlParserTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(RuleXmlParserTest.class);
 
@@ -125,7 +124,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         LOG.info("Rule To and From Dates : " + rule.getDocTypeName()+" "+rule.getName());
         List extensions = rule.getRuleExtensions();
         assertEquals(1, extensions.size());
-        RuleExtension extension = (RuleExtension) extensions.get(0);
+        RuleExtensionBo extension = (RuleExtensionBo) extensions.get(0);
         assertEquals("TestRuleAttribute", extension.getRuleTemplateAttribute().getRuleAttribute().getName());
         List extensionValues = extension.getExtensionValues();
         assertEquals(2, extensionValues.size());
@@ -153,7 +152,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("A named rule", rule.getDescription());
         List extensions = rule.getRuleExtensions();
         assertEquals(1, extensions.size());
-        RuleExtension extension = (RuleExtension) extensions.get(0);
+        RuleExtensionBo extension = (RuleExtensionBo) extensions.get(0);
         assertEquals("TestRuleAttribute", extension.getRuleTemplateAttribute().getRuleAttribute().getName());
         List extensionValues = extension.getExtensionValues();
         assertEquals(2, extensionValues.size());
@@ -206,7 +205,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("A named rule with an updated description, rule extension values, and responsibilities", rule.getDescription());
         List extensions = rule.getRuleExtensions();
         assertEquals(1, extensions.size());
-        RuleExtension extension = (RuleExtension) extensions.get(0);
+        RuleExtensionBo extension = (RuleExtensionBo) extensions.get(0);
         assertEquals("TestRuleAttribute", extension.getRuleTemplateAttribute().getRuleAttribute().getName());
         List extensionValues = extension.getExtensionValues();
         assertEquals(2, extensionValues.size());
@@ -245,7 +244,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("A named rule with an updated description, rule extension values, and responsibilities", rule.getDescription());
         List extensions = rule.getRuleExtensions();
         assertEquals(1, extensions.size());
-        RuleExtension extension = (RuleExtension) extensions.get(0);
+        RuleExtensionBo extension = (RuleExtensionBo) extensions.get(0);
         assertEquals("TestRuleAttribute", extension.getRuleTemplateAttribute().getRuleAttribute().getName());
         List extensionValues = extension.getExtensionValues();
         assertEquals(2, extensionValues.size());

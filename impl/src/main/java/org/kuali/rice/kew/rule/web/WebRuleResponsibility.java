@@ -24,7 +24,7 @@ import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.service.RuleServiceInternal;
@@ -411,8 +411,8 @@ public class WebRuleResponsibility extends RuleResponsibilityBo {
 			}
 
 			for (Iterator iterator = rule.getRuleExtensions().iterator(); iterator.hasNext();) {
-				RuleExtension extension = (RuleExtension) iterator.next();
-				extension.setLockVerNbr(null);
+				RuleExtensionBo extension = (RuleExtensionBo) iterator.next();
+				extension.setVersionNumber(null);
 				extension.setRuleBaseValues(rule);
 				extension.setRuleBaseValuesId(null);
 				extension.setRuleExtensionId(null);

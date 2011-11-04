@@ -30,7 +30,7 @@ class RuleValidationContextTest {
         <ns3:rule>
             <active>true</active>
             <forceAction>false</forceAction>
-            <ruleExtensions/>
+            <ruleExtensionMap/>
         </ns3:rule>
         """
 

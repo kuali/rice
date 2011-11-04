@@ -37,7 +37,7 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
-import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionBo;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.RuleResponsibilityBo;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
@@ -202,10 +202,10 @@ public class RuleXmlExporterTest extends XmlExporterTestCase {
     private void assertRuleExtensions(List oldRuleExtensions, List newRuleExtensions) {
         assertEquals(oldRuleExtensions.size(), newRuleExtensions.size());
         for (Iterator iterator = oldRuleExtensions.iterator(); iterator.hasNext();) {
-            RuleExtension oldExtension = (RuleExtension) iterator.next();
+            RuleExtensionBo oldExtension = (RuleExtensionBo) iterator.next();
             boolean foundExtension = false;
             for (Iterator iterator2 = newRuleExtensions.iterator(); iterator2.hasNext();) {
-                RuleExtension newExtension = (RuleExtension) iterator2.next();
+                RuleExtensionBo newExtension = (RuleExtensionBo) iterator2.next();
                 if (oldExtension.getRuleTemplateAttribute().getRuleAttribute().getName().equals(newExtension.getRuleTemplateAttribute().getRuleAttribute().getName()) &&
                         oldExtension.getRuleTemplateAttribute().getRuleTemplate().getName().equals(newExtension.getRuleTemplateAttribute().getRuleTemplate().getName())) {
                         assertExtensionValues(oldExtension.getExtensionValues(), newExtension.getExtensionValues());

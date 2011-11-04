@@ -15,19 +15,6 @@
 --
 
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 alter table KREN_CHNL_T DROP COLUMN OBJ_ID
 /
@@ -40,19 +27,6 @@ alter table KREN_PRIO_T DROP COLUMN OBJ_ID
 alter table KREN_RVWER_T DROP COLUMN OBJ_ID
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 -- need to remember to go back to "action-list-helpdesk-permissions.sql" and "doc-search-permissions.sql"
 -- and reconcile related changes with these when we build the final upgrade scripts
@@ -97,19 +71,6 @@ alter table KREW_DOC_TYP_T modify RTE_VER_NBR NULL
 ALTER TABLE KREW_DOC_HDR_EXT_FLT_T MODIFY VAL NUMBER
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 -- change namespace to KUALI on all groups with namespace of KFS from original EN_WRKGRP_T to KRIM_GRP_T conversion
 
@@ -120,19 +81,6 @@ alter table KRNS_ATT_T modify MIME_TYP VARCHAR2(150)
 DROP TABLE KRNS_DOC_TYP_ATTR_T
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 -- KULRICE-2870 - generate names for all existing rules that don't have one
 -- if I was better at PL/SQL i could probably figure out a better way to do
@@ -179,56 +127,17 @@ WHERE RULE.NM IS NULL
 ALTER TABLE KREW_RULE_T MODIFY NM NOT NULL
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 alter table krns_att_t modify att_typ_cd VARCHAR2(40)
 /
 
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 DROP TABLE KREW_APP_CNST_T
 /
 DROP TABLE KRNS_DOC_TYP_T
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 
 INSERT INTO KRNS_PARM_T(
@@ -363,19 +272,6 @@ SYS_GUID(),
 )
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 UPDATE KREW_DOC_TYP_T
 SET DOC_TYP_NM = 'NamespaceMaintenanceDocument',
@@ -383,19 +279,6 @@ SET DOC_TYP_NM = 'NamespaceMaintenanceDocument',
 WHERE DOC_TYP_NM = 'ParameterNamespaceMaintenanceDocument'
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 --
 
@@ -420,19 +303,6 @@ ALTER TABLE krns_parm_t DROP CONSTRAINT KRNS_PARM_TP1
 ALTER TABLE krns_parm_t ADD CONSTRAINT KRNS_PARM_TP1 PRIMARY KEY(NMSPC_CD,PARM_DTL_TYP_CD,PARM_NM)
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 update krns_parm_t set   parm_nm = 'EMAIL_NOTIFICATION_TEST_ADDRESS' where parm_nm = 'EMAIL_NOTIFICATION_TEST_ADDRESS '
 /
@@ -726,19 +596,6 @@ on rr.role_id = r.role_id
 order by rsp_tmpl_nmspc_cd, rsp_tmpl_nm, rsp_nmspc_cd, rsp_nm, rsp_id, attr_nm, attr_val
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 -- KULRICE-2970: Renamed some table columns to reflect the change from "ignore previous" to "force action".
 
@@ -779,19 +636,6 @@ order by rsp_nmspc_cd
 , role_mbr_id
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 
 
@@ -801,19 +645,6 @@ CREATE SEQUENCE TRV_FO_ID_S INCREMENT BY 1 START WITH 1000
 
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 --
 INSERT INTO KRNS_PARM_T(
@@ -864,37 +695,11 @@ ALTER TABLE KRNS_MAINT_LOCK_T MODIFY MAINT_LOCK_REP_TXT VARCHAR2(500)
 /
 
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 alter table krns_sesn_doc_t
 ADD content_encrypted_ind CHAR(1) DEFAULT 'N'
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 update krew_doc_typ_t set parnt_id = '2681' where doc_typ_nm = 'NamespaceMaintenanceDocument'
 /
@@ -906,19 +711,6 @@ update krew_doc_typ_t set parnt_id = '2681' where doc_typ_nm = 'ParameterTypeMai
 /
 
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 INSERT INTO krns_parm_t(NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD)
   VALUES('KR-NS', 'All', 'DEFAULT_COUNTRY', '64B87B4C5E3B8F4CE0404F8189D8291A', 1, 'CONFG', 'US', 'Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected.', 'A')
@@ -960,19 +752,6 @@ INSERT INTO krns_parm_dtl_typ_t
 COMMIT
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 TRUNCATE TABLE KRNS_SESN_DOC_T
 /
@@ -1001,19 +780,6 @@ ADD CONSTRAINT KRNS_SESN_DOC_TP1
 PRIMARY KEY (SESN_DOC_ID, DOC_HDR_ID, PRNCPL_ID, IP_ADDR)
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 
 Insert into KREW_DOC_TYP_T (DOC_TYP_ID,PARNT_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,ACTV_IND,CUR_IND,LBL,PREV_DOC_TYP_VER_NBR,DOC_HDR_ID,DOC_TYP_DESC,DOC_HDLR_URL,POST_PRCSR,JNDI_URL,ADV_DOC_SRCH_URL,VER_NBR,RTE_VER_NBR,NOTIFY_ADDR,SVC_NMSPC,EMAIL_XSL,BLNKT_APPR_PLCY,SEC_XML,BLNKT_APPR_GRP_ID,RPT_GRP_ID,GRP_ID,HELP_DEF_URL,OBJ_ID) values (2708,2681,'CampusMaintenanceDocument',0,1,1,'CampusMaintenanceDocument',null,null,null,null,null,null,null,1,'2',null,null,null,null,null,null,null,null,null,'616D94CA-D08D-D036-E77D-4B53DB34CD95');
@@ -1034,19 +800,6 @@ Insert into KREW_DOC_TYP_T (DOC_TYP_ID,PARNT_ID,DOC_TYP_NM,DOC_TYP_VER_NBR,ACTV_
 UPDATE KREW_DOC_TYP_T SET SVC_NMSPC=NULL WHERE SVC_NMSPC='FooBar'
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 
 -- KULRICE-3287
@@ -1056,19 +809,6 @@ DELETE FROM KRNS_PARM_T where NMSPC_CD='KR-WKFLW' AND PARM_DTL_TYP_CD='All' AND 
 
 
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 -- KULRICE-3126 This will turn off field level help by default.
 UPDATE KRNS_PARM_T SET TXT = 'N' WHERE NMSPC_CD = 'KR-NS' AND PARM_DTL_TYP_CD = 'All' AND PARM_NM = 'ENABLE_FIELD_LEVEL_HELP_IND'
@@ -1084,19 +824,6 @@ ALTER TABLE KRNS_PARM_T DROP CONSTRAINT KRNS_PARM_TP1
 ALTER TABLE KRNS_PARM_T ADD CONSTRAINT KRNS_PARM_TP1 PRIMARY KEY(NMSPC_CD,PARM_DTL_TYP_CD,PARM_NM, APPL_NMSPC_CD)
 /
 --
--- Copyright 2009 The Kuali Foundation
---
--- Licensed under the Educational Community License, Version 2.0 (the "License");
--- you may not use this file except in compliance with the License.
--- You may obtain a copy of the License at
---
--- http://www.opensource.org/licenses/ecl2.php
---
--- Unless required by applicable law or agreed to in writing, software
--- distributed under the License is distributed on an "AS IS" BASIS,
--- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
--- See the License for the specific language governing permissions and
--- limitations under the License.
 --
 -- KULRICE-3212
 ALTER TABLE KREW_DOC_HDR_T MODIFY (APP_DOC_ID VARCHAR2(255))

@@ -53,15 +53,15 @@ INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
   VALUES ('admin','DOC_TYPE_COL_SHOW_NEW','yes',1);
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
-  VALUES ('admin','DocSearch.LastSearch.Holding0',',,fromDateCreated=11/04/2008,,superUserSearch=NO',10);
+  VALUES ('admin','DocSearch.LastSearch.Holding0','{"dateCreatedFrom":1225778400000,"documentStatuses":[],"documentStatusCategories":[],"documentAttributeValues":{},"additionalDocumentTypeNames":[]}',10);
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
-  VALUES ('admin','DocSearch.LastSearch.Holding1',',,fromDateCreated=11/05/2008,,superUserSearch=NO',10);
+  VALUES ('admin','DocSearch.LastSearch.Holding1','{"dateCreatedFrom":1225778400000,"documentStatuses":[],"documentStatusCategories":[],"documentAttributeValues":{},"additionalDocumentTypeNames":[]}',10);
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
-  VALUES ('admin','DocSearch.LastSearch.Holding2',',,fromDateCreated=12/01/2008,,superUserSearch=NO',10);
+  VALUES ('admin','DocSearch.LastSearch.Holding2','{"dateCreatedFrom":1228111200000,"documentStatuses":[],"documentStatusCategories":[],"documentAttributeValues":{},"additionalDocumentTypeNames":[]}',10);
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
-  VALUES ('admin','DocSearch.LastSearch.Holding3',',,fromDateCreated=11/01/2008,,superUserSearch=NO',10);
+  VALUES ('admin','DocSearch.LastSearch.Holding3','{"dateCreatedFrom":1225515600000,"documentStatuses":[],"documentStatusCategories":[],"documentAttributeValues":{},"additionalDocumentTypeNames":[]}',10);
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
-  VALUES ('admin','DocSearch.LastSearch.Holding4',',,fromDateCreated=12/22/2008,,superUserSearch=NO',10);
+  VALUES ('admin','DocSearch.LastSearch.Holding4','{"dateCreatedFrom":1229925600000,"documentStatuses":[],"documentStatusCategories":[],"documentAttributeValues":{},"additionalDocumentTypeNames":[]}',10);
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)
   VALUES ('admin','DocSearch.LastSearch.Order','DocSearch.LastSearch.Holding4,DocSearch.LastSearch.Holding3,DocSearch.LastSearch.Holding2,DocSearch.LastSearch.Holding1,DocSearch.LastSearch.Holding0',50);
 INSERT INTO KREW_USR_OPTN_T (PRNCPL_ID,PRSN_OPTN_ID,VAL,VER_NBR)

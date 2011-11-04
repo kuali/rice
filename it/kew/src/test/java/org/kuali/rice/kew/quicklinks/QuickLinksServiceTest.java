@@ -103,11 +103,11 @@ public class QuickLinksServiceTest extends KEWTestCase {
 
         KeyValue kv = recentSearches.get(0);
         assertEquals("Wrong key", "DocSearch.LastSearch.Holding4", kv.getKey());
-        assertEquals("Wrong value", "Date Created=from 12/22/2008; ", kv.getValue());
+        assertEquals("Wrong value", "Created=12/22/2008..;", kv.getValue().trim());
 
         kv = recentSearches.get(4);
         assertEquals("Wrong key", "DocSearch.LastSearch.Holding0", kv.getKey());
-        assertEquals("Wrong value", "Date Created=from 11/04/2008; ", kv.getValue());
+        assertEquals("Wrong value", "Created=11/04/2008..;", kv.getValue().trim());
 
         recentSearches = service.getRecentSearches(badPrincipalId);
         assertNotNull("No collection returned", recentSearches);

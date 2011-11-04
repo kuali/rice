@@ -221,7 +221,8 @@
       p:style="text-align: left; margin-top: 3px;"
       p:styleClasses="kr-footer">
 
-    <property name="renderHeader" value="false"/>
+    <property name="renderHeader" value="true"/>
+    <property name="title" value="Propositions"/>
     <property name="layoutManager">
       <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL" p:style="padding: 5px;"/>
     </property>
@@ -299,8 +300,7 @@
   </bean>
         
   <bean id="RuleEditorView-Tree" parent="ruleTree"/>        
-  <bean id="ruleTree" parent="TreeGroup" p:disclosure.render="false" p:header.render="true" p:style="float:left; margin-left: 2em;">
-    <property name="title" value="Rule Propositions"/>
+  <bean id="ruleTree" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="propertyName" value="agendaItemLine.rule.propositionTree"/>
     <property name="tree">
       <bean parent="RuleTreeWidget">

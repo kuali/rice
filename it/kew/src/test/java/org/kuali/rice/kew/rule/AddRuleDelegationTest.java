@@ -25,6 +25,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ import static org.junit.Assert.*;
  * Tests adding a delegation rule
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class AddRuleDelegationTest extends KEWTestCase {
 
 	private static final String DELEGATE_USER = "user2";

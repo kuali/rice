@@ -617,11 +617,11 @@
     </property>
   </bean>
 
-  <bean name="firstRuleAction" parent="GroupGridLayout" p:layoutManager.numberOfColumns="2">
+  <bean name="firstRuleAction" parent="GroupGridLayout" p:layoutManager.numberOfColumns="2"
+        p:refreshWhenChanged="document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId">
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="agendaItemLine.rule.action.name" p:label="Name" p:required="true"/>
-        <bean parent="InputField" p:propertyName="agendaItemLine.rule.action.typeId" p:label="Type" p:required="true">
+        <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.typeId" p:label="Type" p:required="true">
           <property name="control">
             <bean parent="SelectControl"/>
           </property>
@@ -629,16 +629,12 @@
             <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="true"/>
           </property>
         </bean>
-        <bean name="firstRuleActionCustomAttributes" parent="GroupGridBodyOnly" p:colSpan="2"
-               p:refreshWhenChanged="document.newMaintainableObject.dataObject.agendaItemLine.rule.action.typeId">
-          <property name="items">
-            <list>
-              <bean parent="RemoteFieldsHolder" p:propertyName="customRuleActionAttributesMap"
-                    p:fetchingMethodToCall="retrieveRuleActionCustomAttributes"/>
-            </list>
-          </property>
-        </bean>
-        <bean parent="InputField" p:propertyName="agendaItemLine.rule.action.description" p:label="Description" p:required="true"/>
+        <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.name" p:label="Name" p:required="true"
+              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"/>
+        <bean parent="RemoteFieldsHolder" p:propertyName="customRuleActionAttributesMap"
+              p:fetchingMethodToCall="retrieveRuleActionCustomAttributes"/>
+        <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="true"
+              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"/>
       </list>
     </property>
   </bean>

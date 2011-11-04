@@ -130,14 +130,9 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         AgendaEditor agendaEditor = (AgendaEditor)maintenanceForm.getDocument().getNewMaintainableObject().getDataObject();
 
         // if we have an rule action w/ a typeId set on it
-        if (agendaEditor.getAgendaItemLine() != null && agendaEditor.getAgendaItemLine().getRule() != null
-                && agendaEditor.getAgendaItemLine().getRule().getAction() != null
-                && !StringUtils.isBlank(agendaEditor.getAgendaItemLine().getRule().getAction().getTypeId())) {
-
-            String krmsTypeId = agendaEditor.getAgendaItemLine().getRule().getAction().getTypeId();
-
-            ActionTypeService actionTypeService = getActionTypeService(krmsTypeId);
-            results.addAll(actionTypeService.getAttributeFields(krmsTypeId));
+        if (!StringUtils.isBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
+            ActionTypeService actionTypeService = getActionTypeService(agendaEditor.getAgendaItemLineRuleAction().getTypeId());
+            results.addAll(actionTypeService.getAttributeFields(agendaEditor.getAgendaItemLineRuleAction().getTypeId()));
         }
 
         return results;

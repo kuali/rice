@@ -73,25 +73,6 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
        attributeBos = new ArrayList<RuleAttributeBo>();
    }
 
-    /**
-     * Only needed for support of single rule action.
-     */
-    public List<ActionBo> getActions() {
-        return this.actions;
-    }
-
-    /**
-     * Only needed for support of single rule action.
-     */
-    public ActionBo getAction() {
-        if (getActions().isEmpty()) {
-            ActionBo action = new ActionBo();
-            action.namespace = this.namespace;
-            getActions().add(action);
-        }
-        return getActions().get(0);
-    }
-
    public PropositionBo getProposition(){
        return proposition;
    }

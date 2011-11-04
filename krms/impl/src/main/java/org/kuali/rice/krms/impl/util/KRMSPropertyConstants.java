@@ -26,12 +26,12 @@ import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
 public final class KRMSPropertyConstants {
 
 	public static final class Action {
-		public static final String ACTION_ID ="actionId";
+		public static final String TYPE ="dataObject.agendaItemLineRuleAction.typeId";
+        public static final String NAME ="dataObject.agendaItemLineRuleAction.name";
+        public static final String DESCRIPTION ="dataObject.agendaItemLineRuleAction.description";
 	}
 
 	public static final class Agenda {
-		public static final String ID = "id";
-		public static final String AGENDA_ID ="agendaId";
         public static final String NAME = "dataObject.agenda.name";
         public static final String CONTEXT = "dataObject.agenda.contextId";
 	}

@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.ui;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
@@ -41,6 +42,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 	private AgendaBo agenda;
     private String contextName;
 	private AgendaItemBo agendaItemLine;
+    private ActionBo agendaItemLineRuleAction;
     private String selectedAgendaItemId;
     private String cutAgendaItemId;
     private String selectedPropositionId;
@@ -56,6 +58,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
         // ToDo: Determine proper default values of agenda's typeId
         agenda.setTypeId("");
         agendaItemLine = new AgendaItemBo();
+        agendaItemLineRuleAction = new ActionBo();
     }
 
 	private void addAgendaItemAndChildren(Node<AgendaTreeNode, String> parent, AgendaItemBo agendaItem) {
@@ -127,6 +130,14 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
      */
     public void setAgendaItemLine(AgendaItemBo agendaItemLine) {
         this.agendaItemLine = agendaItemLine;
+    }
+
+    public ActionBo getAgendaItemLineRuleAction() {
+        return agendaItemLineRuleAction;
+    }
+
+    public void setAgendaItemLineRuleAction(ActionBo actionBo) {
+        this.agendaItemLineRuleAction = actionBo;
     }
 
     /**

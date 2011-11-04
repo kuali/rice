@@ -25,16 +25,25 @@ import org.junit.Assert
 import org.kuali.rice.krad.document.MaintenanceDocument
 import org.kuali.rice.krms.impl.ui.AgendaEditor
 import org.kuali.rice.krms.impl.ui.AgendaEditorMaintainable
+import org.kuali.rice.krms.impl.repository.ActionBo
+import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition
+import org.kuali.rice.krms.impl.type.ActionTypeServiceBase
 
 class AgendaEditorBusRuleTest {
 
     def agendaEditorBusRule
     def mockRuleBoService = new MockFor(RuleBoService)
     def mockRuleBoServiceInstance
+    def mockKrmsTypeRepositoryService = new MockFor(KrmsTypeRepositoryService)
+    def mockKrmsTypeRepositoryServiceInstance
 
     void setup() {
         mockRuleBoServiceInstance = mockRuleBoService.proxyDelegateInstance()
-        agendaEditorBusRule = [getRuleBoService: { mockRuleBoServiceInstance } ] as AgendaEditorBusRule
+        mockKrmsTypeRepositoryServiceInstance = mockKrmsTypeRepositoryService.proxyDelegateInstance()
+        agendaEditorBusRule = [getRuleBoService: { mockRuleBoServiceInstance },
+                               getKrmsTypeRepositoryService: { mockKrmsTypeRepositoryServiceInstance },
+                               getActionTypeService: { new ActionTypeServiceBase() }] as AgendaEditorBusRule
     }
 
     /**
@@ -44,7 +53,7 @@ class AgendaEditorBusRuleTest {
     void test_processAddAgendaItemBusinessRule_validateRuleName() {
         mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
         setup()
-        Assert.assertTrue(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getAgenda(null), getAgenda(null))))
+        Assert.assertTrue(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), new ActionBo(), getAgenda(null), getAgenda(null))))
         mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
    }
 
@@ -56,7 +65,7 @@ class AgendaEditorBusRuleTest {
         AgendaItemBo agendaItem = getAgendaItem();
         mockRuleBoService.demand.getRuleByNameAndNamespace(0) {name, namespace -> RuleBo.to(agendaItem.getRule()) }
         setup()
-        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getAgenda(agendaItem), getAgenda(null))))
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), new ActionBo(), getAgenda(agendaItem), getAgenda(null))))
         mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
     }
 
@@ -70,17 +79,70 @@ class AgendaEditorBusRuleTest {
         existingAgendaItem.getRule().setId ("existingRule");
         mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> RuleBo.to(existingAgendaItem.getRule()) }
         setup()
-        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(agendaItem, getAgenda(null), getAgenda(null))))
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(agendaItem, new ActionBo(), getAgenda(null), getAgenda(null))))
         mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
     }
 
-    private MaintenanceDocument getMaintenanceDocument(AgendaItemBo newAgendaItem, AgendaBo newAgenda, AgendaBo oldAgenda) {
+    /**
+     * Check that no error is thrown with a valid action
+     */
+    @Test
+    void test_processAddAgendaItemBusinessRule_validateRuleAction() {
+        mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getTypeById(2) {typeId -> getKrmsTypeDefinition() }
+        setup()
+        Assert.assertTrue(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getActionBo(), getAgenda(null), getAgenda(null))))
+        mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
+    }
+
+    /**
+     * Check that error is thrown when the action type is invalid
+     */
+    @Test
+    void test_processAddAgendaItemBusinessRule_validateRuleActionType_invalid() {
+        mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getTypeById(1) {typeId -> null }
+        setup()
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getActionBo(), getAgenda(null), getAgenda(null))))
+        mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
+    }
+
+    /**
+     * Check that error is thrown when the action name is missing
+     */
+    @Test
+    void test_processAddAgendaItemBusinessRule_validateRuleActionName_missing() {
+        mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getTypeById(2) {typeId -> getKrmsTypeDefinition() }
+        setup()
+        ActionBo actionBo = getActionBo();
+        actionBo.setName("");
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), actionBo, getAgenda(null), getAgenda(null))))
+        mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
+    }
+
+    /**
+     * Check that error is thrown when the action description is missing
+     */
+    @Test
+    void test_processAddAgendaItemBusinessRule_validateRuleActionDescription_missing() {
+        mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getTypeById(2) {typeId -> getKrmsTypeDefinition() }
+        setup()
+        ActionBo actionBo = getActionBo();
+        actionBo.setDescription("");
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), actionBo, getAgenda(null), getAgenda(null))))
+        mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
+    }
+
+    private MaintenanceDocument getMaintenanceDocument(AgendaItemBo newAgendaItem, ActionBo newAgendaRuleAction, AgendaBo newAgenda, AgendaBo oldAgenda) {
         MaintenanceDocument document = new AgendaEditorMaintenanceDocumentDummy();
 
         AgendaEditorMaintainable newMaintainable = new AgendaEditorMaintainable();
         document.setNewMaintainableObject(newMaintainable);
         AgendaEditor newAgendaEditor = new AgendaEditor();
         newAgendaEditor.setAgendaItemLine(newAgendaItem);
+        newAgendaEditor.setAgendaItemLineRuleAction(newAgendaRuleAction);
         newAgendaEditor.setAgenda(newAgenda);
         document.getNewMaintainableObject().setDataObject(newAgendaEditor);
 
@@ -111,6 +173,21 @@ class AgendaEditorBusRuleTest {
         }
 
         return agenda
+    }
+
+    private ActionBo getActionBo() {
+        ActionBo actionBo = new ActionBo();
+        actionBo.setTypeId("ActionType");
+        actionBo.setName("Action Name");
+        actionBo.setDescription("Action Description");
+        return actionBo;
+    }
+
+    private KrmsTypeDefinition getKrmsTypeDefinition() {
+        KrmsTypeDefinition krmsTypeDefinition = KrmsTypeDefinition.Builder.create(KrmsTypeDefinition.Builder.create("Test", "KRMS_TEST"))
+                                                    .serviceName("TypeService")
+                                                    .build();
+        return krmsTypeDefinition;
     }
 
 }

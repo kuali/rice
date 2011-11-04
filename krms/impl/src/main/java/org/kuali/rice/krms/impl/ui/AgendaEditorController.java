@@ -133,9 +133,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             agendaEditor.setAgendaItemLine((AgendaItemBo) ObjectUtils.deepCopy(agendaItem));
         }
 
-        if (agendaEditor.getAgendaItemLine().getRule() != null && agendaEditor.getAgendaItemLine().getRule().getAction() != null) {
-            agendaEditor.setCustomRuleActionAttributesMap(agendaEditor.getAgendaItemLine().getRule().getAction().getAttributes());
+
+        if (agendaItem.getRule().getActions().isEmpty()) {
+            ActionBo actionBo = new ActionBo();
+            actionBo.setNamespace(agendaItem.getRule().getNamespace());
+            actionBo.setRuleId(agendaItem.getRule().getId());
+            actionBo.setSequenceNumber(1);
+            agendaEditor.setAgendaItemLineRuleAction(actionBo);
+        } else {
+            agendaEditor.setAgendaItemLineRuleAction(agendaItem.getRule().getActions().get(0));
         }
+
+        agendaEditor.setCustomRuleActionAttributesMap(agendaEditor.getAgendaItemLineRuleAction().getAttributes());
     }
 
     /**
@@ -212,6 +221,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = agendaEditor.getAgenda();
         AgendaItemBo newAgendaItem = agendaEditor.getAgendaItemLine();
 
+        updateRuleAction(agendaEditor);
+
         if (agenda.getItems() == null) {
             agenda.setItems(new ArrayList<AgendaItemBo>());
         }
@@ -220,9 +231,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
         MaintenanceDocument document = maintenanceForm.getDocument();
         if (rule.processAgendaItemBusinessRules(document)) {
-            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S").toString());
+            newAgendaItem.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_AGENDA_ITM_S")
+                    .toString());
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
-            updateRuleActionAttributes(agendaEditor, newAgendaItem.getRule().getAction());
             if (agenda.getFirstItemId() == null) {
                 agenda.setFirstItemId(newAgendaItem.getId());
             } else {
@@ -266,12 +277,20 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return agenda.getId();
     }
 
-    private void updateRuleActionAttributes(AgendaEditor agendaEditor, ActionBo action) {
+    private void updateRuleAction(AgendaEditor agendaEditor) {
+        agendaEditor.getAgendaItemLine().getRule().setActions(new ArrayList<ActionBo>());
+        if (StringUtils.isNotBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
+            updateRuleActionAttributes(agendaEditor.getCustomRuleActionAttributesMap(), agendaEditor.getAgendaItemLineRuleAction());
+            agendaEditor.getAgendaItemLine().getRule().getActions().add(agendaEditor.getAgendaItemLineRuleAction());
+        }
+    }
+
+    private void updateRuleActionAttributes(Map<String, String> customRuleActionAttributeMap, ActionBo action) {
         Set<ActionAttributeBo> attributes = new HashSet<ActionAttributeBo>();
 
         Map<String, KrmsAttributeDefinition> attributeDefinitionMap = buildAttributeDefinitionMap(action.getTypeId());
 
-        for (Map.Entry<String, String> entry : agendaEditor.getCustomRuleActionAttributesMap().entrySet()) {
+        for (Map.Entry<String, String> entry : customRuleActionAttributeMap.entrySet()) {
             KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey()); // get the definition from our map
 
             if (attrDef != null) {
@@ -319,7 +338,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
         AgendaItemBo agendaItemLine = getAgendaItemLine(form);
-        updateRuleActionAttributes(agendaEditor, agendaItemLine.getRule().getAction());
+
+        updateRuleAction(agendaEditor);
 
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;

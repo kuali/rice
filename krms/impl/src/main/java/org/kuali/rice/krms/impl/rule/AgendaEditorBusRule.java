@@ -28,9 +28,11 @@ import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
+import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaBoService;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
@@ -162,8 +164,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         String typeId = newAgenda.getAgenda().getTypeId();
 
         if (!StringUtils.isEmpty(typeId)) {
-            KrmsTypeDefinition typeDefinition =
-                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(typeId);
+            KrmsTypeDefinition typeDefinition = getKrmsTypeRepositoryService().getTypeById(typeId);
 
             if (typeDefinition == null) {
                 throw new IllegalStateException("agenda typeId must match the id of a valid krms type");
@@ -230,7 +231,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         AgendaEditor oldAgendaEditor = (AgendaEditor) document.getOldMaintainableObject().getDataObject();
         RuleBo rule = newAgendaEditor.getAgendaItemLine().getRule();
         isValid &= validateRuleName(rule, newAgendaEditor.getAgenda());
-        isValid &= validRuleActionAttributes(oldAgendaEditor,newAgendaEditor);
+        isValid &= validateRuleAction(oldAgendaEditor, newAgendaEditor);
 
         return isValid;
     }
@@ -272,22 +273,57 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return true;
     }
 
+    private boolean validateRuleAction(AgendaEditor oldAgendaEditor, AgendaEditor newAgendaEditor) {
+        boolean isValid = true;
+        ActionBo newActionBo = newAgendaEditor.getAgendaItemLineRuleAction();
+
+        isValid &= validRuleActionType(newActionBo.getTypeId());
+        if (isValid && StringUtils.isNotBlank(newActionBo.getTypeId())) {
+            isValid &= validRuleActionName(newActionBo.getName());
+            isValid &= validRuleActionAttributes(oldAgendaEditor, newAgendaEditor);
+            isValid &= validRuleActionDescription(newActionBo.getDescription());
+        }
+        return isValid;
+    }
+
+    /**
+     * Check that the rule type is valid when specified.
+     */
+    private boolean validRuleActionType(String typeId) {
+        if (StringUtils.isBlank(typeId) || (getKrmsTypeRepositoryService().getTypeById(typeId) != null)) {
+            return true;
+        } else {
+            this.putFieldError(KRMSPropertyConstants.Action.TYPE, "error.action.invalidType");
+            return false;
+        }
+    }
+
+    /**
+     * Check that a action name is specified.
+     */
+    private boolean validRuleActionName(String name) {
+        if (StringUtils.isNotBlank(name)) {
+            return true;
+        } else {
+            this.putFieldError(KRMSPropertyConstants.Action.NAME, "error.action.missingName");
+            return false;
+        }
+    }
+
     private boolean validRuleActionAttributes(AgendaEditor oldAgenda, AgendaEditor newAgenda) {
         boolean isValid = true;
 
-        String typeId = newAgenda.getAgendaItemLine().getRule().getAction().getTypeId();
+        String typeId = newAgenda.getAgendaItemLineRuleAction().getTypeId();
 
-        if (!StringUtils.isEmpty(typeId)) {
-            KrmsTypeDefinition typeDefinition =
-                    KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(typeId);
+        if (!StringUtils.isBlank(typeId)) {
+            KrmsTypeDefinition typeDefinition = getKrmsTypeRepositoryService().getTypeById(typeId);
 
             if (typeDefinition == null) {
                 throw new IllegalStateException("action typeId must match the id of a valid krms type");
             } else if (StringUtils.isBlank(typeDefinition.getServiceName())) {
                 throw new IllegalStateException("action type definition must have a non-blank service name");
             } else {
-                ActionTypeService actionTypeService =
-                        (ActionTypeService)KrmsRepositoryServiceLocator.getService(typeDefinition.getServiceName());
+                ActionTypeService actionTypeService = getActionTypeService(typeDefinition.getServiceName());
 
                 if (actionTypeService == null) {
                     throw new IllegalStateException("typeDefinition must have a valid serviceName");
@@ -318,6 +354,19 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return isValid;
     }
 
+    /**
+     * Check that a action description is specified.
+     */
+    private boolean validRuleActionDescription(String description) {
+        if (StringUtils.isNotBlank(description)) {
+            return true;
+        } else {
+            this.putFieldError(KRMSPropertyConstants.Action.DESCRIPTION, "error.action.missingDescription");
+            return false;
+        }
+    }
+
+
     public ContextBoService getContextBoService() {
         return KrmsRepositoryServiceLocator.getContextBoService();
     }
@@ -330,6 +379,13 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return KrmsRepositoryServiceLocator.getRuleBoService();
     }
 
+    public KrmsTypeRepositoryService getKrmsTypeRepositoryService() {
+        return KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
+    }
+
+    public ActionTypeService getActionTypeService(String serviceName) {
+        return (ActionTypeService)KrmsRepositoryServiceLocator.getService(serviceName);
+    }
     private AgendaAuthorizationService getAgendaAuthorizationService() {
         return KrmsRepositoryServiceLocator.getAgendaAuthorizationService();
     }

@@ -443,7 +443,7 @@
           ${impex.oracle.sql.grants}
         </impex.sql.initialize>
         <impex.generate.sql.mysql.phase>none</impex.generate.sql.mysql.phase>
-        <impex.sql.UNITTEST.create>CREATE TABLE IF NOT EXISTS RICEUNT.EN_UNITTEST_T(COL VARCHAR2(1) NULL)
+        <impex.sql.UNITTEST.create>CREATE TABLE RICEUNT.EN_UNITTEST_T(COL VARCHAR2(1) NULL)
 /</impex.sql.UNITTEST.create>
       </properties>
     </profile>

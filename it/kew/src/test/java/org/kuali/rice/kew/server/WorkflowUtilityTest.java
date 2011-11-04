@@ -246,7 +246,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertTrue("User should be authenticated.", wdas.isUserInRouteLog(document.getDocumentId(), getPrincipalIdForName("pmckown"), true));
 
         // now return back to WorkflowDocument
-        document.returnToPreviousNode("", "WorkflowDocument");
+        document.returnToPreviousNode("WorkflowDocument", "");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
         assertTrue(document.isApprovalRequested());
         // Phil should no longer be non-future route log authenticated
@@ -1636,6 +1636,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         try {
             results = KewApiServiceLocator.getWorkflowDocumentService().documentSearch(principalId, criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
+        } catch (IllegalStateException ise) {
         } catch (Exception e) {}
 
         criteria = DocumentSearchCriteria.Builder.create();

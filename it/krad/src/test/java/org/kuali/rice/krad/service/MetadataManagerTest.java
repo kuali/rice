@@ -27,8 +27,14 @@ import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.location.impl.country.CountryBo;
 import org.kuali.rice.location.impl.state.StateBo;
 import org.kuali.rice.location.impl.state.StateId;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KRADTestCase;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +46,26 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@PerTestUnitTestData(
+        value = @UnitTestData(
+                order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                },
+                sqlFiles = {
+                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
+                        , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                }
+        ),
+        tearDown = @UnitTestData(
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                }
+       )
+)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class MetadataManagerTest extends KRADTestCase {
 	/**
 	 * Tests that MetadataManager can convert a primary key Map to a key object correctly
@@ -114,12 +140,12 @@ public class MetadataManagerTest extends KRADTestCase {
 	 */
 	@Test
 	public void testPKObjectForExtension() {
-		final Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "a1");
+		final Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "b101");
 		assertNotNull("Account should not be null", account);
 		final AccountExtension accountExtension = (AccountExtension)account.getExtension();
 		
 		final Object pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObjectWithValuesForExtension(account, accountExtension);
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
-		assertEquals("Single pkValue should be \"a1\"", "a1", pkValue);
+		assertEquals("Single pkValue should be \"b101\"", "b101", pkValue);
 	}
 }

@@ -217,7 +217,15 @@
     </property>
   </bean>
 
-  <bean id="RuleEditorView-RuleTreeControls" parent="FieldGroup" p:showLabel="false" p:group.layoutManager.orientation="HORIZONTAL">
+  <bean id="RuleEditorView-RuleTreeControls" parent="Group"
+      p:style="text-align: left; margin-top: 3px;"
+      p:styleClasses="kr-footer">
+
+    <property name="renderHeader" value="false"/>
+    <property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL" p:style="padding: 5px;"/>
+    </property>
+      
     <property name="items">
       <list>
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');" p:actionLabel="Add">

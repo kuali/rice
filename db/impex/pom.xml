@@ -475,8 +475,8 @@
                 <phase>verify</phase>
               </execution>
             </executions>
-          </plugins>
-        </plugin>
+          </plugin>
+        </plugins>
       </build>
     </profile>
     <profile>

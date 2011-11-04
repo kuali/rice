@@ -466,13 +466,13 @@
               <execution>
                 <id>initialize</id>
                 <phase>initialize</phase>
-                <configuration>
-                  <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
-                </configuration>
               </execution>
               <execution>
                 <id>validate</id>
                 <phase>verify</phase>
+                <configuration>
+                  <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
+                </configuration>
               </execution>
             </executions>
           </plugin>

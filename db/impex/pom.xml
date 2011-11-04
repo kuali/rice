@@ -456,20 +456,8 @@
             <artifactId>sql-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>clean</id>
-                <phase>clean</phase>
-              </execution>
-              <execution>
-                <id>validate-dba</id>
-                <phase>validate</phase>
-              </execution>
-              <execution>
-                <id>initialize</id>
-                <phase>initialize</phase>
-              </execution>
-              <execution>
-                <id>validate</id>
-                <phase>verify</phase>
+                <id>pre-integration-test</id>
+                <phase>pre-integration-test</phase>
                 <configuration>
                   <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
                 </configuration>

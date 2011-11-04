@@ -162,6 +162,10 @@
       TO ${impex.username}
       /
     </impex.oracle.sql.grants>
+    <impex.oracle.sql.itests>
+      CREATE TABLE IF NOT EXISTS RICEUNT.EN_UNITTEST_T(COL VARCHAR2(1) NULL)
+      /
+    </impex.oracle.sql.itests>
     <!-- This is executed just before generating XML from the master db -->
     <impex.oracle.sql.pre.export>
     </impex.oracle.sql.pre.export>
@@ -417,6 +421,8 @@
           ${impex.mysql.sql.grants}
         </impex.sql.initialize>
         <impex.generate.sql.oracle.phase>none</impex.generate.sql.oracle.phase>
+        <impex.sql.UNITTEST.create>CREATE TABLE IF NOT EXISTS RICEUNT.EN_UNITTEST_T(COL VARCHAR(1) NULL)
+/</impex.sql.UNITTEST.create>
       </properties>
     </profile>
     <profile>
@@ -437,7 +443,39 @@
           ${impex.oracle.sql.grants}
         </impex.sql.initialize>
         <impex.generate.sql.mysql.phase>none</impex.generate.sql.mysql.phase>
+        <impex.sql.UNITTEST.create>CREATE TABLE IF NOT EXISTS RICEUNT.EN_UNITTEST_T(COL VARCHAR2(1) NULL)
+/</impex.sql.UNITTEST.create>
       </properties>
+    </profile>
+    <profile>
+      <id>itests</id>
+      <build>
+        <plugin>
+          <groupId>org.kuali.maven.plugins</groupId>
+          <artifactId>sql-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>clean</id>
+              <phase>clean</phase>
+            </execution>
+            <execution>
+              <id>validate-dba</id>
+              <phase>validate</phase>
+            </execution>
+            <execution>
+              <id>initialize</id>
+              <phase>initialize</phase>
+              <configuration>
+                <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
+              </configuration>
+            </execution>
+            <execution>
+              <id>validate</id>
+              <phase>verify</phase>
+            </execution>
+          </executions>
+        </plugin>
+      </build>
     </profile>
     <profile>
       <id>rds</id>

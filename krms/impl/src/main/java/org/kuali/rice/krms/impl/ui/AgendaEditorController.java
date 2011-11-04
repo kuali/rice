@@ -1327,6 +1327,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     break;
                 }
             }
+        } else {
+            // special case, if root has no children, add a new simple proposition
+            // todo: how to add compound proposition. - just add another to the firs simple
+            if (root.getChildren().isEmpty()){
+                PropositionBo blank = PropositionBo.createSimplePropositionBoStub(null,PropositionType.SIMPLE.getCode());
+                blank.setRuleId(rule.getId());
+                blank.setTypeId(rule.getTypeId());  // ?? bug
+                rule.setPropId(blank.getId());
+                rule.setProposition(blank);
+                rule.refreshPropositionTree(true);
+            }
         }
         return super.updateComponent(form, result, request, response);
     }

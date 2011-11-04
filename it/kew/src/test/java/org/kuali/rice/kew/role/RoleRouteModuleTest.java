@@ -673,15 +673,15 @@ public class RoleRouteModuleTest extends KEWTestCase {
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         assertTrue("Approval should be requested.", document.isApprovalRequested());
 
-        // examine the action requests
+        // examine the action requests, because there was only 1 responsibility on each role, the KEW->KIM integration
+        // transitions the requests from all approve to first approve
         List<ActionRequest> actionRequests = KewApiServiceLocator
                 .getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
         assertEquals("Should have 3 action requests.", 3, actionRequests.size());
         int numRoots = 0;
         for (ActionRequest actionRequest : actionRequests) {
-            if (actionRequest.getRequestPolicy() != null) {
-                assertEquals(ActionRequestPolicy.ALL.getCode(), actionRequest.getRequestPolicy().getCode());
-            }
+            assertNotNull(actionRequest.getRequestPolicy());
+            assertEquals(ActionRequestPolicy.FIRST, actionRequest.getRequestPolicy());
             if (actionRequest.getParentActionRequestId() == null) {
                 numRoots++;
             }

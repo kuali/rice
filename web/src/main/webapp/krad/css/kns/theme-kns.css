@@ -45,7 +45,7 @@ input[type="text"], textarea {
 	font-family: arial, helvetica, sans-serif;
 }
 input[type="radio"], input[type="checkbox"] {
-	margin:5px 5px 5px 0;
+	margin:5px 5px 5px 0 !important;
 }
 input:focus, textarea:focus {
 	background: #E7FFF6 repeat scroll 0 0;

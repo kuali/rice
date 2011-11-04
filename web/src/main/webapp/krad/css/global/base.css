@@ -120,7 +120,7 @@ td.kr-clientError {
     margin:  0.3em 0;
     }
 .summary {
-    max-width: 50em;
+    max-width: 64em;
 }
 .kr-field-attribute .summary {		/* was .field_attribute .summary */ /* renamed in xml and/or jsp */
 	line-height: 1.25em;
@@ -293,7 +293,7 @@ li label.kr-error {
 
 .kr-button-primary { /* was .button-primary */ /* renamed in xml and/or jsp */
 	cursor:pointer;
-    padding: 0.6em 2em;
+    padding: 0.5em 1.3em;
    /*remove extra padding in IE*/
    overflow: visible;
 }

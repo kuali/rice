@@ -162,10 +162,6 @@
       TO ${impex.username}
       /
     </impex.oracle.sql.grants>
-    <impex.oracle.sql.itests>
-      CREATE TABLE IF NOT EXISTS RICEUNT.EN_UNITTEST_T(COL VARCHAR2(1) NULL)
-      /
-    </impex.oracle.sql.itests>
     <!-- This is executed just before generating XML from the master db -->
     <impex.oracle.sql.pre.export>
     </impex.oracle.sql.pre.export>
@@ -447,7 +443,7 @@
       </properties>
     </profile>
     <profile>
-      <id>itests</id>
+      <id>integration-test</id>
       <build>
         <plugins>
           <plugin>

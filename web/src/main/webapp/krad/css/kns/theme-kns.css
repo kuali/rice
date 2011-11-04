@@ -17,8 +17,7 @@
 body {
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:0.85em;
-	margin-right: 30px;
-	padding-bottom: 20px;
+
 
 }
 
@@ -321,15 +320,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', end
 }
 .ui-tabs-nav li.ui-state-default {
 	border: 1px solid #000000;
+	
 }
 .ui-tabs-nav li.ui-state-active {
-	background-color: #FFFFFF;
+	background-color: #ffffff;
 	border-color: #CCCCCC;
 }
 .ui-tabs-nav li.ui-state-active a {
 	color: #333333;
 	font-family: Verdana, Geneva, sans-serif;
-	font-weight: bold;
+	/* [disabled]font-weight: bold; */
+}
+
+.ui-tabs-nav li.ui-state-active a:hover {
+	color: #333333;
+	font-family: Verdana, Geneva, sans-serif;
+	/* [disabled]font-weight: bold; */
 }
 .ui-tabs-nav li.ui-state-hover {
 	color: #ffffff;
@@ -347,23 +353,32 @@ d .ui-tabs .ui-tabs-panel {
 	border-bottom:none
 }
 .ui-tabs-nav li.ui-state-hover a {
-	color: #ffffff;
+	color: #ff0000;
 }
 .ui-tabs-nav li.ui-state-hover a:hover {
-	color: #ffffff;
+	color: #ff0000;
 }
 .ui-tabs-nav li.ui-state-active a.clientError {
-	color:#ffffff;
+	color:#ff0000;
 }
 .ui-tabs .ui-tabs-nav li {
-	border-bottom:1px solid #999;
-	border-top: 1px solid #999;
-	border-right: 1px solid #999;
-	border-left: 1px solid #999;
+	border: 1px solid #CCC;
+	background: #f7f7f7; /* Old browsers */
+	background: -moz-linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #e5e5e5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#e5e5e5', GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, #f7f7f7 0%, #e5e5e5 100%); /* W3C */
 }
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected { background:#ffffff }
+
+
 .ui-tabs .ui-tabs-nav {
 	margin: 0 0 0 0px;
-	padding: 0.2em 0.2em 0;
+	padding: 0.2em 0.2em 0 1em;
 }
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
 	border: 1px solid #cccccc;
@@ -371,6 +386,7 @@ d .ui-tabs .ui-tabs-panel {
 	background-color:#ffffff;
 	font-weight: normal;
 	color:#900000;
+	
 }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
 	color: #9c1c1c;
@@ -378,15 +394,16 @@ d .ui-tabs .ui-tabs-panel {
 	font-size: inherit;
 }
 .ui-tabs .ui-widget-header {
-	border:none;
-	background:#CCC;
+	/* [disabled]background:#CCC; */
+	border-top: none;
+	border-right: none;
+	border-bottom: none;
+	border-left: none;
 }
 .ui-tabs .ui-tabs-panel {
-	border: none;
+	border: 1px solid #CCC;
 	background: none repeat scroll 0 0 transparent;
 	/* [disabled]border: 1px solid;
-*/
-	/* [disabled]border-width: 1px 0 0;
 */
 	clear: left;
 	display: block;
@@ -396,8 +413,7 @@ d .ui-tabs .ui-tabs-panel {
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
 	border-radius: 0px;
-	/* [disabled]border-bottom:1px solid #999;
-*/
+	/* [disabled]border-bottom:1px solid #999; */
 }
 .ui-widget-header {
 	border: 1px solid #666666;
@@ -824,7 +840,7 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 .summary {
 	display:block;
 	margin-bottom:10px;
-	margin-top: 10px;
+	margin-top: 5px;
 }
 
 td span.summary {
@@ -1026,5 +1042,4 @@ input[alt="Search Field"] {
 .ui-datepicker-trigger {vertical-align: bottom;}
 
 
-
-
+ul.animated-navigation li.animated-element a { margin-top:0px;}

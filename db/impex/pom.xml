@@ -450,30 +450,32 @@
     <profile>
       <id>itests</id>
       <build>
-        <plugin>
-          <groupId>org.kuali.maven.plugins</groupId>
-          <artifactId>sql-maven-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>clean</id>
-              <phase>clean</phase>
-            </execution>
-            <execution>
-              <id>validate-dba</id>
-              <phase>validate</phase>
-            </execution>
-            <execution>
-              <id>initialize</id>
-              <phase>initialize</phase>
-              <configuration>
-                <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
-              </configuration>
-            </execution>
-            <execution>
-              <id>validate</id>
-              <phase>verify</phase>
-            </execution>
-          </executions>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>sql-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>clean</id>
+                <phase>clean</phase>
+              </execution>
+              <execution>
+                <id>validate-dba</id>
+                <phase>validate</phase>
+              </execution>
+              <execution>
+                <id>initialize</id>
+                <phase>initialize</phase>
+                <configuration>
+                  <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
+                </configuration>
+              </execution>
+              <execution>
+                <id>validate</id>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugins>
         </plugin>
       </build>
     </profile>

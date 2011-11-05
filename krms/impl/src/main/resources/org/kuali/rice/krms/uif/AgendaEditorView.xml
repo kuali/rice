@@ -343,8 +343,18 @@
           </property>
         </bean>
 -->
+        <!-- ugly alert that should be replaced with a disabled button when no rule is selected -->
         <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+              p:clientSideJs="if (getSelectedItemInput().val() == '') {
+                alert('Please select the rule to edit, then click edit rule.');
+                return false;
+              } else {
+                submitForm();
+              }"
+              p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+<!--               p:disabled="@{document.newMaintainableObject.dataObject.selectedAgendaItemId == null}"
+                   p:refreshWhenChanged="document.newMaintainableObject.dataObject.selectedAgendaItemId"
+-->
 
         <!--
         <bean parent="InputField_Form" p:propertyName="maintenanceAction" p:label=""

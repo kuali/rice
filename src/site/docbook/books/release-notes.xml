@@ -153,18 +153,94 @@
     </sect1>
     <sect1 xml:id="major-changes" xreflabel="Major Changes">
         <title>Major Changes</title>
-        <para>While implementing modularity and version compatibility changes, there were many
-            structural improvements and refactoring changes to Rice to set a stronger foundation for
-            future releases. Below is a summary of the major changes.</para>
+        <para> As mentioned in the overview and highlights, there were many major changes that were
+            made in support of the goals of the Rice 2.0 release.  While implementing modularity and
+            version compatibility changes, there were many structural improvements and refactoring
+            changes to Rice to set a stronger foundation for future releases.  The KRMS and KRAD
+            modules brought a large amount of new functionality to the Kuali Rice platform.   These
+            next sections dive into these changes in more detail.</para>
         <sect2>
             <title>Middleware Version Compatibility</title>
-            <para>In Rice 2.0, we are providing Middleware Version Compatibility. More info on this
-                and also Framework Version Compatibility can be found in our <link
-                    xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version Compatibility
-                    Statement</link>.</para>
-            <para>The Rice team implemented this feature with the recommendations found at <link
-                    xlink:href="https://wiki.kuali.org/x/P4AZD">Kuali Rice Version Compatibility
-                    Recommendations</link>.</para>
+            <para>In Rice 2.0, we are providing what we call "middleware" or "service"
+                compatibility.  This type of compatibility is mainly concerned with compatibility
+                between a client application and the version of the Kuali Rice standalone server
+                with which it is integrated.  The basic requirement here is that if the Kuali Rice
+                standalone server (which hosts all of the Kuali Rice services) is upgraded to a new
+                version, that should not force any applications that integrate with those services
+                to also upgrade (unless the server has been upgraded to a new "major" version such
+                as Rice 3.0, 4.0, etc.).  It should be able continue to be able to interoperate with
+                the new set of services without having to pull in new Kuali Rice client libraries or
+                (in the case of manual web-service integration) it should not have to modify the way
+                in which it invokes and handles remote service calls.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/ReleaseCycle1.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>This is in contrast to what we call "framework" compatibility, or the ability to
+                upgrade a client application to a new version of the Kuali Rice client libraries or
+                development framework without having to make any forced changes to that client
+                application.  Those who use Java are familiar with this type of compatibility
+                because that is the level of compatibility that is generally provided between
+                versions of the JDK (this is sometimes called a "drop-in" replacement).  Working
+                toward a goal of framework compatibility is on the roadmap for the Kuali Rice
+                project, however the Rice 2.0 release makes no gaurantees that it will provide such
+                a level of compatibilty moving forward.</para>
+            <para>More info on this and also Framework Version Compatibility can be found in our
+                    <link xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version
+                    Compatibility Statement</link>.</para>
+            <para>The following sub-sections will delve into some specific work that was done in
+                support of version compatibility.</para>
+            <sect3>
+                <title>Migration to SOAP web services</title>
+                <para>In Kuali Rice 1.0.x, services based on Java serialization were the primary
+                    services used for integration between Kuali Rice and client applications.  The
+                    mechanism by which serialization was performed used Spring's HTTP invoker
+                    remoting framework.  Java serialization is convenient for Java-to-Java
+                    application interaction.  However, a SOAP web service approach allows for a
+                    greater level of interoperability between applications, including those not
+                    written in Java.  Additionally, serialization can sometimes inherently cause
+                    compatibility issues when attempting to communicate between applications which
+                    might be running different versions of Java or different versions of
+                    libraries.</para>
+                <para>To this end, the services in Rice 2.0 have all been reimplemented as
+                    SOAP-based web services.  There will be no Java-serialization based service
+                    distributed with Kuali Rice 2.0.  However, the Kuali Sevice Bus will still
+                    support publishing of services that use Java.  As part of this effort, the team
+                    has taken care to carefully design the message formats such that:<itemizedlist>
+                        <listitem>
+                            <para>The "required" portions of the message format are
+                                well-defined</para>
+                        </listitem>
+                        <listitem>
+                            <para>The proper format of data in the messages in well-defined</para>
+                        </listitem>
+                        <listitem>
+                            <para>Error or exception cases are well-defined</para>
+                        </listitem>
+                        <listitem>
+                            <para>The services are designed to allow for safe evolution over
+                                time</para>
+                        </listitem>
+                        <listitem>
+                            <para>The services are namespaced and named appropriately</para>
+                        </listitem>
+                        <listitem>
+                            <para>The services are versioned appropriately</para>
+                        </listitem>
+                        <listitem>
+                            <para>There is consistency in how services are designed and
+                                documented</para>
+                        </listitem>
+                    </itemizedlist>Much of the above information can be found in the WSDL's which
+                    are generated for each of the services.  The WSDL defines the message formats,
+                    operations, and error conditions of the numerous Kuali Rice services.  This
+                    effort is at the heart of what we are calling "version compatibility" for the
+                    Kuali Rice 2.0 release.</para>
+                <para>Note that while SOAP is being used as the primary way in which services are
+                    exposed in Rice 2.0, there will likely be work in the near future to make
+                    services available using the REST architectural style.</para>
+            </sect3>
             <sect3>
                 <title>General Purpose Lookup APIs</title>
                 <para>&lt;TODO: List what solution was chosen. It's not clear at <link
@@ -172,8 +248,54 @@
                         >https://wiki.kuali.org/x/PR9yEg</link>.</para>
             </sect3>
             <sect3>
-                <title>Parameter Service</title>
-                <para>See <link xlink:href="https://wiki.kuali.org/x/tg5yEg"
+                <title>Parameter Service, Namespace Service, and Component Service</title>
+                <para>In Rice 1.0.x, parameters, namespaces, and components were part of the KNS
+                    module of Rice.  Client applications would access tables in the Kuali Rice
+                    server database directory in order to read and write values from these tables.
+                    As part of the general effort to modularize the Rice platform, it was decided
+                    that these three concepts were core concepts since they were used outside of the
+                    pure application development domain of the KNS (parameters in particular are
+                    used all over the Kuali Rice codebase).  To this end they were moved to the
+                    newly established "core" module of Rice (see more information on modularity work
+                    in later sections).</para>
+                <para>Additionally, SOAP services were created for each of these to eliminate the
+                    need for a client application to directly communicate with the related database
+                    tables, instead using a service-oriented approach to interacting with these
+                    different information sources.  This resulted in the creation of the following services:<itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold"
+                                    >org.kuali.rice.core.api.parameter.ParameterRepositoryService</emphasis>
+                                - remote service which provides operations related to system
+                                parameters</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold"
+                                    >org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
+                                remote service which provides oeprations related to
+                                namespaces</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold"
+                                    >org.kuali.rice.core.api.component.ComponentService</emphasis> -
+                                remote service which provides operations related to components, as
+                                well as implementing a new model for publication of "derived"
+                                components</para>
+                        </listitem>
+                    </itemizedlist>For working with parameters, there is still a ParameterService
+                    this is provided as part of the client-side API.  This service is configured
+                    with the application id of the application and delegates calls down to the
+                    remote ParameterRepositoryService.</para>
+                <para>For the ComponentService, it provides a new mechanism for publication of
+                    "derived" components, which can include components that are derived from an
+                    application's data dictionary configuration.  This is a replacement for the
+                    "getNonDatabaseComponents" method which was part of the
+                    RiceApplicationConfigurationService in Rice 1.0.x.  It uses a push model in
+                    contrast to the pull model which was used in Rice 1.0.x.</para>
+                <para>More information about these individual services and their available
+                    operations can be found in the javadocs.  Also see the following page for more
+                    details on the work that was done with these services, including a description
+                    of the new model used for publication of derived components: <link
+                        xlink:href="https://wiki.kuali.org/x/tg5yEg"
                         >https://wiki.kuali.org/x/tg5yEg</link></para>
             </sect3>
             <sect3>
@@ -205,6 +327,30 @@
                 <para>See <link xlink:href="https://wiki.kuali.org/x/vA6tEg"
                         >https://wiki.kuali.org/x/vA6tEg</link></para>
             </sect3>
+        </sect2>
+        <sect2>
+            <title>Modularity</title>
+            <para>See the following notes: <itemizedlist>
+                    <listitem>
+                        <para><link xlink:href="https://wiki.kuali.org/x/AgDYE">Modularity
+                                Analysis</link></para>
+                    </listitem>
+                    <listitem>
+                        <para>the running <link
+                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw/edit?hl=en_US"
+                                >list of modularity changes</link>.</para>
+                    </listitem>
+                    <listitem>
+                        <para><link
+                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8/edit?hl=en_US"
+                                >KEW Refactoring Notes</link></para>
+                    </listitem>
+                    <listitem>
+                        <para>TODO Document Search Framework Changes <link
+                                xlink:href="https://jira.kuali.org/browse/KRDOC-383"
+                                >(https://jira.kuali.org/browse/KRDOC-383</link>)</para>
+                    </listitem>
+                </itemizedlist></para>
         </sect2>
         <sect2>
             <title>New Modules: KRMS and KRAD</title>
@@ -256,30 +402,6 @@
                 <para>View the following analysis page for information on KRMS:<link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
                       Analysis</link></para>
             </sect3>
-        </sect2>
-        <sect2>
-            <title>Increased Modularity</title>
-            <para>See the following notes: <itemizedlist>
-                    <listitem>
-                        <para><link xlink:href="https://wiki.kuali.org/x/AgDYE">Modularity
-                                Analysis</link></para>
-                    </listitem>
-                    <listitem>
-                        <para>the running <link
-                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw/edit?hl=en_US"
-                                >list of modularity changes</link>.</para>
-                    </listitem>
-                    <listitem>
-                        <para><link
-                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8/edit?hl=en_US"
-                                >KEW Refactoring Notes</link></para>
-                    </listitem>
-                    <listitem>
-                        <para>TODO Document Search Framework Changes <link
-                                xlink:href="https://jira.kuali.org/browse/KRDOC-383"
-                                >(https://jira.kuali.org/browse/KRDOC-383</link>)</para>
-                    </listitem>
-                </itemizedlist></para>
         </sect2>
         <sect2>
             <title>Configuration Changes</title>

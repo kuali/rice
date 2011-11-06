@@ -37,31 +37,31 @@
             for cross-version service compatibility moving forward. With the increase in the number
             of applications (both internal and external to Kuali) integrating with the Kuali Rice
             middleware platform, the ability to provide for compatibility across different versions
-            of Kuali Rice has risen to forefront without our community as a critical need. The end
-            result in intended to be a platform on which institutions can build applications without
-            worrying about major forced upgrade paths for all integrated applications whenever a new
-            release of Kuali Rice is made available.</para>
+            of Kuali Rice has risen to forefront within the community as a critical need. The end
+            result is intended to be a platform on which institutions can build applications without
+            worrying about major forced upgrade paths for all integrated applications whenever they
+            deploy a new release of Kuali Rice.</para>
         <para>Another major effort that was undertaken in support of compatibility work was an
             effort to improve the modularity of the various modules of Kuali Rice. In version 1.0.x
-            of Rice, a high level of coupling was present in numerous places. Work was done as part
+            of Rice, a high degree of coupling was present in numerous places. Work was done as part
             of this release to help improve upon that situation.</para>
         <para>In addition to the architectural efforts supporting compatibility and modularity,
             Kuali Rice 2.0 sees the introduction of two new major modules.</para>
-        <para>The first of these is the Kuali Rapid Application Development (KRAD) module.  KRAD is
+        <para>The first of these is the Kuali Rapid Application Development (KRAD) module. KRAD is
             meant to provide the next generation of application development capabilities to those
-            who are building applications based on Kuali software.  KRAD provides a platform that
-            can be utilized to build enterprise applications in a way that provides a more rich and
-            flexiable user experience than could be provided with the existing Kuali Nervous System
-            KNS).  In fact, KRAD is intended to be the eventual replacement for the KNS which is the
-            platform upon which much of the existing Kuali application software was written.  Note,
-            however, that KNS is not being removed as of Rice 2.0.  Work will continue on KRAD past
-            the 2.0 release of Kuali Rice.</para>
+            who are building applications based on Kuali software. KRAD provides a platform that can
+            be utilized to build enterprise applications in a way that provides a more rich and
+            flexable user experience than could be provided with the existing Kuali Nervous System
+            (KNS). In fact, KRAD is intended to be the eventual replacement for the KNS which is the
+            platform upon which much of the existing Kuali application software has been written.
+            Note, however, that KNS is not being removed as of Rice 2.0. Work will continue on KRAD
+            past the 2.0 release of Kuali Rice.</para>
         <para>The final major piece of functionality that was undertaken for this release was the
             introduction of the Kuali Rule Management System (KRMS).  KRMS is a business rule
             management system which can be used to author and maintain business rules that can be
             utilized during decision making processes within an application.  This includes the
-            ability to use business rules defined in KRMS to define rules for workflow routing and
-            validation.</para>
+            ability to use business rules defined in KRMS to define rules for workflow routing,
+            notification, validation, and other custom scenarios.</para>
         <para>More details on each of the major efforts can be found in later sections of this
             document.</para>
         <sect2>

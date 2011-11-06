@@ -176,7 +176,7 @@
                 perspective of major, minor, and patch releases of Kuali Rice.</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/ReleaseCycle1.png"/>
+                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width=""/>
                     </imageobject>
                 </inlinemediaobject></para>
             <para>The type of compatibility being implemented for version 2.0 is in contrast to what
@@ -219,7 +219,7 @@
                             <para>The proper format of data in the messages in well-defined</para>
                         </listitem>
                         <listitem>
-                            <para>Error or exception cases are well-defined</para>
+                            <para>Error and exception cases are well-defined</para>
                         </listitem>
                         <listitem>
                             <para>The services are designed to allow for safe evolution over
@@ -238,17 +238,17 @@
                     </itemizedlist>Much of the above information can be found in the WSDL's which
                     are generated for each of the services.  The WSDL defines the message formats,
                     operations, and error conditions of the numerous Kuali Rice services.  This
-                    effort is at the heart of what we are calling "version compatibility" for the
-                    Kuali Rice 2.0 release.</para>
+                    effort of service refactoring is at the heart of what we are calling "version
+                    compatibility" for the Kuali Rice 2.0 release.</para>
                 <para>Note that while SOAP is being used as the primary way in which services are
                     exposed in Rice 2.0, there will likely be work in the near future to make
                     services available using the REST architectural style.</para>
             </sect3>
             <sect3>
-                <title>General Purpose Lookup APIs</title>
-                <para>&lt;TODO: List what solution was chosen. It's not clear at <link
-                        xlink:href="https://wiki.kuali.org/x/PR9yEg"
-                        >https://wiki.kuali.org/x/PR9yEg</link>.</para>
+                <title>Kuali Service Bus</title>
+                <para/>
+                <para>See <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
+                    >https://wiki.kuali.org/x/T3dyEg</link></para>
             </sect3>
             <sect3>
                 <title>Parameter Service, Namespace Service, and Component Service</title>
@@ -302,11 +302,6 @@
                         >https://wiki.kuali.org/x/tg5yEg</link></para>
             </sect3>
             <sect3>
-                <title>Kuali Service Bus</title>
-                <para>See <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
-                        >https://wiki.kuali.org/x/T3dyEg</link></para>
-            </sect3>
-            <sect3>
                 <title>Kuali Enterprise Workflow</title>
                 <para>
                     <itemizedlist>
@@ -319,6 +314,12 @@
                         </listitem>
                     </itemizedlist>
                 </para>
+            </sect3>
+            <sect3>
+                <title>General Purpose Lookup APIs</title>
+                <para>&lt;TODO: List what solution was chosen. It's not clear at <link
+                    xlink:href="https://wiki.kuali.org/x/PR9yEg"
+                    >https://wiki.kuali.org/x/PR9yEg</link>.</para>
             </sect3>
             <sect3>
                 <title>Caching Infrastructure</title>

@@ -27,8 +27,7 @@
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
-        <para>This Release Notes documentation includes information on the list of changes between
-            Rice ${previousVersion} and Rice ${project.version}. </para>
+        <para>Welcome to the first beta release of Kuali Rice 2.0!</para>
         <para>&lt;TODO: motivation for 2.0 goes here></para>
         <itemizedlist>
             <title>Highlights of this release include:</title>
@@ -51,126 +50,6 @@
                     here>.</simpara>
             </listitem>
         </itemizedlist>
-        <sect2>
-            <title>What's Not Complete for this Release </title>
-            <para>Rice ${project.version} is the first beta release and the goal of this release was
-                to ensure that approximately 95% of the functionality was complete prior to the
-                public beta test. Below is a summary of work items that still need to be completed
-                prior to the generally available release of Kuali Rice 2.0.  Work will continue to
-                try and resolve these issues as soon as possible in future beta releases.</para>
-            <para>
-                <orderedlist>
-                    <listitem>
-                        <para><emphasis role="bold">Remote and embedded client
-                                configurations</emphasis><itemizedlist>
-                                <listitem>
-                                    <para>Rice ${project.version} can only be used to set up
-                                        "bundled" applications.  None of the remote or embedded
-                                        client configurations will work properly.</para>
-                                </listitem>
-                                <listitem>
-                                    <para>We will continue through future beta work to make remote
-                                        and embedded clients available again.</para>
-                                </listitem>
-                            </itemizedlist></para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">Configuration Changes</emphasis> - The way in
-                            which you configure Rice may change quite a bit in future beta releases,
-                            so we are going to be looking at fairly inpactful beta releases coming
-                            down in the future.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">Caching</emphasis> - There is still some work to
-                            do on the new caching layer and that will be cleaned up during
-                            beta.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">Documentation</emphasis> is in a rudimentary
-                            state. During the course of beta releases, it will be reviewed and
-                            augmented.</para>
-                    </listitem>
-                    <listitem>
-                        <para><emphasis role="bold">Upgrade guide/upgrade scripts</emphasis> are not
-                            complete, but will be available before final release. Rough versions of
-                            scripts are available on the <link
-                                xlink:href="https://wiki.kuali.org/x/xSaREg">beta test
-                            site</link>.</para>
-                    </listitem>
-                </orderedlist>
-            </para>
-            <sect3>
-                <title>"Remote" and "Embedded" client application configurations</title>
-                <para>There was much work done in Rice 2.0 to refactor the layout and organization
-                    of the project and it's services.  This was primarily driven from the
-                    perspective of work being done both on improving modularity for the 2.0 release
-                    as well as requirements for version compatibility.  Unfortunately, as of the
-                    first beta release for Rice 2.0, there is still cleanup work to do to allow for
-                    proper configuration and operation of non-bundled client applications.  For
-                    those unfamiliar with the concept of "bundled" vs. "non-bundled", options for
-                    integration with the Kuali Rice middleware is essentially as follows:<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">bundled</emphasis> - in this model, a single
-                                application is bundled together with the Kuali Rice services and web
-                                application.  This allows for that application to be deployed
-                                without the need to set up a seperate application deployment for
-                                Kuali Rice.  This model is not intended for "enterprise" application
-                                deployments because it prohibits proper reuse of the Kuali Rice
-                                middleware as a shared set of services.</para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">standalone</emphasis> - in this model, a
-                                Kuali Rice "standalone server" is deployed which hosts the Kuali
-                                Rice web application along with all of it's services.  Client
-                                applications can then integrate with the standalone server instance
-                                through various "run modes" which are supported by the client-side
-                                pieces for the different Kuali Rice components (KEW, KIM, KSB,
-                                etc.).  This integration model makes more sense for an enterprise
-                                deployment of Kuali Rice because it allows the standalone server
-                                instance and the services it provides to be shared and leveraged by
-                                multiple applications within the enterprise. </para>
-                        </listitem>
-                    </itemizedlist>For applications that are integrating with a standalone server,
-                    there are three primary possibilities for integration (generally, it's possible
-                    to integrate with different modules of Rice in different ways):<itemizedlist>
-                        <listitem>
-                            <para><emphasis role="bold">remote</emphasis> - in this mode, the client
-                                application will be configured to connect to the KSB service
-                                registry and will invoke remote rice services using the server
-                                endpoint information located within the registry</para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">embedded</emphasis> - in this mode, some or
-                                all of the module will be "embedded" into the client application (in
-                                Rice 2.0, this mode is only supported by KEW and KIM).  When using
-                                this client-integration mode, the client application will connect
-                                directly to the Kuali Rice database.</para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">manual</emphasis> - all of the Kuali Rice
-                                services are available as SOAP web services, so any application can
-                                build a manual web-service client using information found in the
-                                WSDL's for the services published by the Kuali Rice standalone
-                                server.  In these cases, there is generally no Kuali Rice code that
-                                need to be configured or used within the client application.</para>
-                        </listitem>
-                    </itemizedlist>Because of the issues mentioned previously, not all of the
-                    modules in Rice are configured to fully support the remote and embedded
-                    configurations (however, manual web-service integration should be possible).
-                    For this reason, we are recommending those participating in the beta test start
-                    by working on upgrades to any Rice standalone server instances they have as well
-                    as running Rice 2.0 in "bundled" mode with any existing applications they wish
-                    to convert to Rice 2.0.</para>
-            </sect3>
-            <sect3>
-                <title>Configurers</title>
-                <para>Related to the previous item of remote and embedded client application
-                    configuration, part of the issue here lies with the fact that there is still
-                    work to do in Rice 2.0 related to how to set up client "configurers".  Those
-                    faimiliar with Rice 1.0.x will recall the <code>RiceConfigurer</code> class and...
-                    TODO</para>
-            </sect3>
-        </sect2>
         <sect2>
             <title>Download</title>
             <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link
@@ -376,6 +255,140 @@
                     </listitem>
                 </itemizedlist>
             </para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Rice 2.0 Work Remaining</title>
+        <para>Rice 2.0 is the first beta release and the goal of this release was to ensure that
+            approximately 95% of the functionality was complete prior to the public beta test. Below
+            is a summary of major work items that still need to be completed prior to the generally
+            available release of Kuali Rice 2.0. Work will continue to try and resolve these issues
+            as soon as possible in future beta releases.</para>
+        <para>
+            <orderedlist>
+                <listitem>
+                    <para><emphasis role="bold">Remote and embedded client
+                        configurations</emphasis><itemizedlist>
+                            <listitem>
+                                <para>Rice ${project.version} can only be used to set up
+                                    "bundled" applications.  None of the remote or embedded
+                                    client configurations will work properly.</para>
+                            </listitem>
+                            <listitem>
+                                <para>We will continue through future beta work to make remote
+                                    and embedded clients available again.</para>
+                            </listitem>
+                        </itemizedlist></para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Configuration Changes</emphasis> - The way in
+                        which you configure Rice may change quite a bit in future beta releases,
+                        so we are going to be looking at fairly inpactful beta releases coming
+                        down in the future.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Caching</emphasis> - There is still some work to
+                        do on the new caching layer and that will be cleaned up during
+                        beta.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Documentation</emphasis> is in a rudimentary
+                        state. During the course of beta releases, it will be reviewed and
+                        augmented.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Upgrade guide/upgrade scripts</emphasis> are not
+                        complete, but will be available before final release. Rough versions of
+                        scripts are available on the <link
+                            xlink:href="https://wiki.kuali.org/x/xSaREg">beta test
+                            site</link>.</para>
+                </listitem>
+            </orderedlist>
+        </para>
+        <sect2>
+            <title>"Remote" and "Embedded" client application configurations</title>
+            <para>There was much work done in Rice 2.0 to refactor the layout and organization
+                of the project and it's services.  This was primarily driven from the
+                perspective of work being done both on improving modularity for the 2.0 release
+                as well as requirements for version compatibility.  Unfortunately, as of the
+                first beta release for Rice 2.0, there is still cleanup work to do to allow for
+                proper configuration and operation of non-bundled client applications.  For
+                those unfamiliar with the concept of "bundled" vs. "non-bundled", options for
+                integration with the Kuali Rice middleware is essentially as follows:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">bundled</emphasis> - in this model, a single
+                            application is bundled together with the Kuali Rice services and web
+                            application.  This allows for that application to be deployed
+                            without the need to set up a seperate application deployment for
+                            Kuali Rice.  This model is not intended for "enterprise" application
+                            deployments because it prohibits proper reuse of the Kuali Rice
+                            middleware as a shared set of services.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">standalone</emphasis> - in this model, a
+                            Kuali Rice "standalone server" is deployed which hosts the Kuali
+                            Rice web application along with all of it's services.  Client
+                            applications can then integrate with the standalone server instance
+                            through various "run modes" which are supported by the client-side
+                            pieces for the different Kuali Rice components (KEW, KIM, KSB,
+                            etc.).  This integration model makes more sense for an enterprise
+                            deployment of Kuali Rice because it allows the standalone server
+                            instance and the services it provides to be shared and leveraged by
+                            multiple applications within the enterprise. </para>
+                    </listitem>
+                </itemizedlist>For applications that are integrating with a standalone server,
+                there are three primary possibilities for integration (generally, it's possible
+                to integrate with different modules of Rice in different ways):<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">remote</emphasis> - in this mode, the client
+                            application will be configured to connect to the KSB service
+                            registry and will invoke remote rice services using the server
+                            endpoint information located within the registry</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">embedded</emphasis> - in this mode, some or
+                            all of the module will be "embedded" into the client application (in
+                            Rice 2.0, this mode is only supported by KEW and KIM).  When using
+                            this client-integration mode, the client application will connect
+                            directly to the Kuali Rice database.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">manual</emphasis> - all of the Kuali Rice
+                            services are available as SOAP web services, so any application can
+                            build a manual web-service client using information found in the
+                            WSDL's for the services published by the Kuali Rice standalone
+                            server.  In these cases, there is generally no Kuali Rice code that
+                            need to be configured or used within the client application.</para>
+                    </listitem>
+                </itemizedlist>Because of the issues mentioned previously, not all of the
+                modules in Rice are configured to fully support the remote and embedded
+                configurations (however, manual web-service integration should be possible).
+                For this reason, we are recommending those participating in the beta test start
+                by working on upgrades to any Rice standalone server instances they have as well
+                as running Rice 2.0 in "bundled" mode with any existing applications they wish
+                to convert to Rice 2.0.</para>
+        </sect2>
+        <sect2>
+            <title>Configurers</title>
+            <para>Related to the previous item of remote and embedded client applcation
+                configuration, part of the issue here lies with the fact that there is still
+                outstanding work on how to set up client "configurers". Those faimiliar with
+                Rice 1.0.x will recall the <code>RiceConfigurer</code> class which was used to
+                load and configure the various Rice modules. In Rice 2.0, this class no longer
+                exists and it's replacement is
+                <code>org.kuali.rice.core.impl.config.module.CoreConfigurer</code>. However,
+                the core configurer only configures the basic "core" of Kuali Rice. The other
+                modules (such as KEW, KSB, etc.) have their own configuers as well.</para>
+            <para>The best place to look at for an example of how to configure Rice 2.0 is in
+                the file
+                <code>impl/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml</code>.
+                This file imports other spring files which configure the various Rice modules.
+                These files can also be imported into an application's Spring file in order to
+                configure that particular module (unless an alternative or customized
+                configuration is needed). Note, however, that the way in which Rice is
+                configured will likely be adjusted in future beta releases, but information and
+                documentation on such changes will be communicated along with those
+                releases.</para>
         </sect2>
     </sect1>
     <sect1 xml:id="upgrade-guide" xreflabel="Upgrade Guide">

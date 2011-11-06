@@ -28,6 +28,11 @@ import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KRADTestCase;
 import org.kuali.test.KRADTestConstants.TestConstants;
 
@@ -36,6 +41,26 @@ import org.kuali.test.KRADTestConstants.TestConstants;
  * 
  * 
  */
+@PerTestUnitTestData(
+        value = @UnitTestData(
+                order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                },
+                sqlFiles = {
+                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
+                        , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                }
+        ),
+        tearDown = @UnitTestData(
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                }
+       )
+)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class KualiLookupableTest extends KRADTestCase {
     private KualiLookupableImpl lookupableImpl;
 
@@ -54,8 +79,8 @@ public class KualiLookupableTest extends KRADTestCase {
      */
     @Test public void testReturnUrl() throws Exception {
     	Map<String, String> lookupProps = new HashMap<String, String>();
-    	lookupProps.put("number", "a1");
-    	lookupProps.put("name", "a1");
+    	lookupProps.put("number", "b101");
+    	lookupProps.put("name", "b101");
     	
     	Account account = (Account) KRADServiceLocatorWeb.getLookupService().findObjectBySearch(Account.class, lookupProps);
 //        ObjectCode objCode = getObjectCodeService().getCountry(TestConstants.Data1.UNIVERSITY_FISCAL_YEAR, TestConstants.Data1.CHART_OF_ACCOUNTS_CODE, TestConstants.Data1.OBJECT_CODE);
@@ -72,7 +97,7 @@ public class KualiLookupableTest extends KRADTestCase {
         // check url goes back to our back location
         checkURLContains("Lookup return url does not go back to back location", TestConstants.BASE_PATH + "ib.do", returnUrl);
 
-        assertEquals(returnUrl, "<a title=\"return valueAccount Number=a1 \" href=\"http://localhost:8080/ib.do?refreshCaller=kualiLookupable&number=a1&methodToCall=refresh&docFormKey=8888888\"  >return value</a>");
+        assertEquals(returnUrl, "<a title=\"return valueAccount Number=b101 \" href=\"http://localhost:8080/ib.do?refreshCaller=kualiLookupable&number=b101&methodToCall=refresh&docFormKey=8888888\"  >return value</a>");
 
         // check that field conversions are working correctly for keys
         fieldConversions.put("number", "myAccount[0].chartCode");
@@ -80,7 +105,7 @@ public class KualiLookupableTest extends KRADTestCase {
         returnUrl = lookupableImpl.getReturnUrl(account, fieldConversions, "kualiLookupable", null).constructCompleteHtmlTag();
 
         // check keys have been mapped properly
-        checkURLContains("Lookup return url does not map key", "myAccount[0].chartCode=a1", returnUrl);
+        checkURLContains("Lookup return url does not map key", "myAccount[0].chartCode=b101", returnUrl);
     }
 
 

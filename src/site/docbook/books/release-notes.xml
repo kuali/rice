@@ -69,19 +69,50 @@
             <itemizedlist>
                 <title>Highlights of this release include:</title>
                     <listitem>
-                        <simpara>Middleware version compatibility and versioned services</simpara>
-                    </listitem>
+                    <simpara>Refactoring of all remotely accessible services to position them for
+                        cross-version compatibility with future versions of Kuali Rice.  This
+                        includes a migration from Java serialization-based services to SOAP-based
+                        web services.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Reduction in the number of places where a Kuali Rice client application
+                        will interact with the Kuali Rice standalone server database (when using
+                        integration models like embedded KEW).</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Improvements to the Kuali Service Bus to allow it to support
+                        requirements for version compatibility.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Introduction of a new approach to server and client-side caching use
+                        the Spring caching abstraction.  This includes a new user interface for
+                        managing caches.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Breakdown of the codebase into smaller modules to increase modularity
+                        and flexibility of the software.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Numerious improvements to the design and documentation of Kuali Rice
+                        apis.</simpara>
+                </listitem>
                     <listitem>
-                        <simpara>Increased Modularity</simpara>
-                    </listitem>
+                    <simpara>Introduction of the Kuali Rules Management System (KRMS) module for
+                        creation and execution of business rules.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Introduction of the concept of PeopleFlows in Kuali Enterprise
+                        Workflow.</simpara>
+                </listitem>
                     <listitem>
-                        <simpara>New module Kuali Rules Management System (KRMS) for building
-                            business rules</simpara>
-                    </listitem>
-                    <listitem>
-                        <simpara>New module Kuali Rapid Application Development (KRAD), the next
-                            revision of the KNS which includes rich UI features</simpara>
-                    </listitem>
+                    <simpara>Introduction of the  Kuali Rapid Application Development (KRAD) module,
+                        the next revision of the KNS which includes rich UI features and is based on
+                        Spring MVC instead of Struts.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Many of the Kuali Rice library dependencies were updated to the latest
+                        versions of those libraries.</simpara>
+                </listitem>
                     <listitem>
                         <simpara>A full feature list of Rice 2.0 can be found at &lt;insert link
                             here>.</simpara>

@@ -87,14 +87,21 @@ jq('#' + componentId).bind('loaded.jstree', function (event, data) {
     jq('a.ruleTreeNode').click( function() {
         var propositionId = jq(this.parentNode).find('input').attr('value');
         var selectedItemTracker = getSelectedPropositionInput();
-        selectedItemTracker.val(propositionId);
+
         // make li show containment of children
         jq('li').each( function() {
             jq(this).removeClass('ruleBlockSelected');
         });
-        if (!jq(this.parentNode).hasClass('ruleCutSelected')){
-            jq(this.parentNode).addClass('ruleBlockSelected');
-        };
+
+        if (selectedItemTracker.val() == propositionId) {
+            // if this item is already selected, deselect it
+            selectedItemTracker.val('');
+        } else {
+            selectedItemTracker.val(propositionId);
+            if (!jq(this.parentNode).hasClass('ruleCutSelected')){
+                jq(this.parentNode).addClass('ruleBlockSelected');
+            };
+        }
     });
 
     // set type to 'logic' on logic nodes -- this prevents them from being selected

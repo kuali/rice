@@ -64,12 +64,19 @@ function initAgendaTree(componentId) {
         jq('a.ruleNode').click( function() {
             var agendaItemId = jq(this.parentNode).find('input').attr('value');
             var selectedItemTracker = getSelectedItemInput()
-            selectedItemTracker.val(agendaItemId);
+
             // make li show containment of children
             jq('li').each( function() {
                 jq(this).removeClass('ruleBlockSelected');
             });
-            jq(this.parentNode).addClass('ruleBlockSelected');
+
+            if (selectedItemTracker.val() == agendaItemId) {
+                // if this item is already selected, deselect it
+                selectedItemTracker.val('');
+            } else { // select it, both with the custom class and with the selectedItemTracker
+                selectedItemTracker.val(agendaItemId);
+                jq(this.parentNode).addClass('ruleBlockSelected');
+            }
         });
 
         // set type to 'logic' on logic nodes -- this prevents them from being selected

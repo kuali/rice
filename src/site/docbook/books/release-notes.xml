@@ -30,45 +30,64 @@
         <para>Welcome to the first beta release of Kuali Rice 2.0!  Version 2.0 is the first major
             release of the Kuali Rice software since version 1.0 which was released in August of
             2009.  This release brings many new and exciting features and improvements to the Kuali
-            Rice platform.  This document provides early information on the work that has been done
-            as part of 2.0 develoment and how one can get started working with the software during
-            the beta test phase of the project.</para>
+            Rice middlware and application development platforms.  This document provides early
+            information on the work that has been done as part of 2.0 develoment and how one can get
+            started working with the software during the beta test phase of the project.</para>
         <para>The primary architectural goal for this release of Rice was to position the platform
-            for cross-version service compatibility moving forward.  With the increase in the number
+            for cross-version service compatibility moving forward. With the increase in the number
             of applications (both internal and external to Kuali) integrating with the Kuali Rice
             middleware platform, the ability to provide for compatibility across different versions
-            of Kuali Rice has risen to forefront without our community as a critical need.  The end
+            of Kuali Rice has risen to forefront without our community as a critical need. The end
             result in intended to be a platform on which institutions can build applications without
             worrying about major forced upgrade paths for all integrated applications whenever a new
-            release of Kuali Rice is made available.  More information on the level of compatibility
-            that is provided with Rice 2.0 and what work was done to accomplish this can be found in
-            a later section of this document.</para>
-        <para>In addition to this work, Kuali Rice 2.0 sees the introduction of two new major
-            offerings.  The first of these is the Kuali Rapid Application Development (KRAD) module.
-            KRAD is meant to provide the next generation of application development capabilities to
-            the </para>
-        <para>&lt;TODO: motivation for 2.0 goes here></para>
-        <itemizedlist>
-            <title>Highlights of this release include:</title>
-            <listitem>
-                <simpara>Middleware version compatibility and versioned services</simpara>
-            </listitem>
-            <listitem>
-                <simpara>Increased Modularity</simpara>
-            </listitem>
-            <listitem>
-                <simpara>New module Kuali Rules Management System (KRMS) for building business
-                    rules</simpara>
-            </listitem>
-            <listitem>
-                <simpara>New module Kuali Rapid Application Development (KRAD), the next revision of
-                    the KNS which includes rich UI features</simpara>
-            </listitem>
-            <listitem>
-                <simpara>A full feature list of Rice 2.0 can be found at &lt;insert link
-                    here>.</simpara>
-            </listitem>
-        </itemizedlist>
+            release of Kuali Rice is made available.</para>
+        <para>Another major effort that was undertaken in support of compatibility work was an
+            effort to improve the modularity of the various modules of Kuali Rice. In version 1.0.x
+            of Rice, a high level of coupling was present in numerous places. Work was done as part
+            of this release to help improve upon that situation.</para>
+        <para>In addition to the architectural efforts supporting compatibility and modularity,
+            Kuali Rice 2.0 sees the introduction of two new major modules.</para>
+        <para>The first of these is the Kuali Rapid Application Development (KRAD) module.  KRAD is
+            meant to provide the next generation of application development capabilities to those
+            who are building applications based on Kuali software.  KRAD provides a platform that
+            can be utilized to build enterprise applications in a way that provides a more rich and
+            flexiable user experience than could be provided with the existing Kuali Nervous System
+            KNS).  In fact, KRAD is intended to be the eventual replacement for the KNS which is the
+            platform upon which much of the existing Kuali application software was written.  Note,
+            however, that KNS is not being removed as of Rice 2.0.  Work will continue on KRAD past
+            the 2.0 release of Kuali Rice.</para>
+        <para>The final major piece of functionality that was undertaken for this release was the
+            introduction of the Kuali Rule Management System (KRMS).  KRMS is a business rule
+            management system which can be used to author and maintain business rules that can be
+            utilized during decision making processes within an application.  This includes the
+            ability to use business rules defined in KRMS to define rules for workflow routing and
+            validation.</para>
+        <para>More details on each of the major efforts can be found in later sections of this
+            document.</para>
+        <sect2>
+            <title>Release Highlights</title>
+            <itemizedlist>
+                <title>Highlights of this release include:</title>
+                    <listitem>
+                        <simpara>Middleware version compatibility and versioned services</simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>Increased Modularity</simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>New module Kuali Rules Management System (KRMS) for building
+                            business rules</simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>New module Kuali Rapid Application Development (KRAD), the next
+                            revision of the KNS which includes rich UI features</simpara>
+                    </listitem>
+                    <listitem>
+                        <simpara>A full feature list of Rice 2.0 can be found at &lt;insert link
+                            here>.</simpara>
+                    </listitem>
+                </itemizedlist>
+        </sect2>
         <sect2>
             <title>Download</title>
             <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link

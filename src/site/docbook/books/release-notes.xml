@@ -27,7 +27,26 @@
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
-        <para>Welcome to the first beta release of Kuali Rice 2.0!</para>
+        <para>Welcome to the first beta release of Kuali Rice 2.0!  Version 2.0 is the first major
+            release of the Kuali Rice software since version 1.0 which was released in August of
+            2009.  This release brings many new and exciting features and improvements to the Kuali
+            Rice platform.  This document provides early information on the work that has been done
+            as part of 2.0 develoment and how one can get started working with the software during
+            the beta test phase of the project.</para>
+        <para>The primary architectural goal for this release of Rice was to position the platform
+            for cross-version service compatibility moving forward.  With the increase in the number
+            of applications (both internal and external to Kuali) integrating with the Kuali Rice
+            middleware platform, the ability to provide for compatibility across different versions
+            of Kuali Rice has risen to forefront without our community as a critical need.  The end
+            result in intended to be a platform on which institutions can build applications without
+            worrying about major forced upgrade paths for all integrated applications whenever a new
+            release of Kuali Rice is made available.  More information on the level of compatibility
+            that is provided with Rice 2.0 and what work was done to accomplish this can be found in
+            a later section of this document.</para>
+        <para>In addition to this work, Kuali Rice 2.0 sees the introduction of two new major
+            offerings.  The first of these is the Kuali Rapid Application Development (KRAD) module.
+            KRAD is meant to provide the next generation of application development capabilities to
+            the </para>
         <para>&lt;TODO: motivation for 2.0 goes here></para>
         <itemizedlist>
             <title>Highlights of this release include:</title>

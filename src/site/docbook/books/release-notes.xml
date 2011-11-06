@@ -172,20 +172,23 @@
                 set of services without having to pull in new Kuali Rice client libraries or (in the
                 case of manual web-service integration) it should not have to modify the way in
                 which it invokes and handles remote service calls.</para>
+            <para>The image below shows what the target is for version compatibility from the
+                perspective of major, minor, and patch releases of Kuali Rice.</para>
             <para><inlinemediaobject>
                     <imageobject>
                         <imagedata fileref="../images/ReleaseCycle1.png"/>
                     </imageobject>
                 </inlinemediaobject></para>
-            <para>This is in contrast to what we call "framework" compatibility, or the ability to
-                upgrade a client application to a new version of the Kuali Rice client libraries or
-                development framework without having to make any forced changes to that client
-                application.  Those who use Java are familiar with this type of compatibility
-                because that is the level of compatibility that is generally provided between
-                versions of the JDK (this is sometimes called a "drop-in" replacement).  Working
-                toward a goal of framework compatibility is on the roadmap for the Kuali Rice
-                project, however the Rice 2.0 release makes no gaurantees that it will provide such
-                a level of compatibilty moving forward.</para>
+            <para>The type of compatibility being implemented for version 2.0 is in contrast to what
+                we call "framework" compatibility, or the ability to upgrade a client application to
+                a new version of the Kuali Rice client libraries or development framework without
+                having to make any forced changes to that client application.  Those who use Java
+                are familiar with this type of compatibility because that is the level of
+                compatibility that is generally provided between releases of the JDK (this is
+                sometimes called a "drop-in" replacement).  Working toward a goal of framework
+                compatibility is on the roadmap for the Kuali Rice project, however the Rice 2.0
+                release makes no gaurantees that it will provide such a level of compatibilty moving
+                forward.</para>
             <para>More info on this and also Framework Version Compatibility can be found in our
                     <link xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version
                     Compatibility Statement</link>.</para>

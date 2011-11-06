@@ -27,12 +27,13 @@
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
-        <para>Welcome to the first beta release of Kuali Rice 2.0!  Version 2.0 is the first major
-            release of the Kuali Rice software since version 1.0 which was released in August of
-            2009.  This release brings many new and exciting features and improvements to the Kuali
-            Rice middlware and application development platforms.  This document provides early
-            information on the work that has been done as part of 2.0 develoment and how one can get
-            started working with the software during the beta test phase of the project.</para>
+        <para>Welcome to the first beta release of Kuali Rice version 2.0!</para>
+        <para>This is the first major release of the Kuali Rice software since version 1.0 which was
+            released in August of 2009. This release brings many new and exciting features and
+            improvements to the Kuali Rice middlware and application development platforms. This
+            document provides early information on the work that has been done as part of 2.0
+            develoment and how one can get started working with the software during the beta test
+            phase of the project.</para>
         <para>The primary architectural goal for this release of Rice was to position the platform
             for cross-version service compatibility moving forward. With the increase in the number
             of applications (both internal and external to Kuali) integrating with the Kuali Rice

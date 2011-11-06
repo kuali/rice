@@ -25,6 +25,11 @@ import org.kuali.rice.location.impl.county.CountyBo;
 import org.kuali.rice.location.impl.county.CountyId;
 import org.kuali.rice.location.impl.state.StateBo;
 import org.kuali.rice.location.impl.state.StateId;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.data.PerTestUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.kuali.rice.test.data.UnitTestFile;
+import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KRADTestCase;
 
 /**
@@ -33,50 +38,70 @@ import org.kuali.test.KRADTestCase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@PerTestUnitTestData(
+        value = @UnitTestData(
+                order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                },
+                sqlFiles = {
+                        @UnitTestFile(filename = "classpath:testAccountManagers.sql", delimiter = ";")
+                        , @UnitTestFile(filename = "classpath:testAccounts.sql", delimiter = ";")
+                }
+        ),
+        tearDown = @UnitTestData(
+                sqlStatements = {
+                        @UnitTestSql("delete from trv_acct where acct_fo_id between 101 and 301")
+                        ,@UnitTestSql("delete from trv_acct_fo where acct_fo_id between 101 and 301")
+                }
+       )
+)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class BusinessObjectRefreshTest extends KRADTestCase {
 
 	@Test
 	public void testLazyRefreshField() {
-		final String accountNumber = "a1";
+		final String accountNumber = "b101";
 		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
-		Assert.assertEquals("Retrieved account should have name a1", "a1", account.getName());
-		Assert.assertEquals("Retrieved account should have a account manager with user name fred", "fred", account.getAccountManager().getUserName());
+		Assert.assertEquals("Retrieved account should have name b101", "b101", account.getName());
+		Assert.assertEquals("Retrieved account should have a account manager with user name fo-101", "fo-101", account.getAccountManager().getUserName());
 		
-		account.setAmId(2L);
+		account.setAmId(102L);
 		account.refreshReferenceObject("accountManager");
 		
-		Assert.assertEquals("Account Manager should now have user name of fran", "fran", account.getAccountManager().getUserName());
+		Assert.assertEquals("Account Manager should now have user name of fo-102", "fo-102", account.getAccountManager().getUserName());
 		
 	}
 	
 	@Test
 	public void testLazyRefreshWholeObject() {
-		final String accountNumber = "a1";
+		final String accountNumber = "b101";
 		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
-		Assert.assertEquals("Retrieved account should have name a1", "a1", account.getName());
-		Assert.assertEquals("Retrieved account should have a account manager with user name fred", "fred", account.getAccountManager().getUserName());
+		Assert.assertEquals("Retrieved account should have name b101", "b101", account.getName());
+		Assert.assertEquals("Retrieved account should have a account manager with user name fo-101", "fo-101", account.getAccountManager().getUserName());
 		
-		account.setAmId(2L);
+		account.setAmId(102L);
 		account.refresh();
 		
-		Assert.assertEquals("Account Manager should now have user name of fran", "fran", account.getAccountManager().getUserName());
+		Assert.assertEquals("Account Manager should now have user name of fo-102", "fo-102", account.getAccountManager().getUserName());
 	}
 	
 	@Ignore // until BO extensions work with JPA
 	@Test
 	public void testLazyCollectionRefresh() {
-		final Long fredManagerId = 1L;
+		final Long fredManagerId = 101L;
 		AccountManager manager = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(AccountManager.class, new Long(fredManagerId));
 		
-		Assert.assertEquals("Retrieve manager should have a name 'fred'", "fred", manager.getUserName());
-		Assert.assertEquals("Manager should have one account", new Integer(1), new Integer(manager.getAccounts().size()));
+		Assert.assertEquals("Retrieve manager should have a name 'fo-101'", "fo-101", manager.getUserName());
+		Assert.assertEquals("Manager should have one account", new Integer(101), new Integer(manager.getAccounts().size()));
 		
-		final String accountNumber = "a2";
+		final String accountNumber = "b102";
 		Account account = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 
-		account.setAmId(1L);
+		account.setAmId(101L);
 		account = (Account) KRADServiceLocator.getBusinessObjectService().save(account);
 		
 		manager.refreshReferenceObject("accounts");

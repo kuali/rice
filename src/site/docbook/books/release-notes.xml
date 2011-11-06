@@ -21,9 +21,8 @@
         <title>Kuali Rice ${project.version} Release Notes</title>
         <edition>${project.version}</edition>
         <pubdate>Released: ${timestamp}</pubdate>
-        <releaseinfo>This document contains a cumulative list of work accomplished between versions
-            ${previousVersion} and ${project.version}. It also contains the steps necessary in
-            upgrading from release ${previousVersion} to ${project.version} </releaseinfo>
+        <releaseinfo>This document contains information on work completed as part of the first beta
+            release of Kuali Rice Version 2.0.</releaseinfo>
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
@@ -36,12 +35,12 @@
             phase of the project.</para>
         <para>The primary architectural goal for this release of Rice was to position the platform
             for cross-version service compatibility moving forward. With the increase in the number
-            of applications (both internal and external to Kuali) integrating with the Kuali Rice
-            middleware platform, the ability to provide for compatibility across different versions
-            of Kuali Rice has risen to forefront within the community as a critical need. The end
-            result is intended to be a platform on which institutions can build applications without
-            worrying about major forced upgrade paths for all integrated applications whenever they
-            deploy a new release of Kuali Rice.</para>
+            of applications (both internal and external to Kuali) that are integrating with the
+            Kuali Rice middleware platform, the ability to provide for compatibility across
+            different versions of Kuali Rice has risen to forefront within the community as a
+            critical need. The end result is intended to be a platform on which institutions can
+            build applications without worrying about major forced upgrade paths for all integrated
+            applications whenever they deploy a new release of Kuali Rice.</para>
         <para>Another major effort that was undertaken in support of compatibility work was an
             effort to improve the modularity of the various modules of Kuali Rice. In version 1.0.x
             of Rice, a high degree of coupling was present in numerous places. Work was done as part
@@ -52,7 +51,7 @@
             meant to provide the next generation of application development capabilities to those
             who are building applications based on Kuali software. KRAD provides a platform that can
             be utilized to build enterprise applications in a way that provides a more rich and
-            flexable user experience than could be provided with the existing Kuali Nervous System
+            flexible user experience than could be provided with the existing Kuali Nervous System
             (KNS). In fact, KRAD is intended to be the eventual replacement for the KNS which is the
             platform upon which much of the existing Kuali application software has been written.
             Note, however, that KNS is not being removed as of Rice 2.0. Work will continue on KRAD
@@ -119,8 +118,8 @@
                         and XAPool.</simpara>
                 </listitem>
                 <listitem>
-                    <simpara>Many of the Kuali Rice library dependencies were updated to the latest
-                        versions of those libraries.</simpara>
+                    <simpara>Many of the Kuali Rice library dependencies have been
+                        updated.</simpara>
                 </listitem>
                 </itemizedlist>
         </sect2>
@@ -142,8 +141,8 @@
             <para>Formal documentation for this release is under review. Other than KRMS and KRAD
                 Chapters, the documentation found at at <link
                     xlink:href="http://kuali.org/rice/docs/${project.version}"
-                    >http://kuali.org/rice/docs/${project.version}</link> has not been updated for
-                Rice 2.0.</para>
+                    >http://kuali.org/rice/docs/${project.version}</link> has not yet been updated
+                for Rice 2.0.</para>
         </sect2>
         <sect2>
             <title>Contact</title>

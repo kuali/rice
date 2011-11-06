@@ -96,6 +96,10 @@
                     <simpara>Numerious improvements to the design and documentation of Kuali Rice
                         apis.</simpara>
                 </listitem>
+                <listitem>
+                    <simpara>Integration of an out-of-the-box LDAP connector for Kuali Identity
+                        Management.</simpara>
+                </listitem>
                     <listitem>
                     <simpara>Introduction of the Kuali Rules Management System (KRMS) module for
                         creation and execution of business rules.</simpara>
@@ -108,6 +112,10 @@
                     <simpara>Introduction of the  Kuali Rapid Application Development (KRAD) module,
                         the next revision of the KNS which includes rich UI features and is based on
                         Spring MVC instead of Struts.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Ability to configure <link xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link> as a JTA alternative to JOTM
+                        and XAPool.</simpara>
                 </listitem>
                 <listitem>
                     <simpara>Many of the Kuali Rice library dependencies were updated to the latest
@@ -356,9 +364,13 @@
                         down in the future.</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">Caching</emphasis> - There is still some work to
-                        do on the new caching layer and that will be cleaned up during
-                        beta.</para>
+                    <para><emphasis role="bold">Caching</emphasis> - There is still some work to do
+                        on the new caching layer and that will be cleaned up during beta.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">KEN and KCB services</emphasis> - these services
+                        have not yet been fully refactored to SOAP versions conforming to Rice
+                        compatibility requirements</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Documentation</emphasis> is in a rudimentary
@@ -469,8 +481,8 @@
     </sect1>
         <sect1 xml:id="bug-fix" xreflabel="Bug Fix">
             <title>Jiras</title>
-        <para>There were over 750 Jira issues addressed in Rice 2.0. Below are links to Jira filters
-            for the items addressed.</para>
+        <para>There were nearly 800 Jira issues addressed in Rice 2.0. Below are links to Jira
+            filters for the items addressed.</para>
         <para>
             <itemizedlist>
                 <listitem>

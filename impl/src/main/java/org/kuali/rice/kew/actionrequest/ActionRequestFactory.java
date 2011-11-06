@@ -42,6 +42,7 @@ import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.workgroup.GroupId;
+import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -461,29 +462,29 @@ public class ActionRequestFactory {
     	}
     }
 
-    private String generateRoleResponsibilityDelegateAnnotation(DelegateType delegate, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
+    private String generateRoleResponsibilityDelegateAnnotation(DelegateMember member, boolean isPrincipal, boolean isGroup, ActionRequestValue parentRequest) {
     	StringBuffer annotation = new StringBuffer( "Delegation of: " );
     	annotation.append( parentRequest.getAnnotation() );
     	annotation.append( " to " );
     	if (isPrincipal) {
     		annotation.append( "principal " );
-    		Principal principal = getIdentityService().getPrincipal( delegate.getDelegationId() );
+    		Principal principal = getIdentityService().getPrincipal(member.getMemberId());
     		if ( principal != null ) {
     			annotation.append( principal.getPrincipalName() );
     		} else {
-    			annotation.append( delegate.getDelegationId() );
+    			annotation.append( member.getMemberId() );
     		}
     	} else if (isGroup) {
     		annotation.append( "group " );
-    		Group group = getGroupService().getGroup( delegate.getDelegationId() );
+    		Group group = getGroupService().getGroup( member.getMemberId() );
     		if ( group != null ) {
     			annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getName() );
     		} else {
-    			annotation.append( delegate.getDelegationId() );
+    			annotation.append( member.getMemberId() );
     		}
     	} else {
     		annotation.append( "?????? '" );
-			annotation.append( delegate.getDelegationId() );
+			annotation.append( member.getMemberId() );
     		annotation.append( "'" );
     	}
     	return annotation.toString();
@@ -614,20 +615,21 @@ public class ActionRequestFactory {
 
      private void generateKimRoleDelegationRequests(List<DelegateType> delegates, ActionRequestValue parentRequest) {
     	for (DelegateType delegate : delegates) {
-    		Recipient recipient;
-            // FIXME: KULRICE-5827 delegation type is Primary/Secondary, not a membership type...?
-    		boolean isPrincipal = MemberType.PRINCIPAL.equals(delegate.getDelegationType());
-            boolean isGroup = MemberType.GROUP.equals(delegate.getDelegationType());
-    		if (isPrincipal) {
-    			recipient = new KimPrincipalRecipient(delegate.getDelegationId());
-    		} else if (isGroup) {
-    			recipient = new KimGroupRecipient(delegate.getDelegationId());
-    		} else {
-    			throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + delegate.getDelegationType() + "'");
-    		}
-    		String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(delegate, isPrincipal, isGroup, parentRequest);
-    		addDelegationRequest(parentRequest, recipient, delegate.getDelegationId(), parentRequest.getForceAction(), delegate.getDelegationType(), delegationAnnotation, null);
-    	}
+            for (DelegateMember member : delegate.getMembers()) {
+    		    Recipient recipient;
+    		    boolean isPrincipal = MemberType.PRINCIPAL.equals(member.getType());
+                boolean isGroup = MemberType.GROUP.equals(member.getType());
+    		    if (isPrincipal) {
+    			    recipient = new KimPrincipalRecipient(member.getMemberId());
+    		    } else if (isGroup) {
+    			    recipient = new KimGroupRecipient(member.getMemberId());
+    		    } else {
+    			    throw new RiceRuntimeException("Invalid DelegateInfo memberTypeCode encountered, was '" + member.getType() + "'");
+    		    }
+    		    String delegationAnnotation = generateRoleResponsibilityDelegateAnnotation(member, isPrincipal, isGroup, parentRequest);
+    		    addDelegationRequest(parentRequest, recipient, delegate.getDelegationId(), parentRequest.getForceAction(), delegate.getDelegationType(), delegationAnnotation, null);
+    	    }
+        }
     }
 
     //return true if requestGraph (root) is in this requests' parents

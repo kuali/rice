@@ -209,7 +209,9 @@ public interface RoleService {
 
     /**
      * Get all the role members (groups and principals) associated with the given list of roles
-     * where their role membership/assignment matches the given qualification.
+     * where their role membership/assignment matches the given qualification.  The list of RoleMemberships returned
+     * will only contain group and principal members.  Any nested role members will be resolved and flattened into
+     * the principals and groups that are members of that nested role (assuming qualifications match).
      *
      * The return object will have each membership relationship along with the delegations
      *

@@ -175,8 +175,8 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
     @SuppressWarnings("unchecked")
     public Map<String, DelegateTypeBo> getDelegationImplMapFromRoleIds(Collection<String> roleIds) {
-        HashMap<String, DelegateTypeBo> results = new HashMap<String, DelegateTypeBo>();
-        if (roleIds != null && !roleIds.isEmpty()) {
+        Map<String, DelegateTypeBo> results = new HashMap<String, DelegateTypeBo>();
+        if (CollectionUtils.isNotEmpty(roleIds)) {
             Criteria c = new Criteria();
             c.addIn(KIMPropertyConstants.Delegation.ROLE_ID, roleIds);
             c.addEqualTo(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE);

@@ -584,7 +584,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         // BC of the way the jpa is handled we have to create the delagate, then the members
         String delgMemberId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_DLGN_MBR_ID_S");
         DelegateMemberBo user1RoleDelegate = new DelegateMemberBo();
-        user1RoleDelegate.setRoleMemberId(delgMemberId);
+        user1RoleDelegate.setDelegationMemberId(delgMemberId);
         // This is the user the delegation requests should be sent to.
         Principal kPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("ewestfal");
         assertNotNull(kPrincipal);
@@ -719,25 +719,22 @@ public class RoleRouteModuleTest extends KEWTestCase {
         String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
 
         // now our fancy new delegate should have an action request
-        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(ewestfalPrincipalId, document.getDocumentId());
         assertTrue("ewestfal should be able to approve", document.isApprovalRequested());
 
-        // let's look at the action requests
+        // let's look at the action requests, there should be 3 root requests, each one should have a delegation to ewestfal
         List<ActionRequest> actionRequests = document.getRootActionRequests();
+        assertEquals(3, actionRequests.size());
 
-        boolean ewestfalHasRequest = false;
-        boolean ewestfalHasDelegateRequest = false;
         for (ActionRequest actionRequest : actionRequests) {
-            if (ewestfalPrincipalId.equals(actionRequest.getPrincipalId())) {
-                ewestfalHasRequest = true;
-                if (actionRequest.getParentActionRequestId() != null) {
-                    ewestfalHasDelegateRequest = true;
-                    assertEquals("Delegation type should been PRIMARY", DelegationType.PRIMARY, actionRequest.getDelegationType());
-                }
-            }
+            // none of the root requests should be to ewestfal
+            assertFalse(ewestfalPrincipalId.equals(actionRequest.getPrincipalId()));
+            // but all of the delegate requests should!
+            assertEquals(1, actionRequest.getChildRequests().size());
+            ActionRequest delegateRequest = actionRequest.getChildRequests().get(0);
+            assertEquals(ewestfalPrincipalId, delegateRequest.getPrincipalId());
+            assertEquals("Delegation type should been PRIMARY", DelegationType.PRIMARY, delegateRequest.getDelegationType());
         }
-        assertTrue("ewestfal should have had a request", ewestfalHasRequest);
-        assertTrue("ewestfal should have had a delegate request", ewestfalHasDelegateRequest);
     }
 
     @Test

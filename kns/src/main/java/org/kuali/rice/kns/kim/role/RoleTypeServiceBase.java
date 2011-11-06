@@ -82,7 +82,8 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 * Subclasses which are application role types should override this method.
 	 *
 	 */
-	protected List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
+    @Override
+	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was null or blank");
@@ -196,14 +197,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 
         return Collections.unmodifiableMap(new HashMap<String, String>(qualification));
 	}
-	
-	/**
-	 * Base implementation: no sorting.  Just returns the input list.
-	 */
-	protected List<RoleMembership> sortRoleMembers(List<RoleMembership> roleMembers) {
-		return Collections.unmodifiableList(new ArrayList<RoleMembership>(roleMembers));
-	}
-	
+		
 	/**
 	 * Performs a simple check that the qualifier on the delegation matches the qualification.
 	 * Extra qualification attributes are ignored.

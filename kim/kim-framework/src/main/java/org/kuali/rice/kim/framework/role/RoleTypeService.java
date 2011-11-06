@@ -131,7 +131,18 @@ public interface RoleTypeService extends KimTypeService {
                                 @WebParam(name = "qualification")
                                 @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                 Map<String, String> qualification ) throws RiceIllegalArgumentException;
-    
+
+    @WebMethod(operationName = "getRoleMembersFromApplicationRole")
+    @XmlElementWrapper(name = "roleMemberships", required = true)
+    @XmlElement(name = "roleMembership", required = false)
+    @WebResult(name = "roleMemberships")
+    List<RoleMembership> getRoleMembersFromApplicationRole(
+            @WebParam(name = "namespaceCode") String namespaceCode,
+            @WebParam(name = "roleName") String roleName,
+            @WebParam(name = "qualification")
+            @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> qualification
+    ) throws RiceIllegalArgumentException;
+
     /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
      *

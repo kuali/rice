@@ -168,10 +168,10 @@
                 standalone server (which hosts all of the Kuali Rice services) is upgraded to a new
                 version, that should not force any applications that integrate with those services
                 to also upgrade (unless the server has been upgraded to a new "major" version such
-                as Rice 3.0, 4.0, etc.).  It should be able continue to be able to interoperate with
-                the new set of services without having to pull in new Kuali Rice client libraries or
-                (in the case of manual web-service integration) it should not have to modify the way
-                in which it invokes and handles remote service calls.</para>
+                as Rice 3.0, 4.0, etc.).  It should be able to continue to interoperate with the new
+                set of services without having to pull in new Kuali Rice client libraries or (in the
+                case of manual web-service integration) it should not have to modify the way in
+                which it invokes and handles remote service calls.</para>
             <para><inlinemediaobject>
                     <imageobject>
                         <imagedata fileref="../images/ReleaseCycle1.png"/>

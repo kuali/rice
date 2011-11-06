@@ -20,15 +20,15 @@
     <info>
         <title>Kuali Rice ${project.version} Release Notes</title>
         <edition>${project.version}</edition>
-        <pubdate>${reldate}</pubdate>
+        <pubdate>Released: ${timestamp}</pubdate>
         <releaseinfo>This document contains a cumulative list of work accomplished between versions
-            ${previous.version} and ${project.version}. It also contains the steps necessary in
-            upgrading from release ${previous.version} to ${project.version} </releaseinfo>
+            ${previousVersion} and ${project.version}. It also contains the steps necessary in
+            upgrading from release ${previousVersion} to ${project.version} </releaseinfo>
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
         <title>Overview</title>
         <para>This Release Notes documentation includes information on the list of changes between
-            Rice ${previous.version} (released ${previous.reldate}) and Rice ${project.version}.  </para>
+            Rice ${previousVersion} and Rice ${project.version}. </para>
         <para>&lt;TODO: motivation for 2.0 goes here></para>
         <itemizedlist>
             <title>Highlights of this release include:</title>
@@ -105,11 +105,15 @@
         </sect2>
         <sect2>
             <title>Documentation</title>
+            <para>JavaDocs can be found at <link xlink:href="http://kuali.org/rice/api/${project.version}"
+                >http://kuali.org/rice/api/${project.version}</link></para>
             <para>For the beta test, we have a <link xlink:href="https://wiki.kuali.org/x/xSaREg"
                     >wiki space to collect and maintain for beta testers</link>.</para>
-            <para>Formal documentation for this release can be found at at <link
+            <para>Formal documentation for this release is under review. Other than KRMS and KRAD
+                Chapters, the documentation found at at <link
                     xlink:href="http://kuali.org/rice/docs/${project.version}"
-                    >http://kuali.org/rice/docs/${project.version}</link>.</para>
+                    >http://kuali.org/rice/docs/${project.version}</link> has not been updated for
+                Rice 2.0.</para>
         </sect2>
         <sect2>
             <title>Contact</title>
@@ -175,14 +179,9 @@
         </sect2>
         <sect2>
             <title>New Modules: KRMS and KRAD</title>
-            <para>View the following analysis pages for information on KRMS and KRAD:<itemizedlist>
-                    <listitem>
-                        <para><link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
-                            Analysis</link></para>
-                    </listitem>
-                </itemizedlist>
-                <title>Kuali Rapid Application Development Framework</title> KRAD (Kuali Rapid
-                Application Development) is a framework that eases the development of enterprise web
+            <sect3>   
+                <title>Kuali Rapid Application Development Framework (KRAD)</title> 
+                <para>KRAD (Kuali Rapid Application Development) is a framework that eases the development of enterprise web
                 applications by providing reusable solutions and tooling that enable developers to
                 build in a rapid and agile fashion. KRAD is a complete framework for web development
                 that provides infrastructure in all major areas of an application (client, business,
@@ -191,36 +190,43 @@
                 development frameworks. It expands on the ability to rapidly create user interfaces
                 with XML while providing more flexibility with layouts and user experience. In
                 addition, KRAD allows for the creation of modern, rich UIs using the jQuery and
-                Fluid frameworks. <para><emphasis role="bold">How does KRAD improve on the KNS?
-                    </emphasis> See <link
+                Fluid frameworks. </para>
+               <para><emphasis role="bold">How does KRAD improve on the KNS?</emphasis> See <link
                         xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf"
-                        >Benefits of KRAD</link></para> To learn more about KRAD, please visit the
-                following pages:<itemizedlist>
-                    <listitem>
-                        <para><link
-                                xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell"
-                                >KRAD in a nutshell</link></para>
-                    </listitem>
-                    <listitem>
-                        <para><link
-                                xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views"
-                                >UIF Architecture</link></para>
-                    </listitem>
-                    <listitem>
-                        <para><link
-                                xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases"
-                                >View Tutorial</link></para>
-                    </listitem>
-                    <listitem>
-                        <para><link
-                                xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial"
-                                >Creating a component</link></para>
-                    </listitem>
-                </itemizedlist> In addition, see various analysis pages here (Note: some of the
+                        >Benefits of KRAD</link>. </para>
+                <para>To learn more about KRAD, please visit the following pages:<itemizedlist>
+                        <listitem>
+                            <para><link
+                                    xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell"
+                                    >KRAD in a nutshell</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link
+                                    xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views"
+                                    >UIF Architecture</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link
+                                    xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases"
+                                    >View Tutorial</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link
+                                    xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial"
+                                    >Creating a component</link></para>
+                        </listitem>
+                    </itemizedlist></para>
+              <para>In addition, see various analysis pages here (Note: some of the
                 information might be incomplete or out of date): <link
                     xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis"
                     >KRAD Analysis</link>
-            </para>
+              </para>
+            </sect3> 
+            <sect3>
+                <title>Kuali Rules Management System (KRMS)</title>
+                <para>View the following analysis page for information on KRMS:<link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
+                      Analysis</link></para>
+            </sect3>
         </sect2>
         <sect2>
             <title>Increased Modularity</title>
@@ -241,7 +247,7 @@
                     </listitem>
                     <listitem>
                         <para>TODO Document Search Framework Changes <link
-                                xlink:href="(https://jira.kuali.org/browse/KRDOC-383"
+                                xlink:href="https://jira.kuali.org/browse/KRDOC-383"
                                 >(https://jira.kuali.org/browse/KRDOC-383</link>)</para>
                     </listitem>
                 </itemizedlist></para>

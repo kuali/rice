@@ -61,6 +61,9 @@
     <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
+    <maven.build.timestamp.format>MM-dd-yyyy</maven.build.timestamp.format>
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <previousVersion>1.0.3.3</previousVersion>
 
     <!-- must provide an explicit pattern - surefire default does not work
       b/c of non-unit test classes that are included in default expression -->

@@ -77,8 +77,8 @@
                 </listitem>
                 <listitem>
                     <simpara>Reduction in the number of places where a Kuali Rice client application
-                        will interact with the Kuali Rice standalone server database (when using
-                        integration models like embedded KEW).</simpara>
+                        will interact directly with the Kuali Rice standalone server database (when
+                        using integration models like embedded KEW).</simpara>
                 </listitem>
                 <listitem>
                     <simpara>Improvements to the Kuali Service Bus to allow it to support
@@ -86,8 +86,8 @@
                 </listitem>
                 <listitem>
                     <simpara>Introduction of a new approach to server and client-side caching use
-                        the Spring caching abstraction.  This includes a new user interface for
-                        managing caches.</simpara>
+                        the Spring caching abstraction coupled with Ehcache. This includes a new
+                        user interface for managing caches.</simpara>
                 </listitem>
                 <listitem>
                     <simpara>Breakdown of the codebase into smaller modules to increase modularity
@@ -122,10 +122,6 @@
                     <simpara>Many of the Kuali Rice library dependencies were updated to the latest
                         versions of those libraries.</simpara>
                 </listitem>
-                    <listitem>
-                        <simpara>A full feature list of Rice 2.0 can be found at &lt;insert link
-                            here>.</simpara>
-                    </listitem>
                 </itemizedlist>
         </sect2>
         <sect2>

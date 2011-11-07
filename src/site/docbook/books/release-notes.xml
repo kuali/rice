@@ -37,14 +37,14 @@
             for cross-version service compatibility moving forward. With the increase in the number
             of applications (both internal and external to Kuali) that are integrating with the
             Kuali Rice middleware platform, the ability to provide for compatibility across
-            different versions of Kuali Rice has risen to forefront within the community as a
+            different versions of Kuali Rice has risen to the forefront within the community as a
             critical need. The end result is intended to be a platform on which institutions can
             build applications without worrying about major forced upgrade paths for all integrated
             applications whenever they deploy a new release of Kuali Rice.</para>
         <para>Another major effort that was undertaken in support of compatibility work was an
-            effort to improve the modularity of the various modules of Kuali Rice. In version 1.0.x
-            of Rice, a high degree of coupling was present in numerous places. Work was done as part
-            of this release to help improve upon that situation.</para>
+            effort to improve the modularity of the various components of Kuali Rice. In version
+            1.0.x of Rice, a high degree of coupling was present in numerous places. Work was done
+            as part of this release to help improve upon that situation.</para>
         <para>In addition to the architectural efforts supporting compatibility and modularity,
             Kuali Rice 2.0 sees the introduction of two new major modules.</para>
         <para>The first of these is the Kuali Rapid Application Development (KRAD) module. KRAD is
@@ -149,12 +149,13 @@
     </sect1>
     <sect1 xml:id="major-changes" xreflabel="Major Changes">
         <title>Major Changes</title>
-        <para> As mentioned in the overview and highlights, there were many major changes that were
-            made in support of the goals of the Rice 2.0 release.  While implementing modularity and
-            version compatibility changes, there were many structural improvements and refactoring
-            changes to Rice to set a stronger foundation for future releases.  The KRMS and KRAD
-            modules brought a large amount of new functionality to the Kuali Rice platform.   These
-            next sections dive into these changes in more detail.</para>
+        <para>As mentioned in the overview and highlights, there were many major changes that were
+            made in support of the goals of the Rice 2.0 release. During the implementation of
+            modularity and version compatibility changes, there were many structural improvements
+            and refactoring changes to Rice that are intended to help set a stronger foundation for
+            future releases. Additionally, the KRMS and KRAD modules brought a large amount of new
+            functionality to the Kuali Rice platform. These next sections dive into these changes in
+            more detail.</para>
         <sect2>
             <title>Middleware Version Compatibility</title>
             <para>In Rice 2.0, we are providing what we call "middleware" or "service"

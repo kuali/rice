@@ -84,9 +84,6 @@ public class DocumentSearchTest extends KEWTestCase {
         criteria.setDateApprovedFrom(new DateTime(2004, 9, 16, 0, 0));
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setRouteNodeName("AdHoc");
-        criteria.setRouteNodeLookupLogic(RouteNodeLookupLogic.EXACTLY);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("bmcgough");
         DocumentSearchCriteria savedCriteria = docSearchService.getNamedSearchCriteria(user.getPrincipalId(), "bytitle");
         assertNotNull(savedCriteria);

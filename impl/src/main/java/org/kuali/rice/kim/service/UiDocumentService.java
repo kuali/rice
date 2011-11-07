@@ -17,8 +17,12 @@ package org.kuali.rice.kim.service;
 
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
+import org.kuali.rice.kim.api.identity.entity.Entity;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
@@ -28,6 +32,7 @@ import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityActionBo;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.springframework.cache.annotation.CacheEvict;
 
 import java.util.List;
 import java.util.Map;
@@ -45,6 +50,7 @@ public interface UiDocumentService {
 	 * 	  
 	 * @param identityManagementPersonDocument
 	 */
+    @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME, GroupMember.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
     void saveEntityPerson(IdentityManagementPersonDocument identityManagementPersonDocument);
     
     /**
@@ -77,6 +83,7 @@ public interface UiDocumentService {
 	 * 
 	 * @param identityManagementRoleDocument
 	 */
+    @CacheEvict(value={Role.Cache.NAME, RoleMember.Cache.NAME}, allEntries = true)
 	public void saveRole(IdentityManagementRoleDocument identityManagementRoleDocument);
 
 
@@ -94,6 +101,7 @@ public interface UiDocumentService {
 	 * 
 	 * @param identityManagementGroupDocument
 	 */
+    @CacheEvict(value={Group.Cache.NAME,GroupMember.Cache.NAME}, allEntries = true)
 	public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument);
 
 	public BusinessObject getMember(MemberType memberType, String memberId);

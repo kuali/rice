@@ -1172,9 +1172,6 @@ public abstract class KualiAction extends DispatchAction {
 				return true;
 			}
 		}
-		if(moduleService != null) {
-			System.out.println("BENNETT: module = " + moduleService.getModuleConfiguration().getNamespaceCode());
-		}
 		return false;
 	}
 }

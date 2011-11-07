@@ -105,15 +105,13 @@ included in this distribution, so neither Maven (nor Ant) is needed.
 Here is a partial, annotated directory structure for the binary distribution:
 
   /config  <-- files useful for starting a Rice client project from scratch
-  /database/rice-impex-client-bootstrap.jar  <-- Torque data and schema essential to
+  /db/impex/client/bootstrap  <-- Torque data and schema essential to
       getting a Rice client running  
-  /database/rice-impex-server-bootstrap.jar  <-- Torque data and schema essential to
+  /db/impex/server/bootstrap  <-- Torque data and schema essential to
       getting a Rice standalone server running
-  /database/legacy-impex-bundle  <-- the Torque-based import/export tool (Impex) that
-      Rice uses to initialize a database (in both source and binary form)
-  /database/rice-impex-client-demo.jar  <-- Torque data and schema for sample client 
+  /db/impex/client/demo  <-- Torque data and schema for sample client 
       application
-  /database/rice-impex-server-demo.jar  <-- Torque data and schema for sample server
+  /db/impex/server/demo  <-- Torque data and schema for sample server
       application
   /lib  <-- the third-party libraries Rice uses
   /licenses  <-- licenses governing the use and redistribution of third-party
@@ -138,11 +136,9 @@ Here is a partial, annotated directory structure for the server distribution:
 
   /kr-dev.war  <-- the web application archive that contains Rice
   /config  <-- files useful for starting a Rice client project from scratch
-  /database/rice-impex-server-bootstrap.jar  <-- Torque data and schema essential to
+  /db/impex/server/bootstrap  <-- Torque data and schema essential to
       getting a Rice standalone server running
-  /database/legacy-impex-bundle  <-- the Torque-based import/export tool (Impex) that
-      Rice uses to initialize a database (in both source and binary form)
-  /database/rice-impex-server-demo.jar  <-- Torque data and schema for sample server
+  /db/impex/server/demo  <-- Torque data and schema for sample server
       application
   /licenses <-- licenses governing the use and redistribution of third-party
       code or libraries used by Rice

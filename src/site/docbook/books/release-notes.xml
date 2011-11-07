@@ -582,7 +582,7 @@
                 resulted in a high level of coupling between the various "logical" modules of Rice
                 (the core, kew, kim, ksb, etc.).  Attempts were made to rectify some of these issues
                 in Kuali Rice 2.0.  Since the full vision for modularity in Kuali Rice was not in
-                scope for the 2.0 release, as much work was done in modularity as could be permitted
+                scope for the 2.0 release, as much work was done on modularity as could be permitted
                 in order help reach version compatibility goals for the release.</para>
             <para>Primarily, this included the creation of numerous "api" and "framework" modules
                 and the partitioning of Kuali Rice into various sub-project modules.  This structure
@@ -591,8 +591,11 @@
                 pursuit of it can be found at the following links:</para>
             <itemizedlist>
                 <listitem>
-                    <para><link xlink:href="https://wiki.kuali.org/x/AgDYE">Modularity
-                            Analysis</link></para>
+                    <para><link xlink:href="https://wiki.kuali.org/x/fYD8E">Modularity Use Case Analysis</link></para>
+                </listitem>
+                <listitem>
+                    <para><link xlink:href="https://wiki.kuali.org/x/SoD8E">Modularity
+                            Design</link></para>
                 </listitem>
                 <listitem>
                     <para>the running <link
@@ -603,11 +606,6 @@
                     <para><link
                             xlink:href="https://docs.google.com/a/kuali.org/document/d/1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8/edit?hl=en_US"
                             >KEW Refactoring Notes</link></para>
-                </listitem>
-                <listitem>
-                    <para>TODO Document Search Framework Changes <link
-                            xlink:href="https://jira.kuali.org/browse/KRDOC-383"
-                            >(https://jira.kuali.org/browse/KRDOC-383</link>)</para>
                 </listitem>
             </itemizedlist>
         </sect2>

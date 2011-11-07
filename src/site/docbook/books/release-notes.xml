@@ -176,7 +176,8 @@
                 perspective of major, minor, and patch releases of Kuali Rice.</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width=""/>
+                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width="100%"
+                            contentdepth="100%"/>
                     </imageobject>
                 </inlinemediaobject></para>
             <para>The type of compatibility being implemented for version 2.0 is in contrast to what

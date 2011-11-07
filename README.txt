@@ -15,8 +15,8 @@
 ====
 
 README.txt
-Kuali Rice 1.1.0
-October 29, 2010
+Kuali Rice ${project.version}
+${kuali.build.timestamp}
 
 
 Contents
@@ -52,16 +52,10 @@ Manifests by Distribution
 
 Source
 ---
-The source distribution is compiled and built using two tools: Ant and Maven,
-with the former invoking the latter. Dependencies involved in the compilation, 
-testing and running of Rice are downloaded and managed by Maven; they are listed
-in the /pom.xml file.
+The source distribution of Rice is compiled and built using Maven.
 
-To compile and build the binary and server distributions of Rice, invoke ant
-from the command-line using the dist-binary or dist-server target, respectively.
-For example:
-
->ant dist-server
+Dependencies involved in the compilation, testing and running of Rice 
+are downloaded and managed by Maven.  They are listed in the /pom.xml file.
 
 For more information about compiling and building Rice from the source
 distribution, consult the Rice documentation (http://rice.kuali.org/docs).
@@ -97,6 +91,11 @@ Here is a partial, annotated directory structure for the source distribution:
       versions of Rice
   /security  <-- SSL-related files
 
+====
+The binary and server distributions of Rice, are assembled using 
+Maven assembly descriptors
+====
+
 Binary 
 --- 
 The binary distribution of Rice contains pre-built libraries for use
@@ -106,15 +105,15 @@ included in this distribution, so neither Maven (nor Ant) is needed.
 Here is a partial, annotated directory structure for the binary distribution:
 
   /config  <-- files useful for starting a Rice client project from scratch
-  /database/bootstrap-client-dataset  <-- Torque data and schema essential to
+  /database/rice-impex-client-bootstrap.jar  <-- Torque data and schema essential to
       getting a Rice client running  
-  /database/bootstrap-server-dataset  <-- Torque data and schema essential to
+  /database/rice-impex-server-bootstrap.jar  <-- Torque data and schema essential to
       getting a Rice standalone server running
-  /database/database-impex  <-- the Torque-based import/export tool (Impex) that
+  /database/legacy-impex-bundle  <-- the Torque-based import/export tool (Impex) that
       Rice uses to initialize a database (in both source and binary form)
-  /database/demo-client-dataset  <-- Torque data and schema for sample client 
+  /database/rice-impex-client-demo.jar  <-- Torque data and schema for sample client 
       application
-  /database/demo-server-dataset  <-- Torque data and schema for sample server
+  /database/rice-impex-server-demo.jar  <-- Torque data and schema for sample server
       application
   /lib  <-- the third-party libraries Rice uses
   /licenses  <-- licenses governing the use and redistribution of third-party
@@ -139,11 +138,11 @@ Here is a partial, annotated directory structure for the server distribution:
 
   /kr-dev.war  <-- the web application archive that contains Rice
   /config  <-- files useful for starting a Rice client project from scratch
-  /database/bootstrap-server-dataset  <-- Torque data and schema essential to
+  /database/rice-impex-server-bootstrap.jar  <-- Torque data and schema essential to
       getting a Rice standalone server running
-  /database/database-impex  <-- the Torque-based import/export tool (Impex) that
+  /database/legacy-impex-bundle  <-- the Torque-based import/export tool (Impex) that
       Rice uses to initialize a database (in both source and binary form)
-  /database/demo-server-dataset  <-- Torque data and schema for sample server
+  /database/rice-impex-server-demo.jar  <-- Torque data and schema for sample server
       application
   /licenses <-- licenses governing the use and redistribution of third-party
       code or libraries used by Rice

@@ -18,6 +18,7 @@
 -->
 <chapter xml:id="UG_KEW" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEW</title>
+    <section/>
     <sect1>
         <title>Kuali Enterprise Workflow: Overview</title>
         <para>Kuali Enterprise Workflow, or KEW, is a module of Kuali Rice. KEW provides useful
@@ -219,7 +220,11 @@
                 </itemizedlist>
             </para>
         </sect2>
-    </sect1>    
+    </sect1>
+    <section>
+        <title>PeopleFlow - a new KEW feature</title>
+        <para>(more coming here)</para>
+    </section>    
     <sect1>
         <title>Actions</title>
         <sect2>

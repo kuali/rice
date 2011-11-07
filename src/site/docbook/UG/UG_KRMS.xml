@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?> 
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
 
     Copyright 2005-2011 The Kuali Foundation
@@ -19,7 +19,91 @@
 <chapter xml:id="UG_KRMS" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KRMS</title>
     <sect1>
-        <title>KRMS</title>
-        <para></para>
+        <title>Kuali Rule Management System: Overview</title>
+        <sect2>
+            <title>What is KRMS?</title>
+            <para xmlns:xlink="http://www.w3.org/1999/xlink">Kuali's Rule Management System (KRMS)
+                supports the creation, maintenance, storage and retrieval of business rules and
+                agendas (ordered sets of business rules) within business contexts (e.g., for a
+                particular department or for a particular university-wide process). </para>
+            <para xmlns:xlink="http://www.w3.org/1999/xlink">KRMS enables you to define a set of
+                rules within a particular business unit or for a particular set of applications.
+                These business rules test for certain conditions and define the set of actions that
+                result when conditions are met. KRMS enables you to call and use this logic from any
+                application, without having to re-write and manage all the rules' logic within the
+                application. </para>
+            <para>KRMS takes advantage of several of the capabilities that KRAD makes available to
+                all application developers.</para>
+        </sect2>
+        <sect2>
+            <title>KRMS features</title>
+        </sect2>
+        <sect2>
+            <title>Why use KRMS?</title>
+            <sect3>
+                <title>Example scenario 1:  Using KRMS with KEW</title>
+            </sect3>
+            <sect3>
+                <title>Example scenario 2:  Using KRMS alone, without KEW</title>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>tbd</title>
+        </sect2>
+    </sect1>
+    <sect1 xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>The KRMS User Interface</title>
+        <sect2>
+            <title>KRMS Agenda Editor</title>
+            <para>Business rules in KRMS are placed into ordered sets called "agendas". The order of
+                the rules in an agenda determines the sequencing, which rule gets evaluated first,
+                second and so on, and the agenda also enables you to include conditional branching
+                logic. </para>
+            <para>In turn, agendas are placed into "contexts". You can set up contexts ro represent
+                any categories that are relevant within your institution, for example they could be
+                document types or business processes or any other categories. In some university
+                environments, the following might be relevant contexts: Awards, Proposals, IRB
+                reviews, Course co-requisites, Course pre-requisites, Student plan evaluations, and
+                so on.   </para>
+            <para>Each defined context contains its own agendas, and each agenda contains its own
+                rules. Rules aren't shared across agendas (though you can copy/paste, they become
+                unique rule instances), and agendas aren't shared across contexts. There is no
+                context hierarchy, that is, agendas and rules can't be inherited across contexts
+                within any sort of hierarchy. </para>
+            <para>See below for a view of the Agenda Editor in KRMS.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRMS%20Agenda%20Editor%201.png" scalefit="1"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>And see below for an example of how attributes can be progressively rendered in
+                KRMS.  In this example, the type of "CampusAgendaType" requires some additional
+                attributes, that are not required by all types.  These are shown to the end user
+                only when required.  This is an example of KRAD's progressive disclosure capability: </para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRMS%20Agenda%20Editor%202.png" scalefit="1"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </sect2>
+        <sect2>
+            <title>KRMS Rules Editor</title>
+            <para>Each defined agenda in KRMS contains its own rules. Rules aren't shared across
+                agendas (though you can copy/paste, they become unique rule instances), and agendas
+                aren't shared across contexts. There is no context hierarchy, that is, agendas and
+                rules can't be inherited across contexts within any sort of hierarchy. </para>
+            <para>See below for a view of the Rules Editor in KRMS.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRMS%20Rules%20Editor%201.png" scalefit="1"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </sect2>
+    </sect1>
+    <sect1 xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>tbd </title>
+    </sect1>
+    <sect1 xmlns:xlink="http://www.w3.org/1999/xlink">
+        <title>Documents</title>
     </sect1>
 </chapter>

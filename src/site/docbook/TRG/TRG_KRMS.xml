@@ -1,3 +1,8 @@
+<<<<<<< .mine
+<?xml version='1.0' encoding='UTF-8'?>
+<chapter xml:id="TRG_KRMS" xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+=======
 <?xml version='1.0' encoding='UTF-8'?> 
 <!--
 
@@ -17,12 +22,255 @@
 
 -->
 <chapter xml:id="TRG_KRMS" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+>>>>>>> .r23980
     <title>KRMS</title>
     <sect1>
         <title>KRMS Overview</title>
         <sect2>
-            <title>What is KRMS?</title>
-            <para></para>
+            <title>What is a Rule Management System, in general?</title>
+            <para>Wikipedia defines a business rule management system, in general, as follows: "a
+                    <link xlink:href="http://en.wikipedia.org/wiki/Computer_software"
+                    >software</link> system used to define, deploy, execute, monitor and maintain
+                the variety and complexity of decision logic that is used by operational systems
+                within an organization or enterprise. This logic, also referred to as <link
+                    xlink:href="http://en.wikipedia.org/wiki/Business_rule">business rules</link>,
+                includes policies, requirements, and conditional statements that are used to
+                determine the tactical actions that take place in applications and systems." </para>
+            <para>A key aspect of a rules management system is that it enables rules to be defined
+                and maintained separately from application code. This modularity has the potential
+                to reduce application maintenance costs, enable increased automation and application
+                flexibility, and to enable business analysts and business process experts who are
+                not developers and who reside outside of the IT organizations in the business
+                departments themselves, to be more directly involved in creating and managing their
+                rules. </para>
+            <para>A rules management system in general includes a repository of decision logic and a
+                rules engine that can be executed by applications in a run-time environment. Again
+                from wikipedia: "... provides the ability to: register, define, classify, and manage
+                all the rules, verify consistency of rules definitions (”Gold-level customers are
+                eligible for free shipping when order quantity &gt; 10” and “maximum order quantity
+                for Silver-level customers = 15” ), define the relationships between different
+                rules, and relate some of these rules to IT applications that are affected or need
+                to enforce one or more of the rules."</para>
+        </sect2>
+        <sect2>
+            <title>What is Kuali's Rule Management System (KRMS), in particular?</title>
+            <para>(Work in progress - Start with definition of how KRMS adds to Rice in the area of
+                business rules.) </para>
+            <para>Kuali's Rule Management System (KRMS) supports the creation, maintenance, storage
+                and retrieval of business rules and agendas (ordered sets of business rules) within
+                business contexts (e.g., for a particular department or for a particular
+                university-wide process). </para>
+            <para>KRMS enables you to define a set of rules within a particular business unit or for
+                a particular set of applications.  These business rules test for certain conditions
+                and define the set of actions that result when conditions are met.  KRMS enables you
+                to call and use this logic from any application, without having to re-write and
+                manage all the rules' logic within the application.  </para>
+            <para>Integration with organizational hierarchies and structures can be accomplished
+                today using KEW for routing and approval.  But before KRMS, other business logic
+                such as "route to this set of people if the dollar amount is less than x, or to this
+                other set if the dollar amount is over that" was the responsibility of the
+                applications themselves.  KRMS now offers a way to manage this type of business
+                logic independently and once, using the logic across applications.</para>
+            <para>Because KRMS is a general-purpose business rules engine, you can use it for many
+                things, for example, you can define a rule to specify that when an account is
+                closed, a continuation account must be specified.  You can also define rules to
+                manage your organizational hierarchies and internal structures.  You can define
+                compound rule logic, for example, "Must meet":  <itemizedlist>
+                    <listitem>
+                        <para>P1 - 12 credits of FirstYearScience (CLU set)</para>
+                        <para> AND</para>
+                    </listitem>
+                    <listitem>
+                        <para>P2 - Completed CALC101 with grade &gt;= B+</para>
+                        <para> AND</para>
+                    </listitem>
+                    <listitem>
+                        <para>p3 - Average of B+ on last 12 credits</para>
+                    </listitem>
+                </itemizedlist>Before KRMS, and using only KEW, these types of business rules were
+                the responsibility of each application to manage.</para>
+            <para>(Maybe move the paragraphs below into an new section of the KEW document for
+                PeopleFlow)</para>
+            <para>Calling a KRMS set of rules (an agenda) from your application can result in a call
+                to a full-blown KEW workflow or to a lighter-weight PeopleFlow, which is a new
+                feature in KEW in Rice 2.0, or to any other action you define in KRMS.  PeopleFlow
+                gives you a new type of request activation strategy called "priority-parallel" to
+                activate requests generated from a PeopleFlow in the appropriate order.
+                Essentially, it's like a mini people-based workflow that doesn't require you to
+                specify a KEW node in the document type for each individual who might need to
+                approve or be notified.   You can define "Stops" in a PeopleFlow, where everything
+                in the same stop proceeds in parallel, but all must be done within the stop before
+                proceeding to the next stop. </para>
+            <para>The same PeopleFlow that defines a routing order among a set of persons, groups or
+                roles can be called by KRMS rules, with the KRMS rules defining which type of action
+                request to pass to the PeopleFlow (for example, an "approval" or a "notification"
+                action).     </para>
+            <para>You can define a PeopleFlow (simple workflow) via a simple maintenance document.
+                You can call/execute a PeopleFlow from a KEW workflow node directly, or you can
+                invoke the KRMS rule engine from an application and any PeopleFlows that get
+                selected during rule execution will be called. In this way, you can integrate
+                business rules across your applications and workflows. </para>
+            <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept in Coeus. For all
+                intents and purposes it's a prioritized list of people to send action requests to.
+                You can use a new type of request activitation strategy called "priority-parallel"
+                to activate requests generated from a PeopleFlow in the appropriate order, so
+                essentially it's like a mini people-based workflow that doesn't require you to
+                specify a KEW node in the document type for each individual who might need to
+                approve.</para>
+            <para> </para>
+        </sect2>
+        <sect2>
+            <title>What problems or functions does KRMS solve?</title>
+            <para>(Work in progress - Scenario for using KRMS in addition to KEW, scenario for using
+                KRMS without KEW.  When to use KEW without KRMS, when to embed logic in your
+                applications instead of using a rules engine)  ) </para>
+            <para> </para>
+        </sect2>
+        <sect2>
+            <title>What problems does KRMS not address?</title>
+            <para>(Work in progress)</para>
+            <para/>
+        </sect2>
+        <sect2>
+            <title>With which types of applications can KRMS integrate?</title>
+            <para>(Work in progress) Include integration with KEW and KIM at a high level (&amp;
+                with KEN &amp; KOM?) And clarify how any application can include KRMS.</para>
+            <para/>
+        </sect2>
+        <sect2>
+            <title>Can I use KRMS without building an entire application?</title>
+            <para>Work in progress) </para>
+            <para/>
+            <para>KRMS Overview</para>
+            <para/>
         </sect2>
     </sect1>
+    <sect1>
+        <title>KRMS Constructs</title>
+        <sect2>
+            <title>Contexts, agendas, rules and propositions</title>
+            <para>Business rules in KRMS are placed into ordered sets called "agendas".  The order
+                of the rules in an agenda determines the sequencing, which rule gets evaluated
+                first, second and so on, and the agenda also enables you to include conditional
+                branching logic.  In turn, agendas are placed into "contexts".  </para>
+            <para>You can set up contexts ro represent any categories that are relevant within your
+                institution, for example they could be document types or business processes or any
+                other categories.  In some university environments, the following might be relevant
+                contexts:  Awards, Proposals, IRB reviews, Course co-requisites, Course
+                pre-requisites, Student plan evaluations, and so on.</para>
+            <para>Each defined context contains its own agendas, and each agenda contains its own
+                rules.  Rules aren't shared across agendas (though you can copy/paste, they become
+                unique rule instances), and agendas aren't shared across contexts.   There is no
+                context hierarchy, that is, agendas and rules can't be inherited across contexts
+                within any sort of hierarchy. </para>
+            <para>Rules consist of propositions, and KRMS supports the following proposition types:
+                (more coming here)</para>
+            <para> </para>
+        </sect2>
+        <sect2>
+            <title>Namespaces, types (and any other unique KRMS constructs?)</title>
+        </sect2>
+        <sect2>
+            <title>Data model (see reference section for more details)</title>
+        </sect2>
+        <sect2>
+            <title/>
+        </sect2>
+        <sect2>
+            <title>(Other?)</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KRMS Administration Guide</title>
+        <para>(work in progress - content tdb.  The below preface is patterned after the KEW TRG -
+            what will admins need to administer for KRMS?  I've put in some placeholder
+            content-topics for a TOC skeleton.)</para>
+        <para>This guide provides information on administering a Kuali Rules Management System
+            (KRMS) installation. Out of the box, KRMS comes with a default setup that works well in
+            development and test environments. However, when moving to a production environment,
+            this setup requires adjustments. This document discusses basic administration as well as
+            instructions for working with some of KRMS’ administration tools.</para>
+        <sect2>
+            <title>Initial Set up tasks</title>
+            <sect3>
+                <title>What do I have to install so that people can use KRMS?</title>
+            </sect3>
+            <sect3>
+                <title>What do I have to create or customize so that people can work with business
+                    contexts, agendas, and rules?</title>
+            </sect3>
+            <sect3>
+                <title>Do I have to define permissions or approval processes so that people can
+                    create and maintain KRMS agendas and rules?</title>
+            </sect3>
+            <sect3>
+                <title>(Other? Anything we have to do to setup integration/interaction with KEW?
+                    KIM? KEN? KOM? PeopleFlow? with other service bus?)</title>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Ongoing Maintenance tasks</title>
+        </sect2>
+        <sect2>
+            <title>Troubleshooting and diagnostics</title>
+            <para/>
+        </sect2>
+        <sect2>
+            <title> Optimizing performance</title>
+            <para>Content TBD.  For example, would logging alternatives affect performance?  Are
+                there selectable levels of KRMS execution logging?  Etc., etc..</para>
+        </sect2>
+        <sect2>
+            <title>Other?</title>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>KRMS Developer tasks</title>
+        <para>(work in progress - content tdb.  I've put in some placeholder content-topics for a
+            TOC skeleton.)</para>
+        <para>KRMS takes advantage of several of the capabilities that KRAD makes available to all
+            application developers.  This section provides information on developing KRMS constructs
+            and integrating within applications and/or workflows. It assumes you or someone else has
+            already done the initial set up tasks described in the KRMS Administration Guide section
+            above.</para>
+        <sect2>
+            <title>Defining KRMS' Contexts, Agendas, and Rules</title>
+        </sect2>
+        <sect2>
+            <title>How do I integrate KRMS into an application?</title>
+            <para>The following shows how to find and call a KRMS agenda (an ordered set of rules,
+                defined for a particular business context) from within an application:  (put the xml
+                code example information here).</para>
+        </sect2>
+        <sect2>
+            <title>How do I integrate KRMS into a KEW workflow? </title>
+            <para>The following shows how to find and call a KRMS agenda (an ordered set of rules,
+                defined for a particular business context) from a KEW node:  (put the xml code
+                example information here).</para>
+        </sect2>
+        <sect2>
+            <title>Is there anything I should be aware of to optimize performance?</title>
+        </sect2>
+        <sect2>
+            <title>Debugging &amp; deployment - FAQs</title>
+        </sect2>
+    </sect1>
+    <section>
+        <title>KRMS reference information</title>
+        <section>
+            <title>KRMS Data model</title>
+        </section>
+        <section>
+            <title>KRMS Architecture diagrams</title>
+        </section>
+        <section>
+            <title>KRMS API</title>
+        </section>
+        <section>
+            <title>KRMS Execution log</title>
+        </section>
+        <section>
+            <title>(Other?)</title>
+        </section>
+    </section>
 </chapter>

@@ -18,6 +18,7 @@
 -->
 <chapter xml:id="TRG_KEW" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KEW</title>
+    <section/>
     <sect1>
         <title>What is Kuali Enterprise Workflow?</title>
         <sect2>
@@ -5272,6 +5273,34 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </sect3>
         </sect2>
     </sect1>
+    <section>
+        <title>PeopleFlow - a new feature in KEW</title>
+        <para>Calling a KRMS set of rules (an agenda) from your application can result in a call to
+            a full-blown KEW workflow or to a lighter-weight PeopleFlow, which is a new feature in
+            KEW in Rice 2.0, or to any other action you define in KRMS. </para>
+        <para>PeopleFlow gives you a new type of request activation strategy called
+            "priority-parallel" to activate requests generated from a PeopleFlow in the appropriate
+            order.  Essentially, it's like a mini people-based workflow that doesn't require you to
+            specify a KEW node in the document type for each individual who might need to approve or
+            be notified. You can define "Stops" in a PeopleFlow, where everything in the same stop
+            proceeds in parallel, but all must be done within the stop before proceeding to the next
+            stop. </para>
+        <para>The same PeopleFlow that defines a routing order among a set of persons, groups or
+            roles can be called by KRMS rules, with the KRMS rules defining which type of action
+            request to pass to the PeopleFlow (for example, an "approval" or a "notification"
+            action). </para>
+        <para>You can define a PeopleFlow (simple workflow) via a simple maintenance document. You
+            can call/execute a PeopleFlow from a KEW workflow node directly, or you can invoke the
+            KRMS rule engine from an application and any PeopleFlows that get selected during rule
+            execution will be called. In this way, you can integrate business rules across your
+            applications and workflows. </para>
+        <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept in Coeus. For all
+            intents and purposes it's a prioritized list of people to send action requests to. You
+            can use a new type of request activitation strategy called "priority-parallel" to
+            activate requests generated from a PeopleFlow in the appropriate order, so essentially
+            it's like a mini people-based workflow that doesn't require you to specify a KEW node in
+            the document type for each individual who might need to approve.</para>
+    </section>
     <sect1>
         <title>KEW Routing Components and Configuration Guide</title>
         <para>KEW has several components that you can use to configure routing. Typically a single

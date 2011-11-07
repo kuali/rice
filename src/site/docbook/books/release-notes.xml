@@ -406,18 +406,64 @@
                     package <code>org.kuali.rice.core.api.criteria</code>.</para>
             </sect3>
             <sect3>
-                <title>Kuali Enterprise Workflow</title>
-                <para>
-                    <itemizedlist>
+                <title>Kuali Enterprise Workflow Services</title>
+                <para>The Kuali Enterprise Workflow services have been refactored for version
+                    compatibility in a similar fashion to the rest of the services in Rice.  As part
+                    of this effort, a bit of a rearchitecture of the service layer and APIs for
+                    workflow were performed as well.  The major changes made to the workflow
+                    services and apis is as follows:<itemizedlist>
                         <listitem>
-                            <para>See <link xlink:href="https://wiki.kuali.org/x/fwuREg"
-                                    >https://wiki.kuali.org/x/fwuREg</link></para>
+                            <para>The <code>WorkflowDocument</code> class is now an interface and is
+                                created using <code>WorkflowDocumentFactory.createDocument</code> or
+                                    <code>WorkflowDocumentFactory.loadDocument</code> instead of
+                                creating new instances through the <code>WorkflowDocument</code>
+                                constructor.</para>
                         </listitem>
                         <listitem>
-                            <para/>
+                            <para><code>SimpleDocumentActionsWebService</code> was combined with
+                                    <code>WorkflowDocumentActions</code> to create the new
+                                    <code>WorkflowDocumentActionsService</code> remotable
+                                service.</para>
                         </listitem>
-                    </itemizedlist>
-                </para>
+                        <listitem>
+                            <para>WorkflowUtility was removed and replaced with the following services:<itemizedlist>
+                                    <listitem>
+                                        <para><code>WorkflowDocumentService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>ActionListService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentTypeService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>NoteService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>RuleService</code></para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>The various KEW framework services were refactored to conform to
+                                service version compatibility standards.  This includes services for
+                                document search customization, action list customization, workflow
+                                notes, document security, rule validation, and workflow rule
+                                attributes.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The various KEW message queues were refactored to conform to
+                                service version compatibility standards.  This includes queues for
+                                document routing, blanket approval, immediate email reminders,
+                                searchable attribute indexing, document requeing, etc.</para>
+                        </listitem>
+                    </itemizedlist>Some rough notes with more details on the work that was done can
+                    be found here: <link xlink:href="https://wiki.kuali.org/x/fwuREg"
+                        >https://wiki.kuali.org/x/fwuREg</link></para>
+            </sect3>
+            <sect3>
+                <title>Document Search</title>
+                <para/>
             </sect3>
             <sect3>
                 <title>Caching Architecture</title>

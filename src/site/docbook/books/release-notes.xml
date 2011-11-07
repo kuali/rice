@@ -654,10 +654,17 @@
               <para>In addition, see various analysis pages here (Note: some of the
                 information might be incomplete or out of date): <link xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis">KRAD Analysis</link>
               </para>
-            </sect3> 
+            </sect3>
             <sect3>
-                <title>Kuali Rules Management System (KRMS)</title>
-                <para>View the following analysis page for information on KRMS:<link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
+                <title>Kuali Rule Management System (KRMS)</title>
+                <para>KRMS (Kuali Rule Management System) is a new module in Rice that enables the externalization of
+                  pieces of business logic (rules) from an application such that it is customizable without need for
+                  additional client programming.  Agendas containing custom business rules can be defined, edited and
+                  stored in the repository, and then executed by the application against some set of information (facts).</para>
+                <para>There is also integration between KRMS and KEW's new PeopleFlow concept that enables invocation of
+                  the rule execution engine from within a workflow.  Rules can be configured with PeopleFlow actions
+                  that specify PeopleFlows to route to or to notify.</para>
+                  <para>View the following analysis page for some additional information on KRMS:<link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
                       Analysis</link></para>
             </sect3>
         </sect2>

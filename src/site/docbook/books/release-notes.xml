@@ -125,19 +125,19 @@
         </sect2>
         <sect2>
             <title>Download</title>
-            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
+            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download/beta">http://kuali.org/rice/download/beta</link>.</para>
             <para>There are three different distributions of Rice available: source, binary and
                 server. Please read the Installation Guide for more details on each of these
                 distributions.</para>
         </sect2>
         <sect2>
             <title>Documentation</title>
-            <para>JavaDocs can be found at <link xlink:href="http://kuali.org/rice/api/${project.version}">http://kuali.org/rice/api/${project.version}</link></para>
+            <para>JavaDocs can be found at <link xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
             <para>For the beta test, we have a <link xlink:href="https://wiki.kuali.org/x/xSaREg">wiki space to collect and maintain for beta testers</link>.</para>
             <para>Formal documentation for this release is under review. Other than KRMS and KRAD
                 Chapters, the documentation found at <link
-                    xlink:href="http://kuali.org/rice/docs/${project.version}"
-                    >http://kuali.org/rice/docs/${project.version}</link> has not yet been updated
+                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html"
+                    >http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link> has not yet been updated
                 for Rice 2.0.</para>
         </sect2>
         <sect2>

@@ -25,7 +25,7 @@
     <sect1 xml:id="download" xreflabel="Download">
         <title>Download</title>
         <itemizedlist>
-            <listitem><para><link xlink:href="http://kuali.org/download">Download Kuali Rice ${project.version}</link></para></listitem>
+            <listitem><para><link xlink:href="http://kuali.org/rice/download/beta">Download Kuali Rice ${project.version}</link></para></listitem>
             <listitem><para>Maven Repository - <link xlink:href="http://nexus.kuali.org/content/groups/public/">http://nexus.kuali.org/content/groups/public/</link></para></listitem>
         </itemizedlist>        
     </sect1>
@@ -38,7 +38,7 @@
                         >HTML</link> / <link xlink:href="../pdf/release-notes.pdf">PDF</link> )</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold"><link xlink:href="../../apidocs">Javadocs</link></emphasis></para>                                     
+                    <para><emphasis role="bold"><link xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">Javadocs</link></emphasis></para>                                     
                 </listitem>
             </orderedlist>
         </para>
@@ -57,10 +57,9 @@
                         users)</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">Client Developer Guide</emphasis> (<link xlink:href="TRG.html"
-                        >HTML</link> / <link xlink:href="../pdf/TRG.pdf">PDF</link> ) - How to build client
+                    <para><emphasis role="bold">Client Developer Guide</emphasis> (HTML / PDF ) - How to build client
                         applications that take advantage of the feature programmatically (for application
-                        programmers)</para>
+                        programmers) - coming soon</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Technical Guide</emphasis> (<link xlink:href="TRG.html"

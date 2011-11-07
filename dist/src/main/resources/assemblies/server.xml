@@ -68,6 +68,18 @@
       </excludes>
     </fileSet>
 
+    <!-- 4. Impex -->
+    <fileSet>
+      <directory>${project.basedir}/../db/impex/server</directory>
+      <outputDirectory>db</outputDirectory>
+      <excludes>
+        <exclude>**/target/**</exclude>
+        <exclude>**/src/test/**</exclude>
+        <exclude>**/src/**/groovy/**</exclude>
+        <exclude>**/velocity.log</exclude>
+      </excludes>
+    </fileSet>
+
   </fileSets>
 
   <dependencySets>
@@ -83,26 +95,6 @@
           <exclude>**/META-INF/**</exclude>
         </excludes>
       </unpackOptions>
-    </dependencySet>
-    <!-- 5. Legacy Ant Impex Tool. -->
-    <dependencySet>
-      <outputDirectory>database/impex-ant-tool</outputDirectory>
-      <includes>
-        <include>org.kuali.db.impex:impex-legacy-bundle</include>
-      </includes>
-      <unpack>true</unpack>
-      <unpackOptions>
-        <excludes>
-          <exclude>**/META-INF/**</exclude>
-        </excludes>
-      </unpackOptions>
-    </dependencySet>
-    <!-- 6. Impex Data. Server only -->
-    <dependencySet>
-      <outputDirectory>database</outputDirectory>
-      <includes>
-        <include>org.kuali.rice:rice-impex-server-*</include>
-      </includes>
     </dependencySet>
   </dependencySets>
 </assembly>

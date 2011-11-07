@@ -1,18 +1,18 @@
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+  Copyright 2005-2011 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -79,10 +79,22 @@
         <exclude>**/target/**</exclude>
       </excludes>
     </fileSet>
+
+    <!-- 5. Impex -->
+    <fileSet>
+      <directory>${project.basedir}/../db</directory>
+      <outputDirectory>db</outputDirectory>
+      <excludes>
+        <exclude>**/target/**</exclude>
+        <exclude>**/src/test/**</exclude>
+        <exclude>**/src/**/groovy/**</exclude>
+        <exclude>**/velocity.log</exclude>
+      </excludes>
+    </fileSet>
   </fileSets>
 
   <dependencySets>
-    <!-- 5. Unpack rice-license-bundle-1.0-legacy.jar into /licenses -->
+    <!-- 6. Unpack rice-license-bundle-1.0-legacy.jar into /licenses -->
     <dependencySet>
       <outputDirectory>licenses</outputDirectory>
       <includes>
@@ -94,26 +106,6 @@
           <exclude>**/META-INF/**</exclude>
         </excludes>
       </unpackOptions>
-    </dependencySet>
-    <!-- 6. Legacy Ant Impex Tool. -->
-    <dependencySet>
-      <outputDirectory>database/impex-ant-tool</outputDirectory>
-      <includes>
-        <include>org.kuali.db.impex:impex-legacy-bundle</include>
-      </includes>
-      <unpack>true</unpack>
-      <unpackOptions>
-        <excludes>
-          <exclude>**/META-INF/**</exclude>
-        </excludes>
-      </unpackOptions>
-    </dependencySet>
-    <!-- 7. Impex Data. All datasets -->
-    <dependencySet>
-      <outputDirectory>database</outputDirectory>
-      <includes>
-        <include>org.kuali.rice:rice-impex-*</include>
-      </includes>
     </dependencySet>
   </dependencySets>
 </assembly>

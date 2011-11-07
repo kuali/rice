@@ -125,23 +125,17 @@
         </sect2>
         <sect2>
             <title>Download</title>
-            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link
-                    xlink:href="http://kuali.org/rice/download"
-                    >http://kuali.org/rice/download</link>.</para>
+            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
             <para>There are three differient distributions of Rice available: source, binary and
                 server. Please read the Installation Guide for more details on each of these
                 distributions.</para>
         </sect2>
         <sect2>
             <title>Documentation</title>
-            <para>JavaDocs can be found at <link xlink:href="http://kuali.org/rice/api/${project.version}"
-                >http://kuali.org/rice/api/${project.version}</link></para>
-            <para>For the beta test, we have a <link xlink:href="https://wiki.kuali.org/x/xSaREg"
-                    >wiki space to collect and maintain for beta testers</link>.</para>
+            <para>JavaDocs can be found at <link xlink:href="http://kuali.org/rice/api/${project.version}">http://kuali.org/rice/api/${project.version}</link></para>
+            <para>For the beta test, we have a <link xlink:href="https://wiki.kuali.org/x/xSaREg">wiki space to collect and maintain for beta testers</link>.</para>
             <para>Formal documentation for this release is under review. Other than KRMS and KRAD
-                Chapters, the documentation found at at <link
-                    xlink:href="http://kuali.org/rice/docs/${project.version}"
-                    >http://kuali.org/rice/docs/${project.version}</link> has not yet been updated
+                Chapters, the documentation found at at <link xlink:href="http://kuali.org/rice/docs/${project.version}">http://kuali.org/rice/docs/${project.version}</link> has not yet been updated
                 for Rice 2.0.</para>
         </sect2>
         <sect2>
@@ -176,8 +170,7 @@
                 perspective of major, minor, and patch releases of Kuali Rice.</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width="100%"
-                            contentdepth="100%"/>
+                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width="100%" contentdepth="100%"/>
                     </imageobject>
                 </inlinemediaobject></para>
             <para>The type of compatibility being implemented for version 2.0 is in contrast to what
@@ -304,8 +297,7 @@
                         </listitem>
                     </orderedlist>As can be seen from the list above, much work was done to the
                     service bus for Kuali Rice verison 2.0.  For more details, read the following
-                    page <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
-                        >https://wiki.kuali.org/x/T3dyEg</link></para>
+                    page <link xlink:href="https://wiki.kuali.org/x/T3dyEg">https://wiki.kuali.org/x/T3dyEg</link></para>
             </sect3>
             <sect3>
                 <title>Parameter Service, Namespace Service, and Component Service</title>
@@ -323,20 +315,17 @@
                     tables, instead using a service-oriented approach to interacting with these
                     different information sources.  This resulted in the creation of the following services:<itemizedlist>
                         <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.core.api.parameter.ParameterRepositoryService</emphasis>
+                            <para><emphasis role="bold">org.kuali.rice.core.api.parameter.ParameterRepositoryService</emphasis>
                                 - remote service which provides operations related to system
                                 parameters</para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
+                            <para><emphasis role="bold">org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
                                 remote service which provides oeprations related to
                                 namespaces</para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold"
-                                    >org.kuali.rice.core.api.component.ComponentService</emphasis> -
+                            <para><emphasis role="bold">org.kuali.rice.core.api.component.ComponentService</emphasis> -
                                 remote service which provides operations related to components, as
                                 well as implementing a new model for publication of "derived"
                                 components</para>
@@ -354,9 +343,7 @@
                 <para>More information about these individual services and their available
                     operations can be found in the javadocs.  Also see the following page for more
                     details on the work that was done with these services, including a description
-                    of the new model used for publication of derived components: <link
-                        xlink:href="https://wiki.kuali.org/x/tg5yEg"
-                        >https://wiki.kuali.org/x/tg5yEg</link></para>
+                    of the new model used for publication of derived components: <link xlink:href="https://wiki.kuali.org/x/tg5yEg">https://wiki.kuali.org/x/tg5yEg</link></para>
             </sect3>
             <sect3>
                 <title>RiceApplicationConfigurationService</title>
@@ -364,9 +351,7 @@
                     by all KNS applications which provided callbacks into the application from the
                     Kuali Rice standalone server.  This service was removed in Rice 2.0 for various
                     reasons.  The reasons for it's removal and information on it's effective
-                    replacements can be found on the following page: <link
-                        xlink:href="https://wiki.kuali.org/x/vA6tEg"
-                        >https://wiki.kuali.org/x/vA6tEg</link></para>
+                    replacements can be found on the following page: <link xlink:href="https://wiki.kuali.org/x/vA6tEg">https://wiki.kuali.org/x/vA6tEg</link></para>
             </sect3>
             <sect3>
                 <title>General Purpose Lookup APIs</title>
@@ -400,8 +385,7 @@
                     API that could be applied in a standard fashion across the various Rice services
                     which needed it. The following page describes more about the various
                     possibilities for implementing this as well as the solution which was chosen:
-                        <link xlink:href="https://wiki.kuali.org/x/PR9yEg"
-                        >https://wiki.kuali.org/x/PR9yEg</link>.</para>
+                        <link xlink:href="https://wiki.kuali.org/x/PR9yEg">https://wiki.kuali.org/x/PR9yEg</link>.</para>
                 <para>The implementation of this api can be found on the core-api module under the
                     package <code>org.kuali.rice.core.api.criteria</code>.</para>
             </sect3>
@@ -468,8 +452,7 @@
                                 the new KEW services that was added in Rice 2.0.</para>
                         </listitem>
                     </itemizedlist>Some rough notes with more details on the work that was done in
-                    KEW can be found here: <link xlink:href="https://wiki.kuali.org/x/fwuREg"
-                        >https://wiki.kuali.org/x/fwuREg</link></para>
+                    KEW can be found here: <link xlink:href="https://wiki.kuali.org/x/fwuREg">https://wiki.kuali.org/x/fwuREg</link></para>
             </sect3>
             <sect3>
                 <title>Document Search</title>
@@ -548,9 +531,7 @@
                         <code>org.kuali.rice.kew.framework.document.search</code> package.  All of
                     the framework apis should have fairly thorough javadocs.  Additional, some rough
                     notes on the document search work and architectural service approach for the
-                    customization handler service can be found near the bottom of this page: <link
-                        xlink:href="https://wiki.kuali.org/x/fwuREg"
-                        >https://wiki.kuali.org/x/fwuREg</link></para>
+                    customization handler service can be found near the bottom of this page: <link xlink:href="https://wiki.kuali.org/x/fwuREg">https://wiki.kuali.org/x/fwuREg</link></para>
             </sect3>
             <sect3>
                 <title>Caching Architecture</title>
@@ -570,9 +551,7 @@
                     different applications in an enterprise architecture which has been integrated
                     with Kuali Rice.</para>
                 <para>More details on the specific work that was done to rearchitect the Kuali Rice
-                    caching infrastructure can be found here: <link
-                        xlink:href="https://wiki.kuali.org/x/XgmWEg"
-                        >https://wiki.kuali.org/x/XgmWEg</link></para>
+                    caching infrastructure can be found here: <link xlink:href="https://wiki.kuali.org/x/XgmWEg">https://wiki.kuali.org/x/XgmWEg</link></para>
             </sect3>
         </sect2>
         <sect2>
@@ -598,16 +577,46 @@
                             Design</link></para>
                 </listitem>
                 <listitem>
-                    <para>the running <link
-                        xlink:href="https://docs.google.com/a/kuali.org/document/pub?id=1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw"
-                            >list of modularity changes</link>.</para>
+                    <para>the running <link xlink:href="https://docs.google.com/a/kuali.org/document/pub?id=1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw">list of modularity changes</link>.</para>
                 </listitem>
                 <listitem>
-                    <para><link
-                        xlink:href="https://docs.google.com/document/pub?id=1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8"
-                            >KEW Refactoring Notes</link></para>
+                    <para><link xlink:href="https://docs.google.com/document/pub?id=1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8">KEW Refactoring Notes</link></para>
                 </listitem>
             </itemizedlist>
+        </sect2>
+        <sect2>
+            <title>PeopleFlows</title>
+            <sect3>
+                <title>Core PeopleFlow concept</title>
+                <para>A new concept was added to Kuali Enterprise Workflow as part of workflow
+                    routing requirements for Kuali Coeus.  The requirement was essentially to
+                    replicate the functionality of "Maps" in the existing Coeus system upon which
+                    Kuali Coeus is based.  These maps are simply lists of people or roles who can
+                    approve in a particular order.  This order is defined by a series of "stops".
+                    At each stop there can be a number of possible approvers which may have
+                    delegates.</para>
+                <para>There was not really an equivalent concept in KEW today, this is essentially
+                    like a mini-workflow itself.  So the concept of PeopleFlows were added along
+                    with a new activation type called "Priority-Parallel" activation.  This
+                    priority-parallel activation allows for action requests to be activated at a
+                    node in parallel if they have the same priority, but in sequence if they have
+                    different priority values.</para>
+                <para>Further details on the implementation of PeopleFlows, their lineage in Coeus,
+                    as well as some screenshots of the maintenance user interface can be found here:
+                        <link xlink:href="https://wiki.kuali.org/x/3R6REg"
+                        >https://wiki.kuali.org/x/3R6REg</link></para>
+            </sect3>
+            <sect3>
+                <title>PeopleFlow integration with KRMS</title>
+                <para>The previous section introduced the concept of PeopleFlows.  The KRMS module
+                    will have integration with PeopleFlows built in through the use of a custom type
+                    of "Action".  This action will allow a rule author to build a business rule and
+                    then indicate that the action that should be executed if the rule succeeds would
+                    be to route to the specified PeopleFlow.</para>
+                <para>Details on the way this integration is implemented can be found here: <link
+                        xlink:href="https://wiki.kuali.org/x/3R6REg"
+                        >https://wiki.kuali.org/x/3R6REg</link></para>
+            </sect3>
         </sect2>
         <sect2>
             <title>New Modules: KRMS and KRAD</title>
@@ -623,35 +632,23 @@
                     on the ability to rapidly create user interfaces with XML while providing more
                     flexibility with layouts and user experience. In addition, KRAD allows for the
                     creation of modern, rich user interfaces using the jQuery and Fluid frameworks. </para>
-               <para><emphasis role="bold">How does KRAD improve on the KNS?</emphasis> See <link
-                        xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf"
-                        >Benefits of KRAD</link>. </para>
+               <para><emphasis role="bold">How does KRAD improve on the KNS?</emphasis> See <link xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf">Benefits of KRAD</link>. </para>
                 <para>To learn more about KRAD, please visit the following pages:<itemizedlist>
                         <listitem>
-                            <para><link
-                                    xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell"
-                                    >KRAD in a nutshell</link></para>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell">KRAD in a nutshell</link></para>
                         </listitem>
                         <listitem>
-                            <para><link
-                                    xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views"
-                                    >UIF Architecture</link></para>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views">UIF Architecture</link></para>
                         </listitem>
                         <listitem>
-                            <para><link
-                                    xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases"
-                                    >View Tutorial</link></para>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases">View Tutorial</link></para>
                         </listitem>
                         <listitem>
-                            <para><link
-                                    xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial"
-                                    >Creating a component</link></para>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial">Creating a component</link></para>
                         </listitem>
                     </itemizedlist></para>
               <para>In addition, see various analysis pages here (Note: some of the
-                information might be incomplete or out of date): <link
-                    xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis"
-                    >KRAD Analysis</link>
+                information might be incomplete or out of date): <link xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis">KRAD Analysis</link>
               </para>
             </sect3> 
             <sect3>
@@ -875,8 +872,7 @@
                 <listitem>
                     <para><emphasis role="bold">Upgrade guide/upgrade scripts</emphasis> are not
                         complete, but will be available before final release. Rough versions of
-                        scripts are available on the <link
-                            xlink:href="https://wiki.kuali.org/x/xSaREg">beta test
+                        scripts are available on the <link xlink:href="https://wiki.kuali.org/x/xSaREg">beta test
                             site</link>.</para>
                 </listitem>
             </orderedlist>
@@ -981,24 +977,16 @@
         <para>
             <itemizedlist>
                 <listitem>
-                    <para><link
-                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+order+by+priority"
-                            >All Rice 2.0 Jiras</link></para>
+                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+order+by+priority">All Rice 2.0 Jiras</link></para>
                 </listitem>
                 <listitem>
-                    <para><link
-                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Bug+Fix%22+order+by+priority"
-                            >Bug Fixes</link></para>
+                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Bug+Fix%22+order+by+priority">Bug Fixes</link></para>
                 </listitem>
                 <listitem>
-                    <para><link
-                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Improvement%22+order+by+priority"
-                            >Improvements</link></para>
+                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Improvement%22+order+by+priority">Improvements</link></para>
                 </listitem>
                 <listitem>
-                    <para><link
-                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+&quot;2.0&quot;+AND+status+IN+('Resolved'%2C'Closed')+AND+type+IN+(&quot;Task&quot;%2C&quot;Sub+Task&quot;)+order+by+priority"
-                            >Tasks &amp; SubTasks</link></para>
+                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+&quot;2.0&quot;+AND+status+IN+('Resolved'%2C'Closed')+AND+type+IN+(&quot;Task&quot;%2C&quot;Sub+Task&quot;)+order+by+priority">Tasks &amp; SubTasks</link></para>
                 </listitem>
             </itemizedlist>
         </para>

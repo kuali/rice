@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+  Copyright 2005-2011 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>Rice Impex Master</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -46,11 +45,11 @@
       </properties>
     </profile>
     <profile>
-      <id>demo</id>
+      <id>dataset</id>
       <properties>
-        <impex.username>RICEDEMO</impex.username>
-        <impex.password>RICEDEMO</impex.password>
-        <impex.database>RICEDEMO</impex.database>
+        <impex.username>RICE${dataset.schema.prefix}${dataset.schema.suffix}</impex.username>
+        <impex.password>RICE${dataset.schema.prefix}${dataset.schema.suffix}</impex.password>
+        <impex.database>RICE${dataset.schema.prefix}${dataset.schema.suffix}</impex.database>
       </properties>
       <build>
         <plugins>
@@ -65,8 +64,10 @@
                   <goal>execute</goal>
                 </goals>
                 <configuration>
+                  <orderFile>NONE</orderFile>
                   <resourceLocations>
-                    <resourceLocation>classpath:demo-server-dataset-cleanup.sql</resourceLocation>
+                    <resourceLocation>${dataset.cleanup.1}</resourceLocation>
+                    <resourceLocation>${dataset.cleanup.2}</resourceLocation>
                   </resourceLocations>
                 </configuration>
               </execution>
@@ -76,36 +77,33 @@
       </build>
     </profile>
     <profile>
+      <id>client</id>
+      <properties>
+        <dataset.schema.prefix>CLIENT</dataset.schema.prefix>
+        <dataset.script>client</dataset.script>
+      </properties>
+    </profile>
+    <profile>
+      <id>server</id>
+      <properties>
+        <dataset.schema.prefix>SERVER</dataset.schema.prefix>
+        <dataset.script>server</dataset.script>
+      </properties>
+    </profile>
+    <profile>
+      <id>demo</id>
+      <properties>
+        <dataset.schema.suffix>DEMO</dataset.schema.suffix>
+        <dataset.cleanup.1>classpath:demo-${dataset.script}-dataset-cleanup.sql</dataset.cleanup.1>
+      </properties>
+    </profile>
+    <profile>
       <id>bootstrap</id>
       <properties>
-        <impex.username>RICEBOOTSTRAP</impex.username>
-        <impex.password>RICEBOOTSTRAP</impex.password>
-        <impex.database>RICEBOOTSTRAP</impex.database>
+        <dataset.schema.suffix>BOOTSTRAP</dataset.schema.suffix>
+        <dataset.cleanup.1>classpath:demo-${dataset.script}-dataset-cleanup.sql</dataset.cleanup.1>
+        <dataset.cleanup.2>classpath:bootstrap-${dataset.script}-dataset-cleanup.sql</dataset.cleanup.2>
       </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>sql-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>cleanup</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>execute</goal>
-                </goals>
-                <configuration>
-                  <orderFile>descending</orderFile>
-                  <resourceLocations>
-                    <resourceLocation>classpath:demo-server-dataset-cleanup.sql</resourceLocation>
-                    <resourceLocation>classpath:bootstrap-server-dataset-cleanup.sql</resourceLocation>
-                  </resourceLocations>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
   </profiles>
 </project>

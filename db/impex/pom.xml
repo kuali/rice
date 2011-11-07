@@ -29,8 +29,8 @@
   <packaging>pom</packaging>
   <modules>
     <module>master</module>
-    <module>demo</module>
-    <module>bootstrap</module>
+    <module>server</module>
+    <module>client</module>
   </modules>
   <properties>
     <sql.plugin.escapeProcessing>false</sql.plugin.escapeProcessing>
@@ -178,7 +178,7 @@
         <plugin>
           <groupId>org.kuali.maven.plugins</groupId>
           <artifactId>sql-maven-plugin</artifactId>
-          <version>1.7</version>
+          <version>1.8</version>
           <configuration>
             <username>${impex.username}</username>
             <password>${impex.password}</password>

@@ -183,6 +183,7 @@
     <profile>
       <id>license</id>
       <properties>
+        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
         <kuali.testjar.phase>none</kuali.testjar.phase>
         <gmaven.stubs.phase>none</gmaven.stubs.phase>
         <gmaven.compile.phase>none</gmaven.compile.phase>

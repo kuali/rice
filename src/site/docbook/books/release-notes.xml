@@ -463,7 +463,80 @@
             </sect3>
             <sect3>
                 <title>Document Search</title>
-                <para/>
+                <para>One of the major KEW framework refactorings that was undertaken for Rice 2.0
+                    was a reimplementation of the various components that support Document Search
+                    customization.  Full documentation on these changes and how to utilize them is
+                    still in progress, but a summary is as follows:<itemizedlist>
+                        <listitem>
+                            <para><code>SearchableAttribute</code> - class still named the same but
+                                moved to a different package, method names changed, returns
+                                    <code>RemotableAttributeField</code> instead of
+                                    <code>List&lt;Row></code></para>
+                        </listitem>
+                        <listitem>
+                            <para>Client applications no longer allowed to override or use these attributes:<itemizedlist>
+                                    <listitem>
+                                        <para><code>DocumentSearchCriteriaProcessorAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchGeneratorAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchResultProcessorAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchXMLResultProcessorAttribute</code></para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>The only valid document search-related attributes are now:<itemizedlist>
+                                    <listitem>
+                                        <para><code>SearchableAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchCustomizer</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSecurityAttribute</code></para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>The <code>DocumentSearchCustomizer</code> replaces most of the
+                                original document search-related attributes.  It is a single
+                                attribute which allows for customization of critieria, results, and
+                                various other aspects of the Document Search operation.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The customizer itself is not remoted, instead a
+                                    <code>DocumentSearchCustomizationHandlerService</code> is
+                                published by each KEW client application.  This allows for a client
+                                application to implement as many customizers as they want and map
+                                them to the document types they should apply to via
+                                    <code>DocumentType</code> configuration.  The Document Search
+                                functionality itself will then callback into the client application
+                                when it needs to via the published
+                                    <code>DocumentSearchCustomizationHandlerService</code>.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The new document search framework uses the
+                                    <code>RemotableAttributeField</code> abstraction for defining
+                                fields that should be displayed as extra search criteria.  This is
+                                in contrast to Rice 1.0.x where KNS <code>Row</code> and
+                                    <code>Field</code> objects were transmitted using Java
+                                serialization.  This old model did not translate well to SOAP-based
+                                services and had numerous other problems as well (namely that not
+                                all of <code>Field</code> and <code>Row</code> was properly
+                                serializable or could be interpreted correctly by the Rice
+                                standalone service, such as custom formatters, values finders,
+                                etc.).</para>
+                        </listitem>
+                    </itemizedlist>Further documentation on how to migrate from the old document
+                    search framework to the new document search framework is forthcoming.  For the
+                    time-being, the best resource is to look at the javadocs for the
+                        <code>org.kuali.rice.kew.framework.document.search</code> package.  All of
+                    the framework apis should have fairly thorough javadocs.</para>
             </sect3>
             <sect3>
                 <title>Caching Architecture</title>

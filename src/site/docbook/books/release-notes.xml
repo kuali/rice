@@ -414,13 +414,13 @@
                                     >https://wiki.kuali.org/x/fwuREg</link></para>
                         </listitem>
                         <listitem>
-                            <para>Addition of Priority parallel activation type (KRDOC-380)</para>
+                            <para/>
                         </listitem>
                     </itemizedlist>
                 </para>
             </sect3>
             <sect3>
-                <title>Caching Infrastructure</title>
+                <title>Caching Architecture</title>
                 <para>See <link xlink:href="https://wiki.kuali.org/x/XgmWEg"
                         >https://wiki.kuali.org/x/XgmWEg</link></para>
             </sect3>
@@ -518,9 +518,6 @@
                     <listitem>
                         <para>Changes to configurers and run modes (KRDOC-389)</para>
                     </listitem>
-                    <listitem>
-                        <para>Removal of </para>
-                    </listitem>
                 </itemizedlist>
             </para>
         </sect2>
@@ -544,6 +541,9 @@
                     <listitem>
                         <para>Changes in how unit tests and integration tests are run
                             (KRDOC-367)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Addition of Priority parallel activation type (KRDOC-380)</para>
                     </listitem>
                 </itemizedlist>
             </para>

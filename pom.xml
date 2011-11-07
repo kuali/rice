@@ -174,7 +174,6 @@
     <rice.java2ws.phase>process-classes</rice.java2ws.phase>
     <!-- Turn off Clover for now -->
     <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
-    <kuali.release.goals>package assembly:assembly deploy site-deploy</kuali.release.goals>
     <enforcer.phase>validate</enforcer.phase>
     <failsafe.phase>integration-test</failsafe.phase>
   </properties>

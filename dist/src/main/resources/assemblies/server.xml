@@ -83,7 +83,7 @@
   </fileSets>
 
   <dependencySets>
-    <!-- 4. Unpack rice-license-bundle-1.0-legacy.jar into /licenses -->
+    <!-- 5. Unpack rice-license-bundle-1.0-legacy.jar into /licenses -->
     <dependencySet>
       <outputDirectory>licenses</outputDirectory>
       <includes>

@@ -359,6 +359,53 @@
                         >https://wiki.kuali.org/x/tg5yEg</link></para>
             </sect3>
             <sect3>
+                <title>RiceApplicationConfigurationService</title>
+                <para>In Rice 1.0.x, the RiceApplicationConfigurationService was a service published
+                    by all KNS applications which provided callbacks into the application from the
+                    Kuali Rice standalone server.  This service was removed in Rice 2.0 for various
+                    reasons.  The reasons for it's removal and information on it's effective
+                    replacements can be found on the following page: <link
+                        xlink:href="https://wiki.kuali.org/x/vA6tEg"
+                        >https://wiki.kuali.org/x/vA6tEg</link></para>
+            </sect3>
+            <sect3>
+                <title>General Purpose Lookup APIs</title>
+                <para>In Rice 1.0.x, may of the services (particularly the KIM services) had
+                    general-purpose lookup methods which took a <code>Map&lt;String, String></code>.
+                    In this map, the key was intended to represent the property name on the data
+                    element being looked up and the value was intended to be the value to search
+                    for. The value itself could contain various wildcard characters and other
+                    operators to allow for the construction of more complex searches. However, there
+                    were a few inadequacies with this approach:<orderedlist>
+                        <listitem>
+                            <para>If an institution wanted to implement their own version of the
+                                service, they would effectively need to implement a complex
+                                interpreter which would take the incoming String value and determine
+                                how to implement the lookup according to the values passed
+                                in.</para>
+                        </listitem>
+                        <listitem>
+                            <para>There was no way to preform cross-property "ors" with this
+                                model.</para>
+                        </listitem>
+                        <listitem>
+                            <para>There was no support for "paging" of query results.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The contract itself tended to be weakly defined, resulting in
+                                service methods that would be hard to maintain from a service
+                                compatibility perspective.</para>
+                        </listitem>
+                    </orderedlist>To this end, some work was done to design a general purpose lookup
+                    API that could be applied in a standard fashion across the various Rice services
+                    which needed it. The following page describes more about the various
+                    possibilities for implementing this as well as the solution which was chosen:
+                        <link xlink:href="https://wiki.kuali.org/x/PR9yEg"
+                        >https://wiki.kuali.org/x/PR9yEg</link>.</para>
+                <para>The implementation of this api can be found on the core-api module under the
+                    package <code>org.kuali.rice.core.api.criteria</code>.</para>
+            </sect3>
+            <sect3>
                 <title>Kuali Enterprise Workflow</title>
                 <para>
                     <itemizedlist>
@@ -373,20 +420,9 @@
                 </para>
             </sect3>
             <sect3>
-                <title>General Purpose Lookup APIs</title>
-                <para>&lt;TODO: List what solution was chosen. It's not clear at <link
-                    xlink:href="https://wiki.kuali.org/x/PR9yEg"
-                    >https://wiki.kuali.org/x/PR9yEg</link>.</para>
-            </sect3>
-            <sect3>
                 <title>Caching Infrastructure</title>
                 <para>See <link xlink:href="https://wiki.kuali.org/x/XgmWEg"
                         >https://wiki.kuali.org/x/XgmWEg</link></para>
-            </sect3>
-            <sect3>
-                <title>RiceApplicationConfigurationService</title>
-                <para>See <link xlink:href="https://wiki.kuali.org/x/vA6tEg"
-                        >https://wiki.kuali.org/x/vA6tEg</link></para>
             </sect3>
         </sect2>
         <sect2>
@@ -417,16 +453,16 @@
             <title>New Modules: KRMS and KRAD</title>
             <sect3>   
                 <title>Kuali Rapid Application Development Framework (KRAD)</title> 
-                <para>KRAD (Kuali Rapid Application Development) is a framework that eases the development of enterprise web
-                applications by providing reusable solutions and tooling that enable developers to
-                build in a rapid and agile fashion. KRAD is a complete framework for web development
-                that provides infrastructure in all major areas of an application (client, business,
-                and data) and integrates with other modules of the Rice middleware project. KRAD is
-                the next generation of the Rice Kuali Nervous System (KNS) and Kuali Student
-                development frameworks. It expands on the ability to rapidly create user interfaces
-                with XML while providing more flexibility with layouts and user experience. In
-                addition, KRAD allows for the creation of modern, rich UIs using the jQuery and
-                Fluid frameworks. </para>
+                <para>KRAD (Kuali Rapid Application Development) is a framework that eases the
+                    development of enterprise web applications by providing reusable solutions and
+                    tooling that enable developers to build in a rapid and agile fashion. KRAD is a
+                    complete framework for web development that provides infrastructure in all major
+                    areas of an application (client, business, and data) and integrates with other
+                    modules of the Rice middleware project. KRAD is the next generation of the Rice
+                    Kuali Nervous System (KNS) and Kuali Student development frameworks. It expands
+                    on the ability to rapidly create user interfaces with XML while providing more
+                    flexibility with layouts and user experience. In addition, KRAD allows for the
+                    creation of modern, rich user interfaces using the jQuery and Fluid frameworks. </para>
                <para><emphasis role="bold">How does KRAD improve on the KNS?</emphasis> See <link
                         xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf"
                         >Benefits of KRAD</link>. </para>
@@ -537,10 +573,10 @@
                         </itemizedlist></para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">Configuration Changes</emphasis> - The way in
-                        which you configure Rice may change quite a bit in future beta releases,
-                        so we are going to be looking at fairly inpactful beta releases coming
-                        down in the future.</para>
+                    <para><emphasis role="bold">Configuration Changes</emphasis> - The way in which
+                        you configure Rice may change quite a bit in future beta releases, so we are
+                        going to be looking at fairly impactful beta releases coming down in the
+                        future.</para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Caching</emphasis> - There is still some work to do
@@ -578,11 +614,11 @@
                     <listitem>
                         <para><emphasis role="bold">bundled</emphasis> - in this model, a single
                             application is bundled together with the Kuali Rice services and web
-                            application.  This allows for that application to be deployed
-                            without the need to set up a seperate application deployment for
-                            Kuali Rice.  This model is not intended for "enterprise" application
-                            deployments because it prohibits proper reuse of the Kuali Rice
-                            middleware as a shared set of services.</para>
+                            application. This allows for that application to be deployed without the
+                            need to set up a separate application deployment for Kuali Rice. This
+                            model is not intended for "enterprise" application deployments because
+                            it prohibits proper reuse of the Kuali Rice middleware as a shared set
+                            of services.</para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">standalone</emphasis> - in this model, a
@@ -630,15 +666,15 @@
         </sect2>
         <sect2>
             <title>Configurers</title>
-            <para>Related to the previous item of remote and embedded client applcation
+            <para>Related to the previous item of remote and embedded client application
                 configuration, part of the issue here lies with the fact that there is still
-                outstanding work on how to set up client "configurers". Those faimiliar with
-                Rice 1.0.x will recall the <code>RiceConfigurer</code> class which was used to
-                load and configure the various Rice modules. In Rice 2.0, this class no longer
-                exists and it's replacement is
-                <code>org.kuali.rice.core.impl.config.module.CoreConfigurer</code>. However,
-                the core configurer only configures the basic "core" of Kuali Rice. The other
-                modules (such as KEW, KSB, etc.) have their own configuers as well.</para>
+                outstanding work on how to set up client "configurers". Those familiar with Rice
+                1.0.x will recall the <code>RiceConfigurer</code> class which was used to load and
+                configure the various Rice modules. In Rice 2.0, this class no longer exists and
+                it's replacement is
+                    <code>org.kuali.rice.core.impl.config.module.CoreConfigurer</code>. However, the
+                core configurer only configures the basic "core" of Kuali Rice. The other modules
+                (such as KEW, KSB, etc.) have their own configurers as well.</para>
             <para>The best place to look at for an example of how to configure Rice 2.0 is in
                 the file
                 <code>impl/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml</code>.

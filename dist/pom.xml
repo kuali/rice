@@ -1,18 +1,18 @@
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+  Copyright 2005-2011 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -27,10 +27,19 @@
   <name>Rice Distributions</name>
   <properties>
     <kuali.testjar.phase>none</kuali.testjar.phase>
+    <gmaven.stubs.phase>none</gmaven.stubs.phase>
+    <gmaven.compile.phase>none</gmaven.compile.phase>
+    <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
+    <maven.test.skip>true</maven.test.skip>
+    <enforcer.phase>none</enforcer.phase>
+    <failsafe.phase>none</failsafe.phase>
   </properties>
   <profiles>
     <profile>
       <id>kuali-release</id>
+      <properties>
+        <maven.build.timestamp.format>MMMM d, yyyy</maven.build.timestamp.format>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -38,6 +47,7 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <configuration>
               <descriptors>
+                <descriptor>src/main/resources/assemblies/server.xml</descriptor>
                 <descriptor>src/main/resources/assemblies/src.xml</descriptor>
                 <descriptor>src/main/resources/assemblies/bin.xml</descriptor>
               </descriptors>
@@ -52,6 +62,46 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-descriptor</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+            <artifactId>maven-svn-revision-number-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-svn-info</id>
+                <phase>none</phase>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
       <dependencies>
@@ -59,6 +109,31 @@
           <groupId>org.kuali.rice</groupId>
           <artifactId>rice-license-bundle</artifactId>
           <version>1.0-legacy</version>
+        </dependency>
+        <dependency>
+          <groupId>org.kuali.db.impex</groupId>
+          <artifactId>impex-legacy-bundle</artifactId>
+          <version>1.0.0</version>
+        </dependency>
+        <dependency>
+          <groupId>org.kuali.rice</groupId>
+          <artifactId>rice-impex-client-demo</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.kuali.rice</groupId>
+          <artifactId>rice-impex-client-bootstrap</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.kuali.rice</groupId>
+          <artifactId>rice-impex-server-demo</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.kuali.rice</groupId>
+          <artifactId>rice-impex-server-bootstrap</artifactId>
+          <version>${project.version}</version>
         </dependency>
       </dependencies>
     </profile>

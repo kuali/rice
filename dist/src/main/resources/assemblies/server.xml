@@ -17,24 +17,22 @@
 -->
 <assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-  <id>bin</id>
-  <!-- This assembly creates a binary distribution -->
+  <id>server</id>
+  <!-- This assembly creates a server distribution -->
   <formats>
     <format>tar.gz</format>
     <format>tar.bz2</format>
     <format>zip</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
+  <files>
+    <!-- 1. War -->
+    <file>
+      <destName>kr-dev.war</destName>
+      <source>${project.basedir}/../web/target/rice-web-${project.version}.war</source>
+    </file>
+  </files>
   <fileSets>
-
-    <!-- 1. Copy the dependencies of rice-web-XYZ.war into /lib -->
-    <fileSet>
-      <directory>${project.basedir}/../web/target/rice-web-${project.version}/WEB-INF/lib</directory>
-      <outputDirectory>lib</outputDirectory>
-      <includes>
-        <include>*</include>
-      </includes>
-    </fileSet>
 
     <!-- 2. Other -->
     <fileSet>
@@ -58,17 +56,7 @@
       <filtered>true</filtered>
     </fileSet>
 
-    <!-- 3. Web Content -->
-    <fileSet>
-      <directory>${project.basedir}/../web/src/main/webapp</directory>
-      <outputDirectory>webcontent</outputDirectory>
-      <excludes>
-        <exclude>*</exclude>
-        <exclude>WEB-INF/*</exclude>
-      </excludes>
-    </fileSet>
-
-    <!-- 4. Config -->
+    <!-- 3. Config -->
     <fileSet>
       <directory>${project.basedir}/..</directory>
       <outputDirectory>config</outputDirectory>
@@ -79,10 +67,11 @@
         <exclude>**/target/**</exclude>
       </excludes>
     </fileSet>
+
   </fileSets>
 
   <dependencySets>
-    <!-- 5. Unpack rice-license-bundle-1.0-legacy.jar into /licenses -->
+    <!-- 4. Unpack rice-license-bundle-1.0-legacy.jar into /licenses -->
     <dependencySet>
       <outputDirectory>licenses</outputDirectory>
       <includes>
@@ -95,7 +84,7 @@
         </excludes>
       </unpackOptions>
     </dependencySet>
-    <!-- 6. Legacy Ant Impex Tool. -->
+    <!-- 5. Legacy Ant Impex Tool. -->
     <dependencySet>
       <outputDirectory>database/impex-legacy-bundle</outputDirectory>
       <includes>
@@ -108,11 +97,11 @@
         </excludes>
       </unpackOptions>
     </dependencySet>
-    <!-- 7. Impex Data. All datasets -->
+    <!-- 6. Impex Data. Server only -->
     <dependencySet>
       <outputDirectory>database</outputDirectory>
       <includes>
-        <include>org.kuali.rice:rice-impex-*</include>
+        <include>org.kuali.rice:rice-impex-server-*</include>
       </includes>
     </dependencySet>
   </dependencySets>

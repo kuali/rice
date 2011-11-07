@@ -56,7 +56,6 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <finalName>rice-${project.version}</finalName>
                   <descriptors>
                     <descriptor>src/main/resources/assemblies/bin.xml</descriptor>
                   </descriptors>
@@ -69,7 +68,6 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <finalName>rice-${project.version}</finalName>
                   <descriptors>
                     <descriptor>src/main/resources/assemblies/src.xml</descriptor>
                   </descriptors>
@@ -82,7 +80,6 @@
                   <goal>single</goal>
                 </goals>
                 <configuration>
-                  <finalName>rice-${project.version}</finalName>
                   <descriptors>
                     <descriptor>src/main/resources/assemblies/server.xml</descriptor>
                   </descriptors>

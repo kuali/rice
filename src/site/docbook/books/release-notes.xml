@@ -247,9 +247,65 @@
             </sect3>
             <sect3>
                 <title>Kuali Service Bus</title>
-                <para/>
-                <para>See <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
-                    >https://wiki.kuali.org/x/T3dyEg</link></para>
+                <para>In order to support requirements for version compatibility, there were
+                    numerous changes that needed to be made to the Kuali Service Bus.  This
+                    ultimately resulted in a reworking of much of the internals of the KSB (with the
+                    exception of it's messaging functionality).  The major changes made to the KSB
+                    for Kuali Rice 2.0 were:<orderedlist>
+                        <listitem>
+                            <para>Client applications now connect to the service registry through a
+                                SOAP web service, rather than through direct connections to the
+                                KRSB_SVC_DEF_T and releated tables.</para>
+                        </listitem>
+                        <listitem>
+                            <para>There is a new API for the ServiceBus which is well documented and
+                                acts as the client application interface point with the KSB.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The practice of storing a java serialized form of the service
+                                configuration in the database was altered to store an XML-serialized
+                                service descriptor.  This allows for more portability and greater
+                                access for non-Java applications to interact with the service
+                                bus.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Removed the faulty "dead service" indicator from the
+                                registry.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Added the concept of a service status to the registry.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Added service version number information to the registry.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Replaced the concept of the "service namespace" with the concept
+                                of an "application id".</para>
+                        </listitem>
+                        <listitem>
+                            <para>Introduced the concept of an "instance id" which identifies an
+                                instance of an application.  This allows the KSB to better handle
+                                applications that are clustered with multiple deployments all
+                                publishing the same set of services.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Much more flexibility in how a client application can configure
+                                and use the KSB.  For example, a client application could just
+                                configure the KSB client to act as a publisher of a service, or it
+                                could just connect to the KSB as a consumer of services.  As well as
+                                additional configuration permutations related to support for
+                                reliable messaging and "development" mode (where services are not
+                                actually published).</para>
+                        </listitem>
+                        <listitem>
+                            <para>A general refactoring of the internal architecture of the KSB
+                                related to handle it handles the publishing lifecycle of services as
+                                well as synchronization with the shared service registry.</para>
+                        </listitem>
+                    </orderedlist>As can be seen from the list above, much work was done to the
+                    service bus for Kuali Rice verison 2.0.  For more details, read the following
+                    page <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
+                        >https://wiki.kuali.org/x/T3dyEg</link></para>
             </sect3>
             <sect3>
                 <title>Parameter Service, Namespace Service, and Component Service</title>

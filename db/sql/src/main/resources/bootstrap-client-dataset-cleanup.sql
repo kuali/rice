@@ -20,9 +20,14 @@
 
 -- drop all sample application tables
 
-drop table recipes_t
-/
-drop table recipe_categories_t
-/
-drop table recipe_ingredients_t
+-- drop table recipes_t
+-- /
+-- drop table recipe_categories_t
+-- /
+-- drop table recipe_ingredients_t
+-- /
+
+-- SQL Maven plugin does not know how to handle SQL files containing only comments
+
+select sysdate from dual
 /

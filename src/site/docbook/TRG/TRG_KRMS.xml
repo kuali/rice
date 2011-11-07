@@ -1,9 +1,4 @@
-<<<<<<< .mine
 <?xml version='1.0' encoding='UTF-8'?>
-<chapter xml:id="TRG_KRMS" xmlns="http://docbook.org/ns/docbook"
-    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
-=======
-<?xml version='1.0' encoding='UTF-8'?> 
 <!--
 
     Copyright 2005-2011 The Kuali Foundation
@@ -22,7 +17,6 @@
 
 -->
 <chapter xml:id="TRG_KRMS" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
->>>>>>> .r23980
     <title>KRMS</title>
     <sect1>
         <title>KRMS Overview</title>

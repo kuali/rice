@@ -129,7 +129,7 @@
         DOC_TYP_DESC="Parent Document Type for all Rice Documents"
         DOC_TYP_ID="2681" DOC_TYP_NM="RiceDocument" DOC_TYP_VER_NBR="0"
         LBL="Rice Document" OBJ_ID="6166CBA1BA82644DE0404F8189D86C09"
-        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="0"/>
+        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="7"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/travelDocument2.do?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Travel Request" DOC_TYP_ID="2683"
@@ -138,6 +138,12 @@
         PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="0"
+        DOC_HDLR_URL="${application.url}/kim/identityManagementPersonDocument.do?methodToCall=docHandler"
+        DOC_TYP_ID="2697" DOC_TYP_NM="IdentityManagementPersonDocument"
+        DOC_TYP_VER_NBR="0" LBL="Person Document"
+        OBJ_ID="6166CBA1BA85644DE0404F8189D86C09" PARNT_ID="2681"
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
         DOC_TYP_DESC="Routing Rule Delegation" DOC_TYP_ID="2699"
@@ -146,6 +152,18 @@
         OBJ_ID="A6DC8753-AF90-7A01-0EF7-E6D446529668" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="0"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="0"
+        DOC_HDLR_URL="${application.url}/kim/identityManagementGroupDocument.do?methodToCall=docHandler"
+        DOC_TYP_ID="2702" DOC_TYP_NM="IdentityManagementGroupDocument"
+        DOC_TYP_VER_NBR="0" LBL="Group"
+        OBJ_ID="6BE7733A-643E-666C-CD18-E7439476C12E" PARNT_ID="2681"
+        RTE_VER_NBR="2" VER_NBR="1"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="0"
+        DOC_HDLR_URL="${application.url}/kim/identityManagementRoleDocument.do?methodToCall=docHandler"
+        DOC_TYP_ID="2703" DOC_TYP_NM="IdentityManagementRoleDocument"
+        DOC_TYP_VER_NBR="0" LBL="Role"
+        OBJ_ID="EAF58989-D602-4CB1-961D-E31E0383B2D6" PARNT_ID="2681"
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" APPL_ID="RECIPE" BLNKT_APPR_GRP_ID="1"
         CUR_IND="1"
         DOC_HDLR_URL="${application.url}/kr/maintenance.do?methodToCall=docHandler"
@@ -236,28 +254,28 @@
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1" DOC_TYP_ID="2994"
         DOC_TYP_NM="IdentityManagementDocument" DOC_TYP_VER_NBR="0"
         LBL="Undefined" OBJ_ID="944596CD-A7FC-0DEE-EDE1-52A52BED85CC"
-        PARNT_ID="2681" RTE_VER_NBR="2" VER_NBR="0"/>
+        PARNT_ID="2681" RTE_VER_NBR="2" VER_NBR="6"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kim.url}/identityManagementRoleDocument.do?methodToCall=docHandler"
         DOC_TYP_ID="2995" DOC_TYP_NM="IdentityManagementRoleDocument"
-        DOC_TYP_VER_NBR="0"
+        DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="default.htm?turl=WordDocuments%2Frole.htm"
         LBL="Role" OBJ_ID="FEA8D9DD-0592-0525-B2BD-2F4BA811CF30"
-        PARNT_ID="2994" RTE_VER_NBR="2" VER_NBR="0"/>
+        PARNT_ID="2994" PREV_DOC_TYP_VER_NBR="2703" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kim.url}/identityManagementGroupDocument.do?methodToCall=docHandler"
         DOC_TYP_ID="2996" DOC_TYP_NM="IdentityManagementGroupDocument"
-        DOC_TYP_VER_NBR="0"
+        DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="default.htm?turl=WordDocuments%2Fgroup.htm"
         LBL="Group" OBJ_ID="D9636763-7749-8F3F-4570-21181E977AE3"
-        PARNT_ID="2994" RTE_VER_NBR="2" VER_NBR="0"/>
+        PARNT_ID="2994" PREV_DOC_TYP_VER_NBR="2702" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kim.url}/identityManagementPersonDocument.do?methodToCall=docHandler"
         DOC_TYP_ID="2997" DOC_TYP_NM="IdentityManagementPersonDocument"
-        DOC_TYP_VER_NBR="0"
+        DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="default.htm?turl=WordDocuments%2Fperson.htm"
         LBL="Person" OBJ_ID="14C95FE4-1497-82C6-CBBD-BF16AD81B845"
-        PARNT_ID="2994" RTE_VER_NBR="2" VER_NBR="0"/>
+        PARNT_ID="2994" PREV_DOC_TYP_VER_NBR="2697" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
         DOC_TYP_ID="2998"
@@ -266,7 +284,7 @@
         HELP_DEF_URL="default.htm?turl=WordDocuments%2Fresponsibility.htm"
         LBL="Review Responsibility"
         OBJ_ID="66413887-3C82-B12D-9563-0A893E8D1910" PARNT_ID="2994"
-        RTE_VER_NBR="2" VER_NBR="0"/>
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
         DOC_TYP_ID="2999"
@@ -274,7 +292,7 @@
         DOC_TYP_VER_NBR="0"
         HELP_DEF_URL="default.htm?turl=WordDocuments%2Fpermission.htm"
         LBL="Permission" OBJ_ID="A3AE4787-018E-1F17-6EB6-F2F0F366774F"
-        PARNT_ID="2994" RTE_VER_NBR="2" VER_NBR="0"/>
+        PARNT_ID="2994" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.krad.url}/krmsAgendaEditor?methodToCall=docHandler"
         DOC_TYP_DESC="Create a KRMS Agenda" DOC_TYP_ID="3000"
@@ -282,7 +300,7 @@
         GRP_ID="1" LBL="KRMS Agenda Editor Maintenance Document"
         OBJ_ID="ebd70731-4d33-4c0b-a958-2b9ca047ae07" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
-        RTE_VER_NBR="2" VER_NBR="0"/>
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Agenda" DOC_TYP_ID="3001"
@@ -290,13 +308,13 @@
         GRP_ID="1" LBL="Agenda Maintenance Document"
         OBJ_ID="3198b708-6e29-4b19-bf35-51473cf8a3d1" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
-        RTE_VER_NBR="2" VER_NBR="0"/>
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.krad.url}/peopleFlowMaintenance?methodToCall=docHandler"
         DOC_TYP_ID="3002" DOC_TYP_NM="PeopleFlowMaintenanceDocument"
         DOC_TYP_VER_NBR="0" LBL="PeopleFlowMaintenanceDocument"
         OBJ_ID="2c0a1333-f60b-47c4-a9b0-76f32f1ed97d" PARNT_ID="2681"
-        RTE_VER_NBR="2" VER_NBR="0"/>
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
         DOC_TYP_DESC="Create a KRMS Context" DOC_TYP_ID="3003"
@@ -304,7 +322,7 @@
         GRP_ID="1" LBL="KRMS Context Maintenance Document"
         OBJ_ID="87413487-8306-4130-b2df-a5d0e42243f9" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
-        RTE_VER_NBR="2" VER_NBR="0"/>
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
         DOC_TYP_DESC="Create a KRMS Term" DOC_TYP_ID="3004"
@@ -312,7 +330,7 @@
         GRP_ID="1" LBL="KRMS Term Maintenance Document"
         OBJ_ID="bc83f80b-85c4-40fd-998c-ef53fdd97e3f" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
-        RTE_VER_NBR="2" VER_NBR="0"/>
+        RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
         DOC_TYP_DESC="Create a KRMS Term Specification"
@@ -322,5 +340,5 @@
         LBL="KRMS Term Specification Maintenance Document"
         OBJ_ID="57e7ee1d-e44a-4154-9ba4-ee562c434c98" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
-        RTE_VER_NBR="2" VER_NBR="0"/>
+        RTE_VER_NBR="2" VER_NBR="1"/>
 </dataset>

@@ -183,9 +183,11 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
           prop = new PropositionBo();
           prop.setId(getNewPropId());
           prop.setPropositionTypeCode(pType);
-          prop.setRuleId(sibling.getRuleId());
-          prop.setTypeId(sibling.getTypeId());
           prop.setEditMode(true);
+          if (sibling != null){
+              prop.setRuleId(sibling.getRuleId());
+              prop.setTypeId(sibling.getTypeId());
+          }
 
           // create blank proposition parameters
           PropositionParameterBo pTerm = new PropositionParameterBo();

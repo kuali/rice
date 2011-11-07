@@ -755,6 +755,76 @@
                     <listitem>
                         <para>Addition of Priority parallel activation type (KRDOC-380)</para>
                     </listitem>
+                    <listitem>
+                        <para>Use of immutable objects and the builder pattern for various
+                            APIs</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removal of "object remoting" functionality from the KSB</para>
+                    </listitem>
+                    <listitem>
+                        <para>Conversion of identifiers from numeric to character-based data types
+                            in KEW</para>
+                    </listitem>
+                    <listitem>
+                        <para>Changes to PersistableBusinessObjectBase and notes
+                            (KULRICE-4862)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Normalization on a single concept of "application id"</para>
+                    </listitem>
+                    <listitem>
+                        <para>Unique constraint on kim permission namespace:name and responsibility
+                            namespace:name</para>
+                    </listitem>
+                    <listitem>
+                        <para>Clean up of multiple "key-value-pair" style classes
+                            (KULRICE-4854)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Transition from custom-written email services to standardizing on the
+                            spring mailer (KULRICE-4863)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Move to Maven version 3</para>
+                    </listitem>
+                    <listitem>
+                        <para>DateTimeService converted to use configuration parameters instead of
+                            system parameters, allowing for it to be used through more of the system
+                            without the need for database dependencies</para>
+                    </listitem>
+                    <listitem>
+                        <para>Kuali Communication Broker (KCB) integration turned off by
+                            default</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removal of IdentityManagementService, replaced with individual service
+                            calls in KIM</para>
+                    </listitem>
+                    <listitem>
+                        <para>Replacement of AttributeSet in KIM service apis with simple
+                            Map&lt;String, String></para>
+                    </listitem>
+                    <listitem>
+                        <para>Renaming of various data elements in KIM to more closely align with
+                            PESC standards (KULRICE-5360)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability for a RouteModule to be called back into multiple times in
+                            order to generate more requests in support of new PeopleFlow
+                            feature</para>
+                    </listitem>
+                    <listitem>
+                        <para>Hours of availability awareness (KULRICE-5695)</para>
+                    </listitem>
+                    <listitem>
+                        <para>Change from WorkflowFunctions to EDLFunctions (and package name
+                            changes) in eDocLites</para>
+                    </listitem>
+                    <listitem>
+                        <para>Aability to define finer-grained Action List notification preferences
+                            for KEW (KULRICE-5848)</para>
+                    </listitem>
                 </itemizedlist>
             </para>
         </sect2>

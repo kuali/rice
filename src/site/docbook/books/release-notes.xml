@@ -1001,7 +1001,43 @@
         <title>Upgrade Guide</title>
         <sect2>
             <title>Database Changes</title>
-            <para>TODO: add links to scripts &amp; how to run (Jeff?)</para>
+            <para>The scripts to upgrade from a 1.0.3.3 version of Kuali Rice to version
+                ${project.version} can be found in the following directory inside of the source
+                distribution:</para>
+            <para><code>scripts/upgrades/1.0.3 to 2.0.0</code></para>
+            <para>Within this directory, are the following sub-directories:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">db-updates</emphasis> - contains the SQL needed
+                            to upgrade from a Kuali Rice 1.0.3.3 standalone server service database
+                            to ${project.version}.  Each of these scripts is dated and that
+                            indicates the order in which they should be run.  SQL scripts for MySql
+                            are prefixed by "mysql".  Scripts for oracle have no prefix on their
+                            name.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">db-updates-client</emphasis> - contains the SQL
+                            needed to upgrade a Kuali Rice client application's Rice-related tables
+                            to ${project.version}.  At this point in time, the only update required
+                            is to the KRNS_SESN_DOC_T table.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">demo-data</emphasis> - this directory contains
+                            updates to the various pieces of Kuali Rice demo data.  Chances are that
+                            most people performing an upgrade will not have demo data in their local
+                            database and will, therefore, not need to execute the scripts located
+                            within this directory.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">support</emphasis> - this directory contains a
+                            groovy script which helps deal with the fact that unique constraints
+                            were added to the database for the combination of namespace code and
+                            name in both the KIM permission and responsibility tables</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">xml-ingest-updates</emphasis> - contains XML
+                            that needs to be ingested after the database upgrade is completed</para>
+                    </listitem>
+                </itemizedlist></para>
         </sect2>
     </sect1>
         <sect1 xml:id="bug-fix" xreflabel="Bug Fix">

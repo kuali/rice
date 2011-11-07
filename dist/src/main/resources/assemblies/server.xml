@@ -86,7 +86,7 @@
     </dependencySet>
     <!-- 5. Legacy Ant Impex Tool. -->
     <dependencySet>
-      <outputDirectory>database/impex-legacy-bundle</outputDirectory>
+      <outputDirectory>database/impex-ant-tool</outputDirectory>
       <includes>
         <include>org.kuali.db.impex:impex-legacy-bundle</include>
       </includes>

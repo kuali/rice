@@ -45,60 +45,45 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>
-              <descriptors>
-                <descriptor>src/main/resources/assemblies/server.xml</descriptor>
-                <descriptor>src/main/resources/assemblies/src.xml</descriptor>
-                <descriptor>src/main/resources/assemblies/bin.xml</descriptor>
-              </descriptors>
-            </configuration>
             <executions>
               <execution>
-                <id>create-distributions</id>
+                <id>create-binary-distro</id>
                 <phase>package</phase>
                 <goals>
                   <goal>single</goal>
                 </goals>
+                <configuration>
+                  <finalName>rice-${project.version}</finalName>
+                  <descriptors>
+                    <descriptor>src/main/resources/assemblies/bin.xml</descriptor>
+                  </descriptors>
+                </configuration>
               </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
               <execution>
-                <id>attach-javadocs</id>
-                <phase>none</phase>
+                <id>create-source-distro</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <finalName>rice-${project.version}</finalName>
+                  <descriptors>
+                    <descriptor>src/main/resources/assemblies/src.xml</descriptor>
+                  </descriptors>
+                </configuration>
               </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <executions>
               <execution>
-                <id>attach-descriptor</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
-            <artifactId>maven-svn-revision-number-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>generate-svn-info</id>
-                <phase>none</phase>
+                <id>create-server-distro</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <finalName>rice-${project.version}</finalName>
+                  <descriptors>
+                    <descriptor>src/main/resources/assemblies/server.xml</descriptor>
+                  </descriptors>
+                </configuration>
               </execution>
             </executions>
           </plugin>

@@ -111,7 +111,7 @@
 
   <bean id="AgendaEditorView-EditRule-Page" parent="AgendaEditorView-EditRule-Page-Parent"/>
   <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Page">
-    <property name="title" value="Agenda Summary: @{document.newMaintainableObject.dataObject.agenda.name}"/>
+    <property name="title" value="Agenda: @{document.newMaintainableObject.dataObject.agenda.name}"/>
     <property name="items">
       <list>
         <bean parent="ruleEditorBody">

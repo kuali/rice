@@ -128,7 +128,7 @@
          p:style="padding: 0px; border-style: hidden;">
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="agendaItemLine.rule.typeId" p:label="Type" p:required="true">
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.typeId" p:label="Type" p:required="false">
           <property name="control">
             <bean parent="SelectControl"/>
           </property>

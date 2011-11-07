@@ -61,7 +61,7 @@ insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd) values ('CAT01', 'misc', 'KRMS
 
 -- add a PeopleFlow attribute to the PeopleFlow types
 insert into krms_attr_defn_t (ATTR_DEFN_ID, NM, NMSPC_CD, LBL, CMPNT_NM, DESC_TXT)
-values ('1000', 'PeopleFlow', 'KR-RULE', 'PeopleFlow', null,
+values ('1000', 'peopleFlowId', 'KR-RULE', 'PeopleFlow', null,
 'An identifier for a PeopleFlow')
 ;
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('1000', 1, '1000', '1000');

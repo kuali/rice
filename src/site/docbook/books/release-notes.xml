@@ -411,7 +411,7 @@
                     compatibility in a similar fashion to the rest of the services in Rice.  As part
                     of this effort, a bit of a rearchitecture of the service layer and APIs for
                     workflow were performed as well.  The major changes made to the workflow
-                    services and apis is as follows:<itemizedlist>
+                    services and apis are as follows:<itemizedlist>
                         <listitem>
                             <para>The <code>WorkflowDocument</code> class is now an interface and is
                                 created using <code>WorkflowDocumentFactory.createDocument</code> or
@@ -426,7 +426,8 @@
                                 service.</para>
                         </listitem>
                         <listitem>
-                            <para>WorkflowUtility was removed and replaced with the following services:<itemizedlist>
+                            <para><code>WorkflowInfo</code> and <code>WorkflowUtility</code> was
+                                removed and replaced with the following services:<itemizedlist>
                                     <listitem>
                                         <para><code>WorkflowDocumentService</code></para>
                                     </listitem>
@@ -457,8 +458,17 @@
                                 document routing, blanket approval, immediate email reminders,
                                 searchable attribute indexing, document requeing, etc.</para>
                         </listitem>
-                    </itemizedlist>Some rough notes with more details on the work that was done can
-                    be found here: <link xlink:href="https://wiki.kuali.org/x/fwuREg"
+                        <listitem>
+                            <para>In the KNS, both <code>KualiWorkflowInfo</code> and
+                                    <code>KualiWorkflowDocument</code> were removed as it was deemed
+                                this duplicate level of abstraction was unnecessary.  In the case of
+                                    <code>KualiWorkflowDocument</code>, existing references were
+                                changed to just <code>WorkflowDocument</code>.  In the case of
+                                    <code>KualiWorkflowInfo</code>, code was changed to call one of
+                                the new KEW services that was added in Rice 2.0.</para>
+                        </listitem>
+                    </itemizedlist>Some rough notes with more details on the work that was done in
+                    KEW can be found here: <link xlink:href="https://wiki.kuali.org/x/fwuREg"
                         >https://wiki.kuali.org/x/fwuREg</link></para>
             </sect3>
             <sect3>
@@ -567,27 +577,39 @@
         </sect2>
         <sect2>
             <title>Modularity</title>
-            <para>See the following notes: <itemizedlist>
-                    <listitem>
-                        <para><link xlink:href="https://wiki.kuali.org/x/AgDYE">Modularity
-                                Analysis</link></para>
-                    </listitem>
-                    <listitem>
-                        <para>the running <link
-                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw/edit?hl=en_US"
-                                >list of modularity changes</link>.</para>
-                    </listitem>
-                    <listitem>
-                        <para><link
-                                xlink:href="https://docs.google.com/a/kuali.org/document/d/1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8/edit?hl=en_US"
-                                >KEW Refactoring Notes</link></para>
-                    </listitem>
-                    <listitem>
-                        <para>TODO Document Search Framework Changes <link
-                                xlink:href="https://jira.kuali.org/browse/KRDOC-383"
-                                >(https://jira.kuali.org/browse/KRDOC-383</link>)</para>
-                    </listitem>
-                </itemizedlist></para>
+            <para>In version 1.0.x of Kuali Rice, the software was divided into 3 main modules: api,
+                impl, and web.  While this was convienent from the development perspective, it
+                resulted in a high level of coupling between the various "logical" modules of Rice
+                (the core, kew, kim, ksb, etc.).  Attempts were made to rectify some of these issues
+                in Kuali Rice 2.0.  Since the full vision for modularity in Kuali Rice was not in
+                scope for the 2.0 release, as much work was done in modularity as could be permitted
+                in order help reach version compatibility goals for the release.</para>
+            <para>Primarily, this included the creation of numerous "api" and "framework" modules
+                and the partitioning of Kuali Rice into various sub-project modules.  This structure
+                can be seen when looking at the source code for Rice 2.0.  The overall vision for
+                modularity in Kuali Rice as well as some notes on specific changes that were made in
+                pursuit of it can be found at the following links:</para>
+            <itemizedlist>
+                <listitem>
+                    <para><link xlink:href="https://wiki.kuali.org/x/AgDYE">Modularity
+                            Analysis</link></para>
+                </listitem>
+                <listitem>
+                    <para>the running <link
+                            xlink:href="https://docs.google.com/a/kuali.org/document/d/1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw/edit?hl=en_US"
+                            >list of modularity changes</link>.</para>
+                </listitem>
+                <listitem>
+                    <para><link
+                            xlink:href="https://docs.google.com/a/kuali.org/document/d/1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8/edit?hl=en_US"
+                            >KEW Refactoring Notes</link></para>
+                </listitem>
+                <listitem>
+                    <para>TODO Document Search Framework Changes <link
+                            xlink:href="https://jira.kuali.org/browse/KRDOC-383"
+                            >(https://jira.kuali.org/browse/KRDOC-383</link>)</para>
+                </listitem>
+            </itemizedlist>
         </sect2>
         <sect2>
             <title>New Modules: KRMS and KRAD</title>
@@ -663,13 +685,9 @@
         </sect2>
         <sect2>
             <title>Library Changes</title>
-            <para>
-                <itemizedlist>
-                    <listitem>
-                        <para>TODO</para>
-                    </listitem>
-                </itemizedlist>
-            </para>
+            <para>There were many changes made to the various direct and transitive dependencies for
+                Kuali Rice.  Additional documentation is forthcoming on what these specific changes
+                were, but the following is a summary of some of the highlights:</para>
         </sect2>
         <sect2>
             <title>Other Changes</title>

@@ -88,6 +88,18 @@
               <goal>java2ws</goal>
             </goals>
           </execution>
+          <execution>
+            <id>actionListService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.kew.api.actionlist.ActionListService</className>
+              <outputFile>${project.build.outputDirectory}/wsdl/ActionListService.wsdl</outputFile>
+              <serviceName>ActionListService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
 					<execution>
 						<id>documentTypeService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>

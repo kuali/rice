@@ -16,9 +16,7 @@
 package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
-
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 
 
 public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract {
@@ -89,8 +87,9 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 //	   return bo
 //   }
 
+    @SuppressWarnings("unchecked")
     @Override
-    List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists() {
+    List buildListOfDeletionAwareLists() {
         List managedLists = super.buildListOfDeletionAwareLists();
         managedLists.add(this.attributeBos);
         managedLists.add(this.items)

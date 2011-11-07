@@ -31,7 +31,7 @@
             released in August of 2009. This release brings many new and exciting features and
             improvements to the Kuali Rice middlware and application development platforms. This
             document provides early information on the work that has been done as part of 2.0
-            develoment and how one can get started working with the software during the beta test
+            development and how one can get started working with the software during the beta test
             phase of the project.</para>
         <para>The primary architectural goal for this release of Rice was to position the platform
             for cross-version service compatibility moving forward. With the increase in the number
@@ -93,7 +93,7 @@
                         and flexibility of the software.</simpara>
                 </listitem>
                 <listitem>
-                    <simpara>Numerious improvements to the design and documentation of Kuali Rice
+                    <simpara>Numerous improvements to the design and documentation of Kuali Rice
                         apis.</simpara>
                 </listitem>
                 <listitem>
@@ -126,7 +126,7 @@
         <sect2>
             <title>Download</title>
             <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
-            <para>There are three differient distributions of Rice available: source, binary and
+            <para>There are three different distributions of Rice available: source, binary and
                 server. Please read the Installation Guide for more details on each of these
                 distributions.</para>
         </sect2>
@@ -135,7 +135,9 @@
             <para>JavaDocs can be found at <link xlink:href="http://kuali.org/rice/api/${project.version}">http://kuali.org/rice/api/${project.version}</link></para>
             <para>For the beta test, we have a <link xlink:href="https://wiki.kuali.org/x/xSaREg">wiki space to collect and maintain for beta testers</link>.</para>
             <para>Formal documentation for this release is under review. Other than KRMS and KRAD
-                Chapters, the documentation found at at <link xlink:href="http://kuali.org/rice/docs/${project.version}">http://kuali.org/rice/docs/${project.version}</link> has not yet been updated
+                Chapters, the documentation found at <link
+                    xlink:href="http://kuali.org/rice/docs/${project.version}"
+                    >http://kuali.org/rice/docs/${project.version}</link> has not yet been updated
                 for Rice 2.0.</para>
         </sect2>
         <sect2>
@@ -176,13 +178,12 @@
             <para>The type of compatibility being implemented for version 2.0 is in contrast to what
                 we call "framework" compatibility, or the ability to upgrade a client application to
                 a new version of the Kuali Rice client libraries or development framework without
-                having to make any forced changes to that client application.  Those who use Java
-                are familiar with this type of compatibility because that is the level of
-                compatibility that is generally provided between releases of the JDK (this is
-                sometimes called a "drop-in" replacement).  Working toward a goal of framework
-                compatibility is on the roadmap for the Kuali Rice project, however the Rice 2.0
-                release makes no gaurantees that it will provide such a level of compatibilty moving
-                forward.</para>
+                having to make any forced changes to that client application. Those who use Java are
+                familiar with this type of compatibility because that is the level of compatibility
+                that is generally provided between releases of the JDK (this is sometimes called a
+                "drop-in" replacement). Working toward a goal of framework compatibility is on the
+                roadmap for the Kuali Rice project, however the Rice 2.0 release makes no guarantees
+                that it will provide such a level of compatibility moving forward.</para>
             <para>More info on this and also Framework Version Compatibility can be found in our
                     <link xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version
                     Compatibility Statement</link>.</para>
@@ -201,9 +202,9 @@
                     might be running different versions of Java or different versions of
                     libraries.</para>
                 <para>To this end, the services in Rice 2.0 have all been reimplemented as
-                    SOAP-based web services.  There will be no Java-serialization based service
-                    distributed with Kuali Rice 2.0.  However, the Kuali Sevice Bus will still
-                    support publishing of services that use Java.  As part of this effort, the team
+                    SOAP-based web services. There will be no Java-serialization based service
+                    distributed with Kuali Rice 2.0. However, the Kuali Service Bus will still
+                    support publishing of services that use Java. As part of this effort, the team
                     has taken care to carefully design the message formats such that:<itemizedlist>
                         <listitem>
                             <para>The "required" portions of the message format are
@@ -230,8 +231,8 @@
                                 documented</para>
                         </listitem>
                     </itemizedlist>Much of the above information can be found in the WSDL's which
-                    are generated for each of the services.  The WSDL defines the message formats,
-                    operations, and error conditions of the numerous Kuali Rice services.  This
+                    are generated for each of the services. The WSDL defines the message formats,
+                    operations, and error conditions of the numerous Kuali Rice services. This
                     effort of service refactoring is at the heart of what we are calling "version
                     compatibility" for the Kuali Rice 2.0 release.</para>
                 <para>Note that while SOAP is being used as the primary way in which services are
@@ -241,14 +242,14 @@
             <sect3>
                 <title>Kuali Service Bus</title>
                 <para>In order to support requirements for version compatibility, there were
-                    numerous changes that needed to be made to the Kuali Service Bus.  This
+                    numerous changes that needed to be made to the Kuali Service Bus. This
                     ultimately resulted in a reworking of much of the internals of the KSB (with the
-                    exception of it's messaging functionality).  The major changes made to the KSB
+                    exception of it's messaging functionality). The major changes made to the KSB
                     for Kuali Rice 2.0 were:<orderedlist>
                         <listitem>
                             <para>Client applications now connect to the service registry through a
                                 SOAP web service, rather than through direct connections to the
-                                KRSB_SVC_DEF_T and releated tables.</para>
+                                KRSB_SVC_DEF_T and related tables.</para>
                         </listitem>
                         <listitem>
                             <para>There is a new API for the ServiceBus which is well documented and
@@ -257,7 +258,7 @@
                         <listitem>
                             <para>The practice of storing a java serialized form of the service
                                 configuration in the database was altered to store an XML-serialized
-                                service descriptor.  This allows for more portability and greater
+                                service descriptor. This allows for more portability and greater
                                 access for non-Java applications to interact with the service
                                 bus.</para>
                         </listitem>
@@ -277,15 +278,15 @@
                         </listitem>
                         <listitem>
                             <para>Introduced the concept of an "instance id" which identifies an
-                                instance of an application.  This allows the KSB to better handle
+                                instance of an application. This allows the KSB to better handle
                                 applications that are clustered with multiple deployments all
                                 publishing the same set of services.</para>
                         </listitem>
                         <listitem>
                             <para>Much more flexibility in how a client application can configure
-                                and use the KSB.  For example, a client application could just
+                                and use the KSB. For example, a client application could just
                                 configure the KSB client to act as a publisher of a service, or it
-                                could just connect to the KSB as a consumer of services.  As well as
+                                could just connect to the KSB as a consumer of services. As well as
                                 additional configuration permutations related to support for
                                 reliable messaging and "development" mode (where services are not
                                 actually published).</para>
@@ -296,8 +297,9 @@
                                 well as synchronization with the shared service registry.</para>
                         </listitem>
                     </orderedlist>As can be seen from the list above, much work was done to the
-                    service bus for Kuali Rice verison 2.0.  For more details, read the following
-                    page <link xlink:href="https://wiki.kuali.org/x/T3dyEg">https://wiki.kuali.org/x/T3dyEg</link></para>
+                    service bus for Kuali Rice version 2.0. For more details, read the following
+                    page <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
+                        >https://wiki.kuali.org/x/T3dyEg</link></para>
             </sect3>
             <sect3>
                 <title>Parameter Service, Namespace Service, and Component Service</title>
@@ -320,8 +322,9 @@
                                 parameters</para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold">org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
-                                remote service which provides oeprations related to
+                            <para><emphasis role="bold"
+                                    >org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
+                                remote service which provides operations related to
                                 namespaces</para>
                         </listitem>
                         <listitem>
@@ -359,7 +362,7 @@
                     general-purpose lookup methods which took a <code>Map&lt;String, String></code>.
                     In this map, the key was intended to represent the property name on the data
                     element being looked up and the value was intended to be the value to search
-                    for. The value itself could contain various wildcard characters and other
+                    for. The value itself could contain various wild card characters and other
                     operators to allow for the construction of more complex searches. However, there
                     were a few inadequacies with this approach:<orderedlist>
                         <listitem>
@@ -385,7 +388,8 @@
                     API that could be applied in a standard fashion across the various Rice services
                     which needed it. The following page describes more about the various
                     possibilities for implementing this as well as the solution which was chosen:
-                        <link xlink:href="https://wiki.kuali.org/x/PR9yEg">https://wiki.kuali.org/x/PR9yEg</link>.</para>
+                        <link xlink:href="https://wiki.kuali.org/x/PR9yEg"
+                        >https://wiki.kuali.org/x/PR9yEg</link>.</para>
                 <para>The implementation of this api can be found on the core-api module under the
                     package <code>org.kuali.rice.core.api.criteria</code>.</para>
             </sect3>
@@ -438,9 +442,9 @@
                         </listitem>
                         <listitem>
                             <para>The various KEW message queues were refactored to conform to
-                                service version compatibility standards.  This includes queues for
+                                service version compatibility standards. This includes queues for
                                 document routing, blanket approval, immediate email reminders,
-                                searchable attribute indexing, document requeing, etc.</para>
+                                searchable attribute indexing, document requeuing, etc.</para>
                         </listitem>
                         <listitem>
                             <para>In the KNS, both <code>KualiWorkflowInfo</code> and
@@ -497,8 +501,8 @@
                         </listitem>
                         <listitem>
                             <para>The <code>DocumentSearchCustomizer</code> replaces most of the
-                                original document search-related attributes.  It is a single
-                                attribute which allows for customization of critieria, results, and
+                                original document search-related attributes. It is a single
+                                attribute which allows for customization of criteria, results, and
                                 various other aspects of the Document Search operation.</para>
                         </listitem>
                         <listitem>
@@ -536,18 +540,18 @@
             <sect3>
                 <title>Caching Architecture</title>
                 <para>In Rice 1.0.x, caching was implemented using a framework called OSCache along
-                    with distributed caching flushing behavior across the KSB.  This worked well in
+                    with distributed caching flushing behavior across the KSB. This worked well in
                     general, however this setup was plagued by issues of far too many cache-related
-                    message events getting generated and sent.  Additionally, OSCache is a long-dead
-                    project which has not had any activity in a long time.  In order to ensure that
-                    Kuali Rice was positioned for service compatiblity moving forward, an effort was
-                    undertaken to revamp and update the caching architecture utilized by the Rice
-                    platform and find a better and more sustainable solution.</para>
+                    message events getting generated and sent. Additionally, OSCache is a long-dead
+                    project which has not had any activity in a long time. In order to ensure that
+                    Kuali Rice was positioned for service compatibility moving forward, an effort
+                    was undertaken to revamp and update the caching architecture utilized by the
+                    Rice platform and find a better and more sustainable solution.</para>
                 <para>The result is a solution based on the caching abstraction provided with the
-                    core Spring framework version 3.1.  The backend caching implementation being
-                    used is Ehcache (which is the default recommended by Spring).  There is a also
-                    integration with the Kuali Service Bus for sending cache evication messages out
-                    to interested listeners.  This allows us to keep our caching consistent across
+                    core Spring framework version 3.1. The backend caching implementation being used
+                    is Ehcache (which is the default recommended by Spring). There is a also
+                    integration with the Kuali Service Bus for sending cache eviction messages out
+                    to interested listeners. This allows us to keep our caching consistent across
                     different applications in an enterprise architecture which has been integrated
                     with Kuali Rice.</para>
                 <para>More details on the specific work that was done to rearchitect the Kuali Rice
@@ -557,10 +561,10 @@
         <sect2>
             <title>Modularity</title>
             <para>In version 1.0.x of Kuali Rice, the software was divided into 3 main modules: api,
-                impl, and web.  While this was convienent from the development perspective, it
+                impl, and web. While this was convenient from the development perspective, it
                 resulted in a high level of coupling between the various "logical" modules of Rice
-                (the core, kew, kim, ksb, etc.).  Attempts were made to rectify some of these issues
-                in Kuali Rice 2.0.  Since the full vision for modularity in Kuali Rice was not in
+                (the core, kew, kim, ksb, etc.). Attempts were made to rectify some of these issues
+                in Kuali Rice 2.0. Since the full vision for modularity in Kuali Rice was not in
                 scope for the 2.0 release, as much work was done on modularity as could be permitted
                 in order help reach version compatibility goals for the release.</para>
             <para>Primarily, this included the creation of numerous "api" and "framework" modules
@@ -740,6 +744,10 @@
         </sect2>
         <sect2>
             <title>Other Changes</title>
+            <para>There were many other changes made in Kuali Rice 2.0 which are not included in the
+                previous section.  The following list is a highlight of some of these.  For a
+                comprehensive list of changes that were performed, the Jira issues are the best
+                place to look.</para>
             <para>
                 <itemizedlist>
                     <listitem>
@@ -819,7 +827,7 @@
                             changes) in eDocLites</para>
                     </listitem>
                     <listitem>
-                        <para>Aability to define finer-grained Action List notification preferences
+                        <para>Ability to define finer-grained Action List notification preferences
                             for KEW (KULRICE-5848)</para>
                     </listitem>
                 </itemizedlist>
@@ -829,54 +837,10 @@
     <sect1>
         <title>Rice 2.0 Work Remaining</title>
         <para>Rice 2.0 is the first beta release and the goal of this release was to ensure that
-            approximately 95% of the functionality was complete prior to the public beta test. Below
-            is a summary of major work items that still need to be completed prior to the generally
-            available release of Kuali Rice 2.0. Work will continue to try and resolve these issues
-            as soon as possible in future beta releases.</para>
-        <para>
-            <orderedlist>
-                <listitem>
-                    <para><emphasis role="bold">Remote and embedded client
-                        configurations</emphasis><itemizedlist>
-                            <listitem>
-                                <para>Rice ${project.version} can only be used to set up
-                                    "bundled" applications.  None of the remote or embedded
-                                    client configurations will work properly.</para>
-                            </listitem>
-                            <listitem>
-                                <para>We will continue through future beta work to make remote
-                                    and embedded clients available again.</para>
-                            </listitem>
-                        </itemizedlist></para>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold">Configuration Changes</emphasis> - The way in which
-                        you configure Rice may change quite a bit in future beta releases, so we are
-                        going to be looking at fairly impactful beta releases coming down in the
-                        future.</para>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold">Caching</emphasis> - There is still some work to do
-                        on the new caching layer and that will be cleaned up during beta.</para>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold">KEN and KCB services</emphasis> - these services
-                        have not yet been fully refactored to SOAP versions conforming to Rice
-                        compatibility requirements</para>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold">Documentation</emphasis> is in a rudimentary
-                        state. During the course of beta releases, it will be reviewed and
-                        augmented.</para>
-                </listitem>
-                <listitem>
-                    <para><emphasis role="bold">Upgrade guide/upgrade scripts</emphasis> are not
-                        complete, but will be available before final release. Rough versions of
-                        scripts are available on the <link xlink:href="https://wiki.kuali.org/x/xSaREg">beta test
-                            site</link>.</para>
-                </listitem>
-            </orderedlist>
-        </para>
+            approximately 95% of the functionality was complete prior to the public beta test.  The
+            following sections summarize major work items that still need to be completed prior to
+            the generally available release of Kuali Rice 2.0. Work will continue to try and resolve
+            these issues as soon as possible for future beta releases.</para>
         <sect2>
             <title>"Remote" and "Embedded" client application configurations</title>
             <para>There was much work done in Rice 2.0 to refactor the layout and organization
@@ -961,6 +925,76 @@
                 configured will likely be adjusted in future beta releases, but information and
                 documentation on such changes will be communicated along with those
                 releases.</para>
+        </sect2>
+        <sect2>
+            <title>Caching</title>
+            <para>There is still work outstanding on the caching infrastructure for Kuali Rice.
+                Remaining work primarily revolves around how client-side caching is managed and
+                performed.  Much of this work relates to the outstanding issues resulting in the
+                inability of configuring remote and embedded client-side integration
+                patterns.</para>
+        </sect2>
+        <sect2>
+            <title>KEN and KCB Services</title>
+            <para>The KEN and KCB services have not yet gone through the refactoring to align them
+                with Kuali Rice 2.0 service compatibility standards.  The services that are
+                published for these modules will likely change in subsequent beta releases.
+                However, they should be finalized prior to the final release of Rice 2.0.</para>
+        </sect2>
+        <sect2>
+            <title>Custom Action List Attributes</title>
+            <para>Work is still being undertaken to reimplement the Action List customization
+                framework so that it adheres to Rice 2.0 version compatibility standards.</para>
+        </sect2>
+        <sect2>
+            <title>Document Search</title>
+            <para>As a result of heaving refactoring of the document search frameworks for version
+                compatibility in Rice 2.0, there is still work remaining before this framework will
+                have parity with the implementation that was in place in Kuali Rice 1.0.x.  Specific
+                outstanding work that remains here includes:<itemizedlist>
+                    <listitem>
+                        <para>Support for range-based searches on search attribute values</para>
+                    </listitem>
+                    <listitem>
+                        <para>Application document status search support</para>
+                    </listitem>
+                    <listitem>
+                        <para>Route Node Name and Route Node Logic search support</para>
+                    </listitem>
+                    <listitem>
+                        <para>Proper data formatting in result set</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to indicate column visibility on searchable attribute
+                            fields</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to customize help link on document search</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to pass query parameters via the document search URL</para>
+                    </listitem>
+                    <listitem>
+                        <para>General cleanup and documentation</para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        <sect2>
+            <title>createproject.groovy</title>
+            <para>The createproject.groovy script has not yet been converted over to produce a valid
+                Rice 2.0-based project.</para>
+        </sect2>
+        <sect2>
+            <title>Documentation</title>
+            <para>Document is still in a rudimentary state.  During the course of the beta releases,
+                it will be reviewed and augmented.</para>
+        </sect2>
+        <sect2>
+            <title>Upgrade Guides and Upgrade Scripts</title>
+            <para>These guides and scripts are not yet fully complete.  However, final documentation
+                and scripts will be provided prior to the final release.  To access rough versions
+                of scripts and some contributed by other members of the community, please visit the
+                    <link xlink:href="https://wiki.kuali.org/x/xSaREg">beta test site</link>.</para>
         </sect2>
     </sect1>
     <sect1 xml:id="upgrade-guide" xreflabel="Upgrade Guide">

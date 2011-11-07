@@ -536,11 +536,32 @@
                     search framework to the new document search framework is forthcoming.  For the
                     time-being, the best resource is to look at the javadocs for the
                         <code>org.kuali.rice.kew.framework.document.search</code> package.  All of
-                    the framework apis should have fairly thorough javadocs.</para>
+                    the framework apis should have fairly thorough javadocs.  Additional, some rough
+                    notes on the document search work and architectural service approach for the
+                    customization handler service can be found near the bottom of this page: <link
+                        xlink:href="https://wiki.kuali.org/x/fwuREg"
+                        >https://wiki.kuali.org/x/fwuREg</link></para>
             </sect3>
             <sect3>
                 <title>Caching Architecture</title>
-                <para>See <link xlink:href="https://wiki.kuali.org/x/XgmWEg"
+                <para>In Rice 1.0.x, caching was implemented using a framework called OSCache along
+                    with distributed caching flushing behavior across the KSB.  This worked well in
+                    general, however this setup was plagued by issues of far too many cache-related
+                    message events getting generated and sent.  Additionally, OSCache is a long-dead
+                    project which has not had any activity in a long time.  In order to ensure that
+                    Kuali Rice was positioned for service compatiblity moving forward, an effort was
+                    undertaken to revamp and update the caching architecture utilized by the Rice
+                    platform and find a better and more sustainable solution.</para>
+                <para>The result is a solution based on the caching abstraction provided with the
+                    core Spring framework version 3.1.  The backend caching implementation being
+                    used is Ehcache (which is the default recommended by Spring).  There is a also
+                    integration with the Kuali Service Bus for sending cache evication messages out
+                    to interested listeners.  This allows us to keep our caching consistent across
+                    different applications in an enterprise architecture which has been integrated
+                    with Kuali Rice.</para>
+                <para>More details on the specific work that was done to rearchitect the Kuali Rice
+                    caching infrastructure can be found here: <link
+                        xlink:href="https://wiki.kuali.org/x/XgmWEg"
                         >https://wiki.kuali.org/x/XgmWEg</link></para>
             </sect3>
         </sect2>

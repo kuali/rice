@@ -56,7 +56,8 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
     	// convert the UberResponsibilityBo class into a ReviewResponsibility object
-        if ( ((UberResponsibilityBo)businessObject).getTemplate().getName().equals( KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
+        if ( (((UberResponsibilityBo)businessObject).getTemplate() != null)
+                && ((UberResponsibilityBo)businessObject).getTemplate().getName().equals( KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME ) ) {
         	ReviewResponsibilityBo reviewResp = new ReviewResponsibilityBo( (UberResponsibilityBo)businessObject );
         	businessObject = reviewResp;
 	        if (allowsMaintenanceEditAction(businessObject)) {

@@ -69,7 +69,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
 
     @OneToOne(targetEntity = PermissionTemplateBo.class, cascade = [], fetch = FetchType.EAGER)
     @JoinColumn(name = "PERM_TMPL_ID", insertable = false, updatable = false)
-    PermissionTemplateBo template;
+    PermissionTemplateBo template = new PermissionTemplateBo()
 
     @OneToMany(targetEntity = PermissionAttributeBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER, mappedBy = "id")
     @Fetch(value = FetchMode.SELECT)

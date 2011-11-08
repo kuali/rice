@@ -629,7 +629,7 @@
             <bean parent="SelectControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="true"/>
+            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="false"/>
           </property>
         </bean>
         <bean parent="RemoteFieldsHolder" p:propertyName="customRuleActionAttributesMap"

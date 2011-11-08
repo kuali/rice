@@ -15,39 +15,44 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.hibernate.mapping.TableOwner;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krms.impl.ui.AgendaEditor;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
  * This class returns all action types of rules.
  */
-public class ActionTypeValuesFinder extends KeyValuesBase {
+public class ActionTypeValuesFinder extends UifKeyValuesFinderBase {
 
     private boolean blankOption;
 
     @Override
-	public List<KeyValue> getKeyValues() {
+	public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
+
+        MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
 
         if(blankOption){
             keyValues.add(new ConcreteKeyValue("", ""));
         }
 
-        // TODO: Only select the actions for the specific context of the agenda
-        // Map<String, String> fieldValues = new HashMap<String, String>();
-        // fieldValues.put(KrmsImplConstants.PropertyNames.Context.CONTEXT_ID, form.getAgenda().getContextId);
-        // Collection<ContextValidActionBo> contextValidActions = KRADServiceLocator.getBusinessObjectService().findMatching(ContextValidActionBo.class, fieldValues);
-        Collection<ContextValidActionBo> contextValidActions = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidActionBo.class);
+        Map<String, String> criteria = Collections.singletonMap(KrmsImplConstants.PropertyNames.Context.CONTEXT_ID,
+                agendaEditor.getAgenda().getContextId());
+        Collection<ContextValidActionBo> contextValidActions =
+                KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(
+                        ContextValidActionBo.class, criteria, "actionType.name", true);
         for (ContextValidActionBo contextValidAction : contextValidActions) {
             keyValues.add(new ConcreteKeyValue(contextValidAction.getActionType().getId(), contextValidAction.getActionType().getName()));
         }
@@ -67,5 +72,4 @@ public class ActionTypeValuesFinder extends KeyValuesBase {
     public void setBlankOption(boolean blankOption) {
         this.blankOption = blankOption;
     }
-
 }

@@ -77,13 +77,13 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
         // each action item should take less than 1 second
         Integer totalSent = getMockEmailService().getTotalPeriodicRemindersSent();
         int expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
-        assertTrue("Total time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (totalEndTimeInMills - totalStartTimeInMills));
+        assertTrue("Total time for " + totalSent + " reminders sent must be under " + expectedValue + " ms, but took " + (totalEndTimeInMills - totalStartTimeInMills) + "ms", expectedValue > (totalEndTimeInMills - totalStartTimeInMills));
         totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
         expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
-        assertTrue("Weekly Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (weeklyEndTimeInMills - weeklyStartTimeInMills));
+        assertTrue("Weekly Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms, but took " + (totalEndTimeInMills - totalStartTimeInMills) + "ms", expectedValue > (weeklyEndTimeInMills - weeklyStartTimeInMills));
         totalSent = getMockEmailService().getTotalPeriodicRemindersSent(KewApiConstants.EMAIL_RMNDR_DAY_VAL);
         expectedValue = (totalSent * EXPECTED_MILLISECONDS_TO_SEND_REMINDER);
-        assertTrue("Daily Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms", expectedValue > (dailyEndTimeInMills - dailyStartTimeInMills));
+        assertTrue("Daily Reminder time for " + totalSent + " reminders sent must be under " + expectedValue + " ms, but took " + (totalEndTimeInMills - totalStartTimeInMills) + "ms", expectedValue > (dailyEndTimeInMills - dailyStartTimeInMills));
     }
 
     private void setupPreferences(List<String> users, String emailNotificationPreference) throws Exception {

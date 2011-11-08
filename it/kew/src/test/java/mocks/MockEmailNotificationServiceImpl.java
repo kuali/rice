@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequestType;
@@ -84,14 +85,27 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
 
     @Override
 	public void sendDailyReminder() {
-        resetStyleService();
-	    //super.sendDailyReminder();
+        try {
+            getEmailContentGenerator().generateWeeklyReminder(null, null);
+        }
+        catch (NullPointerException npe) {}
+
+        List<ActionItem> actionItems = new ArrayList<ActionItem>(1);
+        actionItems.add(ActionItem.Builder.create("ai1", "ai2", "ai3", new DateTime(), "ai4", "ai5", "ai6", "ai7", "ai8").build());
+        sendPeriodicReminder(null, actionItems, KewApiConstants.EMAIL_RMNDR_DAY_VAL);
+        //super.sendDailyReminder();
 		SEND_DAILY_REMINDER_CALLED = true;
     }
 
     @Override
     public void sendWeeklyReminder() {
-        resetStyleService();
+        try {
+            getEmailContentGenerator().generateWeeklyReminder(null, null);
+        }
+        catch (NullPointerException npe) {}
+        List<ActionItem> actionItems = new ArrayList<ActionItem>(1);
+        actionItems.add(ActionItem.Builder.create("ai1", "ai2", "ai3", new DateTime(), "ai4", "ai5", "ai6", "ai7", "ai8").build());
+        sendPeriodicReminder(null, actionItems, KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
         //super.sendWeeklyReminder();
     	SEND_WEEKLY_REMINDER_CALLED = true;
     }

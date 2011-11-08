@@ -26,9 +26,9 @@ jQuery(function() {
         input.val(input.val() == "YES" ? "NO" : "YES");
         customLookupChanged();
     }
-    jQuery("#toggleAdvancedSearch").click(toggleSearchType.bind(null, "isAdvancedSearch"));
-    jQuery("#toggleSuperUserSearch").click(toggleSearchType.bind(null, "superUserSearch"));
-    jQuery("#resetSavedSearch").click(toggleSearchType.bind(null, "resetSavedSearch"));
+    jQuery("#toggleAdvancedSearch" ).click(function() { toggleSearchType("isAdvancedSearch"); });
+    jQuery("#toggleSuperUserSearch").click(function() { toggleSearchType("superUserSearch"); });
+    jQuery("#resetSavedSearch"     ).click(function() { toggleSearchType("resetSavedSearch"); });
 });
 
 /**

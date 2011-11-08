@@ -20,10 +20,22 @@ import java.sql.Connection
  * records with duplicate (NMSPC_CD,NM) fields
  */
 class PermissionsNamespaceNameUniquifierCommand extends RecordUniquifier {
+    /* Exclude core permissions that are fixed by upgrade scripts */
+    def static PERMISSIONS_TO_EXCLUDE = [
+        PERM_ID: (140..152) + (155..156) + (161..168) + [170] + (172..174) +
+                 [ 180, 181, 183, 259, 261, 264, 265, 289, 290, 298, 299, 306, 307 ] +
+                 (332..334) + [378] + (701..703) + [707] + (719..721) + (801..803) +
+                 [807, 814] + (819..821) + (833..836) + [840,841]
+    ]
+
     def PermissionsNamespaceNameUniquifierCommand() {
         super("KRIM_PERM_T", "PERM_ID", {
           self, row ->
             [ NM: row['NM'] + " " + row[self.pk_col] ]
-        }, ["NMSPC_CD", "NM"])
+        }, ["NMSPC_CD", "NM"], PERMISSIONS_TO_EXCLUDE)
+    }
+
+    def addExclusion(select, exclude_where) {
+        select + " and " + exclude_where
     }
 }

@@ -30,14 +30,31 @@ abstract class RecordUniquifier extends RecordSelectTransform {
 
     def columns
     def transform
+    Map<String, Collection<String>> exclude = [:]
 
-    def RecordUniquifier(String table, String pk_col, Closure transform, List<String> columns) {
+    def RecordUniquifier(String table, String pk_col, Closure transform, List<String> columns, Map<String, Collection<String>> exclude = [:]) {
         super(table, pk_col, transform)
         this.columns = columns
+        this.exclude = exclude
+    }
+
+    def addExclusion(select, exclude) {
+        select + " where " + exclude
     }
 
     def String generateSelectSql() {
-        new MessageFormat(SELECT_DUPLICATES).format([ this.columns.join(","), this.table ] as Object[])
+        def select = new MessageFormat(SELECT_DUPLICATES).format([ this.columns.join(","), this.table ] as Object[])
+        def clauses = []
+        exclude.each  { k, v ->
+            if (!v.empty) {
+                clauses << "${k} not in (${v.join(',')})"
+            }
+        }
+        if (!clauses.empty) {
+            println "Excluding: " + exclude
+            select = addExclusion(select, clauses.join(" and "))
+        }
+        select
     }
 
     def help() {

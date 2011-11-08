@@ -4,7 +4,7 @@
 <dataset>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1000"
         DESC_TXT="An identifier for a PeopleFlow" LBL="PeopleFlow"
-        NM="PeopleFlow" NMSPC_CD="KR-RULE" VER_NBR="0"/>
+        NM="peopleFlowId" NMSPC_CD="KR-RULE" VER_NBR="0"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q33001" DESC_TXT="null"
         LBL="Event Name" NM="Event" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q44001" DESC_TXT="null"

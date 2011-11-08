@@ -31,80 +31,67 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 public class CreateDocumentTest extends KEWTestCase {
-    
+
     @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");
     }
 
     /**
-	 * Tests the attempt to create a document from a non-existent document type.
-	 */
-	@Test public void testCreateNonExistentDocumentType() throws Exception {
-		try {
-			WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
-			fail("A DocumentTypeNotFoundException exception should have been thrown.");
-		} catch (RiceIllegalArgumentException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Tests the attempt to create a document from a document type with no routing path.
-	 */
-	@Test public void testCreateNonRoutableDocumentType() throws Exception {
-		// the BlanketApproveTest is a parent document type that has no routing path defined.  Attempts to
-		// create documents of this type should return a DocumentCreationException
-		try {
-			WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
-			fail("A workflow exception should have been thrown.");
-		} catch (IllegalDocumentTypeException e) {
-			e.printStackTrace();
-		}
-	}
-    
+     * Tests the attempt to create a document from a non-existent document type.
+     */
+    @Test(expected=RiceIllegalArgumentException.class)
+    public void testCreateNonExistentDocumentType() throws Exception {
+        WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "flim-flam-flooey");
+    }
+
     /**
      * Tests the attempt to create a document from a document type with no routing path.
      */
-    @Test public void testCreateInactiveDocumentType() throws Exception {
+    @Test(expected=IllegalDocumentTypeException.class)
+    public void testCreateNonRoutableDocumentType() throws Exception {
+        // the BlanketApproveTest is a parent document type that has no routing path defined.  Attempts to
+        // create documents of this type should return a DocumentCreationException
+        WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "BlanketApproveTest");
+    }
+
+    /**
+     * Tests the attempt to create a document from a document type with no routing path.
+     */
+    @Test(expected=IllegalDocumentTypeException.class)
+    public void testCreateInactiveDocumentType() throws Exception {
         // the CreatedDocumentInactive document type is inactive and should not be able to 
         // be initiated for a new document
-    	try {
-    		WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
-            fail("A workflow exception should have been thrown.");
-        } catch (IllegalDocumentTypeException e) {
-            e.printStackTrace();
-        }
+        WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "CreatedDocumentInactive");
     }
-    
+
     /**
      * Tests creation of a simple document and verifies it's state.
      */
     @Test
     public void testCreateSimpleDocumentType() throws Exception {
-    	String principalId = getPrincipalIdForName("ewestfal");
-    	WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(principalId, "TestDocumentType");
-    	assertNotNull(workflowDocument);
-    	
-    	assertNotNull(workflowDocument.getDocumentId());
-    	Document document = workflowDocument.getDocument();
-    	assertNotNull(document);
-    	
-    	assertNotNull(document.getDateCreated());
-    	assertNotNull(document.getDateLastModified());
-    	assertNull(document.getDateApproved());
-    	assertNull(document.getDateFinalized());
-    	
-    	assertEquals("", document.getTitle());
-    	assertNotNull(document.getDocumentTypeId());
-    	assertEquals("TestDocumentType", document.getDocumentTypeName());
-    	assertEquals(principalId, document.getInitiatorPrincipalId());
-    	assertEquals(DocumentStatus.INITIATED, document.getStatus());
-    	
+        String principalId = getPrincipalIdForName("ewestfal");
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(principalId, "TestDocumentType");
+        assertNotNull(workflowDocument);
+
+        assertNotNull(workflowDocument.getDocumentId());
+        Document document = workflowDocument.getDocument();
+        assertNotNull(document);
+
+        assertNotNull(document.getDateCreated());
+        assertNotNull(document.getDateLastModified());
+        assertNull(document.getDateApproved());
+        assertNull(document.getDateFinalized());
+
+        assertEquals("", document.getTitle());
+        assertNotNull(document.getDocumentTypeId());
+        assertEquals("TestDocumentType", document.getDocumentTypeName());
+        assertEquals(principalId, document.getInitiatorPrincipalId());
+        assertEquals(DocumentStatus.INITIATED, document.getStatus());
+
     }
-    
+
     protected String getPrincipalIdForName(String principalName) {
-        return KEWServiceLocator.getIdentityHelperService()
-                .getIdForPrincipalName(principalName);
+        return KEWServiceLocator.getIdentityHelperService().getIdForPrincipalName(principalName);
     }
 }

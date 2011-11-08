@@ -104,7 +104,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
    		qualifier.refreshReferenceObject("kimAttribute");
     }
 	private String getKimTypeServiceName (KimType kimType) {
-    	String serviceName = kimType.getName();
+    	String serviceName = kimType.getServiceName();
     	if (StringUtils.isBlank(serviceName)) {
     		serviceName = "kimTypeService";
     	}

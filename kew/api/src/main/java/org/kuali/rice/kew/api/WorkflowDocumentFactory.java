@@ -83,7 +83,7 @@ public final class WorkflowDocumentFactory {
      * 
      * @throws IllegalArgumentException if principalId is null or blank
      * @throws IllegalArgumentException if documentTypeName is null or blank
-     * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
+     * @throws IllegalDocumentTypeException if documentTypeName does not represent a valid document type
      */
     public static WorkflowDocument createDocument(String principalId, String documentTypeName, String title) {
     	DocumentUpdate.Builder builder = DocumentUpdate.Builder.create();
@@ -103,7 +103,7 @@ public final class WorkflowDocumentFactory {
      * 
      * @throws IllegalArgumentException if principalId is null or blank
      * @throws IllegalArgumentException if documentTypeName is null or blank
-     * @throws DocumentTypeNotFoundException if documentTypeName does not represent a valid document type
+     * @throws IllegalDocumentTypeException if documentTypeName does not represent a valid document type
      */
 	public static WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
 		if (StringUtils.isBlank(principalId)) {

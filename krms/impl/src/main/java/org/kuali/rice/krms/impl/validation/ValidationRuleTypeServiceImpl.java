@@ -82,7 +82,7 @@ public final class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase imp
     @Override
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId) throws RiceIllegalArgumentException {
         RadioButtonTypeServiceUtil radioButtonTypeServiceUtil = new RadioButtonTypeServiceUtil();
-        return radioButtonTypeServiceUtil.getAttributeFields(krmsTypeId);
+        return radioButtonTypeServiceUtil.getAttributeFields(krmsTypeId, null);
     }
 
     /**

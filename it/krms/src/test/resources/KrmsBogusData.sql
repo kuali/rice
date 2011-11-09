@@ -67,7 +67,9 @@ values ('1000', 'peopleFlowId', 'KR-RULE', 'PeopleFlow', null,
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('1000', 1, '1000', '1000');
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('1001', 1, '1001', '1000');
 
-
+-- Validation Action Message
+insert into krms_attr_defn_t (attr_defn_id, nm, nmspc_cd, lbl, actv, cmpnt_nm, ver_nbr, desc_txt) values ('QQ8806', 'Action Message', 'KRMS_TEST', 'Action Message', 'Y', null, 1, 'Message validation action returns');
+insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr) values ('T9M', 3, 'T9', 'QQ8806', 'Y', 1);
 
 --
 -- TermResolver taking 1 campus code parameter

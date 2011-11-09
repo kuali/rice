@@ -100,8 +100,8 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private static final String TERM_NAME = "campusCodeTermSpec";
 
     private static final String CONTEXT_NAME = "ValidationITContext";
-    private static final String WARNING_MESSAGE = "Warning Message (as description)";
-    private static final String ERROR_MESSAGE = "Error Message (as description)";
+    private static final String WARNING_MESSAGE = "Warning Message.";
+    private static final String ERROR_MESSAGE = "Error Message.";
     private static final String VALIDATION_ACTION_TYPE_SERVICE = "validationActionTypeService";
     private static final String VALIDATION_RULE_TYPE_SERVICE = "validationRuleTypeService";
 
@@ -149,7 +149,6 @@ public class ValidationIntegrationTest extends AbstractBoTest {
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.WARNING.toString(), true, ValidationActionType.WARNING.toString(),
                 ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
-
         ContextBo contextBo = createContext();
         RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, WARNING_MESSAGE);
         createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
@@ -399,7 +398,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     }
 
     private RuleBo createRuleWithAction(KrmsAttributeTypeDefinitionAndBuilders ruleBits,
-            KrmsAttributeTypeDefinitionAndBuilders actionBits, ContextBo contextBo, String description) {
+            KrmsAttributeTypeDefinitionAndBuilders actionBits, ContextBo contextBo, String message) {
 
         RuleBo rule = new RuleBo();
         rule.setTypeId(ruleBits.typeDef.getId());
@@ -417,18 +416,21 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         List<ActionBo> actions = new ArrayList<ActionBo>();
         ActionBo action = new ActionBo();
         action.setTypeId(actionBits.typeDef.getId());
-        action.setDescription(description);
+        action.setDescription("Description of validation action for message " + message);
         actions.add(action);
         action.setNamespace(actionBits.typeDef.getNamespace());
         action.setName(actionBits.typeDef.getName());
         action.setSequenceNumber(actionBits.typeAttribBuilder.getSequenceNumber());
         Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
         action.setAttributeBos(actionAttributes);
+
         ActionAttributeBo actionAttribute = new ActionAttributeBo();
         actionAttributes.add(actionAttribute);
         actionAttribute.setAttributeDefinitionId(actionBits.attribDef.getId());
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(actionBits.attribDef));
         actionAttribute.setValue(actionBits.typeAttribBuilder.getTypeId());
+
+        createActionAttributeBo(actionBits.attribDef.getNamespace(), "Action Message", "Action Message", actionBits.attribDef.isActive(), "Action Message", message, actionAttributes);
 
         rule = (RuleBo) getBoService().save(rule);
         RuleDefinition ruleDef = RuleBo.to(rule);
@@ -443,8 +445,26 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         assertNotNull(rule.getPropId());
         assertEquals(1, rule.getActions().size());
         assertNotNull(rule.getActions().get(0).getId());
-        assertEquals(1, rule.getActions().get(0).getAttributeBos().size());
+        assertEquals(2, rule.getActions().get(0).getAttributeBos().size());
         return rule;
+    }
+
+    private void createActionAttributeBo(String namespace, String attributeName, String label, boolean active,
+            String actionAttribDefId, String value, Set<ActionAttributeBo> actionAttributes) {
+        KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
+        attributeDefinitionBo.setNamespace(namespace);
+        attributeDefinitionBo.setName(attributeName);
+        attributeDefinitionBo.setLabel(label);
+        attributeDefinitionBo.setActive(active);
+        attributeDefinitionBo = (KrmsAttributeDefinitionBo)getBoService().save(attributeDefinitionBo);
+        assertNotNull(attributeDefinitionBo.getId());
+        KrmsAttributeDefinition attribDef = KrmsAttributeDefinitionBo.to(attributeDefinitionBo);
+
+        ActionAttributeBo actionAttribute = new ActionAttributeBo();
+        actionAttributes.add(actionAttribute);
+        actionAttribute.setAttributeDefinitionId(attribDef.getId());
+        actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attribDef));
+        actionAttribute.setValue(value);
     }
 
     private PropositionDefinition.Builder createPropositionDefinition1(ContextDefinition contextDefinition, RuleDefinition ruleDef1) {

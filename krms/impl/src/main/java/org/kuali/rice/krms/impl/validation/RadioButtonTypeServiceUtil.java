@@ -39,7 +39,14 @@ import java.util.TreeMap;
  */
 public class RadioButtonTypeServiceUtil {
 
-    public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId) throws RiceIllegalArgumentException {
+    /**
+     *
+     * @param krmsTypeId
+     * @param excludeNames can be null
+     * @return List<RemotableAttributeField>
+     * @throws RiceIllegalArgumentException
+     */
+    public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId, List<String> excludeNames) throws RiceIllegalArgumentException {
 
         if (StringUtils.isBlank(krmsTypeId)) {
             throw new RiceIllegalArgumentException("krmsTypeId must be non-null and non-blank");
@@ -70,8 +77,10 @@ public class RadioButtonTypeServiceUtil {
                     KrmsAttributeDefinition attributeDefinition =
                             typeRepositoryService.getAttributeDefinitionById(typeAttribute.getAttributeDefinitionId());
 
-                    attribDefIdSequenceNumbers.put(attributeDefinition.getId(), typeAttribute.getSequenceNumber());
-                    unsortedIdLables.put(attributeDefinition.getId(), attributeDefinition.getLabel());
+                    if (excludeNames == null || !excludeNames.contains(attributeDefinition.getName())) {
+                        attribDefIdSequenceNumbers.put(attributeDefinition.getId(), typeAttribute.getSequenceNumber());
+                        unsortedIdLables.put(attributeDefinition.getId(), attributeDefinition.getLabel());
+                    }
                 }
 
                 Map<String, String> sortedKeyLabelMap = new TreeMap<String, String>(new LabelSequenceComparator(attribDefIdSequenceNumbers));

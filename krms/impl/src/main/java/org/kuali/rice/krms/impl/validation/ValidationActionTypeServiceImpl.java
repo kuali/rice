@@ -69,13 +69,13 @@ public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase impleme
         }
 
         // Message
-        if (!validationActionDefinition.getAttributes().containsKey(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE)) {
+        if (!validationActionDefinition.getAttributes().containsKey(MESSAGE_FIELD_NAME)) {
             throw new RiceIllegalArgumentException("validationActionDefinition does not contain an " +
-                    ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE + " attribute");
+                    MESSAGE_FIELD_NAME + " attribute");
         }
-        String validationMessage = validationActionDefinition.getAttributes().get(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE);
+        String validationMessage = validationActionDefinition.getAttributes().get(MESSAGE_FIELD_NAME);
         if (StringUtils.isBlank(validationMessage)) {
-            throw new RiceIllegalArgumentException(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE + " attribute must not be null or blank");
+            throw new RiceIllegalArgumentException(MESSAGE_FIELD_NAME + " attribute must not be null or blank");
         }
 
         if (ValidationActionType.WARNING.getCode().equals(validationActionTypeCode)) {

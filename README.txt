@@ -16,7 +16,7 @@
 
 README.txt
 Kuali Rice ${project.version}
-${kuali.build.timestamp}
+${kuali.build.day}
 
 
 Contents

@@ -48,14 +48,14 @@
             <artifactId>buildnumber-maven-plugin</artifactId>
             <executions>
               <execution>
-                <id>generate-short-date</id>
+                <id>create-timestamp</id>
                 <phase>initialize</phase>
                 <goals>
                   <goal>create-timestamp</goal>
                 </goals>
                 <configuration>
-                  <timestampFormat>MMMM d, yyyy</timestampFormat>
-                  <timestampPropertyName>kuali.build.day</timestampPropertyName>
+                  <timestampFormat>${readme.date.format}</timestampFormat>
+                  <timestampPropertyName>readme.build.timestamp</timestampPropertyName>
                 </configuration>
               </execution>
             </executions>

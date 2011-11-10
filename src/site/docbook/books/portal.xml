@@ -20,7 +20,7 @@
     <info>
         <title>Welcome to the Rice ${project.version} Documentation Portal</title>
     </info>
-    <para>Released: ${timestamp}</para>
+    <para>Released: docbook.build.timestamp</para>
     <para>Here you will find links to documentation for the Rice ${project.version} release as well as general resources and information about the Kuali Rice project.</para>
     <sect1 xml:id="download" xreflabel="Download">
         <title>Download</title>

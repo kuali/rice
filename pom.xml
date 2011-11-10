@@ -63,8 +63,7 @@
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
     <maven.build.timestamp.format>MM-dd-yyyy</maven.build.timestamp.format>
-    <timestamp>${maven.build.timestamp}</timestamp>
-    <previousVersion>1.0.3.3</previousVersion>
+    <readme.date.format>MMMM d, yyyy</readme.date.format>
 
     <!-- must provide an explicit pattern - surefire default does not work
       b/c of non-unit test classes that are included in default expression -->
@@ -170,6 +169,8 @@
     <rice.site.dir>${basedir}/target/site</rice.site.dir>
     <!-- Where the generated documentation (pdf, html) will be generated -->
     <rice.docbook.dest>${rice.site.dir}/reference</rice.docbook.dest>
+    <docbook.date.format>MM-dd-yyyy</docbook.date.format>
+    <rice.previousVersion>1.0.3.3</rice.previousVersion>
 
     <!-- phase for wsdl generation from jaxws annotated interfaces -->
     <rice.java2ws.phase>process-classes</rice.java2ws.phase>
@@ -780,7 +781,23 @@
     </pluginManagement>
 
     <plugins>
-
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-timestamp</id>
+            <phase>${rice.docbook.phase}</phase>
+            <goals>
+              <goal>create-timestamp</goal>
+            </goals>
+            <configuration>
+              <timestampFormat>${docbook.date.format}</timestampFormat>
+              <timestampPropertyName>docbook.build.timestamp</timestampPropertyName>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
@@ -790,7 +807,7 @@
             <goals>
               <goal>copy-resources</goal>
             </goals>
-            <phase>pre-site</phase>
+            <phase>${rice.docbook.phase}</phase>
             <configuration>
               <outputDirectory>${rice.docbook.filtered}</outputDirectory>
               <resources>
@@ -820,7 +837,7 @@
             <goals>
               <goal>copy-resources</goal>
             </goals>
-            <phase>pre-site</phase>
+            <phase>${rice.docbook.phase}</phase>
             <configuration>
               <outputDirectory>${rice.docbook.dest}</outputDirectory>
               <resources>
@@ -898,7 +915,7 @@
         <executions>
           <execution>
             <id>remove-fo-files</id>
-            <phase>pre-site</phase>
+            <phase>${rice.docbook.phase}</phase>
             <configuration>
               <target>
                 <delete quiet="true">

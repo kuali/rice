@@ -216,7 +216,7 @@
                   <bean parent="SelectControl"/>
                 </property>
                 <property name="optionsFinder">
-                  <bean class="org.kuali.rice.krms.impl.repository.AgendaTypeValuesFinder" p:blankOption="true"/>
+                  <bean class="org.kuali.rice.krms.impl.repository.AgendaTypeValuesFinder" p:blankOption="false"/>
                 </property>
               </bean>
 

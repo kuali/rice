@@ -42,7 +42,7 @@ public class CustomizableActionListEmailServiceTest extends KEWTestCase {
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
     private static final int STANDARD_SLEEP_TIME = 5000;
-    private static final int EXPECTED_MILLISECONDS_TO_SEND_REMINDER = 100;
+    private static final int EXPECTED_MILLISECONDS_TO_SEND_REMINDER = 300;
 
     @UnitTestData(sqlFiles = {@UnitTestFile(filename = "classpath:testEmailLifecycle.sql", delimiter = ";")})
     @Test public void testEmailCreationPerformance() throws Exception {

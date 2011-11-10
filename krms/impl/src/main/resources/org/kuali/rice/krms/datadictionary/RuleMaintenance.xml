@@ -74,7 +74,7 @@
 
   <bean id="ruleInfoSection" parent="ruleInfoSection-parent"/>
   <bean id="ruleInfoSection-parent" parent="GroupSection">
-    <property name="title" value="!!Rule" />
+    <property name="title" value="Rule" />
     <property name="renderHeader" value="true" />
     <property name="disclosure.render" value="true" />
     <property name="disclosure.defaultOpen" value="true" />

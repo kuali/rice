@@ -208,7 +208,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         for (Responsibility r : getMatchingResponsibilities(responsibilities, responsibilityDetails)) {
             ids.add(r.getId());
         }
-        final List<String> roleIds = getRoleIdsForResponsibilities(ids, qualification);
+        final List<String> roleIds = getRoleIdsForResponsibilities(ids);
         return roleService.principalHasRole(principalId, roleIds, qualification);
     }
 
@@ -245,7 +245,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         List<Responsibility> applicableResponsibilities = getMatchingResponsibilities(responsibilities, responsibilityDetails);
         List<ResponsibilityAction> results = new ArrayList<ResponsibilityAction>();
         for (Responsibility r : applicableResponsibilities) {
-            List<String> roleIds = getRoleIdsForResponsibility(r.getId(), qualification);
+            List<String> roleIds = getRoleIdsForResponsibility(r.getId());
             results.addAll(getActionsForResponsibilityRoles(r, roleIds, qualification));
         }
         return results;
@@ -323,13 +323,11 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     }
 
     @Override
-    public List<String> getRoleIdsForResponsibility(String id, Map<String, String> qualification) throws RiceIllegalArgumentException {
+    public List<String> getRoleIdsForResponsibility(String id) throws RiceIllegalArgumentException {
         incomingParamCheck(id, "id");
-        incomingParamCheck(qualification, "qualification");
 
         final List<String> roleIds = getRoleIdsForPredicate(and(equal("responsibilityId", id), equal("active", "Y")));
 
-        //TODO filter with qualifiers
         return Collections.unmodifiableList(roleIds);
     }
 
@@ -435,10 +433,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return Collections.unmodifiableMap(results);
     }
 
-    private List<String> getRoleIdsForResponsibilities(Collection<String> ids, Map<String, String> qualification) {
+    private List<String> getRoleIdsForResponsibilities(Collection<String> ids) {
         final List<String> roleIds = getRoleIdsForPredicate(and(in("responsibilityId", ids.toArray()), equal("active", "Y")));
 
-        //TODO filter with qualifiers
         return Collections.unmodifiableList(roleIds);
     }
 

@@ -240,7 +240,6 @@ public interface ResponsibilityService {
      * Gets a List of roleIds that the responsibility is associated with.
      *
      * @param id the unique id to retrieve the roleIds for. cannot be null or blank.
-     * @param qualification the qualification for the responsibility. cannot be null.
      * @return an immutable list of roleIds. Will not return null.
      * @throws IllegalArgumentException if the id is null or blank or if the qualification is null
      */
@@ -248,9 +247,7 @@ public interface ResponsibilityService {
     @XmlElementWrapper(name = "roleIds", required = true)
     @XmlElement(name = "roleId", required = false)
     @WebResult(name = "roleIds")
-    List<String> getRoleIdsForResponsibility(@WebParam(name = "id") String id,
-                                             @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
-                                             @WebParam(name = "qualification") Map<String, String> qualification) throws RiceIllegalArgumentException;
+    List<String> getRoleIdsForResponsibility(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
 
     /**
      * This method find Responsibilities based on a query criteria.  The criteria cannot be null.

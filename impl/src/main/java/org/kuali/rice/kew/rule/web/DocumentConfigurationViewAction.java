@@ -214,7 +214,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		}
 		form.setExceptionResponsibilities( responsibilities );
 		for ( ResponsibilityForDisplay responsibility : responsibilities ) {
-			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getResp().getId(), null);
+			List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getResp().getId());
 			form.getResponsibilityRoles().put( responsibility.getResponsibilityId(), getRoleService().getRoles(roleIds) );
 		}
 	}
@@ -334,7 +334,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
             form.setResponsibilityMap( nodeToRespMap );
 		
 		    for (Responsibility responsibility : responsibilities ) {
-		        List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getId(), null);
+		        List<String> roleIds = getResponsibilityService().getRoleIdsForResponsibility(responsibility.getId());
 		        respToRoleMap.put( responsibility.getId(), getRoleService().getRoles(roleIds) );
 		    }
         }

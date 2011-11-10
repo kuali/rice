@@ -625,7 +625,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
 
         List<String> roleIds = new ArrayList<String>();
         for (Responsibility responsibility : responsibilities) {
-            roleIds.addAll(responsibilityService.getRoleIdsForResponsibility(responsibility.getId(), null));
+            roleIds.addAll(responsibilityService.getRoleIdsForResponsibility(responsibility.getId()));
         }
 
         if (roleIds.isEmpty()) {

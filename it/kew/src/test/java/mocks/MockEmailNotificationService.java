@@ -37,4 +37,8 @@ public interface MockEmailNotificationService extends ActionListEmailService {
     public void resetReminderCounts();
 
     public boolean wasStyleServiceAccessed();
+    
+    public boolean wasDailyReminderSent();
+    
+    public boolean wasWeeklyReminderSent();    
 }

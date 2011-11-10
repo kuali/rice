@@ -22,16 +22,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.api.action.ActionItem;
-import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.mail.DailyEmailJob;
+import org.kuali.rice.kew.mail.WeeklyEmailJob;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.quartz.CronTrigger;
+import org.quartz.JobDetail;
 
 
 public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEmailServiceImpl*/ implements MockEmailNotificationService {
@@ -39,8 +44,13 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
 
     private static Map<String,List> immediateReminders = new HashMap<String,List>();
     private static Map<String,Integer> aggregateReminderCount = new HashMap<String,Integer>();
-    public static boolean SEND_DAILY_REMINDER_CALLED = false;
-    public static boolean SEND_WEEKLY_REMINDER_CALLED = false;
+    private boolean sendDailyReminderCalled = false;
+    private boolean sendWeeklyReminderCalled = false;
+    
+    private static final String DAILY_TRIGGER_NAME = "Daily Email Trigger";
+    private static final String DAILY_JOB_NAME = "Daily Email";
+    private static final String WEEKLY_TRIGGER_NAME = "Weekly Email Trigger";
+    private static final String WEEKLY_JOB_NAME = "Weekly Email";
 
     private EmailContentService contentService;
     private String deploymentEnvironment;
@@ -85,6 +95,7 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
 
     @Override
 	public void sendDailyReminder() {
+        LOG.info("Sending daily reminder");
         try {
             getEmailContentGenerator().generateWeeklyReminder(null, null);
         }
@@ -94,11 +105,17 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
         actionItems.add(ActionItem.Builder.create("ai1", "ai2", "ai3", new DateTime(), "ai4", "ai5", "ai6", "ai7", "ai8").build());
         sendPeriodicReminder(null, actionItems, KewApiConstants.EMAIL_RMNDR_DAY_VAL);
         //super.sendDailyReminder();
-		SEND_DAILY_REMINDER_CALLED = true;
+        sendDailyReminderCalled = true;
     }
 
     @Override
+    public boolean wasDailyReminderSent(){
+        return this.sendDailyReminderCalled;
+    }
+    
+    @Override
     public void sendWeeklyReminder() {
+        LOG.info("Sending weekly reminder");
         try {
             getEmailContentGenerator().generateWeeklyReminder(null, null);
         }
@@ -107,12 +124,47 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
         actionItems.add(ActionItem.Builder.create("ai1", "ai2", "ai3", new DateTime(), "ai4", "ai5", "ai6", "ai7", "ai8").build());
         sendPeriodicReminder(null, actionItems, KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
         //super.sendWeeklyReminder();
-    	SEND_WEEKLY_REMINDER_CALLED = true;
+        sendWeeklyReminderCalled = true;
+    }
+    
+    @Override
+    public boolean wasWeeklyReminderSent(){
+        return this.sendWeeklyReminderCalled;
     }
 
     @Override
     public void scheduleBatchEmailReminders() throws Exception {
-        //do nothing
+        sendDailyReminderCalled = false;
+        sendWeeklyReminderCalled = false;
+        LOG.info("Scheduling Batch Email Reminders.");
+        String emailBatchGroup = "Email Batch";
+        String dailyCron = ConfigContext.getCurrentContextConfig()
+                .getProperty(KewApiConstants.DAILY_EMAIL_CRON_EXPRESSION);
+        if (!StringUtils.isBlank(dailyCron)) {
+            LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
+            CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
+            JobDetail dailyJobDetail = new JobDetail(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
+            dailyTrigger.setJobName(dailyJobDetail.getName());
+            dailyTrigger.setJobGroup(dailyJobDetail.getGroup());
+            sendDailyReminderCalled = true;
+        } else {
+            LOG.warn("No " + KewApiConstants.DAILY_EMAIL_CRON_EXPRESSION
+                    + " parameter was configured.  Daily Email batch was not scheduled!");
+        }
+
+        String weeklyCron = ConfigContext.getCurrentContextConfig().getProperty(
+                KewApiConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
+        if (!StringUtils.isBlank(weeklyCron)) {
+            LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
+            CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
+            JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
+            weeklyTrigger.setJobName(weeklyJobDetail.getName());
+            weeklyTrigger.setJobGroup(weeklyJobDetail.getGroup());
+            sendWeeklyReminderCalled = true;
+        } else {
+            LOG.warn("No " + KewApiConstants.WEEKLY_EMAIL_CRON_EXPRESSION
+                    + " parameter was configured.  Weekly Email batch was not scheduled!");
+        }
     }
 
     //@Override
@@ -154,7 +206,11 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
         Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkId);
         List actionItemsSentUser = immediateReminders.get(principal.getPrincipalId());
         if (actionItemsSentUser == null) {
+            LOG.info("There are no immediate reminders for Principal " + networkId + " and Document ID " + documentId);
             return 0;
+        }
+        else {
+            LOG.info("There are " + actionItemsSentUser.size() + " immediate reminders for Principal " + networkId + " and Document ID " + documentId);
         }
         int emailsSent = 0;
         for (Iterator iter = actionItemsSentUser.iterator(); iter.hasNext();) {
@@ -163,6 +219,7 @@ public class MockEmailNotificationServiceImpl /*extends CustomizableActionListEm
                 emailsSent++;
             }
         }
+        LOG.info(emailsSent + "No immediate e-mails were sent to Principal " + networkId + " and Document ID " + documentId);
         return emailsSent;
     }
 

@@ -31,6 +31,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import static org.junit.Assert.*;
 
 public class EmailReminderLifecycleTest extends KEWTestCase {
+    protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
     private static final String DEFAULT_EMAIL_CRON_WEEKLY = "0 0 2 ? * 2";
     private static final String DEFAULT_EMAIL_CRON_DAILY = "0 0 1 * * ?";
@@ -74,20 +75,19 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
 		assertEquals("ewestfal should have no emails.", 0, emailsSent);
-		MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED = false;
-		MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED = false;
 
 		// let's fire up the lifecycle
 		emailReminderLifecycle = new EmailReminderLifecycle();
+		LOG.info("testDailyEmails(): Starting EmailReminderLifeCycle");
 		emailReminderLifecycle.start();
 
 		// sleep for 10 seconds
 		Thread.sleep(10000);
 
 		// send daily reminder should have now been called
-		assertTrue("daily reminder should have been called.", MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED);
-		assertFalse("weekly reminder should NOT have been called.", MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED);
+		assertTrue("daily reminder should have been called.", getMockEmailService().wasDailyReminderSent());
 
+		LOG.info("testDailyEmails(): Stopping EmailReminderLifeCycle");
 		emailReminderLifecycle.stop();
 
 		// setting cron to empty so job will cease
@@ -123,20 +123,21 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 		int emailsSent = getMockEmailService().immediateReminderEmailsSent("ewestfal", document.getDocumentId(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
 		assertEquals("ewestfal should have no emails.", 0, emailsSent);
-		MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED = false;
-		MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED = false;
 
 		// let's fire up the lifecycle
 		emailReminderLifecycle = new EmailReminderLifecycle();
+		LOG.info("testWeeklyEmails(): Starting EmailReminderLifeCycle");
 		emailReminderLifecycle.start();
 
+		assertTrue("EmailReminderLifecycle should have been started", emailReminderLifecycle.isStarted());
+		
 		// sleep for 10 seconds
 		Thread.sleep(10000);
 
 		// send weekly reminder should have now been called
-		assertTrue("weekly reminder should have been called.", MockEmailNotificationServiceImpl.SEND_WEEKLY_REMINDER_CALLED);
-		assertFalse("daily reminder should NOT have been called.", MockEmailNotificationServiceImpl.SEND_DAILY_REMINDER_CALLED);
+		assertTrue("weekly reminder should have been called.", getMockEmailService().wasWeeklyReminderSent());
 
+		LOG.info("testWeeklyEmails(): Stopping EmailReminderLifeCycle");
 		emailReminderLifecycle.stop();
 
         // setting cron to empty so job will cease

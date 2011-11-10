@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2011 The Kuali Foundation
+  Copyright 2005-2011 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+  Licensed under the Educational Community License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+  http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>22</version>
+    <version>25</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -172,13 +173,24 @@
 
     <!-- phase for wsdl generation from jaxws annotated interfaces -->
     <rice.java2ws.phase>process-classes</rice.java2ws.phase>
-    <!-- Turn off Clover for now -->
-    <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
     <enforcer.phase>validate</enforcer.phase>
     <failsafe.phase>integration-test</failsafe.phase>
   </properties>
 
   <profiles>
+    <!-- Profile for site generation. Assumes "mvn clean install" has been run -->
+    <profile>
+      <id>site</id>
+      <properties>
+        <gmaven.stubs.phase>none</gmaven.stubs.phase>
+        <gmaven.compile.phase>none</gmaven.compile.phase>
+        <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
+        <skipTests>true</skipTests>
+        <enforcer.phase>none</enforcer.phase>
+        <failsafe.phase>none</failsafe.phase>
+        <rice.java2ws.phase>none</rice.java2ws.phase>
+      </properties>
+    </profile>
     <profile>
       <id>license</id>
       <properties>

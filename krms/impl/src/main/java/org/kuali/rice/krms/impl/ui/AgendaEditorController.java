@@ -138,6 +138,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         if (agendaItem.getRule().getActions().isEmpty()) {
             ActionBo actionBo = new ActionBo();
+            actionBo.setTypeId("");
             actionBo.setNamespace(agendaItem.getRule().getNamespace());
             actionBo.setRuleId(agendaItem.getRule().getId());
             actionBo.setSequenceNumber(1);

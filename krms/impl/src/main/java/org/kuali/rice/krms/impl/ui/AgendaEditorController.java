@@ -120,6 +120,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         if (agendaItem == null) {
             RuleBo rule = new RuleBo();
+            rule.setId(getSequenceAccessorService().getNextAvailableSequenceNumber("KRMS_RULE_S")
+                    .toString());
             if (StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
                 rule.setNamespace("");
             } else {

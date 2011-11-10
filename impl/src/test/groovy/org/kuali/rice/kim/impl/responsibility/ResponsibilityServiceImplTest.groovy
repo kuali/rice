@@ -759,17 +759,12 @@ class ResponsibilityServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetRoleIdsForResponsibilityWithNullIdFails() {
-        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility(null, new HashMap<String, String>());
+        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetRoleIdsForResponsibilityWithBlankIdFails() {
-        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("", new HashMap<String, String>());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetRoleIdsForResponsibilityWithNullQualificationFails() {
-        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("test", null);
+        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("");
     }
 
     @Test
@@ -788,7 +783,7 @@ class ResponsibilityServiceImplTest {
 
         injectCriteriaLookupServiceIntoResponsibilityService();
 
-        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("respidone", new HashMap<String, String>());
+        List<String> roleIds = responsibilityService.getRoleIdsForResponsibility("respidone");
 
         Assert.assertEquals("rolerespidone", roleIds[0]);
     }

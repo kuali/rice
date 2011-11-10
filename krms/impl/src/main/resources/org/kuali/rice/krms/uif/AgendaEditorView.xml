@@ -57,7 +57,7 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
-  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js">
+  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js">
     <property name="additionalCssFiles" ref="krms-css" />
     <property name="title" value="Agenda Editor"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
@@ -336,12 +336,7 @@
         <!-- this is horrible this clientSideJs it appears to fix the required properties code, at least the first time
              through, after the first time, the alert pops -->
         <bean parent="NavigationActionField" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
-              p:clientSideJs="if (document.getElementById('204').value == '') {
-                alert('Please enter the Agenda Name');
-                return false;
-              }
-              if (document.getElementById('230').value == '') {
-                alert('Please Lookup (click the magnifying glass icon) the Agenda Context');
+              p:clientSideJs="if (!requiredsSet()) {
                 return false;
               }
               submitForm();
@@ -358,18 +353,14 @@
 -->
         <!-- ugly alert that should be replaced with a disabled button when no rule is selected -->
         <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
-              p:clientSideJs="if (document.getElementById('204').value == '') {
-                alert('Please enter the Agenda Name');
+              p:clientSideJs="if (!requiredsSet()) {
                 return false;
               }
-              if (document.getElementById('230').value == '') {
-                alert('Please Lookup (click the magnifying glass icon) the Agenda Context');
-                return false;
-              }
-              if (getSelectedItemInput() != null)
+              if (getSelectedItemInput() != null) {
                 if (getSelectedItemInput().val() == '') {
-                alert('Please select the rule to edit, then click edit rule.');
-                return false;
+                  alert('Please select the rule to edit, then click edit rule.');
+                  return false;
+                }
               }
               submitForm();
               "

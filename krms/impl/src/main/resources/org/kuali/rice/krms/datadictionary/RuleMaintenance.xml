@@ -74,7 +74,7 @@
 
   <bean id="ruleInfoSection" parent="ruleInfoSection-parent"/>
   <bean id="ruleInfoSection-parent" parent="GroupSection">
-    <property name="title" value="Rule" />
+    <property name="title" value="!!Rule" />
     <property name="renderHeader" value="true" />
     <property name="disclosure.render" value="true" />
     <property name="disclosure.defaultOpen" value="true" />
@@ -119,6 +119,11 @@
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.namespace" p:readOnly="true" />
         <ref bean="firstRuleCustomAttributes"/>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" p:required="true"/>
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.description" p:labelField.colSpan="1" p:colSpan="5">
+          <property name="control">
+            <bean parent="TextAreaControl" p:rows="4" p:cols="60"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -141,13 +146,6 @@
       </list>
     </property>
   </bean>
-
-  <bean parent="InputField" p:propertyName="agendaItemLine.rule.description" p:labelField.colSpan="1" p:colSpan="5">
-    <property name="control">
-      <bean parent="TextAreaControl" p:rows="4" p:cols="60"/>
-    </property>
-  </bean>
-
 
   <bean name="propositionSection" parent="propositionSection-parent" />
   <bean name="propositionSection-parent" parent="GroupBodyOnly">

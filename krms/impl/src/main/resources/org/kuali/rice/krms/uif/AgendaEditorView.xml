@@ -336,7 +336,9 @@
         <!-- this is horrible this clientSideJs it appears to fix the required properties code, at least the first time
              through, after the first time, the alert pops -->
         <bean parent="NavigationActionField" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
-              p:clientSideJs="if (!requiredsSet()) {
+              p:clientSideJs="var requiredMessage = requiredsSet();
+              if (requiredMessage.length > 0) {
+                alert(requiredMessage);
                 return false;
               }
               submitForm();
@@ -353,14 +355,15 @@
 -->
         <!-- ugly alert that should be replaced with a disabled button when no rule is selected -->
         <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
-              p:clientSideJs="if (!requiredsSet()) {
-                return false;
-              }
+              p:clientSideJs="var requiredMessage = requiredsSet();
               if (getSelectedItemInput() != null) {
                 if (getSelectedItemInput().val() == '') {
-                  alert('Please select the rule to edit, then click edit rule.');
-                  return false;
+                  requiredMessage = requiredMessage + 'Please select the rule to edit, then click edit rule.';
                 }
+              }
+              if (requiredMessage.length > 0) {
+                alert(requiredMessage);
+                return false;
               }
               submitForm();
               "

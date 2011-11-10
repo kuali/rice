@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 function requiredsSet() {
+    var message = '';
     // 178_attribute is Namespace
-    if (document.getElementById('178_attribute').selected == '') {
-      alert('Please select a Namespace');
-      return false;
+    if (document.getElementById('178_attribute').options[document.getElementById('178_attribute').selectedIndex].value == '') {
+      message =  message + 'Please select a Namespace.\n';
     }
     // 204 is Agenda Name
     if (document.getElementById('204').value == '') {
-      alert('Please enter the Agenda Name');
-      return false;
+      message = message + 'Please enter the Agenda Name.\n';
     }
     // 230 is Agenda Context
     if (document.getElementById('230').value == '') {
-      alert('Please Lookup (click the magnifying glass icon) the Agenda Context');
-      return false;
+      message = message + 'Please Lookup (click the magnifying glass icon) the Agenda Context.\n';
     }
-    return true;
+    return message;
 }
 

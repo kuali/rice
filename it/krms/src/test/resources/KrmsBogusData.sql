@@ -200,8 +200,8 @@ insert into krms_term_spec_t
 values ('TERMSPEC_001', 'campusCodeTermSpec', 'KRMS_TEST', 'java.lang.String', 'Y', 1);
 
 insert into krms_term_t
-(term_id, term_spec_id, ver_nbr)
-values ('TERM_001', 'TERMSPEC_001', 1);
+(term_id, term_spec_id, desc_txt, ver_nbr)
+values ('TERM_001', 'TERMSPEC_001', 'Campus Code', 1);
 
 insert into krms_prop_parm_t
 (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
@@ -502,8 +502,8 @@ insert into krms_term_spec_t
 values ('TERMSPEC_002', 'KRMS_TEST', 'bogusFundTermSpec', 'java.lang.String', 'Y', 1);
 
 insert into krms_term_t
-(term_id, term_spec_id, ver_nbr)
-values ('TERM_002', 'TERMSPEC_002', 1);
+(term_id, term_spec_id, desc_txt, ver_nbr)
+values ('TERM_002', 'TERMSPEC_002', 'Fund Name', 1);
 
 
 -- 2nd level prop
@@ -626,10 +626,10 @@ insert into krms_cntxt_vld_term_spec_t(cntxt_term_spec_prereq_id, cntxt_id, term
 values ('CTSPID006', 'CONTEXT1', 'TERMSPEC_006', 'N');
 
 
-insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_003', 'TERMSPEC_003', 1);
-insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_004', 'TERMSPEC_004', 1);
-insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_005', 'TERMSPEC_005', 1);
-insert into krms_term_t(term_id,TERM_SPEC_ID, VER_NBR)values ('TERM_006', 'TERMSPEC_006', 1);
+insert into krms_term_t(term_id,TERM_SPEC_ID, DESC_TXT, VER_NBR)values ('TERM_003', 'TERMSPEC_003', 'PO Value', 1);
+insert into krms_term_t(term_id,TERM_SPEC_ID, DESC_TXT, VER_NBR)values ('TERM_004', 'TERMSPEC_004', 'PO Item Type', 1);
+insert into krms_term_t(term_id,TERM_SPEC_ID, DESC_TXT, VER_NBR)values ('TERM_005', 'TERMSPEC_005', 'Account', 1);
+insert into krms_term_t(term_id,TERM_SPEC_ID, DESC_TXT, VER_NBR)values ('TERM_006', 'TERMSPEC_006', 'Occasion', 1);
 
 --
 -- big fin rule

@@ -34,7 +34,7 @@
 <div id="workarea" >
   <div class="tab-container" align="center">
     <table width="100%" class="datatable-80" align="center" cellspacing="0">
-	    <tbody id="G" style="display: nonee;"></tbody>
+	    <tbody id="G" style="display: none;"></tbody>
         <tbody id="G448" style="display: none;"></tbody>
         <tbody id="G449" style="display: none;"></tbody>
         <tbody id="G2449" style="display: none;"></tbody>
@@ -48,7 +48,7 @@
 	    </tr>
 	    <tr>
 		  <th><div align="right">Automatic Refresh Rate:</div></th>
-          <td class="datacell"><html-el:text property="preferences.refreshRate" size="3" />
+          <td class="datacell"><html-el:text  property="preferences.refreshRate" size="3" />
             <kul:checkErrors keyMatch="preferences.refreshRate" />
             <c:if test="${hasErrors}">
               <kul:fieldShowErrorIcon />
@@ -165,10 +165,6 @@
         <tr>
           <th ><div align="right">Document Route Status</div></th>
           <td class="datacell"> <html-el:checkbox styleClass="nobord" property="preferences.showDocumentStatus" value="${Constants.PREFERENCES_YES_VAL }"/>          </td>
-        </tr>
-        <tr>
-          <th ><div align="right">Application Document Status</div></th>
-          <td class="datacell"> <html-el:checkbox styleClass="nobord" property="preferences.showAppDocStatus" value="${Constants.PREFERENCES_YES_VAL }"/>          </td>
         </tr>
 
 

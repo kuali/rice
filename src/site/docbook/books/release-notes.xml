@@ -20,7 +20,7 @@
     <info>
         <title>Kuali Rice ${project.version} Release Notes</title>
         <edition>${project.version}</edition>
-        <pubdate>Released: docbook.build.timestamp</pubdate>
+        <pubdate>Released: ${docbook.build.timestamp}</pubdate>
         <releaseinfo>This document contains information on work completed as part of the first beta
             release of Kuali Rice Version 2.0.</releaseinfo>
     </info>

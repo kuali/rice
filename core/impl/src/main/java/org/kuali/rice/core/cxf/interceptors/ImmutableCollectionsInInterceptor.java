@@ -44,8 +44,10 @@ public class ImmutableCollectionsInInterceptor extends AbstractPhaseInterceptor<
     public void handleMessage(final Message message) throws Fault {
         try {
             List contents = message.getContent(List.class);
-            for (Object o : contents) {
-                CollectionUtils.makeUnmodifiableAndNullSafe(o);
+            if (contents != null) {
+                for (Object o : contents) {
+                    CollectionUtils.makeUnmodifiableAndNullSafe(o);
+                }
             }
         } catch (IllegalAccessException e) {
             throw new Fault(e);

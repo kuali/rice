@@ -39,7 +39,9 @@
     <param name="notification.quartz.autostartup">false</param>
     <param name="kcb.messaging.synchronous">true</param>
     <param name="message.delivery">synchronous</param>
+  <!--
     <param name="message.persistence">false</param>
+    -->
     <param name="Routing.ImmediateExceptionRouting">true</param>
 
     <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>

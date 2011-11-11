@@ -15,40 +15,61 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>rice-ken</artifactId>
-		<groupId>org.kuali.rice</groupId>
-		<version>2.0.0-b2-SNAPSHOT</version>
-	</parent>
-	<artifactId>rice-ken-api</artifactId>
-	<version>2.0.0-b2-SNAPSHOT</version>
-	<name>Rice KEN API</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>rice-ken</artifactId>
+    <groupId>org.kuali.rice</groupId>
+    <version>2.0.0-b2-SNAPSHOT</version>
+  </parent>
+  <artifactId>rice-ken-api</artifactId>
+  <version>2.0.0-b2-SNAPSHOT</version>
+  <name>Rice KEN API</name>
 
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>rice-core-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+  <dependencies>
     <dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>rice-ksb-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-ksb-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-	</dependencies>
-	<build>
+  </dependencies>
 
-	</build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-java2ws-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>SendNotificationService-wsdl</id>
+            <phase>${rice.java2ws.phase}</phase>
+            <configuration>
+              <className>org.kuali.rice.ken.api.service.SendNotificationService</className>
+              <outputFile>${project.build.outputDirectory}/wsdl/SendNotificationService.wsdl</outputFile>
+              <serviceName>SendNotificationService</serviceName>
+            </configuration>
+            <goals>
+              <goal>java2ws</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

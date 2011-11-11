@@ -56,6 +56,7 @@ public class KENAPIServiceImpl implements KENAPIService {
     /**
      * @see org.kuali.rice.ken.service.KENAPIService#getAllChannels()
      */
+    @Override
     public Collection<String> getAllChannelNames() {
         Collection<NotificationChannel> chans = channelService.getAllNotificationChannels();
         Collection<String> chanNames = new ArrayList<String>(chans.size());
@@ -68,6 +69,7 @@ public class KENAPIServiceImpl implements KENAPIService {
     /**
      * @see org.kuali.rice.ken.service.KENAPIService#getDeliverersForRecipientAndChannel(java.lang.String, java.lang.String)
      */
+    @Override
     public Collection<String> getDeliverersForRecipientAndChannel(String recipient, String channel) {
         if (StringUtils.isBlank(recipient)) {
             throw new RiceIllegalArgumentException("recipient is null or blank");
@@ -93,6 +95,7 @@ public class KENAPIServiceImpl implements KENAPIService {
     /**
      * @see org.kuali.rice.ken.service.KENAPIService#getRecipientPreference(java.lang.String, java.lang.String)
      */
+    @Override
     public String getRecipientPreference(String recipient, String prefKey) {
         if (StringUtils.isBlank(recipient)) {
             throw new RiceIllegalArgumentException("recipient is null or blank");

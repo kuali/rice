@@ -25,9 +25,30 @@ import org.kuali.rice.core.api.CoreConstants;
 public final class KENServiceConstants {
     public static final String KENAPI_SERVICE = "KEN-KENAPIService";
 
-    public final static String SERVICE_PATH_SOAP = "soap/ken" + "/" + CoreConstants.Versions.VERSION_2_0;
+    public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
 
-	private KENServiceConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
+
+    public static final class Namespaces {
+        public static final String MODULE_NAME = "ken";
+
+        public static final String KEN_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/ken";
+
+        /**
+         * Namespace for the core module which is compatible with Kuali Rice 2.0.x.
+         */
+        public static final String KEN_NAMESPACE_2_0 = KEN_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
+
+        private Namespaces() {
+            throw new UnsupportedOperationException("do not call");
+        }
+    }
+
+    public static final class ServiceNames {
+        public static final String SEND_NOTIFICATION_SERVICE = "SendNotificationService";
+    }
+
+
+    private KENServiceConstants() {
+        throw new UnsupportedOperationException("do not call");
+    }
 }

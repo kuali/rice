@@ -37,16 +37,35 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
 	      <groupId>${project.groupId}</groupId>
 	      <artifactId>rice-it-internal-tools</artifactId>
 	      <version>${project.version}</version>
 	      <scope>test</scope>
 	    </dependency>
+      <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>rice-edl-impl</artifactId>
+          <version>${project.version}</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>rice-krms-impl</artifactId>
+          <version>${project.version}</version>
+          <scope>test</scope>
+      </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>${mysql.jdbc.artifactId}</artifactId>
         </dependency>
+    <dependency>
+        <groupId>com.oracle</groupId>
+        <artifactId>${oracle.jdbc.artifactId}</artifactId>
+    </dependency>
         <dependency>
 	      <groupId>org.springframework</groupId>
 	      <artifactId>spring-core</artifactId>
@@ -112,10 +131,33 @@
 	      <artifactId>spring-web</artifactId>
 	      <scope>test</scope>
 	    </dependency>
-        <dependency>
+            <dependency>
 	      <groupId>xerces</groupId>
 	      <artifactId>xercesImpl</artifactId>
 	      <scope>test</scope>
 	    </dependency>
+
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-core</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-frontend-jaxws</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-transports-http</artifactId>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-transports-http-jetty</artifactId>
+          <scope>test</scope>
+      </dependency>
+
+
     </dependencies>
 </project>

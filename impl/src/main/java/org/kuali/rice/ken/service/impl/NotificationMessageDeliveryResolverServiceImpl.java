@@ -103,14 +103,14 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
         // process the list that came in with the notification request
            for (int i = 0; i < notification.getRecipients().size(); i++) {
                NotificationRecipient recipient = notification.getRecipient(i);
-               if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(recipient.getRecipientType())) {
+               if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode().equals(recipient.getRecipientType())) {
                    // resolve group's users
                    String[] groupMembers = notificationRecipientService.getGroupMembers(recipient.getRecipientId());
                    for(int j = 0; j < groupMembers.length; j++) {
                        completeRecipientList.add(groupMembers[j]);
                    }
                } else {  // just a user, so add to the list
-                   Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(recipient.getRecipientId());
+                   Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(recipient.getRecipientId());
             	   completeRecipientList.add(principal.getPrincipalId());
                }
            }
@@ -119,7 +119,7 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
            Iterator<NotificationRecipientList> i = notification.getChannel().getRecipientLists().iterator();
            while (i.hasNext()) {
                NotificationRecipientList listRecipient  = i.next();
-               if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.equals(listRecipient.getRecipientType())) {
+               if (KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode().equals(listRecipient.getRecipientType())) {
                    // resolve group's users
                    String[] groupMembers = notificationRecipientService.getGroupMembers(listRecipient.getRecipientId());
                    for (int j = 0; j < groupMembers.length; j++) {

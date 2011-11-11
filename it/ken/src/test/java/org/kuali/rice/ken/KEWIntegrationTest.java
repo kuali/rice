@@ -17,10 +17,11 @@ package org.kuali.rice.ken;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.ken.api.service.KENServiceConstants;
+import org.kuali.rice.ken.api.service.SendNotificationService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -43,7 +44,7 @@ public class KEWIntegrationTest extends KENTestCase {
         assertNotNull(identityService);
         LOG.info("Default KIM IdentityManagementService: " + identityService);
 
-        KSBXMLService notification = (KSBXMLService) GlobalResourceLoader.getService(new QName("KEN", "sendNotificationKewXmlService"));
+        SendNotificationService notification = (SendNotificationService) GlobalResourceLoader.getService(new QName(KENServiceConstants.Namespaces.KEN_NAMESPACE_2_0, "sendNotificationService"));
         assertNotNull(notification);
         // XmlIngesterService is = SpringServiceLocator..getXmlIngesterService();
         // check that the quickstart user is present

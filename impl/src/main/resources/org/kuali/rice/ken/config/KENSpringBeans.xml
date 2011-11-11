@@ -60,7 +60,7 @@
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
-	
+
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
 	<bean id="kenOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
@@ -118,7 +118,7 @@
               <value>notificationAuthorizationService</value>
               <value>notificationRecipientService</value>
               <value>notificationWorkflowDocumentService</value>
-              <value>sendNotificationKewXmlService</value>
+              <value>sendNotificationService</value>
               <value>notificationMessageDeliveryService</value>
               <value>userPreferencesService</value>
               <value>kenGenericDao</value>
@@ -138,7 +138,7 @@
     <bean id="kenApiService" class="org.kuali.rice.ken.service.impl.KENAPIServiceImpl">
       <property name="notificationChannelService" ref="notificationChannelService"/>
       <property name="userPreferenceService" ref="userPreferenceService"/>
-      
+
     </bean>
 
     <bean id="notificationService" class="org.kuali.rice.ken.service.impl.NotificationServiceImpl">
@@ -154,26 +154,26 @@
     <bean id="notificationContentTypeService" class="org.kuali.rice.ken.service.impl.NotificationContentTypeServiceImpl">
       <constructor-arg><ref local="kenGenericDao"/></constructor-arg>
     </bean>
-    
+
     <bean id="notificationChannelService" class="org.kuali.rice.ken.service.impl.NotificationChannelServiceImpl">
       <constructor-arg><ref local="kenGenericDao"/></constructor-arg>
     </bean>
-    
+
     <bean id="userPreferenceService" class="org.kuali.rice.ken.service.impl.UserPreferenceServiceImpl">
       <constructor-arg><ref local="kenGenericDao"/></constructor-arg>
       <constructor-arg><ref local="notificationChannelService"/></constructor-arg>
     </bean>
-    
+
     <bean id="notificationAuthorizationService" class="org.kuali.rice.ken.service.impl.NotificationAuthorizationServiceImpl">
       <constructor-arg><ref local="kenGenericDao"/></constructor-arg>
     </bean>
 
     <bean id="notificationRecipientService" class="org.kuali.rice.ken.service.impl.NotificationRecipientServiceKimImpl" />
-    
+
     <bean id="notificationWorkflowDocumentService" class="org.kuali.rice.ken.service.impl.NotificationWorkflowDocumentServiceImpl">
       <constructor-arg><ref local="messageContentService"/></constructor-arg>
     </bean>
-    
+
     <bean id="notificationMessageDeliveryResolverService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl">
       <constructor-arg><ref local="notificationService"/></constructor-arg>
       <constructor-arg><ref local="notificationRecipientService"/></constructor-arg>
@@ -190,17 +190,17 @@
       <constructor-arg><ref local="notificationMessageDeliveryService"/></constructor-arg>
     </bean>
 
-    <bean id="sendNotificationKewXmlService" class="org.kuali.rice.ken.service.impl.SendNotificationServiceKewXmlImpl">
+    <bean id="sendNotificationService" class="org.kuali.rice.ken.service.impl.SendNotificationServiceKewXmlImpl">
       <constructor-arg><ref local="notificationService"/></constructor-arg>
     </bean>
-    
+
     <bean id="notificationMessageDeliveryService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryServiceImpl">
       <constructor-arg><ref local="kenGenericDao"/></constructor-arg>
       <constructor-arg><ref local="kenNotificationMessegeDeliveryDao"/></constructor-arg>
     </bean>
-    
+
     <!-- END SERVICES -->
-       
+
 
     <!-- DAOS -->
     <!-- OJB-->
@@ -209,13 +209,13 @@
             <value>kenDataSource</value>
         </property>
     </bean>
-    
+
     <bean id="kenNotificationDao" class="org.kuali.rice.ken.dao.impl.NotificationDaoOjb">
         <property name="jcdAlias">
             <value>kenDataSource</value>
         </property>
     </bean>
-    
+
     <bean id="kenNotificationMessegeDeliveryDao" class="org.kuali.rice.ken.dao.impl.NotificationMessegeDeliveryDaoOjb">
         <property name="jcdAlias">
             <value>kenDataSource</value>
@@ -234,7 +234,7 @@
         </constructor-arg>
         <constructor-arg><bean class="java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
     </bean>
-    
+
     <bean id="autoRemovalExecutor" class="java.util.concurrent.ThreadPoolExecutor">
         <constructor-arg><value>1</value></constructor-arg> <!--  core pool size -->
         <constructor-arg><value>5</value></constructor-arg> <!-- max pool size -->
@@ -252,43 +252,30 @@
 		<property name="validRunMode" value="LOCAL" />
 	</bean>
 	
-	<bean id="kenSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
-       <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/ken"/>
-       <property name="serviceVersion" value="${rice.version}" />
-       <property name="servicePath" value="#{ T(org.kuali.rice.ken.api.service.KENServiceConstants).SERVICE_PATH_SOAP }" />
-    </bean>
-    
+  <bean id="kenSoapService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
+    <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.ken.api.service.KENServiceConstants$Namespaces).KEN_NAMESPACE_2_0 }" />
+    <property name="jaxWsService" value="true" />
+    <property name="priority" value="3" />
+    <property name="retryAttempts" value="0" />
+    <property name="serviceVersion" value="${rice.version}" />
+    <property name="servicePath" value="#{ T(org.kuali.rice.ken.api.service.KENServiceConstants).SERVICE_PATH_SOAP }" />
+    <property name="cacheManager" value="kewLocalCacheManager"/>
+  </bean>
+
+
 	<bean id="rice.ksb.serviceBus"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.serviceBus" />
 	</bean>
-	
-    <!-- export our sendNotificationKewXmlService -->
-    <bean parent="kenLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-        <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-                <property name="service">
-                    <ref bean="sendNotificationKewXmlService" />
-                </property>
-                <property name="localServiceName" value="sendNotificationKewXmlService" />
-                <property name="serviceNameSpaceURI" value="KEN"/>
-                <property name="priority" value="10" />
-                <property name="retryAttempts" value="1" />
-            </bean>
-        </property>
-        <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
-        <property name="forceRefresh" value="true"/>
-    </bean>
-    
-    <bean parent="kenLocalServiceExporter">
+
+  <bean parent="kenLocalServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
         <property name="serviceDefinition">
             <bean parent="kenSoapService">
                 <property name="service">
-                    <ref bean="sendNotificationKewXmlService" />
+                    <ref bean="sendNotificationService" />
                 </property>
-                <property name="localServiceName" value="sendNotificationKewXmlSOAPService" />
+                <property name="localServiceName" value="sendNotificationService" />
                 <property name="priority" value="10" />
                 <property name="retryAttempts" value="1" />
             </bean>
@@ -296,24 +283,7 @@
         <!-- THIS IS NEEDED FOR THE KEWINTEGRATIONTEST TO OBSERVE THE SERVICE ON THE BUS... -->
         <property name="forceRefresh" value="true"/>
     </bean>
-    
-    <!-- Export the KEN api service -->
-    <bean parent="kenLocalServiceExporter">
-		<property name="serviceBus" ref="rice.ksb.serviceBus"/>
-        <property name="serviceDefinition">
-            <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
-                <property name="service">
-                    <ref bean="kenApiService" />
-                </property>
-                <property name="localServiceName" value="KEN-KENAPIService" />
-                <property name="serviceNameSpaceURI" value="KEN"/>
-                <property name="priority" value="10" />
-                <property name="retryAttempts" value="1" />
-            </bean>
-        </property>
-        <property name="forceRefresh" value="true"/>
-    </bean>
-    
+
     <!-- Quartz beans -->    
 
     <!-- Define the job(s) -->
@@ -369,11 +339,11 @@
     <constructor-arg value="rice.ken"/>
     <constructor-arg ref="kenDataSource"/>
   </bean>
-  
+
   <bean id="kenEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
   	<property name="entityManagerFactory" ref="kenEntityManagerFactory"/>
   </bean>
-  
+
     <!-- 
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
@@ -388,7 +358,7 @@
     </property>
   </bean>
   -->
-  
+
   <!-- END JPA CONFIGURATION -->
 
 </beans>

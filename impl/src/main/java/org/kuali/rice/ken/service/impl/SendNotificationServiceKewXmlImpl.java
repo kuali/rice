@@ -17,21 +17,29 @@ package org.kuali.rice.ken.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.ken.api.service.KENServiceConstants;
+import org.kuali.rice.ken.api.service.SendNotificationService;
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.service.NotificationService;
+import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
+import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  * This class allows the NotificationService.sendNotification(XML) service 
  * to be invoked as a web service generically from the bus.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SendNotificationServiceKewXmlImpl implements KSBXMLService {
+public class SendNotificationServiceKewXmlImpl implements SendNotificationService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-	.getLogger(SendNotificationServiceKewXmlImpl.class);
-    
+    .getLogger(SendNotificationServiceKewXmlImpl.class);
+
     private final NotificationService notificationService;
 
     /**
@@ -39,7 +47,7 @@ public class SendNotificationServiceKewXmlImpl implements KSBXMLService {
      * @param notificationService
      */
     public SendNotificationServiceKewXmlImpl(NotificationService notificationService) {
-	    this.notificationService = notificationService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -48,16 +56,16 @@ public class SendNotificationServiceKewXmlImpl implements KSBXMLService {
      * @see org.kuali.rice.ksb.messaging.service.KSBXMLService#invoke(java.lang.String)
      */
     @Override
-    public void invoke(String xml) {
-    	if (StringUtils.isBlank(xml)) {
+    public void invoke(String message) {
+        if (StringUtils.isBlank(message)) {
             throw new RiceIllegalArgumentException("xml is null or blank");
         }
 
         try {
-    	   NotificationResponse response = notificationService.sendNotification(xml);
-    	   LOG.info(response.getMessage());
-    	} catch (Exception e) {
-    	    throw new WorkflowRuntimeException(e);
-    	}
+           NotificationResponse response = notificationService.sendNotification(message);
+           LOG.info(response.getMessage());
+        } catch (Exception e) {
+            throw new WorkflowRuntimeException(e);
+        }
     }
 }

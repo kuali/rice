@@ -76,11 +76,11 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      {
          boolean b = false;
 
-         if( recipientType.equals(KimGroupMemberTypes.GROUP_MEMBER_TYPE))
+         if( KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode().equals(recipientType) )
          {
              b = isGroupRecipientValid( recipientId );
          }
-         else if( recipientType.equals(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE) )
+         else if( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode().equals(recipientType) )
          {
              b = isUserRecipientValid( recipientId );
          }

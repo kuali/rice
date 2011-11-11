@@ -40,7 +40,7 @@ public class GlobalKCBServiceLocator {
     public static synchronized void init(BeanFactory beanFactory) {
 //        LOG.error("INITIALIZING", new Exception());
         if (locator != null) {
-            throw new IllegalStateException("GlobalNotificationServiceLocator already initialized");
+            throw new IllegalStateException("GlobalKCBServiceLocator already initialized");
         }
 
         locator = (KCBServiceLocator) Proxy.newProxyInstance(GlobalKCBServiceLocator.class.getClassLoader(),

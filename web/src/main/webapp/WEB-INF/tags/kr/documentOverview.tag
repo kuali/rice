@@ -16,7 +16,7 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <%@ attribute name="editingMode" required="true" description="used to decide editability of overview fields" type="java.util.Map"%>
-<c:set var="isMaintenanceForm" value='<%= jspContext.findAttribute("KualiForm") == org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm.class %>' />
+<c:set var="isMaintenanceForm" value='<%= jspContext.findAttribute("KualiForm").getClass() == org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm.class %>' />
 <c:set var="isMaintenance" value="${isMaintenanceForm || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
 <c:set var="readOnly" value="${ ! KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW]}" />
 

@@ -41,7 +41,10 @@
 <c:set var="isInquiry" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
 
 <%-- Is the screen a view of a mantenance document? --%>
-<c:set var="isMaintenanceForm" value='<%= jspContext.findAttribute("KualiForm").getClass() == org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm.class %>' />
+<c:set var="isMaintenanceForm" value='false' />
+<c:if test='<%= jspContext.findAttribute("KualiForm") != null %>'>
+	<c:set var="isMaintenanceForm" value='<%= jspContext.findAttribute("KualiForm").getClass() == org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm.class %>' />
+</c:if>
 <c:set var="isMaintenance" value="${isMaintenanceForm || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
 
 <%-- Is the screen a lookup? --%>

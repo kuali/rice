@@ -136,9 +136,11 @@ jQuery(function(){
 </head>
 <c:choose>
 	<c:when test="${lookup}" >
-		<body onload="placeFocus();
-        <c:if test='<%= jspContext.findAttribute("KualiForm").getClass() == org.kuali.rice.kns.web.struts.form.LookupForm.class %>'>
-			<c:out value ="${KualiForm.lookupable.extraOnLoad}" />
+		<body onload="placeFocus();	 
+		<c:if test='<%= jspContext.findAttribute("KualiForm") != null %>'>
+			<c:if test='<%= jspContext.findAttribute("KualiForm").getClass() == org.kuali.rice.kns.web.struts.form.LookupForm.class %>'>
+				<c:out value ="${KualiForm.lookupable.extraOnLoad}" />
+			</c:if>
 		</c:if>
 		">
     <div id="view_div">

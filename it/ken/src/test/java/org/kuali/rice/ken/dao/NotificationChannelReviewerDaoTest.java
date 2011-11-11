@@ -126,7 +126,7 @@ public class NotificationChannelReviewerDaoTest extends BusinessObjectPersistenc
 
         boolean success = reviewer != null;
         success &= reviewer.getReviewerId().equals("updatedReviewerId");
-        success &= reviewer.getReviewerType().equals(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+        success &= reviewer.getReviewerType().equals(KimGroupMemberTypes.GROUP_MEMBER_TYPE.getCode());
 
         return success;
     }

@@ -87,16 +87,33 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 //	   return bo
 //   }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    List buildListOfDeletionAwareLists() {
-        List managedLists = super.buildListOfDeletionAwareLists();
-        managedLists.add(this.attributeBos);
-        managedLists.add(this.items)
-        for (AgendaItemBo agendaItemBo : items) {
-            managedLists.add(agendaItemBo.getRule().getActions());
-            managedLists.add(agendaItemBo.getRule().getAttributeBos());
-        }
-        return managedLists;
-    }
+
+// The deletionAwareList does not solve the rule deletion issues since agendaItems are linked to each others.  These links
+// have a foreign key constraint in the database. So the agendaItems need to be deleted in a specific order.
+// On top of this comes that the agendaItems may have been moved within the tree which may make it even harder to
+// determine the proper order.
+//
+// Instead we have resorted to deleting the whole agendaItems tree and adding it anew.
+//
+//    @SuppressWarnings("unchecked")
+//    @Override
+//    List buildListOfDeletionAwareLists() {
+//        List managedLists = super.buildListOfDeletionAwareLists();
+//
+//        // The deletionAwareLists must be of a constant size, so we create a list for each collection type that a
+//        // child (rule) might have
+//        List<ActionBo> ruleActions = new ArrayList<ActionBo>();
+//        List<RuleAttributeBo> ruleAttributeBos = new ArrayList<RuleAttributeBo>();
+//        for (AgendaItemBo agendaItemBo : items) {
+//            ruleActions.addAll(agendaItemBo.getRule().getActions());
+//            ruleAttributeBos.addAll(agendaItemBo.getRule().getAttributeBos());
+//        }
+//        managedLists.add(ruleActions);
+//        managedLists.add(ruleAttributeBos);
+//
+//        managedLists.add(this.attributeBos);
+//        managedLists.add(this.items);
+//
+//        return managedLists;
+//    }
 }

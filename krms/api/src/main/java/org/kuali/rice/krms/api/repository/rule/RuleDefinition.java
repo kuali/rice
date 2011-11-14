@@ -287,9 +287,6 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         }
      
         public void setDescription(String description) {
-            if (description != null && StringUtils.isBlank(description)) {
-                throw new IllegalArgumentException("description is non-null but is blank");
-            }
             this.description = description;
         }
      

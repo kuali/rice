@@ -973,6 +973,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         String agendaItemSelected = agendaEditor.getSelectedAgendaItemId();
+        AgendaItemBo selectedItem = getAgendaItemById(firstItem, agendaItemSelected);
 
         if (firstItem != null) {
             // need to handle the first item here, our recursive method won't handle it.
@@ -981,6 +982,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             } else {
                 deleteAgendaItem(firstItem, agendaItemSelected);
             }
+
+            // remove agenda item and its whenTrue & whenFalse children from the list of agendaItems of the agenda
+            if (selectedItem.getWhenTrue() != null) {
+                removeAgendaItem(agendaEditor.getAgenda().getItems(), selectedItem.getWhenTrue());
+            }
+            if (selectedItem.getWhenFalse() != null) {
+                removeAgendaItem(agendaEditor.getAgenda().getItems(), selectedItem.getWhenFalse());
+            }
+            agendaEditor.getAgenda().getItems().remove(selectedItem);
         }
     }
 
@@ -1005,6 +1015,24 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
         return false;
+    }
+
+    /**
+     * Recursively delete the agendaItem and its children from the agendaItemBo list.
+     * @param items, the list of agendaItemBo that the agenda holds
+     * @param removeAgendaItem, the agendaItemBo to be removed
+     */
+    private void removeAgendaItem(List<AgendaItemBo> items, AgendaItemBo removeAgendaItem) {
+        if (removeAgendaItem.getWhenTrue() != null) {
+            removeAgendaItem(items, removeAgendaItem.getWhenTrue());
+        }
+        if (removeAgendaItem.getWhenFalse() != null) {
+            removeAgendaItem(items, removeAgendaItem.getWhenFalse());
+        }
+        if (removeAgendaItem.getAlways() != null) {
+            removeAgendaItem(items, removeAgendaItem.getAlways());
+        }
+        items.remove(removeAgendaItem);
     }
 
     @RequestMapping(params = "methodToCall=" + "ajaxCut")

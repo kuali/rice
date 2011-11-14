@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.metadata.ClassNotPersistenceCapableException;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -36,7 +35,6 @@ import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
 import org.kuali.rice.krms.framework.type.RuleTypeService;
 import org.kuali.rice.krms.impl.repository.ActionBo;
-import org.kuali.rice.krms.impl.repository.AgendaAttributeBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
@@ -47,10 +45,8 @@ import org.kuali.rice.krms.impl.type.RuleTypeServiceBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * {@link Maintainable} for the {@link AgendaEditor}
@@ -292,36 +288,14 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
     @Override
     public void saveDataObject() {
-        AgendaEditor agendaEditor = (AgendaEditor) getDataObject();
         AgendaBo agendaBo = ((AgendaEditor) getDataObject()).getAgenda();
-        if (agendaBo != null) { // apply custom attributes to agendaBo
+        if (agendaBo instanceof PersistableBusinessObject) {
+            Map<String,String> primaryKeys = new HashMap<String, String>();
+            primaryKeys.put("id", agendaBo.getId());
+            AgendaBo blah = getBusinessObjectService().findByPrimaryKey(AgendaBo.class, primaryKeys);
+            getBusinessObjectService().delete(blah);
 
-            Set<AgendaAttributeBo> attributes = new HashSet<AgendaAttributeBo>();
-
-            Map<String, KrmsAttributeDefinition> attributeDefinitionMap = buildAttributeDefinitionMap(agendaBo.getTypeId());
-
-            // for each entry, build an AgendaAttributeBo and add it to the set
-            for (Map.Entry<String,String> entry  : agendaEditor.getCustomAttributesMap().entrySet()){
-
-                KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey()); // get the definition from our map
-
-                if (attrDef != null) {
-                    AgendaAttributeBo attributeBo = new AgendaAttributeBo();
-                    attributeBo.setAgendaId(agendaBo.getId());
-                    attributeBo.setAttributeDefinitionId(attrDef.getId());
-                    attributeBo.setValue(entry.getValue());
-                    attributes.add( attributeBo );
-                }
-            }
-            // remove old attributes if any -- doesn't seem like we should have to do this!
-            if (!CollectionUtils.isEmpty(agendaBo.getAttributeBos())) {
-                getBusinessObjectService().delete(new ArrayList<AgendaAttributeBo>(agendaBo.getAttributeBos()));
-            }
-            // set new ones
-            agendaBo.setAttributeBos(attributes);
-
-            // And finally, save it
-            getBusinessObjectService().linkAndSave((PersistableBusinessObject) agendaBo);
+            getBusinessObjectService().linkAndSave(agendaBo);
         } else {
             throw new RuntimeException(
                     "Cannot save object of type: " + agendaBo + " with business object service");

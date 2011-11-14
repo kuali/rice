@@ -27,7 +27,7 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 
 
 /**
- * This is a description of what this class does - dseibert don't forget to fill this in. 
+ * This test is for the Action Definition!
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

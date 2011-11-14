@@ -184,6 +184,7 @@
   </properties>
 
   <profiles>
+    <!-- Profile for quickly creating basic Maven site -->
     <profile>
       <id>minsite</id>
       <properties>

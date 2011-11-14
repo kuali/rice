@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>26</version>
+    <version>28</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -47,6 +47,11 @@
   </ciManagement>
 
   <properties>
+    <!-- These properties modify the release process -->
+    <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
+    <kuali.release.goals>deploy</kuali.release.goals>
+    <kuali.release.arguments>-DskipTests</kuali.release.arguments>
+
     <appserver.port>8080</appserver.port>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>
@@ -179,6 +184,12 @@
   </properties>
 
   <profiles>
+    <profile>
+      <id>minsite</id>
+      <properties>
+        <rice.docbook.phase>none</rice.docbook.phase>
+      </properties>
+    </profile>
     <!-- Profile for site generation. Assumes "mvn clean install" has been run -->
     <profile>
       <id>site</id>

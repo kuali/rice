@@ -15,12 +15,17 @@
  */
 package org.kuali.rice.kew.dto;
 
+import com.google.common.base.Functions;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import net.sf.cglib.core.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.reflect.DataDefinition;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.reflect.PropertyDefinition;
+import org.kuali.rice.core.api.uif.AttributeError;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -48,7 +53,6 @@ import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.WorkflowRuleAttribute;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -182,14 +186,12 @@ public class DTOConverter {
 
                 // validate inputs from client application if the attribute is capable
                 if (attribute instanceof WorkflowAttributeXmlValidator) {
-                    List<WorkflowAttributeValidationError> errors =
+                    List<? extends AttributeError> errors =
                             ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
                     if (!errors.isEmpty()) {
                         inError = true;
                         errorMessage += "Error validating attribute " + definitionVO.getAttributeName() + " ";
-                        for (WorkflowAttributeValidationError error : errors) {
-                            errorMessage += error.getMessage() + " ";
-                        }
+                        errorMessage += Joiner.on("; ").join(Iterables.transform(errors, Functions.toStringFunction()));
                     }
                 }
                 // dont add to xml if attribute is in error

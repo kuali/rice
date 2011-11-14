@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.uif.AttributeError;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionTaken;
@@ -37,7 +38,6 @@ import org.kuali.rice.kew.api.document.DocumentContract;
 import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 
 /**
@@ -89,7 +89,7 @@ public interface WorkflowDocument extends DocumentContract {
 
 	List<WorkflowAttributeDefinition> getSearchableDefinitions();
 
-	List<WorkflowAttributeValidationError> validateAttributeDefinition(
+	List<? extends AttributeError> validateAttributeDefinition(
 			WorkflowAttributeDefinition attributeDefinition);
 
 	List<ActionRequest> getRootActionRequests();

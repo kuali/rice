@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.api.rule.RuleTemplateAttributeContract;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
 import org.kuali.rice.kew.rule.RoleRuleResponsibility;
@@ -451,7 +452,7 @@ public final class WebRuleUtils {
 			Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
 						
 			// validate rule data populates the rule extension values for us
-			List attValidationErrors = workflowAttribute.validateRuleData(parameterMap);
+			List<WorkflowServiceError> attValidationErrors = workflowAttribute.validateRuleData(parameterMap);
 
 			// because validation should be handled by business rules now, if we encounter a validation error at this point in
 			// time, let's throw an exception

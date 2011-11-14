@@ -36,4 +36,9 @@ public interface AttributeError {
      */
     List<String> getErrors();
 
+    /**
+     * Convenience method that returns a String containing all error messages
+     * @return returns a String containing all error messages
+     */
+    String getMessage();
 }

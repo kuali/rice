@@ -472,7 +472,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		return new Timestamp(date.getTime());
 	}
 
-	private void populateRuleExtensionValues(List errorList) {
+	private void populateRuleExtensionValues(List<WorkflowServiceError> errorList) {
 		RuleTemplateBo ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 		setRuleTemplate(ruleTemplate);
 
@@ -490,7 +490,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 				((GenericXMLRuleAttribute) workflowAttribute).setExtensionDefinition(RuleAttribute.to(ruleAttribute));
 			}
 
-			List attValidationErrors = workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getId()+""));
+			List<WorkflowServiceError> attValidationErrors = workflowAttribute.validateRuleData(getFieldMap(ruleTemplateAttribute.getId()+""));
 			if (attValidationErrors != null && !attValidationErrors.isEmpty()) {
 				errorList.addAll(attValidationErrors);
 			} else {

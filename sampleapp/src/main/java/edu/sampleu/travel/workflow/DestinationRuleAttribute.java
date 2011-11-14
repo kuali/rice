@@ -20,8 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.rule.GenericWorkflowAttribute;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -103,19 +104,19 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
         return props;
     }
 
-	public List validateRoutingData(Map paramMap) {
+	public List<? extends AttributeError> validateRoutingData(Map paramMap) {
 		return validateInputMap(paramMap);
 	}
 
-	public List validateRuleData(Map paramMap) {
+	public List<? extends AttributeError> validateRuleData(Map paramMap) {
 		return validateInputMap(paramMap);
 	}
 
-    private List validateInputMap(Map paramMap) {
+    private List<? extends AttributeError> validateInputMap(Map paramMap) {
     	List errors = new ArrayList();
     	this.destination = (String) paramMap.get(DEST_FIELD_KEY);
     	if (this.destination == null  && required) {
-    		errors.add(new WorkflowAttributeValidationError(DEST_FIELD_KEY, "Destination is required."));
+    		errors.add(RemotableAttributeError.Builder.create(DEST_FIELD_KEY, "Destination is required.").build());
     	}
     	return errors;
     }

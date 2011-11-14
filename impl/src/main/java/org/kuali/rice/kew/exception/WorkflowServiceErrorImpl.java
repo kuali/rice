@@ -151,6 +151,7 @@ public class WorkflowServiceErrorImpl implements Serializable, WorkflowServiceEr
   /**
    * @return the messageMap
    */
+  @Override
   public MessageMap getMessageMap() {
   	return this.messageMap;
   }

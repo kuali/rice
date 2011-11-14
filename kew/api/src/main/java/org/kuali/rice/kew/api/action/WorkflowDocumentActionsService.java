@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
@@ -37,10 +38,7 @@ import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.InvalidDocumentContentException;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
-import org.kuali.rice.kew.api.rule.Rule;
-import org.kuali.rice.kew.api.rule.RuleReportCriteria;
 
 /**
  * This service defines various operations which are used to perform actions against a workflow
@@ -1323,7 +1321,7 @@ public interface WorkflowDocumentActionsService {
      *
      * @param definition WorkflowAttributeDefinition to validate
      *
-     * @return a list of WorkflowAttributeValidationErrors caused by validation of the passed in {@code definition}
+     * @return a list of RemotableAttributeErrors caused by validation of the passed in {@code definition}
      *
      * @throws RiceIllegalArgumentException if {@code parameters} is null
      * @throws RiceIllegalArgumentException if no document with the {@code documentId} specified in
@@ -1339,7 +1337,7 @@ public interface WorkflowDocumentActionsService {
     @WebResult(name = "validationErrors")
     @XmlElementWrapper(name = "validationErrors", required = true)
     @XmlElement(name = "validationError", required = true)
-    List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
+    List<RemotableAttributeError> validateWorkflowAttributeDefinition(
             @WebParam(name = "definition") WorkflowAttributeDefinition definition)
             throws RiceIllegalArgumentException;
 

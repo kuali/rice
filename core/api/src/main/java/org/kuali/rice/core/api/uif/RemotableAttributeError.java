@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -73,6 +75,16 @@ public final class RemotableAttributeError extends AbstractDataTransferObject im
     @Override
     public List<String> getErrors() {
         return this.errors;
+    }
+
+    @Override
+    public String getMessage() {
+        return Joiner.on(", ").skipNulls().join(this.getErrors());
+    }
+
+    @Override
+    public String toString() {
+        return getAttributeName() + ": " + this.getMessage();
     }
 
     /**
@@ -192,6 +204,16 @@ public final class RemotableAttributeError extends AbstractDataTransferObject im
         @Override
         public List<String> getErrors() {
             return Collections.unmodifiableList(this.errors);
+        }
+
+        @Override
+        public String getMessage() {
+            return Joiner.on(", ").skipNulls().join(this.getErrors());
+        }
+
+        @Override
+        public String toString() {
+            return this.getAttributeName() + ": " + this.getMessage();
         }
 
         public void setAttributeName(String attributeName) {

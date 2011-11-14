@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -195,8 +196,8 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
         return extensions;
     }
 
-    public List validateRoutingData(Map paramMap) {
-        List errors = new ArrayList();
+    public List<WorkflowServiceError> validateRoutingData(Map paramMap) {
+        List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
         setDoctypeName((String) paramMap.get(DOC_TYPE_NAME_PROPERTY));
         if (isRequired() && org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
             errors.add(new WorkflowServiceErrorImpl("doc type is not valid.", "routetemplate.ruleroutingattribute.doctype.invalid"));
@@ -212,7 +213,7 @@ public class RuleRoutingAttribute implements WorkflowRuleAttribute {
         return errors;
     }
 
-    public List validateRuleData(Map paramMap) {
+    public List<WorkflowServiceError> validateRuleData(Map paramMap) {
         return validateRoutingData(paramMap);
     }
 

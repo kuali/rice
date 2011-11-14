@@ -21,6 +21,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.api.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.RuleExtensionBo;
@@ -189,7 +190,7 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 		paramMap.put("color", "green");
 		paramMap.put("totalDollar", "500");
 
-		assertFalse("Error list should contain at least one error.", attribute.validateRuleData(paramMap).isEmpty());
+        assertFalse("Error list should contain at least one error.", attribute.validateRuleData(paramMap).isEmpty());
 
 		paramMap = new HashMap();
 		paramMap.put("givenname", "");
@@ -199,6 +200,34 @@ public class StandardGenericXMLRuleAttributeTest extends KEWTestCase {
 
 		assertFalse("givenname should be required.", attribute.validateRuleData(paramMap).isEmpty());
 	}
+
+    @Test public void testRuleDataAttributeErrorTypesAreConformant() {
+        Map paramMap = new HashMap();
+		paramMap.put("givenname", "4444");
+		paramMap.put("gender", "crap");
+		paramMap.put("color", "green");
+		paramMap.put("totalDollar", "500");
+
+		List<WorkflowServiceError> errors = attribute.validateRuleData(paramMap);
+        assertFalse("Error list should contain at least one error.", errors.isEmpty());
+        for (Object e: errors) {
+            assertTrue(WorkflowServiceError.class.isAssignableFrom(e.getClass()));
+        }
+    }
+
+    @Test public void testRoutingDataAttributeErrorTypesAreConformant(){
+        Map paramMap = new HashMap();
+        paramMap.put("givenname", "4444");
+        paramMap.put("gender", "crap");
+        paramMap.put("color", "green");
+        paramMap.put("totalDollar", "500");
+
+        List<WorkflowServiceError> errors = attribute.validateRoutingData(paramMap);
+        assertFalse("Error list should contain at least one error.", errors.isEmpty());
+        for (Object e: errors) {
+            assertTrue(WorkflowServiceError.class.isAssignableFrom(e.getClass()));
+        }
+    }
 
     /**
      * Tests SGXA attribute matching behavior with extension value keys that do not necessarily match

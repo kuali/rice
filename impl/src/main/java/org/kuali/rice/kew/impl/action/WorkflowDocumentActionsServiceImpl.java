@@ -21,6 +21,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -51,7 +53,6 @@ import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.definition.AttributeDefinition;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -950,7 +951,7 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
-    public List<WorkflowAttributeValidationError> validateWorkflowAttributeDefinition(
+    public List<RemotableAttributeError> validateWorkflowAttributeDefinition(
             WorkflowAttributeDefinition definition) {
         if (definition == null) {
             throw new RiceIllegalArgumentException("definition was null");
@@ -972,13 +973,13 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
             }
             xmlAttribute.setParamMap(attributePropMap);
     }
-        List<WorkflowAttributeValidationError> errors = new ArrayList<WorkflowAttributeValidationError>();
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
         //validate inputs from client application if the attribute is capable
         if (attribute instanceof WorkflowAttributeXmlValidator) {
-            List<org.kuali.rice.kew.rule.WorkflowAttributeValidationError> validationErrors = ((WorkflowAttributeXmlValidator)attribute).validateClientRoutingData();
+            List<? extends AttributeError> validationErrors = ((WorkflowAttributeXmlValidator)attribute).validateClientRoutingData();
             if (validationErrors != null) {
-                for (org.kuali.rice.kew.rule.WorkflowAttributeValidationError validationError : validationErrors) {
-                    errors.add(org.kuali.rice.kew.rule.WorkflowAttributeValidationError.to(validationError));
+                for (AttributeError validationError : validationErrors) {
+                    errors.add(RemotableAttributeError.Builder.create(validationError).build());
                 }
             }
         }

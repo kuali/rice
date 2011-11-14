@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.api.rule.RoleName;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -145,11 +147,11 @@ public class TestRuleAttributeThree implements WorkflowRuleAttribute, RoleAttrib
 		return (List)qualifiedRoles.get(qualifiedRoleName);
 	}
 
-	public List<WorkflowAttributeValidationError> validateClientRoutingData() {
+	public List<? extends AttributeError> validateClientRoutingData() {
 		VALID_CLIENT_ROUTING_DATA_CALLED = true;
-		List<WorkflowAttributeValidationError> errors = new ArrayList<WorkflowAttributeValidationError>();
-		errors.add(new WorkflowAttributeValidationError("key1", "value1"));
-		errors.add(new WorkflowAttributeValidationError("key2", "value2"));
+		List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+		errors.add(RemotableAttributeError.Builder.create("key1", "value1").build());
+		errors.add(RemotableAttributeError.Builder.create("key2", "value2").build());
 		return errors;
 	}
 

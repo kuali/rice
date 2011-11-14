@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.uif.AttributeError;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -49,7 +50,6 @@ import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentUpdate;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
-import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 
@@ -223,7 +223,7 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
     }
 
     @Override
-    public List<WorkflowAttributeValidationError> validateAttributeDefinition(
+    public List<? extends AttributeError> validateAttributeDefinition(
             WorkflowAttributeDefinition attributeDefinition) {
         return getWorkflowDocumentActionsService().validateWorkflowAttributeDefinition(attributeDefinition);
     }

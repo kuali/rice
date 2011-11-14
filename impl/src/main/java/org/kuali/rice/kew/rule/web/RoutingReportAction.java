@@ -29,6 +29,7 @@ import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.routeheader.AttributeDocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -111,7 +112,8 @@ public class RoutingReportAction extends KewKualiAction {
 	public ActionForward calculateRoute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		RoutingReportForm routingForm = (RoutingReportForm) form;
 
-		List errors = new ArrayList();
+        // this is never actually used??
+		List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
 
 		if (getDocumentTypeService().findByName(routingForm.getDocumentType()) == null) {
 		    GlobalVariables.getMessageMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");

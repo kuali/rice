@@ -33,7 +33,7 @@ public final class GlobalVariables {
     private static ThreadLocal<LinkedList<GlobalVariables>> GLOBAL_VARIABLES_STACK = new ThreadLocal<LinkedList<GlobalVariables>>() {
         protected LinkedList<GlobalVariables> initialValue() {
             LinkedList<GlobalVariables> globalVariablesStack = new LinkedList<GlobalVariables>();
-            globalVariablesStack.add(0, new GlobalVariables());
+            globalVariablesStack.add(new GlobalVariables());
             return globalVariablesStack;
         }
     };
@@ -42,14 +42,20 @@ public final class GlobalVariables {
         return GLOBAL_VARIABLES_STACK.get().getLast();
     }
 
-    private static GlobalVariables pushGlobalVariables() {
+    static GlobalVariables pushGlobalVariables() {
         GlobalVariables vars = new GlobalVariables();
         GLOBAL_VARIABLES_STACK.get().add(vars);
         return vars;
     }
 
-    private static GlobalVariables popGlobalVariables() {
+    static GlobalVariables popGlobalVariables() {
         return GLOBAL_VARIABLES_STACK.get().removeLast();
+    }
+
+    static void reset() {
+        LinkedList<GlobalVariables> stack = GLOBAL_VARIABLES_STACK.get();
+        stack.clear();
+        stack.add(new GlobalVariables());
     }
 
     private UserSession userSession = null;
@@ -120,7 +126,7 @@ public final class GlobalVariables {
 
     public static Object getRequestCache(String cacheName) {
         GlobalVariables vars = getCurrentGlobalVariables();
-        return vars.requestCache;
+        return vars.requestCache.get(cacheName);
     }
 
     public static void setRequestCache(String cacheName, Object cacheObject) {

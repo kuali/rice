@@ -18,7 +18,10 @@ package org.kuali.rice.krad.util;
 import org.kuali.rice.krad.UserSession;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 /**
  * Holds all of our thread local variables and accessors for those
@@ -27,37 +30,46 @@ import java.util.Map;
  */
 public final class GlobalVariables {
 
-    private GlobalVariables() {
-        throw new UnsupportedOperationException("do not call");
+    private static ThreadLocal<LinkedList<GlobalVariables>> GLOBAL_VARIABLES_STACK = new ThreadLocal<LinkedList<GlobalVariables>>() {
+        protected LinkedList<GlobalVariables> initialValue() {
+            LinkedList<GlobalVariables> globalVariablesStack = new LinkedList<GlobalVariables>();
+            globalVariablesStack.add(0, new GlobalVariables());
+            return globalVariablesStack;
+        }
+    };
+
+    private static GlobalVariables getCurrentGlobalVariables() {
+        return GLOBAL_VARIABLES_STACK.get().getLast();
     }
 
-    private static ThreadLocal<UserSession> userSessions = new ThreadLocal<UserSession>();
-    private static ThreadLocal<String> hideSessionFromTestsMessage = new ThreadLocal<String>();
+    private static GlobalVariables pushGlobalVariables() {
+        GlobalVariables vars = new GlobalVariables();
+        GLOBAL_VARIABLES_STACK.get().add(vars);
+        return vars;
+    }
 
-    private static ThreadLocal<MessageMap> messageMaps = new ThreadLocal<MessageMap>()  {
-		@Override
-		protected MessageMap initialValue() {
-			return new MessageMap();
-		}
-	};
-    
-    private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>() {
-    	@Override
-		protected HashMap<String, Object> initialValue() {
-    		return new HashMap<String, Object>();
-    	}
-    };
+    private static GlobalVariables popGlobalVariables() {
+        return GLOBAL_VARIABLES_STACK.get().removeLast();
+    }
+
+    private UserSession userSession = null;
+    private String hideSessionFromTestsMessage = null;
+    private MessageMap messageMap = new MessageMap();
+    private Map<String,Object> requestCache = new HashMap<String, Object>();
+
+    private GlobalVariables() {}
 
     /**
      * @return the UserSession that has been assigned to this thread of execution it is important that this not be called by
      *         anything that lives outside
      */
     public static UserSession getUserSession() {
-        String message = hideSessionFromTestsMessage.get();
+        GlobalVariables vars = getCurrentGlobalVariables();
+        String message = vars.hideSessionFromTestsMessage;
         if (message != null) {
             throw new RuntimeException(message);
         }
-        return userSessions.get();
+        return vars.userSession;
     }
 
     /**
@@ -67,7 +79,8 @@ public final class GlobalVariables {
      * @param message the detail to throw, or null to allow access to the session
      */
     public static void setHideSessionFromTestsMessage(String message) {
-        hideSessionFromTestsMessage.set(message);
+        GlobalVariables vars = getCurrentGlobalVariables();
+        vars.hideSessionFromTestsMessage = message;
     }
 
     /**
@@ -76,11 +89,13 @@ public final class GlobalVariables {
      * @param userSession
      */
     public static void setUserSession(UserSession userSession) {
-        userSessions.set(userSession);
+        GlobalVariables vars = getCurrentGlobalVariables();
+        vars.userSession = userSession;
     }
-    
+
     public static MessageMap getMessageMap() {
-    	return messageMaps.get();
+        GlobalVariables vars = getCurrentGlobalVariables();
+        return vars.messageMap;
     }
 
     /**
@@ -92,29 +107,47 @@ public final class GlobalVariables {
         getMessageMap().getWarningMessages().putAll(messageMap.getWarningMessages());
         getMessageMap().getInfoMessages().putAll(messageMap.getInfoMessages());
     }
-    
+
     /**
      * Sets a new (clean) MessageMap
      *
      * @param messageMap
      */
     public static void setMessageMap(MessageMap messageMap) {
-    	messageMaps.set(messageMap);
+        GlobalVariables vars = getCurrentGlobalVariables();
+        vars.messageMap = messageMap;
     }
 
-    public static Object getRequestCache( String cacheName ) {
-    	return requestCaches.get().get(cacheName);
+    public static Object getRequestCache(String cacheName) {
+        GlobalVariables vars = getCurrentGlobalVariables();
+        return vars.requestCache;
     }
 
-    public static void setRequestCache( String cacheName, Object cacheObject ) {
-    	requestCaches.get().put(cacheName, cacheObject);
+    public static void setRequestCache(String cacheName, Object cacheObject) {
+        GlobalVariables vars = getCurrentGlobalVariables();
+        vars.requestCache.put(cacheName, cacheObject);
     }
 
     /**
      * Clears out GlobalVariable objects with the exception of the UserSession
      */
     public static void clear() {
-        messageMaps.set(new MessageMap());
-        requestCaches.set(new HashMap<String,Object>() );
+        GlobalVariables vars = getCurrentGlobalVariables();
+        vars.messageMap = new MessageMap();
+        vars.requestCache = new HashMap<String,Object>();
+    }
+
+    /**
+     * Pushes a new GlobalVariables object onto the ThreadLocal GlobalVariables stack, invokes the runnable,
+     * and pops the GlobalVariables off in a finally clause
+     * @param callable the code to run under a new set of GlobalVariables
+     */
+    public static <T> Object doInNewGlobalVariables(Callable<T> callable) throws Exception {
+        try {
+            pushGlobalVariables();
+            return callable.call();
+        } finally {
+            popGlobalVariables();
+        }
     }
 }

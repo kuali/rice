@@ -56,6 +56,8 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.GlobalVariablesContextInvocationHandler;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Basic;
@@ -73,6 +75,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -845,6 +848,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
             throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at application id " + getApplicationId() + ": " + pname);
         }
 
+        // TODO: KULRICE-5572 Determine whether it is safe to wrap all post processors in a fresh GlobalVariables context
+        //return (PostProcessor) Proxy.newProxyInstance(postProcessor.getClass().getClassLoader(), new Class[] { PostProcessor.class }, new GlobalVariablesContextInvocationHandler(postProcessor));
         return (PostProcessor) postProcessor;
     }
 

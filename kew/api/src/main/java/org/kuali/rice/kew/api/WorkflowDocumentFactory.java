@@ -36,24 +36,24 @@ import java.lang.reflect.Method;
  */
 public final class WorkflowDocumentFactory {
 
-	private static final String CREATE_METHOD_NAME = "createDocument";
-	private static final String LOAD_METHOD_NAME = "loadDocument";
-	
-	/**
-	 * A lazy initialization holder class for the Provider.  Allows for
-	 * thread-safe initialization of shared resource.
-	 */
-	private static final class ProviderHolder {
-	    static final Object provider;
-	    static final Method createMethod;
-	    static final Method loadMethod;
-	    static {
-	        provider = loadProvider();
-	        createMethod = locateCreateMethod(provider);
-	        loadMethod = locateLoadMethod(provider);
-	    }
-	}
-	
+    private static final String CREATE_METHOD_NAME = "createDocument";
+    private static final String LOAD_METHOD_NAME = "loadDocument";
+
+    /**
+     * A lazy initialization holder class for the Provider.  Allows for
+     * thread-safe initialization of shared resource.
+     */
+    private static final class ProviderHolder {
+        static final Object provider;
+        static final Method createMethod;
+        static final Method loadMethod;
+        static {
+            provider = loadProvider();
+            createMethod = locateCreateMethod(provider);
+            loadMethod = locateLoadMethod(provider);
+        }
+    }
+
     /**
      * TODO 
      * 
@@ -69,9 +69,9 @@ public final class WorkflowDocumentFactory {
      * @throws InvalidActionTakenException if the caller is not allowed to execute this action
      */
     public static WorkflowDocument createDocument(String principalId, String documentTypeName) {
-    	return createDocument(principalId, documentTypeName, null, null);
+        return createDocument(principalId, documentTypeName, null, null);
     }
-    
+
     /**
      * TODO
      * 
@@ -86,11 +86,11 @@ public final class WorkflowDocumentFactory {
      * @throws IllegalDocumentTypeException if documentTypeName does not represent a valid document type
      */
     public static WorkflowDocument createDocument(String principalId, String documentTypeName, String title) {
-    	DocumentUpdate.Builder builder = DocumentUpdate.Builder.create();
-    	builder.setTitle(title);
-    	return createDocument(principalId, documentTypeName, builder.build(), null);
+        DocumentUpdate.Builder builder = DocumentUpdate.Builder.create();
+        builder.setTitle(title);
+        return createDocument(principalId, documentTypeName, builder.build(), null);
     }
-    
+
     /**
      * TODO
      * 
@@ -105,64 +105,64 @@ public final class WorkflowDocumentFactory {
      * @throws IllegalArgumentException if documentTypeName is null or blank
      * @throws IllegalDocumentTypeException if documentTypeName does not represent a valid document type
      */
-	public static WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
-		if (StringUtils.isBlank(principalId)) {
-			throw new IllegalArgumentException("principalId was null or blank");
-		}
-		if (StringUtils.isBlank(documentTypeName)) {
-			throw new IllegalArgumentException("documentTypeName was null or blank");
-		}
-		
-		Object workflowDocument = null;
-		
-		try {
-			workflowDocument = ProviderHolder.createMethod.invoke(ProviderHolder.provider, principalId, documentTypeName, documentUpdate, documentContentUpdate);
-		} catch (IllegalAccessException e) {
-			throw new ConfigurationException("Failed to invoke " + CREATE_METHOD_NAME, e);
-		} catch (InvocationTargetException e) {
-			if (e.getCause() instanceof RuntimeException) {
-				throw (RuntimeException)e.getCause();
-			}
-			throw new ConfigurationException("Failed to invoke " + CREATE_METHOD_NAME, e);
-		}
+    public static WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new IllegalArgumentException("principalId was null or blank");
+        }
+        if (StringUtils.isBlank(documentTypeName)) {
+            throw new IllegalArgumentException("documentTypeName was null or blank");
+        }
 
-		if (!(workflowDocument instanceof WorkflowDocument)) {
-			throw new ConfigurationException("Created document is not a proper instance of " + WorkflowDocument.class + ", was instead " + workflowDocument.getClass());
-		}
-		return (WorkflowDocument)workflowDocument;
-	}
-	
-	public static WorkflowDocument loadDocument(String principalId, String documentId) {
-		if (StringUtils.isBlank(principalId)) {
-			throw new IllegalArgumentException("principalId was null or blank");
-		}
-		if (StringUtils.isBlank(documentId)) {
-			throw new IllegalArgumentException("documentId was null or blank");
-		}
-				
-		Object workflowDocument = null;
-		
-		try {
-			workflowDocument = ProviderHolder.loadMethod.invoke(ProviderHolder.provider, principalId, documentId);
-		} catch (IllegalAccessException e) {
-			throw new ConfigurationException("Failed to invoke " + LOAD_METHOD_NAME, e);
-		} catch (InvocationTargetException e) {
-			if (e.getCause() instanceof RuntimeException) {
-				throw (RuntimeException)e.getCause();
-			}
-			throw new ConfigurationException("Failed to invoke " + LOAD_METHOD_NAME, e);
-		}
+        Object workflowDocument = null;
 
-		if (!(workflowDocument instanceof WorkflowDocument)) {
-			throw new ConfigurationException("Loaded document is not a proper instance of " + WorkflowDocument.class + ", was instead " + workflowDocument.getClass());
-		}
-		return (WorkflowDocument)workflowDocument;
-	}
-	
-	private static Object loadProvider() {
-		String providerClassName = null;
-		String resource = null;
-		try {
+        try {
+            workflowDocument = ProviderHolder.createMethod.invoke(ProviderHolder.provider, principalId, documentTypeName, documentUpdate, documentContentUpdate);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationException("Failed to invoke " + CREATE_METHOD_NAME, e);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException)e.getCause();
+            }
+            throw new ConfigurationException("Failed to invoke " + CREATE_METHOD_NAME, e);
+        }
+
+        if (!(workflowDocument instanceof WorkflowDocument)) {
+            throw new ConfigurationException("Created document is not a proper instance of " + WorkflowDocument.class + ", was instead " + workflowDocument.getClass());
+        }
+        return (WorkflowDocument)workflowDocument;
+    }
+
+    public static WorkflowDocument loadDocument(String principalId, String documentId) {
+        if (StringUtils.isBlank(principalId)) {
+            throw new IllegalArgumentException("principalId was null or blank");
+        }
+        if (StringUtils.isBlank(documentId)) {
+            throw new IllegalArgumentException("documentId was null or blank");
+        }
+
+        Object workflowDocument = null;
+
+        try {
+            workflowDocument = ProviderHolder.loadMethod.invoke(ProviderHolder.provider, principalId, documentId);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationException("Failed to invoke " + LOAD_METHOD_NAME, e);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof RuntimeException) {
+                throw (RuntimeException)e.getCause();
+            }
+            throw new ConfigurationException("Failed to invoke " + LOAD_METHOD_NAME, e);
+        }
+
+        if (!(workflowDocument instanceof WorkflowDocument)) {
+            throw new ConfigurationException("Loaded document is not a proper instance of " + WorkflowDocument.class + ", was instead " + workflowDocument.getClass());
+        }
+        return (WorkflowDocument)workflowDocument;
+    }
+
+    private static Object loadProvider() {
+        String providerClassName = null;
+        String resource = null;
+        try {
             resource = new StringBuilder().append("META-INF/services/").append(WorkflowDocument.class.getName()).toString();
             final InputStream resourceStream = ClassLoaderUtils.getDefaultClassLoader().getResourceAsStream(resource.toString());
             if (resourceStream != null) {
@@ -177,21 +177,21 @@ public final class WorkflowDocumentFactory {
         } catch (IOException e) {
             throw new ConfigurationException("Failure processing services definition file at " + resource, e);
         } catch (ClassNotFoundException e) {
-        	throw new ConfigurationException("Failed to load provider class: " + providerClassName, e);
+            throw new ConfigurationException("Failed to load provider class: " + providerClassName, e);
         }
-	}
-	
-	private static Object newInstance(Class<?> providerClass) {
-		try {
-			return providerClass.newInstance();
-		} catch (InstantiationException e) {
-			throw new ConfigurationException("Failed to instantiate provider class: " + providerClass.getName(), e);
-		} catch (IllegalAccessException e) {
-			throw new ConfigurationException("Failed to instantiate provider class: " + providerClass.getName(), e);
-		}
-	}
-	
-	private static Method locateCreateMethod(Object provider) {
+    }
+
+    private static Object newInstance(Class<?> providerClass) {
+        try {
+            return providerClass.newInstance();
+        } catch (InstantiationException e) {
+            throw new ConfigurationException("Failed to instantiate provider class: " + providerClass.getName(), e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationException("Failed to instantiate provider class: " + providerClass.getName(), e);
+        }
+    }
+
+    private static Method locateCreateMethod(Object provider) {
         try {
             return provider.getClass().getMethod(CREATE_METHOD_NAME, String.class, String.class, DocumentUpdate.class, DocumentContentUpdate.class);
         } catch (NoSuchMethodException e) {
@@ -199,9 +199,9 @@ public final class WorkflowDocumentFactory {
         } catch (SecurityException e) {
             throw new ConfigurationException("Encountered security issue when attempting to access createDocument method on provider class: " + provider.getClass().getName(), e);
         }
-	}
-	
-	private static Method locateLoadMethod(Object provider) {
+    }
+
+    private static Method locateLoadMethod(Object provider) {
         try {
             return provider.getClass().getMethod(LOAD_METHOD_NAME, String.class, String.class);
         } catch (NoSuchMethodException e) {
@@ -209,6 +209,6 @@ public final class WorkflowDocumentFactory {
         } catch (SecurityException e) {
             throw new ConfigurationException("Encountered security issue when attempting to access createDocument method on provider class: " + provider.getClass().getName(), e);
         }
-	}
+    }
 
 }

@@ -30,25 +30,25 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  */
 public final class DefaultWorkflowDocumentProvider implements WorkflowDocumentProvider {
 
-	@Override
-	public WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
-		Document document = KewApiServiceLocator.getWorkflowDocumentActionsService().create(documentTypeName, principalId, documentUpdate, documentContentUpdate);
-		return initializePrototype(principalId, document);
-	}
+    @Override
+    public WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
+        Document document = KewApiServiceLocator.getWorkflowDocumentActionsService().create(documentTypeName, principalId, documentUpdate, documentContentUpdate);
+        return initializePrototype(principalId, document);
+    }
 
-	@Override
-	public WorkflowDocument loadDocument(String principalId, String documentId) {
-		Document document = KewApiServiceLocator.getWorkflowDocumentService().getDocument(documentId);
-		if (document == null) {
-			throw new IllegalArgumentException("Failed to locate workflow document for given documentId: " + documentId);
-		}
-		return initializePrototype(principalId, document);
-	}
-	
-	private WorkflowDocumentPrototype initializePrototype(String principalId, Document document) {
-		WorkflowDocumentPrototype prototype = KEWServiceLocator.getWorkflowDocumentPrototype();
-		prototype.init(principalId, document);
-		return prototype;
-	}
+    @Override
+    public WorkflowDocument loadDocument(String principalId, String documentId) {
+        Document document = KewApiServiceLocator.getWorkflowDocumentService().getDocument(documentId);
+        if (document == null) {
+            throw new IllegalArgumentException("Failed to locate workflow document for given documentId: " + documentId);
+        }
+        return initializePrototype(principalId, document);
+    }
+    
+    private WorkflowDocumentPrototype initializePrototype(String principalId, Document document) {
+        WorkflowDocumentPrototype prototype = KEWServiceLocator.getWorkflowDocumentPrototype();
+        prototype.init(principalId, document);
+        return prototype;
+    }
 
 }

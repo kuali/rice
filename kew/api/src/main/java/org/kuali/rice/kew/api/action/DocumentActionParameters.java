@@ -37,95 +37,95 @@ import org.w3c.dom.Element;
 @XmlRootElement(name = DocumentActionParameters.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentActionParameters.Constants.TYPE_NAME, propOrder = {
-		DocumentActionParameters.Elements.DOCUMENT_ID,
-		DocumentActionParameters.Elements.PRINCIPAL_ID,
-		DocumentActionParameters.Elements.ANNOTATION,
-		DocumentActionParameters.Elements.DOCUMENT_UPDATE,
-		DocumentActionParameters.Elements.DOCUMENT_CONTENT_UPDATE,
-		CoreConstants.CommonElements.FUTURE_ELEMENTS
+        DocumentActionParameters.Elements.DOCUMENT_ID,
+        DocumentActionParameters.Elements.PRINCIPAL_ID,
+        DocumentActionParameters.Elements.ANNOTATION,
+        DocumentActionParameters.Elements.DOCUMENT_UPDATE,
+        DocumentActionParameters.Elements.DOCUMENT_CONTENT_UPDATE,
+        CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentActionParameters extends AbstractDataTransferObject {
-    
-	private static final long serialVersionUID = -7589214734683758734L;
 
-	@XmlElement(name = Elements.DOCUMENT_ID, required = true)
+    private static final long serialVersionUID = -7589214734683758734L;
+
+    @XmlElement(name = Elements.DOCUMENT_ID, required = true)
     private final String documentId;
-	
-	@XmlElement(name = Elements.PRINCIPAL_ID, required = true)
-	private final String principalId;
 
-	@XmlElement(name = Elements.ANNOTATION, required = false)
-	private final String annotation;
-	
-	@XmlElement(name = Elements.DOCUMENT_UPDATE, required = false)
-	private final DocumentUpdate documentUpdate;
-	
-	@XmlElement(name = Elements.DOCUMENT_CONTENT_UPDATE, required = false)
-	private final DocumentContentUpdate documentContentUpdate;
-	    
+    @XmlElement(name = Elements.PRINCIPAL_ID, required = true)
+    private final String principalId;
+
+    @XmlElement(name = Elements.ANNOTATION, required = false)
+    private final String annotation;
+
+    @XmlElement(name = Elements.DOCUMENT_UPDATE, required = false)
+    private final DocumentUpdate documentUpdate;
+
+    @XmlElement(name = Elements.DOCUMENT_CONTENT_UPDATE, required = false)
+    private final DocumentContentUpdate documentContentUpdate;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
     private DocumentActionParameters() {
-    	this.documentId = null;
-    	this.principalId = null;
-    	this.annotation = null;
-    	this.documentUpdate = null;
-    	this.documentContentUpdate = null;
+        this.documentId = null;
+        this.principalId = null;
+        this.annotation = null;
+        this.documentUpdate = null;
+        this.documentContentUpdate = null;
     }
-    
+
     private DocumentActionParameters(Builder builder) {
-    	this.documentId = builder.getDocumentId();
-    	this.principalId = builder.getPrincipalId();
-    	this.annotation = builder.getAnnotation();
-    	this.documentUpdate = builder.getDocumentUpdate();
-    	this.documentContentUpdate = builder.getDocumentContentUpdate();
+        this.documentId = builder.getDocumentId();
+        this.principalId = builder.getPrincipalId();
+        this.annotation = builder.getAnnotation();
+        this.documentUpdate = builder.getDocumentUpdate();
+        this.documentContentUpdate = builder.getDocumentContentUpdate();
     }
-    
+
     public static DocumentActionParameters create(String documentId, String principalId) {
         return create(documentId, principalId, "");
     }
-    
+
     public static DocumentActionParameters create(String documentId, String principalId, String annotation) {
-    	Builder builder = Builder.create(documentId, principalId);
-    	builder.setAnnotation(annotation);
-    	return builder.build();
+        Builder builder = Builder.create(documentId, principalId);
+        builder.setAnnotation(annotation);
+        return builder.build();
     }
-        
-	public String getDocumentId() {
-		return documentId;
-	}
 
-	public String getPrincipalId() {
-		return principalId;
-	}
+    public String getDocumentId() {
+        return documentId;
+    }
 
-	public String getAnnotation() {
-		return annotation;
-	}
+    public String getPrincipalId() {
+        return principalId;
+    }
 
-	public DocumentUpdate getDocumentUpdate() {
-		return documentUpdate;
-	}
+    public String getAnnotation() {
+        return annotation;
+    }
 
-	public DocumentContentUpdate getDocumentContentUpdate() {
-		return documentContentUpdate;
-	}
-    
+    public DocumentUpdate getDocumentUpdate() {
+        return documentUpdate;
+    }
+
+    public DocumentContentUpdate getDocumentContentUpdate() {
+        return documentContentUpdate;
+    }
+
     /**
      * A builder which can be used to construct {@link DocumentActionParameters} instances.
      * 
      */
     public final static class Builder implements Serializable, ModelBuilder {
 
-		private static final long serialVersionUID = -9209748637365086000L;
+        private static final long serialVersionUID = -9209748637365086000L;
 
-		private String documentId;
-		private String principalId;
-		private String annotation;
-		private DocumentUpdate documentUpdate;
-		private DocumentContentUpdate documentContentUpdate;
+        private String documentId;
+        private String principalId;
+        private String annotation;
+        private DocumentUpdate documentUpdate;
+        private DocumentContentUpdate documentContentUpdate;
 
         private Builder(String documentId, String principalId) {
             setDocumentId(documentId);
@@ -135,59 +135,59 @@ public final class DocumentActionParameters extends AbstractDataTransferObject {
         public static Builder create(String documentId, String principalId) {
             return new Builder(documentId, principalId);
         }
-        
+
         public DocumentActionParameters build() {
             return new DocumentActionParameters(this);
         }
 
-		public String getDocumentId() {
-			return documentId;
-		}
+        public String getDocumentId() {
+            return documentId;
+        }
 
-		public void setDocumentId(String documentId) {
-			if (StringUtils.isBlank(documentId)) {
-				throw new IllegalArgumentException("documentId was null or blank");
-			}
-			this.documentId = documentId;
-		}
+        public void setDocumentId(String documentId) {
+            if (StringUtils.isBlank(documentId)) {
+                throw new IllegalArgumentException("documentId was null or blank");
+            }
+            this.documentId = documentId;
+        }
 
-		public String getPrincipalId() {
-			return principalId;
-		}
+        public String getPrincipalId() {
+            return principalId;
+        }
 
-		public void setPrincipalId(String principalId) {
-			if (StringUtils.isBlank(principalId)) {
-				throw new IllegalArgumentException("principalId was null or blank");
-			}
-			this.principalId = principalId;
-		}
+        public void setPrincipalId(String principalId) {
+            if (StringUtils.isBlank(principalId)) {
+                throw new IllegalArgumentException("principalId was null or blank");
+            }
+            this.principalId = principalId;
+        }
 
-		public String getAnnotation() {
-			return annotation;
-		}
+        public String getAnnotation() {
+            return annotation;
+        }
 
-		public void setAnnotation(String annotation) {
-			this.annotation = annotation;
-		}
+        public void setAnnotation(String annotation) {
+            this.annotation = annotation;
+        }
 
-		public DocumentUpdate getDocumentUpdate() {
-			return documentUpdate;
-		}
+        public DocumentUpdate getDocumentUpdate() {
+            return documentUpdate;
+        }
 
-		public void setDocumentUpdate(DocumentUpdate documentUpdate) {
-			this.documentUpdate = documentUpdate;
-		}
+        public void setDocumentUpdate(DocumentUpdate documentUpdate) {
+            this.documentUpdate = documentUpdate;
+        }
 
-		public DocumentContentUpdate getDocumentContentUpdate() {
-			return documentContentUpdate;
-		}
+        public DocumentContentUpdate getDocumentContentUpdate() {
+            return documentContentUpdate;
+        }
 
-		public void setDocumentContentUpdate(DocumentContentUpdate documentContentUpdate) {
-			this.documentContentUpdate = documentContentUpdate;
-		}
-    
+        public void setDocumentContentUpdate(DocumentContentUpdate documentContentUpdate) {
+            this.documentContentUpdate = documentContentUpdate;
+        }
+
     }
-    
+
     /**
      * Defines some internal constants used on this class.
      */
@@ -195,7 +195,7 @@ public final class DocumentActionParameters extends AbstractDataTransferObject {
         final static String ROOT_ELEMENT_NAME = "documentActionParameters";
         final static String TYPE_NAME = "DocumentActionParametersType";
     }
-    
+
     /**
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */

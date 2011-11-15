@@ -122,73 +122,73 @@ import java.util.Map;
 @Table(name="KREW_DOC_HDR_T")
 //@Sequence(name="KREW_DOC_HDR_S", property="documentId")
 @NamedQueries({
-	@NamedQuery(name="DocumentRouteHeaderValue.FindByDocumentId", query="select d from DocumentRouteHeaderValue as d where d.documentId = :documentId"),
-	@NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(documentId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KewApiConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KewApiConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC"),
-	@NamedQuery(name="DocumentRouteHeaderValue.GetAppDocId", query="SELECT d.appDocId from DocumentRouteHeaderValue as d where d.documentId = :documentId")
+    @NamedQuery(name="DocumentRouteHeaderValue.FindByDocumentId", query="select d from DocumentRouteHeaderValue as d where d.documentId = :documentId"),
+    @NamedQuery(name="DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId", query="SELECT NEW org.kuali.rice.kew.quicklinks.WatchedDocument(documentId, docRouteStatus, docTitle) FROM DocumentRouteHeaderValue WHERE initiatorWorkflowId = :initiatorWorkflowId AND docRouteStatus IN ('"+ KewApiConstants.ROUTE_HEADER_ENROUTE_CD +"','"+ KewApiConstants.ROUTE_HEADER_EXCEPTION_CD +"') ORDER BY createDate DESC"),
+    @NamedQuery(name="DocumentRouteHeaderValue.GetAppDocId", query="SELECT d.appDocId from DocumentRouteHeaderValue as d where d.documentId = :documentId")
 })
 public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase implements DocumentContract, DocumentSearchCriteriaEbo {
     private static final long serialVersionUID = -4700736340527913220L;
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 
     public static final String CURRENT_ROUTE_NODE_NAME_DELIMITER = ", ";
-    
+
     @Column(name="DOC_TYP_ID")
-	private String documentTypeId;
+    private String documentTypeId;
     @Column(name="DOC_HDR_STAT_CD")
-	private java.lang.String docRouteStatus;
+    private java.lang.String docRouteStatus;
     @Column(name="RTE_LVL")
-	private java.lang.Integer docRouteLevel;
-	@Column(name="STAT_MDFN_DT")
-	private java.sql.Timestamp statusModDate;
-	@Column(name="CRTE_DT")
-	private java.sql.Timestamp createDate;
-	@Column(name="APRV_DT")
-	private java.sql.Timestamp approvedDate;
-	@Column(name="FNL_DT")
-	private java.sql.Timestamp finalizedDate;
+    private java.lang.Integer docRouteLevel;
+    @Column(name="STAT_MDFN_DT")
+    private java.sql.Timestamp statusModDate;
+    @Column(name="CRTE_DT")
+    private java.sql.Timestamp createDate;
+    @Column(name="APRV_DT")
+    private java.sql.Timestamp approvedDate;
+    @Column(name="FNL_DT")
+    private java.sql.Timestamp finalizedDate;
     @Transient
     private DocumentRouteHeaderValueContent documentContent;
     @Column(name="TTL")
-	private java.lang.String docTitle;
+    private java.lang.String docTitle;
     @Column(name="APP_DOC_ID")
-	private java.lang.String appDocId;
+    private java.lang.String appDocId;
     @Column(name="DOC_VER_NBR")
     private java.lang.Integer docVersion = new Integer(KewApiConstants.DocumentContentVersions.NODAL);
     @Column(name="INITR_PRNCPL_ID")
-	private java.lang.String initiatorWorkflowId;
+    private java.lang.String initiatorWorkflowId;
     @Column(name="RTE_PRNCPL_ID")
-	private java.lang.String routedByUserWorkflowId;
-	@Column(name="RTE_STAT_MDFN_DT")
-	private java.sql.Timestamp routeStatusDate;
-	@Column(name="RTE_LVL_MDFN_DT")
-	private java.sql.Timestamp routeLevelDate;
+    private java.lang.String routedByUserWorkflowId;
+    @Column(name="RTE_STAT_MDFN_DT")
+    private java.sql.Timestamp routeStatusDate;
+    @Column(name="RTE_LVL_MDFN_DT")
+    private java.sql.Timestamp routeLevelDate;
     @Column(name="APP_DOC_STAT")
-	private java.lang.String appDocStatus;
-	@Column(name="APP_DOC_STAT_MDFN_DT")
-	private java.sql.Timestamp appDocStatusDate;
-	
+    private java.lang.String appDocStatus;
+    @Column(name="APP_DOC_STAT_MDFN_DT")
+    private java.sql.Timestamp appDocStatusDate;
+
     @Id
     @GeneratedValue(generator="KREW_DOC_HDR_S")
-	@GenericGenerator(name="KREW_DOC_HDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_DOC_HDR_S"),
-			@Parameter(name="value_column",value="id")
-	})
-	@Column(name="DOC_HDR_ID")
-	private java.lang.String documentId;
-    
+    @GenericGenerator(name="KREW_DOC_HDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+            @Parameter(name="sequence_name",value="KREW_DOC_HDR_S"),
+            @Parameter(name="value_column",value="id")
+    })
+    @Column(name="DOC_HDR_ID")
+    private java.lang.String documentId;
+
     //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
     //@Fetch(value = FetchMode.SELECT)
     //private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-    
+
     //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
     //@OrderBy("actionDate ASC")
     //@Fetch(value = FetchMode.SELECT)
     //private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
-    
+
     //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
     //@Fetch(value = FetchMode.SELECT)
     //private List<ActionItem> actionItems = new ArrayList<ActionItem>();
-    
+
     /**
      * The appDocStatusHistory keeps a list of Application Document Status transitions
      * for the document.  It tracks the previous status, the new status, and a timestamp of the 
@@ -199,12 +199,12 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     @OrderBy("statusTransitionId ASC")
     @Fetch(value = FetchMode.SELECT)
     private List<DocumentStatusTransition> appDocStatusHistory = new ArrayList<DocumentStatusTransition>();
-    
+
     @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name="DOC_HDR_ID")
     @OrderBy("noteId ASC")
     private List<Note> notes = new ArrayList<Note>();
-    
+
     @Transient
     private List<SearchableAttributeValue> searchableAttributeValues = new ArrayList<SearchableAttributeValue>();
     @Transient
@@ -213,7 +213,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     private boolean routingReport = false;
     @Transient
     private List<ActionRequestValue> simulatedActionRequests;
-    
+
     private static final boolean FINAL_STATE = true;
     protected static final HashMap<String,String> legalActions;
     protected static final HashMap<String,String> stateTransitionMap;
@@ -259,35 +259,35 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public Principal getInitiatorPrincipal() {
-    	// if we are running a simulation, there will be no initiator
-    	if (getInitiatorWorkflowId() == null) {
-    		return null;
-    	}
-    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getInitiatorWorkflowId());
+        // if we are running a simulation, there will be no initiator
+        if (getInitiatorWorkflowId() == null) {
+            return null;
+        }
+        return KEWServiceLocator.getIdentityHelperService().getPrincipal(getInitiatorWorkflowId());
     }
-    
+
     public Principal getRoutedByPrincipal()
     {
-    	if (getRoutedByUserWorkflowId() == null) {
-    		return null;
-    	}
-    	return KEWServiceLocator.getIdentityHelperService().getPrincipal(getRoutedByUserWorkflowId());
-   	}
-	
+        if (getRoutedByUserWorkflowId() == null) {
+            return null;
+        }
+        return KEWServiceLocator.getIdentityHelperService().getPrincipal(getRoutedByUserWorkflowId());
+    }
+
     public String getInitiatorDisplayName() {
         return KEWServiceLocator.getIdentityHelperService().getPerson(getInitiatorWorkflowId()).getName();
     }
 
     public String getRoutedByDisplayName() {
-    	return KEWServiceLocator.getIdentityHelperService().getPerson(getRoutedByUserWorkflowId()).getName();
+        return KEWServiceLocator.getIdentityHelperService().getPerson(getRoutedByUserWorkflowId()).getName();
     }
-	
+
     public String getCurrentRouteLevelName() {
         String name = "Not Found";
         // TODO the isRouteLevelDocument junk can be ripped out
-    	if(routingReport){
-    		name = "Routing Report";
-    	} else if (CompatUtils.isRouteLevelDocument(this)) {
+        if(routingReport){
+            name = "Routing Report";
+        } else if (CompatUtils.isRouteLevelDocument(this)) {
             int routeLevelInt = getDocRouteLevel().intValue();
             LOG.info("Getting current route level name for a Route level document: " + routeLevelInt+CURRENT_ROUTE_NODE_NAME_DELIMITER+documentId);
             List routeLevelNodes = CompatUtils.getRouteLevelCompatibleNodeList(getDocumentType());
@@ -296,18 +296,18 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
                 name = ((RouteNode)routeLevelNodes.get(routeLevelInt)).getRouteNodeName();
             }
         } else {
-        	name = "";
-        	for (Iterator<String> iterator = getCurrentNodeNames().iterator(); iterator.hasNext();) {
-        		String nodeName = iterator.next();
-        		name += nodeName + (iterator.hasNext() ? CURRENT_ROUTE_NODE_NAME_DELIMITER : "");
-        	}
+            name = "";
+            for (Iterator<String> iterator = getCurrentNodeNames().iterator(); iterator.hasNext();) {
+                String nodeName = iterator.next();
+                name += nodeName + (iterator.hasNext() ? CURRENT_ROUTE_NODE_NAME_DELIMITER : "");
+            }
         }
         return name;
     }
-    
+
     public List<String> getCurrentNodeNames() {
-    	List<String> currentNodeNames = new ArrayList<String>();
-    	Collection<RouteNodeInstance> nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getDocumentId());
+        List<String> currentNodeNames = new ArrayList<String>();
+        Collection<RouteNodeInstance> nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getDocumentId());
         if (nodeInstances.isEmpty()) {
             nodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getDocumentId());
         }
@@ -338,9 +338,9 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
      * @return
      */
     public String getDocStatusPolicy() {
-    	return getDocumentType().getDocumentStatusPolicy().getPolicyStringValue();
+        return getDocumentType().getDocumentStatusPolicy().getPolicyStringValue();
     }
-    
+
     public Collection getQueueItems() {
         return queueItems;
     }
@@ -358,26 +358,26 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public List<ActionRequestValue> getActionRequests() {
-    	if (this.simulatedActionRequests == null || this.simulatedActionRequests.isEmpty()) {
-    		return KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(documentId);
-    	} else {
-    		return this.simulatedActionRequests;
-    	}
+        if (this.simulatedActionRequests == null || this.simulatedActionRequests.isEmpty()) {
+            return KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(documentId);
+        } else {
+            return this.simulatedActionRequests;
+        }
     }
 
     public List<ActionRequestValue> getSimulatedActionRequests() {
-    	if (this.simulatedActionRequests == null) {
-    		this.simulatedActionRequests = new ArrayList<ActionRequestValue>();
-    	}
-		return this.simulatedActionRequests;
-	}
+        if (this.simulatedActionRequests == null) {
+            this.simulatedActionRequests = new ArrayList<ActionRequestValue>();
+        }
+        return this.simulatedActionRequests;
+    }
 
-	public void setSimulatedActionRequests(List<ActionRequestValue> simulatedActionRequests) {
-		this.simulatedActionRequests = simulatedActionRequests;
-	}
+    public void setSimulatedActionRequests(List<ActionRequestValue> simulatedActionRequests) {
+        this.simulatedActionRequests = simulatedActionRequests;
+    }
 
-	public DocumentType getDocumentType() {
-    	return KEWServiceLocator.getDocumentTypeService().findById(getDocumentTypeId());
+    public DocumentType getDocumentType() {
+        return KEWServiceLocator.getDocumentTypeService().findById(getDocumentTypeId());
     }
 
     public java.lang.String getAppDocId() {
@@ -405,12 +405,12 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public java.lang.String getDocContent() {
-    	return getDocumentContent().getDocumentContent();
+        return getDocumentContent().getDocumentContent();
     }
 
     public void setDocContent(java.lang.String docContent) {
-    	DocumentRouteHeaderValueContent content = getDocumentContent();
-    	content.setDocumentContent(docContent);
+        DocumentRouteHeaderValueContent content = getDocumentContent();
+        content.setDocumentContent(docContent);
     }
 
     public java.lang.Integer getDocRouteLevel() {
@@ -526,16 +526,16 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
      * @return
      */
     public java.lang.String getAppDocStatus() {
-    	if (appDocStatus == null || "".equals(appDocStatus)){
-    		return KewApiConstants.UNKNOWN_STATUS;
-    	}
+        if (appDocStatus == null || "".equals(appDocStatus)){
+            return KewApiConstants.UNKNOWN_STATUS;
+        }
         return appDocStatus;
     }
 
     public void setAppDocStatus(java.lang.String appDocStatus){
         this.appDocStatus = appDocStatus;
     }
-    
+
     /**
      * 
      * This method returns a combination of the route status label and the app doc status.
@@ -543,16 +543,16 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
      * @return
      */
     public String getCombinedStatus(){
-    	String routeStatus = getRouteStatusLabel();
-    	String appStatus = getAppDocStatus();
-    	if (routeStatus != null && routeStatus.length()>0){
-    		if (appStatus.length() > 0){
-    			routeStatus += ", "+appStatus;
-    		}
-    	} else {
-    		return appStatus;
-    	}
-    	return routeStatus;
+        String routeStatus = getRouteStatusLabel();
+        String appStatus = getAppDocStatus();
+        if (routeStatus != null && routeStatus.length()>0){
+            if (appStatus.length() > 0){
+                routeStatus += ", "+appStatus;
+            }
+        } else {
+            return appStatus;
+        }
+        return routeStatus;
     }
 
     /**
@@ -565,42 +565,42 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
      * @throws WorkflowRuntimeException
      */
     public void updateAppDocStatus(java.lang.String appDocStatus) throws WorkflowRuntimeException{
-       	//validate against allowable values if defined
-    	if (appDocStatus != null && appDocStatus.length() > 0 && !appDocStatus.equalsIgnoreCase(this.appDocStatus)){    		
-    		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(this.getDocumentTypeId());    	
-    		if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
-    			Iterator<ApplicationDocumentStatus> iter = documentType.getValidApplicationStatuses().iterator();
-    			boolean statusValidated = false;
-    			while (iter.hasNext())
-    			{
-    				ApplicationDocumentStatus myAppDocStat = iter.next();
-    				if (appDocStatus.compareToIgnoreCase(myAppDocStat.getStatusName()) == 0)
-    				{
-    					statusValidated = true;
-    					break;
-    				}
-    			}
-    			if (!statusValidated){
-    				WorkflowRuntimeException xpee = new WorkflowRuntimeException("AppDocStatus value " +  appDocStatus + " not allowable."); 
-    				LOG.error("Error validating nextAppDocStatus name: " +  appDocStatus + " against acceptable values.", xpee);
-    				throw xpee; 
-    			}
-    		}
+        //validate against allowable values if defined
+        if (appDocStatus != null && appDocStatus.length() > 0 && !appDocStatus.equalsIgnoreCase(this.appDocStatus)){
+            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findById(this.getDocumentTypeId());
+            if (documentType.getValidApplicationStatuses() != null  && documentType.getValidApplicationStatuses().size() > 0){
+                Iterator<ApplicationDocumentStatus> iter = documentType.getValidApplicationStatuses().iterator();
+                boolean statusValidated = false;
+                while (iter.hasNext())
+                {
+                    ApplicationDocumentStatus myAppDocStat = iter.next();
+                    if (appDocStatus.compareToIgnoreCase(myAppDocStat.getStatusName()) == 0)
+                    {
+                        statusValidated = true;
+                        break;
+                    }
+                }
+                if (!statusValidated){
+                    WorkflowRuntimeException xpee = new WorkflowRuntimeException("AppDocStatus value " +  appDocStatus + " not allowable.");
+                    LOG.error("Error validating nextAppDocStatus name: " +  appDocStatus + " against acceptable values.", xpee);
+                    throw xpee;
+                }
+            }
 
-    		// set the status value
-    		String oldStatus = this.appDocStatus;
-    		this.appDocStatus = appDocStatus;
+            // set the status value
+            String oldStatus = this.appDocStatus;
+            this.appDocStatus = appDocStatus;
 
-    		// update the timestamp
-    		setAppDocStatusDate(new Timestamp(System.currentTimeMillis()));
+            // update the timestamp
+            setAppDocStatusDate(new Timestamp(System.currentTimeMillis()));
 
-    		// save the status transition
-    		this.appDocStatusHistory.add(new DocumentStatusTransition(documentId, oldStatus, appDocStatus));
-    	}
+            // save the status transition
+            this.appDocStatusHistory.add(new DocumentStatusTransition(documentId, oldStatus, appDocStatus));
+        }
 
     }
-    
-    
+
+
     public java.sql.Timestamp getAppDocStatusDate() {
         return appDocStatusDate;
     }
@@ -651,7 +651,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public boolean isEnroute() {
-    	return KewApiConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus);
+        return KewApiConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus);
     }
 
     /**
@@ -663,9 +663,9 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 
     public boolean isRoutable() {
         return KewApiConstants.ROUTE_HEADER_ENROUTE_CD.equals(docRouteStatus) ||
-        		//KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equals(docRouteStatus) ||
-        		KewApiConstants.ROUTE_HEADER_SAVED_CD.equals(docRouteStatus) ||
-        		KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
+                //KewApiConstants.ROUTE_HEADER_EXCEPTION_CD.equals(docRouteStatus) ||
+                KewApiConstants.ROUTE_HEADER_SAVED_CD.equals(docRouteStatus) ||
+                KewApiConstants.ROUTE_HEADER_PROCESSED_CD.equals(docRouteStatus);
     }
 
     /**
@@ -685,7 +685,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public boolean isValidStatusChange(String newStatus) {
-    	return ((String) stateTransitionMap.get(getDocRouteStatus())).contains(newStatus);
+        return ((String) stateTransitionMap.get(getDocRouteStatus())).contains(newStatus);
     }
 
     public void setRouteStatus(String newStatus, boolean finalState) throws InvalidActionTakenException {
@@ -792,7 +792,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
      */
     public void setRouteHeaderData(Document routeHeaderVO) throws WorkflowException {
         if (!ObjectUtils.equals(getDocTitle(), routeHeaderVO.getTitle())) {
-        	KEWServiceLocator.getActionListService().updateActionItemsForTitleChange(getDocumentId(), routeHeaderVO.getTitle());
+            KEWServiceLocator.getActionListService().updateActionItemsForTitleChange(getDocumentId(), routeHeaderVO.getTitle());
         }
         setDocTitle(routeHeaderVO.getTitle());
         setAppDocId(routeHeaderVO.getApplicationDocumentId());
@@ -804,24 +804,24 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             setVariable(kvp.getKey(), kvp.getValue());
         }
     }
-    
+
     public void applyDocumentUpdate(DocumentUpdate documentUpdate) {
-    	if (documentUpdate != null) {
-    		String thisDocTitle = getDocTitle() == null ? "" : getDocTitle();
-    		String updateDocTitle = documentUpdate.getTitle() == null ? "" : documentUpdate.getTitle();
-    		if (!StringUtils.equals(thisDocTitle, updateDocTitle)) {
-            	KEWServiceLocator.getActionListService().updateActionItemsForTitleChange(getDocumentId(), documentUpdate.getTitle());
+        if (documentUpdate != null) {
+            String thisDocTitle = getDocTitle() == null ? "" : getDocTitle();
+            String updateDocTitle = documentUpdate.getTitle() == null ? "" : documentUpdate.getTitle();
+            if (!StringUtils.equals(thisDocTitle, updateDocTitle)) {
+                KEWServiceLocator.getActionListService().updateActionItemsForTitleChange(getDocumentId(), documentUpdate.getTitle());
             }
             setDocTitle(updateDocTitle);
             setAppDocId(documentUpdate.getApplicationDocumentId());
             setStatusModDate(new Timestamp(System.currentTimeMillis()));
             updateAppDocStatus(documentUpdate.getApplicationDocumentStatus());
-            
+
             Map<String, String> variables = documentUpdate.getVariables();
             for (String variableName : variables.keySet()) {
                 setVariable(variableName, variables.get(variableName));
             }
-    	}
+        }
     }
 
     /**
@@ -869,15 +869,15 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public void removeVariableThatContains(String name) {
-	List<BranchState> statesToRemove = new ArrayList<BranchState>();
-	for (BranchState state : this.getRootBranchState()) {
-	    if (state.getKey().contains(name)) {
-		statesToRemove.add(state);
-	    }
-	}
-	this.getRootBranchState().removeAll(statesToRemove);
+    List<BranchState> statesToRemove = new ArrayList<BranchState>();
+    for (BranchState state : this.getRootBranchState()) {
+        if (state.getKey().contains(name)) {
+        statesToRemove.add(state);
+        }
     }
-    
+    this.getRootBranchState().removeAll(statesToRemove);
+    }
+
     /**
      * Sets a variable
      * @param name variable name
@@ -910,7 +910,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             }
         }
     }
-    
+
     public List<BranchState> getRootBranchState() {
         if (this.getRootBranch() != null) {
             return this.getRootBranch().getBranchState();
@@ -921,10 +921,10 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     public CustomActionListAttribute getCustomActionListAttribute() throws WorkflowException {
         CustomActionListAttribute customActionListAttribute = null;
         if (this.getDocumentType() != null) {
-        	customActionListAttribute = this.getDocumentType().getCustomActionListAttribute();
-        	if (customActionListAttribute != null) {
-        		return customActionListAttribute;
-        	}
+            customActionListAttribute = this.getDocumentType().getCustomActionListAttribute();
+            if (customActionListAttribute != null) {
+                return customActionListAttribute;
+            }
         }
         customActionListAttribute = new DefaultCustomActionListAttribute();
         return customActionListAttribute;
@@ -968,17 +968,17 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public ActionRequestValue getDocActionRequest(int index) {
-    	List<ActionRequestValue> actionRequests = getActionRequests();
+        List<ActionRequestValue> actionRequests = getActionRequests();
         while (actionRequests.size() <= index) {
-        	ActionRequestValue actionRequest = new ActionRequestFactory(this).createBlankActionRequest();
-        	actionRequest.setNodeInstance(new RouteNodeInstance());
+            ActionRequestValue actionRequest = new ActionRequestFactory(this).createBlankActionRequest();
+            actionRequest.setNodeInstance(new RouteNodeInstance());
             actionRequests.add(actionRequest);
         }
         return (ActionRequestValue) actionRequests.get(index);
     }
 
     public ActionTakenValue getDocActionTaken(int index) {
-    	List<ActionTakenValue> actionsTaken = getActionsTaken();
+        List<ActionTakenValue> actionsTaken = getActionsTaken();
         while (actionsTaken.size() <= index) {
             actionsTaken.add(new ActionTakenValue());
         }
@@ -986,7 +986,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     public ActionItem getDocActionItem(int index) {
-    	List<ActionItem> actionItems = getActionItems();
+        List<ActionItem> actionItems = getActionItems();
         while (actionItems.size() <= index) {
             actionItems.add(new ActionItem());
         }
@@ -994,10 +994,10 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
     }
 
     private RouteNodeInstance getInitialRouteNodeInstance(int index) {
-    	if (initialRouteNodeInstances.size() >= index) {
-    	    return (RouteNodeInstance) initialRouteNodeInstances.get(index);
-    	} 
-    	return null;
+        if (initialRouteNodeInstances.size() >= index) {
+            return (RouteNodeInstance) initialRouteNodeInstances.get(index);
+        }
+        return null;
     }
 
 //	/**
@@ -1014,13 +1014,13 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
 //		return searchableAttributeValues;
 //	}
 
-	public boolean isRoutingReport() {
-		return routingReport;
-	}
+    public boolean isRoutingReport() {
+        return routingReport;
+    }
 
-	public void setRoutingReport(boolean routingReport) {
-		this.routingReport = routingReport;
-	}
+    public void setRoutingReport(boolean routingReport) {
+        this.routingReport = routingReport;
+    }
 
     public List<RouteNodeInstance> getInitialRouteNodeInstances() {
         return initialRouteNodeInstances;
@@ -1030,118 +1030,118 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
         this.initialRouteNodeInstances = initialRouteNodeInstances;
     }
 
-	public List<Note> getNotes() {
-		return notes;
-	}
+    public List<Note> getNotes() {
+        return notes;
+    }
 
-	public void setNotes(List<Note> notes) {
-		this.notes = notes;
-	}
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
 
-	public DocumentRouteHeaderValueContent getDocumentContent() {
-		if (documentContent == null) {
-			documentContent = KEWServiceLocator.getRouteHeaderService().getContent(getDocumentId());
-		}
-		return documentContent;
-	}
+    public DocumentRouteHeaderValueContent getDocumentContent() {
+        if (documentContent == null) {
+            documentContent = KEWServiceLocator.getRouteHeaderService().getContent(getDocumentId());
+        }
+        return documentContent;
+    }
 
-	public void setDocumentContent(DocumentRouteHeaderValueContent documentContent) {
-		this.documentContent = documentContent;
-	}
+    public void setDocumentContent(DocumentRouteHeaderValueContent documentContent) {
+        this.documentContent = documentContent;
+    }
 
-	public List<DocumentStatusTransition> getAppDocStatusHistory() {
-		return this.appDocStatusHistory;
-	}
+    public List<DocumentStatusTransition> getAppDocStatusHistory() {
+        return this.appDocStatusHistory;
+    }
 
-	public void setAppDocStatusHistory(
-			List<DocumentStatusTransition> appDocStatusHistory) {
-		this.appDocStatusHistory = appDocStatusHistory;
-	}
-	
-	@Override
-	public DocumentStatus getStatus() {
-		return DocumentStatus.fromCode(getDocRouteStatus());
-	}
-	
-	@Override
-	public DateTime getDateCreated() {
-		if (getCreateDate() == null) {
-			return null;
-		}
-		return new DateTime(getCreateDate().getTime());
-	}
-	
-	@Override
-	public DateTime getDateLastModified() {
-		if (getStatusModDate() == null) {
-			return null;
-		}
-		return new DateTime(getStatusModDate().getTime());
-	}
+    public void setAppDocStatusHistory(
+            List<DocumentStatusTransition> appDocStatusHistory) {
+        this.appDocStatusHistory = appDocStatusHistory;
+    }
 
-	@Override
-	public DateTime getDateApproved() {
-		if (getApprovedDate() == null) {
-			return null;
-		}
-		return new DateTime(getApprovedDate().getTime());
-	}
+    @Override
+    public DocumentStatus getStatus() {
+        return DocumentStatus.fromCode(getDocRouteStatus());
+    }
 
-	@Override
-	public DateTime getDateFinalized() {
-		if (getFinalizedDate() == null) {
-			return null;
-		}
-		return new DateTime(getFinalizedDate().getTime());
-	}
-	
-	@Override
-	public String getTitle() {
-		return docTitle;
-	}
+    @Override
+    public DateTime getDateCreated() {
+        if (getCreateDate() == null) {
+            return null;
+        }
+        return new DateTime(getCreateDate().getTime());
+    }
 
-	@Override
-	public String getApplicationDocumentId() {
-		return appDocId;
-	}
+    @Override
+    public DateTime getDateLastModified() {
+        if (getStatusModDate() == null) {
+            return null;
+        }
+        return new DateTime(getStatusModDate().getTime());
+    }
 
-	@Override
-	public String getInitiatorPrincipalId() {
-		return initiatorWorkflowId;
-	}
+    @Override
+    public DateTime getDateApproved() {
+        if (getApprovedDate() == null) {
+            return null;
+        }
+        return new DateTime(getApprovedDate().getTime());
+    }
 
-	@Override
-	public String getRoutedByPrincipalId() {
-		return routedByUserWorkflowId;
-	}
-	
-	@Override
-	public String getDocumentTypeName() {
-		return getDocumentType().getName();
-	}
-	
-	@Override
-	public String getDocumentHandlerUrl() {
-		return getDocumentType().getDocHandlerUrl();
-	}
-	
-	@Override
-	public String getApplicationDocumentStatus() {
-		return appDocStatus;
-	}
-	
-	@Override
-	public DateTime getApplicationDocumentStatusDate() {
-		if (appDocStatusDate == null) {
-			return null;
-		}
-		return new DateTime(appDocStatusDate.getTime());
-	}
-	
-	@Override
-	public Map<String, String> getVariables() {
-		Map<String, String> documentVariables = new HashMap<String, String>();
-		/* populate the routeHeaderVO with the document variables */
+    @Override
+    public DateTime getDateFinalized() {
+        if (getFinalizedDate() == null) {
+            return null;
+        }
+        return new DateTime(getFinalizedDate().getTime());
+    }
+
+    @Override
+    public String getTitle() {
+        return docTitle;
+    }
+
+    @Override
+    public String getApplicationDocumentId() {
+        return appDocId;
+    }
+
+    @Override
+    public String getInitiatorPrincipalId() {
+        return initiatorWorkflowId;
+    }
+
+    @Override
+    public String getRoutedByPrincipalId() {
+        return routedByUserWorkflowId;
+    }
+
+    @Override
+    public String getDocumentTypeName() {
+        return getDocumentType().getName();
+    }
+
+    @Override
+    public String getDocumentHandlerUrl() {
+        return getDocumentType().getDocHandlerUrl();
+    }
+
+    @Override
+    public String getApplicationDocumentStatus() {
+        return appDocStatus;
+    }
+
+    @Override
+    public DateTime getApplicationDocumentStatusDate() {
+        if (appDocStatusDate == null) {
+            return null;
+        }
+        return new DateTime(appDocStatusDate.getTime());
+    }
+
+    @Override
+    public Map<String, String> getVariables() {
+        Map<String, String> documentVariables = new HashMap<String, String>();
+        /* populate the routeHeaderVO with the document variables */
         // FIXME: we assume there is only one for now
         Branch routeNodeInstanceBranch = getRootBranch();
         // Ok, we are using the "branch state" as the arbitrary convenient repository for flow/process/edoc variables
@@ -1156,18 +1156,18 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             }
         }
         return documentVariables;
-	}
+    }
 
-	public static Document to(DocumentRouteHeaderValue documentBo) {
-		if (documentBo == null) {
-			return null;
-		}
-		Document.Builder builder = Document.Builder.create(documentBo);
-		return builder.build();
-	}
-	
-	public static DocumentRouteHeaderValue from(Document document) {
-	    DocumentRouteHeaderValue documentBo = new DocumentRouteHeaderValue();
+    public static Document to(DocumentRouteHeaderValue documentBo) {
+        if (documentBo == null) {
+            return null;
+        }
+        Document.Builder builder = Document.Builder.create(documentBo);
+        return builder.build();
+    }
+
+    public static DocumentRouteHeaderValue from(Document document) {
+        DocumentRouteHeaderValue documentBo = new DocumentRouteHeaderValue();
         documentBo.setAppDocId(document.getApplicationDocumentId());
         if (document.getDateApproved() != null) {
             documentBo.setApprovedDate(new Timestamp(document.getDateApproved().getMillis()));
@@ -1201,7 +1201,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
             documentBo.setAppDocStatusDate(new Timestamp(document.getApplicationDocumentStatusDate().getMillis()));
         }
 
-        
+
         // Convert the variables
         Map<String, String> variables = document.getVariables();
         if( variables != null && !variables.isEmpty()){
@@ -1209,8 +1209,8 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase impl
                 documentBo.setVariable(kvp, variables.get(kvp));
             }
         }
-        
+
         return documentBo;
-	}
+    }
 
 }

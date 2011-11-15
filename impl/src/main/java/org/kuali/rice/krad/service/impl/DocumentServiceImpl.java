@@ -759,9 +759,6 @@ public class DocumentServiceImpl implements DocumentService {
 
     /**
      * Validates and persists a document.
-     *
-     * @see org.kuali.rice.krad.service.DocumentService#validateAndPersistDocument(org.kuali.rice.krad.document.Document,
-     *      java.lang.String)
      */
     public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException {
         if (document == null) {
@@ -901,7 +898,7 @@ public class DocumentServiceImpl implements DocumentService {
      * attached and persisted against it.  This method verifies that the document's
      * note target is non-null as well as checking that it has a non-empty object id.
      *
-     * @param the document on which to check for note target readiness
+     * @param document the document on which to check for note target readiness
      * @return true if the note target is ready, false otherwise
      */
     protected boolean isNoteTargetReady(Document document) {
@@ -924,8 +921,7 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.krad.service.DocumentService#sendAdHocRequests(org.kuali.rice.krad.document.Document,
-     *      java.util.List)
+     * @see org.kuali.rice.krad.service.DocumentService#sendAdHocRequests(org.kuali.rice.krad.document.Document, String, java.util.List)
      */
     @Override
     public void sendAdHocRequests(Document document, String annotation,
@@ -1087,7 +1083,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * @param personService the personService to set
+     * @return the personService
      */
     public PersonService getPersonService() {
         if (personService == null) {

@@ -37,21 +37,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Defines an update to document content on a particular workflow document.
- * Contains general application content as well as a list of attribute
- * definitions and searchable definitions.  When passed to the appropriate
- * workflow services to perform an update on document content, if any of the
- * internal content or definitions on this object have not been set then they
- * will not be updated.  This allows for this data structure to be used to only
- * update the portion of the document content that is desired to be updated.
- * 
+ * Defines an update to document meta-data on a particular workflow document,
+ * including title, application document id, application document status,
+ * and routing branch variables.  This structure is used to convey changes to
+ * the document meta-data on document actions, and to retrieve their state
+ * afterwards.
+ * Document titles will be truncated to to {@link KewApiConstants#TITLE_MAX_LENGTH} length.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ * @see org.kuali.rice.kew.api.WorkflowDocumentFactory
+ * @see WorkflowDocumentImpl
+ * @see WorkflowDocumentImpl.ModifiableDocument
+ * @see WorkflowDocumentActionsServiceImpl
  */
 @XmlRootElement(name = DocumentUpdate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentUpdate.Constants.TYPE_NAME, propOrder = {
-	DocumentUpdate.Elements.TITLE,
+    DocumentUpdate.Elements.TITLE,
     DocumentUpdate.Elements.APPLICATION_DOCUMENT_ID,
     DocumentUpdate.Elements.APPLICATION_DOCUMENT_STATUS,
     DocumentUpdate.Elements.VARIABLES,
@@ -59,154 +61,154 @@ import java.util.Map;
 })
 public final class DocumentUpdate extends AbstractDataTransferObject {
 
-	private static final long serialVersionUID = 608839901744771499L;
+    private static final long serialVersionUID = 608839901744771499L;
 
-	@XmlElement(name = Elements.TITLE, required = false)
-	private final String title;
+    @XmlElement(name = Elements.TITLE, required = false)
+    private final String title;
 
-	@XmlElement(name = Elements.APPLICATION_DOCUMENT_ID, required = false)
-	private final String applicationDocumentId;
-		
-	@XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS, required = false)
-	private final String applicationDocumentStatus;
-	
-	@XmlElement(name = Elements.VARIABLES, required = false)
-	@XmlJavaTypeAdapter(MapStringStringAdapter.class)
-	private final Map<String, String> variables;
-    
-	@SuppressWarnings("unused")
+    @XmlElement(name = Elements.APPLICATION_DOCUMENT_ID, required = false)
+    private final String applicationDocumentId;
+
+    @XmlElement(name = Elements.APPLICATION_DOCUMENT_STATUS, required = false)
+    private final String applicationDocumentStatus;
+
+    @XmlElement(name = Elements.VARIABLES, required = false)
+    @XmlJavaTypeAdapter(MapStringStringAdapter.class)
+    private final Map<String, String> variables;
+
+    @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
-    
-	private DocumentUpdate() {
-		this.title = null;
-		this.applicationDocumentId = null;
-		this.applicationDocumentStatus = null;
-		this.variables = null;
-	}
-	
-    private DocumentUpdate(Builder builder) {
-    	this.title = builder.getTitle();
-    	this.applicationDocumentId = builder.getApplicationDocumentId();
-    	this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
-    	this.variables = builder.getVariables();
+
+    private DocumentUpdate() {
+        this.title = null;
+        this.applicationDocumentId = null;
+        this.applicationDocumentStatus = null;
+        this.variables = null;
     }
 
-	public String getTitle() {
-		return title;
-	}
+    private DocumentUpdate(Builder builder) {
+        this.title = builder.getTitle();
+        this.applicationDocumentId = builder.getApplicationDocumentId();
+        this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
+        this.variables = builder.getVariables();
+    }
 
-	public String getApplicationDocumentId() {
-		return applicationDocumentId;
-	}
-	
-	public String getApplicationDocumentStatus() {
-		return applicationDocumentStatus;
-	}
-	
-	public Map<String, String> getVariables() {
-		if (variables == null) {
-			return Collections.emptyMap();
-		}
-		return Collections.unmodifiableMap(variables);
-	}
-		
-	/**
-	 * A builder which can be used to construct {@link DocumentUpdate} instances.
-	 */
-	public final static class Builder implements Serializable, ModelBuilder {
+    public String getTitle() {
+        return title;
+    }
 
-		private static final long serialVersionUID = 2220000561051177421L;
+    public String getApplicationDocumentId() {
+        return applicationDocumentId;
+    }
 
-		private String title;
-		private String applicationDocumentId;
-		private String applicationDocumentStatus;
-		private Map<String, String> variables;
+    public String getApplicationDocumentStatus() {
+        return applicationDocumentStatus;
+    }
+
+    public Map<String, String> getVariables() {
+        if (variables == null) {
+            return Collections.emptyMap();
+        }
+        return Collections.unmodifiableMap(variables);
+    }
+
+    /**
+     * A builder which can be used to construct {@link DocumentUpdate} instances.
+     */
+    public final static class Builder implements Serializable, ModelBuilder {
+
+        private static final long serialVersionUID = 2220000561051177421L;
+
+        private String title;
+        private String applicationDocumentId;
+        private String applicationDocumentStatus;
+        private Map<String, String> variables;
 
 
-		private Builder() {
-			this.title = "";
-			this.variables = new HashMap<String, String>();
-		}
+        private Builder() {
+            this.title = "";
+            this.variables = new HashMap<String, String>();
+        }
 
-		public static Builder create() {
-			return new Builder();
-		}
+        public static Builder create() {
+            return new Builder();
+        }
 
-		public static Builder create(Document document) {
-			if (document == null) {
-				throw new IllegalArgumentException("document was null");
-			}
-			Builder builder = create();
-			builder.setTitle(document.getTitle());
-			builder.setApplicationDocumentId(document.getApplicationDocumentId());
-			builder.setApplicationDocumentStatus(document.getApplicationDocumentStatus());
-			builder.setVariables(document.getVariables());
-			return builder;
-		}
+        public static Builder create(Document document) {
+            if (document == null) {
+                throw new IllegalArgumentException("document was null");
+            }
+            Builder builder = create();
+            builder.setTitle(document.getTitle());
+            builder.setApplicationDocumentId(document.getApplicationDocumentId());
+            builder.setApplicationDocumentStatus(document.getApplicationDocumentStatus());
+            builder.setVariables(document.getVariables());
+            return builder;
+        }
 
-		public DocumentUpdate build() {
-			return new DocumentUpdate(this);
-		}
+        public DocumentUpdate build() {
+            return new DocumentUpdate(this);
+        }
 
-		public String getTitle() {
-			return title;
-		}
+        public String getTitle() {
+            return title;
+        }
 
-		/**
-		 * TODO: document the fact that this will auto-truncate the title...
-		 */
-		public void setTitle(String title) {
-			if (title == null) {
-				title = "";
-			}
-	        if (title.length() > KewApiConstants.TITLE_MAX_LENGTH) {
-	            title = title.substring(0, KewApiConstants.TITLE_MAX_LENGTH);
-	        }
-			this.title = title;
-		}
+        /**
+         * Sets the document title - will be truncated to {@link KewApiConstants#TITLE_MAX_LENGTH} length.
+         */
+        public void setTitle(String title) {
+            if (title == null) {
+                title = "";
+            }
+            if (title.length() > KewApiConstants.TITLE_MAX_LENGTH) {
+                title = title.substring(0, KewApiConstants.TITLE_MAX_LENGTH);
+            }
+            this.title = title;
+        }
 
-		public String getApplicationDocumentId() {
-			return applicationDocumentId;
-		}
+        public String getApplicationDocumentId() {
+            return applicationDocumentId;
+        }
 
-		public void setApplicationDocumentId(String applicationDocumentId) {
-			this.applicationDocumentId = applicationDocumentId;
-		}
+        public void setApplicationDocumentId(String applicationDocumentId) {
+            this.applicationDocumentId = applicationDocumentId;
+        }
 
-		public String getApplicationDocumentStatus() {
-			return applicationDocumentStatus;
-		}
+        public String getApplicationDocumentStatus() {
+            return applicationDocumentStatus;
+        }
 
-		public void setApplicationDocumentStatus(String applicationDocumentStatus) {
-			this.applicationDocumentStatus = applicationDocumentStatus;
-		}
+        public void setApplicationDocumentStatus(String applicationDocumentStatus) {
+            this.applicationDocumentStatus = applicationDocumentStatus;
+        }
 
-		public void setVariables(Map<String, String> variables) {
-			if (variables == null) {
-				this.variables = new HashMap<String, String>();
-			} else {
-				this.variables = new HashMap<String, String>(variables);
-			}
-		}
-		
-		public Map<String, String> getVariables() {
-			return variables;
-		}
-		
-		public String getVariableValue(String name) {
-			return variables.get(name);
-	    }
+        public void setVariables(Map<String, String> variables) {
+            if (variables == null) {
+                this.variables = new HashMap<String, String>();
+            } else {
+                this.variables = new HashMap<String, String>(variables);
+            }
+        }
 
-	    public void setVariable(String name, String value) {
-	        if (StringUtils.isBlank(name)) {
-	        	throw new IllegalArgumentException("name was null or blank");
-	        }
-	        variables.put(name, value);
-	    }
-	    
-	}
-	
+        public Map<String, String> getVariables() {
+            return variables;
+        }
+
+        public String getVariableValue(String name) {
+            return variables.get(name);
+        }
+
+        public void setVariable(String name, String value) {
+            if (StringUtils.isBlank(name)) {
+                throw new IllegalArgumentException("name was null or blank");
+            }
+            variables.put(name, value);
+        }
+
+    }
+
     /**
      * Defines some internal constants used on this class.
      */
@@ -219,10 +221,9 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
      * A private class which exposes constants which define the XML element names to use when this object is marshalled to XML.
      */
     static class Elements {
-    	final static String TITLE = "title";
+        final static String TITLE = "title";
         final static String APPLICATION_DOCUMENT_ID = "applicationDocumentId";
         final static String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
         final static String VARIABLES = "variables";
     }
-
 }

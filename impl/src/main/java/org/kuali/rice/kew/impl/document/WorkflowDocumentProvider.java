@@ -29,8 +29,8 @@ import org.kuali.rice.kew.api.document.DocumentUpdate;
  */
 public interface WorkflowDocumentProvider {
 
-	WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
-	
-	WorkflowDocument loadDocument(String principalId, String documentId);
-	
+    WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate);
+
+    WorkflowDocument loadDocument(String principalId, String documentId);
+
 }

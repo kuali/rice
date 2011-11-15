@@ -1406,9 +1406,9 @@ public interface WorkflowDocumentActionsService {
      */
     @WebMethod(operationName = "reResolveRoleByDocTypeName")
     void reResolveRoleByDocTypeName(
-    		@WebParam(name = "documentTypeName") String documentTypeName,
-    		@WebParam(name = "roleName") String roleName,
-    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
+            @WebParam(name = "documentTypeName") String documentTypeName,
+            @WebParam(name = "roleName") String roleName,
+            @WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
             throws RiceIllegalArgumentException;
 
     /**
@@ -1424,9 +1424,9 @@ public interface WorkflowDocumentActionsService {
      */
     @WebMethod(operationName = "reResolveRoleByDocumentId")
     void reResolveRoleByDocumentId(
-    		@WebParam(name = "documentId") String documentId,
-    		@WebParam(name = "roleName") String roleName,
-    		@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "roleName") String roleName,
+            @WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
             throws RiceIllegalArgumentException;
 
     /**
@@ -1458,8 +1458,8 @@ public interface WorkflowDocumentActionsService {
     @WebMethod(operationName = "isFinalApprover")
     @WebResult(name = "finalApprover")
     boolean isFinalApprover(
-        	@WebParam(name = "documentId") String documentId,
-    		@WebParam(name = "principalId") String principalId)
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId)
             throws RiceIllegalArgumentException;
 
     /**
@@ -1478,9 +1478,9 @@ public interface WorkflowDocumentActionsService {
     @WebMethod(operationName = "isLastApproverAtNode")
     @WebResult(name = "lastApproverAtNode")
     boolean isLastApproverAtNode(
-    		@WebParam(name = "documentId") String documentId,
-    		@WebParam(name = "principalId") String principalId,
-    		@WebParam(name = "nodeName") String nodeName)
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "nodeName") String nodeName)
             throws RiceIllegalArgumentException;
 
     /**
@@ -1499,9 +1499,9 @@ public interface WorkflowDocumentActionsService {
     @WebMethod(operationName = "routeNodeHasApproverActionRequest")
     @WebResult(name = "routeNodeHasApproverActionRequest")
     boolean routeNodeHasApproverActionRequest(
-    		@WebParam(name = "docType") String docType,
-    		@WebParam(name = "docContent") String docContent,
-    		@WebParam(name = "nodeName") String nodeName)
+            @WebParam(name = "docType") String docType,
+            @WebParam(name = "docContent") String docContent,
+            @WebParam(name = "nodeName") String nodeName)
             throws RiceIllegalArgumentException;
 
     /**
@@ -1520,9 +1520,9 @@ public interface WorkflowDocumentActionsService {
     @WebMethod(operationName = "documentWillHaveAtLeastOneActionRequest")
     @WebResult(name = "documentWillHaveAtLeastOneActionRequest")
     boolean documentWillHaveAtLeastOneActionRequest(
-    		@WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria,
-    		@WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes,
-    		@WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests)
+            @WebParam(name = "reportCriteria") RoutingReportCriteria reportCriteria,
+            @WebParam(name = "actionRequestedCodes") List<String> actionRequestedCodes,
+            @WebParam(name = "ignoreCurrentActionRequests") boolean ignoreCurrentActionRequests)
             throws RiceIllegalArgumentException;
 
     /**
@@ -1540,8 +1540,8 @@ public interface WorkflowDocumentActionsService {
     @XmlElementWrapper(name = "principalIds", required = true)
     @XmlElement(name = "principalId", required = true)
     List<String> getPrincipalIdsInRouteLog(
-    		@WebParam(name = "documentId") String documentId,
-    		@WebParam(name = "lookFuture") boolean lookFuture)
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "lookFuture") boolean lookFuture)
             throws RiceIllegalArgumentException;
 
 }

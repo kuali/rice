@@ -29,8 +29,9 @@ public interface AttributeError {
     String getAttributeName();
 
     /**
-     * A list of errors associated with an attribute.  Will never return null or an empty list.
-     *
+     * A list of fully resolved error messages associated with an attribute.  Will never return null or an empty list.
+     * Note: since this interface is used to communicate errors remotely across modules, all error messages <i>must</i>
+     * but fully resolved and concrete, not error message resource keys.
      *
      * @return list of errors.
      */

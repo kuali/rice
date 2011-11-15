@@ -154,6 +154,9 @@ public final class RemotableAttributeError extends AbstractDataTransferObject im
         private List<String> errors = new ArrayList<String>();
 
         private Builder(String attributeName) {
+            if (StringUtils.isBlank(attributeName)) {
+                throw new IllegalArgumentException("attributeName was null");
+            }
             this.attributeName = attributeName;
         }
 

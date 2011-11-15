@@ -43,11 +43,10 @@ class RemotableAttributeErrorTest {
         assertEquals("error0, error1", o.build().getMessage())
     }
 
-    //@Test(expected=IllegalArgumentException.class)
-    // Empty name not validated...?
+    @Test(expected=IllegalArgumentException.class)
     void testEmptyName() {
-        RemotableAttributeError.Builder o = RemotableAttributeError.Builder.create((String) null);
-        assertNotNull(o.build());
+        RemotableAttributeError.Builder o = RemotableAttributeError.Builder.create((String) null, "error0");
+        assertNotNull(o.build().attributeName);
     }
 
     @Test(expected=IllegalStateException.class)

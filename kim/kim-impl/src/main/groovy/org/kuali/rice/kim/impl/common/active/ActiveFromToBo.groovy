@@ -36,6 +36,10 @@ public abstract class ActiveFromToBo extends PersistableBusinessObjectBase {
         return InactivatableFromToUtils.isActive(getActiveFromDate(), getActiveToDate(), activeAsOfDate)
     }
 
+    boolean isActive() {
+        return InactivatableFromToUtils.isActive(getActiveFromDate(), getActiveToDate(), null)
+    }
+
     DateTime getActiveFromDate() {
         return this.activeFromDateValue == null ? null : new DateTime(this.activeFromDateValue.getTime())
     }

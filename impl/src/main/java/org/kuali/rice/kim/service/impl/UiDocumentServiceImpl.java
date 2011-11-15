@@ -416,7 +416,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
 					pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
 					pndMember.setEdit(true);
-					pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementPersonDocument, pndMember.getAttributesHelper().getDefinitions(), member.getAttributes()));
+					pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementPersonDocument, pndMember.getAttributesHelper().getDefinitions(), member.getAttributeDetails()));
 					pndMembers.add(pndMember);
 				}
 			}
@@ -1958,7 +1958,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
 					pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
 					pndMember.setEdit(true);
-					pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementRoleDocument, member.getAttributes()));
+					pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementRoleDocument, member.getAttributeDetails()));
 					pndMembers.add(pndMember);
 				}
 			}
@@ -2470,9 +2470,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						}
 					}
 				}
-				origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributes()==null)?
-						new ArrayList<DelegateMemberAttributeDataBo>():origDelegationMemberImplTemp.getAttributes();
-				newDelegationMemberImpl.setAttributes(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
+				origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributeDetails()==null)?
+						new ArrayList<DelegateMemberAttributeDataBo>():origDelegationMemberImplTemp.getAttributeDetails();
+				newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
 				newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
                 newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
                 delegationsMembersList.add(newDelegationMemberImpl);

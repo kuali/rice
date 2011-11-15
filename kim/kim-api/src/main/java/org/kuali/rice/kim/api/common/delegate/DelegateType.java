@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
@@ -67,7 +68,8 @@ public final class DelegateType extends AbstractDataTransferObject implements De
     @XmlElement(name = Elements.KIM_TYPE_ID)
     private final String kimTypeId;
 
-    @XmlElement(name = Elements.MEMBERS)
+    @XmlElementWrapper(name = Elements.MEMBERS, required = false)
+    @XmlElement(name = Elements.MEMBER)
     private final List<DelegateMember> members;
 
     @XmlElement(name = Elements.ACTIVE)
@@ -267,6 +269,7 @@ public final class DelegateType extends AbstractDataTransferObject implements De
         static final String DELEGATION_TYPE_CODE = "delegationTypeCode";
         static final String KIM_TYPE_ID = "kimTypeId";
         static final String MEMBERS = "members";
+        static final String MEMBER = "member";
         static final String ACTIVE = "active";
     }
 

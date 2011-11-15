@@ -28,6 +28,8 @@ import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract
 import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
 import java.sql.Timestamp
+import javax.persistence.Transient
+import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo
 
 @Entity
 @Table(name = "KRIM_DLGN_MBR_T")
@@ -43,7 +45,10 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
 
     @OneToMany(targetEntity = DelegateMemberAttributeDataBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID", insertable = false, updatable = false)
-    List<DelegateMemberAttributeDataBo> attributes = new AutoPopulatingList(DelegateMemberAttributeDataBo.class);
+    List<DelegateMemberAttributeDataBo> attributeDetails = new AutoPopulatingList(DelegateMemberAttributeDataBo.class)
+
+    @Transient
+    Map<String,String> attributes
 
     /**
      * Returns Attributes derived from the internal List of DelegateMemberAttributeDataBos.  This field is
@@ -53,14 +58,30 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
     public Map<String,String> getQualifier() {
         Map<String,String> attribs = new HashMap<String,String>();
 
-        if (attributes == null) {
+        if (attributeDetails == null) {
             return attribs;
         }
-        for (DelegateMemberAttributeDataBo attr: attributes) {
+        for (DelegateMemberAttributeDataBo attr: attributeDetails) {
             attribs.put(attr.getKimAttribute().getAttributeName(), attr.getAttributeValue());
         }
         return attribs
     }
+
+    List<DelegateMemberAttributeDataBo> getAttributeDetails() {
+        if (this.attributeDetails == null) {
+            return new AutoPopulatingList(DelegateMemberAttributeDataBo.class);
+        }
+        return this.attributeDetails;
+    }
+
+    void setAttributeDetails(List<DelegateMemberAttributeDataBo> attributeDetails) {
+        this.attributeDetails = attributeDetails;
+    }
+
+    Map<String,String> getAttributes() {
+        return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
+    }
+
 
 
     public static DelegateMember to(DelegateMemberBo bo) {

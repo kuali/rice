@@ -126,20 +126,22 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         activeToDate = b.getActiveToDate();
     }
 
-
+    @Override
     public String getMemberId() {
         return this.memberId;
     }
 
+    @Override
     public MemberType getMemberType() {
         return MemberType.fromCode(this.memberTypeCode);
     }
 
-
+    @Override
     public String getRoleMemberId() {
         return this.roleMemberId;
     }
 
+    @Override
     public String getRoleId() {
         return this.roleId;
     }
@@ -147,6 +149,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
     /**
      * @return the attributes
      */
+    @Override
     public Map<String, String> getAttributes() {
         return this.attributes;
     }
@@ -154,14 +157,17 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
     /**
      * @return the roleResponsibilityActions
      */
+    @Override
     public List<RoleResponsibilityAction> getRoleRspActions() {
         return this.roleResponsibilityActions;
     }
 
+    @Override
     public DateTime getActiveFromDate() {
         return activeFromDate;
     }
 
+    @Override
     public DateTime getActiveToDate() {
         return activeToDate;
     }
@@ -169,6 +175,11 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
     @Override
     public boolean isActive(DateTime activeAsOfDate) {
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
+    }
+
+    @Override
+    public boolean isActive() {
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, null);
     }
 
     public static final class Builder implements ModelBuilder, RoleMemberContract, ModelObjectComplete {
@@ -216,10 +227,12 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             return b;
         }
 
+        @Override
         public RoleMember build() {
             return new RoleMember(this);
         }
 
+        @Override
         public String getRoleMemberId() {
             return roleMemberId;
         }
@@ -228,6 +241,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.roleMemberId = roleMemberId;
         }
 
+        @Override
         public String getRoleId() {
             return roleId;
         }
@@ -236,6 +250,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.roleId = roleId;
         }
 
+        @Override
         public Map<String, String> getAttributes() {
             return attributes;
         }
@@ -244,6 +259,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.attributes = attributes;
         }
 
+        @Override
         public List<RoleResponsibilityAction.Builder> getRoleRspActions() {
             return roleRspActions;
         }
@@ -252,6 +268,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.roleRspActions = roleRspActions;
         }
 
+        @Override
         public String getMemberId() {
             return memberId;
         }
@@ -263,6 +280,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.memberId = memberId;
         }
 
+        @Override
         public MemberType getMemberType() {
             return memberType;
         }
@@ -274,6 +292,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.memberType = memberType;
         }
 
+        @Override
         public DateTime getActiveFromDate() {
             return activeFromDate;
         }
@@ -282,6 +301,7 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             this.activeFromDate = activeFromDate;
         }
 
+        @Override
         public DateTime getActiveToDate() {
             return activeToDate;
         }
@@ -293,6 +313,11 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         @Override
         public boolean isActive(DateTime activeAsOfDate) {
             return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
+        }
+
+        @Override
+        public boolean isActive() {
+            return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, null);
         }
 
         @Override

@@ -69,16 +69,21 @@ public class RoleMembershipTest {
             <delegationTypeCode>${DelegateTypeTest.DELEGATION_TYPE.code}</delegationTypeCode>
             <kimTypeId>${DelegateTypeTest.KIM_TYPE_ID}</kimTypeId>
             <members>
+              <member>
                 <delegationMemberId>${DelegateTypeTest.DELEGATION_MEMBER_ID}</delegationMemberId>
                 <delegationId>${DelegateTypeTest.DELEGATION_ID}</delegationId>
                 <memberId>${DelegateTypeTest.MEMBER_ID}</memberId>
                 <roleMemberId>${DelegateTypeTest.ROLE_MEMBER_ID}</roleMemberId>
                 <typeCode>${DelegateTypeTest.DELEGATION_TYPE.code}</typeCode>
+                <attributes/>
                 <delegationTypeCode>${DelegateTypeTest.DELEGATION_TYPE.code}</delegationTypeCode>
                 <memberTypeCode>${DelegateTypeTest.DELEGATION_TYPE.code}</memberTypeCode>
                 <roleMemberId>${DelegateTypeTest.ROLE_MEMBER_ID}</roleMemberId>
                 <versionNumber>${DelegateTypeTest.VERSION}</versionNumber>
+                <activeFromDate>${DelegateTypeTest.ACTIVE_FROM}</activeFromDate>
+                <activeToDate>${DelegateTypeTest.ACTIVE_TO}</activeToDate>
                 <active>true</active>
+              </member>
             </members>
             <active>${DelegateTypeTest.ACTIVE}</active>
         </delegates>

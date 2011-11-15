@@ -141,6 +141,11 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
     }
 
+    @Override
+    public boolean isActive() {
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, null);
+    }
+
     public static class Builder implements GroupMemberContract, ModelBuilder, Serializable {
         private String id;
         private String groupId;
@@ -267,6 +272,11 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         @Override
         public boolean isActive(DateTime activeAsOf) {
             return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOf);
+        }
+
+        @Override
+        public boolean isActive() {
+            return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, null);
         }
 
         @Override

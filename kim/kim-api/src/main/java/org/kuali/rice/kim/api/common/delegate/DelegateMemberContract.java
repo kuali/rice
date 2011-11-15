@@ -19,6 +19,8 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 
+import java.util.Map;
+
 public interface DelegateMemberContract extends Versioned, InactivatableFromTo {
 
     String getDelegationMemberId();
@@ -30,4 +32,6 @@ public interface DelegateMemberContract extends Versioned, InactivatableFromTo {
     MemberType getType();
 
     String getMemberId();
+
+    Map<String, String> getAttributes();
 }

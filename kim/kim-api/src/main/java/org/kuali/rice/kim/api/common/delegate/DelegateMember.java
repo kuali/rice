@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromToUtils;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
+import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.w3c.dom.Element;
 
@@ -35,6 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Map;
 
 @XmlRootElement(name = DelegateMember.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -44,6 +46,7 @@ import java.util.Collection;
         DelegateMember.Elements.MEMBER_ID,
         DelegateMember.Elements.ROLE_MEMBER_ID,
         DelegateMember.Elements.TYPE_CODE,
+        DelegateMember.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.ACTIVE_FROM_DATE,
         CoreConstants.CommonElements.ACTIVE_TO_DATE,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -66,6 +69,10 @@ public final class DelegateMember extends AbstractDataTransferObject
 
     @XmlElement(name = Elements.TYPE_CODE, required = false)
     private final String typeCode;
+
+    @XmlElement(name = Elements.ATTRIBUTES, required = false)
+    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+    private final Map<String, String> attributes;
 
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     @XmlElement(name = CoreConstants.CommonElements.ACTIVE_FROM_DATE)
@@ -95,6 +102,7 @@ public final class DelegateMember extends AbstractDataTransferObject
         this.versionNumber = null;
         this.activeFromDate = null;
         this.activeToDate = null;
+        this.attributes = null;
     }
 
     private DelegateMember(Builder builder) {
@@ -106,6 +114,7 @@ public final class DelegateMember extends AbstractDataTransferObject
         this.versionNumber = builder.getVersionNumber();
         this.activeFromDate = builder.getActiveFromDate();
         this.activeToDate = builder.getActiveToDate();
+        this.attributes = builder.getAttributes();
     }
 
 
@@ -149,9 +158,22 @@ public final class DelegateMember extends AbstractDataTransferObject
         return activeToDate;
     }
 
+    /**
+     * @return the attributes
+     */
+    @Override
+    public Map<String, String> getAttributes() {
+        return this.attributes;
+    }
+
     @Override
     public boolean isActive(DateTime activeAsOfDate) {
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
+    }
+
+    @Override
+    public boolean isActive() {
+        return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, null);
     }
 
     /**
@@ -164,6 +186,7 @@ public final class DelegateMember extends AbstractDataTransferObject
         private String memberId;
         private String roleMemberId;
         private MemberType type;
+        private Map<String, String> attributes;
         private DateTime activeFromDate;
         private DateTime activeToDate;
         private Long versionNumber;
@@ -185,6 +208,7 @@ public final class DelegateMember extends AbstractDataTransferObject
             builder.setDelegationId(contract.getDelegationId());
             builder.setMemberId(contract.getMemberId());
             builder.setRoleMemberId(contract.getRoleMemberId());
+            builder.setAttributes(contract.getAttributes());
             builder.setType(contract.getType());
             builder.setActiveFromDate(contract.getActiveFromDate());
             builder.setActiveToDate(contract.getActiveToDate());
@@ -245,6 +269,15 @@ public final class DelegateMember extends AbstractDataTransferObject
         }
 
         @Override
+        public Map<String, String> getAttributes() {
+            return this.attributes;
+        }
+
+        public void setAttributes(Map<String, String> attributes) {
+            this.attributes = attributes;
+        }
+
+        @Override
         public Long getVersionNumber() {
             return versionNumber;
         }
@@ -278,6 +311,11 @@ public final class DelegateMember extends AbstractDataTransferObject
         public boolean isActive(DateTime activeAsOfDate) {
             return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, activeAsOfDate);
         }
+
+        @Override
+        public boolean isActive() {
+            return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, null);
+        }
     }
 
     /**
@@ -298,6 +336,7 @@ public final class DelegateMember extends AbstractDataTransferObject
         final static String ROLE_ID = "roleId";
         final static String DELEGATION_ID = "delegationId";
         final static String MEMBER_ID = "memberId";
+        final static String ATTRIBUTES = "attributes";
         final static String ROLE_MEMBER_ID = "roleMemberId";
         final static String TYPE_CODE = "typeCode";
     }

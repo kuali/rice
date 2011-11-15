@@ -26,7 +26,7 @@ import java.sql.Timestamp;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface InactivatableFromTo {
+public interface InactivatableFromTo extends Inactivatable {
 
     /**
 	 * Gets the date for which the record become active. Can be null.
@@ -49,4 +49,6 @@ public interface InactivatableFromTo {
      * @return true if active false if not
      */
     boolean isActive(DateTime activeAsOfDate);
+
+
 }

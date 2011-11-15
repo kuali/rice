@@ -116,15 +116,16 @@ class RoleMemberTest {
         Assert.assertEquals(ACTIVE_TO, roleMember.activeToDate)
     }
 
-
+    @Test
     void testXmlMarshalingAndUnMarshalling() {
         JAXBContext jc = JAXBContext.newInstance(RoleMember.class)
         Marshaller marshaller = jc.createMarshaller()
         StringWriter sw = new StringWriter()
 
-        RoleMember roleMember = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
+        RoleMember.Builder roleMember = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
+        roleMember.setRoleRspActions(ROLE_RESPONSIBILITY_ACTIONS)
 
-        marshaller.marshal(roleMember, sw)
+        marshaller.marshal(roleMember.build(), sw)
         String xml = sw.toString()
 
         Unmarshaller unmarshaller = jc.createUnmarshaller();

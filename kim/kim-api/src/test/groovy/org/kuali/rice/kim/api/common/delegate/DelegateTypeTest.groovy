@@ -26,6 +26,9 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import org.kuali.rice.core.api.membership.MemberType
 import org.kuali.rice.core.api.delegation.DelegationType
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormatter
+import org.joda.time.format.DateTimeFormat
 
 class DelegateTypeTest {
 
@@ -36,17 +39,19 @@ class DelegateTypeTest {
     static final DelegationType DELEGATION_TYPE = DelegationType.PRIMARY
     static final MemberType DELEGATION_MEMBER_TYPE = MemberType.PRINCIPAL
     static final String KIM_TYPE_ID = "187"
-    static final List<DelegateMember.Builder> DELEGATE_MEMBERS = [create_delegate_member()]
+    static final Map<String, String> ATTRIBUTES = [:]
 
+    static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     static final String DELEGATION_MEMBER_ID = "1337"
     static final String MEMBER_ID = "17"
     static final String ROLE_MEMBER_ID = "256"
-    static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00.0"
-    static final Timestamp ACTIVE_FROM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_FROM_STRING).toTimestamp()
-    static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00.0"
-    static final Timestamp ACTIVE_TO = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(ACTIVE_TO_STRING).toTimestamp()
+    static final String ACTIVE_FROM_STRING = "2011-01-01 12:00:00"
+    static final DateTime ACTIVE_FROM = new DateTime(FORMATTER.parseDateTime(ACTIVE_FROM_STRING))
+    static final String ACTIVE_TO_STRING = "2012-01-01 12:00:00"
+    static final DateTime ACTIVE_TO = new DateTime(FORMATTER.parseDateTime(ACTIVE_TO_STRING))
     static final boolean ACTIVE = true;
     static final Long VERSION = 1L
+    static final List<DelegateMember.Builder> DELEGATE_MEMBERS = [create_delegate_member()]
 
     private static DelegateMember.Builder create_delegate_member() {
         DelegateMember.Builder dmBuilder = DelegateMember.Builder.create()
@@ -55,9 +60,11 @@ class DelegateTypeTest {
         dmBuilder.memberId = MEMBER_ID
         dmBuilder.roleMemberId = ROLE_MEMBER_ID
         dmBuilder.type = DELEGATION_MEMBER_TYPE
+        dmBuilder.attributes = ATTRIBUTES
         dmBuilder.activeFromDate = ACTIVE_FROM
         dmBuilder.activeToDate = ACTIVE_TO
         dmBuilder.versionNumber = VERSION
+
 
         return  dmBuilder
     }
@@ -69,14 +76,19 @@ class DelegateTypeTest {
         <delegationTypeCode>${DELEGATION_TYPE.code}</delegationTypeCode>
         <kimTypeId>${KIM_TYPE_ID}</kimTypeId>
         <members>
+          <member>
             <delegationMemberId>${DELEGATION_MEMBER_ID}</delegationMemberId>
             <delegationId>${DELEGATION_ID}</delegationId>
             <memberId>${MEMBER_ID}</memberId>
             <roleMemberId>${ROLE_MEMBER_ID}</roleMemberId>
             <typeCode>${DELEGATION_MEMBER_TYPE.code}</typeCode>
+            <attributes/>
             <roleMemberId>${ROLE_MEMBER_ID}</roleMemberId>
+            <activeFromDate>${ACTIVE_FROM}</activeFromDate>
+            <activeToDate>${ACTIVE_TO}</activeToDate>
             <active>${ACTIVE}</active>
             <versionNumber>${VERSION}</versionNumber>
+          </member>
         </members>
         <active>${ACTIVE}</active>
       </delegateType>

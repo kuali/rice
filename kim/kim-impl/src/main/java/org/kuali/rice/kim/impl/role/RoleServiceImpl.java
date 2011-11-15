@@ -1736,7 +1736,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	    	}
 			attributes.add( delegateMemberAttrBo );
 		}
-		delegationMember.setAttributes( attributes );
+		delegationMember.setAttributeDetails( attributes );
 	}
 
 

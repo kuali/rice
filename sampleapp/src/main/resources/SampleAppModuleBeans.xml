@@ -182,7 +182,9 @@
     <property name="serviceName" value="kualiConfigurationService"/>
   </bean>
 
-  <bean id="campusAgendaTypeService" class="edu.sampleu.krms.impl.CampusAgendaTypeService" p:configurationService="configurationService"/>
+  <bean id="campusAgendaTypeService" class="edu.sampleu.krms.impl.CampusAgendaTypeService">
+    <property name="configurationService" ref="configurationService"/>
+  </bean>
 
   <bean id="fiscalOfficerInfoMaintainable"
         class="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"

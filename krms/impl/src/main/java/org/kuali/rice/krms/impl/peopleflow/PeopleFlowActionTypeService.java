@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.peopleflow;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
@@ -29,6 +30,7 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
@@ -37,10 +39,13 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeServiceBase;
+import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 import javax.jws.WebParam;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +121,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
     private final Type type;
 
     private PeopleFlowService peopleFlowService;
+    private ConfigurationService configurationService;
 
     /**
      * Factory method for getting a {@link PeopleFlowActionTypeService}
@@ -133,6 +139,11 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
     private PeopleFlowActionTypeService(Type type) {
         if (type == null) { throw new IllegalArgumentException("type must not be null"); }
         this.type = type;
+    }
+
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
     @Override
@@ -244,13 +255,13 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
                 // TODO: include the ATTRIBUTE_FIELD_NAME in an error message like
                 //       "The " + ATTRIBUTE_FIELD_NAME + " must be a valid ID for an existing PeopleFlow".
                 //       Currently the RemotableAttributeError doesn't support arguments in the error messages.
-                errorBuilder.addErrors("peopleFlow.peopleFlowId.invalid");
+                errorBuilder.addErrors(MessageFormat.format(configurationService.getPropertyValueAsString("peopleFlow.peopleFlowId.invalid"), ATTRIBUTE_FIELD_NAME));
             }
         } else {
             // TODO: include the ATTRIBUTE_FIELD_NAME in an error message like
             //       ATTRIBUTE_FIELD_NAME + " is required".
             //       Currently the RemotableAttributeError doesn't support arguments in the error messages.
-            errorBuilder.addErrors("peopleFlow.peopleFlowId.required");
+            errorBuilder.addErrors(MessageFormat.format(configurationService.getPropertyValueAsString("peopleFlow.peopleFlowId.required"), ATTRIBUTE_FIELD_NAME));
         }
 
         if (errorBuilder.getErrors().size() > 0) {

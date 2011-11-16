@@ -148,7 +148,7 @@ public final class GlobalVariables {
      * and pops the GlobalVariables off in a finally clause
      * @param callable the code to run under a new set of GlobalVariables
      */
-    public static <T> Object doInNewGlobalVariables(Callable<T> callable) throws Exception {
+    public static <T> T doInNewGlobalVariables(Callable<T> callable) throws Exception {
         try {
             pushGlobalVariables();
             return callable.call();

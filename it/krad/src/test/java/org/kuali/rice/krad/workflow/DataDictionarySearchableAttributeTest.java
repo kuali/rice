@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.workflow;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
@@ -28,6 +29,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.DocumentService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -42,6 +44,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import static org.junit.Assert.*;
 
@@ -338,7 +341,27 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
     	assertNull("Found Exception "+caughtException, caughtException);
     	assertTrue("There were errors: "+foundErrors, (foundErrors == null || foundErrors.isEmpty()));
     }
-    
+
+    /**
+     * Tests handling resolution of error messages
+     */
+    @Test
+    public void testErrorMessageResolution() throws Exception {
+        final DataDictionarySearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
+        final DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        /*criteria.setDocumentTypeName(ACCOUNT_WITH_DD_ATTRIBUTES_DOCUMENT_NAME);
+        Map<String, List<String>> simpleParamMap = new HashMap<String, List<String>>();
+        simpleParamMap.put("accountState", Collections.singletonList("FirstState"));
+        criteria.setDocumentAttributeValues(simpleParamMap);*/
+        List<RemotableAttributeError> errors = GlobalVariables.doInNewGlobalVariables(new Callable<List<RemotableAttributeError>>() {
+            public List<RemotableAttributeError> call() {
+                GlobalVariables.getMessageMap().putError("fake.property", "error.custom", "the error message");
+                return searchableAttribute.validateDocumentAttributeCriteria(null, criteria.build());
+            }
+        });
+        assertEquals(1, errors.size());
+        assertEquals("the error message", errors.get(0).getMessage());
+    }
     /**
      * Test multiple value searches in the context of whole document search context
      */

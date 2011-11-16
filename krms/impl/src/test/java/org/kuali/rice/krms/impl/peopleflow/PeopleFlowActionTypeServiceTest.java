@@ -17,7 +17,9 @@ package org.kuali.rice.krms.impl.peopleflow;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
+import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -59,6 +61,18 @@ public class PeopleFlowActionTypeServiceTest {
     private static final String VALID_PEOPLEFLOW_ID_1 = "myBogusPeopleFlowId1";
     private static final String VALID_PEOPLEFLOW_ID_2 = "myBogusPeopleFlowId2";
     private static final String INVALID_PEOPLEFLOW_ID = "invalidPeopleFlowId";
+
+    private static final ConfigurationService configurationService = new ConfigurationService() {
+        @Override public String getPropertyValueAsString(String key) { return "{0} message"; }
+        @Override public boolean getPropertyValueAsBoolean(String key) { return false; }
+        @Override public Map<String, String> getAllProperties() { return null; }
+    };
+
+    @Before
+    public void injectConfigurationService() {
+        notificationPFATS.setConfigurationService(configurationService);
+        approvalPFATS.setConfigurationService(configurationService);
+    }
 
     @Test(expected = RiceIllegalArgumentException.class) public void testNullActionDefinition() {
         // should throw exception, NOT return null
@@ -122,8 +136,9 @@ public class PeopleFlowActionTypeServiceTest {
 
     @Test public void testValidateAttributes() {
 
-        ActionTypeService peopleFlowActionTypeService =
+        PeopleFlowActionTypeService peopleFlowActionTypeService =
                 PeopleFlowActionTypeService.getInstance(PeopleFlowActionTypeService.Type.NOTIFICATION);
+        peopleFlowActionTypeService.setConfigurationService(configurationService);
 
         // inject our mock PeopleFlowService:
         ((PeopleFlowActionTypeService)peopleFlowActionTypeService).setPeopleFlowService(mockPeopleFlowService);

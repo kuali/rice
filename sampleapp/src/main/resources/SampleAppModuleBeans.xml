@@ -178,7 +178,11 @@
     </property>
   </bean>
 
-  <bean id="campusAgendaTypeService" class="edu.sampleu.krms.impl.CampusAgendaTypeService"/>
+  <bean id="configurationService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiConfigurationService"/>
+  </bean>
+
+  <bean id="campusAgendaTypeService" class="edu.sampleu.krms.impl.CampusAgendaTypeService" p:configurationService="configurationService"/>
 
   <bean id="fiscalOfficerInfoMaintainable"
         class="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"

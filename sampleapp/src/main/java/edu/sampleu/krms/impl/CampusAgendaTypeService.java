@@ -16,6 +16,7 @@
 package edu.sampleu.krms.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
@@ -32,9 +33,11 @@ import org.kuali.rice.krms.impl.type.AgendaTypeServiceBase;
 import org.kuali.rice.location.api.campus.Campus;
 import org.kuali.rice.location.api.services.LocationApiServiceLocator;
 import org.kuali.rice.location.impl.campus.CampusBo;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.jws.WebParam;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +50,8 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
 
     private static final String CAMPUS_FIELD_NAME = "Campus";
 
+    private ConfigurationService configurationService;
+
     @Override
     public RemotableAttributeField translateTypeAttribute(KrmsTypeAttribute inputAttribute,
             KrmsAttributeDefinition attributeDefinition) {
@@ -57,6 +62,11 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
             return super.translateTypeAttribute(inputAttribute,
                 attributeDefinition);
         }
+    }
+
+    @Required
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
     private RemotableAttributeField createCampusField() {
@@ -109,12 +119,12 @@ public class CampusAgendaTypeService extends AgendaTypeServiceBase {
         String campusValue = attributes.get(CAMPUS_FIELD_NAME);
 
         if (StringUtils.isEmpty(campusValue)) {
-            campusErrorBuilder.addErrors("error.agenda.invalidAttributeValue");
+            campusErrorBuilder.addErrors(configurationService.getPropertyValueAsString("error.agenda.invalidAttributeValue"));
         } else {
             Campus campus = LocationApiServiceLocator.getCampusService().getCampus(campusValue);
 
             if (campus == null) {
-                campusErrorBuilder.addErrors("error.agenda.invalidAttributeValue");
+                campusErrorBuilder.addErrors(configurationService.getPropertyValueAsString("error.agenda.invalidAttributeValue"));
             }
         }
 

@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.MessageResourcesFactory;
+import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
@@ -63,6 +64,7 @@ import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -231,8 +233,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         }
 
         // can we use KualiConfigurationService?  It seemed to be used elsewhere...
-        MessageResourcesFactory factory = MessageResourcesFactory.createFactory();
-        MessageResources messageResources = factory.createResources(null);
+        ConfigurationService configurationService = KRADServiceLocator.getKualiConfigurationService();
 
         if(GlobalVariables.getMessageMap().hasErrors()){
         	validationErrors = new ArrayList<RemotableAttributeError>();
@@ -243,7 +244,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
                     List<String> errors = new ArrayList<String>();
                     for (ErrorMessage errorMessage : errorMessages) {
                         // need to materialize the message from it's parameters so we can send it back to the framework
-                        String error = messageResources.getMessage(errorMessage.getErrorKey(), errorMessage.getMessageParameters());
+                        String error = MessageFormat.format(configurationService.getPropertyValueAsString(errorMessage.getErrorKey()), errorMessage.getMessageParameters());
                         errors.add(error);
                     }
                     RemotableAttributeError remotableAttributeError = RemotableAttributeError.Builder.create(errorKey, errors).build();

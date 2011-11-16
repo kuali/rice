@@ -31,8 +31,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * TODO ..
+ * Factory which manufactures WorkflowDocuments.  This is the main entry point for interaction with the
+ * Kuali Enterprise Workflow System.
  *
+ * The WorkflowDocumentFactory uses the {@link org.kuali.rice.kew.impl.document.WorkflowDocumentProvider} SPI as a strategy
+ * for creating WorkflowDocument instances.
+ *
+ * The provider class is specified in the following file in the class loader: "META-INF/services/org.kuali.rice.kew.api.WorkflowDocument",
+ * and should implement the WorkflowDocumentProvider interface.
  */
 public final class WorkflowDocumentFactory {
 
@@ -42,6 +48,10 @@ public final class WorkflowDocumentFactory {
     /**
      * A lazy initialization holder class for the Provider.  Allows for
      * thread-safe initialization of shared resource.
+     *
+     * NOTE: ProviderHolder and its fields are static, therefore there
+     * will only be a simple WorkflowDocumentProvider instance so it needs to be
+     * thread-safe.
      */
     private static final class ProviderHolder {
         static final Object provider;
@@ -55,12 +65,12 @@ public final class WorkflowDocumentFactory {
     }
 
     /**
-     * TODO 
+     * Creates a new workflow document of the given type with the given initiator.
      * 
-     * @param principalId TODO
-     * @param documentTypeName TODO
+     * @param principalId the document initiator
+     * @param documentTypeName the document type
      * 
-     * @return TODO
+     * @return a WorkflowDocument object through which to interact with the new workflow document
      * 
      * @throws IllegalArgumentException if principalId is null or blank
      * @throws IllegalArgumentException if documentTypeName is null or blank
@@ -73,13 +83,13 @@ public final class WorkflowDocumentFactory {
     }
 
     /**
-     * TODO
-     * 
-     * @param principalId TODO
-     * @param documentTypeName TODO
-     * @param title TODO
-     * 
-     * @return TODO
+     * Creates a new workflow document of the given type with the given initiator.
+     *
+     * @param principalId the document initiator
+     * @param documentTypeName the document type
+     * @param title the title of the new document
+     *
+     * @return a WorkflowDocument object through which to interact with the new workflow document
      * 
      * @throws IllegalArgumentException if principalId is null or blank
      * @throws IllegalArgumentException if documentTypeName is null or blank
@@ -92,18 +102,19 @@ public final class WorkflowDocumentFactory {
     }
 
     /**
-     * TODO
-     * 
-     * @param principalId TODO
-     * @param documentTypeName TODO
-     * @param documentUpdate TODO
-     * @param documentContentUpdate TODO
-     * 
-     * @return TODO
+     * Creates a new workflow document of the given type with the given initiator.
+     *
+     * @param principalId the document initiator
+     * @param documentTypeName the document type
+     * @param documentUpdate pre-constructed state with which to initialize the document
+     * @param documentContentUpdate pre-constructed document content with which to initialize the document
+     *
+     * @return a WorkflowDocument object through which to interact with the new workflow document
      * 
      * @throws IllegalArgumentException if principalId is null or blank
      * @throws IllegalArgumentException if documentTypeName is null or blank
      * @throws IllegalDocumentTypeException if documentTypeName does not represent a valid document type
+     * @see org.kuali.rice.kew.impl.document.WorkflowDocumentProvider#createDocument(String, String, DocumentUpdate, DocumentContentUpdate)
      */
     public static WorkflowDocument createDocument(String principalId, String documentTypeName, DocumentUpdate documentUpdate, DocumentContentUpdate documentContentUpdate) {
         if (StringUtils.isBlank(principalId)) {
@@ -132,6 +143,22 @@ public final class WorkflowDocumentFactory {
         return (WorkflowDocument)workflowDocument;
     }
 
+    /**
+     * Loads an existing workflow document.
+     * @param principalId the principal id under which to perform document actions
+     * @param documentId the id of the document to load
+     *
+     * @return a WorkflowDocument object through which to interact with the loaded workflow document
+     *
+     * @throws IllegalArgumentException if principalId is null or blank
+     * @throws IllegalArgumentException if documentTypeName is null or blank
+     * @throws IllegalDocumentTypeException if the specified document type is not active
+     * @throws IllegalDocumentTypeException if the specified document type does not support document
+     *         creation (in other words, it's a document type that is only used as a parent)
+     * @throws InvalidActionTakenException if the supplied principal is not allowed to execute this
+     *         action
+     * @see org.kuali.rice.kew.impl.document.WorkflowDocumentProvider#loadDocument(String, String)
+     */
     public static WorkflowDocument loadDocument(String principalId, String documentId) {
         if (StringUtils.isBlank(principalId)) {
             throw new IllegalArgumentException("principalId was null or blank");
@@ -159,6 +186,10 @@ public final class WorkflowDocumentFactory {
         return (WorkflowDocument)workflowDocument;
     }
 
+    /**
+     * Loads a global WorkflowDocumentProvider implementation
+     * @return the WorkflowDocumentProvider
+     */
     private static Object loadProvider() {
         String providerClassName = null;
         String resource = null;

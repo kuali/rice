@@ -64,12 +64,31 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
 
     private static final long serialVersionUID = -3672966990721719088L;
 
+    /**
+     * The principal id under which all document actions will be performed.
+     */
     private String principalId;
+    /**
+     * Stores local changes that need to be committed.
+     */
     private ModifiableDocument modifiableDocument;
+    /**
+     * Stores local changes that need to be committed.
+     */
     private ModifiableDocumentContent modifiableDocumentContent;
+    /**
+     * Local cache of valid document actions.
+     * @see #getValidActions()  
+     */
     private ValidActions validActions;
+    /**
+     * Local cache of requested document actions.
+     * @see #getRequestedActions()
+     */
     private RequestedActions requestedActions;
-
+    /**
+     * Flag that indicates whether the document has been deleted; if so the object is thereafter in an illegal state.
+     */
     private boolean documentDeleted = false;
 
     private transient WorkflowDocumentActionsService workflowDocumentActionsService;
@@ -384,10 +403,6 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         fyi("");
     }
 
-    /**
-     * TODO - be sure to mention that once this document is deleted, this api effectively becomes
-     * "dead" when you try to execute any document operation
-     */
     @Override
     public void delete() {
         getWorkflowDocumentActionsService().delete(getDocumentId(), principalId);
@@ -925,6 +940,10 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         return getDocument().getVariables();
     }
 
+    /**
+     * A wrapper around DocumentContent which keeps track of local changes and generates
+     * a new updated DocumentContent as necessary.
+     */
     protected static class ModifiableDocumentContent implements Serializable {
 
         private static final long serialVersionUID = -4458431160327214042L;
@@ -1019,6 +1038,10 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
 
     }
 
+    /**
+     * A wrapper around Document which keeps track of local changes and generates
+     * a new updated Document as necessary.
+     */
     protected static class ModifiableDocument implements Serializable {
 
         private static final long serialVersionUID = -3234793238863410378L;

@@ -964,8 +964,7 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
             }
             DocumentContent.Builder documentContentBuilder = DocumentContent.Builder.create(originalDocumentContent);
             documentContentBuilder.setApplicationContent(builder.getApplicationContent());
-            // FIXME: attr content / app content
-            documentContentBuilder.setAttributeContent(builder.getApplicationContent());
+            documentContentBuilder.setAttributeContent(builder.getAttributeContent());
             documentContentBuilder.setSearchableContent(builder.getSearchableContent());
             return documentContentBuilder.build();
         }

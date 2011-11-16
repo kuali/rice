@@ -36,6 +36,18 @@ public class WorkflowDocumentTest extends KEWTestCase {
         loadXmlFile("ClientAppConfig.xml");
     }
 
+    @Test public void testDirtyContent() {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "UnitTestDocument");
+        document.setApplicationContent("application content");
+        document.setAttributeContent("attribute content");
+        document.setSearchableContent("searchable content");
+        assertEquals("application content", document.getApplicationContent());
+        assertEquals("application content", document.getDocumentContent().getApplicationContent());
+        assertEquals("attribute content", document.getAttributeContent());
+        assertEquals("attribute content", document.getDocumentContent().getAttributeContent());
+        assertEquals("searchable content", document.getDocumentContent().getSearchableContent());
+    }
+
     @Test public void testLoadNonExistentDocument() throws Exception {
     	try {
     		WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), "123456789");

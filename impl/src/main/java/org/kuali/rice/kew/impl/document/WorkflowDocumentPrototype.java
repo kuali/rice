@@ -19,13 +19,17 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.document.Document;
 
 /**
- * TODO 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * An implementation/framework interface that extends WorkflowDocument with an initialization
+ * method used internally for construction.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface WorkflowDocumentPrototype extends WorkflowDocument {
 
-	public void init(String principalId, Document document);
-	
+    /**
+     * Initialize the WorkflowDocument
+     * @param principalId the interacting/consuming user principal id
+     * @param document the DTO of the document this WorkflowDocument represents
+     */
+    public void init(String principalId, Document document);
 }

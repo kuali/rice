@@ -54,14 +54,11 @@ import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 
 /**
- * TODO ..
- * 
- * TODO - it is intended that operations against document data on this are only "flushed" when an
- * action is performed...
- * 
- * <p>
- * This class is *not* thread safe.
- * 
+ * The implementation of {@link org.kuali.rice.kew.api.WorkflowDocument}.  Implements {@link WorkflowDocumentPrototype} to expose
+ * and initialization method used for construction.
+ * <p>NOTE: operations against document data on this are only "flushed" when an action is performed.</p>
+ * <p><b>This class is *not* thread safe.</b></p>
+ * @see org.kuali.rice.kew.api.WorkflowDocument
  */
 public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentPrototype {
 
@@ -948,6 +945,7 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
             }
             DocumentContent.Builder documentContentBuilder = DocumentContent.Builder.create(originalDocumentContent);
             documentContentBuilder.setApplicationContent(builder.getApplicationContent());
+            // FIXME: attr content / app content
             documentContentBuilder.setAttributeContent(builder.getApplicationContent());
             documentContentBuilder.setSearchableContent(builder.getSearchableContent());
             return documentContentBuilder.build();

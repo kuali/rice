@@ -117,7 +117,7 @@
           </property>
         </bean>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.namespace" p:readOnly="true" />
-        <ref bean="firstRuleCustomAttributes"/>
+        <ref bean="ruleCustomAttributes"/>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" p:required="true"/>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.description" p:labelField.colSpan="1" p:colSpan="5">
           <property name="control">
@@ -128,7 +128,7 @@
     </property>
   </bean>
 
-  <bean name="firstRuleCustomAttributes" parent="GroupGridLayout" p:colSpan="2" p:layoutManager.numberOfColumns="2"
+  <bean name="ruleCustomAttributes" parent="GroupGridLayout" p:colSpan="2" p:layoutManager.numberOfColumns="2"
          p:refreshWhenChanged="document.newMaintainableObject.dataObject.agendaItemLine.rule.typeId"
          p:style="padding: 0px; border-style: hidden;">
     <property name="items">
@@ -138,7 +138,7 @@
             <bean parent="SelectControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="org.kuali.rice.krms.impl.repository.RuleTypeValuesFinder" p:blankOption="true"/>
+            <bean class="org.kuali.rice.krms.impl.repository.RuleTypeValuesFinder" p:blankOption="false"/>
           </property>
         </bean>
         <bean parent="RemoteFieldsHolder" p:propertyName="customRuleAttributesMap"
@@ -622,7 +622,7 @@
         p:refreshWhenChanged="document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId">
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.typeId" p:label="Type" p:required="true">
+        <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.typeId" p:label="Type" p:required="false">
           <property name="control">
             <bean parent="SelectControl"/>
           </property>

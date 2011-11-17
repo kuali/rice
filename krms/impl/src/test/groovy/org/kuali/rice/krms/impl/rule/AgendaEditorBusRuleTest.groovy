@@ -58,6 +58,18 @@ class AgendaEditorBusRuleTest {
    }
 
     /**
+     * Check that error is thrown when the rule name is missing
+     */
+    @Test
+    void test_processAddAgendaItemBusinessRule_validateRuleName_missing() {
+        setup()
+        def agendaItem = getAgendaItem()
+        agendaItem.getRule().setName("")
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(agendaItem, new ActionBo(), getAgenda(null), getAgenda(null))))
+        mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
+   }
+
+    /**
      * Check that error is thrown when the rule name already exist in the agenda
      */
     @Test
@@ -84,11 +96,27 @@ class AgendaEditorBusRuleTest {
     }
 
     /**
+     * Check that error is thrown when the rule type is invalid
+     */
+    @Test
+    void test_processAddAgendaItemBusinessRule_validateRuleType_invalid() {
+        mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getRuleTypeByRuleTypeIdAndContextId(1) {ruleTypeId, contextId -> null}
+        mockKrmsTypeRepositoryService.demand.getTypeById(1) {typeId -> null }
+        setup()
+        def agendaItem = getAgendaItem()
+        agendaItem.getRule().setTypeId("invalid")
+        Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(agendaItem, new ActionBo(), getAgenda(null), getAgenda(null))))
+        mockRuleBoService.verify(agendaEditorBusRule.getRuleBoService())
+    }
+
+    /**
      * Check that no error is thrown with a valid action
      */
     @Test
     void test_processAddAgendaItemBusinessRule_validateRuleAction() {
         mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getActionTypeByActionTypeIdAndContextId(1) {typeId, contextId -> new KrmsTypeDefinition() }
         mockKrmsTypeRepositoryService.demand.getTypeById(2) {typeId -> getKrmsTypeDefinition() }
         setup()
         Assert.assertTrue(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getActionBo(), getAgenda(null), getAgenda(null))))
@@ -101,6 +129,7 @@ class AgendaEditorBusRuleTest {
     @Test
     void test_processAddAgendaItemBusinessRule_validateRuleActionType_invalid() {
         mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getActionTypeByActionTypeIdAndContextId(1) {typeId, contextId -> null }
         mockKrmsTypeRepositoryService.demand.getTypeById(1) {typeId -> null }
         setup()
         Assert.assertFalse(agendaEditorBusRule.processAgendaItemBusinessRules(getMaintenanceDocument(getAgendaItem(), getActionBo(), getAgenda(null), getAgenda(null))))
@@ -113,6 +142,7 @@ class AgendaEditorBusRuleTest {
     @Test
     void test_processAddAgendaItemBusinessRule_validateRuleActionName_missing() {
         mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
+        mockKrmsTypeRepositoryService.demand.getActionTypeByActionTypeIdAndContextId(1) {typeId, contextId -> null }
         mockKrmsTypeRepositoryService.demand.getTypeById(2) {typeId -> getKrmsTypeDefinition() }
         setup()
         ActionBo actionBo = getActionBo();
@@ -127,7 +157,8 @@ class AgendaEditorBusRuleTest {
     @Test
     void test_processAddAgendaItemBusinessRule_validateRuleActionDescription_missing() {
         mockRuleBoService.demand.getRuleByNameAndNamespace(1) {name, namespace -> null }
-        mockKrmsTypeRepositoryService.demand.getTypeById(2) {typeId -> getKrmsTypeDefinition() }
+        mockKrmsTypeRepositoryService.demand.getActionTypeByActionTypeIdAndContextId(1) {typeId, contextId -> null }
+        mockKrmsTypeRepositoryService.demand.getTypeById(2) {typeId -> null }
         setup()
         ActionBo actionBo = getActionBo();
         actionBo.setDescription("");
@@ -179,6 +210,7 @@ class AgendaEditorBusRuleTest {
         ActionBo actionBo = new ActionBo();
         actionBo.setTypeId("ActionType");
         actionBo.setName("Action Name");
+        actionBo.setNamespace("KRMS_TEST");
         actionBo.setDescription("Action Description");
         return actionBo;
     }

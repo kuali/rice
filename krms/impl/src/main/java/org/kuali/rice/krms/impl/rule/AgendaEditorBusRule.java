@@ -231,6 +231,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         AgendaEditor oldAgendaEditor = (AgendaEditor) document.getOldMaintainableObject().getDataObject();
         RuleBo rule = newAgendaEditor.getAgendaItemLine().getRule();
         isValid &= validateRuleName(rule, newAgendaEditor.getAgenda());
+        isValid &= validRuleType(rule.getTypeId(), newAgendaEditor.getAgenda().getContextId());
         isValid &= validateRuleAction(oldAgendaEditor, newAgendaEditor);
 
         return isValid;
@@ -273,11 +274,30 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return true;
     }
 
+    /**
+     * Check that the rule type is valid when specified.
+     * @param ruleTypeId, the type id
+     * @param contextId, the contextId the action needs to belong to.
+     * @return true if valid, false otherwise.
+     */
+    private boolean validRuleType(String ruleTypeId, String contextId) {
+        if (StringUtils.isBlank(ruleTypeId)) {
+            return true;
+        }
+
+        if (getKrmsTypeRepositoryService().getRuleTypeByRuleTypeIdAndContextId(ruleTypeId, contextId) != null) {
+            return true;
+        } else {
+            this.putFieldError(KRMSPropertyConstants.Rule.TYPE, "error.rule.invalidType");
+            return false;
+        }
+    }
+
     private boolean validateRuleAction(AgendaEditor oldAgendaEditor, AgendaEditor newAgendaEditor) {
         boolean isValid = true;
         ActionBo newActionBo = newAgendaEditor.getAgendaItemLineRuleAction();
 
-        isValid &= validRuleActionType(newActionBo.getTypeId());
+        isValid &= validRuleActionType(newActionBo.getTypeId(), newAgendaEditor.getAgenda().getContextId());
         if (isValid && StringUtils.isNotBlank(newActionBo.getTypeId())) {
             isValid &= validRuleActionName(newActionBo.getName());
             isValid &= validRuleActionAttributes(oldAgendaEditor, newAgendaEditor);
@@ -287,10 +307,17 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     }
 
     /**
-     * Check that the rule type is valid when specified.
+     * Check that the rule action type is valid when specified.
+     * @param typeId, the action type id
+     * @parm contextId, the contextId the action needs to belong to.
+     * @return true if valid, false otherwise.
      */
-    private boolean validRuleActionType(String typeId) {
-        if (StringUtils.isBlank(typeId) || (getKrmsTypeRepositoryService().getTypeById(typeId) != null)) {
+    private boolean validRuleActionType(String typeId, String contextId) {
+        if (StringUtils.isBlank(typeId)) {
+            return true;
+        }
+
+        if (getKrmsTypeRepositoryService().getActionTypeByActionTypeIdAndContextId(typeId, contextId) != null) {
             return true;
         } else {
             this.putFieldError(KRMSPropertyConstants.Action.TYPE, "error.action.invalidType");
@@ -319,9 +346,9 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
             KrmsTypeDefinition typeDefinition = getKrmsTypeRepositoryService().getTypeById(typeId);
 
             if (typeDefinition == null) {
-                throw new IllegalStateException("action typeId must match the id of a valid krms type");
+                throw new IllegalStateException("rule action typeId must match the id of a valid krms type");
             } else if (StringUtils.isBlank(typeDefinition.getServiceName())) {
-                throw new IllegalStateException("action type definition must have a non-blank service name");
+                throw new IllegalStateException("rule action type definition must have a non-blank service name");
             } else {
                 ActionTypeService actionTypeService = getActionTypeService(typeDefinition.getServiceName());
 

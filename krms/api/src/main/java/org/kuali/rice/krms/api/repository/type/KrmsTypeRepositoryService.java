@@ -35,7 +35,8 @@ public interface KrmsTypeRepositoryService {
      * This will create a {@link KrmsTypeDefinition} exactly like the parameter passed in.
      *
      * @param krmsType - KrmsType
-     * @throws IllegalArgumentException if the krmsType is null
+     * @throws IllegalArgumentException if the krmsType is
+     * +
      * @throws IllegalStateException if the KrmsType already exists in the system
      */
     @WebMethod(operationName="createKrmsType")
@@ -104,7 +105,55 @@ public interface KrmsTypeRepositoryService {
     @WebMethod(operationName = "findAllTypes")
     @WebResult(name = "allTypes")
     List<KrmsTypeDefinition> findAllTypes();
-    
+
+    /**
+     * Returns all rule types for the given contextId.
+     *
+     * @param contextId the id of the context
+     * @return all rule types for the given contextId
+     * @throws IllegalArgumentException if the given contextId is a null or blank value
+     */
+    List<KrmsTypeDefinition> findAllRuleTypesByContextId(
+            @WebParam(name="contextId") String contextId)
+        throws RiceIllegalArgumentException;
+
+    /**
+     * Returns all rule types for the given contextId.
+     *
+     * @param ruleTypeId the id of the ruleType
+     * @param contextId the id of the context
+     * @return ruleType or null if none is found
+     * @throws IllegalArgumentException if the given ruleTypeId or contextId is a null or blank value
+     */
+    KrmsTypeDefinition getRuleTypeByRuleTypeIdAndContextId(
+            @WebParam(name="ruleTypeId") String ruleTypeId,
+            @WebParam(name="contextId") String contextId)
+        throws RiceIllegalArgumentException;
+
+    /**
+     * Returns all action types for the given contextId.
+     *
+     * @param contextId the id of the context
+     * @return all action types for the given contextId
+     * @throws IllegalArgumentException if the given contextId is a null or blank value
+     */
+    List<KrmsTypeDefinition> findAllActionTypesByContextId(
+            @WebParam(name="contextId") String contextId)
+        throws RiceIllegalArgumentException;
+
+    /**
+     * Returns all action types for the given contextId.
+     *
+     * @param actionTypeId the id of the actionType
+     * @param contextId the id of the context
+     * @return actionType or null if none is found
+     * @throws IllegalArgumentException if the given actionTypeId or contextId is a null or blank value
+     */
+    KrmsTypeDefinition getActionTypeByActionTypeIdAndContextId(
+            @WebParam(name="actionTypeId") String actionTypeId,
+            @WebParam(name="contextId") String contextId)
+        throws RiceIllegalArgumentException;
+
     /**
      * Retrieves an attribute definition for the given id.
      *

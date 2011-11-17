@@ -17,18 +17,16 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
-import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class returns all action types of rules.
@@ -48,13 +46,9 @@ public class ActionTypeValuesFinder extends UifKeyValuesFinderBase {
             keyValues.add(new ConcreteKeyValue("", ""));
         }
 
-        Map<String, String> criteria = Collections.singletonMap(KrmsImplConstants.PropertyNames.Context.CONTEXT_ID,
-                agendaEditor.getAgenda().getContextId());
-        Collection<ContextValidActionBo> contextValidActions =
-                KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(
-                        ContextValidActionBo.class, criteria, "actionType.name", true);
-        for (ContextValidActionBo contextValidAction : contextValidActions) {
-            keyValues.add(new ConcreteKeyValue(contextValidAction.getActionType().getId(), contextValidAction.getActionType().getName()));
+        Collection<KrmsTypeDefinition> actionTypes = getKrmsTypeRepositoryService().findAllActionTypesByContextId(agendaEditor.getAgenda().getContextId());
+        for (KrmsTypeDefinition actionType : actionTypes) {
+            keyValues.add(new ConcreteKeyValue(actionType.getId(), actionType.getName()));
         }
         return keyValues;
     }
@@ -72,4 +66,9 @@ public class ActionTypeValuesFinder extends UifKeyValuesFinderBase {
     public void setBlankOption(boolean blankOption) {
         this.blankOption = blankOption;
     }
+
+    public KrmsTypeRepositoryService getKrmsTypeRepositoryService() {
+        return KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
+    }
+
 }

@@ -17,8 +17,12 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.web.form.MaintenanceForm;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
+import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,25 +31,25 @@ import java.util.List;
 /**
  * This class returns all rule types of rules.
  */
-public class RuleTypeValuesFinder extends KeyValuesBase {
+public class RuleTypeValuesFinder extends UifKeyValuesFinderBase {
 
     private boolean blankOption;
 
     @Override
-	public List<KeyValue> getKeyValues() {
+	public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
+
+        MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+        AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
 
         if(blankOption){
             keyValues.add(new ConcreteKeyValue("", ""));
         }
 
-        // TODO: Only select the rules for the specific context of the agenda
-        // Map<String, String> fieldValues = new HashMap<String, String>();
-        // fieldValues.put(KrmsImplConstants.PropertyNames.Context.CONTEXT_ID, form.getAgenda().getContextId);
-        // Collection<ContextValidRuleBo> contextValidRules = KRADServiceLocator.getBusinessObjectService().findMatching(ContextValidRuleBo.class, fieldValues);
-        Collection<ContextValidRuleBo> contextValidRules = KRADServiceLocator.getBusinessObjectService().findAll(ContextValidRuleBo.class);
-        for (ContextValidRuleBo contextValidRule : contextValidRules) {
-            keyValues.add(new ConcreteKeyValue(contextValidRule.getRuleType().getId(), contextValidRule.getRuleType().getName()));
+        Collection<KrmsTypeDefinition> ruleTypes = getKrmsTypeRepositoryService().findAllRuleTypesByContextId(
+                agendaEditor.getAgenda().getContextId());
+        for (KrmsTypeDefinition ruleType : ruleTypes) {
+            keyValues.add(new ConcreteKeyValue(ruleType.getId(), ruleType.getName()));
         }
         return keyValues;
     }
@@ -62,6 +66,10 @@ public class RuleTypeValuesFinder extends KeyValuesBase {
      */
     public void setBlankOption(boolean blankOption) {
         this.blankOption = blankOption;
+    }
+
+    public KrmsTypeRepositoryService getKrmsTypeRepositoryService() {
+        return KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
     }
 
 }

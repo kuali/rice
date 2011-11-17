@@ -22,12 +22,16 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 
 import javax.jws.WebParam;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
 
@@ -131,6 +135,66 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
 
         Collection<KrmsTypeBo> krmsTypeBos = businessObjectService.findMatching(KrmsTypeBo.class, Collections.unmodifiableMap(map));
         return convertListOfBosToImmutables(krmsTypeBos);
+    }
+
+    @Override
+    public List<KrmsTypeDefinition> findAllRuleTypesByContextId(String contextId) {
+        if (StringUtils.isBlank(contextId)) {
+            throw new RiceIllegalArgumentException("contextId was a null or blank value");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contextId", contextId);
+        Collection<ContextValidRuleBo> contextValidRuleBos = businessObjectService.findMatchingOrderBy(ContextValidRuleBo.class, Collections.unmodifiableMap(map), "ruleType.name", true);
+        List<KrmsTypeDefinition>  actionTypes = new ArrayList<KrmsTypeDefinition>();
+        for (ContextValidRuleBo contextValidRuleBo : contextValidRuleBos) {
+            actionTypes.add(KrmsTypeBo.to(contextValidRuleBo.getRuleType()));
+        }
+        return actionTypes;
+    }
+
+    @Override
+    public KrmsTypeDefinition getRuleTypeByRuleTypeIdAndContextId(String ruleTypeId, String contextId) {
+        if (StringUtils.isBlank(ruleTypeId)) {
+            throw new RiceIllegalArgumentException("ruleTypeId was a null or blank value");
+        }
+        if (StringUtils.isBlank(contextId)) {
+            throw new RiceIllegalArgumentException("contextId was a null or blank value");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("ruleTypeId", ruleTypeId);
+        map.put("contextId", contextId);
+        ContextValidRuleBo contextValidRuleBo = businessObjectService.findByPrimaryKey(ContextValidRuleBo.class, Collections.unmodifiableMap(map));
+        return KrmsTypeBo.to(contextValidRuleBo.getRuleType());
+    }
+
+    @Override
+    public List<KrmsTypeDefinition> findAllActionTypesByContextId(String contextId) {
+        if (StringUtils.isBlank(contextId)) {
+            throw new RiceIllegalArgumentException("contextId was a null or blank value");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contextId", contextId);
+        Collection<ContextValidActionBo> contextValidActionBos = businessObjectService.findMatchingOrderBy(ContextValidActionBo.class, Collections.unmodifiableMap(map), "actionType.name", true);
+        List<KrmsTypeDefinition>  actionTypes = new ArrayList<KrmsTypeDefinition>();
+        for (ContextValidActionBo contextValidActionBo : contextValidActionBos) {
+            actionTypes.add(KrmsTypeBo.to(contextValidActionBo.getActionType()));
+        }
+        return actionTypes;
+    }
+
+    @Override
+    public KrmsTypeDefinition getActionTypeByActionTypeIdAndContextId(String actionTypeId, String contextId) {
+        if (StringUtils.isBlank(actionTypeId)) {
+            throw new RiceIllegalArgumentException("actionTypeId was a null or blank value");
+        }
+        if (StringUtils.isBlank(contextId)) {
+            throw new RiceIllegalArgumentException("contextId was a null or blank value");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("actionTypeId", actionTypeId);
+        map.put("contextId", contextId);
+        ContextValidActionBo contextValidActionBo = businessObjectService.findByPrimaryKey(ContextValidActionBo.class, Collections.unmodifiableMap(map));
+        return KrmsTypeBo.to(contextValidActionBo.getActionType());
     }
 
     @Override

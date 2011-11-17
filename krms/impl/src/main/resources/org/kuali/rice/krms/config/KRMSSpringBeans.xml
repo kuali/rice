@@ -215,6 +215,8 @@
     <property name="contextProvider" ref="contextProvider"/>
   </bean>
 
+  <bean id="defaultRuleTypeService" class="org.kuali.rice.krms.impl.type.RuleTypeServiceBase"/>
+
   <bean id="validationRuleTypeService" class="org.kuali.rice.krms.impl.validation.ValidationRuleTypeServiceImpl">
     <property name="repositoryToEngineTranslator">
         <ref bean="repositoryToEngineTranslator" />

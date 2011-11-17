@@ -57,10 +57,10 @@ public class RoleMembershipTest {
     final static String XML = """
     <roleMembership xmlns="http://rice.kuali.org/kim/v2_0">
         <roleId>${ROLE_ID}</roleId>
-        <roleMemberId>${ROLE_MEMBER_ID}</roleMemberId>
+        <id>${ROLE_MEMBER_ID}</id>
         <embeddedRoleId>${EMBEDDED_ROLE_ID}</embeddedRoleId>
         <memberId>${MEMBER_ID}</memberId>
-        <memberTypeCode>${MEMBER_TYPE_CODE}</memberTypeCode>
+        <typeCode>${MEMBER_TYPE_CODE}</typeCode>
         <roleSortingCode>${ROLE_SORTING_CODE}</roleSortingCode>
         <qualifier></qualifier>
         <delegates>
@@ -118,10 +118,10 @@ public class RoleMembershipTest {
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         RoleMembership rm = (RoleMembership) unmarshaller.unmarshal(new StringReader(XML))
         Assert.assertEquals(ROLE_ID, rm.roleId)
-        Assert.assertEquals(ROLE_MEMBER_ID, rm.roleMemberId)
+        Assert.assertEquals(ROLE_MEMBER_ID, rm.id)
         Assert.assertEquals(EMBEDDED_ROLE_ID, rm.embeddedRoleId)
         Assert.assertEquals(MEMBER_ID, rm.memberId)
-        Assert.assertEquals(MEMBER_TYPE_CODE, rm.memberTypeCode)
+        Assert.assertEquals(MEMBER_TYPE_CODE, rm.typeCode)
         Assert.assertEquals(ROLE_SORTING_CODE,rm.roleSortingCode)
         Assert.assertEquals(QUALIFIER, rm.qualifier)
         Assert.assertEquals(DELEGATES.collect {delegateBuilder -> delegateBuilder.build()}, rm.delegates)
@@ -159,7 +159,7 @@ public class RoleMembershipTest {
     void test_MemberTypeCode_Blank() {
         RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         shouldFail(IllegalArgumentException) {
-            builder.memberType = null
+            builder.type = null
         }
     }
 
@@ -167,7 +167,7 @@ public class RoleMembershipTest {
     void test_MemberTypeCode_Null() {
         RoleMembership.Builder builder = RoleMembership.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, QUALIFIER)
         shouldFail(IllegalArgumentException) {
-            builder.memberType = null
+            builder.type = null
         }
     }
 

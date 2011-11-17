@@ -47,46 +47,54 @@ import java.util.Map;
 @XmlRootElement(name = RoleMember.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RoleMember.Constants.TYPE_NAME, propOrder = {
-        RoleMember.Elements.ROLE_MEMBER_ID,
+        RoleMember.Elements.ID,
         RoleMember.Elements.ROLE_ID,
         RoleMember.Elements.ATTRIBUTES,
         RoleMember.Elements.ROLE_RESPONSIBILITY_ACTIONS,
         RoleMember.Elements.MEMBER_ID,
-        RoleMember.Elements.MEMBER_TYPE_CODE,
+        RoleMember.Elements.TYPE_CODE,
         CoreConstants.CommonElements.ACTIVE_FROM_DATE,
         CoreConstants.CommonElements.ACTIVE_TO_DATE,
+        CoreConstants.CommonElements.VERSION_NUMBER,
+        CoreConstants.CommonElements.OBJECT_ID,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class RoleMember extends AbstractDataTransferObject implements RoleMemberContract {
 
     private static final long serialVersionUID = 1L;
 
-    @XmlElement(name = Elements.ROLE_MEMBER_ID)
-    private final String roleMemberId;
+    @XmlElement(name = Elements.ID, required = false)
+    private final String id;
 
-    @XmlElement(name = Elements.ROLE_ID)
+    @XmlElement(name = Elements.ROLE_ID, required = true)
     private final String roleId;
 
     @XmlElement(name = Elements.ATTRIBUTES, required = false)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> attributes;
 
-    @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTIONS)
+    @XmlElement(name = Elements.ROLE_RESPONSIBILITY_ACTIONS, required = false)
     private final List<RoleResponsibilityAction> roleResponsibilityActions;
 
-    @XmlElement(name = Elements.MEMBER_ID)
+    @XmlElement(name = Elements.MEMBER_ID, required = true)
     private final String memberId;
 
-    @XmlElement(name = Elements.MEMBER_TYPE_CODE)
-    private final String memberTypeCode;
+    @XmlElement(name = Elements.TYPE_CODE, required = true)
+    private final String typeCode;
 
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
-    @XmlElement(name = CoreConstants.CommonElements.ACTIVE_FROM_DATE)
+    @XmlElement(name = CoreConstants.CommonElements.ACTIVE_FROM_DATE, required = false)
     private final DateTime activeFromDate;
 
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
-    @XmlElement(name = CoreConstants.CommonElements.ACTIVE_TO_DATE)
+    @XmlElement(name = CoreConstants.CommonElements.ACTIVE_TO_DATE, required = false)
     private final DateTime activeToDate;
+
+    @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
+    private final Long versionNumber;
+
+    @XmlElement(name = CoreConstants.CommonElements.OBJECT_ID, required = false)
+    private final String objectId;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -97,18 +105,20 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
      */
     @SuppressWarnings("unused")
     private RoleMember() {
-        roleMemberId = null;
+        id = null;
         roleId = null;
         attributes = null;
         roleResponsibilityActions = null;
         memberId = null;
-        memberTypeCode = null;
+        typeCode = null;
         activeFromDate = null;
         activeToDate = null;
+        this.versionNumber = null;
+        this.objectId = null;
     }
 
     private RoleMember(Builder b) {
-        roleMemberId = b.getRoleMemberId();
+        id = b.getId();
         roleId = b.getRoleId();
         attributes = b.getAttributes();
 
@@ -121,9 +131,11 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         this.roleResponsibilityActions = roleResponsibilityActions;
 
         memberId = b.getMemberId();
-        memberTypeCode = b.getMemberType().getCode();
+        typeCode = b.getType().getCode();
         activeFromDate = b.getActiveFromDate();
         activeToDate = b.getActiveToDate();
+        versionNumber = b.getVersionNumber();
+        objectId = b.getObjectId();
     }
 
     @Override
@@ -132,13 +144,13 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
     }
 
     @Override
-    public MemberType getMemberType() {
-        return MemberType.fromCode(this.memberTypeCode);
+    public MemberType getType() {
+        return MemberType.fromCode(this.typeCode);
     }
 
     @Override
-    public String getRoleMemberId() {
-        return this.roleMemberId;
+    public String getId() {
+        return this.id;
     }
 
     @Override
@@ -182,24 +194,39 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         return InactivatableFromToUtils.isActive(activeFromDate, activeToDate, null);
     }
 
+    @Override
+    public Long getVersionNumber() {
+        return versionNumber;
+    }
+
+    @Override
+    public String getObjectId() {
+        return objectId;
+    }
+
     public static final class Builder implements ModelBuilder, RoleMemberContract, ModelObjectComplete {
 
-        private String roleMemberId;
+        private String id;
         private String roleId;
         private Map<String, String> attributes;
         private List<RoleResponsibilityAction.Builder> roleRspActions;
         private String memberId;
-        private MemberType memberType;
+        private MemberType type;
         private DateTime activeFromDate;
         private DateTime activeToDate;
+        private Long versionNumber;
+        private String objectId;
 
-        public static Builder create(String roleId, String roleMemberId, String memberId,
+        private Builder(String roleId, String memberId, MemberType type) {
+            setRoleId(roleId);
+            setMemberId(memberId);
+            setType(type);
+        }
+
+        public static Builder create(String roleId, String id, String memberId,
                                      MemberType memberType, DateTime activeFromDate, DateTime activeToDate, Map<String, String> attributes) {
-            Builder b = new Builder();
-            b.setRoleId(roleId);
-            b.setRoleMemberId(roleMemberId);
-            b.setMemberId(memberId);
-            b.setMemberType(memberType);
+            Builder b = new Builder(roleId, memberId, memberType);
+            b.setId(id);
             b.setActiveFromDate(activeFromDate);
             b.setActiveToDate(activeToDate);
             b.setAttributes(attributes);
@@ -207,9 +234,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         }
 
         public static Builder create(RoleMemberContract contract) {
-            Builder b = new Builder();
-            b.setRoleMemberId(contract.getRoleMemberId());
-            b.setRoleId(contract.getRoleId());
+            Builder b = new Builder(contract.getRoleId(), contract.getMemberId(), contract.getType());
+            b.setId(contract.getId());
             b.setAttributes(contract.getAttributes());
 
             List<RoleResponsibilityAction.Builder> rraBuilders = new ArrayList<RoleResponsibilityAction.Builder>();
@@ -220,10 +246,10 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             }
             b.setRoleRspActions(rraBuilders);
 
-            b.setMemberId(contract.getMemberId());
-            b.setMemberType(contract.getMemberType());
             b.setActiveFromDate(contract.getActiveFromDate());
             b.setActiveToDate(contract.getActiveToDate());
+            b.setVersionNumber(contract.getVersionNumber());
+            b.setObjectId(contract.getObjectId());
             return b;
         }
 
@@ -233,12 +259,12 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         }
 
         @Override
-        public String getRoleMemberId() {
-            return roleMemberId;
+        public String getId() {
+            return id;
         }
 
-        public void setRoleMemberId(String roleMemberId) {
-            this.roleMemberId = roleMemberId;
+        public void setId(String id) {
+            this.id = id;
         }
 
         @Override
@@ -247,6 +273,9 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         }
 
         public void setRoleId(String roleId) {
+            if (StringUtils.isEmpty(roleId)) {
+                throw new IllegalArgumentException("roleId is empty");
+            }
             this.roleId = roleId;
         }
 
@@ -281,15 +310,15 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         }
 
         @Override
-        public MemberType getMemberType() {
-            return memberType;
+        public MemberType getType() {
+            return type;
         }
 
-        public void setMemberType(MemberType memberType) {
-            if (memberType == null) {
-                throw new IllegalArgumentException("memberType may not be null");
+        public void setType(final MemberType type) {
+            if (type == null) {
+                throw new IllegalArgumentException("type is null");
             }
-            this.memberType = memberType;
+            this.type = type;
         }
 
         @Override
@@ -321,6 +350,24 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         }
 
         @Override
+        public Long getVersionNumber() {
+            return versionNumber;
+        }
+
+        public void setVersionNumber(final Long versionNumber) {
+            this.versionNumber = versionNumber;
+        }
+
+        @Override
+        public String getObjectId() {
+            return objectId;
+        }
+
+        public void setObjectId(final String objectId) {
+            this.objectId = objectId;
+        }
+
+        @Override
         public int hashCode() {
             return HashCodeBuilder.reflectionHashCode(this);
         }
@@ -341,12 +388,12 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
      * when this object is marshalled to XML.
      */
     static class Elements {
-        final static String ROLE_MEMBER_ID = "roleMemberId";
+        final static String ID = "id";
         final static String ROLE_ID = "roleId";
         final static String ATTRIBUTES = "attributes";
         final static String ROLE_RESPONSIBILITY_ACTIONS = "roleResponsibilityActions";
         final static String MEMBER_ID = "memberId";
-        final static String MEMBER_TYPE_CODE = "memberTypeCode";
+        final static String TYPE_CODE = "typeCode";
     }
 
     /**

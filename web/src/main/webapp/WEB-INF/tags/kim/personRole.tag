@@ -40,7 +40,7 @@
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
                 	<kul:htmlControlAttribute property="newRole.roleId" attributeEntry="${docRoleAttributes.roleId}" readOnly="${readOnly}" />
-                	<kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="id:newRole.newRolePrncpl.memberId,id:newRole.roleId,kimTypeId:newRole.kimTypeId,name:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.serviceName:newRole.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
+                	<kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="id:newRole.newRolePrncpl.memberId,id:newRole.roleId,kimTypeId:newRole.kimTypeId,name:newRole.roleName,namespaceCode:newRole.namespaceCode,kimRoleType.name:newRole.kimRoleType.name,kimRoleType.serviceName:newRole.kimRoleType.serviceName" anchor="${tabKey}" />
 					
 					<html:hidden property="newRole.roleName" />
 					<html:hidden property="newRole.roleId" />
@@ -48,7 +48,7 @@
 					<html:hidden property="newRole.namespaceCode" />
 					<html:hidden property="newRole.kimTypeId" />
 					<html:hidden property="newRole.kimRoleType.name" />
-					<html:hidden property="newRole.kimRoleType.kimTypeServiceName" />
+					<html:hidden property="newRole.kimRoleType.serviceName" />
 	            </div>
 				</td>
 				<td align="center">${KualiForm.newRole.namespaceCode}&nbsp;</td>

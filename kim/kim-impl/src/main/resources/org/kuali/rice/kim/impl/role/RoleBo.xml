@@ -332,8 +332,8 @@
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="roleMemberId"/>
-              <bean parent="InputField" p:propertyName="memberTypeCode"/>
+              <bean parent="InputField" p:propertyName="id"/>
+              <bean parent="InputField" p:propertyName="typeCode"/>
               <bean parent="InputField" p:propertyName="memberId"/>
               <bean parent="InputField" p:propertyName="activeFromDate"/>
               <bean parent="InputField" p:propertyName="activeToDate"/>

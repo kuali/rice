@@ -16,21 +16,62 @@
 package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Identifiable;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.InactivatableFromTo;
 
 import java.util.List;
 import java.util.Map;
 
-public interface RoleMemberContract extends InactivatableFromTo {
+public interface RoleMemberContract extends Versioned, GloballyUnique, InactivatableFromTo, Identifiable {
+    /**
+     * This is the member id for the Role Member.
+     *
+     * <p>
+     * This is a id value that defines the Role Member.  This value is either a Principal Id, Group Id, or Role Id
+     * depending on the type code
+     * </p>
+     *
+     * @return memberId
+     */
     String getMemberId();
 
-    MemberType getMemberType();
+    /**
+     * This is the type code for the Role Member.
+     *
+     * <p>
+     * This is a value that defines the type of Role Member.  This value determines whether memberId is
+     * either a Principal Id, Group Id, or Role Id
+     * </p>
+     *
+     * @return typeCode
+     */
+    MemberType getType();
 
-    String getRoleMemberId();
-
+    /**
+     * This is the id for the Role.
+     *
+     * <p>
+     * This is a id assigned to a Role.  It defines the role this role member belongs to.
+     * </p>
+     *
+     * @return roleId
+     */
     String getRoleId();
 
+    /**
+     * This returns specific attributes to be set on a Role Member in order to match permission and responsibilitys.
+     * These attributes match the attributes set to a KimType
+     *
+     * @return attributes
+     */
     Map<String, String> getAttributes();
 
+    /**
+     * This returns a list of role responsibility actions assigned to a role member
+     *
+     * @return roleRspActions
+     */
     List<? extends RoleResponsibilityActionContract> getRoleRspActions();
 }

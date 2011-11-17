@@ -39,14 +39,14 @@
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
                 	${KualiForm.newDelegationMember.roleBo.namespaceCode}&nbsp;${KualiForm.newDelegationMember.roleBo.name}&nbsp;&nbsp;${KualiForm.newDelegationMember.roleMemberNamespaceCode}&nbsp;${KualiForm.newDelegationMember.roleMemberName}
-                	<kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="id:newDelegationMemberRoleId,kimTypeId:newDelegationMember.roleBo.kimTypeId,name:newDelegationMember.roleBo.name,namespaceCode:newDelegationMember.roleBo.namespaceCode,kimRoleType.name:newDelegationMember.roleBo.kimRoleType.name,kimRoleType.kimTypeServiceName:newDelegationMember.roleBo.kimRoleType.kimTypeServiceName" anchor="${tabKey}" />
+                	<kul:lookup boClassName="org.kuali.rice.kim.impl.role.RoleBo" fieldConversions="id:newDelegationMemberRoleId,kimTypeId:newDelegationMember.roleBo.kimTypeId,name:newDelegationMember.roleBo.name,namespaceCode:newDelegationMember.roleBo.namespaceCode,kimRoleType.name:newDelegationMember.roleBo.kimRoleType.name,kimRoleType.serviceName:newDelegationMember.roleBo.kimRoleType.serviceName" anchor="${tabKey}" />
 
 					<html:hidden property="newDelegationMember.roleBo.name" />
 					<html:hidden property="newDelegationMember.roleBo.id" />
 					<html:hidden property="newDelegationMember.roleBo.namespaceCode" />
 					<html:hidden property="newDelegationMember.roleBo.kimTypeId" />
 					<html:hidden property="newDelegationMember.roleBo.kimRoleType.name" />
-					<html:hidden property="newDelegationMember.roleBo.kimRoleType.kimTypeServiceName" />
+					<html:hidden property="newDelegationMember.roleBo.kimRoleType.serviceName" />
 					<html:hidden property="newDelegationMember.roleMemberId" />
 	            </div>
 				</td>

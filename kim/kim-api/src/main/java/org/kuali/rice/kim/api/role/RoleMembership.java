@@ -48,10 +48,10 @@ import java.util.Map;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RoleMembership.Constants.TYPE_NAME, propOrder = {
         RoleMembership.Elements.ROLE_ID,
-        RoleMembership.Elements.ROLE_MEMBER_ID,
+        RoleMembership.Elements.ID,
         RoleMembership.Elements.EMBEDDED_ROLE_ID,
         RoleMembership.Elements.MEMBER_ID,
-        RoleMembership.Elements.MEMBER_TYPE_CODE,
+        RoleMembership.Elements.TYPE_CODE,
         RoleMembership.Elements.ROLE_SORTING_CODE,
         RoleMembership.Elements.QUALIFIER,
         RoleMembership.Elements.DELEGATES,
@@ -60,29 +60,29 @@ import java.util.Map;
 public class RoleMembership extends AbstractDataTransferObject implements RoleMembershipContract {
     private static final long serialVersionUID = 1L;
 
-    @XmlElement(name=Elements.ROLE_ID)
+    @XmlElement(name=Elements.ROLE_ID, required = true)
     private final String roleId;
 
-    @XmlElement(name=Elements.ROLE_MEMBER_ID)
-    private final String roleMemberId;
+    @XmlElement(name=Elements.ID, required = false)
+    private final String id;
 
-    @XmlElement(name=Elements.EMBEDDED_ROLE_ID)
+    @XmlElement(name=Elements.EMBEDDED_ROLE_ID, required = false)
     private final String embeddedRoleId;
 
     @XmlElement(name=Elements.MEMBER_ID, required = true)
     private final String memberId;
 
-    @XmlElement(name=Elements.MEMBER_TYPE_CODE, required = true)
-    private final String memberTypeCode;
+    @XmlElement(name=Elements.TYPE_CODE, required = true)
+    private final String typeCode;
 
-    @XmlElement(name=Elements.ROLE_SORTING_CODE)
+    @XmlElement(name=Elements.ROLE_SORTING_CODE, required = false)
     private final String roleSortingCode;
 
-    @XmlElement(name=Elements.QUALIFIER)
+    @XmlElement(name=Elements.QUALIFIER, required = false)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
     private final Map<String, String> qualifier;
 
-    @XmlElement(name=Elements.DELEGATES)
+    @XmlElement(name=Elements.DELEGATES, required = false)
     private final List<DelegateType> delegates;
 
     @SuppressWarnings("unused")
@@ -95,10 +95,10 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
     @SuppressWarnings("unused")
     private RoleMembership() {
         roleId = null;
-        roleMemberId = null;
+        id = null;
         embeddedRoleId = null;
         memberId = null;
-        memberTypeCode = null;
+        typeCode = null;
         roleSortingCode = null;
         qualifier = null;
         delegates = null;
@@ -106,10 +106,10 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
 
     private RoleMembership(Builder b) {
         roleId = b.getRoleId();
-        roleMemberId = b.getRoleMemberId();
+        id = b.getId();
         embeddedRoleId = b.getEmbeddedRoleId();
         memberId = b.getMemberId();
-        memberTypeCode = b.getMemberType().getCode();
+        typeCode = b.getType().getCode();
         roleSortingCode = b.getRoleSortingCode();
         qualifier = b.getQualifier();
 
@@ -121,34 +121,42 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         }
     }
 
+    @Override
     public String getRoleId() {
         return roleId;
     }
 
-    public String getRoleMemberId() {
-        return roleMemberId;
+    @Override
+    public String getId() {
+        return id;
     }
 
+    @Override
     public String getEmbeddedRoleId() {
         return embeddedRoleId;
     }
 
+    @Override
     public String getMemberId() {
         return memberId;
     }
 
-    public MemberType getMemberType() {
-        return MemberType.fromCode(memberTypeCode);
+    @Override
+    public MemberType getType() {
+        return MemberType.fromCode(typeCode);
     }
 
+    @Override
     public String getRoleSortingCode() {
         return roleSortingCode;
     }
 
+    @Override
     public Map<String, String> getQualifier() {
         return qualifier;
     }
 
+    @Override
     public List<DelegateType> getDelegates() {
         return Collections.unmodifiableList(delegates);
     }
@@ -156,36 +164,33 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
 
     public static final class Builder implements ModelBuilder, RoleMembershipContract, ModelObjectComplete {
         private String roleId;
-        private String roleMemberId;
+        private String id;
         private String embeddedRoleId;
         private String memberId;
-        private MemberType memberType;
+        private MemberType type;
         private String roleSortingCode;
         private Map<String, String> qualifier;
         private List<DelegateType.Builder> delegates;
 
-        private Builder() {
+        private Builder(String roleId, String memberId, MemberType type) {
+            setRoleId(roleId);
+            setMemberId(memberId);
+            setType(type);
         }
 
-        public static Builder create(String roleId, String roleMemberId, String memberId, MemberType memberType,
+        public static Builder create(String roleId, String id, String memberId, MemberType memberType,
                                      Map<String, String> qualifier) {
 
-            Builder b = new Builder();
-            b.setRoleId(roleId);
-            b.setRoleMemberId(roleMemberId);
-            b.setMemberId(memberId);
-            b.setMemberType(memberType);
+            Builder b = new Builder(roleId, memberId, memberType);
+            b.setId(id);
             b.setQualifier(qualifier);
             return b;
         }
 
         public static Builder create(RoleMembershipContract contract) {
-            Builder b = new Builder();
-            b.setRoleId(contract.getRoleId());
-            b.setRoleMemberId(contract.getRoleMemberId());
+            Builder b = new Builder(contract.getRoleId(), contract.getMemberId(), contract.getType());
+            b.setId(contract.getId());
             b.setEmbeddedRoleId(contract.getEmbeddedRoleId());
-            b.setMemberId(contract.getMemberId());
-            b.setMemberType(contract.getMemberType());
             b.setRoleSortingCode(contract.getRoleSortingCode());
             b.setQualifier(contract.getQualifier());
 
@@ -205,6 +210,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             return new RoleMembership(this);
         }
 
+        @Override
         public String getRoleId() {
             return this.roleId;
         }
@@ -213,6 +219,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             this.roleId = roleId;
         }
 
+        @Override
         public Map<String, String> getQualifier() {
             return this.qualifier;
         }
@@ -221,6 +228,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             this.qualifier = qualifier;
         }
 
+        @Override
         public List<DelegateType.Builder> getDelegates() {
             return this.delegates;
         }
@@ -229,14 +237,16 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             this.delegates = delegates;
         }
 
-        public String getRoleMemberId() {
-            return this.roleMemberId;
+        @Override
+        public String getId() {
+            return this.id;
         }
 
-        public void setRoleMemberId(String roleMemberId) {
-            this.roleMemberId = roleMemberId;
+        public void setId(String id) {
+            this.id = id;
         }
 
+        @Override
         public String getMemberId() {
             return this.memberId;
         }
@@ -248,17 +258,19 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             this.memberId = memberId;
         }
 
-        public MemberType getMemberType() {
-            return this.memberType;
+        @Override
+        public MemberType getType() {
+            return this.type;
         }
 
-        public void setMemberType(MemberType memberType) {
-            if (memberType == null) {
-                throw new IllegalArgumentException("memberTypeCode cannot be null");
+        public void setType(MemberType type) {
+            if (type == null) {
+                throw new IllegalArgumentException("type cannot be null");
             }
-            this.memberType = memberType;
+            this.type = type;
         }
 
+        @Override
         public String getEmbeddedRoleId() {
             return this.embeddedRoleId;
         }
@@ -267,6 +279,7 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             this.embeddedRoleId = embeddedRoleId;
         }
 
+        @Override
         public String getRoleSortingCode() {
             return this.roleSortingCode;
         }
@@ -299,10 +312,10 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
      */
     static class Elements {
         final static String ROLE_ID = "roleId";
-        final static String ROLE_MEMBER_ID = "roleMemberId";
+        final static String ID = "id";
         final static String EMBEDDED_ROLE_ID = "embeddedRoleId";
         final static String MEMBER_ID = "memberId";
-        final static String MEMBER_TYPE_CODE = "memberTypeCode";
+        final static String TYPE_CODE = "typeCode";
         final static String ROLE_SORTING_CODE = "roleSortingCode";
         final static String QUALIFIER = "qualifier";
         final static String DELEGATES = "delegates";

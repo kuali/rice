@@ -152,30 +152,30 @@ public class RoleRouteModuleTest extends KEWTestCase {
 
         String roleMemberId1 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo adminRolePrincipal = new RoleMemberBo();
-        adminRolePrincipal.setRoleMemberId(roleMemberId1);
+        adminRolePrincipal.setId(roleMemberId1);
         adminRolePrincipal.setRoleId(roleId);
         Principal adminPrincipal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("admin");
         assertNotNull(adminPrincipal);
         adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
-        adminRolePrincipal.setMemberType( MemberType.PRINCIPAL );
+        adminRolePrincipal.setType( MemberType.PRINCIPAL );
 
         String roleMemberId2 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo user2RolePrincipal = new RoleMemberBo();
-        user2RolePrincipal.setRoleMemberId(roleMemberId2);
+        user2RolePrincipal.setId(roleMemberId2);
         user2RolePrincipal.setRoleId(roleId);
         Principal user2Principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("user2");
         assertNotNull(user2Principal);
         user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
-        user2RolePrincipal.setMemberType( MemberType.PRINCIPAL );
+        user2RolePrincipal.setType( MemberType.PRINCIPAL );
 
         String roleMemberId3 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleMemberBo user1RolePrincipal = new RoleMemberBo();
-        user1RolePrincipal.setRoleMemberId(roleMemberId3);
+        user1RolePrincipal.setId(roleMemberId3);
         user1RolePrincipal.setRoleId(roleId);
         Principal user1Principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName("user1");
         assertNotNull(user1Principal);
         user1RolePrincipal.setMemberId(user1Principal.getPrincipalId());
-        user1RolePrincipal.setMemberType( MemberType.PRINCIPAL );
+        user1RolePrincipal.setType( MemberType.PRINCIPAL );
 
         List<RoleMemberBo> memberPrincipals = new ArrayList<RoleMemberBo>();
         memberPrincipals.add(adminRolePrincipal);
@@ -195,7 +195,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataBL.setKimAttribute(chartAttribute);
         chartDataBL.setKimAttributeId(chartAttribute.getId());
         chartDataBL.setKimTypeId(kimType.getId());
-        chartDataBL.setAssignedToId(adminRolePrincipal.getRoleMemberId());
+        chartDataBL.setAssignedToId(adminRolePrincipal.getId());
 
         dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo chartDataBL2 = new RoleMemberAttributeDataBo();
@@ -204,7 +204,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataBL2.setKimAttribute(chartAttribute);
         chartDataBL2.setKimAttributeId(chartAttribute.getId());
         chartDataBL2.setKimTypeId(kimType.getId());
-        chartDataBL2.setAssignedToId(user2RolePrincipal.getRoleMemberId());
+        chartDataBL2.setAssignedToId(user2RolePrincipal.getId());
 
         dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo orgDataBUS = new RoleMemberAttributeDataBo();
@@ -213,7 +213,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataBUS.setKimAttribute(orgAttribute);
         orgDataBUS.setKimAttributeId(orgAttribute.getId());
         orgDataBUS.setKimTypeId(kimType.getId());
-        orgDataBUS.setAssignedToId(adminRolePrincipal.getRoleMemberId());
+        orgDataBUS.setAssignedToId(adminRolePrincipal.getId());
 
         dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo orgDataBUS2 = new RoleMemberAttributeDataBo();
@@ -222,7 +222,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataBUS2.setKimAttribute(orgAttribute);
         orgDataBUS2.setKimAttributeId(orgAttribute.getId());
         orgDataBUS2.setKimTypeId(kimType.getId());
-        orgDataBUS2.setAssignedToId(user2RolePrincipal.getRoleMemberId());
+        orgDataBUS2.setAssignedToId(user2RolePrincipal.getId());
 
 
         dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
@@ -232,7 +232,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         chartDataIN.setKimAttribute(chartAttribute);
         chartDataIN.setKimAttributeId(chartAttribute.getId());
         chartDataIN.setKimTypeId(kimType.getId());
-        chartDataIN.setAssignedToId(user1RolePrincipal.getRoleMemberId());
+        chartDataIN.setAssignedToId(user1RolePrincipal.getId());
 
         dataId = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_GRP_ATTR_DATA_ID_S");
         RoleMemberAttributeDataBo orgDataMED = new RoleMemberAttributeDataBo();
@@ -241,7 +241,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         orgDataMED.setKimAttribute(orgAttribute);
         orgDataMED.setKimAttributeId(orgAttribute.getId());
         orgDataMED.setKimTypeId(kimType.getId());
-        orgDataMED.setAssignedToId(user1RolePrincipal.getRoleMemberId());
+        orgDataMED.setAssignedToId(user1RolePrincipal.getId());
 
         List<RoleMemberAttributeDataBo> user1Attributes = new ArrayList<RoleMemberAttributeDataBo>();
         user1Attributes.add(chartDataIN);
@@ -408,7 +408,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleResponsibilityActionBo roleResponsibilityAction1 = new RoleResponsibilityActionBo();
         roleResponsibilityAction1.setId(roleResponsibilityActionId);
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
-        roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
+        roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getId());
         roleResponsibilityAction1.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
@@ -418,7 +418,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleResponsibilityActionBo roleResponsibilityAction2 = new RoleResponsibilityActionBo();
         roleResponsibilityAction2.setId(roleResponsibilityActionId);
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
-        roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
+        roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getId());
         roleResponsibilityAction2.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
@@ -428,7 +428,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleResponsibilityActionBo roleResponsibilityAction3 = new RoleResponsibilityActionBo();
         roleResponsibilityAction3.setId(roleResponsibilityActionId);
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
-        roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
+        roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getId());
         roleResponsibilityAction3.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);
@@ -519,7 +519,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleResponsibilityActionBo roleResponsibilityAction1 = new RoleResponsibilityActionBo();
         roleResponsibilityAction1.setId(roleResponsibilityActionId);
         roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
-        roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getRoleMemberId());
+        roleResponsibilityAction1.setRoleMemberId(user1RolePrincipal.getId());
         roleResponsibilityAction1.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction1.setPriorityNumber(1);
@@ -529,7 +529,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleResponsibilityActionBo roleResponsibilityAction2 = new RoleResponsibilityActionBo();
         roleResponsibilityAction2.setId(roleResponsibilityActionId);
         roleResponsibilityAction2.setRoleResponsibilityId(roleResponsibilityId);
-        roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getRoleMemberId());
+        roleResponsibilityAction2.setRoleMemberId(user2RolePrincipal.getId());
         roleResponsibilityAction2.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction2.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction2.setPriorityNumber(1);
@@ -539,7 +539,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleResponsibilityActionBo roleResponsibilityAction3 = new RoleResponsibilityActionBo();
         roleResponsibilityAction3.setId(roleResponsibilityActionId);
         roleResponsibilityAction3.setRoleResponsibilityId(roleResponsibilityId);
-        roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getRoleMemberId());
+        roleResponsibilityAction3.setRoleMemberId(adminRolePrincipal.getId());
         roleResponsibilityAction3.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
         roleResponsibilityAction3.setActionPolicyCode(ActionRequestPolicy.ALL.getCode());
         roleResponsibilityAction3.setPriorityNumber(1);

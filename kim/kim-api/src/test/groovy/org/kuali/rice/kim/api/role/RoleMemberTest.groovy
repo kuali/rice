@@ -17,18 +17,16 @@
 
 package org.kuali.rice.kim.api.role
 
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.bind.Unmarshaller
 import org.junit.Assert
 import org.junit.Test
-import org.junit.Ignore
+
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
-import org.kuali.rice.kim.api.test.JAXBAssert
+
 import org.kuali.rice.core.api.membership.MemberType
 
 class RoleMemberTest {
@@ -67,7 +65,7 @@ class RoleMemberTest {
 
     private static final String XML = """
        <roleMember xmlns="http://rice.kuali.org/kim/v2_0">
-         <roleMemberId>${ROLE_MEMBER_ID}</roleMemberId>
+         <id>${ROLE_MEMBER_ID}</id>
          <roleId>${ROLE_ID}</roleId>
          <attributes/>
          <roleResponsibilityActions>
@@ -88,7 +86,7 @@ class RoleMemberTest {
             <versionNumber>1</versionNumber>
          </roleResponsibilityActions>
          <memberId>${MEMBER_ID}</memberId>
-         <memberTypeCode>${MEMBER_TYPE_CODE}</memberTypeCode>
+         <typeCode>${MEMBER_TYPE_CODE}</typeCode>
          <activeFromDate>${ACTIVE_FROM}</activeFromDate>
          <activeToDate>${ACTIVE_TO}</activeToDate>
          <active>${ACTIVE}</active>
@@ -106,12 +104,12 @@ class RoleMemberTest {
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         RoleMember roleMember = (RoleMember) unmarshaller.unmarshal(new StringReader(XML))
         System.out.println(roleMember)
-        Assert.assertEquals(ROLE_MEMBER_ID, roleMember.roleMemberId)
+        Assert.assertEquals(ROLE_MEMBER_ID, roleMember.id)
         Assert.assertEquals(ROLE_ID, roleMember.roleId)
         Assert.assertEquals(ATTRIBUTES, roleMember.attributes)
         Assert.assertEquals(roleResponsibilityActions, roleMember.roleRspActions)
         Assert.assertEquals(MEMBER_ID, roleMember.memberId)
-        Assert.assertEquals(MEMBER_TYPE_CODE, roleMember.memberType.code)
+        Assert.assertEquals(MEMBER_TYPE_CODE, roleMember.getType().code)
         Assert.assertEquals(ACTIVE_FROM, roleMember.activeFromDate)
         Assert.assertEquals(ACTIVE_TO, roleMember.activeToDate)
     }
@@ -166,7 +164,7 @@ class RoleMemberTest {
     void test_Builder_memberTypeCodeNull() {
         RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
         shouldFail(IllegalArgumentException) {
-            b.memberType = null
+            b.type = null
         }
     }
 
@@ -174,7 +172,7 @@ class RoleMemberTest {
     void test_Builder_memberTypeCodeBlank() {
         RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
         shouldFail(IllegalArgumentException) {
-            b.memberType = ""
+            b.type = ""
         }
     }
 

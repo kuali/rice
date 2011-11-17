@@ -125,7 +125,7 @@ public final class KIMPropertyConstants {
 		public static final String ROLE_MEMBER_ID = "roleMemberId";
 		public static final String ROLE_ID = "roleId";
 		public static final String MEMBER_ID = "memberId";
-		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
+		public static final String MEMBER_TYPE_CODE = "typeCode";
 		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
 		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
 		

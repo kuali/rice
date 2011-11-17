@@ -239,7 +239,9 @@ public final class Responsibility extends AbstractDataTransferObject implements 
             builder.setActive(contract.isActive());
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setObjectId(contract.getObjectId());
-            if (contract.getTemplate() != null) {
+            if (contract.getTemplate() != null
+                    && contract.getTemplate().getName() != null
+                    && contract.getTemplate().getNamespaceCode() != null) {
                 builder.setTemplate(Template.Builder.create(contract.getTemplate()));
             }
 
@@ -297,7 +299,13 @@ public final class Responsibility extends AbstractDataTransferObject implements 
 			if (template == null) {
                 throw new IllegalArgumentException("template is null");
             }
-			this.template = template;
+            if (StringUtils.isNotBlank(template.getName())
+                    && StringUtils.isNotBlank(template.getNamespaceCode())) {
+			    this.template = template;
+            } else {
+                this.template = null;
+            }
+
 		}
 		
 		@Override

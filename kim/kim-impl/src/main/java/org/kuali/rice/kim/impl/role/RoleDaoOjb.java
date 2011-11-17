@@ -687,7 +687,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
     }
 
     private boolean hasCoreRoleMemberCriteria(Map<String, String> fieldValues) {
-        return StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID)) ||
+        return StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.ID)) ||
                 StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID)) ||
                 StringUtils.isNotEmpty(fieldValues.get(KimConstants.PrimaryKeyConstants.MEMBER_ID)) ||
                 StringUtils.isNotEmpty(fieldValues.get(KIMPropertyConstants.KimMember.MEMBER_TYPE_CODE)) ||

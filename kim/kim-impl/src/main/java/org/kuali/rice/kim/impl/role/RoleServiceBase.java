@@ -102,7 +102,7 @@ abstract class RoleServiceBase {
         roleList.add(roleId);
         List<RoleMemberBo> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, MemberType.ROLE.getCode(), Collections.<String, String>emptyMap());
         for (RoleMemberBo member : firstLevelMembers) {
-            if (MemberType.ROLE.equals(member.getMemberType())) {
+            if (MemberType.ROLE.equals(member.getType())) {
                 if (!members.contains(member.getMemberId())) {
                     members.add(member.getMemberId());
                     getNestedRoleTypeMemberIds(member.getMemberId(), members);
@@ -449,7 +449,7 @@ abstract class RoleServiceBase {
     }
 
     protected boolean doesMemberMatch(RoleMemberBo roleMember, String memberId, String memberTypeCode, Map<String, String> qualifier) {
-        if (roleMember.getMemberId().equals(memberId) && roleMember.getMemberType().getCode().equals(memberTypeCode)) {
+        if (roleMember.getMemberId().equals(memberId) && roleMember.getType().getCode().equals(memberTypeCode)) {
             // member ID/type match
             Map<String, String> roleQualifier = roleMember.getAttributes();
             if ((qualifier == null || qualifier.isEmpty())

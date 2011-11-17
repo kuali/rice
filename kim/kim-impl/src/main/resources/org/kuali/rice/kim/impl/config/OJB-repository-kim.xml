@@ -529,10 +529,10 @@
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.impl.role.RoleMemberBo" table="KRIM_ROLE_MBR_T">
-    <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_ROLE_MBR_ID_S"/>
+    <field-descriptor name="id" column="ROLE_MBR_ID" jdbc-type="VARCHAR" primarykey="true"  autoincrement="true" sequence-name="KRIM_ROLE_MBR_ID_S"/>
     <field-descriptor name="roleId" column="ROLE_ID" jdbc-type="VARCHAR" />
     <field-descriptor name="memberId" column="MBR_ID" jdbc-type="VARCHAR" />
-    <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
+    <field-descriptor name="typeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
     <field-descriptor name="activeFromDateValue" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />

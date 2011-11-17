@@ -104,34 +104,42 @@ public class GroupMember extends AbstractDataTransferObject implements GroupMemb
         this.activeToDate = builder.getActiveToDate();
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getGroupId() {
         return groupId;
     }
 
+    @Override
     public String getMemberId() {
         return memberId;
     }
 
+    @Override
     public MemberType getType() {
         return MemberType.fromCode(typeCode);
     }
 
+    @Override
     public DateTime getActiveFromDate() {
         return activeFromDate;
     }
 
+    @Override
     public DateTime getActiveToDate() {
         return activeToDate;
     }
 
+    @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
 
+    @Override
     public String getObjectId() {
         return objectId;
     }

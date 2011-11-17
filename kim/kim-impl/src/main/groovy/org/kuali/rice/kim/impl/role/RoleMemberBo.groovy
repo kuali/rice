@@ -52,13 +52,10 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
     @Parameter(name = "value_column", value = "id")
     ])
     @Column(name = "ROLE_MBR_ID")
-    String roleMemberId;
+    String id;
 
     @Column(name = "ROLE_ID")
     String roleId;
-
-    @Column(name = "MBR_TYP_CD")
-    private String memberTypeCode
 
     @OneToMany(targetEntity = RoleMemberAttributeDataBo.class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     @JoinColumn(name = "ROLE_MBR_ID", insertable = false, updatable = false)
@@ -86,39 +83,6 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
-    /*Map<String,String> getAttributes() {
-        if (qualifier == null) {
-            Role role = getRoleService().getRole(roleId);
-            KimType kimType = getTypeInfoService().getKimType(role.getKimTypeId());
-            Map<String, String> m = new HashMap<String, String>();
-            for (RoleMemberAttributeDataBo data: getAttributes()) {
-                KimTypeAttribute attribute = null;
-                if (kimType != null) {
-                    attribute = kimType.getAttributeDefinitionById(data.getKimAttributeId());
-                }
-                if (attribute != null) {
-                    m.put(attribute.getKimAttribute().getAttributeName(), data.getAttributeValue());
-                } else {
-                    m.put(data.getKimAttribute().getAttributeName(), data.getAttributeValue());
-                }
-            }
-            qualifier = m;
-        }
-        return qualifier;
-    }*/
-
-    public String getMemberTypeCode() {
-        return memberTypeCode;
-    }
-
-    public MemberType getMemberType() {
-        return MemberType.fromCode(memberTypeCode)
-    }
-
-    public void setMemberType(MemberType type) {
-        this.memberTypeCode = type.getCode()
-    }
-
     public static RoleMember to(RoleMemberBo bo) {
         if (bo == null) {return null;}
         return RoleMember.Builder.create(bo).build();
@@ -128,13 +92,19 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         if (immutable == null) { return null; }
 
         return new RoleMemberBo(
-                roleMemberId: immutable.roleMemberId,
+                id: immutable.id,
                 roleId: immutable.roleId,
                 roleRspActions: immutable.roleRspActions.collect { RoleResponsibilityActionBo.from(it) },
                 memberId: immutable.memberId,
-                memberTypeCode: immutable.memberTypeCode,
+                typeCode: immutable.getType().code,
                 activeFromDateValue: immutable.activeFromDate == null ? null : new Timestamp(immutable.activeFromDate.getMillis()),
                 activeToDateValue: immutable.activeToDate == null ? null : new Timestamp(immutable.activeToDate.getMillis()),
+                objectId : immutable.objectId,
+                versionNumber: immutable.versionNumber
         )
+    }
+
+    public getTypeCode() {
+        return this.typeCode
     }
 }

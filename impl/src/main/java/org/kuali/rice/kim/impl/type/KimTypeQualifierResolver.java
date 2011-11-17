@@ -131,7 +131,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     		for ( KimDocumentRoleMember rm : roleDoc.getMembers() ) {
     			boolean foundMember = false;
     			for ( RoleMembership rmi : currentRoleMembers ) {
-    				if ( rmi.getRoleMemberId().equals( rm.getRoleMemberId() ) ) {
+    				if ( rmi.getId().equals( rm.getRoleMemberId() ) ) {
     					foundMember = true;
     					if ( !rm.isActive() ) { // don't need to check the role member information 
     											// - only active members are returned
@@ -185,7 +185,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
         		for ( KimDocumentRoleMember rm : pdr.getRolePrncpls() ) {
         			boolean foundMember = false;
             		for ( RoleMembership rmi : getRoleService().getRoleMembers( Collections.singletonList( rm.getRoleId() ), Collections.<String, String>emptyMap() ) ) {
-            			if ( StringUtils.equals( rmi.getRoleMemberId(), rm.getRoleMemberId() ) ) {
+            			if ( StringUtils.equals( rmi.getId(), rm.getRoleMemberId() ) ) {
             				foundMember = true;
         					if ( !rm.isActive() ) { // don't need to check the role member information 
 								// - only active members are returned

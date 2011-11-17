@@ -38,20 +38,20 @@ class RoleMemberBoTest {
     @Ignore("RoleMemberBo.getAttributes(), called by RoleMemberBo.to(), requires the GRL to use both RoleService and TypeInfoService - not setup for unit tests")
     void test_to() {
         RoleMemberBo bo = new RoleMemberBo(
-                roleMemberId: "1",
+                id: "1",
                 roleId: "2",
-                memberTypeCode: "G",
-                attributes: [],
+                typeCode: "G",
+                attributeDetails: [],
                 roleRspActions: [],
                 memberId: "22",
-                activeFromDate: ACTIVE_FROM,
-                activeToDate: ACTIVE_TO
+                activeFromDateValue: new Timestamp(ACTIVE_FROM.getMillis()),
+                activeToDateValue: new Timestamp(ACTIVE_TO.getMillis())
         )
 
         RoleMember immutable = RoleMemberBo.to(bo)
-        Assert.assertEquals(bo.roleMemberId, immutable.roleMemberId)
+        Assert.assertEquals(bo.id, immutable.id)
         Assert.assertEquals(bo.roleId, immutable.roleId)
-        Assert.assertEquals(bo.memberTypeCode, immutable.memberTypeCode)
+        Assert.assertEquals(bo.typeCode, immutable.typeCode)
         Assert.assertEquals(bo.roleRspActions, immutable.roleRspActions)
         Assert.assertEquals(bo.memberId, immutable.memberId)
         Assert.assertEquals(bo.activeFromDate, immutable.activeFromDate)
@@ -60,11 +60,11 @@ class RoleMemberBoTest {
 
     @Test
     void test_from() {
-        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", G, ACTIVE_FROM, ACTIVE_TO, [:]).build()
+        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", MemberType.GROUP, ACTIVE_FROM, ACTIVE_TO, [:]).build()
         RoleMemberBo bo = RoleMemberBo.from(immutable)
-        Assert.assertEquals(bo.roleMemberId, immutable.roleMemberId)
+        Assert.assertEquals(bo.id, immutable.id)
         Assert.assertEquals(bo.roleId, immutable.roleId)
-        Assert.assertEquals(bo.memberTypeCode, immutable.memberTypeCode)
+        Assert.assertEquals(bo.type, immutable.type)
         Assert.assertEquals(bo.roleRspActions, immutable.roleRspActions)
         Assert.assertEquals(bo.memberId, immutable.memberId)
         Assert.assertEquals(bo.activeFromDate, immutable.activeFromDate)

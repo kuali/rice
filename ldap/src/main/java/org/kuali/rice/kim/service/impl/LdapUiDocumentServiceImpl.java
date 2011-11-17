@@ -414,18 +414,18 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
                     for(RoleMemberBo origRoleMemberImpl: origRoleMembers){
                         if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
                             (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
-                            (origRoleMemberImpl.getMemberType()!=null && org.apache.commons.lang.ObjectUtils.equals(origRoleMemberImpl.getMemberType(), newRoleMember.getMemberType())) &&
+                            (origRoleMemberImpl.getType()!=null && org.apache.commons.lang.ObjectUtils.equals(origRoleMemberImpl.getType(), newRoleMember.getType())) &&
                             !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
                             !kimTypeService.validateAttributesAgainstExisting(identityManagementRoleDocument.getKimType().getId(),
                                     documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes()).isEmpty()) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
 
-                            newRoleMemberIdAssigned = newRoleMember.getRoleMemberId();
-                            newRoleMember.setRoleMemberId(origRoleMemberImpl.getRoleMemberId());
+                            newRoleMemberIdAssigned = newRoleMember.getId();
+                            newRoleMember.setId(origRoleMemberImpl.getId());
                             activatingInactive = true;
                         }
-                        if(origRoleMemberImpl.getRoleMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleMemberId(), newRoleMember.getRoleMemberId())){
+                        if(origRoleMemberImpl.getId()!=null && StringUtils.equals(origRoleMemberImpl.getId(), newRoleMember.getId())){
                             newRoleMember.setVersionNumber(origRoleMemberImpl.getVersionNumber());
                             origRoleMemberImplTemp = origRoleMemberImpl;
                         }

@@ -16,19 +16,16 @@
 package org.kuali.rice.kim.impl.jaxb;
 
 import org.apache.commons.lang.StringUtils;
-import org.jacorb.idl.Member;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePairValidatingAdapter;
-import org.kuali.rice.kim.api.KimConstants.KimUIConstants;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.jaxb.QualificationListAdapter;
 import org.kuali.rice.kim.api.role.RoleContract;
 import org.kuali.rice.kim.api.role.RoleMember;
-import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import javax.xml.bind.Unmarshaller;
@@ -110,7 +107,7 @@ public abstract class RoleMemberXmlDTO implements Serializable {
         if (roleMember == null) {
             throw new IllegalArgumentException("roleMember cannot be null");
         }
-        this.memberType = roleMember.getMemberType();
+        this.memberType = roleMember.getType();
         this.activeFromDate = roleMember.getActiveFromDate();
         this.activeToDate = roleMember.getActiveToDate();
         this.qualifications = (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>();

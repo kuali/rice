@@ -270,16 +270,16 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
                 rai.setResponsibilityName(responsibility.getName());
                 rai.setResponsibilityNamespaceCode(responsibility.getNamespaceCode());
 
-                if (MemberType.PRINCIPAL.equals(rm.getMemberType())) {
+                if (MemberType.PRINCIPAL.equals(rm.getType())) {
                     rai.setPrincipalId(rm.getMemberId());
                 } else {
                     rai.setGroupId(rm.getMemberId());
                 }
                 // get associated resp resolution objects
-                RoleResponsibilityAction action = getResponsibilityAction(rm.getRoleId(), responsibility.getId(), rm.getRoleMemberId());
+                RoleResponsibilityAction action = getResponsibilityAction(rm.getRoleId(), responsibility.getId(), rm.getId());
                 if (action == null) {
                     LOG.error("Unable to get responsibility action record for role/responsibility/roleMember: "
-                            + rm.getRoleId() + "/" + responsibility.getId() + "/" + rm.getRoleMemberId());
+                            + rm.getRoleId() + "/" + responsibility.getId() + "/" + rm.getId());
                     LOG.error("Skipping this role member in getActionsForResponsibilityRoles()");
                     continue;
                 }

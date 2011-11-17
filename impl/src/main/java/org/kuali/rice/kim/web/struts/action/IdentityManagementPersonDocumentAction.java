@@ -541,7 +541,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             impdForm.getNewDelegationMember().setRoleMemberId(roleMemberId);
             RoleMemberBo roleMember = getUiDocumentService().getRoleMember(roleMemberId);
             impdForm.getNewDelegationMember().setRoleMemberMemberId(roleMember.getMemberId());
-            impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getMemberType().getCode());
+            impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getType().getCode());
             impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(MemberType.fromCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode()), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
             impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(MemberType.fromCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode()), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
 

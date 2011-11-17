@@ -626,13 +626,10 @@ class ResponsibilityServiceImplTest {
         mockRoleService.demand.getRoleMembers(1..1) {
             List<String> roleIds, Map<String, String> qualification ->
                 List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
-                RoleMembership.Builder builder = new RoleMembership.Builder();
-                builder.memberId = "memberidone";
+                RoleMembership.Builder builder = RoleMembership.Builder.create(
+                        "roleidone", "id", "memberidone", MemberType.PRINCIPAL, new HashMap<>());
                 builder.embeddedRoleId = "embeddedroleidone";
-                builder.roleId = "roleidone";
                 builder.qualifier = new HashMap<>();
-                builder.memberType = MemberType.PRINCIPAL;
-                builder.roleMemberId = "rolememberidone";
                 roleMemberships.add(builder.build());
                 return roleMemberships;
         }
@@ -721,13 +718,10 @@ class ResponsibilityServiceImplTest {
         mockRoleService.demand.getRoleMembers(1..1) {
             List<String> roleIds, Map<String, String> qualification ->
                 List<RoleMembership> roleMemberships = new ArrayList<RoleMembership>();
-                RoleMembership.Builder builder = new RoleMembership.Builder();
-                builder.memberId = "memberidone";
+                RoleMembership.Builder builder = new RoleMembership.Builder("roleidone", "memberidone", MemberType.PRINCIPAL);
                 builder.embeddedRoleId = "embeddedroleidone";
-                builder.roleId = "roleidone";
                 builder.qualifier = new HashMap<>();
-                builder.memberType = MemberType.PRINCIPAL;
-                builder.roleMemberId = "rolememberidone";
+                builder.id = "rolememberidone";
                 roleMemberships.add(builder.build());
                 return roleMemberships;
         }

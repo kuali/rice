@@ -50,7 +50,7 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 
 	protected Map<String, Class<?>> attributeTypeMap;
 	protected Map<String, Object> attributeValueMap;
-	protected Map<String, PropertyDescriptor> beanInfo;	
+	//protected Map<String, PropertyDescriptor> beanInfo;
 	
 	private final static Logger LOG = Logger.getLogger(MaintenanceDocumentAttributeValueReader.class);
 	
@@ -60,8 +60,8 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 	public MaintenanceDocumentAttributeValueReader(Object object, String entryName, MaintenanceDocumentEntry entry, PersistenceStructureService persistenceStructureService) {
 		super(object, entryName, entry);
 		
-		if (object != null)
-			this.beanInfo = getBeanInfo(object.getClass());
+		//if (object != null)
+		//	this.beanInfo = getBeanInfo(object.getClass());
 		
 		this.attributeTypeMap = new HashMap<String, Class<?>>();
 		this.attributeValueMap = new HashMap<String, Object>();		
@@ -82,7 +82,18 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 			        if (isAttributeDefined) {
 			        	attributeDefinitions.add(attributeDefinition);
 			        	attributeDefinitionMap.put(itemDefinitionName, attributeDefinition);
-			        	PropertyDescriptor propertyDescriptor = beanInfo.get(itemDefinitionName);
+                        LOG.info("itemDefName: " + itemDefinitionName);
+                        PropertyDescriptor propertyDescriptor = null;
+                        try {
+                            propertyDescriptor = PropertyUtils.getPropertyDescriptor(object, itemDefinitionName);
+                        } catch (IllegalAccessException e) {
+                            LOG.warn("Failed to find property description on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
+                        } catch (InvocationTargetException e) {
+                            LOG.warn("Failed to find property description on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
+                        } catch (NoSuchMethodException e) {
+                            LOG.warn("Failed to find property description on object when looking for " + itemDefinitionName + " as a field of " + entry.getDocumentTypeName(), e);
+                        }
+
 			    		Method readMethod = propertyDescriptor.getReadMethod();
 			    		
 						try {
@@ -153,12 +164,12 @@ public class MaintenanceDocumentAttributeValueReader extends DictionaryObjectAtt
 		return (X) attributeValueMap.get(attributeName);
 	}
 
-	private Map<String, PropertyDescriptor> getBeanInfo(Class<?> clazz) {
-		final Map<String, PropertyDescriptor> properties = new HashMap<String, PropertyDescriptor>();
-		for (PropertyDescriptor propertyDescriptor : PropertyUtils.getPropertyDescriptors(clazz)) {
-			properties.put(propertyDescriptor.getName(), propertyDescriptor);
-		}
-		return properties;
-	}
+	//private Map<String, PropertyDescriptor> getBeanInfo(Class<?> clazz) {
+	//	final Map<String, PropertyDescriptor> properties = new HashMap<String, PropertyDescriptor>();
+	//	for (PropertyDescriptor propertyDescriptor : PropertyUtils.getPropertyDescriptors(clazz)) {
+	//		properties.put(propertyDescriptor.getName(), propertyDescriptor);
+	//	}
+	//	return properties;
+	//}
 	
 }

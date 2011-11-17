@@ -17,11 +17,15 @@ package org.kuali.rice.krad.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.kim.api.common.template.Template;
 import org.kuali.rice.kim.api.permission.Permission;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.permission.PermissionAttributeBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
 import org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
+import org.kuali.test.KRADTestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,12 +37,14 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImplTest {
+public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImplTest extends KRADTestCase {
 
     NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl permissionService;
     
     @Before
+    @Override
     public void setUp() throws Exception {
+        super.setUp();
         permissionService = 
             new NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl() {
                 @Override protected boolean isCheckRequiredAttributes() {
@@ -57,16 +63,20 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
         
         List<PermissionBo> permissionsList = new ArrayList<PermissionBo>();
 
-        permissionsList.add(createPermission("Use Screen", "KR-SYS", "namespaceCode=KR*"));
-        PermissionBo exactMatch = createPermission("Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction", "namespaceCode=KR-WKFLW");
+        Template template = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName("KR-NS",
+                "Use Screen");
+        permissionsList.add(createPermission(template, "Use All Screens", "KR-SYS", "namespaceCode=KR*"));
+        PermissionBo exactMatch = createPermission(template, "Use Ingester Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction", "namespaceCode=KR-WKFLW");
         permissionsList.add(exactMatch);
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
-        for (PermissionBo bo : permissionsList) { immutablePermissionList.add(PermissionBo.to(bo));}
+        for (PermissionBo bo : permissionsList) {
+            immutablePermissionList.add(PermissionBo.to(bo));
+        }
        
         List<Permission> returnedPermissions = permissionService.getMatchingPermissions(requestedDetails, immutablePermissionList);
         assertTrue(returnedPermissions.size() == 1);
-        assertTrue(returnedPermissions.get(0).equals(exactMatch));
+        assertTrue(returnedPermissions.get(0).equals(PermissionBo.to(exactMatch)));
     }
     
     /**
@@ -78,8 +88,9 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
         
         List<PermissionBo> permissionsList = new ArrayList<PermissionBo>();
 
-        permissionsList.add(createPermission("Use Screen", "KR-SYS", "namespaceCode=KR*"));
-        PermissionBo exactMatch = createPermission("Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction");
+        Template template = KimApiServiceLocator.getPermissionService().findPermTemplateByNamespaceCodeAndName("KR-NS", "Use Screen");
+        permissionsList.add(createPermission(template, "Use Screen", "KR-SYS", "namespaceCode=KR*"));
+        PermissionBo exactMatch = createPermission(template, "Use Screen", "KR-WKFLW", "actionClass=org.kuali.rice.kew.batch.web.IngesterAction");
         permissionsList.add(exactMatch);
 
         List<Permission> immutablePermissionList = new ArrayList<Permission>();
@@ -87,7 +98,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
        
         List<Permission> returnedPermissions = permissionService.getMatchingPermissions(requestedDetails, immutablePermissionList);
         assertTrue(returnedPermissions.size() == 1);
-        assertTrue(returnedPermissions.get(0).equals(exactMatch));
+        assertTrue(returnedPermissions.get(0).equals(PermissionBo.to(exactMatch)));
     }
     
     /**
@@ -104,11 +115,13 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
     /**
      * @return a KimPermissionInfo object for the given name, namespace, and varargs "=" delimited attributes
      */
-    private PermissionBo createPermission(String name, String namespace, String ... attrs) {
+    private PermissionBo createPermission(Template permissionTemplate, String name, String namespace, String ... attrs) {
         PermissionBo perm = new PermissionBo();
 
         perm.setName(name);
         perm.setNamespaceCode(namespace);
+        perm.setTemplate(PermissionTemplateBo.from(permissionTemplate));
+        perm.setTemplateId(permissionTemplate.getId());
 
         Map<String,String> permissionDetails = new HashMap<String,String>();
         
@@ -118,7 +131,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
         }
 
         List<PermissionAttributeBo> attrBos = KimAttributeDataBo
-                .createFrom(PermissionAttributeBo.class, perm.getAttributes(),
+                .createFrom(PermissionAttributeBo.class, permissionDetails,
                         perm.getTemplate().getKimTypeId());
 
         perm.setAttributeDetails(attrBos);

@@ -20,7 +20,6 @@ import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.util.jaxb.NameAndNamespacePair;
-import org.kuali.rice.kim.api.KimConstants.KimUIConstants;
 import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.permission.PermissionContract;
@@ -124,7 +123,7 @@ public final class RoleXmlUtil {
         // Save the role member.
         RoleMemberContract newMember = KimApiServiceLocator.getRoleService().createRoleMember(builder.build());
         
-        return newMember.getRoleMemberId();
+        return newMember.getId();
     }
     
     /**
@@ -170,9 +169,9 @@ public final class RoleXmlUtil {
                 QueryByCriteria.Builder.fromPredicates(equal("roleId", roleId))).getResults();
         if (roleMembers != null && !roleMembers.isEmpty()) {
             for (RoleMemberContract roleMember : roleMembers) {
-                if (!existingRoleMemberIds.contains(roleMember.getRoleMemberId())) {
+                if (!existingRoleMemberIds.contains(roleMember.getId())) {
                     // If the role member needs to be removed, use the member type code to determine which removal method to call.
-                    MemberType memberType = roleMember.getMemberType();
+                    MemberType memberType = roleMember.getType();
                     if (MemberType.PRINCIPAL.equals(memberType)) {
                         roleUpdateService.removePrincipalFromRole(roleMember.getMemberId(), role.getNamespaceCode(), role.getName(),
                                 (roleMember.getAttributes() != null) ? roleMember.getAttributes() : new HashMap<String, String>());

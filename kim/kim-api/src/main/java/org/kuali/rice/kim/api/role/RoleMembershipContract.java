@@ -16,12 +16,13 @@
 package org.kuali.rice.kim.api.role;
 
 import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.kim.api.common.delegate.DelegateTypeContract;
 
 import java.util.List;
 import java.util.Map;
 
-public interface RoleMembershipContract {
+public interface RoleMembershipContract extends Identifiable {
 
     String getRoleId();
 
@@ -29,11 +30,9 @@ public interface RoleMembershipContract {
 
     List<? extends DelegateTypeContract> getDelegates();
 
-    String getRoleMemberId();
-
     String getMemberId();
 
-    MemberType getMemberType();
+    MemberType getType();
 
     /**
      * @return String Identifier of the role from which the group or principal was derived.

@@ -212,11 +212,11 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		boolean foundG1 = false;
 		boolean foundR1 = false;
 		for (RoleMembership member : members) {
-			if (member.getMemberId().equals(principal3Id) && member.getMemberType().equals(MemberType.PRINCIPAL)) {
+			if (member.getMemberId().equals(principal3Id) && member.getType().equals(MemberType.PRINCIPAL)) {
 				foundP3 = true;
-			} else if (member.getMemberId().equals(group1Id) && member.getMemberType().equals(MemberType.GROUP)) {
+			} else if (member.getMemberId().equals(group1Id) && member.getType().equals(MemberType.GROUP)) {
 				foundG1 = true;
-			} else if (member.getMemberId().equals(principal1Id) && member.getMemberType().equals(MemberType.PRINCIPAL)) {
+			} else if (member.getMemberId().equals(principal1Id) && member.getType().equals(MemberType.PRINCIPAL)) {
 				foundR1 = true;
 				assertEquals("Should have r1 embedded role id.", role1Id, member.getEmbeddedRoleId());
 			}

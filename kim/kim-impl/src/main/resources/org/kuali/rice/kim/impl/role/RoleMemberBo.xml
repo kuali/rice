@@ -23,17 +23,17 @@
   <bean id="RoleMemberBo" parent="RoleMemberBo-parentBean"/>
 
   <bean id="RoleMemberBo-parentBean" abstract="true" parent="BusinessObjectEntry"
-        p:businessObjectClass="org.kuali.rice.kim.impl.role.RoleMemberBo" p:titleAttribute="roleMemberId"
+        p:businessObjectClass="org.kuali.rice.kim.impl.role.RoleMemberBo" p:titleAttribute="id"
         p:objectLabel="Names" p:inquiryDefinition-ref="RoleMemberBo-inquiryDefinition"
         p:lookupDefinition-ref="RoleMemberBo-lookupDefinition">
     <!--<property name="exporterClass" value="org.kuali.rice.kim.impl.jaxb.KimImporterAndExporter" />-->
     <property name="attributes">
       <list>
         <ref bean="RoleMemberBo-roleId"/>
-        <ref bean="RoleMemberBo-roleMemberId"/>
+        <ref bean="RoleMemberBo-id"/>
         <ref bean="RoleMemberBo-memberId"/>
         <!-- TODO: create entry for this  -->
-        <ref bean="RoleMemberBo-memberTypeCode"/>
+        <ref bean="RoleMemberBo-typeCode"/>
         <ref bean="RoleMemberBo-activeFromDate"/>
         <ref bean="RoleMemberBo-activeToDate"/>
       </list>
@@ -44,8 +44,8 @@
   <bean id="RoleMemberBo-roleId" parent="RoleMemberBo-roleId-parentBean"/>
   <bean id="RoleMemberBo-roleId-parentBean" parent="RoleBo-id" p:name="roleId"/>
 
-  <bean id="RoleMemberBo-roleMemberId" parent="RoleMemberBo-roleMemberId-parentBean"/>
-  <bean id="RoleMemberBo-roleMemberId-parentBean" parent="AttributeDefinition" abstract="true" p:name="roleMemberId"
+  <bean id="RoleMemberBo-id" parent="RoleMemberBo-id-parentBean"/>
+  <bean id="RoleMemberBo-id-parentBean" parent="AttributeDefinition" abstract="true" p:name="id"
         p:forceUppercase="true" p:label="Role Member Identifier" p:shortLabel="Role Member Identifier" p:maxLength="40"
         p:required="false">
     <property name="control">
@@ -68,8 +68,8 @@
     </property>
   </bean>
 
-  <bean id="RoleMemberBo-memberTypeCode" parent="RoleMemberBo-memberTypeCode-parentBean"/>
-  <bean id="RoleMemberBo-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberTypeCode"
+  <bean id="RoleMemberBo-typeCode" parent="RoleMemberBo-typeCode-parentBean"/>
+  <bean id="RoleMemberBo-typeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="typeCode"
         p:forceUppercase="true" p:label="Member Type Code" p:shortLabel="Type Code" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="SelectControlDefinition"
@@ -110,7 +110,7 @@
         <bean parent="InquirySectionDefinition" p:title="Person Attributes" p:numberOfColumns="1">
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="roleMemberId"/>
+              <bean parent="FieldDefinition" p:attributeName="id"/>
               <bean parent="FieldDefinition" p:attributeName="memberId"/>
               <bean parent="FieldDefinition" p:attributeName="activeFromDate"/>
               <bean parent="FieldDefinition" p:attributeName="activeToDate"/>
@@ -130,7 +130,7 @@
       <bean parent="SortDefinition">
         <property name="attributeNames">
           <list>
-            <value>roleMemberId</value>
+            <value>id</value>
           </list>
         </property>
         <property name="sortAscending" value="true"/>
@@ -139,9 +139,9 @@
     <property name="lookupFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="roleId" p:readOnly="true"/>
-        <bean parent="FieldDefinition" p:attributeName="roleMemberId"/>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
         <bean parent="FieldDefinition" p:attributeName="memberId"/>
-        <bean parent="FieldDefinition" p:attributeName="memberTypeCode"/>
+        <bean parent="FieldDefinition" p:attributeName="typeCode"/>
         <bean parent="FieldDefinition" p:attributeName="activeFromDate"/>
         <bean parent="FieldDefinition" p:attributeName="activeToDate"/>
       </list>
@@ -149,9 +149,9 @@
     <property name="resultFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="roleId"/>
-        <bean parent="FieldDefinition" p:attributeName="roleMemberId"/>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
         <bean parent="FieldDefinition" p:attributeName="memberId"/>
-        <bean parent="FieldDefinition" p:attributeName="memberTypeCode"/>
+        <bean parent="FieldDefinition" p:attributeName="typeCode"/>
         <bean parent="FieldDefinition" p:attributeName="activeFromDate"/>
         <bean parent="FieldDefinition" p:attributeName="activeToDate"/>
       </list>

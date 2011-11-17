@@ -106,12 +106,26 @@
               <bean parent="InputField" p:propertyName="copyRuleName" p:style="font-size: smaller;" p:showLabel="false">
                 <property name="label" value="Copy from Existing Rule" />
                 <property name="fieldLookup.dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo"/>
+                <property name="fieldLookup.fieldConversions">
+                  <map>
+                    <entry key="id" value="agendaItemLine.rule.id"/>
+                    <entry key="name" value="copyRuleName"/>
+                    <entry key="namespace" value="agendaItemLine.rule.namespace"/>
+                  </map>
+                </property>
+                <property name="fieldLookup.lookupParameters">
+                  <map>
+                    <entry key="agendaItemLine.rule.id" value="id"/>
+                    <entry key="copyRuleName" value="name"/>
+                    <entry key="agendaItemLine.rule.namespace" value="namespace"/>
+                  </map>
+                </property>
                 <property name="control">
                   <bean parent="TextControl" p:size="40"
                     p:watermarkText="Existing Rule Name" />
                   </property>
               </bean>
-              <bean parent="ActionField" p:methodToCall="copyRule" p:actionLabel="Copy Rule"  p:clientSideJs="alert('Not Yet Implemented');"
+              <bean parent="ActionField" p:methodToCall="copyRule" p:actionLabel="Copy Rule"
                 p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt; float: right;"/>
             </list>
           </property>

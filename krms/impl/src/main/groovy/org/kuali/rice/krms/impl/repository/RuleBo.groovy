@@ -31,6 +31,8 @@ import org.kuali.rice.krms.impl.ui.RuleTreeNode
 import org.kuali.rice.krms.impl.ui.SimplePropositionNode
 import org.kuali.rice.krms.impl.ui.SimplePropositionEditNode
 import org.kuali.rice.krms.impl.ui.CompoundPropositionEditNode
+import org.kuali.rice.krad.service.SequenceAccessorService
+import org.kuali.rice.krad.service.KRADServiceLocator
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
    
@@ -258,5 +260,92 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
       return bo;
   }
+
+    public static RuleBo copyRule(RuleBo existing){
+        // create a simple proposition Bo
+        RuleBo newRule = new RuleBo();
+
+        // copy simple fields
+        newRule.setId( getNewRuleId() );
+        newRule.setNamespace( existing.getNamespace() );
+        newRule.setDescription( existing.getDescription() );
+        newRule.setTypeId( existing.getTypeId() );
+
+        // copy proposition(s)
+        PropositionBo newProp = PropositionBo.copyProposition(existing.getProposition());
+        newProp.setRuleId( newRule.getId() );
+        newRule.setProposition( newProp );
+
+        newRule.setAttributeBos(copyRuleAttributes(existing));
+        newRule.setActions(copyRuleActions(existing, newProp.getId()));
+
+        return newRule;
+    }
+    public static List<RuleAttributeBo> copyRuleAttributes(RuleBo existing){
+        List<RuleAttributeBo> newAttributes = new ArrayList<RuleAttributeBo> ();
+        for(RuleAttributeBo attr : existing.getAttributeBos()){
+            RuleAttributeBo newAttr = new RuleAttributeBo();
+            newAttr.setId( getNewRuleAttributeId() );
+            newAttr.setRuleId( attr.getRuleId() );
+            newAttr.setAttributeDefinitionId( attr.getAttributeDefinitionId() );
+            newAttr.setValue( attr.getValue() );
+            newAttributes.add( newAttr );
+        }
+        return newAttributes;
+    }
+
+    public static Set<ActionAttributeBo> copyActionAttributes(ActionBo existing){
+        Set<ActionAttributeBo> newAttributes = new HashSet<ActionAttributeBo> ();
+        for(ActionAttributeBo attr : existing.getAttributeBos()){
+            ActionAttributeBo newAttr = new ActionAttributeBo();
+            newAttr.setId( getNewActionAttributeId() );
+            newAttr.setActionId( attr.getActionId() );
+            newAttr.setAttributeDefinitionId( attr.getAttributeDefinitionId() );
+            newAttr.setValue( attr.getValue() );
+            newAttributes.add( newAttr );
+        }
+        return newAttributes;
+    }
+
+    public static List<ActionBo> copyRuleActions(RuleBo existing, String ruleId){
+        List<ActionBo> newActionList = new ArrayList<ActionBo> ();
+        for(ActionBo action : existing.getActions()){
+            ActionBo newAction = new ActionBo();
+            newAction.setId( getNewActionId() );
+            newAction.setRuleId( ruleId );
+            newAction.setDescription( action.getDescription() );
+            newAction.setName( action.getName() );
+            newAction.setNamespace( action.getNamespace() );
+            newAction.setTypeId( action.getTypeId() );
+            newAction.setSequenceNumber( action.getSequenceNumber() );
+            newAction.setAttributeBos( copyActionAttributes(action) );
+            newActionList.add(newAction);
+        }
+        return newActionList;
+    }
+
+    private static String getNewRuleId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_RULE_S", RuleBo.class);
+        return id.toString();
+    }
+
+    private static String getNewActionId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_ACTN_S", ActionBo.class);
+        return id.toString();
+    }
+
+    private static String getNewRuleAttributeId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_RULE_ATTR_S", RuleAttributeBo.class);
+        return id.toString();
+    }
+
+    private static String getNewActionAttributeId(){
+        SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
+        Long id = sas.getNextAvailableSequenceNumber("KRMS_ACTN_ATTR_S", ActionAttributeBo.class);
+        return id.toString();
+    }
 
 }

@@ -25,6 +25,7 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
 import org.kuali.rice.krms.impl.repository.ActionBo;
@@ -38,6 +39,7 @@ import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
+import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -1177,6 +1179,13 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     /**
+     * return the contextBoService
+     */
+    private RuleBoService getRuleBoService() {
+        return KrmsRepositoryServiceLocator.getRuleBoService();
+    }
+
+    /**
      * binds a child accessor to an AgendaItemBo instance.  An {@link AgendaItemInstanceChildAccessor} allows you to
      * get and set the referent
      */
@@ -1290,6 +1299,22 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     //
     // Rule Editor Controller methods
     //
+    @RequestMapping(params = "methodToCall=" + "copyRule")
+    public ModelAndView copyRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        String name = agendaEditor.getCopyRuleName();
+        String namespace = agendaEditor.getNamespace();
+        // fetch existing rule and copy fields to new rule
+        RuleDefinition oldRuleDefinition = getRuleBoService().getRuleByNameAndNamespace(name, namespace);
+        RuleBo oldRule = RuleBo.from(oldRuleDefinition);
+        agendaEditor.getAgendaItemLine().setRule( RuleBo.copyRule(oldRule) );
+
+        return super.refresh(form, result, request, response);
+    }
+
+
     /**
      * This method starts an edit proposition.
      */

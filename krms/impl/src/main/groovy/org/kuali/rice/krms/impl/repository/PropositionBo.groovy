@@ -259,6 +259,35 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
         return prop;
     }
 
+    public static PropositionBo copyProposition(PropositionBo existing){
+        // Note: RuleId is not set
+        PropositionBo newProp = new PropositionBo();
+        newProp.setId( getNewPropId() );
+        newProp.setDescription( existing.getDescription() );
+        newProp.setPropositionTypeCode( existing.getPropositionTypeCode() );
+        newProp.setTypeId( existing.getTypeId() );
+        newProp.setCompoundOpCode( existing.getCompoundOpCode() );
+        // parameters
+        List<PropositionParameterBo> newParms = new ArrayList<PropositionParameterBo>();
+        for (PropositionParameterBo parm : existing.getParameters()){
+            PropositionParameterBo p = new PropositionParameterBo();
+            p.setId(getNewPropParameterId());
+            p.setParameterType(parm.getParameterType());
+            p.setPropId(parm.getPropId());
+            p.setSequenceNumber(parm.getSequenceNumber());
+            p.setValue(parm.getValue());
+            newParms.add(p);
+        }
+        newProp.setParameters(newParms);
+        // compoundComponents
+        List<PropositionBo>  newCompoundComponents = new ArrayList<PropositionBo>();
+        for (PropositionBo component : existing.getCompoundComponents()){
+            PropositionBo newComponent = copyProposition(component);
+            newCompoundComponents.add(component);
+        }
+        newProp.setCompoundComponents(newCompoundComponents);
+        return newProp;
+    }
     private static String getNewPropId(){
         SequenceAccessorService sas = KRADServiceLocator.getSequenceAccessorService();
         Long id = sas.getNextAvailableSequenceNumber("KRMS_PROP_S",
@@ -271,4 +300,5 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
                 PropositionParameterBo.class);
         return id.toString();
     }
+
 }

@@ -68,7 +68,7 @@ public class RoleDaoOjb extends PlatformAwareDaoBaseOjb implements RoleDao {
                     String value = (qualifier.getValue()).replace('*', '%');
                     subCrit.addLike("attributeValue", value);
                     subCrit.addEqualTo("kimAttributeId", qualifier.getKey());
-					subCrit.addEqualToField("roleMemberId", Criteria.PARENT_QUERY_PREFIX + "roleMemberId"); 
+					subCrit.addEqualToField("assignedToId", Criteria.PARENT_QUERY_PREFIX + "roleMemberId");
                     ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(RoleMemberAttributeDataBo.class, subCrit);
                     c.addExists(subQuery);
                 }

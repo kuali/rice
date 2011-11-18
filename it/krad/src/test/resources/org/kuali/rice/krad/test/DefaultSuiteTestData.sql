@@ -26,3 +26,11 @@ values ('1000', '9A6B69E11DA1477FB0FD899A3C746A17', 1, '1652', '3', '13', 'RiceD
 insert into krim_role_perm_t (role_perm_id, obj_id, ver_nbr, role_id, perm_id, actv_ind)
 values ('2112', '7FE9BCE73E2748FEB56DB358F0FFA84F', 1, '63', '1652', 'Y')
 ;
+
+/* borrowed from db/impex/master/target/classes/sql/mysql/KRNS_NTE_TYP_T.sql (which exists when a maven impex has run)
+to ensure that org.kuali.rice.krad.service.NoteServiceTest.testNoteSave_LargePersonId passes
+ */
+INSERT INTO KRNS_NTE_TYP_T (ACTV_IND,NTE_TYP_CD,OBJ_ID,TYP_DESC_TXT,VER_NBR)
+  VALUES ('Y','BO','53680C68F5A9AD9BE0404F8189D80A6C','DOCUMENT BUSINESS OBJECT',1)
+;
+

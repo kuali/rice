@@ -161,7 +161,8 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
 
         // set up a simple default type for the rule
         KrmsTypeRepositoryService krmsTypeRepositoryService = KrmsApiServiceLocator.getKrmsTypeRepositoryService();
-        KrmsTypeDefinition.Builder typeDefinition = KrmsTypeDefinition.Builder.create(KrmsConstants.KRMS_NAMESPACE, "DefaultRuleType");
+        KrmsTypeDefinition.Builder typeDefinition = KrmsTypeDefinition.Builder.create("Name", KrmsConstants.KRMS_NAMESPACE);
+        typeDefinition.setServiceName("defaultRuleTypeService");
         KrmsTypeDefinition defaultRuleType = krmsTypeRepositoryService.createKrmsType(typeDefinition.build());
         assertNotNull(defaultRuleType);
         assertNotNull(defaultRuleType.getId());

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName ) {
-	var userId = DWRUtil.getValue( userIdFieldName );
+	var userId = dwr.util.getValue( userIdFieldName );
 
 	if (userId == "") {
 		clearRecipients( universalIdFieldName, "" );
@@ -31,7 +31,7 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 					} else {
 						// guess the DIV name
 						divName = userIdFieldName.replace( ".principalName", ".name.div" );
-						DWRUtil.setValue( divName, data.name );
+						dwr.util.setValue( divName, data.name );
 					}
 				} else {
 					if ( universalIdFieldName != null && universalIdFieldName != "" ) {
@@ -42,7 +42,7 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 					} else {
 						// guess the DIV name
 						divName = userIdFieldName.replace( ".principalName", ".name.div" );
-						DWRUtil.setValue( divName, wrapError( "person not found" ), { escapeHtml:false} );
+						dwr.util.setValue( divName, wrapError( "person not found" ), { escapeHtml:false} );
 					}
 				}
 			},
@@ -56,7 +56,7 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
 				} else {
 					// guess the DIV name
 					divName = userIdFieldName.replace( ".principalName", ".name.div" );
-					DWRUtil.setValue( divName, wrapError( "person not found" ), { escapeHtml:false} );
+					dwr.util.setValue( divName, wrapError( "person not found" ), { escapeHtml:false} );
 				}
 			}
 		};
@@ -72,10 +72,9 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
  * datadictionary are removed we have to use the current method.  This mothod
  * stores the current docTypeFullName on Page load.  the call is in page.tag.
  */
- //FIXME: IS THIS STILL USED?
-function storeCurrentDocTypeNameOnLoad(){
+ function storeCurrentDocTypeNameOnLoad(){
 	var oldDocTypeField;
-	var docTypeName = document.getElementById("docTypeFullName");
+	var docTypeName = document.getElementById("documentTypeName");
 	if (document.createElement) {
 		oldDocTypeField = document.createElement("input");
 		oldDocTypeField.setAttribute("type", "hidden");
@@ -96,7 +95,7 @@ function validateDocTypeAndRefresh(docTypeNameField){
 		return;
 	}
 
-	var docTypeName = DWRUtil.getValue( docTypeNameField );
+	var docTypeName = dwr.util.getValue( docTypeNameField );
 	var oldDocTypeName = document.forms[0].oldDocTypeFieldName.value;
 
 	if(docTypeName != null && oldDocTypeName != docTypeName){
@@ -106,7 +105,7 @@ function validateDocTypeAndRefresh(docTypeNameField){
 					if ( data != null && typeof data == 'object' ) {
 						newField = document.createElement("input");
 						newField.type = "hidden";
-						newField.name = "docTypeFullName";
+						newField.name = "documentTypeName";
 						newField.value = data.name;
 
 

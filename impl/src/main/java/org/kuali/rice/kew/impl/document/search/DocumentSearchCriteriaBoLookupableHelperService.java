@@ -662,6 +662,13 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         suppMenuBar.append("&nbsp;");
         suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, DocumentSearchCriteriaProcessorKEWAdapter.CLEARSAVED_SEARCH_FIELD, KewApiConstants.WEBAPP_DIRECTORY, "clearsaved", "clear saved searches"));
 
+        // Wire up the onblur for document type name
+        suppMenuBar.append("<script type=\"text/javascript\">"
+                + " jQuery(document).ready(function () {"
+                + " storeCurrentDocTypeNameOnLoad();"
+                + " jQuery(\"#documentTypeName\").blur(function () { validateDocTypeAndRefresh( this ); });"
+                + "});</script>");
+
         return suppMenuBar.toString();
     }
 

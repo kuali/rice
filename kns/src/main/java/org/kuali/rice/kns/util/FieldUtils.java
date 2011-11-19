@@ -1513,7 +1513,11 @@ public final class FieldUtils {
         } else {
             //this ain't right....
             Field tempField = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel());
-            tempField.setFieldLabel(remotableAttributeField.getShortLabel());
+
+            if (remotableAttributeField.getShortLabel() != null) {
+                tempField.setFieldLabel(remotableAttributeField.getShortLabel());
+            }
+
             fields.add(tempField);
         }
         return fields;

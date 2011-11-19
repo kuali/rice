@@ -83,6 +83,8 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
         this.setNewName(new PersonDocumentName());
         this.setNewPhone(new PersonDocumentPhone());
         this.setNewEmail(new PersonDocumentEmail());
+        this.setNewGroup(new PersonDocumentGroup());
+        this.setNewRole(new PersonDocumentRole());
         this.setNewDelegationMember(new RoleDocumentDelegationMember());
         setFormatterType("document.groups.activeFromDate", DateDisplayTimestampObjectFormatter.class);
         setFormatterType("document.groups.activeToDate", DateDisplayTimestampObjectFormatter.class);

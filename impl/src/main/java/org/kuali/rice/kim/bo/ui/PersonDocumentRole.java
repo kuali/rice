@@ -28,6 +28,7 @@ import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.springframework.util.AutoPopulatingList;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -143,7 +144,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	}
 
 	public KimTypeBo getKimRoleType() {
-		if ( kimRoleType == null ) {
+		if ( kimRoleType == null && StringUtils.hasText(kimTypeId)) {
 			kimRoleType = KimTypeBo.from(KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId));
 		}
 		return kimRoleType;

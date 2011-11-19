@@ -21,12 +21,12 @@
    <table cellpadding="0" cellspacing="0" summary="">
      	<tr>
     		<th><div align="left">&nbsp;</div></th> 
-    		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.groupId}" noColon="true" /> 
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.namespaceCode}" noColon="true" /> 
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.groupName}" noColon="true" /> 
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" /> 
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.activeFromDate}" noColon="true" /> 
-            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.activeToDate}" noColon="true" /> 
+    		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.groupId}" noColon="true" />
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.namespaceCode}" noColon="true" />
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.groupName}" noColon="true" />
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" />
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.activeFromDate}" noColon="true" />
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.activeToDate}" noColon="true" />
            	<c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>
@@ -39,10 +39,10 @@
                 <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.groupId" attributeEntry="${docGroupAttributes.groupId}" readOnly="${readOnly}"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimTypeInfo.name" anchor="${tabKey}" />
+	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo" fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimGroupType.name" anchor="${tabKey}" />
 						<%--<html:hidden property="newGroup.groupName" />--%>
 						<html:hidden property="newGroup.kimTypeId" />
-						<html:hidden property="newGroup.kimTypeInfo.name" />
+						<html:hidden property="newGroup.kimGroupType.name" />
 						<%--<html:hidden property="newGroup.namespaceCode" />--%>				
 					</div>
 				</td>
@@ -50,7 +50,7 @@
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.namespaceCode" attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="${readOnly}"/>
 						<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo"
-									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimKimTypeInfo.name"
+									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimGroupType.name"
 									lookupParameters="newGroup.groupId:id,newGroup.groupName:name,newGroup.namespaceCode:namespaceCode"
 									anchor="${tabKey}" 
 						/>
@@ -60,15 +60,15 @@
                 	<div align="center">
 	                	<kul:htmlControlAttribute property="newGroup.groupName" attributeEntry="${docGroupAttributes.groupName}" readOnly="${readOnly}"/>
 						<kul:lookup boClassName="org.kuali.rice.kim.impl.group.GroupBo"
-									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimTypeInfo.name"
+									fieldConversions="id:newGroup.groupId,kimTypeId:newGroup.kimTypeId,name:newGroup.groupName,namespaceCode:newGroup.namespaceCode,kimTypeInfo.name:newGroup.kimGroupType.name"
 									lookupParameters="newGroup.groupId:id,newGroup.groupName:name,newGroup.namespaceCode:namespaceCode"
-									anchor="${tabKey}" 
+									anchor="${tabKey}"
 					/>
 					</div>
 				</td>
                 <td align="left" valign="middle" class="infoline" >
                 	<div align="center">
-	                	<kul:htmlControlAttribute property="newGroup.kimTypeInfo.name" attributeEntry="${docGroupAttributes['kimGroupType.name']}" readOnly="${readOnly}"/>
+	                	<kul:htmlControlAttribute property="newGroup.kimGroupType.name" attributeEntry="${docGroupAttributes['kimGroupType.name']}" readOnly="${readOnly}"/>
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -78,17 +78,17 @@
                 <td align="left" valign="middle">
                 	<div align="center"> <kul:htmlControlAttribute property="newGroup.activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}"  datePicker="true" readOnly="${readOnly}"/>
 					</div>
-				</td>				                                
+				</td>
                 <td class="infoline">
 					<div align=center>
 						<html:image property="methodToCall.addGroup.anchor${tabKey}"
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
 					</div>
                 </td>
-       		</tr>         
-    	</c:if>        
+       		</tr>
+    	</c:if>
         <c:forEach var="group" items="${KualiForm.document.groups}" varStatus="status">
-	       	<tr>
+  	       	<tr>
 				<th class="infoline">
 					<c:out value="${status.index+1}" />
 				</th>

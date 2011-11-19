@@ -578,13 +578,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         props.put(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, impdForm.getNewDelegationMember().getRoleBo().getId());
 
         props.put(KRADConstants.RETURN_LOCATION_PARAMETER, this.getReturnLocation(request, mapping));
-        props.put(KRADConstants.BACK_LOCATION, this.getReturnLocation(request, mapping));
+     //   props.put(KRADConstants.BACK_LOCATION, this.getReturnLocation(request, mapping));
 
         props.put(KRADConstants.LOOKUP_AUTO_SEARCH, "Yes");
         props.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.SEARCH_METHOD);
 
-        props.put(KRADConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(impdForm));
-        props.put(KRADConstants.DOC_NUM, impdForm.getDocument().getDocumentNumber());
+     //   props.put(KRADConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(impdForm));
+     //   props.put(KRADConstants.DOC_NUM, impdForm.getDocument().getDocumentNumber());
 
         // TODO: how should this forward be handled
         String url = UrlFactory.parameterizeUrl(getApplicationBaseUrl() + "/kr/" + KRADConstants.LOOKUP_ACTION, props);

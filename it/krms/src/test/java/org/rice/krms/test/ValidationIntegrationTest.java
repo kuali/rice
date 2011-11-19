@@ -442,7 +442,8 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         rule = (RuleBo) getBoService().save(rule);
 
         assertNotNull(rule.getId());
-        assertNotNull(rule.getPropId());
+        assertNotNull(propDef.getId());
+        assertEquals(propDef.getRuleId(), rule.getId());
         assertEquals(1, rule.getActions().size());
         assertNotNull(rule.getActions().get(0).getId());
         assertEquals(2, rule.getActions().get(0).getAttributeBos().size());

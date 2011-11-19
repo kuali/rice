@@ -159,6 +159,10 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
         return this.memberPersons
     }
 
+    public void setMemberPersons(List<Person> memberPersons) {
+        this.memberPersons = memberPersons;
+    }
+
     public List<String> getMemberPrincipalIds() {
         List<String> principalIds = new ArrayList<String>()
         if (getMembers() != null) {
@@ -192,6 +196,10 @@ public class GroupBo extends PersistableBusinessObjectBase implements GroupContr
             splitMembersToTypes()
         }
         return this.memberGroups
+    }
+
+    public void setMemberGroups(List<Group> memberGroups) {
+        this.memberGroups = memberGroups;
     }
 
     public KimTypeBo getKimTypeInfo() {

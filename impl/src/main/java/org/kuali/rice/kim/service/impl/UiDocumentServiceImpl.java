@@ -2051,19 +2051,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		List<PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 
-
+        bos.add(roleBo);
 		bos.addAll(getRolePermissions(identityManagementRoleDocument, origRolePermissions));
 		bos.addAll(getRoleResponsibilities(identityManagementRoleDocument, origRoleResponsibilities));
 		bos.addAll(getRoleResponsibilitiesActions(identityManagementRoleDocument));
 		String initiatorPrincipalId = getInitiatorPrincipalId(identityManagementRoleDocument);
+
 		if(canAssignToRole(identityManagementRoleDocument, initiatorPrincipalId)){
 			List<RoleMemberBo> newRoleMembersList = getRoleMembers(identityManagementRoleDocument, origRoleMembers);
             roleBo.setMembers(newRoleMembersList);
+
 			bos.addAll(getRoleMemberResponsibilityActions(newRoleMembersList));
 			//bos.addAll(getRoleMemberResponsibilityActions(identityManagementRoleDocument));
 			bos.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
 		}
-        bos.add(roleBo);
+       // bos.add(roleBo);
 		getBusinessObjectService().save(bos);
 		KimImplServiceLocator.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 		if(!roleBo.isActive()){
@@ -2821,6 +2823,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         fieldValues.remove(KRADConstants.DOC_FORM_KEY);
         fieldValues.remove(KRADConstants.DOC_NUM);
 		List<KimDocumentRoleMember> matchingRoleMembers = new ArrayList<KimDocumentRoleMember>();
+        //Remove since they are KNS fieldValues and not BO
+        fieldValues.remove(KRADConstants.BACK_LOCATION);
+        fieldValues.remove(KRADConstants.DOC_FORM_KEY);
+        fieldValues.remove(KRADConstants.DOC_NUM);
+
 		List<RoleMember> matchingRoleMembersTemp = getRoleService().findRoleMembers(toQuery(fieldValues)).getResults();
 		KimDocumentRoleMember matchingRoleMember;
 		BusinessObject roleMemberObject;

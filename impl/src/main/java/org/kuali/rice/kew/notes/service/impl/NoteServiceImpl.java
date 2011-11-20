@@ -58,11 +58,15 @@ public class NoteServiceImpl implements NoteService {
 
 	public void deleteNote(Note note) {
 		try {
-			for (Iterator iter = note.getAttachments().iterator(); iter.hasNext();) {
-				Attachment attachment = (Attachment) iter.next();
-				attachmentService.deleteAttachedFile(attachment);
-			}
-			getNoteDAO().deleteNote(note);
+           if (note != null && !note.getAttachments().isEmpty()){
+               for (Iterator iter = note.getAttachments().iterator(); iter.hasNext();) {
+                   Attachment attachment = (Attachment) iter.next();
+                   attachmentService.deleteAttachedFile(attachment);
+               }
+           }
+           if (note != null) {
+               getNoteDAO().deleteNote(note);
+           }
 		} catch (Exception e) {
 			throw new RuntimeException("caught exception deleting attachment", e);
 		}

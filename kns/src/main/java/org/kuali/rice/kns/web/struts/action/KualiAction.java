@@ -459,7 +459,7 @@ public abstract class KualiAction extends DispatchAction {
             // register each of the destination parameters of the field conversion string as editable
             String[] fieldConversions = conversionFields.split(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
             for (String fieldConversion : fieldConversions) {
-            	String destination = fieldConversion.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR)[1];
+            	String destination = fieldConversion.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2)[1];
             	kualiForm.registerEditableProperty(destination);
             }
         }
@@ -476,7 +476,7 @@ public abstract class KualiAction extends DispatchAction {
             	 LOG.debug( "lookupParams: " + Arrays.toString(lookupParams) ); 
             }
             for (String lookupParam : lookupParams) {
-            	String[] keyValue = lookupParam.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                String[] keyValue = lookupParam.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
                 if (keyValue.length != 2) {
 					throw new RuntimeException("malformed field conversion pair: " + Arrays.toString(keyValue));
 				} 
@@ -654,7 +654,7 @@ public abstract class KualiAction extends DispatchAction {
             }
             Class<? extends BusinessObject> boClass = (Class<? extends BusinessObject>) Class.forName(boClassName);
             for (String inquiryParam : inquiryParams) {
-                String[] keyValue = inquiryParam.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                String[] keyValue = inquiryParam.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
 
                 String inquiryParameterValue = retrieveLookupParameterValue(boClass, keyValue[1], keyValue[0], form, request);
                 if (inquiryParameterValue == null) {
@@ -1049,7 +1049,7 @@ public abstract class KualiAction extends DispatchAction {
                 LOG.debug( "lookupParams: " + textAreaParams );
             }
             for (final String textAreaParam : textAreaParams) {
-                keyValue = textAreaParam.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                keyValue = textAreaParam.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
 
                 if ( LOG.isDebugEnabled() ) {
                     LOG.debug( "keyValue[0]: " + keyValue[0] );

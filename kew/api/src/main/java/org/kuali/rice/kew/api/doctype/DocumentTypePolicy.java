@@ -107,6 +107,8 @@ public enum DocumentTypePolicy implements Coded {
 
     @XmlEnumValue(Codes.FAIL_ON_INACTIVE_GROUP) FAIL_ON_INACTIVE_GROUP(Codes.FAIL_ON_INACTIVE_GROUP),
 
+    @XmlEnumValue(Codes.ENROUTE_ERROR_SUPPRESSION) ENROUTE_ERROR_SUPPRESSION(Codes.ENROUTE_ERROR_SUPPRESSION),
+
     @XmlEnumValue(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE) REGENERATE_ACTION_REQUESTS_ON_CHANGE(Codes.REGENERATE_ACTION_REQUESTS_ON_CHANGE);
 
     
@@ -150,6 +152,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE = "ALLOW_SU_POSTPROCESSOR_OVERRIDE";
         private static final String FAIL_ON_INACTIVE_GROUP = "FAIL_ON_INACTIVE_GROUP";
         private static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";       
+        private static final String ENROUTE_ERROR_SUPPRESSION = "ENROUTE_ERROR_SUPPRESSION";       
     }
     
 }

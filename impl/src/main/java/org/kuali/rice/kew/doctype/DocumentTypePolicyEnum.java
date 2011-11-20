@@ -96,6 +96,8 @@ public final class DocumentTypePolicyEnum {
 
     public static final DocumentTypePolicyEnum FAIL_ON_INACTIVE_GROUP = new DocumentTypePolicyEnum(KewApiConstants.FAIL_ON_INACTIVE_GROUP_POLICY);
 
+    public static final DocumentTypePolicyEnum ENROUTE_ERROR_SUPPRESSION = new DocumentTypePolicyEnum(KewApiConstants.ENROUTE_ERROR_SUPPRESSION_POLICY);
+
     public static final DocumentTypePolicyEnum REGENERATE_ACTION_REQUESTS_ON_CHANGE = new DocumentTypePolicyEnum(KewApiConstants.REGENERATE_ACTION_REQUESTS_ON_CHANGE_POLICY);
 
     private final String name;
@@ -146,6 +148,8 @@ public final class DocumentTypePolicyEnum {
         	return ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY;
         } else if (FAIL_ON_INACTIVE_GROUP.name.equalsIgnoreCase(name)) {
             return FAIL_ON_INACTIVE_GROUP;
+        } else if (ENROUTE_ERROR_SUPPRESSION.name.equalsIgnoreCase(name)) {
+            return ENROUTE_ERROR_SUPPRESSION;
         } else if(REGENERATE_ACTION_REQUESTS_ON_CHANGE.name.equalsIgnoreCase(name)) {
             return REGENERATE_ACTION_REQUESTS_ON_CHANGE;
         } else {

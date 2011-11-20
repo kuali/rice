@@ -149,8 +149,17 @@ public abstract class ActionTakenEvent {
 	}
 
 	public void performAction() throws InvalidActionTakenException {
-	    recordAction();
-	    if (queueDocumentAfterAction) {
+	    try{
+	        recordAction();
+        }catch(InvalidActionTakenException e){
+            if(routeHeader.getDocumentType().getEnrouteErrorSuppression().getPolicyValue()){
+                LOG.error("Invalid Action Taken Exception was thrown, but swallowed due to ENROUTE_ERROR_SUPPRESSION document type policy!");
+                return;
+            }else{
+                throw e;
+            }
+        }
+        if (queueDocumentAfterAction) {
 	    	queueDocumentProcessing();
 	    }
 
@@ -297,6 +306,4 @@ public abstract class ActionTakenEvent {
         }
         throw new WorkflowRuntimeException(e);
 	}
-
-	
 }

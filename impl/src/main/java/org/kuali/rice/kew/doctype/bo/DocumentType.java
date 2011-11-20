@@ -320,9 +320,13 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public DocumentTypePolicy getSuPostprocessorOverridePolicy() {
         return getPolicyByName(DocumentTypePolicyEnum.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY.getName(), Boolean.TRUE);
     }
-    
+        
     public DocumentTypePolicy getFailOnInactiveGroup() {
         return getPolicyByName(DocumentTypePolicyEnum.FAIL_ON_INACTIVE_GROUP.getName(), Boolean.TRUE);
+    }
+    
+    public DocumentTypePolicy getEnrouteErrorSuppression() {
+    	return getPolicyByName(DocumentTypePolicyEnum.ENROUTE_ERROR_SUPPRESSION.getName(), Boolean.FALSE);
     }
     
     public DocumentTypePolicy getRegenerateActionRequestsOnChange() {

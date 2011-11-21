@@ -15,43 +15,43 @@
 --
 
 -- ---- If you should want to clean out your KRMS tables:
--- delete from  krms_cntxt_vld_rule_t ;
--- delete from  krms_cntxt_vld_func_t ;
--- delete from  krms_ctgry_t ;
--- delete from  krms_term_spec_ctgry_t ;
--- delete from  krms_func_ctgry_t ;
--- delete from  krms_func_parm_t ;
--- delete from  krms_func_t ;
--- delete from  krms_term_parm_t ;
--- delete from  krms_term_rslvr_parm_spec_t ;
--- delete from  krms_term_t ;
--- delete from  krms_cntxt_vld_term_spec_t ;
--- delete from  krms_term_rslvr_input_spec_t ;
--- delete from  krms_term_rslvr_attr_t ;
--- delete from  krms_term_rslvr_t ;
--- delete from  krms_term_spec_t ;
--- delete from  krms_prop_parm_t ;
--- delete from  krms_cmpnd_prop_props_t ;
--- delete from  krms_agenda_attr_t ;
--- delete from  krms_cntxt_vld_actn_t ;
--- delete from  krms_cntxt_vld_agenda_t ;
--- delete from  krms_cntxt_attr_t ;
--- delete from  krms_rule_attr_t ;
--- delete from  krms_agenda_itm_t ;
--- delete from  krms_actn_attr_t ;
--- delete from  krms_actn_t ;
--- delete from  krms_typ_attr_t ;
--- delete from  krms_attr_defn_t ;
--- delete from  krms_agenda_t ;
--- update krms_rule_t set prop_id=null;
--- delete from  krms_prop_t ;
--- delete from  krms_rule_t ;
--- delete from  krms_typ_t where typ_id not in ('1000','1001');
--- delete from  krms_cntxt_t ;
--- delete from krcr_nmspc_t where obj_id = '5a83c912-94b9-4b4d-ac3f-88c53380a4a3';
---
--- ---- KRMS test namespace
--- insert into krcr_nmspc_t (nmspc_cd, obj_id, nm, appl_id) values ('KRMS_TEST', '5a83c912-94b9-4b4d-ac3f-88c53380a4a3', 'Kuali Rules Test', 'RICE');
+delete from  krms_cntxt_vld_rule_t ;
+delete from  krms_cntxt_vld_func_t ;
+delete from  krms_term_spec_ctgry_t ;
+delete from  krms_func_ctgry_t ;
+delete from  krms_ctgry_t ;
+delete from  krms_func_parm_t ;
+delete from  krms_func_t ;
+delete from  krms_term_parm_t ;
+delete from  krms_term_rslvr_parm_spec_t ;
+delete from  krms_term_t ;
+delete from  krms_cntxt_vld_term_spec_t ;
+delete from  krms_term_rslvr_input_spec_t ;
+delete from  krms_term_rslvr_attr_t ;
+delete from  krms_term_rslvr_t ;
+delete from  krms_term_spec_t ;
+delete from  krms_prop_parm_t ;
+delete from  krms_cmpnd_prop_props_t ;
+delete from  krms_agenda_attr_t ;
+delete from  krms_cntxt_vld_actn_t ;
+delete from  krms_cntxt_vld_agenda_t ;
+delete from  krms_cntxt_attr_t ;
+delete from  krms_rule_attr_t ;
+delete from  krms_agenda_itm_t ;
+delete from  krms_actn_attr_t ;
+delete from  krms_actn_t ;
+delete from  krms_typ_attr_t ;
+delete from  krms_attr_defn_t ;
+delete from  krms_agenda_t ;
+update krms_rule_t set prop_id=null;
+delete from  krms_prop_t ;
+delete from  krms_rule_t ;
+delete from  krms_typ_t where typ_id not in ('1000','1001');
+delete from  krms_cntxt_t ;
+delete from krcr_nmspc_t where obj_id = '5a83c912-94b9-4b4d-ac3f-88c53380a4a3';
+
+---- KRMS test namespace
+insert into krcr_nmspc_t (nmspc_cd, obj_id, nm, appl_id) values ('KRMS_TEST', '5a83c912-94b9-4b4d-ac3f-88c53380a4a3', 'Kuali Rules Test', 'RICE');
 
 
 -- misc category
@@ -66,10 +66,6 @@ values ('1000', 'peopleFlowId', 'KR-RULE', 'PeopleFlow', null,
 ;
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('1000', 1, '1000', '1000');
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('1001', 1, '1001', '1000');
-
--- Validation Action Message
-insert into krms_attr_defn_t (attr_defn_id, nm, nmspc_cd, lbl, actv, cmpnt_nm, ver_nbr, desc_txt) values ('QQ8806', 'Action Message', 'KRMS_TEST', 'Action Message', 'Y', null, 1, 'Message validation action returns');
-insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr) values ('T9M', 3, 'T9', 'QQ8806', 'Y', 1);
 
 --
 -- TermResolver taking 1 campus code parameter
@@ -793,6 +789,12 @@ values ('Q9901', 'Campus', 'KRMS_TEST', 'campus label', null, 'the campus which 
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('T6B', 1, 'T6', 'Q9901');
 
 
+-- Validation Action Message
+insert into krms_attr_defn_t (attr_defn_id, nm, nmspc_cd, lbl, actv, cmpnt_nm, ver_nbr, desc_txt) values ('QQ8806', 'Action Message', 'KRMS_TEST', 'Action Message', 'Y', null, 1, 'Message validation action returns');
+-- insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr) values ('T9M', 3, 'T9', 'QQ8806', 'Y', 1);
+
+
+
 --
 -- additional agenda item template:
 --
@@ -801,36 +803,36 @@ insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values (
 -- (rule_id, nmspc_cd, nm, typ_id, prop_id, actv, ver_nbr, desc_txt)
 -- values ('R${ID}', 'KRMS_TEST', 'Rule${ID}', 'T2', null, 'Y', 1, 'Bloomington Campus Code Rule')
 -- ;
--- 
+--
 -- insert into krms_prop_t(prop_id, desc_txt, typ_id, dscrm_typ_cd, rule_id, ver_nbr)
 -- values ('P${ID}', 'is campus bloomington', null, 'S','R${ID}',1)
 -- ;
--- 
+--
 -- update krms_rule_t
 -- set prop_id = 'P${ID}' where rule_id = 'R${ID}'
 -- ;
--- 
--- insert into krms_prop_parm_t 
+--
+-- insert into krms_prop_parm_t
 -- (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 -- values ('${ID}A', 'P${ID}', 'TERM_001', 'T', 1, 1)
 -- ;
--- 
--- insert into krms_prop_parm_t 
+--
+-- insert into krms_prop_parm_t
 -- (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 -- values ('${ID}C', 'P${ID}', 'BL', 'C', 2, 1)
 -- ;
--- 
--- insert into krms_prop_parm_t 
+--
+-- insert into krms_prop_parm_t
 -- (prop_parm_id, prop_id, parm_val, parm_typ_cd, seq_no, ver_nbr)
 -- values ('${ID}B', 'P${ID}', '=', 'O', 3, 1)
 -- ;
--- 
+--
 -- insert into krms_agenda_itm_t
 -- (agenda_itm_id, rule_id, agenda_id, ver_nbr)
 -- VALUES('AGENDA301ITEM${ID}', 'R${ID}', 'AGENDA301', 1)
 -- ;
 --
--- update krms_agenda_itm_t 
+-- update krms_agenda_itm_t
 -- SET when_true = 'AGENDA301ITEM${ID}' WHERE agenda_itm_id = 'AGENDA301ITEM${PARENT_ID}'
 -- ;
 

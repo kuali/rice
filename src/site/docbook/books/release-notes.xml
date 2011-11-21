@@ -21,12 +21,13 @@
         <title>Kuali Rice ${project.version} Release Notes</title>
         <edition>${project.version}</edition>
         <pubdate>Released: ${docbook.build.timestamp}</pubdate>
-        <releaseinfo>This document contains information on work completed as part of the first beta
-            release of Kuali Rice Version 2.0.</releaseinfo>
+        <releaseinfo>This document contains information on work completed as part of the Kuali Rice Version 2.0 Beta.</releaseinfo>
     </info>
     <sect1 xml:id="overview" xreflabel="Overview">
-        <title>Overview</title>
-        <para>Welcome to the first beta release of Kuali Rice version 2.0!</para>
+        <title>Kuali Rice 2.0 Beta Overview</title>
+        <note><para>For a list of changes between the different Kuali Rice 2.0 beta releases, see the
+            <link linkend="changelog">Changelog</link> section at the end of the release notes.</para></note>
+        <para>Welcome to the Kuali Rice version 2.0 Beta!</para>
         <para>This is the first major release of the Kuali Rice software since version 1.0 which was
             released in August of 2009. This release brings many new and exciting features and
             improvements to the Kuali Rice middlware and application development platforms. This
@@ -237,8 +238,8 @@
                     effort of service refactoring is at the heart of what we are calling "version
                     compatibility" for the Kuali Rice 2.0 release.</para>
                 <para>Note that while SOAP is being used as the primary way in which services are
-                    exposed in Rice 2.0, there will likely be work in the near future to make
-                    services available using the REST architectural style.</para>
+                    exposed in Rice 2.0, there will likely be work in the future to make services
+                    available using the REST architectural style.</para>
             </sect3>
             <sect3>
                 <title>Kuali Service Bus</title>
@@ -844,18 +845,17 @@
     </sect1>
     <sect1>
         <title>Rice 2.0 Work Remaining</title>
-        <para>Rice 2.0 is the first beta release and the goal of this release was to ensure that
-            approximately 95% of the functionality was complete prior to the public beta test.  The
-            following sections summarize major work items that still need to be completed prior to
-            the generally available release of Kuali Rice 2.0. Work will continue to try and resolve
-            these issues as soon as possible for future beta releases.</para>
+        <para>For the first beta release of Rice 2.0, the goal was to ensure that approximately 95%
+            of the functionality was complete prior to the public beta test. The following sections
+            summarize major work items that still need to be completed prior to the generally
+            available release of Kuali Rice 2.0. Work will continue to try and resolve these issues
+            as soon as possible for future beta releases.</para>
         <sect2>
             <title>"Remote" and "Embedded" client application configurations</title>
             <para>There was much work done in Rice 2.0 to refactor the layout and organization
                 of the project and it's services.  This was primarily driven from the
                 perspective of work being done both on improving modularity for the 2.0 release
-                as well as requirements for version compatibility.  Unfortunately, as of the
-                first beta release for Rice 2.0, there is still cleanup work to do to allow for
+                as well as requirements for version compatibility.  However, there is still cleanup work to do to allow for
                 proper configuration and operation of non-bundled client applications.  For
                 those unfamiliar with the concept of "bundled" vs. "non-bundled", options for
                 integration with the Kuali Rice middleware is essentially as follows:<itemizedlist>
@@ -941,13 +941,6 @@
                 performed.  Much of this work relates to the outstanding issues resulting in the
                 inability of configuring remote and embedded client-side integration
                 patterns.</para>
-        </sect2>
-        <sect2>
-            <title>KEN and KCB Services</title>
-            <para>The KEN and KCB services have not yet gone through the refactoring to align them
-                with Kuali Rice 2.0 service compatibility standards.  The services that are
-                published for these modules will likely change in subsequent beta releases.
-                However, they should be finalized prior to the final release of Rice 2.0.</para>
         </sect2>
         <sect2>
             <title>Custom Action List Attributes</title>
@@ -1048,25 +1041,77 @@
                 </itemizedlist></para>
         </sect2>
     </sect1>
-        <sect1 xml:id="bug-fix" xreflabel="Bug Fix">
-            <title>Jiras</title>
-        <para>There were nearly 800 Jira issues addressed in Rice 2.0. Below are links to Jira
-            filters for the items addressed.</para>
-        <para>
+        <sect1 xml:id="changelog" xreflabel="Changelog">
+            <title>Changelog</title>
+        <sect2>
+            <title>Beta 1 - November 7, 2011</title>
+            <para>There were nearly 800 Jira issues addressed in Rice 2.0. Below are links to Jira
+                filters for the items addressed.</para>
             <itemizedlist>
                 <listitem>
-                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+order+by+priority">All Rice 2.0 Jiras</link></para>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+order+by+priority"
+                            >All Rice 2.0 Jiras</link></para>
                 </listitem>
                 <listitem>
-                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Bug+Fix%22+order+by+priority">Bug Fixes</link></para>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Bug+Fix%22+order+by+priority"
+                            >Bug Fixes</link></para>
                 </listitem>
                 <listitem>
-                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Improvement%22+order+by+priority">Improvements</link></para>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Improvement%22+order+by+priority"
+                            >Improvements</link></para>
                 </listitem>
                 <listitem>
-                    <para><link xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+&quot;2.0&quot;+AND+status+IN+('Resolved'%2C'Closed')+AND+type+IN+(&quot;Task&quot;%2C&quot;Sub+Task&quot;)+order+by+priority">Tasks &amp; SubTasks</link></para>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+&quot;2.0&quot;+AND+status+IN+('Resolved'%2C'Closed')+AND+type+IN+(&quot;Task&quot;%2C&quot;Sub+Task&quot;)+order+by+priority"
+                            >Tasks &amp; SubTasks</link></para>
                 </listitem>
             </itemizedlist>
-        </para>
+        </sect2>
+            <sect2>
+                <title>Beta 2 - November 21, 2011</title>
+                <para>Highlights of the Beta 2 release include:<itemizedlist>
+                    <listitem>
+                        <para>KEN and KCB services converted to standard SOAP services.</para>
+                    </listitem>
+                    <listitem>
+                        <para><code>WorkflowAttributeValidationError</code> replaced by new
+                                <code>AttributeError</code> implementation.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Type IDs made optional on various pieces of the KRMS data model</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD sample application views moved to their own tab in the
+                            portal.</para>
+                    </listitem>
+                    <listitem>
+                        <para>New DocumentType policy for ENROUTE error suppression</para>
+                    </listitem>
+                    <listitem>
+                        <para>Added missing qualifiers to service model of delegate members in
+                            KIM</para>
+                    </listitem>
+                    <listitem>
+                        <para>Additional documentation of KEW apis in the javadocs</para>
+                    </listitem>
+                    <listitem>
+                        <para>Various improvements to the KRMS user interface functionality</para>
+                    </listitem>
+                    <listitem>
+                        <para>Numerous bug fixes throughout the project</para>
+                    </listitem>
+                </itemizedlist>The full list of JIRA tickets that were resolved for Kuali Rice
+                2.0.0-b2 can be found here: <link
+                    xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b2-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b2-jiras</link></para>
+            <para>Additional details on impacting changes in this release can be found here:
+                <link xlink:href="https://wiki.kuali.org/x/EwO1Eg">https://wiki.kuali.org/x/EwO1Eg</link></para>
+            <para>Database changes for this beta release were minimal, see the mysql-2011-11-14.sql
+                or 2011-11-14.sql scripts in the database updates directory inside the source code
+                in order to perform a database upgrade from b1 to b2.</para>
+            </sect2>
          </sect1>
 </article>

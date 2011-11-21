@@ -39,7 +39,7 @@
 	 		        </noscript>
 	 		    </c:if>
 	 		</td>
-    		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.roleName}"  /></div></th>
+    		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${roleAttributes.name}"  /></div></th>
 	 		<td><kul:htmlControlAttribute property="document.roleName" attributeEntry="${roleAttributes.name}" readOnly="${readOnly}" /></td>
 	 	</tr>
 	 	<tr>

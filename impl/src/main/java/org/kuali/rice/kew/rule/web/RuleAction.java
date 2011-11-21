@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -54,7 +55,14 @@ public class RuleAction extends KewKualiAction {
     }
 
     public ActionForward cancel(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return mapping.findForward("actionTaken");
+        RuleForm form = (RuleForm) actionForm;
+        ActionForward dest = null;
+        if (StringUtils.isNotBlank(form.getBackLocation())) {
+            dest = new ActionForward(form.getBackLocation(), true);
+        } else {
+            dest = mapping.findForward(KRADConstants.MAPPING_PORTAL);
+        }
+        return dest;
     }
 
     protected String generateMaintenanceUrl(HttpServletRequest request, RuleForm form) {

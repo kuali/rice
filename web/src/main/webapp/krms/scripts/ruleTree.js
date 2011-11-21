@@ -77,31 +77,52 @@ function ajaxPastePropositionTree(controllerMethod, collectionGroupId) {
 }
 
 // binding to tree loaded event
+function handlePropositionNodeClick(parentLiNode) {
+    var propositionId = jq(parentLiNode).find('input').first().attr('value');
+    var selectedItemTracker = getSelectedPropositionInput();
+
+    // make li show containment of children
+    jq('li').each(function() {
+        jq(this).removeClass('ruleBlockSelected');
+        // hide edit image links
+        jq(this.parentNode).find(".actionReveal").hide();
+    });
+
+    if (selectedItemTracker.val() == propositionId) {
+        // if this item is already selected, deselect it
+        selectedItemTracker.val('');
+    } else {
+        selectedItemTracker.val(propositionId);
+        if (!jq(parentLiNode).hasClass('ruleCutSelected')) {
+            jq(parentLiNode).addClass('ruleBlockSelected');
+        }
+        ;
+        // show hidden edit image link
+        jq(parentLiNode).find(".actionReveal").first().show();
+    }
+}
 function initRuleTree(componentId){
-jq('#' + componentId).bind('loaded.jstree', function (event, data) {
+    jq('#' + componentId).bind('loaded.jstree', function (event, data) {
     /* make the tree load with all nodes expanded */
     jq('#' + componentId).jstree('open_all');
 
+    jq('select.categorySelect').change( function() {
+        ajaxCallPropositionTree('ajaxCategoryChangeRefresh', 'RuleEditorView-Tree')
+    });
+
+    jq(this).find(".actionReveal").hide();
+
+    // selecting the description on an edit node should set it to be selected
+    jq('input.editDescription').click( function() {
+
+        var parentLiNode = jq(this).closest('li');
+        handlePropositionNodeClick(parentLiNode);
+    });
 
     // rule node clicks should set the selected item
     jq('a.ruleTreeNode').click( function() {
-        var propositionId = jq(this.parentNode).find('input').attr('value');
-        var selectedItemTracker = getSelectedPropositionInput();
-
-        // make li show containment of children
-        jq('li').each( function() {
-            jq(this).removeClass('ruleBlockSelected');
-        });
-
-        if (selectedItemTracker.val() == propositionId) {
-            // if this item is already selected, deselect it
-            selectedItemTracker.val('');
-        } else {
-            selectedItemTracker.val(propositionId);
-            if (!jq(this.parentNode).hasClass('ruleCutSelected')){
-                jq(this.parentNode).addClass('ruleBlockSelected');
-            };
-        }
+        var parentLiNode = this.parentNode;
+        handlePropositionNodeClick(parentLiNode);
     });
 
     // set type to 'logic' on logic nodes -- this prevents them from being selected
@@ -111,7 +132,7 @@ jq('#' + componentId).bind('loaded.jstree', function (event, data) {
 
     /* mark the selected node */
     jq('a.ruleTreeNode').each( function() {
-        var propositionId = jq(this.parentNode).find('input').attr('value');
+        var propositionId = jq(this.parentNode).find('input.hiddenId').first().attr('value');
         var selectedItemTracker = getSelectedPropositionInput();
         var selectedItemId = selectedItemTracker.val();
 

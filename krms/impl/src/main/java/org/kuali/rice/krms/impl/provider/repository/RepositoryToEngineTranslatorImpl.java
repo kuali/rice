@@ -149,7 +149,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 				if (ruleEntry.getIfTrue() != null) {
 					ifTrue = translateAgendaTreeDefinition(ruleEntry.getIfTrue());
 				}
-				if (ruleEntry.getIfTrue() != null) {
+				if (ruleEntry.getIfFalse() != null) {
 					ifFalse = translateAgendaTreeDefinition(ruleEntry.getIfFalse());
 				}
 				Rule rule = rules.get(ruleEntry.getRuleId());

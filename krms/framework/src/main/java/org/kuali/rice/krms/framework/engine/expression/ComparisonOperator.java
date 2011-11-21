@@ -19,6 +19,10 @@ import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.mo.common.Coded;
 import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public enum ComparisonOperator implements Coded {
 
 	EQUALS("="),
@@ -49,18 +53,66 @@ public enum ComparisonOperator implements Coded {
 		}
 		throw new IllegalArgumentException("Failed to locate the ComparisionOperator with the given code: " + code);
 	}
+
+    private Object coerceRhs(Object lhs, Object rhs) {
+        if (lhs != null && rhs != null) {
+            if  (!lhs.getClass().equals(rhs.getClass()) && rhs instanceof String) {
+                rhs = coerceRhsHelper(lhs, rhs.toString(), Double.class, Float.class, Long.class, Integer.class);
+
+                if (rhs instanceof String) { // was coercion successful?
+                    if (lhs instanceof BigDecimal) {
+                        try {
+                            rhs = BigDecimal.valueOf(Double.valueOf(rhs.toString()));
+                        } catch (NumberFormatException e) {
+                            throw new IncompatibleTypeException("Could not coerce String to BigDecimal" + this, rhs, lhs.getClass());
+                        }
+                    } else if (lhs instanceof BigInteger) {
+                        try {
+                            rhs = BigInteger.valueOf(Long.valueOf(rhs.toString()));
+                        } catch (NumberFormatException e) {
+                            throw new IncompatibleTypeException("Could not coerce String to BigInteger" + this, rhs, lhs.getClass());
+                        }
+                    } else {
+                        throw new IncompatibleTypeException("Could not compare values for operator " + this, lhs, rhs.getClass());
+                    }
+                }
+            }
+        }
+        return rhs;
+    }
+
+    private Object coerceRhsHelper(Object lhs, String rhs, Class<?> ... clazzes) {
+        for (Class clazz : clazzes) {
+            if (clazz.isInstance(lhs)) {
+                try {
+                    return clazz.getMethod("valueOf", String.class).invoke(null, rhs);
+                } catch (NumberFormatException e) {
+                    throw new IncompatibleTypeException("Could not coerce String to " +
+                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                } catch (NoSuchMethodException e) {
+                    throw new IncompatibleTypeException("Could not coerce String to " +
+                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                } catch (InvocationTargetException e) {
+                    throw new IncompatibleTypeException("Could not coerce String to " +
+                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                } catch (IllegalAccessException e) {
+                    throw new IncompatibleTypeException("Could not coerce String to " +
+                            clazz.getSimpleName() + " " + this, rhs, lhs.getClass());
+                }
+            }
+        }
+        return rhs;
+    }
 	
 	public boolean compare(Object lhs, Object rhs) {
 		
 		// TODO this implementation seems largely incomplete, it seems we are need to have some kind of engine
 		// or utility which can coerce types to possible forms for comparision purposes?  For now, let's verify
 		// they are of the same type
-		
-		if (lhs != null && rhs != null && !lhs.getClass().equals(rhs.getClass())) {
-			throw new IncompatibleTypeException("Could not compare values for operator " + this, lhs, rhs.getClass());
-		}
-		
-		if (this == EQUALS) {
+
+        rhs = coerceRhs(lhs, rhs);
+
+        if (this == EQUALS) {
 			return ObjectUtils.equals(lhs, rhs);
 		} else if (this == NOT_EQUALS) {
 			return ObjectUtils.notEqual(lhs, rhs);
@@ -91,5 +143,5 @@ public enum ComparisonOperator implements Coded {
 		}
 		throw new IllegalStateException("Invalid operator detected: " + this);
 	}
-	
+
 }

@@ -149,6 +149,19 @@ public class TermMaintainable extends MaintainableImpl {
 
 	}
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+
+
+        super.processAfterEdit(document,
+                requestParameters);
+
+        document.getDocumentHeader().setDocumentDescription("Edited Term Document");
+    }
+
     @Override
     public void saveDataObject() {
         TermBo term = (TermBo) getDataObject();

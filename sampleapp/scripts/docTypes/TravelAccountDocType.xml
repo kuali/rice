@@ -37,7 +37,8 @@
       <routingVersion>2</routingVersion>
       <routePaths>
         <routePath>
-          <start name="Initiated" />
+          <start name="Initiated" nextNode="PeopleFlows"/>
+          <requests name="PeopleFlows"/>
         </routePath>
       </routePaths>
       <routeNodes>
@@ -46,6 +47,10 @@
           <mandatoryRoute>false</mandatoryRoute>
           <finalApproval>false</finalApproval>
         </start>
+        <requests name="PeopleFlows">
+          <activationType>R</activationType>
+          <rulesEngine executorClass="edu.sampleu.travel.workflow.TravelAccountRulesEngineExecutor"/>
+        </requests>
       </routeNodes>
     </documentType>
   </documentTypes>

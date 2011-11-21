@@ -50,11 +50,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Controller for the Test UI Page
@@ -1104,6 +1106,45 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     /**
+     * Updates to the category call back to this method to set the categoryId appropriately
+     * TODO: shouldn't this happen automatically?  We're taking it out of the form by hand here
+     */
+    @RequestMapping(params = "methodToCall=" + "ajaxCategoryChangeRefresh")
+    public ModelAndView ajaxCategoryChangeRefresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        String categoryParamName = null;
+        Enumeration paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement().toString();
+            if (paramName.endsWith("categoryId")) {
+                categoryParamName = paramName;
+                break;
+            }
+        }
+
+        if (categoryParamName != null) {
+            String categoryId = request.getParameter(categoryParamName);
+
+            if (StringUtils.isBlank(categoryId)) { categoryId = null; }
+
+            AgendaEditor agendaEditor = getAgendaEditor(form);
+            RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+            String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+            // TODO: This should work even if the prop isn't selected!!!  Find the node in edit mode?
+            if (!StringUtils.isBlank(selectedPropId)) {
+                Node<RuleTreeNode, String> selectedPropositionNode =
+                        findPropositionTreeNode(rule.getPropositionTree().getRootElement(), selectedPropId);
+                selectedPropositionNode.getData().getProposition().setCategoryId(categoryId);
+            }
+        }
+
+        return ajaxRefresh(form, result, request, response);
+    }
+
+    /**
      * This method checks if the node is the same as the new parent node or a when-true/when-fase
      * child of the new parent node.
      *
@@ -1327,8 +1368,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
-        // find parent
         Node<RuleTreeNode,String> root = rule.getPropositionTree().getRootElement();
+
+        // find parent
         Node<RuleTreeNode,String> parent = findParentPropositionNode( root, selectedPropId);
         if (parent != null){
             List<Node<RuleTreeNode,String>> children = parent.getChildren();
@@ -1337,19 +1379,27 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 if (propIdMatches(child, selectedPropId)){
                     PropositionBo prop = child.getData().getProposition();
                     boolean editMode =  !prop.getEditMode();
+
+                    // reset children before we set this prop
+                    resetEditModeOnPropositionTree(child);
+
                     prop.setEditMode(editMode);
                     // if compound node, set all children into same edit mode
-                    if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
-                       for ( PropositionBo compoundComponent : prop.getCompoundComponents() ){
-                           compoundComponent.setEditMode(editMode);
-                       }
-                    }
+//                    if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
+//                       for ( PropositionBo compoundComponent : prop.getCompoundComponents() ){
+//                           compoundComponent.setEditMode(editMode);
+//                       }
+//                    }
+
                     //refresh the tree
                     rule.refreshPropositionTree(null);
                     break;
+                } else {
+                    child.getData().getProposition().setEditMode(false);
                 }
             }
         }
+
         return super.updateComponent(form, result, request, response);
     }
 
@@ -1361,9 +1411,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
+
         // find parent
         Node<RuleTreeNode,String> root = agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
         Node<RuleTreeNode,String> parent = findParentPropositionNode( root, selectedPropId);
+
+        resetEditModeOnPropositionTree(root);
 
         // add new child at appropriate spot
         if (parent != null){
@@ -1382,7 +1435,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                         SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(child.getNodeType()))){
 
                         // create a new compound proposition
-                        PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(child.getData().getProposition());
+                        PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(child.getData().getProposition(), true);
                         compound.setEditMode(true);
                         rule.setProposition(compound);
                         rule.refreshPropositionTree(null);
@@ -1447,6 +1500,21 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             return true;
         }
         return false;
+    }
+
+    /**
+     * disable edit mode for all Nodes beneath and including the passed in Node
+     * @param currentNode
+     */
+    private void resetEditModeOnPropositionTree(Node<RuleTreeNode, String> currentNode){
+        if (currentNode.getData() != null){
+            RuleTreeNode dataNode = currentNode.getData();
+            dataNode.getProposition().setEditMode(false);
+        }
+        List<Node<RuleTreeNode,String>> children = currentNode.getChildren();
+        for( Node<RuleTreeNode,String> child : children){
+              resetEditModeOnPropositionTree(child);
+        }
     }
 
     private Node<RuleTreeNode, String> findPropositionTreeNode(Node<RuleTreeNode, String> currentNode, String selectedPropId){
@@ -1647,6 +1715,60 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 }
             }
         }
+        return super.updateComponent(form, result, request, response);
+    }
+
+    /**
+     * introduces a new compound proposition between the selected proposition and its parent.
+     * Additionally, it puts a new blank simple proposition underneath the compound proposition
+     * as a sibling to the selected proposition.
+     */
+    @RequestMapping(params = "methodToCall=" + "togglePropositionSimpleCompound")
+    public ModelAndView togglePropositionSimpleCompound(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
+        String selectedPropId = agendaEditor.getSelectedPropositionId();
+
+        resetEditModeOnPropositionTree(rule.getPropositionTree().getRootElement());
+
+        if (!StringUtils.isBlank(selectedPropId)) {
+            // find parent
+            Node<RuleTreeNode,String> parent = findParentPropositionNode(
+                    rule.getPropositionTree().getRootElement(), selectedPropId);
+            if (parent != null){
+
+                int index = findChildIndex(parent, selectedPropId);
+
+                PropositionBo propBo = parent.getChildren().get(index).getData().getProposition();
+
+                // create a new compound proposition
+                PropositionBo compound = PropositionBo.createCompoundPropositionBoStub(propBo, true);
+                compound.setDescription("New Compound Proposition " + UUID.randomUUID().toString());
+                compound.setEditMode(false);
+
+                if (parent.getData() == null) { // SPECIAL CASE: this is the only proposition in the tree
+                    rule.setProposition(compound);
+                } else {
+                    PropositionBo parentBo = parent.getData().getProposition();
+                    List<PropositionBo> siblings = parentBo.getCompoundComponents();
+
+                    int propIndex = -1;
+                    for (int i=0; i<siblings.size(); i++) {
+                        if (propBo.getId().equals(siblings.get(i).getId())) {
+                            propIndex = i;
+                            break;
+                        }
+                    }
+
+                    parentBo.getCompoundComponents().set(propIndex, compound);
+                }
+            }
+        }
+
+        agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(true);
         return super.updateComponent(form, result, request, response);
     }
 

@@ -135,7 +135,7 @@
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.name" p:required="true"/>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.description" p:labelField.colSpan="1" p:colSpan="5">
           <property name="control">
-            <bean parent="TextAreaControl" p:rows="4" p:cols="60"/>
+            <bean parent="TextAreaControl" p:rows="2" p:cols="60" p:textExpand="true"/>
           </property>
         </bean>
       </list>
@@ -173,6 +173,7 @@
           <property name="layoutManager.numberOfColumns" value="8" />
           <property name="items">
             <list>
+
               <bean parent="InputField" p:propertyName="agendaItemLine.rule.propositionSummary"
                 p:colSpan="8">
                 <property name="label" value="Proposition Summary" />
@@ -182,6 +183,15 @@
 
                 </property>
               </bean>
+
+              <bean parent="ActionImageField"
+                  p:clientSideJs="ajaxCallPropositionTree('ajaxRefresh', 'RuleEditorView-PropositionSummary');">
+              <property name="actionImage">
+                <bean parent="ImageField" p:source="../krms/images/refresh.png"
+                      p:altText="Refresh Proposition Summary"/>
+              </property>
+            </bean>
+
             </list>
           </property>
         </bean>
@@ -376,27 +386,34 @@
       </map>
     </property>
   </bean>
-        
-<bean id="RuleTreeNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
-  <property name="labelPrototype">
-    <bean parent="MessageField"/>
-  </property>
-  <property name="dataGroupPrototype">
-    <bean parent="GroupBodyOnly" p:hidden="false">
-      <property name="layoutManager.orientation" value="HORIZONTAL"/>
-      <property name="items">
-        <list>
-          <bean parent="InputField" p:propertyName="proposition.id"
+
+  <bean id="RuleTreeNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
+    <property name="labelPrototype">
+      <bean parent="MessageField"/>
+    </property>
+    <property name="dataGroupPrototype">
+      <bean parent="GroupBodyOnly" p:hidden="false" p:style="float: right;">
+        <property name="layoutManager.orientation" value="HORIZONTAL"/>
+        <property name="items">
+          <list>
+            <bean parent="ActionImageField"
+                  p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
+              <property name="actionImage">
+                <bean parent="ImageField" p:source="../krms/images/edit.png"
+                      p:altText="Edit" p:styleClasses="actionReveal"/>
+              </property>
+            </bean>
+            <bean parent="InputField" p:propertyName="proposition.id"
                   p:showLabel="false" p:label="id" p:maxLength="255">
-            <property name="control">
-              <bean parent="HiddenControl"/>
-            </property>
-          </bean>
-        </list>
-      </property>
-    </bean>
-  </property>
-</bean>
+              <property name="control">
+                <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
 
   <bean id="SimplePropositionNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
     <property name="labelPrototype">
@@ -410,15 +427,19 @@
             <bean parent="InputField" p:propertyName="proposition.id"
                     p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="HiddenControl"/>
+                <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
               </property>
             </bean>
             <bean parent="InputField" p:propertyName="proposition.parameterDisplayString"
                    p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="TextControl" p:size="100" p:style="margin-left: 24pt; border: 0"/>
+                <bean parent="TextControl" p:style="margin-left: 24pt; border: 0; width: 100%;"/>
               </property>
             </bean>
+
+            <bean parent="MessageField" p:messageText="FOO!!!"   />
+            <bean parent="selectedNodeQuickActions"/>
+
           </list>
         </property>
       </bean>
@@ -430,20 +451,21 @@
       <bean parent="MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="GroupBodyOnly" p:hidden="true">
+      <bean parent="GroupBodyOnly" p:styleClasses="editModeNode">
         <property name="layoutManager.orientation" value="VERTICAL"/>
         <property name="items">
           <list>
             <bean parent="InputField" p:propertyName="proposition.id"
                     p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="HiddenControl"/>
+                <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
               </property>
             </bean>
             <bean parent="InputField" p:propertyName="proposition.description"
                   p:style="margin-left: 1pt;" p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="TextControl" p:size="140" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;" />
+                <bean parent="TextControl" p:size="140" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;"
+                        p:styleClasses="editDescription"/>
               </property>
             </bean>
             <bean parent="GroupBodyOnly" p:hidden="true" >
@@ -453,16 +475,10 @@
                   <bean parent="InputField" p:propertyName="proposition.categoryId"
                           p:style="margin-left: 12pt" p:showLabel="true" p:label="Category" p:labelPlacement="TOP" p:maxLength="40">
                     <property name="control">
-                      <bean parent="SelectControl">
-                        <property name="options">
-                          <list>
-                            <bean parent="KeyLabelPair" p:key="1" p:value="default" />
-                            <bean parent="KeyLabelPair" p:key="2" p:value="Notification" />
-                            <bean parent="KeyLabelPair" p:key="3" p:value="Validation" />
-                            <bean parent="KeyLabelPair" p:key="4" p:value="Workflow" />
-                          </list>
-                        </property>
-                      </bean>
+                      <bean parent="SelectControl" p:styleClasses="categorySelect"/>
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krms.impl.ui.CategoryValuesFinder"/>
                     </property>
                   </bean>
                   <bean parent="InputField" p:propertyName="proposition.parameters[0].value"
@@ -489,6 +505,9 @@
                       <bean parent="TextControl" p:style="margin-top: 2px;" p:watermarkText="Enter a Literal Value" />
                     </property>
                   </bean>
+
+                  <bean parent="selectedNodeQuickActions"/>
+
                 </list>
               </property>
             </bean>
@@ -497,6 +516,30 @@
       </bean>
     </property>
   </bean>
+
+  <bean id="selectedNodeQuickActions" parent="FieldGroup" p:styleClasses="actionReveal"
+        p:group.layoutManager.orientation="HORIZONTAL">
+    <property name="items">
+      <list>
+        <bean parent="ActionImageField"
+              p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="../krms/images/edit.png"
+                  p:altText="Edit"/>
+          </property>
+        </bean>
+
+        <bean parent="ActionImageField"
+              p:clientSideJs="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-Tree');">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="../krms/images/parent.png"
+                  p:altText="Simple/Compound toggle"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 
   <bean id="CompoundOpCodeNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
     <property name="labelPrototype">
@@ -521,6 +564,7 @@
       </bean>
     </property>
   </bean>
+
   <bean id="CompoundPropositionEditNodePrototype" class="org.kuali.rice.krad.uif.container.NodePrototype">
     <property name="labelPrototype">
       <bean parent="MessageField"/>
@@ -533,15 +577,25 @@
             <bean parent="InputField" p:propertyName="proposition.id"
                     p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="HiddenControl"/>
+                <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
               </property>
             </bean>
             <bean parent="InputField" p:propertyName="proposition.description"
                     p:showLabel="false" p:label="description" p:maxLength="255" p:style="margin-left: 12pt">
               <property name="control">
-                <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Compound Proposition Description" />
+                <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Compound Proposition Description"
+                      p:styleClasses="editDescription"/>
               </property>
             </bean>
+
+            <bean parent="ActionImageField"
+                  p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
+              <property name="actionImage">
+                <bean parent="ImageField" p:source="../krms/images/edit.png"
+                      p:altText="Edit" p:styleClasses="actionReveal"/>
+              </property>
+            </bean>
+
           </list>
         </property>
       </bean>

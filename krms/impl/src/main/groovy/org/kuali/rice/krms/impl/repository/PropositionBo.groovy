@@ -25,7 +25,8 @@ import org.kuali.rice.krad.service.KRADServiceLocator
 import org.kuali.rice.krms.api.repository.proposition.PropositionType
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterType
 import org.kuali.rice.krad.service.SequenceAccessorService
-import org.kuali.rice.krms.api.repository.LogicalOperator;
+import org.kuali.rice.krms.api.repository.LogicalOperator
+import org.apache.commons.lang.StringUtils;
 
 
 public class PropositionBo extends PersistableBusinessObjectBase implements PropositionDefinitionContract {
@@ -109,6 +110,19 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 
     public void setCategoryId(String categoryId){
         this.categoryId = categoryId;
+    }
+
+    /**
+     * set the typeId.  If the parameter is blank, then this PropositionBo's
+     * typeId will be set to null
+     * @param typeId
+     */
+    public void setTypeId(String typeId) {
+        if (StringUtils.isBlank(typeId)) {
+            this.typeId = null;
+        } else {
+            this.typeId = typeId;
+        }
     }
 
     public BusinessObjectService getBoService() {
@@ -221,7 +235,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
       return prop;
   }
 
-    public static PropositionBo createCompoundPropositionBoStub(PropositionBo existing){
+    public static PropositionBo createCompoundPropositionBoStub(PropositionBo existing, boolean addNewChild){
         // create a simple proposition Bo
         PropositionBo prop = new PropositionBo();
         prop.setId(getNewPropId());
@@ -234,10 +248,15 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
             prop.setTypeId(existing.getTypeId());
         }
 
-        PropositionBo newProp = createSimplePropositionBoStub(existing, PropositionType.SIMPLE.code)
         List <PropositionBo> components = new ArrayList<PropositionBo>(2);
         components.add(existing);
-        components.add(newProp);
+
+        if (addNewChild) {
+            PropositionBo newProp = createSimplePropositionBoStub(existing, PropositionType.SIMPLE.code)
+            newProp.setDescription("New Proposition " + UUID.randomUUID().toString());
+            components.add(newProp);
+        }
+
         prop.setCompoundComponents(components);
         return prop;
     }

@@ -91,6 +91,19 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
 
 	}
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
+
+
+        super.processAfterEdit(document,
+                requestParameters);
+
+        document.getDocumentHeader().setDocumentDescription("Edited Term Specification Document");
+    }
+
     @Override
     public void saveDataObject() {
         TermSpecificationBo termSpec = (TermSpecificationBo) getDataObject();

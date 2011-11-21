@@ -27,15 +27,29 @@
 <c:if test="${!empty field.height}">
    <c:set var="height" value="height=\"${field.height}\""/>
 </c:if>
- 
+
 <krad:attributeBuilder component="${field}"/>
 
 <krad:span component="${field}">
 
   <krad:fieldLabel field="${field}">
+    <%-- render caption header above --%>
+    <c:if test="${!empty field.captionHeader.headerText && field.captionHeaderAboveImage}">
+      <krad:template component="${field.captionHeader}"/>
+    </c:if>
 
     <img id="${field.id}" src="${field.source}" alt="${field.altText}"
       ${height} ${style} ${styleClass} ${title} />
+
+    <%-- render caption header below --%>
+    <c:if test="${!empty field.captionHeader.headerText && !field.captionHeaderAboveImage}">
+      <krad:template component="${field.captionHeader}"/>
+    </c:if>
+
+    <%-- render cutline text --%>
+    <c:if test="${!empty field.cutline.messageText}">
+      <krad:template component="${field.cutline}"/>
+    </c:if>
 
   </krad:fieldLabel>
 

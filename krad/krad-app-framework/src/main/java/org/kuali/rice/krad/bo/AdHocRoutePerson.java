@@ -41,9 +41,8 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
     public AdHocRoutePerson() {
         setType(PERSON_TYPE);
 
-        // TODO: need some way of handling types that cannot be instantiated due to module dependencies
         try {
-            person = (Person) Class.forName("org.kuali.rice.kim.impl.identity.PersonImpl").newInstance();
+            person = (Person) KimApiServiceLocator.getPersonService().getPersonImplementationClass().newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -84,7 +83,8 @@ public class AdHocRoutePerson extends AdHocRouteRecipient {
 
             if (person == null) {
                 try {
-                    person = (Person) Class.forName("org.kuali.rice.kim.impl.identity.PersonImpl").newInstance();
+                    person = (Person) KimApiServiceLocator.getPersonService().getPersonImplementationClass()
+                            .newInstance();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

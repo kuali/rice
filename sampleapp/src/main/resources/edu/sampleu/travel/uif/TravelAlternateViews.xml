@@ -46,12 +46,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="id" value="Travel-testView2_KNS"/>
       <property name="additionalCssFiles" ref="kns-css"/>
    </bean>
-   
-   <bean id="UifComponentsView_KNS" parent="UifComponentsView">
-      <property name="id" value="UifComponentsView_KNS"/>
-      <property name="additionalCssFiles" ref="kns-css"/>
-   </bean>
-   
+
    <bean id="LayoutTestView_KNS" parent="LayoutTestView">
       <property name="id" value="LayoutTestView_KNS"/>
       <property name="additionalCssFiles" ref="kns-css"/>

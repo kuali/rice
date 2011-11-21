@@ -59,6 +59,22 @@
 			</li>
 		</c:if>
 
-	
+
+   	<%-- KRAD  --%>
+
+		<c:if test='${selectedTab == "krad"}'>
+			<li class="red">
+				<a class="red" href="portal.do?selectedTab=krad"
+					title="KRAD">KRAD</a>
+			</li>
+		</c:if>
+		<c:if test='${selectedTab != "krad"}'>
+			<li class="green">
+				<a class="green"
+					href="portal.do?selectedTab=krad"
+					title="KRAD">KRAD</a>
+			</li>
+		</c:if>
+
 	</ul>
 </div>

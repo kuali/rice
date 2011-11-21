@@ -17,13 +17,11 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp" %>
 
-
 <%@ taglib tagdir="/WEB-INF/tags/rice-portal" prefix="portal"%>
 <%@ taglib tagdir="/WEB-INF/tags/rice-portal/channel" prefix="channel"%>
 <%@ taglib tagdir="/WEB-INF/tags/rice-portal/channel/administration" prefix="administrationChannel"%>
-
 <%@ taglib tagdir="/WEB-INF/tags/rice-portal/channel/main" prefix="mainChannel"%>
-
+<%@ taglib tagdir="/WEB-INF/tags/rice-portal/channel/krad" prefix="kradChannel"%>
 
 <%-- utility web functions --%>
 

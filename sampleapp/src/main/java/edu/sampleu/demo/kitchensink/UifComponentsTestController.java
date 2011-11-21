@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.sampleu.travel.krad.controller;
+package edu.sampleu.demo.kitchensink;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.sampleu.demo.kitchensink.UifComponentsTestForm;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -34,8 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-@RequestMapping(value = "/uilayouttest")
-public class UILayoutTestController extends UifControllerBase {
+@RequestMapping(value = "/uicomponents")
+public class UifComponentsTestController extends UifControllerBase {
 
     /**
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
@@ -68,4 +69,34 @@ public class UILayoutTestController extends UifControllerBase {
 		return getUIFModelAndView(uiTestForm, "page1");
 	}
 
+    /**
+     * Handles menu navigation between view pages
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=navigate")
+    public ModelAndView navigate(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        String pageId = form.getActionParamaterValue(UifParameters.NAVIGATE_TO_PAGE_ID);
+
+        if(pageId.equals("UifCompView-Page8")){
+            GlobalVariables.getMessageMap().putError("gField1", "serverTestError");
+            GlobalVariables.getMessageMap().putError("gField1", "serverTestError2");
+            GlobalVariables.getMessageMap().putError("gField2", "serverTestError");
+            GlobalVariables.getMessageMap().putError("gField3", "serverTestError");
+            GlobalVariables.getMessageMap().putWarning("gField1", "serverTestWarning");
+            GlobalVariables.getMessageMap().putWarning("gField2", "serverTestWarning");
+            GlobalVariables.getMessageMap().putInfo("gField2", "serverTestInfo");
+            GlobalVariables.getMessageMap().putInfo("gField3", "serverTestInfo");
+        }
+        // only refreshing page
+        form.setRenderFullView(false);
+
+        return getUIFModelAndView(form, pageId);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshProgGroup")
+	public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		return updateComponent(uiTestForm, result, request, response);
+	}
 }

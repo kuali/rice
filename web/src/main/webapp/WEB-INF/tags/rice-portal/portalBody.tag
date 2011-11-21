@@ -33,7 +33,7 @@
 		<c:if test="${!empty pageScope.motd}">
 		  	<tr valign="top" bgcolor="#FFFFFF">
 				<td width="15" class="leftback-focus">&nbsp;</td>
-				<td colspan="3">
+				<td colspan="4">
 				    <channel:portalChannelTop channelTitle="Message Of The Day" />
 					    <div class="body">
 				    	    <strong><c:out value="${pageScope.motd}"  /></strong>
@@ -53,6 +53,10 @@
 	          <c:when test='${selectedTab == "administration"}'>
 	              <portal:administrationTab />
 	          </c:when>
+
+            <c:when test='${selectedTab == "krad"}'>
+                <portal:kradTab/>
+            </c:when>
 	          
 	          <%-- as backup go to the main menu index --%>
 	          <c:otherwise>

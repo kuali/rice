@@ -15,7 +15,7 @@
  */
 package edu.sampleu.travel.options;
 
-import edu.sampleu.travel.krad.form.UILayoutTestForm;
+import edu.sampleu.demo.kitchensink.UifComponentsTestForm;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
@@ -31,7 +31,7 @@ public class FoodKeyValuesFinder extends UifKeyValuesFinderBase {
 
     @Override
     public List<KeyValue> getKeyValues(ViewModel model) {
-        UILayoutTestForm testForm = (UILayoutTestForm) model;
+        UifComponentsTestForm testForm = (UifComponentsTestForm) model;
 
         List<KeyValue> options = new ArrayList<KeyValue>();
 

@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Components View (Kitchen Sink)
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView" parent="FormView">
+    <property name="title" value="Uif Components"/>
+    <property name="entryPageId" value="UifCompView-Page1"/>
+    <property name="navigation">
+      <ref bean="UifCompView-Menu"/>
+    </property>
+    <property name="items">
+      <list>
+        <bean id="UifCompView-Page1" parent="Page" p:title="Input Fields and Controls">
+          <property name="items">
+            <list>
+              <ref bean="UifCompView-AnchorLinks"/>
+              <ref bean="UifCompView-TextFields"/>
+              <ref bean="UifCompView-DateFields"/>
+              <ref bean="UifCompView-SelectFields"/>
+              <ref bean="UifCompView-OtherControls"/>
+              <bean parent="ActionLinkField_JumpToTop" p:actionLabel="Jump To Top Demo"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page2" parent="Page" p:title="Other Fields">
+          <property name="items">
+            <list>
+              <ref bean="UifCompView-FieldGroups"/>
+              <ref bean="UifCompView-MessageFields"/>
+              <ref bean="UifCompView-AttributeSecurity"/>
+              <ref bean="UifCompView-ImageFields"/>
+              <ref bean="UifCompView-ActionFields"/>
+              <ref bean="UifCompView-LinkFields"/>
+              <ref bean="UifCompView-OtherFields"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page3" parent="Page" p:title="Validation"
+              p:instructionalText="Take note of the constraintText text underneath field inputs, they describe the validation constraint for that field.  Validation constraints are evaluated by default when a user leaves a field, if the user has not satisfied the requirement, the ui will alert them of their error.  When they return to a field the ui will dynamically remove the error as they correct it and note any additional errors they may have caused.">
+          <property name="items">
+            <list>
+              <ref bean="minMaxSection"/>
+              <ref bean="requiredSection"/>
+              <ref bean="preReqSection"/>
+              <ref bean="mustOccursSection"/>
+              <ref bean="caseConstraintSection"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page4" parent="Page"
+              p:title="Validation - Regex Patterns, the ValidCharactersConstraint">
+          <property name="items">
+            <list>
+              <ref bean="regex1"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page5" parent="Page" p:title="Progressive Disclosure and Conditional Refresh"
+              p:instructionalText="Fields and Groups (ONLY!) can have conditions in which they show themselves on the page or in which they refresh themselves.  Refreshing is defined as requesting an new component from the server (which may or may not be the same element ui wise).">
+          <property name="items">
+            <list>
+              <ref bean="prog1"/>
+              <ref bean="prog2"/>
+              <ref bean="prog3"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page6" parent="Page" p:title="Lookups, Inquiry, and SuggestBoxes inline"
+              p:instructionalText="Lookups and Inquiries backed by BO searches can be used on fields to fill in their values, as well as SuggestBoxes backed by a query">
+          <property name="items">
+            <list>
+              <ref bean="lookups1"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page7" parent="Page" p:title="Collections" p:instructionalText="Lists of Data Objects">
+          <property name="items">
+            <list>
+              <ref bean="collection1"/>
+              <ref bean="collection2"/>
+              <ref bean="collection6"/>
+              <ref bean="collection3"/>
+              <ref bean="collection4"/>
+              <ref bean="collection5"/>
+            </list>
+          </property>
+          <property name="header">
+            <bean parent="HeaderPage_DisclosureEdit"/>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page8" parent="Page" p:title="Errors"
+              p:instructionalText="ErrorsField options examples - same fields are used over and over to demonstrate; server errors, warnings, and information are for demonstration purposes.  NOTE: ANYTHING seen in the following groups can also be applied to the page level as it is also a group.  ErrorsField options are also available on InputFields.">
+          <property name="items">
+            <list>
+              <ref bean="errors1"/>
+              <ref bean="errors2"/>
+              <ref bean="errors3"/>
+              <ref bean="errors4"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page9" parent="Page" p:title="Other Examples"
+              p:instructionalText="Other examples for developer reference">
+          <property name="items">
+            <list>
+              <ref bean="remotableFieldsGroup"/>
+              <ref bean="miscGroup"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="additionalCssFiles" ref="ks-css"/>
+    <property name="viewHelperServiceClassName"
+              value="edu.sampleu.demo.kitchensink.UIfComponentsViewHelperServiceImpl"/>
+    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+  </bean>
+
+  <bean id="UifCompView_KNS" parent="UifCompView">
+    <property name="additionalCssFiles" ref="kns-css"/>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Components View Menu
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-Menu" parent="NavigationGroupMenu">
+    <property name="items">
+      <list>
+        <bean parent="HeaderTwo" p:headerText="Navigation"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page1"
+              p:actionLabel="Input Fields"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page2"
+              p:actionLabel="Other Fields"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page3"
+              p:actionLabel="Validation"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page4"
+              p:actionLabel="Validation - Regex"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page5"
+              p:actionLabel="Progressive Disclosure"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page6"
+              p:actionLabel="Lookups, etc"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page7"
+              p:actionLabel="Collections"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page8"
+              p:actionLabel="Error Layout"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page9"
+              p:actionLabel="Other Examples"/>
+      </list>
+    </property>
+    <property name="componentOptions">
+      <map>
+        <entry key="animate" value="true"/>
+        <entry key="slideout" value="true"/>
+      </map>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Anchors Link Group
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-AnchorLinks" parent="Group">
+    <property name="items">
+      <list>
+        <bean parent="ActionLinkField_JumpToBottom" p:actionLabel="Jump To Bottom Demo"/>
+
+        <bean id="ActionLinkField_JumpToField3" parent="ActionLinkField"
+              p:clientSideJs="jumpToElementByName('field80');"
+              p:actionLabel="Jump to field with property name Field80 (first field of FieldGroup1)"/>
+
+        <bean id="ActionLinkField_FocusOnField79" parent="ActionLinkField"
+              p:clientSideJs="focusOnElementByName('field79');"
+              p:actionLabel="Focus on field with property name Field79 (size 60 text field)"/>
+
+        <bean id="ActionLinkField_FocusOnIdTest123" parent="ActionLinkField"
+              p:clientSideJs="focusOnElementById('Test123');"
+              p:actionLabel="Focus on field with id Test123 (Date1 field)"/>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Text Fields Section
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-TextFields" parent="GroupSection" p:title="Text Controls">
+    <property name="items">
+      <list>
+        <bean parent="UifCompView-TextFields1"/>
+        <bean parent="UifCompView-TextFields2"/>
+        <bean parent="UifCompView-TextFields3"/>
+        <bean parent="UifCompView-TextAreas"/>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Text Controls 1
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-TextFields1" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <property name="title" value="Field Label Options"/>
+    <property name="items">
+      <list>
+        <bean parent="InputField_Form" p:propertyName="field1" p:label="Field Label" p:labelPlacement="TOP"
+              p:instructionalText="Label top, no colon" p:labelField.styleClasses="labelTop"
+              p:labelField.renderColon="false">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field100" p:label="Field Label" p:labelPlacement="TOP"
+              p:instructionalText="Label top, with colon" p:labelField.styleClasses="labelTop"
+              p:labelField.renderColon="true">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field101" p:label="Field Label"
+              p:instructionalText="Label left, with colon" p:labelField.renderColon="true">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Text Controls 2
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-TextFields2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <property name="title" value="Field Label Options"/>
+    <property name="items">
+      <list>
+        <bean parent="InputField_Form" p:propertyName="field102" p:label="Field Label" p:labelPlacement="RIGHT"
+              p:instructionalText="Label right">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field103" p:label="Field Label" p:labelPlacement="TOP"
+              p:instructionalText="With constraintText text" p:constraintText="Constraint text"
+              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field104" p:labelPlacement="TOP" p:instructionalText="No label"
+              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field105" p:labelField.renderColon="false">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Text Controls 3
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-TextFields3" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <property name="title" value="Text Control Options"/>
+    <property name="items">
+      <list>
+        <bean parent="InputField_Form" p:propertyName="field106" p:label="Field Label" p:labelPlacement="TOP"
+              p:labelField.renderColon="false" p:instructionalText="With watermark text, and size=&quot;30&quot;">
+          <property name="control">
+            <bean parent="TextControl" p:size="30" p:watermarkText="Watermark..."/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field107" p:label="Field Label" p:labelPlacement="TOP"
+              p:labelField.renderColon="false" p:instructionalText="Size=&quot;60&quot;">
+          <property name="control">
+            <bean parent="TextControl" p:size="60"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field108" p:label="Field Label" p:labelPlacement="TOP"
+              p:labelField.renderColon="false" p:instructionalText="Text expand option">
+          <property name="control">
+            <bean parent="TextControl" p:size="30" p:textExpand="true"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field109" p:label="Field Label" p:labelPlacement="TOP"
+              p:labelField.renderColon="false" p:instructionalText="Disabled">
+          <property name="control">
+            <bean parent="TextControl" p:size="30" p:disabled="true"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - TextArea Controls
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-TextAreas" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <property name="title" value="TextArea Control Options"/>
+    <property name="instructionalText"
+              value="TextAreas have basically the same options as text controls, so only a couple examples"/>
+    <property name="items">
+      <list>
+        <bean parent="InputField_Form" p:propertyName="field110" p:label="Field Label" p:labelPlacement="TOP"
+              p:instructionalText="With watermark, rows=&quot;5&quot;, cols=&quot;40&quot;"
+              p:labelField.styleClasses="labelTop" p:labelField.renderColon="false">
+          <property name="control">
+            <bean parent="TextAreaControl" p:rows="5" p:cols="40" p:watermarkText="Watermark..."/>
+          </property>
+        </bean>
+
+        <bean parent="InputField_Form" p:propertyName="field111" p:label="Field Label"
+              p:labelPlacement="TOP" p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+              p:instructionalText="No watermark, textExpand option, rows=&quot;10&quot;, cols=&quot;50&quot;">
+          <property name="control">
+            <bean parent="TextAreaControl" p:rows="10" p:cols="50" p:textExpand="true"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Date Fields
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-DateFields" parent="GroupSection" p:layoutManager.orientation="HORIZONTAL">
+    <property name="title" value="Date Control"/>
+    <property name="instructionalText"
+              value="DateControl configuration options, date control uses the jQuery date picker plugin see its plugin page for more info"/>
+    <property name="items">
+      <list>
+        <bean parent="InputFieldLabelTop_Form" p:propertyName="field112" p:label="Date 1"
+              p:instructionalText="Default DateControl options">
+          <property name="control">
+            <bean parent="DateControl"/>
+          </property>
+        </bean>
+
+        <bean parent="InputFieldLabelTop_Form" p:propertyName="field113" p:label="Date 2"
+              p:instructionalText="Custom options: show on focus, different animation, and show 2 months at once">
+          <property name="control">
+            <bean parent="DateControl">
+              <property name="datePicker.componentOptions">
+                <map>
+                  <entry key="showOn" value="both"/>
+                  <entry key="buttonImage" value="@{#ConfigProperties['krad.externalizable.images.url']}cal.gif"/>
+                  <entry key="buttonImageOnly" value="true"/>
+                  <entry key="showAnim" value="fadeIn"/>
+                  <entry key="showButtonPanel" value="true"/>
+                  <entry key="changeMonth" value="true"/>
+                  <entry key="changeYear" value="true"/>
+                  <entry key="numberOfMonths" value="2"/>
+                </map>
+              </property>
+            </bean>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Select Fields
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-SelectFields" parent="GroupSection">
+    <property name="title" value="Selection Controls"/>
+    <property name="instructionalText" value="Controls used for selection of 1 or multiple items"/>
+    <property name="items">
+      <list>
+        <bean parent="UifCompView-Checkboxes"/>
+        <bean parent="UifCompView-RadioButtons"/>
+        <bean parent="UifCompView-OtherSelects"/>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Checkboxes
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-Checkboxes" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="bField1" p:label="Checkbox" p:defaultValue="true"
+              p:instructionalText="Single CheckboxControl with defaultValue=&quot;true&quot; so checkbox is checked by default">
+          <property name="control">
+            <bean parent="CheckboxControl"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="field114" p:label="Checkboxes 1"
+              p:instructionalText="CheckboxGroupControl using an optionsFinder" p:width="auto">
+          <property name="control">
+            <bean parent="CheckboxGroupControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="field115" p:label="Checkboxes 2" p:width="auto"
+              p:instructionalText="CheckboxGroupControl using explicitly defined key-value pairs from the DD">
+          <property name="control">
+            <bean parent="CheckboxGroupControl">
+              <property name="options">
+                <list>
+                  <bean parent="KeyLabelPair" p:key="1" p:value="Option 1"/>
+                  <bean parent="KeyLabelPair" p:key="2" p:value="Option 2"/>
+                  <bean parent="KeyLabelPair" p:key="3" p:value="Option 3"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="field116" p:label="Checkboxes 3" p:width="auto"
+              p:instructionalText="Disabled CheckboxGroupControl">
+          <property name="control">
+            <bean parent="CheckboxGroupControl" p:disabled="true">
+              <property name="options">
+                <list>
+                  <bean parent="KeyLabelPair" p:key="1" p:value="Option 1"/>
+                  <bean parent="KeyLabelPair" p:key="2" p:value="Option 2"/>
+                  <bean parent="KeyLabelPair" p:key="3" p:value="Option 3"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Radio Buttons
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-RadioButtons" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="field117" p:label="Radio 1" p:width="auto"
+              p:instructionalText="RadioGroupControl using an optionsFinder">
+          <property name="control">
+            <bean parent="RadioGroupControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="field118" p:label="Radio 2" p:width="auto"
+              p:instructionalText="RadioGroupControl using explicitly defined key-value pairs from the DD">
+          <property name="control">
+            <bean parent="RadioGroupControl">
+              <property name="options">
+                <list>
+                  <bean parent="KeyLabelPair" p:key="1" p:value="Radio 1"/>
+                  <bean parent="KeyLabelPair" p:key="2" p:value="Radio 2"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Other Selects
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-OtherSelects" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="field119" p:label="Select Control" p:width="auto"
+              p:instructionalText="SelectControl using an optionsFinder">
+          <property name="control">
+            <bean parent="SelectControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="edu.sampleu.travel.document.keyvalue.SimpleTestKeyValues" p:blankOption="true"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="field120" p:label="Multi Select Control" p:width="auto"
+              p:instructionalText="SelectControl with multiple=&quot;true&quot;, size=&quot;3&quot;, using explicitly defined key-value pairs from the DD">
+          <property name="control">
+            <bean parent="SelectControl" p:multiple="true" p:size="3" p:options-ref="test-options"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <util:list id="test-options">
+    <bean parent="KeyLabelPair" p:key="1" p:value="Select 1"/>
+    <bean parent="KeyLabelPair" p:key="2" p:value="Select 2"/>
+    <bean parent="KeyLabelPair" p:key="3" p:value="Select 3"/>
+    <bean parent="KeyLabelPair" p:key="4" p:value="Select 4"/>
+    <bean parent="KeyLabelPair" p:key="4" p:value="Select 5"/>
+  </util:list>
+
+  <!--
+  ********************************************************************************************************************
+                                           UIF Comp - Other Controls
+  ********************************************************************************************************************
+  -->
+  <bean id="UifCompView-OtherControls" parent="Group">
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="field30" p:label="File Control">
+          <property name="instructionalText" value="Use to upload files"/>
+          <property name="control">
+            <bean parent="FileControl" p:size="30"/>
+          </property>
+        </bean>
+        <bean parent="InputField" p:propertyName="testPerson.principalName" p:label="User Control">
+          <property name="instructionalText"
+                    value="Type two letters of user id to see suggestion, or use the lookup. User full name will display after tabbing."/>
+          <property name="control">
+            <bean parent="UserControl" p:principalIdPropertyName="testPersonId"
+                  p:personNamePropertyName="testPerson.name"/>
+          </property>
+        </bean>
+        <!-- TODO: add spinner control -->
+      </list>
+    </property>
+  </bean>
+
+</beans>

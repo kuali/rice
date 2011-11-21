@@ -80,8 +80,6 @@
         <value>classpath:edu/sampleu/travel/uif/TravelAccountMaintenance.xml</value>
         <value>classpath:edu/sampleu/travel/uif/Travel-testView1.xml</value>
         <value>classpath:edu/sampleu/travel/uif/Travel-testView2.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/LayoutTestView.xml</value>
-        <value>classpath:edu/sampleu/travel/uif/UifComponentsView.xml</value>
         <value>classpath:edu/sampleu/travel/uif/FiscalOfficerView.xml</value>
         <value>classpath:edu/sampleu/travel/uif/FiscalOfficerLookup.xml</value>
         <value>classpath:edu/sampleu/travel/uif/TravelAlternateViews.xml</value>
@@ -97,24 +95,20 @@
         <value>classpath:edu/sampleu/bookstore/document/datadictionary/BookMaintenanceDocument.xml</value>
         <value>classpath:edu/sampleu/bookstore/document/datadictionary/BookOrderDocument.xml</value>
         <value>classpath:edu/sampleu/bookstore/document/datadictionary/BookTypeMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/AddressType.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/GenericAttributes.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/OwnershipType.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/PaymentTermType.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/VendorAddress.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/VendorDefaultAddress.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/VendorDetail.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/VendorGenericAttributes.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/VendorHeader.xml</value>
-        <value>classpath:edu/sampleu/financial/datadictionary/VendorType.xml</value>
-        <value>classpath:edu/sampleu/financial/uif/AddressTypeLookup.xml</value>
-        <value>classpath:edu/sampleu/financial/uif/OwnershipTypeLookup.xml</value>
-        <value>classpath:edu/sampleu/financial/uif/PaymentTermLookup.xml</value>
-        <value>classpath:edu/sampleu/financial/uif/VendorDetailLookup.xml</value>
-        <value>classpath:edu/sampleu/financial/uif/VendorMaintenanceDocument.xml</value>
-        <value>classpath:edu/sampleu/student/uif/CourseOfferingView.xml</value>
-        <value>classpath:edu/sampleu/student/uif/RegistrationView.xml</value>
-        <value>classpath:edu/sampleu/student/uif/UifStudentDefinitions.xml</value>
+        <value>classpath:edu/sampleu/demo/course/UifStudentDefinitions.xml</value>
+        <value>classpath:edu/sampleu/demo/course/CourseOfferingView.xml</value>
+        <value>classpath:edu/sampleu/demo/registration/RegistrationView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsView.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP3.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP4.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP5.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP6.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP7.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP8.xml</value>
+        <value>classpath:edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</value>
+        <value>classpath:edu/sampleu/demo/layout/LayoutTestView.xml</value>
+
         <!-- <value>classpath:edu/sampleu/kim/uif/ResponsibilityMaintenanceDocument.xml</value>
        <value>classpath:edu/sampleu/kim/uif/ResponsibilityInquiry.xml</value> -->
 
@@ -141,7 +135,7 @@
       <list>
         <value>edu.sampleu.travel</value>
         <value>edu.sampleu.bookstore</value>
-        <value>edu.sampleu.financial</value>
+        <value>edu.sampleu.demo</value>
         <value>edu.sampleu.kew.krad</value>
       </list>
     </property>

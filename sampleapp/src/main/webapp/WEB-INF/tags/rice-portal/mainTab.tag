@@ -17,14 +17,10 @@
 
 <td class="content" valign="top">
     <mainChannel:sampleTravelApplication />
-    <mainChannel:kradBookStoreApplication />
-    <mainChannel:kradTestLinks />
-    <mainChannel:kradTestLinks2 />
 </td>
 <td class="content" valign="top">
 <mainChannel:workflow />
 <mainChannel:rules />
-<mainChannel:knsConvert />
 </td>
 <td class="content" valign="top">
 <mainChannel:notification />

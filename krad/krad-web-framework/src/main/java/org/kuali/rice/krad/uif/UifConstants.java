@@ -44,7 +44,7 @@ public class UifConstants {
     }
 
     public static enum MessageType {
-        NORMAL, INSTRUCTIONAL, CONSTRAINT, REQUIRED, HELP_SUMMARY, HELP_DESCRIPTION
+        NORMAL, CUTLINE, INSTRUCTIONAL, CONSTRAINT, REQUIRED, HELP_SUMMARY, HELP_DESCRIPTION
     }
 
     public static enum ViewType {

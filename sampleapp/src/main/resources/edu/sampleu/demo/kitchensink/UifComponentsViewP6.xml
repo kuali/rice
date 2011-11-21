@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="lookups1" parent="Group" p:layoutManager.orientation="VERTICAL">
+      <property name="disclosure.render" value="false" />
+      <property name="styleClasses" value="group_header" />
+      <property name="items">
+        <list>
+          <bean parent="GenericTextField" p:label="Inquiry" p:readOnly="true"
+            p:instructionalText="Click the link to perform an inquiry on this TravelAccount number"
+            p:propertyName="field59" p:defaultValue="a2">
+            <property name="fieldInquiry.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="fieldInquiry.inquiryParameters">
+              <map>
+                <entry key="field59" value="number" />
+              </map>
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Direct Inquiry"
+            p:instructionalText="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')"
+            p:propertyName="field71" p:defaultValue="a1">
+            <property name="fieldDirectInquiry.dataObjectClassName"
+              value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="fieldDirectInquiry.inquiryParameters">
+              <map>
+                <entry key="field71" value="number" />
+              </map>
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Ajax Field Query"
+            p:instructionalText="Displays additional information retrieved from an ajax data retrieval (input 'a1')"
+            p:propertyName="field72" p:defaultValue="a3">
+            <property name="informationalDisplayPropertyNames" value="field73,field74" />
+            <property name="fieldAttributeQuery">
+              <bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74" />
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Lookup"
+            p:instructionalText="click the button to perform a lookup on TravelAccounts"
+            p:propertyName="field60">
+            <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="fieldLookup.fieldConversions">
+              <map>
+                <entry key="number" value="field60" />
+              </map>
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Lookup (Return by script)"
+            p:instructionalText="click the button to perform a lookup on TravelAccounts"
+            p:propertyName="field90">
+            <property name="fieldLookup">
+              <bean parent="QuickFinderByScript"/>
+            </property>
+            <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="fieldLookup.fieldConversions">
+              <map>
+                <entry key="number" value="field90" />
+              </map>
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Lookup"
+            p:instructionalText="overriden link to display different text - Search Now"
+            p:propertyName="field87">
+            <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
+            <property name="fieldLookup.fieldConversions">
+              <map>
+                <entry key="number" value="field87" />
+              </map>
+            </property>
+            <property name="fieldLookup.quickfinderActionField.actionLabel" value="Search Now"/>
+          </bean>
+          <bean parent="GenericTextField" p:label="Suggest"
+            p:instructionalText="for example, type ea or ca to see a suggestion"
+            p:propertyName="field61">
+            <property name="fieldSuggest.render" value="true" />
+            <property name="fieldSuggest.sourcePropertyName" value="accountTypeCode" />
+            <property name="fieldSuggest.suggestQuery.dataObjectClassName"
+              value="edu.sampleu.travel.bo.TravelAccountType" />
+          </bean>
+        </list>
+      </property>
+    </bean>
+
+
+</beans>

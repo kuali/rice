@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="errors1" parent="genericTextGroup">
+      <property name="title" value="Group Errors" />
+      <property name="instructionalText"
+        value="Group with displayMessages turned on (off by default because messages are displayed at page level and at field level normally)" />
+      <property name="errorsField">
+        <bean parent="ErrorsField_Group">
+          <property name="displayMessages" value="true" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean id="errors2" parent="genericTextGroup">
+      <property name="title" value="Group Errors" />
+      <property name="instructionalText"
+        value="Group with displayMessages turned on, highlight on, and allowMessageRepeat off (don't allow same messages to show up below this level, ie at the field level)" />
+      <property name="errorsField">
+        <bean parent="ErrorsField_Group">
+          <property name="displayMessages" value="true" />
+          <property name="allowMessageRepeat" value="false" />
+          <property name="highlightOnError" value="true" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean id="errors3" parent="genericTextGroup">
+      <property name="title" value="Group Errors" />
+      <property name="instructionalText"
+        value="Group with combineMessages off(messages for the same field will be multiple lines instead of one) and displayErrorTitle, displayWarningTitle, displayInfoTitle on" />
+      <property name="errorsField">
+        <bean parent="ErrorsField_Group">
+          <property name="displayMessages" value="true" />
+          <property name="displayErrorTitle" value="true" />
+          <property name="errorTitle" value="Errors in this Group:" />
+          <property name="displayWarningTitle" value="true" />
+          <property name="warningTitle" value="Warnings in this Group:" />
+          <property name="combineMessages" value="false" />
+        </bean>
+      </property>
+    </bean>
+
+    <bean id="errors4" parent="genericTextGroup">
+      <property name="title" value="Group Errors" />
+      <property name="instructionalText"
+        value="Group with ErrorsField's displayCounts off, displayFieldErrorIcon on and highlightOnError off for its InputFields, and displayInfoMessages on (off by default because info messages only appear in growls)" />
+      <property name="errorsField">
+        <bean parent="ErrorsField_Group">
+          <property name="displayMessages" value="true" />
+          <property name="displayCounts" value="false" />
+          <property name="displayInfoMessages" value="true" />
+        </bean>
+      </property>
+      <property name="items">
+        <list>
+          <bean parent="GenericTextField" p:label="Field 1" p:required="true"
+            p:propertyName="gField1">
+            <property name="errorsField">
+              <bean parent="ErrorsField">
+                <property name="highlightOnError" value="false" />
+                <property name="displayFieldErrorIcon" value="true" />
+              </bean>
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Field 2" p:required="true"
+            p:propertyName="gField2">
+            <property name="errorsField">
+              <bean parent="ErrorsField">
+                <property name="highlightOnError" value="false" />
+                <property name="displayFieldErrorIcon" value="true" />
+              </bean>
+            </property>
+          </bean>
+          <bean parent="GenericTextField" p:label="Field 3" p:required="true"
+            p:propertyName="gField3">
+            <property name="errorsField">
+              <bean parent="ErrorsField">
+                <property name="highlightOnError" value="false" />
+                <property name="displayFieldErrorIcon" value="true" />
+              </bean>
+            </property>
+          </bean>
+        </list>
+      </property>
+    </bean>
+
+</beans>

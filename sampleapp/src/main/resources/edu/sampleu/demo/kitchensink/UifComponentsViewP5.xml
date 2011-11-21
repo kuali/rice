@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+  <bean id="prog1" parent="Group" p:layoutManager.orientation="VERTICAL"
+		p:title="Progressive Disclosure of Fields">
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="InputField_Form" p:label="Progressive Disclose options"
+					p:instructionalText="Chose an option to display the corresponding fields"
+					p:width="auto" p:propertyName="field34">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="show1"
+										p:value="Show Field 1 - no ajax request, the content is already on the page but hidden" />
+									<bean parent="KeyLabelPair" p:key="show2"
+										p:value="Show Field 2 - this will do an ajax request for the field the first time, then hide and show it locally" />
+									<bean parent="KeyLabelPair" p:key="show3"
+										p:value="Show Field 3 - this will do an ajax request for the field each time the condition is met" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Field 1"
+					p:progressiveRender="field34 eq 'show1'" p:propertyName="field35" />
+				<bean parent="GenericTextField" p:label="Field 2"
+					p:progressiveRenderViaAJAX="true" p:progressiveRender="field34 eq 'show2'"
+					p:propertyName="field36" />
+				<bean parent="GenericTextField" p:label="Field 3"
+					p:progressiveRenderAndRefresh="true" p:progressiveRender="field34 eq 'show3'"
+					p:propertyName="field37" />
+				<bean parent="GenericTextField" p:label="Show Field through matching"
+					p:progressiveRenderAndRefresh="true" p:maxLength="1"
+					p:instructionalText="Demonstration of alternate progressive condition: Type in &quot;A&quot;, or &quot;B&quot; to make fields show"
+					p:propertyName="field47" />
+				<bean parent="GenericTextField" p:label="Field A"
+					p:progressiveRenderAndRefresh="true" p:progressiveRender="field47 matches '^[aA]$'"
+					p:propertyName="field48" />
+				<bean parent="GenericTextField" p:label="Field B"
+					p:progressiveRenderAndRefresh="true" p:progressiveRender="field47 matches '^[bB]$'"
+					p:propertyName="field49" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="prog2" parent="Group" p:layoutManager.orientation="VERTICAL"
+		p:title="Progressive Disclosure of Groups">
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="InputField_Form" p:label="Progressive Disclose options"
+					p:instructionalText="Progressive Disclosure also works on displaying entire groups"
+					p:width="auto" p:propertyName="field38">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="show1"
+										p:value="Show Group 1 - no ajax request" />
+									<bean parent="KeyLabelPair" p:key="show2"
+										p:value="Show Group 2 - ajax request for group" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
+					p:progressiveRender="field38 eq 'show1'" p:title="Group 1"
+					p:disclosure.render="false">
+					<property name="items">
+						<list>
+							<bean parent="GenericTextField" p:label="Field 1A"
+								p:propertyName="field39" />
+							<bean parent="GenericTextField" p:label="Field 2A"
+								p:propertyName="field40" />
+							<bean parent="GenericTextField" p:label="Field 3A"
+								p:propertyName="field41" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
+					p:progressiveRenderViaAJAX="true" p:progressiveRender="field38 eq 'show2'"
+					p:title="Group 2" p:disclosure.render="false">
+					<property name="items">
+						<list>
+							<bean parent="GenericTextField" p:label="Field 1B"
+								p:propertyName="field42" />
+							<bean parent="GenericTextField" p:label="Field 2B"
+								p:propertyName="field43" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="prog3" parent="Group" p:layoutManager.orientation="VERTICAL"
+		p:title="Conditional Refresh">
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="InputField_Form" p:label="Conditional Refresh"
+					p:instructionalText="Chose an option cause a conditional refresh on a field"
+					p:width="auto" p:propertyName="field44">
+					<property name="control">
+						<bean parent="RadioGroupControl">
+							<property name="options">
+								<list>
+									<bean parent="KeyLabelPair" p:key="show1"
+										p:value="Refresh Field 1 - refreshes when this option is selected, conditionalRefresh statement option" />
+									<bean parent="KeyLabelPair" p:key="show2"
+										p:value="Refresh Field 2, make it read only if this is selected, otherwise editable by using refreshWhenChanged pointing to this field" />
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean parent="GenericTextField" p:label="Field 1"
+					p:conditionalRefresh="field44 eq 'show1'" p:propertyName="field45" />
+				<bean parent="GenericTextField" p:label="Field 2"
+					p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="field44"
+					p:readOnly="@{field44 eq 'show2'}" p:propertyName="field46" />
+        <bean parent="GenericHorizontalFieldGroup" p:label="Conditonal Options"
+              p:group.instructionalText="Choose an option from the first select control which will change the options available in the second select control">
+          <property name="items">
+            <list>
+              <bean parent="GenericTextField" p:propertyName="field88" p:label="Field 1">
+                <property name="control">
+                  <bean parent="SelectControl">
+                    <property name="options">
+                      <list>
+                        <bean parent="KeyLabelPair" p:key="Fruits" p:value="Fruits"/>
+                        <bean parent="KeyLabelPair" p:key="Vegetables" p:value="Vegetables"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="GenericTextField" p:propertyName="field89" p:label="Field 2"
+                    p:optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder"
+                    p:refreshWhenChanged="field88">
+                <property name="control">
+                  <bean parent="SelectControl"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <bean parent="GenericHorizontalFieldGroup" p:label="Refresh Buttons">
+          <property name="items">
+            <list>
+              <bean parent="AjaxActionField" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
+                    p:refreshId="prog3"/>
+              <bean parent="AjaxActionField" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
+                    p:refreshPropertyName="field45"/>
+              <bean parent="AjaxActionField" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
+            </list>
+          </property>
+        </bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

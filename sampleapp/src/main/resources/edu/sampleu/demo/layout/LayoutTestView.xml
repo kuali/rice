@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+
+	<bean id="LayoutTestView" parent="FormView">
+		<property name="id" value="LayoutTestView" />
+		<property name="title" value="Layout View" />
+		<property name="entryPageId" value="page1" />
+		<property name="navigation">
+			<ref bean="layoutTestViewMenu" />
+		</property>
+		<property name="items">
+			<list>
+				<bean parent="Page" p:id="page1" p:title="Basic Layouts - Box">
+					<property name="items">
+						<list>
+							<ref bean="vertical-Section1" />
+							<ref bean="horizontal-Section2" />
+							<ref bean="horizontal-Section3" />
+							<ref bean="horizontal-Section4" />
+							<ref bean="tabs-Section5" />
+							<ref bean="disclosure-Section6" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="page2" p:title="Nested Layouts - Box">
+					<property name="items">
+						<list>
+							<ref bean="horizontalWithVerticalGroups-1" />
+							<ref bean="horizontalWithVerticalGroups-2" />
+							<ref bean="verticalWithHorizontalGroups-1" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="page3" p:title="Basic Layout - Grid">
+					<property name="items">
+						<list>
+							<ref bean="gridGroup-1" />
+							<ref bean="gridGroup-2" />
+							<ref bean="gridGroup-3" />
+						</list>
+					</property>
+				</bean>
+				<bean parent="Page" p:id="page4" p:title="Nested Layouts - Grid">
+					<property name="items">
+						<list>
+							<ref bean="gridGroupNested-1" />
+							<ref bean="gridGroupNested-2" />
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="additionalCssFiles" ref="ks-css" />
+		<property name="formClass"
+			value="edu.sampleu.demo.kitchensink.UifComponentsTestForm" />
+	</bean>
+
+	<bean id="layoutTestViewMenu" parent="NavigationGroupMenu">
+		<property name="items">
+			<list>
+				<bean parent="HeaderTwo" p:headerText="Navigation" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="page1"
+					p:actionLabel="Basic Layouts - Box" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="page2"
+					p:actionLabel="Nested Layouts - Box" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="page3"
+					p:actionLabel="Basic Layouts - Grid" />
+				<bean parent="NavigationActionLinkField" p:navigateToPageId="page4"
+					p:actionLabel="Nested Layouts - Grid" />
+			</list>
+		</property>
+		<property name="componentOptions">
+			<map>
+				<entry key="animate" value="true" />
+				<entry key="slideout" value="true" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="TextAreaTestField" parent="InputField_Form"
+		abstract="true" p:label="Field Label" p:labelPlacement="TOP"
+		p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
+		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+		p:required="true">
+		<property name="control">
+			<bean parent="TextAreaControl" p:textExpand="true" p:rows="5"
+				p:cols="40" p:watermarkText="Text Here..." />
+		</property>
+	</bean>
+
+	<bean id="TextTestField" parent="InputField_Form" abstract="true"
+		p:label="Field Label" p:labelPlacement="TOP"
+		p:instructionalText="Instructions Instructions Instructions" p:constraintText="Constraint text"
+		p:labelField.styleClasses="labelTop" p:labelField.renderColon="false"
+		p:required="true">
+		<property name="control">
+			<bean parent="TextControl" p:size="30" p:watermarkText="Enter Data" />
+		</property>
+	</bean>
+
+	<bean id="vertical-Section1" parent="Group"
+		p:layoutManager.orientation="VERTICAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Vertical Layout test" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextTestField" p:propertyName="field1" />
+				<bean parent="TextAreaTestField" p:propertyName="field2" />
+				<bean parent="TextTestField" p:propertyName="field3" />
+				<bean parent="TextAreaTestField" p:propertyName="field4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="horizontal-Section2" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Horizontal Layout test - 3 across" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextTestField" p:propertyName="field5" />
+				<bean parent="TextAreaTestField" p:propertyName="field6" />
+				<bean parent="TextTestField" p:propertyName="field7" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="horizontal-Section3" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Horizontal Layout test - 5 across" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextAreaTestField" p:propertyName="field8" />
+				<bean parent="TextTestField" p:propertyName="field9" />
+				<bean parent="TextAreaTestField" p:propertyName="field10" />
+				<bean parent="TextTestField" p:propertyName="field11" />
+				<bean parent="TextAreaTestField" p:propertyName="field12" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="horizontal-Section4" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Horizontal Layout test - 8 across" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextTestField" p:propertyName="field13" />
+				<bean parent="TextAreaTestField" p:propertyName="field14" />
+				<bean parent="TextTestField" p:propertyName="field15" />
+				<bean parent="TextAreaTestField" p:propertyName="field16" />
+				<bean parent="TextAreaTestField" p:propertyName="field17" />
+				<bean parent="TextTestField" p:propertyName="field18" />
+				<bean parent="TextAreaTestField" p:propertyName="field19" />
+				<bean parent="TextTestField" p:propertyName="field20" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="tabs-Section5" parent="TabGroup">
+		<property name="title" value="Tab Test" />
+		<property name="items">
+			<list>
+				<bean parent="vertical-Section1" />
+				<bean parent="horizontal-Section2" />
+				<bean parent="horizontal-Section3" />
+				<bean parent="horizontal-Section4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="disclosure-Section6" parent="Group"
+		p:layoutManager.orientation="VERTICAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Disclosure test" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextTestField" p:propertyName="field21" />
+				<bean parent="TextAreaTestField" p:propertyName="field22" />
+				<bean parent="TextTestField" p:propertyName="field23" />
+				<bean parent="TextAreaTestField" p:propertyName="field24" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="horizontalWithVerticalGroups-1" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Horizontal layout with 2 vertical groupings" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="vertical-Section1" />
+				<bean parent="vertical-Section1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="horizontalWithVerticalGroups-2" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Horizontal layout with 3 vertical groupings" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="vertical-Section1" />
+				<bean parent="vertical-Section1" />
+				<bean parent="vertical-Section1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="verticalWithHorizontalGroups-1" parent="Group"
+		p:layoutManager.orientation="HORIZONTAL">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="Vertical layout with 2 horizontal groupings" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="horizontal-Section2" />
+				<bean parent="horizontal-Section3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="gridGroup-1" parent="GroupGridLayout">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText" value="GroupGridLayout default settings" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextTestField" p:propertyName="field25" />
+				<bean parent="TextAreaTestField" p:propertyName="field26" />
+				<bean parent="TextTestField" p:propertyName="field27" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="gridGroup-2" parent="GroupGridLayout">
+		<property name="title" value="Section Title" />
+		<property name="layoutManager.numberOfColumns" value="4" />
+		<property name="instructionalText" value="GroupGridLayout number of columns = 4" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextTestField" p:propertyName="field28" />
+				<bean parent="TextAreaTestField" p:propertyName="field29" />
+				<bean parent="TextTestField" p:propertyName="field30" />
+				<bean parent="TextAreaTestField" p:propertyName="field31" />
+				<bean parent="TextTestField" p:propertyName="field32" />
+				<bean parent="TextAreaTestField" p:propertyName="field33" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="gridGroup-3" parent="GroupGridLayout">
+		<property name="title" value="Section Title" />
+		<property name="layoutManager.numberOfColumns" value="4" />
+		<property name="instructionalText"
+			value="GroupGridLayout number of columns = 4, fields have colspan settings" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="TextTestField" p:propertyName="field34" />
+				<bean parent="TextAreaTestField" p:propertyName="field35" />
+				<bean parent="TextTestField" p:instructionalText="Colspan 2"
+					p:propertyName="field36" p:colSpan="2" p:labelField.colSpan="2" />
+				<bean parent="TextAreaTestField" p:instructionalText="Colspan 3"
+					p:propertyName="field37" p:colSpan="3" p:labelField.colSpan="1" />
+				<bean parent="TextTestField" p:instructionalText="Colspan 2"
+					p:propertyName="field38" p:colSpan="2" p:labelField.colSpan="2" />
+				<bean parent="TextAreaTestField" p:instructionalText="Rowspan 2"
+					p:propertyName="field39" p:rowSpan="2" p:labelField.rowSpan="2" />
+				<bean parent="TextTestField" p:propertyName="field40" />
+				<bean parent="TextTestField" p:propertyName="field41" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="gridGroupNested-1" parent="GroupGridLayout">
+		<property name="title" value="Section Title" />
+		<property name="layoutManager.numberOfColumns" value="2" />
+		<property name="instructionalText"
+			value="GroupGridLayout 2 columns with two nested groups" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="gridGroup-1" />
+				<bean parent="gridGroup-1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="gridGroupNested-2" parent="GroupGridLayout">
+		<property name="title" value="Section Title" />
+		<property name="instructionalText"
+			value="GroupGridLayout default settings, 2 nested groups" />
+		<property name="disclosure.render" value="false" />
+		<property name="styleClasses" value="group_header" />
+		<property name="items">
+			<list>
+				<bean parent="gridGroup-2" />
+				<bean parent="gridGroup-3" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

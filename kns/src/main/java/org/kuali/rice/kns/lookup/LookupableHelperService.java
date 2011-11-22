@@ -31,7 +31,11 @@ import java.util.Map;
 public interface LookupableHelperService extends Serializable{
 
     /**
-     * Initializes the lookup with a businss object class
+     * Initializes the lookup with a business object class.  This is set
+     * via the LookupableHelperService's consumer, namely the Lookupable
+     * implementation (or in cases of nesting a wrapping LookupableHelperService).
+     * The Lookupable in turn receives this value from the UI via
+     * LookupForm population.
      *
      * @param businessObjectClass
      */

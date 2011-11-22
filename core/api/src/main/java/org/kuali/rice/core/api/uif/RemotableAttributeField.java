@@ -125,6 +125,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         @XmlElement(name = RemotableTextarea.Constants.ROOT_ELEMENT_NAME, type = RemotableTextarea.class, required = false),
         @XmlElement(name = RemotableTextInput.Constants.ROOT_ELEMENT_NAME, type = RemotableTextInput.class, required = false)
     })
+    // this field is defaulted to a RemotableTextInput in constructors and builder
+    // for flexibility, i would have preferred to assign a default value on the client/consumer only but there isn't a practical way to do that
     private final RemotableAbstractControl control;
 
     @XmlElementWrapper(name = Elements.WIDGETS, required = false)
@@ -161,7 +163,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.required = false;
         this.defaultValues = null;
         this.attributeLookupSettings = null;
-        this.control = null;
+        this.control = RemotableTextInput.Builder.create().build();
         this.widgets = null;
     }
 
@@ -197,7 +199,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             this.attributeLookupSettings = b.attributeLookupSettings.build();
         }
         if (b.control == null) {
-            this.control = null;
+            this.control = RemotableTextInput.Builder.create().build();
         } else {
             this.control = b.control.build();
         }
@@ -359,7 +361,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
         private Collection<String> defaultValues = new ArrayList<String>();
         private RemotableAttributeLookupSettings.Builder attributeLookupSettings;
-        private RemotableAbstractControl.Builder control;
+        private RemotableAbstractControl.Builder control =  RemotableTextInput.Builder.create();
 
         private Collection<RemotableAbstractWidget.Builder> widgets = new ArrayList<RemotableAbstractWidget.Builder>();
 

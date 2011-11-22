@@ -105,6 +105,19 @@ class RemotableAttributeFieldTest {
         assertNotNull(o.build());
     }
 
+    /**
+     * Tests that a default control is always present on the RemotableAttributeField
+     */
+    @Test
+    void testDefaultControl() {
+        RemotableAttributeField.Builder o = create();
+        assertEquals(RemotableTextInput.Builder.create().build(), o.build().getControl())
+
+        // control explicitly set to null, default should still be generated
+        o.control = null
+        assertEquals(RemotableTextInput.Builder.create().build(), o.build().getControl())
+    }
+
     @Test(expected=IllegalArgumentException.class)
     void testNullName() {
         RemotableAttributeField.Builder o = RemotableAttributeField.Builder.create((String) null);

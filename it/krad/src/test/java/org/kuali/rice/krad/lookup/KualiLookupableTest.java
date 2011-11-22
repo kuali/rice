@@ -19,11 +19,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.bo.Account;
@@ -70,6 +73,36 @@ public class KualiLookupableTest extends KRADTestCase {
         lookupableImpl = new KualiLookupableImpl();
         lookupableImpl.setLookupableHelperService((LookupableHelperService) KRADServiceLocatorInternal.getService("lookupableHelperService"));
         lookupableImpl.setBusinessObjectClass(Account.class);
+    }
+
+    /**
+     * Tests generation of lookup form rows
+     * @throws Exception
+     */
+    @Test public void testGetRows() throws Exception {
+        // rows should have been populated by business object class initialization
+        List<? extends Row> rows = lookupableImpl.getRows();
+        assertEquals(4, rows.size());
+
+        Field f = rows.get(0).getField(0);
+        assertEquals("number", f.getPropertyName());
+        assertEquals("Account Number", f.getFieldLabel());
+        assertEquals("text", f.getFieldType());
+
+        f = rows.get(1).getField(0);
+        assertEquals("name", f.getPropertyName());
+        assertEquals("Account Name", f.getFieldLabel());
+        assertEquals("text", f.getFieldType());
+
+        f = rows.get(2).getField(0);
+        assertEquals("extension.accountTypeCode", f.getPropertyName());
+        assertEquals("Account Type Code", f.getFieldLabel());
+        assertEquals("dropdown", f.getFieldType());
+
+        f = rows.get(3).getField(0);
+        assertEquals("amId", f.getPropertyName());
+        assertEquals("Account Manager Id", f.getFieldLabel());
+        assertEquals("text", f.getFieldType());
     }
 
     /**

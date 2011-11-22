@@ -38,7 +38,8 @@ import java.util.Map;
 public interface Lookupable extends Serializable {
 
     /**
-     * Initializes the lookup with a businss object class
+     * Initializes the lookup with a businss object class.  This value originates
+     * from the UI via LookupForm population.
      *
      * It is required that implementations of this method will initialize the
      * search area used by the UI to provide the search form.  In particular,

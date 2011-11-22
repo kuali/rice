@@ -124,7 +124,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                     for (Field defaultField : defaultRow.getFields()) {
                         // dp "endsWith" here because lower bounds properties come
                         // across like "rangeLowerBoundKeyPrefix_dateCreated"
-                        if (defaultField.getPropertyName().endsWith(fieldName)) {
+                        if (defaultField.getPropertyName().equals(fieldName) || defaultField.getPropertyName().endsWith("_" + fieldName)) {
                             // don't show the following fields if there is no document type
                             if (fieldName.equals(APPLICATION_DOCUMENT_STATUS_CODE) ||
                                     fieldName.equals(ROUTE_NODE_NAME) ||

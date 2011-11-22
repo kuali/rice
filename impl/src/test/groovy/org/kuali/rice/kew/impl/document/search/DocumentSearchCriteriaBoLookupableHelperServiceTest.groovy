@@ -26,6 +26,9 @@ import static org.junit.Assert.assertEquals
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
+import org.kuali.rice.kew.doctype.bo.DocumentType
+import org.kuali.rice.kns.web.ui.Row
+import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor
 
 /**
  * Tests parsing of document search criteria form
@@ -67,5 +70,17 @@ class DocumentSearchCriteriaBoLookupableHelperServiceTest {
 
         assertEquals([ DocumentStatus.INITIATED, DocumentStatus.PROCESSED, DocumentStatus.FINAL ], crit.getDocumentStatuses())
         assertEquals([ DocumentStatusCategory.SUCCESSFUL, DocumentStatusCategory.UNSUCCESSFUL ], crit.getDocumentStatusCategories())
+    }
+
+    @Test
+    void testCheckForAdditionalFieldsSetsRows() {
+        def DOC_TYPE = "DOC TYPE"
+        def setRowsCalledWith = ""
+        new DocumentSearchCriteriaBoLookupableHelperService() {
+            protected void setRows(String doctype) {
+                setRowsCalledWith = doctype
+            }
+        }.checkForAdditionalFields([documentTypeName: DOC_TYPE])
+        assertEquals("checkForAdditionalFields did not initialize rows for document type argument: $DOC_TYPE", DOC_TYPE, setRowsCalledWith)
     }
 }

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.test;
 
+import org.apache.commons.lang.StringUtils;
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
@@ -69,7 +71,11 @@ public final class JAXBAssert {
 		  
 		  Object actual = unmarshaller.unmarshal(new StringReader(stringWriter.toString()));
 		  assertEquals("Unmarshalled object should be equal to original objectToMarshall.", objectToMarshal, actual);
-		  
+
+          if (StringUtils.isBlank(expectedXml)) {
+              throw new IllegalArgumentException("Expected XML must be specified.");
+          }
+
 		  Object expected = unmarshaller.unmarshal(new StringReader(expectedXml.trim()));
 		  assertEquals("Unmarshalled objects should be equal.", expected, actual);
 		} catch (Throwable e) {

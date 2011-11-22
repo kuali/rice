@@ -19,6 +19,7 @@ import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
+import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -162,7 +163,7 @@ public class KualiLookupableImpl implements Lookupable {
     /**
      * @see Lookupable#getRows()
      */
-    public List getRows() {
+    public List<? extends Row> getRows() {
         return getLookupableHelperService().getRows();
     }
 

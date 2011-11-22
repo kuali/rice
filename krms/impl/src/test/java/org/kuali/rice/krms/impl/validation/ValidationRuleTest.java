@@ -28,9 +28,9 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.BasicExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.ComparableTermBasedProposition;
-import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.Rule;
 import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
 
 import java.util.Collections;

@@ -30,7 +30,7 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameter;
 import org.kuali.rice.krms.api.repository.proposition.PropositionParameterContract;
-import org.kuali.rice.krms.framework.engine.ComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 
 class PropositionBoServiceImplTest {
     private def MockFor mock

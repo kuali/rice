@@ -22,6 +22,7 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
 public class ComparableTermBasedProposition<T> implements Proposition {

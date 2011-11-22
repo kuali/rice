@@ -19,8 +19,7 @@ package org.kuali.rice.krms.impl.ui;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;
-import org.kuali.rice.krms.api.repository.LogicalOperator;
-import org.kuali.rice.krms.framework.engine.ComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 
 import java.util.ArrayList;
 import java.util.Collections;

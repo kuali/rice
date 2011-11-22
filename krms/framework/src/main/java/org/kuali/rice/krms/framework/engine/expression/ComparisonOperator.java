@@ -17,11 +17,15 @@ package org.kuali.rice.krms.framework.engine.expression;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.mo.common.Coded;
+import org.kuali.rice.core.api.util.jaxb.EnumStringAdapter;
 import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public enum ComparisonOperator implements Coded {
 
@@ -144,4 +148,23 @@ public enum ComparisonOperator implements Coded {
 		throw new IllegalStateException("Invalid operator detected: " + this);
 	}
 
+    public static final Collection<String> OPERATOR_CODES =
+        Collections.unmodifiableCollection(Arrays.asList(EQUALS.getCode(), NOT_EQUALS.getCode(), GREATER_THAN.getCode(),
+                GREATER_THAN_EQUAL.getCode(), LESS_THAN.getCode(), LESS_THAN_EQUAL.getCode()));
+
+    public static final Collection<String> OPERATOR_NAMES =
+        Collections.unmodifiableCollection(Arrays.asList(EQUALS.name(), NOT_EQUALS.name(), GREATER_THAN.name(),
+                GREATER_THAN_EQUAL.name(), LESS_THAN.name(), LESS_THAN_EQUAL.name()));
+
+    @Override
+    public String toString(){
+        return code;
+    }
+
+    static final class Adapter extends EnumStringAdapter<ComparisonOperator> {
+
+        protected Class<ComparisonOperator> getEnumClass() {
+            return ComparisonOperator.class;
+        }
+    }
 }

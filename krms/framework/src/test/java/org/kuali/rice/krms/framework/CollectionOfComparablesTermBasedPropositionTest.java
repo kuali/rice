@@ -45,13 +45,13 @@ import org.kuali.rice.krms.framework.engine.BasicContext;
 import org.kuali.rice.krms.framework.engine.BasicRule;
 import org.kuali.rice.krms.framework.engine.CollectionOfComparablesTermBasedProposition;
 import org.kuali.rice.krms.framework.engine.CollectionOperator;
-import org.kuali.rice.krms.framework.engine.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.Context;
 import org.kuali.rice.krms.framework.engine.ContextProvider;
 import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.ProviderBasedEngine;
 import org.kuali.rice.krms.framework.engine.ResultLogger;
 import org.kuali.rice.krms.framework.engine.Rule;
+import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 
 public class CollectionOfComparablesTermBasedPropositionTest {
 	private static final ResultLogger LOG = ResultLogger.getInstance();

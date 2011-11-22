@@ -116,7 +116,8 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
     // String constants
     static final String PEOPLE_FLOWS_SELECTED_ATTRIBUTE = "peopleFlowsSelected";
-    static final String ATTRIBUTE_FIELD_NAME = "peopleFlowId";
+    public static final String ATTRIBUTE_FIELD_NAME = "peopleFlowId";
+    public static final String NAME_ATTRIBUTE_FIELD = "peopleFlowName";
 
     private final Type type;
 
@@ -158,14 +159,17 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         }
 
         String peopleFlowId = actionDefinition.getAttributes().get(ATTRIBUTE_FIELD_NAME);
-
         if (StringUtils.isBlank(peopleFlowId)) {
             throw new RiceIllegalArgumentException(ATTRIBUTE_FIELD_NAME + " attribute must not be null or blank");
         }
 
-        // if the ActionDefinition is valid, constructing the PeopleFlowAction is cake
+        String peopleFlowName = actionDefinition.getAttributes().get(NAME_ATTRIBUTE_FIELD);
+        if (StringUtils.isBlank(peopleFlowName)) {
+            throw new RiceIllegalArgumentException(NAME_ATTRIBUTE_FIELD + " attribute must not be null or blank");
+        }
 
-        return new PeopleFlowAction(type, peopleFlowId);
+        // if the ActionDefinition is valid, constructing the PeopleFlowAction is cake
+        return new PeopleFlowAction(type, peopleFlowId, peopleFlowName);
     }
 
     @Override
@@ -174,6 +178,8 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         if (ATTRIBUTE_FIELD_NAME.equals(attributeDefinition.getName())) {
             return createPeopleFlowField();
+        } else if (NAME_ATTRIBUTE_FIELD.equals(attributeDefinition.getName())) {
+            return createPeopleFlowNameField();
         } else {
             return super.translateTypeAttribute(inputAttribute,
                     attributeDefinition);
@@ -212,6 +218,40 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         return builder.build();
     }
+
+    public RemotableAttributeField createPeopleFlowNameField() {
+
+        String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
+
+        RemotableQuickFinder.Builder quickFinderBuilder =
+                RemotableQuickFinder.Builder.create(baseLookupUrl, PEOPLE_FLOW_BO_CLASS_NAME);
+
+        quickFinderBuilder.setFieldConversions(Collections.singletonMap("name", NAME_ATTRIBUTE_FIELD));
+
+        RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();
+        controlBuilder.setSize(Integer.valueOf(40));
+        controlBuilder.setWatermark("PeopleFlow Name");
+
+        RemotableAttributeLookupSettings.Builder lookupSettingsBuilder = RemotableAttributeLookupSettings.Builder.create();
+        lookupSettingsBuilder.setCaseSensitive(Boolean.TRUE);
+        lookupSettingsBuilder.setInCriteria(true);
+        lookupSettingsBuilder.setInResults(true);
+        lookupSettingsBuilder.setRanged(false);
+
+        RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(NAME_ATTRIBUTE_FIELD);
+        builder.setAttributeLookupSettings(lookupSettingsBuilder);
+        builder.setRequired(true);
+        builder.setDataType(DataType.STRING);
+        builder.setControl(controlBuilder);
+        builder.setLongLabel("PeopleFlow Name");
+        builder.setShortLabel("PeopleFlow Name");
+        builder.setMinLength(Integer.valueOf(1));
+        builder.setMaxLength(Integer.valueOf(40));
+        builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
+
+        return builder.build();
+    }
+
 
     private void validateNonBlankKrmsTypeId(String krmsTypeId) {
         if (StringUtils.isEmpty(krmsTypeId)) {
@@ -308,14 +348,17 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         private final Type type;
         private final String peopleFlowId;
+        private final String peopleFlowName;
 
-        private PeopleFlowAction(Type type, String peopleFlowId) {
+        private PeopleFlowAction(Type type, String peopleFlowId, String peopleFlowName) {
 
             if (type == null) throw new IllegalArgumentException("type must not be null");
-            if (StringUtils.isBlank(peopleFlowId)) throw new IllegalArgumentException("peopleFlowId must not be null");
+            if (StringUtils.isBlank(peopleFlowId)) throw new IllegalArgumentException("peopleFlowId must not be null or blank");
+            if (StringUtils.isBlank(peopleFlowName)) throw new IllegalArgumentException("peopleFlowName must not be null or blank");
 
             this.type = type;
             this.peopleFlowId = peopleFlowId;
+            this.peopleFlowName = peopleFlowName;
         }
 
         @Override
@@ -342,6 +385,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
             environment.getEngineResults().setAttribute(
                     PEOPLE_FLOWS_SELECTED_ATTRIBUTE, selectedAttributesStringBuilder.toString()
             );
+            environment.getEngineResults().setAttribute(NAME_ATTRIBUTE_FIELD, peopleFlowName);
         }
 
         @Override

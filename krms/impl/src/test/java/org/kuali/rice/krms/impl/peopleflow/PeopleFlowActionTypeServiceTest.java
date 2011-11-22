@@ -34,7 +34,6 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.engine.BasicExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.TermResolutionEngineImpl;
-import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 import javax.jws.WebParam;
@@ -59,7 +58,9 @@ public class PeopleFlowActionTypeServiceTest {
             PeopleFlowActionTypeService.Type.APPROVAL);
 
     private static final String VALID_PEOPLEFLOW_ID_1 = "myBogusPeopleFlowId1";
+    private static final String VALID_PEOPLEFLOW_NAME_1 = "myBogusPeopleFlowName1";
     private static final String VALID_PEOPLEFLOW_ID_2 = "myBogusPeopleFlowId2";
+    private static final String VALID_PEOPLEFLOW_NAME_2 = "myBogusPeopleFlowName2";
     private static final String INVALID_PEOPLEFLOW_ID = "invalidPeopleFlowId";
 
     private static final ConfigurationService configurationService = new ConfigurationService() {
@@ -88,6 +89,7 @@ public class PeopleFlowActionTypeServiceTest {
 
         Map<String, String> attributes = new HashMap<String, String>();
         attributes.put(PeopleFlowActionTypeService.ATTRIBUTE_FIELD_NAME, VALID_PEOPLEFLOW_ID_1);
+        attributes.put(PeopleFlowActionTypeService.NAME_ATTRIBUTE_FIELD, VALID_PEOPLEFLOW_NAME_1);
 
         actionDefinitionBuilder.setAttributes(attributes);
 
@@ -107,6 +109,7 @@ public class PeopleFlowActionTypeServiceTest {
         // change the peopleFlow id
         attributes.clear();
         attributes.put(PeopleFlowActionTypeService.ATTRIBUTE_FIELD_NAME, VALID_PEOPLEFLOW_ID_2);
+        attributes.put(PeopleFlowActionTypeService.NAME_ATTRIBUTE_FIELD, VALID_PEOPLEFLOW_NAME_2);
         actionDefinitionBuilder.setAttributes(attributes);
 
         // load an approval action
@@ -120,6 +123,12 @@ public class PeopleFlowActionTypeServiceTest {
 
         // compare against our expected output:
         assertEquals("F:myBogusPeopleFlowId1,A:myBogusPeopleFlowId2", selectedPeopleFlows);
+
+        String selectedPeopleName =
+                (String)ee.getEngineResults().getAttribute(PeopleFlowActionTypeService.NAME_ATTRIBUTE_FIELD);
+
+        // compare against our expected output:
+        assertEquals(VALID_PEOPLEFLOW_NAME_2, selectedPeopleName);
 
         // TODO: test ActionDefinition w/o the attribute we need
 

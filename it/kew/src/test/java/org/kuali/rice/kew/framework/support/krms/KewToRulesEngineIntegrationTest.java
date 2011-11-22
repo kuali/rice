@@ -61,11 +61,13 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
     private static final String SIMPLE_DOCUMENT_TYPE = "RulesEngineIntegration-Simple";
 
     private static final String PEOPLE_FLOW_ID_ATTRIBUTE = "peopleFlowId";
+    private static final String PEOPLE_FLOW_NAME_ATTRIBUTE = "peopleFlowName";
     private static final String EVENT_ATTRIBUTE = "Event";
 
     private BusinessObjectService businessObjectService;
 
     private KrmsAttributeDefinition peopleFlowIdAttributeDefinition;
+    private KrmsAttributeDefinition peopleFlowNameAttributeDefinition;
     private KrmsTypeDefinition approvalPeopleFlowActionType;
     private RuleBo ruleBo;
 
@@ -77,9 +79,11 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         assertNotNull(businessObjectService);
         PeopleFlowDefinition peopleFlow = createFirstPeopleFlow();
         this.peopleFlowIdAttributeDefinition = createPeopleFlowIdAttributeDefinition();
+        this.peopleFlowNameAttributeDefinition = createPeopleFlowNameAttributeDefinition();
         KrmsAttributeDefinitionBo eventAttributeDefinition = createEventAttributeDefinition();
         this.approvalPeopleFlowActionType = createApprovalPeopleFlowActionType(peopleFlowIdAttributeDefinition);
-        this.ruleBo = createRule(approvalPeopleFlowActionType, peopleFlowIdAttributeDefinition, peopleFlow.getId());
+        this.ruleBo = createRule(approvalPeopleFlowActionType, peopleFlowIdAttributeDefinition,
+                                 peopleFlowNameAttributeDefinition, peopleFlow.getId());
         ContextBo contextBo = createContext();
         createAgenda(ruleBo, contextBo, eventAttributeDefinition);
     }
@@ -99,17 +103,32 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
      * Create an attribute definition for "peopleFlowId" which can be used on PeopleFlow-related action types.
      */
     private KrmsAttributeDefinition createPeopleFlowIdAttributeDefinition() {
+        return createPeopleFlowAttributeDefinition(PEOPLE_FLOW_ID_ATTRIBUTE, "PeopleFlow ID");
+    }
+
+    /**
+     * Create an attribute definition for "peopleFlowName" 
+     */
+    private KrmsAttributeDefinition createPeopleFlowNameAttributeDefinition() {
+        return createPeopleFlowAttributeDefinition(PEOPLE_FLOW_NAME_ATTRIBUTE, "PeopleFlow Name");
+    }
+
+    /**
+     * Create an attribute definition for "peopleFlow" using given attribute and label
+     */
+    private KrmsAttributeDefinition createPeopleFlowAttributeDefinition(String attribute, String label) {
         KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("krmsAttributeDefinitionService");
         assertNotNull(service);
         KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
         attributeDefinitionBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
-        attributeDefinitionBo.setName(PEOPLE_FLOW_ID_ATTRIBUTE);
-        attributeDefinitionBo.setLabel("PeopleFlow ID");
+        attributeDefinitionBo.setName(attribute);
+        attributeDefinitionBo.setLabel(label);
         attributeDefinitionBo.setActive(true);
         attributeDefinitionBo = businessObjectService.save(attributeDefinitionBo);
         assertNotNull(attributeDefinitionBo.getId());
         return KrmsAttributeDefinitionBo.to(attributeDefinitionBo);
     }
+
 
     /**
      * Creates the KRMS Type for PeopleFlow approval actions.
@@ -135,7 +154,8 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
      * @param peopleFlowIdAttributeDefinition
      * @param peopleFlowId
      */
-    private RuleBo createRule(KrmsTypeDefinition actionType, KrmsAttributeDefinition peopleFlowIdAttributeDefinition, String peopleFlowId) {
+    private RuleBo createRule(KrmsTypeDefinition actionType, KrmsAttributeDefinition peopleFlowIdAttributeDefinition,
+            KrmsAttributeDefinition peopleFlowNameAttributeDefinition, String peopleFlowId) {
         RuleBo rule = new RuleBo();
         rule.setNamespace("TEST");
         rule.setName("PeopleFlowRule");
@@ -153,15 +173,22 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         peopleFlowAction.setTypeId(actionType.getId());
         Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
         peopleFlowAction.setAttributeBos(actionAttributes);
+
         ActionAttributeBo actionAttribute = new ActionAttributeBo();
         actionAttributes.add(actionAttribute);
         actionAttribute.setAttributeDefinitionId(peopleFlowIdAttributeDefinition.getId());
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowIdAttributeDefinition));
         actionAttribute.setValue(peopleFlowId);
 
+        ActionAttributeBo actionNameAttribute = new ActionAttributeBo();
+        actionAttributes.add(actionNameAttribute);
+        actionNameAttribute.setAttributeDefinitionId(peopleFlowNameAttributeDefinition.getId());
+        actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
+        actionNameAttribute.setValue(peopleFlowId);
+
         // set up a simple default type for the rule
         KrmsTypeRepositoryService krmsTypeRepositoryService = KrmsApiServiceLocator.getKrmsTypeRepositoryService();
-        KrmsTypeDefinition.Builder typeDefinition = KrmsTypeDefinition.Builder.create("Name", KrmsConstants.KRMS_NAMESPACE);
+        KrmsTypeDefinition.Builder typeDefinition = KrmsTypeDefinition.Builder.create("PeopleFlowRule Name", KrmsConstants.KRMS_NAMESPACE);
         typeDefinition.setServiceName("defaultRuleTypeService");
         KrmsTypeDefinition defaultRuleType = krmsTypeRepositoryService.createKrmsType(typeDefinition.build());
         assertNotNull(defaultRuleType);
@@ -173,7 +200,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         assertNotNull(rule.getId());
         assertEquals(1, rule.getActions().size());
         assertNotNull(rule.getActions().get(0).getId());
-        assertEquals(1, rule.getActions().get(0).getAttributeBos().size());
+        assertEquals(2, rule.getActions().get(0).getAttributeBos().size());
         return rule;
     }
 
@@ -353,6 +380,12 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         actionAttribute.setAttributeDefinitionId(peopleFlowIdAttributeDefinition.getId());
         actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowIdAttributeDefinition));
         actionAttribute.setValue(peopleFlow.getId());
+
+        ActionAttributeBo actionNameAttribute = new ActionAttributeBo();
+        actionAttributes.add(actionNameAttribute);
+        actionNameAttribute.setAttributeDefinitionId(peopleFlowNameAttributeDefinition.getId());
+        actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
+        actionNameAttribute.setValue(peopleFlow.getId());
 
         businessObjectService.save(ruleBo);
         

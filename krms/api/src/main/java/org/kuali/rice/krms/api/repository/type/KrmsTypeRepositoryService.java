@@ -107,6 +107,30 @@ public interface KrmsTypeRepositoryService {
     List<KrmsTypeDefinition> findAllTypes();
 
     /**
+     * Returns all agenda types for the given contextId.
+     *
+     * @param contextId the id of the context
+     * @return all agenda types for the given contextId
+     * @throws IllegalArgumentException if the given contextId is a null or blank value
+     */
+    List<KrmsTypeDefinition> findAllAgendaTypesByContextId(
+            @WebParam(name="contextId") String contextId)
+        throws RiceIllegalArgumentException;
+
+    /**
+     * Return the agenda type by agendaItemId for the given contextId.
+     *
+     * @param agendaTypeId the id of the agendaType
+     * @param contextId the id of the context
+     * @return agendaType or null if none is found
+     * @throws IllegalArgumentException if the given agendaTypeId or contextId is a null or blank value
+     */
+    KrmsTypeDefinition getAgendaTypeByAgendaTypeIdAndContextId(
+            @WebParam(name="agendaTypeId") String agendaTypeId,
+            @WebParam(name="contextId") String contextId)
+        throws RiceIllegalArgumentException;
+
+    /**
      * Returns all rule types for the given contextId.
      *
      * @param contextId the id of the context
@@ -118,7 +142,7 @@ public interface KrmsTypeRepositoryService {
         throws RiceIllegalArgumentException;
 
     /**
-     * Returns all rule types for the given contextId.
+     * Return the rule type by ruleItemId for the given contextId.
      *
      * @param ruleTypeId the id of the ruleType
      * @param contextId the id of the context
@@ -142,7 +166,7 @@ public interface KrmsTypeRepositoryService {
         throws RiceIllegalArgumentException;
 
     /**
-     * Returns all action types for the given contextId.
+     * Return the action type by actionItemId for the given contextId.
      *
      * @param actionTypeId the id of the actionType
      * @param contextId the id of the context

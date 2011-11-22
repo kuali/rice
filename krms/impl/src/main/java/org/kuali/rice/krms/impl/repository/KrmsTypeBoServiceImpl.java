@@ -138,6 +138,36 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
     }
 
     @Override
+    public List<KrmsTypeDefinition> findAllAgendaTypesByContextId(String contextId) {
+        if (StringUtils.isBlank(contextId)) {
+            throw new RiceIllegalArgumentException("contextId was a null or blank value");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contextId", contextId);
+        Collection<ContextValidAgendaBo> contextValidAgendaBos = businessObjectService.findMatchingOrderBy(ContextValidAgendaBo.class, Collections.unmodifiableMap(map), "agendaType.name", true);
+        List<KrmsTypeDefinition>  agendaTypes = new ArrayList<KrmsTypeDefinition>();
+        for (ContextValidAgendaBo contextValidAgendaBo : contextValidAgendaBos) {
+            agendaTypes.add(KrmsTypeBo.to(contextValidAgendaBo.getAgendaType()));
+        }
+        return agendaTypes;
+    }
+
+    @Override
+    public KrmsTypeDefinition getAgendaTypeByAgendaTypeIdAndContextId(String agendaTypeId, String contextId) {
+        if (StringUtils.isBlank(agendaTypeId)) {
+            throw new RiceIllegalArgumentException("agendaTypeId was a null or blank value");
+        }
+        if (StringUtils.isBlank(contextId)) {
+            throw new RiceIllegalArgumentException("contextId was a null or blank value");
+        }
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("agendaTypeId", agendaTypeId);
+        map.put("contextId", contextId);
+        ContextValidAgendaBo contextValidAgendaBo = businessObjectService.findByPrimaryKey(ContextValidAgendaBo.class, Collections.unmodifiableMap(map));
+        return KrmsTypeBo.to(contextValidAgendaBo.getAgendaType());
+    }
+
+    @Override
     public List<KrmsTypeDefinition> findAllRuleTypesByContextId(String contextId) {
         if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("contextId was a null or blank value");
@@ -145,11 +175,11 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeRepositoryService {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
         Collection<ContextValidRuleBo> contextValidRuleBos = businessObjectService.findMatchingOrderBy(ContextValidRuleBo.class, Collections.unmodifiableMap(map), "ruleType.name", true);
-        List<KrmsTypeDefinition>  actionTypes = new ArrayList<KrmsTypeDefinition>();
+        List<KrmsTypeDefinition>  ruleTypes = new ArrayList<KrmsTypeDefinition>();
         for (ContextValidRuleBo contextValidRuleBo : contextValidRuleBos) {
-            actionTypes.add(KrmsTypeBo.to(contextValidRuleBo.getRuleType()));
+            ruleTypes.add(KrmsTypeBo.to(contextValidRuleBo.getRuleType()));
         }
-        return actionTypes;
+        return ruleTypes;
     }
 
     @Override

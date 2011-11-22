@@ -18,40 +18,21 @@ package org.kuali.rice.krms.impl.repository;
 import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
-import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Helper class that returns all agenda types that are valid for a given context.
  */
 public class AgendaTypeValuesFinder extends UifKeyValuesFinderBase {
-
-    private boolean blankOption;
-
-    /**
-     * @return the blankOption
-     */
-    public boolean isBlankOption() {
-        return this.blankOption;
-    }
-
-    /**
-     * @param blankOption the blankOption to set
-     */
-    public void setBlankOption(boolean blankOption) {
-        this.blankOption = blankOption;
-    }
 
     @Override
     public List<KeyValue> getKeyValues(ViewModel model) {
@@ -62,26 +43,18 @@ public class AgendaTypeValuesFinder extends UifKeyValuesFinderBase {
 
         // if we have an agenda w/ a selected context
         if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {
-
-            // key off the contextId
-
-            String contextId = agendaEditor.getAgenda().getContextId();
-
-            if(blankOption){
-                keyValues.add(new ConcreteKeyValue("", ""));
-            }
-
-            Map<String, String> criteria = Collections.singletonMap("contextId", contextId);
-            Collection<ContextValidAgendaBo> contextValidAgendas =
-                    KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(
-                            ContextValidAgendaBo.class, criteria, "agendaType.name", true
-                    );
-
-            for (ContextValidAgendaBo contextValidAgenda : contextValidAgendas) {
-                keyValues.add(new ConcreteKeyValue(contextValidAgenda.getAgendaType().getId(), contextValidAgenda.getAgendaType().getName()));
+            Collection<KrmsTypeDefinition> agendaTypes = getKrmsTypeRepositoryService().findAllAgendaTypesByContextId(
+                    agendaEditor.getAgenda().getContextId());
+            for (KrmsTypeDefinition agendaType : agendaTypes) {
+                keyValues.add(new ConcreteKeyValue(agendaType.getId(), agendaType.getName()));
             }
         }
 
         return keyValues;
     }
+
+    public KrmsTypeRepositoryService getKrmsTypeRepositoryService() {
+        return KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
+    }
+
 }

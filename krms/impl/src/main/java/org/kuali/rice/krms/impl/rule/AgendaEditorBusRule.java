@@ -125,7 +125,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         AgendaEditor oldAgenda = (AgendaEditor) document.getOldMaintainableObject().getDataObject();
         isValid &= validContext(agenda);
         isValid &= validAgendaName(agenda);
-        isValid &= validAgendaAttributes(oldAgenda, agenda);
+        isValid &= validAgendaTypeAndAttributes(oldAgenda, agenda);
 
         return isValid;
     }
@@ -153,6 +153,28 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         catch (IllegalArgumentException e) {
             this.putFieldError(KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.invalidContext");
             isValid = false;
+        }
+
+        return isValid;
+    }
+
+    private boolean validAgendaTypeAndAttributes( AgendaEditor oldAgendaEditor, AgendaEditor newAgendaEditor) {
+        if (validAgendaType(newAgendaEditor.getAgenda().getTypeId(), newAgendaEditor.getAgenda().getContextId())) {
+            return validAgendaAttributes(oldAgendaEditor, newAgendaEditor);
+        } else {
+            return false;
+        }
+    }
+    private boolean validAgendaType(String typeId, String contextId) {
+        boolean isValid = true;
+
+        if (!StringUtils.isBlank(typeId) && !StringUtils.isBlank(contextId)) {
+            if (getKrmsTypeRepositoryService().getAgendaTypeByAgendaTypeIdAndContextId(typeId, contextId) != null) {
+                return true;
+            } else {
+                this.putFieldError(KRMSPropertyConstants.Agenda.TYPE, "error.agenda.invalidType");
+                return false;
+            }
         }
 
         return isValid;
@@ -224,6 +246,12 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return true;
     }
 
+    /**
+     * Check if a agenda item is valid.
+     *
+     * @param document, the Agenda document of the added/edited agenda item
+     * @return true if agenda item is valid, false otherwise
+     */
     public boolean processAgendaItemBusinessRules(MaintenanceDocument document) {
         boolean isValid = true;
 
@@ -413,7 +441,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     public ActionTypeService getActionTypeService(String serviceName) {
         return (ActionTypeService)KrmsRepositoryServiceLocator.getService(serviceName);
     }
-    private AgendaAuthorizationService getAgendaAuthorizationService() {
+    public AgendaAuthorizationService getAgendaAuthorizationService() {
         return KrmsRepositoryServiceLocator.getAgendaAuthorizationService();
     }
 

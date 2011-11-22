@@ -152,7 +152,7 @@
             <bean parent="SelectControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="org.kuali.rice.krms.impl.repository.RuleTypeValuesFinder" p:blankOption="false"/>
+            <bean class="org.kuali.rice.krms.impl.repository.RuleTypeValuesFinder"/>
           </property>
         </bean>
         <bean parent="RemoteFieldsHolder" p:propertyName="customRuleAttributesMap"
@@ -678,7 +678,7 @@
             <bean parent="SelectControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="true"/>
+            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder"/>
           </property>
         </bean>
         <bean parent="InputField" p:propertyName="description" p:label="Description" p:required="false"/>
@@ -695,7 +695,7 @@
             <bean parent="SelectControl"/>
           </property>
           <property name="optionsFinder">
-            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="false"/>
+            <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder"/>
           </property>
         </bean>
         <bean parent="RemoteFieldsHolder" p:propertyName="customRuleActionAttributesMap"

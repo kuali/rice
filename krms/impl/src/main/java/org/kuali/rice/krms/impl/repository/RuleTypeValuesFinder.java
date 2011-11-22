@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
@@ -33,8 +34,6 @@ import java.util.List;
  */
 public class RuleTypeValuesFinder extends UifKeyValuesFinderBase {
 
-    private boolean blankOption;
-
     @Override
 	public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
@@ -42,30 +41,16 @@ public class RuleTypeValuesFinder extends UifKeyValuesFinderBase {
         MaintenanceForm maintenanceForm = (MaintenanceForm) model;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
 
-        if(blankOption){
-            keyValues.add(new ConcreteKeyValue("", ""));
+        // if we have an agenda w/ a selected context
+        if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {
+            Collection<KrmsTypeDefinition> ruleTypes = getKrmsTypeRepositoryService().findAllRuleTypesByContextId(
+                    agendaEditor.getAgenda().getContextId());
+            for (KrmsTypeDefinition ruleType : ruleTypes) {
+                keyValues.add(new ConcreteKeyValue(ruleType.getId(), ruleType.getName()));
+            }
         }
 
-        Collection<KrmsTypeDefinition> ruleTypes = getKrmsTypeRepositoryService().findAllRuleTypesByContextId(
-                agendaEditor.getAgenda().getContextId());
-        for (KrmsTypeDefinition ruleType : ruleTypes) {
-            keyValues.add(new ConcreteKeyValue(ruleType.getId(), ruleType.getName()));
-        }
         return keyValues;
-    }
-
-    /**
-     * @return the blankOption
-     */
-    public boolean isBlankOption() {
-        return this.blankOption;
-    }
-
-    /**
-     * @param blankOption the blankOption to set
-     */
-    public void setBlankOption(boolean blankOption) {
-        this.blankOption = blankOption;
     }
 
     public KrmsTypeRepositoryService getKrmsTypeRepositoryService() {

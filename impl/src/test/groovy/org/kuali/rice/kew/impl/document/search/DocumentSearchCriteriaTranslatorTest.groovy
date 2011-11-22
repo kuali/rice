@@ -62,7 +62,9 @@ class DocumentSearchCriteriaTranslatorTest {
         def dts = new DateTimeServiceImpl()
         dts.afterPropertiesSet()
         ssl.addService(new QName(CoreConstants.Services.DATETIME_SERVICE), dts)
+        GlobalResourceLoader.stop();
         GlobalResourceLoader.addResourceLoader(new BaseResourceLoader(new QName("whatever"), ssl))
+        GlobalResourceLoader.start();
     }
     /**
      * Tests that the lookup form fields are property parsed into a DocumentSearchCriteria object

@@ -65,8 +65,9 @@ public class RuleValidationAttributeServicesTest {
 
     private static void mockTheResourceLoader() {
         mockTheConfig()
-        GlobalResourceLoader.addResourceLoader(new BaseResourceLoader(new QName(MOCK_APP_ID, RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME)));
-        GlobalResourceLoader.start();
+        GlobalResourceLoader.stop()
+        GlobalResourceLoader.addResourceLoader(new BaseResourceLoader(new QName(MOCK_APP_ID, RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME)))
+        GlobalResourceLoader.start()
     }
 
     @Before

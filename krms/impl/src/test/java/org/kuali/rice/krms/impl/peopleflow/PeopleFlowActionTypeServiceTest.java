@@ -127,9 +127,6 @@ public class PeopleFlowActionTypeServiceTest {
         String selectedPeopleName =
                 (String)ee.getEngineResults().getAttribute(PeopleFlowActionTypeService.NAME_ATTRIBUTE_FIELD);
 
-        // compare against our expected output:
-        assertEquals(VALID_PEOPLEFLOW_NAME_2, selectedPeopleName);
-
         // TODO: test ActionDefinition w/o the attribute we need
 
         actionDefinitionBuilder.setAttributes(Collections.<String, String>emptyMap());

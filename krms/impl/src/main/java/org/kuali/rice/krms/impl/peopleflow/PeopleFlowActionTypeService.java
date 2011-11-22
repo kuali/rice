@@ -385,7 +385,6 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
             environment.getEngineResults().setAttribute(
                     PEOPLE_FLOWS_SELECTED_ATTRIBUTE, selectedAttributesStringBuilder.toString()
             );
-            environment.getEngineResults().setAttribute(NAME_ATTRIBUTE_FIELD, peopleFlowName);
         }
 
         @Override

@@ -703,7 +703,8 @@
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.name" p:label="Name" p:required="true"
               p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"/>
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="false"
-              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"/>
+              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"
+              p:instructionalText="instructional text" p:constraintText="constraint text"/>
       </list>
     </property>
   </bean>

@@ -130,7 +130,7 @@
 
   <bean id="RoleBo-namespaceCode" parent="RoleBo-namespaceCode-parentBean"/>
   <bean id="RoleBo-namespaceCode-parentBean" parent="KimType-namespaceCode" abstract="true" p:name="namespaceCode"
-        p:forceUppercase="false" p:label="Namespace" p:shortLabel="Namespace" p:maxLength="40" p:required="false">
+        p:forceUppercase="false" p:label="Namespace" p:shortLabel="Namespace" p:maxLength="40" p:required="true">
   </bean>
 
   <bean id="RoleBo-active" parent="RoleBo-active-parentBean"/>

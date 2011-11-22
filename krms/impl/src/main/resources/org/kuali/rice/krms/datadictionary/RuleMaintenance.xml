@@ -681,7 +681,7 @@
             <bean class="org.kuali.rice.krms.impl.repository.ActionTypeValuesFinder" p:blankOption="true"/>
           </property>
         </bean>
-        <bean parent="InputField" p:propertyName="description" p:label="Description" p:required="true"/>
+        <bean parent="InputField" p:propertyName="description" p:label="Description" p:required="false"/>
       </list>
     </property>
   </bean>
@@ -702,7 +702,7 @@
               p:fetchingMethodToCall="retrieveRuleActionCustomAttributes"/>
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.name" p:label="Name" p:required="true"
               p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"/>
-        <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="true"
+        <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="false"
               p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"/>
       </list>
     </property>

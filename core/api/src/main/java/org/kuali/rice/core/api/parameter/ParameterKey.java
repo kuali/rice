@@ -124,6 +124,10 @@ public final class ParameterKey extends AbstractDataTransferObject {
 	public String getName() {
 		return name;
 	}
+
+    public String getCacheKey() {
+        return this.applicationId + this.namespaceCode + this.componentCode + this.name;
+    }
     
 	/**
 	 * Defines some internal constants used on this class.

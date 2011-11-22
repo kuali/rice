@@ -63,5 +63,9 @@ public class ParameterId implements Serializable {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+
+    public String getCacheKey() {
+        return this.applicationId + this.componentCode + this.namespaceCode + this.name;
+    }
 }
 

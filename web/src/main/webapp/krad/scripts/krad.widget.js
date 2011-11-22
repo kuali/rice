@@ -533,6 +533,18 @@ function createSuggest(controlId, options, queryFieldId, queryParameters) {
 }
 
 /**
+ * Uses the Fluid Reorderer plug-in to allow the items of the given div to be reordered by the user.
+ * See <link>http://wiki.fluidproject.org/display/fluid/Grid+Reorderer+API</link> for documentation on the
+ * options available for the plug-in
+ *
+ * @param divId - id for the div containing the items to be reordered
+ * @param options - options for reorderer plug-in
+ */
+function createReorderer(divId, options) {
+    fluid.reorderGrid(jq("#" + divId + "_div"), options);
+}
+
+/**
  * Executes a query with ajax for the given field to retrieve additional information after
  * the field has been updated (on blur)
  *

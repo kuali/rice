@@ -24,7 +24,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Base Groups -->
 
-  <bean id="Group" abstract="true" parent="Group-parentBean"/>
+  <bean id="Group" parent="Group-parentBean"/>
   <bean id="Group-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
 	    <property name="errorsField">
@@ -45,7 +45,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
-  <bean id="PageGroup" abstract="true" parent="PageGroup-parentBean"/>
+  <bean id="PageGroup" parent="PageGroup-parentBean"/>
   <bean id="PageGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.PageGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/group.jsp"/>
       <!-- default set here so page header will always be genereated -->
@@ -68,7 +68,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
-  <bean id="GroupGridLayout" abstract="true" parent="GroupGridLayout-parentBean"/>
+  <bean id="GroupGridLayout" parent="GroupGridLayout-parentBean"/>
   <bean id="GroupGridLayout-parentBean" abstract="true" parent="Group">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
@@ -80,14 +80,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="GroupBodyOnly" abstract="true" parent="GroupBodyOnly-parentBean"/>
+  <bean id="GroupBodyOnly" parent="GroupBodyOnly-parentBean"/>
   <bean id="GroupBodyOnly-parentBean" abstract="true" parent="Group">
       <property name="renderHeader" value="false"/>
       <property name="renderFooter" value="false"/>
       <property name="disclosure.render" value="false"/>
   </bean>
 
-  <bean id="GroupGridBodyOnly" abstract="true" parent="GroupGridBodyOnly-parentBean"/>
+  <bean id="GroupGridBodyOnly" parent="GroupGridBodyOnly-parentBean"/>
   <bean id="GroupGridBodyOnly-parentBean" abstract="true" parent="GroupBodyOnly">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
@@ -99,7 +99,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="TabGroup" abstract="true" parent="TabGroup-parentBean"/>
+  <bean id="TabGroup" parent="TabGroup-parentBean"/>
   <bean id="TabGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.TabGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/tabGroup.jsp"/>
 	  <property name="disclosure">
@@ -110,22 +110,22 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="NavigationGroup" abstract="true" parent="NavigationGroup-parentBean"/>
+  <bean id="NavigationGroup" parent="NavigationGroup-parentBean"/>
   <bean id="NavigationGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.NavigationGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/navigationGroup.jsp"/>
   </bean>
 
-  <bean id="NavigationGroupMenu" abstract="true" parent="NavigationGroupMenu-parentBean"/>
+  <bean id="NavigationGroupMenu" parent="NavigationGroupMenu-parentBean"/>
   <bean id="NavigationGroupMenu-parentBean" abstract="true" parent="NavigationGroup">
       <property name="navigationType" value="VERTICAL_MENU"/>
   </bean>
 
-  <bean id="NavigationGroupTabMenu" abstract="true" parent="NavigationGroupTabMenu-parentBean"/>
+  <bean id="NavigationGroupTabMenu" parent="NavigationGroupTabMenu-parentBean"/>
   <bean id="NavigationGroupTabMenu-parentBean" abstract="true" parent="NavigationGroup">
       <property name="navigationType" value="TAB_MENU"/>
   </bean>
 
-  <bean id="TreeGroup" abstract="true" parent="TreeGroup-parentBean"/>
+  <bean id="TreeGroup" parent="TreeGroup-parentBean"/>
   <bean id="TreeGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.TreeGroup" parent="Group">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/treeGroup.jsp"/>
       <property name="bindingInfo">
@@ -149,21 +149,30 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="LinkGroup" abstract="true" parent="LinkGroup-parentBean"/>
+  <bean id="ReorderingGroup" parent="ReorderingGroup-parentBean"/>
+  <bean id="ReorderingGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.ReorderingGroup"
+        scope="prototype" parent="Group">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/group/reorderingGroup.jsp"/>
+    <property name="reorderer">
+      <bean parent="Reorderer"/>
+    </property>
+  </bean>
+
+  <bean id="LinkGroup" parent="LinkGroup-parentBean"/>
   <bean id="LinkGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.LinkGroup" parent="GroupBodyOnly">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/linkGroup.jsp"/>
       <property name="linkSeparator" value="&amp;nbsp;&amp;nbsp;"/>
       <property name="emptyLinkGroupString" value="&amp;nbsp;"/>
   </bean>
 
-  <bean id="LinkGroupNested" abstract="true" parent="LinkGroupNested-parentBean"/>
+  <bean id="LinkGroupNested" parent="LinkGroupNested-parentBean"/>
   <bean id="LinkGroupNested-parentBean" abstract="true" parent="LinkGroup">
       <property name="linkSeparator" value="&amp;nbsp;|&amp;nbsp;"/>
       <property name="groupBeginDelimiter" value="&amp;nbsp;["/>
       <property name="groupEndDelimiter" value="]"/>
   </bean>
 
-  <bean id="GroupSection" abstract="true" parent="GroupSection-parentBean"/>
+  <bean id="GroupSection" parent="GroupSection-parentBean"/>
   <bean id="GroupSection-parentBean" abstract="true" parent="Group">
       <property name="header">
         <bean parent="HeaderThree" p:styleClasses="grouping-header-expandable"/>
@@ -176,7 +185,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="GroupSectionGridLayout" abstract="true" parent="GroupSectionGridLayout-parentBean"/>
+  <bean id="GroupSectionGridLayout" parent="GroupSectionGridLayout-parentBean"/>
   <bean id="GroupSectionGridLayout-parentBean" abstract="true" parent="GroupSection">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
@@ -188,7 +197,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="CollectionGroup" abstract="true" parent="CollectionGroup-parentBean"/>
+  <bean id="CollectionGroup" parent="CollectionGroup-parentBean"/>
   <bean id="CollectionGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup" parent="Group">
       <property name="template" value="/krad/WEB-INF/jsp/templates/group/collectionGroup.jsp"/>
       <property name="styleClasses" value="kr-collection-cntr,kr-collectionStacked"/>
@@ -224,7 +233,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="CollectionGroupSection" abstract="true" parent="CollectionGroupSection-parentBean"/>
+  <bean id="CollectionGroupSection" parent="CollectionGroupSection-parentBean"/>
   <bean id="CollectionGroupSection-parentBean" parent="CollectionGroup">
     <property name="header.headerLevel" value="h3"/>
     <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
@@ -233,7 +242,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="disclosure.render" value="true"/>
   </bean>
 
-  <bean id="CollectionGroupTableLayout" abstract="true" parent="CollectionGroupTableLayout-parentBean"/>
+  <bean id="CollectionGroupTableLayout" parent="CollectionGroupTableLayout-parentBean"/>
   <bean id="CollectionGroupTableLayout-parentBean" abstract="true" parent="CollectionGroup">
       <property name="styleClasses" value="kr-collection-cntr,kr-collectionTable"/>
       <property name="layoutManager">
@@ -241,7 +250,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
 
-  <bean id="CollectionGroupSectionTableLayout" abstract="true" parent="CollectionGroupSectionTableLayout-parentBean"/>
+  <bean id="CollectionGroupSectionTableLayout" parent="CollectionGroupSectionTableLayout-parentBean"/>
   <bean id="CollectionGroupSectionTableLayout-parentBean" parent="CollectionGroupTableLayout">
     <property name="header.headerLevel" value="h3"/>
     <property name="header.styleClasses" value="kr-page-section-title kr-collectionGroup-header grouping-header-expandable"/>
@@ -250,7 +259,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="disclosure.render" value="true"/>
   </bean>
 
-  <bean id="ListGroup" abstract="true" parent="ListGroup-parentBean"/>
+  <bean id="ListGroup" parent="ListGroup-parentBean"/>
   <bean id="ListGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.CollectionGroup"
         parent="Group">
     <property name="styleClasses" value="kr-collection-cntr, kr-collection-list-cntr"/>

@@ -293,6 +293,26 @@
           <property name="propertyName" value="tree1"/>
         </bean>
 
+        <bean parent="ReorderingGroup">
+          <property name="title" value="Reordering Group"/>
+          <property name="instructionalText"
+                    value="Reorder the group items by dragging one of the items to its new position. Note each of these 'boxes' could contain a field or group of fields"/>
+          <property name="items">
+            <list>
+              <bean parent="MessageField" p:messageText="Box 1"
+                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+              <bean parent="MessageField" p:messageText="Box 2"
+                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+              <bean parent="MessageField" p:messageText="Box 3"
+                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+              <bean parent="MessageField" p:messageText="Box 4"
+                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+              <bean parent="MessageField" p:messageText="Box 5"
+                    p:styleClasses="fl-font-size-150,fl-input-outline"/>
+            </list>
+          </property>
+        </bean>
+
         <bean parent="IframeField" p:label="IframeField" p:width="800px" p:height="550px"
               p:source="http://www.kuali.org"/>
       </list>

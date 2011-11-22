@@ -15,9 +15,14 @@
     limitations under the License.
 
 --%>
-<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp" %>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.krad.uif.widget.Tabs"/>
-<tiles:useAttribute name="parent" classname="org.kuali.rice.krad.uif.container.Group"/>
+<tiles:useAttribute name="group" classname="org.kuali.rice.krad.uif.container.ReorderingGroup"/>
 
-<krad:script value="createTabs('${parent.id}', ${widget.componentOptionsJSString});"/>
+<%-- render group --%>
+<tiles:insertTemplate template="group.jsp">
+  <tiles:putAttribute name="group" value="${group}"/>
+</tiles:insertTemplate>
+
+<%-- render reorderer widget --%>
+<krad:template component="${group.reorderer}" parent="${group}"/>

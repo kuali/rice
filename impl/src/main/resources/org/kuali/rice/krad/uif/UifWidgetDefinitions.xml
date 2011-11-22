@@ -239,6 +239,12 @@
         <bean parent="AttributeQuery" />
       </property>
   </bean>
+
+  <bean id="Reorderer" parent="Reorderer-parentBean"/>
+  <bean id="Reorderer-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Reorderer" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/widget/reorderer.jsp"/>
+    <property name="movableStyleClass" value="flc-reorderer-movable"/>
+  </bean>
   
   <!-- Modifiers -->
   

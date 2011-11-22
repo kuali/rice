@@ -161,6 +161,11 @@ public class UifConstants {
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
     }
 
+    public static class ReordererOptionKeys {
+        public static final String SELECTORS = "selectors";
+        public static final String MOVABLES = "movables";
+    }
+
     public static class TitleAppendTypes {
         public static final String DASH = "dash";
         public static final String PARENTHESIS = "parenthesis";

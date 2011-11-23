@@ -24,42 +24,14 @@ import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl
 import org.kuali.rice.kns.lookup.LookupableHelperService
 import org.kuali.rice.kns.web.ui.Row
 import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertTrue
-import org.junit.Ignore
+
+import static org.junit.Assert.fail
 
 /**
  * Tests the DocumentSearchCriteriaProcessorKEWAdapter
  */
 class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
-     private static def BASIC_FIELD_NAMES = [
-            "documentTypeName",
-            "initiatorPrincipalName",
-            "documentId",
-            "dateCreated",
-            "saveName"
-     ]
-
-     private static def ADVANCED_FIELD_NAMES = [
-            "documentTypeName",
-            "initiatorPrincipalName",
-            "approverPrincipalName",
-            "viewerPrincipalName",
-            "groupViewerName",
-            "groupViewerId",
-            "documentId",
-            "applicationDocumentId",
-            "statusCode",
-            "applicationDocumentStatusCode",
-            "routeNodeName",
-            "routeNodeLogic",
-            "dateCreated",
-            "dateApproved",
-            "dateLastModified",
-            "dateFinalized",
-            "title",
-            "saveName"
-    ]
-
+    // the default rows for a DocumentSearchCriteria lookup, returned by AbstractLookupableHelperServiceImpl
     private static def DEFAULT_ROW_VALUES = [
         [ propertyName: "documentTypeName", fieldLabel: "Document Type", fieldType: "text" ],
         [ propertyName: "initiatorPrincipalName", fieldLabel: "Initiator", fieldType: "text" ],
@@ -85,9 +57,45 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         [ propertyName: "groupViewerId", fieldLabel: "Group Viewer Id", fieldType: "hidden" ]
     ]
 
+    // the list of *default* fields the DSCPKEWAdapter will return for a basic search
+    private static def BASIC_FIELD_NAMES = [
+        "documentTypeName",
+        "initiatorPrincipalName",
+        "documentId",
+        "dateCreated",
+        "rangeLowerBoundKeyPrefix_dateCreated",
+        "saveName"
+    ]
+
+    // the list of *default* fields the DSCPKEWAdapter will return for a detailed search
+    private static def ADVANCED_FIELD_NAMES = [
+        "documentTypeName",
+        "initiatorPrincipalName",
+        "approverPrincipalName",
+        "viewerPrincipalName",
+        "groupViewerName",
+        "groupViewerId",
+        "documentId",
+        "applicationDocumentId",
+        "statusCode",
+        "applicationDocumentStatusCode",
+        "routeNodeName",
+        "routeNodeLogic",
+        "dateCreated",
+        "rangeLowerBoundKeyPrefix_dateCreated",
+        "dateApproved",
+        "rangeLowerBoundKeyPrefix_dateApproved",
+        "dateLastModified",
+        "rangeLowerBoundKeyPrefix_dateLastModified",
+        "dateFinalized",
+        "rangeLowerBoundKeyPrefix_dateFinalized",
+        "title",
+        "saveName"
+    ]
+
+    // the list of additional fields added by DSCPKEWAdapter, including the searchable attribute fields for the "SearchDocType"
     private static def SEARCHABLE_FIELD_NAMES = [
         "documentAttribute.givenname", "documentAttribute.testLongKey", "documentAttribute.testFloatKey", "documentAttribute.testDateTimeKey",
-        "rangeLowerBoundKeyPrefix_dateCreated",
         "isAdvancedSearch",
         "resetSavedSearch",
         "superUserSearch"
@@ -99,11 +107,6 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         loadXmlFile("SearchAttributeConfig.xml");
     }
 
-    protected List<Row> getDefaultRows() {
-        LookupableHelperService lhs = new KualiLookupableHelperServiceImpl()
-        lhs.setBusinessObjectClass(DocumentSearchCriteriaBo.class)
-        lhs.getRows()
-    }
 
     /* this test should probably go in a KualiLookupableHelperService(Impl) integration test */
     @Test
@@ -111,33 +114,89 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         // simulate helper service initialization from lookup form
         def rows = getDefaultRows()
         displayRows(rows)
-        assertRows(rows, DEFAULT_ROW_VALUES)
+        assertRowValues(rows, DEFAULT_ROW_VALUES)
     }
 
+    /**
+     * Test basic search rows
+     */
     @Test
     void testBasicRows() {
-        DocumentSearchCriteriaProcessor dscp = new DocumentSearchCriteriaProcessorKEWAdapter()
-        def defaultRows = getDefaultRows()
-        def dscpRows = dscp.getRows(KEWServiceLocator.getDocumentTypeService().findByName("SearchDocType"), defaultRows, false, false)
-        displayRows(dscpRows)
-        assertRowPresence(dscpRows, BASIC_FIELD_NAMES + SEARCHABLE_FIELD_NAMES)
+        assertRows(BASIC_FIELD_NAMES + SEARCHABLE_FIELD_NAMES)
     }
 
-    @Test @Ignore("WIP")
+    /**
+     * Test basic search rows
+     */
+    @Test
+    void testBasicSuperUserRows() {
+        assertRows(BASIC_FIELD_NAMES + SEARCHABLE_FIELD_NAMES, false, true)
+    }
+
+    /**
+     * Test advanced/detailed search rows
+     */
+    @Test
     void testAdvancedRows() {
+        assertRows((ADVANCED_FIELD_NAMES + SEARCHABLE_FIELD_NAMES) - [ "applicationDocumentStatusCode" ] /* TODO: KULRICE-5635 */, true)
+    }
+
+    /**
+     * Test advanced/detailed search rows
+     */
+    @Test
+    void testAdvancedSuperUserRows() {
+        assertRows((ADVANCED_FIELD_NAMES + SEARCHABLE_FIELD_NAMES) - [ "applicationDocumentStatusCode" ] /* TODO: KULRICE-5635 */, true, true)
+    }
+
+    /**
+     * Calls a vanilla KualiLookupableHelperServiceImpl to get the default lookup rows for a DocumentSearchCriteriaBo which
+     * are sent to the DSCPKEWAdapter to simulate a real lookup rendering
+     */
+    protected List<Row> getDefaultRows() {
+        LookupableHelperService lhs = new KualiLookupableHelperServiceImpl()
+        lhs.setBusinessObjectClass(DocumentSearchCriteriaBo.class)
+        lhs.getRows()
+    }
+
+    /**
+     * Obtains rows and asserts that the expected list of fields is present
+     */
+    protected List<Row> assertRows(expectedFieldNames, advanced=false, superUser=false) {
         DocumentSearchCriteriaProcessor dscp = new DocumentSearchCriteriaProcessorKEWAdapter()
         def defaultRows = getDefaultRows()
-        def dscpRows = dscp.getRows(KEWServiceLocator.getDocumentTypeService().findByName("SearchDocType"), defaultRows, true, false)
-        displayRows(dscpRows)
-        assertRowPresence(dscpRows, ADVANCED_FIELD_NAMES + SEARCHABLE_FIELD_NAMES)
+        def dscpRows = dscp.getRows(KEWServiceLocator.getDocumentTypeService().findByName("SearchDocType"), defaultRows, advanced, superUser)
+        assertFieldValue(dscpRows, "isAdvancedSearch", advanced ? "YES" : "NO")
+        assertFieldValue(dscpRows, "superUserSearch", superUser ? "YES" : "NO")
+        assertFieldPresence(dscpRows, expectedFieldNames)
     }
-    
-    protected assertRowPresence(List<Row> row, List<String> names) {
-        def row_fields = row.collect { it.fields }.flatten().collect { it.propertyName }
+
+    /**
+     * Assert that the set of rows represents the set of field names
+     */
+    protected assertFieldPresence(List<Row> rows, List<String> names) {
+        def row_fields = rows.collect { it.fields }.flatten().collect { it.propertyName }
         assertEquals(names.toSet(), row_fields.toSet())
     }
 
-    protected assertRows(List<Row> rows, test_values) {
+    /**
+     * Assert that a field with a specific value exists
+     */
+    protected assertFieldValue(List<Row> rows, fieldName, fieldValue) {
+        for (row in rows) {
+            for (field in row.fields) {
+                if (field.propertyName == fieldName && field.propertyValue == fieldValue) {
+                    return
+                }
+            }
+        }
+        fail("Field with name '$fieldName' and value '$fieldValue' not found.")
+    }
+
+    /**
+     * Assert row list matches expected field data, in exact order
+     */
+    protected assertRowValues(List<Row> rows, test_values) {
         rows.eachWithIndex {
             it, i ->
                 assertEquals(it.fields[0].propertyName, test_values[i]["propertyName"])

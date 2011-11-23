@@ -27,7 +27,7 @@ function setPageBreadcrumb(){
 		var pageId = jq("#pageId").val();
 		jq("#breadcrumbs").find("#page_breadcrumb").remove();
 		var bcSet = false;
-		if(pageTitle){
+		if(pageTitle && pageTitle != "&nbsp;"){
 			jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 			jq("#current_breadcrumb_span").hide();
             if(jq("#current_breadcrumb_span").parent("li").length){
@@ -40,7 +40,7 @@ function setPageBreadcrumb(){
 		}
 		else if(pageId){
 			pageTitle = jq("a[name='"+ pageId + "']").text();
-			if(pageTitle){
+			if(pageTitle && pageTitle != "&nbsp;"){
 				jq("#breadcrumbs").append("<li id='page_breadcrumb'><span role='presentation'>&raquo;</span> <span class='kr-current'>" + pageTitle + "</span></li>");
 				jq("#current_breadcrumb_span").hide();
                 if(jq("#current_breadcrumb_span").parent("li").length){

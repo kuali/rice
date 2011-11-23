@@ -129,7 +129,7 @@ public class WorkflowRuleAttributeHandlerServiceImpl implements WorkflowRuleAttr
         if (WorkflowRuleSearchAttribute.class.isAssignableFrom(attribute.getClass())) {
             errors = ((WorkflowRuleSearchAttribute)attribute).validateSearchData(paramMap);
         } else {
-            errors = ((WorkflowRuleAttribute)attribute).validateRoutingData(paramMap);
+            errors = ((WorkflowRuleAttribute)attribute).validateRuleData(paramMap);
         }
         ValidationResults.Builder builder = ValidationResults.Builder.create();
         for (WorkflowServiceError error : errors) {

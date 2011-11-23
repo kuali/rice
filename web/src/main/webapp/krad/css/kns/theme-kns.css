@@ -1015,19 +1015,19 @@ div.kr-addLine, span.kr-addLine {
 
 
 .paginate_disabled_previous {
-	background: url(../../images/kns/back_disabled.jpg);
+	background: url(../../images/back_disabled.jpg);
 }
 
 .paginate_enabled_previous {
-    background-image: url(../../images/kns/back_enabled.jpg);
+    background-image: url(../../images/back_enabled.jpg);
 }
 
 .paginate_disabled_next {
-    background-image: url(../../images/kns/forward_disabled.jpg);
+    background-image: url(../../images/forward_disabled.jpg);
 }
 
 .paginate_enabled_next {
-    background-image: url(../../images/kns/forward_enabled.jpg);
+    background-image: url(../../images/forward_enabled.jpg);
 }
 
 

@@ -17,7 +17,7 @@ package org.kuali.rice.core.api.uif
 
 import org.junit.Test
 import static org.junit.Assert.*
-import org.junit.Ignore
+
 import org.kuali.rice.core.test.JAXBAssert;
 
 class RemotableAttributeFieldTest {
@@ -34,7 +34,7 @@ class RemotableAttributeFieldTest {
             <shortLabel>a_shortLabel</shortLabel>
             <longLabel>a_longLabel</longLabel>
             <helpSummary>a_helpSummary</helpSummary>
-            <helpConstraint>a_helpConstraint</helpConstraint>
+            <constraintText>a_helpConstraint</constraintText>
             <helpDescription>a_helpDescription</helpDescription>
             <forceUpperCase>true</forceUpperCase>
             <minLength>1</minLength>
@@ -83,7 +83,7 @@ class RemotableAttributeFieldTest {
         o.dataType = null
         o.shortLabel = null
         o.helpSummary = null
-        o.helpConstraint = null
+        o.constraintText = null
         o.helpDescription = null
         o.minLength = null
         o.maxLength = null
@@ -155,7 +155,7 @@ class RemotableAttributeFieldTest {
         o.shortLabel = "a_shortLabel"
         o.longLabel = "a_longLabel"
         o.helpSummary = "a_helpSummary"
-        o.helpConstraint = "a_helpConstraint"
+        o.constraintText = "a_helpConstraint"
         o.helpDescription = "a_helpDescription"
         o.forceUpperCase = true
         o.minLength = 1

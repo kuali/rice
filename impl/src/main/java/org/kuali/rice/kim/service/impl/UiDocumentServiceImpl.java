@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
@@ -2363,7 +2364,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     private boolean doCheckboxLogic(String kimTypeId, String attrId) {
         final KimAttributeField attributeDefinition = getAttributeDefinition(kimTypeId, attrId);
-        return attributeDefinition != null && attributeDefinition.getAttributeField().getControl() != null && attributeDefinition.getAttributeField().getControl() instanceof RemotableCheckboxGroup;
+        return attributeDefinition != null
+                && attributeDefinition.getAttributeField().getControl() != null
+                && (attributeDefinition.getAttributeField().getControl() instanceof RemotableCheckboxGroup
+                        || attributeDefinition.getAttributeField().getControl() instanceof RemotableCheckbox);
     }
 
 	protected void formatCheckboxAttributeData(KimDocumentRoleQualifier roleQualifier) {
@@ -2823,10 +2827,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         fieldValues.remove(KRADConstants.DOC_FORM_KEY);
         fieldValues.remove(KRADConstants.DOC_NUM);
 		List<KimDocumentRoleMember> matchingRoleMembers = new ArrayList<KimDocumentRoleMember>();
-        //Remove since they are KNS fieldValues and not BO
-        fieldValues.remove(KRADConstants.BACK_LOCATION);
-        fieldValues.remove(KRADConstants.DOC_FORM_KEY);
-        fieldValues.remove(KRADConstants.DOC_NUM);
 
 		List<RoleMember> matchingRoleMembersTemp = getRoleService().findRoleMembers(toQuery(fieldValues)).getResults();
 		KimDocumentRoleMember matchingRoleMember;

@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
@@ -42,6 +43,7 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.GroupControl;
@@ -115,7 +117,9 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
         Control control = attr.getControlField();
 
         if (control != null) {
-            if (control instanceof CheckboxGroupControl) {
+            if (control instanceof CheckboxControl) {
+                return RemotableCheckbox.Builder.create();
+            } else if (control instanceof CheckboxGroupControl) {
                 return RemotableCheckboxGroup.Builder.create(getValues(attr));
             } else if (control instanceof HiddenControl) {
                 return RemotableHiddenInput.Builder.create();

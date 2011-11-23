@@ -29,7 +29,7 @@ final class ControlCopy {
         if (c == null) {
             throw new IllegalArgumentException("c is null");
         }
-
+        if (c instanceof RemotableCheckbox || c instanceof RemotableCheckbox.Builder) return RemotableCheckbox.Builder.create();
         if (c instanceof RemotableCheckboxGroup || c instanceof RemotableCheckboxGroup.Builder) return RemotableCheckboxGroup.Builder.create(((KeyLabeled)c).getKeyLabels());
         if (c instanceof RemotableHiddenInput || c instanceof RemotableHiddenInput.Builder) return RemotableHiddenInput.Builder.create();
         if (c instanceof RemotablePasswordInput || c instanceof RemotablePasswordInput.Builder){

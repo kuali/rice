@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
@@ -333,7 +334,7 @@ public class ComponentFactory {
         inputField.setLabel(remotableField.getLongLabel());
         inputField.setHelpSummary(remotableField.getHelpSummary());
         inputField.setHelpDescription(remotableField.getHelpDescription());
-        inputField.setConstraintText(remotableField.getHelpConstraint());
+        inputField.setConstraintText(remotableField.getConstraintText());
         inputField.setPerformUppercase(remotableField.isForceUpperCase());
         inputField.setMinLength(remotableField.getMinLength());
         inputField.setMaxLength(remotableField.getMaxLength());
@@ -410,6 +411,8 @@ public class ComponentFactory {
                 RemotableCheckboxGroup remotableCheckboxGroup = (RemotableCheckboxGroup) remotableControl;
                 control = getCheckboxGroupControl();
                 ((CheckboxGroupControl) control).setOptions(buildKeyValuePairs(remotableCheckboxGroup.getKeyLabels()));
+            } else if (remotableControl instanceof RemotableCheckbox) {
+                control = getCheckboxControl();
             } else if (remotableControl instanceof RemotableTextarea) {
                 RemotableTextarea remotableTextarea = (RemotableTextarea) remotableControl;
                 control = getTextAreaControl();

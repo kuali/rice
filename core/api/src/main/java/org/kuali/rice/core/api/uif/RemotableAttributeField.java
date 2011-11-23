@@ -46,7 +46,7 @@ import java.util.List;
 		RemotableAttributeField.Elements.SHORT_LABEL,
 		RemotableAttributeField.Elements.LONG_LABEL,
 		RemotableAttributeField.Elements.HELP_SUMMARY,
-		RemotableAttributeField.Elements.HELP_CONSTRAINT,
+		RemotableAttributeField.Elements.CONSTRAINT_TEXT,
 		RemotableAttributeField.Elements.HELP_DESCRIPTION,
 		RemotableAttributeField.Elements.FORCE_UPPERCASE,
 		RemotableAttributeField.Elements.MIN_LENGTH,
@@ -79,8 +79,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     @XmlElement(name = Elements.HELP_SUMMARY, required = false)
     private final String helpSummary;
 
-    @XmlElement(name = Elements.HELP_CONSTRAINT, required = false)
-    private final String helpConstraint;
+    @XmlElement(name = Elements.CONSTRAINT_TEXT, required = false)
+    private final String constraintText;
 
     @XmlElement(name = Elements.HELP_DESCRIPTION, required = false)
     private final String helpDescription;
@@ -117,6 +117,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     private final RemotableAttributeLookupSettings attributeLookupSettings;
 
     @XmlElements(value = {
+        @XmlElement(name = RemotableCheckbox.Constants.ROOT_ELEMENT_NAME, type = RemotableCheckbox.class, required = false),
         @XmlElement(name = RemotableCheckboxGroup.Constants.ROOT_ELEMENT_NAME, type = RemotableCheckboxGroup.class, required = false),
         @XmlElement(name = RemotableHiddenInput.Constants.ROOT_ELEMENT_NAME, type = RemotableHiddenInput.class, required = false),
         @XmlElement(name = RemotablePasswordInput.Constants.ROOT_ELEMENT_NAME, type = RemotablePasswordInput.class, required = false),
@@ -151,7 +152,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.shortLabel = null;
         this.longLabel = null;
         this.helpSummary = null;
-        this.helpConstraint = null;
+        this.constraintText = null;
         this.helpDescription = null;
         this.forceUpperCase = false;
         this.minLength = null;
@@ -177,7 +178,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         this.shortLabel = b.shortLabel;
         this.longLabel = b.longLabel;
         this.helpSummary = b.helpSummary;
-        this.helpConstraint = b.helpConstraint;
+        this.constraintText = b.helpConstraint;
         this.helpDescription = b.helpDescription;
         this.forceUpperCase = b.forceUpperCase;
         this.minLength = b.minLength;
@@ -242,8 +243,8 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
-    public String getHelpConstraint() {
-        return helpConstraint;
+    public String getConstraintText() {
+        return constraintText;
     }
 
     @Override
@@ -383,7 +384,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             b.setShortLabel(field.getShortLabel());
             b.setLongLabel(field.getLongLabel());
             b.setHelpSummary(field.getHelpSummary());
-            b.setHelpConstraint(field.getHelpConstraint());
+            b.setConstraintText(field.getConstraintText());
             b.setHelpDescription(field.getHelpDescription());
             b.setForceUpperCase(field.isForceUpperCase());
             b.setMinLength(field.getMinLength());
@@ -463,11 +464,11 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         }
 
         @Override
-        public String getHelpConstraint() {
+        public String getConstraintText() {
             return helpConstraint;
         }
 
-        public void setHelpConstraint(String helpConstraint) {
+        public void setConstraintText(String helpConstraint) {
             this.helpConstraint = helpConstraint;
         }
 
@@ -569,6 +570,10 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             this.defaultValues = defaultValues;
         }
 
+        public void addToDefaultValues(String defaultValue) {
+            this.defaultValues.add(defaultValue);
+        }
+
         @Override
         public RemotableAttributeLookupSettings.Builder getAttributeLookupSettings() {
             return attributeLookupSettings;
@@ -616,7 +621,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         static final String SHORT_LABEL = "shortLabel";
         static final String LONG_LABEL = "longLabel";
         static final String HELP_SUMMARY = "helpSummary";
-        static final String HELP_CONSTRAINT = "helpConstraint";
+        static final String CONSTRAINT_TEXT = "constraintText";
         static final String HELP_DESCRIPTION = "helpDescription";
         static final String FORCE_UPPERCASE = "forceUpperCase";
         static final String MIN_LENGTH = "minLength";

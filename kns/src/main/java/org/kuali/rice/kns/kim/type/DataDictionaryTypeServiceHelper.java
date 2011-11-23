@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.uif.Control;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
@@ -160,7 +161,7 @@ public final class DataDictionaryTypeServiceHelper {
         ad.setShortLabel(attr.getShortLabel());
         ad.setLabel(attr.getLongLabel());
         ad.setSummary(attr.getHelpSummary());
-        ad.setConstraintText(attr.getHelpConstraint());
+        ad.setConstraintText(attr.getConstraintText());
         ad.setDescription(attr.getHelpDescription());
         ad.setForceUppercase(attr.isForceUpperCase());
         ad.setMinLength(attr.getMinLength());
@@ -225,7 +226,9 @@ public final class DataDictionaryTypeServiceHelper {
             containingAttribute.setOptionsFinder(KeyValuesFinderFactory.fromMap(((RemotableCheckboxGroup) control).getKeyLabels()));
             CheckboxControlDefinition checkbox = new CheckboxControlDefinition();
             return checkbox;
-
+        } else if (control instanceof RemotableCheckbox) {
+            CheckboxControlDefinition checkbox = new CheckboxControlDefinition();
+            return checkbox;
         } else if (control instanceof RemotableHiddenInput) {
             HiddenControlDefinition hidden = new HiddenControlDefinition();
             return hidden;

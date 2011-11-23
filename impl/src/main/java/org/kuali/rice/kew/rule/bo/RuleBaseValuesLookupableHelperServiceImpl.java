@@ -17,6 +17,7 @@ package org.kuali.rice.kew.rule.bo;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.api.uif.RemotableRadioButtonGroup;
 import org.kuali.rice.core.api.uif.RemotableSelect;
@@ -268,6 +269,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                     }
                     if (field.getControl() instanceof RemotableTextInput || field.getControl() instanceof RemotableSelect
                             || field.getControl() instanceof RemotableCheckboxGroup
+                            || field.getControl() instanceof RemotableCheckbox
                             || field.getControl() instanceof RemotableRadioButtonGroup) {
                         myColumns.getColumns().add(new ConcreteKeyValue(field.getName(), ruleTemplateAttribute.getId()));
                     }

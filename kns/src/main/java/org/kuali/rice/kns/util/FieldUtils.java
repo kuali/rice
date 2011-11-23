@@ -27,6 +27,7 @@ import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
+import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
 import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
@@ -1551,7 +1552,7 @@ public final class FieldUtils {
         builder.setShortLabel(field.getFieldLabel());
         builder.setLongLabel(field.getMainFieldLabel());
         builder.setHelpSummary(field.getFieldHelpSummary());
-        //builder.setHelpConstraint(field.)
+        //builder.setConstraintText(field.)
         //builder.setHelpDescription();
         builder.setForceUpperCase(field.isUpperCase());
         //builder.setMinLength()
@@ -1627,6 +1628,8 @@ public final class FieldUtils {
             RemotableCheckboxGroup checkbox = (RemotableCheckboxGroup)control;
             fieldType = Field.CHECKBOX;
             field.setFieldValidValues(FieldUtils.convertMapToKeyValueList(checkbox.getKeyLabels()));
+        } else if (control instanceof RemotableCheckbox) {
+            fieldType = Field.CHECKBOX;
         } else if (control instanceof RemotableHiddenInput) {
             fieldType = Field.HIDDEN;
         } else if (control instanceof RemotablePasswordInput) {

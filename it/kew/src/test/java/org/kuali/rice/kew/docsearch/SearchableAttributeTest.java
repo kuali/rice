@@ -326,11 +326,9 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         criteria.setDateCreatedFrom(new DateTime(2004, 1, 1, 0, 0));
-        addSearchableAttribute(criteria, "MockSearchableAttributeKey", "");
 
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        // should return two because an empty value above will return any value of the 'MockSearchableAttributeKey' key including the previous document
-        // that doesn't even have a record of that field being saved to the database
+
         assertEquals(2, results.getSearchResults().size());
     }
 

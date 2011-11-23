@@ -64,7 +64,7 @@ public interface AttributeField {
      *
      * @return the help constraint or null.
      */
-    String getHelpConstraint();
+    String getConstraintText();
 
     /**
      * The help description of the attribute. Can be null.

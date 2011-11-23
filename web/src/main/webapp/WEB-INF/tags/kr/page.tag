@@ -90,7 +90,7 @@ function publishHeight(){
     if(navigator.cookieEnabled){
         parentUrl = jQuery.cookie('parentUrl');
         var passedUrl = decodeURIComponent( document.location.hash.replace( /^#/, '' ) );
-        if(passedUrl){
+        if(passedUrl && passedUrl.substring(0, 4) === "http"){
             jQuery.cookie('parentUrl', passedUrl, {path: '/'});
             parentUrl = passedUrl;
         }

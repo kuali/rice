@@ -78,7 +78,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         "documentId",
         "applicationDocumentId",
         "statusCode",
-        "applicationDocumentStatusCode",
+        "applicationDocumentStatus",
         "routeNodeName",
         "routeNodeLogic",
         "dateCreated",

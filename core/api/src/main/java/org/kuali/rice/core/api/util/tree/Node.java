@@ -199,18 +199,22 @@ public class Node<T, K> implements Serializable {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{").append(getData().toString()).append(",[");
-        int i = 0;
-        for (Node<T, K> e : getChildren()) {
-            if (i > 0) {
-                sb.append(",");
+        if (getData() != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("{").append(getData().toString()).append(",[");
+            int i = 0;
+            for (Node<T, K> e : getChildren()) {
+                if (i > 0) {
+                    sb.append(",");
+                }
+                sb.append(e.getData().toString());
+                i++;
             }
-            sb.append(e.getData().toString());
-            i++;
+            sb.append("]").append("}");
+            return sb.toString();
+        } else {
+            return super.toString();
         }
-        sb.append("]").append("}");
-        return sb.toString();
     }
 }
 

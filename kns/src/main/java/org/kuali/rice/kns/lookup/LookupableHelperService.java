@@ -42,10 +42,11 @@ public interface LookupableHelperService extends Serializable{
     public void setBusinessObjectClass(Class businessObjectClass);
 
     /**
-     *
      * @return Returns the dataObjectClass this lookupable is representing
-     *
      */
+    // NOTE: used in exactly one place in RuleBaseValuesLookupableHelperServiceImpl to conditionally initialize
+    // an internal lookup helper service reference; this reference should in theory be a unique instance or prototype
+    // so the check should not be necessary
     public Class getBusinessObjectClass();
 
     /**

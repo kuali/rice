@@ -153,16 +153,6 @@ public class LookupForm extends UifFormBase {
         return (Lookupable) viewHelperService;
     }
 
-    protected Boolean processBooleanParameter(String parameterValue) {
-        if (StringUtils.isNotBlank(parameterValue)) {
-            if ("YES".equals(parameterValue.toUpperCase())) {
-                return Boolean.TRUE;
-            }
-            return new Boolean(parameterValue);
-        }
-        return null;
-    }
-
     public String getDataObjectClassName() {
         return this.dataObjectClassName;
     }

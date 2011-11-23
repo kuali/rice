@@ -15,40 +15,43 @@
 --
 
 -- ---- If you should want to clean out your KRMS tables:
-delete from  krms_cntxt_vld_rule_t ;
-delete from  krms_cntxt_vld_func_t ;
-delete from  krms_term_spec_ctgry_t ;
-delete from  krms_func_ctgry_t ;
-delete from  krms_ctgry_t ;
-delete from  krms_func_parm_t ;
-delete from  krms_func_t ;
-delete from  krms_term_parm_t ;
-delete from  krms_term_rslvr_parm_spec_t ;
-delete from  krms_term_t ;
-delete from  krms_cntxt_vld_term_spec_t ;
-delete from  krms_term_rslvr_input_spec_t ;
-delete from  krms_term_rslvr_attr_t ;
-delete from  krms_term_rslvr_t ;
-delete from  krms_term_spec_t ;
-delete from  krms_prop_parm_t ;
-delete from  krms_cmpnd_prop_props_t ;
-delete from  krms_agenda_attr_t ;
-delete from  krms_cntxt_vld_actn_t ;
-delete from  krms_cntxt_vld_agenda_t ;
-delete from  krms_cntxt_attr_t ;
-delete from  krms_rule_attr_t ;
-delete from  krms_agenda_itm_t ;
-delete from  krms_actn_attr_t ;
-delete from  krms_actn_t ;
-delete from  krms_typ_attr_t ;
-delete from  krms_attr_defn_t ;
-delete from  krms_agenda_t ;
-update krms_rule_t set prop_id=null;
-delete from  krms_prop_t ;
-delete from  krms_rule_t ;
-delete from  krms_typ_t where typ_id not in ('1000','1001');
-delete from  krms_cntxt_t ;
-delete from krcr_nmspc_t where obj_id = '5a83c912-94b9-4b4d-ac3f-88c53380a4a3';
+-- delete from  krms_cntxt_vld_rule_t ;
+-- delete from  krms_cntxt_vld_func_t ;
+-- delete from  krms_term_spec_ctgry_t ;
+-- delete from  krms_func_ctgry_t ;
+-- delete from  krms_ctgry_t ;
+-- delete from  krms_func_parm_t ;
+-- delete from  krms_func_t ;
+-- delete from  krms_term_parm_t ;
+-- delete from  krms_term_rslvr_parm_spec_t ;
+-- delete from  krms_term_t ;
+-- delete from  krms_cntxt_vld_term_spec_t ;
+-- delete from  krms_term_rslvr_input_spec_t ;
+-- delete from  krms_term_rslvr_attr_t ;
+-- delete from  krms_term_rslvr_t ;
+-- delete from  krms_term_spec_t ;
+-- delete from  krms_prop_parm_t ;
+-- delete from  krms_cmpnd_prop_props_t ;
+-- delete from  krms_agenda_attr_t ;
+-- delete from  krms_cntxt_vld_actn_t ;
+-- delete from  krms_cntxt_vld_agenda_t ;
+-- delete from  krms_cntxt_attr_t ;
+-- delete from  krms_rule_attr_t ;
+-- update krms_agenda_itm_t set when_true=null;
+-- update krms_agenda_itm_t set when_false=null;
+-- update krms_agenda_itm_t set always=null;
+-- delete from  krms_agenda_itm_t ;
+-- delete from  krms_actn_attr_t ;
+-- delete from  krms_actn_t ;
+-- delete from  krms_typ_attr_t ;
+-- delete from  krms_attr_defn_t ;
+-- delete from  krms_agenda_t ;
+-- update krms_rule_t set prop_id=null;
+-- delete from  krms_prop_t ;
+-- delete from  krms_rule_t ;
+-- delete from  krms_typ_t where typ_id not in ('1000','1001');
+-- delete from  krms_cntxt_t ;
+-- delete from krcr_nmspc_t where obj_id = '5a83c912-94b9-4b4d-ac3f-88c53380a4a3';
 
 ---- KRMS test namespace
 insert into krcr_nmspc_t (nmspc_cd, obj_id, nm, appl_id) values ('KRMS_TEST', '5a83c912-94b9-4b4d-ac3f-88c53380a4a3', 'Kuali Rules Test', 'RICE');
@@ -144,7 +147,7 @@ values ('T5', 'AGENDA', 'KRMS_TEST',  'Y', 1)
 
 insert into krms_typ_t
 (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr)
-values ('T6', 'CampusAgendaType', 'KRMS_TEST', 'campusAgendaTypeService', 'Y', 1)
+values ('T6', 'Campus Agenda', 'KRMS_TEST', 'campusAgendaTypeService', 'Y', 1)
 ;
 
 
@@ -789,10 +792,12 @@ values ('Q9901', 'Campus', 'KRMS_TEST', 'campus label', null, 'the campus which 
 insert into krms_typ_attr_t (TYP_ATTR_ID, SEQ_NO, TYP_ID, ATTR_DEFN_ID) values ('T6B', 1, 'T6', 'Q9901');
 
 
--- Validation Action Message
+-- General validation action type w/ message attribute
+insert into krms_typ_t (typ_id, nm, nmspc_cd, srvc_nm, actv, ver_nbr) values('T9', 'Validation Action', 'KRMS_TEST', 'validationActionTypeService', 'Y', 1);
 insert into krms_attr_defn_t (attr_defn_id, nm, nmspc_cd, lbl, actv, cmpnt_nm, ver_nbr, desc_txt) values ('QQ8806', 'Action Message', 'KRMS_TEST', 'Action Message', 'Y', null, 1, 'Message validation action returns');
--- insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr) values ('T9M', 3, 'T9', 'QQ8806', 'Y', 1);
-
+insert into krms_typ_attr_t (typ_attr_id, seq_no, typ_id, attr_defn_id, actv, ver_nbr) values ('T9M', 3, 'T9', 'QQ8806', 'Y', 1);
+-- make it valid in our test context
+insert into krms_cntxt_vld_actn_t (cntxt_vld_actn_id, cntxt_id, actn_typ_id, ver_nbr) values ('CONTEXT1T9', 'CONTEXT1', 'T9', 1);
 
 
 --

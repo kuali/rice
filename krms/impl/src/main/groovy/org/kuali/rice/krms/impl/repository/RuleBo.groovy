@@ -105,9 +105,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     * @return Tree representing a rule proposition.
     */
     public Tree getPropositionTree() {
-        if (this.propositionTree == null){
-            this.propositionTree = refreshPropositionTree(false);
-        }
+        this.propositionTree = refreshPropositionTree(false);
 
         return this.propositionTree;
     }

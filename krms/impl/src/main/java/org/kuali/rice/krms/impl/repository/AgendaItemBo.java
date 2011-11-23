@@ -18,6 +18,7 @@ package org.kuali.rice.krms.impl.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
@@ -78,6 +79,15 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
             if (!StringUtils.isBlank(getRule().getDescription())) {
                 resultBuilder.append(": ");
                 resultBuilder.append(getRule().getDescription());
+            }
+            // add a description of the action configured on the rule, if there is one
+            if (!CollectionUtils.isEmpty(getRule().getActions())) {
+                resultBuilder.append("   [");
+                resultBuilder.append(getRule().getActions().get(0).getDescription());
+                if (getRule().getActions().size() > 1) {
+                    resultBuilder.append(" ... ");
+                }
+                resultBuilder.append("]");
             }
         } else {
             throw new IllegalStateException();

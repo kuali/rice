@@ -19,12 +19,10 @@ package org.kuali.rice.krms.impl.ui;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
-import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.impl.repository.CategoryBo;
 import org.kuali.rice.krms.impl.repository.ContextValidTermBo;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
@@ -55,13 +53,8 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
         PropositionBo rootProposition = agendaEditor.getAgendaItemLine().getRule().getProposition();
-        PropositionBo selectedProposition = findProposition(rootProposition, selectedPropId);
-        String selectedCategoryId = null;
-
-        // get the selected category
-        if (selectedProposition != null) {
-            selectedCategoryId = selectedProposition.getCategoryId();
-        }
+        PropositionBo editModeProposition = findPropositionUnderEdit(rootProposition);
+        String selectedCategoryId = (editModeProposition != null) ? editModeProposition.getCategoryId() : null;
 
         // Get all valid terms
 
@@ -106,16 +99,16 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
     }
 
     /**
-     * helper method to find a proposition by its ID
+     * helper method to find the proposition under edit
      */
-    private PropositionBo findProposition(PropositionBo currentProposition, String idToFind) {
+    private PropositionBo findPropositionUnderEdit(PropositionBo currentProposition) {
         PropositionBo result = null;
-        if (idToFind.equals(currentProposition.getId())) {
+        if (currentProposition.getEditMode()) {
             result = currentProposition;
         } else {
             if (currentProposition.getCompoundComponents() != null) {
                 for (PropositionBo child : currentProposition.getCompoundComponents()) {
-                    result = findProposition(child, idToFind);
+                    result = findPropositionUnderEdit(child);
                     if (result != null) break;
                 }
             }

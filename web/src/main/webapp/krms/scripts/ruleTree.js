@@ -21,6 +21,11 @@ function getCutPropositionInput() {
     return jq('input[id="proposition_cut_attribute"]');
 }
 
+function getPropositionIdFromParentLi(parentLiNode) {
+    return jq(parentLiNode).find('input.hiddenId').first().attr('value');
+}
+
+
 function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
 
     var collectionGroupDivLocator = '#' + collectionGroupId + '_div';
@@ -51,7 +56,7 @@ function ajaxCallPropositionTree(controllerMethod, collectionGroupId) {
 
 function ajaxCutPropositionTree(controllerMethod, collectionGroupId) {
     jq('a.ruleTreeNode').each( function() {
-        var propositionId = jq(this.parentNode).find('input').attr('value');
+        var propositionId = getPropositionIdFromParentLi(this.parentNode);
         var selectedItemTracker = getSelectedPropositionInput();
         var selectedItemId = selectedItemTracker.val();
         var cutItemTracker = getCutPropositionInput();
@@ -76,9 +81,8 @@ function ajaxPastePropositionTree(controllerMethod, collectionGroupId) {
     ajaxCallPropositionTree(controllerMethod, collectionGroupId);
 }
 
-// binding to tree loaded event
 function handlePropositionNodeClick(parentLiNode) {
-    var propositionId = jq(parentLiNode).find('input').first().attr('value');
+    var propositionId = getPropositionIdFromParentLi(parentLiNode);
     var selectedItemTracker = getSelectedPropositionInput();
 
     // make li show containment of children
@@ -102,82 +106,85 @@ function handlePropositionNodeClick(parentLiNode) {
     }
 }
 function initRuleTree(componentId){
+
+    // binding to tree loaded event
     jq('#' + componentId).bind('loaded.jstree', function (event, data) {
-    /* make the tree load with all nodes expanded */
-    jq('#' + componentId).jstree('open_all');
+        /* make the tree load with all nodes expanded */
+        jq('#' + componentId).jstree('open_all');
 
-    jq('select.categorySelect').change( function() {
-        ajaxCallPropositionTree('ajaxCategoryChangeRefresh', 'RuleEditorView-Tree')
+        jq('select.categorySelect').change( function() {
+            ajaxCallPropositionTree('ajaxRefresh', 'RuleEditorView-Tree')
+        });
+
+        jq(this).find(".actionReveal").hide();
+
+        // selecting the description on an edit node should set it to be selected
+        jq('input.editDescription').click( function() {
+
+            var parentLiNode = jq(this).closest('li');
+            handlePropositionNodeClick(parentLiNode);
+        });
+
+        // rule node clicks should set the selected item
+        jq('a.ruleTreeNode').click( function() {
+            var parentLiNode = this.parentNode;
+            handlePropositionNodeClick(parentLiNode);
+        });
+
+        // set type to 'logic' on logic nodes -- this prevents them from being selected
+        jq('a.compoundOpCodeNode').each( function() {
+            jq('#' + componentId).jstree('set_type', 'logic', this.parentNode);
+        });
+
+        /* mark the selected node */
+        jq('a.ruleTreeNode').each( function() {
+            var propositionId = getPropositionIdFromParentLi(this.parentNode);
+            var selectedItemTracker = getSelectedPropositionInput();
+            var selectedItemId = selectedItemTracker.val();
+
+            if (selectedItemId == propositionId) {
+                // simulate click, which will mark it
+                jq(this).click();
+            }
+
+            var cutItemTracker = getCutPropositionInput();
+            var cutItemId = cutItemTracker.val();
+            if (cutItemId == propositionId) {
+                jq(this.parentNode).addClass('ruleCutSelected');
+                cutItemTracker.val(cutItemId);
+            } else {
+                jq(this.parentNode).removeClass('ruleCutSelected');
+            }
+        });
+
+        /* update sister compound operators and update proposition summary */
+        jq("[name$='data.proposition.compoundOpCode']").change(function(){
+            var onChangeElementId = this.id;
+
+            jq("select").filter(function() {
+                return this.id.match(
+                        new RegExp(onChangeElementId.replace(/^(\d+_node_)(\d+)(_.*)$/, '^$1\\d+$3$$'))
+                );
+            }).val(jq(this).val());
+
+            ajaxCallPropositionTree('updateCompoundOperator', 'RuleEditorView-PropositionSummary');
+        })
+
     });
 
-    jq(this).find(".actionReveal").hide();
 
-    // selecting the description on an edit node should set it to be selected
-    jq('input.editDescription').click( function() {
-
-        var parentLiNode = jq(this).closest('li');
-        handlePropositionNodeClick(parentLiNode);
-    });
-
-    // rule node clicks should set the selected item
-    jq('a.ruleTreeNode').click( function() {
-        var parentLiNode = this.parentNode;
-        handlePropositionNodeClick(parentLiNode);
-    });
-
-    // set type to 'logic' on logic nodes -- this prevents them from being selected
-    jq('a.compoundOpCodeNode').each( function() {
-        jq('#' + componentId).jstree('set_type', 'logic', this.parentNode);
-    });
-
-    /* mark the selected node */
-    jq('a.ruleTreeNode').each( function() {
-        var propositionId = jq(this.parentNode).find('input.hiddenId').first().attr('value');
-        var selectedItemTracker = getSelectedPropositionInput();
-        var selectedItemId = selectedItemTracker.val();
-
-        if (selectedItemId == propositionId) {
-            // simulate click, which will mark it
-            jq(this).click();
-        }
-
-        var cutItemTracker = getCutPropositionInput();
-        var cutItemId = cutItemTracker.val();
-        if (cutItemId == propositionId) {
-            jq(this.parentNode).addClass('ruleCutSelected');
-            cutItemTracker.val(cutItemId);
-        } else {
-            jq(this.parentNode).removeClass('ruleCutSelected');
-        }
-    });
-
-    /* update sister compound operators and update proposition summary */
-    jq("[name$='data.proposition.compoundOpCode']").change(function(){
-      var onChangeElementId = this.id;
-
-      jq("select").filter(function() {
-        return this.id.match(
-          new RegExp(onChangeElementId.replace(/^(\d+_node_)(\d+)(_.*)$/, '^$1\\d+$3$$'))
-        );
-      }).val(jq(this).val());
-
-      ajaxCallPropositionTree('updateCompoundOperator', 'RuleEditorView-PropositionSummary');
-    })
-
-});
-
-/* create the tree */
-createTree(componentId, {
-    'plugins' : ['themes','html_data', 'ui', 'crrm', 'types' /*, 'dnd' */ ], // disabled drag and drop plugin
-    'ui' : { 'select_limit' : 1 },
-    'themes' : { 'theme':'krms','dots': true ,'icons': false },
-    'crrm' : {
-        /* This is where you can control what is draggable onto what within the tree: */
-        'move' : {
-               /*
-                * m.o - the node being dragged
-                * m.r - the target node
-                */
+    /* create the tree */
+    createTree(componentId, {
+        'plugins' : ['themes','html_data', 'ui', 'crrm', 'types' /*, 'dnd' */ ], // disabled drag and drop plugin
+        'ui' : { 'select_limit' : 1 },
+        'themes' : { 'theme':'krms','dots': true ,'icons': false },
+        'crrm' : {
+            /* This is where you can control what is draggable onto what within the tree: */
+            'move' : {
+                /*
+                 * m.o - the node being dragged
+                 * m.r - the target node
+                 */
                 'check_move' : function (m) {
                     var p = this._get_parent(m.o);
                     if(!p) return false;
@@ -191,14 +198,14 @@ createTree(componentId, {
                 }
             }
         },
-  'types' : {
-       'types' : {
-           /* nodes set to type 'logic' will not be selectable */
-           'logic' : { 'select_node' : false }
-       }
-  },
-  'dnd' : { 'drag_target' : false, 'drop_target' : false }
-} );
+        'types' : {
+            'types' : {
+                /* nodes set to type 'logic' will not be selectable */
+                'logic' : { 'select_node' : false }
+            }
+        },
+        'dnd' : { 'drag_target' : false, 'drop_target' : false }
+    } );
 
 }
 

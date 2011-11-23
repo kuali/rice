@@ -83,9 +83,8 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
      * @return the parameterDisplayString
      */
     public String getParameterDisplayString() {
-        if (parameterDisplayString == null){
-            setupParameterDisplayString()
-        }
+        setupParameterDisplayString()
+
         return this.parameterDisplayString;
     }
 
@@ -215,7 +214,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
           // create blank proposition parameters
           PropositionParameterBo pOp = new PropositionParameterBo();
           pOp.setId(getNewPropParameterId());
-          pOp.setParameterType("F");
+          pOp.setParameterType("O");
           pOp.setPropId(prop.getId());
           pOp.setSequenceNumber(new Integer("2"));
           pOp.setVersionNumber(new Long(1));

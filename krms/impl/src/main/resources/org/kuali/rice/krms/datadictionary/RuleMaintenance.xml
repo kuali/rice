@@ -437,7 +437,6 @@
               </property>
             </bean>
 
-            <bean parent="MessageField" p:messageText="FOO!!!"   />
             <bean parent="selectedNodeQuickActions"/>
 
           </list>

@@ -22,17 +22,18 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.web.format.FormatException;
 
 import java.beans.PropertyEditorSupport;
+import java.io.Serializable;
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
 
 /**
- * This PropertyEditor converts between date display strings and
- * <code>java.sql.Date</code> objects.
+ * PropertyEditor converts between date display strings and <code>java.sql.Date</code> objects
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifDateEditor extends PropertyEditorSupport {
+public class UifDateEditor extends PropertyEditorSupport implements Serializable {
+    private static final long serialVersionUID = 8122469337264797008L;
 
     /** The date time service. */
     private transient DateTimeService dateTimeService;

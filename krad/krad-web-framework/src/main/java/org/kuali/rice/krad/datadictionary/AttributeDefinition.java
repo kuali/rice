@@ -42,6 +42,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.util.ObjectUtils;
 
+import java.beans.PropertyEditor;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeDefinition extends AttributeDefinitionBase implements CaseConstrainable, PrerequisiteConstrainable, Formatable, HierarchicallyConstrainable, MustOccurConstrainable, LengthConstrainable, RangeConstrainable, ValidCharactersConstrainable {
-	private static final long serialVersionUID = -2490613377818442742L;
+    private static final long serialVersionUID = -2490613377818442742L;
 
 	protected Boolean forceUppercase = Boolean.FALSE;
 	
@@ -74,6 +75,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 	protected Control controlField;
 
 	protected String formatterClass;
+    protected PropertyEditor propertyEditor;
 
 	protected AttributeSecurity attributeSecurity;
 	
@@ -295,6 +297,40 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
 		}
 		this.formatterClass = formatterClass;
 	}
+
+    /**
+     * Performs formatting of the field value for display and then converting the value back to its
+     * expected type from a string
+     *
+     * <p>
+     * Note property editors exist and are already registered for the basic Java types and the
+     * common Kuali types such as [@link KualiDecimal}. Registration with this property is only
+     * needed for custom property editors
+     * </p>
+     *
+     * @return PropertyEditor property editor instance to use for this field
+     */
+    public PropertyEditor getPropertyEditor() {
+        return propertyEditor;
+    }
+
+    /**
+     * Setter for the custom property editor to use for the field
+     *
+     * @param propertyEditor
+     */
+    public void setPropertyEditor(PropertyEditor propertyEditor) {
+        this.propertyEditor = propertyEditor;
+    }
+
+    /**
+     * Convenience setter for configuring a property editor by class
+     *
+     * @param propertyEditorClass
+     */
+    public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
+        this.propertyEditor = ObjectUtils.newInstance(propertyEditorClass);
+    }
 
 	/**
 	 * Directly validate simple fields, call completeValidation on Definition

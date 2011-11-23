@@ -21,18 +21,20 @@ import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.core.web.format.FormatException;
 
 import java.beans.PropertyEditorSupport;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
 /**
- * This PropertyEditor converts between percentage strings and
- * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> objects.
+ * PropertyEditor converts between percentage strings and
+ * <code>org.kuali.rice.core.api.util.type.KualiPercent</code> objects
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifPercentageEditor extends PropertyEditorSupport {
+public class UifPercentageEditor extends PropertyEditorSupport implements Serializable {
+    private static final long serialVersionUID = -3562156375311932094L;
 
     /** The default scale for percentage values. */
     public final static int PERCENTAGE_SCALE = 2;

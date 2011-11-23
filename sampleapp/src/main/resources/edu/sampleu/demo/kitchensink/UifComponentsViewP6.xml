@@ -48,7 +48,7 @@
             </property>
           </bean>
           <bean parent="GenericTextField" p:label="Ajax Field Query"
-            p:instructionalText="Displays additional information retrieved from an ajax data retrieval (input 'a1')"
+            p:instructionalText="Displays additional information retrieved from an ajax data retrieval (just tab out)"
             p:propertyName="field72" p:defaultValue="a3">
             <property name="informationalDisplayPropertyNames" value="field73,field74" />
             <property name="fieldAttributeQuery">

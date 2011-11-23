@@ -22,48 +22,51 @@ import java.beans.PropertyEditorSupport;
 import java.security.GeneralSecurityException;
 
 /**
- * A property editor 
- * 
+ * Property editor which encrypts values for display and decrypts on binding, uses the
+ * {@link org.kuali.rice.core.api.encryption.EncryptionService} to perform the encryption
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifEncryptionPropertyEditorWrapper extends PropertyEditorSupport {
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifKnsFormatterPropertyEditor.class);
+public class UifEncryptionPropertyEditorWrapper extends PropertyEditorSupport{
 
-	PropertyEditor propertyEditor;
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifEncryptionPropertyEditorWrapper.class);
+
+    PropertyEditor propertyEditor;
 
     /**
-     * @param formatter
+     * @param propertyEditor
      */
     public UifEncryptionPropertyEditorWrapper(PropertyEditor propertyEditor) {
-	    super();
-	    this.propertyEditor = propertyEditor;
+        super();
+        this.propertyEditor = propertyEditor;
     }
 
-	@Override
-	public String getAsText() {
-		try {
-			if (propertyEditor != null) {
-				return CoreApiServiceLocator.getEncryptionService().encrypt(propertyEditor.getAsText());
-			}
-			return CoreApiServiceLocator.getEncryptionService().encrypt(getValue());
-		} catch (GeneralSecurityException e) {
-			LOG.error("Unable to encrypt value");
+    @Override
+    public String getAsText() {
+        try {
+            if (propertyEditor != null) {
+                return CoreApiServiceLocator.getEncryptionService().encrypt(propertyEditor.getAsText());
+            }
+            return CoreApiServiceLocator.getEncryptionService().encrypt(getValue());
+        } catch (GeneralSecurityException e) {
+            LOG.error("Unable to encrypt value");
             throw new RuntimeException("Unable to encrypt value.");
-		}
-	}
+        }
+    }
 
-	@Override
-	public void setAsText(String text) throws IllegalArgumentException {
-		try {
-			String value = CoreApiServiceLocator.getEncryptionService().decrypt(text);
-			if (propertyEditor != null) {
-				propertyEditor.setAsText(value);
-			} else {
-				setValue(value);
-			}
-		} catch (GeneralSecurityException e) {
-			LOG.error("Unable to decrypt value: " + text);
+    @Override
+    public void setAsText(String text) throws IllegalArgumentException {
+        try {
+            String value = CoreApiServiceLocator.getEncryptionService().decrypt(text);
+            if (propertyEditor != null) {
+                propertyEditor.setAsText(value);
+            } else {
+                setValue(value);
+            }
+        } catch (GeneralSecurityException e) {
+            LOG.error("Unable to decrypt value: " + text);
             throw new RuntimeException("Unable to decrypt value.");
-		}
-	}
+        }
+    }
 
 }

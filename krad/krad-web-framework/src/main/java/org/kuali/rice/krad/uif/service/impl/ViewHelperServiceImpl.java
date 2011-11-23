@@ -734,8 +734,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
         view.setPreLoadScript(clientStateScript);
 
-        // set apply default indicator to false (since they would have been applied during the component finalize)
-        ((ViewModel) model).setDefaultsApplied(true);
+        // apply default values if they have not been applied yet
+        if (!((ViewModel) model).isDefaultsApplied()) {
+            applyDefaultValues(view, view, model);
+            ((ViewModel) model).setDefaultsApplied(true);
+        }
     }
 
     /**
@@ -839,12 +842,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         // invoke component modifiers setup to run in the finalize phase
         runComponentModifiers(view, component, model, UifConstants.ViewPhases.FINALIZE);
-
-        // apply default value if needed
-        if ((component instanceof DataField) && !((ViewModel) model).isDefaultsApplied()) {
-            populateDefaultValueForField(view, model, (DataField) component,
-                    ((DataField) component).getBindingInfo().getBindingPath());
-        }
 
         // get components children and recursively update state
         for (Component nestedComponent : component.getComponentsForLifecycle()) {
@@ -1233,6 +1230,40 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             bindingPath += dataField.getBindingInfo().getBindingName();
 
             populateDefaultValueForField(view, line, dataField, bindingPath);
+        }
+    }
+
+    /**
+     * Iterates through the view components picking up data fields and applying an default value configured
+     *
+     * @param view - view instance we are applying default values for
+     * @param component - component that should be checked for default values
+     * @param model - model object that values should be set on
+     */
+    protected void applyDefaultValues(View view, Component component, Object model) {
+        if (component == null) {
+            return;
+        }
+
+        // if component is a data field apply default value
+        if (component instanceof DataField) {
+            DataField dataField = ((DataField) component);
+
+            // need to make sure binding is initialized since this could be on a page we have not initialized yet
+            dataField.getBindingInfo().setDefaults(view, dataField.getPropertyName());
+
+            populateDefaultValueForField(view, model, dataField, dataField.getBindingInfo().getBindingPath());
+        }
+
+        List<Component> nestedComponents = component.getComponentsForLifecycle();
+
+        // if view, need to add all pages since only one will be on the lifecycle
+        if (component instanceof View) {
+            nestedComponents.addAll(((View) component).getItems());
+        }
+
+        for (Component nested : nestedComponents) {
+            applyDefaultValues(view, nested, model);
         }
     }
 

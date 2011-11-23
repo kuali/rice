@@ -21,12 +21,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="remotableFieldsGroup" parent="Group" p:disclosure.render="false">
+  <bean id="remotableFieldsGroup" parent="Group" p:disclosure.render="false">
     <property name="title" value="Fields created by Fetching Remotable Fields"/>
     <property name="items">
       <list>
         <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
               p:fetchingMethodToCall="retrieveRemoteFields"/>
+
         <bean parent="HorizontalFieldGroup" p:group.instructionalText="Remote fields pulled into a Field Group">
           <property name="items">
             <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap2"
@@ -44,8 +45,16 @@
 				<bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
                 p:instructionalText="Field that is being set to read only by request">
            <property name="control">
-             <bean parent="TextControl" p:size="30"/>
+             <bean parent="TextControl"/>
            </property>
+        </bean>
+
+        <bean parent="GenericTextField" p:label="Field 2" p:propertyName="uiTestObject.field3"
+              p:instructionalText="Field using a custom property editor"
+              p:propertyEditorClass="edu.sampleu.demo.kitchensink.UITestPropertyEditor">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
         </bean>
       </list>
     </property>

@@ -19,9 +19,8 @@ import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
 
 /**
- * This class is used to format
- * <code>org.kuali.rice.core.api.util.type.KualiInteger</code> in the local
- * currency.
+ * Class used to format
+ * <code>org.kuali.rice.core.api.util.type.KualiInteger</code> in the local currency
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

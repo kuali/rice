@@ -59,14 +59,14 @@ public class UifComponentsTestController extends UifControllerBase {
 	public ModelAndView save(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, "page2");
+		return getUIFModelAndView(uiTestForm);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
 	public ModelAndView close(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, "page1");
+		return getUIFModelAndView(uiTestForm, "UifCompView-Page1");
 	}
 
     /**

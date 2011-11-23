@@ -59,11 +59,12 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
         DecimalFormat bigIntFormatter = new DecimalFormat();
         bigIntFormatter.setMaximumFractionDigits(340);
         binder.registerCustomEditor(BigDecimal.class, new CustomNumberEditor(BigDecimal.class, bigIntFormatter, true));
-        binder.registerCustomEditor(AbstractKualiDecimal.class,
-                new CustomNumberEditor(AbstractKualiDecimal.class, bigIntFormatter, true));
+        binder.registerCustomEditor(AbstractKualiDecimal.class, new CustomNumberEditor(AbstractKualiDecimal.class,
+                bigIntFormatter, true));
 
         // Use the spring StringTrimmerEditor editor for Strings
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(false));
+
         // Use the StringArrayPropertyEditor for string arrays with "," as the
         // separator
         binder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(",", false));

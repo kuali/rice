@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -38,6 +39,8 @@ public class UifBeanPropertyBindingResult extends BeanPropertyBindingResult {
     @Override
     protected UifViewBeanWrapper createBeanWrapper() {
         Assert.state(super.getTarget() != null, "Cannot access properties on null bean instance '" + getObjectName() + "'!");
-        return new UifViewBeanWrapper(super.getTarget());
+        Assert.state(super.getTarget() instanceof ViewModel, "Object must be instance of ViewModel to use Uif Bean Wrapper");
+
+        return new UifViewBeanWrapper((ViewModel) super.getTarget());
     }
 }

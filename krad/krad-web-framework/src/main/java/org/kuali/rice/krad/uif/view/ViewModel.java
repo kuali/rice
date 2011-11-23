@@ -85,6 +85,38 @@ public interface ViewModel extends Serializable {
     public void setViewTypeName(ViewType viewTypeName);
 
     /**
+     * View instance associated with the model. Used to render the user interface
+     *
+     * @return View
+     */
+    public View getView();
+
+    /**
+     * Setter for the view instance
+     *
+     * @param view
+     */
+    public void setView(View view);
+
+    /**
+     * View instance for the page that made a request. Since a new view instance
+     * gets initialized for each request before the controller logic is invoked,
+     * any state about the previous view is lost. This could be needed to read
+     * metadata from the view for such things as collection processing. When
+     * this is necessary the previous view instance can be retrieved
+     *
+     * @return View instance
+     */
+    public View getPreviousView();
+
+    /**
+     * Setter for the previous view instance
+     *
+     * @param previousView
+     */
+    public void setPreviousView(View previousView);
+
+    /**
      * Id for the current page being displayed within the view
      *
      * @return String page id

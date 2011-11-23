@@ -17,7 +17,7 @@ package org.kuali.rice.krad.web.bind;
 
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -29,38 +29,50 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class is a top level BeanWrapper for a UIF View (form).  It will call the
- * view service to find formatters and check if fields are encrypted.
+ * Class is a top level BeanWrapper for a UIF View Model
+ *
+ * <p>
+ * Registers custom property editors configured on the field associated with the property name for which
+ * we are getting or setting a value. In addition determines if the field requires encryption and if so applies
+ * the {@link UifEncryptionPropertyEditorWrapper}
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifViewBeanWrapper extends BeanWrapperImpl {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifViewBeanWrapper.class);
 
-    // this is a handle to the target object so we don't
-    // have to cast so often
-    private UifFormBase form;
+    // this is a handle to the target object so we don't have to cast so often
+    private ViewModel model;
 
     // this stores all properties this wrapper has already checked
     // with the view so the service isn't called again
     private Set<String> processedProperties;
 
-    public UifViewBeanWrapper(Object object) {
-        super(object);
+    public UifViewBeanWrapper(ViewModel model) {
+        super(model);
 
-        form = (UifFormBase) object;
-        processedProperties = new HashSet<String>();
+        this.model = model;
+        this.processedProperties = new HashSet<String>();
     }
 
-    protected void callViewService(String propertyName) {
+    /**
+     * Attempts to find a corresponding data field for the given property name in the current view or previous view,
+     * then if the field has a property editor configured it is registered with the property editor registry to use
+     * for this property
+     *
+     * @param propertyName - name of the property to find field and editor for
+     */
+    protected void registerEditorFromView(String propertyName) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting view service call for property '" + propertyName + "'");
+            LOG.debug("Attempting to find property editor for property '" + propertyName + "'");
         }
-        Class<? extends Formatter> formatterClass = null;
+
+        PropertyEditor propertyEditor = null;
 
         // viewId should be determined in UifAnnotationMethodHandlerAdapter so
         // nothing we can do without one here
-        if (form.getView() == null) {
+        if (model.getView() == null) {
             return;
         }
 
@@ -69,53 +81,57 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             return;
         }
 
-        DataField af = null;
-        if (form.getView().getViewIndex() != null) {
-            af = form.getView().getViewIndex().getDataFieldByPath(propertyName);
+        DataField dataField = null;
+        if (model.getView().getViewIndex() != null) {
+            dataField = model.getView().getViewIndex().getDataFieldByPath(propertyName);
         }
 
-        if ((af == null) && (form.getPreviousView() != null) && (form.getPreviousView().getViewIndex() != null)) {
-            af = form.getPreviousView().getViewIndex().getDataFieldByPath(propertyName);
+        if ((dataField == null) && (model.getPreviousView() != null) && (model.getPreviousView().getViewIndex()
+                != null)) {
+            dataField = model.getPreviousView().getViewIndex().getDataFieldByPath(propertyName);
         }
 
         boolean requiresEncryption = false;
-        if (af != null) {
-            if (af.getAttributeSecurity() != null) {
-                if (af.getAttributeSecurity().hasRestrictionThatRemovesValueFromUI()) {
+        if (dataField != null) {
+            if (dataField.getAttributeSecurity() != null) {
+                if (dataField.getAttributeSecurity().hasRestrictionThatRemovesValueFromUI()) {
                     requiresEncryption = true;
                 }
             }
 
-            Formatter formatter = af.getFormatter();
-            if (formatter != null) {
-                formatterClass = formatter.getClass();
-            }
+            propertyEditor = dataField.getPropertyEditor();
         }
 
-        // really these should be PropertyEditors after we evaluate how many are
-        // needed vs how many spring provides
-        if (formatterClass != null) {
+        if (propertyEditor != null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Registering custom editor for property path '" + propertyName + "' and formatter class '" +
-                        formatterClass.getName() + "'");
+                LOG.debug("Registering custom editor for property path '"
+                        + propertyName
+                        + "' and property editor class '"
+                        + propertyEditor.getClass().getName()
+                        + "'");
             }
-            PropertyEditor customEditor = new UifKnsFormatterPropertyEditor(formatterClass);
+
             if (requiresEncryption) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Enabling encryption for custom editor '" + propertyName + "' and formatter class '" +
-                            formatterClass.getName() + "'");
+                    LOG.debug("Enabling encryption for custom editor '"
+                            + propertyName
+                            + "' and property editor class '"
+                            + propertyEditor.getClass().getName()
+                            + "'");
                 }
-                this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(customEditor));
+                this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(propertyEditor));
             } else {
-                this.registerCustomEditor(null, propertyName, customEditor);
+                this.registerCustomEditor(null, propertyName, propertyEditor);
             }
         } else if (requiresEncryption) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("No custom formatter for property path '" + propertyName +
-                        "' but property does require encryption");
+                LOG.debug("No custom formatter for property path '"
+                        + propertyName
+                        + "' but property does require encryption");
             }
-            this.registerCustomEditor(null, propertyName,
-                    new UifEncryptionPropertyEditorWrapper(findEditorForPropertyName(propertyName)));
+
+            this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(
+                    findEditorForPropertyName(propertyName)));
         }
 
         processedProperties.add(propertyName);
@@ -124,17 +140,25 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     protected PropertyEditor findEditorForPropertyName(String propertyName) {
         Class<?> clazz = getPropertyType(propertyName);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting retrieval of property editor using class '" + clazz + "' and property path '" +
-                    propertyName + "'");
+            LOG.debug("Attempting retrieval of property editor using class '"
+                    + clazz
+                    + "' and property path '"
+                    + propertyName
+                    + "'");
         }
+
         PropertyEditor editor = findCustomEditor(clazz, propertyName);
         if (editor == null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("No custom property editor found using class '" + clazz + "' and property path '" +
-                        propertyName + "'. Attempting to find default property editor class.");
+                LOG.debug("No custom property editor found using class '"
+                        + clazz
+                        + "' and property path '"
+                        + propertyName
+                        + "'. Attempting to find default property editor class.");
             }
             editor = getDefaultEditor(clazz);
         }
+
         return editor;
     }
 
@@ -167,33 +191,33 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
 
     @Override
     public Object getPropertyValue(String propertyName) throws BeansException {
-        callViewService(propertyName);
+        registerEditorFromView(propertyName);
         return super.getPropertyValue(propertyName);
     }
 
     @Override
     public void setPropertyValue(PropertyValue pv) throws BeansException {
-        callViewService(pv.getName());
+        registerEditorFromView(pv.getName());
         super.setPropertyValue(pv);
     }
 
     @Override
     public void setPropertyValue(String propertyName, Object value) throws BeansException {
-        callViewService(propertyName);
+        registerEditorFromView(propertyName);
         super.setPropertyValue(propertyName, value);
     }
 
     @Override
     public void setWrappedInstance(Object object, String nestedPath, Object rootObject) {
         //TODO clear cache?
-        form = (UifFormBase) object;
+        model = (ViewModel) object;
         super.setWrappedInstance(object, nestedPath, rootObject);
     }
 
     @Override
     public void setWrappedInstance(Object object) {
         //TODO clear cache?
-        form = (UifFormBase) object;
+        model = (ViewModel) object;
         super.setWrappedInstance(object);
     }
 }

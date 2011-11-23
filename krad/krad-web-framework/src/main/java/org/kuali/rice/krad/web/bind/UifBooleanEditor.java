@@ -16,22 +16,23 @@
 package org.kuali.rice.krad.web.bind;
 
 import java.beans.PropertyEditorSupport;
+import java.io.Serializable;
 
 /**
- * This PropertyEditor for booleans supports y/n which the spring version does not. 
+ * PropertyEditor for booleans supports y/n which the spring version does not
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class UifBooleanEditor extends PropertyEditorSupport {
-	
+public class UifBooleanEditor extends PropertyEditorSupport implements Serializable {
+	private static final long serialVersionUID = -6333792216543862346L;
+
 	private static final String TRUE_VALUES = "/true/yes/y/on/1/";
 	private static final String FALSE_VALUES = "/false/no/n/off/0/";
 	
 	private static final String TRUE_VALUE = "true";
 	private static final String FALSE_VALUE = "false";
 
-	@Override
+    @Override
 	public String getAsText() {
 		if(this.getValue() == null) {
 			return "";

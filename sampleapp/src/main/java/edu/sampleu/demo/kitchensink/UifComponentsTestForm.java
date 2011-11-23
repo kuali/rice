@@ -171,12 +171,14 @@ public class UifComponentsTestForm extends UifFormBase {
     private String mField2 = "SecretInfo111";
     private String mField3 = "SecretInfo222";
 
-    private List<UITestListObject> list1 = new ArrayList<UITestListObject>();
-    private List<UITestListObject> list2 = new ArrayList<UITestListObject>();
-    private List<UITestListObject> list3 = new ArrayList<UITestListObject>();
-    private List<UITestListObject> list4 = new ArrayList<UITestListObject>();
-    private List<UITestListObject> list5 = new ArrayList<UITestListObject>();
-    private List<UITestListObject> list6 = new ArrayList<UITestListObject>();
+    private UITestObject uiTestObject;
+
+    private List<UITestObject> list1 = new ArrayList<UITestObject>();
+    private List<UITestObject> list2 = new ArrayList<UITestObject>();
+    private List<UITestObject> list3 = new ArrayList<UITestObject>();
+    private List<UITestObject> list4 = new ArrayList<UITestObject>();
+    private List<UITestObject> list5 = new ArrayList<UITestObject>();
+    private List<UITestObject> list6 = new ArrayList<UITestObject>();
 
     private Tree<String, String> tree1 = new Tree<String, String>();
 
@@ -189,42 +191,45 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public UifComponentsTestForm() {
         super();
-        list1.add(new UITestListObject("A", "B", "C", "D"));
-        list1.add(new UITestListObject("1", "2", "3", "4"));
-        list1.add(new UITestListObject("W", "X", "Y", "Z"));
-        list1.add(new UITestListObject("a", "b", "c", "d"));
-        list1.add(new UITestListObject("a", "s", "d", "f"));
 
-        list2.add(new UITestListObject("A", "B", "C", "D"));
-        list2.add(new UITestListObject("1", "2", "3", "4"));
-        list2.add(new UITestListObject("W", "X", "Y", "Z"));
-        list2.add(new UITestListObject("a", "b", "c", "d"));
-        list2.add(new UITestListObject("a", "s", "d", "f"));
+        uiTestObject = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
 
-        list3.add(new UITestListObject("A", "B", "C", "D"));
-        list3.add(new UITestListObject("1", "2", "3", "4"));
-        list3.add(new UITestListObject("W", "X", "Y", "Z"));
+        list1.add(new UITestObject("A", "B", "C", "D"));
+        list1.add(new UITestObject("1", "2", "3", "4"));
+        list1.add(new UITestObject("W", "X", "Y", "Z"));
+        list1.add(new UITestObject("a", "b", "c", "d"));
+        list1.add(new UITestObject("a", "s", "d", "f"));
 
-        list4.add(new UITestListObject("A", "B", "C", "D"));
-        list4.get(0).getSubList().add(new UITestListObject("A", "B", "C", "D"));
-        list4.get(0).getSubList().add(new UITestListObject("1", "2", "3", "4"));
-        list4.get(0).getSubList().add(new UITestListObject("W", "X", "Y", "Z"));
-        list4.add(new UITestListObject("1", "2", "3", "4"));
-        list4.get(1).getSubList().add(new UITestListObject("a", "b", "C", "D"));
-        list4.get(1).getSubList().add(new UITestListObject("a", "s", "D", "F"));
+        list2.add(new UITestObject("A", "B", "C", "D"));
+        list2.add(new UITestObject("1", "2", "3", "4"));
+        list2.add(new UITestObject("W", "X", "Y", "Z"));
+        list2.add(new UITestObject("a", "b", "c", "d"));
+        list2.add(new UITestObject("a", "s", "d", "f"));
 
-        list5.add(new UITestListObject("a", "a", "a", "a"));
-        list5.get(0).getSubList().add(new UITestListObject("A", "B", "C", "D"));
-        list5.get(0).getSubList().add(new UITestListObject("1", "2", "3", "4"));
-        list5.add(new UITestListObject("b", "b", "b", "b"));
-        list5.get(1).getSubList().add(new UITestListObject("a", "b", "C", "D"));
-        list5.get(1).getSubList().add(new UITestListObject("a", "s", "D", "F"));
+        list3.add(new UITestObject("A", "B", "C", "D"));
+        list3.add(new UITestObject("1", "2", "3", "4"));
+        list3.add(new UITestObject("W", "X", "Y", "Z"));
 
-        list6.add(new UITestListObject("A", "B", "C", "D"));
-        list6.add(new UITestListObject("1", "2", "3", "4"));
-        list6.add(new UITestListObject("W", "X", "Y", "Z"));
-        list6.add(new UITestListObject("a", "b", "c", "d"));
-        list6.add(new UITestListObject("a", "s", "d", "f"));
+        list4.add(new UITestObject("A", "B", "C", "D"));
+        list4.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        list4.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        list4.get(0).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
+        list4.add(new UITestObject("1", "2", "3", "4"));
+        list4.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
+        list4.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
+
+        list5.add(new UITestObject("a", "a", "a", "a"));
+        list5.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        list5.get(0).getSubList().add(new UITestObject("1", "2", "3", "4"));
+        list5.add(new UITestObject("b", "b", "b", "b"));
+        list5.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
+        list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
+
+        list6.add(new UITestObject("A", "B", "C", "D"));
+        list6.add(new UITestObject("1", "2", "3", "4"));
+        list6.add(new UITestObject("W", "X", "Y", "Z"));
+        list6.add(new UITestObject("a", "b", "c", "d"));
+        list6.add(new UITestObject("a", "s", "d", "f"));
 
         Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
         item1.addChild(new Node<String, String>("SubItem A", "SubItem A"));
@@ -1229,56 +1234,56 @@ public class UifComponentsTestForm extends UifFormBase {
     /**
      * @return the list1
      */
-    public List<UITestListObject> getList1() {
+    public List<UITestObject> getList1() {
         return this.list1;
     }
 
     /**
      * @param list1 the list1 to set
      */
-    public void setList1(List<UITestListObject> list1) {
+    public void setList1(List<UITestObject> list1) {
         this.list1 = list1;
     }
 
     /**
      * @return the list2
      */
-    public List<UITestListObject> getList2() {
+    public List<UITestObject> getList2() {
         return this.list2;
     }
 
     /**
      * @param list2 the list2 to set
      */
-    public void setList2(List<UITestListObject> list2) {
+    public void setList2(List<UITestObject> list2) {
         this.list2 = list2;
     }
 
     /**
      * @return the list3
      */
-    public List<UITestListObject> getList3() {
+    public List<UITestObject> getList3() {
         return this.list3;
     }
 
     /**
      * @param list3 the list3 to set
      */
-    public void setList3(List<UITestListObject> list3) {
+    public void setList3(List<UITestObject> list3) {
         this.list3 = list3;
     }
 
     /**
      * @return the list4
      */
-    public List<UITestListObject> getList4() {
+    public List<UITestObject> getList4() {
         return this.list4;
     }
 
     /**
      * @param list4 the list4 to set
      */
-    public void setList4(List<UITestListObject> list4) {
+    public void setList4(List<UITestObject> list4) {
         this.list4 = list4;
     }
 
@@ -1593,28 +1598,28 @@ public class UifComponentsTestForm extends UifFormBase {
     /**
      * @return the list5
      */
-    public List<UITestListObject> getList5() {
+    public List<UITestObject> getList5() {
         return this.list5;
     }
 
     /**
      * @param list5 the list5 to set
      */
-    public void setList5(List<UITestListObject> list5) {
+    public void setList5(List<UITestObject> list5) {
         this.list5 = list5;
     }
 
     /**
      * @return the list6
      */
-    public List<UITestListObject> getList6() {
+    public List<UITestObject> getList6() {
         return this.list6;
     }
 
     /**
      * @param list6 the list6 to set
      */
-    public void setList6(List<UITestListObject> list6) {
+    public void setList6(List<UITestObject> list6) {
         this.list6 = list6;
     }
 
@@ -2010,5 +2015,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setField130(String field130) {
         this.field130 = field130;
+    }
+
+    public UITestObject getUiTestObject() {
+        return uiTestObject;
+    }
+
+    public void setUiTestObject(UITestObject uiTestObject) {
+        this.uiTestObject = uiTestObject;
     }
 }

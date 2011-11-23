@@ -22,19 +22,20 @@ import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.web.format.FormatException;
 
 import java.beans.PropertyEditorSupport;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
 /**
- * This class is used to format
+ * Class is used to format
  * <code>org.kuali.rice.core.api.util.type.KualiDecimal</code> in the local
- * currency.
+ * currency
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifCurrencyEditor extends PropertyEditorSupport {
-
+public class UifCurrencyEditor extends PropertyEditorSupport implements Serializable {
+    private static final long serialVersionUID = 6692868638156609014L;
     private static Logger LOG = Logger.getLogger(UifCurrencyEditor.class);
 
     /**

@@ -259,7 +259,7 @@
           </property>
         </bean>
 
-        <bean parent="InputField_Form" p:propertyName="field101" p:label="Field Label"
+        <bean parent="InputField_Form" p:propertyName="field101" p:label="Field Label" p:defaultValue="val"
               p:instructionalText="Label left, with colon" p:labelField.renderColon="true">
           <property name="control">
             <bean parent="TextControl"/>
@@ -478,7 +478,7 @@
         </bean>
 
         <bean parent="InputField" p:propertyName="field116" p:label="Checkboxes 3" p:width="auto"
-              p:instructionalText="Disabled CheckboxGroupControl">
+              p:instructionalText="Disabled CheckboxGroupControl" p:defaultValue="2">
           <property name="control">
             <bean parent="CheckboxGroupControl" p:disabled="true">
               <property name="options">
@@ -539,7 +539,7 @@
     <property name="items">
       <list>
         <bean parent="InputField" p:propertyName="field119" p:label="Select Control" p:width="auto"
-              p:instructionalText="SelectControl using an optionsFinder">
+              p:instructionalText="SelectControl using an optionsFinder" p:defaultValue="4">
           <property name="control">
             <bean parent="SelectControl"/>
           </property>

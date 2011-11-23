@@ -24,27 +24,20 @@ import java.util.List;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UITestListObject implements Serializable {
+public class UITestObject implements Serializable {
+    private static final long serialVersionUID = -7525378097732916411L;
+
     private String field1;
     private String field2;
     private String field3;
     private String field4;
-    private List<UITestListObject> subList = new ArrayList<UITestListObject>();
-    private static final long serialVersionUID = -7525378097732916411L;
-    
-    
-    /**
-     * This constructs a ...
-     * 
-     */
-    public UITestListObject() {
+
+    private List<UITestObject> subList = new ArrayList<UITestObject>();
+
+    public UITestObject() {
     }
 
-    /**
-     * This constructs a ...
-     * 
-     */
-    public UITestListObject(String field1, String field2, String field3, String field4) {
+    public UITestObject(String field1, String field2, String field3, String field4) {
         this.field1 = field1;
         this.field2 = field2;
         this.field3 = field3;
@@ -110,14 +103,14 @@ public class UITestListObject implements Serializable {
     /**
      * @param subList the subList to set
      */
-    public void setSubList(List<UITestListObject> subList) {
+    public void setSubList(List<UITestObject> subList) {
         this.subList = subList;
     }
 
     /**
      * @return the subList
      */
-    public List<UITestListObject> getSubList() {
+    public List<UITestObject> getSubList() {
         return subList;
     }
 

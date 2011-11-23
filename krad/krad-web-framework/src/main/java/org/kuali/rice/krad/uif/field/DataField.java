@@ -33,6 +33,7 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 
+import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class DataField extends FieldBase implements DataBinding {
     private String defaultValue;
     private Class<? extends ValueFinder> defaultValueFinderClass;
 
-    private Formatter formatter;
+    private PropertyEditor propertyEditor;
     private AttributeSecurity attributeSecurity;
 
     private boolean readOnlyHidden;
@@ -312,17 +313,9 @@ public class DataField extends FieldBase implements DataBinding {
             setAdditionalDisplayPropertyName(attributeDefinition.getAdditionalDisplayAttributeName());
         }
 
-        if (getFormatter() == null && StringUtils.isNotBlank(attributeDefinition.getFormatterClass())) {
-            Class clazz = null;
-            try {
-                clazz = Class.forName(attributeDefinition.getFormatterClass());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException("Unable to get class from name: " + attributeDefinition.getFormatterClass(),
-                        e);
-            }
-
-            Formatter formatter = (Formatter) ObjectUtils.newInstance(clazz);
-            setFormatter(formatter);
+        // property editor
+        if (getPropertyEditor() == null) {
+            setPropertyEditor(attributeDefinition.getPropertyEditor());
         }
     }
 
@@ -365,28 +358,37 @@ public class DataField extends FieldBase implements DataBinding {
     }
 
     /**
-     * <code>Formatter</code> instance that should be used when displaying and
-     * accepting the field's value in the user interface
+     * Performs formatting of the field value for display and then converting the value back to its
+     * expected type from a string
      *
      * <p>
-     * Formatters can provide conversion between datatypes in addition to
-     * special string formatting such as currency display
+     * Note property editors exist and are already registered for the basic Java types and the
+     * common Kuali types such as [@link KualiDecimal}. Registration with this property is only
+     * needed for custom property editors
      * </p>
      *
-     * @return Formatter instance
-     * @see org.kuali.rice.core.web.format.Formatter
+     * @return PropertyEditor property editor instance to use for this field
      */
-    public Formatter getFormatter() {
-        return this.formatter;
+    public PropertyEditor getPropertyEditor() {
+        return propertyEditor;
     }
 
     /**
-     * Setter for the field's formatter
+     * Setter for the custom property editor to use for the field
      *
-     * @param formatter
+     * @param propertyEditor
      */
-    public void setFormatter(Formatter formatter) {
-        this.formatter = formatter;
+    public void setPropertyEditor(PropertyEditor propertyEditor) {
+        this.propertyEditor = propertyEditor;
+    }
+
+    /**
+     * Convenience setter for configuring a property editor by class
+     *
+     * @param propertyEditorClass
+     */
+    public void setPropertyEditorClass(Class<? extends PropertyEditor> propertyEditorClass) {
+        this.propertyEditor = ObjectUtils.newInstance(propertyEditorClass);
     }
 
     /**
@@ -418,6 +420,7 @@ public class DataField extends FieldBase implements DataBinding {
      * set this property. However this property can also be set in the fields
      * configuration to use another dictionary attribute.
      * </p>
+     *
      * <p>
      * The attribute name is used along with the dictionary object entry to find
      * the <code>AttributeDefinition</code>

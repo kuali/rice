@@ -29,7 +29,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="readOnly" value="@{#parent.readOnly}"/>
   </bean>
 
-  <bean id="DataField" abstract="true" parent="DataField-parentBean"/>
+  <bean id="DataField" parent="DataField-parentBean"/>
   <bean id="DataField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField" parent="Field">
     <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
     <property name="styleClasses" value="kr-data-fld"/>

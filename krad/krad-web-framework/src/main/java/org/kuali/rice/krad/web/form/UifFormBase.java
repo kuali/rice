@@ -449,40 +449,28 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * View instance associated with the form. Used to render the user interface
-     *
-     * @return View
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getView()
      */
     public View getView() {
         return this.view;
     }
 
     /**
-     * Setter for the view instance
-     *
-     * @param view
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setView(org.kuali.rice.krad.uif.view.View)
      */
     public void setView(View view) {
         this.view = view;
     }
 
     /**
-     * View instance for the page that made a request. Since a new view instance
-     * gets initialized for each request before the controller logic is invoked,
-     * any state about the previous view is lost. This could be needed to read
-     * metadata from the view for such things as collection processing. When
-     * this is necessary the previous view instance can be retrieved
-     *
-     * @return View instance
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getPreviousView()
      */
     public View getPreviousView() {
         return this.previousView;
     }
 
     /**
-     * Setter for the previous view instance
-     *
-     * @param previousView
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setPreviousView(org.kuali.rice.krad.uif.view.View)
      */
     public void setPreviousView(View previousView) {
         this.previousView = previousView;

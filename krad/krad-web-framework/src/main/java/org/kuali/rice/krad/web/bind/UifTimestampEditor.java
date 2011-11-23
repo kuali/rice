@@ -15,17 +15,19 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * This PropertyEditor converts between date display strings and
+ * PropertyEditor converts between date display strings and
  * <code>java.sql.Timestamp</code> objects using the
  * <code>org.kuali.rice.core.api.datetime.DateTimeService</code>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifTimestampEditor extends UifDateEditor {
+public class UifTimestampEditor extends UifDateEditor implements Serializable {
+    private static final long serialVersionUID = -2776193044590819394L;
 
     /**
      * This overridden method uses the

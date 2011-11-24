@@ -135,6 +135,10 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
     /**
      * Generates the document search form fields given the DataDictionary-defined fields, the DocumentType,
      * and whether basic, detailed, or superuser search is being rendered.
+     * If the document type policy DOCUMENT_STATUS_POLICY is set to "app", or "both"
+     * Then display the doc search criteria fields.
+     * If the documentType.validApplicationStatuses are defined, then the criteria field is a drop down.
+     * If the validApplication statuses are NOT defined, then the criteria field is a text input.
      * @param rowsToLoad the list of rows to update
      * @param defaultRows the DataDictionary-derived default form rows
      * @param fieldNames a list of field names corresponding to the fields to render according to the current document search state
@@ -169,11 +173,18 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                     if (field.getPropertyName().equals(fieldName) || field.getPropertyName().endsWith("_" + fieldName)) {
                         matched = true;
                         if (APPLICATION_DOCUMENT_STATUS.equals(field.getPropertyName())) {
-                            // TODO - KULRICE-5635 - need to add back in the building of application document status row, commented out for now because this code is weird!
                             // If Application Document Status policy is in effect for this document type,
                             // add search attributes for document status, and transition dates.
                             // Note: document status field is a drop down if valid statuses are defined, a text input field otherwise.
                             applyApplicationDocumentStatusCustomizations(field, documentType);
+
+                            // TODO: KULRICE-5635 figure out what to do about these date fields
+                            // Create Date Picker fields for AppDocStatus transitions
+                            // List<StandardSearchCriteriaField> dateFields = new ArrayList<StandardSearchCriteriaField>();
+                            // dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_LOWER_BOUND,"fromStatusTransitionDate",StandardSearchCriteriaField.TEXT,"fromStatusTransitionDate","docSearch.DocumentSearch.criteria.label.from","DocSearchStatusTransitionDate",false,null,null,false));
+                            // dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_UPPER_BOUND,"toStatusTransitionDate",StandardSearchCriteriaField.TEXT,"toStatusTransitionDate","docSearch.DocumentSearch.criteria.label.to",null,false,null,null,false));
+                            // StandardDocSearchCriteriaFieldContainer dateContainer = new StandardDocSearchCriteriaFieldContainer(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE, "docSearch.DocumentSearch.criteria.label.statusTransitionDate", dateFields);
+
                             break;
                         }
                     }
@@ -223,6 +234,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
      * Modifies the DataDictionary-defined applicationDocumentStatus field control to reflect whether the DocumentType
      * has specified a list of valid application document statuses (in which case a select control is rendered), or whether
      * it is free form (in which case a text control is rendered)
+     *
      * @param field the applicationDocumentStatus field
      * @param documentType the document type
      */
@@ -248,67 +260,6 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             //dropDown.setCollectionLabelProperty("statusName");
             //dropDown.setEmptyCollectionMessage("Select a document status.");
         }
-    }
-    
-    // Add the appropriate doc search criteria rows.
-    // If the document type policy DOCUMENT_STATUS_POLICY is set to "app", or "both"
-    // Then display the doc search criteria fields.
-    // If the documentType.validApplicationStatuses are defined, then the criteria field is a drop down.
-    // If the validApplication statuses are NOT defined, then the criteria field is a text input.
-    protected List<Row> buildAppDocStatusRows(DocumentType documentType) {
-        final String CRITERIA_KEY_APP_DOC_STATUS = "appDocStatus";
-        final String APP_DOC_STATUS_CONTAINER_LABEL_MSG_KEY = "docSearch.DocumentSearch.criteria.label.appDocStatus";
-
-        List<Row> appDocStatusRows = new ArrayList<Row>();
-        if (documentType.isAppDocStatusInUse()) {
-
-            Field appDocStatus = new Field();
-            // container.setLabelMessageKey(APP_DOC_STATUS_CONTAINER_LABEL_MSG_KEY);
-            // container.setFieldKey(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS);
-            // String helpMessageKeyArgument "DocSearchApplicationDocStatus"
-            appDocStatus.setPropertyName("criteria.appDocStatus");
-            appDocStatus.setFieldLabel(APP_DOC_STATUS_CONTAINER_LABEL_MSG_KEY);
-
-            List<ApplicationDocumentStatus> validStatuses = documentType.getValidApplicationStatuses();
-            if (validStatuses == null || validStatuses.size() == 0){
-                // use a text input field
-                // StandardSearchCriteriaField(String fieldKey, String propertyName, String fieldType, String datePickerKey, String labelMessageKey, String helpMessageKeyArgument, boolean hidden, String displayOnlyPropertyName, String lookupableImplServiceName, boolean lookupTypeRequired)
-                // new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS,"criteria.appDocStatus",StandardSearchCriteriaField.TEXT,null,null,"DocSearchApplicationDocStatus",false,null,null,false));
-                // String fieldKey DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS
-                appDocStatus.setFieldType(Field.TEXT);
-            } else {
-                // dropdown
-                // String fieldKey DocumentSearchCriteriaProcessor.CRITERIA_KEY_APP_DOC_STATUS + "_VALUES"
-                appDocStatus.setFieldType(Field.DROPDOWN);
-                List<KeyValue> validValues = new ArrayList<KeyValue>();
-                for (ApplicationDocumentStatus status: validStatuses) {
-                    validValues.add(new ConcreteKeyValue(status.getStatusName(), status.getStatusName()));
-                }
-                appDocStatus.setFieldValidValues(validValues);
-                //dropDown.setOptionsCollectionProperty("validApplicationStatuses");
-                //dropDown.setCollectionKeyProperty("statusName");
-                //dropDown.setCollectionLabelProperty("statusName");
-                //dropDown.setEmptyCollectionMessage("Select a document status.");
-            }
-
-
-            appDocStatusRows.add(new Row(
-                    // StandardDocSearchCriteriaFieldContainer(String fieldKey, String labelKey, List<StandardSearchCriteriaField> fields) {
-                    FieldUtils.constructContainerField(CRITERIA_KEY_APP_DOC_STATUS, APP_DOC_STATUS_CONTAINER_LABEL_MSG_KEY, Collections.singletonList(appDocStatus))));
-        }
-
-        // Create Date Picker fields for AppDocStatus transitions
-//        List<StandardSearchCriteriaField> dateFields = new ArrayList<StandardSearchCriteriaField>();
-//        dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_LOWER_BOUND,"fromStatusTransitionDate",StandardSearchCriteriaField.TEXT,"fromStatusTransitionDate","docSearch.DocumentSearch.criteria.label.from","DocSearchStatusTransitionDate",false,null,null,false));
-//        dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_UPPER_BOUND,"toStatusTransitionDate",StandardSearchCriteriaField.TEXT,"toStatusTransitionDate","docSearch.DocumentSearch.criteria.label.to",null,false,null,null,false));
-//        StandardDocSearchCriteriaFieldContainer dateContainer = new StandardDocSearchCriteriaFieldContainer(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE, "docSearch.DocumentSearch.criteria.label.statusTransitionDate", dateFields);
-
-        //columns.add( container );
-//        columns.add( dateContainer );
-        //columnList.add( columns );
-        //appDocStatusRows.addAll( standardNonSearchAttRows(documentType,columnList) );
-
-        return appDocStatusRows;
     }
 
     protected void addHiddenFields(List<Row> rows, boolean advancedSearch, boolean superUserSearch) {

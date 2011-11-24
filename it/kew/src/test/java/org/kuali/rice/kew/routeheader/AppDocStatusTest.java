@@ -23,12 +23,22 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
+import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
+import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AppDocStatusTest extends KEWTestCase {
     	    
@@ -235,5 +245,32 @@ public class AppDocStatusTest extends KEWTestCase {
     		assertTrue("Expected WorkflowRuntimeException not thrown.", gotException);
     		
     	}
+    }
+
+    @Test public void testSearching() {
+        String documentTypeName = "TestAppDocStatusDoc1";
+        DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
+        String userNetworkId = "rkirkend";
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("Routing style");
+        workflowDocument.route("routing this document.");
+
+        workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getDocumentId());
+        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
+
+        DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
+        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setApplicationDocumentStatus("Submitted");
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should have no documents.", 0, results.getSearchResults().size());
+
+        criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setApplicationDocumentStatus("Approval in Progress");
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
     }
 }

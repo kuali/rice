@@ -122,10 +122,12 @@ function submitForm(){
 
 function replacePage(contentDiv){
 	var page = jq("#viewpage_div", contentDiv);
+    page.hide();
 	jq("#viewpage_div").replaceWith(page);
 	setPageBreadcrumb();
 	pageValidatorReady = false;
 	runHiddenScripts("viewpage_div");
+    jq("#viewpage_div").show();
 }
 
 /**

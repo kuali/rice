@@ -81,7 +81,9 @@
   <!----------------------------------- #BEGIN BODY --------------------------------------->
 
   <body>
-    <div id="view_div">
+    <%--View is hidden here but shown by the initial ready jq script after page content scripts
+     have completed--%>
+    <div id="view_div" style="display:none;">
      <krad:div component="${view}">
 
       <krad:backdoor/>

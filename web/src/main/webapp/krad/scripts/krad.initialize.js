@@ -311,7 +311,6 @@ function errorHandler(msg,url,lno)
 
 // common event registering done here through JQuery ready event
 jq(document).ready(function() {
-	createLoading(false);
 	setPageBreadcrumb();
 
 	// buttons
@@ -334,6 +333,8 @@ jq(document).ready(function() {
 	});
 
 	runHiddenScripts("");
+    jq("#view_div").show();
+    createLoading(false);
 });
 
 

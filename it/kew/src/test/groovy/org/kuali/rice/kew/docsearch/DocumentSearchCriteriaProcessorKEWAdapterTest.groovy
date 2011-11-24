@@ -138,7 +138,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
      */
     @Test
     void testAdvancedRows() {
-        assertRows((ADVANCED_FIELD_NAMES + SEARCHABLE_FIELD_NAMES) - [ "applicationDocumentStatusCode" ] /* TODO: KULRICE-5635 */, true)
+        assertRows(ADVANCED_FIELD_NAMES + SEARCHABLE_FIELD_NAMES, true)
     }
 
     /**
@@ -146,7 +146,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
      */
     @Test
     void testAdvancedSuperUserRows() {
-        assertRows((ADVANCED_FIELD_NAMES + SEARCHABLE_FIELD_NAMES) - [ "applicationDocumentStatusCode" ] /* TODO: KULRICE-5635 */, true, true)
+        assertRows(ADVANCED_FIELD_NAMES + SEARCHABLE_FIELD_NAMES, true, true)
     }
 
     /**

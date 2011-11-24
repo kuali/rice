@@ -350,7 +350,19 @@
 					<name>USE_KEW_SUPERUSER_DOCHANDLER</name>
 					<value>false</value>
 				</policy>
+        <policy>
+            <name>DOCUMENT_STATUS_POLICY</name>
+            <stringValue>both</stringValue>
+        </policy>
 			</policies>
+      <validApplicationStatuses>
+        <status>Approval In Progress</status>
+        <status>Submitted</status>
+        <status>Pending</status>
+        <status>Completed</status>
+        <status>Approved</status>
+        <status>Rejected</status>
+      </validApplicationStatuses>
 			<attributes>
 				<!-- Add the CustomActionListAttribute to this document type to verify the resolution to KULWF-654 -->
 				<attribute>
@@ -371,8 +383,8 @@
 			</attributes>
 			<routePaths>
 				<routePath>
-					<start name="Initial" nextNode="First" />
-					<requests name="First" />
+					<start name="Initial" nextNode="First"  nextAppDocStatus="Approval in Progress"/>
+					<requests name="First" nextAppDocStatus="Submitted"/>
 				</routePath>
 			</routePaths>
 			<routeNodes>

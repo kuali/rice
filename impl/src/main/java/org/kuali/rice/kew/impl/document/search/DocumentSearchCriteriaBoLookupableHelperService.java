@@ -586,9 +586,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * via a saved search
      */
     protected void setRows(String documentTypeName) {
-        if (getRows() == null) {
-            super.setRows();
-        }
+        // Always call superclass to regenerate the rows since state may have changed (namely, documentTypeName parsed from params)
+        super.setRows();
+
         List<Row> lookupRows = new ArrayList<Row>();
         //copy the current rows
         for (Row row : getRows()) {

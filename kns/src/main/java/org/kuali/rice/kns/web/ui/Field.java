@@ -847,6 +847,9 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     }
 
     public boolean getHasBlankValidValue() {
+        if (fieldValidValues == null) {
+            throw new IllegalStateException("Valid values are undefined");
+        }
         for (KeyValue keyLabel : fieldValidValues) {
             if (keyLabel.getKey().equals("")) {
                 return true;

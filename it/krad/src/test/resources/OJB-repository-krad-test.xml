@@ -124,7 +124,7 @@
 		<field-descriptor name="documentNumber" column="DOC_HDR_ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" indexed="true" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="BIGINT" nullable="false"/>
+		<field-descriptor name="accountNumber" column="ACCT_NUM" jdbc-type="INTEGER" nullable="false"/>
 		<field-descriptor name="accountOwner" column="ACCT_OWNR" jdbc-type="VARCHAR" nullable="false"/>
 		<field-descriptor name="accountBalance" column="ACCT_BAL" jdbc-type="DECIMAL" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbKualiDecimalFieldConversion" nullable="false"/>
 		<field-descriptor name="accountOpenDate" column="ACCT_OPN_DAT" jdbc-type="DATE" nullable="false"/>

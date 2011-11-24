@@ -76,7 +76,7 @@ public class DocumentSearchInternalUtils {
 
         CONFIGURATIONS.add(new SearchableAttributeConfiguration(
                 DATE_TIME_ATTRIBUTE_TABLE_NAME,
-                EnumSet.of(DataType.DATE, DataType.TRUNCATED_DATE),
+                EnumSet.of(DataType.DATE, DataType.TRUNCATED_DATE, DataType.DATETIME),
                 Timestamp.class));
 
         CONFIGURATIONS.add(new SearchableAttributeConfiguration(
@@ -274,7 +274,7 @@ public class DocumentSearchInternalUtils {
     public static DocumentSearchCriteria unmarshalDocumentSearchCriteria(String string) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-        DocumentSearchCriteria.Builder builder = (DocumentSearchCriteria.Builder) jsonMapper.readValue(string, DocumentSearchCriteria.Builder.class); // see JacksonRiceModule for details of unmarshalling
+        DocumentSearchCriteria.Builder builder = jsonMapper.readValue(string, DocumentSearchCriteria.Builder.class); // see JacksonRiceModule for details of unmarshalling
         // fix up the Joda DateTimes
         builder.normalizeDateTimes();
         // build() it

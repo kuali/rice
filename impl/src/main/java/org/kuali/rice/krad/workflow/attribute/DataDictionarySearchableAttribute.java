@@ -18,11 +18,10 @@ package org.kuali.rice.krad.workflow.attribute;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts.util.MessageResources;
-import org.apache.struts.util.MessageResourcesFactory;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
@@ -32,7 +31,6 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -53,6 +51,7 @@ import org.kuali.rice.krad.datadictionary.SearchingAttribute;
 import org.kuali.rice.krad.datadictionary.SearchingTypeDefinition;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
@@ -141,7 +140,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
         }
         if ( doc != null ) {
-            DocumentEntry docEntry = (DocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(
+            DocumentEntry docEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(
                     documentWithContent.getDocument().getDocumentTypeName());
             if ( docEntry != null ) {
 		        WorkflowAttributes workflowAttributes = docEntry.getWorkflowAttributes();
@@ -159,7 +158,21 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     @Override
     public List<RemotableAttributeField> getSearchFields(ExtensionDefinition extensionDefinition, String documentTypeName) {
         List<Row> searchRows = getSearchingRows(documentTypeName);
-        return FieldUtils.convertRowsToAttributeFields(searchRows);
+        List<RemotableAttributeField> attributeFields = new ArrayList<RemotableAttributeField>();
+        DataDictionaryRemoteFieldService dataDictionaryRemoteFieldService =
+                KRADServiceLocatorWeb.getDataDictionaryRemoteFieldService();
+        for (Row row : searchRows) {
+            List<RemotableAttributeField> rowAttributeFields = new ArrayList<RemotableAttributeField>();
+            for (Field field : row.getFields()) {
+                RemotableAttributeField remotableAttributeField = dataDictionaryRemoteFieldService.buildRemotableFieldFromAttributeDefinition(field.getBusinessObjectClassName(), field.getPropertyName());
+                if (remotableAttributeField != null) {
+                    rowAttributeFields.add(remotableAttributeField);
+                }
+            }
+            attributeFields.addAll(rowAttributeFields);
+        }
+        return attributeFields;
+        //return FieldUtils.convertRowsToAttributeFields(searchRows);
     }
 
     /**
@@ -187,7 +200,8 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         docSearchRows.add(new Row(fieldList));
 
 
-        DocumentEntry entry = (DocumentEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentTypeName);
+        DocumentEntry entry =
+                KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentTypeName);
         if (entry  == null)
             return docSearchRows;
         if (entry instanceof MaintenanceDocumentEntry) {

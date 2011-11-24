@@ -21,15 +21,14 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.service.DocumentService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -128,11 +127,11 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 		docService.routeDocument(DOCUMENT_FIXTURE.ANOTHER_ODD_NAME_DOCUMENT.getDocument(docService), "Routing ANOTHER_ODD_NAME_DOCUMENT", null);
 		docService.routeDocument(DOCUMENT_FIXTURE.INVALID_STATE_DOCUMENT.getDocument(docService), "Routing INVALID_STATE_DOCUMENT", null);
 		docService.routeDocument(DOCUMENT_FIXTURE.WILDCARD_NAME_DOCUMENT.getDocument(docService), "Routing WILDCARD_NAME_DOCUMENT", null);
-		
+
 		// Ensure that DD searchable attribute integer fields function correctly when searched on.
 		// Note that negative numbers are disallowed by the NumericValidationPattern that validates this field.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
-				new String[] {"!1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
+				new String[] {"1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
 						">1234567889&&<1234567890", ">=88&&<=99999", "0|>10&&<10000", "9000..1000000", "0..100|>1234567889", "1..10000&&>50", "250..50"},
 				new int[]    {1            , -1     , -1     , 6   , 2                     , 3     , 4        , -1     , 6          , 2,
 						0                         , 3              , 3              , 2              , 4                   , 2              , 0});
@@ -277,7 +276,15 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
         for (int i = 0; i < resultSizes.length; i++) {
         	criteria = DocumentSearchCriteria.Builder.create();
         	criteria.setDocumentTypeName(docType.getName());
-            criteria.addDocumentAttributeValue(fieldName, searchValues[i].toString());
+            if (searchValues instanceof String[][]) {
+                String[] innerArray = (String[]) searchValues[i];
+                for (int j=0; j<innerArray.length; j++) {
+                    criteria.addDocumentAttributeValue(fieldName, innerArray[j]);
+                }
+            } else {
+                criteria.addDocumentAttributeValue(fieldName, searchValues[i].toString());
+            }
+
         	try {
         		results = docSearchService.lookupDocuments(principalId, criteria.build());
         		if (resultSizes[i] < 0) {

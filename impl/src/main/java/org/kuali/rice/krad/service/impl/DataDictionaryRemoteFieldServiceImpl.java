@@ -18,6 +18,7 @@ package org.kuali.rice.krad.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -30,11 +31,6 @@ import org.kuali.rice.core.api.uif.RemotableSelect;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.uif.RemotableTextarea;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
-import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -42,6 +38,7 @@ import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
@@ -55,6 +52,7 @@ import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UserControl;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,7 +77,7 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
         // try to resolve the component name - if not possible - try to pull the definition from the app mediation service
         try {
             componentClass = (Class<? extends BusinessObject>) Class.forName(componentClassName);
-            baseDefinition = getDataDictionaryService().getDataDictionary().getDataObjectEntry(componentClassName)
+            baseDefinition = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(componentClassName)
                     .getAttributeDefinition(attributeName);
         } catch (ClassNotFoundException ex) {
             throw new RiceRuntimeException("Unable to find attribute definition for attribute : " + attributeName);
@@ -92,7 +90,12 @@ public class DataDictionaryRemoteFieldServiceImpl implements DataDictionaryRemot
         definition.setMaxLength(baseDefinition.getMaxLength());
         definition.setRequired(baseDefinition.isRequired());
         definition.setForceUpperCase(baseDefinition.getForceUppercase());
-
+        //set the datatype - needed for successful custom doc searches
+        WorkflowAttributePropertyResolutionService propertyResolutionService = KRADServiceLocatorInternal
+                .getWorkflowAttributePropertyResolutionService();
+        String dataType = propertyResolutionService.determineFieldDataType(
+                (Class<? extends BusinessObject>) componentClass, attributeName);
+        definition.setDataType(DataType.valueOf(dataType.toUpperCase()));
         RemotableAbstractControl.Builder control = createControl(baseDefinition);
         if (control != null) {
             definition.setControl(control);

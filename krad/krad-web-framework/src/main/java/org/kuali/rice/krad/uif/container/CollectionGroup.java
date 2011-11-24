@@ -249,8 +249,6 @@ public class CollectionGroup extends Group implements DataBinding {
         List<Component> components = super.getComponentsForLifecycle();
 
         components.add(addLineLabelField);
-        components.addAll(actionFields);
-        components.addAll(addLineActionFields);
         components.add(collectionLookup);
 
         // remove the containers items because we don't want them as children
@@ -272,6 +270,8 @@ public class CollectionGroup extends Group implements DataBinding {
     public List<Component> getComponentPrototypes() {
         List<Component> components = super.getComponentPrototypes();
 
+        components.addAll(actionFields);
+        components.addAll(addLineActionFields);
         components.addAll(getItems());
         components.addAll(getSubCollections());
 

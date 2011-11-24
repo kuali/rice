@@ -50,7 +50,7 @@ public class CourseOfferingController extends UifControllerBase {
      * Populate some data for demonstration
      */
     @Override
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
+    @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 

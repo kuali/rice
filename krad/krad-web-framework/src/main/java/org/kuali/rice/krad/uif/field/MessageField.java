@@ -38,8 +38,9 @@ public class MessageField extends FieldBase {
 	}
 
 	/**
-	 * Override to render only if the message text has been given
-	 * 
+	 * Override to render only if the message text has been given or there is a conditional expression on the
+     * message text
+	 *
 	 * @see org.kuali.rice.krad.uif.component.ComponentBase#isRender()
 	 */
 	@Override
@@ -47,7 +48,8 @@ public class MessageField extends FieldBase {
 		boolean render = super.isRender();
 
         if (render) {
-            render = StringUtils.isNotBlank(messageText) && !StringUtils.equals(messageText, "&nbsp;");
+            render = getPropertyExpressions().containsKey("messageText") || (StringUtils.isNotBlank(messageText)
+                    && !StringUtils.equals(messageText, "&nbsp;"));
         }
 
         return render;

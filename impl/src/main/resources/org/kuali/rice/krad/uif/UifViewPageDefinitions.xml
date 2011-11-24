@@ -146,41 +146,7 @@
       <bean parent="FieldGroup">
         <property name="label" value="Actions"/>
         <property name="group">
-          <bean parent="LinkGroup"/>
-        </property>
-        <property name="items">
-          <list>
-            <bean parent="LinkField" p:order="10">
-              <property name="linkLabel" value="edit"/>
-              <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
-              <property name="finalizeMethodAdditionalArguments">
-                <list>
-                  <value>maintenanceEdit</value>
-                </list>
-              </property>
-              <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line)}"/>
-            </bean>
-            <bean parent="LinkField" p:order="20">
-              <property name="linkLabel" value="copy"/>
-              <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
-              <property name="finalizeMethodAdditionalArguments">
-                <list>
-                  <value>maintenanceCopy</value>
-                </list>
-              </property>
-              <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction()}"/>
-            </bean>
-            <bean parent="LinkField" p:order="30">
-              <property name="linkLabel" value="delete"/>
-              <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
-              <property name="finalizeMethodAdditionalArguments">
-                <list>
-                  <value>maintenanceDelete</value>
-                </list>
-              </property>
-              <property name="render" value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line)}"/>
-            </bean>
-          </list>
+          <bean parent="LookupView-MaintenanceActionsGroup"/>
         </property>
       </bean>
     </property>
@@ -189,6 +155,43 @@
         <property name="label" value="Return Value"/>
         <property name="finalizeMethodToCall" value="getReturnUrlForResults"/>
       </bean>
+    </property>
+  </bean>
+
+  <bean id="LookupView-MaintenanceActionsGroup" parent="LinkGroup">
+    <property name="items">
+      <list>
+        <bean parent="LinkField" p:order="10">
+          <property name="linkLabel" value="edit"/>
+          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+          <property name="finalizeMethodAdditionalArguments">
+            <list>
+              <value>maintenanceEdit</value>
+            </list>
+          </property>
+          <property name="render" value="@{#ViewHelper.allowsMaintenanceEditAction(#line)}"/>
+        </bean>
+        <bean parent="LinkField" p:order="20">
+          <property name="linkLabel" value="copy"/>
+          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+          <property name="finalizeMethodAdditionalArguments">
+            <list>
+              <value>maintenanceCopy</value>
+            </list>
+          </property>
+          <property name="render" value="@{#ViewHelper.allowsMaintenanceNewOrCopyAction()}"/>
+        </bean>
+        <bean parent="LinkField" p:order="30">
+          <property name="linkLabel" value="delete"/>
+          <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+          <property name="finalizeMethodAdditionalArguments">
+            <list>
+              <value>maintenanceDelete</value>
+            </list>
+          </property>
+          <property name="render" value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line)}"/>
+        </bean>
+      </list>
     </property>
   </bean>
 

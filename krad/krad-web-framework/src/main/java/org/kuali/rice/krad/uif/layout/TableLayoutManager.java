@@ -197,10 +197,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
             return;
         }
-		
-        // if add line or first line set number of data columns
-        if (isAddLine || ((!collectionGroup.isRenderAddLine() || collectionGroup.isReadOnly() || isSeparateAddLine())
-                && (lineIndex == 0))) {
+
+        // if first line for table set number of data columns
+        if (dataFields.isEmpty()) {
             if (isSuppressLineWrapping()) {
                 setNumberOfDataColumns(lineFields.size());
             } else {

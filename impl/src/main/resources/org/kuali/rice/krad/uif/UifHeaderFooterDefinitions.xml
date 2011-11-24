@@ -118,7 +118,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
      <property name="group">
        <bean parent="Group_DocumentHeader" p:styleClasses="group_docheader"/>
      </property>
-  </bean>  
+  </bean>
+
+  <bean id="HeaderSection" parent="HeaderThree" p:headerStyleClasses="kr-page-section-title kr-left"
+        p:styleClasses="grouping-header-expandable,clearfix">
+    <!--property name="help">
+      <bean parent="Help" p:styleClasses="kr-help,kr-right"/>
+    </property-->
+  </bean>
   
   <!-- Base Footers -->
    

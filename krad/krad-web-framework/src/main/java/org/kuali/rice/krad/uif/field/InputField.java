@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
@@ -170,10 +171,14 @@ public class InputField extends DataField {
                 && StringUtils.isBlank(getAdditionalDisplayPropertyName())) {
 
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-            for (KeyValue keyValue : fieldOptions) {
-                if (StringUtils.equals((String) fieldValue, keyValue.getKey())) {
-                    setAlternateDisplayValue(keyValue.getValue());
-                    break;
+
+            // TODO: can we translate Collections? (possibly combining output with delimiter
+            if ((fieldValue != null) && (TypeUtils.isSimpleType(fieldValue.getClass()))) {
+                for (KeyValue keyValue : fieldOptions) {
+                    if (StringUtils.equals((String) fieldValue, keyValue.getKey())) {
+                        setAlternateDisplayValue(keyValue.getValue());
+                        break;
+                    }
                 }
             }
         }

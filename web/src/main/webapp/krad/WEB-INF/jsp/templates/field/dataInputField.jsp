@@ -46,14 +46,16 @@
           </c:if>
         </c:set>
 
-        <%-- render inquiry if enabled --%>
-        <c:if test="${field.fieldInquiry.render}">
-          <krad:template component="${field.fieldInquiry}" componentId="${field.id}" body="${readOnlyDisplay}"/>
-        </c:if>
+        <span id="${field.id}">
+          <%-- render inquiry if enabled --%>
+          <c:if test="${field.fieldInquiry.render}">
+            <krad:template component="${field.fieldInquiry}" componentId="${field.id}" body="${readOnlyDisplay}"/>
+          </c:if>
 
-        <c:if test="${!field.fieldInquiry.render}">
-          ${readOnlyDisplay}
-        </c:if>
+          <c:if test="${!field.fieldInquiry.render}">
+            ${readOnlyDisplay}
+          </c:if>
+        </span>
       </c:when>
 
       <c:otherwise>

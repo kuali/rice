@@ -181,7 +181,7 @@ public abstract class UifControllerBase {
      * Initial method called when requesting a new view instance which forwards
      * the view for rendering
      */
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
+    @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 

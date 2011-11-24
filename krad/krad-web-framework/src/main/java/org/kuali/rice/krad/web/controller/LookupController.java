@@ -200,7 +200,6 @@ public class LookupController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         Properties parameters = new Properties();
         parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
-        parameters.put(UifParameters.SKIP_VIEW_INIT, "true");
 
         if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
             parameters.put(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());

@@ -40,24 +40,14 @@ import java.util.List;
 public class LookupInputField extends InputField {
     private static final long serialVersionUID = -8294275596836322699L;
 
-    protected boolean treatWildcardsAndOperatorsAsLiteral = false;
+    private boolean treatWildcardsAndOperatorsAsLiteral;
+    private boolean addAllOption;
 
     public LookupInputField() {
         super();
-    }
 
-    /**
-     * @return the treatWildcardsAndOperatorsAsLiteral
-     */
-    public boolean isTreatWildcardsAndOperatorsAsLiteral() {
-        return this.treatWildcardsAndOperatorsAsLiteral;
-    }
-
-    /**
-     * @param treatWildcardsAndOperatorsAsLiteral the treatWildcardsAndOperatorsAsLiteral to set
-     */
-    public void setTreatWildcardsAndOperatorsAsLiteral(boolean treatWildcardsAndOperatorsAsLiteral) {
-        this.treatWildcardsAndOperatorsAsLiteral = treatWildcardsAndOperatorsAsLiteral;
+        treatWildcardsAndOperatorsAsLiteral = false;
+        addAllOption = false;
     }
 
     /**
@@ -148,5 +138,38 @@ public class LookupInputField extends InputField {
         }
 
         return newControl;
+    }
+
+    /**
+     * @return the treatWildcardsAndOperatorsAsLiteral
+     */
+    public boolean isTreatWildcardsAndOperatorsAsLiteral() {
+        return this.treatWildcardsAndOperatorsAsLiteral;
+    }
+
+    /**
+     * @param treatWildcardsAndOperatorsAsLiteral the treatWildcardsAndOperatorsAsLiteral to set
+     */
+    public void setTreatWildcardsAndOperatorsAsLiteral(boolean treatWildcardsAndOperatorsAsLiteral) {
+        this.treatWildcardsAndOperatorsAsLiteral = treatWildcardsAndOperatorsAsLiteral;
+    }
+
+    /**
+     * Indicates whether the option for all values (blank key, 'All' label) should be added to the lookup
+     * field, note this is only supported for {@link org.kuali.rice.krad.uif.control.MultiValueControl} instance
+     *
+     * @return boolean true if all option should be added, false if not
+     */
+    public boolean isAddAllOption() {
+        return addAllOption;
+    }
+
+    /**
+     * Setter for the add all option indicator
+     *
+     * @param addAllOption
+     */
+    public void setAddAllOption(boolean addAllOption) {
+        this.addAllOption = addAllOption;
     }
 }

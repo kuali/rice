@@ -39,6 +39,7 @@ import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.widget.BreadCrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ObjectUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -150,6 +151,7 @@ public class View extends ContainerBase {
         translateCodes = false;
         viewTypeName = ViewType.DEFAULT;
         viewStatus = UifConstants.ViewStatus.CREATED;
+        formClass = UifFormBase.class;
         breadcrumbsInApplicationHeader = false;
         supportsReadOnlyFieldsOverride = true;
 

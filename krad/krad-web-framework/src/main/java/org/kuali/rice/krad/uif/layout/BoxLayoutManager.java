@@ -24,6 +24,9 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Layout manager that organizes components in a single row (horizontal) or
  * column (vertical)
@@ -46,12 +49,15 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	private String padding;
 
 	private String itemStyle;
+    private List<String> itemStyleClasses;
+
 	private boolean layoutFieldErrors;
 
 	public BoxLayoutManager() {
 		super();
 
 		orientation = Orientation.HORIZONTAL;
+        itemStyleClasses = new ArrayList<String>();
 	}
 
 	/**
@@ -175,11 +181,43 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	/**
 	 * Setter for the span style
 	 * 
-	 * @param itemSpanStyle
+	 * @param itemStyle
 	 */
 	public void setItemStyle(String itemStyle) {
 		this.itemStyle = itemStyle;
 	}
+
+    /**
+     * List of style classes that should be applied to each span that wraps the item in the layout
+     *
+     * @return List<String>
+     */
+    public List<String> getItemStyleClasses() {
+        return itemStyleClasses;
+    }
+
+    /**
+     * Setter for the list of style classes that should apply to each item span
+     *
+     * @param itemStyleClasses
+     */
+    public void setItemStyleClasses(List<String> itemStyleClasses) {
+        this.itemStyleClasses = itemStyleClasses;
+    }
+
+    /**
+     * Builds the HTML class attribute string by combining the item styleClasses list
+     * with a space delimiter
+     *
+     * @return String class attribute string
+     */
+    public String getItemStyleClassesAsString() {
+        if (itemStyleClasses != null) {
+            return StringUtils.join(itemStyleClasses, " ");
+        }
+
+        return "";
+    }
 
 	/**
 	 * @return the layoutFieldErrors

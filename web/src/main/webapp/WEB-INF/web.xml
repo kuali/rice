@@ -97,7 +97,17 @@
   </filter-mapping>
 
   <filter-mapping>
+    <filter-name>BootstrapFilter</filter-name>
+    <servlet-name>krad</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
     <filter-name>UserLoginFilter</filter-name>
+    <servlet-name>krad</servlet-name>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>UserPreferencesFilter</filter-name>
     <servlet-name>krad</servlet-name>
   </filter-mapping>
 

@@ -121,6 +121,14 @@ public class Group extends ContainerBase {
                         subGroup.setFieldBindByNamePrefix(getFieldBindByNamePrefix());
                     }
                 }
+                if (StringUtils.isNotBlank(getFieldBindingObjectPath())) {
+                    if (StringUtils.isNotBlank(subGroup.getFieldBindingObjectPath())) {
+                        subGroup.setFieldBindingObjectPath(
+                                getFieldBindingObjectPath() + "." + subGroup.getFieldBindingObjectPath());
+                    } else {
+                        subGroup.setFieldBindingObjectPath(getFieldBindingObjectPath());
+                    }
+                }
             }
         }
     }

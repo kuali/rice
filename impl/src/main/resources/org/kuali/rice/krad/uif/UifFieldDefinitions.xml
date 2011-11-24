@@ -44,6 +44,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <bean parent="Inquiry"/>
     </property>
   </bean>
+
+  <bean id="DataField_NoLabel" abstract="true" parent="DataField_NoLabel-parentBean"/>
+  <bean id="DataField_NoLabel-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField" parent="DataField">
+    <property name="labelField">
+      <null/>
+    </property>
+  </bean>
   
   <bean id="InputField" parent="InputField-parentBean"/>
   <bean id="InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField" parent="DataField" scope="prototype">

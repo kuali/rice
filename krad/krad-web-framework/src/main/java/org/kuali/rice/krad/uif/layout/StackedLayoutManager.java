@@ -63,6 +63,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     private Group lineGroupPrototype;
     private FieldGroup subCollectionFieldGroupPrototype;
     private Field selectFieldPrototype;
+    private Group wrapperGroup;
 
     private List<Group> stackedGroups;
 
@@ -87,12 +88,33 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     public void performInitialization(View view, Object model, Container container) {
         super.performInitialization(view, model, container);
 
+        stackedGroups = new ArrayList<Group>();
+
         if (addLineGroup != null) {
             view.getViewHelperService().performComponentInitialization(view, model, addLineGroup);
         }
         view.getViewHelperService().performComponentInitialization(view, model, lineGroupPrototype);
         view.getViewHelperService().performComponentInitialization(view, model, subCollectionFieldGroupPrototype);
         view.getViewHelperService().performComponentInitialization(view, model, selectFieldPrototype);
+    }
+
+    /**
+     * The following actions are performed:
+     *
+     * <ul>
+     * <li>If wrapper group is specified, places the stacked groups into the wrapper</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.layout.BoxLayoutManager#performApplyModel(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object, org.kuali.rice.krad.uif.container.Container)
+     */
+    @Override
+    public void performApplyModel(View view, Object model, Container container) {
+        super.performApplyModel(view, model, container);
+
+        if (wrapperGroup != null) {
+            wrapperGroup.setItems(stackedGroups);
+        }
     }
 
     /**
@@ -225,7 +247,11 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
     public List<Component> getComponentsForLifecycle() {
         List<Component> components = super.getComponentsForLifecycle();
 
-        components.addAll(stackedGroups);
+        if (wrapperGroup != null) {
+            components.add(wrapperGroup);
+        } else {
+            components.addAll(stackedGroups);
+        }
 
         return components;
     }
@@ -373,6 +399,34 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
      */
     public void setSelectFieldPrototype(Field selectFieldPrototype) {
         this.selectFieldPrototype = selectFieldPrototype;
+    }
+
+    /**
+     * Group that will 'wrap' the generated collection lines so that they have a different layout from the general
+     * stacked layout
+     *
+     * <p>
+     * By default (when the wrapper group is null), each collection line will become a group and the groups are
+     * rendered one after another. If the wrapper group is configured, the generated groups will be inserted as the
+     * items for the wrapper group, and the layout manager configured for the wrapper group will determine how they
+     * are rendered. For example, the layout manager could be a grid layout configured for three columns, which would
+     * layout the first three lines horizontally then break to a new row.
+     * </p>
+     *
+     * @return Group instance whose items list should be populated with the generated groups, or null to use the
+     *         default layout
+     */
+    public Group getWrapperGroup() {
+        return wrapperGroup;
+    }
+
+    /**
+     * Setter for the wrapper group that will receive the generated line groups
+     *
+     * @param wrapperGroup
+     */
+    public void setWrapperGroup(Group wrapperGroup) {
+        this.wrapperGroup = wrapperGroup;
     }
 
     /**

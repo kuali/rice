@@ -41,13 +41,21 @@
   <c:set var="itemSpanClasses" value="class=\"fieldContainerVerticalItem clearfix\""/>
 </c:if>
 
-<%-- render items --%>
 <div id="${manager.id}" ${style} ${styleClass}>
-<span ${fieldItemsStyle}>
-   <c:forEach items="${manager.stackedGroups}" var="item" varStatus="itemVarStatus">
-        <span ${itemSpanClasses}>
-          <krad:template component="${item}"/>
-        </span>
-   </c:forEach>
-</span>
+  <span ${fieldItemsStyle}>
+    <c:choose>
+      <c:when test="${manager.wrapperGroup != null}">
+         <%-- render Group --%>
+        <krad:template component="${manager.wrapperGroup}"/>
+      </c:when>
+      <c:otherwise>
+        <%-- render items --%>
+        <c:forEach items="${manager.stackedGroups}" var="item" varStatus="itemVarStatus">
+          <span ${itemSpanClasses}>
+            <krad:template component="${item}"/>
+          </span>
+       </c:forEach>
+      </c:otherwise>
+     </c:choose>
+  </span>
 </div>

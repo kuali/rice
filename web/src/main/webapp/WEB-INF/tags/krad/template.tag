@@ -37,11 +37,12 @@ still render, but render in a hidden container --%>
 		<c:when	test="${!component.render && !component.progressiveRenderViaAJAX && !empty component.progressiveRender}">
 			<div style="display: none;" id="${component.id}_refreshWrapper" class="refreshWrapper">
 		</c:when>
-		<c:otherwise>
-			<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged || component.refreshedByAction}">
-				<div id="${component.id}_refreshWrapper" class="refreshWrapper">
-			</c:if>
-		</c:otherwise>
+    <c:when test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged || component.refreshedByAction}">
+      <div id="${component.id}_refreshWrapper" class="refreshWrapper">
+    </c:when>
+    <c:when test="${component.hidden}">
+      <div style="display: none;">
+    </c:when>
 	</c:choose>
 
 	<c:choose>
@@ -65,7 +66,8 @@ still render, but render in a hidden container --%>
 	<%-- generate event code for component --%>
 	<krad:eventScript component="${component}" />
 	
-	<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged || component.refreshedByAction}">
+	<c:if test="${!empty component.progressiveRender || !empty component.conditionalRefresh || !empty component.refreshWhenChanged
+	              || component.refreshedByAction || component.hidden}">
 		</div>
 	</c:if>
 </c:if>

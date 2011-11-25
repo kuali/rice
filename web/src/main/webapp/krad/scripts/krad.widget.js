@@ -250,6 +250,17 @@ function returnLookupResultByScript(fieldName, value) {
     returnField.focus();
 }
 
+/*
+ * Function that sets the return target when returning multiple lookup results
+ */
+function setMultiValueReturnTarget() {
+    if (parent.jq == null) {
+        jq('#kualiForm').attr('target',parent.$('#iframeportlet').attr('name'));
+    }else{
+        jq('#kualiForm').attr('target','_parent');
+    }
+}
+
 /**
  * Opens the inquiry window
  * Is called from the onclick event on the direct inquiry

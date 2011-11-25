@@ -195,7 +195,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 p:clientSideJs="selectAllLines('@{#collectionGroup.id}');"/>
           <bean parent="ActionField" p:methodToCall="deselectAllPage" p:actionLabel="deselect all from this page"
                 p:clientSideJs="deselectAllLines('@{#collectionGroup.id}');"/>
-          <bean parent="ActionField" p:onClickScript="jq('#kualiForm').attr('target',parent.$('#iframeportlet').attr('name'));closeLightbox();"
+          <bean parent="ActionField" p:onClickScript="setMultiValueReturnTarget();closeLightbox();"
                 p:methodToCall="returnSelected" p:actionLabel="return selected"/>
         </list>
       </property>

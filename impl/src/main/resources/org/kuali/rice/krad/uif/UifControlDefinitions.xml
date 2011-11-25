@@ -109,4 +109,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="GroupControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.GroupControl" scope="prototype" parent="TextControl">
     <property name="size" value="10" />
   </bean>
+
+  <bean id="SpinnerControl" parent="SpinnerControl-parentBean"/>
+  <bean id="SpinnerControl-parentBean" abstract="true" class="org.kuali.rice.krad.uif.control.SpinnerControl" scope="prototype" parent="TextControl">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/control/spinner.jsp"/>
+    <property name="styleClasses" value="kr-spinner"/>
+    <property name="spinner">
+      <bean parent="Spinner"/>
+    </property>
+  </bean>
+
 </beans>

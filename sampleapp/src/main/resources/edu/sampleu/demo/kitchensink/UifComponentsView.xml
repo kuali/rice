@@ -580,15 +580,23 @@
             <bean parent="FileControl" p:size="30"/>
           </property>
         </bean>
+
         <bean parent="InputField" p:propertyName="testPerson.principalName" p:label="User Control">
           <property name="instructionalText"
-                    value="Type two letters of user id to see suggestion, or use the lookup. User full name will display after tabbing."/>
+                    value="Type user id and user full name will display after tabbing, or use lookup to select a person"/>
           <property name="control">
             <bean parent="UserControl" p:principalIdPropertyName="testPersonId"
                   p:personNamePropertyName="testPerson.name"/>
           </property>
         </bean>
-        <!-- TODO: add spinner control -->
+
+        <bean parent="InputField" p:propertyName="field131" p:label="Spinner Control">
+          <property name="instructionalText"
+                    value="Click the arrows on the right side of the control to increment/decrement the value"/>
+          <property name="control">
+            <bean parent="SpinnerControl"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

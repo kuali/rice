@@ -245,6 +245,17 @@
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/reorderer.jsp"/>
     <property name="movableStyleClass" value="flc-reorderer-movable"/>
   </bean>
+
+  <bean id="Spinner" parent="Spinner-parentBean"/>
+  <bean id="Spinner-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.Spinner" scope="prototype">
+    <property name="componentOptions">
+      <map>
+        <entry key="min" value="0"/>
+        <entry key="stepInc" value="1"/>
+        <entry key="pageInc" value="1"/>
+      </map>
+    </property>
+  </bean>
   
   <!-- Modifiers -->
   

@@ -556,6 +556,16 @@ function createReorderer(divId, options) {
 }
 
 /**
+ * Creates the spinner widget for an input
+ *
+ * @param id - id for the control to apply the spinner to
+ * @param options - options for the spinner
+ */
+function createSpinner(id, options) {
+    jq("#" + id).spinit(options);
+}
+
+/**
  * Executes a query with ajax for the given field to retrieve additional information after
  * the field has been updated (on blur)
  *

@@ -159,6 +159,7 @@ public class UifComponentsTestForm extends UifFormBase {
     private String field128;
     private String field129;
     private String field130;
+    private Integer field131;
 
     private String testPersonId;
     private Person testPerson;
@@ -272,6 +273,8 @@ public class UifComponentsTestForm extends UifFormBase {
         field88 = "Fruits";
         field91 = "Read only value";
         field92 = "Value 92";
+
+        field131 = new Integer(0);
     }
 
     @Override
@@ -2023,5 +2026,13 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setUiTestObject(UITestObject uiTestObject) {
         this.uiTestObject = uiTestObject;
+    }
+
+    public Integer getField131() {
+        return field131;
+    }
+
+    public void setField131(Integer field131) {
+        this.field131 = field131;
     }
 }

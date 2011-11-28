@@ -15,17 +15,20 @@
  */
 package org.kuali.rice.kew.mail.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.mail.EmailBody;
 import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailSubject;
-import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -49,7 +52,7 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         return contentService;
     }
 
-    public void sendImmediateReminder(ActionItem actionItem, Boolean skipOnApprovals) {
+    public void sendImmediateReminder(org.kuali.rice.kew.api.action.ActionItem actionItem, Boolean skipOnApprovals) {
         if (actionItem == null) {
             LOG.warn("Request to send immediate reminder to recipient of a null action item... aborting.");
             return;
@@ -66,7 +69,8 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
             return;
         }
         
-        if(suppressImmediateReminder(actionItem, actionItem.getPrincipalId())) {
+        Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
+        if(!checkEmailNotificationPreferences(actionItem, preferences, KewApiConstants.EMAIL_RMNDR_IMMEDIATE)) {
             LOG.debug("Email suppressed due to the user's preferences");
             return;
         }
@@ -87,7 +91,11 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
 
     @Override
     protected void sendPeriodicReminder(Person person, Collection<ActionItem> actionItems, String emailSetting) {
-        actionItems = filterActionItemsToNotify(person.getPrincipalId(), actionItems);
+        actionItems = filterActionItemsToNotify(person.getPrincipalId(), actionItems, emailSetting);
+        Collection<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>();
+        for(ActionItem actionItem : actionItems) {
+            apiActionItems.add(ActionItem.to(actionItem));
+        }
         // if there are no action items after being filtered, there's no
         // reason to send the email
         if (actionItems.isEmpty()) {
@@ -95,9 +103,9 @@ public class CustomizableActionListEmailServiceImpl extends ActionListEmailServi
         }
         EmailContent content;
         if (KewApiConstants.EMAIL_RMNDR_DAY_VAL.equals(emailSetting)) {
-            content = getEmailContentGenerator().generateDailyReminder(person, actionItems);
+            content = getEmailContentGenerator().generateDailyReminder(person, apiActionItems);
         } else if (KewApiConstants.EMAIL_RMNDR_WEEK_VAL.equals(emailSetting)) {
-            content = getEmailContentGenerator().generateWeeklyReminder(person, actionItems);
+            content = getEmailContentGenerator().generateWeeklyReminder(person, apiActionItems);
         } else {
             // else...refactor this...
             throw new RuntimeException("invalid email setting. this code needs refactoring");

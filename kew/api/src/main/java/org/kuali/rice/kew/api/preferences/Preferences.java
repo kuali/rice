@@ -17,6 +17,7 @@ package org.kuali.rice.kew.api.preferences;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -25,9 +26,12 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.kuali.rice.core.api.util.jaxb.MultiValuedStringMapAdapter;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.w3c.dom.Element;
 
@@ -120,6 +124,9 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
     private final String notifyComplete;
     @XmlElement(name = Elements.NOTIFY_FYI)
     private final String notifyFYI;
+    @XmlElement(name = Elements.DOCUMENT_TYPE_NOTIFICATION_PREFERENCES)
+    @XmlJavaTypeAdapter(MultiValuedStringMapAdapter.class)
+    private Map<String, String> documentTypeNotificationPreferences;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -161,6 +168,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         this.notifyApprove =  null;
         this.notifyComplete = null;
         this.notifyFYI = null;
+        this.documentTypeNotificationPreferences = new HashMap<String, String>();
         
         this.requiresSave = false;
     }
@@ -202,6 +210,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         this.notifyApprove = builder.getNotifyApprove();
         this.notifyComplete = builder.getNotifyComplete();
         this.notifyFYI = builder.getNotifyFYI();
+        this.documentTypeNotificationPreferences = builder.getDocumentTypeNotificationPreferences();
     }
 
     public boolean isRequiresSave() {
@@ -347,6 +356,19 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
     public String getNotifyFYI() {
         return this.notifyFYI;
     }
+    
+    public String getDocumentTypeNotificationPreference(String documentType) {
+        String preferenceName = documentType.replace(KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_DELIMITER, ".");
+        String preferenceValue = this.documentTypeNotificationPreferences.get(preferenceName);
+        if(StringUtils.isNotBlank(preferenceValue)) {
+            return preferenceValue;
+        }
+        return null;
+    }
+    
+    public Map<String, String> getDocumentTypeNotificationPreferences() {
+        return this.documentTypeNotificationPreferences;
+    }
 
     public boolean isUsingOutbox() {
         if (this.getUseOutbox() != null && this.getUseOutbox().equals(Constants.PREFERENCES_YES_VAL)) {
@@ -396,9 +418,10 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         private String notifyApprove;
         private String notifyComplete;
         private String notifyFYI;
+        private Map<String, String> documentTypeNotificationPreferences;
 
         private Builder() {
-
+            this.documentTypeNotificationPreferences = new HashMap<String, String>();
         }
 
         private Builder(String emailNotification, String notifyPrimaryDelegation, String notifySecondaryDelegation,
@@ -409,7 +432,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                 String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProccessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
                 String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
-                String notifyApprove, String notifyComplete, String notifyFYI, boolean requiresSave) {
+                String notifyApprove, String notifyComplete, String notifyFYI, Map<String, String> documentTypeNotificationPreferences,
+                boolean requiresSave) {
             this.emailNotification = emailNotification;
             this.notifyPrimaryDelegation = notifyPrimaryDelegation;
             this.notifySecondaryDelegation = notifySecondaryDelegation;
@@ -446,6 +470,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
             this.notifyApprove = notifyApprove;
             this.notifyComplete = notifyComplete;
             this.notifyFYI = notifyFYI;
+            this.documentTypeNotificationPreferences = documentTypeNotificationPreferences;
         }
 
         public Preferences build() {
@@ -464,12 +489,13 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                 String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProccessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
                 String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
-                String notifyApprove, String notifyComplete, String notifyFYI, boolean requiresSave) {
+                String notifyApprove, String notifyComplete, String notifyFYI, Map<String, String> documentTypeNotificationPreferences,
+                boolean requiresSave) {
             return new Builder(emailNotification, notifyPrimaryDelegation, notifySecondaryDelegation, openNewWindow, showActionRequested, showDateCreated,
                     showDocumentStatus, showAppDocStatus, showDocType, showInitiator, showDocTitle, showWorkgroupRequest,  showDelegator, showClearFyi,
                     pageSize, refreshRate, colorSaved, colorInitiated, colorDissaproved, colorEnroute, colorApproved, colorFinal, colorDissapproveCancel,
                     colorProccessed, colorException, colorCanceled, delegatorFilter, useOutbox, showDateApproved, showCurrentNode, primaryDelegateFilter,
-                    notifyAcknowledge, notifyApprove, notifyComplete, notifyFYI, requiresSave);
+                    notifyAcknowledge, notifyApprove, notifyComplete, notifyFYI, documentTypeNotificationPreferences, requiresSave);
         }
 
         public static Builder create(PreferencesContract contract) {
@@ -483,11 +509,11 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                     contract.getColorEnroute(), contract.getColorApproved(), contract.getColorFinal(), contract.getColorDisapproveCancel(), contract.getColorProcessed(),
                     contract.getColorException(), contract.getColorCanceled(), contract.getDelegatorFilter(), contract.getUseOutbox(), contract.getShowDateApproved(),
                     contract.getShowCurrentNode(), contract.getPrimaryDelegateFilter(), contract.getNotifyAcknowledge(), contract.getNotifyApprove(), contract.getNotifyComplete(),
-                    contract.getNotifyFYI(), contract.isRequiresSave());
+                    contract.getNotifyFYI(), contract.getDocumentTypeNotificationPreferences(), contract.isRequiresSave());
             return builder;
         }
 
-        public static Builder create(Map<String, String> map, boolean requiresSave) {
+        public static Builder create(Map<String, String> map, Map<String, String> documentTypeNotificationPreferences, boolean requiresSave) {
             Builder builder = create(map.get(KEYS.EMAIL_NOTIFICATION), map.get(KEYS.NOTIFY_PRIMARY_DELEGATION), map.get(KEYS.NOTIFY_SECONDARY_DELEGATION), map.get(KEYS.OPEN_NEW_WINDOW),
                     map.get(KEYS.SHOW_ACTION_REQUESTED), map.get(KEYS.SHOW_DATE_CREATED), map.get(KEYS.SHOW_DOCUMENT_STATUS), map.get(KEYS.SHOW_APP_DOC_STATUS), map.get(KEYS.SHOW_DOC_TYPE),
                     map.get(KEYS.SHOW_INITIATOR), map.get(KEYS.SHOW_DOC_TITLE), map.get(KEYS.SHOW_GROUP_REQUEST), map.get(KEYS.SHOW_DELEGATOR), map.get(KEYS.SHOW_CLEAR_FYI),
@@ -495,7 +521,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                     map.get(KEYS.COLOR_ENROUTE), map.get(KEYS.COLOR_APPROVED), map.get(KEYS.COLOR_FINAL), map.get(KEYS.COLOR_DISAPPROVE_CANCEL), map.get(KEYS.COLOR_PROCESSED),
                     map.get(KEYS.COLOR_EXCEPTION), map.get(KEYS.COLOR_CANCELED), map.get(KEYS.DELEGATOR_FILTER), map.get(KEYS.USE_OUT_BOX), map.get(KEYS.SHOW_DATE_APPROVED),
                     map.get(KEYS.SHOW_CURRENT_NODE), map.get(KEYS.PRIMARY_DELEGATE_FILTER), map.get(KEYS.NOTIFY_ACKNOWLEDGE), map.get(KEYS.NOTIFY_APPROVE), map.get(KEYS.NOTIFY_COMPLETE),
-                    map.get(KEYS.NOTIFY_FYI), requiresSave);
+                    map.get(KEYS.NOTIFY_FYI), documentTypeNotificationPreferences, requiresSave);
             return builder;
         }
 
@@ -786,6 +812,39 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         public synchronized void setNotifyFYI(String notifyFYI) {
             this.notifyFYI = notifyFYI;
         }
+        
+        public synchronized String getDocumentTypeNotificationPreference(String documentType) {
+            String preferenceName = documentType.replace(KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_DELIMITER, ".");
+            String preferenceValue = this.documentTypeNotificationPreferences.get(preferenceName);
+            if(StringUtils.isNotBlank(preferenceValue)) {
+                return preferenceValue;
+            }
+            return null;
+        }
+        
+        public synchronized void setDocumentTypeNotificationPreference(String documentType, String preference) {   
+            documentType = documentType.replace(KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_DELIMITER, ".");
+            this.documentTypeNotificationPreferences.put(documentType, preference);
+        }
+
+        public synchronized Map<String, String> getDocumentTypeNotificationPreferences() {
+            if(this.documentTypeNotificationPreferences == null) {
+                this.documentTypeNotificationPreferences = new HashMap<String, String>();
+            }
+            return this.documentTypeNotificationPreferences;
+        }
+
+        public synchronized void setDocumentTypeNotificationPreferences(Map<String, String> documentTypeNotificationPreferences) {
+            this.documentTypeNotificationPreferences = documentTypeNotificationPreferences;
+        }
+        
+        public synchronized void addDocumentTypeNotificationPreference(String documentType, String preference) {
+            this.getDocumentTypeNotificationPreferences().put(documentType, preference);
+        }
+        
+        public synchronized void removeDocumentTypeNotificationPreference(String documentType) {
+            this.getDocumentTypeNotificationPreferences().remove(documentType);
+        }
     }
 
     static class Constants {
@@ -836,6 +895,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         static final String NOTIFY_APPROVE = "notifyApprove";
         static final String NOTIFY_COMPLETE = "notifyCompelte";
         static final String NOTIFY_FYI = "notifyFYI";
+        static final String DOCUMENT_TYPE_NOTIFICATION_PREFERENCES = "documentTypeNotificationPreferences";
     }
 
     public static class KEYS {
@@ -879,6 +939,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         public static final String NOTIFY_APPROVE = "NOTIFY_APPROVE";
         public static final String NOTIFY_COMPLETE = "NOTIFY_COMPLETE";
         public static final String NOTIFY_FYI = "NOTIFY_FYI";
+        public static final String DOCUMENT_TYPE_NOTIFICATION_PREFERENCES = "DOCUMENT_TYPE_NOTIFICATION_PREFERENCES";
     }
 
     public static class Cache {

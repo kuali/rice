@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.api.preferences;
 
+import java.util.Map;
+
 /**
  * A contract defining the method for a {@link Preferences} model object and its data transfer object equivalent.
  *
@@ -95,5 +97,7 @@ public interface PreferencesContract {
     String getNotifyComplete();
     
     String getNotifyFYI();
+    
+    Map<String, String> getDocumentTypeNotificationPreferences();
 
 }

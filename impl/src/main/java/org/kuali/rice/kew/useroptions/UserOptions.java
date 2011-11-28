@@ -39,7 +39,8 @@ import org.kuali.rice.kew.api.preferences.Preferences;
   @NamedQuery(name="UserOptions.FindByUserQualified", query="select uo from UserOptions uo where uo.workflowId = :workflowId and uo.optionId like :optionId"), 
   @NamedQuery(name="UserOptions.FindByWorkflowId",  query="select uo from UserOptions uo where uo.workflowId = :workflowId"),
   @NamedQuery(name="UserOptions.FindByOptionValue", query="select uo from UserOptions uo where uo.optionId = :optionId and uo.optionVal = :optionValue"),
-  @NamedQuery(name="UserOptions.FindByOptionId", query="select uo from UserOptions uo where uo.optionId = :optionId and uo.workflowId = :workflowId")
+  @NamedQuery(name="UserOptions.FindByOptionId", query="select uo from UserOptions uo where uo.optionId = :optionId and uo.workflowId = :workflowId"),
+  @NamedQuery(name="UserOptions.FindEmailUserOptionsByType", query="select uo from UserOptions uo where (uo.optionId = :optionId or uo.optionId like :optionIdLike) and uo.optionVal = :optionValue")
 })
 public class UserOptions implements Comparable {
 

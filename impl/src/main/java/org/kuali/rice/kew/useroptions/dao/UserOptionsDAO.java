@@ -32,4 +32,14 @@ public interface UserOptionsDAO {
 	public UserOptions findByOptionId(String optionId, String principalId);
 	public Collection<UserOptions> findByOptionValue(String optionId, String optionValue);
 	public Long getNewOptionIdForActionList();
+	
+	/**
+	 * 
+	 * This method fetches all of the user options which are used for email preferences
+	 * and are set to the given email setting.
+	 * 
+	 * @param emailSetting
+	 * @return
+	 */
+	public List<UserOptions> findEmailUserOptionsByType(String emailSetting);
 }

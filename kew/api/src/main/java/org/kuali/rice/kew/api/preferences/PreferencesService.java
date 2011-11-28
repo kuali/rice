@@ -15,18 +15,13 @@
  */
 package org.kuali.rice.kew.api.preferences;
 
-import org.kuali.rice.kew.api.KewApiConstants;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.springframework.cache.annotation.Cacheable;
-
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.preferences.Preferences;
 
 /**
  * A service which provides data access for {@link Preferences}.
@@ -46,5 +41,4 @@ public interface PreferencesService {
     @WebResult(name = "preferences")
     //@Cacheable(value= Preferences.Cache.NAME, key="'principalId=' + #principalId")
     public Preferences getPreferences(@WebParam(name="principalId") String principalId);
-
 }

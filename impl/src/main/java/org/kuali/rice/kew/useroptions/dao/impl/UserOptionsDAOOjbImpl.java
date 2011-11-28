@@ -15,20 +15,25 @@
  */
 package org.kuali.rice.kew.useroptions.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 
 public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implements UserOptionsDAO {
@@ -91,5 +96,20 @@ public class UserOptionsDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         userOptions.setOptionId(optionId);
         userOptions.setOptionVal(optionValue);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(userOptions));
+    }
+
+    @Override
+    public List<UserOptions> findEmailUserOptionsByType(String emailSetting) {
+        Criteria optionIDCriteria = new Criteria();
+        optionIDCriteria.addEqualTo("optionId", KewApiConstants.EMAIL_RMNDR_KEY);
+
+        Criteria documentTypeNotificationCriteria = new Criteria();
+        documentTypeNotificationCriteria.addLike("optionId", "%" + KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX);
+        optionIDCriteria.addOrCriteria(documentTypeNotificationCriteria);
+
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo("optionVal", emailSetting);
+        criteria.addAndCriteria(optionIDCriteria);
+        return Lists.newArrayList(Iterables.filter(this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(UserOptions.class, criteria)), UserOptions.class));
     }
 }

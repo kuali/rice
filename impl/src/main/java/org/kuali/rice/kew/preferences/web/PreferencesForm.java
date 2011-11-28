@@ -40,6 +40,8 @@ public class PreferencesForm extends KualiForm {
     private String methodToCall = "";
     private String returnMapping;
     private boolean showOutbox = true;
+    private String documentTypePreferenceName;
+    private String documentTypePreferenceValue;
 
     // KULRICE-3137: Added a backLocation parameter similar to the one from lookups.
     private String backLocation;
@@ -78,6 +80,30 @@ public class PreferencesForm extends KualiForm {
 	public void setBackLocation(String backLocation) {
 		this.backLocation = backLocation;
 	}
+	
+	public String getDocumentTypePreferenceName() {
+        return documentTypePreferenceName;
+    }
+    
+    public void setDocumentTypePreferenceName(String documentTypePreferenceName) {
+        this.documentTypePreferenceName = documentTypePreferenceName;
+    }
+    
+    public String getDocumentTypePreferenceValue() {
+        return documentTypePreferenceValue;
+    }
+    
+    public void setDocumentTypePreferenceValue(String documentTypePreferenceValue) {
+        this.documentTypePreferenceValue = documentTypePreferenceValue;
+    }
+    
+    public Object getDocumentTypeNotificationPreference(String documentType) {
+        return preferences.getDocumentTypeNotificationPreference(documentType);
+    }
+    
+    public void setDocumentTypeNotificationPreference(String documentType, String preferenceValue) {
+        preferences.addDocumentTypeNotificationPreference(documentType, preferenceValue);
+    }
 	
 	/**
 	 * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.

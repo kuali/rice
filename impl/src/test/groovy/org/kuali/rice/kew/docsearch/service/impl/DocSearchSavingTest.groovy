@@ -15,15 +15,18 @@
  */
 package org.kuali.rice.kew.docsearch.service.impl
 
+import static org.junit.Assert.assertEquals
+
+import java.util.List;
+
 import org.junit.Before
 import org.junit.Test
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
+import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
 import org.kuali.rice.kew.useroptions.UserOptions
 import org.kuali.rice.kew.useroptions.UserOptionsServiceImpl
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO
-import static org.junit.Assert.assertEquals
 
-import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils
 
 /**
  * Unit tests DocumentSearchCriteria saving behavior of DocumentSearchServiceImpl
@@ -76,6 +79,8 @@ class DocSearchSavingTest {
         }
         Collection<UserOptions> findByOptionValue(String optionId, String optionValue) { null }
         Long getNewOptionIdForActionList() { 0 }
+        
+        List<UserOptions> findEmailUserOptionsByType(String emailSetting) { null }
     }
 
     private def userOptionsService = new UserOptionsServiceImpl()

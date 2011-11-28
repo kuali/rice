@@ -18,8 +18,12 @@ package org.kuali.rice.kew.useroptions.dao.impl;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -81,6 +85,16 @@ public class UserOptionsDaoJpaImpl implements UserOptionsDAO {
 
     public Collection findByOptionValue(String optionId, String optionValue) {
         return entityManager.createNamedQuery("UserOptions.FindByOptionValue").setParameter("optionId", optionId).setParameter("optionValue", optionValue).getResultList();
+    }
+
+    @Override
+    public List<UserOptions> findEmailUserOptionsByType(String emailSetting) {
+        return Lists.newArrayList(Iterables.filter(entityManager.createNamedQuery("UserOptions.FindByOptionValue")
+                                                                .setParameter("optionId", KewApiConstants.EMAIL_RMNDR_KEY)
+                                                                .setParameter("optionIdLike", "%" + KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX)
+                                                                .setParameter("optionValue", emailSetting)
+                                                                .getResultList(),
+                                                   UserOptions.class));
     }
 
     public EntityManager getEntityManager() {

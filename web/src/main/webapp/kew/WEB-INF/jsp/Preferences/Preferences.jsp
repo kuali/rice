@@ -16,10 +16,10 @@
 
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<%--<%@ page import="org.kuali.rice.kew.api.preferences.PreferencesService" %>--%>
+<c:set var="showSaveReminder" value="${requestScope.saveReminder}" />
 <kul:page headerTitle="Workflow Preferences" lookup="false"
   headerMenuBar="" transactionalDocument="false" showDocumentInfo="false"
-  htmlFormAction="Preferences" docTitle="Workflow Preferences">
+  htmlFormAction="Preferences" docTitle="Workflow Preferences" errorKey="*">
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="t3" summary="">
   <tbody>
@@ -48,7 +48,7 @@
 	    </tr>
 	    <tr>
 		  <th><div align="right">Automatic Refresh Rate:</div></th>
-          <td class="datacell"><html-el:text  property="preferences.refreshRate" size="3" />
+          <td class="datacell"><html-el:text property="preferences.refreshRate" size="3" />
             <kul:checkErrors keyMatch="preferences.refreshRate" />
             <c:if test="${hasErrors}">
               <kul:fieldShowErrorIcon />
@@ -64,36 +64,6 @@
               <kul:fieldShowErrorIcon />
             </c:if>
           </td>
-        </tr>
-        <tr>
-          <th ><div align="right">Email Notification</div></th>
-          <td class="datacell">
-            <html-el:select property="preferences.emailNotification">
-              <html-el:option value="${Constants.EMAIL_RMNDR_NO_VAL}">None</html-el:option>
-              <html-el:option value="${Constants.EMAIL_RMNDR_DAY_VAL}">Daily</html-el:option>
-              <html-el:option value="${Constants.EMAIL_RMNDR_WEEK_VAL}">Weekly</html-el:option>
-              <html-el:option value="${Constants.EMAIL_RMNDR_IMMEDIATE}">Immediate</html-el:option>
-            </html-el:select>
-          </td>
-        </tr>
-        <tr>
-          <th><div align="right">Send Email Notifications For</div></th>
-          <td class="datacell">
-            <ul style="padding-left: 0;">
-              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyComplete" value="${Constants.PREFERENCES_YES_VAL}"/> Complete</li>
-              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyApprove" value="${Constants.PREFERENCES_YES_VAL}"/> Approve</li>
-              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyAcknowledge" value="${Constants.PREFERENCES_YES_VAL}"/> Acknowledge</li>
-              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyFYI" value="${Constants.PREFERENCES_YES_VAL}"/> FYI</li>
-            </ul>
-          </td>
-        </tr>
-        <tr>
-          <th><div align="right">Receive Primary Delegate Emails</div></th>
-          <td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/></td>
-        </tr>
-        <tr>
-           <th><div align="right">Receive Secondary Delegate Emails</div></th>
-           <td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.notifySecondaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/></td>
         </tr>
         <tr>
           <th width="50%"><div align="right">Delegator Filter</div></th>
@@ -311,6 +281,100 @@
 			  </table>
 			</td>
 		</tr>
+		<tr>
+			<td colspan="2" class="subhead">Email Notification Preferences</td>
+		</tr>
+		<tr>
+          <th><div align="right">Receive Primary Delegate Emails</div></th>
+          <td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.notifyPrimaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/></td>
+        </tr>
+        <tr>
+           <th><div align="right">Receive Secondary Delegate Emails</div></th>
+           <td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.notifySecondaryDelegation" value="${Constants.PREFERENCES_YES_VAL}"/></td>
+        </tr>
+		<tr>
+          <th><div align="right">Default Email Notification</div></th>
+          <td class="datacell">
+            <html-el:select property="preferences.emailNotification">
+              <html-el:option value="${Constants.EMAIL_RMNDR_NO_VAL}">None</html-el:option>
+              <html-el:option value="${Constants.EMAIL_RMNDR_DAY_VAL}">Daily</html-el:option>
+              <html-el:option value="${Constants.EMAIL_RMNDR_WEEK_VAL}">Weekly</html-el:option>
+              <html-el:option value="${Constants.EMAIL_RMNDR_IMMEDIATE}">Immediate</html-el:option>
+            </html-el:select>
+          </td>
+        </tr>
+        <tr>
+          <th><div align="right">Document Type Notifications</div></th>
+          <td class="datacell">
+            <c:if test="${showSaveReminder}">
+            <div style="color: red; font-weight: bold;"><bean:message key="docType.preference.save.reminder" /></div>
+            </c:if>
+            <table>
+              <tr>
+                <th>Document Type</th>
+                <th>Notification Preference</th>
+                <th>Actions</th>
+              </tr>
+              <logic:iterate name="KualiForm" property="preferences.documentTypeNotificationPreferences" id="entry" indexId="status">
+              <tr>
+                <td>
+                  <c:set var="documentType"><bean:write name="entry" property="key" /></c:set>
+                  ${documentType}
+                  <html-el:hidden name="KualiForm" property="preferences.documentTypeNotificationPreference(${fn:replace(documentType, '.', Constants.DOCUMENT_TYPE_NOTIFICATION_DELIMITER)})" />
+                </td>
+                <td>
+                  <c:set var="preferenceValue"><bean:write name="entry" property="value" /></c:set>
+                  <c:choose>
+                  	<c:when test="${preferenceValue == Constants.EMAIL_RMNDR_NO_VAL}">None</c:when>
+                  	<c:when test="${preferenceValue == Constants.EMAIL_RMNDR_DAY_VAL}">Daily</c:when>
+                  	<c:when test="${preferenceValue == Constants.EMAIL_RMNDR_WEEK_VAL}">Weekly</c:when>
+                  	<c:when test="${preferenceValue == Constants.EMAIL_RMNDR_IMMEDIATE}">Immediate</c:when>
+                  </c:choose>
+                </td>
+                <td>
+                  <html:image property="methodToCall.deleteNotificationPreference.${documentType}"
+                              src="${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif"
+                              styleClass="tinybutton"/>
+                </td>
+              </tr>
+              </logic:iterate>
+              <tr>
+                <td>
+                  <html-el:text name="KualiForm" property="documentTypePreferenceName" />
+                  <kul:checkErrors keyMatch="documentTypePreferenceName" />
+            	  <c:if test="${hasErrors}">
+                    <br/><kul:fieldShowErrorIcon />
+            	  </c:if>
+            	  <kul:lookup boClassName="org.kuali.rice.kew.doctype.bo.DocumentType" fieldConversions="name:documentTypePreferenceName"/>
+                </td>
+                <td>
+                  <html-el:select name="KualiForm" property="documentTypePreferenceValue">
+                    <html-el:option value="${Constants.EMAIL_RMNDR_NO_VAL}">None</html-el:option>
+                    <html-el:option value="${Constants.EMAIL_RMNDR_DAY_VAL}">Daily</html-el:option>
+                    <html-el:option value="${Constants.EMAIL_RMNDR_WEEK_VAL}">Weekly</html-el:option>
+                    <html-el:option value="${Constants.EMAIL_RMNDR_IMMEDIATE}">Immediate</html-el:option>
+                  </html-el:select>
+                </td>
+                <td>
+                  <html:image property="methodToCall.addNotificationPreference"
+                              src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif"
+                              styleClass="tinybutton"/>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <th><div align="right">Send Email Notifications For</div></th>
+          <td class="datacell">
+            <ul style="padding-left: 0;">
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyComplete" value="${Constants.PREFERENCES_YES_VAL}"/> Complete</li>
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyApprove" value="${Constants.PREFERENCES_YES_VAL}"/> Approve</li>
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyAcknowledge" value="${Constants.PREFERENCES_YES_VAL}"/> Acknowledge</li>
+              <li style="list-style-type: none;"><html-el:checkbox styleClass="nobord" property="preferences.notifyFYI" value="${Constants.PREFERENCES_YES_VAL}"/> FYI</li>
+            </ul>
+          </td>
+        </tr>
 	  </table>
     </div><!-- End tab-container -->
     <table width="100%" border="0" cellpadding="0" cellspacing="0" class="b3" summary="">

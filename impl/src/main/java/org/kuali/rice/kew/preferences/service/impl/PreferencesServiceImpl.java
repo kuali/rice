@@ -15,8 +15,16 @@
  */
 package org.kuali.rice.kew.preferences.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -24,13 +32,7 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -90,8 +92,15 @@ public class PreferencesServiceImpl implements PreferencesService {
         Collection<UserOptions> options = getUserOptionService().findByWorkflowUser(principalId);
         Map<String,UserOptions> optionMap = new HashMap<String, UserOptions>();
         Map<String,String> optionValueMap = new HashMap<String, String>();
+        Map<String, String> documentTypeNotificationPreferences = new HashMap<String, String>();
         for ( UserOptions option : options ) {
-        	optionMap.put(option.getOptionId(), option);
+            if(option.getOptionId().endsWith(KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX)) {
+                String preferenceName = option.getOptionId();
+                preferenceName = StringUtils.substringBeforeLast(preferenceName, KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX);
+                documentTypeNotificationPreferences.put(preferenceName, option.getOptionVal());
+            } else {
+                optionMap.put(option.getOptionId(), option);
+            }
         }
         
         ConfigurationService kcs = KRADServiceLocator.getKualiConfigurationService();
@@ -139,7 +148,7 @@ public class PreferencesServiceImpl implements PreferencesService {
 //        if (isSaveRequired)
 //            getUserOptionService().save(principalId, optionValueMap);
 
-        return Preferences.Builder.create(optionValueMap, isSaveRequired).build();
+        return Preferences.Builder.create(optionValueMap, documentTypeNotificationPreferences, isSaveRequired).build();
     }
 
     public void savePreferences(String principalId, Preferences preferences) {
@@ -188,7 +197,19 @@ public class PreferencesServiceImpl implements PreferencesService {
         if (ConfigContext.getCurrentContextConfig().getOutBoxOn()) {
             optionsMap.put(Preferences.KEYS.USE_OUT_BOX, preferences.getUseOutbox());
         }
+        for(Entry<String, String> documentTypePreference : preferences.getDocumentTypeNotificationPreferences().entrySet()) {
+            optionsMap.put(documentTypePreference.getKey() + KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX, documentTypePreference.getValue());
+        }
         getUserOptionService().save(principalId, optionsMap);
+        
+        // Find which document type notification preferences have been deleted
+        // and remove them from the database
+        Preferences storedPreferences = this.getPreferences(principalId);
+        for(Entry<String, String> storedEntry : storedPreferences.getDocumentTypeNotificationPreferences().entrySet()) {
+            if(preferences.getDocumentTypeNotificationPreference(storedEntry.getKey()) == null) {
+                getUserOptionService().deleteUserOptions(getUserOptionService().findByOptionId(storedEntry.getKey() + KewApiConstants.DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX, principalId));
+            }
+        }
         if ( LOG.isDebugEnabled() ) {
         LOG.debug("saved preferences user " + principalId);
     }

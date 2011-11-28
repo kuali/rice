@@ -171,6 +171,8 @@ public final class KewApiConstants {
 
     /* email notification for action requests left in action list */
     public static final String EMAIL_RMNDR_KEY = "EMAIL_NOTIFICATION";
+    public static final String DOCUMENT_TYPE_NOTIFICATION_PREFERENCE_SUFFIX = ".DocumentTypeNotification";
+    public static final String DOCUMENT_TYPE_NOTIFICATION_DELIMITER = "|~|";
     public static final String EMAIL_RMNDR_NO_VAL = "no";
     public static final String EMAIL_RMNDR_DAY_VAL = "daily";
     public static final String EMAIL_RMNDR_WEEK_VAL = "weekly";

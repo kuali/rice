@@ -1087,8 +1087,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
     public Group getBlanketApproveWorkgroupWithInheritance() {
         if (getParentDocType() != null && this.blanketApproveWorkgroupId == null) {
             return getParentDocType().getBlanketApproveWorkgroupWithInheritance();
+        } else if(this.blanketApproveWorkgroupId != null) {
+            return getGroupService().getGroup(blanketApproveWorkgroupId);
         }
-        return getGroupService().getGroup(blanketApproveWorkgroupId);
+        return null;
     }
 
     public boolean isBlanketApprover(String principalId) {

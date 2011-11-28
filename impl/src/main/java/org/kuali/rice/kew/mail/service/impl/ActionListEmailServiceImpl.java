@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.kew.mail.service.impl;
 
+import java.text.FieldPosition;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.delegation.DelegationType;
@@ -24,10 +36,12 @@ import org.kuali.rice.core.mail.EmailFrom;
 import org.kuali.rice.core.mail.EmailSubject;
 import org.kuali.rice.core.mail.EmailTo;
 import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
-import org.kuali.rice.kew.api.action.ActionItem;
+import org.kuali.rice.kew.api.action.ActionItemContract;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.preferences.Preferences;
@@ -40,10 +54,11 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
-import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
@@ -51,16 +66,6 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-
-import java.text.FieldPosition;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ActionListeEmailService which generates messages whose body and subject can be customized via KEW
@@ -106,7 +111,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     public String getApplicationEmailAddress() {
         // first check the configured value
         String fromAddress = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.MAILER_DETAIL_TYPE,
+                KewApiConstants.KEW_NAMESPACE,
+                KRADConstants.DetailTypes.MAILER_DETAIL_TYPE,
                 KewApiConstants.EMAIL_REMINDER_FROM_ADDRESS);
         // if there's no value configured, use the default
         if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
@@ -162,7 +168,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                 mailer.sendEmail(
                         getEmailFrom(documentType),
                         new EmailTo(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
-                                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                                KewApiConstants.KEW_NAMESPACE,
+                                KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
                                 KewApiConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
                         subject,
                         body,
@@ -172,31 +179,95 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             LOG.error("Error sending Action List email.", e);
         }
     }
-
+    
     /**
      * 
-     * This method checks the given principal's preferences and returns true or
-     * false based on the type of action requested and whether the user wishes
-     * to receive immediate notifications for that type of request.
+     * This method takes in a type of email which is being sent, an action item
+     * which is being checked and a user's preferences and it checks to see if
+     * the action item should be included in the given kind of email based on
+     * the user's preferences.
      * 
-     * @return Whether the immediate reminder should be suppressed based on the
-     * principal's preferences
+     * @param actionItem
+     * @param preferences
+     * @param emailSetting
+     * @return
      */
-    protected boolean suppressImmediateReminder(ActionItem actionItem, String principalId) {
-        Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(principalId);
-        String actionRequestCd = actionItem.getActionRequestCd();
-        return
-        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ) && 
-                StringUtils.equals(preferences.getNotifyAcknowledge(), KewApiConstants.PREFERENCES_YES_VAL)) ||
-        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_APPROVE_REQ) && 
-                StringUtils.equals(preferences.getNotifyApprove(), KewApiConstants.PREFERENCES_YES_VAL)) ||
-        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_COMPLETE_REQ) && 
-                StringUtils.equals(preferences.getNotifyComplete(), KewApiConstants.PREFERENCES_YES_VAL)) ||
-        (StringUtils.equals(actionRequestCd, KewApiConstants.ACTION_REQUEST_FYI_REQ) && 
-                StringUtils.equals(preferences.getNotifyFYI(), KewApiConstants.PREFERENCES_YES_VAL));
+    protected boolean checkEmailNotificationPreferences(ActionItemContract actionItem, Preferences preferences, String emailSetting) {
+        boolean shouldSend = true;
+        // Check the user's primary and secondary delegation email preferences
+        if (KimConstants.KimUIConstants.DELEGATION_PRIMARY.equals(actionItem.getDelegationType())) {
+            shouldSend = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
+        } else if (KimConstants.KimUIConstants.DELEGATION_SECONDARY.equals(actionItem.getDelegationType())) {
+            shouldSend = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
+        }
+        if(!shouldSend) {
+            // If the action item has a delegation type and the user's
+            // preference for the delegation type is false, the item should not
+            // be included
+            return false;
+        }
+
+        // Check the request code of the action item and the complete, approve,
+        // acknowledge, or FYI notification preference accordingly
+        boolean checkRequestCodePreferences = ((StringUtils.equals(actionItem.getActionRequestCd(), KewApiConstants.ACTION_REQUEST_COMPLETE_REQ) && 
+                                                StringUtils.equals(preferences.getNotifyComplete(), KewApiConstants.PREFERENCES_YES_VAL)) ||
+                                               (StringUtils.equals(actionItem.getActionRequestCd(), KewApiConstants.ACTION_REQUEST_APPROVE_REQ) && 
+                                                StringUtils.equals(preferences.getNotifyApprove(), KewApiConstants.PREFERENCES_YES_VAL)) ||
+                                               (StringUtils.equals(actionItem.getActionRequestCd(), KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ) && 
+                                                StringUtils.equals(preferences.getNotifyAcknowledge(), KewApiConstants.PREFERENCES_YES_VAL)) ||
+                                               (StringUtils.equals(actionItem.getActionRequestCd(), KewApiConstants.ACTION_REQUEST_FYI_REQ) && 
+                                                StringUtils.equals(preferences.getNotifyFYI(), KewApiConstants.PREFERENCES_YES_VAL)));
+
+        DocumentType documentType = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getDocumentId()).getDocumentType();
+        
+        // If the user has document type notification preferences check them to
+        // see if the action item should be included in the email.
+        if(preferences.getDocumentTypeNotificationPreferences().size() > 0) {   
+            while(ObjectUtils.isNotNull(documentType)) {
+                // Check to see if there is a notification preference for the
+                // given document type in the user's preferences
+                String documentTypePreference = preferences.getDocumentTypeNotificationPreference(documentType.getName());
+                if(StringUtils.isNotBlank(documentTypePreference)) {
+                    // If a document type notification preference is found,
+                    // check the type of email being sent
+                    if(StringUtils.equals(emailSetting, KewApiConstants.EMAIL_RMNDR_DAY_VAL) || StringUtils.equals(emailSetting, KewApiConstants.EMAIL_RMNDR_WEEK_VAL)) {
+                        // If a daily or weekly email is being sent, include
+                        // the action item unless the notification preference
+                        // is 'None'
+                        return !StringUtils.equals(documentTypePreference, KewApiConstants.EMAIL_RMNDR_NO_VAL);
+                    } else if(StringUtils.equals(emailSetting, KewApiConstants.EMAIL_RMNDR_IMMEDIATE)) {
+                        // Otherwise if this is an immediate notification check
+                        // the action item request code preferences
+                        return StringUtils.equals(emailSetting, documentTypePreference) && checkRequestCodePreferences;
+                    } else {
+                        // Otherwise the emailSetting is "None" so no email
+                        // should be sent
+                        return false;
+                    }
+                }
+                // If no matches were found, continue checking the document
+                // type hierarchy
+                documentType = documentType.getParentDocType();
+            }
+        }
+
+        // If no document type notification preference is found, include the
+        // item if the email setting matches the user's default email
+        // notification preference
+        if(StringUtils.equals(emailSetting, preferences.getEmailNotification())) {
+            if(StringUtils.equals(emailSetting, KewApiConstants.EMAIL_RMNDR_IMMEDIATE)) {
+                // If this is an immediate notification check
+                // the request code of the action item with the user's preferences
+                return checkRequestCodePreferences;
+            } else {
+                // Otherwise just return true if the email setting isn't "None"
+                return !StringUtils.equals(emailSetting, KewApiConstants.EMAIL_RMNDR_NO_VAL);
+            }
+        }
+        return false;
     }
-    
-    public void sendImmediateReminder(ActionItem actionItem, Boolean skipOnApprovals) {
+
+    public void sendImmediateReminder(org.kuali.rice.kew.api.action.ActionItem actionItem, Boolean skipOnApprovals) {
         if (actionItem == null) {
             LOG.warn("Request to send immediate reminder to recipient of a null action item... aborting.");
             return;
@@ -213,7 +284,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             return;
         }
         
-        if(suppressImmediateReminder(actionItem, actionItem.getPrincipalId())) {
+        Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId());
+        if(!checkEmailNotificationPreferences(actionItem, preferences, KewApiConstants.EMAIL_RMNDR_IMMEDIATE)) {
             LOG.debug("Email suppressed due to the user's preferences");
             return;
         }
@@ -273,7 +345,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
             for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
                 Person user = userIter.next();
                 try {
-                    Collection actionItems = getActionListService().getActionList(user.getPrincipalId(), null);
+                    Collection<ActionItem> actionItems = getActionListService().getActionList(user.getPrincipalId(), null);
                     if (actionItems != null && actionItems.size() > 0) {
                         sendPeriodicReminder(user, actionItems,
                                 KewApiConstants.EMAIL_RMNDR_DAY_VAL);
@@ -290,12 +362,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
     public void sendWeeklyReminder() {
         if (sendActionListEmailNotification()) {
-            List<Person> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
+            Collection<Person> users = getUsersWithEmailSetting(KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
             for (Iterator<Person> userIter = users.iterator(); userIter.hasNext();) {
                 Person user = userIter.next();
                 try {
-                    Collection actionItems = getActionListService()
-                            .getActionList(user.getPrincipalId(), null);
+                    Collection<ActionItem> actionItems = getActionListService().getActionList(user.getPrincipalId(), null);
                     if (actionItems != null && actionItems.size() > 0) {
                         sendPeriodicReminder(user, actionItems,
                                 KewApiConstants.EMAIL_RMNDR_WEEK_VAL);
@@ -312,7 +383,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
     protected void sendPeriodicReminder(Person user, Collection<ActionItem> actionItems, String emailSetting) {
         String emailBody = null;
-        actionItems = filterActionItemsToNotify(user.getPrincipalId(), actionItems);
+        actionItems = filterActionItemsToNotify(user.getPrincipalId(), actionItems, emailSetting);
         // if there are no action items after being filtered, there's no
         // reason to send the email
         if (actionItems.isEmpty()) {
@@ -331,42 +402,32 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
      * user's preferences. If they have opted not to recieve secondary or primary delegation emails
      * then they will not be included.
      */
-    protected Collection filterActionItemsToNotify(String principalId, Collection actionItems) {
-        List filteredItems = new ArrayList();
+    protected Collection<ActionItem> filterActionItemsToNotify(String principalId, Collection<ActionItem> actionItems, String emailSetting) {
+        List<ActionItem> filteredItems = new ArrayList<ActionItem>();
         Preferences preferences = KewApiServiceLocator.getPreferencesService().getPreferences(principalId);
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-            ActionItem actionItem = (ActionItem) iterator.next();
+        for (ActionItem actionItem : actionItems) {
             if (!actionItem.getPrincipalId().equals(principalId)) {
                 LOG.warn("Encountered an ActionItem with an incorrect workflow ID.  Was " + actionItem.getPrincipalId()
                         +
                         " but expected " + principalId);
                 continue;
             }
-            boolean includeItem = true;
-            if (DelegationType.PRIMARY.equals(actionItem.getDelegationType())) {
-                includeItem = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifyPrimaryDelegation());
-            } else if (DelegationType.SECONDARY.equals(actionItem.getDelegationType())) {
-                includeItem = KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getNotifySecondaryDelegation());
-            }
-            if (includeItem) {
+            if (checkEmailNotificationPreferences(actionItem, preferences, emailSetting)) {
                 filteredItems.add(actionItem);
             }
         }
         return filteredItems;
     }
 
-    protected List<Person> getUsersWithEmailSetting(String setting) {
-        List users = new ArrayList();
-        Collection userOptions = getUserOptionsService().findByOptionValue(
-                KewApiConstants.EMAIL_RMNDR_KEY, setting);
-        for (Iterator iter = userOptions.iterator(); iter.hasNext();) {
-            String workflowId = ((UserOptions) iter.next()).getWorkflowId();
+    protected Collection<Person> getUsersWithEmailSetting(String setting) {
+        Set<Person> users = new HashSet<Person>();
+        Collection<UserOptions> userOptions = getUserOptionsService().retrieveEmailPreferenceUserOptions(setting);
+        for(UserOptions userOption : userOptions) {
+            String workflowId = userOption.getWorkflowId();
             try {
-
                 users.add(KimApiServiceLocator.getPersonService().getPerson(workflowId));
             } catch (Exception e) {
-                LOG.error("error retrieving workflow user with ID: "
-                        + workflowId);
+                LOG.error("error retrieving workflow user with ID: " + workflowId);
             }
         }
         return users;
@@ -428,8 +489,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                     "{6}\n\n\n"
             );
 
-    public String buildImmediateReminderBody(Person person,
-            ActionItem actionItem, DocumentType documentType) {
+    public String buildImmediateReminderBody(Person person, org.kuali.rice.kew.api.action.ActionItem actionItem, DocumentType documentType) {
         String docHandlerUrl = documentType.getDocHandlerUrl();
         if (StringUtils.isNotBlank(docHandlerUrl)) {
             if (!docHandlerUrl.contains("?")) {
@@ -535,7 +595,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     }
 
     public String buildDailyReminderBody(Person user,
-            Collection actionItems) {
+            Collection<ActionItem> actionItems) {
         StringBuffer sf = new StringBuffer();
         sf.append(getDailyWeeklyMessageBody(actionItems));
         sf
@@ -551,7 +611,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     }
 
     public String buildWeeklyReminderBody(Person user,
-            Collection actionItems) {
+            Collection<ActionItem> actionItems) {
         StringBuffer sf = new StringBuffer();
         sf.append(getDailyWeeklyMessageBody(actionItems));
         sf
@@ -566,17 +626,15 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         return sf.toString();
     }
 
-    String getDailyWeeklyMessageBody(Collection actionItems) {
+    String getDailyWeeklyMessageBody(Collection<ActionItem> actionItems) {
         StringBuffer sf = new StringBuffer();
-        HashMap docTypes = getActionListItemsStat(actionItems);
+        HashMap<String, Integer> docTypes = getActionListItemsStat(actionItems);
 
         sf
                 .append("Your Action List has "
                         + actionItems.size()
                         + " eDocs(electronic documents) that need your attention: \n\n");
-        Iterator iter = docTypes.keySet().iterator();
-        while (iter.hasNext()) {
-            String docTypeName = (String) iter.next();
+        for(String docTypeName : docTypes.keySet()) {
             sf.append("\t" + ((Integer) docTypes.get(docTypeName)).toString()
                     + "\t" + docTypeName + "\n");
         }
@@ -592,8 +650,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
     private HashMap<String, Integer> getActionListItemsStat(Collection<ActionItem> actionItems) {
         HashMap<String, Integer> docTypes = new LinkedHashMap<String, Integer>();
-        Map<String, DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService()
-                .getRouteHeadersForActionItems(actionItems);
+        Collection<org.kuali.rice.kew.api.action.ActionItem> apiActionItems = new ArrayList<org.kuali.rice.kew.api.action.ActionItem>();
+        for(ActionItem actionItem : actionItems) {
+            apiActionItems.add(ActionItem.to(actionItem));
+        }
+        Map<String, DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(apiActionItems);
         Iterator<ActionItem> iter = actionItems.iterator();
 
         while (iter.hasNext()) {

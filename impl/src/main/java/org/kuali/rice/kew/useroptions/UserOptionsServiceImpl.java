@@ -134,4 +134,8 @@ public class UserOptionsServiceImpl implements UserOptionsService {
 		this.reloadActionListDAO = rald;
 	}
 
+    @Override
+    public List<UserOptions> retrieveEmailPreferenceUserOptions(String emailSetting) {
+        return this.getUserOptionsDAO().findEmailUserOptionsByType(emailSetting);
+    }
 }

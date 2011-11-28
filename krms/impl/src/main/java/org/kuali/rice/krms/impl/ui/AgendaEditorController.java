@@ -1369,6 +1369,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedPropId = agendaEditor.getSelectedPropositionId();
 
         Node<RuleTreeNode,String> root = rule.getPropositionTree().getRootElement();
+        PropositionBo propositionToToggleEdit = null;
+        boolean newEditMode = true;
 
         // find parent
         Node<RuleTreeNode,String> parent = findParentPropositionNode( root, selectedPropId);
@@ -1378,12 +1380,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 Node<RuleTreeNode,String> child = children.get(index);
                 if (propIdMatches(child, selectedPropId)){
                     PropositionBo prop = child.getData().getProposition();
-                    boolean editMode =  !prop.getEditMode();
+                    propositionToToggleEdit = prop;
+                    newEditMode =  !prop.getEditMode();
 
-                    // reset children before we set this prop
-                    resetEditModeOnPropositionTree(child);
-
-                    prop.setEditMode(editMode);
                     // if compound node, set all children into same edit mode
 //                    if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())){
 //                       for ( PropositionBo compoundComponent : prop.getCompoundComponents() ){
@@ -1399,6 +1398,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 }
             }
         }
+
+        resetEditModeOnPropositionTree(root);
+        propositionToToggleEdit.setEditMode(newEditMode);
 
         return super.updateComponent(form, result, request, response);
     }

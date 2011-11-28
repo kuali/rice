@@ -392,7 +392,7 @@
       <bean parent="MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="GroupBodyOnly" p:hidden="false" p:style="float: right;">
+      <bean parent="GroupBodyOnly" p:style="float: right;">
         <property name="layoutManager.orientation" value="HORIZONTAL"/>
         <property name="items">
           <list>
@@ -420,7 +420,7 @@
       <bean parent="MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="GroupBodyOnly" p:hidden="true">
+      <bean parent="GroupBodyOnly">
         <property name="layoutManager.orientation" value="HORIZONTAL"/>
         <property name="items">
           <list>
@@ -467,7 +467,7 @@
                         p:styleClasses="editDescription"/>
               </property>
             </bean>
-            <bean parent="GroupBodyOnly" p:hidden="true" >
+            <bean parent="GroupBodyOnly">
               <property name="layoutManager.orientation" value="HORIZONTAL"/>
               <property name="items">
                 <list>
@@ -545,7 +545,7 @@
       <bean parent="MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="GroupBodyOnly" p:hidden="true">
+      <bean parent="GroupBodyOnly">
         <property name="layoutManager.orientation" value="HORIZONTAL"/>
         <property name="items">
           <list>
@@ -569,7 +569,7 @@
       <bean parent="MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="GroupBodyOnly" p:hidden="true">
+      <bean parent="GroupBodyOnly">
         <property name="layoutManager.orientation" value="HORIZONTAL"/>
         <property name="items">
           <list>

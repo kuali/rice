@@ -486,6 +486,7 @@
   <param name="rice.kew.preferencesService.secure" override="false">true</param>
   <param name="rice.kew.ruleService.secure" override="false">true</param>
   <param name="rice.kew.documentAttributeIndexingQueue.secure" override="false">true</param>
+  <param name="rice.kew.actionListCustomizationHandlerService.secure" override="false">true</param>
   <param name="rice.kew.documentSearchCustomizationHandlerService.secure" override="false">true</param>
   <param name="rice.kew.documentSecurityHandlerService.secure" override="false">true</param>
   <param name="rice.kew.ruleValidationAttributeExporterService.secure" override="false">true</param>

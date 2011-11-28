@@ -141,6 +141,19 @@
 		</property>
 	</bean>
 
+  <bean id="rice.kew.actionListCustomizationHandlerService.exporter" parent="kewEmbeddedServiceExporter">
+		<property name="serviceBus" ref="rice.ksb.serviceBus" />
+		<property name="serviceDefinition">
+			<bean parent="kewService">
+				<property name="service">
+					<ref bean="rice.kew.actionListCustomizationHandlerService" />
+				</property>
+				<property name="localServiceName" value="actionListCustomizationHandlerService" />
+				<property name="busSecurity" value="${rice.kew.actionListCustomizationHandlerService.secure}" />
+			</bean>
+		</property>
+	</bean>
+	
   <bean id="rice.kew.documentLookupCustomizationHandlerService.exporter" parent="kewEmbeddedServiceExporter">
 		<property name="serviceBus" ref="rice.ksb.serviceBus" />
 		<property name="serviceDefinition">

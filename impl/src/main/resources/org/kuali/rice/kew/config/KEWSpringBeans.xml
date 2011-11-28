@@ -196,6 +196,7 @@
         <idref local="rice.kew.noteService" />
         <idref local="rice.kew.preferencesService"/>
         <idref local="rice.kew.ruleService" />
+        <idref local="rice.kew.actionListCustomizationHandlerService" />
         <idref local="rice.kew.documentSearchCustomizationHandlerService" />
         <idref local="rice.kew.documentSecurityHandlerService" />
         <idref local="rice.kew.ruleValidationAttributeExporterService" />
@@ -843,7 +844,11 @@
         p:businessObjectService-ref="businessObjectService"
         p:criteriaLookupService-ref="criteriaLookupService" />
 
-  <bean id="rice.kew.documentSearchCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
+  <bean id="rice.kew.actionListCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
+    <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
+  </bean>
+  
+  <bean id="rice.kew.documentSearchCustomizationHandlerService" class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationHandlerServiceImpl">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
   </bean>
 

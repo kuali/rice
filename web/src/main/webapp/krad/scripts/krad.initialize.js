@@ -303,6 +303,8 @@ window.onerror = errorHandler;
 
 function errorHandler(msg,url,lno)
 {
+  jq("#view_div").show();
+  jq("#viewpage_div").show();
   var context = getContext();
   context.unblockUI();
   showGrowl(msg + '<br/>' + url + '<br/>' + lno, 'Javascript Error', 'errorGrowl');

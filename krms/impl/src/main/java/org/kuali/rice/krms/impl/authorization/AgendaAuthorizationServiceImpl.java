@@ -18,7 +18,6 @@ package org.kuali.rice.krms.impl.authorization;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
@@ -32,15 +31,16 @@ public class AgendaAuthorizationServiceImpl implements AgendaAuthorizationServic
 
     @Override
     public boolean isAuthorized(String permissionName, String contextId) {
-        ContextDefinition context = getContextBoService().getContextByContextId(contextId);
+        String namespace = "";
+        if (contextId != null) {
+            ContextDefinition context = getContextBoService().getContextByContextId(contextId);
+            namespace = context.getNamespace();
+        }
 
         Map qualification = new HashMap<String, String>();
-        if (contextId != null) {
-            qualification.put(NAMESPACE_CODE, context.getNamespace());
-        }
         boolean isAuthorized = getPermissionService().isAuthorized(
                 GlobalVariables.getUserSession().getPrincipalId(),
-                KrmsConstants.KRMS_NAMESPACE,
+                namespace,
                 permissionName,
                 qualification,
                 new HashMap<String, String>());

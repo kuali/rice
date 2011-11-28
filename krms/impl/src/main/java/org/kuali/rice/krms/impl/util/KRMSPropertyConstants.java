@@ -33,7 +33,7 @@ public final class KRMSPropertyConstants {
 
 	public static final class Agenda {
         public static final String NAME = "dataObject.agenda.name";
-        public static final String CONTEXT = "dataObject.agenda.contextId";
+        public static final String CONTEXT = "dataObject.contextName";
         public static final String TYPE ="dataObject.agenda.typeId";
 	}
 

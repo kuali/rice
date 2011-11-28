@@ -34,11 +34,9 @@ public class AgendaLookupableHelperServiceImpl extends LookupableImpl {
 
     @Override
     public boolean allowsMaintenanceNewOrCopyAction() {
-        boolean allowsEdit = false;
-
-        allowsEdit = KrmsRepositoryServiceLocator.getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, null);
-
-        return allowsEdit;
+        // The context is unknown on create so we need to let the user in
+        // TODO: maybe restrict it so only user that have rights to some contexts are allowed to create agendas.
+        return true;
     }
 
     @Override

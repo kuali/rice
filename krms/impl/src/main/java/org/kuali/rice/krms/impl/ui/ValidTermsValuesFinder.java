@@ -67,31 +67,33 @@ public class ValidTermsValuesFinder extends UifKeyValuesFinderBase {
             termSpecIds.add(validTerm.getTermSpecificationId());
         }
 
-        Collection<TermBo> terms = null;
-        Map<String,Object> criteria = new HashMap<String,Object>();
-        criteria.put("specificationId", termSpecIds);
-        terms = KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(TermBo.class, criteria, "description", true);
+        if (termSpecIds.size() > 0) { // if we don't have any valid terms, skip it
+            Collection<TermBo> terms = null;
+            Map<String,Object> criteria = new HashMap<String,Object>();
+            criteria.put("specificationId", termSpecIds);
+            terms = KRADServiceLocator.getBusinessObjectService().findMatchingOrderBy(TermBo.class, criteria, "description", true);
 
-        // add all terms that are in the selected category (or else add 'em all if no category is selected)
-        for (TermBo term : terms) {
-            String selectName = term.getDescription();
+            // add all terms that are in the selected category (or else add 'em all if no category is selected)
+            for (TermBo term : terms) {
+                String selectName = term.getDescription();
 
-            if (StringUtils.isBlank(selectName) || "null".equals(selectName)) {
-                selectName = term.getSpecification().getName();
-            }
+                if (StringUtils.isBlank(selectName) || "null".equals(selectName)) {
+                    selectName = term.getSpecification().getName();
+                }
 
-            if (!StringUtils.isBlank(selectedCategoryId)) {
-                // only add if the term has the selected category
-                if (term.getSpecification().getCategories() != null) {
-                    for (CategoryBo category : term.getSpecification().getCategories()) {
-                        if (selectedCategoryId.equals(category.getId())) {
-                            keyValues.add(new ConcreteKeyValue(term.getId(), selectName));
-                            break;
+                if (!StringUtils.isBlank(selectedCategoryId)) {
+                    // only add if the term has the selected category
+                    if (term.getSpecification().getCategories() != null) {
+                        for (CategoryBo category : term.getSpecification().getCategories()) {
+                            if (selectedCategoryId.equals(category.getId())) {
+                                keyValues.add(new ConcreteKeyValue(term.getId(), selectName));
+                                break;
+                            }
                         }
                     }
+                } else {
+                    keyValues.add(new ConcreteKeyValue(term.getId(), selectName));
                 }
-            } else {
-                keyValues.add(new ConcreteKeyValue(term.getId(), selectName));
             }
         }
 

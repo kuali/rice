@@ -1400,7 +1400,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         resetEditModeOnPropositionTree(root);
-        propositionToToggleEdit.setEditMode(newEditMode);
+        if (propositionToToggleEdit != null) {
+            propositionToToggleEdit.setEditMode(newEditMode);
+        }
 
         return super.updateComponent(form, result, request, response);
     }

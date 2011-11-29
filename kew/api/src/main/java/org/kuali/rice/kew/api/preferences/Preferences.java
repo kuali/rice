@@ -401,12 +401,12 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         private String refreshRate;
         private String colorSaved;
         private String colorInitiated;
-        private String colorDissaproved;
+        private String colorDisapproved;
         private String colorEnroute;
         private String colorApproved;
         private String colorFinal;
         private String colorDissapproveCancel;
-        private String colorProccessed;
+        private String colorProcessed;
         private String colorException;
         private String colorCanceled;
         private String delegatorFilter;
@@ -428,8 +428,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                 String openNewWindow, String showActionRequested, String showDateCreated, String showDocumentStatus,
                 String showAppDocStatus, String showDocType, String showInitiator, String showDocTitle,
                 String showWorkgroupRequest, String showDelegator, String showClearFyi, String pageSize, String refreshRate,
-                String colorSaved, String colorInitiated, String colorDissaproved, String colorEnroute,
-                String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProccessed,
+                String colorSaved, String colorInitiated, String colorDisapproved, String colorEnroute,
+                String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProcessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
                 String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
                 String notifyApprove, String notifyComplete, String notifyFYI, Map<String, String> documentTypeNotificationPreferences,
@@ -452,12 +452,12 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
             this.refreshRate = refreshRate;
             this.colorSaved = colorSaved;
             this.colorInitiated = colorInitiated;
-            this.colorDissaproved = colorDissaproved;
+            this.colorDisapproved = colorDisapproved;
             this.colorEnroute = colorEnroute;
             this.colorApproved = colorApproved;
             this.colorFinal = colorFinal;
             this.colorDissapproveCancel = colorDissapproveCancel;
-            this.colorProccessed = colorProccessed;
+            this.colorProcessed = colorProcessed;
             this.colorException = colorException;
             this.colorCanceled = colorCanceled;
             this.delegatorFilter = delegatorFilter;
@@ -485,16 +485,16 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                 String openNewWindow, String showActionRequested, String showDateCreated, String showDocumentStatus,
                 String showAppDocStatus, String showDocType, String showInitiator, String showDocTitle,
                 String showWorkgroupRequest, String showDelegator, String showClearFyi, String pageSize, String refreshRate,
-                String colorSaved, String colorInitiated, String colorDissaproved, String colorEnroute,
-                String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProccessed,
+                String colorSaved, String colorInitiated, String colorDisapproved, String colorEnroute,
+                String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProcessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
                 String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
                 String notifyApprove, String notifyComplete, String notifyFYI, Map<String, String> documentTypeNotificationPreferences,
                 boolean requiresSave) {
             return new Builder(emailNotification, notifyPrimaryDelegation, notifySecondaryDelegation, openNewWindow, showActionRequested, showDateCreated,
                     showDocumentStatus, showAppDocStatus, showDocType, showInitiator, showDocTitle, showWorkgroupRequest,  showDelegator, showClearFyi,
-                    pageSize, refreshRate, colorSaved, colorInitiated, colorDissaproved, colorEnroute, colorApproved, colorFinal, colorDissapproveCancel,
-                    colorProccessed, colorException, colorCanceled, delegatorFilter, useOutbox, showDateApproved, showCurrentNode, primaryDelegateFilter,
+                    pageSize, refreshRate, colorSaved, colorInitiated, colorDisapproved, colorEnroute, colorApproved, colorFinal, colorDissapproveCancel,
+                    colorProcessed, colorException, colorCanceled, delegatorFilter, useOutbox, showDateApproved, showCurrentNode, primaryDelegateFilter,
                     notifyAcknowledge, notifyApprove, notifyComplete, notifyFYI, documentTypeNotificationPreferences, requiresSave);
         }
 
@@ -678,11 +678,11 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         }
 
         public synchronized String getColorDisapproved() {
-            return colorDissaproved;
+            return colorDisapproved;
         }
 
-        public synchronized void setColorDissaproved(String colorDissaproved) {
-            this.colorDissaproved = colorDissaproved;
+        public synchronized void setColorDisapproved(String colorDisapproved) {
+            this.colorDisapproved = colorDisapproved;
         }
 
         public synchronized String getColorEnroute() {
@@ -718,11 +718,11 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         }
 
         public synchronized String getColorProcessed() {
-            return colorProccessed;
+            return colorProcessed;
         }
 
-        public synchronized void setColorProccessed(String colorProccessed) {
-            this.colorProccessed = colorProccessed;
+        public synchronized void setColorProcessed(String colorProcessed) {
+            this.colorProcessed = colorProcessed;
         }
 
         public synchronized String getColorException() {

@@ -844,11 +844,11 @@
         p:businessObjectService-ref="businessObjectService"
         p:criteriaLookupService-ref="criteriaLookupService" />
 
-  <bean id="rice.kew.actionListCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
+  <bean id="rice.kew.actionListCustomizationHandlerService" class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationHandlerServiceImpl">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
   </bean>
   
-  <bean id="rice.kew.documentSearchCustomizationHandlerService" class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationHandlerServiceImpl">
+  <bean id="rice.kew.documentSearchCustomizationHandlerService" class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService" />
   </bean>
 

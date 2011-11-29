@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
@@ -41,6 +42,24 @@ import java.util.Map;
  * associated with a document type and combines with the "default" rows for the search,
  * returning the final List of Row objects to render for the document search.
  *
+ * <p>Implementation note:</p>
+ * <p>
+ * This implementation relies on applicationDocumentStatus, and dateApplicationDocumentStatusChanged conditional fields
+ * being defined in the DD for basic display purposes.  These fields are conditionally shown depending on whether
+ * a document supporting application document statuses has been specified.  Further, the applicationDocumentStatus field
+ * is dynamically switched to a dropdown when the document specifies an explicit enumeration of valid statuses (this
+ * control switching is something that is not possible via declarative DD, at the time of this writing).
+ * </p>
+ * <p>
+ * In addition the routeNodeName field is dynamically populated with the list of route nodes for the specified document
+ * type.
+ * <p>
+ * Note: an alternative to programmatically providing dynamic select values is to define a value finder declaratively in
+ * DD.  KeyValueFinder however does not have access to request state, including the required document type, which would mean
+ * resorting to GlobalVariables inspection.  In reluctance to add yet another dependency on this external state, the fixups
+ * are done programmatically in this class. (see {@link #applyApplicationDocumentStatusCustomizations(org.kuali.rice.kns.web.ui.Field, org.kuali.rice.kew.doctype.bo.DocumentType)},
+ * {@link #applyRouteNodeNameCustomizations(org.kuali.rice.kns.web.ui.Field, org.kuali.rice.kew.doctype.bo.DocumentType)}).
+ * </p>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -180,15 +199,10 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
                             // add search attributes for document status, and transition dates.
                             // Note: document status field is a drop down if valid statuses are defined, a text input field otherwise.
                             applyApplicationDocumentStatusCustomizations(field, documentType);
-
-                            // TODO: KULRICE-5635 figure out what to do about these date fields
-                            // Create Date Picker fields for AppDocStatus transitions
-                            // List<StandardSearchCriteriaField> dateFields = new ArrayList<StandardSearchCriteriaField>();
-                            // dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_LOWER_BOUND,"fromStatusTransitionDate",StandardSearchCriteriaField.TEXT,"fromStatusTransitionDate","docSearch.DocumentSearch.criteria.label.from","DocSearchStatusTransitionDate",false,null,null,false));
-                            // dateFields.add(new StandardSearchCriteriaField(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE + DocumentSearchCriteriaProcessor.CRITERIA_KEYS_SUFFIX_RANGE_UPPER_BOUND,"toStatusTransitionDate",StandardSearchCriteriaField.TEXT,"toStatusTransitionDate","docSearch.DocumentSearch.criteria.label.to",null,false,null,null,false));
-                            // StandardDocSearchCriteriaFieldContainer dateContainer = new StandardDocSearchCriteriaFieldContainer(DocumentSearchCriteriaProcessor.CRITERIA_KEY_STATUS_TRANSITION_DATE, "docSearch.DocumentSearch.criteria.label.statusTransitionDate", dateFields);
-
                             break;
+                        } else if (ROUTE_NODE_NAME.equals(field.getPropertyName())) {
+                            // populates routenodename dropdown with documenttype nodes
+                            applyRouteNodeNameCustomizations(field, documentType);
                         }
                     }
                 }
@@ -199,6 +213,9 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
         }
     }
 
+    /**
+     * Returns fields for the search attributes defined on the document
+     */
     protected List<Row> getDocumentAttributeRows(DocumentType documentType) {
         List<Row> documentAttributeRows = new ArrayList<Row>();
         DocumentSearchCriteriaConfiguration configuration =
@@ -263,6 +280,15 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             //dropDown.setCollectionLabelProperty("statusName");
             //dropDown.setEmptyCollectionMessage("Select a document status.");
         }
+    }
+
+    protected void applyRouteNodeNameCustomizations(Field field, DocumentType documentType) {
+        List<RouteNode> nodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
+        List<KeyValue> values = new ArrayList<KeyValue>(nodes.size());
+        for (RouteNode node: nodes) {
+            values.add(new ConcreteKeyValue(node.getName(), node.getName()));
+        }
+        field.setFieldValidValues(values);
     }
 
     protected void addHiddenFields(List<Row> rows, boolean advancedSearch, boolean superUserSearch) {

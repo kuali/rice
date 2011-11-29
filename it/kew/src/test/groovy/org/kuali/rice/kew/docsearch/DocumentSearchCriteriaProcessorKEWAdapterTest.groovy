@@ -45,7 +45,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         [ propertyName: "rangeLowerBoundKeyPrefix_dateApplicationDocumentStatusChanged", fieldLabel: "Date App Doc Status Changed, From", fieldType: "text" ],
         [ propertyName: "dateApplicationDocumentStatusChanged", fieldLabel: "Date App Doc Status Changed, To", fieldType: "text" ],
         [ propertyName: "routeNodeName", fieldLabel: "Route Node", fieldType: "text" ],
-        [ propertyName: "routeNodeLogic", fieldLabel: "Route Node Logic", fieldType: "text" ],
+        [ propertyName: "routeNodeLogic", fieldLabel: "Route Node Logic", fieldType: "dropdown" ],
         [ propertyName: "rangeLowerBoundKeyPrefix_dateCreated", fieldLabel: "Date Created From", fieldType: "text" ],
         [ propertyName: "dateCreated", fieldLabel: "Date Created To", fieldType: "text" ],
         [ propertyName: "rangeLowerBoundKeyPrefix_dateApproved", fieldLabel: "Date Approved From", fieldType: "text" ],
@@ -103,7 +103,6 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         "isAdvancedSearch",
         "resetSavedSearch",
         "superUserSearch"
-        // TODO - KULRICE-5635 - need to add back in the building of application document status row
     ]
 
     @Override

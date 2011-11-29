@@ -27,6 +27,7 @@ public abstract class MultivalueControlDefinitionBase extends ControlDefinitionB
 	/**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Class)
      */
+    @Override
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         super.completeValidation(rootBusinessObjectClass, otherBusinessObjectClass);
 

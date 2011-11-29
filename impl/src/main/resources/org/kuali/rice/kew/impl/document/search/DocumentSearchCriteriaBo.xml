@@ -210,7 +210,6 @@
     <property name="label" value="Application Document Status"/>
     <property name="shortLabel" value="App Doc Status"/>
     <property name="control">
-      <!-- TODO - KULRICE-5635 - TextControlDefinition For now...though should be a select control with values finder -->
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
   </bean>
@@ -222,9 +221,9 @@
     <property name="label" value="Route Node"/>
     <property name="shortLabel" value="Node"/>
     <property name="maxLength" value="255"/>
-    <!-- TODO - KULRICE-5831 - TextControlDefinition For now...though should be a select control with values finder -->
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="20"/>
+      <!-- This is an imposter KeyValuesFinder. values are dynamically provided by DocumentSearchCriteriaProcessorKEWAdapter. -->
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PlaceholderKeyValuesFinder"/>
     </property>
   </bean>
 
@@ -234,9 +233,13 @@
     <property name="name" value="routeNodeLogic"/>
     <property name="label" value="Route Node Logic"/>
     <property name="shortLabel" value="Node Logic"/>
-    <!-- TODO - KULRICE-5831 - TextControlDefinition For now...though should be a select control with values finder -->
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="20"/>
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kew.impl.document.search.RouteNodeLookupLogicValuesFinder"
+            p:includeKeyInLabel="false" p:includeBlankRow="false"/>
+            <!-- includeBlankRow="false" does not actually work as anticipated.  the rowDisplay jsp enforces an empty
+                 select value unless the field values contains one, or the field is specifically configured to "skipBlankValidValue".
+                 There is no way to set that via DD and it's not clear changing the code to propagate derive that flag from this
+                 value is the right thing. -->
     </property>
   </bean>
 
@@ -374,7 +377,7 @@
         <bean parent="FieldDefinition" p:attributeName="applicationDocumentStatus"/>
         <bean parent="FieldDefinition" p:attributeName="dateApplicationDocumentStatusChanged"/>
         <bean parent="FieldDefinition" p:attributeName="routeNodeName"/>
-        <bean parent="FieldDefinition" p:attributeName="routeNodeLogic"/>
+        <bean parent="FieldDefinition" p:attributeName="routeNodeLogic" p:defaultValue="#{T(org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic).EXACTLY.name()}"/>
         <bean parent="FieldDefinition" p:attributeName="dateCreated"/>
         <bean parent="FieldDefinition" p:attributeName="dateApproved"/>
         <bean parent="FieldDefinition" p:attributeName="dateLastModified"/>

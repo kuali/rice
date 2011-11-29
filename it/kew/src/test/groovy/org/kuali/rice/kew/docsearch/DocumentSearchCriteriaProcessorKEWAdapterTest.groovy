@@ -42,6 +42,8 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         [ propertyName: "applicationDocumentId", fieldLabel: "Application Document Id", fieldType: "text" ],
         [ propertyName: "statusCode", fieldLabel: "Document Status", fieldType: "multiselect" ],
         [ propertyName: "applicationDocumentStatus", fieldLabel: "Application Document Status", fieldType: "text" ],
+        [ propertyName: "rangeLowerBoundKeyPrefix_dateApplicationDocumentStatusChanged", fieldLabel: "Date App Doc Status Changed, From", fieldType: "text" ],
+        [ propertyName: "dateApplicationDocumentStatusChanged", fieldLabel: "Date App Doc Status Changed, To", fieldType: "text" ],
         [ propertyName: "routeNodeName", fieldLabel: "Route Node", fieldType: "text" ],
         [ propertyName: "routeNodeLogic", fieldLabel: "Route Node Logic", fieldType: "text" ],
         [ propertyName: "rangeLowerBoundKeyPrefix_dateCreated", fieldLabel: "Date Created From", fieldType: "text" ],
@@ -199,9 +201,9 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
     protected assertRowValues(List<Row> rows, test_values) {
         rows.eachWithIndex {
             it, i ->
-                assertEquals(it.fields[0].propertyName, test_values[i]["propertyName"])
-                assertEquals(it.fields[0].fieldLabel, test_values[i]["fieldLabel"])
-                assertEquals(it.fields[0].fieldType, test_values[i]["fieldType"])
+                assertEquals(test_values[i]["propertyName"], it.fields[0].propertyName)
+                assertEquals(test_values[i]["fieldLabel"], it.fields[0].fieldLabel)
+                assertEquals(test_values[i]["fieldType"], it.fields[0].fieldType)
         }
     }
 

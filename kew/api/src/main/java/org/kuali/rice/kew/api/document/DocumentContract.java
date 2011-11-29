@@ -111,8 +111,8 @@ public interface DocumentContract {
     String getApplicationDocumentStatus();
 
     /**
-     * Retrieve the application document status date
-     * TODO: explain what the application document status date field is
+     * Retrieve the last application document status transition date.  The Application Document Status date is
+     * the date the application document status last transitioned.
      * @return the application document status date
      */
     DateTime getApplicationDocumentStatusDate();

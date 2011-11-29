@@ -15,18 +15,24 @@
  */
 package org.kuali.rice.kew.routeheader;
 
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -247,30 +253,104 @@ public class AppDocStatusTest extends KEWTestCase {
     	}
     }
 
-    @Test public void testSearching() {
+    @Test public void testSearching() throws InterruptedException {
         String documentTypeName = "TestAppDocStatusDoc1";
-        DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
-        String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
+
+        String initiatorNetworkId = "rkirkend";
+        Person initiator = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorNetworkId);
+        String approverNetworkId = "bmcgough";
+        Person approver = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(approverNetworkId);
+        String travelerNetworkId = "temay";
+        Person traveler = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(travelerNetworkId);
+
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(initiator.getPrincipalId(), documentTypeName);
         workflowDocument.setTitle("Routing style");
+
+        // no status, not routed
+        assertAppDocStatuses(workflowDocument.getDocumentId(), new String [] { });
+        assertSearchStatus(documentTypeName, initiator, "Approval in Progress", 0, 0);
+        assertSearchStatus(documentTypeName, initiator, "Submitted", 0, 0);
+
         workflowDocument.route("routing this document.");
 
-        workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getDocumentId());
-        DocumentRouteHeaderValue doc = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
+        DocumentRouteHeaderValue drhv = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
+        
+        // should be in approval status
+        assertAppDocStatuses(workflowDocument.getDocumentId(), new String [] { "Approval in Progress" });
+        assertSearchStatus(documentTypeName, initiator, "Approval in Progress", 1, 0); // one document currently in "Approval in Progress" status
+        assertSearchStatus(documentTypeName, initiator, "Approval in Progress", 1, drhv.getRouteStatusDate().getTime()); // one transition to "Approval in Progress" status around the time of routing
+        assertSearchStatus(documentTypeName, initiator, "Submitted", 0, 0); // none in "Submitted" status
 
-        DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
-        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
+        // approve it out of the "Approval in Progress" state
+        workflowDocument = WorkflowDocumentFactory.loadDocument(approver.getPrincipalId(), workflowDocument.getDocumentId());
+        RequestedActions actions = workflowDocument.getRequestedActions();
+        assertTrue(actions.isApproveRequested());
+        workflowDocument.approve("destination approval");
 
+        assertAppDocStatuses(workflowDocument.getDocumentId(), new String [] { "Approval in Progress", "Submitted" });
+        assertSearchStatus(documentTypeName, approver, "Approval in Progress", 0, 0); // no documents currently in "Approval in Progress" status
+        assertSearchStatus(documentTypeName, approver, "Approval in Progress", 1, drhv.getRouteStatusDate().getTime()); // one transition to "Approval in Progress" status around the time of routing
+        assertSearchStatus(documentTypeName, approver, "Submitted", 1, 0); // one document currently in "Submitted" status
+        assertSearchStatus(documentTypeName, approver, "Submitted", 1, drhv.getDateLastModified().getMillis()); // one transition to "Submitted" status around the time of approval
+
+        // approve it out of the "Approval in Progress" state
+        workflowDocument = WorkflowDocumentFactory.loadDocument(traveler.getPrincipalId(), workflowDocument.getDocumentId());
+        actions = workflowDocument.getRequestedActions();
+        assertTrue(actions.isApproveRequested());
+        workflowDocument.approve("travel approval");
+
+        // no final status, so no transition
+        assertAppDocStatuses(workflowDocument.getDocumentId(), new String [] { "Approval in Progress", "Submitted" });
+        assertSearchStatus(documentTypeName, traveler, "Approval in Progress", 0, 0); // no documents currently in "Approval in Progress" status
+        assertSearchStatus(documentTypeName, traveler, "Approval in Progress", 1, drhv.getRouteStatusDate().getTime()); // one transition to "Approval in Progress" status around the time of routing
+        assertSearchStatus(documentTypeName, traveler, "Submitted", 1, 0); // one document currently in "Submitted" status
+        assertSearchStatus(documentTypeName, traveler, "Submitted", 1, drhv.getDateLastModified().getMillis()); // one transition to "Submitted" status around the time of approval
+    }
+
+    /**
+     * Verifies the DocumentSearchService finds documents with a given app document status
+     * @param documentTypeName the doc type
+     * @param user user for lookup
+     * @param appDocStatus the app doc status target
+     * @param expected the expected number of results
+     * @param changed the time the transition occurred (used for from/to range)
+     */
+    protected void assertSearchStatus(String documentTypeName, Person user, String appDocStatus, int expected, long changed) {
         DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
-        criteria.setApplicationDocumentStatus("Submitted");
-        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have no documents.", 0, results.getSearchResults().size());
+        criteria.setApplicationDocumentStatus(appDocStatus);
+        if (changed != 0) {
+            criteria.setDateApplicationDocumentStatusChangedFrom(new DateTime(changed - 200));
+            criteria.setDateApplicationDocumentStatusChangedTo(new DateTime(changed + 200));
+        }
+        DocumentSearchResults results = KEWServiceLocator.getDocumentSearchService().lookupDocuments(user.getPrincipalId(), criteria.build());
+        assertEquals("Search results should have " + expected + " documents.", expected, results.getSearchResults().size());
+    }
 
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        criteria.setApplicationDocumentStatus("Approval in Progress");
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
+    /**
+     * Verifies the document application document status history
+     * @param documentId the doc id
+     * @param appDocStatuses list of app doc statuses in chronological order
+     */
+    protected void assertAppDocStatuses(String documentId, String[] appDocStatuses) {
+        DocumentRouteHeaderValue drhv = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+
+        String curStatus = KewApiConstants.UNKNOWN_STATUS;
+        if (appDocStatuses.length > 0) {
+            curStatus = appDocStatuses[appDocStatuses.length - 1];
+        }
+        assertEquals(curStatus, drhv.getAppDocStatus());
+
+        List<DocumentStatusTransition> transitions = drhv.getAppDocStatusHistory();
+        assertEquals(appDocStatuses.length, transitions.size());
+        for (int i = 0; i < appDocStatuses.length; i++) {
+            DocumentStatusTransition trans = transitions.get(i);
+            assertEquals(appDocStatuses[i], trans.getNewAppDocStatus());
+            String prevStatus = null;
+            if (i > 0) {
+                prevStatus = appDocStatuses[i - 1];
+            }
+            assertEquals(prevStatus, trans.getOldAppDocStatus());
+        }
     }
 }

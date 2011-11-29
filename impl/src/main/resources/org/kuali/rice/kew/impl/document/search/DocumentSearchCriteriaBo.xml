@@ -43,6 +43,7 @@
         <ref bean="DocumentSearchCriteria-applicationDocumentId"/>
         <ref bean="DocumentSearchCriteria-statusCode"/>
         <ref bean="DocumentSearchCriteria-applicationDocumentStatus"/>
+        <ref bean="DocumentSearchCriteria-dateApplicationDocumentStatusChanged"/>
         <ref bean="DocumentSearchCriteria-routeNodeName"/>
         <ref bean="DocumentSearchCriteria-routeNodeLogic"/>
         <ref bean="DocumentSearchCriteria-dateCreated"/>
@@ -273,6 +274,15 @@
     <property name="shortLabel" value="Date Finalized"/>
   </bean>
 
+  <!-- App doc status transition dates -->
+  <bean id="DocumentSearchCriteria-dateApplicationDocumentStatusChanged" parent="DocumentSearchCriteria-dateApplicationDocumentStatusChanged-parentBean"/>
+
+  <bean id="DocumentSearchCriteria-dateApplicationDocumentStatusChanged-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="dateApplicationDocumentStatusChanged"/>
+    <property name="label" value="Date App Doc Status Changed,"/>
+    <property name="shortLabel" value="Date Status Changed,"/>
+  </bean>
+
   <bean id="DocumentSearchCriteria-title" parent="DocumentSearchCriteria-title-parentBean"/>
 
   <bean id="DocumentSearchCriteria-title-parentBean" abstract="true" parent="AttributeDefinition">
@@ -362,6 +372,7 @@
         <bean parent="FieldDefinition" p:attributeName="applicationDocumentId"/>
         <bean parent="FieldDefinition" p:attributeName="statusCode"/>
         <bean parent="FieldDefinition" p:attributeName="applicationDocumentStatus"/>
+        <bean parent="FieldDefinition" p:attributeName="dateApplicationDocumentStatusChanged"/>
         <bean parent="FieldDefinition" p:attributeName="routeNodeName"/>
         <bean parent="FieldDefinition" p:attributeName="routeNodeLogic"/>
         <bean parent="FieldDefinition" p:attributeName="dateCreated"/>

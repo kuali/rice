@@ -51,6 +51,7 @@ class DocumentSearchCriteriaBo implements BusinessObject {
     Timestamp dateLastModified
     Timestamp dateApproved
     Timestamp dateFinalized
+    Timestamp dateApplicationDocumentStatusChanged
     String saveName
 
     void refresh() {

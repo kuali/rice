@@ -65,7 +65,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
 
     private static final String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
     private static final String DATE_APP_DOC_STATUS_CHANGED_FROM = "rangeLowerBoundKeyPrefix_dateApplicationDocumentStatusChanged";
-    private static final String DATE_APP_DOC_STATUS_CHANGED_TO = "dateApplicationDocumentStatusChanged";
+    private static final String DATE_APP_DOC_STATUS_CHANGED = "dateApplicationDocumentStatusChanged";
     private static final String ROUTE_NODE_NAME = "routeNodeName";
     private static final String ROUTE_NODE_LOGIC = "routeNodeLogic";
 
@@ -89,6 +89,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             "applicationDocumentId",
             "statusCode",
             APPLICATION_DOCUMENT_STATUS,
+            DATE_APP_DOC_STATUS_CHANGED,
             ROUTE_NODE_NAME,
             ROUTE_NODE_LOGIC,
             "dateCreated",
@@ -103,11 +104,11 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
     /**
      * Fields that are only applicable if a document type has been specified
      */
-    private static final Collection<String> DOCUMENTTYPE_DEPENDENT_FIELDS = Arrays.asList(new String[] { DOCUMENT_ATTRIBUTE_FIELD_MARKER, APPLICATION_DOCUMENT_STATUS, DATE_APP_DOC_STATUS_CHANGED_FROM, DATE_APP_DOC_STATUS_CHANGED_TO, ROUTE_NODE_NAME, ROUTE_NODE_LOGIC });
+    private static final Collection<String> DOCUMENTTYPE_DEPENDENT_FIELDS = Arrays.asList(new String[] { DOCUMENT_ATTRIBUTE_FIELD_MARKER, APPLICATION_DOCUMENT_STATUS, DATE_APP_DOC_STATUS_CHANGED_FROM, DATE_APP_DOC_STATUS_CHANGED, ROUTE_NODE_NAME, ROUTE_NODE_LOGIC });
     /**
      * Fields that are only applicable if application document status is in use (assumes documenttype dependency)
      */
-    private static final Collection<String> DOCSTATUS_DEPENDENT_FIELDS = Arrays.asList(new String[] { APPLICATION_DOCUMENT_STATUS, DATE_APP_DOC_STATUS_CHANGED_FROM, DATE_APP_DOC_STATUS_CHANGED_TO });
+    private static final Collection<String> DOCSTATUS_DEPENDENT_FIELDS = Arrays.asList(new String[] { APPLICATION_DOCUMENT_STATUS, DATE_APP_DOC_STATUS_CHANGED_FROM, DATE_APP_DOC_STATUS_CHANGED });
 
 
     @Override

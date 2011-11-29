@@ -21,16 +21,12 @@ import org.kuali.rice.krad.document.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
-import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
-import org.kuali.rice.krms.impl.authorization.AgendaAuthorizationService;
 import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
@@ -45,7 +41,6 @@ import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
-import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -87,24 +82,22 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // handle return from context lookup
         MaintenanceForm maintenanceForm = (MaintenanceForm) form;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
-        // verify that user has permission for the context
-        if (!getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agendaEditor.getAgenda().getContextId())) {
-            GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRADConstants.MAINTENANCE_NEW_MAINTAINABLE
-                    + KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.unauthorizedContext");
-        }
-        // update the namespace on all agenda related objects if the contest has been changed
-        if (!StringUtils.equals(agendaEditor.getOldContextId(), agendaEditor.getAgenda().getContextId())) {
-            agendaEditor.setOldContextId(agendaEditor.getAgenda().getContextId());
+        AgendaEditorBusRule rule = new AgendaEditorBusRule();
+        if (rule.validContext(agendaEditor) && rule.validAgendaName(agendaEditor)) {
+            // update the namespace on all agenda related objects if the contest has been changed
+            if (!StringUtils.equals(agendaEditor.getOldContextId(), agendaEditor.getAgenda().getContextId())) {
+                agendaEditor.setOldContextId(agendaEditor.getAgenda().getContextId());
 
-            String namespace = "";
-            if (!StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
-                namespace = getContextBoService().getContextByContextId(agendaEditor.getAgenda().getContextId()).getNamespace();
-            }
+                String namespace = "";
+                if (!StringUtils.isBlank(agendaEditor.getAgenda().getContextId())) {
+                    namespace = getContextBoService().getContextByContextId(agendaEditor.getAgenda().getContextId()).getNamespace();
+                }
 
-            for (AgendaItemBo agendaItem : agendaEditor.getAgenda().getItems()) {
-                agendaItem.getRule().setNamespace(namespace);
-                for (ActionBo action : agendaItem.getRule().getActions()) {
-                    action.setNamespace(namespace);
+                for (AgendaItemBo agendaItem : agendaEditor.getAgenda().getItems()) {
+                    agendaItem.getRule().setNamespace(namespace);
+                    for (ActionBo action : agendaItem.getRule().getActions()) {
+                        action.setNamespace(namespace);
+                    }
                 }
             }
         }
@@ -1903,7 +1896,4 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         return super.updateComponent(form, result, request, response);
     }
 
-    public AgendaAuthorizationService getAgendaAuthorizationService() {
-        return KrmsRepositoryServiceLocator.getAgendaAuthorizationService();
-    }
 }

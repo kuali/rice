@@ -121,30 +121,30 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
     protected boolean processCustomSaveDocumentBusinessRules(MaintenanceDocument document) {
         boolean isValid = true;
 
-        AgendaEditor agenda = (AgendaEditor) document.getNewMaintainableObject().getDataObject();
-        AgendaEditor oldAgenda = (AgendaEditor) document.getOldMaintainableObject().getDataObject();
-        isValid &= validContext(agenda);
-        isValid &= validAgendaName(agenda);
-        isValid &= validAgendaTypeAndAttributes(oldAgenda, agenda);
+        AgendaEditor agendaEditor = (AgendaEditor) document.getNewMaintainableObject().getDataObject();
+        AgendaEditor oldAgendaEditor = (AgendaEditor) document.getOldMaintainableObject().getDataObject();
+        isValid &= validContext(agendaEditor);
+        isValid &= validAgendaName(agendaEditor);
+        isValid &= validAgendaTypeAndAttributes(oldAgendaEditor, agendaEditor);
 
         return isValid;
     }
 
     /**
      * Check if the context exists and if user has authorization to edit agendas under this context.
-     * @param agenda
+     * @param agendaEditor
      * @return true if the context exist and has authorization, false otherwise
      */
-    private boolean validContext(AgendaEditor agenda) {
+    public boolean validContext(AgendaEditor agendaEditor) {
         boolean isValid = true;
 
         try {
-            if (getContextBoService().getContextByContextId(agenda.getAgenda().getContextId()) == null) {
+            if (getContextBoService().getContextByContextId(agendaEditor.getAgenda().getContextId()) == null) {
                 this.putFieldError(KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.invalidContext");
                 isValid = false;
             } else {
                 if (!getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA,
-                        agenda.getAgenda().getContextId())) {
+                        agendaEditor.getAgenda().getContextId())) {
                     this.putFieldError(KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.unauthorizedContext");
                     isValid = false;
                 }
@@ -180,10 +180,10 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         return isValid;
     }
 
-    private boolean validAgendaAttributes(AgendaEditor oldAgenda, AgendaEditor newAgenda) {
+    private boolean validAgendaAttributes(AgendaEditor oldAgendaEditor, AgendaEditor newAgendaEditor) {
         boolean isValid = true;
 
-        String typeId = newAgenda.getAgenda().getTypeId();
+        String typeId = newAgendaEditor.getAgenda().getTypeId();
 
         if (!StringUtils.isEmpty(typeId)) {
             KrmsTypeDefinition typeDefinition = getKrmsTypeRepositoryService().getTypeById(typeId);
@@ -201,10 +201,10 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
                 } else {
 
                     List<RemotableAttributeError> errors;
-                    if (oldAgenda == null) {
-                        errors = agendaTypeService.validateAttributes(typeId, newAgenda.getCustomAttributesMap());
+                    if (oldAgendaEditor == null) {
+                        errors = agendaTypeService.validateAttributes(typeId, newAgendaEditor.getCustomAttributesMap());
                     } else {
-                        errors = agendaTypeService.validateAttributesAgainstExisting(typeId, newAgenda.getCustomAttributesMap(), oldAgenda.getCustomAttributesMap());
+                        errors = agendaTypeService.validateAttributesAgainstExisting(typeId, newAgendaEditor.getCustomAttributesMap(), oldAgendaEditor.getCustomAttributesMap());
                     }
 
                     if (!CollectionUtils.isEmpty(errors)) {
@@ -227,14 +227,14 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
 
     /**
      * Check if an agenda with that name exists already in the context.
-     * @param agenda
+     * @param agendaEditor
      * @return true if agenda name is unique, false otherwise
      */
-    private boolean validAgendaName(AgendaEditor agenda) {
+    public boolean validAgendaName(AgendaEditor agendaEditor) {
         try {
-            AgendaDefinition agendaFromDataBase = getAgendaBoService().getAgendaByNameAndContextId(agenda.getAgenda().getName(),
-                    agenda.getAgenda().getContextId());
-            if ((agendaFromDataBase != null) && !StringUtils.equals(agendaFromDataBase.getId(), agenda.getAgenda().getId())) {
+            AgendaDefinition agendaFromDataBase = getAgendaBoService().getAgendaByNameAndContextId(
+                    agendaEditor.getAgenda().getName(), agendaEditor.getAgenda().getContextId());
+            if ((agendaFromDataBase != null) && !StringUtils.equals(agendaFromDataBase.getId(), agendaEditor.getAgenda().getId())) {
                 this.putFieldError(KRMSPropertyConstants.Agenda.NAME, "error.agenda.duplicateName");
                 return false;
             }
@@ -365,10 +365,10 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         }
     }
 
-    private boolean validRuleActionAttributes(AgendaEditor oldAgenda, AgendaEditor newAgenda) {
+    private boolean validRuleActionAttributes(AgendaEditor oldAgendaEditor, AgendaEditor newAgendaEditor) {
         boolean isValid = true;
 
-        String typeId = newAgenda.getAgendaItemLineRuleAction().getTypeId();
+        String typeId = newAgendaEditor.getAgendaItemLineRuleAction().getTypeId();
 
         if (!StringUtils.isBlank(typeId)) {
             KrmsTypeDefinition typeDefinition = getKrmsTypeRepositoryService().getTypeById(typeId);
@@ -385,10 +385,12 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
                 } else {
 
                     List<RemotableAttributeError> errors;
-                    if (oldAgenda == null) {
-                        errors = actionTypeService.validateAttributes(typeId, newAgenda.getCustomRuleActionAttributesMap());
+                    if (oldAgendaEditor == null) {
+                        errors = actionTypeService.validateAttributes(typeId,
+                                newAgendaEditor.getCustomRuleActionAttributesMap());
                     } else {
-                        errors = actionTypeService.validateAttributesAgainstExisting(typeId, newAgenda.getCustomRuleActionAttributesMap(), oldAgenda.getCustomRuleActionAttributesMap());
+                        errors = actionTypeService.validateAttributesAgainstExisting(typeId,
+                                newAgendaEditor.getCustomRuleActionAttributesMap(), oldAgendaEditor.getCustomRuleActionAttributesMap());
                     }
 
                     if (!CollectionUtils.isEmpty(errors)) {

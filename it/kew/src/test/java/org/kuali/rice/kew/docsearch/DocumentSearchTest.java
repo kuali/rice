@@ -19,15 +19,21 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Years;
 import org.junit.Test;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.RequestedActions;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchResult;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.useroptions.UserOptions;
@@ -35,6 +41,7 @@ import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -48,6 +55,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class DocumentSearchTest extends KEWTestCase {
@@ -504,6 +512,98 @@ public class DocumentSearchTest extends KEWTestCase {
         assertEquals(4, results.getSearchResults().size());
     }
 
+    /**
+     * Tests searching on document status and document status category
+     */
+    @Test public void testDocumentStatusSearching() {
+        String dt = "SearchDocType";
+        String pid = getPrincipalIdForName("quickstart");
+        WorkflowDocument initiated = WorkflowDocumentFactory.createDocument(pid, dt);
+        WorkflowDocument saved = WorkflowDocumentFactory.createDocument(pid, dt);
+        saved.saveDocument("saved");
+        assertEquals(DocumentStatus.SAVED, saved.getStatus());
+
+        WorkflowDocument enroute = WorkflowDocumentFactory.createDocument(pid, dt);
+        enroute.route("routed");
+        assertEquals(DocumentStatus.ENROUTE, enroute.getStatus());
+
+        WorkflowDocument exception = WorkflowDocumentFactory.createDocument(pid, dt);
+        exception.route("routed");
+        exception.placeInExceptionRouting("placed in exception routing");
+        assertEquals(DocumentStatus.EXCEPTION, exception.getStatus());
+
+        // no acks on this doc, can't test?
+        //WorkflowDocument processed = WorkflowDocumentFactory.createDocument(pid, dt);
+        //processed.route("routed");
+
+        WorkflowDocument finl = WorkflowDocumentFactory.createDocument(pid, dt);
+        finl.route("routed");
+        finl.switchPrincipal(getPrincipalId("jhopf"));
+        finl.approve("approved");
+        assertEquals(DocumentStatus.FINAL, finl.getStatus());
+
+        WorkflowDocument canceled = WorkflowDocumentFactory.createDocument(pid, dt);
+        canceled.cancel("canceled");
+        assertEquals(DocumentStatus.CANCELED, canceled.getStatus());
+
+        WorkflowDocument disapproved = WorkflowDocumentFactory.createDocument(pid, dt);
+        disapproved.route("routed");
+        disapproved.switchPrincipal(getPrincipalId("jhopf"));
+        RequestedActions ra = disapproved.getRequestedActions();
+        disapproved.disapprove("disapproved");
+        assertEquals(DocumentStatus.DISAPPROVED, disapproved.getStatus());
+
+        assertDocumentStatuses(dt, pid, 1, 1, 1, 1, 0, 1, 1, 1);
+    }
+
+    /**
+     * Asserts that documents are present in the given statuses, including document status categories (this requires that
+     * no docs are in the system prior to routing of the test docs)
+     */
+    protected void assertDocumentStatuses(String documentType, String principalId, int initiated, int saved, int enroute, int exception,
+                                                          int processed, int finl, int canceled, int disapproved) {
+        assertDocumentStatus(documentType, principalId, DocumentStatus.INITIATED, initiated);
+        assertDocumentStatus(documentType, principalId, DocumentStatus.SAVED, saved);
+        assertDocumentStatus(documentType, principalId, DocumentStatus.ENROUTE, enroute);
+        assertDocumentStatus(documentType, principalId, DocumentStatus.EXCEPTION, exception);
+
+        assertDocumentStatusCategory(documentType, principalId, DocumentStatusCategory.PENDING,
+                initiated + saved + enroute + exception);
+
+        assertDocumentStatus(documentType, principalId, DocumentStatus.PROCESSED, processed);
+        assertDocumentStatus(documentType, principalId, DocumentStatus.FINAL, finl);
+
+        assertDocumentStatusCategory(documentType, principalId, DocumentStatusCategory.SUCCESSFUL, processed + finl);
+
+        assertDocumentStatus(documentType, principalId, DocumentStatus.CANCELED, canceled);
+        assertDocumentStatus(documentType, principalId, DocumentStatus.DISAPPROVED, finl);
+
+        assertDocumentStatusCategory(documentType, principalId, DocumentStatusCategory.UNSUCCESSFUL,
+                canceled + disapproved);
+    }
+
+    /**
+     * Asserts that there are a certain number of docs in the given status
+     */
+    protected void assertDocumentStatus(String documentType, String principalId, DocumentStatus status, int num) {
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentType);
+        criteria.setDocumentStatuses(Arrays.asList(new DocumentStatus[] { status }));
+        DocumentSearchResults result = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals("Expected " + num + " documents in status " + status, num, result.getSearchResults().size());
+    }
+
+    /**
+     * Asserts that there are a certain number of docs in the given document status category
+     */
+    protected void assertDocumentStatusCategory(String documentType, String principalId, DocumentStatusCategory status, int num) {
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentType);
+        criteria.setDocumentStatusCategories(Arrays.asList(new DocumentStatusCategory[]{status}));
+        DocumentSearchResults result = docSearchService.lookupDocuments(principalId, criteria.build());
+        assertEquals("Expected " + num + " documents in status category " + status, num,
+                result.getSearchResults().size());
+    }
 
     /**
      * Routes some test docs for searching

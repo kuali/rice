@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.test.BaselineTestCase;
@@ -100,4 +102,19 @@ public class ExceptionRoutingServiceTest extends KEWTestCase {
             assertTrue("Document should be in exception routing", document.isException());
         }
 	}
+
+    /**
+     * Makes sure the {@link org.kuali.rice.kew.routeheader.service.WorkflowDocumentService#placeInExceptionRouting(String, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue, String)}
+     * method exposed through {@link org.kuali.rice.kew.api.action.WorkflowDocumentActionsService#placeInExceptionRouting(org.kuali.rice.kew.api.action.DocumentActionParameters)} and
+     * {@link WorkflowDocument#placeInExceptionRouting(String)} at the time of this writing works when not called in the context of an exisiting message.
+     */
+    @Test public void testExplicitlyPlacingDocumentInException() {
+        loadXmlFile("org/kuali/rice/kew/routeheader/AppDocStatusTestConfig.xml");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("rkirkend"), "TestAppDocStatusDoc1");
+        document.setTitle("");
+        document.route("");
+        // no message will be associated with this invocation inside ExceptionRoutingServiceImpl
+        document.placeInExceptionRouting("explicitly placing in exception routing");
+        assertEquals(DocumentStatus.EXCEPTION, document.getStatus());
+    }
 }

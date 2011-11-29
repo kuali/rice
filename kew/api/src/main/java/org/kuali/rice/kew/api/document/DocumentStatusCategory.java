@@ -23,10 +23,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * TODO...
+ * A DocumentStatusCategory is a grouping of document statuses that is searchable
+ * on the document search screen.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 @XmlRootElement(name = "documentStatusCategory")
 @XmlType(name = "DocumentStatusCategoryType")

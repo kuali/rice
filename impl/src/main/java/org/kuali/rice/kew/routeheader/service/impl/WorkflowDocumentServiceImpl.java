@@ -134,6 +134,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 	
 	public DocumentRouteHeaderValue placeInExceptionRouting(String principalId, DocumentRouteHeaderValue routeHeader, String annotation) throws InvalidActionTakenException {
  	 	try {
+            // sends null as the PersistedMessage since this is an explicit external call.
  	 		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(annotation, null, routeHeader.getDocumentId());
  	 	} catch (Exception e) {
  	 		throw new RiceRuntimeException("Failed to place the document into exception routing!", e);

@@ -128,7 +128,7 @@
     </property>
   </bean>
 
-  <bean id="PermissionBo-detailObjectsValues" parent="PermissionBo-attributeDetails" p:name="detailObjectsValues">
+  <bean id="PermissionBo-detailObjectsValues" parent="PermissionBo-attributeDetails" p:name="detailObjectsValues" p:label="Permission Detail Values">
   </bean>
 
   <bean id="PermissionBo-inquiryDefinition" parent="PermissionBo-inquiryDefinition-parentBean"/>
@@ -184,6 +184,8 @@
           <bean parent="FieldDefinition" p:attributeName="template.name"/>
        	  <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
        	  <bean parent="FieldDefinition" p:attributeName="name"/>
+          <bean parent="FieldDefinition" p:attributeName="description"/>
+          <bean parent="FieldDefinition" p:attributeName="detailObjectsValues" />
       </list>
     </property>
   </bean>

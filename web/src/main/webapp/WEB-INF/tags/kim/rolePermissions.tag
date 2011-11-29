@@ -27,12 +27,12 @@
 	                <div align="center">
 	                	<br/>
 						<b>Add Permission ID:</b>
-						<kul:htmlControlAttribute property="permission.permission.id" attributeEntry="${permissionAttributes.id}"/>
+						<kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.id}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.permission.PermissionBo" fieldConversions=
-	                	"template.name:permission..permission.template.name,id:permission.permission.id,name:permission.permission.name,namespaceCode:permission.permission.namespaceCode" anchor="${tabKey}" />
-						<html:hidden property="permission..permission.name" />
-						<html:hidden property="permission.permission.namespaceCode" />
-						${KualiForm.permission.permission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.permission.name}&nbsp;
+	                	"id:permission.permissionId,template.name:permission.permission.template.name,name:permission.permission.name,namespaceCode:permission.permission.namespaceCode" anchor="${tabKey}" />
+						<html:hidden property="permission.name" />
+						<html:hidden property="permission.namespaceCode" />
+						${KualiForm.permission.namespaceCode}&nbsp;&nbsp;${KualiForm.permission.name}&nbsp;
 	                	<br/>
 	                	<br/>
 		            </div>
@@ -54,7 +54,7 @@
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.namespaceCode}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.id}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.name}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsToDisplay}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.detailObjectsValues}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${permissionAttributes.active}" noColon="true" /></div></th>
 				<c:if test="${!readOnly}">	
             		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
@@ -78,7 +78,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.attributes"  attributeEntry="${permissionAttributes.attributeDetails}" readOnly="true"  />
+	              	<div align="left"> <kul:htmlControlAttribute property="document.permissions[${status.index}].permission.attributes"  attributeEntry="${permissionAttributes.detailObjectsValues}" readOnly="true"  />
 					</div>
 				</td>
 				<c:choose>

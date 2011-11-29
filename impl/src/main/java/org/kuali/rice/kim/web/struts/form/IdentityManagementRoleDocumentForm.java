@@ -56,10 +56,11 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	{
 		member = new KimDocumentRoleMember();
 		member.getQualifiers().add(new KimDocumentRoleQualifier());
+
 	}
-	protected KimDocumentRolePermission permission;
-	protected KimDocumentRoleResponsibility responsibility;
-	protected RoleDocumentDelegationMember delegationMember;
+	protected KimDocumentRolePermission permission = new KimDocumentRolePermission();
+    protected KimDocumentRoleResponsibility responsibility = new KimDocumentRoleResponsibility();
+    protected RoleDocumentDelegationMember delegationMember;
 	{
 		delegationMember = new RoleDocumentDelegationMember();
 		delegationMember.getQualifiers().add(new RoleDocumentDelegationMemberQualifier());
@@ -69,11 +70,13 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 
 	public IdentityManagementRoleDocumentForm() {
         super();
+
         setFormatterType("document.members.activeFromDate", DateDisplayTimestampObjectFormatter.class);
         setFormatterType("document.delegationMembers.activeFromDate", DateDisplayTimestampObjectFormatter.class);
         setFormatterType("document.members.activeToDate", DateDisplayTimestampObjectFormatter.class);
         setFormatterType("document.delegationMembers.activeToDate", DateDisplayTimestampObjectFormatter.class);
     }
+
 	
     /**
 	 * @return the delegationMember

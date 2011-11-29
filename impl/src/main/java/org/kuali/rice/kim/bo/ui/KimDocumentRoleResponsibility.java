@@ -56,7 +56,11 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	protected ResponsibilityBo kimResponsibility;
 	@Transient
 	protected List<KimDocumentRoleResponsibilityAction> roleRspActions = new AutoPopulatingList(KimDocumentRoleResponsibilityAction.class);
-	
+    @Transient
+    protected String name;
+    @Transient
+    protected String namespaceCode;
+
 	public String getRoleId() {
 		return roleId;
 	}
@@ -108,7 +112,7 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	 * @return the responsibilityId
 	 */
 	public String getResponsibilityId() {
-		return this.responsibilityId;
+    		return this.responsibilityId;
 	}
 
 	/**
@@ -135,4 +139,27 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 		this.roleRspActions = roleRspActions;
 	}
 
+    public String getName(){
+        if( null == kimResponsibility ) {
+            getKimResponsibility();
+        }
+
+        if (null == kimResponsibility) {
+            return "";
+        }
+
+        return kimResponsibility.getName();
+    }
+
+    public String getNamespaceCode(){
+        if( null == kimResponsibility ) {
+            getKimResponsibility();
+        }
+
+        if (null == kimResponsibility) {
+            return "";
+        }
+
+        return kimResponsibility.getNamespaceCode();
+    }
 }

@@ -28,12 +28,12 @@
 	                <div align="center">
 	                	<br/>
 						<b>Add Responsibility ID:</b>
-						<kul:htmlControlAttribute property="responsibility.id" attributeEntry="${responsibilityAttributes.id}"/>
+						<kul:htmlControlAttribute property="responsibility.responsibilityId" attributeEntry="${responsibilityAttributes.id}"/>
 	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo" fieldConversions=
-	                	"template.name:responsibility.kimResponsibility.template.name,responsibilityId:responsibility.responsibilityId,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
-						<html:hidden property="responsibility.kimResponsibility.name" />
-						<html:hidden property="responsibility.kimResponsibility.namespaceCode" />
-						${KualiForm.responsibility.kimResponsibility.namespaceCode}&nbsp;&nbsp;${KualiForm.responsibility.kimResponsibility.name}&nbsp;
+	                	"id:responsibility.responsibilityId,template.name:responsibility.kimResponsibility.template.name,name:responsibility.kimResponsibility.name,namespaceCode:responsibility.kimResponsibility.namespaceCode" anchor="${tabKey}" />
+						<html:hidden property="responsibility.name" />
+						<html:hidden property="responsibility.namespaceCode" />
+						${KualiForm.responsibility.namespaceCode}&nbsp;&nbsp;${KualiForm.responsibility.name}&nbsp;
 	                	<br/>
 	                	<br/>
 		            </div>
@@ -53,7 +53,7 @@
         	<tr>
         		<th>&nbsp;</th> 
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.namespaceCode}" noColon="true" /></div></th>
-        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.responsibilityId}" noColon="true" /></div></th>
+        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.id}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.name}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.detailObjectsValues}" noColon="true" /></div></th>
         		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${responsibilityAttributes.active}" noColon="true" /></div></th>
@@ -75,7 +75,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].responsibilityId"  attributeEntry="${responsibilityAttributes.responsibilityId}" readOnly="true"  />
+	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].responsibilityId"  attributeEntry="${responsibilityAttributes.id}" readOnly="true"  />
 					</div>
 				</td>
 	            <td align="left" valign="middle">
@@ -83,7 +83,7 @@
 					</div>
 				</td>
 	            <td align="left" valign="middle">
-	               	<div align="left"> <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.detailObjectsValues"  attributeEntry="${responsibilityAttributes.detailObjectsToDisplay}" readOnly="true"  />
+	               	<div align="left">  <kul:htmlControlAttribute property="document.responsibilities[${status.index}].kimResponsibility.detailObjectsValues"  attributeEntry="${responsibilityAttributes.detailObjectsToDisplay}" readOnly="true"  />
 					</div>
 				</td>
 				<c:choose>

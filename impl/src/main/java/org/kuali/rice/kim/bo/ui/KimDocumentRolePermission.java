@@ -52,11 +52,16 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	protected String permissionId;
 	@Transient
 	protected Permission permission;
+    @Transient
+    protected String name;
+    @Transient
+    protected String namespaceCode;
+
 	
 	public String getPermissionId() {
 		return permissionId;
 	}
-	
+
 	public String getRoleId() {
 		return roleId;
 	}
@@ -81,9 +86,11 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	 * @return the permission
 	 */
 	public Permission getPermission() {
-		if ( permission == null || !StringUtils.equals( permission.getId(), permissionId ) ) {
-			permission = KimApiServiceLocator.getPermissionService().getPermission(permissionId);
-		}
+        if(null != permissionId){
+            if ( permission == null || !StringUtils.equals( permission.getId(), permissionId ) ) {
+                permission = KimApiServiceLocator.getPermissionService().getPermission(permissionId);
+            }
+        }
 		return permission;
 	}
 
@@ -93,5 +100,31 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	public void setPermission(Permission permission) {
 		this.permission = permission;
 	}
+
+    public String getName(){
+        if(null!= permission){
+            return permission.getName();
+        }else{
+            getPermission();
+            if(null == permission){
+                return "";
+            }else{
+                return permission.getName();
+            }
+        }
+    }
+
+    public String getNamespaceCode(){
+
+        if( null == permission ) {
+            getPermission();
+        }
+
+        if (null == permission) {
+            return "";
+        }
+
+        return permission.getNamespaceCode();
+    }
 	
 }

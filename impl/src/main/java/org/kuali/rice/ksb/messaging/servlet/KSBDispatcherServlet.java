@@ -67,6 +67,10 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 	private KSBHttpInvokerHandler httpInvokerHandler;
 	private ServletController cxfServletController;
 	
+	protected WebApplicationContext initWebApplicationContext() throws BeansException {
+	    return null;
+	}
+
 	protected void initFrameworkServlet() throws ServletException, BeansException {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();
 		

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<chapter xml:id="responsibility" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
+    <info>
+        <title>Responsibility</title>
+    </info>
+    <para>Administration > System > Identity > Responsibility > Responsibility Inquiry</para>
+    <para>The Responsibility document allows you to create new responsibilities or edit existing
+        ones. The Responsibility Lookup allows you to search for and view existing responsibilities.
+        You can view summarized information about the responsibility detail values as well as the
+        roles with which the responsibility is currently associated.</para>
+    <para>Only members of the KFS-SYS Technical Administrator or KFS-SYS Manager role can create or
+        modify a Responsibility document and it does not route for approval. Information about the
+        Responsibility document follows detailed information about the Responsibility Lookup
+        below.</para>
+    <warning><para>Caution should be exercised when modifying existing responsibilities or adding new ones.
+        Relatively minor changes can result in disruptions to the workflow of documents if made in
+        error. Changes should be made only after sufficient testing with your local configuration. </para></warning>
+    <para><figure><title>Responsibility Lookup</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="../images/help/responsibility_lookup.png"/>
+            </imageobject>
+        </mediaobject>
+        </figure>
+    </para>
+    <para>
+        <table frame="void">
+            <caption>Responsibility Lookup search criteria</caption>
+            <col width="50%"/>
+            <col width="50%"/>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Template Namespace </td>
+                    <td>Optional. To search for a responsibility based on its template namespace
+                        (that is, the name of the application and module to which its responsibility
+                        template belongs), select the appropriate namespace.</td>
+                </tr>
+                <tr>
+                    <td>Template Name</td>
+                    <td>Optional. To search for a responsibility based on the name of the template
+                        it is based on, enter the appropriate template name.</td>
+                </tr>
+                <tr>
+                    <td>Responsibility Namespace</td>
+                    <td>Optional. To search for a responsibility based on its namespace, select the
+                        appropriate responsibility namespace.</td>
+                </tr>
+                <tr>
+                    <td>Responsibility Name</td>
+                    <td>Optional. To search for a responsibility by name, enter its name.</td>
+                </tr>
+                <tr>
+                    <td>Role Namespace</td>
+                    <td>To search for a responsibility based on the namespace of the role to which
+                        it is assigned, enter the appropriate role namespace.</td>
+                </tr>
+                <tr>
+                    <td>Role Name</td>
+                    <td>Optional. To search for a responsibility based on the role to which it is
+                        assigned, enter the appropriate role name.</td>
+                </tr>
+                <tr>
+                    <td>Principal Name</td>
+                    <td>Optional. To search for a responsibility based on the principals that
+                        currently have this responsibility through their association with a role,
+                        enter an appropriate principal name.</td>
+                </tr>
+                <tr>
+                    <td>Group Namespace</td>
+                    <td>Optional. To search for a responsibility based on the namespace of groups
+                        that have this responsibility through the group's association with a role,
+                        enter an appropriate group namespace.</td>
+                </tr>
+                <tr>
+                    <td>Group Name</td>
+                    <td>Optional. To search for a responsibility based on the name of a group that
+                        has this responsibility through its association with a role, enter an
+                        appropriate group name.</td>
+                </tr>
+                <tr>
+                    <td>Attributes</td>
+                    <td>Optional. To find a responsibility based on a specific responsibility detail
+                        value associated with it, enter the value.</td>
+                </tr>
+            </tbody>
+        </table>
+    </para>
+    <para><figure><title>Responsibility Lookup results</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="../images/help/responsibility_lookup_results.jpg"/>
+            </imageobject>
+        </mediaobject></figure></para>
+    <para>The Responsibility results display contains the fields described in the table
+        below.</para>
+    <para>
+        <table frame="void">
+            <caption>Responsibility Lookup results fields</caption>
+            <col width="50%"/>
+            <col width="50%"/>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Actions</td>
+                    <td>Actions allow selection of edit or copy for each responsibility
+                        displayed.</td>
+                </tr>
+                <tr>
+                    <td>Template Namespace</td>
+                    <td>The code identifying the application and module the template pertains to.
+                        Because responsibilities pertain to workflow, most responsibility templates
+                        are associated with the KR-WKFLW (Kuali Rice-Workflow) namespace.</td>
+                </tr>
+                <tr>
+                    <td>Template Name</td>
+                    <td>The template the responsibility is based on. A template usually defines, in
+                        a broad sense, what the responsibility is. Since responsibilities normally
+                        are normally associated with action requests for user review, most
+                        responsibilities have a template name of 'Review.</td>
+                </tr>
+                <tr>
+                    <td>Responsibility Namespace</td>
+                    <td>The code designating the application and module this responsibility is
+                        associated with. This code usually corresponds to the namespace of the
+                        document type for which the responsibility generates action requests.</td>
+                </tr>
+                <tr>
+                    <td>Responsibility Name</td>
+                    <td><para>The name of this responsibility. In most cases the responsibility name will be the same as the
+                            associated template name ('Review').</para><para>Like permission names, responsibility names are not unique. Most KFS responsibilities have a
+                            name of 'Review.</para></td>
+                </tr>
+                <tr>
+                    <td>Responsibility Detail Values</td>
+                    <td><para>Display-only. Detailed information that defines what document this responsibility generates
+                            action requests for, when the requests are generated and how they are
+                            handled by workflow.</para>
+                    <para>Unlike permissions, which sometimes have different detail values,
+                            responsibility detail values generally contain the elements defined
+                            below.</para>
+                        <para>routeNodeName: The point in a document's workflow routing at which
+                            this responsibility generates requests.</para>
+                        <para>documentTypeName: The name of the document type for which this
+                            responsibility generates action requests. This value may also be a
+                            parent document type, which indicates that this responsibility applies
+                            to all child documents that contain the appropriate route node.</para>
+                        <para>actionDetailsAtRoleMemberLevel: A True or False indicator that defines
+                            where the system collects details of this workflow action request. If
+                            the value is 'True,' the system collects action details when members are
+                            assigned to the role. If the value is 'False,' the system collects
+                            action details when this responsibility is assigned to a role.</para>
+                        <para>required: A True or False value that indicates whether the system is
+                            required to generate an action request for this document type. If the
+                            value is 'True' and the document generates no requests associated with
+                            this responsibility, then the document will go into exception status. If
+                            the value is 'False' and the responsibility generates no action
+                            requests, then the document continues to route as normal.</para>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Granted to Roles</td>
+                    <td>Lists the namespace and name of roles that have this responsibility. Click
+                        on the linked name to view the Role Inquiry.</td>
+                </tr>
+            </tbody>
+        </table>
+    </para>
+    <para>To view an Inquiry screen for a responsibility, select the <emphasis role="bold"
+            >Responsibility Name</emphasis> of the appropriate row in the search results. The
+        Inquiry contains the same information displayed in the search results in a slightly
+        different format.</para>
+    <para><figure><title>Responsibility Inquiry</title><mediaobject>
+            <imageobject>
+                <imagedata fileref="../images/help/responsibility_inquiry.jpg"/>
+            </imageobject>
+        </mediaobject>
+    </figure></para>
+    <sect1>
+        <title>Document Layout</title>
+        <para>The Responsibility document includes <emphasis role="bold">Document
+                Overview</emphasis>, <emphasis role="bold">Responsibility Info</emphasis>, and
+                <emphasis role="bold">Responsibility Details</emphasis> tabs.</para>
+        <para><figure><title>Responsibility document</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/responsibility_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <sect2>
+            <title>Responsibility Info Tab</title>
+            <para>This tab identifies the responsibility with a unique system-assigned ID number, a
+                namespace, name and description.</para>
+            <para><figure><title>Responsibility Info tab</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/help/responsibility_info_tab.jpg"/>
+                    </imageobject>
+                </mediaobject>
+                </figure></para>
+            <para>
+                <table frame="void">
+                    <caption>Permission Info tab definition</caption>
+                    <col width="50%"/>
+                    <col width="50%"/>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Responsibility Identifier</td>
+                            <td>Display-only. The unique, system-assigned ID number that identifies
+                                this responsibility.</td>
+                        </tr>
+                        <tr>
+                            <td>Responsibility Namespace</td>
+                            <td>Required. An indicator that associates the responsibility with a
+                                particular application and module.</td>
+                        </tr>
+                        <tr>
+                            <td>Responsibility Name</td>
+                            <td>Required (defaults to 'Review'). A text name identifying this
+                                responsibility. Note that this is the only valid value for this
+                                document. You cannot use the Responsibility document to establish or
+                                modify Responsibilities with the name 'Resolve Exception' -these
+                                require a technical resource to modify.</td>
+                        </tr>
+                        <tr>
+                            <td>Responsibility Description</td>
+                            <td>Optional. Enter a text description of what this responsibility
+                                does.</td>
+                        </tr>
+                        <tr>
+                            <td>Active Indicator</td>
+                            <td>Required (defaults to 'Yes'). Change the default selection if you
+                                wish this responsibility to be inactive. Inactive responsibilities
+                                will be disregarded by Workflow.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Responsibility Details Tab</title>
+            <para>This tab identifies the document type and route node associated with this
+                responsibility. It also defines other responsibility information such as whether or
+                not the action details reside at the role member level.</para>
+            <para><figure><title>Responsibility Details tab</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/help/responsibility_details_tab.jpg"/>
+                    </imageobject>
+                </mediaobject>
+            </figure></para>
+            <para>
+                <table frame="void">
+                    <caption>Responsibility Details tab definition</caption>
+                    <col width="50%"/>
+                    <col width="50%"/>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Document Type Name </td>
+                            <td>Required. Enter the name of the document type this responsibility is
+                                associated with or use the <emphasis role="bold">Document Type
+                                    Lookup</emphasis> to search for and select a value.</td>
+                        </tr>
+                        <tr>
+                            <td>Route Node Name</td>
+                            <td>Required. The name of the route node at which this responsibility
+                                should be invoked. </td>
+                        </tr>
+                        <tr>
+                            <td>Action Details at Role Member Level</td>
+                            <td>Required (defaults to False). Check this box if you want role
+                                members associated with this responsibility to be able to define the
+                                type of workflow action they will need to take in order to fulfill
+                                the action request it generates.</td>
+                        </tr>
+                        <tr>
+                            <td>Required</td>
+                            <td>Required (defaults to False). Check this box if you wish documents
+                                of this type to go into Exception status if this responsibility does
+                                not generate at least one action request.</td>
+                        </tr>
+                        <tr>
+                            <td>Qualifier Resolver Provided Identifier</td>
+                            <td><para>Optional. In most cases this field should be blank. It can be used as an additional identifier
+                                    KIM will use to choose the correct responsibility information
+                                    for a given doc type. The document type must pass the provided
+                                    identifier to KIM.</para>
+                            <para>This is only used in the KFS based data for the routing of group
+                                    documents. The group type ID is populated here and determines
+                                    how the document routes (Chart and Organization type groups do
+                                    organization review routing and default group types do not). </para></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </para>
+        </sect2>
+    </sect1>
+</chapter>

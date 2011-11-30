@@ -1354,8 +1354,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // fetch existing rule and copy fields to new rule
         RuleDefinition oldRuleDefinition = getRuleBoService().getRuleByNameAndNamespace(name, namespace);
         RuleBo oldRule = RuleBo.from(oldRuleDefinition);
-        agendaEditor.getAgendaItemLine().setRule( RuleBo.copyRule(oldRule) );
-
+        RuleBo newRule = RuleBo.copyRule(oldRule);
+        agendaEditor.getAgendaItemLine().setRule( newRule );
+        // hack to set ui action object to first action in the list
+        if (!newRule.getActions().isEmpty()) {
+            agendaEditor.setAgendaItemLineRuleAction( newRule.getActions().get(0));
+        }
         return super.refresh(form, result, request, response);
     }
 

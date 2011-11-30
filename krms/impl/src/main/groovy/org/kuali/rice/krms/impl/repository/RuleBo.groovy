@@ -289,7 +289,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
         newRule.setProposition( newProp );
 
         newRule.setAttributeBos(copyRuleAttributes(existing));
-        newRule.setActions(copyRuleActions(existing, newProp.getId()));
+        newRule.setActions(copyRuleActions(existing, newRule.getId()));
 
         return newRule;
     }

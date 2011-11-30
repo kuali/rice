@@ -102,16 +102,16 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	}
 
     public String getName(){
-        if(null!= permission){
-            return permission.getName();
-        }else{
-            getPermission();
-            if(null == permission){
-                return "";
-            }else{
-                return permission.getName();
-            }
+        if( null == permission ) {
+             getPermission();
         }
+
+        if (null == permission) {
+             return "";
+        }
+
+        return permission.getName();
+
     }
 
     public String getNamespaceCode(){

@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="permissionAttributes" value="${DataDictionary.PermissionBo.attributes}" />
+<c:set var="permissionAttributes" value="${DataDictionary.UberPermissionBo.attributes}" />
 
 <kul:tab tabTitle="Permissions" defaultOpen="true" tabErrorKey="document.perm*">
 	<div class="tab-container" align="center">    
@@ -28,7 +28,7 @@
 	                	<br/>
 						<b>Add Permission ID:</b>
 						<kul:htmlControlAttribute property="permission.permissionId" attributeEntry="${permissionAttributes.id}"/>
-	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.permission.PermissionBo" fieldConversions=
+	                	<kul:lookup boClassName="org.kuali.rice.kim.impl.permission.UberPermissionBo" fieldConversions=
 	                	"id:permission.permissionId,template.name:permission.permission.template.name,name:permission.permission.name,namespaceCode:permission.permission.namespaceCode" anchor="${tabKey}" />
 						<html:hidden property="permission.name" />
 						<html:hidden property="permission.namespaceCode" />

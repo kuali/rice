@@ -111,7 +111,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     public ModelAndView goToAddRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         setAgendaItemLine(form, null);
-
+        AgendaEditor agendaEditor = getAgendaEditor(form);
+        agendaEditor.setAddRuleInProgress(true);
         form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
         return super.navigate(form, result, request, response);
     }
@@ -210,6 +211,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
+        agendaEditor.setAddRuleInProgress(false);
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         String selectedItemId = agendaEditor.getSelectedAgendaItemId();
@@ -270,7 +272,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
             // add it to the collection on the agenda too
             agenda.getItems().add(newAgendaItem);
-
+            agendaEditor.setAddRuleInProgress(false);
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-Agenda-Page");
         } else {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");

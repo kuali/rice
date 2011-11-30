@@ -49,6 +49,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String cutPropositionId;
     private String copyRuleName;
     private String oldContextId;
+    private boolean addRuleInProgress = false;
     private Map<String, String> customAttributesMap = new HashMap<String, String>();
     private Map<String, String> customRuleAttributesMap = new HashMap<String, String>();
     private Map<String, String> customRuleActionAttributesMap = new HashMap<String, String>();
@@ -284,6 +285,15 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+
+    public boolean isAddRuleInProgress() {
+        return addRuleInProgress;
+    }
+
+    public void setAddRuleInProgress(boolean addRuleInProgress) {
+        this.addRuleInProgress = addRuleInProgress;
     }
 
     /**

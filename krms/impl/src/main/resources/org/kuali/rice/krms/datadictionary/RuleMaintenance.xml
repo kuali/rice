@@ -100,7 +100,12 @@
     <property name="items">
       <list>
 
-        <bean parent="FieldGroup" p:label="Copy from Existing Rule">
+        <bean parent="FieldGroup" p:label="Copy from Existing Rule"
+              p:progressiveRenderViaAJAX="true"
+              p:progressiveRender="document.newMaintainableObject.dataObject.addRuleInProgress == true">
+          <property name="group.layoutManager">
+            <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+          </property>
           <property name="items">
             <list>
               <bean parent="InputField" p:propertyName="copyRuleName" p:style="font-size: smaller;" p:showLabel="false">

@@ -165,6 +165,9 @@
 
     <!-- Connect documentation generation to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
+    <rice.docbook.phase.html>${rice.docbook.phase}</rice.docbook.phase.html>
+    <rice.docbook.phase.pdf>${rice.docbook.phase}</rice.docbook.phase.pdf>
+    <rice.docbook.phase.multi>${rice.docbook.phase}</rice.docbook.phase.multi>
     <!-- Where the original documentation source is located -->
     <rice.docbook.src>${basedir}/src/site/docbook</rice.docbook.src>
     <!-- Where the filtered documentation source is located -->
@@ -885,7 +888,7 @@
             <goals>
               <goal>generate-html</goal>
             </goals>
-            <phase>${rice.docbook.phase}</phase>
+            <phase>${rice.docbook.phase.html}</phase>
             <configuration>
               <htmlStylesheet>../css/stylesheet.css</htmlStylesheet>
               <targetDirectory>${rice.docbook.dest}/html</targetDirectory>
@@ -897,7 +900,7 @@
             <goals>
               <goal>generate-pdf</goal>
             </goals>
-            <phase>${rice.docbook.phase}</phase>
+            <phase>${rice.docbook.phase.pdf}</phase>
             <configuration>
               <foCustomization>${rice.docbook.filtered}/stylesheets/fo-stylesheet.xsl</foCustomization>
               <targetDirectory>${rice.docbook.dest}/pdf</targetDirectory>
@@ -908,7 +911,7 @@
             <goals>
               <goal>generate-html</goal>
             </goals>
-            <phase>${rice.docbook.phase}</phase>
+            <phase>${rice.docbook.phase.multi}</phase>
             <configuration>
               <chunkedOutput>true</chunkedOutput>
               <htmlStylesheet>../../css/stylesheet.css</htmlStylesheet>

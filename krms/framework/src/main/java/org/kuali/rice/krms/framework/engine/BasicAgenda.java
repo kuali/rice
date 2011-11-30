@@ -37,10 +37,11 @@ public class BasicAgenda implements Agenda {
 
 	@Override
 	public boolean appliesTo(ExecutionEnvironment environment) {
-        for (String agendaQualifierName : qualifiers.keySet()) {
-            String qualifierValue = qualifiers.get(agendaQualifierName);
-            String environmentQualifierValue = environment.getSelectionCriteria().getAgendaQualifiers().get(agendaQualifierName);
-            if (!qualifierValue.equals(environmentQualifierValue)) {
+
+        for (Map.Entry<String, String> agendaQualifier : environment.getSelectionCriteria().getAgendaQualifiers().entrySet()) {
+            String agendaQualifierValue = qualifiers.get(agendaQualifier.getKey());
+            String environmentQualifierValue = agendaQualifier.getValue();
+            if (!environmentQualifierValue.equals(agendaQualifierValue)) {
                 return false;
             }
         }

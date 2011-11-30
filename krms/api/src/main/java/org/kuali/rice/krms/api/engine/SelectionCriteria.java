@@ -67,10 +67,16 @@ public final class SelectionCriteria {
 		return effectiveExecutionTime;
 	}
 
+    /**
+     * @return the map of context qualifiers.  May be empty, will never be null.
+     */
 	public Map<String, String> getContextQualifiers() {
 		return Collections.unmodifiableMap(contextQualifiers);
 	}
 
+    /**
+     * @return the map of agenda qualifiers.  May be empty, will never be null.
+     */
 	public Map<String, String> getAgendaQualifiers() {
 		return Collections.unmodifiableMap(agendaQualifiers);
 	}

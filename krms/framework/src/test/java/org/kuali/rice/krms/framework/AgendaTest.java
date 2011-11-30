@@ -168,12 +168,44 @@ public class AgendaTest {
 
 		assertFalse(ActionMock.actionFired("a2"));
 		assertTrue(ActionMock.actionFired("a3"));
-	}	
-	
-	/**
-	 * @param agenda
-	 */
-	private void execute(Agenda agenda) {
+	}
+
+    /**
+     * Make sure agenda qualifier matching is based on the provided qualifiers
+     * see https://jira.kuali.org/browse/KULRICE-6098
+     */
+    public void testQualifierMissingFromAgenda() {
+        // RESET
+		ActionMock.resetActionsFired();
+
+        Rule rule1 = new BasicRule("r1", trueProp, Collections.<Action>singletonList(new ActionMock("a1")));
+
+        BasicAgendaTree agendaTree1 = new BasicAgendaTree(new BasicAgendaTreeEntry(rule1));
+        Agenda agenda1 = new BasicAgenda(Collections.<String, String>emptyMap(), agendaTree1);
+
+        // this shouldn't select any agendas, so no rules will really get executed
+        execute(agenda1, Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"));
+
+        // Expected: the agenda didn't get selected, so the action didn't fire
+        assertFalse("the agenda should not have been selected and executed", ActionMock.actionFired("a1"));
+    }
+
+    /**
+     * execute the engine against a trivial context containing the given agenda.
+     * a default agenda qualifier of Event=test will be used.
+     * @param agenda
+     */
+    private void execute(Agenda agenda) {
+        execute(agenda, Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"));
+    }
+
+    /**
+     * execute the engine against a trivial context containing the given agenda.
+     * the given agenda qualifier will be used.
+     * @param agenda
+     * @param agendaQualifiers
+     */
+	private void execute(Agenda agenda, Map<String, String> agendaQualifiers) {
 		Map<String, String> contextQualifiers = new HashMap<String, String>();
 		contextQualifiers.put("docTypeName", "Proposal");
 
@@ -184,7 +216,7 @@ public class AgendaTest {
 		ContextProvider contextProvider = new ManualContextProvider(context);
 		
 		SelectionCriteria selectionCriteria = SelectionCriteria.createCriteria(null, contextQualifiers,
-                Collections.singletonMap(AgendaDefinition.Constants.EVENT, "test"));
+                agendaQualifiers);
 		
 		ProviderBasedEngine engine = new ProviderBasedEngine();
 		engine.setContextProvider(contextProvider);

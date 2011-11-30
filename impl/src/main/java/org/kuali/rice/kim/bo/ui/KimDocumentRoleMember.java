@@ -225,6 +225,7 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
         	setMemberName(role.getName());
         	setMemberNamespaceCode(role.getNamespaceCode());
         }
+
 	}
 	
 	public boolean isRole(){

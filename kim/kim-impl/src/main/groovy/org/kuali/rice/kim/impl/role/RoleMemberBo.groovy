@@ -38,6 +38,16 @@ import org.kuali.rice.kim.impl.membership.AbstractMemberBo
 import org.springframework.util.AutoPopulatingList
 import java.sql.Timestamp
 import org.kuali.rice.core.api.membership.MemberType
+import org.kuali.rice.kim.api.group.Group
+import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.role.RoleService;
+import org.apache.commons.lang.StringUtils
+import org.kuali.rice.kim.api.identity.principal.Principal
+import org.kuali.rice.krad.bo.BusinessObject
+import org.kuali.rice.kim.impl.group.GroupBo
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
+import org.kuali.rice.kim.api.KimConstants
+import org.kuali.rice.krad.service.KRADServiceLocator;
 
 @Entity
 @Table(name = "KRIM_ROLE_MBR_T")
@@ -65,7 +75,13 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
     List<RoleResponsibilityActionBo> roleRspActions;
 
     @Transient
-    Map<String,String> attributes
+    Map<String, String> attributes
+
+    @Transient
+    protected String memberName;
+
+    @Transient
+    protected String memberNamespaceCode;
 
 
     List<RoleMemberAttributeDataBo> getAttributeDetails() {
@@ -79,7 +95,7 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
         this.attributeDetails = attributeDetails;
     }
 
-    Map<String,String> getAttributes() {
+    Map<String, String> getAttributes() {
         return attributeDetails != null ? KimAttributeDataBo.toAttributes(attributeDetails) : attributes
     }
 
@@ -99,12 +115,85 @@ public class RoleMemberBo extends AbstractMemberBo implements RoleMemberContract
                 typeCode: immutable.getType().code,
                 activeFromDateValue: immutable.activeFromDate == null ? null : new Timestamp(immutable.activeFromDate.getMillis()),
                 activeToDateValue: immutable.activeToDate == null ? null : new Timestamp(immutable.activeToDate.getMillis()),
-                objectId : immutable.objectId,
-                versionNumber: immutable.versionNumber
+                objectId: immutable.objectId,
+                versionNumber: immutable.versionNumber,
+                memberName: immutable.memberName,
+                memberNamespaceCode: immutable.memberNamespaceCode
+
         )
     }
 
     public getTypeCode() {
         return this.typeCode
     }
+
+    protected BusinessObject getMember(MemberType memberType, String memberId) {
+        Class<? extends BusinessObject> roleMemberTypeClass = null;
+        String roleMemberIdName = "";
+        if (MemberType.PRINCIPAL.equals(memberType)) {
+            roleMemberTypeClass = PrincipalBo.class;
+            roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
+            Principal principalInfo = KimApiServiceLocator.getIdentityService().getPrincipal(memberId);
+        } else if (MemberType.GROUP.equals(memberType)) {
+            roleMemberTypeClass = GroupBo.class;
+            roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
+            Group groupInfo = null;
+            groupInfo = KimApiServiceLocator.getGroupService().getGroup(memberId);
+        } else if (MemberType.ROLE.equals(memberType)) {
+            roleMemberTypeClass = RoleBo.class;
+            roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
+            Role role = KimApiServiceLocator.getRoleService().getRole(memberId);
+        }
+        Map<String, String> criteria = new HashMap<String, String>();
+        criteria.put(roleMemberIdName, memberId);
+        return KRADServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
+    }
+
+    public String getMemberName() {
+        if (getType() == null || StringUtils.isEmpty(getMemberId())) { return "";}
+        BusinessObject member = getMember(getType(), memberId);
+        if (member == null) {
+            this.memberName = "";
+            Principal kp = KimApiServiceLocator.getIdentityService().getPrincipal(getMemberId());
+            if (kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())) {
+                this.memberName = kp.getPrincipalName();
+            }
+
+            return this.memberName;
+        }
+        return getRoleMemberName(getType(), member);
+    }
+
+    public String getRoleMemberName(MemberType memberType, BusinessObject member) {
+        String roleMemberName = "";
+        if (MemberType.PRINCIPAL.equals(memberType)) {
+            roleMemberName = ((PrincipalBo) member).getPrincipalName();
+        } else if (MemberType.GROUP.equals(memberType)) {
+            roleMemberName = ((GroupBo) member).getName();
+        } else if (MemberType.ROLE.equals(memberType)) {
+            roleMemberName = ((RoleBo) member).getName();
+        }
+        return roleMemberName;
+    }
+
+    public String getMemberNamespaceCode() {
+        if (getType() == null || StringUtils.isEmpty(getMemberId())) {return "";}
+        this.memberNamespaceCode = "";
+        if (MemberType.PRINCIPAL.equals(getType())) {
+            this.memberNamespaceCode = "";
+        } else if (MemberType.GROUP.equals(getType())) {
+            Group groupInfo = getGroupService().getGroup(memberId);
+            if (groupInfo != null) {
+                this.memberNamespaceCode = groupInfo.getNamespaceCode();
+            }
+        } else if (MemberType.ROLE.equals(getType())) {
+            Role role = getRoleService().getRole(memberId);
+            if (role != null) {
+                this.memberNamespaceCode = role.getNamespaceCode();
+            }
+        }
+        return this.memberNamespaceCode;
+
+    }
+
 }

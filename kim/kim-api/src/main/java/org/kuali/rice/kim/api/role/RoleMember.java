@@ -53,6 +53,8 @@ import java.util.Map;
         RoleMember.Elements.ROLE_RESPONSIBILITY_ACTIONS,
         RoleMember.Elements.MEMBER_ID,
         RoleMember.Elements.TYPE_CODE,
+        RoleMember.Elements.MEMBER_NAME,
+        RoleMember.Elements.MEMBER_NAMESPACE_CODE,
         CoreConstants.CommonElements.ACTIVE_FROM_DATE,
         CoreConstants.CommonElements.ACTIVE_TO_DATE,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -81,6 +83,12 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
 
     @XmlElement(name = Elements.TYPE_CODE, required = true)
     private final String typeCode;
+
+    @XmlElement(name = Elements.MEMBER_NAME, required = true)
+    private final String memberName;
+
+     @XmlElement(name = Elements.MEMBER_NAMESPACE_CODE, required = true)
+    private final String memberNamespaceCode;
 
     @XmlJavaTypeAdapter(DateTimeAdapter.class)
     @XmlElement(name = CoreConstants.CommonElements.ACTIVE_FROM_DATE, required = false)
@@ -111,6 +119,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         roleResponsibilityActions = null;
         memberId = null;
         typeCode = null;
+        memberName = null;
+        memberNamespaceCode = null;
         activeFromDate = null;
         activeToDate = null;
         this.versionNumber = null;
@@ -132,6 +142,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
 
         memberId = b.getMemberId();
         typeCode = b.getType().getCode();
+        memberName = b.getMemberName();
+        memberNamespaceCode = b.getMemberNamespaceCode();
         activeFromDate = b.getActiveFromDate();
         activeToDate = b.getActiveToDate();
         versionNumber = b.getVersionNumber();
@@ -204,6 +216,17 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         return objectId;
     }
 
+    @Override
+    public String getMemberName() {
+            return memberName;
+        }
+
+    @Override
+     public String getMemberNamespaceCode() {
+            return memberNamespaceCode;
+        }
+
+
     public static final class Builder implements ModelBuilder, RoleMemberContract, ModelObjectComplete {
 
         private String id;
@@ -216,6 +239,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         private DateTime activeToDate;
         private Long versionNumber;
         private String objectId;
+        private String memberName;
+        private String memberNamespaceCode;
 
         private Builder(String roleId, String memberId, MemberType type) {
             setRoleId(roleId);
@@ -224,12 +249,14 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         }
 
         public static Builder create(String roleId, String id, String memberId,
-                                     MemberType memberType, DateTime activeFromDate, DateTime activeToDate, Map<String, String> attributes) {
+                                     MemberType memberType, DateTime activeFromDate, DateTime activeToDate, Map<String, String> attributes,String memberName,String memberNamespaceCode) {
             Builder b = new Builder(roleId, memberId, memberType);
             b.setId(id);
             b.setActiveFromDate(activeFromDate);
             b.setActiveToDate(activeToDate);
             b.setAttributes(attributes);
+            b.setMemberName(memberName);
+            b.setMemberNamespaceCode(memberNamespaceCode);
             return b;
         }
 
@@ -248,6 +275,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
 
             b.setActiveFromDate(contract.getActiveFromDate());
             b.setActiveToDate(contract.getActiveToDate());
+            b.setMemberName(contract.getMemberName());
+            b.setMemberNamespaceCode(contract.getMemberNamespaceCode());
             b.setVersionNumber(contract.getVersionNumber());
             b.setObjectId(contract.getObjectId());
             return b;
@@ -314,6 +343,22 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
             return type;
         }
 
+        @Override
+        public String getMemberName() {
+            return memberName;
+        }
+
+         public void setMemberName(String memberName){
+             this.memberName = memberName;
+         }
+        @Override
+        public String getMemberNamespaceCode() {
+            return memberNamespaceCode;
+        }
+
+        public void setMemberNamespaceCode(String memberNamespaceCode){
+             this.memberNamespaceCode = memberNamespaceCode;
+        }
         public void setType(final MemberType type) {
             if (type == null) {
                 throw new IllegalArgumentException("type is null");
@@ -394,6 +439,8 @@ public class RoleMember extends AbstractDataTransferObject implements RoleMember
         final static String ROLE_RESPONSIBILITY_ACTIONS = "roleResponsibilityActions";
         final static String MEMBER_ID = "memberId";
         final static String TYPE_CODE = "typeCode";
+        final static String MEMBER_NAME = "memberName";
+        final static String MEMBER_NAMESPACE_CODE = "memberNamespaceCode";
     }
 
     /**

@@ -74,4 +74,8 @@ public interface RoleMemberContract extends Versioned, GloballyUnique, Inactivat
      * @return roleRspActions
      */
     List<? extends RoleResponsibilityActionContract> getRoleRspActions();
+
+    String getMemberName();
+
+    String getMemberNamespaceCode();
 }

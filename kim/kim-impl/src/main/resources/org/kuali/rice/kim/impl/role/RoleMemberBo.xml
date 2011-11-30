@@ -112,8 +112,8 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="id"/>
               <bean parent="FieldDefinition" p:attributeName="memberId"/>
-              <bean parent="FieldDefinition" p:attributeName="activeFromDate"/>
-              <bean parent="FieldDefinition" p:attributeName="activeToDate"/>
+              <bean parent="FieldDefinition" p:attributeName="activeFromDateValue"/>
+              <bean parent="FieldDefinition" p:attributeName="activeToDateValue"/>
             </list>
           </property>
         </bean>
@@ -142,8 +142,8 @@
         <bean parent="FieldDefinition" p:attributeName="id"/>
         <bean parent="FieldDefinition" p:attributeName="memberId"/>
         <bean parent="FieldDefinition" p:attributeName="typeCode"/>
-        <bean parent="FieldDefinition" p:attributeName="activeFromDate"/>
-        <bean parent="FieldDefinition" p:attributeName="activeToDate"/>
+        <bean parent="FieldDefinition" p:attributeName="activeFromDateValue"/>
+        <bean parent="FieldDefinition" p:attributeName="activeToDateValue"/>
       </list>
     </property>
     <property name="resultFields">
@@ -152,8 +152,8 @@
         <bean parent="FieldDefinition" p:attributeName="id"/>
         <bean parent="FieldDefinition" p:attributeName="memberId"/>
         <bean parent="FieldDefinition" p:attributeName="typeCode"/>
-        <bean parent="FieldDefinition" p:attributeName="activeFromDate"/>
-        <bean parent="FieldDefinition" p:attributeName="activeToDate"/>
+        <bean parent="FieldDefinition" p:attributeName="activeFromDateValue"/>
+        <bean parent="FieldDefinition" p:attributeName="activeToDateValue"/>
       </list>
     </property>
   </bean>

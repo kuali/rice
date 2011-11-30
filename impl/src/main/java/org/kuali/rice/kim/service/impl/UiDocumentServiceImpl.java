@@ -18,9 +18,11 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.groovy.util.StringUtil;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.parameter.Parameter;
@@ -135,6 +137,7 @@ import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -144,7 +147,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThan;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -651,12 +655,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return (List<RoleMemberBo>)getBusinessObjectService().findMatching(RoleMemberBo.class, criteria);
 	}
 
-	public RoleMemberBo getRoleMember(String roleMemberId) {
-		if ( roleMemberId == null ) {
+	public RoleMemberBo getRoleMember(String id) {
+		if ( id == null ) {
 			return null;
 		}
 		Map<String,String> criteria = new HashMap<String,String>( 2 );
-		criteria.put("roleMemberId", roleMemberId);
+		criteria.put("id", id);
 		return getBusinessObjectService().findByPrimaryKey(RoleMemberBo.class, criteria);
 	}
 
@@ -2823,10 +2827,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
     public List<KimDocumentRoleMember> getRoleMembers(Map<String,String> fieldValues) {
+        List<KimDocumentRoleMember> matchingRoleMembers = new ArrayList<KimDocumentRoleMember>();
+        //Remove since they are KNS fieldValues and not BO
         fieldValues.remove(KRADConstants.BACK_LOCATION);
         fieldValues.remove(KRADConstants.DOC_FORM_KEY);
         fieldValues.remove(KRADConstants.DOC_NUM);
-		List<KimDocumentRoleMember> matchingRoleMembers = new ArrayList<KimDocumentRoleMember>();
+
+
 
 		List<RoleMember> matchingRoleMembersTemp = getRoleService().findRoleMembers(toQuery(fieldValues)).getResults();
 		KimDocumentRoleMember matchingRoleMember;
@@ -2838,6 +2845,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				roleMemberObject = getMember(roleMemberBo.getType(), roleMemberBo.getMemberId());
 				matchingRoleMember = new KimDocumentRoleMember();
 				KimCommonUtilsInternal.copyProperties(matchingRoleMember, roleMemberBo);
+                matchingRoleMember.setMemberId(roleMemberBo.getMemberId());
+                matchingRoleMember.setRoleMemberId(roleMemberBo.getId());
 				matchingRoleMember.setMemberName(getMemberName(roleMemberBo.getType(), roleMemberObject));
 				matchingRoleMember.setMemberNamespaceCode(getMemberNamespaceCode(roleMemberBo.getType(), roleMemberObject));
 				matchingRoleMember.setQualifiers(getQualifiers(roleMemberBo.getAttributeDetails()));
@@ -2847,13 +2856,23 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return matchingRoleMembers;
     }
 
-   private QueryByCriteria toQuery(Map<String,?> fieldValues) {
-        Set<Predicate> preds = new HashSet<Predicate>();
-        for (String key : fieldValues.keySet()) {
-            preds.add(equal(key, fieldValues.get(key)));
-        }
-        Predicate[] predicates = new Predicate[0];
-        predicates = preds.toArray(predicates);
+   private QueryByCriteria toQuery(Map<String,String> fieldValues) {
+       String memberTypeCode = fieldValues.get(KIMPropertyConstants.KimMember.MEMBER_TYPE_CODE);
+       String memberName = fieldValues.get(KimConstants.KimUIConstants.MEMBER_NAME);
+       String memberNamespaceCode = fieldValues.get(KimConstants.KimUIConstants.MEMBER_NAMESPACE_CODE);
+
+       if(StringUtils.isNotEmpty(memberName) || StringUtils.isNotEmpty(memberNamespaceCode)) {
+            String memberId  = getMemberIdByName(MemberType.fromCode(memberTypeCode),memberNamespaceCode,memberName)  ;
+           if(StringUtils.isNotEmpty(memberId)) {
+                  fieldValues.put(KIMPropertyConstants.KimMember.MEMBER_ID, memberId);
+           }
+       }
+
+       List<Predicate> pred = new ArrayList<Predicate>();
+
+       pred.add(PredicateUtils.convertMapToPredicate(fieldValues));
+       Predicate[] predicates = new Predicate[0];
+       predicates = pred.toArray(predicates)  ;
         return QueryByCriteria.Builder.fromPredicates(predicates);
     }
 

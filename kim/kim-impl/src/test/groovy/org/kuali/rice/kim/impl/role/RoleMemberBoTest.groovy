@@ -60,7 +60,7 @@ class RoleMemberBoTest {
 
     @Test
     void test_from() {
-        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", MemberType.GROUP, ACTIVE_FROM, ACTIVE_TO, [:]).build()
+        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", MemberType.GROUP, ACTIVE_FROM, ACTIVE_TO, [:], "", "").build()
         RoleMemberBo bo = RoleMemberBo.from(immutable)
         Assert.assertEquals(bo.id, immutable.id)
         Assert.assertEquals(bo.roleId, immutable.roleId)
@@ -73,7 +73,7 @@ class RoleMemberBoTest {
 
     @Test
     void test_notEqualToImmutable() {
-        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", G, ACTIVE_FROM, ACTIVE_TO, [:]).build()
+        RoleMember immutable = RoleMember.Builder.create("23", "1", "42", G, ACTIVE_FROM, ACTIVE_TO, [:], "", "").build()
         RoleMemberBo bo = RoleMemberBo.from(immutable)
         Assert.assertFalse(bo.equals(immutable))
         Assert.assertFalse(immutable.equals(bo))

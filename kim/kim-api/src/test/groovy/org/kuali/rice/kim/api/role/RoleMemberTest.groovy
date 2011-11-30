@@ -87,6 +87,8 @@ class RoleMemberTest {
          </roleResponsibilityActions>
          <memberId>${MEMBER_ID}</memberId>
          <typeCode>${MEMBER_TYPE_CODE}</typeCode>
+         <memberName></memberName>
+         <memberNamespaceCode></memberNamespaceCode>
          <activeFromDate>${ACTIVE_FROM}</activeFromDate>
          <activeToDate>${ACTIVE_TO}</activeToDate>
          <active>${ACTIVE}</active>
@@ -120,7 +122,7 @@ class RoleMemberTest {
         Marshaller marshaller = jc.createMarshaller()
         StringWriter sw = new StringWriter()
 
-        RoleMember.Builder roleMember = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
+        RoleMember.Builder roleMember = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "")
         roleMember.setRoleRspActions(ROLE_RESPONSIBILITY_ACTIONS)
 
         marshaller.marshal(roleMember.build(), sw)
@@ -134,19 +136,19 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_create() {
-        RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
+        RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "").build()
     }
 
     @Test
     void test_Builder_createWithContract() {
-        RoleMemberContract rmc = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
+        RoleMemberContract rmc = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "").build()
         RoleMember rm = RoleMember.Builder.create(rmc).build();
         Assert.assertEquals(rm, rmc);
     }
 
     @Test
     void test_Builder_memberIdNull() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "")
         shouldFail(IllegalArgumentException) {
             b.memberId = null
         }
@@ -154,7 +156,7 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_memberIdBlank() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "")
         shouldFail(IllegalArgumentException) {
             b.memberId = ""
         }
@@ -162,7 +164,7 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_memberTypeCodeNull() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "")
         shouldFail(IllegalArgumentException) {
             b.type = null
         }
@@ -170,7 +172,7 @@ class RoleMemberTest {
 
     @Test
     void test_Builder_memberTypeCodeBlank() {
-        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES)
+        RoleMember.Builder b = RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "")
         shouldFail(IllegalArgumentException) {
             b.type = ""
         }
@@ -182,7 +184,7 @@ class RoleMemberTest {
         DateTime betweenDateTime = FORMATTER.parseDateTime(betweenDate)
 
         RoleMember roleMember =
-            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
+            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "").build()
 
         Assert.assertTrue(roleMember.isActive(betweenDateTime))
     }
@@ -193,7 +195,7 @@ class RoleMemberTest {
         DateTime betweenDateTime = FORMATTER.parseDateTime(betweenDate)
 
         RoleMember roleMember =
-            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
+            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "").build()
 
         Assert.assertFalse(roleMember.isActive(betweenDateTime))
     }
@@ -204,7 +206,7 @@ class RoleMemberTest {
         DateTime betweenDateTime = FORMATTER.parseDateTime(betweenDate)
 
         RoleMember roleMember =
-            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES).build()
+            RoleMember.Builder.create(ROLE_ID, ROLE_MEMBER_ID, MEMBER_ID, MEMBER_TYPE, ACTIVE_FROM, ACTIVE_TO, ATTRIBUTES, "", "").build()
 
         Assert.assertFalse(roleMember.isActive(betweenDateTime))
     }

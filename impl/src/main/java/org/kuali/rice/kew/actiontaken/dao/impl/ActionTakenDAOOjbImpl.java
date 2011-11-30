@@ -70,7 +70,12 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         Criteria crit = new Criteria();
         crit.addEqualTo("documentId", documentId);
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
-        return (Collection<ActionTakenValue>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
+
+        QueryByCriteria qByCrit = new QueryByCriteria(ActionTakenValue.class, crit);
+
+       qByCrit.addOrderByAscending("actionDate");
+
+        return (Collection<ActionTakenValue>) this.getPersistenceBrokerTemplate().getCollectionByQuery(qByCrit);
     }
 
     public List<ActionTakenValue> findByDocumentIdWorkflowId(String documentId, String principalId) {

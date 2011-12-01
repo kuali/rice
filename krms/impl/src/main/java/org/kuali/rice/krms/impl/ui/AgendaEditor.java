@@ -51,6 +51,7 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
     private String oldContextId;
     private boolean addRuleInProgress = false;
     private Map<String, String> customAttributesMap = new HashMap<String, String>();
+    private Map<String, String> customAttributesIdMap = new HashMap<String, String>();
     private Map<String, String> customRuleAttributesMap = new HashMap<String, String>();
     private Map<String, String> customRuleActionAttributesMap = new HashMap<String, String>();
 
@@ -203,6 +204,14 @@ public class AgendaEditor extends PersistableBusinessObjectBase {
 
     public void setCustomAttributesMap(Map<String, String> customAttributesMap) {
         this.customAttributesMap = customAttributesMap;
+    }
+
+    public Map<String, String> getCustomAttributesIdMap() {
+        return customAttributesIdMap;
+    }
+
+    public void setCustomAttributesIdMap(Map<String, String> customAttributesIdMap) {
+        this.customAttributesIdMap = customAttributesIdMap;
     }
 
     public Map<String, String> getCustomRuleAttributesMap() {

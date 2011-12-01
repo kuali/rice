@@ -46,6 +46,27 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
         }
         return attributes;
     }
+
+    public Map<String, String> getAttributeIds() {
+        HashMap<String, String> attributes = new HashMap<String, String>();
+        for (attr in attributeBos) {
+            attributes.put( attr.attributeDefinition.name, attr.id )
+        }
+        return attributes;
+    }
+
+    public void setAttributes(Map<String, String> attributes, Map<String, String> attributeIds) {
+        attributeBos = []
+        for (attr in attributes) {
+            def AgendaAttributeBo attributeBo = new AgendaAttributeBo()
+            attributeBo.setId(attributeIds.get(attr.key))
+            attributeBo.setAgendaId(id)
+            attributeBo.setAttributeDefinitionId(KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().getAttributeDefinitionByNameAndNamespace(attr.key, this.context.namespace).id)
+            attributeBo.setValue(attr.value)
+            attributeBos.add(attributeBo)
+        }
+
+    }
     
 
 	

@@ -224,6 +224,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
             // set custom attributes map in AgendaEditor
             agendaEditor.setCustomAttributesMap(agenda.getAttributes());
+            agendaEditor.setCustomAttributesIdMap(agenda.getAttributeIds());
 
             // set extra fields on AgendaEditor
             agendaEditor.setNamespace(agenda.getContext().getNamespace());
@@ -284,6 +285,17 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
         super.processAfterEdit(document, requestParameters);
         document.getDocumentHeader().setDocumentDescription("Modify Agenda Editor Document");
+    }
+
+    @Override
+    public void prepareForSave() {
+        // set agenda attributes
+        AgendaEditor agendaEditor = (AgendaEditor) getDataObject();
+        if (StringUtils.isEmpty(agendaEditor.getAgenda().getTypeId())) {
+            agendaEditor.getAgenda().setAttributes(new HashMap<String, String>(), new HashMap<String, String>());
+        } else {
+            agendaEditor.getAgenda().setAttributes(agendaEditor.getCustomAttributesMap(), agendaEditor.getCustomAttributesIdMap());
+        }
     }
 
     @Override

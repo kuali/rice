@@ -159,7 +159,6 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         assertEquals("unexpected validation errors", 0, errors.size())
     }
 
-    @Ignore("KULRICE-5630 work in progress")
     @Test void testValidateDocumentAttributeCriteriaExpression() {
         def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
         edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, STRING_FIELD_SEARCH_CONFIG)
@@ -169,6 +168,50 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         println errors
         assertEquals("unexpected validation errors", 0, errors.size())
     }
+
+    @Test void testGetSearchFields() {
+        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, STRING_FIELD_SEARCH_CONFIG)
+        def fields= new StandardGenericXMLSearchableAttribute().getSearchFields(edb.build(), "not used")
+        println fields
+        // TODO: test something more substantial
+        assertEquals(1, fields.size())
+    }
+
+    private static final String RANGE_FIELD_SEARCH_CONFIG = """
+    <searchingConfig>
+        <fieldDef name="givenname" title="First name">
+            <display>
+                <type>text</type>
+            </display>
+            <searchDefinition rangeSearch="true"/>
+            <validation required="true">
+                <regex>^[a-zA-Z ]+\$</regex>
+                <message>Invalid first name</message>
+            </validation>
+            <fieldEvaluation>
+                <xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
+            </fieldEvaluation>
+        </fieldDef>
+        <xmlSearchContent>
+            <putWhateverWordsIwantInsideThisTag>
+                <givenname>
+                    <value>%givenname%</value>
+                </givenname>
+            </putWhateverWordsIwantInsideThisTag>
+        </xmlSearchContent>
+    </searchingConfig>
+    """
+
+    @Test void testGetRangeSearchFields() {
+        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, RANGE_FIELD_SEARCH_CONFIG)
+        def fields= new StandardGenericXMLSearchableAttribute().getSearchFields(edb.build(), "not used")
+        println fields
+        // TODO: test something more substantial
+        assertEquals(1, fields.size())
+    }
+
 
     protected void testXmlConfigValidity(String xmlConfig) {
         testGenerateSearchContent(xmlConfig)

@@ -31,6 +31,7 @@ import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
@@ -445,6 +446,11 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 		return searchFields;
 	}
 
+    /**
+     * Converts a searchable attribute field data type into a UI data type
+     * @param dataTypeValue the {@link SearchableAttributeValue} data type
+     * @return the corresponding {@link DataType}
+     */
     private DataType convertValueToDataType(String dataTypeValue) {
         if (StringUtils.isBlank(dataTypeValue)) {
             return DataType.STRING;
@@ -460,6 +466,14 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         throw new IllegalArgumentException("Invalid dataTypeValue was given: " + dataTypeValue);
     }
 
+    /**
+     * Determines whether the searchable field definition is a ranged search
+     * @param searchableAttributeValues the possible system {@link SearchableAttributeValue}s
+     * @param dataType the UI data type
+     * @param searchDefAttributes the DOM attributes
+     * @param searchDefNode the dom node
+     * @return
+     */
     private boolean isRangeSearchField(List<SearchableAttributeValue> searchableAttributeValues, DataType dataType, NamedNodeMap searchDefAttributes, Node searchDefNode) {
         for (SearchableAttributeValue attValue : searchableAttributeValues)
         {
@@ -790,14 +804,19 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
         					} else {
                                 List<String> enteredValue = documentAttributeValues.get(fieldDefName);
-                                if (enteredValue.size() == 1) {
-                                    String stringVariable = enteredValue.get(0);
+
+                                List<String> cleanedValues = new ArrayList<String>();
+                                for (String val: enteredValue) {
+                                    cleanedValues.addAll(SQLUtils.getCleanedSearchableValues(val, fieldDataType));
+                                }
+
+                                if (cleanedValues.size() == 1) {
+                                    String stringVariable = cleanedValues.get(0);
                                     errors.addAll(performValidation(extensionDefinition, attributeValue, fieldDefName, stringVariable, fieldDefTitle, findXpathExpressionPrefix));
                                 } else {
-                                    for (String stringVariable : enteredValue) {
+                                    for (String stringVariable : cleanedValues) {
                                         errors.addAll(performValidation(extensionDefinition, attributeValue, fieldDefName, stringVariable, "One value for " + fieldDefTitle, findXpathExpressionPrefix));
                                     }
-
                                 }
             				}
         				}

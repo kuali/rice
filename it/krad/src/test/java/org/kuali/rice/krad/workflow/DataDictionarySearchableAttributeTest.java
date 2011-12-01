@@ -33,6 +33,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.workflow.attribute.DataDictionarySearchableAttribute;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.test.KRADTestCase;
 
 import java.sql.Date;
@@ -52,6 +53,7 @@ import static org.junit.Assert.*;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+//@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 
     @Override
@@ -131,9 +133,9 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 		// Ensure that DD searchable attribute integer fields function correctly when searched on.
 		// Note that negative numbers are disallowed by the NumericValidationPattern that validates this field.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountNumber",
-				new String[] {"1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
+				new String[] {"!1234567890", "*567*", "9???9", ">1", "987654321|1234567889", "<100", ">=99999", "<=-42", ">9000|<=1", "<1|>=1234567890",
 						">1234567889&&<1234567890", ">=88&&<=99999", "0|>10&&<10000", "9000..1000000", "0..100|>1234567889", "1..10000&&>50", "250..50"},
-				new int[]    {1            , -1     , -1     , 6   , 2                     , 3     , 4        , -1     , 6          , 2,
+				new int[]    {7            , -1     , -1     , 6   , 2                     , 3     , 4        , -1     , 6          , 2,
 						0                         , 3              , 3              , 2              , 4                   , 2              , 0});
 		
 		// Ensure that DD searchable attribute string fields function correctly when searched on.
@@ -151,7 +153,7 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 				new String[] {"501.??", "*.54" , "!2.22", "10000051.0|771.05", "<0.0", ">501", "<=4.54", ">=-99.99", ">4.54|<=-1", ">=0&&<501.77", "!",
 						"<=0|>=10000051", ">501&&<501.77", "-100|>771.05", "2.22..501", "-100..4.54&&<=0", "2.22|501.77..10000051.0", "Zero",
 						"-$100", "<(501)&&>=($2.22)", "$4.54|<(1)", "($0.00)..$771.05", ">=$(500)", ")501(", "4.54$", "$501..0"},
-				new int[]    {-1      , -1     , 1      , 2                  , 1     , 3     , 4       , 7         , 5           , 4             , -1,
+				new int[]    {-1      , -1     , 7      , 2                  , 1     , 3     , 4       , 7         , 5           , 4             , -1,
 						3               , 0              , 2             , 3          , 2                , 4                        , -1,
 						1      , 2                  , 3           , 6                 , -1        , -1     , -1     , 0});
 		

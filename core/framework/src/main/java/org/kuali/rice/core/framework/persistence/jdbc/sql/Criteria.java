@@ -227,6 +227,21 @@ public class Criteria {
 		//tokens.add(alias + "." + attribute + " NOT LIKE " + stripFunctions(fixedValue).replaceAll("\\*", "%") + " ");
 	}
 
+    public void notEqual(String attribute, Object value, Class propertyType, boolean allowWildcards) {
+		String fixedValue = fixValue(value, propertyType);
+
+		if(allowWildcards){
+			fixedValue = fixWildcards(stripFunctions(fixedValue));
+		}
+
+		if (attribute.contains("__JPA_ALIAS__")) {
+			tokens.add(fix(attribute) + " <> " + fixedValue + " ");
+		} else {
+			tokens.add(alias + "." + attribute + " <> " + fixedValue + " ");
+		}
+		//tokens.add(alias + "." + attribute + " NOT LIKE " + stripFunctions(fixedValue).replaceAll("\\*", "%") + " ");
+	}
+
 	private static String fixWildcards(String sIn){
 		String sRet = sIn.replaceAll("\\*", "%");
 		return sRet.replaceAll("\\?", "_");

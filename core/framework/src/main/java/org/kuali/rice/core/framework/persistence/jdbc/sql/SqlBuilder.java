@@ -114,12 +114,13 @@ public class SqlBuilder {
 			return;
 		}
 
+        if (StringUtils.contains(propertyValue,	SearchOperator.NOT.op())) {
+				addNotCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, allowWildcards);
+            return;
+        }
+
 		if (TypeUtils.isStringClass(propertyType)) {
-			if (StringUtils.contains(propertyValue,
-					SearchOperator.NOT.op())) {
-				addNotCriteria(propertyName, propertyValue, propertyType,
-						caseInsensitive, criteria, allowWildcards);
-            } else if (propertyValue != null && (
+			if (propertyValue != null && (
             				StringUtils.contains(propertyValue, SearchOperator.BETWEEN.op())
             				|| propertyValue.startsWith(">")
             				|| propertyValue.startsWith("<") ) ) {
@@ -168,8 +169,12 @@ public class SqlBuilder {
 			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
 			addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, allowWildcards, criteria);
 		} else {
-			// only one so add a not like
-			criteria.notLike(propertyName, splitPropVal[0], propertyType, allowWildcards);
+			// only one so add a not like (all the rest) or not equal (decimal types)
+            if (TypeUtils.isDecimalClass(propertyType)) {
+                criteria.notEqual(propertyName, splitPropVal[0], propertyType, allowWildcards);
+            }  else {
+			    criteria.notLike(propertyName, splitPropVal[0], propertyType, allowWildcards);
+            }
 		}
 	}
 

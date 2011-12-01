@@ -23,6 +23,7 @@ import java.util.Map;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -32,8 +33,8 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
- * Mock lookupable helper service for the LookupResultsService test 
- * 
+ * Mock lookupable helper service for the LookupResultsService test
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -53,7 +54,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always return false
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#allowsMaintenanceNewOrCopyAction()
 	 */
 	public boolean allowsMaintenanceNewOrCopyAction() {
@@ -62,7 +63,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always return false
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#allowsNewOrCopyAction(java.lang.String)
 	 */
 	public boolean allowsNewOrCopyAction(String documentTypeName) {
@@ -71,14 +72,14 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Don't do anything
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.krad.web.ui.Field)
 	 */
 	public void applyFieldAuthorizationsFromNestedLookups(Field field) {}
 
 	/**
 	 * Always returns false
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#checkForAdditionalFields(java.util.Map)
 	 */
 	public boolean checkForAdditionalFields(Map fieldValues) {
@@ -87,7 +88,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns a blank String
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List, org.kuali.rice.krad.authorization.BusinessObjectRestrictions)
 	 */
 	public String getActionUrls(BusinessObject businessObject, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
@@ -96,7 +97,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns blank String
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getBackLocation()
 	 */
 	public String getBackLocation() {
@@ -105,7 +106,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns the class of LookupResultsDDBo
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getBusinessObjectClass()
 	 */
 	public Class getBusinessObjectClass() {
@@ -117,12 +118,12 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getBusinessObjectDictionaryService()
 	 */
 	public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-		return KRADServiceLocatorWeb.getBusinessObjectDictionaryService();
+		return KNSServiceLocator.getBusinessObjectDictionaryService();
 	}
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getColumns()
 	 */
 	public List getColumns() {
@@ -131,7 +132,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getCustomActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List)
 	 */
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
@@ -140,7 +141,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Returns DataDictionaryService from KRADServiceLocatorInternal
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getDataDictionaryService()
 	 */
 	public DataDictionaryService getDataDictionaryService() {
@@ -149,7 +150,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getDefaultSortColumns()
 	 */
 	public List getDefaultSortColumns() {
@@ -158,7 +159,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns an empty String
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getDocFormKey()
 	 */
 	public String getDocFormKey() {
@@ -167,7 +168,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns empty String
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getDocNum()
 	 */
 	public String getDocNum() {
@@ -176,7 +177,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getExtraField()
 	 */
 	public Field getExtraField() {
@@ -185,7 +186,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getInquiryUrl(org.kuali.rice.krad.bo.BusinessObject, java.lang.String)
 	 */
 	public HtmlData getInquiryUrl(BusinessObject businessObject, String propertyName) {
@@ -194,7 +195,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getMaintenanceUrl(org.kuali.rice.krad.bo.BusinessObject, org.kuali.rice.krad.lookup.HtmlData, java.util.List, org.kuali.rice.krad.authorization.BusinessObjectRestrictions)
 	 */
 	public String getMaintenanceUrl(BusinessObject businessObject, HtmlData htmlData, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
@@ -203,7 +204,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getParameters()
 	 */
 	public Map getParameters() {
@@ -212,7 +213,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Returns an incredibly sophisticated puzzle that would require the smartest genius on earth years to disentangle.  It only appears to return null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getPrimaryKeyFieldLabels()
 	 */
 	public String getPrimaryKeyFieldLabels() {
@@ -221,7 +222,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Isn't this class exciting?
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getReadOnlyFieldsList()
 	 */
 	public List<String> getReadOnlyFieldsList() {
@@ -230,7 +231,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * It does ever so much work
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getReturnKeys()
 	 */
 	public List getReturnKeys() {
@@ -239,7 +240,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Returns null for everything
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getReturnLocation()
 	 */
 	public String getReturnLocation() {
@@ -248,7 +249,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Yeah, this too
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getReturnUrl(org.kuali.rice.krad.bo.BusinessObject, org.kuali.rice.krad.web.struts.form.LookupForm, java.util.List, org.kuali.rice.krad.authorization.BusinessObjectRestrictions)
 	 */
 	public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
@@ -257,7 +258,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Why am I doing all of this?
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getReturnUrl(org.kuali.rice.krad.bo.BusinessObject, java.util.Map, java.lang.String, java.util.List, org.kuali.rice.krad.authorization.BusinessObjectRestrictions)
 	 */
 	public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
@@ -266,7 +267,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Why not just extend AbstractLookupableHelperServiceImpl?
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getRows()
 	 */
 	public List<Row> getRows() {
@@ -275,7 +276,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Oh, trust me...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getSearchResultsUnbounded(java.util.Map)
 	 */
 	public List getSearchResultsUnbounded(Map<String, String> fieldValues) {
@@ -284,7 +285,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * There's a story there
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getSupplementalMenuBar()
 	 */
 	public String getSupplementalMenuBar() {
@@ -293,7 +294,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * At any rate, my unit test works
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#getTitle()
 	 */
 	public String getTitle() {
@@ -302,7 +303,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * And I just have a lot of dead methods
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#isResultReturnable(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	public boolean isResultReturnable(BusinessObject object) {
@@ -311,7 +312,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * I'm not injecting dependencies
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#isSearchUsingOnlyPrimaryKeyValues()
 	 */
 	public boolean isSearchUsingOnlyPrimaryKeyValues() {
@@ -320,14 +321,14 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * This method found it hard pressed to do anything...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#performClear(org.kuali.rice.krad.web.struts.form.LookupForm)
 	 */
 	public void performClear(LookupForm lookupForm) {}
 
 	/**
 	 * Always returns false
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#performCustomAction(boolean)
 	 */
 	public boolean performCustomAction(boolean ignoreErrors) {
@@ -336,7 +337,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Always returns null
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#performLookup(org.kuali.rice.krad.web.struts.form.LookupForm, java.util.Collection, boolean)
 	 */
 	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
@@ -345,56 +346,56 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Ignores the passed in value
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#setBackLocation(java.lang.String)
 	 */
 	public void setBackLocation(String backLocation) {}
 
 	/**
 	 * Throws the passed in value away
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#setBusinessObjectClass(java.lang.Class)
 	 */
 	public void setBusinessObjectClass(Class businessObjectClass) {}
 
 	/**
 	 * Did you actually want this mock service to save this information?  I think not...
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#setDocFormKey(java.lang.String)
 	 */
 	public void setDocFormKey(String docFormKey) {}
 
 	/**
 	 * Does nothing
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#setDocNum(java.lang.String)
 	 */
 	public void setDocNum(String docNum) {}
 
 	/**
 	 * Doesn't do a thing
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#setFieldConversions(java.util.Map)
 	 */
 	public void setFieldConversions(Map fieldConversions) {}
 
 	/**
 	 * Doesn't set anything
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#setParameters(java.util.Map)
 	 */
 	public void setParameters(Map parameters) {}
 
 	/**
 	 * doesn't set anything
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#setReadOnlyFieldsList(java.util.List)
 	 */
 	public void setReadOnlyFieldsList(List<String> readOnlyFieldsList) {}
 
 	/**
 	 * Always returns true, so that James isn't completely bored
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#shouldDisplayHeaderNonMaintActions()
 	 */
 	public boolean shouldDisplayHeaderNonMaintActions() {
@@ -403,7 +404,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Flips a coin to determine whether to return true or false
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#shouldDisplayLookupCriteria()
 	 */
 	public boolean shouldDisplayLookupCriteria() {
@@ -414,7 +415,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 
 	/**
 	 * Everything's valid, trust us
-	 * 
+	 *
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#validateSearchParameters(java.util.Map)
 	 */
 	public void validateSearchParameters(Map fieldValues) {}
@@ -423,7 +424,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 * @see org.kuali.rice.krad.lookup.LookupableHelperService#applyConditionalLogicForFieldDisplay()
 	 */
 	public void applyConditionalLogicForFieldDisplay() {
-		
+
 	}
-	
+
 }

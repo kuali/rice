@@ -184,7 +184,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         actionAttributes.add(actionNameAttribute);
         actionNameAttribute.setAttributeDefinitionId(peopleFlowNameAttributeDefinition.getId());
         actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
-        actionNameAttribute.setValue(peopleFlowId);
+        actionNameAttribute.setValue(peopleFlowAction.getName() + " Name attr");
 
         // set up a simple default type for the rule
         KrmsTypeRepositoryService krmsTypeRepositoryService = KrmsApiServiceLocator.getKrmsTypeRepositoryService();
@@ -385,7 +385,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         actionAttributes.add(actionNameAttribute);
         actionNameAttribute.setAttributeDefinitionId(peopleFlowNameAttributeDefinition.getId());
         actionNameAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(peopleFlowNameAttributeDefinition));
-        actionNameAttribute.setValue(peopleFlow.getId());
+        actionNameAttribute.setValue(peopleFlowAction.getName() + " Name attr");
 
         businessObjectService.save(ruleBo);
         

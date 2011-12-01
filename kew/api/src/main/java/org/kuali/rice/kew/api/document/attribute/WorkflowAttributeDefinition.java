@@ -42,6 +42,9 @@ import org.w3c.dom.Element;
  * Encapsulates parameters that can be sent to an attribute when using that attribute to perform various operations
  * (primarily, in the case of workflow attributes, during the generation of XML).
  *
+ * The distinction between parameters and properties is that parameters are used to initially construct the attribute
+ * (via the attribute class constructor), while property definitions are used to set properties on the attribute thereafter.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = WorkflowAttributeDefinition.Constants.ROOT_ELEMENT_NAME)

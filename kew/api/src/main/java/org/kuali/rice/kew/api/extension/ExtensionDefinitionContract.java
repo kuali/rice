@@ -35,16 +35,27 @@ public interface ExtensionDefinitionContract extends Identifiable, Versioned {
 
     String getDescription();
 
+    /**
+     * The "type" of extension definition.  For example, attributes types are defined in:
+     * {@link org.kuali.rice.kew.api.KewApiConstants#RULE_ATTRIBUTE_TYPES}
+     * @see org.kuali.rice.kew.api.KewApiConstants#RULE_ATTRIBUTE_TYPES
+     * @return the extension definition type
+     */
     String getType();
 
     /**
      * Retrieves the resource descriptor for this extension.  This gives the calling code the
-     * information it needs to locate and execute the extension resource if it needs to.
+     * information it needs to locate and execute the extension resource if it needs to. In practice
+     * this is a fully qualified class name.
      *
      * @return the resource descriptor for this extension, this value should never be blank or null
      */
     String getResourceDescriptor();
 
+    /**
+     * Returns a list of key/value settings that the extension was statically configured with when defined.
+     * @return a list of key/value settings that the extension was statically configured with when defined.
+     */
     Map<String, String> getConfiguration();
 
 }

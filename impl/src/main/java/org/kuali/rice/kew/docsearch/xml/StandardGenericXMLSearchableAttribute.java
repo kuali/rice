@@ -75,6 +75,59 @@ import java.util.regex.Pattern;
 /**
  * Implementation of a {@code SearchableAttribute} whose configuration is driven from XML.
  *
+ * XML configuration must be supplied in the ExtensionDefinition configuration parameter {@link KewApiConstants#ATTRIBUTE_XML_CONFIG_DATA}.
+ * Parsing of XML search configuration and generation of XML search content proceeds in an analogous fashion to {@link org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute}.
+ * Namely, if an <pre>searchingConfig/xmlSearchContent</pre> element is provided, its content is used as a template.  Otherwise a standard XML template is used.
+ * This template is parameterized with variables of the notation <pre>%name%</pre> which are resolved by <pre>searchingConfig/fieldDef[@name]</pre> definitions.
+ *
+ * The XML content is not validated, but it must be well formed.
+ *
+ * Example 1:
+ * <pre>
+ *     <searchingConfig>
+ *         <fieldDef name="def1" ...other attrs/>
+ *             ... other config
+ *         </fieldDef>
+ *         <fieldDef name="def2" ...other attrs/>
+ *             ... other config
+ *         </fieldDef>
+ *     </searchingConfig>
+ * </pre>
+ * Produces, when supplied with the workflow definition parameters: { def1: val1, def2: val2 }:
+ * <pre>
+ *     <xmlRouting>
+ *         <field name="def1"><value>val1</value></field>
+ *         <field name="def2"><value>val2</value></field>
+ *     </xmlRouting>
+ * </pre>
+ *
+ * Example 2:
+ * <pre>
+ *     <searchingConfig>
+ *         <xmlSearchContent>
+ *             <myGeneratedContent>
+ *                 <version>whatever</version>
+ *                 <anythingIWant>Once upon a %def1%...</anythingIWant>
+ *                 <conclusion>Happily ever %def2%.</conclusion>
+ *             </myGeneratedContent>
+ *         </xmlSearchContent>
+ *         <fieldDef name="def1" ...other attrs/>
+ *             ... other config
+ *         </fieldDef>
+ *         <fieldDef name="def2" ...other attrs/>
+ *             ... other config
+ *         </fieldDef>
+ *     </searchingConfig>
+ * </pre>
+ * Produces, when supplied with the workflow definition parameters: { def1: val1, def2: val2 }:
+ * <pre>
+ *     <myGeneratedContent>
+ *         <version>whatever</version>
+ *         <anythingIWant>Once upon a val1...</anythingIWant>
+ *         <conclusion>Happily ever val2.</conclusion>
+ *     </myGeneratedContent>
+ * </pre>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardGenericXMLSearchableAttribute implements SearchableAttribute {
@@ -797,7 +850,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 		return errors;
 	}
 
-	public Element getConfigXML(ExtensionDefinition extensionDefinition) {
+	protected Element getConfigXML(ExtensionDefinition extensionDefinition) {
 		try {
             String xmlConfigData = extensionDefinition.getConfiguration().get(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA);
 			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new BufferedReader(new StringReader(xmlConfigData)))).getDocumentElement();

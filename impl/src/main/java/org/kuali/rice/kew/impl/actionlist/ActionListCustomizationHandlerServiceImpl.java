@@ -50,19 +50,16 @@ public class ActionListCustomizationHandlerServiceImpl implements ActionListCust
             actionItems = Collections.emptyList();
         }
         List<ActionItemCustomization> actionItemCustomizations = new ArrayList<ActionItemCustomization>();
-        // TODO Iterate through the list of Action Items. Return Action Item Customizations only for those Action Items which...    
+        // Iterate through the list of Action Items. Return Action Item Customizations only for those Action Items which have legal actions   
         for (ActionItem actionItem : actionItems) {
-            // TODO Figure out how to properly load a CAL Attribute 
             // Load the CustomActionListAttribute
-            CustomActionListAttribute customActionListAttribute = loadAttribute("attributeName?");
+            CustomActionListAttribute customActionListAttribute = loadAttribute(actionItem.getId());
             // Build the list of ActionItemCustomizations
-            ActionItemCustomization actionItemCustomization;
             try {
-                actionItemCustomization = ActionItemCustomization.Builder.create(customActionListAttribute.getLegalActions(principalId, actionItem), customActionListAttribute.getDocHandlerDisplayParameters(principalId, actionItem)).build();
+                ActionItemCustomization actionItemCustomization = ActionItemCustomization.Builder.create(customActionListAttribute.getLegalActions(principalId, actionItem), customActionListAttribute.getDocHandlerDisplayParameters(principalId, actionItem)).build();
                 actionItemCustomizations.add(actionItemCustomization);
             } catch (Exception e) {
-                // TODO give a better message like attribute name or something
-                LOG.error("Problem loading custom action list attribute", e);
+                LOG.error("Problem loading custom action list attribute " + actionItem.getId(), e);
             }           
         }
         return actionItemCustomizations;
@@ -100,5 +97,6 @@ public class ActionListCustomizationHandlerServiceImpl implements ActionListCust
 
     public void setExtensionRepositoryService(ExtensionRepositoryService extensionRepositoryService) {
         this.extensionRepositoryService = extensionRepositoryService;
+        LOG.info("Setting ExtensionRepositoryService");
     }
 }

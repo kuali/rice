@@ -274,7 +274,7 @@ public class DocumentSearchInternalUtils {
     public static DocumentSearchCriteria unmarshalDocumentSearchCriteria(String string) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
         jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
-        DocumentSearchCriteria.Builder builder = jsonMapper.readValue(string, DocumentSearchCriteria.Builder.class); // see JacksonRiceModule for details of unmarshalling
+        DocumentSearchCriteria.Builder builder = jsonMapper.readValue(string, DocumentSearchCriteria.Builder.class);
         // fix up the Joda DateTimes
         builder.normalizeDateTimes();
         // build() it

@@ -301,6 +301,10 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(documentTypeName);
         addSearchableAttributeRange(criteria, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, null, false);
+        // FIXME: KULRICE-5630 this is failing validation because StandardGenericXMLSearchableAttribute relies on the configured field validation regex to validate search
+        // criteria.  This regex in general is not going to support query operators (unless explicitly or accidentally configured so by the user), e.g. ">= jack"
+        // The Docsearchgenerator.validateDocumentSearchCriteria -> validateSearchableAttributes -> validateLookupFieldParameters -> validateCriteria -> searchableAttribute.validateDocumentAttributeCriteria
+        // -> StandardGenerixXMLSearchableAttribute.performValidation
         results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
         int size = results.getSearchResults().size();
         assertTrue("Searching for a lower bound of 'jack'. case insensitive, inclusive.  so searching for something >= 'JACK'. Should Return 1, but got" + size, 1 == size);

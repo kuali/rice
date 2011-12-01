@@ -144,6 +144,29 @@ public interface RoleTypeService extends KimTypeService {
     ) throws RiceIllegalArgumentException;
 
     /**
+     * For roles where the order of members returned may be meaningful,
+     * this method provides a hook to sort the results before they
+     * are returned from getRoleMembers on the RoleService.
+     *
+     * This method may alter the passed in list directly and return it rather than
+     * allocating a new list.
+     * 
+     * This is also the place where the roleSortingCode property on the RoleMembershipInfo objects can be
+     * populated in preparation for routing if not all members of this role should be group as separate
+     * units for routing.
+     * 
+     * @param roleMemberships the list of roleMemberships to check for matches. cannot be null.
+     * @return an immutable list of matched roleMemberships.  will not return null.
+     * @throws IllegalArgumentException if the roleMemberships is null.
+     */
+    @WebMethod(operationName="sortRoleMembers")
+    @XmlElementWrapper(name = "roleMemberships", required = true)
+    @XmlElement(name = "roleMembership", required = false)
+    @WebResult(name = "roleMemberships")
+    List<RoleMembership> sortRoleMembers( @WebParam(name = "roleMemberships")
+                                          List<RoleMembership> roleMembers ) throws RiceIllegalArgumentException;
+    
+    /**
      * Takes the passed in qualifications and converts them, if necessary, for any downstream roles which may be present.
      *
      * @param namespaceCode the namespace code the role is in. cannot be blank or null.

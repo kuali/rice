@@ -240,5 +240,13 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	public List<String> getQualifiersForExactMatch() {    
 		return Collections.emptyList();
 	}
-	
+
+    /**
+     * Base implementation: no sorting.  Just returns the input list.
+     */
+	@Override
+	public List<RoleMembership> sortRoleMembers(List<RoleMembership> roleMembers)
+			throws RiceIllegalArgumentException {
+		return roleMembers;
+	}
 }

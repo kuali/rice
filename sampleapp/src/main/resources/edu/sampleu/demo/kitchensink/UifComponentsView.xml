@@ -321,7 +321,7 @@
         <bean parent="InputField_Form" p:propertyName="field106" p:label="Field Label" p:labelPlacement="TOP"
               p:labelField.renderColon="false" p:instructionalText="With watermark text, and size=&quot;30&quot;">
           <property name="control">
-            <bean parent="TextControl" p:size="30" p:watermarkText="Watermark..."/>
+            <bean parent="TextControl" p:size="30" p:watermarkText="It's watermarked"/>
           </property>
         </bean>
 

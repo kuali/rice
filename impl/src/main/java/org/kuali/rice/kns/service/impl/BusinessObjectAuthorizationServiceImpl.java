@@ -37,8 +37,11 @@ import org.kuali.rice.kns.document.authorization.InquiryOrMaintenanceDocumentRes
 import org.kuali.rice.kns.document.authorization.InquiryOrMaintenanceDocumentRestrictionsBase;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictionsBase;
+import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
+import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.authorization.BusinessObjectAuthorizer;
@@ -50,9 +53,6 @@ import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationController;
-import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
-import org.kuali.rice.krad.inquiry.InquiryPresentationController;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -638,7 +638,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 
 	private BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
 		if (businessObjectDictionaryService == null) {
-			businessObjectDictionaryService = KRADServiceLocatorWeb
+			businessObjectDictionaryService = KNSServiceLocator
 					.getBusinessObjectDictionaryService();
 		}
 		return businessObjectDictionaryService;

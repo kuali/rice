@@ -13,23 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.inquiry;
+package org.kuali.rice.kns.inquiry;
 
-import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
-import org.kuali.rice.krad.bo.authorization.BusinessObjectAuthorizerBase;
+import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
 
-import java.util.HashSet;
-import java.util.Set;
-
-
-public class InquiryAuthorizerBase extends BusinessObjectAuthorizerBase implements InquiryAuthorizer {
-	/**
-	 * Implement this method to flag sections as restricted and get the
-	 * framework to check the permission for you
-	 * 
-	 * @return Set of section ids that need to be hidden for particular users
-	 */
-	public Set<String> getSecurePotentiallyHiddenSectionIds() {
-		return new HashSet<String>();
-	}
+public interface InquiryPresentationController extends InquiryOrMaintenanceDocumentPresentationController {
 }
+

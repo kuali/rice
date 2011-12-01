@@ -64,6 +64,11 @@
            p:required="true" />
        </list>
      </property>
+     <property name="filters">
+       <list>
+         <bean parent="ELCollectionFilter" p:expression="#line.field1 ne '1'"/>
+       </list>
+     </property>
    </bean>
 
    <bean id="collection3" parent="CollectionGroupSection">

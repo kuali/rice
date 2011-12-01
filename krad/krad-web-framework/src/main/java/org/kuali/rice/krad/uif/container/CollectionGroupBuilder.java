@@ -22,12 +22,14 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -211,36 +213,40 @@ public class CollectionGroupBuilder implements Serializable {
 		CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
 		// copy group items for new line
-        List<Field> lineFields = (List<Field>) collectionGroup.getItems();
+        List<? extends Component> lineItems = ComponentUtils.copyComponentList(collectionGroup.getItems(), null);
         String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         if (lineIndex == -1) {
-            lineFields = (List<Field>) collectionGroup.getAddLineFields();
+            lineItems = ComponentUtils.copyComponentList(collectionGroup.getAddLineFields(), null);
             lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
         }
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
 
+        // check for remote fields holder
+        List<Field> lineFields = processAnyRemoteFieldsHolder(view, model, collectionGroup, lineItems);
+
+        // copy fields for line and adjust binding to match collection line path
         lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
 
-		if(lineIndex == -1 && !lineFields.isEmpty()){
-    		for(Field f: lineFields){
-    		    if(f instanceof InputField){
-    		        //sets up - skipping these fields in add area during standard form validation calls
-    		        //custom addLineToCollection js call will validate these fields manually on an add
-    		    	Control control = ((InputField) f).getControl();
-    		    	if (control != null) {
-    		    	    control.addStyleClass(collectionGroup.getFactoryId() + "-addField");
-    		    		control.addStyleClass("ignoreValid");
-    		    	}
-    		    }
-    		}
-    		for(ActionField action: actions){
-    		    if(action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE)){
-    		        action.setFocusOnAfterSubmit(lineFields.get(0).getId());
-    		    }
-    		}
-		}
+        if (lineIndex == -1 && !lineFields.isEmpty()) {
+            for (Field f : lineFields) {
+                if (f instanceof InputField) {
+                    //sets up - skipping these fields in add area during standard form validation calls
+                    //custom addLineToCollection js call will validate these fields manually on an add
+                    Control control = ((InputField) f).getControl();
+                    if (control != null) {
+                        control.addStyleClass(collectionGroup.getFactoryId() + "-addField");
+                        control.addStyleClass("ignoreValid");
+                    }
+                }
+            }
+            for (ActionField action : actions) {
+                if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE)) {
+                    action.setFocusOnAfterSubmit(lineFields.get(0).getId());
+                }
+            }
+        }
 		
 		ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
 
@@ -291,7 +297,35 @@ public class CollectionGroupBuilder implements Serializable {
 				lineSuffix, currentLine, lineIndex);
 	}
 
-	
+    /**
+     * Iterates through the given items checking for <code>RemotableFieldsHolder</code>, if found
+     * the holder is invoked to retrieved the remotable fields and translate to attribute fields. The translated list
+     * is then inserted into the returned list at the position of the holder
+     *
+     * @param view - view instance containing the container
+     * @param model - object instance containing the view data
+     * @param group - collection group instance to check for any remotable fields holder
+     * @param items - list of items to process
+     */
+    protected List<Field> processAnyRemoteFieldsHolder(View view, Object model, CollectionGroup group,
+            List<? extends Component> items) {
+        List<Field> processedItems = new ArrayList<Field>();
+
+        // check for holders and invoke to retrieve the remotable fields and translate
+        // translated fields are placed into the processed items list at the position of the holder
+        for (Component item : items) {
+            if (item instanceof RemoteFieldsHolder) {
+                List<InputField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(view,
+                        model, group);
+                processedItems.addAll(translatedFields);
+            } else {
+                processedItems.add((Field) item);
+            }
+        }
+
+        return processedItems;
+    }
+
     /**
      * Evaluates the render property for the given list of <code>Field</code>
      * instances for the line and removes any fields from the returned list that

@@ -33,7 +33,7 @@
 			value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl" />
 		<!--<property name="styleClasses" value="workarea" />-->
 		<property name="presentationControllerClass"
-			value="org.kuali.rice.krad.uif.authorization.PresentationControllerBase" />
+			value="org.kuali.rice.krad.uif.authorization.ViewPresentationControllerBase" />
 		<property name="authorizerClass"
 			value="org.kuali.rice.krad.uif.authorization.AuthorizerBase" />
 		<property name="breadcrumbs">

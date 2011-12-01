@@ -559,7 +559,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
     				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.
         	        if (ruleDelegationLookupableHelperService == null) {
         				ruleDelegationLookupableHelperService = KNSServiceLocator.getLookupable(
-                                KRADServiceLocatorWeb.getBusinessObjectDictionaryService()
+                                KNSServiceLocator.getBusinessObjectDictionaryService()
                                         .getLookupableID(ruleDelegation.getClass())).getLookupableHelperService();
         				if (ruleDelegationLookupableHelperService.getBusinessObjectClass() == null) {
         					ruleDelegationLookupableHelperService.setBusinessObjectClass(ruleDelegation.getClass());

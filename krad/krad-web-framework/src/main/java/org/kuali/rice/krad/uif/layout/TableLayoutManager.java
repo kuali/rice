@@ -228,7 +228,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 			ComponentUtils.setComponentPropertyDeep(field, "summaryMessageField.render", new Boolean(false));
 		}
 
-		int rowCount = calculateNumberOfRows(collectionGroup.getItems());
+		int rowCount = calculateNumberOfRows(lineFields);
 		int rowSpan = rowCount + subCollectionFields.size();
 
 		// sequence field is always first and should span all rows for the line
@@ -315,7 +315,7 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 	protected void buildTableHeaderRows(CollectionGroup collectionGroup, List<Field> lineFields) {
 		// row count needed to determine the row span for the sequence and
 		// action fields, since they should span all rows for the line
-		int rowCount = calculateNumberOfRows(collectionGroup.getItems());
+		int rowCount = calculateNumberOfRows(lineFields);
 
 		// first column is sequence label
 		if (renderSequenceField) {

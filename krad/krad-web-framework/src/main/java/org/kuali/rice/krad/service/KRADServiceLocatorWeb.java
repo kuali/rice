@@ -25,8 +25,6 @@ import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
 
-import javax.xml.namespace.QName;
-
 /**
  * Service locator for the KRAD Web module
  *
@@ -53,7 +51,6 @@ public class KRADServiceLocatorWeb {
     public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
     public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "kradExceptionIncidentService";
     public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
-    public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
     public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
     public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
     public static final String PERSISTENCE_SERVICE_OJB = "persistenceServiceOjb";
@@ -101,10 +98,6 @@ public class KRADServiceLocatorWeb {
 
     public static DataDictionaryService getDataDictionaryService() {
         return getService(DATA_DICTIONARY_SERVICE);
-    }
-
-    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-        return getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
     }
 
     public static DocumentHeaderService getDocumentHeaderService() {

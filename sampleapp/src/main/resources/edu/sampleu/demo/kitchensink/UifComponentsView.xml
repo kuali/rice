@@ -140,6 +140,7 @@
           <property name="items">
             <list>
               <ref bean="remotableFieldsGroup"/>
+              <ref bean="remotableFieldsCollection"/>
               <ref bean="miscGroup"/>
             </list>
           </property>
@@ -184,12 +185,6 @@
         <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page9"
               p:actionLabel="Other Examples"/>
       </list>
-    </property>
-    <property name="componentOptions">
-      <map>
-        <entry key="animate" value="true"/>
-        <entry key="slideout" value="true"/>
-      </map>
     </property>
   </bean>
 

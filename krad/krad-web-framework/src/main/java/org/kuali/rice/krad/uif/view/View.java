@@ -20,7 +20,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.authorization.Authorizer;
-import org.kuali.rice.krad.uif.authorization.PresentationController;
+import org.kuali.rice.krad.uif.authorization.ViewPresentationController;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
@@ -116,7 +116,7 @@ public class View extends ContainerBase {
     private ViewIndex viewIndex;
     private Map<String, String> viewRequestParameters;
 
-    private Class<? extends PresentationController> presentationControllerClass;
+    private Class<? extends ViewPresentationController> presentationControllerClass;
     private Class<? extends Authorizer> authorizerClass;
 
     private BooleanMap actionFlags;
@@ -770,7 +770,7 @@ public class View extends ContainerBase {
      * @see View.getActionFlags()
      * @see View.getEditModes()
      */
-    public Class<? extends PresentationController> getPresentationControllerClass() {
+    public Class<? extends ViewPresentationController> getPresentationControllerClass() {
         return this.presentationControllerClass;
     }
 
@@ -779,7 +779,7 @@ public class View extends ContainerBase {
      *
      * @param presentationControllerClass
      */
-    public void setPresentationControllerClass(Class<? extends PresentationController> presentationControllerClass) {
+    public void setPresentationControllerClass(Class<? extends ViewPresentationController> presentationControllerClass) {
         this.presentationControllerClass = presentationControllerClass;
     }
 

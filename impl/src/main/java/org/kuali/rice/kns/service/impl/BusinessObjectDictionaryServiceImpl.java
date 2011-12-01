@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.service.impl;
+package org.kuali.rice.kns.service.impl;
 
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.PropertyDescriptor;
@@ -35,14 +35,14 @@ import org.kuali.rice.kns.datadictionary.InquiryDefinition;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
+import org.kuali.rice.kns.inquiry.InquiryPresentationController;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.exception.IntrospectionException;
-import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
 import org.kuali.rice.krad.inquiry.InquiryAuthorizerBase;
-import org.kuali.rice.krad.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.inquiry.InquiryPresentationControllerBase;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -54,8 +54,7 @@ import org.kuali.rice.krad.valuefinder.ValueFinder;
  * DataDictionaryService.
  */
 @Deprecated
-public class BusinessObjectDictionaryServiceImpl implements
-		BusinessObjectDictionaryService {
+public class BusinessObjectDictionaryServiceImpl implements BusinessObjectDictionaryService {
 	private static Logger LOG = Logger
 			.getLogger(BusinessObjectDictionaryServiceImpl.class);
 
@@ -102,7 +101,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     /**
      * Uses the DataDictionaryService.
      *
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getBusinessObjectEntries()
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getBusinessObjectEntries()
      */
     public List getBusinessObjectClassnames() {
 		return getDataDictionaryService().getDataDictionary()
@@ -110,7 +109,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isLookupable(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupable(java.lang.Class)
      */
     public Boolean isLookupable(Class businessObjectClass) {
         Boolean isLookupable = Boolean.FALSE;
@@ -124,7 +123,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isInquirable(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isInquirable(java.lang.Class)
      */
     public Boolean isInquirable(Class businessObjectClass) {
         Boolean isInquirable = Boolean.FALSE;
@@ -138,7 +137,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isMaintainable(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isMaintainable(java.lang.Class)
      */
     public Boolean isMaintainable(Class businessObjectClass) {
         Boolean isMaintainable = Boolean.FALSE;
@@ -154,7 +153,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
 	 */
 	public Boolean isExportable(Class businessObjectClass) {
 		Boolean isExportable = Boolean.FALSE;
@@ -168,7 +167,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupFieldNames(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldNames(java.lang.Class)
      */
     public List getLookupFieldNames(Class businessObjectClass) {
         List results = null;
@@ -183,7 +182,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupTitle(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupTitle(java.lang.Class)
      */
     public String getLookupTitle(Class businessObjectClass) {
         String lookupTitle = "";
@@ -197,7 +196,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupMenuBar(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupMenuBar(java.lang.Class)
      */
     public String getLookupMenuBar(Class businessObjectClass) {
         String menubar = "";
@@ -214,7 +213,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getExtraButtonSource(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonSource(java.lang.Class)
      */
     public String getExtraButtonSource(Class businessObjectClass) {
         String buttonSource = "";
@@ -230,7 +229,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getExtraButtonParams(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getExtraButtonParams(java.lang.Class)
      */
     public String getExtraButtonParams(Class businessObjectClass) {
         String buttonParams = "";
@@ -247,7 +246,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
     
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getSearchIconOverride(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getSearchIconOverride(java.lang.Class)
      */
     public String getSearchIconOverride(Class businessObjectClass) {
         String iconUrl = "";
@@ -264,7 +263,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
     
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
      */
     public List getLookupDefaultSortFieldNames(Class businessObjectClass) {
         List defaultSort = null;
@@ -284,7 +283,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupResultFieldNames(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldNames(java.lang.Class)
      */
     public List<String> getLookupResultFieldNames(Class businessObjectClass) {
         List<String> results = null;
@@ -298,7 +297,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupResultFieldMaxLength(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldMaxLength(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Integer getLookupResultFieldMaxLength(Class businessObjectClass,
@@ -317,7 +316,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupResultSetLimit(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultSetLimit(java.lang.Class)
      */
     public Integer getLookupResultSetLimit(Class businessObjectClass) {
         LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
@@ -342,7 +341,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupNumberOfColumns(java.lang.Class)
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupNumberOfColumns(java.lang.Class)
 	 */
 	public Integer getLookupNumberOfColumns(Class businessObjectClass) {
 		// default to 1
@@ -359,7 +358,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupAttributeRequired(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupAttributeRequired(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean getLookupAttributeRequired(Class businessObjectClass,
@@ -376,7 +375,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupAttributeReadOnly(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupAttributeReadOnly(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public Boolean getLookupAttributeReadOnly(Class businessObjectClass, String attributeName) {
@@ -391,7 +390,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getInquiryFieldNames(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldNames(java.lang.Class,
 	 *      java.lang.String)
      */
 	public List getInquiryFieldNames(Class businessObjectClass,
@@ -408,7 +407,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getInquirySections(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquirySections(java.lang.Class)
      */
     public List<InquirySectionDefinition> getInquirySections(Class businessObjectClass) {
         List<InquirySectionDefinition> results = null;
@@ -420,7 +419,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getInquiryTitle(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryTitle(java.lang.Class)
      */
     public String getInquiryTitle(Class businessObjectClass) {
         String title = "";
@@ -434,7 +433,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getInquirableClass(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquirableClass(java.lang.Class)
      */
     public Class getInquirableClass(Class businessObjectClass) {
         Class clazz = null;
@@ -448,7 +447,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getMaintainableTitle(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getMaintainableTitle(java.lang.Class)
      */
     public String getMaintainableLabel(Class businessObjectClass) {
         String label = "";
@@ -463,7 +462,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
     /**
      *
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupableID(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupableID(java.lang.Class)
      */
     public String getLookupableID(Class businessObjectClass) {
         String lookupableID = null;
@@ -743,7 +742,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getTitleAttribute(java.lang.Class)
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getTitleAttribute(java.lang.Class)
      */
     public String getTitleAttribute(Class businessObjectClass) {
         String titleAttribute = null;
@@ -798,7 +797,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#forceLookupResultFieldInquiry(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceLookupResultFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean forceLookupResultFieldInquiry(Class businessObjectClass,
@@ -813,7 +812,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#noLookupResultFieldInquiry(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupResultFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean noLookupResultFieldInquiry(Class businessObjectClass,
@@ -828,7 +827,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#forceLookupFieldLookup(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceLookupFieldLookup(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean forceLookupFieldLookup(Class businessObjectClass,
@@ -854,7 +853,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean noLookupFieldLookup(Class businessObjectClass,
@@ -869,7 +868,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean noDirectInquiryFieldLookup(Class businessObjectClass,
@@ -884,7 +883,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupResultFieldUseShortLabel(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldUseShortLabel(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public Boolean getLookupResultFieldUseShortLabel(Class businessObjectClass,
@@ -899,7 +898,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupResultFieldTotal(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldTotal(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public Boolean getLookupResultFieldTotal(Class businessObjectClass, String attributeName) {
@@ -914,7 +913,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#forceInquiryFieldInquiry(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceInquiryFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean forceInquiryFieldInquiry(Class businessObjectClass,
@@ -929,7 +928,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#noInquiryFieldInquiry(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noInquiryFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
      */
 	public Boolean noInquiryFieldInquiry(Class businessObjectClass,
@@ -944,7 +943,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupFieldDefaultValue(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldDefaultValue(java.lang.Class,
 	 *      java.lang.String)
      */
 	public String getLookupFieldDefaultValue(Class businessObjectClass,
@@ -954,7 +953,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
     /**
-     * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupFieldDefaultValueFinderClass(java.lang.Class,
+     * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldDefaultValueFinderClass(java.lang.Class,
      *      java.lang.String)
      */
 	public Class<? extends ValueFinder> getLookupFieldDefaultValueFinderClass(
@@ -979,7 +978,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     }
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isLookupFieldTreatWildcardsAndOperatorsAsLiteral(java.lang.Class, java.lang.String)
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupFieldTreatWildcardsAndOperatorsAsLiteral(java.lang.Class, java.lang.String)
 	 */
 	public boolean isLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class businessObjectClass, String attributeName) {
 		FieldDefinition lookupFieldDefinition = getLookupFieldDefinition(businessObjectClass, attributeName);
@@ -987,7 +986,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 	
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getInquiryFieldAdditionalDisplayAttributeName(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldAdditionalDisplayAttributeName(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public String getInquiryFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
@@ -1002,7 +1001,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getInquiryFieldAlternateDisplayAttributeName(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldAlternateDisplayAttributeName(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public String getInquiryFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
@@ -1017,7 +1016,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupFieldAdditionalDisplayAttributeName(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldAdditionalDisplayAttributeName(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
@@ -1032,7 +1031,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#getLookupFieldAlternateDisplayAttributeName(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldAlternateDisplayAttributeName(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public String getLookupFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
@@ -1047,7 +1046,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 	
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#tranlateCodesInLookup(java.lang.Class)
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#tranlateCodesInLookup(java.lang.Class)
 	 */
 	public Boolean tranlateCodesInLookup(Class businessObjectClass) {
 		boolean translateCodes = false;
@@ -1060,7 +1059,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#tranlateCodesInInquiry(java.lang.Class)
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#tranlateCodesInInquiry(java.lang.Class)
 	 */
 	public Boolean tranlateCodesInInquiry(Class businessObjectClass) {
 		boolean translateCodes = false;
@@ -1073,7 +1072,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#isLookupFieldTriggerOnChange(java.lang.Class,
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupFieldTriggerOnChange(java.lang.Class,
 	 *      java.lang.String)
 	 */
 	public boolean isLookupFieldTriggerOnChange(Class businessObjectClass, String attributeName) {
@@ -1086,7 +1085,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
-	 * @see org.kuali.rice.krad.service.BusinessObjectDictionaryService#disableSearchButtonsInLookup(java.lang.Class)
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#disableSearchButtonsInLookup(java.lang.Class)
 	 */
 	public boolean disableSearchButtonsInLookup(Class businessObjectClass) {
 		boolean disableSearchButtons = false;

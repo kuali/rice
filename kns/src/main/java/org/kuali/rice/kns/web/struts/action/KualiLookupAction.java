@@ -150,7 +150,7 @@ public class KualiLookupAction extends KualiAction {
 
         hideHeaderBarIfNeeded(form, request);
 
-        int numCols = KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
+        int numCols = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
                 Class.forName(lookupForm.getBusinessObjectClassName()));
         lookupForm.setNumColumns(numCols);
 

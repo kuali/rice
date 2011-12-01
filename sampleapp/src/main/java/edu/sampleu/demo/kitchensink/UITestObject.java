@@ -17,11 +17,13 @@ package edu.sampleu.demo.kitchensink;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * For test view purposes only
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UITestObject implements Serializable {
@@ -32,9 +34,16 @@ public class UITestObject implements Serializable {
     private String field3;
     private String field4;
 
+    private Map<String, Object> remoteFieldValuesMap;
+
     private List<UITestObject> subList = new ArrayList<UITestObject>();
 
     public UITestObject() {
+        remoteFieldValuesMap = new HashMap<String, Object>();
+        remoteFieldValuesMap.put("remoteField1", "Apple");
+        remoteFieldValuesMap.put("remoteField2", "Banana");
+        remoteFieldValuesMap.put("remoteField3", true);
+        remoteFieldValuesMap.put("remoteField4", "Fruit");
     }
 
     public UITestObject(String field1, String field2, String field3, String field4) {
@@ -42,6 +51,13 @@ public class UITestObject implements Serializable {
         this.field2 = field2;
         this.field3 = field3;
         this.field4 = field4;
+
+        remoteFieldValuesMap = new HashMap<String, Object>();
+        remoteFieldValuesMap.put("remoteField1", "Apple");
+        remoteFieldValuesMap.put("remoteField2", "Banana");
+        remoteFieldValuesMap.put("remoteField3", true);
+        remoteFieldValuesMap.put("remoteField4", "Fruit");
+
     }
 
     /**
@@ -112,6 +128,14 @@ public class UITestObject implements Serializable {
      */
     public List<UITestObject> getSubList() {
         return subList;
+    }
+
+    public Map<String, Object> getRemoteFieldValuesMap() {
+        return remoteFieldValuesMap;
+    }
+
+    public void setRemoteFieldValuesMap(Map<String, Object> remoteFieldValuesMap) {
+        this.remoteFieldValuesMap = remoteFieldValuesMap;
     }
 
 }

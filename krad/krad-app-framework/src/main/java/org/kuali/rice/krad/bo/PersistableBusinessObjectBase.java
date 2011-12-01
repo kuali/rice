@@ -42,11 +42,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Business Object Base Business Object
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
 public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject, PersistenceBrokerAware, Versioned, GloballyUnique {
-    
 	private static final long serialVersionUID = 1451642350593233282L;
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);
     

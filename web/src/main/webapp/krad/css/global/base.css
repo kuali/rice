@@ -704,3 +704,7 @@ table.datatable {
     clear: both;
     display: block;
 }
+
+.boxLayoutHorizontalItem-tight {
+    margin-right : .7em;
+}

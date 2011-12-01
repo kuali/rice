@@ -469,7 +469,7 @@
   </bean>
 
   <bean id="businessObjectDictionaryService"
-        class="org.kuali.rice.krad.service.impl.BusinessObjectDictionaryServiceImpl">
+        class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
     <property name="dataDictionaryService">
       <ref bean="dataDictionaryService"/>
     </property>

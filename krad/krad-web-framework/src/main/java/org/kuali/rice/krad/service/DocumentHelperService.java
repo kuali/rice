@@ -23,7 +23,6 @@ import org.kuali.rice.krad.document.authorization.DocumentPresentationController
  * This class is a utility service intended to help retrieve objects related to particular documents.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface DocumentHelperService {
 

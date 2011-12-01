@@ -27,12 +27,12 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InquiryPresentationControllerBase extends PresentationControllerBase {
+public class InquiryPresentationControllerBase extends ViewPresentationControllerBase {
 
     /**
      * Prepares a list of action flags applicable for a inquiry
      *
-     * @see org.kuali.rice.krad.uif.authorization.PresentationControllerBase#getActionFlags(org.kuali.rice.krad.web.spring.form.UifFormBase)
+     * @see ViewPresentationControllerBase#getActionFlags(org.kuali.rice.krad.web.spring.form.UifFormBase)
      */
     @Override
     public Set<String> getActionFlags(UifFormBase model) {

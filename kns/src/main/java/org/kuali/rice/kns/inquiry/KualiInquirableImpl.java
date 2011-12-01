@@ -39,7 +39,7 @@ import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.inquiry.InquirableImpl;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -525,7 +525,7 @@ public class KualiInquirableImpl extends InquirableImpl implements Inquirable {
 
 	protected BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
 		if (businessObjectDictionaryService == null) {
-			businessObjectDictionaryService = KRADServiceLocatorWeb.getBusinessObjectDictionaryService();
+			businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
 		}
 		return businessObjectDictionaryService;
 	}

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.inquiry;
+package org.kuali.rice.kns.inquiry;
 
-import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
+import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
 
-public interface InquiryPresentationController extends InquiryOrMaintenanceDocumentPresentationController {
+public interface InquiryAuthorizer extends InquiryOrMaintenanceDocumentAuthorizer {
 }
 

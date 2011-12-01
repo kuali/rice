@@ -162,7 +162,9 @@ public class ViewModelUtils {
                     Map.class.isAssignableFrom(parentObject.getClass())) {
                 try {
                     Class<?> parentObjectClass = getPropertyTypeByClassAndView(view, parentObjectPath);
-                    parentObject = parentObjectClass.newInstance();
+                    if (parentObjectClass != null) {
+                        parentObject = parentObjectClass.newInstance();
+                    }
                 } catch (InstantiationException e) {
                     // swallow exception and let null be returned
                 } catch (IllegalAccessException e) {

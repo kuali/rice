@@ -13,10 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.inquiry;
+package org.kuali.rice.krad.uif.authorization;
 
-import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
-public interface InquiryAuthorizer extends InquiryOrMaintenanceDocumentAuthorizer {
+import java.util.Set;
+
+/**
+ * Configured for a <code>View</code> instance to provide conditional logic
+ * based on any variable (view configuration, system parameters, ...) that does
+ * not depend on the current user
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public interface ViewPresentationController {
+
+    public Set<String> getActionFlags(UifFormBase model);
+
+    public Set<String> getEditModes(UifFormBase model);
+
 }
-

@@ -48,7 +48,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -191,7 +191,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the businessObjectDictionaryService.
      */
     public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-        return businessObjectDictionaryService != null ? businessObjectDictionaryService : KRADServiceLocatorWeb
+        return businessObjectDictionaryService != null ? businessObjectDictionaryService : KNSServiceLocator
                 .getBusinessObjectDictionaryService();
     }
 

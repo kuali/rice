@@ -163,7 +163,7 @@ public class LookupForm extends KualiForm {
                 }
 
                 // call data dictionary service to get lookup impl for bo class
-                String lookupImplID = KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(Class.forName(localBusinessObjectClassName));
+                String lookupImplID = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(Class.forName(localBusinessObjectClassName));
                 if (lookupImplID == null) {
                     lookupImplID = "kualiLookupable";
                 }
@@ -714,7 +714,7 @@ public class LookupForm extends KualiForm {
 		boolean renderSearchButtons = true;
 
 		if (disableSearchButtons
-				|| KRADServiceLocatorWeb.getBusinessObjectDictionaryService().disableSearchButtonsInLookup(
+				|| KNSServiceLocator.getBusinessObjectDictionaryService().disableSearchButtonsInLookup(
 						getLookupable().getBusinessObjectClass())) {
 			renderSearchButtons = false;
 		}

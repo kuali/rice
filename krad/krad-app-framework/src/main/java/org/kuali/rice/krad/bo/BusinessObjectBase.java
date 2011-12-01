@@ -20,7 +20,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import java.util.LinkedHashMap;
 
 /**
- * Transient Business Object Base Business Object
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class BusinessObjectBase implements BusinessObject {
 

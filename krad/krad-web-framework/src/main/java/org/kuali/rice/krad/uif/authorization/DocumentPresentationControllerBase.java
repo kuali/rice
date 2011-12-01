@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentPresentationControllerBase extends PresentationControllerBase {
+public class DocumentPresentationControllerBase extends ViewPresentationControllerBase {
 
     private static transient ParameterService parameterService;
 

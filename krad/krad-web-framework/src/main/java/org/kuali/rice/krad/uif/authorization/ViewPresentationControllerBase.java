@@ -15,31 +15,33 @@
  */
 package org.kuali.rice.krad.uif.authorization;
 
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Configured for a <code>View</code> instance to provide conditional logic
- * based on any variable (view configuration, system parameters, ...) that does
- * not depend on the current user
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface PresentationController {
+public class ViewPresentationControllerBase implements ViewPresentationController {
 
-    public Set<String> getActionFlags(UifFormBase model);
+    /**
+     * @see ViewPresentationController#getActionFlags(org.kuali.rice.krad.web.form.UifFormBase)
+     */
+    public Set<String> getActionFlags(UifFormBase model) {
+        Set<String> actions = new HashSet<String>();
 
-    public Set<String> getEditModes(UifFormBase model);
+        actions.add(KRADConstants.KUALI_ACTION_CAN_EDIT);
 
-    public Set<String> getConditionallyHiddenPropertyNames(UifFormBase model);
+        return actions;
+    }
 
-    public Set<String> getConditionallyHiddenGroupIds(UifFormBase model);
-
-    public Set<String> getConditionallyReadOnlyPropertyNames(UifFormBase model);
-
-    public Set<String> getConditionallyReadOnlyGroupIds(UifFormBase model);
-
-    public Set<String> getConditionallyRequiredPropertyNames(UifFormBase model);
+    /**
+     * @see ViewPresentationController#getEditModes(org.kuali.rice.krad.web.form.UifFormBase)
+     */
+    public Set<String> getEditModes(UifFormBase model) {
+        return new HashSet<String>();
+    }
 
 }

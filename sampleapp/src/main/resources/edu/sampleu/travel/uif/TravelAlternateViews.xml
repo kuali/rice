@@ -47,11 +47,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="additionalCssFiles" ref="kns-css"/>
    </bean>
 
-   <bean id="LayoutTestView_KNS" parent="LayoutTestView">
-      <property name="id" value="LayoutTestView_KNS"/>
-      <property name="additionalCssFiles" ref="kns-css"/>
-   </bean>
-
    <bean id="TravelAccount-InquiryView_KS" parent="TravelAccount-InquiryView">
       <property name="id" value="TravelAccount-InquiryView_KS"/>
       <property name="additionalCssFiles" ref="ks-css"/>

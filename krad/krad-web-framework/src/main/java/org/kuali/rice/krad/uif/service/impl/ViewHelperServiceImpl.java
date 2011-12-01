@@ -27,7 +27,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.authorization.Authorizer;
-import org.kuali.rice.krad.uif.authorization.PresentationController;
+import org.kuali.rice.krad.uif.authorization.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
@@ -316,8 +316,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             // invoke hook point for adding components through code
             addCustomContainerComponents(view, model, (Container) component);
 
-            // process any remote fields holder that might be in the containers items
-            processAnyRemoteFieldsHolder(view, model, (Container) component);
+            // process any remote fields holder that might be in the containers items, collection items will get
+            // processed as the lines are being built
+            if (!(component instanceof CollectionGroup)) {
+                processAnyRemoteFieldsHolder(view, model, (Container) component);
+            }
         }
 
         // for collection groups set defaults from dictionary entry
@@ -536,7 +539,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param model - Object that contains the model data
      */
     protected void invokeAuthorizerPresentationController(View view, UifFormBase model) {
-        PresentationController presentationController = ObjectUtils.newInstance(view.getPresentationControllerClass());
+        ViewPresentationController presentationController = ObjectUtils.newInstance(view.getPresentationControllerClass());
         Authorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
 
         Person user = GlobalVariables.getUserSession().getPerson();

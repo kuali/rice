@@ -58,6 +58,7 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
@@ -76,7 +77,6 @@ import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -1771,7 +1771,7 @@ public final class FieldUtils {
 
     private static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
     	if (businessObjectDictionaryService == null) {
-    		businessObjectDictionaryService = KRADServiceLocatorWeb.getBusinessObjectDictionaryService();
+    		businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
     	}
     	return businessObjectDictionaryService;
     }

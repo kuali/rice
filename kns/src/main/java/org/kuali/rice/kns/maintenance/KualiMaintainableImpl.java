@@ -30,6 +30,7 @@ import org.kuali.rice.kns.document.authorization.FieldRestriction;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -46,7 +47,6 @@ import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttribut
 import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -1418,7 +1418,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	protected BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
 		if (businessObjectDictionaryService == null) {
-			businessObjectDictionaryService = KRADServiceLocatorWeb.getBusinessObjectDictionaryService();
+			businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
 		}
 		return businessObjectDictionaryService;
 	}

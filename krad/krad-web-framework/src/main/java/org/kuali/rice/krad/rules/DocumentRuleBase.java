@@ -55,7 +55,9 @@ import org.kuali.rice.krad.util.MessageMap;
 
 
 /**
- * This class contains all of the business rules that are common to all documents.
+ * Contains all of the business rules that are common to all documents
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumentRule, ApproveDocumentRule, AddNoteRule, AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule, SendAdHocRequestsRule {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRuleBase.class);
@@ -68,52 +70,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     private static PermissionService permissionService;
     private static DataDictionaryService dataDictionaryService;
     
-    /**
-     * Just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
-     */
+    // just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
     private int maxDictionaryValidationDepth = 100;
-
-    protected PersonService getPersonService() {
-        if ( personService == null ) {
-            personService = KimApiServiceLocator.getPersonService();
-        }
-        return personService;
-    }
-
-    public static GroupService getGroupService() {
-        if ( groupService == null ) {
-            groupService = KimApiServiceLocator.getGroupService();
-        }
-        return groupService;
-    }
-
-    public static PermissionService getPermissionService() {
-        if ( permissionService == null ) {
-            permissionService = KimApiServiceLocator.getPermissionService();
-        }
-        return permissionService;
-    }
-
-    protected DocumentHelperService getDocumentHelperService() {
-        if ( documentHelperService == null ) {
-            documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
-        }
-        return documentHelperService;
-    }
-
-    protected DictionaryValidationService getDictionaryValidationService() {
-        if ( dictionaryValidationService == null ) {
-            dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
-        }
-        return dictionaryValidationService;
-    }
-
-    protected ConfigurationService getKualiConfigurationService() {
-        if ( kualiConfigurationService == null ) {
-            kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
-        }
-        return kualiConfigurationService;
-    }
 
     /**
      * Verifies that the document's overview fields are valid - it does required and format checks.
@@ -524,5 +482,47 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     		dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
     	}
     	return dataDictionaryService;
+    }
+
+    protected PersonService getPersonService() {
+        if ( personService == null ) {
+            personService = KimApiServiceLocator.getPersonService();
+        }
+        return personService;
+    }
+
+    public static GroupService getGroupService() {
+        if ( groupService == null ) {
+            groupService = KimApiServiceLocator.getGroupService();
+        }
+        return groupService;
+    }
+
+    public static PermissionService getPermissionService() {
+        if ( permissionService == null ) {
+            permissionService = KimApiServiceLocator.getPermissionService();
+        }
+        return permissionService;
+    }
+
+    protected DocumentHelperService getDocumentHelperService() {
+        if ( documentHelperService == null ) {
+            documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+        }
+        return documentHelperService;
+    }
+
+    protected DictionaryValidationService getDictionaryValidationService() {
+        if ( dictionaryValidationService == null ) {
+            dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
+        }
+        return dictionaryValidationService;
+    }
+
+    protected ConfigurationService getKualiConfigurationService() {
+        if ( kualiConfigurationService == null ) {
+            kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
+        }
+        return kualiConfigurationService;
     }
 }

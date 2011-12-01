@@ -19,20 +19,20 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 
 /**
- * Defines a set of restrictions that are possible on an attribute in a 
- * {@link BusinessObjectEntry} or a maintainable field in a {@link MaintenanceDocumentEntry}
+ * Defines a set of restrictions that are possible on an attribute
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AttributeSecurity extends DataDictionaryDefinitionBase {
 	private static final long serialVersionUID = -7923499408946975318L;
 	
-	boolean readOnly = false;
-	boolean hide = false;
-	boolean mask = false;
-	boolean partialMask = false;
-	MaskFormatter partialMaskFormatter;
-	MaskFormatter maskFormatter;
+	private boolean readOnly = false;
+	private boolean hide = false;
+	private boolean mask = false;
+	private boolean partialMask = false;
+
+	private MaskFormatter partialMaskFormatter;
+	private MaskFormatter maskFormatter;
 
 	/**
 	 * @return the readOnly

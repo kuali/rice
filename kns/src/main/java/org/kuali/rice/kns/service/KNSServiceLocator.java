@@ -31,6 +31,7 @@ public class KNSServiceLocator {
 
     public static final String BUSINESS_OBJECT_AUTHORIZATION_SERVICE = "businessObjectAuthorizationService";
     public static final String BUSINESS_OBJECT_METADATA_SERVICE = "businessObjectMetaDataService";
+    public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
     public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
     public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
     public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
@@ -86,5 +87,9 @@ public class KNSServiceLocator {
 
     public static DataDictionaryService getDataDictionaryService() {
         return getService(DATA_DICTIONARY_SERVICE);
+    }
+
+    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+        return getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
     }
 }

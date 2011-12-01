@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kns.lookup
 
-import org.junit.Before
 import groovy.mock.interceptor.MockFor
 import static org.junit.Assert.assertEquals
 import org.junit.Test
 import org.kuali.rice.kns.web.ui.Field
 import org.kuali.rice.kns.web.ui.ResultRow
 import org.kuali.rice.kns.web.struts.form.LookupForm
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService
 import static org.junit.Assert.assertTrue
 import org.kuali.rice.krad.bo.BusinessObject
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions

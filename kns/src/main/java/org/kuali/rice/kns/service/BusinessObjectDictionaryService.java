@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.service;
+package org.kuali.rice.kns.service;
 
+import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
+import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
-import org.kuali.rice.krad.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 
 import java.util.List;

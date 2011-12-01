@@ -65,7 +65,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private String addLinePropertyName;
     private BindingInfo addLineBindingInfo;
     private LabelField addLineLabelField;
-    private List<? extends Field> addLineFields;
+    private List<? extends Component> addLineFields;
     private List<ActionField> addLineActionFields;
 
     private boolean renderLineActions;
@@ -487,13 +487,13 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
-     * List of <code>Field</code> instances that should be rendered for the
+     * List of <code>Component</code> instances that should be rendered for the
      * collection add line (if enabled). If not set, the default group's items
      * list will be used
      *
-     * @return List<? extends Field> add line field list
+     * @return List<? extends Component> add line field list
      */
-    public List<? extends Field> getAddLineFields() {
+    public List<? extends Component> getAddLineFields() {
         return this.addLineFields;
     }
 
@@ -502,7 +502,7 @@ public class CollectionGroup extends Group implements DataBinding {
      *
      * @param addLineFields
      */
-    public void setAddLineFields(List<? extends Field> addLineFields) {
+    public void setAddLineFields(List<? extends Component> addLineFields) {
         this.addLineFields = addLineFields;
     }
 
@@ -736,11 +736,11 @@ public class CollectionGroup extends Group implements DataBinding {
     /**
      * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<? extends Field> getItems() {
-        return (List<? extends Field>) super.getItems();
-    }
+//    @SuppressWarnings("unchecked")
+//    @Override
+//    public List<? extends Field> getItems() {
+//        return (List<? extends Field>) super.getItems();
+//    }
 
     /**
      * @param showHideInactiveButton the showHideInactiveButton to set

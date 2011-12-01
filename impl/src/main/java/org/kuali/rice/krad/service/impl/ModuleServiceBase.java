@@ -27,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.framework.parameter.ParameterService;
 import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -34,7 +35,7 @@ import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
-import org.kuali.rice.krad.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.krad.service.BusinessObjectNotLookupableException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -410,7 +411,7 @@ public class ModuleServiceBase implements ModuleService {
 
 	public BusinessObjectDictionaryService getBusinessObjectDictionaryService () {
 		if ( businessObjectDictionaryService == null ) {
-			businessObjectDictionaryService = KRADServiceLocatorWeb.getBusinessObjectDictionaryService();
+			businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
 		}
 		return businessObjectDictionaryService;
 	}

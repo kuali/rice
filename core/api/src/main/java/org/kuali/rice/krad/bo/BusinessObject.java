@@ -17,14 +17,20 @@ package org.kuali.rice.krad.bo;
 
 import org.kuali.rice.core.api.mo.ModelObjectBasic;
 
-/*
- * Defines methods a business object should implement.
+/**
+ * Interface for business objects
+ *
+ * <p>
+ * Business objects are special objects to the Rice framework that indicate an object has certain features
+ * (like refresh), most business objects are persistable see {@link PersistableBusinessObjectBase}
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface BusinessObject extends ModelObjectBasic {
     
     /**
      * Refreshes any reference objects from the primitive values.
-     * 
      */
     public abstract void refresh();
 }

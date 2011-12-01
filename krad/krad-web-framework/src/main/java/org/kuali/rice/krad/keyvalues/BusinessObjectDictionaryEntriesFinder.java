@@ -32,7 +32,8 @@ public class BusinessObjectDictionaryEntriesFinder extends KeyValuesBase {
      */
     @Override
 	public List<KeyValue> getKeyValues() {
-        List<String> businessObjects = KRADServiceLocatorWeb.getBusinessObjectDictionaryService().getBusinessObjectClassnames();
+        List<String> businessObjects =
+                KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectClassNames();
         List<KeyValue> boKeyLabels = new ArrayList<KeyValue>();
 
         for (String string : businessObjects) {

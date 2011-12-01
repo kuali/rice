@@ -38,15 +38,33 @@
     </property>
   </bean>
 
+  <bean id="remotableFieldsCollection" parent="CollectionGroupSectionTableLayout"
+        p:layoutManager.suppressLineWrapping="true">
+    <property name="title" value="Collection Group Remote Fields"/>
+    <property name="instructionalText" value="A collection group that has remote fields."/>
+    <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="propertyName" value="list1"/>
+    <property name="layoutManager.sequencePropertyName" value="field1"/>
+    <property name="layoutManager.richTable.render" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+        <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
+              p:fetchingMethodToCall="retrieveRemoteFields"/>
+        <bean parent="InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+      </list>
+    </property>
+  </bean>
+
   <bean id="miscGroup" parent="Group" p:disclosure.render="false">
     <property name="title" value="Various configuration and feature examples"/>
     <property name="items">
       <list>
-				<bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
-                p:instructionalText="Field that is being set to read only by request">
-           <property name="control">
-             <bean parent="TextControl"/>
-           </property>
+        <bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
+              p:instructionalText="Field that is being set to read only by request">
+          <property name="control">
+            <bean parent="TextControl"/>
+          </property>
         </bean>
 
         <bean parent="GenericTextField" p:label="Field 2" p:propertyName="uiTestObject.field3"

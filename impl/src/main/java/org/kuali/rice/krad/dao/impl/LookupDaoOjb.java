@@ -27,6 +27,7 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
 import org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.dao.LookupDao;
@@ -86,7 +87,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         		caseInsensitive = !KRADServiceLocatorWeb.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
         	}
         	if ( caseInsensitive == null ) { caseInsensitive = Boolean.TRUE; }
-        	boolean treatWildcardsAndOperatorsAsLiteral = KRADServiceLocatorWeb
+        	boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator
         			.getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
         	
             if (formProps.get(propertyName) instanceof Collection) {
@@ -135,7 +136,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
                     }
                 }
             }
-            boolean treatWildcardsAndOperatorsAsLiteral = KRADServiceLocatorWeb.
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
             		getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, pkFieldName);
             createCriteria(businessObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
         }
@@ -254,7 +255,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         	}
         	if ( caseInsensitive == null ) { caseInsensitive = Boolean.TRUE; }
 
-        	boolean treatWildcardsAndOperatorsAsLiteral = KRADServiceLocatorWeb
+        	boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator
 					.getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
         	
     		if (!caseInsensitive) { 

@@ -27,6 +27,7 @@ import org.kuali.rice.core.framework.persistence.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
@@ -99,7 +100,7 @@ public class LookupDaoJpa implements LookupDao {
 				caseInsensitive = Boolean.TRUE;
 			}
 
-			boolean treatWildcardsAndOperatorsAsLiteral = KRADServiceLocatorWeb.
+			boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
 					getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName); 
 			// build criteria
     		if (!caseInsensitive) { 
@@ -135,7 +136,7 @@ public class LookupDaoJpa implements LookupDao {
 			if (caseInsensitive == null) {
 				caseInsensitive = Boolean.TRUE;
 			}
-            boolean treatWildcardsAndOperatorsAsLiteral = KRADServiceLocatorWeb.
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
     				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
 			if (formProps.get(propertyName) instanceof Collection) {
 				Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
@@ -181,7 +182,7 @@ public class LookupDaoJpa implements LookupDao {
                     }
                 }
 			}
-            boolean treatWildcardsAndOperatorsAsLiteral = KRADServiceLocatorWeb.
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
     				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, pkFieldName);
 			createCriteria(businessObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
 		}

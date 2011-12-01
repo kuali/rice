@@ -20,7 +20,7 @@
 
    <strong>Screen Element Testing</strong>
    <ul class="chan">
-  	 <li><portal:portalLink displayTitle="true" title="Layout Test" url="${ConfigProperties.application.url}/kr-krad/uilayouttest?viewId=LayoutTestView_KNS&methodToCall=start" /></li>
+  	 <li><portal:portalLink displayTitle="true" title="Uif Layout Test" url="${ConfigProperties.application.url}/kr-krad/uilayouttest?viewId=UifLayoutView_KNS&methodToCall=start" /></li>
   	 <li><portal:portalLink displayTitle="true" title="Uif Components (Kitchen Sink)" url="${ConfigProperties.application.url}/kr-krad/uicomponents?viewId=UifCompView_KNS&methodToCall=start&readOnlyFields=field91" /></li>
 	   <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView1_KNS&methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="Test View 2" url="${ConfigProperties.application.url}/kr-krad/uitest?viewId=Travel-testView2_KNS&methodToCall=start" /></li>

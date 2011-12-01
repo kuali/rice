@@ -16,10 +16,10 @@
 package org.kuali.rice.kns.datadictionary;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
+import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.datadictionary.DataDictionaryDefinitionBase;
 import org.kuali.rice.krad.inquiry.Inquirable;
-import org.kuali.rice.krad.inquiry.InquiryAuthorizer;
-import org.kuali.rice.krad.inquiry.InquiryPresentationController;
 
 import java.util.ArrayList;
 import java.util.List;

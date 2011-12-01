@@ -18,10 +18,10 @@ package org.kuali.rice.krad.inquiry;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.krad.bo.BusinessObject;
 
-public class InquiryPresentationControllerBase implements
-		InquiryPresentationController {
+public class InquiryPresentationControllerBase implements InquiryPresentationController {
 	/**
 	 * Implement this method to hide fields based on specific data in the record being inquired into
 	 * 

@@ -99,4 +99,13 @@ public class UifComponentsTestController extends UifControllerBase {
 
 		return updateComponent(uiTestForm, result, request, response);
 	}
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshWithServerMessages")
+	public ModelAndView refreshWithServerMessages(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+        GlobalVariables.getMessageMap().putError("field45", "serverTestError");
+        GlobalVariables.getMessageMap().putWarning("field45", "serverTestWarning");
+        GlobalVariables.getMessageMap().putInfo("field45", "serverTestInfo");
+		return updateComponent(uiTestForm, result, request, response);
+	}
 }

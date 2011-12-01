@@ -439,6 +439,11 @@ public abstract class UifControllerBase {
         form.getView().getViewHelperService().performComponentLifecycle(form.getView(), form, comp,
                 requestedComponentId);
 
+        //Regenerate server message content for page
+        form.getView().getCurrentPage().getErrorsField().setDisplayNestedMessages(true);
+        form.getView().getCurrentPage().getErrorsField().generateMessages(false, form.getView(),
+                form,form.getView().getCurrentPage());
+
         return UifWebUtils.getComponentModelAndView(comp, form);
     }
 

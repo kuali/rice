@@ -180,6 +180,8 @@
                     p:refreshId="prog3"/>
               <bean parent="AjaxActionField" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
                     p:refreshPropertyName="field45"/>
+              <bean parent="AjaxActionField" p:actionLabel="Refresh Field but with Server Errors" p:methodToCall="refreshWithServerMessages"
+                    p:refreshPropertyName="field45"/>
               <bean parent="AjaxActionField" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
             </list>
           </property>

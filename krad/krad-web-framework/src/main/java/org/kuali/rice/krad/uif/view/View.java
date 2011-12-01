@@ -220,8 +220,22 @@ public class View extends ContainerBase {
 
         String prefixScript = "";
         if (this.getOnDocumentReadyScript() != null) {
+            prefixScript = this.getPreLoadScript();
+        }
+
+        String growlScript = "";
+        Growls gw = view.getGrowls();
+        if (!gw.getComponentOptions().isEmpty()) {
+            growlScript = "setGrowlDefaults(" + gw.getComponentOptionsJSString() + ");";
+        }
+
+        this.setPreLoadScript(prefixScript + growlScript);
+
+        prefixScript = "";
+        if (this.getOnDocumentReadyScript() != null) {
             prefixScript = this.getOnDocumentReadyScript();
         }
+
         this.setOnDocumentReadyScript(prefixScript + "jQuery.extend(jQuery.validator.messages, " +
                 ClientValidationUtils.generateValidatorMessagesOption() + ");");
     }

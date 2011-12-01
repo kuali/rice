@@ -59,6 +59,13 @@ public interface ScriptEventSupport {
 	 */
 	public boolean getSupportsOnDocumentReady();
 
+    /**
+     * Setter for the onDocumentReadyScript
+     *
+     * @param script - script for onDocumentReadyScript
+     */
+    public void setOnDocumentReadyScript(String script);
+
 	/**
 	 * Script to be run when the document ready event is triggered
 	 * 

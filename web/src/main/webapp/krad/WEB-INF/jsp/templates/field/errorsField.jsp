@@ -88,11 +88,16 @@
       </ul>
     </div>
   </c:if>
+  <krad:script value="
+    ${field.growlScript}
+    clearServerErrorColors('${field.id}_div');
+  "/>
+
+  <c:if test="${(field.infoCount > 0 || field.warningCount > 0 || field.errorCount > 0)}">
+    <krad:script value="
+        applyErrorColors('${field.id}_div', ${field.errorCount}, ${field.warningCount}, ${field.infoCount}, false);
+        showFieldIcon('${field.id}_div', ${field.errorCount});
+      "/>
+  </c:if>
 </krad:div>
 
-<c:if test="${(field.infoCount > 0 || field.warningCount > 0 || field.errorCount > 0)}">
-  <krad:script value="
-			applyErrorColors('${field.id}_div', ${field.errorCount}, ${field.warningCount}, ${field.infoCount}, false);
-			showFieldIcon('${field.id}_div', ${field.errorCount});
-		"/>
-</c:if>

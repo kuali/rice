@@ -46,7 +46,12 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 				tempDiv.innerHTML = response;
 				var hasError = handleIncidentReport(response);
 				if(!hasError){
+                    var newServerErrors = jq("#errorsFieldForPage_div", tempDiv).clone();
 					successCallback(tempDiv);
+                    if(successCallback !== replacePage){
+                        jq("#errorsFieldForPage_div").replaceWith(newServerErrors);
+                        runHiddenScripts("errorsFieldForPage_div");
+                    }
 				}
 				jq("#formComplete").html("");
 			},

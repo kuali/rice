@@ -100,6 +100,28 @@ function createLoading(showLoading) {
     }
 }
 
+function clearServerErrorColors(errorDivId){
+    if (errorDivId) {
+        var div = jq("#" + errorDivId);
+        var label = jq("#" + errorDivId.replace("errors_div", "label"));
+        var highlightLine = "";
+
+        //check to see if the option to highlight fields is on
+        if (div.length > 0 && !div.hasClass("noHighlight")) {
+            if (div.parent().is("td") || (div.parent().is(".refreshWrapper") && div.parent().parent().is("td"))) {
+                highlightLine = div.closest("td");
+            }
+            else {
+                highlightLine = div.closest(".fieldLine");
+            }
+
+            if (highlightLine.length > 0) {
+                highlightLine.removeClass("kr-serverError");
+            }
+        }
+    }
+}
+
 /**
  * Applies the error coloring for fields with errors, warnings, or information
  */
@@ -119,7 +141,9 @@ function applyErrorColors(errorDivId, errorNum, warningNum, infoNum, clientSide)
             }
 
             if (highlightLine.length > 0) {
+
                 if (errorNum && !clientSide) {
+
                     highlightLine.addClass("kr-serverError");
                     label.addClass("kr-serverError");
                 }

@@ -22,6 +22,7 @@ import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.widget.Growls;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
@@ -30,6 +31,7 @@ import org.springframework.util.AutoPopulatingList;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -49,6 +51,9 @@ public class ErrorsField extends FieldBase {
 	private static final long serialVersionUID = 780940788435330077L;
 
 	private List<String> additionalKeysToMatch;
+
+    private boolean fireGrowlsForMessages;
+    private String growlScript = "";
 
 	// Title variables
 	private String errorTitle;
@@ -88,9 +93,6 @@ public class ErrorsField extends FieldBase {
 	private int warningCount;
 	private int infoCount;
 
-	// internal
-	private int tempCount;
-
 	// not used
 	private boolean displayLockMessages;
 
@@ -113,14 +115,21 @@ public class ErrorsField extends FieldBase {
 	public void performFinalize(View view, Object model, Component parent) {
 		super.performFinalize(view, model, parent);
 
-		List<String> masterKeyList = getKeys(parent);
-		errors = new ArrayList<String>();
-		warnings = new ArrayList<String>();
-		infos = new ArrayList<String>();
-		errorCount = 0;
-		warningCount = 0;
-		infoCount = 0;
-		MessageMap messageMap = GlobalVariables.getMessageMap();
+		generateMessages(true, view, model, parent);
+	}
+
+    public void generateMessages(boolean reset, View view, Object model, Component parent){
+        if(reset){
+            errors = new ArrayList<String>();
+            warnings = new ArrayList<String>();
+            infos = new ArrayList<String>();
+            errorCount = 0;
+            warningCount = 0;
+            infoCount = 0;
+        }
+
+        List<String> masterKeyList = getKeys(parent);
+        MessageMap messageMap = GlobalVariables.getMessageMap();
 
 		if (!displayFieldLabelWithMessages) {
 			this.addStyleClass("noLabels");
@@ -141,17 +150,14 @@ public class ErrorsField extends FieldBase {
 				if (displayErrorMessages) {
 					errors.addAll(getMessages(view, key,
 							messageMap.getErrorMessagesForProperty(key, true)));
-					errorCount = errorCount + tempCount;
 				}
 				if (displayWarningMessages) {
 					warnings.addAll(getMessages(view, key,
 							messageMap.getWarningMessagesForProperty(key, true)));
-					warningCount = warningCount + tempCount;
 				}
 				if (displayInfoMessages) {
 					infos.addAll(getMessages(view, key,
 							messageMap.getInfoMessagesForProperty(key, true)));
-					infoCount = infoCount + tempCount;
 				}
 			}
 		} else if (displayFieldErrorIcon) {
@@ -167,7 +173,7 @@ public class ErrorsField extends FieldBase {
 				}
 			}
 		}
-		
+
 		//Check for errors that are not matched on the page(only applies when parent is page)
 		if(parent instanceof PageGroup){
 			if(errorCount < messageMap.getErrorCount()){
@@ -176,9 +182,8 @@ public class ErrorsField extends FieldBase {
 				for (String key : diff) {
     				errors.addAll(getMessages(view, key,
                             messageMap.getErrorMessagesForProperty(key, true)));
-    				errorCount = errorCount+ tempCount;
 				}
-				
+
 			}
 			if(warningCount < messageMap.getWarningCount()){
 				List<String> diff = messageMap.getPropertiesWithWarnings();
@@ -186,7 +191,6 @@ public class ErrorsField extends FieldBase {
 				for (String key : diff) {
 				    warnings.addAll(getMessages(view, key,
                             messageMap.getWarningMessagesForProperty(key, true)));
-                    warningCount = warningCount + tempCount;
                 }
 			}
 			if(infoCount < messageMap.getInfoCount()){
@@ -195,18 +199,34 @@ public class ErrorsField extends FieldBase {
                 for (String key : diff) {
                     infos.addAll(getMessages(view, key,
                             messageMap.getInfoMessagesForProperty(key, true)));
-                    infoCount = infoCount + tempCount;
                 }
 			}
+            this.setId("errorsFieldForPage");
 		}
-		
+
+        if(fireGrowlsForMessages){
+            //set up growl script
+            growlScript = getGrowlScript(view);
+        }
+
+        //Remove any textual duplicates that may have snuck in, by converting to set and back to list
+        errors = new ArrayList<String>(new LinkedHashSet<String>(errors));
+        warnings = new ArrayList<String>(new LinkedHashSet<String>(warnings));
+        infos = new ArrayList<String>(new LinkedHashSet<String>(infos));
+
+        errorCount = errors.size();
+        warningCount = warnings.size();
+        infoCount = infos.size();
+
 		// dont display anything if there are no messages
 		if (errorCount + warningCount + infoCount == 0 || !displayMessages) {
 			this.setStyle("display: none;");
 		} else {
 			this.setStyle("display: visible");
 		}
-	}
+
+
+    }
 
 	/**
 	 * Gets all the messages from the list of lists passed in (which are
@@ -224,7 +244,6 @@ public class ErrorsField extends FieldBase {
 	private List<String> getMessages(View view, String key,
 			List<AutoPopulatingList<ErrorMessage>> lists) {
 		List<String> result = new ArrayList<String>();
-		tempCount = 0;
 		for (List<ErrorMessage> errorList : lists) {
 			if (errorList != null && StringUtils.isNotBlank(key)) {
 				ConfigurationService configService = KRADServiceLocator
@@ -233,7 +252,6 @@ public class ErrorsField extends FieldBase {
 				String label = "";
 
 				for (ErrorMessage e : errorList) {
-					tempCount++;
 					String message = configService.getPropertyValueAsString(e.getErrorKey());
 					if (e.getMessageParameters() != null) {
 						message = message.replace("'", "''");
@@ -255,7 +273,7 @@ public class ErrorsField extends FieldBase {
 						if (comboMessage.isEmpty()) {
 							comboMessage = message;
 						} else {
-							comboMessage = comboMessage + ", " + message;
+							comboMessage = comboMessage + ",  " + message;
 						}
 					} else {
 						// add it directly to the list - non combined messages
@@ -781,4 +799,74 @@ public class ErrorsField extends FieldBase {
 		return highlightOnError;
 	}
 
+    private String getGrowlScript(View view){
+        // growls are setup here because they are relevant to the current page, but their
+        // settings are global to the view
+        String growlScript = "";
+        if (view.isGrowlMessagingEnabled()) {
+            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
+            MessageMap messageMap = GlobalVariables.getMessageMap();
+            if (messageMap.hasErrors()) {
+                String message = configService.getPropertyValueAsString("growl.hasErrors");
+                if (StringUtils.isNotBlank(message)) {
+                    growlScript =
+                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
+                                    "general.error") + "', 'errorGrowl');";
+                }
+            }
+
+            if (messageMap.hasWarnings()) {
+                String message = configService.getPropertyValueAsString("growl.hasWarnings");
+                if (StringUtils.isNotBlank(message)) {
+                    growlScript =
+                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
+                                    "general.warning") + "', 'warningGrowl');";
+                }
+            }
+
+            if (messageMap.hasInfo()) {
+                List<String> properties = messageMap.getPropertiesWithInfo();
+                String message = "";
+                for (String property : properties) {
+                    List<AutoPopulatingList<ErrorMessage>> lists = messageMap.getInfoMessagesForProperty(property,
+                            true);
+                    for (List<ErrorMessage> errorList : lists) {
+                        if (errorList != null) {
+                            for (ErrorMessage e : errorList) {
+                                if (StringUtils.isBlank(message)) {
+                                    message = configService.getPropertyValueAsString(e.getErrorKey());
+                                } else {
+                                    message = message + "<br/>" + configService.getPropertyValueAsString(
+                                            e.getErrorKey());
+                                }
+                                if (e.getMessageParameters() != null) {
+                                    message = message.replace("'", "''");
+                                    message = MessageFormat.format(message, (Object[]) e.getMessageParameters());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (StringUtils.isNotBlank(message)) {
+                    growlScript =
+                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
+                                    "general.info") + "', 'infoGrowl');";
+                }
+            }
+        }
+        return growlScript;
+    }
+
+    public boolean isFireGrowlsForMessages() {
+        return fireGrowlsForMessages;
+    }
+
+    public void setFireGrowlsForMessages(boolean fireGrowlsForMessages) {
+        this.fireGrowlsForMessages = fireGrowlsForMessages;
+    }
+
+    public String getGrowlScript() {
+        return growlScript;
+    }
 }

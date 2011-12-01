@@ -53,70 +53,7 @@ public class PageGroup extends Group {
             prefixScript = this.getOnDocumentReadyScript();
         }
 
-        // growls are setup here because they are relevant to the current page, but their
-        // settings are global to the view
-        String growlScript = "";
-        if (view.isGrowlMessagingEnabled()) {
-            Growls gw = view.getGrowls();
-
-            //Setup defaults
-            if (!gw.getComponentOptions().isEmpty()) {
-                growlScript = "setGrowlDefaults(" + gw.getComponentOptionsJSString() + ");";
-            }
-
-            ConfigurationService configService = KRADServiceLocator.getKualiConfigurationService();
-            MessageMap messageMap = GlobalVariables.getMessageMap();
-            if (messageMap.hasErrors()) {
-                String message = configService.getPropertyValueAsString("growl.hasErrors");
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.error") + "', 'errorGrowl');";
-                }
-            }
-
-            if (messageMap.hasWarnings()) {
-                String message = configService.getPropertyValueAsString("growl.hasWarnings");
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.warning") + "', 'warningGrowl');";
-                }
-            }
-
-            if (messageMap.hasInfo()) {
-                List<String> properties = messageMap.getPropertiesWithInfo();
-                String message = "";
-                for (String property : properties) {
-                    List<AutoPopulatingList<ErrorMessage>> lists = messageMap.getInfoMessagesForProperty(property,
-                            true);
-                    for (List<ErrorMessage> errorList : lists) {
-                        if (errorList != null) {
-                            for (ErrorMessage e : errorList) {
-                                if (StringUtils.isBlank(message)) {
-                                    message = configService.getPropertyValueAsString(e.getErrorKey());
-                                } else {
-                                    message = message + "<br/>" + configService.getPropertyValueAsString(
-                                            e.getErrorKey());
-                                }
-                                if (e.getMessageParameters() != null) {
-                                    message = message.replace("'", "''");
-                                    message = MessageFormat.format(message, (Object[]) e.getMessageParameters());
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (StringUtils.isNotBlank(message)) {
-                    growlScript =
-                            growlScript + "showGrowl('" + message + "', '" + configService.getPropertyValueAsString(
-                                    "general.info") + "', 'infoGrowl');";
-                }
-            }
-        }
-
-        this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();" + growlScript);
+        this.setOnDocumentReadyScript(prefixScript + "\nsetupValidator();");
     }
 
     /**

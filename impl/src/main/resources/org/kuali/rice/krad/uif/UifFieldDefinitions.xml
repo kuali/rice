@@ -155,7 +155,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
 
   <bean id="ErrorsField_Page" parent="ErrorsField">
-    <property name="styleClasses" value="kr-errorsField kr-errorsFieldForContainer"/>
+    <property name="styleClasses" value="kr-errorsField kr-errorsFieldForContainer kr-errorsFieldForPage"/>
     <property name="additionalKeysToMatch">
       <list>
         <value>GLOBAL_ERRORS</value>
@@ -163,6 +163,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <value>GLOBAL_INFO</value>
       </list>
     </property>
+    <property name="fireGrowlsForMessages" value="true"/>
     <property name="displayErrorTitle" value="true"/>
     <property name="displayWarningTitle" value="true"/>
     <property name="displayInfoTitle" value="true"/>

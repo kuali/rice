@@ -20,6 +20,7 @@
 <%-- render component only --%>
 <html>
 	<s:nestedPath path="KualiForm">
+    <krad:template component="${KualiForm.view.currentPage.errorsField}"/>
 		<span id="${Component.id}_update">
 			<krad:template component="${Component}"/>
 		</span>

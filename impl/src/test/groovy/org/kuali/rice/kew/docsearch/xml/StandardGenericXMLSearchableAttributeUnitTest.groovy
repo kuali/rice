@@ -22,6 +22,8 @@ import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.fail
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
+import org.junit.Ignore
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute class in isolation
@@ -111,6 +113,61 @@ class StandardGenericXMLSearchableAttributeUnitTest {
                     <epilogue>this var isn't set %undefined%</epilogue>
                 </myGeneratedContent>
         """, [ def1: "val1", def2: "val2", third: "doesn't matter" ])
+    }
+
+    /* if no fields are defined, validation is moot */
+    @Test void testDocumentAttributeCriteriaIsAlwaysValidWhenNoFieldsAreDefined() {
+        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, "<validXml/>")
+        def errors = new StandardGenericXMLSearchableAttribute().validateDocumentAttributeCriteria(edb.build(), DocumentSearchCriteria.Builder.create().build())
+        assertEquals("unexpected validation errors", 0, errors.size())
+    }
+
+    private static final String STRING_FIELD_SEARCH_CONFIG = """
+    <searchingConfig>
+            <fieldDef name="givenname" title="First name">
+                <display>
+                    <type>text</type>
+                </display>
+                <visibility>
+                    <column visible="true"/>
+                </visibility>
+                <validation required="true">
+                    <regex>^[a-zA-Z ]+\$</regex>
+                    <message>Invalid first name</message>
+                </validation>
+                <fieldEvaluation>
+                    <xpathexpression>//putWhateverWordsIwantInsideThisTag/givenname/value</xpathexpression>
+                </fieldEvaluation>
+            </fieldDef>
+            <xmlSearchContent>
+                <putWhateverWordsIwantInsideThisTag>
+                    <givenname>
+                        <value>%givenname%</value>
+                    </givenname>
+                </putWhateverWordsIwantInsideThisTag>
+            </xmlSearchContent>
+        </searchingConfig>
+    """
+
+    @Test void testValidateDocumentAttributeCriteriaSimpleValue() {
+        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, STRING_FIELD_SEARCH_CONFIG)
+        def c = DocumentSearchCriteria.Builder.create();
+        c.documentAttributeValues.put("givenname", [ "jack" ] as List<String>)
+        def errors = new StandardGenericXMLSearchableAttribute().validateDocumentAttributeCriteria(edb.build(), c.build())
+        assertEquals("unexpected validation errors", 0, errors.size())
+    }
+
+    @Ignore("KULRICE-5630 work in progress")
+    @Test void testValidateDocumentAttributeCriteriaExpression() {
+        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, STRING_FIELD_SEARCH_CONFIG)
+        def c = DocumentSearchCriteria.Builder.create();
+        c.documentAttributeValues.put("givenname", [ ">= jack" ] as List<String>)
+        def errors = new StandardGenericXMLSearchableAttribute().validateDocumentAttributeCriteria(edb.build(), c.build())
+        println errors
+        assertEquals("unexpected validation errors", 0, errors.size())
     }
 
     protected void testXmlConfigValidity(String xmlConfig) {

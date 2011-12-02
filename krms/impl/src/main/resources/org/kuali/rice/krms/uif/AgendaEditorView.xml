@@ -282,9 +282,9 @@
           p:actionLabel="[-] collapse all" p:style="font-size: smaller; margin-right: 15pt;">
           <property name="actionImage"><null/></property>
         </bean>
-        <bean id="agenda_item_selected" parent="InputField" p:propertyName="selectedAgendaItemId" p:showLabel="false">
+        <bean parent="InputField" p:propertyName="selectedAgendaItemId" p:showLabel="false">
           <property name="control">
-            <bean parent="HiddenControl"/>
+            <bean parent="HiddenControl" p:styleClasses="selectedAgendaItemId"/>
           </property>
         </bean>
       </list>
@@ -520,7 +520,7 @@
                     <bean parent="InputField" p:propertyName="agendaItem.id"
                             p:showLabel="false" p:label="id" p:maxLength="255">
                       <property name="control">
-                        <bean parent="HiddenControl"/>
+                        <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
                       </property>
                     </bean>
                   </list>

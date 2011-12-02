@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 function getSelectedItemInput() {
-    return jq('input[id="agenda_item_selected_attribute"]');
+    return jq('input.selectedAgendaItemId');
+}
+
+function getRuleIdFromParentLi(parentLiNode) {
+    return jq(parentLiNode).find('input.hiddenId').first().attr('value');
 }
 
 function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {
@@ -62,7 +66,7 @@ function initAgendaTree(componentId) {
 
         // rule node clicks should set the selected item
         jq('a.ruleNode').click( function() {
-            var agendaItemId = jq(this.parentNode).find('input').attr('value');
+            var agendaItemId = getRuleIdFromParentLi(this.parentNode);
             var selectedItemTracker = getSelectedItemInput()
 
             // make li show containment of children
@@ -86,8 +90,8 @@ function initAgendaTree(componentId) {
 
         /* mark the selected node */
         jq('a.ruleNode').each( function() {
-            var agendaItemId = jq(this.parentNode).find('input').attr('value');
-            var selectedItemTracker = jq('input[id=\"agenda_item_selected_attribute\"]');
+            var agendaItemId = getRuleIdFromParentLi(this.parentNode);
+            var selectedItemTracker = getSelectedItemInput();
             var selectedItemId = selectedItemTracker.val();
 
             if (selectedItemId == agendaItemId) {

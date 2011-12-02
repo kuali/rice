@@ -18,7 +18,6 @@
 -->
 <chapter xml:id="UG_KEW" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>KEW</title>
-    <section/>
     <sect1>
         <title>Kuali Enterprise Workflow: Overview</title>
         <para>Kuali Enterprise Workflow, or KEW, is a module of Kuali Rice. KEW provides useful
@@ -221,10 +220,10 @@
             </para>
         </sect2>
     </sect1>
-    <section>
+    <sect1>
         <title>PeopleFlow - a new KEW feature</title>
         <para>(more coming here)</para>
-    </section>    
+    </sect1>    
     <sect1>
         <title>Actions</title>
         <sect2>
@@ -636,7 +635,7 @@
                     </listitem>
                 </itemizedlist></para>
             <para>Your Action List Preferences page looks like this: </para>
-            <figure><title>Action List Preferences: Example</title>
+            <figure><title>Action List Preferences: Document Route Status Colors Example</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/action_list_preferences2.png"/>
@@ -646,10 +645,10 @@
             <para>Click the Save button at the bottom of the page to make these changes in your
                 Action List.</para>
             <para>Action Lists your color changes by Status:</para>
-            <figure><title>Action List Preferences: Setup Error Message</title>
+            <figure><title>Action List Preferences: Document Route Status Colors Action List Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/action_list_error.png"/>
+                        <imagedata fileref="../images/document_route_status_colors_exp.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -1786,11 +1785,6 @@
                             <imagedata fileref="../images/edoclite_form.png"/>
                         </imageobject>
                     </inlinemediaobject></para>
-                <para><inlinemediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/edoclite_form2.png"/>
-                        </imageobject>
-                    </inlinemediaobject></para>
                 <note><para>Notes that have been added to an eDocLite document can be edited or
                     deleted.</para></note>
             </sect3>
@@ -2009,6 +2003,10 @@
     </sect1>
     <sect1>
         <title>Routing</title>
+        <para><emphasis role="bold">Please Note:</emphasis> The following secitons on routing and
+            rules are written as they relate the legacy/traditional KNS workflow. A new concept of
+            workflows, called PeopleFlows, and their use and maintenance is covered in a separate
+            section.</para>
         <sect2>
             <title>Delegate Rules and Delegation Routing Rules</title>
             <para>Rice provides a quick and convenient way to obtain information on Delegation Rules
@@ -2583,6 +2581,7 @@
                 through the <emphasis role="bold">Rule Lookup</emphasis> feature. This feature also
                 provides an entry point to creating a new Rule through the <emphasis role="bold"
                     >create new</emphasis> function.</para>
+           
             <figure><title>Workflow Channel: Routing Rules Link</title>
                 <mediaobject>
                     <imageobject>

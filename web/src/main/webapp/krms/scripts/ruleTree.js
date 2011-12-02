@@ -81,6 +81,14 @@ function ajaxPastePropositionTree(controllerMethod, collectionGroupId) {
     ajaxCallPropositionTree(controllerMethod, collectionGroupId);
 }
 
+function markNodeAsSelected(parentLiNode) {
+    if (!jq(parentLiNode).hasClass('ruleCutSelected')) {
+        jq(parentLiNode).addClass('ruleBlockSelected');
+    }
+    ;
+    // show hidden edit image link
+    jq(parentLiNode).find(".actionReveal").first().show();
+}
 function handlePropositionNodeClick(parentLiNode) {
     var propositionId = getPropositionIdFromParentLi(parentLiNode);
     var selectedItemTracker = getSelectedPropositionInput();
@@ -97,12 +105,7 @@ function handlePropositionNodeClick(parentLiNode) {
         selectedItemTracker.val('');
     } else {
         selectedItemTracker.val(propositionId);
-        if (!jq(parentLiNode).hasClass('ruleCutSelected')) {
-            jq(parentLiNode).addClass('ruleBlockSelected');
-        }
-        ;
-        // show hidden edit image link
-        jq(parentLiNode).find(".actionReveal").first().show();
+        markNodeAsSelected(parentLiNode);
     }
 }
 function initRuleTree(componentId){
@@ -143,8 +146,7 @@ function initRuleTree(componentId){
             var selectedItemId = selectedItemTracker.val();
 
             if (selectedItemId == propositionId) {
-                // simulate click, which will mark it
-                jq(this).click();
+                markNodeAsSelected(this.parentNode);
             }
 
             var cutItemTracker = getCutPropositionInput();

@@ -325,14 +325,16 @@
 
     <property name="items">
       <list>
-<!--
+
+        <!--
         <bean parent="AgendaEditorView-barButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule">
           <property name="actionImage">
-            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/add.png"
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/node-insert-next.png"
                   p:altText="Add Rule"/>
           </property>
         </bean>
--->
+        -->
+
         <!-- this is horrible this clientSideJs it appears to fix the required properties code, at least the first time
              through, after the first time, the alert pops -->
         <bean parent="NavigationActionField" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"

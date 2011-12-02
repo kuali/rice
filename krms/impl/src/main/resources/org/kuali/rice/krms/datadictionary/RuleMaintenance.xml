@@ -261,10 +261,20 @@
       <list>
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');" p:actionLabel="Add">
           <property name="actionImage">
-            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/add.png"
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/node-insert-next.png"
               p:altText="Add Proposition"/>
           </property>
         </bean>
+
+        <bean parent="AgendaEditorView-barButton"
+              p:clientSideJs="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-Tree');"
+              p:actionLabel="Add Parent">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="../krms/images/node-parent-and-child.png"
+                  p:altText="Add Parent"/>
+          </property>
+        </bean>
+
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');"
               p:actionLabel="Edit">
           <property name="actionImage">
@@ -272,6 +282,7 @@
               p:altText="Edit Proposition"/>
           </property>
         </bean>
+
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-Tree');"
               p:actionLabel="Left">
@@ -536,8 +547,8 @@
         <bean parent="ActionImageField"
               p:clientSideJs="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-Tree');">
           <property name="actionImage">
-            <bean parent="ImageField" p:source="../krms/images/parent.png"
-                  p:altText="Simple/Compound toggle"/>
+            <bean parent="ImageField" p:source="../krms/images/node-parent-and-child.png"
+                  p:altText="Add Parent"/>
           </property>
         </bean>
       </list>

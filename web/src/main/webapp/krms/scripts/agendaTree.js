@@ -95,8 +95,8 @@ function initAgendaTree(componentId) {
             var selectedItemId = selectedItemTracker.val();
 
             if (selectedItemId == agendaItemId) {
-                // simulate click, which will mark it
-                jq(this).click();
+                // add class which will visually mark it
+                jq(this.parentNode).addClass('ruleBlockSelected');
             }
         });
     });

@@ -22,10 +22,12 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -33,6 +35,7 @@ import org.kuali.rice.krad.uif.field.RemoteFieldsHolder;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
+import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -364,6 +367,10 @@ public class CollectionGroupBuilder implements Serializable {
                 context.put(UifConstants.ContextVariableNames.LINE, currentLine);
                 context.put(UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
                 context.put(UifConstants.ContextVariableNames.IS_ADD_LINE, new Boolean(lineIndex == -1));
+
+                // Adjust the condition as ExpressionUtils.adjustPropertyExpressions will only be
+                // executed after the collection is built.
+                conditionalRender = ExpressionUtils.replaceBindingPrefixes(view, lineField, conditionalRender);
 
                 Boolean render = (Boolean) getExpressionEvaluatorService().evaluateExpression(model, context,
                         conditionalRender);

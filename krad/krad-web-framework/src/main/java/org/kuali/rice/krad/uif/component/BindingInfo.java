@@ -163,7 +163,7 @@ public class BindingInfo extends ConfigurableBase implements Serializable {
      * Special check is done for org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix
      * on the property name which indicates the property path is the full path and should
      * not be adjusted. Also, if the property is prefixed with
-     * org.kuali.rice.krad.uif.UifConstants#DATA_OBJECT_BIND_ADJUST_PREFIX, this indicates we should only append the
+     * org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX, this indicates we should only append the
      * binding object path
      * </p>
      *
@@ -181,9 +181,9 @@ public class BindingInfo extends ConfigurableBase implements Serializable {
         // clear the path if explicitly set
         bindingInfoCopy.setBindingPath("");
 
-        if (propertyPath.startsWith(UifConstants.DATA_OBJECT_BIND_ADJUST_PREFIX)) {
+        if (propertyPath.startsWith(UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX)) {
             bindingInfoCopy.setBindByNamePrefix("");
-            propertyPath = StringUtils.removeStart(propertyPath, UifConstants.DATA_OBJECT_BIND_ADJUST_PREFIX);
+            propertyPath = StringUtils.removeStart(propertyPath, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX);
         }
         bindingInfoCopy.setBindingName(propertyPath);
 

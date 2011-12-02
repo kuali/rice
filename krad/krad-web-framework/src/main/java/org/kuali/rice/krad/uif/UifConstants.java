@@ -113,8 +113,9 @@ public class UifConstants {
 
     public static final String EL_PLACEHOLDER_PREFIX = "@{";
     public static final String EL_PLACEHOLDER_SUFFIX = "}";
-    public static final String NO_BIND_ADJUST_PREFIX = "form.";
-    public static final String DATA_OBJECT_BIND_ADJUST_PREFIX = "do.";
+    public static final String NO_BIND_ADJUST_PREFIX = "#form.";
+    public static final String DEFAULT_PATH_BIND_ADJUST_PREFIX = "#dp.";
+    public static final String FIELD_PATH_BIND_ADJUST_PREFIX = "#fp.";
 
     public static class ContextVariableNames {
         public static final String COLLECTION_GROUP = "collectionGroup";

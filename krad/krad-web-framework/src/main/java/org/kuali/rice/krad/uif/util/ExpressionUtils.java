@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -35,8 +36,20 @@ import java.util.Map;
 public class ExpressionUtils {
 
     /**
-     * @param view
-     * @param object
+     *  Adjusts the property expressions for a given object. Any nested properties are moved to the parent
+     *  object. Binding adjust prefixes are replaced with the correct values.
+     *
+     *  <p>
+     *  The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
+     *  as this is a placeholder indicating that the property is directly on the form.
+     *  The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
+     *  the object's field path - this is only applicable to DataFields. The
+     *  org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
+     *  by the view's default path if it is set.
+     *  </p>
+     *
+     * @param view - the parent view of the object
+     * @param object - Object to adjust property expressions on
      */
     public static void adjustPropertyExpressions(View view, Object object) {
         if (object == null) {
@@ -53,8 +66,6 @@ public class ExpressionUtils {
             propertyExpressions = ((BindingInfo) object).getPropertyExpressions();
         }
 
-        boolean defaultPathSet = StringUtils.isNotBlank(view.getDefaultBindingObjectPath());
-
         Map<String, String> adjustedPropertyExpressions = new HashMap<String, String>();
         for (Map.Entry<String, String> propertyExpression : propertyExpressions.entrySet()) {
             String propertyName = propertyExpression.getKey();
@@ -70,94 +81,70 @@ public class ExpressionUtils {
                 }
             }
 
-            adjustedPropertyExpressions.put(propertyName, expression);
+            // Replace the binding prefixes
+            String adjustedExpression = replaceBindingPrefixes(view, object, expression);
+
+            adjustedPropertyExpressions.put(propertyName, adjustedExpression);
         }
 
         // update property expressions map on object
         ObjectPropertyUtils.setPropertyValue(object, UifPropertyPaths.PROPERTY_EXPRESSIONS,
                 adjustedPropertyExpressions);
-
-        // TODO: In progress, adjusting paths in expressions
-//            if (defaultPathSet) {
-//                String adjustedExpression = "";
-//
-//                // check for expression placeholder wrapper or multiple expressions (template)
-//                if (StringUtils.contains(expression, "@{") && StringUtils.contains(expression, "}")) {
-//                    String remainder = expression;
-//
-//                    while (StringUtils.isNotBlank(remainder) && StringUtils.contains(remainder, "@{") && StringUtils
-//                            .contains(remainder, "}")) {
-//                        String beforeLiteral = StringUtils.substringBefore(remainder, "@{");
-//                        String afterBeginDelimiter = StringUtils.substringAfter(remainder, "@{");
-//                        String nestedExpression = StringUtils.substringBefore(afterBeginDelimiter, "}");
-//                        remainder = StringUtils.substringAfter(afterBeginDelimiter, "}");
-//
-//                        if (StringUtils.isNotBlank(beforeLiteral)) {
-//                            adjustedExpression += beforeLiteral;
-//                        }
-//                        adjustedExpression += "@{";
-//
-//                        if (StringUtils.isNotBlank(nestedExpression)) {
-//                            String adjustedNestedExpression = processExpression(nestedExpression,
-//                                    view.getDefaultBindingObjectPath());
-//                            adjustedExpression += adjustedNestedExpression;
-//                        }
-//                        adjustedExpression += "}";
-//                    }
-//
-//                    // add last remainder if was a literal (did not contain expression placeholders)
-//                    if (StringUtils.isNotBlank(remainder)) {
-//                        adjustedExpression += remainder;
-//                    }
-//                } else {
-//                    // treat expression as one
-//                    adjustedExpression = processExpression(expression, view.getDefaultBindingObjectPath());
-//                }
-//
-//                adjustedPropertyExpressions.put(propertyName, adjustedExpression);
-//            } else {
-//                adjustedPropertyExpressions.put(propertyName, expression);
-//            }
-//        }
-//
-
     }
 
-    protected static String processExpression(String expression, String pathPrefix) {
-        String processedExpression = "";
+     /**
+     *  Adjusts the property expressions for a given object.
+     *
+     *  <p>
+     *  The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
+     *  as this is a placeholder indicating that the property is directly on the form.
+     *  The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
+     *  the object's field path - this is only applicable to DataFields. The
+     *  org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
+     *  by the view's default path if it is set.
+     *  </p>
+     *
+     * @param view - the parent view of the object
+     * @param object - Object to adjust property expressions on
+     * @param expression - The expression to adjust
+     * @return the adjusted expression String
+     */
+    public static String replaceBindingPrefixes(View view, Object object, String expression) {
+        String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
 
-        Tokenizer tokenizer = new Tokenizer(expression);
-        tokenizer.process();
+        // Replace the field path prefix for DataFields
+        if (object instanceof DataField) {
 
-        Tokenizer.Token previousToken = null;
-        for (Tokenizer.Token token : tokenizer.getTokens()) {
-            if (token.isIdentifier()) {
-                // if an identifier, verify it is a model property name (must be at beginning of expression of
-                // come after a space)
-                String identifier = token.stringValue();
-                if ((previousToken == null) || (previousToken.isIdentifier() && StringUtils.isBlank(
-                        previousToken.stringValue()))) {
-                    // append path prefix unless specified as form property
-                    if (!StringUtils.startsWith(identifier, "form")) {
-                        identifier = pathPrefix + "." + identifier;
-                    }
-                }
-                processedExpression += identifier;
-            } else if (token.getKind().tokenChars.length != 0) {
-                processedExpression += new String(token.getKind().tokenChars);
-            } else {
-                processedExpression += token.stringValue();
-            }
+            // Get the binding path from the object
+            BindingInfo bindingInfo = ((DataField)object).getBindingInfo();
+            String fieldPath = bindingInfo.getBindingPath();
 
-            previousToken = token;
+            // Remove the property name from the binding path
+            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName() );
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX, fieldPath + ".");
+        }else{
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX, "");
         }
 
-        // remove special binding prefixes
-        processedExpression = StringUtils.replace(processedExpression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
+        // Replace the default path prefix if there is one set on the view
+        if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX, view.getDefaultBindingObjectPath() + ".");
 
-        return processedExpression;
+        }else{
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX, "");
+        }
+        return adjustedExpression;
     }
 
+    /**
+     * Moves any nested property expressions to the parent object
+     *
+     *
+     * @param object - the object containing the expression
+     * @param propertyName - the property the expression is on
+     * @param expression - the epxression
+     * @return
+     */
     protected static boolean moveNestedPropertyExpression(Object object, String propertyName, String expression) {
         boolean moved = false;
 

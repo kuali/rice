@@ -20,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.kuali.rice.core.cxf.interceptors.ImmutableCollectionsInInterceptor;
+import org.kuali.rice.ksb.impl.cxf.interceptors.ImmutableCollectionsInInterceptor;
 
 import javax.jws.WebService;
 import javax.xml.ws.Endpoint;

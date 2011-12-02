@@ -16,7 +16,7 @@
 package org.kuali.rice.core.test;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.BaselineTestCase;
 
 import javax.xml.namespace.QName;

@@ -108,6 +108,12 @@
 	      	<version>${project.version}</version>
 	      	<scope>test</scope>
 	    </dependency>
+      <dependency>
+	      	<groupId>${project.groupId}</groupId>
+	      	<artifactId>rice-ksb-web</artifactId>
+	      	<version>${project.version}</version>
+	      	<scope>test</scope>
+	    </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>${mysql.jdbc.artifactId}</artifactId>

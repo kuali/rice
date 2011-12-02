@@ -18,12 +18,11 @@ package org.kuali.rice.krad.config;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -127,7 +126,7 @@ public class KRADConfigurer extends ModuleConfigurer {
     /**
      * Returns true - KNS UI should always be included.
      *
-     * @see org.kuali.rice.core.impl.config.module.ModuleConfigurer#shouldRenderWebInterface()
+     * @see org.kuali.rice.core.framework.config.module.ModuleConfigurer#shouldRenderWebInterface()
      */
     @Override
     public boolean shouldRenderWebInterface() {

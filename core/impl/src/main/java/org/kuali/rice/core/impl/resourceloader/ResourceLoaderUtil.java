@@ -18,6 +18,7 @@ package org.kuali.rice.core.impl.resourceloader;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.api.resourceloader.ResourceLoaderException;
+import org.kuali.rice.core.api.util.ContextClassLoaderProxy;
 
 /**
  * A class for {@link org.kuali.rice.core.api.resourceloader.ResourceLoader} related utilities.

@@ -9,7 +9,12 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../kew/impl/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../kew/impl/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../kew/impl/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/impl/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/impl/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/impl/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../kew/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -57,6 +62,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
@@ -71,7 +77,6 @@
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-core:2.2.2" level="project" />

@@ -16,9 +16,7 @@
 package org.kuali.test;
 
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;

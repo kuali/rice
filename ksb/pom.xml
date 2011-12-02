@@ -28,5 +28,8 @@
   <name>Rice KSB</name>
   <modules>
   	<module>api</module>
+    <module>client-impl</module>
+    <module>server-impl</module>
+    <module>web</module>
   </modules>
 </project>

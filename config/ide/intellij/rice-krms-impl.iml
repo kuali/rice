@@ -9,7 +9,14 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/surefire-reports" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krms/impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -44,6 +51,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -72,7 +80,6 @@
     <orderEntry type="module" module-name="rice-krad-web-framework" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-core:2.2.2" level="project" />

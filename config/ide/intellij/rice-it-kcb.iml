@@ -8,7 +8,11 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kcb/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kcb/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/kcb/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/kcb/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/kcb/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -59,6 +63,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hibernate:hibernate-entitymanager:3.6.7.Final" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
@@ -73,7 +78,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
     <orderEntry type="module" module-name="rice-kim-framework" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.tiles:tiles-core:2.2.2" level="project" />
@@ -139,6 +143,8 @@
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />
     <orderEntry type="module" module-name="rice-core-web" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-client-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />

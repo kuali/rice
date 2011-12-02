@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.resourceloader.ServiceLocator;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.api.util.ContextClassLoaderProxy;
 
 import javax.xml.namespace.QName;
 import java.util.HashSet;

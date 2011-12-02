@@ -16,15 +16,11 @@
 package org.kuali.rice.edl.impl.config;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
-import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
-import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
-import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
+import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
@@ -33,8 +29,6 @@ import org.kuali.rice.kew.api.KewApiConstants.ClientProtocol;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 

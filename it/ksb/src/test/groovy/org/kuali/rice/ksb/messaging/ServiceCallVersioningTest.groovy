@@ -33,7 +33,7 @@ import org.kuali.rice.ksb.test.KSBTestCase
 
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder
 import org.kuali.rice.core.api.config.property.Config
-import org.kuali.rice.core.cxf.interceptors.ServiceCallVersioningHelper
+import org.kuali.rice.ksb.impl.cxf.interceptors.ServiceCallVersioningHelper
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard
 

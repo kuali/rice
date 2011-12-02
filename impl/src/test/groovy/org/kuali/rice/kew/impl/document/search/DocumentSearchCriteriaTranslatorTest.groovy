@@ -28,7 +28,7 @@ import org.kuali.rice.kew.api.KewApiConstants
 import org.junit.Before
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 
-import org.kuali.rice.core.impl.resourceloader.SimpleServiceLocator
+import org.kuali.rice.core.framework.resourceloader.SimpleServiceLocator
 import org.kuali.rice.core.api.CoreConstants
 import javax.xml.namespace.QName
 import org.kuali.rice.core.framework.config.property.SimpleConfig

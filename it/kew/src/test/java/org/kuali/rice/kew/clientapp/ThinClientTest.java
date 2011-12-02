@@ -25,8 +25,8 @@ import org.junit.Ignore;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kew.test.KEWTestCase;
 
 /**

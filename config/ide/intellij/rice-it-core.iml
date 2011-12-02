@@ -8,7 +8,11 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/resources/META-INF" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../it/core/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -45,6 +49,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -73,7 +78,6 @@
     <orderEntry type="module" module-name="rice-krad-web-framework" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-core:2.2.2" level="project" />
@@ -101,7 +105,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: xml-resolver:xml-resolver:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-api:2.3.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-common-utilities:2.3.6" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.ws.commons.schema:XmlSchema:1.4.7" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.apache.ws.commons.schema:XmlSchema:1.4.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.woodstox:woodstox-core-asl:4.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.woodstox:stax2-api:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.neethi:neethi:2.0.5" level="project" />
@@ -143,6 +147,8 @@
     <orderEntry type="module" module-name="rice-kew-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
     <orderEntry type="module" module-name="rice-core-web" />
+    <orderEntry type="module" module-name="rice-ksb-client-impl" />
+    <orderEntry type="module" module-name="rice-ksb-server-impl" />
     <orderEntry type="module" module-name="rice-location-framework" />
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />

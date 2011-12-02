@@ -9,7 +9,14 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/api/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/surefire-reports" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -37,7 +44,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.9" level="project" />

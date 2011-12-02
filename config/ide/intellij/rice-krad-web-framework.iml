@@ -9,7 +9,14 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/src/test/groovy" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/test-annotations" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/annotations" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/classes" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/surefire-reports" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../krad/krad-web-framework/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -55,6 +62,7 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: xapool:xapool:1.5.0-patch3" level="project" />
@@ -70,7 +78,6 @@
     <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />

@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.location.config;
 
-import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;

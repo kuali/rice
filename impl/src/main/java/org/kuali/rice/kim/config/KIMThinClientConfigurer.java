@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.config;
 
-import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 
 import java.util.Collections;
 import java.util.List;

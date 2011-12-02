@@ -17,10 +17,9 @@ package org.kuali.rice.ken.test;
 
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
-import org.kuali.rice.core.impl.resourceloader.RiceResourceLoaderFactory;
-import org.kuali.rice.core.impl.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -83,7 +82,8 @@ public abstract class KENTestCase extends BaselineTestCase {
             @Override
             public void start() throws Exception {
                 // get the composite Rice Spring context
-                BeanFactory moduleContext = CompositeBeanFactory.createBeanFactory(RiceResourceLoaderFactory.getSpringResourceLoaders());
+                BeanFactory moduleContext = CompositeBeanFactory.createBeanFactory(
+                        RiceResourceLoaderFactory.getSpringResourceLoaders());
                 // This method sets up the Spring services so that they can be accessed by the tests.
                 services = new SpringNotificationServiceLocator(moduleContext);
                 // grab the module's transaction manager

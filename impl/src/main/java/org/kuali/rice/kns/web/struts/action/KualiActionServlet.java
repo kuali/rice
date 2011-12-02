@@ -30,7 +30,7 @@ import org.apache.commons.collections.iterators.IteratorEnumeration;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;

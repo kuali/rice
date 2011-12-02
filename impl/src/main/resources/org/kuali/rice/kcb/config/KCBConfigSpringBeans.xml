@@ -70,7 +70,7 @@
 		</property>
 	</bean>
 
-	<bean id="kcbConfigurer" class="org.kuali.rice.core.impl.config.module.ModuleConfigurer">
+	<bean id="kcbConfigurer" class="org.kuali.rice.core.framework.config.module.ModuleConfigurer">
 		<property name="moduleName" value="KCB" />
 		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">

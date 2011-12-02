@@ -18,7 +18,7 @@ package org.kuali.rice.krms.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.impl.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 
 /**
  * This class handles the Spring based KRMS configuration that is part of the Rice Configurer that must 

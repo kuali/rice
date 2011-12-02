@@ -6,6 +6,67 @@
         <webroots>
           <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/webapp" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" />
+          <root url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" />
+        </sourceRoots>
+      </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration>
+        <fileset id="fileset1" name="Uif" removed="false">
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AdHocRoutePerson.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AdHocRouteWorkgroup.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/Attachment.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/DataDictionaryBaseTypes.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/Note.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/NoteType.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifControlDefinitions.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifFieldDefinitions.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifGroupDefinitions.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</file>
+          <file>file://$MODULE_DIR$/../../../impl/src/main/resources/org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</file>
+          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/uif/PeopleFlowViews.xml</file>
+          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowMemberBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowDelegateBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../kew/impl/src/main/resources/org/kuali/rice/kew/impl/datadictionary/PeopleFlowBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ActionBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/uif/AgendaEditorView.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaItemBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/AgendaMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/CategoryBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ContextBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/ContextMaintenanceDocument.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/uif/ContextMaintenanceView.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/KrmsAttributeDefinitionBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/PropositionBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleAttributeBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/RuleMaintenance.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermParameterBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../krms/impl/src/main/resources/org/kuali/rice/krms/datadictionary/TermSpecificationBo.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsView.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP2.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP3.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP4.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP5.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP6.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP7.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP8.xml</file>
+          <file>file://$MODULE_DIR$/../../../sampleapp/src/main/resources/edu/sampleu/demo/kitchensink/UifComponentsViewP9.xml</file>
+        </fileset>
       </configuration>
     </facet>
   </component>
@@ -13,16 +74,17 @@
     <output url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../sampleapp">
+      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/it/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/test-annotations" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-b2-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/rice-sampleapp-2.0.0-b3-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/test-classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../sampleapp/target/war" />

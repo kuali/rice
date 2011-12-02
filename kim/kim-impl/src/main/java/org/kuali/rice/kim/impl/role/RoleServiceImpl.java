@@ -810,7 +810,52 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                 results = ModelObjectUtils.buildImmutableCopy(membershipsWithDelegations);
             }
     	}
-
+    	
+    	// sort the results if a single role type service can be identified for
+        // all the matching role members
+        if ( results.size() > 1 ) {
+            // if a single role: easy case
+            if ( matchingRoleIds.size() == 1 ) {
+                String roleId = matchingRoleIds.iterator().next();
+                RoleTypeService roleTypeService = getRoleTypeService( roleId );
+                //it is possible that the the roleTypeService is coming from a remote application 
+                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+                try {
+                    if ( roleTypeService != null ) {
+                        results = roleTypeService.sortRoleMembers( results );
+                    }
+                } catch (Exception ex) {
+                    LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+                }
+            } else if ( matchingRoleIds.size() > 1 ) {
+                // if more than one, check if there is only a single role type service
+                String prevServiceName = null;
+                boolean multipleServices = false;
+                for ( String roleId : matchingRoleIds ) {
+                    String serviceName = KimApiServiceLocator.getKimTypeInfoService().getKimType(getRole(roleId).getKimTypeId()).getServiceName();
+                    if ( prevServiceName != null && !StringUtils.equals( prevServiceName, serviceName ) ) {
+                        multipleServices = true;
+                        break;
+                    }
+                    prevServiceName = serviceName;
+                }
+                if ( !multipleServices ) {
+                    String roleId = matchingRoleIds.iterator().next();
+                    //it is possible that the the roleTypeService is coming from a remote application 
+                    // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
+                    try {                       
+                        RoleTypeService kimRoleTypeService = getRoleTypeService( roleId );
+                        if ( kimRoleTypeService != null ) {
+                            results = kimRoleTypeService.sortRoleMembers( results );
+                        }
+                    } catch (Exception ex) {
+                        LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + roleId, ex);
+                    }
+                } else {
+                    LOG.warn( "Did not sort role members - multiple role type services found.  Role Ids: " + matchingRoleIds );
+                }
+            }
+        }
         return Collections.unmodifiableList(results);
     }
 

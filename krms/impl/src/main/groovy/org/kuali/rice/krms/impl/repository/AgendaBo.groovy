@@ -17,6 +17,8 @@ package org.kuali.rice.krms.impl.repository
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract
+import org.apache.commons.lang.StringUtils
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 
 
 public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDefinitionContract {
@@ -57,11 +59,24 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
 
     public void setAttributes(Map<String, String> attributes, Map<String, String> attributeIds) {
         attributeBos = []
+
+        Map<String, KrmsAttributeDefinition> attributeDefinitionsByName = Collections.emptyMap();
+        if (!StringUtils.isBlank(typeId)) {
+            attributeDefinitionsByName = new HashMap<String, KrmsAttributeDefinition>();
+
+            List<KrmsAttributeDefinition> attributeDefinitions = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().findAttributeDefinitionsByType(typeId);
+            if (attributeDefinitions != null) for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
+                attributeDefinitionsByName.put(attributeDefinition.getName(), attributeDefinition);
+            }
+        }
+
         for (attr in attributes) {
+            KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.key);
+
             def AgendaAttributeBo attributeBo = new AgendaAttributeBo()
             attributeBo.setId(attributeIds.get(attr.key))
             attributeBo.setAgendaId(id)
-            attributeBo.setAttributeDefinitionId(KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().getAttributeDefinitionByNameAndNamespace(attr.key, this.context.namespace).id)
+            attributeBo.setAttributeDefinitionId((attributeDefinition == null) ? null : attributeDefinition.id);
             attributeBo.setValue(attr.value)
             attributeBos.add(attributeBo)
         }

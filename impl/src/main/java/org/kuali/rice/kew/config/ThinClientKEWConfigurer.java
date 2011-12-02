@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.config;
 
-import org.kuali.rice.kim.config.KIMThinClientConfigurer;
-import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
-
 /**
  * A configurer which configures KEW Thin-Client mode.
  *      

@@ -41,11 +41,27 @@
                     web applications targetted at a wide range of user types.</para>
             </listitem>
             <listitem>
-                <para>KNS has very little built-in rich user interface support whereas KRAD includes
+                <para>KNS has little built-in rich user interface support whereas KRAD includes
                     this.</para>
             </listitem>
             <listitem>
-                <para>KNS is Struts 1.x based whereas KRAD is Spring-MVC based.</para>
+                <para>KNS is Struts 1.x based whereas KRAD is Spring-MVC based.  </para>
+                <para><emphasis role="bold">KRAD uses the following:</emphasis></para>
+            </listitem>
+            <listitem>
+                <para>Spring Beans and Expression Language </para>
+            </listitem>
+            <listitem>
+                <para>Apache Tiles as the templating engine</para>
+            </listitem>
+            <listitem>
+                <para>Fluid Skinning System for CSS</para>
+            </listitem>
+            <listitem>
+                <para>jQuery as the javascript library, including jQuery UI widgets</para>
+            </listitem>
+            <listitem>
+                <para>And other plugins providing functionality, such as AJAX</para>
             </listitem>
         </itemizedlist>
         <section>
@@ -210,12 +226,9 @@
             way to enforce a data type for a user input value. There wasn't a way to say, for
             instance, that one or another field was required - either a field was required or it
             wasn't. </para>
-        <para>Such logic, not that much more complex, all required a Java-based rules solution.
-            However, thanks to some enterprising collaboration across the Kuali Student and Kuali
-            Rice teams, the data dictionary for KRAD expanded beyond the KNS data dictionary and
-            gained a lot of power in the validation space. Much more complex logic is available than
-            ever before. Not only that, but it can be enabled to work on the client side via
-            JavaScript as well. </para>
+        <para>Such logic, not that much more complex, all required a Java-based rules solution. Much
+            more complex logic is available than ever before. Not only that, but it can be enabled
+            to work on the client side via JavaScript as well. </para>
         <para>Finally, for even more flexibility, the processors which act on the constraints have
             been pulled out into injectable classes - meaning that applications can override the
             logic for a constraint if needed. Furthermore, constraints need not act only on
@@ -760,16 +773,34 @@
             not needed.)</para>
     </section>
     <section>
-        <title>(other? E/R diagrams?, binding paths?, pointer to javadocs?)</title>
-    </section>
-    <section>
         <title>Installing and Configuring KRAD</title>
         <para>Before developing with KRAD and after installing and configuring Rice, here are the
             additional steps you'll need to follow to configure KRAD before starting to develop an
-            application:</para>
-        <para>(Include instructions for setting up a Rice project, include assumptions for what is
-            already done and not covered in the instructions, such as setting up all else needed for
-            development environment - what are pre-reqs, what are co-reqs, etc..)</para>
+            application.</para>
+        <para>
+            <para>This information below assumes you already have Rice installed and configured for
+                your database.  Below are the additional tasks required to configure KRAD.  For more
+                information, see the KRAD Installation Guide and KRAD javadocs.</para>
+        </para>
+        <para>(TBD - Revise the section heads below as needed and then populate with info.  Include
+            instructions for setting up a Rice project, include assumptions for what is already done
+            and not covered in the instructions, such as setting up all else needed for development
+            environment - what are pre-reqs, what are co-reqs, etc..)</para>
+        <section>
+            <title>Creating the KRAD database tables / connections to data?</title>
+        </section>
+        <section>
+            <title>KRAD Configurer and RiceConfigurer?</title>
+        </section>
+        <section>
+            <title>Configuring Spring and MVC?</title>
+        </section>
+        <section>
+            <title>Module Configuration – Loading Data Dictionary and OJB Files?</title>
+        </section>
+        <section>
+            <title>Other KRAD Configuration Parameters?</title>
+        </section>
     </section>
     <section>
         <title>Building application pages using KRAD</title>
@@ -1067,35 +1098,6 @@
         <title>Converting KNS pages to KRAD</title>
     </section>
     <section>
-        <title>(other?)</title>
+        <title>(other? E/R diagrams?, binding paths?, pointer to javadocs?)</title>
     </section>
-    <sect1>
-        <title/>
-        <para>
-            <para>This information below assumes you already have Rice installed and configured for
-                your database.  Below are the additional tasks required to configure KRAD.  For more
-                information, see the KRAD Installation Guide and KRAD javadocs.</para>
-        </para>
-        <para>(TBD - Revise the section heads below as needed and then populate with info).</para>
-        <para>
-            <sect2>
-                <title>Creating the KRAD database tables / connections to data?</title>
-            </sect2>
-            <sect2>
-                <title>KRAD Configurer and RiceConfigurer?</title>
-            </sect2>
-            <sect2>
-                <title>Configuring Spring and MVC?</title>
-            </sect2>
-            <sect2>
-                <title>Module Configuration – Loading Data Dictionary and OJB Files?</title>
-            </sect2>
-            <sect2>
-                <title>Other KRAD Configuration Parameters?</title>
-            </sect2>
-        </para>
-        <sect2>
-            <title/>
-        </sect2>
-    </sect1>
 </chapter>

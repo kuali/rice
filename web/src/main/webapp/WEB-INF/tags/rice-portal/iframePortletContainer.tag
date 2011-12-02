@@ -32,11 +32,11 @@
   jQuery(function() {
     var if_height = ${frameHeight};
     var if_width;
-    var if_prev_height
-    var thisIframe = jQuery("iframe[src='${channelUrl}']");
+    var channelUrlEscaped = "${channelUrl}".replace(/'/g,"\\'");
+    var thisIframe = jQuery("iframe[src='"+ channelUrlEscaped + "']");
 
     //find iframe source host
-    var iframeSrc = '${channelUrl}';
+    var iframeSrc = "${channelUrl}";
     var regex = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im');
     var receivingMessages = false;
     var intervalId;
@@ -76,7 +76,7 @@
           //add parent url to hash of iframe to pass it in, it will be stored in the cookie of that
           //frame for its future page navigations so it can communicate back with postMessage
           var parentUrl = document.location.href;
-          var newUrl = '${channelUrl}' + '#' + encodeURIComponent(parentUrl);
+          var newUrl = "${channelUrl}" + '#' + encodeURIComponent(parentUrl);
           jQuery(thisIframe).attr("src", newUrl);
           //Also put it in the cookie in this context incase the page being viewed in the iframe switches
           //to the same host

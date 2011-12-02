@@ -44,11 +44,9 @@
             <para>KRAD supports the KNS document types - Lookups, Inquiries, and Maintenance pages -
                 while it also provides more flexibility in user interface layouts, for example,
                 beyond the "vertical" tab section and collection layouts that are supported by KNS.   </para>
-            <para>(more in progress here)</para>
         </sect2>
         <sect2>
             <title>KRAD Conceptual View</title>
-            <para>(more to come here)</para>
             <para><inlinemediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRAD%20classes%201.png" scalefit="1"/>
@@ -226,11 +224,11 @@
                 <title>KRAD Input Fields</title>
                 <para>An Input field enables user input. This means that this "grouped" field
                     control will display an entry field for user input, and can optionally include
-                    instructions, watermarks, constraint text,  a lookup widget, inquiry widget, or
-                    help widget, and includes a place for  error messages associated with the field
-                    to appear.  This could arguably be considered the most complex of all fields,
-                    and additional information on this field can be found in the Technical Reference
-                    Guide (TRG) and Developers' Guide.</para>
+                    instructions, watermarks, constraint text, a lookup widget, inquiry widget, or
+                    help widget, and includes a place for error messages associated with the field
+                    to appear. This could arguably be considered the most complex of all fields, and
+                    additional information on this field can be found in the  Developers'
+                    Guide.</para>
                 <figure>
                     <mediaobject>
                         <imageobject>
@@ -244,10 +242,8 @@
             <section>
                 <title>Other KRAD Fields </title>
                 <para>There are many other field types provided by KRAD, but none are as complex and
-                    rich as the input field.  Below is a listing and information on several of the
-                    other provided types.  For a full list, see the "KRAD Conceptual View -  KRAD
+                    rich as the input field.  For a full list, see the "KRAD Conceptual View - KRAD
                     classes" in the Architecture Overview section above.</para>
-                <para>(more to come)</para>
             </section>
         </section>
         <section>
@@ -263,7 +259,4 @@
             </section>
         </section>
     </section>
-    <sect1>
-        <para>(more coming here)</para>
-    </sect1>
 </chapter>

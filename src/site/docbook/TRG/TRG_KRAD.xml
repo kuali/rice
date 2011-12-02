@@ -16,13 +16,1086 @@
     limitations under the License.
 
 -->
-<chapter xml:id="TRG_KRAD" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<chapter xml:id="TRG_KRAD" xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KRAD</title>
-    <sect1>
+    <section>
         <title>KRAD Overview</title>
+        <para>New for Rice 2.0, the Kuali Rapid Application Development (KRAD) framework eases the
+            development of enterprise web applications by providing reusable solutions and tooling
+            that enable developers to build in a rapid and agile fashion.   KRAD is a complete
+            framework for web developers that provides infrastructure in all the major areas of an
+            application (client, business, and data), and integrates with other modules of the Rice
+            middleware project.</para>
+        <para>KRAD expands the Kuali development platform and will eventually replace the Kuali
+            Nervous System (KNS).  KRAD supports the KNS document types - Lookups, Inquiries, and
+            Maintenance pages - while it also provides more flexibility in user interface layouts,
+            for example, beyond the "vertical" tab section and collection layouts typical of
+            KNS-based applications.  In addition, KRAD eliminates the need for a transaction
+            document type, as maintenance documents can now handle full transactional
+            interactions.</para>
+        <para>KRAD differs from KNS in some key ways:</para>
+        <itemizedlist>
+            <listitem>
+                <para>The KNS look-and-feel was targetted at administrative users, KRAD enables rich
+                    web applications targetted at a wide range of user types.</para>
+            </listitem>
+            <listitem>
+                <para>KNS has very little built-in rich user interface support whereas KRAD includes
+                    this.</para>
+            </listitem>
+            <listitem>
+                <para>KNS is Struts 1.x based whereas KRAD is Spring-MVC based.</para>
+            </listitem>
+        </itemizedlist>
+        <section>
+            <title>Key KRAD Features</title>
+            <para>Built upon a rich JQuery library of standards and Fluid Skinning System's (FSS)
+                set of cascading style sheets, KRAD provides a set of rich user Interface
+                components, such as the following.  Note that jQuery themes are widget-oriented,
+                while the FSS provides support for whole pages and applications, so they are
+                compatible with each other.</para>
+            <para>The key KRAD User Interface Framework (UIF) components include, but are not
+                limited to, the following:<itemizedlist>
+                    <listitem>
+                        <para>Navigation objects:  Left menu and Horizontal tabs navigation</para>
+                    </listitem>
+                    <listitem>
+                        <para>Layout managers:  Grid, Box, Table and Stacked</para>
+                    </listitem>
+                    <listitem>
+                        <para>Widgets:  Light-box, Disclosure, Breadcrumb,  Date picker, Growl,
+                            Direct inquiry, Inquiry,  QuickFinder, RichTable, Suggest, Tabs,
+                            Tree</para>
+                    </listitem>
+                    <listitem>
+                        <para>Controls: Checkbox, Checkbox group, File, KIM Group, Hidden, Select,
+                            TextArea, Text, User</para>
+                    </listitem>
+                    <listitem>
+                        <para>Containers: Group, Link group, Navigation group, Tab group, Tree
+                            group</para>
+                    </listitem>
+                    <listitem>
+                        <para>Fields:  Input field, Field Group, Action, Ajax Action, Blank, Data,
+                            Errors, Generic, Header, iFrame, Image, Label, Link, Lookup Input,
+                            Message </para>
+                    </listitem>
+                    <listitem>
+                        <para>View Types: Lookup, Inquiry, Maintenance, Transactional   </para>
+                    </listitem>
+                    <listitem>
+                        <para>General Features:  Constraints (simple, valid characters, case, must
+                            occurs, dependency, custom), Watermarks, Help summary &amp; description,
+                            Messages (constraint, instructional, required, error, informational,
+                            warning), Validation (client-side, dirty fields validation, exception
+                            handling - incident page), Remote fields, Progressive Disclosure,  Audo
+                            Code-name translation (auto-completion), Dialogs (questions and
+                            prompts), Focus and anchoring handling, Tabbing order, Field queries,
+                            Information properties, Hidden properties, Default Values, Disabled,
+                            Alternate and Additional Display Properties,  Read-Only fields request
+                            override, Attribute security and masking, Add/Delete line handling, Form
+                            Edit Modes, Property editors, Property replacers, Component refresh,
+                            Component Modifiers, Collection filters, Show/Hide inactive, EL Language
+                            for XML Config, Support for all JS events, Integration with KIM and
+                            KEW.</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>For example, see the information below on KRAD's Input field, and how this field
+                can be grouped with others of the constructs listed above to make for a richer UI
+                experience than what was possible in KNS.</para>
+            <para>An Input field enables user input. This means that this "grouped" field control
+                will display an entry field for user input, and can optionally include instructions,
+                watermarks, constraint text, a lookup widget, inquiry widget, or help widget, and
+                includes a place for error messages associated with the field to appear. This could
+                arguably be considered the most complex of all fields, and additional information on
+                this field can be found in the  Developers' Guide.</para>
+            <figure>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD%20-%20Input%20Field.png"
+                            contentdepth="400"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>The information below provides additional conceptual and relational information on
+                the KRAD architecture, classes and user interface patterns that are supported
+                "out-of-the-box.</para>
+        </section>
+    </section>
+    <section>
+        <title>KRAD Conceptual view</title>
+        <para><inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KRAD%20classes%201.png" scalefit="1"/>
+                </imageobject>
+            </inlinemediaobject></para>
+        <para>For additional high-level views of information on the layout managers and fields, see
+            the KRAD Users' Guide.  </para>
+    </section>
+    <section>
+        <title>KRAD Relational View</title>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="../../../../../Documents/KRAD/KRAD%20image%20test%201.png"
+                    scalefit="1"/>
+            </imageobject>
+        </mediaobject>
+    </section>
+    <section>
+        <title>KRAD Data Dictionary</title>
+        <para>(Need direction on what of the KNS information should be copied here and what other
+            new information should be included.)  </para>
+        <para>KRAD enhancements to the Data Dictionary include, but are not limited to, the
+            following:</para>
+        <itemizedlist>
+            <listitem>
+                <para>Simple Constraints, Min/Max</para>
+            </listitem>
+            <listitem>
+                <para>Valid Characters Constraints</para>
+            </listitem>
+            <listitem>
+                <para>Dependency Constraints</para>
+            </listitem>
+            <listitem>
+                <para>Lookup Constraints</para>
+            </listitem>
+            <listitem>
+                <para>Conditional Logic Constraints </para>
+            </listitem>
+            <listitem>
+                <para>Occurrences Constraints - Collection size constraints</para>
+            </listitem>
+            <listitem>
+                <para>Constraints on the client side</para>
+            </listitem>
+            <listitem>
+                <para>Changing Error Messages</para>
+            </listitem>
+            <listitem>
+                <para>Custom Constraints </para>
+            </listitem>
+        </itemizedlist>
+        <para>In the earliest versions of the Kuali Nervous System, it was recognized that forcing
+            developers to write Java-based rules to check if a required field was filled in or if it
+            matched a date pattern was a hefty load of work that easily could be transferred to the
+            data dictionary. </para>
+        <para>Every AttributeDefinition defined for a property of a data object had the ability to
+            be paired with a validation. For instance, let's take a generic date field from KFS's
+            org/kuali/kfs/sys/businessobject/datadictionary/GenericAttributes.xml file.</para>
+        <para><emphasis role="bold"><emphasis role="underline">Code snippet example follows:
+                </emphasis></emphasis></para>
+        <para>1. &lt;bean id="GenericAttributes-genericDate"
+            parent="GenericAttributes-genericDate-parentBean"/> </para>
+        <para>2. &lt;bean id="GenericAttributes-genericDate-parentBean" abstract="true"
+            parent="AttributeDefinition"> </para>
+        <para>3. &lt;property name="name" value="genericDate"/> </para>
+        <para>4. &lt;property name="forceUppercase" value="false"/> </para>
+        <para>5. &lt;property name="label" value="Generic Date Style Attribute"/> </para>
+        <para>6. &lt;property name="shortLabel" value="GenericDate"/> </para>
+        <para>7. &lt;property name="maxLength" value="22"/> </para>
+        <para>8. &lt;property name="validationPattern" ref="DateValidation" /> </para>
+        <para>9. &lt;property name="control" ref="DateControl" /> </para>
+        <para>10. &lt;property name="formatterClass"
+            value="org.kuali.rice.kns.web.format.DateFormatter"/> </para>
+        <para>11. &lt;/bean> </para>
+        <para>It's a simple enough example, but lines 7 and 8 pack quite a bit of power.  Together,
+            they limit the length of the field to a size which can fit in the database (evidently
+            twenty-two characters) and they add the DateValidation, which requires that any user
+            input fits a certain pattern defined as a regular expression. Two lines of
+            configuration, and the developer gets a fair amount of error checking. </para>
+        <para>That's wonderful, of course, but it has limits.  For example, there's no way to only
+            run constraints based on the values present in other attributes. There wasn't a general
+            way to enforce a data type for a user input value. There wasn't a way to say, for
+            instance, that one or another field was required - either a field was required or it
+            wasn't. </para>
+        <para>Such logic, not that much more complex, all required a Java-based rules solution.
+            However, thanks to some enterprising collaboration across the Kuali Student and Kuali
+            Rice teams, the data dictionary for KRAD expanded beyond the KNS data dictionary and
+            gained a lot of power in the validation space. Much more complex logic is available than
+            ever before. Not only that, but it can be enabled to work on the client side via
+            JavaScript as well. </para>
+        <para>Finally, for even more flexibility, the processors which act on the constraints have
+            been pulled out into injectable classes - meaning that applications can override the
+            logic for a constraint if needed. Furthermore, constraints need not act only on
+            AttributeDefinitions; new interfaces have been developed which allow any configuration
+            class to participate in being validated. Obviously, there's a lot of functionality to
+            cover - from the classic constraints which continue on in the framework to the powerful
+            constraints that the Kuali Student team contributed to KRAD. </para>
+        <para>The information below includes an overview of the specific "built-in" KRAD constraints
+            available to developers. We'll also cover the architecture of the constraint framework,
+            with a special emphasis on how constraint logic may be overridden, how new constraints
+            would be constructed, and how non-attributes could have Constraint logic built for
+            them.</para>
+        <para>Information on each of the KRAD-packaged constraints is below, followed by a look at
+            the constraint architecture itself. </para>
+        <section>
+            <title>Simple Constraints, Min / Max</title>
+            <para>As is covered in more detail in the previous Constraint Architecture section that
+                follows this documentation on the constraints packaged with KRAD,  every constraint
+                in KRAD implements the <emphasis role="italic"
+                    >org.kuali.rice.kns.datadictionary.validation.constraint.Constraint</emphasis>
+                interface. This interface is a simple marker interface. Children of that interface
+                tend to define the data they would need from the configuration to figure out if the
+                value put into the attribute is valid or not. </para>
+            <para>For instance, in the <emphasis role="italic"
+                    >GenericAttributes-genericDate</emphasis> example in the introduction section
+                above, the maxLength property is set to 22. One would expect a length-based
+                constraint to require a getMaxLength() method which could then be fed to the
+                Constraint to find the maximum length. </para>
+            <para>org.kuali.rice.kns.datadictionary.validation.constraint.SimpleConstraint defines
+                what we might call a "nervous system classic" constraint. It is built from normal
+                fields on AttributeDefinition - required; maxLength and minLength (the latter has
+                been added as part of KRAD); exclusiveMin and exclusiveMax; and finally, minOccurs
+                and maxOccurs, which will be covered in more detail below. </para>
+            <para>The required constraint, of course, means that some value must be set for the
+                attribute. The maxLength and minLength attributes typically apply to String data,
+                which must be a certain size. Likewise, exclusiveMin and exclusiveMax apply to
+                numeric data which must fit within some set range.</para>
+        </section>
+        <section>
+            <title>Valid Characters Constraints</title>
+            <para>Another hold over from the Kuali Nervous System constraints,
+                ValidCharactersConstraint exists to make sure that a String value matches against a
+                regular expression. For instance, let's say that a KRAD application requires that
+                all phone numbers must be in the form of (###) ###-#### (Evidently, the attribute
+                does not yet accept international numbers...but as developers, we must rest assured
+                that's coming, and is the requirement.) </para>
+            <para>In the data dictionary for that attribute, the following could be set. </para>
+            <para><emphasis role="bold"><emphasis role="underline">Code snippet example
+                        follows:</emphasis></emphasis></para>
+            <para>1. &lt;bean id="DataObject-phoneNumber" parent="AttributeDefinition"> </para>
+            <para>2. &lt;property name="name" value="phoneNumber" /> </para>
+            <para>3. &lt;property name="validCharactersConstraint"> </para>
+            <para>4. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint"> </para>
+            <para>5. &lt;property name="value" value="\(\d{3}\) \d{3}-\d{4}" /> </para>
+            <para>6. &lt;/bean> </para>
+            <para>7. &lt;/property> </para>
+            <para>8. &lt;/bean> </para>
+            <para>In lines 3 through 7, we set the validCharactersConstraint property on the
+                AttributeDefinition, handing the bean we just created a regex which should match the
+                phone number pattern which the requirements say all phone numbers should match. </para>
+            <para>This regex is passed in as the value property to the ValidCharactersConstraint
+                bean. A number of ValidCharacterConstraints are defined in <emphasis role="italic"
+                    >org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</emphasis>.
+                Among those are "UrlPatternConstraint", "DatePatternConstraint",
+                "CreditcardPatternConstraint", "NonWhitespacePatternConstraint",
+                "IntegerPatternConstraint", "PhoneUSPatternConstraint", and "TimePatternConstraint",
+                as a mere sampling. As of the time of this writing (May 2011), the constraints only
+                worked for javascript side validation. However, work was being done to build server
+                side equivalencies of all of these patterns. </para>
+            <para>Finally, note that the ValidCharactersConstraint has a second property, "jsValue".
+                In most cases, Java's regular expression engine (ValidCharactersConstraint uses the
+                built-in regular expression engine) will accept the same expressions as the
+                JavaScript engine. That's good, because the same regular expression can be passed to
+                the client and handled client side, as will be covered in more detail soon. </para>
+            <para>The best idea is to keep validation regular expressions to the use of broadly
+                supported features (outside of POSIX, which Java supports but which most JavaScript
+                engines do not), and keep on eye on engine comparison pages such as
+                http://en.wikipedia.org/wiki/Comparison_of_regular_expression_engines. The KRAD team
+                is attempting to avoid differences, though, and create a single pattern for both
+                JavaScript and Java. </para>
+        </section>
+        <section>
+            <title>Dependency Constraints</title>
+            <para>Dependency constraints are used to define a set of PrerequisiteConstraint
+                dependencies on an attribute. A PreRequisiteConstraint is simply used to denote that
+                some other attribute be required. If the attribute is non-empty and has dependency
+                constraints, each pre-requisite constraint attribute must also be non-empty. Note
+                the prerequisite constraint is also used in the MustOccurConstraint. Unlike the
+                MustOccurConstraint which requires that a minimum or maximum number of prerequisite
+                constraints be satisfied, a dependency constraint requires that all pre-requisite
+                constraints be satisfied. </para>
+            <para><emphasis role="bold"><emphasis role="underline">A code snippet example
+                        follows:</emphasis></emphasis></para>
+            <para>1. &lt;bean id="DataObject-phoneNumber" parent="AttributeDefinition"> </para>
+            <para>2. &lt;property name="name" value="phoneNumber" /> </para>
+            <para>3. &lt;property name="dependencyConstraints"> </para>
+            <para>4. &lt;list> </para>
+            <para>5. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
+                p:attributePath="phoneExtension" /> </para>
+            <para>6. &lt;/list> </para>
+            <para>7. &lt;/property> </para>
+            <para>8. &lt;/bean> In this case, if phoneNumber is non-empty, then phoneExtension must
+                be non-empty as well.</para>
+        </section>
+        <section>
+            <title>Lookup Constraints</title>
+            <para>These are constraints on values returned from lookups into an attribute. As of the
+                time of this writing, they're still in process of implementation. </para>
+        </section>
+        <section>
+            <title>Conditional Logic Constraints</title>
+            <para>All of the constraints so far covered are static, in a fashion. Once declared,
+                they will apply to their attributes no matter what. However, let's say that a
+                constraint should only be tested when the attribute has a certain value. How could
+                the constraint be turned off if that value isn't present and only be applied if the
+                attribute has the given value? </para>
+            <para>The final constraint to look at is <emphasis role="italic"
+                    >org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint</emphasis>,
+                which will turn on and off child constraints if attributes match certain values. The
+                classic example of using this is in an international address form. If the country
+                code is the United States, then the state code should be filled in as well. If the
+                country code is for Canada or Turkey, a province should be filled in. That would be
+                done via a configuration like this.</para>
+            <para><emphasis role="bold"><emphasis role="underline">A code snippet example
+                        follows:</emphasis></emphasis>
+            </para>
+            <para>1. &lt;bean id="DataObject-countryCode" parent="AttributeDefinition"> </para>
+            <para>2. &lt;property name="name" value="countryCode" /> </para>
+            <para>3. &lt;property name="caseConstraint"> </para>
+            <para>4. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint"> </para>
+            <para>5. &lt;property name="whenConstraint"> </para>
+            <para>6. &lt;list> </para>
+            <para>7. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint"> </para>
+            <para>8. &lt;property name="values"> </para>
+            <para>9. &lt;list> </para>
+            <para>10. &lt;value>US&lt;/value> </para>
+            <para>11. &lt;/list> </para>
+            <para>12. &lt;/property> </para>
+            <para>13. &lt;property name="constraint"> </para>
+            <para>14. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
+                p:attributePath="state" /> </para>
+            <para>15. &lt;/property> </para>
+            <para>16. &lt;/bean> </para>
+            <para>17. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint"> </para>
+            <para>18. &lt;property name="values"> </para>
+            <para>19. &lt;list> </para>
+            <para>20. &lt;value>CA&lt;/value> </para>
+            <para>21. &lt;value>TR&lt;/value> </para>
+            <para>22. &lt;/list> </para>
+            <para>23. &lt;/property> </para>
+            <para>24. &lt;property name="constraint"> </para>
+            <para>25. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
+                p:attributePath="province" /> </para>
+            <para>26. &lt;/property> </para>
+            <para>27. &lt;/bean> </para>
+            <para>28. &lt;/list> </para>
+            <para>29. &lt;/property> </para>
+            <para>30. &lt;/bean> </para>
+            <para>31. &lt;/property> </para>
+            <para>32. &lt;/bean> </para>
+            <para>Obviously, for such a powerful constraint, configuration becomes a bit more
+                complex. A <emphasis role="italic">CaseConstraint</emphasis> has a List of <emphasis
+                    role="italic">WhenConstraints</emphasis>. <emphasis role="italic"
+                    >WhenConstraints</emphasis> match values to constraints that should be run when
+                the attribute's value matches the <emphasis role="italic"
+                >WhenConstraint</emphasis>'s values. Here, values are hard coded (lines 8 through 12
+                and lines 18 through 23) but they need not be. If the values are in other
+                attributes, a List of valuePaths can be specified. </para>
+            <para>A <emphasis role="italic">WhenConstraint</emphasis> also has one child constraint
+                to match. In both of the <emphasis role="italic">WhenConstraints</emphasis> above, a
+                    <emphasis role="italic">PrerequisiteConstraint</emphasis> is used to make sure
+                that another attribute - either state or province - is non-empty (lines 14 and 25).
+                Any Constraint could be used as the child of the <emphasis role="italic"
+                    >WhenConstraint</emphasis> - a SimpleConstraint, another CaseConstraint, and so
+                on. The ability to turn on and off constraints such can lead to very powerful
+                validations being built directly in the DataDictionary. </para>
+        </section>
+        <section>
+            <title>Ocurrences Constraints</title>
+            <para>An occurrence constraint states that for a given attribute to be valid, a certain
+                number of prerequisite conditions must be matched. A prerequisite condition simply
+                means that another attribute with a specified attribute path is non-empty (so
+                Strings must have some text in them; Collections must have at least one member; or
+                the attribute must otherwise not be null). These constraints thus handle situations
+                where one or more of a number of fields are required. </para>
+            <para>An occurrence constraint is specified via the MustOccurConstraint constraint.
+                Let's say that an application requires either a phone number, an e-mail address, or
+                a time for showing up be specified as contact information. The following example
+                sets up that validation in the data dictionary, adding the error to the phone number
+                attribute (though the same constraint could be copied to the other attributes just
+                as easily).</para>
+            <para><emphasis role="bold"><emphasis role="underline">A code snippet example follows:
+                    </emphasis></emphasis></para>
+            <para>1. &lt;bean id="DataObject-phoneNumber" parent="DataObjectEntry"> </para>
+            <para>2. &lt;property name="objectClass" value="edu.sampleu.contact.ContactInformation"
+                /> </para>
+            <para>3. &lt;property name="mustOccurConstraints"> </para>
+            <para>4. &lt;list> </para>
+            <para>5. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
+            <para>6. &lt;property name="min" value="1" /> </para>
+            <para>7. &lt;property name="max" value="3" /> </para>
+            <para>8. &lt;property name="prerequisiteConstraints"> </para>
+            <para>9. &lt;list> </para>
+            <para>10. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
+                p:attributePath="phoneNumber"/> </para>
+            <para>11. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
+                p:attributePath="emailAddress"/> </para>
+            <para>12. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
+                p:attributePath="showUpTime"/> </para>
+            <para>13. &lt;/list> </para>
+            <para>14. &lt;/property> </para>
+            <para>15. &lt;/bean> </para>
+            <para>16. &lt;/list> </para>
+            <para>17. &lt;/property> </para>
+            <para>18. &lt;/bean> </para>
+            <para>Lines 1 and 2 surprising show that this constraint has been set at the
+                DataObjectEntry level, not that of the AttributeDefinition. While
+                MustOccurConstraints can be set in pretty much the same way on AttributeDefinitions,
+                since several attributes are involved, it makes more sense to have the validation at
+                a higher level. At the time of this writing, MustOccurConstraint is the only
+                validation which can be set at the DataObjectLevel. </para>
+            <para>The min and max properties of lines 6 and 7 tell the constraint how many of the
+                following properties must be present and the maximum number of filled in properties
+                we expect. Here, the min is 1 - so at least one of the properties must be filled in
+                - and the max is 3, so if all three are filled in, the validation will still work
+                fine. If there was a desire to only have one attribute filled in, the max could have
+                been set to 1. </para>
+            <para>The MustOccurConstraint has a list of prerequisiteConstraints - lines 8 through 14
+                - which describe which attributes are grouped by this constraint. </para>
+            <para>A MustOccurConstraint can also have a list of child MustOccurConstraints. Why
+                would such a thing be desirable? Because it provides a way to set up nested
+                validations. Let's say that, instead of specifying a show up time, we had an address
+                which needed to be filled in. If that was the case, we'd need every field of the
+                address - street, city, state, and zip filled in - for the constraint to pass. In
+                that case, we would have left min and max at 1 and 3 respectively; but instead of
+                line 12, we would have specified a value for the property mustOccurConstraints at
+                line 15, and added a list of constraints asking for all the address attributes to be
+                filled in. </para>
+        </section>
+        <section>
+            <title>Collection Size Constraints</title>
+            <para>Another common rule situation is when a collection is the child of a data object
+                or document, and for that data object or document to be valid, a certain number of
+                elements must be available in the collection. For instance, on an Add Course
+                Document, one would expect the "courses" collection to have at least one course in
+                it and to be less than the total number of courses a student is allowed to take in a
+                semester or quarter. Therefore in the data dictionary entry for the data object, one
+                adds a constraint as follows,</para>
+            <para><emphasis role="bold"><emphasis role="underline">A code snippet example follows:
+                    </emphasis></emphasis></para>
+            <para>1. &lt;bean name="AddCourseDocument" parent="BusinessObjectEntry"> </para>
+            <para>2. ... </para>
+            <para>3. &lt;property name="collections"> </para>
+            <para>4. &lt;list> </para>
+            <para>5. &lt;bean parent="CollectionDefinition" p:name="courses" p:label="Courses"> </para>
+            <para>6. &lt;property name="minOccurs" value="1" /> </para>
+            <para>7. &lt;property name="maxOccurs" value="74" /> </para>
+            <para>8. &lt;/bean> </para>
+            <para>9. &lt;/list> </para>
+            <para>10. &lt;/property> </para>
+            <para>11. ... </para>
+            <para>12. &lt;/bean> </para>
+            <para>Evidently, some students can take up to seventy four classes. Busy student.
+                CollectionSizeConstraint is handled as a special type of SimpleConstraint (though
+                only for use with CollectionDefinitions). Simply set the minOccurs and maxOccurs for
+                the attribute and there will be an error if the collection size falls outside those
+                limits. Naturally, either the minOccurs or maxOccurs can be left out for collections
+                which should be unbounded in either lower or upper size limit.</para>
+        </section>
+        <section>
+            <title>Constraints on the client side</title>
+            <para>One of the tasks that org.kuali.rice.kns.uif.field.AttributeField does in its
+                Finalization stage is to convert constraints to JavaScript. For all of the following
+                constraints, AttributeField automatically will push the Constraint to the client
+                side: </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Exclusive Minimum and Inclusive Maximum constraints </para>
+                    </listitem>
+                    <listitem>
+                        <para>ValidCharactersConstraint </para>
+                    </listitem>
+                    <listitem>
+                        <para>CaseConstraint </para>
+                    </listitem>
+                    <listitem>
+                        <para>DependencyConstraint </para>
+                    </listitem>
+                    <listitem>
+                        <para>MustOccursConstraint </para>
+                    </listitem>
+                    <listitem>
+                        <para>PreRequisiteConstraint </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>When the user attempts to take action on the page, this level of Constraints will
+                kick in - meaning that feedback comes much more quickly. These constraints will
+                always be called when buttons such as save, submit, or approve - buttons where
+                business logic would typically be evaluated - are clicked. They will also occur on
+                onBlur's for most fields. </para>
+            <para>There are, however, certain constraints which apply to multiple fields:
+                CaseConstraints and PreRequisiteConstraints, to name two instances. Which onBlur
+                issues the error among all of those fields? Generally, KRAD attempts to not give an
+                error until the user has gone past a point where she or he could have prevented said
+                error. For instance, if oneField has a DependencyConstraint on two other fields, but
+                those two other fields render later and lower on the page, then KRAD will associate
+                the validation with the last, bottom-most field of those the constraint applies to.
+                In an interesting corollary, KRAD will issue an error on the onFocus event for a
+                field which has already been visited if an error occurs with that field. </para>
+            <para>Of course, the constraints are still run just the same on the server side once the
+                page has been submitted; that way, if the user has scripting turned off, the
+                constraints are still run and user input data gets validated. </para>
+        </section>
+        <section>
+            <title>Changing Error Messages</title>
+            <para>All of the covered constraints are associated with standard error messages. For
+                instance, if a "required" constraint has been violated, the user will get the
+                following message: </para>
+            <para>Phone Number is a required field. </para>
+            <para>This has taken the label from the attribute which violated the constraint and
+                formatted that into the standard error.required message in the
+                KR-ApplicationResources.properties file. </para>
+            <para>With most of the constraints, the message can be overridden on the constraint, by
+                specifying the "labelKey" property. For instance, a configuration like this: </para>
+            <para><emphasis role="bold"><emphasis role="underline">Code snippet example
+                        follows:</emphasis></emphasis></para>
+            <para>1. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
+            <para>2. &lt;property name="min" value="1" /> </para>
+            <para>3. &lt;property name="max" value="3" /> </para>
+            <para>4. &lt;property name="labelKey" value="error.must.be.able.to.track.down" /> </para>
+            <para>Instead of using the standard message, the error message that is shown will be the
+                message associated with the "error.must.be.able.to.track.down" key. This allows for
+                a great deal more flexibility in what message gets displayed - though, the classic
+                messages will still show up as they always did if nothing else is specified.</para>
+        </section>
+        <section>
+            <title>Constraint Architecture (building a custom constraint)</title>
+            <para>The constraints that come standard with KRAD provide a lot of power through
+                configuration.  For example, validating user input will be easier than ever. And the
+                constraint sub-system of KRAD was built with the realization that even more
+                constraints will be added in the future. Because of that, there needs to be an easy
+                way for Kuali application developers or even future versions of Rice to add new
+                constraints into the system. And so, there is. </para>
+            <para>A constraint is a marker interface which is implemented by any Constraint bean
+                (Java). These Constraint beans are purely configuration - they only hold what regex
+                should be parsed against, if a field is required or not: basic information. The
+                Constraint, in turn, is passed to an implementation of
+                org.kuali.rice.kns.datadictionary.validation.processor.ConstraintProcessor. </para>
+            <para>Note that implementations of ConstraintProcessors can be genericized with both the
+                type of value that the processor expects and the type of Constraint that the
+                processor will work on. Most ConstraintProcessor implementations only genericize the
+                Constraint, accepting any Object as a value to validate. </para>
+            <section>
+                <title>ConstraintProcessor Methods</title>
+            </section>
+            <para>ConstraintProcessors have four methods: </para>
+            <itemizedlist>
+                <listitem>
+                    <para>First, the getName() method returns the name that the constraint processor
+                        holds. </para>
+                </listitem>
+                <listitem>
+                    <para>The getConstraintType() method returns the implementation of Constraint
+                        that this processor has the business logic for. </para>
+                </listitem>
+                <listitem>
+                    <para>The isOptional() method returns a boolean: true if the processor can be
+                        turned off in certain situations by another piece of code, false otherwise. </para>
+                    <para>The only constraint which is currently optional is the
+                        ExistenceConstraint; it is turned off by passing a false in the
+                        doOptionalProcessing parameter of
+                        DictionaryValidationService#processConstraints. </para>
+                </listitem>
+                <listitem>
+                    <para>The final method is the one that contains the ConstraintProcessor's
+                        business logic: process. Process takes in DictionaryValidationResult, a
+                        value of some type, the Constraint information to apply to the value, and an
+                        AttributeValueReader if the value needs yet to be read; it returns an
+                        instance of
+                        org.kuali.rice.kns.datadictionary.validation.result.ProcessorResult. </para>
+                </listitem>
+            </itemizedlist>
+            <para>ProcessorResults typically wrap instances of
+                org.kuali.rice.kns.datadictionary.validation.result.ConstraintValidationResult. A
+                ConstraintValidationResult encapsulates a number of possible outcomes for the
+                validation, all generated by
+                org.kuali.rice.kns.datadictionary.validation.result.DictionaryValidationResult. </para>
+            <para>DictionaryValidationResult's addError method, for example, returns a
+                ConstraintValidationResult which contains an error about a constraint being broken.
+                Likewise, DictionaryValidationResult's addSuccess method indicates that the result
+                of the constraint test was positive - the value passed the constraint. </para>
+            <para>The other outcomes that DictionaryValidationResult can generate is addWarning -
+                which gives an informative message that something is wrong with the attribute's
+                value but which will not "fail"; addSkipped, which says that the value could not be
+                tested and therefore the validation was not run; and finally addNoConstraint, which
+                means that the constraint was configured in such way as to not run for the given
+                value or at all. </para>
+            <para>DictionaryValidationResults wrap ConstraintValidationResults in a way which
+                provides easy access to these results in the data dictionary. These
+                ConstraintValidationResults are passed back to KRAD wrapped within the
+                ProcessorResults; the ProcessorResults then ensures that proper logic - whether that
+                be the display of a message, the stopping of logic, or - if everything passed -
+                carrying on with the transaction - occurs. </para>
+            <section>
+                <title>ConstraintProcessor interface</title>
+            </section>
+            <para>That covers ConstraintProcessors. Now on to how they are called from within an
+                application.   An implementation of
+                org.kuali.rice.kns.service.DictionaryValidationService is responsible for checking
+                all of the attributes which are passed in as part of a request into a KRAD form. The
+                configuration of the default implementation of DictionaryValidationService has all
+                of the ConstraintProcessors for KRAD passed into it.  See the following code
+                snippets.  For example, if we assume the following 5 lines of code, </para>
+            <para>3. &lt;property name="collectionConstraintProcessors"> </para>
+            <para>4. &lt;list> </para>
+            <para>5. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/> </para>
+            <para>6. &lt;/list> </para>
+            <para>7. &lt;/property></para>
+            <para>Lines 3 through 7 above are the collectionConstraintProcessors - constraints which
+                apply to collections. Here is where CollectionSizeConstraint - the constraint that
+                handles the maxOccurs and minOccurs constraint attributes - goes. </para>
+            <para>In line 5, the CollectionSizeConstraintProcessor is injected in.
+                DictionaryValidationServiceImpl then matches the active Constraints on an attribute
+                with the ConstraintProcessors passed in, and runs the logic against the constrained
+                attribute. If the ConstraintProcessor acts only on a single attribute, it is passed
+                into the elementConstraintProcessor property.</para>
+            <section>
+                <title>ConstraintProvider interfaces</title>
+            </section>
+            <para>ConstraintProcessors are supplied to engines which validate against constraints -
+                DictionaryValidationServiceImpl, for instance - via ConstraintProviders.  Different
+                implementations of the <emphasis role="italic"
+                    >org.kuali.rice.kns.datadictionary.validation.constraint.provider.ConstraintProvider</emphasis>
+                interface can exist; their job is to map an implementation of Constrainable (a
+                simple interface all Constraints implement) to constraint processors, as can be seen
+                in lines 29-79 below.  </para>
+            <para>The usefulness of ConstraintProviders can be seen in the example. Lines 31-64
+                shows the mapping for the AttributeDefinitionConstraintProvider - constraints which
+                can be run against an attribute definition. Lines 65-77 shows that only one
+                constraint - the MustOccurConstraint - can be run for
+                ObjectDictionaryEntryConstraintProviders, meaning this is the sole constraint
+                supported by data dictionary entries for entire data objects. </para>
+            <para><emphasis role="bold"><emphasis role="underline">Code snippet example
+                        follows:</emphasis></emphasis></para>
+            <para>29. &lt;property name="constraintProviders"> </para>
+            <para>30. &lt;list> </para>
+            <para>31. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider"> </para>
+            <para>32. &lt;!-- </para>
+            <para>33. individual constraint resolvers can be injected as a map keyed by constraint
+                type as string, or the default </para>
+            <para>34. resolvers can be instantiated into the map by adding 'init-method="init"' to
+                the bean declaration above </para>
+            <para>35. --> </para>
+            <para>36. &lt;property name="resolverMap"> </para>
+            <para>37. &lt;map> </para>
+            <para>38. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint"> </para>
+            <para>39. &lt;ref bean="dictionaryValidationCaseConstraintResolver"/> </para>
+            <para>40. &lt;/entry> </para>
+            <para>41. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint"> </para>
+            <para>42. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
+            <para>43. &lt;/entry>  </para>
+            <para>44. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint"> </para>
+            <para>45. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
+            <para>46. &lt;/entry> </para>
+            <para>47. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint"> </para>
+            <para>48. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
+            <para>49. &lt;/entry> </para>
+            <para>50. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint"> </para>
+            <para>51. &lt;ref bean="dictionaryValidationValidCharactersConstraintResolver"/> </para>
+            <para>52. &lt;/entry> </para>
+            <para>53. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"> </para>
+            <para>54. &lt;ref bean="dictionaryValidationPrerequisiteConstraintsResolver"/> </para>
+            <para>55. &lt;/entry> </para>
+            <para>56. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
+            <para>57. &lt;ref bean="dictionaryValidationMustOccurConstraintsResolver"/> </para>
+            <para>58. &lt;/entry> </para>
+            <para>59. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint"> </para>
+            <para>60. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
+            <para>61. &lt;/entry> </para>
+            <para>62. &lt;/map> </para>
+            <para>63. &lt;/property> </para>
+            <para>64. &lt;/bean> </para>
+            <para>65. &lt;bean
+                class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider"> </para>
+            <para>66. &lt;!-- </para>
+            <para>67. individual constraint resolvers can be injected as a map keyed by constraint
+                type as string, or the default </para>
+            <para>68. resolvers can be instantiated into the map by adding 'init-method="init"' to
+                the bean declaration above </para>
+            <para>69. --> </para>
+            <para>70. &lt;property name="resolverMap"> </para>
+            <para>71. &lt;map> </para>
+            <para>72. &lt;entry
+                key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
+            <para>73. &lt;ref bean="dictionaryValidationMustOccurConstraintsResolver"/> </para>
+            <para>74. &lt;/entry> </para>
+            <para>75. &lt;/map> </para>
+            <para>76. &lt;/property> </para>
+            <para>77. &lt;/bean> </para>
+            <para>78. &lt;/list> </para>
+            <para>79. &lt;/property> </para>
+            <para>80. &lt;/bean></para>
+            <para>Other ConstraintProviders packed into Rice at the time of this writing are
+                CollectionDefinitionConstraintProvider - constraints which work for collection
+                definitions; and ComplexAttributeDefinitionConstraintProvider, which supports
+                constraints for "ComplexAttributeDefinitions" - data dictionary entries for
+                attributes on one DataObject which are represented by another data object.</para>
+        </section>
+    </section>
+    <section>
+        <title>KRAD Business Objects? </title>
+        <para>(Need direction on what of the KNS information should be copied here and what new
+            information should be included or if this section is not needed.)</para>
+    </section>
+    <section>
+        <title>KRAD Class Libraries?</title>
+        <para>(Need direction on what new information should be included here or if this section is
+            not needed.)</para>
+    </section>
+    <section>
+        <title>(other? E/R diagrams?, binding paths?, pointer to javadocs?)</title>
+    </section>
+    <section>
+        <title>Installing and Configuring KRAD</title>
+        <para>Before developing with KRAD and after installing and configuring Rice, here are the
+            additional steps you'll need to follow to configure KRAD before starting to develop an
+            application:</para>
+        <para>(Include instructions for setting up a Rice project, include assumptions for what is
+            already done and not covered in the instructions, such as setting up all else needed for
+            development environment - what are pre-reqs, what are co-reqs, etc..)</para>
+    </section>
+    <section>
+        <title>Building application pages using KRAD</title>
+        <para>This information assumes you've already installed Rice.  Once Rice is installed and
+            set up, you can use KRAD to build applications.   You can use the code snippet templates
+            covered below, and you can look through the codebase itself or the sample application to
+            see the code snippets for each of the KRAD features, and then copy/paste them to use in
+            your developing application.</para>
+        <section>
+            <title>KRAD Templates</title>
+            <para>Live templates contain predefined code fragments. You can use them to insert
+                frequently-used or custom code constructs into your source code file quickly,
+                efficiently, and accurately. </para>
+            <section>
+                <title>Loading the KRAD Templates</title>
+                <para>The following have been tested in the IntelliJ IDE.</para>
+                <para>Download the KRAD Templates File and place into the following location:
+                    (ACTION/TO-DO -- Need to specify the link where we will maintain this
+                    long-term!)</para>
+                <para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>Windows: &lt;your home directory>\.&lt;product name>&lt;version
+                                number>\config\templates </para>
+                        </listitem>
+                        <listitem>
+                            <para>Linux: ~\.&lt;product name>&lt;version number>\config\templates
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>MacOS: ~/Library/Preferences/&lt;product name>&lt;version
+                                number>/templates</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+            </section>
+            <section>
+                <title>Using Templates</title>
+                <para>While in an XML file, type the template abbreviation and then the space key.
+                    The completion key (setup as space) can be changed if desired by going to
+                    settings-live templates. Your cursor will then be inserted into the location
+                    specified by the template (marked with the $END$ variable).</para>
+            </section>
+            <section>
+                <title>Available KRAD Templates</title>
+                <para>
+                    <table frame="border">
+                        <caption>Available KRAD Templates</caption>
+                        <thead>
+                            <tr>
+                                <th> Abbreviation </th>
+                                <th> Description </th>
+                                <th> Code </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@</td>
+                                <td>Inserts the expression placeholders</td>
+                                <td>@{$END}</td>
+                            </tr>
+                            <tr>
+                                <td>action  </td>
+                                <td>Generates an action field</td>
+                                <td>&lt;bean parent="ActionField" p:actionLabel="$END$"
+                                    p:methodToCall=""/></td>
+                            </tr>
+                            <tr>
+                                <td>alink</td>
+                                <td>Generates an action link field</td>
+                                <td>&lt;bean parent="ActionLinkField" p:actionLabel="$END$"
+                                    p:methodToCall=""/></td>
+                            </tr>
+                            <tr>
+                                <td>be</td>
+                                <td>Generates a bean tag</td>
+                                <td>&lt;bean parent="$END$"/></td>
+                            </tr>
+                            <tr>
+                                <td>cc</td>
+                                <td>Generates a checkbox control</td>
+                                <td>&lt;bean parent="CheckboxControl"/></td>
+                            </tr>
+                            <tr>
+                                <td>cgc</td>
+                                <td>Generate a checkbox group control</td>
+                                <td>&lt;property name="control"> &lt;bean
+                                    parent="CheckboxGroupControl"/> &lt;/property> &lt;property
+                                    name="optionsFinder"> &lt;bean class="$END$"/>
+                                    &lt;/property></td>
+                            </tr>
+                            <tr>
+                                <td>dc</td>
+                                <td>Generates a date control</td>
+                                <td>&lt;bean parent="DateControl" p:size="$END$"/></td>
+                            </tr>
+                            <tr>
+                                <td>fc</td>
+                                <td>Generates a file control</td>
+                                <td>&lt;bean parent="FileControl" p:size="$END$"/></td>
+                            </tr>
+                            <tr>
+                                <td>fg</td>
+                                <td>Generates a field group</td>
+                                <td>&lt;bean parent="FieldGroup" p:label="$END$"> &lt;property
+                                    name="items"> &lt;list> &lt;/list> &lt;/property>
+                                    &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>fi</td>
+                                <td>Generates a field inquiry</td>
+                                <td>&lt;property name="fieldInquiry.dataObjectClassName"
+                                    value="$END$ $CLASS$"/> &lt;property
+                                    name="fieldInquiry.inquiryParameters" value=""/></td>
+                            </tr>
+                            <tr>
+                                <td>fl</td>
+                                <td>Generates a field lookup</td>
+                                <td>&lt;property name="fieldLookup.dataObjectClassName" value="$END$
+                                    $CLASS$"/> &lt;property name="fieldLookup.fieldConversions"
+                                    value=""/> &lt;property name="fieldLookup.lookupParameters"
+                                    value=""/></td>
+                            </tr>
+                            <tr>
+                                <td>fs</td>
+                                <td>Generates a field suggest</td>
+                                <td>&lt;property name="fieldSuggest.render" value="true"/>
+                                    &lt;property
+                                    name="fieldSuggest.suggestQuery.dataObjectClassName"
+                                    value="$END$ $CLASS$"/> &lt;property
+                                    name="fieldSuggest.sourcePropertyName" value=""/></td>
+                            </tr>
+                            <tr>
+                                <td>group</td>
+                                <td>Generates a group</td>
+                                <td>&lt;bean id="$END$" parent="Group" p:title=""
+                                    p:instructionalText=""> &lt;property name="items"> &lt;list>
+                                    &lt;/list> &lt;/property> &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>hfg</td>
+                                <td>Generates a field group with horizontal layout</td>
+                                <td>&lt;bean parent="HorizontalFieldGroup" p:label="$END$">
+                                    &lt;property name="items"> &lt;list> &lt;/list> &lt;/property>
+                                    &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>image</td>
+                                <td>Generates an image field</td>
+                                <td>&lt;bean parent="ImageField" p:label="$END$" p:altText=""
+                                    p:source="@#ConfigProperties['krad.externalizable.images.url']"/></td>
+                            </tr>
+                            <tr>
+                                <td>input</td>
+                                <td>Generates an input field</td>
+                                <td>&lt;bean parent="InputField" p:propertyName="$END$" p:label="">
+                                    &lt;property name="control"> &lt;/property> &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>link</td>
+                                <td>Generates a link field</td>
+                                <td>&lt;bean parent="LinkField" p:linkLabel="$END$"
+                                    p:hrefText=""/></td>
+                            </tr>
+                            <tr>
+                                <td>mess</td>
+                                <td>Generates a message field</td>
+                                <td>&lt;bean parent="MessageField" p:messageText="$END$"/></td>
+                            </tr>
+                            <tr>
+                                <td>page</td>
+                                <td>Generates a page</td>
+                                <td>&lt;bean id="$END$" parent="Page" p:title=""> &lt;property
+                                    name="items"> &lt;list> &lt;/list> &lt;/property>
+                                    &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>prop</td>
+                                <td>Inserts a property tag </td>
+                                <td>&lt;property name="$END$" value=""/> </td>
+                            </tr>
+                            <tr>
+                                <td>rc</td>
+                                <td>Generates a radio group control</td>
+                                <td>&lt;property name="control"> &lt;bean
+                                    parent="RadioGroupControl"/> &lt;/property> &lt;property
+                                    name="optionsFinder"> &lt;bean class="$END$"/>
+                                    &lt;/property></td>
+                            </tr>
+                            <tr>
+                                <td>sc</td>
+                                <td>Generates a select control</td>
+                                <td>&lt;property name="control"> &lt;bean parent="SelectControl"/>
+                                    &lt;/property> &lt;property name="optionsFinder"> &lt;bean
+                                    class="$END$"/> &lt;/property></td>
+                            </tr>
+                            <tr>
+                                <td>section</td>
+                                <td>Generates a section group</td>
+                                <td>&lt;bean id="$END$" parent="GroupSection" p:title=""
+                                    p:instructionalText=""> &lt;property name="items"> &lt;list>
+                                    &lt;/list> &lt;/property> &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>sstack</td>
+                                <td>Generates a collection group section with stacked layout</td>
+                                <td>&lt;bean id="$END$" parent="CollectionGroupSection"
+                                    p:layoutManager.numberOfColumns="" p:title=""
+                                    p:instructionalText=""> &lt;property
+                                    name="collectionObjectClass" value="$CLASS$"/> &lt;property
+                                    name="propertyName" value=""/> &lt;property
+                                    name="layoutManager.summaryTitle" value="" /> &lt;property
+                                    name="layoutManager.summaryFields" value="" /> &lt;property
+                                    name="items"> &lt;list> &lt;/list> &lt;/property>
+                                    &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>stable</td>
+                                <td>Generates a collection group section with table layout</td>
+                                <td>&lt;bean id="$END$" parent="CollectionGroupSectionTableLayout"
+                                    p:layoutManager.numberOfColumns="" p:title=""
+                                    p:instructionalText=""> &lt;property
+                                    name="collectionObjectClass" value="$CLASS$"/> &lt;property
+                                    name="propertyName" value=""/> &lt;property
+                                    name="layoutManager.sequencePropertyName" value=""/>
+                                    &lt;property name="items"> &lt;list> &lt;/list> &lt;/property>
+                                    &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>stack</td>
+                                <td>Generates a collection group with stacked layout</td>
+                                <td>&lt;bean id="$END$" parent="CollectionGroup"
+                                    p:layoutManager.numberOfColumns="" p:title=""
+                                    p:instructionalText=""> &lt;property
+                                    name="collectionObjectClass" value="$CLASS$"/> &lt;property
+                                    name="propertyName" value=""/> &lt;property
+                                    name="layoutManager.summaryTitle" value="" /> &lt;property
+                                    name="layoutManager.summaryFields" value="" /> &lt;property
+                                    name="items"> &lt;list> &lt;/list> &lt;/property>
+                                    &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>table</td>
+                                <td>Generates a collection group with table layout</td>
+                                <td>&lt;bean id="$END$" parent="CollectionGroupTableLayout"
+                                    p:layoutManager.numberOfColumns="" p:title=""
+                                    p:instructionalText=""> &lt;property
+                                    name="collectionObjectClass" value="$CLASS$"/> &lt;property
+                                    name="propertyName" value=""/> &lt;property
+                                    name="layoutManager.sequencePropertyName" value=""/>
+                                    &lt;property name="items"> &lt;list> &lt;/list> &lt;/property>
+                                    &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td>tac</td>
+                                <td>Generates a text area control</td>
+                                <td>&lt;bean parent="TextAreaControl" p:rows="$END$"
+                                    p:cols=""/></td>
+                            </tr>
+                            <tr>
+                                <td>tc</td>
+                                <td>Generates a text control</td>
+                                <td>&lt;bean parent="TextControl" p:size="$END$"/></td>
+                            </tr>
+                            <tr>
+                                <td>view</td>
+                                <td>Generates a view</td>
+                                <td>&lt;bean id="$END$" parent="FormView"> &lt;property name="title"
+                                    value=""/> &lt;property name="navigation"> &lt;ref bean=""/>
+                                    &lt;/property> &lt;property name="items"> &lt;list> &lt;/list>
+                                    &lt;/property> &lt;property name="additionalCssFiles" ref=""/>
+                                    &lt;property name="additionalJsFiles" ref=""/> &lt;property
+                                    name="viewHelperServiceClassName" value=""/> &lt;property
+                                    name="defaultBindingObjectPath" vaue=""/> &lt;property
+                                    name="formClass" value=""/> &lt;/bean></td>
+                            </tr>
+                            <tr>
+                                <td/>
+                                <td/>
+                                <td/>
+                            </tr>
+                        </tbody>
+                    </table>
+                </para>
+            </section>
+            <section>
+                <title>Creating your own Templates</title>
+                <para>See <link>http://www.jetbrains.com/idea/webhelp/live-templates.html</link>
+                </para>
+                <para>Please post back and share!</para>
+            </section>
+        </section>
+    </section>
+    <section>
+        <title>Converting KNS pages to KRAD</title>
+    </section>
+    <section>
+        <title>(other?)</title>
+    </section>
+    <sect1>
+        <title/>
+        <para>
+            <para>This information below assumes you already have Rice installed and configured for
+                your database.  Below are the additional tasks required to configure KRAD.  For more
+                information, see the KRAD Installation Guide and KRAD javadocs.</para>
+        </para>
+        <para>(TBD - Revise the section heads below as needed and then populate with info).</para>
+        <para>
+            <sect2>
+                <title>Creating the KRAD database tables / connections to data?</title>
+            </sect2>
+            <sect2>
+                <title>KRAD Configurer and RiceConfigurer?</title>
+            </sect2>
+            <sect2>
+                <title>Configuring Spring and MVC?</title>
+            </sect2>
+            <sect2>
+                <title>Module Configuration – Loading Data Dictionary and OJB Files?</title>
+            </sect2>
+            <sect2>
+                <title>Other KRAD Configuration Parameters?</title>
+            </sect2>
+        </para>
         <sect2>
-            <title>What is KRAD?</title>
-            <para></para>
+            <title/>
         </sect2>
     </sect1>
 </chapter>

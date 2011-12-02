@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -153,9 +153,6 @@
     <ojdbc14.jar.location>${jdbc.drivers.location}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar</ojdbc14.jar.location>
 
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
-    <javadoc.plugin.version>2.8</javadoc.plugin.version>
-    <project.info.reports.plugin.version>2.4</project.info.reports.plugin.version>
-    <kuali.site.plugin.version>3.0-beta-3</kuali.site.plugin.version>
     <surefire.plugin.version>2.9</surefire.plugin.version>
     <failsafe.plugin.version>2.9</failsafe.plugin.version>
     <source.plugin.version>2.1.2</source.plugin.version>
@@ -692,11 +689,6 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
           <version>1.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>${project.info.reports.plugin.version}</version>
         </plugin>
 
         <plugin>
@@ -1935,3 +1927,4 @@
   </scm>
 
 </project>
+

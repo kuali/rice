@@ -146,7 +146,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	  <property name="displayFieldLabelWithMessages" value="true"/>
 	  <property name="displayNestedMessages" value="true"/> 
 	  <property name="highlightOnError" value="false"/>
-	  <property name="combineMessages" value="true"/> 
+	  <property name="combineMessages" value="false"/>
 	  <property name="allowMessageRepeat" value="true"/>
 	  <!--note global display flag is false by default, but others are true by default, 
 	  no messages will be displayed by default in groups, but all can easily be turned on-->
@@ -170,7 +170,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     <property name="displayFieldLabelWithMessages" value="true"/>
     <property name="displayNestedMessages" value="true"/>
     <property name="highlightOnError" value="false"/>
-    <property name="combineMessages" value="true"/>
+    <property name="combineMessages" value="false"/>
     <property name="allowMessageRepeat" value="true"/>
     <property name="displayMessages" value="true"/>
     <property name="displayErrorMessages" value="true"/>
@@ -273,7 +273,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="LinkField" parent="LinkField-parentBean"/>
   <bean id="LinkField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField" parent="Field" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
-      <property name="target" value="_blank"/>
+      <property name="target" value="_self"/>
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>

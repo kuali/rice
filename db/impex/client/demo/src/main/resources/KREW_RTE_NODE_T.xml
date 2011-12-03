@@ -28,7 +28,7 @@
         TYP="org.kuali.rice.kew.engine.node.RequestsNode" VER_NBR="1"/>
     <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="2029" FNL_APRVR_IND="0"
         GRP_ID="1" MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2057"
-        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="2"/>
     <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="2030" FNL_APRVR_IND="0"
         GRP_ID="1" MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2059"
         TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
@@ -129,4 +129,11 @@
     <KREW_RTE_NODE_T ACTVN_TYP="S" DOC_TYP_ID="2999" FNL_APRVR_IND="0"
         MNDTRY_RTE_IND="0" NM="AdHoc" RTE_NODE_ID="2910"
         TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3006" FNL_APRVR_IND="0"
+        GRP_ID="1" MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2914"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="R" DOC_TYP_ID="3006" FNL_APRVR_IND="0"
+        GRP_ID="1" MNDTRY_RTE_IND="0" NM="PeopleFlows" RTE_MTHD_CD="RE"
+        RTE_NODE_ID="2915"
+        TYP="org.kuali.rice.kew.engine.node.RequestsNode" VER_NBR="1"/>
 </dataset>

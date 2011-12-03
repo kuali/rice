@@ -32,6 +32,11 @@
     <module>client</module>
   </modules>
   <properties>
+    <oracle.jdbc.groupId>com.oracle</oracle.jdbc.groupId>
+    <jdbc.groupId>${oracle.jdbc.groupId}</jdbc.groupId>
+    <jdbc.artifactId>${oracle.jdbc.artifactId}</jdbc.artifactId>
+    <jdbc.version>${oracle.jdbc.version}</jdbc.version>
+    
     <sql.plugin.escapeProcessing>false</sql.plugin.escapeProcessing>
     <sql.plugin.orderFile>ascending</sql.plugin.orderFile>
     <sql.plugin.keepFormat>true</sql.plugin.keepFormat>
@@ -57,8 +62,8 @@
     <impex.masterdb.username>RICEMASTER</impex.masterdb.username>
     <impex.masterdb.password>RICEMASTER</impex.masterdb.password>
     <impex.oracle.driver>oracle.jdbc.driver.OracleDriver</impex.oracle.driver>
-    <impex.oracle.default.url>jdbc:oracle:thin:@localhost:1521:XE</impex.oracle.default.url>
-    <impex.oracle.dba.url>${impex.oracle.default.url}</impex.oracle.dba.url>
+    <impex.oracle.url>jdbc:oracle:thin:@localhost:1521:XE</impex.oracle.url>
+    <impex.oracle.dba.url>${impex.oracle.url}</impex.oracle.dba.url>
     <impex.oracle.delimiter>/</impex.oracle.delimiter>
     <impex.oracle.defaultTablespace>users</impex.oracle.defaultTablespace>
     <impex.oracle.temporaryTablespace>temp</impex.oracle.temporaryTablespace>
@@ -264,14 +269,9 @@
               <version>${project.version}</version>
             </dependency>
             <dependency>
-              <groupId>mysql</groupId>
-              <artifactId>${mysql.jdbc.artifactId}</artifactId>
-              <version>${mysql.jdbc.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>com.oracle</groupId>
-              <artifactId>${oracle.jdbc.artifactId}</artifactId>
-              <version>${oracle.jdbc.version}</version>
+              <groupId>${jdbc.groupId}</groupId>
+              <artifactId>${jdbc.artifactId}</artifactId>
+              <version>${jdbc.version}</version>
             </dependency>
           </dependencies>
         </plugin>
@@ -281,14 +281,9 @@
           <version>1.0.26</version>
           <dependencies>
             <dependency>
-              <groupId>mysql</groupId>
-              <artifactId>${mysql.jdbc.artifactId}</artifactId>
-              <version>${mysql.jdbc.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>com.oracle</groupId>
-              <artifactId>${oracle.jdbc.artifactId}</artifactId>
-              <version>${oracle.jdbc.version}</version>
+              <groupId>${jdbc.groupId}</groupId>
+              <artifactId>${jdbc.artifactId}</artifactId>
+              <version>${jdbc.version}</version>
             </dependency>
           </dependencies>
           <configuration>
@@ -401,6 +396,9 @@
       <id>mysql</id>
       <properties>
         <db.vendor>mysql</db.vendor>
+        <jdbc.groupId>mysql</jdbc.groupId>
+        <jdbc.artifactId>${mysql.jdbc.artifactId}</jdbc.artifactId>
+        <jdbc.version>${mysql.jdbc.version}</jdbc.version>
         <impex.database>${impex.mysql.database}</impex.database>
         <impex.delimiter>${impex.mysql.delimiter}</impex.delimiter>
         <impex.url>${impex.mysql.default.url}</impex.url>
@@ -424,9 +422,9 @@
       <properties>
         <db.vendor>oracle</db.vendor>
         <impex.delimiter>${impex.oracle.delimiter}</impex.delimiter>
-        <impex.url>${impex.oracle.default.url}</impex.url>
+        <impex.url>${impex.oracle.url}</impex.url>
+        <impex.dba.url>${impex.url}</impex.dba.url>
         <impex.driver>${impex.oracle.driver}</impex.driver>
-        <impex.dba.url>${impex.oracle.dba.url}</impex.dba.url>
         <impex.dba.username>${impex.oracle.dba.username}</impex.dba.username>
         <impex.dba.password>${impex.oracle.dba.password}</impex.dba.password>
         <impex.sql.validate>${impex.oracle.sql.validate}</impex.sql.validate>

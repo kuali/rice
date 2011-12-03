@@ -465,7 +465,7 @@
     <profile>
       <id>rds</id>
       <properties>
-        <!-- Override for JDK6 and to match up with Amazon RDS -->
+        <!-- Override for JDK6 and Amazon RDS -->
         <oracle.jdbc.artifactId>ojdbc6_g</oracle.jdbc.artifactId>
         <oracle.jdbc.version>11.2.0.2</oracle.jdbc.version>
         <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>

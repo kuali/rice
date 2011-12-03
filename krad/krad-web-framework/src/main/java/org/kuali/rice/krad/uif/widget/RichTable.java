@@ -101,6 +101,15 @@ public class RichTable extends WidgetBase {
 
             if (component instanceof CollectionGroup) {
                 buildTableSortOptions((CollectionGroup) component);
+                //copy component options from collectionGroup to richtable with the exception
+                //of UifConstants.TableToolsKeys.AO_COLUMNS or if not already defined in rich table
+                for (String key: component.getComponentOptions().keySet()) {
+                    if (!StringUtils.equalsIgnoreCase(key, UifConstants.TableToolsKeys.AO_COLUMNS)) {
+                        if (StringUtils.isEmpty(getComponentOptions().get(key))) {
+                            getComponentOptions().put(key, component.getComponentOptions().get(key));
+                        }
+                    }
+                }
             }
 
             if (isDisableTableSort()) {
@@ -144,41 +153,49 @@ public class RichTable extends WidgetBase {
                 String colOptions = constructTableColumnOptions(false, null, null);
                 tableToolsColumnOptions.append(colOptions + " , ");
             }
+           //if collectionGroup defines aoColumns, copy here and skip default sorting/visibility behaviour
+            if (!StringUtils.isEmpty(collectionGroup.getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
+                //get the contents of the JS array string
+                String jsArray = collectionGroup.getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
+                int startBrace = StringUtils.indexOf(jsArray,"[");
+                int endBrace = StringUtils.indexOf(jsArray, "]");
+                tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + " , ");
+            } else {
+                // TODO: does this handle multiple rows correctly?
+                for (Component component : collectionGroup.getItems()) {
+                    // For FieldGroup, get the first field from that group
+                    if (component instanceof FieldGroup) {
+                        component = ((FieldGroup) component).getItems().get(0);
+                    }
 
-            // TODO: does this handle multiple rows correctly?
-            for (Component component : collectionGroup.getItems()) {
-                // For FieldGroup, get the first field from that group
-                if (component instanceof FieldGroup) {
-                    component = ((FieldGroup) component).getItems().get(0);
-                }
+                    if (component instanceof DataField) {
+                        DataField field = (DataField) component;
 
-                if (component instanceof DataField) {
-                    DataField field = (DataField) component;
-
-                    String sortType = null;
-                    if (!collectionGroup.isReadOnly() && (field instanceof InputField)
-                            && ((InputField) field).getControl() != null) {
-                        Control control = ((InputField) field).getControl();
-                        if (control instanceof SelectControl) {
-                            sortType = UifConstants.TableToolsValues.DOM_SELECT;
-                        } else if (control instanceof CheckboxControl || control instanceof CheckboxGroupControl) {
-                            sortType = UifConstants.TableToolsValues.DOM_CHECK;
-                        } else if (control instanceof RadioGroupControl) {
-                            sortType = UifConstants.TableToolsValues.DOM_RADIO;
+                        String sortType = null;
+                        if (!collectionGroup.isReadOnly() && (field instanceof InputField)
+                                && ((InputField) field).getControl() != null) {
+                            Control control = ((InputField) field).getControl();
+                            if (control instanceof SelectControl) {
+                                sortType = UifConstants.TableToolsValues.DOM_SELECT;
+                            } else if (control instanceof CheckboxControl || control instanceof CheckboxGroupControl) {
+                                sortType = UifConstants.TableToolsValues.DOM_CHECK;
+                            } else if (control instanceof RadioGroupControl) {
+                                sortType = UifConstants.TableToolsValues.DOM_RADIO;
+                            } else {
+                                sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                            }
                         } else {
                             sortType = UifConstants.TableToolsValues.DOM_TEXT;
                         }
-                    } else {
-                        sortType = UifConstants.TableToolsValues.DOM_TEXT;
-                    }
 
-                    Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
-                            collectionGroup.getCollectionObjectClass(), field.getPropertyName());
-                    String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
-                    tableToolsColumnOptions.append(colOptions + " , ");
-                } else {
-                    String colOptions = constructTableColumnOptions(false, null, null);
-                    tableToolsColumnOptions.append(colOptions + " , ");
+                        Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
+                                collectionGroup.getCollectionObjectClass(), field.getPropertyName());
+                        String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
+                        tableToolsColumnOptions.append(colOptions + " , ");
+                    } else {
+                        String colOptions = constructTableColumnOptions(false, null, null);
+                        tableToolsColumnOptions.append(colOptions + " , ");
+                    }
                 }
             }
 

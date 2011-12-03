@@ -74,7 +74,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                   <bean parent="DataField" p:propertyName="subsidizedPercent"/>
                   <bean parent="DataField" p:propertyName="createDate"/>
                  </list>
-              </property>      
+              </property>
+             <property name="componentOptions">
+               <map>
+                 <entry key="aoColumns">
+                   <value>
+                     [
+                      {'bSortable':true, 'sSortDataType':'numeric'},
+                      {'bVisible':false},
+                      {'bSortable':false},
+                     {'bSortable':true, 'sSortDataType':'numeric'},
+                     {'bSortable':false}]
+                   </value>
+                 </entry>
+               </map>
+             </property>
            </bean>                
          </list>
      </property>

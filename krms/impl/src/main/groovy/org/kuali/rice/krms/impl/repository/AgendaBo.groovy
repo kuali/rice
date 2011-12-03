@@ -49,38 +49,26 @@ public class AgendaBo extends PersistableBusinessObjectBase implements AgendaDef
         return attributes;
     }
 
-    public Map<String, String> getAttributeIds() {
-        HashMap<String, String> attributes = new HashMap<String, String>();
-        for (attr in attributeBos) {
-            attributes.put( attr.attributeDefinition.name, attr.id )
-        }
-        return attributes;
-    }
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributeBos  = new ArrayList<AgendaAttributeBo>();
 
-    public void setAttributes(Map<String, String> attributes, Map<String, String> attributeIds) {
-        attributeBos = []
-
-        Map<String, KrmsAttributeDefinition> attributeDefinitionsByName = Collections.emptyMap();
-        if (!StringUtils.isBlank(typeId)) {
-            attributeDefinitionsByName = new HashMap<String, KrmsAttributeDefinition>();
-
-            List<KrmsAttributeDefinition> attributeDefinitions = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().findAttributeDefinitionsByType(typeId);
+        if (!StringUtils.isBlank(this.typeId)) {
+            List<KrmsAttributeDefinition> attributeDefinitions = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().findAttributeDefinitionsByType(this.getTypeId());
+            Map<String, KrmsAttributeDefinition> attributeDefinitionsByName = new HashMap<String, KrmsAttributeDefinition>();
             if (attributeDefinitions != null) for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
                 attributeDefinitionsByName.put(attributeDefinition.getName(), attributeDefinition);
             }
+
+            for (Map.Entry<String, String> attr : attributes) {
+                KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.key);
+                AgendaAttributeBo attributeBo = new AgendaAttributeBo();
+                attributeBo.setAgendaId(this.getId());
+                attributeBo.setAttributeDefinitionId((attributeDefinition == null) ? null : attributeDefinition.getId());
+                attributeBo.setValue(attr.getValue());
+                attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attributeDefinition));
+                attributeBos.add(attributeBo);
+            }
         }
-
-        for (attr in attributes) {
-            KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.key);
-
-            def AgendaAttributeBo attributeBo = new AgendaAttributeBo()
-            attributeBo.setId(attributeIds.get(attr.key))
-            attributeBo.setAgendaId(id)
-            attributeBo.setAttributeDefinitionId((attributeDefinition == null) ? null : attributeDefinition.id);
-            attributeBo.setValue(attr.value)
-            attributeBos.add(attributeBo)
-        }
-
     }
     
 

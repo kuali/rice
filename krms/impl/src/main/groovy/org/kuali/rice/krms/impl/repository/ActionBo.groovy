@@ -18,9 +18,13 @@ package org.kuali.rice.krms.impl.repository
 import java.util.Map.Entry;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.apache.commons.lang.StringUtils
+
 
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
+
 
 public class ActionBo extends PersistableBusinessObjectBase implements ActionDefinitionContract {
 
@@ -45,6 +49,28 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 		}
 		return attributes;
 	}
+
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributeBos  = new ArrayList<ActionAttributeBo>();
+
+        if (!StringUtils.isBlank(this.typeId)) {
+            List<KrmsAttributeDefinition> attributeDefinitions = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().findAttributeDefinitionsByType(this.getTypeId());
+            Map<String, KrmsAttributeDefinition> attributeDefinitionsByName = new HashMap<String, KrmsAttributeDefinition>();
+            if (attributeDefinitions != null) for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
+                attributeDefinitionsByName.put(attributeDefinition.getName(), attributeDefinition);
+            }
+
+            for (Map.Entry<String, String> attr : attributes) {
+                KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.key);
+                ActionAttributeBo attributeBo = new ActionAttributeBo();
+                attributeBo.setActionId(this.getId());
+                attributeBo.setAttributeDefinitionId((attributeDefinition == null) ? null : attributeDefinition.getId());
+                attributeBo.setValue(attr.getValue());
+                attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attributeDefinition));
+                attributeBos.add(attributeBo);
+            }
+        }
+    }
 
 	/**
 	* Converts a mutable bo to it's immutable counterpart

@@ -34,6 +34,7 @@ import org.kuali.rice.krms.impl.ui.SimplePropositionEditNode
 import org.kuali.rice.krms.impl.ui.CompoundPropositionEditNode
 import org.kuali.rice.krad.service.SequenceAccessorService
 import org.kuali.rice.krad.service.KRADServiceLocator
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
    
@@ -93,6 +94,28 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
            attributes.put( attr.getAttributeDefinition().getName(), attr.getValue() );
        }
        return attributes;
+   }
+
+   public void setAttributes(Map<String, String> attributes) {
+       this.attributeBos  = new ArrayList<RuleAttributeBo>();
+
+       if (!StringUtils.isBlank(this.typeId)) {
+           List<KrmsAttributeDefinition> attributeDefinitions = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().findAttributeDefinitionsByType(this.getTypeId());
+           Map<String, KrmsAttributeDefinition> attributeDefinitionsByName = new HashMap<String, KrmsAttributeDefinition>();
+           if (attributeDefinitions != null) for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
+               attributeDefinitionsByName.put(attributeDefinition.getName(), attributeDefinition);
+           }
+
+           for (Map.Entry<String, String> attr : attributes) {
+               KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.key);
+               RuleAttributeBo attributeBo = new RuleAttributeBo();
+               attributeBo.setRuleId(this.getId());
+               attributeBo.setAttributeDefinitionId((attributeDefinition == null) ? null : attributeDefinition.getId());
+               attributeBo.setValue(attr.getValue());
+               attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attributeDefinition));
+               attributeBos.add(attributeBo);
+           }
+       }
    }
    
    public String getPropositionSummary(){

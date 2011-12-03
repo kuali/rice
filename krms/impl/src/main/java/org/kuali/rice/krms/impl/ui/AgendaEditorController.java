@@ -160,17 +160,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     /**
-     * This method returns the agendaItemLine from adding/editing AgendaItems.
-     *
-     * @param form
-     * @return agendaItem
-     */
-    private AgendaItemBo getAgendaItemLine(UifFormBase form) {
-        AgendaEditor agendaEditor = getAgendaEditor(form);
-        return agendaEditor.getAgendaItemLine();
-    }
-
-    /**
      * This method returns the id of the selected agendaItem.
      *
      * @param form
@@ -234,6 +223,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = agendaEditor.getAgenda();
         AgendaItemBo newAgendaItem = agendaEditor.getAgendaItemLine();
 
+        newAgendaItem.getRule().setAttributes(agendaEditor.getCustomRuleAttributesMap());
         updateRuleAction(agendaEditor);
 
         if (agenda.getItems() == null) {
@@ -293,29 +283,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     private void updateRuleAction(AgendaEditor agendaEditor) {
         agendaEditor.getAgendaItemLine().getRule().setActions(new ArrayList<ActionBo>());
         if (StringUtils.isNotBlank(agendaEditor.getAgendaItemLineRuleAction().getTypeId())) {
-            updateRuleActionAttributes(agendaEditor.getCustomRuleActionAttributesMap(), agendaEditor.getAgendaItemLineRuleAction());
+            agendaEditor.getAgendaItemLineRuleAction().setAttributes(agendaEditor.getCustomRuleActionAttributesMap());
             agendaEditor.getAgendaItemLine().getRule().getActions().add(agendaEditor.getAgendaItemLineRuleAction());
         }
-    }
-
-    private void updateRuleActionAttributes(Map<String, String> customRuleActionAttributeMap, ActionBo action) {
-        Set<ActionAttributeBo> attributes = new HashSet<ActionAttributeBo>();
-
-        Map<String, KrmsAttributeDefinition> attributeDefinitionMap = buildAttributeDefinitionMap(action.getTypeId());
-
-        for (Map.Entry<String, String> entry : customRuleActionAttributeMap.entrySet()) {
-            KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey()); // get the definition from our map
-
-            if (attrDef != null) {
-                ActionAttributeBo attributeBo = new ActionAttributeBo();
-                attributeBo.setActionId(action.getId());
-                attributeBo.setAttributeDefinitionId(attrDef.getId());
-                attributeBo.setValue(entry.getValue());
-                attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attrDef));
-                attributes.add(attributeBo);
-            }
-        }
-        action.setAttributeBos(attributes);
     }
 
     /**
@@ -350,8 +320,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
-        AgendaItemBo agendaItemLine = getAgendaItemLine(form);
+        AgendaItemBo agendaItemLine = agendaEditor.getAgendaItemLine();
 
+        agendaItemLine.getRule().setAttributes(agendaEditor.getCustomRuleAttributesMap());
         updateRuleAction(agendaEditor);
 
         AgendaEditorBusRule rule = new AgendaEditorBusRule();

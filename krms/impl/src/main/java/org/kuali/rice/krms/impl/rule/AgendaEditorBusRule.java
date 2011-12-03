@@ -329,7 +329,6 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         if (isValid && StringUtils.isNotBlank(newActionBo.getTypeId())) {
             isValid &= validRuleActionName(newActionBo.getName());
             isValid &= validRuleActionAttributes(oldAgendaEditor, newAgendaEditor);
-            isValid &= validRuleActionDescription(newActionBo.getDescription());
         }
         return isValid;
     }
@@ -410,19 +409,6 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         }
         return isValid;
     }
-
-    /**
-     * Check that a action description is specified.
-     */
-    private boolean validRuleActionDescription(String description) {
-        if (StringUtils.isNotBlank(description)) {
-            return true;
-        } else {
-            this.putFieldError(KRMSPropertyConstants.Action.DESCRIPTION, "error.action.missingDescription");
-            return false;
-        }
-    }
-
 
     public ContextBoService getContextBoService() {
         return KrmsRepositoryServiceLocator.getContextBoService();

@@ -20,8 +20,62 @@
     <info>
         <title>Parameter Component</title>
     </info>
+    <para>Administration > Configuration > Functional > Parameter Component > Parameter Component
+        Lookup > Parameter Component</para>
+    <para>The Parameter Component document defines valid components that can be associated with a
+        parameter. Parameter components indicate a general or specific piece of KFS functionality to
+        which a parameter applies. Some Parameter Components are generic (batch, lookup, all) while
+        others are very specific and refer to particular documents or even specific tabs or fields
+        on documents.</para>
+    <para>Only members of the KR-SYS Technical Administrator or KFS-SYS Manager role can create or
+        edit Parameter Component documents.</para>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <para><figure><title>Parameter Component document</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/parameter_component_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <para>The Parameter Component document includes the <emphasis role="bold">Edit Parameter
+                Detail Type </emphasis>tab.</para>
+        <para>
+            <table frame="border">
+                <caption>Edit Parameter Detail Type tab definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Namespace Code</td>
+                        <td>Required. Select the appropriate Namespace code for the parameter from
+                            the <emphasis role="bold">Namespace Code</emphasis> list or search for
+                            it from the lookup.</td>
+                    </tr>
+                    <tr>
+                        <td>Parameter Component</td>
+                        <td>Required. Enter the parameter component code or search for it from the
+                                <emphasis role="bold">Parameter Component</emphasis> lookup.</td>
+                    </tr>
+                    <tr>
+                        <td>Parameter Component Name</td>
+                        <td>Required. Enter the descriptive name of the parameter component being
+                            defined.</td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td>Required. Leave checked to indicate that this parameter component is
+                            active and can be associated with parameters. Uncheck the box to
+                            inactivate this component and make it an invalid choice.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
     </sect1>
 </chapter>

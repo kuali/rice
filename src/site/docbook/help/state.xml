@@ -20,8 +20,61 @@
     <info>
         <title>State</title>
     </info>
+    <para>Administration > System > Locations > State > State Code Lookup >
+        StateMaintenanceDocument</para>
+    <para>The State Maintenance document defines the U.S. Postal Service codes used to identify
+        states. When the user chooses the <emphasis role="bold">State</emphasis> option from the
+            <emphasis role="bold">Administration</emphasis> menu tab, the system displays the State
+        Code Lookup screen. After the user selects a state code or clicks the <emphasis role="bold"
+            >create new</emphasis> button, the system presents the State Maintenance
+        document.</para>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <para><figure><title>State Maintenance document, create mode</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/state_maintenance_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <para>The State Maintenance document includes the <emphasis role="bold">Edit States
+            </emphasis>tab.</para>
+        <para>In edit mode, the <emphasis role="bold">Edit States</emphasis> tab presents a
+            display-only set of fields on the left and editable fields on the right in which the
+            user may enter changes.</para>
+        <para>
+            <table frame="border">
+                <caption>Edit States tab definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Country Code</td>
+                        <td>A unique identifying code assigned to the country of which this state is
+                            a part.</td>
+                    </tr>
+                    <tr>
+                        <td>State Abbreviation</td>
+                        <td>The state abbreviation.</td>
+                    </tr>
+                    <tr>
+                        <td>State Name </td>
+                        <td>Required. The full name of the state associated with the state
+                            abbreviation.</td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td>Indicates whether the state code is active or inactive in the KFS.
+                            Remove the check mark to deactivate the state code.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
     </sect1>
 </chapter>

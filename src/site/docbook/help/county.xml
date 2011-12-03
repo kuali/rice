@@ -20,8 +20,62 @@
     <info>
         <title>County</title>
     </info>
+    <para>Administration > System > Locations > County > County Code Lookup >
+        CountyMaintenanceDocument</para>
+    <para>The County Maintenance document is used to assign specific identifying codes to county
+        names.</para>
+    <para>When the user chooses the <emphasis role="bold">County</emphasis> option from the
+            <emphasis role="bold">Administration</emphasis> menu tab, the system displays the County
+        Lookup screen. After the user selects a county or clicks the <emphasis role="bold">create
+            new</emphasis> button, the system presents the County Maintenance document.</para>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <para><figure><title>County Maintenance document, create mode</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/county_maintenance_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <para>The County Maintenance document includes the <emphasis role="bold">Edit
+                Counties</emphasis> tab.</para>
+        <para>In edit mode, the<emphasis role="bold"> Edit Counties</emphasis> tab presents a
+            display-only set of fields on the left and editable fields on the right in which the
+            user may enter changes.</para>
+        <para>
+            <table frame="border">
+                <caption>Edit Counties tab definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Country Code</td>
+                        <td>The country code for the country in which this county is located. </td>
+                    </tr>
+                    <tr>
+                        <td>County Code </td>
+                        <td>A unique identifying code assigned to this county.</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>The state abbreviation assigned to the state in which a county is located.</td>
+                    </tr>
+                    <tr>
+                        <td>County Name </td>
+                        <td>Required. The familiar name of this county.</td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td>Indicates whether the county code is active or inactive in the KFS. Remove the check mark to deactivate this county code. </td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
     </sect1>
 </chapter>

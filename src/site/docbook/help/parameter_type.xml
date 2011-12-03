@@ -20,8 +20,57 @@
     <info>
         <title>Parameter Type</title>
     </info>
+    <para>Administration > Configuration > Functional > Parameter Type > Parameter Type Lookup >
+        Parameter Type</para>
+    <para>The parameter type broadly defines what a parameter is used for. In the KFS base data
+        there are only two parameter types: parameters used for document validation  (such as
+        business rules) and parameters used for System Configuration (customizing KFS for your
+        institution).</para>
+    <para>The Parameter Type document allows you to create new or edit existing parameter types.
+        Code must be developed to support any additional types or changes to existing types.</para>
+    <para>Only members of the KR-SYS Technical Administrator or KFS-SYS Manager role can create or
+        edit Parameter Type documents and they do not route for approval.</para>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <para><figure><title>Parameter Type document</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/parameter_type_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <para>The Parameter Type document includes the <emphasis role="bold">Edit Parameter Type
+            </emphasis>tab.</para>
+        <para>
+            <table frame="border">
+                <caption>Edit Parameter Type tab definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Parameter Type Code</td>
+                        <td>Required. Enter the code by which this parameter type will be
+                            identified.</td>
+                    </tr>
+                    <tr>
+                        <td>Parameter Type Name</td>
+                        <td>Required. Enter the long descriptive name for this parameter type.</td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td>Required. Check the box to make this parameter type active and available
+                            for selection when creating parameters. Uncheck the box if you wish to
+                            inactivate this type of parameter and prevent its selection when
+                            creating new parameters.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
     </sect1>
 </chapter>

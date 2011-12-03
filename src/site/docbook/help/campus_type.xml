@@ -20,8 +20,59 @@
     <info>
         <title>Campus Type</title>
     </info>
+    <para>Administration > System > Reference > Campus Type > Campus Type Lookup >
+        CampusTypeMaintenanceDocument</para>
+    <para>When the user selects <emphasis role="bold">Campus Type</emphasis> from the <emphasis
+            role="bold">Administration</emphasis> menu tab, the system displays the Campus Type
+        Lookup. From this screen, the user may either create a new type or search for an existing
+        type. This defines the valid types of campuses that can be selected when creating a new
+        campus.</para>
+    <para>After performing a search based on user-specified criteria, the system displays a results
+        table. The user may then choose to edit or copy a retrieved record.</para>
+    <para>After the user selects <emphasis role="bold">create new</emphasis>, <emphasis role="bold"
+            >edit</emphasis>, or <emphasis role="bold">copy</emphasis>, the system displays the
+        Campus Type Maintenance document. This document allows users to add and maintain campus
+        types. </para>
+    <note><para>While anyone can view the current values for campus type, only members of the KFS-SYS
+        Manager or KR-SYS Technical Manager roles can create new campus types or edit existing
+        values. This document does not route for approval.</para></note>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <para><figure><title>Campus Type Maintenance document</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/campus_type_maintenance_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <para>The Campus Type Maintenance document includes the <emphasis role="bold">Edit Campus
+                Type</emphasis><emphasis role="bold"> </emphasis>tab.</para>
+        <para>
+            <table frame="border">
+                <caption>Edit Campus Type tab definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> Campus Type Code </td>
+                        <td>Required. Enter a code to identify this type of campus.</td>
+                    </tr>
+                    <tr>
+                        <td> Campus Type Name </td>
+                        <td>Required. Enter a descriptive name for this campus type.</td>
+                    </tr>
+                    <tr>
+                        <td> Active Indicator </td>
+                        <td>Required. Indicates whether the campus code is active or inactive. Remove the check mark to deactivate a campus type and remove it from the dropdown list on the Campus document.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
     </sect1>
 </chapter>

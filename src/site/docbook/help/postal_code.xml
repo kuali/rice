@@ -20,8 +20,67 @@
     <info>
         <title>Postal Code</title>
     </info>
+    <para>Administration > System > Locations > Postal Code > Postal Code Lookup >
+        PostalCodeMaintenanceDocument</para>
+    <para>The Postal Code Maintenance document defines the zip code by city and state. When the user
+        chooses the <emphasis role="bold">Postal Code</emphasis> option from the <emphasis
+            role="bold">Administration</emphasis> menu tab, the system displays the Postal Code
+        Lookup screen. After the user selects a postal code or clicks the <emphasis role="bold"
+            >create new</emphasis> button, the system presents the Postal Code Maintenance document. </para>
+    <note><para>The user may also enter a city and state to find the associated zip code. </para></note>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <figure>
+            <title>Postal Code Maintenance document, create mode</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/postal_code_maintenance_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>The Postal Code Maintenance document includes the <emphasis role="bold">Edit Postal
+                Codes </emphasis>tab.</para>
+        <para>In edit mode, the<emphasis role="bold"> Edit Postal Codes</emphasis> tab presents a
+            display-only set of fields on the left and editable fields on the right in which the
+            user may enter changes.</para>
+        <para>
+            <table frame="border">
+                <caption>Edit Postal Codes tab definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Country Code </td>
+                        <td>The country code for the country associated with the zip (postal) code. </td>
+                    </tr>
+                    <tr>
+                        <td>Postal Code </td>
+                        <td>Identifies a Postal Service code.</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>Required. The state associated with the zip (postal) code.</td>
+                    </tr>
+                    <tr>
+                        <td>County Code </td>
+                        <td>The unique identifying code for the county associated with the zip (postal) code.</td>
+                    </tr>
+                    <tr>
+                        <td>City Name </td>
+                        <td>Required. The name of the city associated with the zip (postal) code.</td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td>Indicates whether the postal code is active or inactive in the KFS. Remove the check mark to deactivate this postal code.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
     </sect1>
 </chapter>

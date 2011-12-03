@@ -20,8 +20,52 @@
     <info>
         <title>Phone Type</title>
     </info>
+    <para>Administration > System > Reference > Phone Type > Phone Type Lookup </para>
+    <para>The Phone Type Lookup displays codes that identify various categories of phone numbers on
+        the Person document.</para>
+    <note><para> Phone types cannot be edited via the interface. Technical assistance is required to add
+        new or edit existing phone types. </para></note>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <para><figure><title>Phone Type Lookup with results</title><mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/phone_type_lookup.jpg"/>
+                </imageobject>
+        </mediaobject>
+        </figure></para>
+        <para>
+            <table frame="border">
+                <caption>Phone Type Lookup results definition</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> Phone Type Code </td>
+                        <td> Display-only. The code that identifies the type of phone number. </td>
+                    </tr>
+                    <tr>
+                        <td> Phone Type Name </td>
+                        <td> Display-only. The descriptive name for this type of phone number. </td>
+                    </tr>
+                    <tr>
+                        <td>Display Sort Code</td>
+                        <td>Display-only. An alphabetic value that determines the order in which
+                            phone types are displayed in the dropdown list. </td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td>Display-only. Indicates whether this phone type is active (in which case
+                            the system displays it in the <emphasis role="bold">Phone Type
+                            </emphasis>dropdown list on the Person document). </td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
     </sect1>
 </chapter>

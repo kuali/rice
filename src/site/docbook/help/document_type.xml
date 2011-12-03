@@ -20,8 +20,192 @@
     <info>
         <title>Document Type</title>
     </info>
+    <para>Administration > Configuration > Functional > Document Type > Document Type Lookup >
+        DocumentType</para>
+    <para>The Document Type document defines basic information about the document types that exist
+        in KFS. It also defines document types specific to workflow and KIM. Many attributes of a
+        document type not defined here are included in its workflow process definition and the data
+        dictionary (a technical resource). The workflow process definition for a document type can
+        be viewed using the Document Type lookup.</para>
+    <para>Document Type documents can only be created by members of the KFS-SYS Manager or KR-SYS
+        Technical Administrator roles and they do not route for approval.</para>
     <sect1>
-        <title></title>
-        <para></para>
+        <title>Document Layout</title>
+        <para><figure><title>Document Type document</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/document_type_document.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <para>The Document Type document contains the <emphasis role="bold">Edit Document
+                Type</emphasis> tab and the <emphasis role="bold">Fields Available for Retroactive
+                Application</emphasis> tab.</para>
+        <sect2>
+            <title>Edit Document Type Tab</title>
+            <para><figure><title>Edit Document Type tab</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/help/edit_document_tab.jpg"/>
+                    </imageobject>
+                </mediaobject>
+            </figure></para>
+            <para>
+                <table frame="border">
+                    <caption>Edit Document Type tab definition</caption>
+                    <col width="50%"/>
+                    <col width="50%"/>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Parent Name</td>
+                            <td><para>Required. Every document type must answer to another document type in a parent/child
+                                    relationship. Use the lookup to search for the document type to
+                                    which this document type will answer.</para><para>Document types can inherit important attributes from their parent document types, including
+                                    permissions and responsibilities.</para></td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>Required. The common name of the document type. For most KFS
+                                documents the name is a four-character abbreviation. Note that while
+                                the name field can support longer names (and KEW and KIM documents
+                                are examples of these) the Labor Ledger and General Ledger can only
+                                support  document names up to four characters in length. If you are
+                                creating a new document type that will eventually populate the
+                                ledgers be sure to abide by this four character convention.</td>
+                        </tr>
+                        <tr>
+                            <td>Document Handler URL</td>
+                            <td>Optional. (Technical) Identifies the basic URL that will take a user
+                                to this document type.</td>
+                        </tr>
+                        <tr>
+                            <td>Notification From Address</td>
+                            <td>Optional. The email address that will appear as the 'From' address
+                                on any action list notifications sent by workflow for this document
+                                type. This allows several applications using workflow to maintain
+                                separate notification email addresses.</td>
+                        </tr>
+                        <tr>
+                            <td>Active</td>
+                            <td>Required. The box should be checked if the document type is active
+                                and available for use. Uncheck the box to inactivate the document
+                                type. Note that you cannot post labor or General Ledger KFS entries
+                                with inactive document types. </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Fields Available for Retroactive Application Tab</title>
+            <para>These are Document Type attributes that can be edited retroactively if need be.
+                This means that should you decide to change one of these values for a given document
+                type it is possible to apply the change retroactively to any documents of this type
+                already created. For example, if you decided to change the Label of the Budget
+                Adjustment document type you could choose that have that label change apply to
+                historical Budget Adjustment documents in your KFS system.</para>
+            <para><figure><title>Fields Available for Retroactive Application tab</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/help/retroactive_application_tab.jpg"/>
+                    </imageobject>
+                </mediaobject>
+            </figure></para>
+            <para>
+                <table frame="border">
+                    <caption>Fields Available for Retroactive Application tab definition</caption>
+                    <col width="50%"/>
+                    <col width="50%"/>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Label</td>
+                            <td>Optional. The Label appears in most places where document types are
+                                displayed in results (including the action list and document search
+                                screens) and is commonly longer than the document Name, which is
+                                often an abbreviation.</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>Optional. A text description of this document type.</td>
+                        </tr>
+                        <tr>
+                            <td>Help Definition URL</td>
+                            <td>Optional. (Technical) Identifies the URL where the online help
+                                content for this document type resides.</td>
+                        </tr>
+                        <tr>
+                            <td>Apply Label Change Retroactively</td>
+                            <td>Optional. Check this box only when updating an existing document
+                                type and only if you wish the fields on this tab to be updated on
+                                previously created versions of documents of this type.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </para>
+        </sect2>
+        <sect2>
+            <title>Document Type Inquiry</title>
+            <para>The Document Type Inquiry contains some additional fields that are not defined on
+                this document but referenced from their source (either the corresponding workflow
+                process definition or data dictionary information). These fields are defined
+                below.</para>
+            <para><figure><title>Document Type Inquiry</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/help/document_type_inquiry.jpg"/>
+                    </imageobject>
+                </mediaobject>
+            </figure></para>
+            <para>
+                <table frame="border">
+                    <caption>Document Type Inquiry definition</caption>
+                    <col width="50%"/>
+                    <col width="50%"/>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Parent ID</td>
+                            <td>Display only. The unique, system-generated ID number that identifies
+                                the parent document of this Document Type.</td>
+                        </tr>
+                        <tr>
+                            <td>ID</td>
+                            <td>Display only. The unique, system-generated ID number that identifies
+                                this document type.</td>
+                        </tr>
+                        <tr>
+                            <td>Post Processor Class</td>
+                            <td>Display only. (Technical.) Identifies the post processor this
+                                document type calls upon reaching a completed workflow status
+                                (usually 'Final' or 'Processed'). The post processor is the code
+                                that tells KFS what tables to update when a document is approved.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Service Namespace</td>
+                            <td>Display only. The namespace (large functional category) that is
+                                associated with this document type.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </para>
+        </sect2>
     </sect1>
 </chapter>

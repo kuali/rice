@@ -18,8 +18,51 @@
 -->
 <chapter xml:id="address_type" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
     <title>Address Type</title>
+    <para>Administration > System > Reference > Address Type > Address Type Lookup </para>
+    <para>The Address Type Lookup displays the types of addresses that may be associated with Person
+        records in KIM.   </para>
+    <note><para>Address types cannot be edited via the interface. Technical assistance is required to add
+        new or edit existing address types.</para></note>
     <sect1>
-        <title>Section 1</title>
-        <para>para 1</para>
+        <title>Document Layout</title>
+        <para><figure><title>Address Type Lookup with results</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/help/address_type_lookup.jpg"/>
+                </imageobject>
+            </mediaobject>
+        </figure></para>
+        <para/>
+        <table frame="border">
+            <caption>Address Type Lookup results definition</caption>
+            <col width="50%"/>
+            <col width="50%"/>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> Address Type Code </td>
+                    <td>Display-only. The unique code for this type of address.</td>
+                </tr>
+                <tr>
+                    <td> Address Type Name </td>
+                    <td>Display-only. The familiar title of this address type.</td>
+                </tr>
+                <tr>
+                    <td>Display Sort Code</td>
+                    <td>Display-only. An alphabetical character used to determine the order in which address types are displayed in the dropdown list on the Person document.</td>
+                </tr>
+                <tr>
+                    <td>Active Indicator</td>
+                    <td>Display-only. Indicates whether this address type is active (in which case
+                        the system displays it in the <emphasis role="bold">Address Type</emphasis>
+                        dropdown list on the Person document). </td>
+                </tr>
+            </tbody>
+        </table>
     </sect1>
 </chapter>

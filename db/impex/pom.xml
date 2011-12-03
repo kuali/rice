@@ -98,8 +98,14 @@
       GRANT USAGE ON *.* TO '${impex.username}'@'%'
       IDENTIFIED BY '${impex.password}'
       /
+      GRANT USAGE ON *.* TO '${impex.username}'@'localhost'
+      IDENTIFIED BY '${impex.password}'
+      /
       DROP
-      USER ${impex.username}
+      USER '${impex.username}'@'%'
+      /
+      DROP
+      USER '${impex.username}'@'localhost'
       /
     </impex.mysql.sql.drop>
     <impex.mysql.sql.create>
@@ -111,6 +117,9 @@
       /
 
       CREATE USER '${impex.username}'@'%' IDENTIFIED
+      BY '${impex.password}'
+      /
+      CREATE USER '${impex.username}'@'localhost' IDENTIFIED
       BY '${impex.password}'
       /
     </impex.mysql.sql.create>

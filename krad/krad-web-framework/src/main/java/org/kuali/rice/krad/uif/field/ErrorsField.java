@@ -253,6 +253,9 @@ public class ErrorsField extends FieldBase {
 
 				for (ErrorMessage e : errorList) {
 					String message = configService.getPropertyValueAsString(e.getErrorKey());
+                    if (message == null) {
+                        message = "Intended message with key: " + e.getErrorKey() + " not found.";
+                    }
 					if (e.getMessageParameters() != null) {
 						message = message.replace("'", "''");
 						message = MessageFormat.format(message,

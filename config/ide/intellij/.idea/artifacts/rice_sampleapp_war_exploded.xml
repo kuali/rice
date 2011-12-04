@@ -95,7 +95,7 @@
           <element id="library" level="project" name="Maven: org.jacorb:jacorb-idl:2.2.3-jonas-patch-20071018" />
           <element id="library" level="project" name="Maven: logkit:logkit:1.2" />
           <element id="library" level="project" name="Maven: org.objectweb.howl:howl:1.0.1-1" />
-          <element id="library" level="project" name="Maven: org.codehaus.btm:btm:2.1.1" />
+          <element id="library" level="project" name="Maven: org.codehaus.btm:btm:2.1.2" />
           <element id="archive" name="rice-kim-framework-2.0.0-b3-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-framework" />
           </element>
@@ -177,6 +177,9 @@
           </element>
           <element id="archive" name="rice-ksb-server-impl-2.0.0-b3-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-server-impl" />
+          </element>
+          <element id="archive" name="rice-ksb-web-2.0.0-b3-SNAPSHOT.jar">
+            <element id="module-output" name="rice-ksb-web" />
           </element>
           <element id="archive" name="rice-location-framework-2.0.0-b3-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-framework" />

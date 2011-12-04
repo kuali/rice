@@ -66,7 +66,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.jacorb:jacorb-idl:2.2.3-jonas-patch-20071018" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: logkit:logkit:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.btm:btm:2.1.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.btm:btm:2.1.2" level="project" />
     <orderEntry type="module" module-name="rice-krad-app-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-api" scope="TEST" />
@@ -148,6 +148,8 @@
     <orderEntry type="module" module-name="rice-core-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
+    <orderEntry type="module" module-name="rice-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />
@@ -158,7 +160,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas-client:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.0.7.RELEASE" level="project" />
-    <orderEntry type="module" module-name="rice-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-it-internal-tools" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.5.1.v20110908" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.5.1.v20110908" level="project" />

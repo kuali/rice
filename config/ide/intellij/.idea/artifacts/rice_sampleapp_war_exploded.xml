@@ -178,9 +178,6 @@
           <element id="archive" name="rice-ksb-server-impl-2.0.0-b3-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-server-impl" />
           </element>
-          <element id="archive" name="rice-ksb-web-2.0.0-b3-SNAPSHOT.jar">
-            <element id="module-output" name="rice-ksb-web" />
-          </element>
           <element id="archive" name="rice-location-framework-2.0.0-b3-SNAPSHOT.jar">
             <element id="module-output" name="rice-location-framework" />
           </element>

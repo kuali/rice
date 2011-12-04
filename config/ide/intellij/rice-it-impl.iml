@@ -141,7 +141,6 @@
     <orderEntry type="module" module-name="rice-core-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" />
-    <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-framework" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-location-web" scope="TEST" />
@@ -153,6 +152,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-cas-client:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.security:spring-security-web:3.0.7.RELEASE" level="project" />
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />
+    <orderEntry type="module" module-name="rice-ksb-web" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-deploy:7.5.1.v20110908" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-webapp:7.5.1.v20110908" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-xml:7.5.1.v20110908" level="project" />

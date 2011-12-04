@@ -149,7 +149,6 @@
     <orderEntry type="module" module-name="rice-core-web" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" />
-    <orderEntry type="module" module-name="rice-ksb-web" />
     <orderEntry type="module" module-name="rice-location-framework" />
     <orderEntry type="module" module-name="rice-location-impl" />
     <orderEntry type="module" module-name="rice-location-web" />
@@ -162,6 +161,7 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.17" level="project" />
     <orderEntry type="module" module-name="rice-it-internal-tools" />
+    <orderEntry type="module" module-name="rice-ksb-web" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-jsp-2.1:7.5.1.v20110908" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:7.5.1.v20110908" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-security:7.4.5.v20110725" level="project" />

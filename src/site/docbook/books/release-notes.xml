@@ -1113,5 +1113,80 @@
                 or 2011-11-14.sql scripts in the database updates directory inside the source code
                 in order to perform a database upgrade from b1 to b2.</para>
             </sect2>
+        <sect2>
+            <title>Beta 3 - December 5, 2011</title>
+            <para>Highlights of the Beta 3 release include:<itemizedlist>
+                    <listitem>
+                        <para>Some configuration work was completed, but full configuration for Rice
+                            standalone server not yet available. See impacting changes below.</para>
+                    </listitem>
+                    <listitem>
+                        <para>RiceConfigurer refactored so that is doesn't depend on all the
+                            modules</para>
+                    </listitem>
+                    <listitem>
+                        <para>KSB modularity improvements, see impacting changes below</para>
+                    </listitem>
+                    <listitem>
+                        <para>CustomActionListAttribute converted to a remotable SOAP service</para>
+                    </listitem>
+                    <listitem>
+                        <para>Bitronix upgraded to version 2.1.2</para>
+                    </listitem>
+                    <listitem>
+                        <para>Application Document Status code for Doc Search re-enabled</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD fixes for iFrames in Internet Explorer, Chrome</para>
+                    </listitem>
+                    <listitem>
+                        <para>Remotable fields can be added to a collection</para>
+                    </listitem>
+                    <listitem>
+                        <para>'Copy rule' functionality implemented</para>
+                    </listitem>
+                    <listitem>
+                        <para>Agenda Permission Authorization enhancements</para>
+                    </listitem>
+                    <listitem>
+                        <para>Numerous bug fixes</para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>The full list of JIRA tickets that were resolved for Kuali Rice 2.0.0-b3 can be
+                found here: <link xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b3-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b3-jiras</link></para>
+            <sect3>
+                <title>Impacting Changes</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>Created a new rice-ksb-server-impl module and moved ksb classes from
+                            rice-impl into there in preparation for remaining configuration
+                            work</para>
+                    </listitem>
+                    <listitem>
+                        <para>Created a new rice-ksb-client-impl module and moved ksb classes from
+                            rice-ksb-server-impl to that module</para>
+                    </listitem>
+                    <listitem>
+                        <para>Created a new rice-ksb-web module and moved web application related
+                            files into there</para>
+                    </listitem>
+                    <listitem>
+                        <para>Moved org.kuali.rice.core.cxf.interceptors package from core-impl
+                            module to package org.kuali.rice.ksb.impl.cxf.interceptors in the
+                            ksb-client-impl module</para>
+                    </listitem>
+                    <listitem>
+                        <para>Database changes in 2011-11-23.sql/mysql-2011-11-23.sql and
+                            2011-11-28.sql/mysql-2011-11-28.sql scripts found in the database
+                            updates directory inside the source code in order to perform a database
+                            upgrade from b2 to b3.</para>
+                    </listitem>
+                </itemizedlist>
+                <para>Additional details on impacting changes in this release can be found here:
+                        <link xlink:href="https://wiki.kuali.org/x/EwO1Eg"
+                        >https://wiki.kuali.org/x/EwO1Eg</link></para>
+            </sect3>
+        </sect2>
          </sect1>
 </article>

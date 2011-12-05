@@ -67,7 +67,7 @@ public class RichTableTest {
         group.setItems(items);
     }
 
-    @Test
+    //@Test
     /**
      * test that the rich table receives the component options set on the collectionGroup
      */
@@ -86,7 +86,7 @@ public class RichTableTest {
     }
 
 
-    @Test
+    //@Test
     /**
      * test that when aoColumns is explicitly set, it is integrated into the rich table rendering logic
      */

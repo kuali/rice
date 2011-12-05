@@ -75,7 +75,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                   <bean parent="DataField" p:propertyName="createDate"/>
                  </list>
               </property>
-             <property name="componentOptions">
+             <property name="layoutManager.richTable.componentOptions">
                <map>
                  <entry key="aoColumns">
                    <value>

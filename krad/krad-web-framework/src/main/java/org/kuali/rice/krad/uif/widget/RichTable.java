@@ -101,15 +101,6 @@ public class RichTable extends WidgetBase {
 
             if (component instanceof CollectionGroup) {
                 buildTableSortOptions((CollectionGroup) component);
-                //copy component options from collectionGroup to richtable with the exception
-                //of UifConstants.TableToolsKeys.AO_COLUMNS or if not already defined in rich table
-                for (String key: component.getComponentOptions().keySet()) {
-                    if (!StringUtils.equalsIgnoreCase(key, UifConstants.TableToolsKeys.AO_COLUMNS)) {
-                        if (StringUtils.isEmpty(getComponentOptions().get(key))) {
-                            getComponentOptions().put(key, component.getComponentOptions().get(key));
-                        }
-                    }
-                }
             }
 
             if (isDisableTableSort()) {
@@ -153,10 +144,11 @@ public class RichTable extends WidgetBase {
                 String colOptions = constructTableColumnOptions(false, null, null);
                 tableToolsColumnOptions.append(colOptions + " , ");
             }
-           //if collectionGroup defines aoColumns, copy here and skip default sorting/visibility behaviour
-            if (!StringUtils.isEmpty(collectionGroup.getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
+
+            //if data dictionary defines aoColumns, copy here and skip default sorting/visibility behaviour
+            if (!StringUtils.isEmpty(getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS))) {
                 //get the contents of the JS array string
-                String jsArray = collectionGroup.getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
+                String jsArray = getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
                 int startBrace = StringUtils.indexOf(jsArray,"[");
                 int endBrace = StringUtils.indexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + " , ");

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-db</artifactId>
-    <version>2.0.0-b3-SNAPSHOT</version>
+    <version>2.0.0-b3</version>
   </parent>
   <artifactId>rice-sql</artifactId>
 </project>

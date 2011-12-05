@@ -943,11 +943,6 @@
                 patterns.</para>
         </sect2>
         <sect2>
-            <title>Custom Action List Attributes</title>
-            <para>Work is still being undertaken to reimplement the Action List customization
-                framework so that it adheres to Rice 2.0 version compatibility standards.</para>
-        </sect2>
-        <sect2>
             <title>Document Search</title>
             <para>As a result of heaving refactoring of the document search frameworks for version
                 compatibility in Rice 2.0, there is still work remaining before this framework will

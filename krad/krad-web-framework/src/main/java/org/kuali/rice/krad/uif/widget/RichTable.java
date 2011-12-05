@@ -150,7 +150,7 @@ public class RichTable extends WidgetBase {
                 //get the contents of the JS array string
                 String jsArray = getComponentOptions().get(UifConstants.TableToolsKeys.AO_COLUMNS);
                 int startBrace = StringUtils.indexOf(jsArray,"[");
-                int endBrace = StringUtils.indexOf(jsArray, "]");
+                int endBrace = StringUtils.lastIndexOf(jsArray, "]");
                 tableToolsColumnOptions.append(StringUtils.substring(jsArray, startBrace + 1, endBrace) + " , ");
             } else {
                 // TODO: does this handle multiple rows correctly?

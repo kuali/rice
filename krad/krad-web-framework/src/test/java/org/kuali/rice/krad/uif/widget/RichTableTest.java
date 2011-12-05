@@ -86,7 +86,7 @@ public class RichTableTest {
     }
 
 
-    //@Test
+    @Test
     /**
      * test that when aoColumns is explicitly set, it is integrated into the rich table rendering logic
      */
@@ -98,9 +98,9 @@ public class RichTableTest {
     }
 
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {
-        group.getComponentOptions().put(optionKey, optionsOnGroup);
+        richTable.getComponentOptions().put(optionKey, optionsOnGroup);
         richTable.performFinalize(new View(), new UifFormBase(), group);
-        assertNotNull(richTable.getComponentOptions().get(optionKey));
+        //assertNotNull(richTable.getComponentOptions().get(optionKey));
         assertEquals(optionsOnRichTable,richTable.getComponentOptions().get(optionKey));
     }
 }

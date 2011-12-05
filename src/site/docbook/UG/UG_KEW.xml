@@ -519,7 +519,7 @@
                     </imageobject>
                 </mediaobject>
             </figure>
-            <para>The Action List Preferences page has three sections:</para>
+            <para>The Action List Preferences page has four sections:</para>
             <figure>
                 <title>Action List Preferences: General section</title>
                 <mediaobject>
@@ -548,39 +548,6 @@
                     <listitem>
                         <para>The Action List Page Size tells KEW how many action requests to
                             display at once on your Action List page. </para>
-                    </listitem>
-                    <listitem>
-                        <para>KEW can automatically send a reminder email to you when get new
-                            documents on your Action List. KEW permits you to choose to get
-                            email reminders on one of these schedules: <itemizedlist>
-                                <listitem>
-                                    <para><emphasis role="bold">None</emphasis> (KEW won’t send
-                                        you any email reminders for your Action List.) </para>
-                                </listitem>
-                                <listitem>
-                                    <para><emphasis role="bold">Daily</emphasis> (If you have
-                                        any new action requests, KEW sends you an email reminder
-                                        once a day.) </para>
-                                </listitem>
-                                <listitem>
-                                    <para><emphasis role="bold">Weekly</emphasis> (If you have
-                                        any new action requests, KEW sends you an email reminder
-                                        once a week.) </para>
-                                </listitem>
-                                <listitem>
-                                    <para><emphasis role="bold">Immediately</emphasis> (KEW
-                                        sends you an email reminder as soon as you receive a new
-                                        action request on a document. This is the default – the
-                                        setting when you start to use KEW.) </para>
-                                </listitem>
-                            </itemizedlist></para>
-                    </listitem>
-                    <listitem>
-                        <para>The next two fields on the Action List Preferences page allow you
-                            to choose whether or not you receive email reminders when action
-                            requests come to you because you are the delegate of another person
-                            in KEW. Placing a checkmark in the box tells KEW to send you email
-                            reminders in each situation.</para>
                     </listitem>
                     <listitem>
                         <para>The Delegator Filter field lets you decide where to show action
@@ -652,8 +619,105 @@
                     </imageobject>
                 </mediaobject>
             </figure>
+            <figure><title>Action List Preferences: Email Notifications Preferences</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/action_list_prefs_email_settings.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>            
+            <para>The fields used to maintain email preferences are located in a new “Email 
+                Notification Preferences” section at the bottom of the Workflow Preferences 
+                screen.
+                
+                The “Email Notification Preferences” section accommodates two new options and 
+                allows selection of how and when to receive reminder emails on items sent to the 
+                Action List.</para>
+            
+            <para>In this section, one can select whether or not to receive emails as the Primary 
+                Delegate, as the Secondary Delegate, and also set the Default Email Notification 
+                preference (None, Daily, Weekly, or Immediate). If you are NOT a Primary or Secondary Delegate, 
+                you can leave those fields as unchecked.</para>
+            
+                <para>You can choose to get email reminders on one of these Default Email
+                Notification schedules: <itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">None</emphasis> (KEW won’t send you any email
+                            reminders for your Action List.) </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Daily</emphasis> (If you have any new action
+                            requests, KEW sends you an email reminder once a day.) </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Weekly</emphasis> (If you have any new action
+                            requests, KEW sends you an email reminder once a week.) </para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">Immediately</emphasis> (KEW sends you an email
+                            reminder as soon as you receive a new action request on a document. This
+                            is the default – the setting when you start to use KEW.) </para>
+                    </listitem>
+                </itemizedlist></para>
+            
+            <para>The first new option allows overriding of the ‘Default Email Notification’ preference 
+                and setting of different frequencies to receive notifications based on the document type 
+                of the action request (Timesheet, EPTO, Hire Employee eDoc, Create Additional Pay eDoc, 
+                Requisition, etc.).</para>
+            <para>The parameters set for the default email notification and document-type notification work 
+                together to determine when a given action item is included in the immediate, daily, or 
+                weekly email reminders.</para>  
+            <para>If one sets a ‘Default Email Notification’ without any ‘Document Type Notifications,’ 
+                then emails are sent (or not sent), based on the default selection.</para>
+            <para>The second new option allows one to turn notifications on or off based on the request 
+                type (Complete, Approve, Acknowledge, or FYI) when “Immediate” is set as the ‘Default 
+                Email Notification.’</para>
+            <figure>
+                <title>Action List Preferences: Document Type Notifications</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/document_type_notifications.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>    
+            <para>However, adding a ‘Document Type Notification’ that is different from 
+                the ‘Default Email Notification,’ forces the document-type notification to take 
+                precedence. This allows users to customize by document- type for email reminders. 
+                For example:<itemizedlist>
+                    <listitem><para>If ‘Immediate’ is set as the ‘Default Email Notification,’ but a 
+                        document-type rule is set to ’None’ for the Maintain Time Assignment eDoc; 
+                        then no email notifications are sent for that specific document.</para>
+                    </listitem>
+                    <listitem><para>If ‘Daily’ is the ‘Default Email Notification,’ and a document-type rule 
+                        is added to receive ‘Weekly notifications for the Hire Employee eDoc; then for that document, 
+                        the only action request email received is a Weekly reminder.</para>
+                    </listitem>
+                    <listitem><para>If ‘None’ is set as the ‘Default Email Notification,’ and a document-type rule 
+                        is added to receive “Daily” notifications for EPIC Purchase Orders; then for that document, 
+                        the only action request email received is a Daily reminder.</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>In addition, when the ‘Default Email Notification’ is set to “Immediate” one can use the Send Email 
+                Notifications For option to decide whether or not to receive notifications by request-type.</para>
+            <para>All four of the request-types are already “checked” by default in your Workflow Preferences screen.</para>
+            <figure>
+                <title>Action List Preferences: Action Requested Email Notification</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/action_requested_email_notification.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure> 
+            <para>When an action request is received, and the preference is set to receive an immediate reminder, the system 
+                checks to ensure that the request-type checkbox is turned-on (checked) before an email is sent.</para>
+            <para>This allows these checkboxes to be used as a switch to ‘turn-on or turn-off’ the “immediate” email 
+                reminders for a given request type. For example:<itemizedlist>
+                    <listitem><para>To stop the receipt of Acknowledgement emails when your preference is set to 
+                    receive “Immediate” reminders, just uncheck the “Acknowledge” checkbox.</para>
+                    </listitem>
+                </itemizedlist></para>
             <para>Remember, all of these preferences and settings are on your Action List
-                Preferences page.</para>
+                Preferences page.</para>            
             <sect3>
                 <title>Refresh</title>
                 <para>As described above, you can use the Action List Preferences page to tell

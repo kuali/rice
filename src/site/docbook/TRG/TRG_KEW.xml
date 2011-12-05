@@ -18,7 +18,6 @@
 -->
 <chapter xml:id="TRG_KEW" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <title>KEW</title>
-    <section/>
     <sect1>
         <title>What is Kuali Enterprise Workflow?</title>
         <sect2>
@@ -5273,7 +5272,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </sect3>
         </sect2>
     </sect1>
-    <section>
+    <sect1  >
         <title>PeopleFlow - a new feature in KEW</title>
         <para>Calling a KRMS set of rules (an agenda) from your application can result in a call to
             a full-blown KEW workflow or to a lighter-weight PeopleFlow, which is a new feature in
@@ -5300,7 +5299,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             activate requests generated from a PeopleFlow in the appropriate order, so essentially
             it's like a mini people-based workflow that doesn't require you to specify a KEW node in
             the document type for each individual who might need to approve.</para>
-    </section>
+    </sect1>
     <sect1>
         <title>KEW Routing Components and Configuration Guide</title>
         <para>KEW has several components that you can use to configure routing. Typically a single
@@ -6833,7 +6832,7 @@ EDL EDoclite Example
             <title>Custom Search Screen</title>
             <para>As an example of customizing a Document Search screen, we’ll use a customized
                     <emphasis role="bold">Delete Course Request</emphasis> screen:</para>
-            <figure><title>Custom Search Screen: Delete Course Example</title>
+            <figure><title>Custom Search Screen: Delet Course Request Example</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/delete_course_request.png"/>
@@ -7375,13 +7374,13 @@ EDL EDoclite Example
                         <para>Document Id </para>
                     </listitem>
                     <listitem>
-                        <para>Type </para>
+                        <para>Document Type </para>
                     </listitem>
                     <listitem>
                         <para>Title </para>
                     </listitem>
                     <listitem>
-                        <para>Route Status </para>
+                        <para>Status </para>
                     </listitem>
                     <listitem>
                         <para>Initiator </para>
@@ -7422,10 +7421,10 @@ EDL EDoclite Example
                             <para>Document Id </para>
                         </listitem>
                         <listitem>
-                            <para>Type </para>
+                            <para>Document Type </para>
                         </listitem>
                         <listitem>
-                            <para>Route Status </para>
+                            <para>Status </para>
                         </listitem>
                         <listitem>
                             <para>Initiator </para>
@@ -7556,7 +7555,7 @@ EDL EDoclite Example
                                     <entry>routeHeaderId </entry>
                                 </row>
                                 <row>
-                                    <entry>Type </entry>
+                                    <entry>Document Type </entry>
                                     <entry>docTypeLabel </entry>
                                 </row>
                                 <row>
@@ -7564,7 +7563,7 @@ EDL EDoclite Example
                                     <entry>documentTitle </entry>
                                 </row>
                                 <row>
-                                    <entry>Route Status </entry>
+                                    <entry>Status </entry>
                                     <entry>docRouteStatusCodeDesc </entry>
                                 </row>
                                 <row>

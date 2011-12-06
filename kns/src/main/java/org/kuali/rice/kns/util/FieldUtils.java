@@ -1483,30 +1483,15 @@ public final class FieldUtils {
         if (remotableAttributeField.getAttributeLookupSettings() != null && remotableAttributeField.getAttributeLookupSettings().isRanged()) {
             // create two fields, one for the "from" and one for the "to"
             AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
-            String lowerBoundName = lookupSettings.getLowerBoundName();
-            String upperBoundName = lookupSettings.getUpperBoundName();
-            String lowerBoundLabel = lookupSettings.getLowerBoundLabel();
-            String upperBoundLabel = lookupSettings.getUpperBoundLabel();
-            if (StringUtils.isBlank(lowerBoundName)) {
-                lowerBoundName = "from_" + remotableAttributeField.getName();
-            }
-            if (StringUtils.isBlank(upperBoundName)) {
-                upperBoundName = "to_" + remotableAttributeField.getName();
-            }
-            if (StringUtils.isBlank(lowerBoundLabel)) {
-                lowerBoundLabel = "From " + remotableAttributeField.getLongLabel();
-            }
-            if (StringUtils.isBlank(upperBoundLabel)) {
-                upperBoundLabel = "To " + remotableAttributeField.getLongLabel();
-            }
-
-            Field lowerField = new Field(lowerBoundName, lowerBoundLabel);
+            // Create a pair of range input fields for a ranged attribute
+            // the lower bound is prefixed to distinguish it from the upper bound, which retains the original field name
+            Field lowerField = new Field(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + remotableAttributeField.getName(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
             lowerField.setMemberOfRange(true);
             lowerField.setAllowInlineRange(false);
             lowerField.setRangeFieldInclusive(lookupSettings.isLowerBoundInclusive());
             fields.add(lowerField);
 
-            Field upperField = new Field(upperBoundName, upperBoundLabel);
+            Field upperField = new Field(remotableAttributeField.getName(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
             upperField.setMemberOfRange(true);
             upperField.setAllowInlineRange(false);
             upperField.setRangeFieldInclusive(lookupSettings.isUpperBoundInclusive());

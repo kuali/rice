@@ -36,11 +36,7 @@ import org.w3c.dom.Element;
         RemotableAttributeLookupSettings.Elements.IN_CRITERIA,
         RemotableAttributeLookupSettings.Elements.IN_RESULTS,
         RemotableAttributeLookupSettings.Elements.RANGED,
-        RemotableAttributeLookupSettings.Elements.LOWER_BOUND_NAME,
-        RemotableAttributeLookupSettings.Elements.LOWER_BOUND_LABEL,
         RemotableAttributeLookupSettings.Elements.LOWER_BOUND_INCLUSIVE,
-        RemotableAttributeLookupSettings.Elements.UPPER_BOUND_NAME,
-        RemotableAttributeLookupSettings.Elements.UPPER_BOUND_LABEL,
         RemotableAttributeLookupSettings.Elements.UPPER_BOUND_INCLUSIVE,
         RemotableAttributeLookupSettings.Elements.CASE_SENSITIVE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -56,20 +52,8 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
     @XmlElement(name = Elements.RANGED, required = true)
     private final boolean ranged;
 
-    @XmlElement(name = Elements.LOWER_BOUND_NAME, required = false)
-    private final String lowerBoundName;
-
-    @XmlElement(name = Elements.LOWER_BOUND_LABEL, required = false)
-    private final String lowerBoundLabel;
-
     @XmlElement(name = Elements.LOWER_BOUND_INCLUSIVE, required = false)
     private final boolean lowerBoundInclusive;
-
-    @XmlElement(name = Elements.UPPER_BOUND_NAME, required = false)
-    private final String upperBoundName;
-
-    @XmlElement(name = Elements.UPPER_BOUND_LABEL, required = false)
-    private final String upperBoundLabel;
 
     @XmlElement(name = Elements.UPPER_BOUND_INCLUSIVE, required = false)
     private final boolean upperBoundInclusive;
@@ -88,11 +72,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         this.inCriteria = false;
         this.inResults = false;
         this.ranged = false;
-        this.lowerBoundName = null;
-        this.lowerBoundLabel = null;
         this.lowerBoundInclusive = false;
-        this.upperBoundName = null;
-        this.upperBoundLabel = null;
         this.upperBoundInclusive = false;
         this.caseSensitive = null;
     }
@@ -101,11 +81,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         this.inCriteria = builder.isInCriteria();
         this.inResults = builder.isInResults();
         this.ranged = builder.isRanged();
-        this.lowerBoundName = builder.getLowerBoundName();
-        this.lowerBoundLabel = builder.getLowerBoundLabel();
         this.lowerBoundInclusive = builder.isLowerBoundInclusive();
-        this.upperBoundName = builder.getUpperBoundName();
-        this.upperBoundLabel = builder.getUpperBoundLabel();
         this.upperBoundInclusive = builder.isUpperBoundInclusive();
         this.caseSensitive = builder.isCaseSensitive();
     }
@@ -126,28 +102,8 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
     }
 
     @Override
-    public String getLowerBoundName() {
-        return this.lowerBoundName;
-    }
-
-    @Override
-    public String getLowerBoundLabel() {
-        return this.lowerBoundLabel;
-    }
-
-    @Override
     public boolean isLowerBoundInclusive() {
         return this.lowerBoundInclusive;
-    }
-
-    @Override
-    public String getUpperBoundName() {
-        return this.upperBoundName;
-    }
-
-    @Override
-    public String getUpperBoundLabel() {
-        return this.upperBoundLabel;
     }
 
     @Override
@@ -168,11 +124,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         private boolean inCriteria;
         private boolean inResults;
         private boolean ranged;
-        private String lowerBoundName;
-        private String lowerBoundLabel;
         private boolean lowerBoundInclusive;
-        private String upperBoundName;
-        private String upperBoundLabel;
         private boolean upperBoundInclusive;
         private Boolean caseSensitive;
 
@@ -194,11 +146,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
             builder.setInCriteria(contract.isInCriteria());
             builder.setInResults(contract.isInResults());
             builder.setRanged(contract.isRanged());
-            builder.setLowerBoundName(contract.getLowerBoundName());
-            builder.setLowerBoundLabel(contract.getLowerBoundLabel());
             builder.setLowerBoundInclusive(contract.isLowerBoundInclusive());
-            builder.setUpperBoundName(contract.getUpperBoundName());
-            builder.setUpperBoundLabel(contract.getUpperBoundLabel());
             builder.setUpperBoundInclusive(contract.isUpperBoundInclusive());
             builder.setCaseSensitive(contract.isCaseSensitive());
             return builder;
@@ -224,28 +172,8 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         }
 
         @Override
-        public String getLowerBoundName() {
-            return this.lowerBoundName;
-        }
-
-        @Override
-        public String getLowerBoundLabel() {
-            return this.lowerBoundLabel;
-        }
-
-        @Override
         public boolean isLowerBoundInclusive() {
             return this.lowerBoundInclusive;
-        }
-
-        @Override
-        public String getUpperBoundName() {
-            return this.upperBoundName;
-        }
-
-        @Override
-        public String getUpperBoundLabel() {
-            return this.upperBoundLabel;
         }
 
         @Override
@@ -270,30 +198,8 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
             this.ranged = ranged;
         }
 
-        public void setLowerBoundName(String lowerBoundName) {
-            if (StringUtils.isBlank(lowerBoundName)) {
-                throw new IllegalArgumentException("lowerBoundName was null or blank");
-            }
-            this.lowerBoundName = lowerBoundName;
-        }
-
-        public void setLowerBoundLabel(String lowerBoundLabel) {
-            this.lowerBoundLabel = lowerBoundLabel;
-        }
-
         public void setLowerBoundInclusive(boolean lowerBoundInclusive) {
             this.lowerBoundInclusive = lowerBoundInclusive;
-        }
-
-        public void setUpperBoundName(String upperBoundName) {
-            if (StringUtils.isBlank(upperBoundName)) {
-                throw new IllegalArgumentException("upperBoundName was null or blank");
-            }
-            this.upperBoundName = upperBoundName;
-        }
-
-        public void setUpperBoundLabel(String upperBoundLabel) {
-            this.upperBoundLabel = upperBoundLabel;
         }
 
         public void setUpperBoundInclusive(boolean upperBoundInclusive) {
@@ -321,11 +227,7 @@ public final class RemotableAttributeLookupSettings extends AbstractDataTransfer
         final static String IN_CRITERIA = "inCriteria";
         final static String IN_RESULTS = "inResults";
         final static String RANGED = "ranged";
-        final static String LOWER_BOUND_NAME = "lowerBoundName";
-        final static String LOWER_BOUND_LABEL = "lowerBoundLabel";
         final static String LOWER_BOUND_INCLUSIVE = "lowerBoundInclusive";
-        final static String UPPER_BOUND_NAME = "upperBoundName";
-        final static String UPPER_BOUND_LABEL = "upperBoundLabel";
         final static String UPPER_BOUND_INCLUSIVE = "upperBoundInclusive";
         final static String CASE_SENSITIVE = "caseSensitive";
     }

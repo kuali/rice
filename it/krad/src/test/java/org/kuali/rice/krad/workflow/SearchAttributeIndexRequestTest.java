@@ -256,27 +256,4 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
         	GlobalVariables.clear();
         }
     }
-    
-	/*
-	 * A method that was copied from DocumentSearchTestBase.
-	 */
-	private RemotableAttributeField getFieldByFormKey(DocumentType docType, String formKey) {
-        if (docType == null) {
-            return null;
-        }
-        for (DocumentType.ExtensionHolder<SearchableAttribute> holder : docType.loadSearchableAttributes()) {
-            for (RemotableAttributeField field : holder.getExtension().getSearchFields(holder.getExtensionDefinition(),
-                    docType.getName())) {
-                if (field.getName().equals(formKey)) {
-                    return field;
-                } else if (field.getAttributeLookupSettings() != null) {
-                    if (field.getName().equals(field.getAttributeLookupSettings().getLowerBoundName()) ||
-                            field.getName().equals(field.getAttributeLookupSettings().getUpperBoundName())) {
-                        return field;
-                    }
-                }
-            }
-        }
-        return null;
-    }
 }

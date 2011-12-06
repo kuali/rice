@@ -55,45 +55,12 @@ public interface AttributeLookupSettings {
     boolean isRanged();
 
     /**
-     * Returns the name to assign to the lower bound of the range.  It is important to ensure that this
-     * does not conflict with any other attribute names being used on the lookup.
-     *
-     * @return the name of the lower bound of the range
-     */
-    String getLowerBoundName();
-
-    /**
-     * Returns the label to use for the lower bound of the range.  If no label is defined, then the
-     * framework will generate one.
-     *
-     * @return the label of the lower bound of the range
-     */
-    String getLowerBoundLabel();
-
-
-    /**
      * Returns true if the lower bound should be treated as inclusive when executing a ranged
      * lookup against the attribute, false if it should be treated as exclusive.
      *
      * @return true if the lower bound is inclusive, false if it is exclusive
      */
     boolean isLowerBoundInclusive();
-
-    /**
-     * Returns the name to assign to the upper bound of the range.  It is important to ensure that this
-     * does not conflict with any other attribute names being used on the lookup.
-     *
-     * @return the name of the upper bound of the range
-     */
-    String getUpperBoundName();
-
-    /**
-     * Returns the label to use for the upper bound of the range.  If no label is defined, then the
-     * framework will generate one.
-     *
-     * @return the label of the upper bound of the range
-     */
-    String getUpperBoundLabel();
 
     /**
      * Returns true if the upper bound should be treated as inclusive when executing a ranged

@@ -23,6 +23,12 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.fail
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 import org.junit.Ignore
+import static org.junit.Assert.assertTrue
+import static org.junit.Assert.assertFalse
+import org.kuali.rice.kew.framework.document.search.AttributeFields
+import org.kuali.rice.kns.util.FieldUtils
+import org.kuali.rice.kns.web.ui.Row
+import org.apache.commons.lang.ObjectUtils
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute class in isolation
@@ -55,43 +61,51 @@ class StandardGenericXMLSearchableAttributeUnitTest {
     }
 
     @Test
-    void testDefaultXmlGenerationReturnsEmptyForNoValues() {
+    void testDefaultXmlGenerationWithNoValues() {
         testGenerateSearchContent("""
+        <ruleAttribute>
         <searchingConfig>
-            <field name="def1"/>
-            <field name="def2"/>
+            <fieldDef name="def1"/>
+            <fieldDef name="def2"/>
         </searchingConfig>
-        """)
+        </ruleAttribute>
+        """, "<xmlRouting></xmlRouting>")
     }
 
     @Test
-    void testCustomXmlGenerationReturnsEmptyForNoValues() {
+    void testCustomXmlGenerationWithNoValues() {
+        def content = """<myGeneratedContent>
+                           <noVariableReplacement/>
+                         </myGeneratedContent>"""
         testGenerateSearchContent("""
+        <ruleAttribute>
         <searchingConfig>
             <xmlSearchContent>
-                <myGeneratedContent>
-                    <currentImplJustReturnsEmptyIfNoAttrParamsAreSupplied/>
-                </myGeneratedContent>
+                ${content}
             </xmlSearchContent>
-            <field name="def1"/>
-            <field name="def2"/>
+            <fieldDef name="def1"/>
+            <fieldDef name="def2"/>
         </searchingConfig>
-        """)
+        </ruleAttribute>
+        """, content)
     }
 
     @Test
     void testDefaultXmlGeneration() {
         testGenerateSearchContent("""
+        <ruleAttribute>
         <searchingConfig>
             <fieldDef name="def1"/>
             <fieldDef name="def2"/>
         </searchingConfig>
+        </ruleAttribute>
         """, """<xmlRouting><field name="def1"><value>val1</value></field></xmlRouting>""", [ def1: "val1" ])
     }
 
     @Test
     void testCustomXmlGeneration() {
         testGenerateSearchContent("""
+        <ruleAttribute>
         <searchingConfig>
             <xmlSearchContent>
                 <myGeneratedContent>
@@ -104,6 +118,7 @@ class StandardGenericXMLSearchableAttributeUnitTest {
             <fieldDef name="def1"/>
             <fieldDef name="def2"/>
         </searchingConfig>
+        </ruleAttribute>
         """, """
                 <myGeneratedContent>
                     <version>whatever</version>
@@ -175,6 +190,8 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         println fields
         // TODO: test something more substantial
         assertEquals(1, fields.size())
+        List<Row> rows = FieldUtils.convertRemotableAttributeFields(fields);
+        assertEquals(1, rows.size());
     }
 
     private static final String RANGE_FIELD_SEARCH_CONFIG = """
@@ -209,8 +226,15 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         println fields
         // TODO: test something more substantial
         assertEquals(1, fields.size())
-    }
+        assertFalse(fields[0].attributeLookupSettings.lowerBoundInclusive);
+        assertFalse(fields[0].attributeLookupSettings.upperBoundInclusive);
 
+        // ranged search generates 2 fields, from and to
+        List<Row> rows = FieldUtils.convertRemotableAttributeFields(fields);
+        assertEquals(2, rows.size());
+        assertEquals(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + "givenname", rows[0].fields[0].propertyName);
+        assertEquals("givenname", rows[1].fields[0].propertyName);
+    }
 
     protected void testXmlConfigValidity(String xmlConfig) {
         testGenerateSearchContent(xmlConfig)
@@ -224,8 +248,9 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         params.each { k,v -> ad.addPropertyDefinition(k, v) }
 
         def generated = new StandardGenericXMLSearchableAttribute().generateSearchContent(edb.build(), "no document type", ad.build())
-        if (expected) {
-            assertEquals(expected.trim(), generated.trim())
+
+        if (expected != null) {
+            assertEquals(expected.trim(), generated.trim());
         }
     }
 }

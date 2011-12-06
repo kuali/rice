@@ -154,7 +154,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria3.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException e) {}
+        } catch (RuntimeException e) {}
 
         criteria = null;
         criteria = DocumentSearchCriteria.Builder.create();
@@ -177,7 +177,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria3.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException e) {}
+        } catch (RuntimeException e) {}
 
         criteria = null;
         criteria = DocumentSearchCriteria.Builder.create();
@@ -269,7 +269,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException wsee) {}
+        } catch (RuntimeException wsee) {}
     }
 
     @Test public void testDocumentSearchAttributeWildcarding() throws Exception {
@@ -523,7 +523,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException wsee) {}
+        } catch (RuntimeException wsee) {}
     }
 
     /**
@@ -568,7 +568,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             results =  docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException wsee) {}
+        } catch (RuntimeException wsee) {}
     }
 
     /*
@@ -936,7 +936,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             results =  docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException wsee) {}
+        } catch (RuntimeException wsee) {}
     }
 
 
@@ -1070,7 +1070,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         try {
             results =  docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
-        } catch (WorkflowServiceErrorException wsee) {}
+        } catch (RuntimeException wsee) {}
     }
 
     /**

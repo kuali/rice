@@ -495,14 +495,16 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         return ( (allowRangedSearch) && ((rangeDefinition != null) || (rangeSearch)) );
     }
 
+    /**
+     * Configures the AttributeLookupSettings for the ranged field
+     * @param attributeLookupSettings the attribute lookup settings to modify
+     * @param fieldBuilder the field
+     * @param searchDefinitionNode the XML configuration
+     */
     private void applyAttributeRange(RemotableAttributeLookupSettings.Builder attributeLookupSettings, RemotableAttributeField.Builder fieldBuilder, Node searchDefinitionNode) {
         NamedNodeMap searchDefAttributes = searchDefinitionNode.getAttributes();
         Node rangeDefinitionNode = getPotentialChildNode(searchDefinitionNode, "rangeDefinition");
-        String lowerBoundDefaultName = KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
-        String upperBoundDefaultName = KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldBuilder.getName();
         attributeLookupSettings.setRanged(true);
-        attributeLookupSettings.setLowerBoundName(lowerBoundDefaultName);
-        attributeLookupSettings.setUpperBoundName(upperBoundDefaultName);
         if (rangeDefinitionNode != null) {
             NamedNodeMap rangeDefinitionAttributes = rangeDefinitionNode.getAttributes();
             NamedNodeMap lowerBoundNodeAttributes = getAttributesForPotentialChildNode(rangeDefinitionNode, "lower");
@@ -513,17 +515,11 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                 if (lowerRangeBound.inclusive != null) {
                     attributeLookupSettings.setLowerBoundInclusive(lowerRangeBound.inclusive);
                 }
-                if (StringUtils.isNotBlank(lowerRangeBound.label)) {
-                    attributeLookupSettings.setLowerBoundLabel(lowerRangeBound.label);
-                }
             }
             RangeBound upperRangeBound = determineRangeBoundProperties(searchDefAttributes, rangeDefinitionAttributes, upperBoundNodeAttributes);
             if (upperRangeBound != null) {
                 if (upperRangeBound.inclusive != null) {
                     attributeLookupSettings.setUpperBoundInclusive(upperRangeBound.inclusive);
-                }
-                if (StringUtils.isNotBlank(upperRangeBound.label)) {
-                    attributeLookupSettings.setUpperBoundLabel(upperRangeBound.label);
                 }
             }
         }
@@ -704,7 +700,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                         // TODO - KULRICE-5630 - I'm pretty sure this *won't* work because we don't store lower and upper bound keys in the document attributes
 
                         String lowerBoundFieldDefName = KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName;
-                        String upperBoundFieldDefName = KewApiConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName;
+                        String upperBoundFieldDefName = fieldDefName;
                         List<String> lowerBoundValues = documentAttributeValues.get(lowerBoundFieldDefName);
                         rangeMemberInSearchParams |= CollectionUtils.isNotEmpty(lowerBoundValues) && StringUtils.isNotBlank(lowerBoundValues.get(0));
                         List<String> upperBoundValues = documentAttributeValues.get(upperBoundFieldDefName);
@@ -771,14 +767,14 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                     if (lowerBoundValues.size() > 1) {
                                         throw new WorkflowRuntimeException("Encountered an illegal lower bound with more then one value for field: " + fieldDefName);
                                     }
-                                    lowerBoundValue = lowerBoundValues.get(0);
+                                    lowerBoundValue = extractValuesFromExpressions(lowerBoundValues, fieldDataType).get(0);
                                 }
                                 String upperBoundValue = null;
                                 if (CollectionUtils.isNotEmpty(upperBoundValues)) {
                                     if (upperBoundValues.size() > 1) {
                                         throw new WorkflowRuntimeException("Encountered an illegal upper bound with more then one value for field: " + fieldDefName);
                                     }
-                                    upperBoundValue = upperBoundValues.get(0);
+                                    upperBoundValue = extractValuesFromExpressions(upperBoundValues, fieldDataType).get(0);
                                 }
 
         						if (StringUtils.isNotBlank(lowerBoundValue)) {
@@ -803,12 +799,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                                 }
 
         					} else {
-                                List<String> enteredValue = documentAttributeValues.get(fieldDefName);
-
-                                List<String> cleanedValues = new ArrayList<String>();
-                                for (String val: enteredValue) {
-                                    cleanedValues.addAll(SQLUtils.getCleanedSearchableValues(val, fieldDataType));
-                                }
+                                List<String> cleanedValues = extractValuesFromExpressions(documentAttributeValues.get(fieldDefName), fieldDataType);
 
                                 if (cleanedValues.size() == 1) {
                                     String stringVariable = cleanedValues.get(0);
@@ -829,6 +820,14 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 		}
 		return errors;
 	}
+
+    private List<String> extractValuesFromExpressions(List<String> enteredValue, String fieldDataType) {
+        List<String> cleanedValues = new ArrayList<String>();
+        for (String val: enteredValue) {
+            cleanedValues.addAll(SQLUtils.getCleanedSearchableValues(val, fieldDataType));
+        }
+        return cleanedValues;
+    }
 
     private String constructRangeFieldErrorPrefix(String fieldDefLabel, NamedNodeMap rangeBoundAttributes) {
         String potentialLabel = getPotentialRangeBoundLabelFromAttributes(rangeBoundAttributes);
@@ -888,5 +887,4 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         Boolean inclusive;
         String label;
     }
-
 }

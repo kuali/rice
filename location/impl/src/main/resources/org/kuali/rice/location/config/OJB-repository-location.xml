@@ -37,8 +37,6 @@
 		</sequence-manager>
 	</jdbc-connection-descriptor>
 
-	<!-- The following need to be moved to an OJB file in the "location" module -->
-
 	<class-descriptor class="org.kuali.rice.location.impl.campus.CampusBo" table="KRLC_CMP_T">
 		<field-descriptor name="code" column="CAMPUS_CD" jdbc-type="VARCHAR" primarykey="true" indexed="true" />
 		<field-descriptor name="name" column="CAMPUS_NM" jdbc-type="VARCHAR" />

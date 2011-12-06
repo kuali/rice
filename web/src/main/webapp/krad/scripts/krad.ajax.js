@@ -71,10 +71,7 @@ function ajaxSubmitForm(methodToCall, successCallback, additionalData, elementTo
 						elementToBlock.block({
 			                message: '<img src="' + getConfigParam("kradImageLocation") + 'loader.gif" alt="working..." /> Updating...',
 			                fadeIn:  400,
-			                fadeOut:  800,
-			                overlayCSS:  {
-			                    opacity: 0.3
-			                }
+			                fadeOut:  800
 			            });
 					}
 				},
@@ -162,9 +159,9 @@ function handleActionLink(methodToCall, navigateToPageId) {
  */
 function retrieveComponent(id, actualId, methodToCall){
 	var elementToBlock = jq("#" + id + "_refreshWrapper");
-	if(elementToBlock.find("#" + actualId + "_attribute_span").length){
+/*	if(elementToBlock.find("#" + actualId + "_attribute_span").length){
 		elementToBlock = jq("#" + actualId +"_attribute_span");
-	}
+	}*/
 	
 	var updateRefreshableComponentCallback = function(htmlContent){
 		var component = jq("#" + id + "_refreshWrapper", htmlContent);
@@ -177,13 +174,14 @@ function retrieveComponent(id, actualId, methodToCall){
 		}
 
 		elementToBlock.unblock({onUnblock: function(){
+				component.effect("highlight",{}, 6000);
 				// replace component
 				if(jq("#" + id + "_refreshWrapper").length){
 					jq("#" + id + "_refreshWrapper").replaceWith(component);
 				}
 				runHiddenScripts(id + "_refreshWrapper");
 
-                component.effect("highlight",{}, 6000);
+
                 jq(".displayWith-" + actualId).effect("highlight",{}, 6000);
 			}
 		});

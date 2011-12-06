@@ -17,6 +17,10 @@
 var $dialog = null;
 var jq = jQuery.noConflict();
 
+//clear out blockUI css, using css class overrides
+jQuery.blockUI.defaults.css = {};
+jQuery.blockUI.defaults.overlayCSS = {};
+
 // validation init
 var pageValidatorReady = false;
 

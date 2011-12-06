@@ -90,7 +90,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     		showReturnHref = kimType!=null && 
     			( StringUtils.isBlank( kimType.getServiceName() )
     					|| (KimFrameworkServiceLocator.getKimTypeService(kimType) instanceof RoleTypeService
-    						&&!((RoleTypeService) KimFrameworkServiceLocator.getKimTypeService(kimType)).isApplicationRoleType() )
+    						&&!((RoleTypeService) KimFrameworkServiceLocator.getKimTypeService(kimType)).isDerivedRoleType() )
     					);
     	} else{
     		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
@@ -134,7 +134,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 		try {
 		    if(hasRoleTypeService(kimType, kimTypeService))
-		        hasDerivedRoleTypeService = (kimType.getServiceName()!=null && ((RoleTypeService)kimTypeService).isApplicationRoleType());
+		        hasDerivedRoleTypeService = (kimType.getServiceName()!=null && ((RoleTypeService)kimTypeService).isDerivedRoleType());
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
 		    return hasDerivedRoleTypeService;

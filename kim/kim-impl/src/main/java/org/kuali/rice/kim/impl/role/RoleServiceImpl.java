@@ -445,7 +445,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
         for (Map.Entry<String, List<RoleMembership>> entry : roleIdToMembershipMap.entrySet()) {
             RoleTypeService roleTypeService = getRoleTypeService(entry.getKey());
-            //it is possible that the the roleTypeService is coming from a remote application
+            //it is possible that the the roleTypeService is coming from a remote   
             // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
                 List<RoleMembership> matchingMembers = roleTypeService.getMatchingRoleMemberships(qualification,
@@ -775,15 +775,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             }
         }
 
-        // handle application roles
+        // handle derived roles
     	for ( String roleId : allRoleIds ) {
     		RoleTypeService roleTypeService = getRoleTypeService( roleId );
 			RoleBo role = roles.get( roleId );
-    		// check if an application role
+    		// check if a derived role
             try {
-        		if ( isApplicationRoleType(role.getKimTypeId(), roleTypeService) ) {
-                    // for each application role, get the list of principals and groups which are in that role given the qualification (per the role type service)
-        			List<RoleMembership> roleMembers = roleTypeService.getRoleMembersFromApplicationRole(role.getNamespaceCode(), role.getName(), qualification);
+        		if ( isDerivedRoleType(role.getKimTypeId(), roleTypeService) ) {
+                    // for each derived role, get the list of principals and groups which are in that role given the qualification (per the role type service)
+        			List<RoleMembership> roleMembers = roleTypeService.getRoleMembersFromDerivedRole(role.getNamespaceCode(), role.getName(), qualification);
         			if ( !roleMembers.isEmpty()  ) {
         				matchingRoleIds.add( roleId );
         			}
@@ -1084,7 +1084,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
 
-        // check for application roles and extract principals and groups from that - then check them against the
+        // check for derived roles and extract principals and groups from that - then check them against the
         // role type service passing in the qualification and principal - the qualifier comes from the
         // external system (application)
 
@@ -1092,12 +1092,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         for (String roleId : allRoleIds) {
             RoleBo role = roles.get(roleId);
             RoleTypeService roleTypeService = getRoleTypeService(roleId);
-            // check if an application role
+            // check if an derived role
             //it is possible that the the roleTypeService is coming from a remote application
             // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
             try {
-                if (isApplicationRoleType(role.getKimTypeId(), roleTypeService)) {
-                    if (roleTypeService.hasApplicationRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getName(), qualification)) {
+                if (isDerivedRoleType(role.getKimTypeId(), roleTypeService)) {
+                    if (roleTypeService.hasDerivedRole(principalId, principalGroupIds, role.getNamespaceCode(), role.getName(), qualification)) {
                         return true;
                     }
                 }
@@ -1120,8 +1120,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
 
-    protected boolean isApplicationRoleType(String roleTypeId, RoleTypeService service) {
-        return service != null && service.isApplicationRoleType();
+    protected boolean isDerivedRoleType(String roleTypeId, RoleTypeService service) {
+        return service != null && service.isDerivedRoleType();
     }
 
     /**

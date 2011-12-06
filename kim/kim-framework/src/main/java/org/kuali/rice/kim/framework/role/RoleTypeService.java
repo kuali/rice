@@ -91,18 +91,18 @@ public interface RoleTypeService extends KimTypeService {
                                                     List<RoleMembership> roleMemberships) throws RiceIllegalArgumentException;
 
     /**
-     * Returns true if this role type represents an "application" role type.  That is, the members of the 
+     * Returns true if this role type represents a "derived" role type.  That is, the members of the 
      * role are known to the host application, not to KIM.  This is needed for cases like the KFS
      * Fiscal Officer, where the members of the role are in the Account table in the KFS database.
      *
-     * @return true if application type
+     * @return true if derived type
      */
-    @WebMethod(operationName="isApplicationRoleType")
-    @WebResult(name = "applicationRoleType")
-    boolean isApplicationRoleType();
+    @WebMethod(operationName="isDerivedRoleType")
+    @WebResult(name = "derivedRoleType")
+    boolean isDerivedRoleType();
 
     /**
-     * This method can be used to check if the given principal has this application role.  It is designed to be used in case
+     * This method can be used to check if the given principal has this derived role.  It is designed to be used in case
      * there is a more efficient way to check for whether a principal is in a role rather than retrieving all the
      * members of the role and checking against that.
      * 
@@ -114,13 +114,13 @@ public interface RoleTypeService extends KimTypeService {
      * @param namespaceCode the namespace code the role is in. cannot be blank or null.
      * @param roleName the name of the role.  cannot be blank or null.
      * @param qualification the qualification.  cannot be null.
-     * @return if the principal has an application role.
+     * @return if the principal has a derived role.
      * @throws IllegalArgumentException if the principalId, namespaceCode, roleName is blank or null.
      * @throws IllegalArgumentException if the groupIds, qualification is null.
      */
-    @WebMethod(operationName="hasApplicationRole")
-    @WebResult(name = "applicationRole")
-    boolean hasApplicationRole( @WebParam(name = "principalId")
+    @WebMethod(operationName="hasDerivedRole")
+    @WebResult(name = "derivedRole")
+    boolean hasDerivedRole( @WebParam(name = "principalId")
                                 String principalId,
                                 @WebParam(name = "groupIds")
                                 List<String> groupIds,
@@ -132,11 +132,11 @@ public interface RoleTypeService extends KimTypeService {
                                 @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
                                 Map<String, String> qualification ) throws RiceIllegalArgumentException;
 
-    @WebMethod(operationName = "getRoleMembersFromApplicationRole")
+    @WebMethod(operationName = "getRoleMembersFromDerivedRole")
     @XmlElementWrapper(name = "roleMemberships", required = true)
     @XmlElement(name = "roleMembership", required = false)
     @WebResult(name = "roleMemberships")
-    List<RoleMembership> getRoleMembersFromApplicationRole(
+    List<RoleMembership> getRoleMembersFromDerivedRole(
             @WebParam(name = "namespaceCode") String namespaceCode,
             @WebParam(name = "roleName") String roleName,
             @WebParam(name = "qualification")

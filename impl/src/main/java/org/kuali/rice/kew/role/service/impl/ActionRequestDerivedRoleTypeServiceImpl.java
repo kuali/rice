@@ -58,7 +58,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
     }
 	
 	@Override
-    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
+    public List<RoleMembership> getRoleMembersFromDerivedRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was null or blank");
         }
@@ -70,7 +70,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 		if ( qualification != null && !qualification.isEmpty() ) {
 		    String principalId = qualification.get(KimConstants.AttributeConstants.PRINCIPAL_ID);
 			if (qualification.containsKey(KimConstants.AttributeConstants.PRINCIPAL_ID)
-					&& hasApplicationRole(principalId, null, namespaceCode,
+					&& hasDerivedRole(principalId, null, namespaceCode,
 							roleName, qualification)) {
                 members.add(RoleMembership.Builder.create(null/*roleId*/, null, principalId, MemberType.PRINCIPAL, null).build());
 			}
@@ -79,7 +79,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends DerivedRoleTypeServ
 	}
 
 	@Override
-	public boolean hasApplicationRole(String principalId,
+	public boolean hasDerivedRole(String principalId,
 			List<String> groupIds, String namespaceCode, String roleName,
 			Map<String, String> qualification) {
 		/*if (StringUtils.isBlank(principalId)) {

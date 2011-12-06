@@ -74,7 +74,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceB
 	 * Since this is potentially the entire set of users, just check the qualification for the user we are interested in and return it.
 	 */
 	@Override
-    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
+    public List<RoleMembership> getRoleMembersFromDerivedRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 		if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was null or blank");
         }
@@ -90,14 +90,14 @@ public class PrincipalDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceB
 		qualification = translateInputAttributes(qualification);
 		// check that the principal ID is not null
 		String principalId = qualification.get( KimConstants.AttributeConstants.PRINCIPAL_ID );
-		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
+		if ( hasDerivedRole(principalId, null, namespaceCode, roleName, qualification)) {
 	        tempIdList.add( RoleMembership.Builder.create(null/*roleId*/, null, principalId, MemberType.PRINCIPAL, null).build());
 		}
 		return tempIdList;
 	}
 	
 	@Override
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
+	public boolean hasDerivedRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
         if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId was null or blank");
         }

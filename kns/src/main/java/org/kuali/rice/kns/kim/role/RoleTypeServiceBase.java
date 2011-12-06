@@ -83,7 +83,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 *
 	 */
     @Override
-	public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
+	public List<RoleMembership> getRoleMembersFromDerivedRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 
         if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was null or blank");
@@ -98,7 +98,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
         }
 
         validateRequiredAttributesAgainstReceived(qualification);
-		if ( !isApplicationRoleType() ) {
+		if ( !isDerivedRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
 		} else {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is an application role type but has not overridden this method." );
@@ -111,7 +111,7 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	 *
 	 */
     @Override
-	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
+	public boolean hasDerivedRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification) {
 	    if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId was null or blank");
         }
@@ -132,12 +132,12 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
             throw new RiceIllegalArgumentException("qualification was null or blank");
         }
 
-        if ( !isApplicationRoleType() ) {
+        if ( !isDerivedRoleType() ) {
 			throw new UnsupportedOperationException( this.getClass().getName() + " is not an application role." );
 		}
 		// if principal ID given, check if it is in the list generated from the getPrincipalIdsFromApplicationRole method
 		if ( StringUtils.isNotBlank( principalId ) ) {
-		    List<RoleMembership> members = getRoleMembersFromApplicationRole(namespaceCode, roleName, qualification);
+		    List<RoleMembership> members = getRoleMembersFromDerivedRole(namespaceCode, roleName, qualification);
 		    for ( RoleMembership rm : members ) {
 		    	if ( StringUtils.isBlank( rm.getId() ) ) {
 		    		continue;
@@ -158,12 +158,12 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
 	}
 	
 	/**
-	 * Default to not being an application role type.  Always returns false.
+	 * Default to not being a derived role type.  Always returns false.
 	 * 
-	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#isApplicationRoleType()
+	 * @see org.kuali.rice.kim.framework.role.RoleTypeService#isDerivedRoleType()
 	 */
     @Override
-	public boolean isApplicationRoleType() {
+	public boolean isDerivedRoleType() {
 		return false;
 	}
 		

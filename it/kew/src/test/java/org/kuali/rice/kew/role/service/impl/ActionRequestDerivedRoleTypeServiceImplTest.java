@@ -64,10 +64,10 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
                 .singletonMap(KimConstants.AttributeConstants.DOCUMENT_NUMBER, "" + document.getDocumentId());
 		
 		// rkirkend should have role as an approver
-		assertTrue("rkirkend should have role.", roleTypeService.hasApplicationRole(getPrincipalIdForName("rkirkend"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertTrue("rkirkend should have role.", roleTypeService.hasDerivedRole(getPrincipalIdForName("rkirkend"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		
 		// now verify it returns false for the non-adhoc case since we created request to rkirkend as an adhoc request
-		assertFalse("rkirkend should not have role for non-adhoc (since this was an adhoc request)", roleTypeService.hasApplicationRole(getPrincipalIdForName("rkirkend"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertFalse("rkirkend should not have role for non-adhoc (since this was an adhoc request)", roleTypeService.hasDerivedRole(getPrincipalIdForName("rkirkend"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		
 		// switch to bmcgough and send an acknowledge
 		document = TestUtilities.switchByPrincipalName("bmcgough", document);
@@ -75,11 +75,11 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		assertTrue("bmcgough should have ack", document.isAcknowledgeRequested());
 		
 		// bmcgough should not have role as an approver
-		assertFalse("bmcgough should not have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("bmcgough"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertFalse("bmcgough should not have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("bmcgough"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		// bmcgough should have role as an ack
-		assertTrue("bmcgough should have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("bmcgough"), null, null, ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertTrue("bmcgough should have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("bmcgough"), null, null, ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		// bmcgough should not have role as an fyi
-		assertFalse("bmcgough should not have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("bmcgough"), null, null, FYI_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertFalse("bmcgough should not have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("bmcgough"), null, null, FYI_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		
 		// now approve as "rkirkend", should generate a requeest to jhopf
 		document = TestUtilities.switchByPrincipalName("rkirkend", document);
@@ -89,14 +89,14 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		// jhopf should now have approve request, not as the result of an adhoc request
 		document = TestUtilities.switchByPrincipalName("jhopf", document);
 		assertTrue(document.isApprovalRequested());
-		assertTrue("jhopf should have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("jhopf"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
-		assertTrue("jhopf should have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("jhopf"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertTrue("jhopf should have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("jhopf"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertTrue("jhopf should have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("jhopf"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		
 		// send an fyi to "pmckown"
 		document.adHocToPrincipal(ActionRequestType.FYI, "", getPrincipalIdForName("pmckown"), "", true);
 		document = TestUtilities.switchByPrincipalName("pmckown", document);
 		assertTrue(document.isFYIRequested());
-		assertTrue("pmckown should have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("pmckown"), null, null, FYI_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertTrue("pmckown should have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("pmckown"), null, null, FYI_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 				
 		// create a new doc and "save" as ewestfal, this should generate a "complete" request to ewestfal
 		document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "ActionRequestDerivedRoleTypeServiceImplTest");
@@ -106,8 +106,8 @@ public class ActionRequestDerivedRoleTypeServiceImplTest extends KEWTestCase {
 		assertTrue(document.isApprovalRequested());
 		
 		// the ActionRequestDerivedRoleTypeService does not consider COMPLETE and APPROVE to be the same, let's verify that's the case
-		assertFalse("ewestfal should not have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("ewestfal"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
-		assertFalse("ewestfal should not have role", roleTypeService.hasApplicationRole(getPrincipalIdForName("ewestfal"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertFalse("ewestfal should not have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("ewestfal"), null, null, APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
+		assertFalse("ewestfal should not have role", roleTypeService.hasDerivedRole(getPrincipalIdForName("ewestfal"), null, null, NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME, qualifications));
 		
 	}
 	

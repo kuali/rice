@@ -57,7 +57,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBa
 	 *
 	 */
 	@Override
-    public List<RoleMembership> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, Map<String, String> qualification) {
+    public List<RoleMembership> getRoleMembersFromDerivedRole(String namespaceCode, String roleName, Map<String, String> qualification) {
 	    if (StringUtils.isBlank(namespaceCode)) {
             throw new RiceIllegalArgumentException("namespaceCode was null or blank");
         }
@@ -103,7 +103,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends DerivedRoleTypeServiceBa
 	}
 
 	@Override
-	public boolean hasApplicationRole(
+	public boolean hasDerivedRole(
 			String principalId, List<String> groupIds, String namespaceCode, String roleName, Map<String, String> qualification){
 		if (StringUtils.isBlank(principalId)) {
             throw new RiceIllegalArgumentException("principalId was null or blank");

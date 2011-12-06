@@ -32,17 +32,13 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Deprecated
 public interface BusinessObjectMetaDataService extends DataObjectMetaDataService {
 
-	@Deprecated
 	public DataObjectRelationship getBusinessObjectRelationship(RelationshipDefinition ddReference,
 			BusinessObject bo, Class boClass, String attributeName, String attributePrefix, boolean keysOnly);
 
-	@Deprecated
 	public RelationshipDefinition getBusinessObjectRelationshipDefinition(Class c, String attributeName);
 
-	@Deprecated
 	public RelationshipDefinition getBusinessObjectRelationshipDefinition(BusinessObject bo, String attributeName);
 
 	/**
@@ -52,7 +48,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param bo
 	 * @return a collection of inquirable field names
 	 */
-	@Deprecated
 	public Collection<String> getInquirableFieldNames(Class boClass, String sectionTitle);
 
 	/**
@@ -62,7 +57,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param bo
 	 * @return a collection of lookupable fields
 	 */
-	@Deprecated
 	public List<String> getLookupableFieldNames(Class boClass);
 
 	/**
@@ -74,7 +68,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param attributeName
 	 * @return default value for an attribute
 	 */
-	@Deprecated
 	public String getLookupFieldDefaultValue(Class businessObjectClass, String attributeName);
 
 	/**
@@ -85,7 +78,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param attributeName
 	 * @return value finder class
 	 */
-	@Deprecated
 	public Class getLookupFieldDefaultValueFinderClass(Class businessObjectClass, String attributeName);
 
 	/**
@@ -98,7 +90,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param attributeName
 	 * @return default values for attributes
 	 */
-	@Deprecated
 	public String getLookupFieldQuickfinderParameterString(Class businessObjectClass, String attributeName);
 
 	/**
@@ -110,7 +101,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param attributeName
 	 * @return value finder class
 	 */
-	@Deprecated
 	public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(Class businessObjectClass,
 			String attributeName);
 
@@ -121,7 +111,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param bo
 	 * @return
 	 */
-	@Deprecated
 	public Collection<String> getCollectionNames(BusinessObject bo);
 
 	/**
@@ -134,7 +123,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param sectionTitle
 	 * @return true if field is inquirable
 	 */
-	@Deprecated
 	public boolean isAttributeInquirable(Class boClass, String attributeName, String sectionTitle);
 
 	/**
@@ -144,7 +132,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param bo
 	 * @return true if bo is inquirable
 	 */
-	@Deprecated
 	public boolean isInquirable(Class boClass);
 
 	/**
@@ -156,7 +143,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param attributeName
 	 * @return true if field is lookupable
 	 */
-	@Deprecated
 	public boolean isAttributeLookupable(Class boClass, String attributeName);
 
 	/**
@@ -166,7 +152,6 @@ public interface BusinessObjectMetaDataService extends DataObjectMetaDataService
 	 * @param bo
 	 * @return true if bo is lookupable
 	 */
-	@Deprecated
 	public boolean isLookupable(Class boClass);
 
 	/**

@@ -17,11 +17,11 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.InactivationBlockingDetectionService;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,13 +41,13 @@ import java.util.Map;
 public class InactivationBlockingDetectionServiceImpl implements InactivationBlockingDetectionService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InactivationBlockingDetectionServiceImpl.class);
 
-    protected BusinessObjectMetaDataService businessObjectMetaDataService;
+    protected DataObjectMetaDataService dataObjectMetaDataService;
     protected BusinessObjectService businessObjectService;
     
     /**
      * Note we are checking the active getting after retrieving potential blocking records instead of setting criteria on the
 	 * active field. This is because some implementations of {@link org.kuali.rice.core.api.mo.common.active.MutableInactivatable} might not have the active field, for example
-	 * instances of {@link InactivateableFromTo}
+	 * instances of {@link org.kuali.rice.krad.bo.InactivatableFromTo}
 	 * 
      * @see org.kuali.rice.krad.service.InactivationBlockingDetectionService#listAllBlockerRecords(org.kuali.rice.krad.datadictionary.InactivationBlockingDefinition)
      * @see org.kuali.rice.core.api.mo.common.active.MutableInactivatable
@@ -80,7 +80,7 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
 	/**
 	 * Note we are checking the active getting after retrieving potential blocking records instead of setting criteria on the
 	 * active field. This is because some implementations of {@link org.kuali.rice.core.api.mo.common.active.MutableInactivatable} might not have the active field, for example
-	 * instances of {@link InactivateableFromTo}
+	 * instances of {@link org.kuali.rice.krad.bo.InactivatableFromTo}
 	 * 
 	 * @see org.kuali.rice.krad.service.InactivationBlockingDetectionService#hasABlockingRecord(org.kuali.rice.krad.bo.BusinessObject,
 	 *      org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata)
@@ -110,9 +110,9 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
 		BusinessObject blockingBo = (BusinessObject) ObjectUtils.createNewObjectFromClass(inactivationBlockingMetadata
 				.getBlockingReferenceBusinessObjectClass());
 
-		DataObjectRelationship dataObjectRelationship = businessObjectMetaDataService
-				.getBusinessObjectRelationship(blockingBo,
-						inactivationBlockingMetadata.getBlockedReferencePropertyName());
+		DataObjectRelationship dataObjectRelationship = dataObjectMetaDataService
+				.getDataObjectRelationship(blockingBo, blockedBo.getClass(),
+                        inactivationBlockingMetadata.getBlockedReferencePropertyName(), "", true, false, false);
 
 		// note, this method assumes that all PK fields of the blockedBo have a non-null and, for strings, non-blank values
 		if (dataObjectRelationship != null) {
@@ -137,8 +137,8 @@ public class InactivationBlockingDetectionServiceImpl implements InactivationBlo
 		return null;
 	}
     
-    public void setBusinessObjectMetaDataService(BusinessObjectMetaDataService businessObjectMetaDataService) {
-        this.businessObjectMetaDataService = businessObjectMetaDataService;
+    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetaDataService) {
+        this.dataObjectMetaDataService = dataObjectMetaDataService;
     }
 
     public void setBusinessObjectService(BusinessObjectService businessObjectService) {

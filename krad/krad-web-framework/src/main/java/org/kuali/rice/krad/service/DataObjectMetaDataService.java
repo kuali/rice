@@ -108,6 +108,23 @@ public interface DataObjectMetaDataService {
             boolean supportInquiry);
 
     /**
+     * Attempts to find relationships for the given data object class
+     *
+     * <p>
+     * First the data dictionary is queried to find any relationship definitions
+     * <code>BusinessObjectRetationship</code> is build from that. If not and
+     * the data object class is persistent, relationships are retrieved from the
+     * persistence service. Nested attributes are handled in addition to
+     * external business objects. If multiple relationships are found, the one
+     * that contains the least amount of joining keys is returned
+     * </p>
+     *
+     * @param dataObjectClass - class for the data object that contains the attribute
+     * @return List of DataObjectRelationship for the class
+     */
+    public List<DataObjectRelationship> getDataObjectRelationships(Class<?> dataObjectClass);
+
+    /**
      * Fetches the RelationshipDefinition for the attribute with the given name within
      * the given class
      *

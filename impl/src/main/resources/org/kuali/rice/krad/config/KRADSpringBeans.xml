@@ -381,8 +381,8 @@
     <property name="persistenceService">
       <ref bean="persistenceService"/>
     </property>
-    <property name="businessObjectMetaDataService">
-      <ref bean="businessObjectMetaDataService"/>
+    <property name="dataObjectMetaDataService">
+      <ref bean="dataObjectMetaDataService"/>
     </property>
   </bean>
 
@@ -923,8 +923,8 @@
 
   <bean id="inactivationBlockingDetectionService"
         class="org.kuali.rice.krad.service.impl.InactivationBlockingDetectionServiceImpl">
-    <property name="businessObjectMetaDataService">
-      <ref bean="businessObjectMetaDataService"/>
+    <property name="dataObjectMetaDataService">
+      <ref bean="dataObjectMetaDataService"/>
     </property>
     <property name="businessObjectService">
       <ref bean="businessObjectService"/>

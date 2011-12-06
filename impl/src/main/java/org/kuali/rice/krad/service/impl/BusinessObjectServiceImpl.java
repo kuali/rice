@@ -19,9 +19,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.identity.PersonService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -30,6 +29,7 @@ import org.kuali.rice.krad.dao.BusinessObjectDao;
 import org.kuali.rice.krad.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.krad.exception.ReferenceAttributeDoesntExistException;
 import org.kuali.rice.krad.service.BusinessObjectService;
+import org.kuali.rice.krad.service.DataObjectMetaDataService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceService;
@@ -58,7 +58,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     private PersistenceStructureService persistenceStructureService;
     private BusinessObjectDao businessObjectDao;
     private PersonService personService;
-    private BusinessObjectMetaDataService businessObjectMetaDataService;
+    private DataObjectMetaDataService dataObjectMetaDataService;
 
     private boolean illegalBusinessObjectsForSaveInitialized;
     private final Set<String> illegalBusinessObjectsForSave = new HashSet<String>();
@@ -255,7 +255,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         // get the list of foreign-keys for this reference. if the reference
         // does not exist, or is not a reference-descriptor, an exception will
         // be thrown here.
-        DataObjectRelationship boRel = businessObjectMetaDataService.getBusinessObjectRelationship( bo, referenceName );
+        //DataObjectRelationship boRel = dataObjectMetaDataService.getBusinessObjectRelationship( bo, referenceName );
+        DataObjectRelationship boRel = dataObjectMetaDataService.getDataObjectRelationship(bo, bo.getClass(),
+                referenceName, "", true, false, false);
         final Map<String,String> fkMap = boRel != null ? boRel.getParentToChildReferences() : Collections.<String, String>emptyMap();
 
         boolean allFkeysHaveValues = true;
@@ -336,7 +338,8 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         Person person;
         for (PersistableBusinessObject bo : bos) {
             // get a list of the reference objects on the BO
-            List<DataObjectRelationship> relationships = businessObjectMetaDataService.getBusinessObjectRelationships( bo );
+            List<DataObjectRelationship> relationships = dataObjectMetaDataService.getDataObjectRelationships(
+                    bo.getClass());
             for ( DataObjectRelationship rel : relationships ) {
                 if ( Person.class.isAssignableFrom( rel.getRelatedClass() ) ) {
                     person = (Person) ObjectUtils.getPropertyValue(bo, rel.getParentAttributeName() );
@@ -453,12 +456,12 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         this.persistenceService = persistenceService;
     }
 
-    protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
-        return businessObjectMetaDataService;
+    protected DataObjectMetaDataService getDataObjectMetaDataService() {
+        return dataObjectMetaDataService;
     }
 
-    public void setBusinessObjectMetaDataService(BusinessObjectMetaDataService boMetadataService) {
-        this.businessObjectMetaDataService = boMetadataService;
+    public void setDataObjectMetaDataService(DataObjectMetaDataService dataObjectMetadataService) {
+        this.dataObjectMetaDataService = dataObjectMetadataService;
     }
 
 }

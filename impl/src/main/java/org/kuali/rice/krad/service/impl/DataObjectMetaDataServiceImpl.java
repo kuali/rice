@@ -447,6 +447,52 @@ public class DataObjectMetaDataServiceImpl implements DataObjectMetaDataService 
         return entry;
     }
 
+    public List<DataObjectRelationship> getDataObjectRelationships(Class<?> dataObjectClass) {
+		if (dataObjectClass == null) {
+			return null;
+		}
+
+		Map<String, Class> referenceClasses = null;
+		if (PersistableBusinessObject.class.isAssignableFrom(dataObjectClass)
+				&& getPersistenceStructureService().isPersistable(dataObjectClass)) {
+			referenceClasses = getPersistenceStructureService().listReferenceObjectFields(dataObjectClass);
+		}
+		DataDictionaryEntry ddEntry = getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(
+				dataObjectClass.getName());
+		List<RelationshipDefinition> ddRelationships = (ddEntry == null ? new ArrayList<RelationshipDefinition>()
+				: ddEntry.getRelationships());
+		List<DataObjectRelationship> relationships = new ArrayList<DataObjectRelationship>();
+
+		// loop over all relationships
+		if (referenceClasses != null) {
+			for (Map.Entry<String, Class> entry : referenceClasses.entrySet()) {
+                if (classHasSupportedFeatures(entry.getValue(), true, false)) {
+					Map<String, String> fkToPkRefs = getPersistenceStructureService().getForeignKeysForReference(dataObjectClass,
+							entry.getKey());
+					DataObjectRelationship rel = new DataObjectRelationship(dataObjectClass, entry.getKey(),
+							entry.getValue());
+					for (Map.Entry<String, String> ref : fkToPkRefs.entrySet()) {
+						rel.getParentToChildReferences().put(ref.getKey(), ref.getValue());
+					}
+					relationships.add(rel);
+				}
+			}
+		}
+
+		for (RelationshipDefinition rd : ddRelationships) {
+			if (classHasSupportedFeatures(rd.getTargetClass(), true, false)) {
+				DataObjectRelationship rel = new DataObjectRelationship(dataObjectClass, rd.getObjectAttributeName(),
+						rd.getTargetClass());
+				for (PrimitiveAttributeDefinition def : rd.getPrimitiveAttributes()) {
+					rel.getParentToChildReferences().put(def.getSourceName(), def.getTargetName());
+				}
+				relationships.add(rel);
+			}
+		}
+
+		return relationships;
+	}
+
     /**
      * @param businessObjectClass - class of business object to return entry for
      * @return BusinessObjectEntry for the given dataObjectClass, or null if

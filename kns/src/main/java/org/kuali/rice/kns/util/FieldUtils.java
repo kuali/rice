@@ -1637,6 +1637,13 @@ public final class FieldUtils {
         } else {
             throw new IllegalArgumentException("Given control type is not supported: " + control.getClass());
         }
+        // compare setting of Field default values to {@link ComponentFactory#translateRemotableField}
+        if (!remotableField.getDefaultValues().isEmpty()) {
+            field.setDefaultValue(remotableField.getDefaultValues().iterator().next());
+            // why are these two not related? :/
+            field.setPropertyValues(remotableField.getDefaultValues().toArray(new String[remotableField.getDefaultValues().size()]));
+            field.setPropertyValue(field.getDefaultValue());
+        }
         field.setFieldType(fieldType);
     }
 

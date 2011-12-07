@@ -128,8 +128,9 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
     * @return Tree representing a rule proposition.
     */
     public Tree getPropositionTree() {
-        this.propositionTree = refreshPropositionTree(false);
-
+        if (this.propositionTree == null){
+            this.propositionTree = refreshPropositionTree(false);
+        }
         return this.propositionTree;
     }
     public void setPropositionTree(Tree<RuleTreeNode, String> tree) {
@@ -202,7 +203,9 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
 
                boolean first = true;
                List <PropositionBo> allMyChildren = prop.getCompoundComponents();
+               int compoundSequenceNumber = 0;
                for (PropositionBo child : allMyChildren){
+                   child.setCompoundSequenceNumber(++compoundSequenceNumber);  // start with 1
                    // add an opcode node in between each of the children.
                    if (!first){
                        addOpCodeNode(aNode, prop);

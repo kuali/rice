@@ -194,9 +194,10 @@
 	<class-descriptor class="org.kuali.rice.krms.impl.repository.PropositionBo" table="KRMS_PROP_T">
 		<field-descriptor name="id" column="PROP_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_PROP_S"/>
 		<field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
-        <field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR" />
-        <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
-        <field-descriptor name="compoundOpCode" column="CMPND_OP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="ruleId" column="RULE_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
+    <field-descriptor name="compoundOpCode" column="CMPND_OP_CD" jdbc-type="VARCHAR" />
+    <field-descriptor name="compoundSequenceNumber" column="CMPND_SEQ_NO" jdbc-type="INTEGER" />
 		<field-descriptor name="propositionTypeCode" column="DSCRM_TYP_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
 	    <collection-descriptor name="parameters" element-class-ref="org.kuali.rice.krms.impl.repository.PropositionParameterBo" 
@@ -209,7 +210,7 @@
 	        collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" 
 	        indirection-table="KRMS_CMPND_PROP_PROPS_T"
 	        auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
-	        <orderby name="SEQ_NO" sort="ASC" />
+	        <orderby name="CMPND_SEQ_NO" sort="ASC" />
 	        <fk-pointing-to-this-class    column="CMPND_PROP_ID" />
 	        <fk-pointing-to-element-class column="PROP_ID" />
 	        <inverse-foreignkey field-ref="propId" />

@@ -41,6 +41,7 @@ public class PropositionBo extends PersistableBusinessObjectBase implements Prop
 	
 	// Compound parameter related properties
 	def String compoundOpCode
+    def Integer compoundSequenceNumber
 	def List<PropositionBo> compoundComponents
 
     // parameter display string (for tree display)

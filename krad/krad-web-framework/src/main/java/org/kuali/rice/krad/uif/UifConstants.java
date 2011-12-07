@@ -143,6 +143,7 @@ public class UifConstants {
         public static final String SORT_SKIP_ROWS = "aiSortingSkipRows";
         public static final String SORT_DATA_TYPE = "sSortDataType";
         public static final String SORTABLE = "bSortable";
+        public static final String VISIBLE = "bVisible";
         public static final String SORT_TYPE = "sType";
         public static final String TABLE_SORT = "bSort";
     }

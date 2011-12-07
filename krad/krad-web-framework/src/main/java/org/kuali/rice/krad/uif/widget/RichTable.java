@@ -30,7 +30,6 @@ import org.kuali.rice.krad.uif.control.CheckboxControl;
 import org.kuali.rice.krad.uif.control.CheckboxGroupControl;
 import org.kuali.rice.krad.uif.control.RadioGroupControl;
 import org.kuali.rice.krad.uif.control.SelectControl;
-import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
@@ -39,6 +38,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * Decorates a HTML Table client side with various tools
@@ -55,6 +55,11 @@ public class RichTable extends WidgetBase {
 
     private String emptyTableMessage;
     private boolean disableTableSort;
+    /** since columns are visible by default, this set holds propertyNames for the ones meant to be hidden*/
+    private Set<String> hiddenColumns;
+    /**holds the propertyNames for columns that are to be sorted*/
+    private Set<String> sortableColumns;
+
 
     private boolean showSearchAndExportOptions = true;
 
@@ -100,7 +105,7 @@ public class RichTable extends WidgetBase {
             }
 
             if (component instanceof CollectionGroup) {
-                buildTableSortOptions((CollectionGroup) component);
+                buildTableOptions((CollectionGroup) component);
             }
 
             if (isDisableTableSort()) {
@@ -114,7 +119,7 @@ public class RichTable extends WidgetBase {
      *
      * @param collectionGroup
      */
-    protected void buildTableSortOptions(CollectionGroup collectionGroup) {
+    protected void buildTableOptions(CollectionGroup collectionGroup) {
         LayoutManager layoutManager = collectionGroup.getLayoutManager();
 
         // if sub collection exists, don't allow the table sortable
@@ -162,28 +167,20 @@ public class RichTable extends WidgetBase {
 
                     if (component instanceof DataField) {
                         DataField field = (DataField) component;
-
-                        String sortType = null;
-                        if (!collectionGroup.isReadOnly() && (field instanceof InputField)
-                                && ((InputField) field).getControl() != null) {
-                            Control control = ((InputField) field).getControl();
-                            if (control instanceof SelectControl) {
-                                sortType = UifConstants.TableToolsValues.DOM_SELECT;
-                            } else if (control instanceof CheckboxControl || control instanceof CheckboxGroupControl) {
-                                sortType = UifConstants.TableToolsValues.DOM_CHECK;
-                            } else if (control instanceof RadioGroupControl) {
-                                sortType = UifConstants.TableToolsValues.DOM_RADIO;
+                        //if a field is marked as invisible in hiddenColumns, append options and skip sorting
+                        if (getHiddenColumns() != null && getHiddenColumns().contains(field.getPropertyName())) {
+                            tableToolsColumnOptions.append("{" + UifConstants.TableToolsKeys.VISIBLE + ": false}, ");
+                        //if sortableColumns is present and a field is marked as sortable or unspecified
+                        } else if (getSortableColumns() != null && !getSortableColumns().isEmpty()) {
+                            if (getSortableColumns().contains(field.getPropertyName())) {
+                                tableToolsColumnOptions.append(getDataFieldColumnOptions(collectionGroup, field) + ", ");
                             } else {
-                                sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                                tableToolsColumnOptions.append("{'" + UifConstants.TableToolsKeys.SORTABLE + "':false}, ");
                             }
-                        } else {
-                            sortType = UifConstants.TableToolsValues.DOM_TEXT;
+                        } else {//sortable columns not defined
+                            String colOptions = getDataFieldColumnOptions(collectionGroup, field);
+                            tableToolsColumnOptions.append(colOptions + " , ");
                         }
-
-                        Class dataTypeClass = ObjectPropertyUtils.getPropertyType(
-                                collectionGroup.getCollectionObjectClass(), field.getPropertyName());
-                        String colOptions = constructTableColumnOptions(true, dataTypeClass, sortType);
-                        tableToolsColumnOptions.append(colOptions + " , ");
                     } else {
                         String colOptions = constructTableColumnOptions(false, null, null);
                         tableToolsColumnOptions.append(colOptions + " , ");
@@ -203,6 +200,35 @@ public class RichTable extends WidgetBase {
 
             getComponentOptions().put(UifConstants.TableToolsKeys.AO_COLUMNS, tableToolsColumnOptions.toString());
        }
+    }
+
+    /**
+     * construct the column options for a data field
+     * @param collectionGroup - the collectionGroup in which the data field is defined
+     * @param field - the field to construction options for
+     * @return - options as valid for datatable
+     */
+    private String getDataFieldColumnOptions(CollectionGroup collectionGroup, DataField field) {
+        String sortType = null;
+        if (!collectionGroup.isReadOnly() && (field instanceof InputField)
+                && ((InputField) field).getControl() != null) {
+            Control control = ((InputField) field).getControl();
+            if (control instanceof SelectControl) {
+                sortType = UifConstants.TableToolsValues.DOM_SELECT;
+            } else if (control instanceof CheckboxControl || control instanceof CheckboxGroupControl) {
+                sortType = UifConstants.TableToolsValues.DOM_CHECK;
+            } else if (control instanceof RadioGroupControl) {
+                sortType = UifConstants.TableToolsValues.DOM_RADIO;
+            } else {
+                sortType = UifConstants.TableToolsValues.DOM_TEXT;
+            }
+        } else {
+            sortType = UifConstants.TableToolsValues.DOM_TEXT;
+        }
+
+        Class dataTypeClass = ObjectPropertyUtils.getPropertyType(collectionGroup.getCollectionObjectClass(),
+                field.getPropertyName());
+        return constructTableColumnOptions(true, dataTypeClass, sortType);
     }
 
     /**
@@ -293,5 +319,21 @@ public class RichTable extends WidgetBase {
      */
     public void setShowSearchAndExportOptions(boolean showSearchAndExportOptions) {
         this.showSearchAndExportOptions = showSearchAndExportOptions;
+    }
+
+    public Set<String> getHiddenColumns() {
+        return hiddenColumns;
+    }
+
+    public void setHiddenColumns(Set<String> hiddenColumns) {
+        this.hiddenColumns = hiddenColumns;
+    }
+
+    public Set<String> getSortableColumns() {
+        return sortableColumns;
+    }
+
+    public void setSortableColumns(Set<String> sortableColumns) {
+        this.sortableColumns = sortableColumns;
     }
 }

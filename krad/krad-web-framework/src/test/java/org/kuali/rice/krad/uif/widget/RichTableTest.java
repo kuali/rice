@@ -28,7 +28,9 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -63,17 +65,11 @@ public class RichTableTest {
         DataField number = new DataField();
         number.setPropertyName("positionTitle");
         items.add(number);
+        DataField contactEmail = new DataField();
+        contactEmail.setPropertyName("contactEmail");
+        items.add(contactEmail);
 
         group.setItems(items);
-    }
-
-    //@Test
-    /**
-     * test that the rich table receives the component options set on the collectionGroup
-     */
-    public void testComponentOptionsInitialSorting() throws Exception {
-        String sortOptions = "[[1,'asc'], [2,'desc']]";
-        assertRichTableComponentOptions(sortOptions, sortOptions, UifConstants.TableToolsKeys.AASORTING);
     }
 
     @Test
@@ -81,7 +77,9 @@ public class RichTableTest {
      * test that without aoColumns being set explicitly, the default behaviour continues
      */
     public void testComponentOptionsDefault() throws Exception {
-        String expected = "[ null ,{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} , {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} ]";
+        String expected = "[ null ,{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} , "
+                + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} , "
+                + "{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"} ]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
     }
 
@@ -90,11 +88,28 @@ public class RichTableTest {
     /**
      * test that when aoColumns is explicitly set, it is integrated into the rich table rendering logic
      */
-    public void testComponentOptionsAoColumns() throws Exception {
+    public void testComponentOptionsAoColumnsJSOptions() throws Exception {
         String innerColValues = "{bVisible: false}, null, null";
         String options = "[" + innerColValues + "]";
         String expected = "[ null ," + innerColValues + " ]";
         assertRichTableComponentOptions(options, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
+    }
+
+    @Test
+    /**
+     * test whether a hidden column, when marked as sortable is still hidden
+     * @throws Exception
+     */
+     public void testComponentOptionsHideColumn() {
+        Set<String> hiddenColumns = new HashSet<String>();
+        hiddenColumns.add("employeeId");
+        Set<String> sortableColumns = new HashSet<String>();
+        //sortableColumns.add("employeeId");
+        sortableColumns.add("positionTitle");
+        richTable.setSortableColumns(sortableColumns);
+        richTable.setHiddenColumns(hiddenColumns);
+        String expected = "[ null ,{bVisible: false}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable':false}]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
     }
 
     private void assertRichTableComponentOptions(String optionsOnGroup, String optionsOnRichTable, String optionKey) {

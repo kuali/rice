@@ -480,8 +480,6 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             return;
         }
 
-        // TODO - KULRICE-5832 - need to add support for whether or not the saved search is a detailed/advanced search, this was originally stored with savedSearchString in Rice 1.x
-
         try {
             String savedSearchString = DocumentSearchInternalUtils.marshalDocumentSearchCriteria(criteria);
 

@@ -62,7 +62,8 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
             "approverPrincipalName",
             "routeNodeName",
             "documentTypeName",
-            "saveName"
+            "saveName",
+            "isAdvancedSearch"
     };
     private static final Set<String> DIRECT_TRANSLATE_FIELD_NAMES_SET =
             new HashSet<String>(Arrays.asList(DIRECT_TRANSLATE_FIELD_NAMES));

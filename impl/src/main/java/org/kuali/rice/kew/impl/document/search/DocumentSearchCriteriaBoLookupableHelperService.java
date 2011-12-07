@@ -373,6 +373,17 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         // get the document type
         String docTypeName = criteria.getDocumentTypeName();
+
+        // update the parameters to include whether or not this is an advanced search
+        if(this.getParameters().containsKey(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD)) {
+            Map<String, String[]> parameters = this.getParameters();
+            String[] params = (String[])parameters.get(DocumentSearchCriteriaProcessorKEWAdapter.ADVANCED_SEARCH_FIELD);
+            if (ArrayUtils.isNotEmpty(params)) {
+                params[0] = criteria.getIsAdvancedSearch();
+                this.setParameters(parameters);
+            }
+        }
+
         // and set the rows based on doc type
         setRows(docTypeName);
 

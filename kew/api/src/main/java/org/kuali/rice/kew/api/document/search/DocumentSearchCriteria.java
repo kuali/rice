@@ -81,6 +81,7 @@ import java.util.Map;
     DocumentSearchCriteria.Elements.SAVE_NAME,
     DocumentSearchCriteria.Elements.START_AT_INDEX,
     DocumentSearchCriteria.Elements.MAX_RESULTS,
+    DocumentSearchCriteria.Elements.IS_ADVANCED_SEARCH,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentSearchCriteria extends AbstractDataTransferObject implements DocumentSearchCriteriaContract {
@@ -185,6 +186,9 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
 
     @XmlElement(name = Elements.MAX_RESULTS, required = false)
     private final Integer maxResults;
+
+    @XmlElement(name = Elements.IS_ADVANCED_SEARCH, required = false)
+    private final String isAdvancedSearch;
     
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -222,6 +226,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.saveName = null;
         this.startAtIndex = null;
         this.maxResults = null;
+        this.isAdvancedSearch = null;
     }
 
     private DocumentSearchCriteria(Builder builder) {
@@ -254,6 +259,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         this.saveName = builder.getSaveName();
         this.startAtIndex = builder.getStartAtIndex();
         this.maxResults = builder.getMaxResults();
+        this.isAdvancedSearch = builder.getIsAdvancedSearch();
     }
 
     @Override
@@ -396,6 +402,11 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         return this.maxResults;
     }
 
+    @Override
+    public String getIsAdvancedSearch() {
+        return this.isAdvancedSearch;
+    }
+
     /**
      * A builder which can be used to construct {@link DocumentSearchCriteria} instances.  Enforces the constraints of
      * the {@link DocumentSearchCriteriaContract}.
@@ -430,6 +441,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         private String saveName;
         private Integer startAtIndex;
         private Integer maxResults;
+        private String isAdvancedSearch;
 
         private Builder() {
             setDocumentStatuses(new ArrayList<DocumentStatus>());
@@ -497,6 +509,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             builder.setSaveName(contract.getSaveName());
             builder.setStartAtIndex(contract.getStartAtIndex());
             builder.setMaxResults(contract.getMaxResults());
+            builder.setIsAdvancedSearch(contract.getIsAdvancedSearch());
             return builder;
         }
 
@@ -648,6 +661,11 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             return this.maxResults;
         }
 
+        @Override
+        public String getIsAdvancedSearch() {
+            return this.isAdvancedSearch;
+        }
+
         public void setDocumentId(String documentId) {
             this.documentId = documentId;
         }
@@ -772,6 +790,10 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
             this.maxResults = maxResults;
         }
 
+        public void setIsAdvancedSearch(String isAdvancedSearch) {
+            this.isAdvancedSearch = isAdvancedSearch;
+        }
+
         /**
          * Resets DateTimes to local TimeZone (preserving absolute time)
          * @see {@link http://jira.codehaus.org/browse/JACKSON-279}
@@ -835,6 +857,7 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
         final static String SAVE_NAME = "saveName";
         final static String START_AT_INDEX = "startAtIndex";
         final static String MAX_RESULTS = "maxResults";
+        final static String IS_ADVANCED_SEARCH = "isAdvancedSearch";
     }
 
 }

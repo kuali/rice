@@ -304,4 +304,10 @@ public interface DocumentSearchCriteriaContract {
      */
 	Integer getMaxResults();
 
+    /**
+     * Returns a string that indicates if a query was run in advanced mode.
+     *
+     * @return whether or not the search was run in advanced mode
+     */
+    String getIsAdvancedSearch();
 }

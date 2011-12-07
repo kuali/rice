@@ -22,6 +22,20 @@
 /* get rid of ugly link underlines in tree */
 li a.agendaNode { text-decoration: none; }
 
+li a.compoundNode { font-size: 1.6em; }
+
+a.simplePropositionEditNode { height: 0; }
+li.simplePropositionEditNode > ins { height: 0; margin: 0; padding: 0; }
+
+li.compoundOpCodeNode > ins { height: 0; margin: 0; padding: 0; }
+li.compoundOpCodeNode > a { height: 0; margin: 0; padding: 0; }
+
+.parameterDisplayString { margin-left: 13pt; border: 0; width: 100%; }
+.parameterDisplayString > input { border: 0; }
+
+.jstree-krms .boxLayoutHorizontalItem { background: transparent; }
+.jstree-krms .boxLayoutVerticalItem { background: transparent; }
+
 .jstree-krms > ul { background-color:transparent; }
 .jstree-krms li, 
 .jstree-krms ins { background-image:url("d.png"); background-repeat:no-repeat; background-color:transparent; }
@@ -33,8 +47,10 @@ li a.agendaNode { text-decoration: none; }
 .jstree-krms .jstree-closed > ins { background-position:-54px 0; } 
 .jstree-krms .jstree-leaf > ins { background-position:-36px 0; }
 
-.jstree-krms .ruleBlockSelected {background:#e7f4f9; border: 1px dashed #69f; }
-.jstree-krms .ruleCutSelected { background:#F4E271; border: 1px dashed goldenrod; }
+.editModeNode { background-color: #eee !important; }
+
+.jstree-krms .ruleBlockSelected {background-color:#e7f4f9 !important; border: 1px dashed #69f; }
+.jstree-krms .ruleCutSelected { background-color:#F4E271 !important; border: 1px dashed goldenrod; }
 
 .jstree-krms .boxLayoutHorizontalItem {padding-bottom: 0em;padding-top: 0em;padding-left: 0em;padding-right: 0em;}
 .jstree-krms .boxLayoutVerticalItem { padding-bottom: 0em;padding-top: 0em;padding-left: 0em;padding-right: 0em;}
@@ -42,8 +58,8 @@ li a.agendaNode { text-decoration: none; }
 /*
 .jstree-krms a { border-radius:4px; -moz-border-radius:4px; -webkit-border-radius:4px; text-shadow:1px 1px 1px white; }
 */
-.jstree-krms .jstree-hovered { background:#e7f4f9; border:1px solid #d8f0fa; padding:0 3px 0 1px; text-shadow:1px 1px 1px silver; }
-.jstree-krms .jstree-clicked { background:#beebff; border:1px solid #99defd; padding:0 3px 0 1px; }
+.jstree-krms .jstree-hovered { background:#beebff; /* background:#e7f4f9; border:1px solid #d8f0fa; padding:0 3px 0 1px; text-shadow:1px 1px 1px silver; */ }
+.jstree-krms .jstree-clicked { /* background:#beebff; border:1px solid #99defd; padding:0 3px 0 1px; */ }
 .jstree-krms a .jstree-icon { background-position:-56px -20px; }
 .jstree-krms a.jstree-loading .jstree-icon { background:url("throbber.gif") center center no-repeat !important; }
 

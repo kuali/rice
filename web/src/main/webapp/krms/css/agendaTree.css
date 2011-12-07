@@ -17,8 +17,9 @@
 
 
 
-.logicNode { border: 1px solid #ccd; background-color:#dde; /* -moz-border-radius: 3px; border-radius: 3px; */ font-weight: bold; padding-bottom: 2pt; padding-top: 2pt; 
+a.logicNode { border: 1px solid #ccd; background-color:#dde; /* -moz-border-radius: 3px; border-radius: 3px; */ font-weight: bold; padding-bottom: 2pt; padding-top: 2pt;
                 padding-left: 10pt; padding-right: 10pt; margin-bottom: 2pt; }
+
 .logicNode .jstree-open { margin-bottom: 2pt; }
 
 .krmsDisabled 

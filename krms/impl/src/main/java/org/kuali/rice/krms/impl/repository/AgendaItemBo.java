@@ -22,6 +22,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItem;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
 /**
  * Agenda Item business object
@@ -83,7 +84,15 @@ public class AgendaItemBo extends PersistableBusinessObjectBase {
             // add a description of the action configured on the rule, if there is one
             if (!CollectionUtils.isEmpty(getRule().getActions())) {
                 resultBuilder.append("   [");
-                resultBuilder.append(getRule().getActions().get(0).getDescription());
+                ActionBo action = getRule().getActions().get(0);
+
+                KrmsTypeDefinition krmsTypeDefn =
+                        KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(action.getTypeId());
+
+                resultBuilder.append(krmsTypeDefn.getName());
+                resultBuilder.append(": ");
+                resultBuilder.append(action.getName());
+
                 if (getRule().getActions().size() > 1) {
                     resultBuilder.append(" ... ");
                 }

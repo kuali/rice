@@ -19,7 +19,7 @@
               description="Node instance in the tree to be rendered"
               type="org.kuali.rice.core.api.util.tree.Node"%>
 
-<li id="${node.data.id}">
+<li id="${node.data.id}" class="${node.nodeType}">
    <a href="#" class="${node.nodeType}">
        <krad:template component="${node.nodeLabel}"/>
    </a>

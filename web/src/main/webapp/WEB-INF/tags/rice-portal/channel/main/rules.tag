@@ -19,7 +19,7 @@
 <div class="body">
   <strong>Maintenance Docs</strong>
   <ul class="chan">
-    <li><portal:portalLink displayTitle="true" title="Agenda Editor" url="${ConfigProperties.application.url}/kr-krad/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+    <li><portal:portalLink displayTitle="true" title="Create New Agenda" url="${ConfigProperties.application.url}/kr-krad/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
   <strong>Lookups</strong>
   <ul class="chan">

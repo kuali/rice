@@ -447,9 +447,9 @@
               </property>
             </bean>
             <bean parent="InputField" p:propertyName="proposition.parameterDisplayString"
-                   p:showLabel="false" p:label="id" p:maxLength="255">
+                   p:showLabel="false" p:label="id" p:maxLength="255"  p:styleClasses="parameterDisplayString">
               <property name="control">
-                <bean parent="TextControl" p:style="margin-left: 24pt; border: 0; width: 100%;"/>
+                <bean parent="TextControl"/>
               </property>
             </bean>
 
@@ -479,7 +479,7 @@
             <bean parent="InputField" p:propertyName="proposition.description"
                   p:style="margin-left: 1pt;" p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="TextControl" p:size="140" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;"
+                <bean parent="TextControl" p:size="93" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;"
                         p:styleClasses="editDescription"/>
               </property>
             </bean>
@@ -561,12 +561,12 @@
       <bean parent="MessageField"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="GroupBodyOnly">
+      <bean parent="GroupBodyOnly" p:style="padding-bottom: 10pt;">
         <property name="layoutManager.orientation" value="HORIZONTAL"/>
         <property name="items">
           <list>
             <bean parent="InputField" p:propertyName="proposition.compoundOpCode"
-                    p:style="margin-left: 12pt" p:showLabel="false" p:label="operator" p:maxLength="20">
+                    p:style="margin-left: 12pt;" p:showLabel="false" p:label="operator" p:maxLength="20">
               <property name="control">
                 <bean parent="SelectControl"/>
               </property>

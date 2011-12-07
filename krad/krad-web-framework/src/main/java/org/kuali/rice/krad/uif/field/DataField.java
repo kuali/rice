@@ -260,7 +260,7 @@ public class DataField extends FieldBase implements DataBinding {
         } else if (getAttributeSecurity().isPartialMask()) {
             return attributeSecurity.getPartialMaskFormatter().maskValue(fieldValue);
         } else {
-            throw new RuntimeException("Encountered unsupported Attribute Security..");
+            return String.valueOf(fieldValue);
         }
     }
 

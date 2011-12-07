@@ -100,7 +100,7 @@ public class RichTableTest {
      * test whether a hidden column, when marked as sortable is still hidden
      * @throws Exception
      */
-     public void testComponentOptionsHideColumn() {
+     public void testComponentOptionsHideColumnOnRichTable() {
         Set<String> hiddenColumns = new HashSet<String>();
         hiddenColumns.add("employeeId");
         Set<String> sortableColumns = new HashSet<String>();
@@ -108,7 +108,32 @@ public class RichTableTest {
         sortableColumns.add("positionTitle");
         richTable.setSortableColumns(sortableColumns);
         richTable.setHiddenColumns(hiddenColumns);
-        String expected = "[ null ,{bVisible: false}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable':false}]";
+        String expected = "[ null ,{bVisible: false}, {\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}]";
+        assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
+    }
+
+    @Test
+    /**
+     * test that sortableColumns and hiddenColumns, when set on layoutManager, override those properties on the richTable
+     * @throws Exception
+     */
+     public void testComponentOptionsHideColumnOnLayoutManager() {
+        //set rich table properties
+        Set<String> richTableHiddenColumns = new HashSet<String>();
+        richTableHiddenColumns.add("employeeId");
+        Set<String> sortableColumns = new HashSet<String>();
+        sortableColumns.add("positionTitle");
+        richTable.setSortableColumns(sortableColumns);
+        richTable.setHiddenColumns(richTableHiddenColumns);
+        //set layout manager properties
+        Set<String> lmHiddenColumns = new HashSet<String>();
+        lmHiddenColumns.add("contactEmail");
+        Set<String> lmSortableColumns = new HashSet<String>();
+        lmSortableColumns.add("employeeId");
+        ((TableLayoutManager)group.getLayoutManager()).setSortableColumns(lmSortableColumns);
+        ((TableLayoutManager)group.getLayoutManager()).setHiddenColumns(lmHiddenColumns);
+
+        String expected = "[ null ,{\"sSortDataType\" : \"dom-text\" , \"sType\" : \"string\"}, {'bSortable': false}, {bVisible: false}]";
         assertRichTableComponentOptions(null, expected, UifConstants.TableToolsKeys.AO_COLUMNS);
     }
 

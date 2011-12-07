@@ -159,6 +159,7 @@ public class UifConstants {
         public static final String PERCENT = "kuali_percent";
         public static final String CURRENCY = "kuali_currency";
         public static final String TIMESTAMP = "kuali_timestamp";
+         public static final String FALSE = "false";
 
         public static final int ADD_ROW_DEFAULT_INDEX = 0;
     }

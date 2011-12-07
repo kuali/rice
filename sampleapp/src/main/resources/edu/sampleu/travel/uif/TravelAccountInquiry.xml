@@ -91,7 +91,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
            </bean>
            <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="5">
-              <property name="title" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties"/>
+              <property name="title" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on rich table"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="layoutManager.renderSequenceField" value="false"/>
@@ -110,6 +110,33 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </set>
              </property>
               <property name="layoutManager.richTable.sortableColumns">
+               <set>
+                 <value>number</value>
+                 <value>createDate</value>
+               </set>
+             </property>
+           </bean>
+           <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="5">
+              <property name="title" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on layout manager"/>
+              <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+              <property name="propertyName" value="fiscalOfficer.accounts"/>
+              <property name="layoutManager.renderSequenceField" value="false"/>
+              <property name="items">
+                <list>
+                  <bean parent="DataField" p:propertyName="number"/>
+                  <bean parent="DataField" p:propertyName="name"/>
+                  <bean parent="DataField" p:propertyName="foId"/>
+                  <bean parent="DataField" p:propertyName="subsidizedPercent"/>
+                  <bean parent="DataField" p:propertyName="createDate"/>
+                 </list>
+              </property>
+             <property name="layoutManager.hiddenColumns">
+               <set>
+                 <value>name</value>
+                 <value>foId</value>
+               </set>
+             </property>
+              <property name="layoutManager.sortableColumns">
                <set>
                  <value>number</value>
                  <value>createDate</value>

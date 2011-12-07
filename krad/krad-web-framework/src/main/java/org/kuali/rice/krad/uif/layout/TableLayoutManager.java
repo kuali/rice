@@ -37,6 +37,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Layout manager that works with <code>CollectionGroup</code> components and
@@ -79,6 +80,9 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
 
 	private RichTable richTable;
 	private boolean headerAdded = false;
+
+    private Set<String> hiddenColumns;
+    private Set<String> sortableColumns;
 
 	public TableLayoutManager() {
 		useShortLabels = true;
@@ -776,4 +780,21 @@ public class TableLayoutManager extends GridLayoutManager implements CollectionL
     	this.numberOfDataColumns = numberOfDataColumns;
     }
 
+    /** since columns are visible by default, this set holds propertyNames for the ones meant to be hidden*/
+    public Set<String> getHiddenColumns() {
+        return hiddenColumns;
+    }
+
+    public void setHiddenColumns(Set<String> hiddenColumns) {
+        this.hiddenColumns = hiddenColumns;
+    }
+
+    /**holds the propertyNames for columns that are to be sorted*/
+    public Set<String> getSortableColumns() {
+        return sortableColumns;
+    }
+
+    public void setSortableColumns(Set<String> sortableColumns) {
+        this.sortableColumns = sortableColumns;
+    }
 }

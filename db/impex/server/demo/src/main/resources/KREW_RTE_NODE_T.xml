@@ -133,4 +133,7 @@
         GRP_ID="1" MNDTRY_RTE_IND="0" NM="PeopleFlows" RTE_MTHD_CD="RE"
         RTE_NODE_ID="2915"
         TYP="org.kuali.rice.kew.engine.node.RequestsNode" VER_NBR="1"/>
+    <KREW_RTE_NODE_T ACTVN_TYP="P" DOC_TYP_ID="3007" FNL_APRVR_IND="0"
+        GRP_ID="1" MNDTRY_RTE_IND="0" NM="Initiated" RTE_NODE_ID="2917"
+        TYP="org.kuali.rice.kew.engine.node.InitialNode" VER_NBR="1"/>
 </dataset>

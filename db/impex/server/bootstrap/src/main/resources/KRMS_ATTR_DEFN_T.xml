@@ -7,7 +7,7 @@
         NM="peopleFlowId" NMSPC_CD="KR-RULE" VER_NBR="0"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1001"
         DESC_TXT="PeopleFlow Name" LBL="PeopleFlow Name"
-        NM="PeopleFlow Name" NMSPC_CD="KR_RULE" VER_NBR="1"/>
+        NM="peopleFlowName" NMSPC_CD="KR_RULE" VER_NBR="1"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q33001" DESC_TXT="null"
         LBL="Event Name" NM="Event" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q44001" DESC_TXT="null"

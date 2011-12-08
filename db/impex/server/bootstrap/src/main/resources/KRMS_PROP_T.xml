@@ -10,34 +10,40 @@
         PROP_ID="P3" RULE_ID="R3" VER_NBR="1"/>
     <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
         PROP_ID="P4" RULE_ID="R4" VER_NBR="1"/>
-    <KRMS_PROP_T CMPND_OP_CD="a" DESC_TXT="a compound prop"
+    <KRMS_PROP_T CMPND_OP_CD="&amp;" DESC_TXT="a compound prop"
         DSCRM_TYP_CD="C" PROP_ID="P421A" RULE_ID="R421" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="a simple child to a compound prop"
-        DSCRM_TYP_CD="S" PROP_ID="P421B" RULE_ID="R421" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="2nd simple child to a compound prop "
-        DSCRM_TYP_CD="S" PROP_ID="P421C" RULE_ID="R421" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="3nd simple child to a compound prop "
-        DSCRM_TYP_CD="S" PROP_ID="P421D" RULE_ID="R421" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="1"
+        DESC_TXT="a simple child to a compound prop" DSCRM_TYP_CD="S"
+        PROP_ID="P421B" RULE_ID="R421" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="2"
+        DESC_TXT="2nd simple child to a compound prop " DSCRM_TYP_CD="S"
+        PROP_ID="P421C" RULE_ID="R421" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="3"
+        DESC_TXT="3nd simple child to a compound prop " DSCRM_TYP_CD="S"
+        PROP_ID="P421D" RULE_ID="R421" VER_NBR="1"/>
     <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
         PROP_ID="P5" RULE_ID="R5" VER_NBR="1"/>
     <KRMS_PROP_T CMPND_OP_CD="&amp;" DESC_TXT="is purchase special"
         DSCRM_TYP_CD="C" PROP_ID="P500" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="is purchase order value large"
-        DSCRM_TYP_CD="S" PROP_ID="P501A" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T CMPND_OP_CD="|" DESC_TXT="is purchased item controlled"
-        DSCRM_TYP_CD="C" PROP_ID="P502" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="is item purchased animal" DSCRM_TYP_CD="S"
-        PROP_ID="P502A" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="is purchased item radioactive"
-        DSCRM_TYP_CD="S" PROP_ID="P502B" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="is it medicinal" DSCRM_TYP_CD="S"
-        PROP_ID="P502C" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="is it for a special event" DSCRM_TYP_CD="C"
-        PROP_ID="P503" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="charged to Kuali" DSCRM_TYP_CD="S"
-        PROP_ID="P503A" RULE_ID="R500" VER_NBR="1"/>
-    <KRMS_PROP_T DESC_TXT="Party at Travis House" DSCRM_TYP_CD="S"
-        PROP_ID="P503B" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="1"
+        DESC_TXT="is purchase order value large" DSCRM_TYP_CD="S"
+        PROP_ID="P501A" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_OP_CD="|" CMPND_SEQ_NO="2"
+        DESC_TXT="is purchased item controlled" DSCRM_TYP_CD="C"
+        PROP_ID="P502" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="1" DESC_TXT="is item purchased animal"
+        DSCRM_TYP_CD="S" PROP_ID="P502A" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="2"
+        DESC_TXT="is purchased item radioactive" DSCRM_TYP_CD="S"
+        PROP_ID="P502B" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="3" DESC_TXT="is it medicinal"
+        DSCRM_TYP_CD="S" PROP_ID="P502C" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="3" DESC_TXT="is it for a special event"
+        DSCRM_TYP_CD="C" PROP_ID="P503" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="1" DESC_TXT="charged to Kuali"
+        DSCRM_TYP_CD="S" PROP_ID="P503A" RULE_ID="R500" VER_NBR="1"/>
+    <KRMS_PROP_T CMPND_SEQ_NO="2" DESC_TXT="Party at Travis House"
+        DSCRM_TYP_CD="S" PROP_ID="P503B" RULE_ID="R500" VER_NBR="1"/>
     <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"
         PROP_ID="P6" RULE_ID="R6" VER_NBR="1"/>
     <KRMS_PROP_T DESC_TXT="is campus bloomington" DSCRM_TYP_CD="S"

@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<!DOCTYPE dataset SYSTEM "data.dtd">
-<dataset>
-    <KRSB_QRTZ_SCHEDULER_STATE CHECKIN_INTERVAL="7500"
-        INSTANCE_NAME="pc79045.adp.iastate.edu1323359019252" LAST_CHECKIN_TIME="1323359124975"/>
-</dataset>

@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<!DOCTYPE dataset SYSTEM "data.dtd">
-<dataset>
-    <KRSB_QRTZ_SIMPLE_TRIGGERS REPEAT_COUNT="-1" REPEAT_INTERVAL="30000"
-        TIMES_TRIGGERED="1" TRIGGER_GROUP="KCB-Delivery" TRIGGER_NAME="PeriodicMessageProcessingTrigger"/>
-</dataset>

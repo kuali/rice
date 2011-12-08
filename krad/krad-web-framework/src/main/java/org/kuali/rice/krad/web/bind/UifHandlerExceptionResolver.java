@@ -98,7 +98,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         incidentReportForm.setUserName(userSession.getPrincipalName());
         incidentReportForm.setUserEmail(userSession.getPerson().getEmailAddress());
         incidentReportForm.setDevMode(!KRADUtils.isProductionEnvironment());
-
+        incidentReportForm.setViewId("Incident-Report");
         // Set the view object
         incidentReportForm.setView(getViewService().getViewById("Incident-Report"));
 
@@ -117,7 +117,7 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
         }
-
+        request.getSession().setAttribute(incidentReportForm.getFormKey(), incidentReportForm);
         return modelAndView;
     }
 

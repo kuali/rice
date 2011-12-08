@@ -2856,7 +2856,6 @@
     <table name="KRMS_CMPND_PROP_PROPS_T">
         <column name="CMPND_PROP_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PROP_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column default="null" name="SEQ_NO" size="5" type="DECIMAL"/>
         <foreign-key foreignTable="KRMS_PROP_T" name="KRMS_CMPND_PROP_PROPS_FK1">
             <reference foreign="PROP_ID" local="PROP_ID"/>
         </foreign-key>
@@ -3051,6 +3050,7 @@
         <column name="CMPND_OP_CD" size="40" type="VARCHAR"/>
         <column name="RULE_ID" required="true" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="null" name="CMPND_SEQ_NO" size="5" type="DECIMAL"/>
         <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_PROP_FK2">
             <reference foreign="TYP_ID" local="TYP_ID"/>
         </foreign-key>

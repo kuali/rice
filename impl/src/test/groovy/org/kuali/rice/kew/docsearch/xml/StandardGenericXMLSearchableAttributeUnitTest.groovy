@@ -175,7 +175,7 @@ class StandardGenericXMLSearchableAttributeUnitTest {
 
     @Test void testValidateDocumentAttributeCriteriaExpression() {
         def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
-        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, STRING_FIELD_SEARCH_CONFIG)
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, RANGE_FIELD_SEARCH_CONFIG)
         def c = DocumentSearchCriteria.Builder.create();
         c.documentAttributeValues.put("givenname", [ ">= jack" ] as List<String>)
         def errors = new StandardGenericXMLSearchableAttribute().validateDocumentAttributeCriteria(edb.build(), c.build())

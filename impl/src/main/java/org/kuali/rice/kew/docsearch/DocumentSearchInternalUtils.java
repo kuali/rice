@@ -219,13 +219,13 @@ public class DocumentSearchInternalUtils {
             range.setLowerBoundValue(rangeString);
             range.setLowerBoundInclusive(false);
         } else if (rangeString.contains(SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op())) {
-            String[] rangeBounds = StringUtils.split(rangeString, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op());
+            String[] rangeBounds = StringUtils.splitByWholeSeparator(rangeString, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op(), 2);
             range.setLowerBoundValue(rangeBounds[0]);
             range.setLowerBoundInclusive(true);
             range.setUpperBoundValue(rangeBounds[1]);
             range.setUpperBoundInclusive(false);
         } else if (rangeString.contains(SearchOperator.BETWEEN.op())) {
-            String[] rangeBounds = StringUtils.split(rangeString, SearchOperator.BETWEEN.op());
+            String[] rangeBounds = StringUtils.splitByWholeSeparator(rangeString, SearchOperator.BETWEEN.op(), 2);
             range.setLowerBoundValue(rangeBounds[0]);
             range.setLowerBoundInclusive(true);
             range.setUpperBoundValue(rangeBounds[1]);

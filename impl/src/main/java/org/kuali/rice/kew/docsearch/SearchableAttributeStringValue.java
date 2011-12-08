@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
@@ -156,7 +158,9 @@ public class SearchableAttributeStringValue implements SearchableAttributeValue,
      */
     public Boolean isRangeValid(String lowerValue, String upperValue) {
         if (allowsRangeSearches()) {
-            return true;
+            return StringUtils.isBlank(lowerValue) ||
+                   StringUtils.isBlank(upperValue) ||
+                   ObjectUtils.compare(lowerValue, upperValue) <= 0;
         }
         return null;
     }

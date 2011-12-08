@@ -113,7 +113,7 @@ public class SearchableAttributeLongValue implements SearchableAttributeValue, S
         if (org.apache.commons.lang.StringUtils.isEmpty(value)) {
             return null;
         } else {
-            return Long.valueOf(value);
+            return Long.valueOf(value.trim());
         }
     }
 

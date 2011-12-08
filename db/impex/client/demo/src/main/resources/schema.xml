@@ -2856,7 +2856,6 @@
     <table name="KRMS_CMPND_PROP_PROPS_T">
         <column name="CMPND_PROP_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PROP_ID" primaryKey="true" size="40" type="VARCHAR"/>
-        <column default="null" name="SEQ_NO" size="5" type="DECIMAL"/>
         <foreign-key foreignTable="KRMS_PROP_T" name="KRMS_CMPND_PROP_PROPS_FK1">
             <reference foreign="PROP_ID" local="PROP_ID"/>
         </foreign-key>
@@ -3051,6 +3050,7 @@
         <column name="CMPND_OP_CD" size="40" type="VARCHAR"/>
         <column name="RULE_ID" required="true" size="40" type="VARCHAR"/>
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
+        <column default="null" name="CMPND_SEQ_NO" size="5" type="DECIMAL"/>
         <foreign-key foreignTable="KRMS_TYP_T" name="KRMS_PROP_FK2">
             <reference foreign="TYP_ID" local="TYP_ID"/>
         </foreign-key>
@@ -3776,7 +3776,7 @@
     <sequence name="KREW_ACTN_RQST_S" nextval="2369"/>
     <sequence name="KREW_ACTN_TKN_S" nextval="2329"/>
     <sequence name="KREW_ATTR_DEFN_S" nextval="10000"/>
-    <sequence name="KREW_DOC_HDR_S" nextval="3007"/>
+    <sequence name="KREW_DOC_HDR_S" nextval="3008"/>
     <sequence name="KREW_DOC_LNK_S" nextval="2000"/>
     <sequence name="KREW_DOC_NTE_S" nextval="2020"/>
     <sequence name="KREW_DOC_TYP_ATTR_S" nextval="2010"/>
@@ -3789,8 +3789,8 @@
     <sequence name="KREW_PPL_FLW_MBR_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_S" nextval="10000"/>
     <sequence name="KREW_RSP_S" nextval="2065"/>
-    <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2470"/>
-    <sequence name="KREW_RTE_NODE_S" nextval="2917"/>
+    <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2475"/>
+    <sequence name="KREW_RTE_NODE_S" nextval="2919"/>
     <sequence name="KREW_RTE_TMPL_S" nextval="1645"/>
     <sequence name="KREW_RULE_EXPR_S" nextval="2002"/>
     <sequence name="KREW_RULE_TMPL_OPTN_S" nextval="2020"/>
@@ -3870,7 +3870,7 @@
     <sequence name="KRSB_BAM_PARM_S" nextval="2000"/>
     <sequence name="KRSB_BAM_S" nextval="2000"/>
     <sequence name="KRSB_MSG_QUE_S" nextval="466"/>
-    <sequence name="KRSB_SVC_DEF_S" nextval="10000"/>
-    <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10000"/>
+    <sequence name="KRSB_SVC_DEF_S" nextval="10105"/>
+    <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10105"/>
     <sequence name="TRV_FO_ID_S" nextval="1000"/>
 </database>

@@ -60,6 +60,8 @@
         CMPNT_SET_ID="DD:RICE" NM="Phone Type" NMSPC_CD="KR-IDM"/>
     <KRCR_DRVD_CMPNT_T CMPNT_CD="EntityTypeBo" CMPNT_SET_ID="DD:RICE"
         NM="Entity Type" NMSPC_CD="KR-IDM"/>
+    <KRCR_DRVD_CMPNT_T CMPNT_CD="FiscalOfficer" CMPNT_SET_ID="DD:RICE"
+        NM="Fiscal Officer" NMSPC_CD="tv"/>
     <KRCR_DRVD_CMPNT_T CMPNT_CD="GenericPermissionBo"
         CMPNT_SET_ID="DD:RICE" NM="Permission" NMSPC_CD="KR-IDM"/>
     <KRCR_DRVD_CMPNT_T CMPNT_CD="GroupBo" CMPNT_SET_ID="DD:RICE"
@@ -163,6 +165,14 @@
         NM="State" NMSPC_CD="KR-NS"/>
     <KRCR_DRVD_CMPNT_T CMPNT_CD="StyleBo" CMPNT_SET_ID="DD:RICE"
         NM="Stylesheet" NMSPC_CD="KR-CORE"/>
+    <KRCR_DRVD_CMPNT_T CMPNT_CD="TravelAccount" CMPNT_SET_ID="DD:RICE"
+        NM="Travel Account" NMSPC_CD="tv"/>
+    <KRCR_DRVD_CMPNT_T CMPNT_CD="TravelAccountExtension"
+        CMPNT_SET_ID="DD:RICE" NM="Travel Account Extension" NMSPC_CD="tv"/>
+    <KRCR_DRVD_CMPNT_T CMPNT_CD="TravelAccountType"
+        CMPNT_SET_ID="DD:RICE" NM="Travel Account Type" NMSPC_CD="tv"/>
+    <KRCR_DRVD_CMPNT_T CMPNT_CD="TravelAccountUseRate"
+        CMPNT_SET_ID="DD:RICE" NM="Travel Account Use Rate" NMSPC_CD="tv"/>
     <KRCR_DRVD_CMPNT_T CMPNT_CD="UberPermissionBo"
         CMPNT_SET_ID="DD:RICE" NM="Permission" NMSPC_CD="KR-IDM"/>
     <KRCR_DRVD_CMPNT_T CMPNT_CD="UberResponsibilityBo"

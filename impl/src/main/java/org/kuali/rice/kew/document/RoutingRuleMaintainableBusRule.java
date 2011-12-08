@@ -58,9 +58,6 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 		RuleBaseValues ruleBaseValues = this.getRuleBaseValues(document);
 		RuleBaseValues oldRuleBaseValues = this.getOldRuleBaseValues(document);
 		
-		if (oldRuleBaseValues != null) {
-			ruleBaseValues.setPreviousRuleId(oldRuleBaseValues.getId());
-        }
 		isValid &= this.populateErrorMap(ruleBaseValues);
 
 

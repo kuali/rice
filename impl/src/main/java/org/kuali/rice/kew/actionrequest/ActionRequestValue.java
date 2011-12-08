@@ -931,7 +931,6 @@ public class ActionRequestValue implements Serializable {
             .append("ruleBaseValuesId", ruleBaseValuesId)
             .append("delegationType", delegationTypeCode)
             .append("approvePolicy", approvePolicy)
-            .append("childrenRequests", childrenRequests == null ? null : childrenRequests.size())
             .append("actionTaken", actionTaken)
             .append("currentIndicator", currentIndicator)
             .append("createDateString", createDateString)

@@ -283,8 +283,6 @@ public class RouteNodeInstance implements Serializable {
             .append("complete", complete)
             .append("initial", initial)
             .append("process", process)
-            .append("nextNodeInstances", nextNodeInstances == null ? null : nextNodeInstances.size())
-            .append("previousNodeInstances", previousNodeInstances == null ? null : previousNodeInstances.size())
             .append("state", state == null ? null : state.size())
             .toString();
     }

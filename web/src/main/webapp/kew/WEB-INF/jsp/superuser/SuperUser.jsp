@@ -92,7 +92,7 @@
 	  <html-el:hidden property="lookupableImplServiceName" />
   	  <html-el:hidden property="lookupType" />
 
-<c:if test="${(! SuperUserForm.routeHeader.final)}">
+<c:if test="${(! SuperUserForm.routeHeader['final'])}">
   <tr>
     <td height="30">
       <table width="100%" border="0" cellpadding="0" cellspacing="0" class="bord-r-t">

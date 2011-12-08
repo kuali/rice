@@ -22,9 +22,8 @@ update krms_cmpnd_prop_props_t set seq_no = '3' where prop_id = 'P421D';
 update krms_cmpnd_prop_props_t set seq_no = '3' where prop_id = 'P502C';
 
 -- move seq_no column from krms_cmpnd_prop_props_t pivot table to krms_prop_t table.
-alter table krms_prop_t add column cmpnd_seq_no decimal(5,0) default null;
+alter table krms_prop_t add (cmpnd_seq_no decimal(5,0) default null);
 
-update krms_prop_t, krms_cmpnd_prop_props_t set krms_prop_t.cmpnd_seq_no = krms_cmpnd_prop_props_t.seq_no
-where krms_prop_t.prop_id = krms_cmpnd_prop_props_t.prop_id;
+update krms_prop_t set krms_prop_t.cmpnd_seq_no = (select seq_no from krms_cmpnd_prop_props_t where prop_id = krms_prop_t.prop_id);
 
-alter table krms_cmpnd_prop_props_t drop seq_no;
+alter table krms_cmpnd_prop_props_t drop (seq_no);

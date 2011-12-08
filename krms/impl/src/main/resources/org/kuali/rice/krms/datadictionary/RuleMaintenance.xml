@@ -173,34 +173,6 @@
     <property name="items">
       <list>
 
-        <bean id="RuleEditorView-PropositionSummary" parent="GroupGridLayout" p:renderHeader="false" p:style="margin-bottom: 0em;">
-          <property name="disclosure.render" value="false" />
-          <property name="layoutManager.numberOfColumns" value="8" />
-          <property name="items">
-            <list>
-
-              <bean parent="InputField" p:propertyName="agendaItemLine.rule.propositionSummary"
-                p:colSpan="8">
-                <property name="label" value="Proposition Summary" />
-                <property name="control">
-<!--                  <bean parent="TextControl" p:size="90" p:readOnly="true" p:style="border: 0px"/> -->
-                  <bean parent="TextAreaControl" p:rows="3" p:cols="120" p:readOnly="true" />
-
-                </property>
-              </bean>
-
-              <bean parent="ActionImageField"
-                  p:clientSideJs="ajaxCallPropositionTree('ajaxRefresh', 'RuleEditorView-PropositionSummary');">
-              <property name="actionImage">
-                <bean parent="ImageField" p:source="../krms/images/refresh.png"
-                      p:altText="Refresh Proposition Summary"/>
-              </property>
-            </bean>
-
-            </list>
-          </property>
-        </bean>
-
         <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; margin-top: " >
           <property name="items">
             <list>
@@ -211,15 +183,46 @@
                   </list>
                 </property>
               </bean>
-              <ref bean="RuleEditorView-TreeExpandCollapse" />
-              <ref bean="RuleEditorView-Tree" />
+              <bean id="RuleEditorView-TreeGroup" parent="GroupBodyOnly" p:style="margin-bottom: 5pt; margin-top: 0em;">
+                <property name="layoutManager.orientation" value="VERTICAL"/>
+                <property name="items">
+                  <list>
+                    <ref bean="RuleEditorView-PropositionSummary"/>
+                    <ref bean="RuleEditorView-TreeExpandCollapse" />
+                    <ref bean="RuleEditorView-Tree" />
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>
       </list>
     </property>
   </bean>
-        
+
+  <bean id="RuleEditorView-PropositionSummary" parent="GroupGridLayout" p:renderHeader="false" p:style="margin-bottom: 0em;">
+    <property name="disclosure.render" value="false" />
+    <property name="layoutManager.numberOfColumns" value="8" />
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.propositionSummary"
+          p:colSpan="8">
+          <property name="label" value="Proposition Summary" />
+          <property name="control">
+            <bean parent="TextAreaControl" p:rows="3" p:cols="150" p:readOnly="true" />
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <!--<bean id="RuleEditorView-PropositionSummary" parent="InputField" p:showLabel="true" p:propertyName="agendaItemLine.rule.propositionSummary">-->
+          <!--<property name="label" value="Proposition Summary" />-->
+          <!--<property name="control">-->
+            <!--<bean parent="TextAreaControl" p:rows="3" p:cols="120" p:readOnly="true" />-->
+          <!--</property>-->
+  <!--</bean>-->
+
   <bean id="RuleEditorView-TreeExpandCollapse" parent="FieldGroup"  p:showLabel="false"
     p:style="font-size: smaller;">
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
@@ -275,7 +278,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');"
               p:actionLabel="Edit">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
@@ -284,28 +287,28 @@
         </bean>
 
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');"
               p:actionLabel="Left">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
                   p:altText="Left"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-TreeGroup');"
               p:actionLabel="Right">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
                   p:altText="Right"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-TreeGroup');"
               p:actionLabel="Up">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
                   p:altText="Up"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-TreeGroup');"
               p:actionLabel="Down">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
@@ -321,14 +324,14 @@
                   p:altText="Cut"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');"
               p:actionLabel="Paste">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
                   p:altText="Paste"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-TreeGroup');"
               p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
@@ -413,7 +416,7 @@
         <property name="items">
           <list>
             <bean parent="ActionImageField"
-                  p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
+                  p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
               <property name="actionImage">
                 <bean parent="ImageField" p:source="../krms/images/edit.png"
                       p:altText="Edit" p:styleClasses="actionReveal"/>
@@ -537,7 +540,7 @@
     <property name="items">
       <list>
         <bean parent="ActionImageField"
-              p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-Tree');">
+              p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
           <property name="actionImage">
             <bean parent="ImageField" p:source="../krms/images/edit.png"
                   p:altText="Edit"/>
@@ -545,7 +548,7 @@
         </bean>
 
         <bean parent="ActionImageField"
-              p:clientSideJs="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-Tree');">
+              p:clientSideJs="ajaxCallPropositionTree('togglePropositionSimpleCompound', 'RuleEditorView-TreeGroup');">
           <property name="actionImage">
             <bean parent="ImageField" p:source="../krms/images/node-parent-and-child.png"
                   p:altText="Add Parent"/>

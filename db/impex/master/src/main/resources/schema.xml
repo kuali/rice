@@ -3870,7 +3870,7 @@
     <sequence name="KRSB_BAM_PARM_S" nextval="2000"/>
     <sequence name="KRSB_BAM_S" nextval="2000"/>
     <sequence name="KRSB_MSG_QUE_S" nextval="466"/>
-    <sequence name="KRSB_SVC_DEF_S" nextval="10000"/>
-    <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10000"/>
+    <sequence name="KRSB_SVC_DEF_S" nextval="10052"/>
+    <sequence name="KRSB_SVC_DSCRPTR_S" nextval="10052"/>
     <sequence name="TRV_FO_ID_S" nextval="1000"/>
 </database>

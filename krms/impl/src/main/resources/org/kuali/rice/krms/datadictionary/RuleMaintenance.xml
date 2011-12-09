@@ -200,9 +200,9 @@
     </property>
   </bean>
 
+<!--
   <bean id="RuleEditorView-PropositionSummary" parent="GroupGridLayout" p:renderHeader="false" p:style="margin-bottom: 0em;">
     <property name="disclosure.render" value="false" />
-    <property name="layoutManager.numberOfColumns" value="8" />
     <property name="items">
       <list>
         <bean parent="InputField" p:propertyName="agendaItemLine.rule.propositionSummary"
@@ -214,14 +214,22 @@
         </bean>
       </list>
     </property>
+
+  </bean>
+-->
+
+  <bean id="RuleEditorView-PropositionSummary" parent="GroupBodyOnly" p:renderHeader="false"
+        p:layoutManager.orientation="HORIZONTAL">
+    <property name="disclosure.render" value="false" />
+    <property name="items">
+      <list>
+        <bean parent="MessageField" p:label="Summary" p:showLabel="true" p:labelPlacement="TOP"
+              p:labelField.styleClasses="labelTop" p:messageText="@{#dp.agendaItemLine.rule.propositionSummary}" />
+      </list>
+    </property>
+
   </bean>
 
-  <!--<bean id="RuleEditorView-PropositionSummary" parent="InputField" p:showLabel="true" p:propertyName="agendaItemLine.rule.propositionSummary">-->
-          <!--<property name="label" value="Proposition Summary" />-->
-          <!--<property name="control">-->
-            <!--<bean parent="TextAreaControl" p:rows="3" p:cols="120" p:readOnly="true" />-->
-          <!--</property>-->
-  <!--</bean>-->
 
   <bean id="RuleEditorView-TreeExpandCollapse" parent="FieldGroup"  p:showLabel="false"
     p:style="font-size: smaller;">

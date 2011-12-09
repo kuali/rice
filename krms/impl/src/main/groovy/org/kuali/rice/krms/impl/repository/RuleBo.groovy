@@ -119,6 +119,9 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
    }
    
    public String getPropositionSummary(){
+       if (this.propositionTree == null) {
+           this.propositionTree = refreshPropositionTree(false);
+       }
        return propositionSummaryBuffer.toString();
    }
    

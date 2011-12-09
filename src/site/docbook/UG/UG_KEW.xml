@@ -520,6 +520,7 @@
                 </mediaobject>
             </figure>
             <para>The Action List Preferences page has four sections:</para>
+            <sect3><title>Action List Preferences: General Section</title>
             <figure>
                 <title>Action List Preferences: General section</title>
                 <mediaobject>
@@ -556,6 +557,11 @@
                             not, using this dropdown menu. If you do not display action requests
                             on which you are the Secondary Delegate on your Action List page,
                             you can only see them on a Filter Page (see Filter, below).</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            </sect3>
+            <sect3><title>Action List Preferences: Fields Displayed</title>
                         <figure>
                             <title>Action List Preferences: Fields Displayed section</title>
                             <mediaobject>
@@ -565,13 +571,17 @@
                                         scale="85"/>
                                 </imageobject>
                             </mediaobject></figure>
-                    </listitem>
-                    <listitem>
+                    <itemizedlist>
+                       <listitem>
                         <para>You determine which fields are displayed on your Action List page
                             using this section of the Action List Preferences page. Place a
                             checkmark in the box next to fields that you want to display on your
                             Action List page. (Click the box to checkmark it and click it again
                             to un-checkmark it, and vice versa.)</para>
+                       </listitem>
+                    </itemizedlist>
+            </sect3>
+            <sect3><title>Action List Preferences: Document Route Status Colors</title>
                         <figure>
                             <title>Action List Preferences: Document Route Status Colors Section</title>
                             <mediaobject>
@@ -581,15 +591,14 @@
                                 </imageobject>
                             </mediaobject>
                         </figure>
-                    </listitem>
-                    <listitem>
+                    <itemizedlist>
+                <listitem>
                         <para>In this section of the Action List Preferences page, you can
                             choose a color for each different Status of action requests. This
                             can help you quickly find action requests on which you need to take
                             action.</para>
                     </listitem>
-                </itemizedlist>
-            </para>
+                    </itemizedlist>
             <para>For example, if you set these colors for these routing status levels: <itemizedlist>
                     <listitem>
                         <para>Green for Saved status </para>
@@ -619,6 +628,8 @@
                     </imageobject>
                 </mediaobject>
             </figure>
+            </sect3>
+            <sect3><title>Action List Preferences: Email Notifications</title>
             <figure><title>Action List Preferences: Email Notifications Preferences</title>
                 <mediaobject>
                     <imageobject>
@@ -717,7 +728,10 @@
                     </listitem>
                 </itemizedlist></para>
             <para>Remember, all of these preferences and settings are on your Action List
-                Preferences page.</para>            
+            Preferences page.</para>
+            </sect3>
+        </sect2>
+        <sect2><title>Action List Refresh and Filter</title>
             <sect3>
                 <title>Refresh</title>
                 <para>As described above, you can use the Action List Preferences page to tell

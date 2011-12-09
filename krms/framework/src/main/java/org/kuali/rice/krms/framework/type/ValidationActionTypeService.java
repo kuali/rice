@@ -27,8 +27,8 @@ import org.kuali.rice.krms.framework.engine.Action;
 public interface ValidationActionTypeService extends RemotableAttributeOwner, ActionTypeService {
 
     static public final String VALIDATIONS_ACTION_ATTRIBUTE = "validations";
-    static public final String ATTRIBUTE_FIELD_NAME = "validationId";
-    static final String VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE = "ActionTypeCode";
+    static public final String VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE = "actionTypeCode"; // Database krms_attr_defn_t NM value
+    static public final String VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE = "actionMessage"; // Database krms_attr_defn_t NM value
 
     @Override
 	public Action loadAction(ActionDefinition actionDefinition);

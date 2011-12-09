@@ -80,6 +80,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -145,10 +146,18 @@ public class ValidationIntegrationTest extends AbstractBoTest {
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.VALID.toString(), true, ValidationRuleType.VALID.toString(),
                 ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDefs = createKrmsAttributeTypeDefinitionAndBuilders(
+        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.WARNING.toString(), true, ValidationActionType.WARNING.toString(),
                 ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
+                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
+                "Valdiation Action Message", true, "Valdiation Action Message",
+                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+
+        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
+        actionDefs.add(actionDef);
+        actionDefs.add(actionMessageDef);
         ContextBo contextBo = createContext();
         RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, WARNING_MESSAGE);
         createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
@@ -164,10 +173,18 @@ public class ValidationIntegrationTest extends AbstractBoTest {
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.INVALID.toString(), true, ValidationRuleType.INVALID.toString(),
                 ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDefs = createKrmsAttributeTypeDefinitionAndBuilders(
+        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.WARNING.toString(), true, ValidationActionType.WARNING.toString(),
                 ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
+                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
+                "Valdiation Action Message", true, "Valdiation Action Message",
+                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+
+        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
+        actionDefs.add(actionDef);
+        actionDefs.add(actionMessageDef);
 
         ContextBo contextBo = createContext();
         RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, WARNING_MESSAGE);
@@ -186,11 +203,17 @@ public class ValidationIntegrationTest extends AbstractBoTest {
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.VALID.toString(), true, ValidationRuleType.VALID.toString(),
                 ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDefs = createKrmsAttributeTypeDefinitionAndBuilders(
+        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.ERROR.toString(), true, ValidationActionType.ERROR.toString(),
                 ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
-
+        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
+                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
+                "Valdiation Action Message", true, "Valdiation Action Message",
+                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
+        actionDefs.add(actionDef);
+        actionDefs.add(actionMessageDef);
 
         ContextBo contextBo = createContext();
         RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, ERROR_MESSAGE);
@@ -207,10 +230,17 @@ public class ValidationIntegrationTest extends AbstractBoTest {
                 ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationRuleType.INVALID.toString(), true, ValidationRuleType.INVALID.toString(),
                 ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeRepositoryService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDefs = createKrmsAttributeTypeDefinitionAndBuilders(
+        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
                 ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
                 ValidationActionType.ERROR.toString(), true, ValidationActionType.ERROR.toString(),
                 ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
+                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
+                "Valdiation Action Message", true, "Valdiation Action Message",
+                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeRepositoryService, 1);
+        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
+        actionDefs.add(actionDef);
+        actionDefs.add(actionMessageDef);
 
         ContextBo contextBo = createContext();
         RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, ERROR_MESSAGE);
@@ -398,7 +428,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     }
 
     private RuleBo createRuleWithAction(KrmsAttributeTypeDefinitionAndBuilders ruleBits,
-            KrmsAttributeTypeDefinitionAndBuilders actionBits, ContextBo contextBo, String message) {
+            List<KrmsAttributeTypeDefinitionAndBuilders> actionBits, ContextBo contextBo, String message) {
 
         RuleBo rule = new RuleBo();
         rule.setTypeId(ruleBits.typeDef.getId());
@@ -414,23 +444,27 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         ruleType.setRuleId(rule.getId());
 
         List<ActionBo> actions = new ArrayList<ActionBo>();
+
         ActionBo action = new ActionBo();
-        action.setTypeId(actionBits.typeDef.getId());
-        action.setDescription("Description of validation action for message " + message);
+        action.setTypeId(actionBits.get(0).typeDef.getId());
+        action.setDescription("Description of validation action for message " + actionBits.get(0).attribDef.getDescription());
         actions.add(action);
-        action.setNamespace(actionBits.typeDef.getNamespace());
-        action.setName(actionBits.typeDef.getName());
-        action.setSequenceNumber(actionBits.typeAttribBuilder.getSequenceNumber());
+        action.setNamespace(actionBits.get(0).typeDef.getNamespace());
+        action.setName(actionBits.get(0).typeDef.getName());
+        action.setSequenceNumber(actionBits.get(0).typeAttribBuilder.getSequenceNumber());
         Set<ActionAttributeBo> actionAttributes = new HashSet<ActionAttributeBo>();
         action.setAttributeBos(actionAttributes);
 
-        ActionAttributeBo actionAttribute = new ActionAttributeBo();
-        actionAttributes.add(actionAttribute);
-        actionAttribute.setAttributeDefinitionId(actionBits.attribDef.getId());
-        actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(actionBits.attribDef));
-        actionAttribute.setValue(actionBits.typeAttribBuilder.getTypeId());
+        for (KrmsAttributeTypeDefinitionAndBuilders actionBit : actionBits) {
 
-        createActionAttributeBo(actionBits.attribDef.getNamespace(), "Action Message", "Action Message", actionBits.attribDef.isActive(), "Action Message", message, actionAttributes);
+            ActionAttributeBo actionAttribute = new ActionAttributeBo();
+            actionAttributes.add(actionAttribute);
+            actionAttribute.setAttributeDefinitionId(actionBit.attribDef.getId());
+            actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(actionBit.attribDef));
+            actionAttribute.setValue(actionBit.typeAttribBuilder.getTypeId());
+
+//            createActionAttributeBo(actionBit.attribDef.getNamespace(), actionBit.attribDef.getName(), "Action Message", actionBit.attribDef.isActive(), actionBit.attribDef.getDescription(), message, actionAttributes);
+        }
 
         rule = (RuleBo) getBoService().save(rule);
         RuleDefinition ruleDef = RuleBo.to(rule);

@@ -31,9 +31,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ValidationRuleTypeService extends RuleTypeService {
-    static final String ATTRIBUTE_FIELD_NAME = "validationId";
-    public static final String VALIDATIONS_RULE_ATTRIBUTE = "validations";
-    static final String VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE = "RuleTypeCode";
+    static public final String VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE = "ruleTypeCode";
 
     public Rule loadRule(RuleDefinition validationRuleDefinition);
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId)

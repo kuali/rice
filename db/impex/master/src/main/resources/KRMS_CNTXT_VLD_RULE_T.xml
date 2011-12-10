@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE dataset SYSTEM "data.dtd">
 <dataset>
-    <KRMS_CNTXT_VLD_RULE_T CNTXT_ID="CONTEXT1" CNTXT_VLD_RULE_ID="CVR8"
-        RULE_ID="T8" VER_NBR="1"/>
+    <KRMS_CNTXT_VLD_RULE_T CNTXT_ID="CONTEXT1" CNTXT_VLD_RULE_ID="1000"
+        RULE_ID="1003" VER_NBR="0"/>
 </dataset>

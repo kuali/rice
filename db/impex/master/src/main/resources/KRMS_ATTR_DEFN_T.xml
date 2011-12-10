@@ -7,6 +7,17 @@
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1001"
         DESC_TXT="PeopleFlow Name" LBL="PeopleFlow Name"
         NM="peopleFlowName" NMSPC_CD="KR_RULE" VER_NBR="1"/>
+    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1002"
+        DESC_TXT="Warning or Error Validation Actions"
+        LBL="Validation Action Type" NM="actionTypeCode"
+        NMSPC_CD="KR-RULE" VER_NBR="0"/>
+    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1003"
+        DESC_TXT="Message displayed on Validation Action execution"
+        LBL="Validation Action Message" NM="actionMessage"
+        NMSPC_CD="KR-RULE" VER_NBR="0"/>
+    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="1004"
+        DESC_TXT="Valid or Invalid Validation Rules"
+        LBL="Validation Rule Type" NM="ruleTypeCode" NMSPC_CD="KR-RULE" VER_NBR="0"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q33001" LBL="Event Name"
         NM="Event" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q44001"
@@ -18,17 +29,4 @@
     <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="Q9901"
         DESC_TXT="the campus which this agenda is valid for"
         LBL="campus label" NM="Campus" NMSPC_CD="KRMS_TEST" VER_NBR="0"/>
-    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="QQ8801"
-        DESC_TXT="If true, execute the action" LBL="Invalid Rule"
-        NM="Invalid Rule" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
-    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="QQ8802"
-        DESC_TXT="If false, execute the action" LBL="Valid Rule"
-        NM="Valid Rule" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
-    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="QQ8804" DESC_TXT="Warning"
-        LBL="Warning Action" NM="Warning Action" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
-    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="QQ8805" DESC_TXT="Error"
-        LBL="Error Action" NM="Error Action" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
-    <KRMS_ATTR_DEFN_T ACTV="Y" ATTR_DEFN_ID="QQ8806"
-        DESC_TXT="Message validation action returns"
-        LBL="Action Message" NM="Action Message" NMSPC_CD="KRMS_TEST" VER_NBR="1"/>
 </dataset>

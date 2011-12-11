@@ -202,70 +202,23 @@ public class KualiRequestProcessor extends RequestProcessor {
         processFormActionAndForward(request, response, mapping);
 
     }
-    
-    public void processFormActionAndForward(final HttpServletRequest request, final HttpServletResponse response, final ActionMapping mapping) throws ServletException, IOException {
-    	TransactionTemplate template = new TransactionTemplate(getTransactionManager());
-    	try {
-			template.execute(new TransactionCallback() {
-				@Override
-				public Object doInTransaction(TransactionStatus status) {
-					try {
-						// ProcessDefinition any ActionForm bean related to this request
-				        ActionForm form = processActionForm(request, response, mapping);
-				        processPopulate(request, response, form, mapping);
-				        
-				        // Validate any fields of the ActionForm bean, if applicable
-				        try {
-				            if (!processValidate(request, response, form, mapping)) {
-				                return null;
-				            }
-				        } catch (InvalidCancelException e) {
-				            ActionForward forward = processException(request, response, e, form, mapping);
-				            processForwardConfig(request, response, forward);
-				            return null;
-				        } catch (IOException e) {
-				            throw e;
-				        } catch (ServletException e) {
-				            throw e;
-				        }
-				            
-				        // ProcessDefinition a forward or include specified by this mapping
-				        if (!processForward(request, response, mapping)) {
-				            return null;
-				        }
-				        
-				        if (!processInclude(request, response, mapping)) {
-				            return null;
-				        }
 
-				        // Create or acquire the Action instance to process this request
-				        Action action = processActionCreate(request, response, mapping);
-				        if (action == null) {
-				            return null;
-				        }
-						
-				    	// Call the Action instance itself
-				        ActionForward forward = processActionPerform(request, response, action, form, mapping);
-				
-				        // ProcessDefinition the returned ActionForward instance
-				        processForwardConfig(request, response, forward);
-					} catch (Exception e) {
-						// the doInTransaction method has no means for
-						// throwing exceptions, so we will wrap the
-						// exception in
-						// a RuntimeException and re-throw. The one caveat
-						// here is that this will always result in
-						// the
-						// transaction being rolled back (since
-						// WrappedRuntimeException is a runtime exception).
-						throw new WrappedRuntimeException(e);
-					}
-					return null;
-				}
-			});
-		} catch (WrappedRuntimeException wre) {
-			throw new RuntimeException(wre.getCause());
-		}
+    public void processFormActionAndForward(final HttpServletRequest request, final HttpServletResponse response, final ActionMapping mapping) throws ServletException, IOException {
+    	ActionForm form = processActionForm(request, response, mapping);
+        processPopulate(request, response, form, mapping);
+
+        // Create or acquire the Action instance to process this request
+		Action action = processActionCreate(request, response, mapping);
+
+        if (action != null) {
+            // Call the Action instance itself
+		    ActionForward forward = processActionPerform(request, response, action, form, mapping);
+
+            if (forward != null) {
+                // ProcessDefinition the returned ActionForward instance
+			    processForwardConfig(request, response, forward);
+            }
+        }
     }
 
 
@@ -523,28 +476,60 @@ public class KualiRequestProcessor extends RequestProcessor {
 	@Override
 	protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response, final Action action, final ActionForm form, final ActionMapping mapping) throws IOException, ServletException {
 		try {
-			
-			ActionForward forward = action.execute(mapping, form, request, response);
+            TransactionTemplate template = new TransactionTemplate(getTransactionManager());
+			ActionForward forward = null;
+			try {
+				forward = (ActionForward) template.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						ActionForward actionForward = null;
+						try {
+							actionForward = action.execute(mapping, form, request, response);
+						} catch (Exception e) {
+							// the doInTransaction method has no means for
+							// throwing exceptions, so we will wrap the
+							// exception in
+							// a RuntimeException and re-throw. The one caveat
+							// here is that this will always result in
+							// the
+							// transaction being rolled back (since
+							// WrappedRuntimeException is a runtime exception).
+							throw new WrappedRuntimeException(e);
+						}
+						if (status.isRollbackOnly()) {
+							// this means that the struts action execution
+							// caused the transaction to rollback, we want to
+							// go ahead
+							// and trigger the rollback by throwing an exception
+							// here but then return the action forward
+							// from this method
+							throw new WrappedActionForwardRuntimeException(actionForward);
+						}
+						return actionForward;
+					}
+				});
+			} catch (WrappedActionForwardRuntimeException e) {
+				forward = e.getActionForward();
+			}
 
 			publishMessages(request);
 			saveMessages(request);
 			saveAuditErrors(request);
-			
+
 			if (form instanceof PojoForm) {
-				if (((PojoForm)form).getEditableProperties() == null 
+				if (((PojoForm)form).getEditableProperties() == null
 						|| ((PojoForm)form).getEditableProperties().isEmpty()) {
 					EditablePropertiesHistoryHolder holder = (EditablePropertiesHistoryHolder) GlobalVariables.getUserSession().getObjectMap().get(
                             KRADConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME);
 				    if (holder == null) {
 				    	holder = new EditablePropertiesHistoryHolder();
 				    }
-					
+
 					final String guid = holder.addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
 				    ((PojoForm)form).setActionEditablePropertiesGuid(guid);
 				    GlobalVariables.getUserSession().addObject(KRADConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME, holder);
 				}
 			}
-			
+
 			return forward;
 
 		} catch (Exception e) {
@@ -559,7 +544,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				}
 
 				if (form instanceof PojoForm) {
-					if (((PojoForm)form).getEditableProperties() == null 
+					if (((PojoForm)form).getEditableProperties() == null
 							|| ((PojoForm)form).getEditableProperties().isEmpty()) {
 					    EditablePropertiesHistoryHolder holder = (EditablePropertiesHistoryHolder) GlobalVariables.getUserSession().getObjectMap().get(
                                 KRADConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME);
@@ -580,6 +565,18 @@ public class KualiRequestProcessor extends RequestProcessor {
 			publishMessages(request);
 
 			return (processException(request, response, e, form, mapping));
+		}
+	}
+
+    private static class WrappedActionForwardRuntimeException extends RuntimeException {
+		private ActionForward actionForward;
+
+		public WrappedActionForwardRuntimeException(ActionForward actionForward) {
+			this.actionForward = actionForward;
+		}
+
+		public ActionForward getActionForward() {
+			return actionForward;
 		}
 	}
 

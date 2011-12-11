@@ -53,12 +53,17 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -77,12 +82,17 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	private static final String LAST_SEARCH_ORDER_OPTION = "DocSearch.LastSearch.Order";
 	private static final String NAMED_SEARCH_ORDER_BASE = "DocSearch.NamedSearch.";
 	private static final String LAST_SEARCH_BASE_NAME = "DocSearch.LastSearch.Holding";
+    private static final String DOC_SEARCH_CRITERIA_CLASS = "org.kuali.rice.kew.api.document.search.DocumentSearchCriteria";
+    private static final String DATA_TYPE_DATE = "datetime";
 
 	private volatile ConfigurationService kualiConfigurationService;
     private DocumentSearchCustomizationMediator documentSearchCustomizationMediator;
 
 	private DocumentSearchDAO docSearchDao;
 	private UserOptionsService userOptionsService;
+
+    private static DictionaryValidationService dictionaryValidationService;
+    private static DataDictionaryService dataDictionaryService;
 
 	public void setDocumentSearchDAO(DocumentSearchDAO docSearchDao) {
 		this.docSearchDao = docSearchDao;
@@ -332,9 +342,142 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         criteria.setInitiatorPrincipalName(trimCriteriaValue(criteria.getInitiatorPrincipalName()));
         validateGroupCriteria(criteria, errors);
         criteria.setDocumentId(criteria.getDocumentId());
+
+        // validate any dates
+        boolean compareDatePairs = true;
+        if (criteria.getDateCreatedFrom() == null) {
+            compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateCreatedFrom", criteria.getDateCreatedFrom().toString(), "dateCreatedFrom")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateCreatedFrom(criteria.getDateCreatedFrom());
+            }
+        }
+        if (criteria.getDateCreatedTo() == null) {
+             compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateCreatedTo", criteria.getDateCreatedTo().toString(), "dateCreatedTo")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateCreatedTo(criteria.getDateCreatedTo());
+            }
+        }
+        if (compareDatePairs) {
+            if (!checkDateRanges(new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateCreatedFrom().toDate()), new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateCreatedTo().toDate()))) {
+                errors.add(new WorkflowServiceErrorImpl("The Date Created From (Date Created) must not have a \"From\" date that occurs after the \"To\" date.", "docsearch.DocumentSearchService.dateCreatedRange"));
+            }
+        }
+
+        compareDatePairs = true;
+        if (criteria.getDateApprovedFrom() == null) {
+            compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateApprovedFrom", criteria.getDateApprovedFrom().toString(), "dateApprovedFrom")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateApprovedFrom(criteria.getDateApprovedFrom());
+            }
+        }
+        if (criteria.getDateApprovedTo() == null) {
+            compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateApprovedTo", criteria.getDateApprovedTo().toString(), "dateApprovedTo")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateApprovedTo(criteria.getDateApprovedTo());
+            }
+        }
+        if (compareDatePairs) {
+            if (!checkDateRanges(new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateApprovedFrom().toDate()), new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateApprovedTo().toDate()))) {
+            	errors.add(new WorkflowServiceErrorImpl("The Date Approved From (Date Approved) must not have a \"From\" date that occurs after the \"To\" date.", "docsearch.DocumentSearchService.dateApprovedRange"));
+            }
+        }
+
+        compareDatePairs = true;
+        if (criteria.getDateFinalizedFrom() == null) {
+            compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateFinalizedFrom", criteria.getDateFinalizedFrom().toString(), "dateFinalizedFrom")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateFinalizedFrom(criteria.getDateFinalizedFrom());
+            }
+        }
+        if (criteria.getDateFinalizedTo() == null) {
+            compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateFinalizedTo", criteria.getDateFinalizedTo().toString(), "dateFinalizedTo")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateFinalizedTo(criteria.getDateFinalizedTo());
+            }
+        }
+        if (compareDatePairs) {
+            if (!checkDateRanges(new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateFinalizedFrom().toDate()), new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateFinalizedTo().toDate()))) {
+            	errors.add(new WorkflowServiceErrorImpl("The Date Finalized From (Date Finalized) must not have a \"From\" date that occurs after the \"To\" date.", "docsearch.DocumentSearchService.dateFinalizedRange"));
+            }
+        }
+
+        compareDatePairs = true;
+        if (criteria.getDateLastModifiedFrom() == null) {
+            compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateLastModifiedFrom", criteria.getDateLastModifiedFrom().toString(), "dateLastModifiedFrom")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateLastModifiedFrom(criteria.getDateLastModifiedFrom());
+            }
+        }
+        if (criteria.getDateLastModifiedTo() == null) {
+            compareDatePairs = false;
+        }
+        else {
+            if (!validateDate("dateLastModifiedTo", criteria.getDateLastModifiedTo().toString(), "dateLastModifiedTo")) {
+                compareDatePairs = false;
+            } else {
+                criteria.setDateLastModifiedTo(criteria.getDateLastModifiedTo());
+            }
+        }
+        if (compareDatePairs) {
+            if (!checkDateRanges(new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateLastModifiedFrom().toDate()), new SimpleDateFormat("MM/dd/yyyy").format(criteria.getDateLastModifiedTo().toDate()))) {
+                errors.add(new WorkflowServiceErrorImpl("The Date Last Modified From (Date Last Modified) must not have a \"From\" date that occurs after the \"To\" date.", "docsearch.DocumentSearchService.dateLastModifiedRange"));
+            }
+        }
         return errors;
     }
 
+    private boolean validateDate(String dateFieldName, String dateFieldValue, String dateFieldErrorKey) {
+		// Validates the date format via the dictionary validation service. If validation fails, the validation service adds an error to the message map.
+		int oldErrorCount = GlobalVariables.getMessageMap().getErrorCount();
+		getDictionaryValidationService().validateAttributeFormat(DOC_SEARCH_CRITERIA_CLASS, dateFieldName, dateFieldValue, DATA_TYPE_DATE, dateFieldErrorKey);
+		return (GlobalVariables.getMessageMap().getErrorCount() <= oldErrorCount);
+	}
+
+    public static DictionaryValidationService getDictionaryValidationService() {
+		if (dictionaryValidationService == null) {
+			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
+		}
+		return dictionaryValidationService;
+	}
+
+    public static DataDictionaryService getDataDictionaryService() {
+		if (dataDictionaryService == null) {
+			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+		}
+		return dataDictionaryService;
+	}
+
+    private boolean checkDateRanges(String fromDate, String toDate) {
+		return Utilities.checkDateRanges(fromDate, toDate);
+	}
     private String trimCriteriaValue(String criteriaValue) {
         if (StringUtils.isNotBlank(criteriaValue)) {
             criteriaValue = criteriaValue.trim();

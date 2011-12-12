@@ -122,10 +122,10 @@
                 experience than what was possible in KNS.</para>
             <para>An Input field enables user input. This means that this "grouped" field control
                 will display an entry field for user input, and can optionally include instructions,
-                watermarks, constraint text, a lookup widget, inquiry widget, or help widget, and
-                includes a place for error messages associated with the field to appear. This could
-                arguably be considered the most complex of all fields, and additional information on
-                this field can be found in the  Developers' Guide.</para>
+                a watermark, constraint text, a lookup widget, inquiry widget, and/or help widget,
+                and includes a place for error messages associated with the field to appear. This
+                could be considered the most complex of all fields, and additional information on
+                this field can be found in the Developers' Guide.</para>
             <figure>
                 <mediaobject>
                     <imageobject>
@@ -202,20 +202,21 @@
             org/kuali/kfs/sys/businessobject/datadictionary/GenericAttributes.xml file.</para>
         <para><emphasis role="bold"><emphasis role="underline">Code snippet example follows:
                 </emphasis></emphasis></para>
-        <para>1. &lt;bean id="GenericAttributes-genericDate"
-            parent="GenericAttributes-genericDate-parentBean"/> </para>
-        <para>2. &lt;bean id="GenericAttributes-genericDate-parentBean" abstract="true"
-            parent="AttributeDefinition"> </para>
-        <para>3. &lt;property name="name" value="genericDate"/> </para>
-        <para>4. &lt;property name="forceUppercase" value="false"/> </para>
-        <para>5. &lt;property name="label" value="Generic Date Style Attribute"/> </para>
-        <para>6. &lt;property name="shortLabel" value="GenericDate"/> </para>
-        <para>7. &lt;property name="maxLength" value="22"/> </para>
-        <para>8. &lt;property name="validationPattern" ref="DateValidation" /> </para>
-        <para>9. &lt;property name="control" ref="DateControl" /> </para>
-        <para>10. &lt;property name="formatterClass"
-            value="org.kuali.rice.kns.web.format.DateFormatter"/> </para>
-        <para>11. &lt;/bean> </para>
+        <para>
+            <programlisting>
+1.  &lt;bean id="GenericAttributes-genericDate" parent="GenericAttributes-genericDate-parentBean"/>
+2.  &lt;bean id="GenericAttributes-genericDate-parentBean" abstract="true" parent="AttributeDefinition">
+3.    &lt;property name="name" value="genericDate"/>
+4.    &lt;property name="forceUppercase" value="false"/>
+5.    &lt;property name="label" value="Generic Date Style Attribute"/>
+6.    &lt;property name="shortLabel" value="GenericDate"/>
+7.    &lt;property name="maxLength" value="22"/>
+8.    &lt;property name="validationPattern" ref="DateValidation"/>
+9.    &lt;property name="control" ref="DateControl" />
+10.   &lt;property name="formatterClass" value="org.kuali.rice.kns.web.format.DateFormatter"/>
+11. &lt;/bean> 
+           </programlisting>
+        </para>
         <para>It's a simple enough example, but lines 7 and 8 pack quite a bit of power.  Together,
             they limit the length of the field to a size which can fit in the database (evidently
             twenty-two characters) and they add the DateValidation, which requires that any user
@@ -245,9 +246,9 @@
             the constraint architecture itself. </para>
         <section>
             <title>Simple Constraints, Min / Max</title>
-            <para>As is covered in more detail in the previous Constraint Architecture section that
-                follows this documentation on the constraints packaged with KRAD,  every constraint
-                in KRAD implements the <emphasis role="italic"
+            <para>As is covered in more detail in the Constraint Architecture section that follows
+                this this documentation of the constraints packaged with KRAD, every constraint in
+                KRAD implements the <emphasis role="italic"
                     >org.kuali.rice.kns.datadictionary.validation.constraint.Constraint</emphasis>
                 interface. This interface is a simple marker interface. Children of that interface
                 tend to define the data they would need from the configuration to figure out if the
@@ -277,16 +278,18 @@
                 that's coming, and is the requirement.) </para>
             <para>In the data dictionary for that attribute, the following could be set. </para>
             <para><emphasis role="bold"><emphasis role="underline">Code snippet example
-                        follows:</emphasis></emphasis></para>
-            <para>1. &lt;bean id="DataObject-phoneNumber" parent="AttributeDefinition"> </para>
-            <para>2. &lt;property name="name" value="phoneNumber" /> </para>
-            <para>3. &lt;property name="validCharactersConstraint"> </para>
-            <para>4. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint"> </para>
-            <para>5. &lt;property name="value" value="\(\d{3}\) \d{3}-\d{4}" /> </para>
-            <para>6. &lt;/bean> </para>
-            <para>7. &lt;/property> </para>
-            <para>8. &lt;/bean> </para>
+            follows:</emphasis></emphasis></para>
+            <para>
+            <programlisting>1.  &lt;bean id="DataObject-phoneNumber" parent="AttributeDefinition">
+2.    &lt;property name="name" value="phoneNumber" />
+3.    &lt;property name="validCharactersConstraint">
+4.      &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
+5.        &lt;property name="value" value="\(\d{3}\) \d{3}-\d{4}" />
+6.      &lt;/bean>
+7.    &lt;/property>
+8.  &lt;/bean>            </programlisting>
+            </para>
+                
             <para>In lines 3 through 7, we set the validCharactersConstraint property on the
                 AttributeDefinition, handing the bean we just created a regex which should match the
                 phone number pattern which the requirements say all phone numbers should match. </para>
@@ -296,9 +299,9 @@
                 Among those are "UrlPatternConstraint", "DatePatternConstraint",
                 "CreditcardPatternConstraint", "NonWhitespacePatternConstraint",
                 "IntegerPatternConstraint", "PhoneUSPatternConstraint", and "TimePatternConstraint",
-                as a mere sampling. As of the time of this writing (May 2011), the constraints only
-                worked for javascript side validation. However, work was being done to build server
-                side equivalencies of all of these patterns. </para>
+                as a mere sampling. As of the time of this writing, the constraints only worked for
+                javascript side validation. However, work was being done to build server side
+                equivalencies of all of these patterns. </para>
             <para>Finally, note that the ValidCharactersConstraint has a second property, "jsValue".
                 In most cases, Java's regular expression engine (ValidCharactersConstraint uses the
                 built-in regular expression engine) will accept the same expressions as the
@@ -323,17 +326,17 @@
                 constraints be satisfied. </para>
             <para><emphasis role="bold"><emphasis role="underline">A code snippet example
                         follows:</emphasis></emphasis></para>
-            <para>1. &lt;bean id="DataObject-phoneNumber" parent="AttributeDefinition"> </para>
-            <para>2. &lt;property name="name" value="phoneNumber" /> </para>
-            <para>3. &lt;property name="dependencyConstraints"> </para>
-            <para>4. &lt;list> </para>
-            <para>5. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
-                p:attributePath="phoneExtension" /> </para>
-            <para>6. &lt;/list> </para>
-            <para>7. &lt;/property> </para>
-            <para>8. &lt;/bean> In this case, if phoneNumber is non-empty, then phoneExtension must
-                be non-empty as well.</para>
+            <para>
+                <programlisting>1.  &lt;bean id="DataObject-phoneNumber" parent="AttributeDefinition"&gt;
+2.    &lt;property name="name" value="phoneNumber"/&gt;
+3.    &lt;property name="dependencyConstraints"&gt;
+4.      &lt;list&gt;
+5.        &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint" p:attributePath="phoneExtension" /&gt;
+6.      &lt;/list&gt;
+7.    &lt;/property&gt;
+8.  &lt;/bean&gt;</programlisting>
+            </para>
+        
         </section>
         <section>
             <title>Lookup Constraints</title>
@@ -357,45 +360,38 @@
             <para><emphasis role="bold"><emphasis role="underline">A code snippet example
                         follows:</emphasis></emphasis>
             </para>
-            <para>1. &lt;bean id="DataObject-countryCode" parent="AttributeDefinition"> </para>
-            <para>2. &lt;property name="name" value="countryCode" /> </para>
-            <para>3. &lt;property name="caseConstraint"> </para>
-            <para>4. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint"> </para>
-            <para>5. &lt;property name="whenConstraint"> </para>
-            <para>6. &lt;list> </para>
-            <para>7. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint"> </para>
-            <para>8. &lt;property name="values"> </para>
-            <para>9. &lt;list> </para>
-            <para>10. &lt;value>US&lt;/value> </para>
-            <para>11. &lt;/list> </para>
-            <para>12. &lt;/property> </para>
-            <para>13. &lt;property name="constraint"> </para>
-            <para>14. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
-                p:attributePath="state" /> </para>
-            <para>15. &lt;/property> </para>
-            <para>16. &lt;/bean> </para>
-            <para>17. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint"> </para>
-            <para>18. &lt;property name="values"> </para>
-            <para>19. &lt;list> </para>
-            <para>20. &lt;value>CA&lt;/value> </para>
-            <para>21. &lt;value>TR&lt;/value> </para>
-            <para>22. &lt;/list> </para>
-            <para>23. &lt;/property> </para>
-            <para>24. &lt;property name="constraint"> </para>
-            <para>25. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
-                p:attributePath="province" /> </para>
-            <para>26. &lt;/property> </para>
-            <para>27. &lt;/bean> </para>
-            <para>28. &lt;/list> </para>
-            <para>29. &lt;/property> </para>
-            <para>30. &lt;/bean> </para>
-            <para>31. &lt;/property> </para>
-            <para>32. &lt;/bean> </para>
+            <programlisting> 1. &lt;bean id="DataObject-countryCode" parent="AttributeDefinition">
+ 2.   &lt;property name="name" value="countryCode"/>
+ 3.   &lt;property name="caseConstraint">
+ 4.     &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+ 5.       &lt;property name="whenConstraint">
+ 6.         &lt;list>
+ 7.           &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+ 8.             &lt;property name="values">
+ 9.               &lt;list>
+10.                 &lt;value>US&lt;/value>
+11.               &lt;/list>
+12.             &lt;/property>
+13.             &lt;property name="constraint">
+14.               &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"p:attributePath="state" />
+15.             &lt;/property>
+16.           &lt;/bean>
+17.           &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.WhenConstraint">
+18.             &lt;property name="values">
+19.               &lt;list>
+20.                 &lt;value>CA&lt;/value>
+21.                 &lt;value>TR&lt;/value>
+22.               &lt;/list>
+23.             &lt;/property>
+24.             &lt;property name="constraint">
+25.               &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"p:attributePath="province"/>
+26.             &lt;/property>
+27.           &lt;/bean>
+28.         &lt;/list>
+29.       &lt;/property>
+30.     &lt;/bean>
+31.   &lt;/property>
+32. &lt;/bean> </programlisting> 
             <para>Obviously, for such a powerful constraint, configuration becomes a bit more
                 complex. A <emphasis role="italic">CaseConstraint</emphasis> has a List of <emphasis
                     role="italic">WhenConstraints</emphasis>. <emphasis role="italic"
@@ -429,32 +425,24 @@
                 as easily).</para>
             <para><emphasis role="bold"><emphasis role="underline">A code snippet example follows:
                     </emphasis></emphasis></para>
-            <para>1. &lt;bean id="DataObject-phoneNumber" parent="DataObjectEntry"> </para>
-            <para>2. &lt;property name="objectClass" value="edu.sampleu.contact.ContactInformation"
-                /> </para>
-            <para>3. &lt;property name="mustOccurConstraints"> </para>
-            <para>4. &lt;list> </para>
-            <para>5. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
-            <para>6. &lt;property name="min" value="1" /> </para>
-            <para>7. &lt;property name="max" value="3" /> </para>
-            <para>8. &lt;property name="prerequisiteConstraints"> </para>
-            <para>9. &lt;list> </para>
-            <para>10. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
-                p:attributePath="phoneNumber"/> </para>
-            <para>11. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
-                p:attributePath="emailAddress"/> </para>
-            <para>12. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"
-                p:attributePath="showUpTime"/> </para>
-            <para>13. &lt;/list> </para>
-            <para>14. &lt;/property> </para>
-            <para>15. &lt;/bean> </para>
-            <para>16. &lt;/list> </para>
-            <para>17. &lt;/property> </para>
-            <para>18. &lt;/bean> </para>
+            <programlisting>1.   &lt;bean id="DataObject-phoneNumber" parent="DataObjectEntry">
+2.     &lt;property name="objectClass" value="edu.sampleu.contact.ContactInformation" />
+3.     &lt;property name="mustOccurConstraints">
+4.       &lt;list>
+5.         &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+6.           &lt;property name="min" value="1" />
+7.           &lt;property name="max" value="3"/>
+8.           &lt;property name="prerequisiteConstraints">
+9.             &lt;list>
+10.              &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"p:attributePath="phoneNumber"/>
+11.              &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"p:attributePath="emailAddress"/>
+12.              &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"p:attributePath="showUpTime"/>
+13.            &lt;/list>
+14.          &lt;/property>
+15.        &lt;/bean>
+16.      &lt;/list>
+17.    &lt;/property>
+18.  &lt;/bean>            </programlisting> 
             <para>Lines 1 and 2 surprising show that this constraint has been set at the
                 DataObjectEntry level, not that of the AttributeDefinition. While
                 MustOccurConstraints can be set in pretty much the same way on AttributeDefinitions,
@@ -490,18 +478,18 @@
                 adds a constraint as follows,</para>
             <para><emphasis role="bold"><emphasis role="underline">A code snippet example follows:
                     </emphasis></emphasis></para>
-            <para>1. &lt;bean name="AddCourseDocument" parent="BusinessObjectEntry"> </para>
-            <para>2. ... </para>
-            <para>3. &lt;property name="collections"> </para>
-            <para>4. &lt;list> </para>
-            <para>5. &lt;bean parent="CollectionDefinition" p:name="courses" p:label="Courses"> </para>
-            <para>6. &lt;property name="minOccurs" value="1" /> </para>
-            <para>7. &lt;property name="maxOccurs" value="74" /> </para>
-            <para>8. &lt;/bean> </para>
-            <para>9. &lt;/list> </para>
-            <para>10. &lt;/property> </para>
-            <para>11. ... </para>
-            <para>12. &lt;/bean> </para>
+            <programlisting> 1. &lt;bean name="AddCourseDocument" parent="BusinessObjectEntry">
+ 2.   ...
+ 3.   &lt;property name="collections">
+ 4.     &lt;list>
+ 5.       &lt;bean parent="CollectionDefinition" p:name="courses" p:label="Courses">
+ 6.         &lt;property name="minOccurs" value="1" />
+ 7.         &lt;property name="maxOccurs" value="74" />
+ 8.       &lt;/bean>
+ 9.     &lt;/list>
+10.   &lt;/property>
+11.   ...
+12. &lt;/bean> </programlisting> 
             <para>Evidently, some students can take up to seventy four classes. Busy student.
                 CollectionSizeConstraint is handled as a special type of SimpleConstraint (though
                 only for use with CollectionDefinitions). Simply set the minOccurs and maxOccurs for
@@ -560,7 +548,11 @@
             <para>All of the covered constraints are associated with standard error messages. For
                 instance, if a "required" constraint has been violated, the user will get the
                 following message: </para>
-            <para>Phone Number is a required field. </para>
+            <para>
+            <programlisting> 
+            Phone Number is a required field. 
+            </programlisting> 
+            </para>
             <para>This has taken the label from the attribute which violated the constraint and
                 formatted that into the standard error.required message in the
                 KR-ApplicationResources.properties file. </para>
@@ -568,11 +560,12 @@
                 specifying the "labelKey" property. For instance, a configuration like this: </para>
             <para><emphasis role="bold"><emphasis role="underline">Code snippet example
                         follows:</emphasis></emphasis></para>
-            <para>1. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
-            <para>2. &lt;property name="min" value="1" /> </para>
-            <para>3. &lt;property name="max" value="3" /> </para>
-            <para>4. &lt;property name="labelKey" value="error.must.be.able.to.track.down" /> </para>
+            <para>
+            <programlisting>1.  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+2.    &lt;property name="min" value="1" />
+3.    &lt;property name="max" value="3" />
+4.    &lt;property name="labelKey" value="error.must.be.able.to.track.down" /> </programlisting>     
+            </para>    
             <para>Instead of using the standard message, the error message that is shown will be the
                 message associated with the "error.must.be.able.to.track.down" key. This allows for
                 a great deal more flexibility in what message gets displayed - though, the classic
@@ -595,9 +588,6 @@
                 type of value that the processor expects and the type of Constraint that the
                 processor will work on. Most ConstraintProcessor implementations only genericize the
                 Constraint, accepting any Object as a value to validate. </para>
-            <section>
-                <title>ConstraintProcessor Methods</title>
-            </section>
             <para>ConstraintProcessors have four methods: </para>
             <itemizedlist>
                 <listitem>
@@ -646,9 +636,6 @@
                 ProcessorResults; the ProcessorResults then ensures that proper logic - whether that
                 be the display of a message, the stopping of logic, or - if everything passed -
                 carrying on with the transaction - occurs. </para>
-            <section>
-                <title>ConstraintProcessor interface</title>
-            </section>
             <para>That covers ConstraintProcessors. Now on to how they are called from within an
                 application.   An implementation of
                 org.kuali.rice.kns.service.DictionaryValidationService is responsible for checking
@@ -656,12 +643,13 @@
                 configuration of the default implementation of DictionaryValidationService has all
                 of the ConstraintProcessors for KRAD passed into it.  See the following code
                 snippets.  For example, if we assume the following 5 lines of code, </para>
-            <para>3. &lt;property name="collectionConstraintProcessors"> </para>
-            <para>4. &lt;list> </para>
-            <para>5. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/> </para>
-            <para>6. &lt;/list> </para>
-            <para>7. &lt;/property></para>
+            <para>
+            <programlisting> 3.	  &lt;property name="collectionConstraintProcessors">
+ 4.	    &lt;list>
+ 5.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/>
+ 6.		&lt;/list>
+ 7.	  &lt;/property> </programlisting> 
+            </para>
             <para>Lines 3 through 7 above are the collectionConstraintProcessors - constraints which
                 apply to collections. Here is where CollectionSizeConstraint - the constraint that
                 handles the maxOccurs and minOccurs constraint attributes - goes. </para>
@@ -670,9 +658,6 @@
                 with the ConstraintProcessors passed in, and runs the logic against the constrained
                 attribute. If the ConstraintProcessor acts only on a single attribute, it is passed
                 into the elementConstraintProcessor property.</para>
-            <section>
-                <title>ConstraintProvider interfaces</title>
-            </section>
             <para>ConstraintProcessors are supplied to engines which validate against constraints -
                 DictionaryValidationServiceImpl, for instance - via ConstraintProviders.  Different
                 implementations of the <emphasis role="italic"
@@ -687,74 +672,92 @@
                 ObjectDictionaryEntryConstraintProviders, meaning this is the sole constraint
                 supported by data dictionary entries for entire data objects. </para>
             <para><emphasis role="bold"><emphasis role="underline">Code snippet example
-                        follows:</emphasis></emphasis></para>
-            <para>29. &lt;property name="constraintProviders"> </para>
-            <para>30. &lt;list> </para>
-            <para>31. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider"> </para>
-            <para>32. &lt;!-- </para>
-            <para>33. individual constraint resolvers can be injected as a map keyed by constraint
-                type as string, or the default </para>
-            <para>34. resolvers can be instantiated into the map by adding 'init-method="init"' to
-                the bean declaration above </para>
-            <para>35. --> </para>
-            <para>36. &lt;property name="resolverMap"> </para>
-            <para>37. &lt;map> </para>
-            <para>38. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint"> </para>
-            <para>39. &lt;ref bean="dictionaryValidationCaseConstraintResolver"/> </para>
-            <para>40. &lt;/entry> </para>
-            <para>41. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint"> </para>
-            <para>42. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
-            <para>43. &lt;/entry>  </para>
-            <para>44. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint"> </para>
-            <para>45. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
-            <para>46. &lt;/entry> </para>
-            <para>47. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint"> </para>
-            <para>48. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
-            <para>49. &lt;/entry> </para>
-            <para>50. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint"> </para>
-            <para>51. &lt;ref bean="dictionaryValidationValidCharactersConstraintResolver"/> </para>
-            <para>52. &lt;/entry> </para>
-            <para>53. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint"> </para>
-            <para>54. &lt;ref bean="dictionaryValidationPrerequisiteConstraintsResolver"/> </para>
-            <para>55. &lt;/entry> </para>
-            <para>56. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
-            <para>57. &lt;ref bean="dictionaryValidationMustOccurConstraintsResolver"/> </para>
-            <para>58. &lt;/entry> </para>
-            <para>59. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint"> </para>
-            <para>60. &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/> </para>
-            <para>61. &lt;/entry> </para>
-            <para>62. &lt;/map> </para>
-            <para>63. &lt;/property> </para>
-            <para>64. &lt;/bean> </para>
-            <para>65. &lt;bean
-                class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider"> </para>
-            <para>66. &lt;!-- </para>
-            <para>67. individual constraint resolvers can be injected as a map keyed by constraint
-                type as string, or the default </para>
-            <para>68. resolvers can be instantiated into the map by adding 'init-method="init"' to
-                the bean declaration above </para>
-            <para>69. --> </para>
-            <para>70. &lt;property name="resolverMap"> </para>
-            <para>71. &lt;map> </para>
-            <para>72. &lt;entry
-                key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint"> </para>
-            <para>73. &lt;ref bean="dictionaryValidationMustOccurConstraintsResolver"/> </para>
-            <para>74. &lt;/entry> </para>
-            <para>75. &lt;/map> </para>
-            <para>76. &lt;/property> </para>
-            <para>77. &lt;/bean> </para>
-            <para>78. &lt;/list> </para>
-            <para>79. &lt;/property> </para>
-            <para>80. &lt;/bean></para>
+            follows:</emphasis></emphasis></para>
+            <para>
+            <programlisting> 1. &lt;bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
+      ...
+      contents trimmed
+      ...
+ 2.   &lt;!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint --> 
+ 3.	  &lt;property name="collectionConstraintProcessors">
+ 4.	    &lt;list>
+ 5.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.CollectionSizeConstraintProcessor"/>
+ 6.		&lt;/list>
+ 7.	  &lt;/property>
+ 8.	  &lt;!-- Element constraint processors are classes that determine if a passed value is valid for a specific constraint at the individual object or object attribute level -->
+ 9.	  &lt;property name="elementConstraintProcessors">
+10.     &lt;list>
+11.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.CaseConstraintProcessor" 
+12.		        parent="mandatoryElementConstraintProcessor"/>
+13.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.ExistenceConstraintProcessor"/>
+14.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.DataTypeConstraintProcessor"
+15.				parent="mandatoryElementConstraintProcessor"/>
+16.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.RangeConstraintProcessor"
+17.		        parent="mandatoryElementConstraintProcessor"/>
+18.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.LengthConstraintProcessor"
+19.		        parent="mandatoryElementConstraintProcessor"/>
+20.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.ValidCharactersConstraintProcessor"
+21.		        parent="mandatoryElementConstraintProcessor"/>
+22.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.PrerequisiteConstraintProcessor"
+23.		        parent="mandatoryElementConstraintProcessor"/>
+24.		  &lt;bean class="org.kuali.rice.kns.datadictionary.validation.processor.MustOccurConstraintProcessor"
+25.		        parent="mandatoryElementConstraintProcessor"/>
+26.	    &lt;/list>
+27.   &lt;/property>
+28.	  &lt;!-- Constraint providers are classes that map specific constraint types to a constraint resolver, which takes a constrainable definition -->
+29.	  &lt;property name="constraintProviders">
+30.	    &lt;list>
+31.	      &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.AttributeDefinitionConstraintProvider">
+32.		    &lt;!-- 
+33.		        individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
+34.	            resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above
+35.	        -->
+36.	        &lt;property name="resolverMap">
+37.			  &lt;map>
+38.			    &lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.CaseConstraint">
+39.				  &lt;ref bean="dictionaryValidationCaseConstraintResolver"/>
+40.				&lt;/entry>
+41.				&lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.ExistenceConstraint">
+42.				  &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+43.				&lt;/entry>
+44.				&lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.DataTypeConstraint">
+45.	              &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+46.				&lt;/entry>
+47.				&lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.LengthConstraint">
+48.				  &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+49.				&lt;/entry>
+50.				&lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.ValidCharactersConstraint">
+51.				  &lt;ref bean="dictionaryValidationValidCharactersConstraintResolver"/>
+52.				&lt;/entry>
+53.				&lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.PrerequisiteConstraint">
+54.				  &lt;ref bean="dictionaryValidationPrerequisiteConstraintsResolver"/>
+55.				&lt;/entry>
+56.				&lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+57.				  &lt;ref bean="dictionaryValidationMustOccurConstraintsResolver"/>
+58.				&lt;/entry>
+59.				&lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.CollectionSizeConstraint">
+60.				  &lt;ref bean="dictionaryValidationDefinitionConstraintResolver"/>
+61.				&lt;/entry>
+62.	          &lt;/map>
+63.	        &lt;/property>
+64.	      &lt;/bean>
+65.       &lt;bean class="org.kuali.rice.kns.datadictionary.validation.constraint.provider.ObjectDictionaryEntryConstraintProvider">
+66.         &lt;!-- 
+67.			    individual constraint resolvers can be injected as a map keyed by constraint type as string, or the default 
+68.			    resolvers can be instantiated into the map by adding 'init-method="init"' to the bean declaration above
+69.			-->
+70.	        &lt;property name="resolverMap">
+71.			  &lt;map>
+72.			    &lt;entry key="org.kuali.rice.kns.datadictionary.validation.constraint.MustOccurConstraint">
+73.				  &lt;ref bean="dictionaryValidationMustOccurConstraintsResolver"/>
+74.				&lt;/entry>
+75.			  &lt;/map>
+76.			&lt;/property>
+77.		  &lt;/bean>
+78.	    &lt;/list>
+79.	  &lt;/property>
+80. &lt;/bean> </programlisting> 
+            </para>
             <para>Other ConstraintProviders packed into Rice at the time of this writing are
                 CollectionDefinitionConstraintProvider - constraints which work for collection
                 definitions; and ComplexAttributeDefinitionConstraintProvider, which supports
@@ -777,29 +780,33 @@
         <para>Before developing with KRAD and after installing and configuring Rice, here are the
             additional steps you'll need to follow to configure KRAD before starting to develop an
             application.</para>
-        <para>
-            <para>This information below assumes you already have Rice installed and configured for
-                your database.  Below are the additional tasks required to configure KRAD.  For more
-                information, see the KRAD Installation Guide and KRAD javadocs.</para>
-        </para>
+        <para>This information below assumes you already have Rice installed and configured for your
+            database. Below are the additional tasks required to configure KRAD. For more
+            information, see the KRAD Installation Guide and KRAD javadocs. </para>
         <para>(TBD - Revise the section heads below as needed and then populate with info.  Include
             instructions for setting up a Rice project, include assumptions for what is already done
             and not covered in the instructions, such as setting up all else needed for development
             environment - what are pre-reqs, what are co-reqs, etc..)</para>
+        
         <section>
             <title>Creating the KRAD database tables / connections to data?</title>
+            <para/>
         </section>
         <section>
             <title>KRAD Configurer and RiceConfigurer?</title>
+            <para/>
         </section>
         <section>
             <title>Configuring Spring and MVC?</title>
+            <para/>
         </section>
         <section>
             <title>Module Configuration – Loading Data Dictionary and OJB Files?</title>
+            <para/>
         </section>
         <section>
             <title>Other KRAD Configuration Parameters?</title>
+            <para/>
         </section>
     </section>
     <section>
@@ -1096,8 +1103,10 @@
     </section>
     <section>
         <title>Converting KNS pages to KRAD</title>
+        <para/>
     </section>
     <section>
         <title>(other? E/R diagrams?, binding paths?, pointer to javadocs?)</title>
+        <para/>
     </section>
 </chapter>

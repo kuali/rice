@@ -16,14 +16,12 @@
 package org.kuali.rice.krad.criteria;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.LookupCustomizer;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;

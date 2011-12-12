@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.kew.batch;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.impex.xml.DirectoryXmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
+import org.kuali.rice.core.api.impex.xml.ZipXmlDocCollection;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -28,13 +34,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.impex.xml.DirectoryXmlDocCollection;
-import org.kuali.rice.core.api.impex.xml.FileXmlDocCollection;
-import org.kuali.rice.core.api.impex.xml.XmlDocCollection;
-import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
-import org.kuali.rice.core.api.impex.xml.ZipXmlDocCollection;
 
 
 /**

@@ -79,7 +79,7 @@
     <property name="controlField">
       <bean parent="SelectControl"/>
     </property>
-    <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+    <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
     <property name="name" value="namespace"/>
     <property name="label" value="Namespace"/>
    </bean>
@@ -174,7 +174,7 @@
         </bean>
 
         <bean parent="InputField" p:propertyName="namespace" p:required="true">
-          <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+          <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
           <property name="control">
             <bean parent="SelectControl"/>
           </property>
@@ -221,7 +221,7 @@
         </bean>
 
         <bean parent="InputField" p:propertyName="namespace" p:required="true">
-          <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+          <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
           <property name="control">
             <bean parent="SelectControl"/>
           </property>

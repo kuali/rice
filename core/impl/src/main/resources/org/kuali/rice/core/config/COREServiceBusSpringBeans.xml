@@ -82,13 +82,13 @@
 		<property name="validRunMode" value="REMOTE" />
 	</bean>
 
-  <bean parent="coreLocalServiceExporter">
+  <!--<bean parent="coreLocalServiceExporter">
     <property name="serviceBus" ref="rice.ksb.serviceBus"/>
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="parameterRepositoryService"
             p:localServiceName="parameterRepositoryService"
-            p:serviceInterface="org.kuali.rice.core.api.parameter.ParameterRepositoryService"/>
+            p:serviceInterface="org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService"/>
     </property>
   </bean>
 
@@ -98,7 +98,7 @@
       <bean parent="coreService"
             p:service-ref="namespaceService"
             p:localServiceName="namespaceService"
-            p:serviceInterface="org.kuali.rice.core.api.namespace.NamespaceService"/>
+            p:serviceInterface="org.kuali.rice.coreservice.api.namespace.NamespaceService"/>
     </property>
   </bean>
   
@@ -108,7 +108,7 @@
       <bean parent="coreService"
             p:service-ref="componentService"
             p:localServiceName="componentService"
-            p:serviceInterface="org.kuali.rice.core.api.component.ComponentService"/>
+            p:serviceInterface="org.kuali.rice.coreservice.api.component.ComponentService"/>
     </property>
   </bean>
 
@@ -119,6 +119,6 @@
             p:service-ref="coreCacheService"
             p:localServiceName="coreCacheService"/>
     </property>
-  </bean>
+  </bean>-->
 
 </beans>

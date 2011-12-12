@@ -79,6 +79,7 @@
 	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/coreservice/config/CoreServiceConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml"/>
     

@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
 package org.kuali.rice.kew.docsearch.xml
 
 import javax.xml.namespace.QName
@@ -23,7 +25,7 @@ import org.kuali.rice.core.api.CoreConstants
 import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import org.kuali.rice.core.api.resourceloader.ResourceLoader
-import org.kuali.rice.core.framework.parameter.ParameterService
+import org.kuali.rice.coreservice.framework.parameter.ParameterService
 import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 import org.w3c.dom.Element
 import org.xml.sax.InputSource

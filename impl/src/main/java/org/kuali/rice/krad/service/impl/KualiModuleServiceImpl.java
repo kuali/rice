@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.framework.parameter.ParameterConstants;
+import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.document.TransactionalDocument;
@@ -136,7 +136,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 
     @Override
 	public String getNamespaceName(final String namespaceCode){
-    	Namespace parameterNamespace = CoreApiServiceLocator.getNamespaceService().getNamespace(namespaceCode);
+    	Namespace parameterNamespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(namespaceCode);
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }
     

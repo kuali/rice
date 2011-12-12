@@ -20,7 +20,7 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegationBo;

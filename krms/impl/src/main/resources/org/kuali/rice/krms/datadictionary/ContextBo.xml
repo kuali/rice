@@ -75,7 +75,7 @@
       <bean parent="SelectControl"/>
     </property>
     <property name="optionsFinder">
-      <bean class="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+      <bean class="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
     </property>
     <property name="name" value="namespace"/>
     <property name="label" value="Context Namespace"/>

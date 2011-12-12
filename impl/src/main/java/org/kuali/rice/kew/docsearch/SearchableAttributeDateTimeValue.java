@@ -23,11 +23,11 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

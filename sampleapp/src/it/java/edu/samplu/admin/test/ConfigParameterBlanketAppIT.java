@@ -60,7 +60,7 @@ public class ConfigParameterBlanketAppIT {
         assertEquals("", selenium.getText("methodToCall.cancel"));
         selenium.type("//input[@id='document.documentHeader.documentDescription']", "Validation Test Parameter");          
         selenium.select("//select[@id='document.newMaintainableObject.namespaceCode']", "label=Kuali Nervous System");
-        selenium.click("methodToCall.performLookup.(!!org.kuali.rice.core.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
+        selenium.click("methodToCall.performLookup.(!!ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + System.getProperty("remote.public.url") + "kr/lookup.do;::::).anchor4");
         selenium.waitForPageToLoad("30000");
         selenium.click("//input[@name='methodToCall.search' and @value='search']");
         selenium.waitForPageToLoad("30000");

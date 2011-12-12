@@ -124,7 +124,7 @@
               </bean>
 
               <bean parent="InputField" p:propertyName="specification.namespace" p:label="Namespace" p:required="true">
-                <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+                <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
                 <property name="control">
                   <bean parent="SelectControl"/>
                 </property>

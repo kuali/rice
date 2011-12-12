@@ -76,6 +76,8 @@
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.2" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />

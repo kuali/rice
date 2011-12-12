@@ -25,7 +25,6 @@ import javax.persistence.Transient
 import org.apache.commons.lang.StringUtils
 import org.hibernate.annotations.GenericGenerator
 import org.hibernate.annotations.Parameter
-import org.kuali.rice.core.api.CoreApiServiceLocator
 import org.kuali.rice.kim.api.KimConstants
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract

@@ -17,9 +17,10 @@ package org.kuali.rice.core.impl.component;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.component.Component;
-import org.kuali.rice.core.api.component.ComponentService;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.component.Component;
+import org.kuali.rice.coreservice.api.component.ComponentService;
+import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.test.KRADTestCase;
 
@@ -43,7 +44,7 @@ public class ComponentServiceTest extends KRADTestCase {
 
     @Before
     public void establishComponentService() {
-        componentService = CoreApiServiceLocator.getComponentService();
+        componentService = CoreServiceApiServiceLocator.getComponentService();
         assertNotNull("Failed to locate ComponentService", componentService);
     }
 

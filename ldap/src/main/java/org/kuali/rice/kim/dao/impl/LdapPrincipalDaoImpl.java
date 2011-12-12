@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;

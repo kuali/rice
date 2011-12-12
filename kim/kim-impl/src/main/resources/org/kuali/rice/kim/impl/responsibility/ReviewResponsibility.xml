@@ -60,7 +60,7 @@
         p:shortLabel="Responsibility Namespace" 
         p:required="true">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.core.web.namespace.NamespaceValuesFinder" p:includeKeyInLabel="true"/>
+      <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder" p:includeKeyInLabel="true"/>
     </property>
   </bean>
 

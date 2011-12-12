@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.util.WebUtils;

@@ -13,7 +13,6 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../ldap/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -81,6 +80,8 @@
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.2" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
@@ -145,6 +146,7 @@
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:1.8.4" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />
+    <orderEntry type="module" module-name="rice-core-service-impl" />
     <orderEntry type="module" module-name="rice-core-web" />
     <orderEntry type="module" module-name="rice-location-framework" />
     <orderEntry type="module" module-name="rice-location-impl" />
@@ -153,6 +155,7 @@
     <orderEntry type="module" module-name="rice-impl" />
     <orderEntry type="module" module-name="rice-ken-api" />
     <orderEntry type="module" module-name="rice-kew-impl" />
+    <orderEntry type="module" module-name="rice-core-service-web" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />

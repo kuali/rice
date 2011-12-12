@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.parameter.Parameter;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;

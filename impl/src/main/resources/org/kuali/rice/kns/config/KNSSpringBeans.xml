@@ -246,19 +246,19 @@
         <value>classpath:org/kuali/rice/location/web/state/State.xml</value>
         <value>classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml</value>
 
-        <value>classpath:org/kuali/rice/core/web/namespace/Namespace.xml</value>
-        <value>classpath:org/kuali/rice/core/web/parameter/ParameterType.xml</value>
-        <value>classpath:org/kuali/rice/core/web/component/Component.xml</value>
-        <value>classpath:org/kuali/rice/core/web/parameter/Parameter.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/namespace/Namespace.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterType.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/component/Component.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/parameter/Parameter.xml</value>
 
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml</value>
 
-        <value>classpath:org/kuali/rice/core/web/namespace/NamespaceMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/core/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/core/web/component/ComponentMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/core/web/parameter/ParameterMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/namespace/NamespaceMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/component/ComponentMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterMaintenanceDocument.xml</value>
 
         <value>classpath:org/kuali/rice/core/web/cache/CacheAdmin.xml</value>
 
@@ -364,7 +364,7 @@
 
    <bean id="parameterLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
     <property name="lookupableHelperService">
-      <bean class="org.kuali.rice.core.web.parameter.ParameterLookupableHelperServiceImpl"
+      <bean class="org.kuali.rice.coreservice.web.parameter.ParameterLookupableHelperServiceImpl"
             parent="lookupableHelperService">
       </bean>
     </property>
@@ -372,7 +372,7 @@
 
   <bean id="componentLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" parent="kualiLookupable">
     <property name="lookupableHelperService">
-      <bean class="org.kuali.rice.core.web.component.ComponentLookupableHelperServiceImpl"
+      <bean class="org.kuali.rice.coreservice.web.component.ComponentLookupableHelperServiceImpl"
             parent="lookupableHelperService">
       </bean>
     </property>

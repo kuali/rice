@@ -961,6 +961,7 @@
   <modules>
     <module>db</module>
     <module>core</module>
+    <module>core-service</module>
     <module>kim</module>
     <module>location</module>
     <module>krad</module>

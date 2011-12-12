@@ -148,8 +148,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="Component-InquiryView" parent="InquiryView">
 	<property name="title" value="Component Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.core.impl.component.ComponentBo"/>
-    <property name="viewHelperServiceClassName" value="org.kuali.rice.core.web.component.ComponentInquirableImpl"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.component.ComponentBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.coreservice.web.component.ComponentInquirableImpl"/>
     <property name="Items">
         <list>
           <bean parent="GroupSectionGridLayout">
@@ -168,7 +168,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="Namespace-InquiryView" parent="InquiryView">
 	<property name="title" value="Namespace Inquiry"/>
-    <property name="dataObjectClassName" value="org.kuali.rice.core.impl.namespace.NamespaceBo"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.namespace.NamespaceBo"/>
     <property name="Items">
         <list>
           <bean parent="GroupSectionGridLayout">

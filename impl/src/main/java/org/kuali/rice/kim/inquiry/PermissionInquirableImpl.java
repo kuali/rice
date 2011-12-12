@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.inquiry;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.role.Role;

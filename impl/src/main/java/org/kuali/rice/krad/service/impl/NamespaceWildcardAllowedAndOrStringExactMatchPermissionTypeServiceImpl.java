@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.namespace.Namespace;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
@@ -107,7 +107,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 		// Check if "namespaceCode" is one of the permission detail values.
 		if (attributes.containsKey(NAMESPACE_CODE)) {
 			nonNamespaceCodeAttributes.remove(NAMESPACE_CODE);
-            final Namespace namespace = CoreApiServiceLocator.getNamespaceService().getNamespace(attributes.get(NAMESPACE_CODE));
+            final Namespace namespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(attributes.get(NAMESPACE_CODE));
 			if (namespace != null) {
 			    errors.addAll(super.validateReferencesExistAndActive(kimType, Collections.singletonMap(NAMESPACE_CODE,
                         namespace.getCode()), previousValidationErrors));

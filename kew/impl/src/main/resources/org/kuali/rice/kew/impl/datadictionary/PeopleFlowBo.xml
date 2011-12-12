@@ -80,7 +80,7 @@
   <bean id="PeopleFlow-namespaceCode-parentBean" abstract="true" parent="Namespace-code">
     <property name="name" value="namespaceCode"/>
     <property name="shortLabel" value="Namespace"/>
-    <property name="optionsFinderClass" value="org.kuali.rice.core.web.namespace.NamespaceValuesFinder"/>
+    <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
     <property name="controlField">
        <bean parent="SelectControl"/>
     </property>

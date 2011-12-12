@@ -20,18 +20,16 @@
          updateCheck="true" monitoring="autodetect"
          dynamicConfig="true">
 
-  <cache name="http://rice.kuali.org/location/v2_0/CampusType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/location/v2_0/CampusTypeType" eternal="false" overflowToDisk="false"
+  <defaultCache eternal="false"
+         overflowToDisk="false"
          copyOnRead="false"
          copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/location/v2_0/CountryType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/location/v2_0/CountyType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/location/v2_0/PostalCodeType" eternal="false" overflowToDisk="false"
-         copyOnRead="false" copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/location/v2_0/StateType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
+
+  <cache name="http://rice.kuali.org/location/v2_0/CampusType"/>
+  <cache name="http://rice.kuali.org/location/v2_0/CampusTypeType"/>
+  <cache name="http://rice.kuali.org/location/v2_0/CountryType"/>
+  <cache name="http://rice.kuali.org/location/v2_0/CountyType"/>
+  <cache name="http://rice.kuali.org/location/v2_0/PostalCodeType"/>
+  <cache name="http://rice.kuali.org/location/v2_0/StateType"/>
 
 </ehcache>

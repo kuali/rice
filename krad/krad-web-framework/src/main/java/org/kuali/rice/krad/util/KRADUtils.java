@@ -16,12 +16,12 @@
 package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.core.framework.parameter.ParameterConstants;
-import org.kuali.rice.core.framework.parameter.ParameterService;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
@@ -34,7 +34,6 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.security.GeneralSecurityException;
 import java.text.NumberFormat;

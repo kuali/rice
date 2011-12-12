@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.engine.simulation;
 
 import org.apache.log4j.MDC;
-import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;

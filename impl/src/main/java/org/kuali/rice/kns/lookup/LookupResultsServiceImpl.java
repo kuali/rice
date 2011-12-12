@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.codec.binary.Base64;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kns.web.ui.ResultRow;
@@ -35,6 +27,14 @@ import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class LookupResultsServiceImpl implements LookupResultsService {
     private BusinessObjectService businessObjectService;

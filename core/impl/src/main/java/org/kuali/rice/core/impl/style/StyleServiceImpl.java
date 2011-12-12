@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleRepositoryService;
 import org.kuali.rice.core.api.style.StyleService;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;
 

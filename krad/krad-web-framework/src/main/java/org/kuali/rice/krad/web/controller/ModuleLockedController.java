@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.web.controller;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.framework.parameter.ParameterService;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

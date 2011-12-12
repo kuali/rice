@@ -22,7 +22,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.util.RiceConstants;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;

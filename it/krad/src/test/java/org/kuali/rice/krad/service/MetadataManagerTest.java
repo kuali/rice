@@ -16,11 +16,11 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.parameter.Parameter;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
-import org.kuali.rice.core.impl.parameter.ParameterId;
-import org.kuali.rice.core.impl.parameter.ParameterTypeBo;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
+import org.kuali.rice.coreservice.impl.parameter.ParameterId;
+import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.core.framework.persistence.jpa.metadata.MetadataManager;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.test.document.bo.AccountExtension;
@@ -34,7 +34,6 @@ import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KRADTestCase;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 

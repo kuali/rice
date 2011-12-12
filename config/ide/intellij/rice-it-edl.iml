@@ -74,6 +74,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: logkit:logkit:1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.btm:btm:2.1.2" level="project" />
+    <orderEntry type="module" module-name="rice-core-service-framework" scope="TEST" />
+    <orderEntry type="module" module-name="rice-core-service-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-framework" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
@@ -139,6 +141,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.quartz-scheduler:quartz:1.8.4" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />
+    <orderEntry type="module" module-name="rice-core-service-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-core-service-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-core-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" />

@@ -18,18 +18,17 @@ package org.kuali.rice.kim.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.groovy.util.StringUtil;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.core.api.parameter.Parameter;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
-import org.kuali.rice.core.framework.parameter.ParameterService;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.group.Group;
@@ -137,7 +136,6 @@ import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -146,9 +144,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThan;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.

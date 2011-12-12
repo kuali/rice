@@ -16,24 +16,19 @@
 package org.kuali.rice.krms.impl.repository;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.web.form.MaintenanceForm;
-import org.kuali.rice.krms.impl.ui.AgendaEditor;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Helper class that returns all namespaces that have contexts associated w/ them.

@@ -79,8 +79,12 @@
 		</property>
 	</bean>
 
- <!-- core caching set in KRADSpringBeans (sadly) -->
+ <!-- caching set in KRADSpringBeans (sadly) -->
+  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl"/>
 
+  <bean id="globalCacheManager" class="org.kuali.rice.core.impl.cache.GlobalCacheManager">
+    <property name="cacheManagerRegistry" ref="cacheManagerRegistry" />
+  </bean>
   <!--<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
 		<property name="jcdAlias" value="coreApplicationDataSource" />
 		<property name="dbPlatform" ref="dbPlatform" />

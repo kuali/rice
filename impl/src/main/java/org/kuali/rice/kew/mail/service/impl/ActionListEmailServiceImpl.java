@@ -29,8 +29,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.mail.EmailBody;
 import org.kuali.rice.core.mail.EmailFrom;
 import org.kuali.rice.core.mail.EmailSubject;

@@ -17,11 +17,11 @@ package org.kuali.rice.krad.lookup;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -41,7 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 /**
  * Provides static utility methods for use within the lookup framework

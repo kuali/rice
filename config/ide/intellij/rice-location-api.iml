@@ -4,16 +4,13 @@
     <output url="file://$MODULE_DIR$/../../../location/api/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../location/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../location/api">
+      <sourceFolder url="file://$MODULE_DIR$/../../../location/api/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../location/api/src/test/groovy" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../location/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../location/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../location/api/target/generated-sources/groovy-stubs" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../location/api/target/maven-archiver" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../location/api/target/surefire" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../location/api/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../location/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />

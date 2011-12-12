@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/test-classes" />
@@ -75,6 +74,8 @@
     <orderEntry type="module" module-name="rice-location-api" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
@@ -140,11 +141,14 @@
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />
     <orderEntry type="module" module-name="rice-core-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-core-service-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-core-service-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-kim-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-impl" scope="TEST" />
     <orderEntry type="module" module-name="rice-ken-api" scope="TEST" />
     <orderEntry type="module" module-name="rice-kew-impl" scope="TEST" />
+    <orderEntry type="module" module-name="rice-core-service-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-core-web" scope="TEST" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" scope="TEST" />

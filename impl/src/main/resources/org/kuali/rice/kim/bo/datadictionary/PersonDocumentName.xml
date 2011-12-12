@@ -59,7 +59,7 @@
   <bean id="DocName-nameSuffix" parent="DocName-nameSuffix-parentBean"/>
   <bean id="DocName-nameSuffix-parentBean" parent="AttributeDefinition" abstract="true" p:name="nameSuffix" p:forceUppercase="true" p:label="Name Suffix" p:shortLabel="Name Suffix" p:maxLength="20" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.core.impl.parameter.ParameterBo" p:valuesFinderClass="org.kuali.rice.kim.bo.options.NameSuffixValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="namespaceCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.coreservice.impl.parameter.ParameterBo" p:valuesFinderClass="org.kuali.rice.kim.bo.options.NameSuffixValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="namespaceCode" p:labelAttribute="name"/>
     </property>
   </bean>
  
@@ -73,7 +73,7 @@
   <bean id="DocName-namePrefix" parent="DocName-namePrefix-parentBean"/>
   <bean id="DocName-namePrefix-parentBean" parent="AttributeDefinition" abstract="true" p:name="namePrefix" p:forceUppercase="true" p:label="Name Prefix" p:shortLabel="Name Prefix" p:maxLength="20" p:required="false">
     <property name="control">
-      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.core.impl.parameter.ParameterBo" p:valuesFinderClass="org.kuali.rice.kim.bo.options.NamePrefixValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="namespaceCode" p:labelAttribute="name"/>
+      <bean parent="SelectControlDefinition" p:businessObjectClass="org.kuali.rice.coreservice.impl.parameter.ParameterBo" p:valuesFinderClass="org.kuali.rice.kim.bo.options.NamePrefixValuesFinder" p:includeKeyInLabel="false" p:keyAttribute="namespaceCode" p:labelAttribute="name"/>
     </property>
   </bean>
   

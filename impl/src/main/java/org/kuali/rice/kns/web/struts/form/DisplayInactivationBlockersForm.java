@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.web.struts.form;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;

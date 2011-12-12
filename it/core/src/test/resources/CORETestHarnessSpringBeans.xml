@@ -109,12 +109,13 @@
     </bean>
 
     <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
-<!--    <import resource="classpath:org/kuali/rice/krad/config/KRADConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/kim/config/KIMConfigSpringBeans.xml"/>
+	  <import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+	  <import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
+	  <import resource="classpath:org/kuali/rice/krad/config/KRADConfigSpringBeans.xml"/>
+	  <import resource="classpath:org/kuali/rice/coreservice/config/CoreServiceConfigSpringBeans.xml"/>
+    <import resource="classpath:org/kuali/rice/kim/impl/config/KIMConfigSpringBeans.xml"/>
     <import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/krms/config/KRMSConfigSpringBeans.xml"/>
--->
+    <!--<import resource="classpath:org/kuali/rice/krms/impl/config/KRMSConfigSpringBeans.xml"/>-->
+
 
 </beans>

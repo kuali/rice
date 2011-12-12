@@ -8,7 +8,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/location/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/location/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/location/target/generated-sources/test-annotations" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../it/location/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/location/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/location/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/location/target/test-classes" />
@@ -51,6 +50,7 @@
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-commons-annotations:3.2.0.Final" level="project" />
     <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" level="project" />
+    <orderEntry type="module" module-name="rice-location-framework" />
     <orderEntry type="module" module-name="rice-krad-app-framework" />
     <orderEntry type="module" module-name="rice-kim-api" />
     <orderEntry type="module" module-name="rice-kew-api" />
@@ -75,6 +75,8 @@
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.2" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
@@ -145,10 +147,11 @@
     <orderEntry type="module" module-name="rice-ken-api" />
     <orderEntry type="module" module-name="rice-kew-impl" />
     <orderEntry type="module" module-name="rice-kim-impl" />
+    <orderEntry type="module" module-name="rice-core-service-impl" />
+    <orderEntry type="module" module-name="rice-core-service-web" />
     <orderEntry type="module" module-name="rice-core-web" />
     <orderEntry type="module" module-name="rice-ksb-client-impl" />
     <orderEntry type="module" module-name="rice-ksb-server-impl" />
-    <orderEntry type="module" module-name="rice-location-framework" />
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.jasig.cas.client:cas-client-core:3.2.1" level="project" />

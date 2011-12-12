@@ -15,25 +15,22 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kew.export.KewExportDataSet;
+import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.ClearDatabaseLifecycle;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.kew.export.KewExportDataSet;
-import org.kuali.rice.kew.rule.RuleTemplateOptionBo;
-import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
-import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
-import org.kuali.rice.test.ClearDatabaseLifecycle;
+import static org.junit.Assert.*;
 
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class RuleTemplateXmlExporterTest extends XmlExporterTestCase {

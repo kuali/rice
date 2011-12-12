@@ -16,19 +16,16 @@
 package org.kuali.rice.core.api.parameter
 
 import org.junit.Test
-import org.junit.Assert;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator
-import org.kuali.rice.core.api.parameter.Parameter
+
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator
+import org.kuali.rice.coreservice.api.parameter.Parameter
 import org.kuali.rice.krad.util.KRADConstants
 import org.kuali.rice.kew.api.KewApiConstants
-import static org.junit.Assert.assertTrue
+
 import static org.junit.Assert.assertNotNull
-import org.kuali.rice.core.framework.parameter.ParameterService
+import org.kuali.rice.coreservice.framework.parameter.ParameterService
 import org.apache.commons.lang.time.StopWatch
-import org.kuali.rice.core.api.cache.CacheService
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import org.springframework.cache.Cache
-import javax.xml.namespace.QName
+
 import org.kuali.test.KRADTestCase
 
 
@@ -55,11 +52,5 @@ class ParameterUpdateTest extends KRADTestCase {
         }
         stopWatch.stop()
         LOG.info("loop time: " + stopWatch.getTime() + "ms");
-
-        //CacheService cacheService = GlobalResourceLoader.getService(new QName("http://rice.kuali.org/core/v2_0", "coreCacheService"))
-
-        //Cache cache = cacheService.getCache()
-
-        //LOG.info(cache);
     }
 }

@@ -17,8 +17,8 @@ package org.kuali.rice.ken.web.spring;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.namespace.Namespace;
-import org.kuali.rice.core.api.namespace.NamespaceService;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
+import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.ken.exception.ErrorList;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;

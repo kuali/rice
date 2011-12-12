@@ -75,6 +75,8 @@
     <orderEntry type="module" module-name="rice-location-api" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: net.sf.ehcache:ehcache-core:2.4.6" level="project" />
     <orderEntry type="module" module-name="rice-krad-web-framework" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />

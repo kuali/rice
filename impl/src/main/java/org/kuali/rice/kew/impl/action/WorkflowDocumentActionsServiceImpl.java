@@ -23,7 +23,7 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.AttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;

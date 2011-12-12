@@ -99,11 +99,11 @@
                   <goal>java2ws</goal>
               </goals>
           </execution>
-					<execution>
+					<!--<execution>
 						<id>parameterRepositoryService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
-							<className>org.kuali.rice.core.api.parameter.ParameterRepositoryService</className>
+							<className>org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService</className>
 							<outputFile>${project.build.outputDirectory}/wsdl/ParameterRepositoryService.wsdl</outputFile>
 							<serviceName>ParameterRepositoryService</serviceName>
 						</configuration>
@@ -115,14 +115,14 @@
 						<id>namespaceService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>
 						<configuration>
-							<className>org.kuali.rice.core.api.namespace.NamespaceService</className>
+							<className>org.kuali.rice.coreservice.api.namespace.NamespaceService</className>
 							<outputFile>${project.build.outputDirectory}/wsdl/NamespaceService.wsdl</outputFile>
 							<serviceName>NamespaceService</serviceName>
 						</configuration>
 						<goals>
 							<goal>java2ws</goal>
 						</goals>
-					</execution>
+					</execution>-->
 					<execution>
 						<id>styleRepositoryService-wsdl</id>
 						<phase>${rice.java2ws.phase}</phase>

@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kew.mail;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.Collection;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -37,6 +28,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests email content generation

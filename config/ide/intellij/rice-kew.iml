@@ -3,7 +3,6 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../../kew/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../kew/target/test-classes" />
-    <exclude-output />
     <content url="file://$MODULE_DIR$/../../../kew">
       <excludeFolder url="file://$MODULE_DIR$/../../../kew/target" />
     </content>

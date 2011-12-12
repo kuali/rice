@@ -49,6 +49,19 @@
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
+      <artifactId>rice-core-service-impl</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-core-service-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
       <artifactId>rice-kim-impl</artifactId>
       <scope>test</scope>
       <type>test-jar</type>

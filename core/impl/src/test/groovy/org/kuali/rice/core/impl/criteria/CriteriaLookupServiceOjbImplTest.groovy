@@ -17,7 +17,7 @@ package org.kuali.rice.core.impl.criteria
 
 import org.junit.Test
 import org.kuali.rice.core.api.criteria.QueryByCriteria
-import org.kuali.rice.core.api.parameter.Parameter
+import org.kuali.rice.coreservice.api.parameter.Parameter
 
 import org.kuali.rice.krad.criteria.CriteriaLookupDaoOjb
 

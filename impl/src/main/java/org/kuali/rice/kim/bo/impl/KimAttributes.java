@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import org.kuali.rice.core.impl.component.ComponentBo;
-import org.kuali.rice.core.impl.namespace.NamespaceBo;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.coreservice.impl.component.ComponentBo;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
+import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.krad.bo.TransientBusinessObjectBase;
 import org.kuali.rice.location.impl.campus.CampusBo;

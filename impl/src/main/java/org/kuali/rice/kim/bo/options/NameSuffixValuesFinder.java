@@ -17,7 +17,7 @@ package org.kuali.rice.kim.bo.options;
 
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.krad.keyvalues.KeyValuesBase;

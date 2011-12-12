@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.util;
 
 import org.junit.Test;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;

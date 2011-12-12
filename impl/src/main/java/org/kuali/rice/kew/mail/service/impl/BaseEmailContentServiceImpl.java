@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.mail.service.impl;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.action.ActionRequest;

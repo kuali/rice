@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.engine;
 
-import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;

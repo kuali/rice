@@ -51,10 +51,10 @@ public class KRADConfigurer extends ModuleConfigurer {
         final List<String> springFileLocations = new ArrayList<String>();
         springFileLocations.add(KRAD_SPRING_BEANS_PATH);
 
-        if (isExposeServicesOnBus()) {
+        /*if (isExposeServicesOnBus()) {
             //TODO FIXME hack!  KRAD should not be loading core!  (needed for now to publish core services)
             springFileLocations.add("classpath:org/kuali/rice/core/config/COREServiceBusSpringBeans.xml");
-        }
+        }*/
 
         if (isIncludeKnsSpringBeans()) {
             springFileLocations.add(KNS_SPRING_BEANS_PATH);

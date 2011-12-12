@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.inquiry;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.impl.namespace.NamespaceBo;
+import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;

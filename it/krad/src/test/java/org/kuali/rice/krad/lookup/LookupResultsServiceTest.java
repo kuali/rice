@@ -17,7 +17,7 @@ package org.kuali.rice.krad.lookup;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.impl.parameter.ParameterBo;
+import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.identity.PersonImpl;

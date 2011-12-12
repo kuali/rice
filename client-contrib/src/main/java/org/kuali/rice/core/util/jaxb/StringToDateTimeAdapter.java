@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.core.util.jaxb;
 
-import java.util.Date;
-
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.Date;
 
 /**
  * An XML Adapter that relies on the DateTimeService to marshal and unmarshal datetime values in String form.

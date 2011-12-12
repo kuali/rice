@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.core.api.namespace.NamespaceService;
+import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;

@@ -22,7 +22,7 @@ import org.junit.Test
 import org.kuali.rice.core.api.criteria.CountFlag
 import org.kuali.rice.core.api.criteria.QueryByCriteria
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import org.kuali.rice.core.impl.parameter.ParameterBo
+import org.kuali.rice.coreservice.impl.parameter.ParameterBo
 import org.kuali.rice.core.test.CORETestCase
 import org.kuali.rice.test.data.PerSuiteUnitTestData
 import org.kuali.rice.test.data.UnitTestData

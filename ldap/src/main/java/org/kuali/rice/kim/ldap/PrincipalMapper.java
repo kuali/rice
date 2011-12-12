@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.support.AbstractContextMapper;
 
-import org.kuali.rice.core.framework.parameter.ParameterService;
+import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.util.Constants;
 

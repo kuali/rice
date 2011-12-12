@@ -17,7 +17,7 @@ package org.kuali.rice.kew.docsearch.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.impl.document.search.DocumentSearchGenerator;

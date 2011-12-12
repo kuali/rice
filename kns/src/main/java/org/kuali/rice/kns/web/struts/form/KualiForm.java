@@ -17,7 +17,7 @@ package org.kuali.rice.kns.web.struts.form;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.framework.services.CoreFrameworkServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.util.ActionFormUtilMap;

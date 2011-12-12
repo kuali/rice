@@ -24,14 +24,14 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.LinkField;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.UrlFactory;
 
 import java.security.GeneralSecurityException;

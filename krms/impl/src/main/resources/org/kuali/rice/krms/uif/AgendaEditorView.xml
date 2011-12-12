@@ -111,7 +111,7 @@
 
   <bean id="AgendaEditorView-EditRule-Page" parent="AgendaEditorView-EditRule-Page-Parent"/>
   <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Page">
-    <property name="title" value="Agenda: @{document.newMaintainableObject.dataObject.agenda.name}"/>
+    <property name="title" value="Agenda: @{#dp.agenda.name}"/>
     <property name="items">
       <list>
         <bean parent="ruleEditorBody">
@@ -210,7 +210,7 @@
 
               <bean parent="InputField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"
                     p:progressiveRenderViaAJAX="true"
-                    p:progressiveRender="document.newMaintainableObject.dataObject.agenda.contextId != null">
+                    p:progressiveRender="!#empty(#dp.agenda.contextId)">
 
                 <property name="control">
                   <bean parent="SelectControl"/>
@@ -235,7 +235,7 @@
         <bean parent="GroupGridLayout" p:layoutManager.numberOfColumns="2"
                p:refreshWhenChanged="document.newMaintainableObject.dataObject.agenda.typeId"
                p:title="Type Attributes"
-               p:renderHeader="@{document.newMaintainableObject.dataObject.agenda.typeId != null and document.newMaintainableObject.dataObject.agenda.typeId.trim() != ''}">
+               p:renderHeader="@{!#empty(#dp.agenda.typeId)}">
 
           <property name="items">
             <list>
@@ -252,10 +252,17 @@
 -->
           <property name="items">
             <list>
-              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;">
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="#form.viewTypeName.toString() != 'MAINTENANCE'">
                 <property name="items">
                   <list>
-                    <ref bean="AgendaEditorView-TreeControls" />
+                    <ref bean="AgendaEditorView-TreeViewControls" />
+                  </list>
+                </property>
+              </bean>
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="#form.viewTypeName.toString() == 'MAINTENANCE'">
+                <property name="items">
+                  <list>
+                    <ref bean="AgendaEditorView-TreeEditControls" />
                   </list>
                 </property>
               </bean>
@@ -270,7 +277,7 @@
 
   <bean id="AgendaEditorView-TreeExpandCollapse" parent="FieldGroup" p:showLabel="false"
     p:style="font-size: smaller;">
-    <property name="render" value="@{document.newMaintainableObject.dataObject.agenda != null and document.newMaintainableObject.dataObject.agenda.name != null and !document.newMaintainableObject.dataObject.agenda.name.isEmpty()}" />
+    <property name="render" value="@{!#empty(#dp.agenda.firstItemId)}" />
     <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
     <property name="items">
       <list>                            
@@ -313,10 +320,39 @@
         p:styleClasses-ref="AgendaEditorView-treeBarButtonClasses" abstract="true" />
 
   <!-- TODO: figure out how to style this without using kr-footer -->
-  <bean id="AgendaEditorView-TreeControls" parent="Group"
+  <bean id="AgendaEditorView-TreeViewControls" parent="Group"
         p:style="text-align: left; margin-top: 3px;"
         p:styleClasses="kr-footer">
+    <property name="renderHeader" value="true"/>
+    <property name="title" value="Rules"/>
+    <property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+    </property>
 
+    <property name="items">
+      <list>
+        <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="View Rule"
+              p:clientSideJs="var requiredMessage = requiredsSet();
+              if (getSelectedItemInput() != null) {
+                if (getSelectedItemInput().val() == '') {
+                  requiredMessage = requiredMessage + 'Please select the rule to view, then click view rule.';
+                }
+              }
+              if (requiredMessage.length > 0) {
+                alert(requiredMessage);
+                return false;
+              }
+              submitForm();
+              "
+              p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- TODO: figure out how to style this without using kr-footer -->
+  <bean id="AgendaEditorView-TreeEditControls" parent="Group"
+        p:style="text-align: left; margin-top: 3px;"
+        p:styleClasses="kr-footer">
     <property name="renderHeader" value="true"/>
     <property name="title" value="Rules"/>
     <property name="layoutManager">

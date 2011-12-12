@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
@@ -38,8 +39,15 @@ public class AgendaTypeValuesFinder extends UifKeyValuesFinderBase {
     public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
 
-        MaintenanceForm maintenanceForm = (MaintenanceForm) model;
-        AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+        AgendaEditor agendaEditor;
+        if (model instanceof InquiryForm) {
+            InquiryForm inquiryForm = (InquiryForm) model;
+            agendaEditor = ((AgendaEditor) inquiryForm.getDataObject());
+
+        } else {
+            MaintenanceForm maintenanceForm = (MaintenanceForm) model;
+            agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
+        }
 
         // if we have an agenda w/ a selected context
         if (agendaEditor.getAgenda() != null && !StringUtils.isEmpty(agendaEditor.getAgenda().getContextId())) {

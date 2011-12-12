@@ -107,4 +107,18 @@
     </property>
   </bean>
 
+  <bean id="AgendaBo-InquiryView" parent="InquiryView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js">
+    <property name="title" value="Agenda Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />
+    <property name="items">
+      <list>
+        <ref bean="AgendaEditorView-Agenda-Page"/>
+        <ref bean="AgendaEditorView-EditRule-Page"/>
+      </list>
+    </property>
+    <property name="singlePageView" value="false"/>
+    <property name="entryPageId" value="AgendaEditorView-Agenda-Page"/>
+  </bean>
+
 </beans>

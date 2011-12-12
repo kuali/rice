@@ -29,7 +29,11 @@ public class AgendaTreeRuleNode extends AgendaTreeNode {
     private static final long serialVersionUID = 8348548494907941273L;
 
     private AgendaItemBo agendaItem;
-    
+
+    // needed for agenda inquiry
+    public AgendaTreeRuleNode() {
+    }
+
     public AgendaTreeRuleNode(AgendaItemBo agendaItem) {
         this.agendaItem = agendaItem;
     }

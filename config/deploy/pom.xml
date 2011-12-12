@@ -66,7 +66,7 @@
     <impex.mysql.url>${impex.mysql.dba.url}/${impex.database}</impex.mysql.url>
     <ant.target>reset</ant.target>
     <ant.phase>install</ant.phase>
-    <antrun.version>1.7</antrun.version>
+    <antrun.version>1.65</antrun.version>
     <db.vendor>oracle</db.vendor>
     <impex.url>${impex.oracle.url}</impex.url>
     <impex.dba.url>${impex.oracle.url}</impex.dba.url>

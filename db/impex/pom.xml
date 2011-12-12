@@ -566,7 +566,7 @@
           </plugin>
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.7</version>
+            <version>1.65</version>
             <executions>
               <execution>
                 <id>remove-from-scm</id>

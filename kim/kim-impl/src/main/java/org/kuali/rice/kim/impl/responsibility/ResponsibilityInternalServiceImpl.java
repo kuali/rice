@@ -93,7 +93,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 	public List<RoleResponsibility> getRoleResponsibilities(String roleId){
 		List<RoleResponsibilityBo> rrBoList =
 				(List<RoleResponsibilityBo>)getBusinessObjectService()
-				.findMatching(RoleResponsibilityBo.class, Collections.singletonMap(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId));
+				.findMatching(RoleResponsibilityBo.class, Collections.singletonMap(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleId));
 		List<RoleResponsibility> result = new ArrayList<RoleResponsibility>( rrBoList.size() );
 		for ( RoleResponsibilityBo bo : rrBoList ) {
 			result.add( RoleResponsibilityBo.to(bo) );

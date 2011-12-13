@@ -30,21 +30,14 @@
         </itemizedlist>        
     </sect1>
     <sect1>
-        <title>Release Documentation (mostly outdated)</title>
+        <title>Release Documentation</title>
         <para>
             <orderedlist>
                 <listitem>
-                    <para><emphasis role="bold">Release Notes</emphasis> (<link xlink:href="release-notes.html"
-                        >HTML</link> / <link xlink:href="../pdf/release-notes.pdf">PDF</link> )</para>
+                    <para><emphasis role="bold">Release Notes</emphasis> (<link
+                            xlink:href="release-notes.html">HTML</link> / <link
+                            xlink:href="../pdf/release-notes.pdf">PDF</link> )</para>
                 </listitem>
-                <listitem>
-                    <para><emphasis role="bold"><link xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">Javadocs</link></emphasis></para>                                     
-                </listitem>
-            </orderedlist>
-        </para>
-        <para>Note: The following items have not been updated for Rice 2.0 except for KRAD and KRMS
-            chapters.</para>
-        <para><orderedlist>
                 <listitem>
                     <para><emphasis role="bold">Installation Guide</emphasis> (<link
                             xlink:href="IG.html">HTML</link> /<link xlink:href="../pdf/IG.pdf"
@@ -52,31 +45,76 @@
                         and developers)</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:href="UG.html">HTML</link> /
-                        <link xlink:href="../pdf/UG.pdf">PDF</link> ) - How to use a feature (for
-                        users)</para>
+                    <para><emphasis role="bold">Introduction to Rice</emphasis> (<link
+                            xlink:href="Intro_To_Rice.html">HTML</link> /<link
+                            xlink:href="../pdf/Intro_To_Rice.pdf">PDF</link> ) - Introduction to
+                        Rice Concepts and Architecture</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">Client Developer Guide</emphasis> (HTML / PDF ) - How to build client
-                        applications that take advantage of the feature programmatically (for application
-                        programmers) - coming soon</para>
+                    <para><emphasis role="bold">User Guide</emphasis> (<link xlink:href="UG.html"
+                            >HTML</link> / <link xlink:href="../pdf/UG.pdf">PDF</link> ) - How to
+                        use a feature (for users)</para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">Technical Guide</emphasis> (<link xlink:href="TRG.html"
-                        >HTML</link> / <link xlink:href="../pdf/TRG.pdf">PDF</link> ) - How we built the
-                        feature in the core system (for contributors and maintainers) </para>
+                    <para><emphasis role="bold">Client Developer Guide</emphasis> (<link xlink:href="CDG.html"
+                        >HTML</link> / <link xlink:href="../pdf/CDG.pdf">PDF</link> ) -
+                        How to build client applications that take advantage of the feature
+                        programmatically (for application programmers)</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Technical Guide</emphasis> (<link
+                            xlink:href="TRG.html">HTML</link> / <link xlink:href="../pdf/TRG.pdf"
+                            >PDF</link> ) - How we built the feature in the core system (for
+                        contributors and maintainers) </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold"><link
+                                xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html"
+                                >Javadocs</link></emphasis></para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold"><link
+                        xlink:href="Help.html"
+                        >Online Help</link></emphasis></para>
                 </listitem>
                 <listitem>
                     <para><emphasis role="bold">Database Diagrams</emphasis> </para>
                     <itemizedlist>
-                        <para>* When using Internet Explorer, we recommend viewing the PDF files since the size of the diagrams may be illegible in IE.</para>
-                        <listitem><para><link xlink:href="../db_diagrams/schema.html">Schema</link></para></listitem>
-                        <listitem><para>RiceKREN (<link xlink:href="../db_diagrams/RiceKREN.png">png*</link> / <link xlink:href="../db_diagrams/RiceKREN.pdf">pdf</link>)</para></listitem>
-                        <listitem><para>RiceKREW (<link xlink:href="../db_diagrams/RiceKREW.png">png*</link> / <link xlink:href="../db_diagrams/RiceKREW.pdf">pdf</link>)</para></listitem>
-                        <listitem><para>RiceKRIM (<link xlink:href="../db_diagrams/RiceKRIM.png">png*</link> / <link xlink:href="../db_diagrams/RiceKRIM.pdf">pdf</link>)</para></listitem>
-                        <listitem><para>RiceKRNS (<link xlink:href="../db_diagrams/RiceKRNS.png">png*</link> / <link xlink:href="../db_diagrams/RiceKRNS.pdf">pdf</link>)</para></listitem>
-                        <listitem><para>RiceKRSB (<link xlink:href="../db_diagrams/RiceKRSB.png">png*</link> / <link xlink:href="../db_diagrams/RiceKRSB.pdf">pdf</link>)</para></listitem>
-                        <listitem><para>RiceKRSB_QRTZ (<link xlink:href="../db_diagrams/RiceKRSB_QRTZ.png">png*</link> / <link xlink:href="../db_diagrams/RiceKRSB_QRTZ.pdf">pdf</link>)</para></listitem>                 
+                        <para>* When using Internet Explorer, we recommend viewing the PDF files
+                            since the size of the diagrams may be illegible in IE.</para>
+                        <listitem>
+                            <para><link xlink:href="../db_diagrams/schema.html">Schema</link></para>
+                        </listitem>
+                        <listitem>
+                            <para>RiceKREN (<link xlink:href="../db_diagrams/RiceKREN.png"
+                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKREN.pdf"
+                                    >pdf</link>)</para>
+                        </listitem>
+                        <listitem>
+                            <para>RiceKREW (<link xlink:href="../db_diagrams/RiceKREW.png"
+                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKREW.pdf"
+                                    >pdf</link>)</para>
+                        </listitem>
+                        <listitem>
+                            <para>RiceKRIM (<link xlink:href="../db_diagrams/RiceKRIM.png"
+                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKRIM.pdf"
+                                    >pdf</link>)</para>
+                        </listitem>
+                        <listitem>
+                            <para>RiceKRNS (<link xlink:href="../db_diagrams/RiceKRNS.png"
+                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKRNS.pdf"
+                                    >pdf</link>)</para>
+                        </listitem>
+                        <listitem>
+                            <para>RiceKRSB (<link xlink:href="../db_diagrams/RiceKRSB.png"
+                                    >png*</link> / <link xlink:href="../db_diagrams/RiceKRSB.pdf"
+                                    >pdf</link>)</para>
+                        </listitem>
+                        <listitem>
+                            <para>RiceKRSB_QRTZ (<link xlink:href="../db_diagrams/RiceKRSB_QRTZ.png"
+                                    >png*</link> / <link
+                                    xlink:href="../db_diagrams/RiceKRSB_QRTZ.pdf">pdf</link>)</para>
+                        </listitem>
                     </itemizedlist>
                 </listitem>
             </orderedlist>

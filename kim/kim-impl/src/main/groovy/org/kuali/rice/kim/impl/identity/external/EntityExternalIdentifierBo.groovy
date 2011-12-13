@@ -30,6 +30,7 @@ import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.service.KRADServiceLocator
+import org.kuali.rice.core.api.CoreApiServiceLocator
 
 class EntityExternalIdentifierBo extends PersistableBusinessObjectBase implements EntityExternalIdentifierContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(EntityExternalIdentifierBo.class)

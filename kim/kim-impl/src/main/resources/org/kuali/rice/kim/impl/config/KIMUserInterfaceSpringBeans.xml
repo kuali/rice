@@ -58,78 +58,83 @@
 
 	<!-- hack start cannot use GRL to import b/c of Spring Inheritance -->
 
-	<bean id="persistenceStructureService"
+	<bean id="rice.kim.import.persistenceStructureService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="persistenceStructureService" />
 	</bean>
 	
-	<bean id="businessObjectDictionaryService"
+	<bean id="rice.kim.import.businessObjectDictionaryService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectDictionaryService" />
 	</bean>
 	
-	<bean id="dataDictionaryService"
+	<bean id="rice.kim.import.dataDictionaryService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="dataDictionaryService" />
 	</bean>
 	
-	<bean id="encryptionService"
+	<bean id="rice.kim.import.encryptionService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="encryptionService" />
 	</bean>
 	
-	<bean id="lookupService"
+	<bean id="rice.kim.import.lookupService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="lookupService" />
 	</bean>
 	
-	<bean id="businessObjectMetaDataService"
+	<bean id="rice.kim.import.businessObjectMetaDataService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectMetaDataService" />
 	</bean>
 	
-	<bean id="sequenceAccessorService"
+	<bean id="rice.kim.import.sequenceAccessorService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="sequenceAccessorService" />
 	</bean>
 	
-	<bean id="lookupResultsService"
+	<bean id="rice.kim.import.lookupResultsService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="lookupResultsService" />
 	</bean>
 	
-	<bean id="businessObjectService"
+	<bean id="rice.kim.import.businessObjectService"
 		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="businessObjectService" />
 	</bean>
 
+  <bean id="rice.kim.import.kimRoleDao"
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kimRoleDao" />
+	</bean>
+
 	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl">
 		<property name="persistenceStructureService">
-			<ref bean="persistenceStructureService" />
+			<ref bean="rice.kim.import.persistenceStructureService" />
 		</property>
 		<property name="businessObjectDictionaryService">
-			<ref bean="businessObjectDictionaryService" />
+			<ref bean="rice.kim.import.businessObjectDictionaryService" />
 		</property>
 		<property name="dataDictionaryService">
-			<ref bean="dataDictionaryService" />
+			<ref bean="rice.kim.import.dataDictionaryService" />
 		</property>
 		<property name="encryptionService">
-			<ref bean="encryptionService" />
+			<ref bean="rice.kim.import.encryptionService" />
 		</property>
 		<property name="lookupService">
-			<ref bean="lookupService" />
+			<ref bean="rice.kim.import.lookupService" />
 		</property>
 		<property name="businessObjectMetaDataService">
-			<ref bean="businessObjectMetaDataService" />
+			<ref bean="rice.kim.import.businessObjectMetaDataService" />
 		</property>
 		<property name="sequenceAccessorService">
-			<ref bean="sequenceAccessorService" />
+			<ref bean="rice.kim.import.sequenceAccessorService" />
 		</property>
 		<property name="businessObjectService">
-			<ref bean="businessObjectService" />
+			<ref bean="rice.kim.import.businessObjectService" />
 		</property>
 		<property name="lookupResultsService">
-			<ref bean="lookupResultsService" />
+			<ref bean="rice.kim.import.lookupResultsService" />
 		</property>
 	</bean>
 	
@@ -155,7 +160,7 @@
         <property name="lookupableHelperService">
             <bean class="org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl"
                 parent="lookupableHelperService"
-                p:roleDao-ref="kimRoleDao">
+                p:roleDao-ref="rice.kim.import.kimRoleDao">
             </bean>
         </property>
     </bean>

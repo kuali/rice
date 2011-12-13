@@ -28,9 +28,9 @@
     </author>
   </info>
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/intro.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/software_architecture.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/technical_overview.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/developer_setup.xml"/> 
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/standalone_server.xml"/>
+
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/installation_steps.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/keystore.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/tuning_rice.xml"/>

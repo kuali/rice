@@ -224,6 +224,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 
             try {
                 PropertyUtils.copyProperties(responsibilityCopy, responsibilityImpl);
+                //Hack for tomcat 7 KULRICE:5927
                 responsibilityCopy.setTemplate(responsibilityImpl.getTemplate());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("unable to copy properties");

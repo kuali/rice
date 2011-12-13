@@ -40,6 +40,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
 import org.kuali.rice.krad.service.DataDictionaryService
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb
 import org.springframework.util.AutoPopulatingList
+import org.kuali.rice.kim.api.common.template.TemplateContract
 
 @Entity
 @Table(name = "KRIM_RSP_T")
@@ -69,7 +70,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     @OneToOne(targetEntity=ResponsibilityTemplateBo.class,cascade=[],fetch=FetchType.EAGER)
     @JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
-    ResponsibilityTemplateBo template = new ResponsibilityTemplateBo()
+    ResponsibilityTemplateBo template
 
     @OneToMany(targetEntity=ResponsibilityAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
@@ -124,6 +125,9 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     }
 
     ResponsibilityTemplateBo getTemplate() {
+        if(null == template) {
+            template = new ResponsibilityTemplateBo();
+        }
         return template;
     }
 
@@ -159,4 +163,4 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 		}
 		return kimTypeInfoService;
 	}
-}
+  }

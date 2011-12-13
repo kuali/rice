@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/remote/target/test-classes" />

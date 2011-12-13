@@ -96,6 +96,66 @@
   </bean>
   <!-- caching end -->
 
+  <bean id="dataDictionaryService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="dataDictionaryService" />
+  </bean>
+
+  <bean id="persistenceServiceOjb"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="persistenceServiceOjb" />
+  </bean>
+
+  <bean id="locationModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+  <property name="namespaceCode" value="KR-NS"/>
+    <property name="dataSourceName" value="locationServerDataSource"/>
+    <property name="initializeDataDictionary" value="true"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="persistenceService" ref="persistenceServiceOjb"/>
+    <property name="dataDictionaryPackages">
+      <list>
+        <value>classpath:org/kuali/rice/location/web/campus/Campus.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusType.xml</value>
+        <value>classpath:org/kuali/rice/location/web/country/Country.xml</value>
+        <value>classpath:org/kuali/rice/location/web/county/County.xml</value>
+        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml</value>
+        <value>classpath:org/kuali/rice/location/web/state/State.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/campus/CampusTypeMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/country/CountryMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/county/CountyMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
+        <value>classpath:org/kuali/rice/location/web/state/StateMaintenanceDocument.xml</value>
+      </list>
+    </property>
+    <property name="packagePrefixes">
+      <list>
+        <value>org.kuali.rice.location.</value>
+      </list>
+    </property>
+    <property name="externalizableBusinessObjectImplementations">
+      <map>
+        <entry key="org.kuali.rice.location.framework.country.CountryEbo"
+               value="org.kuali.rice.location.impl.country.CountryBo"/>
+        <entry key="org.kuali.rice.location.framework.state.StateEbo"
+               value="org.kuali.rice.location.impl.state.StateBo"/>
+        <entry key="org.kuali.rice.location.framework.postalcode.PostalCodeEbo"
+               value="org.kuali.rice.location.impl.postalcode.PostalCodeBo"/>
+        <entry key="org.kuali.rice.location.framework.county.CountyEbo"
+               value="org.kuali.rice.location.impl.county.CountyBo"/>
+        <entry key="org.kuali.rice.location.framework.campus.CampusEbo"
+               value="org.kuali.rice.location.impl.campus.CampusBo"/>
+        <entry key="org.kuali.rice.location.framework.campus.CampusTypeEbo"
+               value="org.kuali.rice.location.impl.campus.CampusTypeBo"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="locationServerModule" class="org.kuali.rice.location.service.impl.LocationModuleService">
+    <property name="moduleConfiguration" ref="locationModuleConfiguration"/>
+    <property name="kualiModuleService" ref="kualiModuleService"/>
+  </bean>
+
   <bean id="businessObjectService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="businessObjectService"/>
   </bean>
@@ -118,5 +178,9 @@
 
   <bean id="campusService" class="org.kuali.rice.location.impl.campus.CampusServiceImpl">
     <property name="businessObjectService" ref="businessObjectService"/>
+  </bean>
+
+  <bean id="kualiModuleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiModuleService" />
   </bean>
 </beans>

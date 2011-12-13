@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/src/test/resources/META-INF" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../it/core/target/generated-sources/test-annotations" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/generated-sources/groovy-stubs" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/../../../it/core/target/test-classes" />

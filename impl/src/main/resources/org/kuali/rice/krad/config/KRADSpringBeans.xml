@@ -70,7 +70,7 @@
     <property name="jcdAliases">
       <list>
         <value>kradApplicationDataSource</value>
-        <value>kradServerDataSource</value>
+        <!--<value>kradServerDataSource</value>-->
       </list>
     </property>
     <property name="metadataLocation" value="classpath:org/kuali/rice/krad/config/OJB-repository-krad.xml"/>
@@ -89,21 +89,6 @@
       </list>
     </property>
     <property name="serverDataSource" value="false"/>
-  </bean>
-
-  <bean id="kradServerDataSource"
-        class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
-    <property name="preferredDataSourceParams">
-      <list>
-        <value>kradServer.datasource</value>
-      </list>
-    </property>
-    <property name="preferredDataSourceJndiParams">
-      <list>
-        <value>kradServer.datasource.jndi.location</value>
-      </list>
-    </property>
-    <property name="serverDataSource" value="true"/>
   </bean>
 
   <bean id="kradApplicationModuleConfiguration" parent="kradApplicationModuleConfiguration-parentBean"/>
@@ -231,7 +216,7 @@
     </property>
   </bean>
 
-  <bean id="kradServerModuleConfiguration" parent="kradServerModuleConfiguration-parentBean"/>
+  <!--<bean id="kradServerModuleConfiguration" parent="kradServerModuleConfiguration-parentBean"/>
 
   <bean id="kradServerModuleConfiguration-parentBean" class="org.kuali.rice.krad.bo.ModuleConfiguration"
         abstract="true">
@@ -243,15 +228,6 @@
     <property name="persistenceService" ref="persistenceServiceOjb"/>
     <property name="dataDictionaryPackages">
       <list>
-        <value>classpath:org/kuali/rice/coreservice/web/component/ComponentMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterMaintenanceDocument.xml</value>
-
-        <value>classpath:org/kuali/rice/core/web/cache/CacheAdmin.xml</value>
-
-        <value>classpath:org/kuali/rice/coreservice/web/namespace/NamespaceMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterTypeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCodeMaintenanceDocument.xml</value>
-        <value>classpath:org/kuali/rice/location/web/state/StateMaintenanceDocument.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
@@ -266,19 +242,7 @@
         <value>org.kuali.rice.krad.</value>
       </list>
     </property>
-    <property name="externalizableBusinessObjectImplementations">
-      <map>
-        <entry key="org.kuali.rice.coreservice.framework.component.ComponentEbo"
-               value="org.kuali.rice.coreservice.impl.component.ComponentBo"/>
-        <entry key="org.kuali.rice.coreservice.framework.namespace.NamespaceEbo"
-               value="org.kuali.rice.coreservice.impl.namespace.NamespaceBo"/>
-        <entry key="org.kuali.rice.coreservice.framework.parameter.ParameterTypeEbo"
-               value="org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo"/>
-        <entry key="org.kuali.rice.coreservice.framework.parameter.ParameterEbo"
-               value="org.kuali.rice.coreservice.impl.parameter.ParameterBo"/>
-      </map>
-    </property>
-  </bean>
+  </bean>-->
 
   <bean id="platformAwareDao" abstract="true"
         class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
@@ -734,68 +698,6 @@
     </property>
   </bean>
 
-
-
-  <!-- TODO - this needs to be moved out of this file and set up with the core data source on the rice standalone server! --><!--
-  <bean id="namespaceService" class="NamespaceServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-  </bean>
-
-  <bean id="componentSetDao" class="ComponentSetDaoOjbImpl" lazy-init="true">
-    <property name="jcdAlias" value="kradApplicationDataSource" />
-  </bean>
-
-  <bean id="componentService" class="ComponentServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-    <property name="componentSetDao" ref="componentSetDao"/>
-  </bean>
-
-  <bean id="parameterRepositoryService" class="ParameterRepositoryServiceImpl">
-    <property name="businessObjectService" ref="businessObjectService"/>
-    <property name="criteriaLookupService" ref="criteriaLookupService"/>
-  </bean>
-
-  <bean id="parameterService" class="ParameterServiceImpl">
-    <property name="parameterRepositoryService" ref="parameterRepositoryService"/>
-    <property name="kualiModuleService" ref="kualiModuleService"/>
-    <property name="applicationId" value="${application.id}"/>
-  </bean>
--->
-  <!--<cache:annotation-driven cache-manager="globalCacheManager" />
-
-  <bean id="coreLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-    <property name="cacheManager">
-      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="${core.ehcache.config.location}"/>
-    </property>
-  </bean>
-  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
-    <property name="cacheManager" ref="coreDistributedCacheManager" />
-  </bean>
-
-  <bean id="globalCacheManager" class="org.kuali.rice.core.impl.cache.GlobalCacheManager">
-    <property name="cacheManagerRegistry" ref="cacheManagerRegistry" />
-  </bean>
-
-  <bean id="coreDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
-    <property name="cacheManager" ref="coreLocalCacheManager" />
-    <property name="serviceName" value="{http://rice.kuali.org/core/v2_0}coreCacheService" />
-  </bean>
-
-  <bean id="coreCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="coreLocalCacheManager" />-->
-
-
-
-  <!--
-      <bean id="workflowLookupable" class="org.kuali.rice.krad.workflow.attribute.WorkflowLookupableImpl" scope="prototype">
-          <property name="configurationService">
-              <ref bean="kualiConfigurationService" />
-          </property>
-          <property name="businessObjectDictionaryService">
-              <ref bean="businessObjectDictionaryService" />
-          </property>
-      </bean>
-  -->
-
   <bean id="sessionDocumentService" class="org.kuali.rice.krad.service.impl.SessionDocumentServiceImpl">
     <property name="businessObjectService">
       <ref bean="businessObjectService"/>
@@ -943,19 +845,8 @@
     <constructor-arg value="rice.krad"/>
   </bean>
 
-  <bean id="kradServerEntityManagerFactory"
-        class="org.kuali.rice.krad.app.persistence.jpa.RiceEntityManagerProxyFactoryBean">
-    <constructor-arg value="rice.krad.server"/>
-    <constructor-arg ref="kradServerDataSource"/>
-    <constructor-arg value="rice.krad"/>
-  </bean>
-
   <bean id="kradApplicationEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
     <property name="entityManagerFactory" ref="kradApplicationEntityManagerFactory"/>
-  </bean>
-
-  <bean id="kradServerEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
-    <property name="entityManagerFactory" ref="kradServerEntityManagerFactory"/>
   </bean>
 
   <bean id="documentSerializerService" class="org.kuali.rice.krad.service.impl.DocumentSerializerServiceImpl">
@@ -996,26 +887,6 @@
         <value>org.kuali.rice.krad.bo.LookupResults</value>
         <value>org.kuali.rice.krad.bo.SelectedObjectIds</value>
         <value>org.kuali.rice.krad.bo.SessionDocument</value>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="kradServerModule" class="org.kuali.rice.krad.service.impl.KRADModuleService">
-    <property name="moduleConfiguration" ref="kradServerModuleConfiguration"/>
-    <property name="kualiModuleService" ref="kualiModuleService"/>
-    <property name="businessObjects">
-      <list>
-        <value>org.kuali.rice.coreservice.impl.namespace.NamespaceBo</value>
-        <value>org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo</value>
-        <value>org.kuali.rice.coreservice.impl.component.ComponentBo</value>
-        <value>org.kuali.rice.coreservice.impl.parameter.ParameterBo</value>
-
-        <value>org.kuali.rice.location.impl.state.StateBo</value>
-        <value>org.kuali.rice.location.impl.county.CountyBo</value>
-        <value>org.kuali.rice.location.impl.postalcode.PostalCodeBo</value>
-        <value>org.kuali.rice.location.impl.country.CountryBo</value>
-        <value>org.kuali.rice.location.impl.campus.CampusBo</value>
-        <value>org.kuali.rice.location.impl.campus.CampusTypeBo</value>
       </list>
     </property>
   </bean>

@@ -10,16 +10,12 @@
       <module fileurl="file://$PROJECT_DIR$/rice-core-api.iml" filepath="$PROJECT_DIR$/rice-core-api.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-framework.iml" filepath="$PROJECT_DIR$/rice-core-framework.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-impl.iml" filepath="$PROJECT_DIR$/rice-core-impl.iml" group="rice-core and modules" />
-      <module fileurl="file://$PROJECT_DIR$/../../../core-service/rice-core-service.iml" filepath="$PROJECT_DIR$/../../../core-service/rice-core-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../client-service/rice-core-service.iml" filepath="$PROJECT_DIR$/../../../client-service/rice-core-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../core-service/api/rice-core-service-api.iml" filepath="$PROJECT_DIR$/../../../core-service/api/rice-core-service-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../client-service/api/rice-core-service-api.iml" filepath="$PROJECT_DIR$/../../../client-service/api/rice-core-service-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../core-service/framework/rice-core-service-framework.iml" filepath="$PROJECT_DIR$/../../../core-service/framework/rice-core-service-framework.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../client-service/framework/rice-core-service-framework.iml" filepath="$PROJECT_DIR$/../../../client-service/framework/rice-core-service-framework.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../core-service/impl/rice-core-service-impl.iml" filepath="$PROJECT_DIR$/../../../core-service/impl/rice-core-service-impl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../client-service/impl/rice-core-service-impl.iml" filepath="$PROJECT_DIR$/../../../client-service/impl/rice-core-service-impl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../core-service/web/rice-core-service-web.iml" filepath="$PROJECT_DIR$/../../../core-service/web/rice-core-service-web.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../client-service/web/rice-core-service-web.iml" filepath="$PROJECT_DIR$/../../../client-service/web/rice-core-service-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service.iml" filepath="$PROJECT_DIR$/rice-core-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service.iml" filepath="$PROJECT_DIR$/rice-core-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$//rice-core-service-api.iml" filepath="$PROJECT_DIR$//rice-core-service-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-framework.iml" filepath="$PROJECT_DIR$/rice-core-service-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-impl.iml" filepath="$PROJECT_DIR$/rice-core-service-impl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-web.iml" filepath="$PROJECT_DIR$/rice-core-service-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-core-web.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-db.iml" filepath="$PROJECT_DIR$/rice-db.iml" group="rice-db and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-deploy.iml" filepath="$PROJECT_DIR$/rice-deploy.iml" group="rice-config and modules" />

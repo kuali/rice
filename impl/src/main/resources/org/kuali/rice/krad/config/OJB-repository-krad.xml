@@ -29,14 +29,6 @@
 		</sequence-manager>
 	</jdbc-connection-descriptor>
 
-	<jdbc-connection-descriptor jcd-alias="kradServerDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
-		useAutoCommit="0" ignoreAutoCommitExceptions="false">
-		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
-        <sequence-manager className="org.kuali.rice.core.framework.persistence.ojb.ConfigurableSequenceManager">
-			<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
-		</sequence-manager>
-	</jdbc-connection-descriptor>
-
 	<!--  DOCUMENT MAPPINGS -->
 	<!--
 		NOTE:  we are not relating from document header to the other document

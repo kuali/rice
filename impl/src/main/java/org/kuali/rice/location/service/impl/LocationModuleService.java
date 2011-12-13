@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2011 The Kuali Foundation
+/*
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,6 @@ package org.kuali.rice.location.service.impl;
 
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.framework.group.GroupEbo;
-import org.kuali.rice.kim.framework.role.RoleEbo;
-import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.service.impl.ModuleServiceBase;
 import org.kuali.rice.location.api.LocationConstants;

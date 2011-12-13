@@ -15,7 +15,12 @@
  */
 package org.kuali.rice.krms.impl.type;
 
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.framework.engine.Agenda;
 import org.kuali.rice.krms.framework.type.AgendaTypeService;
+import org.kuali.rice.krms.impl.provider.repository.RepositoryToEngineTranslatorImpl;
+import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
 
 /**
  * Base class for {@link org.kuali.rice.krms.framework.type.AgendaTypeService} implementations, providing
@@ -25,4 +30,15 @@ public class AgendaTypeServiceBase extends KrmsTypeServiceBase implements Agenda
 
     public static final AgendaTypeService defaultAgendaTypeService = new AgendaTypeServiceBase();
 
+    @Override
+    public Agenda loadAgenda(AgendaDefinition agendaDefinition) {
+
+        if (agendaDefinition == null) { throw new RiceIllegalArgumentException("agendaDefinition must not be null"); }
+        RepositoryToEngineTranslatorImpl repositoryToEngineTranslator = KRMSServiceLocatorInternal.getService(
+                "repositoryToEngineTranslator");
+        if (repositoryToEngineTranslator == null) {
+            return null;
+        }
+        return repositoryToEngineTranslator.translateAgendaDefinition(agendaDefinition);
+    }
 }

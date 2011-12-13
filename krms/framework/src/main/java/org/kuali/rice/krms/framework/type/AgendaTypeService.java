@@ -29,4 +29,6 @@ import java.util.Map;
  */
 public interface AgendaTypeService extends RemotableAttributeOwner {
 
+    public Agenda loadAgenda(AgendaDefinition agendaDefinition);
+
 }

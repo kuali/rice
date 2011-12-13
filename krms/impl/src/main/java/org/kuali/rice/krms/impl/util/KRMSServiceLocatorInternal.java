@@ -31,8 +31,6 @@ public class KRMSServiceLocatorInternal {
 	
 	public static final String KRMS_RUN_MODE_PROPERTY = "krms.mode";
 	public static final String KRMS_MODULE_NAMESPACE = "KRMS";
-    public static final String VALIDATION_ACTION_SERVICE = "validationActionService";
-    public static final String VALIDATION_RULE_SERVICE = "validationRuleService";
 
 	private static final Logger LOG = Logger.getLogger(KRMSServiceLocatorInternal.class);
 

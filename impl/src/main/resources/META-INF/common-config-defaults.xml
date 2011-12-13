@@ -239,7 +239,6 @@
 	  <param name="rice.ksb.registry.serviceUrl" override="false">${rice.server.url}/remoting/soap/ksb/v2_0/serviceRegistry</param>
 	  <param name="rice.ksb.serviceRegistry.security" override="false">true</param>
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>
-	  <param name="rice.ksb.loadModuleConfiguration" override="false">true</param>
 
 	  <param name="dev.mode" override="false">false</param>
     <param name="bam.enabled" override="false">false</param>

@@ -359,7 +359,6 @@
     &lt;param name="message.delivery">synchronous&lt;/param>
     &lt;param name="message.persistence">true&lt;/param>
     &lt;param name="useQuartzDatabase">false&lt;/param>
-    &lt;param name="rice.ksb.loadModuleConfiguration">false&lt;/param>
     &lt;param name="config.location">${additional.config.locations}&lt;/param>
     &lt;param name="config.location">${alt.config.location}&lt;/param>
 &lt;/config></programlisting>
@@ -610,12 +609,6 @@
                                 <entry>A service bus mode suitable for running batch jobs; it, like
                                     the KSB dev mode, runs only local services.</entry>
                                 <entry>local</entry>
-                            </row>
-                            <row>
-                                <entry>rice.ksb.loadModuleConfiguration</entry>
-                                <entry>Determines whether the KSB should load as a service itself as
-                                    a KRAD module.</entry>
-                                <entry>true</entry>
                             </row>
                             <row>
                                 <entry>rice.ksb.struts.config.files</entry>
@@ -2337,12 +2330,6 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
                                 <entry>/ksb/WEB-INF/struts-config.xml</entry>
                             </row>
                             <row>
-                                <entry>rice.ksb.loadModuleConfiguration</entry>
-                                <entry>Indicates if the KRAD module for the KSB configuration should
-                                    be loaded</entry>
-                                <entry>true</entry>
-                            </row>
-                            <row>
                                 <entry>dev.mode</entry>
                                 <entry>If <emphasis role="italic">true</emphasis>, application will
                                     not publish or consume services from the central service
@@ -2465,13 +2452,6 @@ SynchronousServiceCallProxy sscp = return SynchronousServiceCallProxy.createInst
                     struts module is loaded automatically if a <emphasis role="italic"
                         >KualiActionServlet</emphasis> is configured in the <emphasis role="italic"
                         >web.xml</emphasis>.</para>
-            </sect3>
-            <sect3>
-                <title>rice.ksb.loadModuleConfiguration</title>
-                <para>Indicates if the KRAD module for the KSB configuration should be loaded. It can
-                    be useful to set this to <emphasis role="italic">false</emphasis> if you want to
-                    load KSB without the GUIs and without pulling in the KRAD as a runtime
-                    dependency.</para>
             </sect3>
             <sect3>
                 <title>dev.mode</title>

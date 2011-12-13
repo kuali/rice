@@ -68,4 +68,38 @@
 		</property>
 	</bean>
 
+  <bean id="rice.ksb.import.persistenceService"
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="persistenceService" />
+	</bean>
+
+  <bean id="rice.ksb.import.dataDictionaryService"
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dataDictionaryService" />
+	</bean>
+
+  <bean id="rice.ksb.import.kualiModuleService"
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kualiModuleService" />
+	</bean>
+
+  <!-- Can only load the KSB Module Configuration when the KNS is available and loaded -->
+
+  <bean id="rice.ksb.moduleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+		<property name="namespaceCode" value="KR-BUS" />
+		<property name="initializeDataDictionary" value="false"/>
+		<property name="dataDictionaryService" ref="rice.ksb.import.dataDictionaryService" />
+ 	    <property name="persistenceService" ref="rice.ksb.import.persistenceService" />
+        <property name="packagePrefixes">
+            <list>
+                <value>org.kuali.rice.ksb.</value>
+            </list>
+        </property>
+  </bean>
+
+  <bean id="rice.ksb.module" class="org.kuali.rice.ksb.service.impl.KSBModuleService">
+  	<property name="moduleConfiguration" ref="rice.ksb.moduleConfiguration"/>
+    <property name="kualiModuleService" ref="rice.ksb.import.kualiModuleService" />
+  </bean>
+
 </beans>

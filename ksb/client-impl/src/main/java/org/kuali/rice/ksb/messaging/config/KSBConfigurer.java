@@ -29,6 +29,7 @@ import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 import org.kuali.rice.core.framework.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.ksb.api.KsbApiConstants;
@@ -68,7 +69,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private static final String OJB_MESSAGE_CLIENT_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbMessageClientSpringBeans.xml";
 	private static final String BAM_SPRING = "classpath:org/kuali/rice/ksb/config/KsbBamSpringBeans.xml";
 	private static final String OJB_BAM_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbBamSpringBeans.xml";
-	private static final String MODULE_SPRING = "classpath:org/kuali/rice/ksb/config/KsbModuleConfigurationSpringBeans.xml";
 	private static final String REGISTRY_SERVER_SPRING = "classpath:org/kuali/rice/ksb/config/KsbRegistryServerSpringBeans.xml";
 	private static final String OJB_REGISTRY_SPRING = "classpath:org/kuali/rice/ksb/config/KsbOjbRegistrySpringBeans.xml";
 	private static final String WEB_SPRING = "classpath:org/kuali/rice/ksb/config/KsbWebSpringBeans.xml";
@@ -136,10 +136,6 @@ public class KSBConfigurer extends ModuleConfigurer {
             springFileLocations.add("classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml");
         	springFileLocations.add(REGISTRY_SERVER_SPRING);
         	springFileLocations.add(OJB_REGISTRY_SPRING);
-        	if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KSBConstants.Config.LOAD_KRAD_MODULE_CONFIGURATION, false)) {
-            	springFileLocations.add(MODULE_SPRING);
-            	springFileLocations.add(WEB_SPRING);
-            }
         }
         
         return springFileLocations;
@@ -148,6 +144,13 @@ public class KSBConfigurer extends ModuleConfigurer {
     @Override
     public boolean hasWebInterface() {
         return true;
+    }
+
+    @Override
+    protected WebModuleConfiguration loadWebModule() {
+        WebModuleConfiguration configuration = super.loadWebModule();
+        configuration.getWebSpringFiles().add(WEB_SPRING);
+        return configuration;
     }
 
     @Override

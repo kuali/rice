@@ -72,7 +72,6 @@
 
 	<bean id="locationConfigurer" class="org.kuali.rice.location.config.LocationConfigurer">
 		<property name="moduleName" value="LOCATION" />
-		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>

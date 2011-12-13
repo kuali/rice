@@ -17,8 +17,10 @@ package org.kuali.rice.kim.config;
 
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,15 +45,18 @@ public class KIMConfigurer extends ModuleConfigurer {
 		if ( isExposeServicesOnBus() ) {
 		    springFileLocations.add(KIM_KSB_SPRING_BEANS_PATH);
 		}
-        // TODO replace this with "WebModuleConfiguration" concept once it's done
-		//if ( isIncludeUserInterfaceComponents() ) {
-			springFileLocations.add(KIM_UI_SPRING_BEANS_PATH);
-		//}
 		return springFileLocations;
 	}
 
     @Override
     public boolean hasWebInterface() {
         return true;
+    }
+
+    @Override
+    protected WebModuleConfiguration loadWebModule() {
+        WebModuleConfiguration configuration = super.loadWebModule();
+        configuration.setWebSpringFiles(Arrays.asList(KIM_UI_SPRING_BEANS_PATH));
+        return configuration;
     }
 }

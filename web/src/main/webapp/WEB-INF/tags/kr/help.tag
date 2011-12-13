@@ -1,5 +1,5 @@
 <%--
- Copyright 2005-2007 The Kuali Foundation
+ Copyright 2005-2012 The Kuali Foundation
  
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,8 +20,9 @@
 <%@ attribute name="documentTypeName" required="false" description="The name of the document type to show help text for." %>
 <%@ attribute name="pageName" required="false" description="The page of a specific document to show a help icon for." %>
 <%@ attribute name="altText" required="false" description="The alternate text for the help icon." %>
-<%@ attribute name="securityGroupName" required="false" description="The name of the security group to be used with the parameter name attribute; together, the found parameter has the URL for the help text." %>
-<%@ attribute name="name" required="false" description="The name of the parameter which will be used with the securityGroup name attribute; together, the found parameter has the URL for the help text." %>
+<%@ attribute name="parameterNamespace" required="false" description="The namespace of the parameter to be used with the parameterName, parameterDetailType attributes to find the URL for the help text." %>
+<%@ attribute name="parameterDetailType" required="false" description="The name of the parameter Detail which will be used with the parameterNamespace, ParameterName attributesto find the URL for the help text." %>
+<%@ attribute name="parameterName" required="false" description="The name of the parameter which will be used with the parameterNamespace, parameterDetailType attributes to find the URL for the help text." %>
 <%@ attribute name="searchDocumentTypeName" required="false" description="The document type name of a document being looked up to display help for." %>
 <%@ attribute name="lookupBusinessObjectClassName" required="false" description="The business object looked up on the lookup page, which needs to have specific help displayed for it." %>
 <%@ attribute name="alternativeHelp" required="false"%>

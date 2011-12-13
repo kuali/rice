@@ -148,10 +148,8 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		while ( docType != null) {
 			String documentTypeName = docType.getName();
             Predicate p = and(
-                equal("attributeName", "documentTypeName"),
                 equal("active", "Y"),
-                equal("detailCriteria",
-					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()));
+                equal("attributes[" + KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME + "]", docType.getName()));
 			List<Permission> perms = getPermissionService().findPermissions(QueryByCriteria.Builder.fromPredicates(p)).getResults();
 			for ( Permission perm : perms ) {
                 PermissionBo permBo = PermissionBo.from(perm);
@@ -418,9 +416,9 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		public String getNamespaceCode() {
 			return this.perm.getNamespaceCode();
 		}
-		public String getPermissionId() {
-			return this.perm.getId();
-		}
+        public String getId() {
+            return this.perm.getId();
+        }
 		public PermissionTemplateBo getTemplate() {
 			return this.perm.getTemplate();
 		}

@@ -46,7 +46,7 @@
                             <td>
                             	<%-- TODO: update this to use the proper url for an inquiry and not use the impl class --%>
                                 <kul:inquiry boClassName="org.kuali.rice.kim.impl.permission.PermissionTemplateBo"
-                                			 keyValues="permissionTemplateId=${perm.template.id}" render="true">
+                                			 keyValues="id=${perm.template.id}" render="true">
                                 <c:out value="${perm.template.name}" />
                                 (<c:out value="${perm.template.namespaceCode}" />)
                                 </kul:inquiry>
@@ -54,7 +54,7 @@
                             <td>
                             	<%-- TODO: update this to use the proper url for a detailed inquiry and not use the impl class --%>
                                 <kul:inquiry boClassName="org.kuali.rice.kim.impl.permission.PermissionBo"
-                                			 keyValues="permissionId=${perm.id}" render="true">
+                                			 keyValues="id=${perm.id}" render="true">
 	                                <c:if test="${empty perm.name}">
 	                                    <c:out value="${perm.template.name}" />
 	                                </c:if>
@@ -93,7 +93,7 @@
                                     <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.MAINTENANCE_ACTION}">
 		                                <c:param name="methodToCall" value="edit" />
 		                                <c:param name="businessObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
-		                                <c:param name="permissionId" value="${perm.id}"/>
+		                                <c:param name="id" value="${perm.id}"/>
 	                                </c:url>" target="_blank">Edit Permission</a>
 		                        </td>
                             </c:if>

@@ -18,8 +18,8 @@
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
 <c:set var="documentTypeAttributes" value="${DataDictionary.DocumentType.attributes}" scope="request" />
-<c:set var="permissionAttributes" value="${DataDictionary.PermissionImpl.attributes}" scope="request" />
-<c:set var="responsibilityAttributes" value="${DataDictionary.ResponsibilityImpl.attributes}" scope="request" />
+<c:set var="permissionAttributes" value="${DataDictionary.UberPermissionBo.attributes}" scope="request" />
+<c:set var="responsibilityAttributes" value="${DataDictionary.UberResponsibilityBo.attributes}" scope="request" />
 <c:set var="documentType" value="${KualiForm.documentType}" scope="request" />
 <c:set var="attributeLabels" value="${KualiForm.attributeLabels}" scope="request" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributes.attributes}" scope="request" />

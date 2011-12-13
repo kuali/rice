@@ -11,8 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-core-framework.iml" filepath="$PROJECT_DIR$/rice-core-framework.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-impl.iml" filepath="$PROJECT_DIR$/rice-core-impl.iml" group="rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-service.iml" filepath="$PROJECT_DIR$/rice-core-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$/rice-core-service.iml" filepath="$PROJECT_DIR$/rice-core-service.iml" />
-      <module fileurl="file://$PROJECT_DIR$//rice-core-service-api.iml" filepath="$PROJECT_DIR$//rice-core-service-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rice-core-service-api.iml" filepath="$PROJECT_DIR$/rice-core-service-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-service-framework.iml" filepath="$PROJECT_DIR$/rice-core-service-framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-service-impl.iml" filepath="$PROJECT_DIR$/rice-core-service-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/rice-core-service-web.iml" filepath="$PROJECT_DIR$/rice-core-service-web.iml" />

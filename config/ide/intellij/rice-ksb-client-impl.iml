@@ -4,14 +4,17 @@
     <output url="file://$MODULE_DIR$/../../../ksb/client-impl/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../ksb/client-impl/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../ksb/client-impl">
-      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/surefire" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ksb/client-impl/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -32,23 +35,23 @@
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
     <orderEntry type="library" name="Maven: javax.ws.rs:jsr311-api:1.1.1" level="project" />
     <orderEntry type="module" module-name="rice-core-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -68,8 +71,8 @@
     <orderEntry type="library" name="Maven: org.objectweb.howl:howl:1.0.1-1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.btm:btm:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz:1.8.4" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk16:1.46" level="project" />
     <orderEntry type="library" name="Maven: org.apache.ws.security:wss4j:1.5.11" level="project" />
     <orderEntry type="library" name="Maven: org.apache.santuario:xmlsec:1.4.4" level="project" />

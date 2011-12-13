@@ -4,13 +4,15 @@
     <output url="file://$MODULE_DIR$/../../../ken/api/target/classes" />
     <output-test url="file://$MODULE_DIR$/../../../ken/api/target/test-classes" />
     <content url="file://$MODULE_DIR$/../../../ken/api">
-      <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/target/generated-sources/annotations" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/main/groovy" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/src/test/groovy" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../ken/api/target/generated-sources/annotations" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/generated-sources/groovy-stubs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/surefire" />
       <excludeFolder url="file://$MODULE_DIR$/../../../ken/api/target/test-classes" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -30,13 +32,13 @@
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />

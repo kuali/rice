@@ -18,6 +18,17 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
+    <orderEntry type="module" module-name="rice-core-service-framework" />
+    <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-core-framework" />
     <orderEntry type="module" module-name="rice-core-api" />
     <orderEntry type="library" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch7" level="project" />
@@ -34,21 +45,21 @@
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.commons:commons-beanutils:1.8.3-kuali" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-asm:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.0" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:r09" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-orm:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.springmodules:spring-modules-ojb:0.8a" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.6.7.Final" level="project" />
     <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
@@ -80,8 +91,8 @@
     <orderEntry type="module" module-name="rice-core-service-api" />
     <orderEntry type="module" module-name="rice-kew-framework" />
     <orderEntry type="module" module-name="rice-kim-framework" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC1" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.1.0.RC2" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.1.0.RC2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-core:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tiles:tiles-api:2.2.2" level="project" />
     <orderEntry type="library" name="Maven: commons-digester:commons-digester:2.0" level="project" />

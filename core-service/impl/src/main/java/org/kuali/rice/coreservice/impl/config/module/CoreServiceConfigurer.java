@@ -37,4 +37,5 @@ public class CoreServiceConfigurer extends ModuleConfigurer {
 		}
 		return springFileLocations;
 	}
+
 }

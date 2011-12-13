@@ -172,4 +172,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+
+    @Override
+    public boolean hasWebInterface() {
+        return true;
+    }
 }

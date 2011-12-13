@@ -57,7 +57,6 @@
 
 	<bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer">
 		<property name="moduleName" value="KEW" />
-		<property name="hasWebInterface" value="true" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>

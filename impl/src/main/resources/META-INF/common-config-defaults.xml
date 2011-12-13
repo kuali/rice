@@ -387,7 +387,6 @@
 	<param name="kradApplication.datasource.jndi.location" override="false"></param>
 	<param name="rice.kr.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kr.expose.services.on.bus" override="false">true</param>
-	<param name="rice.kr.include.user.interface.components" override="false">true</param>
 	<param name="load.data.dictionary" override="false">true</param>=
 	<param name="validate.data.dictionary" override="false">true</param>
 	<param name="validate.data.dictionary.ebo.references" override="false">true</param>
@@ -401,16 +400,14 @@
 	<param name="kcb.mode" override="false">LOCAL</param>
 	<param name="rice.kcb.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kcb.expose.services.on.bus" override="false">true</param>
-	<param name="rice.kcb.include.user.interface.components" override="false">true</param>
-	
+
 	<!-- KEN -->
 	<param name="rice.ken.struts.config.files" override="false">/ken/WEB-INF/struts-config.xml</param>
 	<param name="ken.url" override="false">${application.url}/ken</param>
 	<param name="ken.mode" override="false">LOCAL</param>
 	<param name="rice.ken.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.ken.expose.services.on.bus" override="false">true</param>
-	<param name="rice.ken.include.user.interface.components" override="false">true</param>
-	
+
 	<!-- KEW -->
 	<param name="rice.kew.struts.config.files" override="false">/kew/WEB-INF/struts-config.xml</param>
 	<param name="kew.url" override="false">${application.url}/kew</param>
@@ -419,15 +416,13 @@
 	<param name="org.kuali.workflow.datasource.jndi.location" override="false"></param>
 	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
-	<param name="rice.kew.include.user.interface.components" override="false">true</param>
-	
+
 	<!-- KIM -->
 	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 	<param name="kim.url" override="false">${application.url}/kim</param>
 	<param name="kim.mode" override="false">LOCAL</param>
 	<param name="rice.kim.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kim.expose.services.on.bus" override="false">true</param>
-	<param name="rice.kim.include.user.interface.components" override="false">true</param>
 
   <!-- KRMS -->
   <param name="krms.mode" override="false">LOCAL</param>
@@ -442,8 +437,7 @@
 	<param name="location.mode" override="false">LOCAL</param>
 	<param name="rice.location.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.location.expose.services.on.bus" override="false">true</param>
-	<param name="rice.location.include.user.interface.components" override="false">false</param>
-    <param name="location.soapExposedService.jaxws.security" override="false">true</param>
+  <param name="location.soapExposedService.jaxws.security" override="false">true</param>
 
 	<!-- KSB -->
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
@@ -458,9 +452,8 @@
 	<param name="http.service.url" override="false">${serviceServletUrl}</param>
 	<param name="rice.ksb.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.ksb.expose.services.on.bus" override="false">true</param>
-	<param name="rice.ksb.include.user.interface.components" override="false">true</param>
-    <param name="rice.ksb.expose.services.on.bus" override="false">true</param>
-    <param name="ksb.soapExposedService.jaxws.security" override="false">true</param>
+  <param name="rice.ksb.expose.services.on.bus" override="false">true</param>
+  <param name="ksb.soapExposedService.jaxws.security" override="false">true</param>
 	
 	<!-- CORE -->
 	<param name="core.mode" override="false">LOCAL</param>

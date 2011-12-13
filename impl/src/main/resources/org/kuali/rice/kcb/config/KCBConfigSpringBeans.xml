@@ -72,7 +72,6 @@
 
 	<bean id="kcbConfigurer" class="org.kuali.rice.core.framework.config.module.ModuleConfigurer">
 		<property name="moduleName" value="KCB" />
-		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>

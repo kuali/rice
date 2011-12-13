@@ -39,8 +39,6 @@
 
 	<bean id="krmsConfigurer" class="org.kuali.rice.krms.config.KRMSConfigurer">
         <property name="moduleName" value="KRMS" />
-        <!-- TODO: switch to true when we have some web stuff -->
-        <property name="hasWebInterface" value="false" />
         <property name="validRunModes">
             <list>
                 <value>LOCAL</value>

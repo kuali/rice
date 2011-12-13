@@ -59,22 +59,7 @@ public class EDLConfigurer extends ModuleConfigurer {
     private List<String> getEmbeddedSpringFileLocation(){
     	final List<String> springFileLocations = new ArrayList<String>();
     	springFileLocations.add("classpath:org/kuali/rice/edl/impl/config/EDLSpringBeans.xml");
-
-//        if ( isExposeServicesOnBus() ) {
-//        	if (isSetSOAPServicesAsDefault()) {
-//        		springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSOAPDefaultSpringBeans.xml");
-//        	} else {
-//        		springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml");
-//        	}
-//        }
-        
-//        if (OrmUtils.isJpaEnabled("rice.kew")) {
-//        	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWJPASpringBeans.xml");
-//        }
-//        else {
-        	springFileLocations.add("classpath:org/kuali/rice/edl/impl/config/EDLOJBSpringBeans.xml");
-//        }
-
+      	springFileLocations.add("classpath:org/kuali/rice/edl/impl/config/EDLOJBSpringBeans.xml");
     	return springFileLocations;
     }
 

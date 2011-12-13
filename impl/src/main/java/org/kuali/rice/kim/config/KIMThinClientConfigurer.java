@@ -38,7 +38,7 @@ public class KIMThinClientConfigurer extends ModuleConfigurer {
 	public KIMThinClientConfigurer() {
         super();
         setModuleName( "KIM" );
-        setHasWebInterface(false);
+        //setHasWebInterface(false);
     }
 	
 	@Override

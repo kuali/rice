@@ -53,8 +53,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
     protected final Logger LOG = Logger.getLogger(getClass());
 
     private List<RunMode> validRunModes = new ArrayList<RunMode>();
-	private boolean hasWebInterface;
-	
+
 	private Properties properties = new Properties();
 	private String moduleName;
 	private ServletContext servletContext;
@@ -118,55 +117,57 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		}
 		return RunMode.valueOf(runMode.toUpperCase());
 	}
-	
-	public String getWebModuleConfigName() {
-		return "config/" + getModuleName().toLowerCase();
-	}
-	
-	public String getWebModuleConfigurationFiles() {
-		return ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".struts.config.files");
+
+    /**
+     * Indicates whether or not this module has a web interface module.  Default implementation returns false, but
+     * subclasses can override to return true if they have a web module that can be loaded.
+     *
+     * @return true if this module has a web interface, false otherwise
+     */
+    public boolean hasWebInterface() {
+		return false;
 	}
 	
 	/**
 	 * This base implementation returns true when the module has a web interface and the
 	 * runMode is "local".
 	 * 
-	 * Subclasses can override this method if there are different requirements for inclusion
-	 * of the web UI for the module.
+	 * <p>Subclasses can override this method if there are different requirements for inclusion
+	 * of the web UI for the module.</p>
+     *
+     * @return true if the web interface for this module should be rendered, false otherwise
 	 */
 	public boolean shouldRenderWebInterface() {
-		return hasWebInterface() &&	getRunMode().equals( RunMode.LOCAL );
+		return hasWebInterface() && getRunMode().equals( RunMode.LOCAL );
 	}
-	
-	public boolean isSetSOAPServicesAsDefault() {
-		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".set.soap.services.as.default")).booleanValue();
-	}
-	
+		
 	public boolean isExposeServicesOnBus() {
 		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".expose.services.on.bus")).booleanValue();
 	}
-	
-	public boolean isIncludeUserInterfaceComponents() {
-		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".include.user.interface.components")).booleanValue();
-	}
-
-	public String getWebModuleBaseUrl() {
-		return ConfigContext.getCurrentContextConfig().getProperty(getModuleName().toLowerCase() + ".url");
-	}
-	
+		
 	@Override
 	public List<String> getPrimarySpringFiles() {
 		return Collections.singletonList(getDefaultSpringBeansPath(getDefaultConfigPackagePath()));
 	}
 
-	public boolean hasWebInterface() {
-		return this.hasWebInterface;
-	}
+    public final WebModuleConfiguration getWebModuleConfiguration() {
+        if (hasWebInterface()) {
+            return loadWebModule();
+        }
+        return null;
+    }
 
-	public void setHasWebInterface(boolean hasWebInterface) {
-		this.hasWebInterface = hasWebInterface;
-	}
-	
+    /**
+     * Subclasses can override the default implementation of this method if they want to provide a custom implementation
+     * for loading the web module configuration.  This method will be called from #getWebModuleConfiguration when
+     * #hasWebInterface return true.
+     *
+     * @return the loaded web module configuration, this method should *never* return null.
+     */
+    protected WebModuleConfiguration loadWebModule() {
+        return new WebModuleConfiguration(this.moduleName);
+    }
+
 	public Properties getProperties() {
 		return this.properties;
 	}

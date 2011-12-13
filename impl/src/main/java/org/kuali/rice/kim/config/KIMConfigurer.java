@@ -43,9 +43,15 @@ public class KIMConfigurer extends ModuleConfigurer {
 		if ( isExposeServicesOnBus() ) {
 		    springFileLocations.add(KIM_KSB_SPRING_BEANS_PATH);
 		}
-		if ( isIncludeUserInterfaceComponents() ) {
+        // TODO replace this with "WebModuleConfiguration" concept once it's done
+		//if ( isIncludeUserInterfaceComponents() ) {
 			springFileLocations.add(KIM_UI_SPRING_BEANS_PATH);
-		}
+		//}
 		return springFileLocations;
 	}
+
+    @Override
+    public boolean hasWebInterface() {
+        return true;
+    }
 }

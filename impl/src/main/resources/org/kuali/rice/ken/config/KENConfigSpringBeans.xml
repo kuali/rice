@@ -70,9 +70,8 @@
 		</property>
 	</bean>
 
-	<bean id="kenConfigurer" class="org.kuali.rice.core.framework.config.module.ModuleConfigurer">
+	<bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer">
 		<property name="moduleName" value="KEN" />
-		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>

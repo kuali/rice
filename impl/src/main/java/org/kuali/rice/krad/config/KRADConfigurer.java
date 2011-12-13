@@ -123,6 +123,11 @@ public class KRADConfigurer extends ModuleConfigurer {
         }
     }
 
+    @Override
+    public boolean hasWebInterface() {
+        return true;
+    }
+
     /**
      * Returns true - KNS UI should always be included.
      *

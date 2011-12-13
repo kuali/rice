@@ -97,9 +97,6 @@ public class CoreConfigurer extends ModuleConfigurer {
             //in krad for now as a hack
 		    //springFileLocations.add("classpath:org/kuali/rice/core/config/COREServiceBusSpringBeans.xml");
 		}
-		if ( isIncludeUserInterfaceComponents() ) {
-			//FIXME: should only load the DD maintenance docs here
-		}
 		return springFileLocations;
 	}
 	

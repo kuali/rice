@@ -144,16 +144,13 @@ public class KSBConfigurer extends ModuleConfigurer {
         
         return springFileLocations;
 	}
-	
-	/**
-	 * Returns true - KSB UI should always be included.
-	 */
-	@Override
-	public boolean shouldRenderWebInterface() {
-		return true;
-	}
-	
-	@Override
+
+    @Override
+    public boolean hasWebInterface() {
+        return true;
+    }
+
+    @Override
 	public Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception{
 		ResourceLoader ksbRemoteResourceLoader = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
 		ksbRemoteResourceLoader.start();

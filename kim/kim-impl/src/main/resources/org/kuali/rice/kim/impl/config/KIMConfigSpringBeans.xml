@@ -72,7 +72,6 @@
 	
 	<bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer">
 		<property name="moduleName" value="KIM" />
-		<property name="hasWebInterface" value="true" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>

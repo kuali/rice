@@ -130,7 +130,6 @@
 
 	<bean id="coreConfigurer" class="org.kuali.rice.core.impl.config.module.CoreConfigurer">
 		<property name="moduleName" value="CORE" />
-		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>
@@ -155,7 +154,6 @@
 	
 	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
 		<property name="moduleName" value="KSB" />
-		<property name="hasWebInterface" value="true" />
 		<property name="validRunModes">
 			<list>
 				<value>LOCAL</value>

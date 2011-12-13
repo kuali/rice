@@ -29,8 +29,10 @@ import org.apache.commons.beanutils.converters.ShortConverter;
 import org.apache.commons.collections.iterators.IteratorEnumeration;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
+import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -135,14 +137,18 @@ public class KualiActionServlet extends ActionServlet {
                 // and it is running in a "local" mode
                 // in "embedded" or "remote" modes, the UIs are hosted on a central server
                 if ( module.shouldRenderWebInterface() ) {
+                    WebModuleConfiguration webModuleConfiguration = module.getWebModuleConfiguration();
+                    if (webModuleConfiguration == null) {
+                        throw new ConfigurationException("Attempting to load WebModuleConfiguration for module '" + module.getModuleName() + "' but no configuration was provided!");
+                    }
                 	if ( LOG.isInfoEnabled() ) {
-                		LOG.info( "Configuring Web Content for Module: " + module.getModuleName()
-                				+ " / " + module.getWebModuleConfigName()
-                				+ " / " + module.getWebModuleConfigurationFiles()
-                				+ " / Base URL: " + module.getWebModuleBaseUrl() );
+                		LOG.info( "Configuring Web Content for Module: " + webModuleConfiguration.getModuleName()
+                				+ " / " + webModuleConfiguration.getWebModuleStrutsConfigName()
+                				+ " / " + webModuleConfiguration.getWebModuleStrutsConfigurationFiles()
+                				+ " / Base URL: " + webModuleConfiguration.getWebModuleBaseUrl() );
                 	}
-                    if ( !initParameters.containsKey( module.getWebModuleConfigName() ) ) {
-                        initParameters.put( module.getWebModuleConfigName(), module.getWebModuleConfigurationFiles() );
+                    if ( !initParameters.containsKey( webModuleConfiguration.getWebModuleStrutsConfigName() ) ) {
+                        initParameters.put( webModuleConfiguration.getWebModuleStrutsConfigName(), webModuleConfiguration.getWebModuleStrutsConfigurationFiles() );
                     }
                 }
             }

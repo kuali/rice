@@ -1745,7 +1745,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
             Map<String, String> criteria = new HashMap<String, String>();
             criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, roleMemberAttrBo.getKimAttributeId());
-            criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMember.getId());
+            //criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMember.getId());
+            criteria.put("assignedToId", roleMember.getId());
             List<RoleMemberAttributeDataBo> origRoleMemberAttributes =
                     (List<RoleMemberAttributeDataBo>) getBusinessObjectService().findMatching(RoleMemberAttributeDataBo.class, criteria);
             RoleMemberAttributeDataBo origRoleMemberAttribute =

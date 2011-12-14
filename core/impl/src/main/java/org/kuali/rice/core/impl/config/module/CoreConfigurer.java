@@ -61,8 +61,14 @@ public class CoreConfigurer extends ModuleConfigurer {
 		configureDataSource();
 		configureCredentialsSourceFactory();
 	}
-	
-	protected boolean isConfigureLogging() {
+
+    @Override
+    public boolean hasWebInterface() {
+        // Core has the XML Ingester user interface
+        return true;
+    }
+
+    protected boolean isConfigureLogging() {
 		return ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
 	}
 	

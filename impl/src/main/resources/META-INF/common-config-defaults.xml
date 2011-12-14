@@ -455,9 +455,12 @@
   <param name="ksb.soapExposedService.jaxws.security" override="false">true</param>
 	
 	<!-- CORE -->
+  <param name="rice.core.struts.config.files" override="false">/core/WEB-INF/struts-config.xml</param>
+  <param name="core.url" override="false">${application.url}/core</param>
 	<param name="core.mode" override="false">LOCAL</param>
   <param name="rice.core.expose.services.on.bus" override="false">true</param>
   <param name="core.soapExposedService.jaxws.security" override="false">true</param>
+
 	
 	<!-- from kew-config-defaults -->
 	

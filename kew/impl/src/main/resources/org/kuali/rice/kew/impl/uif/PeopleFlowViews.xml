@@ -168,7 +168,7 @@
   ********************************************************************************************************************
   -->
   <bean id="PeopleFlow-Delegates" abstract="true" parent="CollectionGroupTableLayout"
-        p:layoutManager.numberOfColumns="4">
+        p:layoutManager.numberOfColumns="4" p:style="margin-left: 25%;">
     <property name="title" value="Member Delegates"/>
     <property name="collectionObjectClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowDelegateBo"/>
     <property name="propertyName" value="delegates"/>

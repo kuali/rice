@@ -18,11 +18,11 @@ package org.kuali.rice.kew.xml.export;
 import org.jdom.Document;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.style.Style;
+import org.kuali.rice.coreservice.api.style.Style;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
-import org.kuali.rice.core.impl.style.StyleBo;
-import org.kuali.rice.core.impl.style.StyleExportDataSet;
+import org.kuali.rice.coreservice.impl.style.StyleBo;
+import org.kuali.rice.coreservice.impl.style.StyleExportDataSet;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 

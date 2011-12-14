@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
-import org.kuali.rice.core.api.style.Style;
-import org.kuali.rice.core.api.style.StyleRepositoryService;
+import org.kuali.rice.coreservice.impl.style.StyleBo;
+import org.kuali.rice.coreservice.api.style.Style;
+import org.kuali.rice.coreservice.api.style.StyleRepositoryService;
 import org.kuali.rice.core.api.util.RiceUtilities;
-import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
 
 import java.io.IOException;
 import java.io.InputStream;

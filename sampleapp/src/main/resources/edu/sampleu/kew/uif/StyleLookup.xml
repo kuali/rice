@@ -23,7 +23,7 @@
 
   <bean id="Style-LookupView" parent="LookupView">
     <property name="title" value="Style Lookup" />
-    <property name="dataObjectClassName" value="org.kuali.rice.core.impl.style.StyleBo" />
+    <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.style.StyleBo" />
     <!-- <property name="defaultSortAttributeNames">
       <list>
       	<value>id</value>

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style
+package org.kuali.rice.coreservice.impl.style
 
 import groovy.mock.interceptor.MockFor
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
-import org.kuali.rice.core.api.style.Style
-import org.kuali.rice.core.api.style.StyleContract
-import org.kuali.rice.core.api.style.StyleRepositoryService
+import org.kuali.rice.coreservice.api.style.Style
+import org.kuali.rice.coreservice.api.style.StyleContract
+import org.kuali.rice.coreservice.api.style.StyleRepositoryService
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertTrue
 

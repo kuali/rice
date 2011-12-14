@@ -83,7 +83,7 @@
 		<property name="serverDataSource" value="true"/>
 	</bean>
 
-  <bean id="styleDao" class="org.kuali.rice.core.impl.style.StyleDaoOjb">
+  <bean id="styleDao" class="org.kuali.rice.coreservice.impl.style.StyleDaoOjb">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 

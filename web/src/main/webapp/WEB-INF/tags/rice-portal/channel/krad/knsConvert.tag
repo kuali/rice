@@ -55,7 +55,7 @@
     <li><portal:portalLink displayTitle="true" title="Rule Template"
                            url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.kew.rule.bo.RuleTemplate&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="XML Stylesheets"
-                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.core.impl.style.StyleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
+                           url="${ConfigProperties.application.url}/kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.coreservice.impl.style.StyleBo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="XML Ingester"
                            url="${ConfigProperties.application.url}/kr-krad/ingester?viewId=KEW-IngesterView&methodToCall=start"/></li>
     <li><portal:portalLink displayTitle="true" title="Statistics"

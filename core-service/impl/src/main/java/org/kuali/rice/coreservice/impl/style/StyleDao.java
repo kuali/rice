@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
+
+import org.kuali.rice.coreservice.impl.style.StyleBo;
 
 import java.util.List;
 

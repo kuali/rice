@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
 
 import org.apache.log4j.Logger;
 import org.jdom.Element;
@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.coreservice.impl.style.StyleBo;
 
 import java.io.StringReader;
 import java.util.Iterator;

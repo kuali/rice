@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.style.Style;
-import org.kuali.rice.core.api.style.StyleRepositoryService;
-import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.coreservice.api.style.Style;
+import org.kuali.rice.coreservice.api.style.StyleRepositoryService;
+import org.kuali.rice.coreservice.api.style.StyleService;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.util.KRADConstants;

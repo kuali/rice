@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.api.impex.ExportDataSet;
+import org.kuali.rice.coreservice.impl.style.StyleBo;
 
 /**
  * A utility class for managing an {@link ExportDataSet} containing StyleBo

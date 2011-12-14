@@ -18,7 +18,7 @@
 -->
 <bean id="Style-InquiryView" parent="InquiryView">
    <property name="title" value="Rule Attribute"/>
-   <property name="dataObjectClassName" value="org.kuali.rice.core.impl.style.StyleBo"/>
+   <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.style.StyleBo"/>
    <property name="Items">
        <list>
          <bean parent="GroupSectionGridLayout">

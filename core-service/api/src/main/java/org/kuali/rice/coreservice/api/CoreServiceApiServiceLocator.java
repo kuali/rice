@@ -17,14 +17,10 @@ package org.kuali.rice.coreservice.api;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.coreservice.api.component.ComponentService;
-import org.kuali.rice.core.api.datetime.DateTimeService;
-import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.core.api.impex.xml.XmlExporterService;
-import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
 import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.coreservice.api.style.StyleService;
 
 import javax.xml.namespace.QName;
 

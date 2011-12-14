@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
-import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.coreservice.api.style.StyleService;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.EDLController;

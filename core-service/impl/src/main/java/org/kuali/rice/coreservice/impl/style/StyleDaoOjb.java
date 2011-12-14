@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
+import org.kuali.rice.coreservice.impl.style.StyleBo;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**

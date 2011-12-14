@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
 
 import java.io.StringReader;
 
@@ -22,9 +22,8 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.style.Style;
-import org.kuali.rice.core.api.style.StyleService;
-
+import org.kuali.rice.coreservice.api.style.Style;
+import org.kuali.rice.coreservice.api.style.StyleService;
 
 /**
  * A URIResolver that knows how to resolve href's based on style names.

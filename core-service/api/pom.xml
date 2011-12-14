@@ -120,7 +120,7 @@
             <id>styleRepositoryService-wsdl</id>
             <phase>${rice.java2ws.phase}</phase>
             <configuration>
-              <className>org.kuali.rice.core.api.style.StyleRepositoryService</className>
+              <className>org.kuali.rice.coreservice.api.style.StyleRepositoryService</className>
               <outputFile>${project.build.outputDirectory}/wsdl/StyleRepositoryService.wsdl</outputFile>
               <serviceName>StyleRepositoryService</serviceName>
             </configuration>

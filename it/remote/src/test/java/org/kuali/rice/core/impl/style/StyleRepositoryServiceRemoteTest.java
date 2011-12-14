@@ -17,7 +17,8 @@ package org.kuali.rice.core.impl.style;
 
 import org.junit.After;
 import org.junit.Before;
-import org.kuali.rice.core.api.style.StyleRepositoryService;
+import org.kuali.rice.coreservice.api.style.StyleRepositoryService;
+import org.kuali.rice.coreservice.impl.style.StyleRepositoryServiceImplTest;
 import org.kuali.rice.test.remote.RemoteTestHarness;
 
 public class StyleRepositoryServiceRemoteTest extends StyleRepositoryServiceImplTest {

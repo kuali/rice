@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.coreservice.impl;
 
-import org.kuali.rice.core.api.cache.CacheManagerRegistry;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
-import org.kuali.rice.core.impl.style.StyleXmlParser;
+import org.kuali.rice.coreservice.impl.style.StyleXmlParser;
 
 public class CoreServiceImplServiceLocator {
 

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.style;
+package org.kuali.rice.coreservice.impl.style;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.style.Style;
-import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.coreservice.api.style.Style;
+import org.kuali.rice.coreservice.api.style.StyleService;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.impl.CoreServiceImplServiceLocator;

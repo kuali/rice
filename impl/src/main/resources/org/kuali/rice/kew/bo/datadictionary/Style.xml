@@ -19,8 +19,8 @@
   <bean id="Style" parent="Style-parentBean"/>
 
   <bean id="Style-parentBean" abstract="true" parent="BusinessObjectEntry">
-    <property name="businessObjectClass" value="org.kuali.rice.core.impl.style.StyleBo"/>
-    <property name="exporterClass" value="org.kuali.rice.core.impl.style.StyleDataExporter"/>
+    <property name="businessObjectClass" value="org.kuali.rice.coreservice.impl.style.StyleBo"/>
+    <property name="exporterClass" value="org.kuali.rice.coreservice.impl.style.StyleDataExporter"/>
     <property name="objectLabel" value="Stylesheet"/>
     <property name="inquiryDefinition">
       <ref bean="Style-inquiryDefinition"/>

@@ -13,9 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@javax.xml.bind.annotation.XmlSchema(namespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0, elementFormDefault = XmlNsForm.QUALIFIED)
-package org.kuali.rice.core.api.style;
-import org.kuali.rice.core.api.CoreConstants;
+package org.kuali.rice.coreservice.impl.style;
 
-import javax.xml.bind.annotation.XmlNsForm;
+import java.io.InputStream;
+import java.util.List;
 
+import org.kuali.rice.coreservice.api.style.Style;
+import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+
+/**
+ * Parses an inputstream containing XML into Style objects. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
+public interface StyleXmlParser extends XmlLoader {
+
+	public List<Style> parseStyles(InputStream inputStream);
+	
+}

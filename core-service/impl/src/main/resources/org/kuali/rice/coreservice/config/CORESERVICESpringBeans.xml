@@ -128,24 +128,24 @@
     <property name="serviceName" value="persistenceServiceOjb" />
   </bean>
 
-  <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
+  <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl">
     <property name="styleRepositoryService" ref="styleRepositoryService" />
   </bean>
 
-  <bean id="styleRepositoryService" class="org.kuali.rice.core.impl.style.StyleRepositoryServiceImpl">
+  <bean id="styleRepositoryService" class="org.kuali.rice.coreservice.impl.style.StyleRepositoryServiceImpl">
     <property name="styleXmlParser" ref="styleXmlLoader" />
     <property name="styleDao" ref="styleDao" />
   </bean>
 
-  <bean id="styleDao" class="org.kuali.rice.core.impl.style.StyleDaoOjb">
+  <bean id="styleDao" class="org.kuali.rice.coreservice.impl.style.StyleDaoOjb">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
 
-  <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParserImpl">
+  <bean id="styleXmlLoader" class="org.kuali.rice.coreservice.impl.style.StyleXmlParserImpl">
     <property name="styleService" ref="styleService" />
   </bean>
 
-  <bean id="styleXmlExporter" class="org.kuali.rice.core.impl.style.StyleXmlExporter"/>
+  <bean id="styleXmlExporter" class="org.kuali.rice.coreservice.impl.style.StyleXmlExporter"/>
 
   <bean id="rice.coreservice.import.xmlImpexRegistry"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">

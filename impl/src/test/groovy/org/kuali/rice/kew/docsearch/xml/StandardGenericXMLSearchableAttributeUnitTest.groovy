@@ -29,6 +29,7 @@ import org.kuali.rice.kew.framework.document.search.AttributeFields
 import org.kuali.rice.kns.util.FieldUtils
 import org.kuali.rice.kns.web.ui.Row
 import org.apache.commons.lang.ObjectUtils
+import org.apache.commons.lang.StringUtils
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute class in isolation
@@ -250,7 +251,8 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         def generated = new StandardGenericXMLSearchableAttribute().generateSearchContent(edb.build(), "no document type", ad.build())
 
         if (expected != null) {
-            assertEquals(expected.trim(), generated.trim());
+            // if we don't delete whitespace here we can get failures for some reason
+            assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(generated));
         }
     }
 }

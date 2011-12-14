@@ -491,7 +491,6 @@
      <attribute name="label"/>
      <attribute name="inclusive" type="boolean" default="true"/>
      <attribute name="datePicker" type="boolean" default="true"/>
-     <attribute name="caseSensitive" type="boolean" default="true"/>
   </complexType>
 
   <simpleType name="dataType">

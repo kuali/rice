@@ -312,10 +312,10 @@ class XMLSearchableAttributeContentTest {
           <ruleAttribute>
             <searchingConfig>
               <fieldDef>
-                <searchDefinition inclusive="true" dataType="datetime">
+                <searchDefinition caseSensitive="true" inclusive="true" dataType="datetime">
                   <rangeDefinition caseSensitive="false" datePicker="false">
                     <lower inclusive="false" datePicker="true"/>
-                    <upper caseSensitive="true"/>
+                    <upper caseSensitive="true"/> <!-- caseSensitive ignored on bound -->
                   </rangeDefinition>
                 </searchDefinition>
               </fieldDef>
@@ -326,11 +326,11 @@ class XMLSearchableAttributeContentTest {
         assertEquals("datetime", searchDef.dataType)
         assertTrue(searchDef.lowerBound.datePicker)
         assertFalse(searchDef.lowerBound.inclusive)
-        assertFalse(searchDef.lowerBound.caseSensitive)
+        assertTrue(searchDef.searchDef.caseSensitive)
 
         assertFalse(searchDef.upperBound.datePicker)
         assertTrue(searchDef.upperBound.inclusive)
-        assertTrue(searchDef.upperBound.caseSensitive)
+        assertFalse(searchDef.rangeBoundOptions.caseSensitive)
     }
 
     @Test void testSearchDefinitionOptions2() {

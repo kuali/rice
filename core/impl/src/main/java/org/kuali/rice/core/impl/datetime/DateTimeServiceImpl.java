@@ -39,6 +39,16 @@ import java.util.List;
  */
 //@Transactional
 public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
+    /**
+     * Default date/time formats
+     */
+    private static final String STRING_TO_DATE_FORMATS = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MM-dd-yyyy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
+    private static final String STRING_TO_TIMESTAMP_FORMATS = "MM/dd/yyyy hh:mm a;MM/dd/yy;MM/dd/yyyy;MM-dd-yy;MMddyy;MMMM dd;yyyy;MM/dd/yy HH:mm:ss;MM/dd/yyyy HH:mm:ss;MM-dd-yy HH:mm:ss;MMddyy HH:mm:ss;MMMM dd HH:mm:ss;yyyy HH:mm:ss";
+    private static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "MM/dd/yyyy";
+    private static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "MM/dd/yyyy hh:mm a";
+    private static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "yyyyMMdd";
+    private static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "yyyyMMdd-HH-mm-ss-S";
+
 	protected String[] stringToDateFormats;
 	protected String[] stringToTimestampFormats;
 	protected String dateToStringFormatForUserInterface;
@@ -273,11 +283,44 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 		return dateFormat.format(date);
 	}
 	
+
 	/**
+	 * This overridden method ...
 	 * 
-	 * The dateTime config vars are ';' seperated. This method should probably 
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if (stringToDateFormats == null) {
+            stringToDateFormats = loadAndValidateFormats(CoreConstants.STRING_TO_DATE_FORMATS, STRING_TO_DATE_FORMATS);
+		}
+
+		if (stringToTimestampFormats == null) {
+            stringToTimestampFormats = loadAndValidateFormats(CoreConstants.STRING_TO_TIMESTAMP_FORMATS, STRING_TO_TIMESTAMP_FORMATS);
+		}
+
+		if (dateToStringFormatForUserInterface == null) {
+			dateToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE, DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+		}
+
+		if (timestampToStringFormatForUserInterface == null) {
+			timestampToStringFormatForUserInterface = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE, TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+		}
+
+		if (dateToStringFormatForFileName == null) {
+			dateToStringFormatForFileName = loadAndValidateFormat(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME, DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+		}
+
+		if (timestampToStringFormatForFileName == null) {
+			timestampToStringFormatForFileName = loadAndValidateFormat(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME, TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
+		}
+	}
+
+    	/**
+	 *
+	 * The dateTime config vars are ';' seperated. This method should probably
 	 * be on the config interface.
-	 * 
+	 *
 	 * @param configValue
 	 * @return
 	 */
@@ -287,73 +330,68 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	    }
 	    return Arrays.asList(configValue.split(";"));
 	}
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (stringToDateFormats == null) {
-			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_DATE_FORMATS));
 
-			stringToDateFormats = new String[dateFormatParams.size()];
+    /**
+     * Loads a format string list from config or default
+     * @param property the config property
+     * @param deflt the default value
+     * @return the config or default value
+     */
+    private List<String> loadFormats(String property, String deflt) {
+        return parseConfigValues(loadFormat(property, deflt));
+    }
 
-			for (int i = 0; i < dateFormatParams.size(); i++) {
-				String dateFormatParam = dateFormatParams.get(i);
-				if (StringUtils.isBlank(dateFormatParam)) {
-					throw new IllegalArgumentException("Core/All/STRING_TO_DATE_FORMATS parameter contains a blank semi-colon delimited substring");
-				}
-				else {
-					// try to create a new SimpleDateFormat to try to detect illegal patterns
-					new SimpleDateFormat(dateFormatParam);
-					stringToDateFormats[i] = dateFormatParam;
-				}
-			}
-		}
+    /**
+     * Loads a format string list from the config or default and validates each entry
+     * @param property the config property
+     * @param deflt the default value
+     * @return string array of valid date/time formats
+     */
+    private String[] loadAndValidateFormats(String property, String deflt) {
+        List<String> dateFormatParams = loadFormats(property, deflt);
 
-		if (stringToTimestampFormats == null) {
-			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_TIMESTAMP_FORMATS));			
+        String[] validFormats = new String[dateFormatParams.size()];
 
-			stringToTimestampFormats = new String[dateFormatParams.size()];
+        for (int i = 0; i < dateFormatParams.size(); i++) {
+            String dateFormatParam = dateFormatParams.get(i);
+            if (StringUtils.isBlank(dateFormatParam)) {
+                throw new IllegalArgumentException("Core/All/" + property + " parameter contains a blank semi-colon delimited substring");
+            }
+            else {
+                // try to create a new SimpleDateFormat to try to detect illegal patterns
+                new SimpleDateFormat(dateFormatParam);
+                validFormats[i] = dateFormatParam;
+            }
+        }
 
-			for (int i = 0; i < dateFormatParams.size(); i++) {
-				String dateFormatParam = dateFormatParams.get(i);
-				if (StringUtils.isBlank(dateFormatParam)) {
-					throw new IllegalArgumentException("Core/All/STRING_TO_TIMESTAMP_FORMATS parameter contains a blank semi-colon delimited substring");
-				}
-				else {
-					// try to create a new SimpleDateFormat to try to detect illegal patterns
-					new SimpleDateFormat(dateFormatParam);
-					stringToTimestampFormats[i] = dateFormatParam;
-				}
-			}
-		}
+        return validFormats;
+    }
 
-		if (dateToStringFormatForUserInterface == null) {
-			dateToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(dateToStringFormatForUserInterface);
-		}
+    /**
+     * Loads a particular date format from the config, using a default for fallback
+     * @param property the config property
+     * @param deflt the default value
+     * @return the config value or default value
+     */
+    private String loadFormat(String property, String deflt) {
+        String format = ConfigContext.getCurrentContextConfig().getProperty(property);
+        if (StringUtils.isBlank(format)) {
+            format = deflt;
+        }
+        return format;
+    }
 
-		if (timestampToStringFormatForUserInterface == null) {
-			timestampToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);			
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(timestampToStringFormatForUserInterface);
-		}
-
-		if (dateToStringFormatForFileName == null) {
-			dateToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
-			
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(dateToStringFormatForFileName);
-		}
-
-		if (timestampToStringFormatForFileName == null) {
-			timestampToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
-			
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(timestampToStringFormatForFileName);
-		}		
-	}
+    /**
+     * Loads a particular date format from the config, using a default for fallback,
+     * and validates the format.
+     * @param property the config property
+     * @param deflt the default value
+     * @return the validated config value or default value
+     */
+    private String loadAndValidateFormat(String property, String deflt) {
+        String format = loadFormat(property, deflt);
+        // construct new SDF to make sure it's properly formatted
+        new SimpleDateFormat(format);
+        return format;
+    }
 }

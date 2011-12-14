@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.docsearch;
+package org.kuali.rice.core.api.search;
 
+/**
+ * Represents a search range
+ */
 public class Range {
-
     private String lowerBoundValue;
     private String upperBoundValue;
     private boolean lowerBoundInclusive = true;

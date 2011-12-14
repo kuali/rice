@@ -23,6 +23,8 @@ import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
+import org.kuali.rice.core.api.search.Range;
+import org.kuali.rice.core.api.search.SearchExpressionUtils;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.core.api.uif.DataType;
@@ -168,7 +170,7 @@ public class DocumentSearchInternalUtils {
     }
 
     public static DateTime getLowerDateTimeBound(String dateRange) throws ParseException {
-        Range range = parseRange(dateRange);
+        Range range = SearchExpressionUtils.parseRange(dateRange);
         if (range == null) {
             throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
         }
@@ -182,7 +184,7 @@ public class DocumentSearchInternalUtils {
     }
 
     public static DateTime getUpperDateTimeBound(String dateRange) throws ParseException {
-        Range range = parseRange(dateRange);
+        Range range = SearchExpressionUtils.parseRange(dateRange);
         if (range == null) {
             throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
         }
@@ -194,47 +196,6 @@ public class DocumentSearchInternalUtils {
             return dateTime.toDateTime();
         }
         return null;
-    }
-
-    public static Range parseRange(String rangeString) {
-        if (StringUtils.isBlank(rangeString)) {
-            throw new IllegalArgumentException("rangeString was null or blank");
-        }
-        Range range = new Range();
-        rangeString = rangeString.trim();
-        if (rangeString.startsWith(SearchOperator.LESS_THAN_EQUAL.op())) {
-            rangeString = StringUtils.remove(rangeString, SearchOperator.LESS_THAN_EQUAL.op()).trim();
-            range.setUpperBoundValue(rangeString);
-            range.setUpperBoundInclusive(true);
-        } else if (rangeString.startsWith(SearchOperator.LESS_THAN.op())) {
-            rangeString = StringUtils.remove(rangeString, SearchOperator.LESS_THAN.op()).trim();
-            range.setUpperBoundValue(rangeString);
-            range.setUpperBoundInclusive(false);
-        } else if (rangeString.startsWith(SearchOperator.GREATER_THAN_EQUAL.op())) {
-            rangeString = StringUtils.remove(rangeString, SearchOperator.GREATER_THAN_EQUAL.op()).trim();
-            range.setLowerBoundValue(rangeString);
-            range.setLowerBoundInclusive(true);
-        } else if (rangeString.startsWith(SearchOperator.GREATER_THAN.op())) {
-            rangeString = StringUtils.remove(rangeString, SearchOperator.GREATER_THAN.op()).trim();
-            range.setLowerBoundValue(rangeString);
-            range.setLowerBoundInclusive(false);
-        } else if (rangeString.contains(SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op())) {
-            String[] rangeBounds = StringUtils.splitByWholeSeparator(rangeString, SearchOperator.BETWEEN_EXCLUSIVE_UPPER.op(), 2);
-            range.setLowerBoundValue(rangeBounds[0]);
-            range.setLowerBoundInclusive(true);
-            range.setUpperBoundValue(rangeBounds[1]);
-            range.setUpperBoundInclusive(false);
-        } else if (rangeString.contains(SearchOperator.BETWEEN.op())) {
-            String[] rangeBounds = StringUtils.splitByWholeSeparator(rangeString, SearchOperator.BETWEEN.op(), 2);
-            range.setLowerBoundValue(rangeBounds[0]);
-            range.setLowerBoundInclusive(true);
-            range.setUpperBoundValue(rangeBounds[1]);
-            range.setUpperBoundInclusive(true);
-        } else {
-            // if it has no range specification, return null
-            return null;
-        }
-        return range;
     }
 
     public static class SearchableAttributeConfiguration {

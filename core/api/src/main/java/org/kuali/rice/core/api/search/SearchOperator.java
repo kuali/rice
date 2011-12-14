@@ -25,39 +25,43 @@ import java.util.Collections;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public enum SearchOperator {
-	AND("&&"),
-	OR("|"),
-	NOT("!"),
-	BETWEEN(".."),
+    AND("&&"),
+    OR("|"),
+    NOT("!"),
+    BETWEEN(".."),
+    BETWEEN_EXCLUSIVE_LOWER(">.."),
     BETWEEN_EXCLUSIVE_UPPER("..."),
-	NULL("NULL"), 
-	NOT_NULL("!NULL"),
-	LIKE_ONE("?"),
-	LIKE_MANY("*"),
-	LIKE_MANY_P("%"),
-	GREATER_THAN(">"),
-	LESS_THAN("<"),
-	EQUAL("="),
-	GREATER_THAN_EQUAL(">="),
-	LESS_THAN_EQUAL("<=");
-	
-	private final String op;
-	private SearchOperator(String op) {
-		this.op = op;
-	}
-	
-	public static final Collection<SearchOperator> QUERY_CHARACTERS =
-		Collections.unmodifiableCollection(Arrays.asList(LIKE_MANY, LIKE_ONE, LIKE_MANY_P, GREATER_THAN, LESS_THAN, BETWEEN, BETWEEN_EXCLUSIVE_UPPER, OR, NOT, EQUAL));
-	
-	public static final Collection<SearchOperator> RANGE_CHARACTERS =
-		Collections.unmodifiableCollection(Arrays.asList(GREATER_THAN_EQUAL, LESS_THAN_EQUAL, GREATER_THAN, LESS_THAN, BETWEEN, BETWEEN_EXCLUSIVE_UPPER));
-	
-	public String op() {
-		return op;
-	}
-	
-	@Override
-	public String toString() {
-		return op;
-	}
+    BETWEEN_EXCLUSIVE_UPPER2("..<"),
+    BETWEEN_EXCLUSIVE(">..<"),
+    NULL("NULL"),
+    NOT_NULL("!NULL"),
+    LIKE_ONE("?"),
+    LIKE_MANY("*"),
+    LIKE_MANY_P("%"),
+    GREATER_THAN(">"),
+    LESS_THAN("<"),
+    EQUAL("="),
+    GREATER_THAN_EQUAL(">="),
+    LESS_THAN_EQUAL("<=");
+
+    private final String op;
+    private SearchOperator(String op) {
+        this.op = op;
+    }
+
+    public static final Collection<SearchOperator> QUERY_CHARACTERS =
+        Collections.unmodifiableCollection(Arrays.asList(LIKE_MANY, LIKE_ONE, LIKE_MANY_P, GREATER_THAN, LESS_THAN, BETWEEN, BETWEEN_EXCLUSIVE_UPPER, OR, NOT, EQUAL));
+
+    public static final Collection<SearchOperator> RANGE_CHARACTERS =
+        Collections.unmodifiableCollection(Arrays.asList(GREATER_THAN_EQUAL, LESS_THAN_EQUAL, GREATER_THAN, LESS_THAN, BETWEEN, BETWEEN_EXCLUSIVE_LOWER,
+                                                         BETWEEN_EXCLUSIVE_UPPER, BETWEEN_EXCLUSIVE_UPPER2, BETWEEN_EXCLUSIVE));
+
+    public String op() {
+        return op;
+    }
+
+    @Override
+    public String toString() {
+        return op;
+    }
 }

@@ -326,14 +326,14 @@ class XMLSearchableAttributeContent {
          * Encapsulates a SearchDefinition
          */
         static class SearchDefinition {
-            final RangeBoundOptions DEFAULTS = new RangeBoundOptions(false, false, false);
+            final RangeOptions DEFAULTS = new RangeOptions(false, false, false);
             /**
              * The field search data type.  Guaranteed to be defined (defaulted if missing).
              */
             final String dataType;
             final boolean rangeSearch;
-            final RangeBoundOptions searchDef;
-            final RangeBoundOptions rangeDef;
+            final RangeOptions searchDef;
+            final RangeOptions rangeDef;
             final RangeBound lowerBound;
             final RangeBound upperBound;
 
@@ -341,8 +341,8 @@ class XMLSearchableAttributeContent {
                 String dataType = KewApiConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
                 // if element is missing outright, omit the defaults as well as it cannot be a ranged search
                 // caller should check whether this is a ranged search
-                RangeBoundOptions searchDefDefaults = new RangeBoundOptions();
-                RangeBoundOptions rangeDef = null;
+                RangeOptions searchDefDefaults = new RangeOptions();
+                RangeOptions rangeDef = null;
                 RangeBound lowerBound = null;
                 RangeBound upperBound = null;
                 boolean rangeSearch = false;
@@ -357,11 +357,11 @@ class XMLSearchableAttributeContent {
                     // this is not currently enforced
                     rangeSearch = getBooleanAttr(searchDefNode, "rangeSearch", false);
 
-                    searchDefDefaults = new RangeBoundOptions(xpath, searchDefNode, DEFAULTS);
+                    searchDefDefaults = new RangeOptions(xpath, searchDefNode, DEFAULTS);
                     Node rangeDefinition = (Node) xpath.evaluate("rangeDefinition", searchDefNode, XPathConstants.NODE);
                     // if range definition element is present, bounds derive settings from range definition
                     if (rangeDefinition != null) {
-                        rangeDef = new RangeBoundOptions(xpath, rangeDefinition, searchDefDefaults);
+                        rangeDef = new RangeOptions(xpath, rangeDefinition, searchDefDefaults);
                         Node lower = (Node) xpath.evaluate("lower", rangeDefinition, XPathConstants.NODE);
                         lowerBound = lower == null ? new RangeBound(rangeDef) : new RangeBound(xpath, lower, rangeDef);
                         Node upper = (Node) xpath.evaluate("upper", rangeDefinition, XPathConstants.NODE);
@@ -384,7 +384,7 @@ class XMLSearchableAttributeContent {
             /**
              * Returns the most specific global/non-bounds options
              */
-            public RangeBoundOptions getRangeBoundOptions() {
+            public RangeOptions getRangeBoundOptions() {
                 return rangeDef == null ? searchDef : rangeDef;
             }
 
@@ -400,42 +400,63 @@ class XMLSearchableAttributeContent {
             }
 
             /**
-             * Reads inclusive, caseSensitive, and datePicker options from attributes
+             * Base range options class used by search/range definition and bounds elements
              */
-            static class RangeBoundOptions {
+            static class BaseRangeOptions {
                 protected final Boolean inclusive;
-                protected final Boolean caseSensitive;
                 protected final Boolean datePicker;
-                RangeBoundOptions() {
-                    this.inclusive = this.caseSensitive = this.datePicker = null;
+
+                BaseRangeOptions() {
+                    this.inclusive = this.datePicker = null;
                 }
-                RangeBoundOptions(boolean inclusive, boolean caseSensitive, boolean datePicker) {
+                BaseRangeOptions(boolean inclusive, boolean datePicker) {
                     this.inclusive = inclusive;
-                    this.caseSensitive = caseSensitive;
                     this.datePicker = datePicker;
                 }
-                RangeBoundOptions(RangeBoundOptions defaults) {
+                BaseRangeOptions(BaseRangeOptions defaults) {
                     this.inclusive = defaults.inclusive;
-                    this.caseSensitive = defaults.caseSensitive;
                     this.datePicker = defaults.datePicker;
                 }
-                RangeBoundOptions(XPath xpath, Node n, RangeBoundOptions defaults) {
+                BaseRangeOptions(XPath xpath, Node n, BaseRangeOptions defaults) {
                     this.inclusive = getBooleanAttr(n, "inclusive", defaults.inclusive);
-                    this.caseSensitive = getBooleanAttr(n, "caseSensitive", defaults.caseSensitive);
                     this.datePicker = getBooleanAttr(n, "datePicker", defaults.datePicker);
                 }
             }
 
             /**
-             * Adds label to RangeBoundOptions
+             * Reads inclusive, caseSensitive, and datePicker options from attributes of
+             * search definition and range definition elements.
              */
-            static class RangeBound extends RangeBoundOptions {
+            static class RangeOptions extends BaseRangeOptions {
+                protected final Boolean caseSensitive;
+                RangeOptions() {
+                    super();
+                    this.caseSensitive = null;
+                }
+                RangeOptions(boolean inclusive, boolean caseSensitive, boolean datePicker) {
+                    super(inclusive, datePicker);
+                    this.caseSensitive = caseSensitive;
+                }
+                RangeOptions(RangeOptions defaults) {
+                    super(defaults);
+                    this.caseSensitive = defaults.caseSensitive;
+                }
+                RangeOptions(XPath xpath, Node n, RangeOptions defaults) {
+                    super(xpath, n, defaults);
+                    this.caseSensitive = getBooleanAttr(n, "caseSensitive", defaults.caseSensitive);
+                }
+            }
+
+            /**
+             * Adds label to BaseRangeOptions
+             */
+            static class RangeBound extends BaseRangeOptions {
                 final String label;
-                RangeBound(RangeBoundOptions defaults) {
+                RangeBound(BaseRangeOptions defaults) {
                     super(defaults);
                     this.label = null;
                 }
-                RangeBound(XPath xpath, Node n, RangeBoundOptions defaults) {
+                RangeBound(XPath xpath, Node n, RangeOptions defaults) {
                     super(xpath, n, defaults);
                     this.label = getStringAttr(n, "label");
                 }

@@ -44,7 +44,7 @@ class DocumentSearchCriteriaProcessorKEWAdapterTest extends KEWTestCase {
         [ propertyName: "applicationDocumentStatus", fieldLabel: "Application Document Status", fieldType: "text" ],
         [ propertyName: "rangeLowerBoundKeyPrefix_dateApplicationDocumentStatusChanged", fieldLabel: "Date App Doc Status Changed, From", fieldType: "text" ],
         [ propertyName: "dateApplicationDocumentStatusChanged", fieldLabel: "Date App Doc Status Changed, To", fieldType: "text" ],
-        [ propertyName: "routeNodeName", fieldLabel: "Route Node", fieldType: "text" ],
+        [ propertyName: "routeNodeName", fieldLabel: "Route Node", fieldType: "dropdown" ],
         [ propertyName: "routeNodeLogic", fieldLabel: "Route Node Logic", fieldType: "dropdown" ],
         [ propertyName: "rangeLowerBoundKeyPrefix_dateCreated", fieldLabel: "Date Created From", fieldType: "text" ],
         [ propertyName: "dateCreated", fieldLabel: "Date Created To", fieldType: "text" ],

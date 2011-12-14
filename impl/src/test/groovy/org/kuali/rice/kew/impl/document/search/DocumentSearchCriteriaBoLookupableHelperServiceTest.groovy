@@ -29,12 +29,42 @@ import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
 import org.kuali.rice.kew.doctype.bo.DocumentType
 import org.kuali.rice.kns.web.ui.Row
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor
+import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
+import org.kuali.rice.core.api.CoreConstants
+import org.kuali.rice.core.api.config.property.ConfigContext
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import javax.xml.namespace.QName
+import org.kuali.rice.core.impl.datetime.DateTimeServiceImpl
+import org.kuali.rice.core.api.resourceloader.ResourceLoader
+import java.text.SimpleDateFormat
+import org.joda.time.DateTime
 
 /**
  * Tests parsing of document search criteria form
  */
 class DocumentSearchCriteriaBoLookupableHelperServiceTest {
     def lookupableHelperService = new DocumentSearchCriteriaBoLookupableHelperService()
+
+    @Before
+    void setupFakeEnv() {
+        def config = new JAXBConfigImpl();
+        config.putProperty(CoreConstants.Config.APPLICATION_ID, "APPID");
+
+        ConfigContext.init(config);
+        GlobalResourceLoader.stop();
+        
+        def dts = new DateTimeServiceImpl()
+        dts.afterPropertiesSet()
+
+        GlobalResourceLoader.addResourceLoader([
+            getName: { -> new QName("Foo", "Bar") },
+            getService: { QName name ->
+                [ dateTimeService: dts ][name.getLocalPart()]
+            },
+            stop: {}
+        ] as ResourceLoader)
+    }
+
 
     @Before
     void init() {
@@ -82,5 +112,15 @@ class DocumentSearchCriteriaBoLookupableHelperServiceTest {
             }
         }.checkForAdditionalFields([documentTypeName: DOC_TYPE])
         assertEquals("checkForAdditionalFields did not initialize rows for document type argument: $DOC_TYPE", DOC_TYPE, setRowsCalledWith)
+    }
+
+    @Test
+    void testDateRangeFloorAndCeiling() {
+        def fields = new HashMap<String, String>()
+        fields.put("dateCreated", "11/11/11..12/12/12")
+        lookupableHelperService.setParameters([:]) // otherwise NPE
+        def crit = lookupableHelperService.loadCriteria(fields)
+        assertEquals(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("11/11/11")).withMillisOfDay(0), crit.dateCreatedFrom)
+        assertEquals(new DateTime(new DateTime(new SimpleDateFormat("MM/dd/yy").parse("12/13/12")).toDateMidnight()).minusMillis(1), crit.dateCreatedTo)
     }
 }

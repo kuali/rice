@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2011 The Kuali Foundation
+/*
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.docsearch
 
-import org.junit.Test
-import org.kuali.rice.core.api.search.SearchOperator
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.assertEquals
+package org.kuali.rice.core.api.criteria
 
 /**
- * Tests DocumentSearchInternalUtils
+ * TODO: test parsing/predicate generation before refactoring to use SearchExpressionUtils
  */
-class DocumentSearchInternalUtilsTest {
-    
+class PredicateUtilsTest {
 }

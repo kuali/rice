@@ -17,6 +17,8 @@ package org.kuali.rice.kew.docsearch.xml;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.search.Range;
+import org.kuali.rice.core.api.search.SearchExpressionUtils;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -38,7 +40,6 @@ import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
-import org.kuali.rice.kew.docsearch.Range;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.framework.document.attribute.SearchableAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -517,7 +518,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                 // if it's not empty. see if it's a range
                 Range r = null;
                 if (StringUtils.isNotEmpty(value)) {
-                    r = DocumentSearchInternalUtils.parseRange(value);
+                    r = SearchExpressionUtils.parseRange(value);
                 }
                 if (r != null) {
                     // hey, it looks like a range

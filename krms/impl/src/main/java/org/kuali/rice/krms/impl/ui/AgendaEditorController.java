@@ -1370,9 +1370,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 //                           compoundComponent.setEditMode(editMode);
 //                       }
 //                    }
-
-                    //refresh the tree
-                    rule.refreshPropositionTree(null);
+//
+//                    //refresh the tree
+//                    rule.refreshPropositionTree(null);
                     break;
                 } else {
                     child.getData().getProposition().setEditMode(false);
@@ -1383,6 +1383,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         resetEditModeOnPropositionTree(root);
         if (propositionToToggleEdit != null) {
             propositionToToggleEdit.setEditMode(newEditMode);
+            //refresh the tree
+            rule.refreshPropositionTree(null);
         }
 
         return super.updateComponent(form, result, request, response);

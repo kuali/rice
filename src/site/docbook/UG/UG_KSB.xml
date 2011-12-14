@@ -822,6 +822,11 @@
                 </imageobject>
             </mediaobject>
         </figure>
+        <para>Please note, you may have permissions that allow you to click on a row's Endpoint 
+            URL to view the WSDL fiels assoicated with the given service.  In Internet Explorer or
+            Firefox, this WSDL will be displayed normally in a separate window.  In Google Chrome or
+            Safari, however, you will need to click the link then right click to view the frame source
+            to see the WSDL due to current restricts in Chrome and Safari.</para>
     </sect1>
     <sect1>
         <title>Quartz</title>

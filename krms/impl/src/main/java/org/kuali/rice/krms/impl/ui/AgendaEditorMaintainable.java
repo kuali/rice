@@ -218,6 +218,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
                 // MaintenanceDocumentServiceImpl.processMaintenanceObjectForCopy() will try to locate the primary keys in
                 // an attempt to clear them which again would cause an exception due to the wrapper class.
                 agenda.setId(null);
+                document.getDocumentHeader().setDocumentDescription("New Agenda Editor Document");
                 document.setFieldsClearedOnCopy(true);
             }
             agendaEditor.setAgenda(agenda);
@@ -273,12 +274,6 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 		
 		
 	}
-
-    @Override
-    public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> requestParameters) {
-        super.processAfterCopy(document, requestParameters);
-        document.getDocumentHeader().setDocumentDescription("New Agenda Editor Document");
-    }
 
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {

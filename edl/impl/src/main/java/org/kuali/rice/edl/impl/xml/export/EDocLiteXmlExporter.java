@@ -18,13 +18,13 @@ package org.kuali.rice.edl.impl.xml.export;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.ExportDataSet;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlRenderer;
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
@@ -97,7 +97,7 @@ public class EDocLiteXmlExporter implements XmlExporter {
 	private void exportStyles(Element parentEl, EDocLiteAssociation edl) {
 
 		try {
-			StyleService styleService = CoreApiServiceLocator.getStyleService();
+			StyleService styleService = CoreServiceApiServiceLocator.getStyleService();
 
 			if (edl.getStyle() != null) {//this probably shouldn't be supported on the entry side...
 				Element styleWrapperEl = renderer.renderElement(parentEl, EDL_STYLE);

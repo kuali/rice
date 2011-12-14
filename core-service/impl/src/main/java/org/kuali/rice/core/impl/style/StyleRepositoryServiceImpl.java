@@ -41,10 +41,15 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
 
     private static final String STYLE_CONFIG_PREFIX = "edl.style";
 
+    private StyleXmlParser styleXmlParser;
     private StyleDao styleDao;
 
     public void setStyleDao(StyleDao styleDao) {
         this.styleDao = styleDao;
+    }
+
+    public void setStyleXmlParser(StyleXmlParser styleXmlParser) {
+        this.styleXmlParser = styleXmlParser;
     }
 
     /**
@@ -81,7 +86,7 @@ public class StyleRepositoryServiceImpl implements StyleRepositoryService {
                 }
 
                 LOG.info("Automatically loading style '" + styleName + "' from '" + location + "' as configured by " + propertyName);
-                List<Style> styles = CoreImplServiceLocator.getStyleXmlLoader().parseStyles(xml);
+                List<Style> styles = styleXmlParser.parseStyles(xml);
                 for (Style autoLoadedStyle : styles) {
                     if (autoLoadedStyle.getName().equals(styleName)) {
                         return autoLoadedStyle;

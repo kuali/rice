@@ -38,6 +38,7 @@ import static org.junit.Assert.assertNotNull
 import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.extension.ExtensionDefinition
 import org.kuali.rice.kim.api.KimConstants
+import org.apache.commons.lang.StringUtils
 
 /**
  *
@@ -303,7 +304,7 @@ class XMLSearchableAttributeContentTest {
             </searchingConfig>
           </ruleAttribute>
         """)
-        assertEquals(searchContent, content.searchContent.trim())
+        assertEqualsDeleteWhitespace(searchContent, content.searchContent.trim())
     }
 
     @Test void testSearchDefinitionOptions() {
@@ -379,7 +380,7 @@ class XMLSearchableAttributeContentTest {
 
     @Test
     void testDefaultXmlGenerationWithNoValues() {
-        assertEquals("<xmlRouting></xmlRouting>", new XMLSearchableAttributeContent("""
+        assertEqualsDeleteWhitespace("<xmlRouting></xmlRouting>", new XMLSearchableAttributeContent("""
         <ruleAttribute>
             <searchingConfig>
                 <fieldDef name="def1"/>
@@ -394,7 +395,7 @@ class XMLSearchableAttributeContentTest {
         def content = """<myGeneratedContent>
                            <noVariableReplacement/>
                          </myGeneratedContent>"""
-        assertEquals(content, new XMLSearchableAttributeContent("""
+        assertEqualsDeleteWhitespace(content, new XMLSearchableAttributeContent("""
         <ruleAttribute>
           <searchingConfig>
             <xmlSearchContent>
@@ -409,7 +410,7 @@ class XMLSearchableAttributeContentTest {
 
     @Test
     void testDefaultXmlGeneration() {
-        assertEquals("""<xmlRouting><field name="def1"><value>val1</value></field></xmlRouting>""", new XMLSearchableAttributeContent("""
+        assertEqualsDeleteWhitespace("""<xmlRouting><field name="def1"><value>val1</value></field></xmlRouting>""", new XMLSearchableAttributeContent("""
         <ruleAttribute>
           <searchingConfig>
             <fieldDef name="def1"/>
@@ -436,7 +437,7 @@ class XMLSearchableAttributeContentTest {
             </searchingConfig>
           </ruleAttribute>
         """)
-        assertEquals("""
+        assertEqualsDeleteWhitespace("""
                 <myGeneratedContent>
                   <version>whatever</version>
                   <anythingIWant>Once upon a val1...</anythingIWant>
@@ -448,5 +449,9 @@ class XMLSearchableAttributeContentTest {
 
     private static Element dom(String content) {
         DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(content))).getDocumentElement()
+    }
+
+    private assertEqualsDeleteWhitespace(String expected, String actual) {
+        assertEquals(StringUtils.deleteWhitespace(expected), StringUtils.deleteWhitespace(actual));
     }
 }

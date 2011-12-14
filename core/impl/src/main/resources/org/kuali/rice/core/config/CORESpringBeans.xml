@@ -60,7 +60,6 @@
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
-    <import resource="classpath:org/kuali/rice/core/config/CoreOjbSpringBeans.xml" />
 
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="interceptorNames">
@@ -70,11 +69,7 @@
 		</property>
 		<property name="beanNames">
 			<list>
-                <idref local="xmlDigesterService" />
-                <!-- <idref local="styleService" />
-                <idref local="styleXmlLoader" />
-                <idref local="styleXmlExporter" />
-                -->
+        <idref local="xmlDigesterService" />
 			</list>
 		</property>
 	</bean>
@@ -85,13 +80,6 @@
   <bean id="globalCacheManager" class="org.kuali.rice.core.impl.cache.GlobalCacheManager">
     <property name="cacheManagerRegistry" ref="cacheManagerRegistry" />
   </bean>
-  <!--<bean id="platformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
-		<property name="jcdAlias" value="coreApplicationDataSource" />
-		<property name="dbPlatform" ref="dbPlatform" />
-	</bean>
-
-  &lt;!&ndash; this should go in the core spring beans once ojb is available&ndash;&gt;
-  <bean id="criteriaLookupService" class="org.kuali.rice.core.impl.criteria.CriteriaLookupServiceOjbImpl" parent="platformAwareDao"/>-->
 
 	<!-- Mail Sender Factory -->
 	<bean id="mailSender" class="org.kuali.rice.core.mail.MailSenderFactoryBean" />
@@ -118,37 +106,5 @@
 	<bean id="xmlExporterService" class="org.kuali.rice.core.impl.impex.xml.XmlExporterServiceImpl">
 		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
 	</bean>
-	
-	<!-- TODO moved these to KEWSpringBeans.xml for now because of dependency issues with the caching magic
-	
-	<bean id="serviceRegistry" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="rice.ksb.serviceBus" />
-	</bean>
-    
-    <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
-    </bean>
-    
-    <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParser">
-    	<property name="styleService" ref="styleService" />
-    </bean>
-    
-    <bean id="styleXmlExporter" class="org.kuali.rice.core.impl.style.StyleXmlExporter"/>
-        
-    <bean id="coreImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
-		<property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
-        
-        <property name="xmlLoadersToRegister">
-		   <list>
-		     <ref local="styleXmlLoader" />
-		   </list>
-		</property>
-		<property name="xmlExportersToRegister">
-		   <list>
-		     <ref local="styleXmlExporter" />
-		   </list>
-		</property>
-	</bean>
-	
-	-->
 
 </beans>

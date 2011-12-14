@@ -17,7 +17,7 @@ package org.kuali.rice.core.api.style
 
 import org.junit.Assert
 import org.junit.Test
-import org.kuali.rice.core.test.JAXBAssert
+import org.kuali.rice.coreservice.test.JAXBAssert
 
 class StyleTest {
 	private static final Long STYLE_ID = 1

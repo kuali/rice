@@ -17,7 +17,6 @@ package org.kuali.rice.kew.mail;
 
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
@@ -26,6 +25,7 @@ import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailFrom;
 import org.kuali.rice.core.mail.EmailSubject;
 import org.kuali.rice.core.mail.EmailTo;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -109,7 +109,7 @@ public class EmailNode implements SimpleNode {
 
     protected Templates loadStyleSheet(String styleName) {
 	try {
-	    Templates style = CoreApiServiceLocator.getStyleService().getStyleAsTranslet(styleName);
+	    Templates style = CoreServiceApiServiceLocator.getStyleService().getStyleAsTranslet(styleName);
 	    if (style == null) {
 		throw new WorkflowRuntimeException("Failed to locate stylesheet with name '" + styleName + "'");
 	    }

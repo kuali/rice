@@ -16,12 +16,12 @@
 package org.kuali.rice.edl.impl;
 
 import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
 import org.kuali.rice.edl.impl.service.EDocLiteService;
@@ -49,7 +49,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         loadXmlFile("edlstyle.xml");
 
         EDocLiteService edls = EdlServiceLocator.getEDocLiteService();
-        StyleService styleService = CoreApiServiceLocator.getStyleService();
+        StyleService styleService = CoreServiceApiServiceLocator.getStyleService();
         //edls.loadXml(new FileInputStream("conf/examples/xml/EDocLiteContent.xml"));
         assertTrue("Definition not found", edls.getEDocLiteDefinitions().contains("profile"));
         Style defaultStyle = styleService.getStyle("Default");

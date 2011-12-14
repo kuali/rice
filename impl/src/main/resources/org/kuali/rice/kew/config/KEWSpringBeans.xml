@@ -81,6 +81,10 @@
     <property name="serviceName" value="globalCacheManager" />
   </bean>
 
+  <bean id="rice.kew.import.styleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="styleService"/>
+  </bean>
+
   <bean id="KewApiConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
     <property name="constantClass" value="org.kuali.rice.kew.api.KewApiConstants"/>
   </bean>
@@ -210,13 +214,6 @@
         <idref local="documentTypeResponsibilityTypeService" />
         <idref local="reviewResponsibilityTypeService" />
         <idref local="routeLogDerivedRoleTypeService" />
-        <!-- it's important that this service remains non-transactionally proxied for various reasons
-          <idref local="enUserOptionsService"/>
-        -->
-        <idref local="styleService" />
-        <idref local="styleRepositoryService" />
-        <idref local="styleXmlLoader" />
-        <idref local="styleXmlExporter" />
       </list>
     </property>
   </bean>
@@ -449,7 +446,7 @@
   </bean>
 
   <bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl" lazy-init="true">
-    <property name="styleService" ref="styleService"/>
+    <property name="styleService" ref="rice.kew.import.styleService"/>
   </bean>
 
   <bean id="enActionListEmailService" class="org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl">
@@ -467,13 +464,6 @@
 
   <!-- Action Registry -->
   <bean id="enActionRegistry" class="org.kuali.rice.kew.actions.ActionRegistryImpl" lazy-init="true"/>
-
-  <!-- some beans shared by client and server -->
-  <!--
-  <bean id="styleService" class="GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="styleService" />
-  </bean>
-  -->
 
   <!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true"/> -->
   <bean id="enEncryptionService" class="org.kuali.rice.core.impl.encryption.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
@@ -777,44 +767,6 @@
   </bean>
 
   <!-- TODO moved these from CoreSpringBeans.xml for now because of dependency issues with the caching magic -->
-
-  <bean id="serviceRegistry" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="rice.ksb.serviceBus" />
-  </bean>
-
-  <bean id="styleService" class="org.kuali.rice.core.impl.style.StyleServiceImpl">
-    <property name="styleRepositoryService" ref="styleRepositoryService" />
-  </bean>
-
-  <bean id="styleRepositoryService" class="org.kuali.rice.core.impl.style.StyleRepositoryServiceImpl">
-    <property name="styleDao" ref="styleDao" />
-  </bean>
-
-  <bean id="styleDao" class="org.kuali.rice.core.impl.style.StyleDaoOjb">
-    <property name="jcdAlias" value="enWorkflowDataSource" />
-  </bean>
-
-  <bean id="styleXmlLoader" class="org.kuali.rice.core.impl.style.StyleXmlParserImpl">
-    <property name="styleService" ref="styleService" />
-  </bean>
-
-  <bean id="styleXmlExporter" class="org.kuali.rice.core.impl.style.StyleXmlExporter"/>
-
-  <bean id="coreImpexRegistrations" class="org.kuali.rice.core.framework.impex.xml.XmlImpexRegistrationBean">
-    <property name="xmlImpexRegistry" ref="xmlImpexRegistry" />
-
-    <property name="xmlLoadersToRegister">
-      <list>
-        <ref local="styleXmlLoader" />
-      </list>
-    </property>
-    <property name="xmlExportersToRegister">
-      <list>
-        <ref local="styleXmlExporter" />
-      </list>
-    </property>
-  </bean>
-
 
   <!-- New beans added for KEW version compatibility refactoring Rice 2.0 -->
 

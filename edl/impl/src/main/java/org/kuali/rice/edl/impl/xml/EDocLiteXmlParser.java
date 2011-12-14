@@ -16,12 +16,12 @@
 package org.kuali.rice.edl.impl.xml;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.api.util.xml.XmlException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.bo.EDocLiteAssociation;
 import org.kuali.rice.edl.impl.bo.EDocLiteDefinition;
@@ -255,6 +255,6 @@ public class EDocLiteXmlParser {
     }
     
     private static StyleService getStyleService() {
-    	return CoreApiServiceLocator.getStyleService();
+    	return CoreServiceApiServiceLocator.getStyleService();
     }
 }

@@ -18,8 +18,6 @@ package org.kuali.rice.edl.impl.components;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
@@ -31,6 +29,8 @@ import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailFrom;
 import org.kuali.rice.core.mail.EmailSubject;
 import org.kuali.rice.core.mail.EmailToList;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
@@ -514,7 +514,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 
     protected Templates loadStyleSheet(String styleName) {
         try {
-            Templates style = CoreApiServiceLocator.getStyleService().getStyleAsTranslet(styleName);
+            Templates style = CoreServiceApiServiceLocator.getStyleService().getStyleAsTranslet(styleName);
             if (style == null) {
                 throw new WorkflowRuntimeException("Failed to locate stylesheet with name '" + styleName + "'");
             }

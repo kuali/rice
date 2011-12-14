@@ -15,26 +15,19 @@
  */
 package org.kuali.rice.core.api;
 
-
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
 import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.api.style.StyleService;
 
 import javax.xml.namespace.QName;
 
 public class CoreApiServiceLocator {
 
-	public static final String NAMESPACE_SERVICE = "namespaceService";
 	public static final String XML_EXPORTER_SERVICE = "xmlExporterService";
 	public static final String XML_INGESTER_SERVICE = "xmlIngesterService";
-	public static final String STYLE_SERVICE = "styleService";
 
-    public static final QName PARAMETER_REPOSITORY_SERVICE = new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, "parameterRepositoryService");
-    public static final QName COMPONENT_SERVICE = new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, "componentService");
-	
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
@@ -53,10 +46,6 @@ public class CoreApiServiceLocator {
     
     public static final EncryptionService getEncryptionService() {
         return getService(CoreConstants.Services.ENCRYPTION_SERVICE);
-    }
-    
-    public static StyleService getStyleService() {
-    	return getService(STYLE_SERVICE);
     }
 
 	public static DateTimeService getDateTimeService() {

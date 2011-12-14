@@ -17,14 +17,14 @@ package org.kuali.rice.core.impl.style;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.impex.xml.XmlIngestionException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.style.Style;
 import org.kuali.rice.core.api.style.StyleService;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
-import org.kuali.rice.core.impl.services.CoreImplServiceLocator;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.impl.CoreServiceImplServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 
@@ -52,7 +52,7 @@ public class StyleServiceImplTest extends KEWTestCase {
 	@Test public void testLoadXML() throws FileNotFoundException {
         loadXmlFile("style.xml");
 
-        StyleService styleService = CoreApiServiceLocator.getStyleService();
+        StyleService styleService = CoreServiceApiServiceLocator.getStyleService();
         assertNotNull("Style 'an_arbitrary_style' not found", styleService.getStyle("an_arbitrary_style"));
 
         Style style = styleService.getStyle("an_arbitrary_style");
@@ -68,7 +68,7 @@ public class StyleServiceImplTest extends KEWTestCase {
 	 * See edl.style.widgets in common-config-defualts.xml, edl.style.gidgets in kew-test-config.xml
 	 */
     @Test public void testLoadingFromConfiguredFile() {
-        StyleService styleService = CoreApiServiceLocator.getStyleService();
+        StyleService styleService = CoreServiceApiServiceLocator.getStyleService();
         StyleDao dao = (StyleDao)GlobalResourceLoader.getService("styleDao");
 
         String notThereStyle = "gidgets";
@@ -96,7 +96,7 @@ public class StyleServiceImplTest extends KEWTestCase {
     @Test public void testInclusions() throws FileNotFoundException, TransformerConfigurationException, TransformerException {
         loadXmlFile("style.xml");
 
-        StyleService styleService = CoreApiServiceLocator.getStyleService();
+        StyleService styleService = CoreServiceApiServiceLocator.getStyleService();
 
         // ignoring the duplicate definition via inclusion test as the behavior seems
         // unspecified
@@ -148,7 +148,7 @@ public class StyleServiceImplTest extends KEWTestCase {
     }
 
     @Test public void testLoadBadDefinition() throws FileNotFoundException {
-        XmlLoader xmlLoader = CoreImplServiceLocator.getStyleXmlLoader();
+        XmlLoader xmlLoader = CoreServiceImplServiceLocator.getStyleXmlLoader();
         try {
             xmlLoader.loadXml(TestUtilities.loadResource(getClass(), "badstyle.xml"), null);
             fail("BadDefinition was successfully parsed.");
@@ -160,8 +160,8 @@ public class StyleServiceImplTest extends KEWTestCase {
     }
 
     @Test public void testStoreStyle() {
-    	StyleService styleService = CoreApiServiceLocator.getStyleService();
-    	XmlLoader xmlLoader = CoreImplServiceLocator.getStyleXmlLoader();
+    	StyleService styleService = CoreServiceApiServiceLocator.getStyleService();
+    	XmlLoader xmlLoader = CoreServiceImplServiceLocator.getStyleXmlLoader();
         String styleXml = "<data xmlns=\"ns:workflow\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:workflow resource:WorkflowData\"><styles xmlns=\"ns:workflow/Style\" xsi:schemaLocation=\"ns:workflow/Style resource:Style\"><style></style></styles></data>";
         try {
             xmlLoader.loadXml(new ByteArrayInputStream(styleXml.getBytes()), null);

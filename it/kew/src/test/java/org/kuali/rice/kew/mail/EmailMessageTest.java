@@ -17,8 +17,8 @@ package org.kuali.rice.kew.mail;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.mail.EmailContent;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionItem;
@@ -48,7 +48,7 @@ public class EmailMessageTest extends KEWTestCase {
         actionListEmailService.setDeploymentEnvironment("dev");
        // hardCodedEmailContentService.setDeploymentEnvironment("dev");
         styleableContentService.setDeploymentEnvironment("dev");
-        styleableContentService.setStyleService(CoreApiServiceLocator.getStyleService());
+        styleableContentService.setStyleService(CoreServiceApiServiceLocator.getStyleService());
     }
 
     @Override
@@ -87,7 +87,7 @@ public class EmailMessageTest extends KEWTestCase {
     @Test
     public void testGenerateRemindersCustomStyleSheet() throws Exception {
         loadXmlFile("customEmailStyleData.xml");
-        assertNotNull(CoreApiServiceLocator.getStyleService().getStyle("kew.email.style"));
+        assertNotNull(CoreServiceApiServiceLocator.getStyleService().getStyle("kew.email.style"));
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, user);
@@ -120,8 +120,8 @@ public class EmailMessageTest extends KEWTestCase {
         // distinguishing marker...so we just reuse the global custom email style here
         loadXmlFile("customEmailStyleData.xml");
         loadXmlFile("docCustomEmailStyleData.xml");
-        assertNotNull(CoreApiServiceLocator.getStyleService().getStyle("kew.email.style"));
-        assertNotNull(CoreApiServiceLocator.getStyleService().getStyle("doc.custom.email.style"));
+        assertNotNull(CoreServiceApiServiceLocator.getStyleService().getStyle("kew.email.style"));
+        assertNotNull(CoreServiceApiServiceLocator.getStyleService().getStyle("doc.custom.email.style"));
 
         Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocumentCustomStyle" }, user);
@@ -158,6 +158,6 @@ public class EmailMessageTest extends KEWTestCase {
     		fail("Loading of badCustomEmailStyleData.xml should have failed!");
     	} catch (Exception e) {}
         // this doesn't get loaded
-        assertNull(CoreApiServiceLocator.getStyleService().getStyle("bad.kew.email.style"));
+        assertNull(CoreServiceApiServiceLocator.getStyleService().getStyle("bad.kew.email.style"));
     }
 }

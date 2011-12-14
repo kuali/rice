@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2011 The Kuali Foundation
+/*
+ * Copyright 2006-2011 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.impl.services;
+package org.kuali.rice.coreservice.impl;
 
 import org.kuali.rice.core.api.cache.CacheManagerRegistry;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.framework.impex.xml.XmlExporter;
+import org.kuali.rice.core.impl.style.StyleXmlParser;
 
-public class CoreImplServiceLocator {
+public class CoreServiceImplServiceLocator {
 
-    public static final String CACHE_MANAGER_REGISTRY = "cacheManagerRegistry";
-	
+	public static final String STYLE_XML_LOADER = "styleXmlLoader";
+	public static final String STYLE_XML_EXPORTER = "styleXmlExporter";
+
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
+
+    public static StyleXmlParser getStyleXmlLoader() {
+        return getService(STYLE_XML_LOADER);
+    }
         
-    public static CacheManagerRegistry getCacheManagerRegistry() {
-        return getService(CACHE_MANAGER_REGISTRY);
+    public static XmlExporter getStyleXmlExporter() {
+        return getService(STYLE_XML_EXPORTER);
     }
 
 }

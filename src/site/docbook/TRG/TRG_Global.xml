@@ -305,12 +305,6 @@
                         <entry>50</entry>
                     </row>
                     <row>
-                        <entry>datasource.pool.size</entry>
-                        <entry>The number of connections in the data source pool; the default is
-                            5.</entry>
-                        <entry>6</entry>
-                    </row>
-                    <row>
                         <entry>environment</entry>
                         <entry>The name of the environment. This will be used to determine if the
                             environment the application is working within is a production
@@ -1112,8 +1106,8 @@ alter system set sessions=150 scope=spfile;
 </programlisting>
                         </listitem>
                         <listitem>
-                            <para>Lower the Atomikos pool size in your rice config.xml: </para>
-                            <programlisting>&lt;param name="datasource.pool.size">10&lt;/param></programlisting>
+                            <para>Lower the pool size in your rice config.xml: </para>
+                            <programlisting>&lt;param name="datasource.pool.maxSize">10&lt;/param></programlisting>
                         </listitem>
                     </orderedlist></para>
                 <para>Disconnect any other clients and then restart Oracle-XE.</para>

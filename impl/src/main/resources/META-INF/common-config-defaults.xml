@@ -41,7 +41,6 @@
 
   	<param name="datasource.pool.minSize" override="false">0</param>
     <param name="datasource.pool.maxSize" override="false">5</param>
-    <param name="datasource.pool.size" override="false">5</param>
     <param name="datasource.pool.maxWait" override="false">30000</param>
 
 

@@ -551,7 +551,6 @@ cp -p rice-config.xml rice-config-prd2.xml</programlisting></para>
 	&lt;param name="datasource.password">kualirice&lt;/param>
 
 	&lt;param name="datasource.driver.name">com.mysql.jdbc.Driver&lt;/param>
-	&lt;param name="datasource.pool.size">5&lt;/param>
 
 	&lt;param name="datasource.pool.maxWait">10000&lt;/param>
 	&lt;param name="datasource.pool.validationQuery">select 1&lt;/param>
@@ -568,7 +567,6 @@ cp -p rice-config.xml rice-config-prd2.xml</programlisting></para>
 	&lt;param name="datasource.password">*** password ***&lt;/param>
 
 	&lt;param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver&lt;/param>
-	&lt;param name="datasource.pool.size">5&lt;/param>
 	&lt;param name="datasource.pool.maxWait">10000&lt;/param>
 	&lt;param name="datasource.pool.validationQuery">select 1 from dual&lt;/param>
 	-->
@@ -588,7 +586,6 @@ cp -p rice-config.xml rice-config-prd2.xml</programlisting></para>
 	&lt;param name="datasource.username">riceprd1&lt;/param>
 	&lt;param name="datasource.password">kualirice&lt;/param>
 	&lt;param name="datasource.driver.name">com.mysql.jdbc.Driver&lt;/param>
-	&lt;param name="datasource.pool.size">5&lt;/param>
 	&lt;param name="datasource.pool.maxWait">10000&lt;/param>
 	&lt;param name="datasource.pool.validationQuery">select 1&lt;/param>
 
@@ -599,7 +596,6 @@ cp -p rice-config.xml rice-config-prd2.xml</programlisting></para>
 	&lt;param name="datasource.username">rice&lt;/param>
 	&lt;param name="datasource.password">*** password ***&lt;/param>
 	&lt;param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver&lt;/param>
-	&lt;param name="datasource.pool.size">5&lt;/param>
 	&lt;param name="datasource.pool.maxWait">10000&lt;/param>
 	&lt;param name="datasource.pool.validationQuery">select 1 from dual&lt;/param>
 	-->

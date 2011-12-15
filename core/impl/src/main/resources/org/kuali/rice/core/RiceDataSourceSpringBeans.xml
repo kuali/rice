@@ -113,20 +113,6 @@
   <alias name="riceDataSource${connection.pool.impl}" alias="riceDataSource"/>
   <alias name="riceDataSource${connection.pool.impl}" alias="dataSource"/>
 
- <!--
-    <bean id="riceDataSource" class="com.atomikos.jdbc.nonxa.NonXADataSourceBean">
-  	  <property name="uniqueResourceName" value="riceRiceDataSource"/>
-  	  <property name="driverClassName" value="${datasource.driver.name}"/>
-  	  <property name="url" value="${datasource.url}"/>
-  	  <property name="poolSize" value="${datasource.pool.size}"/>
-  	  <property name="connectionTimeout" value="${datasource.pool.maxWait}"/>
-  	  <property name="validatingQuery" value="${datasource.pool.validationQuery}"/>
-  	  <property name="testOnBorrow" value="true"/>
-  	  <property name="user" value="${datasource.username}"/>
-  	  <property name="password" value="${datasource.password}"/>
-    </bean>
--->
-
     <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
         <property name="url" value="${datasource.url}"/>

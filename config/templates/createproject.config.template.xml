@@ -34,7 +34,6 @@
 	<param name="datasource.driver.name">oracle.jdbc.OracleDriver</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="datasource.pool.maxWait">30000</param>
-	<param name="datasource.pool.size">5</param>
 
 	<param name="keystore.alias">rice</param>
 	<param name="keystore.file">${USER_HOME}/kuali/main/dev/rice.keystore</param>

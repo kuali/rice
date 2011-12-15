@@ -44,7 +44,6 @@
 	<param name="${PROJECT_NAME}.datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="${PROJECT_NAME}.datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="${PROJECT_NAME}.datasource.pool.maxWait">30000</param>
-	<param name="${PROJECT_NAME}.datasource.pool.size">5</param>
 	<param name="${PROJECT_NAME}.datasource.pool.maxSize">5</param>
 	<param name="${PROJECT_NAME}.datasource.pool.minSize">5</param>
 	<param name="${PROJECT_NAME}.datasource.pool.maxActive">${datasource.pool.maxActive}</param>

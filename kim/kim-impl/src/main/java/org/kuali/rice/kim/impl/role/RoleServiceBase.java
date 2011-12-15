@@ -196,7 +196,7 @@ abstract class RoleServiceBase {
         }
 
         return getBusinessObjectService().findByPrimaryKey(RoleMemberBo.class, Collections.singletonMap(
-                KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId));
+               KimConstants.PrimaryKeyConstants.ID, roleMemberId));
     }
 
     /**

@@ -16,11 +16,14 @@
 package org.kuali.rice.location.api.services;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.location.api.LocationConstants;
 import org.kuali.rice.location.api.campus.CampusService;
 import org.kuali.rice.location.api.country.CountryService;
 import org.kuali.rice.location.api.county.CountyService;
 import org.kuali.rice.location.api.postalcode.PostalCodeService;
 import org.kuali.rice.location.api.state.StateService;
+
+import javax.xml.namespace.QName;
 
 /**
  * <p>LocationApiServiceLocator class.</p>
@@ -28,18 +31,22 @@ import org.kuali.rice.location.api.state.StateService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocationApiServiceLocator {
-    /** Constant <code>COUNTRY_SERVICE="countryService"</code> */
-    public static final String COUNTRY_SERVICE = "countryService";
-    /** Constant <code>CAMPUS_SERVICE="campusService"</code> */
-    public static final String CAMPUS_SERVICE = "campusService";
-    /** Constant <code>STATE_SERVICE="stateService"</code> */
-    public static final String STATE_SERVICE = "stateService";
-    /** Constant <code>COUNTY_SERVICE="countyService"</code> */
-    public static final String COUNTY_SERVICE = "countyService";
-    /** Constant <code>POSTAL_CODE_SERVICE="postalCodeService"</code> */
-    public static final String POSTAL_CODE_SERVICE = "postalCodeService";
 
-    static <T> T getService(String serviceName) {
+    public static final QName COUNTRY_SERVICE = buildName("countryService");
+
+    public static final QName CAMPUS_SERVICE = buildName("campusService");
+
+    public static final QName STATE_SERVICE = buildName("stateService");
+
+    public static final QName COUNTY_SERVICE = buildName("countyService");
+
+    public static final QName POSTAL_CODE_SERVICE = buildName("postalCodeService");
+
+    private static QName buildName(String serviceName) {
+        return new QName(LocationConstants.Namespaces.LOCATION_NAMESPACE_2_0, serviceName);
+    }
+
+    static <T> T getService(QName serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
@@ -77,4 +84,5 @@ public class LocationApiServiceLocator {
     public static PostalCodeService getPostalCodeService() {
         return (PostalCodeService) getService(POSTAL_CODE_SERVICE);
     }
+    
 }

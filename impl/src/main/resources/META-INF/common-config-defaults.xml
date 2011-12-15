@@ -432,7 +432,7 @@
 
   <!-- LOCATION -->
 
-	<param name="location.mode" override="false">LOCAL</param>
+	<param name="location.mode" override="false">REMOTE</param>
 	<param name="rice.location.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.location.expose.services.on.bus" override="false">true</param>
   <param name="location.soapExposedService.jaxws.security" override="false">true</param>

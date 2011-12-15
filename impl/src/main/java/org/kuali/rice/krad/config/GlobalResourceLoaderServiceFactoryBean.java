@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.krad.config;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+
+import javax.xml.namespace.QName;
 
 /**
  * Exports services in the {@link org.kuali.rice.core.api.resourceloader.GlobalResourceLoader} as beans available to Spring.
@@ -28,6 +31,7 @@ import org.springframework.beans.factory.InitializingBean;
  */
 public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Object>, InitializingBean {
 
+    private String serviceNamespace;
 	private String serviceName;
 	private boolean singleton;
 	private boolean mustExist;
@@ -43,7 +47,12 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 		if (isFetchingService) return null; // we already have been invoked, don't recurse, just return null.
 		isFetchingService = true;
 		try {
-			Object service = GlobalResourceLoader.getService(this.getServiceName());
+            Object service = null;
+            if (StringUtils.isBlank(getServiceNamespace())) {
+			    service = GlobalResourceLoader.getService(this.getServiceName());
+            } else {
+                service = GlobalResourceLoader.getService(new QName(getServiceNamespace(), getServiceName()));
+            }
 			if (mustExist && service == null) {
 				throw new IllegalStateException("Service must exist and no service could be located with name: " + this.getServiceName());
 			}
@@ -61,7 +70,15 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 		return singleton;
 	}
 
-	public String getServiceName() {
+    public String getServiceNamespace() {
+        return serviceNamespace;
+    }
+
+    public void setServiceNamespace(String serviceNamespace) {
+        this.serviceNamespace = serviceNamespace;
+    }
+
+    public String getServiceName() {
 		return serviceName;
 	}
 
@@ -83,7 +100,7 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
 	
 
 	public void afterPropertiesSet() throws Exception {
-		if (this.getServiceName() == null) {
+		if (StringUtils.isBlank(this.getServiceName())) {
 			throw new ConfigurationException("No serviceName given.");
 		}
 	}

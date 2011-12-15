@@ -66,5 +66,7 @@
 	<import resource="classpath:org/kuali/rice/ken/config/KENConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/edl/impl/config/EDLConfigSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/krms/config/KRMSConfigSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/location/config/LocationConfigSpringBeans.xml"/>
+  
+  <bean id="locationConfigurer" class="org.kuali.rice.location.impl.config.LocationConfigurer"/>
+  
 </beans>

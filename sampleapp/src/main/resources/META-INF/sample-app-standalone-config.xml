@@ -16,6 +16,9 @@
 
 -->
 <config>
+
+  <param name="config.location">classpath:org/kuali/rice/standalone/config/standalone-config-defaults.xml</param>
+
   <param name="module.name">sample-app-standalone</param>
   <param name="application.id">TRAVEL</param>
 

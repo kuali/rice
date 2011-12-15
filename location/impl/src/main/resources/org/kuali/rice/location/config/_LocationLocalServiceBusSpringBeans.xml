@@ -56,34 +56,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean id="rice.ksb.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="rice.ksb.serviceBus"/>
-  </bean>
-
-  <bean id="locationService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
-    <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.location.api.LocationConstants$Namespaces).LOCATION_NAMESPACE_2_0 }"/>
-    <property name="jaxWsService" value="true"/>
-    <property name="priority" value="3"/>
-    <property name="retryAttempts" value="0"/>
-    <property name="busSecurity" value="${location.soapExposedService.jaxws.security}"/>
-    <property name="serviceVersion" value="${rice.version}"/>
-    <property name="servicePath" value="#{ T(org.kuali.rice.location.api.LocationConstants).SERVICE_PATH_SOAP }"/>
-    <property name="cacheManager" value="locationLocalCacheManager"/>
-  </bean>
-
-  <bean id="locationLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
-		<property name="runModePropertyName" value="location.mode" />
-		<property name="validRunMode" value="LOCAL" />
-	</bean>
-
-  <bean id="locationRemoteServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
-		<property name="runModePropertyName" value="location.mode" />
-		<property name="validRunMode" value="REMOTE" />
-	</bean>
-
-  <bean parent="locationLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+  <bean parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="postalCodeService"
@@ -93,8 +66,7 @@
     <property name="exportIf" value="postalCodeService.expose"/>
   </bean>
 
-  <bean parent="locationLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+  <bean parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="countyService"
@@ -104,8 +76,7 @@
     <property name="exportIf" value="countyService.expose"/>
   </bean>
 
-    <bean parent="locationLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+  <bean parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="stateService"
@@ -115,8 +86,7 @@
     <property name="exportIf" value="stateService.expose"/>
   </bean>
 
-  <bean parent="locationLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+  <bean parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="countryService"
@@ -126,8 +96,7 @@
     <property name="exportIf" value="countryService.expose"/>
   </bean>
 
-    <bean parent="locationLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+    <bean parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="campusService"
@@ -135,16 +104,6 @@
             p:serviceInterface="org.kuali.rice.location.api.campus.CampusService"/>
     </property>
     <property name="exportIf" value="campusService.expose"/>
-  </bean>
-
-  <bean parent="locationRemoteServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="locationService"
-            p:service-ref="locationCacheService"
-            p:localServiceName="locationCacheService"/>
-    </property>
-    <property name="exportIf" value="locationCacheService.expose"/>
   </bean>
 
 </beans>

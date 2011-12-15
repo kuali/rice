@@ -267,13 +267,13 @@
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceDummy.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/AttributeReferenceElements.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/BusinessObjectAttributeEntry.xml</value>
-        <value>classpath:org/kuali/rice/location/web/campus/Campus.xml</value>
-        <value>classpath:org/kuali/rice/location/web/campus/CampusType.xml</value>
+        <!--<value>classpath:org/kuali/rice/location/web/campus/Campus.xml</value>-->
+        <!--<value>classpath:org/kuali/rice/location/web/campus/CampusType.xml</value>-->
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/DocumentHeader.xml</value>
-        <value>classpath:org/kuali/rice/location/web/country/Country.xml</value>
-        <value>classpath:org/kuali/rice/location/web/county/County.xml</value>
-        <value>classpath:org/kuali/rice/location/web/state/State.xml</value>
-        <value>classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml</value>
+        <!--<value>classpath:org/kuali/rice/location/web/country/Country.xml</value>-->
+        <!--<value>classpath:org/kuali/rice/location/web/county/County.xml</value>-->
+        <!--<value>classpath:org/kuali/rice/location/web/state/State.xml</value>-->
+        <!--<value>classpath:org/kuali/rice/location/web/postalcode/PostalCode.xml</value>-->
 
         <value>classpath:org/kuali/rice/coreservice/web/namespace/Namespace.xml</value>
         <value>classpath:org/kuali/rice/coreservice/web/parameter/ParameterType.xml</value>

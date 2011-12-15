@@ -13,21 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.location.config;
+package org.kuali.rice.location.impl.config;
 
+import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.location.api.LocationConstants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Allows for configuring a client to the "location" module in Kuali Rice.
+ *
+ * <p>The LocationConfigurer supports two run modes:
+ *   <ol>
+ *       <li>REMOTE - loads the client which interacts remotely with the location services</li>
+ *       <li>LOCAL - loads the location service implementations and web components locally</li>
+ *   </ol>
+ * </p>
+ *
+ * <p>Client applications should generally only use "remote" run mode (which is the default).</p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocationConfigurer extends ModuleConfigurer {
-	private static final String LOCATION_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/location/config/LocationServiceBusSpringBeans.xml";
+
+    public LocationConfigurer() {
+        super(LocationConstants.Namespaces.MODULE_NAME);
+        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
+    }
 
     @Override
     public String getModuleName() {
@@ -36,11 +51,12 @@ public class LocationConfigurer extends ModuleConfigurer {
 
     @Override
 	public List<String> getPrimarySpringFiles() {
-		final List<String> springFileLocations = new ArrayList<String>(super.getPrimarySpringFiles());
-
-		if ( isExposeServicesOnBus() ) {
-		    springFileLocations.add(LOCATION_KSB_SPRING_BEANS_PATH);
-		}
+        List<String> springFileLocations = new ArrayList<String>();
+        if (RunMode.REMOTE == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "LocationRemoteSpringBeans.xml");
+        } else if (RunMode.LOCAL == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "LocationLocalSpringBeans.xml");
+        }
 		return springFileLocations;
 	}
 

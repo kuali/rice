@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright 2005-2011 The Kuali Foundation
@@ -55,14 +56,29 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean id="locationConfigurer" class="org.kuali.rice.location.config.LocationConfigurer">
-		<property name="moduleName" value="LOCATION" />
-		<property name="validRunModes">
+  <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+
+  <bean id="locationOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
+		<property name="jcdAliases">
 			<list>
-				<value>LOCAL</value>
-				<value>EMBEDDED</value>
-				<value>REMOTE</value>
+				<value>locationDataSource</value>
 			</list>
 		</property>
+		<property name="metadataLocation" value="classpath:org/kuali/rice/location/config/OJB-repository-location.xml" />
 	</bean>
+
+	<bean id="locationDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+		<property name="preferredDataSourceParams">
+			<list>
+				<value>location.datasource</value>
+			</list>
+		</property>
+		<property name="preferredDataSourceJndiParams">
+			<list>
+				<value>location.datasource.jndi.location</value>
+			</list>
+		</property>
+		<property name="serverDataSource" value="true"/>
+	</bean>
+
 </beans>

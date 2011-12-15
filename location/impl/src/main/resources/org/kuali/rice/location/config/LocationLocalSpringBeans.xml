@@ -61,21 +61,18 @@
                            http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
-  <import resource="classpath:org/kuali/rice/location/config/LocationOjbSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/location/config/_LocationCommonSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/location/config/_LocationOjbSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/location/config/_LocationLocalServiceBusSpringBeans.xml" />
 
   <!-- caching start -->
-  <cache:annotation-driven cache-manager="globalCacheManager" />
 
-  <bean id="rice.ksb.messageHelper" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="rice.ksb.messageHelper"/>
+  <bean id="rice.location.import.globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="globalCacheManager" />
   </bean>
 
-  <!-- this can be swapped with whatever cache manager you want (ehcache, java.util.concurrent, etc.) -->
-  <bean id="locationLocalCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-    <property name="cacheManager">
-      <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="${location.ehcache.config.location}"/>
-    </property>
-  </bean>
+  <cache:annotation-driven cache-manager="rice.location.import.globalCacheManager" />
 
   <!-- the distributed cache manager that calls into the locationCacheService on the ksb -->
   <bean id="locationDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
@@ -87,13 +84,6 @@
     <property name="cacheManager" ref="locationDistributedCacheManager" />
   </bean>
 
-  <!-- spring service that should be exposed on the ksb to receive messages from the distributed cache manager -->
-  <bean id="locationCacheService" class="org.kuali.rice.core.impl.cache.CacheServiceImpl" p:cacheManager-ref="locationLocalCacheManager" />
-
-  <bean id="globalCacheManager"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="globalCacheManager" />
-  </bean>
   <!-- caching end -->
 
   <bean id="dataDictionaryService"
@@ -108,7 +98,7 @@
 
   <bean id="locationModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
   <property name="namespaceCode" value="KR-NS"/>
-    <property name="dataSourceName" value="locationServerDataSource"/>
+    <property name="dataSourceName" value="locationDataSource"/>
     <property name="initializeDataDictionary" value="true"/>
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
     <property name="persistenceService" ref="persistenceServiceOjb"/>

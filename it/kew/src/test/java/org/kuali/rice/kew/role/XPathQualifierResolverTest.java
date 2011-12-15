@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.role;
 
 import org.junit.Test;
+import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
@@ -23,6 +24,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -39,9 +41,9 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 
 	private static final String SIMPLE_CONFIG_1 = "<resolverConfig>" +
 		"<baseXPathExpression>/xmlData/accountNumbers</baseXPathExpression>" +
-		"<qualifier name=\"accountNumber\">" +
+		"<attributes name=\"accountNumber\">" +
 		"<xPathExpression>./accountNumber</xPathExpression>" +
-		"</qualifier>" +
+		"</attributes>" +
 		"</resolverConfig>";
 	
 	private static final String SIMPLE_DOC_XML_1 = "<xmlData>" +
@@ -54,28 +56,28 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 		"</xmlData>";
 	
 	private static final String SIMPLE_CONFIG_2 = "<resolverConfig>" +
-	"<qualifier name=\"accountNumber\">" +
+	"<attributes name=\"accountNumber\">" +
 	"<xPathExpression>//accountNumber</xPathExpression>" +
-	"</qualifier>" +
+	"</attributes>" +
 	"</resolverConfig>";
 	
 	private static final String COMPOUND_CONFIG_1 = "<resolverConfig>" +
 		"<baseXPathExpression>/xmlData/chartOrg</baseXPathExpression>" +
-		"<qualifier name=\"chart\">" +
+		"<attributes name=\"chart\">" +
 		"<xPathExpression>./chart</xPathExpression>" +
-		"</qualifier>" +
-		"<qualifier name=\"org\">" +
+		"</attributes>" +
+		"<attributes name=\"org\">" +
 		"<xPathExpression>./org</xPathExpression>" +
-		"</qualifier>" +
+		"</attributes>" +
 		"</resolverConfig>";
 
 	private static final String COMPOUND_CONFIG_2 = "<resolverConfig>" +
-		"<qualifier name=\"chart\">" +
+		"<attributes name=\"chart\">" +
 		"<xPathExpression>//chart</xPathExpression>" +
-		"</qualifier>" +
-		"<qualifier name=\"org\">" +
+		"</attributes>" +
+		"<attributes name=\"org\">" +
 		"<xPathExpression>//org</xPathExpression>" +
-		"</qualifier>" +
+		"</attributes>" +
 		"</resolverConfig>";
 
 	
@@ -109,9 +111,10 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_simpleMap() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
+        ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, SIMPLE_CONFIG_1));
+		resolver.setExtensionDefinition(extensionDefinition.build());
 
-		resolver.setXmlConfigData(SIMPLE_CONFIG_1);
-		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
 		context.setDocumentContent(docContent);
@@ -123,9 +126,10 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_simpleMap_noBaseXPath() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
-		
-		resolver.setXmlConfigData(SIMPLE_CONFIG_2);
-		
+		ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, SIMPLE_CONFIG_2));
+		resolver.setExtensionDefinition(extensionDefinition.build());
+
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(SIMPLE_DOC_XML_1);
 		context.setDocumentContent(docContent);
@@ -156,8 +160,9 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_compoundMap1() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
-
-		resolver.setXmlConfigData(COMPOUND_CONFIG_1);
+        ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, COMPOUND_CONFIG_1));
+		resolver.setExtensionDefinition(extensionDefinition.build());
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_1);
@@ -183,8 +188,9 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_compoundMap() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
-
-		resolver.setXmlConfigData(COMPOUND_CONFIG_1);
+        ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, COMPOUND_CONFIG_1));
+		resolver.setExtensionDefinition(extensionDefinition.build());
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);
@@ -214,8 +220,9 @@ public class XPathQualifierResolverTest extends BaseRiceTestCase {
 	@Test
 	public void testResolve_compoundMap_noBaseXPath() throws Exception {
 		XPathQualifierResolver resolver = new XPathQualifierResolver();
-		
-		resolver.setXmlConfigData(COMPOUND_CONFIG_2);
+		ExtensionDefinition.Builder extensionDefinition = ExtensionDefinition.Builder.create("fakeName", "fakeType", "fakeResourceDescriptor");
+        extensionDefinition.setConfiguration(Collections.singletonMap(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, COMPOUND_CONFIG_2));
+		resolver.setExtensionDefinition(extensionDefinition.build());
 		
 		RouteContext context = new RouteContext();
 		DocumentContent docContent = new StandardDocumentContent(COMPOUND_DOC_XML_2);

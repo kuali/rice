@@ -18,8 +18,10 @@ package org.kuali.rice.kew.role;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.extension.ExtensionDefinition;
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -44,12 +46,12 @@ import java.util.Map;
  * <p><pre>
  * <resolverConfig>
  *   <baseXPathExpression>/xmlData/chartOrg</baseXPathExpression>
- *   <qualifier name="chart">
+ *   <attribute name="chart">
  *     <xPathExpression>./chart</xPathExpression>
- *   </qualifier>
- *   <qualifier name="org">
+ *   </attribute>
+ *   <attribute name="org">
  *     <xPathExpression>./org</xPathExpression>
- *   </qualifier>
+ *   </attribute>
  * </resolverConfig>
  * </pre>
  * 
@@ -120,12 +122,11 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XPathQualifierResolver implements QualifierResolver {
+public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredAttribute {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XPathQualifierResolver.class);
 
 	private ExtensionDefinition extensionDefinition;
-    String xmlConfigData;
-	
+
 	public List<Map<String, String>> resolve(RouteContext context) {
 			ResolverConfig config = parseResolverConfig();
 			Document xmlContent = context.getDocumentContent().getDocument();
@@ -184,24 +185,21 @@ public class XPathQualifierResolver implements QualifierResolver {
 			maps.add(map);
 		}
 	}
-
-	public void setXmlConfigData (String xmlConfigData) {
-		this.xmlConfigData = xmlConfigData;
-	}
 	
 	protected ResolverConfig parseResolverConfig() {
-		if (xmlConfigData == null) {
+		if (extensionDefinition.getConfiguration() != null
+               && extensionDefinition.getConfiguration().get(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA) == null) {
 			throw new RiceRuntimeException("Failed to locate a RuleAttribute for the given XPathQualifierResolver");
 		}
 		try {
 			ResolverConfig resolverConfig = new ResolverConfig();
-			String xmlConfig = xmlConfigData;
+			String xmlConfig = extensionDefinition.getConfiguration().get(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA);
 			XPath xPath = XPathHelper.newXPath();
 			String baseExpression = xPath.evaluate("//resolverConfig/baseXPathExpression", new InputSource(new StringReader(xmlConfig)));
 			if (!StringUtils.isEmpty(baseExpression)) {
 				resolverConfig.setBaseXPathExpression(baseExpression);
 			}
-			NodeList qualifiers = (NodeList)xPath.evaluate("//resolverConfig/qualifier", new InputSource(new StringReader(xmlConfig)), XPathConstants.NODESET);
+			NodeList qualifiers = (NodeList)xPath.evaluate("//resolverConfig/attributes", new InputSource(new StringReader(xmlConfig)), XPathConstants.NODESET);
 			if (qualifiers == null || qualifiers.getLength() == 0) {
 				throw new RiceRuntimeException("Invalid qualifier resolver configuration.  Must contain at least one qualifier!");
 			}
@@ -223,8 +221,13 @@ public class XPathQualifierResolver implements QualifierResolver {
 			throw new RiceRuntimeException("Encountered an error parsing resolver config.", e);
 		}
 	}
-	
-	class ResolverConfig {
+
+    @Override
+    public void setExtensionDefinition(ExtensionDefinition ruleAttribute) {
+        extensionDefinition = ruleAttribute;
+    }
+
+    class ResolverConfig {
 		private String baseXPathExpression = "/";
 		private Map<String, String> expressionMap = new HashMap<String, String>();
 		public String getBaseXPathExpression() {

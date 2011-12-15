@@ -934,9 +934,9 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         		new String[] { ""        , "thevalue", "Thevalue", "THEVALUF", "THEVALUF", "Thevaluf", ""        },
         		new int[]    { 1         , 1         , 0         , 0         , -1        , 0         , 1         });
 
-        // Verify that the "TextFieldWithOverrides" attribute behaves as expected (that is, after overriding the appropriate region definition
-        // properties, the lower bound should be case-insensitive and non-inclusive, and the upper bound should be case-sensitive and inclusive).
-        // FIXME: KULRICE-5630 not completely sure what this means, I don't think AttributeLookupSettings accounts for lower/upper case-sensitivity
+        // Verify that the "TextFieldWithOverrides" attribute behaves as expected
+        // FIXME: KULRICE-5630 need to update these tests to specify expressions instead of using addSearchableAttribute range, which does not
+        // support exclusive lower
         assertSearchBehavesAsExpected(docType, principalId, "textFieldWithOverrides",
         		new String[] { "someval", "SomeVal", ""       , ""       , "SOMEVAK", "SomeVam", "SOMEVAM", "somevak", ""       },
         		new String[] { ""       , ""       , "SOMEVAL", "SomeVal", "SomeVam", "SOMEVAK", "SomeVak", ""       , "SomeVak"},

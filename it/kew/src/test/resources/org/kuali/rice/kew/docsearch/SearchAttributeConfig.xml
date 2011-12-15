@@ -229,7 +229,10 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition dataType="string">
+					<searchDefinition dataType="string" rangeSearch="true">
+            <rangeDefinition>
+              <upper inclusive="true"/>
+            </rangeDefinition>
 					</searchDefinition>
 					<fieldEvaluation>
 						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardString/value</xpathexpression>
@@ -255,7 +258,7 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition dataType="long">
+					<searchDefinition dataType="long" rangeSearch="true">
 					</searchDefinition>
 					<fieldEvaluation>
 						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardLong/value</xpathexpression>
@@ -281,7 +284,7 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition dataType="float">
+					<searchDefinition dataType="float" rangeSearch="true">
 					</searchDefinition>
 					<fieldEvaluation>
 						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardFloat/value</xpathexpression>
@@ -307,7 +310,7 @@
 					<display>
 						<type>text</type>
 					</display>
-					<searchDefinition dataType="datetime">
+					<searchDefinition dataType="datetime" rangeSearch="true">
 					</searchDefinition>
 					<fieldEvaluation>
 						<xpathexpression>//putWhateverWordsIwantInsideThisTag/xmlSearchableAttributeWildcardDatetime/value</xpathexpression>

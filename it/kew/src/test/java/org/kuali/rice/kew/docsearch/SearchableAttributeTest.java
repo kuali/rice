@@ -381,9 +381,9 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         					">More????"             , "<*test*"},
         			new int[] {2                    , 2             , 1                       , 1                         , 3                  ,
         					2                       , 1             , 1                       , 0                         , 1                  , 2                   , 2 /*1*/               ,
-        					0                       , 1             , 2                       , 1                         , 3                  , 0                   ,
+        					-1                       , 1             , 2                       , 1                         , 3                  , 0                   ,
         					2                       , 2});
-        
+
         // ensure multiple values work
         assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardString",
         		new String[][] { {"testString"}, {"anotherStr"}, {"MoreText"}, {"testString", "anotherStr"}, {"testString", "MoreText"}, {"anotherStr", "MoreText"}, {"testString", "anotherStr", "MoreText"}, {"monkey"}, {"monkey", "giraffe"}, {"monkey", "testString"} },
@@ -393,9 +393,9 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
         		new String[]  {"99??", "*2"       , "!33"         , "<9984", ">432", "<=33", ">=432", ">33&&<9984", "<=100000&&>=20", ">9984&&<33", "432..9984",
         					"9999..1", "<432|>432", ">=9000|<=100", "!", ">-76"},
-        			new int[] {-1     , -1          , 1             , 2      , 1     , 1     , 2      , 1           , 3               , 0           , 2 /*1*/    ,
-        					0        , 2          , 2             , -1 , 3});
-        
+        			new int[] {-1     , -1          , 2             , 2      , 1     , 1     , 2      , 1           , 3               , 0           , 2 /*1*/    ,
+        					-1        , 2          , 2             , -1 , 3});
+
         // ensure multiple values work
         assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardLong",
         		new String[][] { {"9984"}, {"33"}, {"432"}, {"9984", "33"}, {"9984", "432"}, {"33", "432"}, {"9984", "33", "432"}, {"7"}, {"7", "4488"}, {"7", "9984"} },
@@ -405,9 +405,9 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         assertSearchableAttributeWildcardsWork(docType, principalId, "xmlSearchableAttributeWildcardFloat",
         		new String[]  {"38.1???", "!-0.765", "*80*"                , "<80000.65432"   , ">0"                  , "<=-0.765", ">=38.1357", "<38.1358", "<-0.5|>0.5", ">=-0.765&&<=-0.765", ">38.1357&&<80000.65432",
         					"-50..50"   , "100..10", "<=38.1357|>=38.1357" , ">123.4567|<0.11", "-1.1..38.1357&&<3.3"},
-        			new int[] {-1        , 1        , -1                     , 2                , 2                     , 1         , 2          , 2         , 3           , 1                   , 0                       ,
-        					2           , 0        , 3                     , 2                , 1});
-        
+        			new int[] {-1        , 2        , -1                     , 2                , 2                     , 1         , 2          , 2         , 3           , 1                   , 0                       ,
+        					2           , -1        , 3                     , 2                , 1});
+
         // ensure multiple values work
         assertSearchableAttributeMultiplesWork(docType, principalId, "xmlSearchableAttributeWildcardFloat",
         		new String[][] { {"38.1357"}, {"80000.65432"}, {"-0.765"}, {"38.1357", "80000.65432"}, {"38.1357", "-0.765"}, {"80000.65432", "-0.765"}, {"38.1357", "80000.65432", "-0.765"}, {"3.1415928"}, {"3.1415928", "4488.0"}, {"3.1415928", "38.1357"} },
@@ -420,8 +420,8 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         		new String[]  {"??/??/20??"            , "12/12/20*"               , "!07/08/2010"           , ">06/24/2009", "<07/08/2010", ">=12/12/2012", "<=05/06/2011", ">06/24/2009&&<=07/08/2010",
         					">=01/01/2001&&<06/24/2009", "11/29/1990..12/31/2009"  , "12/13/2100..08/09/1997",
         					"<06/24/2009|>=12/12/2012" , "<=06/24/2009|>07/08/2010", ">02/31/2011"},
-        			new int[] {-1                      , -1                         , -1                      , 2            , 1            , 1             , 2             , 1                          ,
-        					0                          , 1                         , 0                       ,
+        			new int[] {-1                      , -1                         , 2 /* supports NOT operator*/, 2            , 1            , 1             , 2             , 1                          ,
+        					0                          , 1                         , -1                       ,
         					1                          , 2                         , -1});
         
         // ensure multiple values work
@@ -460,6 +460,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         		}
         	} catch (Exception ex) {
         		if (resultSizes[i] >= 0) {
+                    ex.printStackTrace();
         			fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");
         		}
         	}

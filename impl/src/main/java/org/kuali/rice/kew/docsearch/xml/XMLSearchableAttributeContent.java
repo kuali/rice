@@ -326,7 +326,7 @@ class XMLSearchableAttributeContent {
          * Encapsulates a SearchDefinition
          */
         static class SearchDefinition {
-            final RangeOptions DEFAULTS = new RangeOptions(false, false, false);
+            final RangeOptions DEFAULTS = new RangeOptions(null, false, false);
             /**
              * The field search data type.  Guaranteed to be defined (defaulted if missing).
              */
@@ -349,7 +349,7 @@ class XMLSearchableAttributeContent {
                 Node searchDefNode = (Node) xpath.evaluate("searchDefinition", n, XPathConstants.NODE);
                 if (searchDefNode != null) {
                     String s = getStringAttr(searchDefNode, "dataType");
-                    // TODO: empty data type should really be invalid
+                    // TODO: empty data type should really be invalid or default to something (String?)
                     if (StringUtils.isNotEmpty(s)) {
                         dataType = s;
                     }
@@ -363,14 +363,14 @@ class XMLSearchableAttributeContent {
                     if (rangeDefinition != null) {
                         rangeDef = new RangeOptions(xpath, rangeDefinition, searchDefDefaults);
                         Node lower = (Node) xpath.evaluate("lower", rangeDefinition, XPathConstants.NODE);
-                        lowerBound = lower == null ? new RangeBound(rangeDef) : new RangeBound(xpath, lower, rangeDef);
+                        lowerBound = lower == null ? new RangeBound(defaultInclusive(rangeDef, true)) : new RangeBound(xpath, lower, defaultInclusive(rangeDef, true));
                         Node upper = (Node) xpath.evaluate("upper", rangeDefinition, XPathConstants.NODE);
-                        upperBound = upper == null ? new RangeBound(rangeDef) : new RangeBound(xpath, upper, rangeDef);
+                        upperBound = upper == null ? new RangeBound(defaultInclusive(rangeDef, false)) : new RangeBound(xpath, upper, defaultInclusive(rangeDef, false));
                     } else if (rangeSearch) {
                         // otherwise if range search is specified but no rangedefinition element is present,
                         // bounds use options from search definition element
-                        lowerBound = new RangeBound(searchDefDefaults);
-                        upperBound = new RangeBound(searchDefDefaults);
+                        lowerBound = new RangeBound(defaultInclusive(searchDefDefaults, true));
+                        upperBound = new RangeBound(defaultInclusive(searchDefDefaults, false));
                     }
                 }
                 this.dataType = dataType;
@@ -379,6 +379,11 @@ class XMLSearchableAttributeContent {
                 this.rangeDef = rangeDef;
                 this.lowerBound = lowerBound;
                 this.upperBound = upperBound;
+            }
+
+            private static BaseRangeOptions defaultInclusive(BaseRangeOptions opts, boolean inclusive) {
+                boolean inc = opts.inclusive == null ? inclusive : opts.inclusive;
+                return new BaseRangeOptions(inc, opts.datePicker);
             }
 
             /**
@@ -409,7 +414,7 @@ class XMLSearchableAttributeContent {
                 BaseRangeOptions() {
                     this.inclusive = this.datePicker = null;
                 }
-                BaseRangeOptions(boolean inclusive, boolean datePicker) {
+                BaseRangeOptions(Boolean inclusive, Boolean datePicker) {
                     this.inclusive = inclusive;
                     this.datePicker = datePicker;
                 }
@@ -433,7 +438,7 @@ class XMLSearchableAttributeContent {
                     super();
                     this.caseSensitive = null;
                 }
-                RangeOptions(boolean inclusive, boolean caseSensitive, boolean datePicker) {
+                RangeOptions(Boolean inclusive, Boolean caseSensitive, Boolean datePicker) {
                     super(inclusive, datePicker);
                     this.caseSensitive = caseSensitive;
                 }
@@ -456,7 +461,7 @@ class XMLSearchableAttributeContent {
                     super(defaults);
                     this.label = null;
                 }
-                RangeBound(XPath xpath, Node n, RangeOptions defaults) {
+                RangeBound(XPath xpath, Node n, BaseRangeOptions defaults) {
                     super(xpath, n, defaults);
                     this.label = getStringAttr(n, "label");
                 }

@@ -44,7 +44,7 @@ import java.sql.SQLException;
 	@NamedQuery(name="SearchableAttributeStringValue.FindByDocumentId", query="select s from SearchableAttributeStringValue as s where s.documentId = :documentId"),
 	@NamedQuery(name="SearchableAttributeStringValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.documentId = :documentId and s.searchableAttributeKey = :searchableAttributeKey")
 })
-public class SearchableAttributeStringValue implements SearchableAttributeValue, Serializable {
+public class SearchableAttributeStringValue implements CaseAwareSearchableAttributeValue, Serializable {
 
     private static final long serialVersionUID = 8696089933682052078L;
 
@@ -157,10 +157,19 @@ public class SearchableAttributeStringValue implements SearchableAttributeValue,
      * @see org.kuali.rice.kew.docsearch.SearchableAttributeValue#isRangeValid(java.lang.String, java.lang.String)
      */
     public Boolean isRangeValid(String lowerValue, String upperValue) {
+        return isRangeValid(lowerValue, upperValue, true);
+    }
+
+    /* (non-Javadoc)
+     * @see org.kuali.rice.kew.docsearch.CaseAwareSearchableAttributeValue#isRangeValid(java.lang.String, java.lang.String, boolean)
+     */
+    public Boolean isRangeValid(String lowerValue, String upperValue, boolean caseSensitive) {
         if (allowsRangeSearches()) {
             return StringUtils.isBlank(lowerValue) ||
                    StringUtils.isBlank(upperValue) ||
-                   ObjectUtils.compare(lowerValue, upperValue) <= 0;
+                   (caseSensitive ?
+                     ObjectUtils.compare(lowerValue, upperValue) <= 0 :
+                     String.CASE_INSENSITIVE_ORDER.compare(lowerValue, upperValue) <= 0);
         }
         return null;
     }

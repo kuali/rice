@@ -307,6 +307,26 @@ class XMLSearchableAttributeContentTest {
         assertEqualsDeleteWhitespace(searchContent, content.searchContent.trim())
     }
 
+    @Test void testInclusivenessDefaults() {
+        def searchDef = new XMLSearchableAttributeContent("""
+          <ruleAttribute>
+            <searchingConfig>
+              <fieldDef>
+                <searchDefinition>
+                  <rangeDefinition>
+                    <lower/>
+                    <upper/>
+                  </rangeDefinition>
+                </searchDefinition>
+              </fieldDef>
+            </searchingConfig>
+          </ruleAttribute>
+        """).fieldDefList[0].searchDefinition
+
+        assertTrue(searchDef.lowerBound.inclusive)
+        assertFalse(searchDef.upperBound.inclusive)
+    }
+
     @Test void testSearchDefinitionOptions() {
         def searchDef = new XMLSearchableAttributeContent("""
           <ruleAttribute>

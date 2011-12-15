@@ -560,7 +560,7 @@
 					<searchDefinition>
 						<rangeDefinition inclusive="true" caseSensitive="false" datePicker="false">
 							<lower inclusive="false" datePicker="true"/>
-							<upper caseSensitive="true"/>
+							<upper/>
 						</rangeDefinition>
 					</searchDefinition>
 					<fieldEvaluation>

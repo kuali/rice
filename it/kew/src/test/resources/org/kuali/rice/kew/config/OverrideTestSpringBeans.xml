@@ -57,13 +57,14 @@
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
   <bean id="enExceptionRoutingService" class="org.kuali.rice.kew.routemanager.TestExceptionRoutingServiceImpl"/>
   <bean id="rice.kew.documentRefreshQueue" class="mocks.MockDocumentRefreshQueueImpl" />
+
   <bean id="enActionListEmailService" class="mocks.MockEmailNotificationServiceImpl">
     <property name="deploymentEnvironment">
       <value>${environment}</value>
     </property>
     <property name="emailContentGenerator">
       <bean class="mocks.MockStyleableEmailContentServiceImpl">
-        <property name="styleService" ref="styleService"/>
+        <property name="styleService" ref="rice.kew.import.styleService"/>
       </bean>
     </property>
   </bean>

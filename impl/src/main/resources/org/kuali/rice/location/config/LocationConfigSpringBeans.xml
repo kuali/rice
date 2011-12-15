@@ -54,21 +54,6 @@
                            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
-                           
-	<bean id="locationConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean">
-		<property name="configLocations">
-			<list>
-				<value>classpath:org/kuali/rice/location/config/location-config-defaults.xml</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" />
-		<property name="arguments">
-			<list><ref bean="locationConfig"/></list>
-		</property>
-	</bean>
 
 	<bean id="locationConfigurer" class="org.kuali.rice.location.config.LocationConfigurer">
 		<property name="moduleName" value="LOCATION" />

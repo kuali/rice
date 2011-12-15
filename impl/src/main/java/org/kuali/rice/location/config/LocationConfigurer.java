@@ -16,20 +16,25 @@
 package org.kuali.rice.location.config;
 
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
+import org.kuali.rice.location.api.LocationConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
- * exist in all Rice based systems and clients. 
+ * Allows for configuring a client to the "location" module in Kuali Rice.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocationConfigurer extends ModuleConfigurer {
 	private static final String LOCATION_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/location/config/LocationServiceBusSpringBeans.xml";
-	
-	@Override
+
+    @Override
+    public String getModuleName() {
+        return LocationConstants.Namespaces.MODULE_NAME;
+    }
+
+    @Override
 	public List<String> getPrimarySpringFiles() {
 		final List<String> springFileLocations = new ArrayList<String>(super.getPrimarySpringFiles());
 
@@ -38,4 +43,6 @@ public class LocationConfigurer extends ModuleConfigurer {
 		}
 		return springFileLocations;
 	}
+
+
 }

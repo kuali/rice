@@ -437,6 +437,7 @@
 	<param name="rice.location.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.location.expose.services.on.bus" override="false">true</param>
   <param name="location.soapExposedService.jaxws.security" override="false">true</param>
+  <param name="location.ehcache.config.location" override="false">classpath:org/kuali/rice/location/config/location.ehcache.xml</param>
 
 	<!-- KSB -->
 	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>

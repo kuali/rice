@@ -111,9 +111,11 @@
 
   <bean id="AgendaEditorView-EditRule-Page" parent="AgendaEditorView-EditRule-Page-Parent"/>
   <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Page">
-    <property name="title" value="Agenda: @{#dp.agenda.name}"/>
+    <!-- property name="title" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
     <property name="items">
       <list>
+        <!-- work around for title issues above -->
+        <bean id="agendaName" parent="MessageField" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
         <bean parent="ruleEditorBody">
         </bean>
       </list>

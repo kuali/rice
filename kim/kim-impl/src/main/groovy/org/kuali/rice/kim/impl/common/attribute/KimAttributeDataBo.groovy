@@ -22,6 +22,8 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator
 import org.kuali.rice.kim.api.type.KimTypeAttribute
 import org.kuali.rice.kim.impl.type.KimTypeBo
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase
+import org.kuali.rice.krad.util.ObjectUtils
+import org.kuali.rice.krad.service.PersistenceStructureService
 
 abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implements KimAttributeDataContract {
     private static final long serialVersionUID = 1L;
@@ -36,8 +38,12 @@ abstract class KimAttributeDataBo extends PersistableBusinessObjectBase implemen
 
     abstract void setAssignedToId(String s);
 
-    @Override
+   @Override
     KimAttributeBo getKimAttribute() {
+        if(ObjectUtils.isNull(this.kimAttribute)
+            && StringUtils.isNotBlank(kimAttributeId)) {
+            this.refreshReferenceObject("kimAttribute");
+        }
         return kimAttribute
     }
 

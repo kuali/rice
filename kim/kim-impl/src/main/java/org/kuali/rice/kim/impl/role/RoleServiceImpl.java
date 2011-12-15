@@ -1652,6 +1652,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
         // look up the role
     	RoleBo role = getRoleBoByName(namespaceCode, roleName);
+        role.refreshReferenceObject("members");
     	// pull all the principal members
     	// look for an exact qualifier match
         List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier);

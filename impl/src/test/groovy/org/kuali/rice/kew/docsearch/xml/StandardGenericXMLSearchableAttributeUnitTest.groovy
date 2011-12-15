@@ -227,7 +227,7 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         println fields
         // TODO: test something more substantial
         assertEquals(1, fields.size())
-        assertFalse(fields[0].attributeLookupSettings.lowerBoundInclusive);
+        assertTrue(fields[0].attributeLookupSettings.lowerBoundInclusive);
         assertFalse(fields[0].attributeLookupSettings.upperBoundInclusive);
 
         // ranged search generates 2 fields, from and to

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.api.search;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Represents a search range
  */
@@ -55,5 +57,28 @@ public class Range {
     public void setUpperBoundInclusive(boolean upperBoundInclusive) {
         this.upperBoundInclusive = upperBoundInclusive;
     }
-    
+
+    public String toString() {
+        if (StringUtils.isNotEmpty(lowerBoundValue) && StringUtils.isNotEmpty(upperBoundValue)) {
+            SearchOperator op;
+            if (lowerBoundInclusive && upperBoundInclusive) {
+                op = SearchOperator.BETWEEN;
+            } else if (lowerBoundInclusive && !upperBoundInclusive) {
+                op = SearchOperator.BETWEEN_EXCLUSIVE_UPPER2;
+            } else if (!lowerBoundInclusive && upperBoundInclusive) {
+                op = SearchOperator.BETWEEN_EXCLUSIVE_LOWER;
+            } else {
+                op = SearchOperator.BETWEEN_EXCLUSIVE;
+            }
+            return lowerBoundValue + op.op() + upperBoundValue;
+        } else if (StringUtils.isNotEmpty(lowerBoundValue) && StringUtils.isEmpty(upperBoundValue)) {
+            SearchOperator op = lowerBoundInclusive ? SearchOperator.GREATER_THAN_EQUAL : SearchOperator.GREATER_THAN;
+            return op.op() + lowerBoundValue;
+        } else if (StringUtils.isNotEmpty(upperBoundValue) && StringUtils.isEmpty(lowerBoundValue)) {
+            SearchOperator op = upperBoundInclusive ? SearchOperator.LESS_THAN_EQUAL : SearchOperator.LESS_THAN;
+            return op.op() + upperBoundValue;
+        } else { // both are empty
+            return "";
+        }
+    }
 }

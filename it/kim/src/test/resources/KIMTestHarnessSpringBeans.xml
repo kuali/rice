@@ -105,7 +105,7 @@
 	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/krad/config/KRADConfigSpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/coreservice/config/CoreServiceConfigSpringBeans.xml"/>
+	<bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
 	<import resource="classpath:org/kuali/rice/kim/impl/config/KIMConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
 </beans>

@@ -56,34 +56,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean id="rice.ksb.serviceBus"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="rice.ksb.serviceBus"/>
-  </bean>
-
-  <bean id="coreService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
-    <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.core.api.CoreConstants$Namespaces).CORE_NAMESPACE_2_0 }"/>
-    <property name="jaxWsService" value="true"/>
-    <property name="priority" value="3"/>
-    <property name="retryAttempts" value="0"/>
-    <property name="busSecurity" value="${core.soapExposedService.jaxws.security}"/>
-    <property name="serviceVersion" value="${rice.version}"/>
-    <property name="servicePath" value="#{ T(org.kuali.rice.core.api.CoreConstants).SERVICE_PATH_SOAP }" />
-    <property name="cacheManager" value="coreServiceLocalCacheManager"/>
-  </bean>
-
-  <bean id="clientLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
-		<property name="runModePropertyName" value="core.mode" />
-		<property name="validRunMode" value="LOCAL" />
-	</bean>
-
-  <bean id="clientRemoteServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
-		<property name="runModePropertyName" value="core.mode" />
-		<property name="validRunMode" value="REMOTE" />
-	</bean>
-
-  <bean parent="clientLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+  <bean id="parameterRespositoryService.exporter" parent="coreServiceExporter">
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="parameterRepositoryService"
@@ -92,8 +65,7 @@
     </property>
   </bean>
 
-  <bean parent="clientLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+  <bean id="namespaceService.exporter" parent="coreServiceExporter">
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="namespaceService"
@@ -102,22 +74,12 @@
     </property>
   </bean>
   
-  <bean parent="clientLocalServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
+  <bean id="componentService.exporter" parent="coreServiceExporter">
     <property name="serviceDefinition">
       <bean parent="coreService"
             p:service-ref="componentService"
             p:localServiceName="componentService"
             p:serviceInterface="org.kuali.rice.coreservice.api.component.ComponentService"/>
-    </property>
-  </bean>
-
-  <bean parent="clientRemoteServiceExporter">
-    <property name="serviceBus" ref="rice.ksb.serviceBus"/>
-    <property name="serviceDefinition">
-      <bean parent="coreService"
-            p:service-ref="coreServiceCacheService"
-            p:localServiceName="coreServiceCacheService"/>
     </property>
   </bean>
 

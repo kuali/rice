@@ -59,32 +59,32 @@
   <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
 
-  	<bean id="locationOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
+  	<bean id="coreServiceOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
-				<value>coreServiceServerDataSource</value>
+				<value>coreServiceDataSource</value>
 			</list>
 		</property>
 		<property name="metadataLocation" value="classpath:org/kuali/rice/coreservice/config/OJB-repository-core-service.xml" />
 	</bean>
 
 
-	<bean id="coreServiceServerDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
+	<bean id="coreServiceDataSource" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.PrimaryDataSourceFactoryBean" lazy-init="true">
 		<property name="preferredDataSourceParams">
 			<list>
-				<value>coreServiceServer.datasource</value>
+				<value>coreService.datasource</value>
 			</list>
 		</property>
 		<property name="preferredDataSourceJndiParams">
 			<list>
-				<value>coreServiceServer.datasource.jndi.location</value>
+				<value>coreService.datasource.jndi.location</value>
 			</list>
 		</property>
 		<property name="serverDataSource" value="true"/>
 	</bean>
 
   <bean id="styleDao" class="org.kuali.rice.coreservice.impl.style.StyleDaoOjb">
-    <property name="jcdAlias" value="enWorkflowDataSource" />
+    <property name="jcdAlias" value="coreServiceDataSource" />
   </bean>
 
 </beans>

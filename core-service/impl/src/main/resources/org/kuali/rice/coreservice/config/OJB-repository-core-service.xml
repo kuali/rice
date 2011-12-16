@@ -21,7 +21,7 @@
 
 <descriptor-repository version="1.0">
 
-	<jdbc-connection-descriptor jcd-alias="coreServiceServerDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
+	<jdbc-connection-descriptor jcd-alias="coreServiceDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
 		useAutoCommit="0" ignoreAutoCommitExceptions="false">
 		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
         <sequence-manager className="org.kuali.rice.core.framework.persistence.ojb.ConfigurableSequenceManager">

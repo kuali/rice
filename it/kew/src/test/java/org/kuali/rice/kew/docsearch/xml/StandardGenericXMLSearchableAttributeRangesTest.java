@@ -209,7 +209,6 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdFloatRange");
         ed = createExtensionDefinition("XMLSearchableAttributeStdFloatRange");
-        // FIXME: KULRICE-5630 SGXSA does not interpret >= correctly, compares null lower to upper bound and fails validation of the range
         assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, ">= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString(), false);
         error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "<= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a", true);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));

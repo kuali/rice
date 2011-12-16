@@ -36,6 +36,8 @@ import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.impl.datetime.DateTimeServiceImpl
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
+import org.kuali.rice.krad.util.KRADConstants
+import org.junit.Ignore
 
 /**
  *
@@ -80,6 +82,8 @@ class DocumentSearchCriteriaTranslatorTest {
                      DocumentStatus.FINAL.code,
                      "category:" + DocumentStatusCategory.SUCCESSFUL.getCode(),
                      "category:" + DocumentStatusCategory.UNSUCCESSFUL.getCode()].join(','))
+        // org.kuali.rice.kns.lookup.AbstractLookupableHelperServiceImpl.performLookup calls LookupUtils.preProcessRangeFields(lookupFormFields);
+        // to pre-process range fields, resulting in values that have already been converted to expressions by the time the DSCTranslator sees them
         fields.put("dateCreated", ">=01/01/2010")
         fields.put("routeNodeLookupLogic", RouteNodeLookupLogic.EXACTLY.toString())
 
@@ -128,8 +132,8 @@ class DocumentSearchCriteriaTranslatorTest {
                      DocumentStatus.FINAL.code,
                      "category:" + DocumentStatusCategory.SUCCESSFUL.getCode(),
                      "category:" + DocumentStatusCategory.UNSUCCESSFUL.getCode()] as Set, fields[KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_STATUS_CODE] as Set)
-        assertEquals(new DateTime(2010, 1, 1, 0, 0).toString(), fields["dateApprovedFrom"][0])
-        assertEquals(new DateTime(2011, 1, 1, 0, 0).toString(), fields["dateApprovedTo"][0])
+        assertEquals(new DateTime(2010, 1, 1, 0, 0).toString(), fields[KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "dateApproved"][0])
+        assertEquals(new DateTime(2011, 1, 1, 0, 0).toString(), fields["dateApproved"][0])
         assertEquals(RouteNodeLookupLogic.BEFORE.toString(), fields["routeNodeLookupLogic"][0])
 
         builder.documentAttributeValues.each { k, v ->

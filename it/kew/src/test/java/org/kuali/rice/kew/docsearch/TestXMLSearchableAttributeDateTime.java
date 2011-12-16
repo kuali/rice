@@ -16,9 +16,11 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.core.api.uif.DataType;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
+import org.kuali.rice.core.api.uif.RemotableAttributeLookupSettings;
 import org.kuali.rice.kew.api.document.DocumentWithContent;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
@@ -61,6 +63,11 @@ public class TestXMLSearchableAttributeDateTime implements SearchableAttribute {
         RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(SEARCH_STORAGE_KEY);
         builder.setLongLabel("title");
         builder.setDataType(DataType.DATE);
+
+        RemotableAttributeLookupSettings.Builder settings = RemotableAttributeLookupSettings.Builder.create();
+        settings.setRanged(true);
+        settings.setUpperBoundInclusive(false);
+        builder.setAttributeLookupSettings(settings);
 		fields.add(builder.build());
         return fields;
     }

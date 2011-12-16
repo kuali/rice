@@ -756,6 +756,9 @@ public class LookupUtils {
     /**
      * Changes ranged search fields like from/to dates into the range operators the lookupable dao expects
      * ("..",">" etc) this method modifies the passed in map and returns a list containing only the modified fields
+     *
+     * This method does not handle document searchable attributes.  This is handled in a second pass by the docsearch-specific
+     * DocumentSearchCriteriaTranslator
      */
     public static Map<String, String> preProcessRangeFields(Map<String, String> lookupFormFields) {
         Map<String, String> fieldsToUpdate = new HashMap<String, String>();

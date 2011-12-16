@@ -17,11 +17,15 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
@@ -31,6 +35,7 @@ import org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.impl.document.search.DocumentSearchCriteriaTranslatorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -40,6 +45,7 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.sql.Timestamp;
@@ -47,11 +53,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.
@@ -570,6 +577,35 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         assertTrue(workflowDocument.isFinal());
         assertEquals(StringUtils.deleteWhitespace("<" + KewApiConstants.SEARCHABLE_CONTENT_ELEMENT + ">" + MockSearchableAttribute.SEARCH_CONTENT + "</" + KewApiConstants.SEARCHABLE_CONTENT_ELEMENT + ">"),
                 StringUtils.deleteWhitespace(workflowDocument.getDocumentContent().getSearchableContent()));
+    }
+
+    @Test
+    public void testAttributeRangeFieldGeneration() {
+        String documentTypeName = "SearchDocType";
+        DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
+        String userNetworkId = "rkirkend";
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalId(userNetworkId), documentTypeName);
+        workflowDocument.setTitle("Routing style");
+        workflowDocument.route("routing this document.");
+
+        DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        criteria.setDocumentTypeName(documentTypeName);
+        criteria.setDateApprovedFrom(new DateTime(2010, 1, 1, 0, 0));
+        criteria.setDateApprovedTo(new DateTime(2011, 1, 1, 0, 0));
+        addSearchableAttribute(criteria, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, ">= " + DocumentSearchInternalUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)));
+
+        Map<String, String[]> fields = new DocumentSearchCriteriaTranslatorImpl().translateCriteriaToFields(criteria.build());
+        System.err.println(fields);
+        String lowerBoundField = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY;
+        String upperBoundField = KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY;
+        assertNotNull(fields.get(lowerBoundField));
+        assertNotNull(fields.get(upperBoundField));
+        assertEquals(new DateTime(2010, 1, 1, 0, 0).toString(), fields.get(lowerBoundField)[0]);
+        assertEquals(new DateTime(2011, 1, 1, 0, 0).toString(), fields.get(upperBoundField)[0]);
+
+        for (Map.Entry<String, List<String>> entry: criteria.getDocumentAttributeValues().entrySet()) {
+            assertEquals(new HashSet(entry.getValue()), new HashSet(Arrays.asList(fields.get(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey()))));
+        }
     }
     
 }

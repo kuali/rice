@@ -20,13 +20,23 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.search.Range;
+import org.kuali.rice.core.api.search.SearchExpressionUtils;
+import org.kuali.rice.core.api.uif.AttributeLookupSettings;
+import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.DocumentStatusCategory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.kew.api.document.search.DocumentSearchCriteriaContract;
 import org.kuali.rice.kew.api.document.search.RouteNodeLookupLogic;
 import org.kuali.rice.kew.docsearch.DocumentSearchInternalUtils;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.framework.document.search.DocumentSearchCriteriaConfiguration;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -81,6 +91,7 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
     public DocumentSearchCriteria translateFieldsToCriteria(Map<String, String> fieldValues) {
 
         DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
+        List<String> documentAttributeFields = new ArrayList<String>();
         for (Map.Entry<String, String> field : fieldValues.entrySet()) {
             try {
                 if (StringUtils.isNotBlank(field.getValue())) {
@@ -89,14 +100,17 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
                     } else if (DATE_RANGE_TRANSLATE_FIELD_NAMES_SET.contains(field.getKey())) {
                         applyDateRangeField(criteria, field.getKey(), field.getValue());
                     } else if (field.getKey().startsWith(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX)) {
-                        String documentAttributeName = field.getKey().substring(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX.length());
-                        applyDocumentAttribute(criteria, documentAttributeName, field.getValue());
+                        documentAttributeFields.add(field.getKey());
                     }
 
                 }
             } catch (Exception e) {
                 throw new IllegalStateException("Failed to set document search criteria field: " + field.getKey(), e);
             }
+        }
+
+        if (!documentAttributeFields.isEmpty()) {
+            translateDocumentAttributeFieldsToCriteria(fieldValues, documentAttributeFields, criteria);
         }
 
         String routeNodeLookupLogic = fieldValues.get(ROUTE_NODE_LOOKUP_LOGIC);
@@ -133,13 +147,20 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
         }
 
         for (String property: DATE_RANGE_TRANSLATE_FIELD_NAMES) {
-            convertCriteriaPropertyToField(criteria, property + "From", values);
-            convertCriteriaPropertyToField(criteria, property + "To", values);
+            convertCriteriaRangeField(criteria, property, values);
         }
 
         Map<String, List<String>> docAttrValues = criteria.getDocumentAttributeValues();
-        for (Map.Entry<String, List<String>> entry: docAttrValues.entrySet()) {
-            values.put(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey(), entry.getValue().toArray(new String[0]));
+        if (!docAttrValues.isEmpty()) {
+            Map<String, AttributeLookupSettings> attributeLookupSettingsMap = getAttributeLookupSettings(criteria);
+            for (Map.Entry<String, List<String>> entry: docAttrValues.entrySet()) {
+                AttributeLookupSettings lookupSettings = attributeLookupSettingsMap.get(entry.getKey());
+                if (lookupSettings != null && lookupSettings.isRanged()) {
+                    convertAttributeRangeField(entry.getKey(), entry.getValue(), values);
+                } else {
+                    values.put(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + entry.getKey(), entry.getValue().toArray(new String[0]));
+                }
+            }
         }
 
         RouteNodeLookupLogic lookupLogic = criteria.getRouteNodeLookupLogic();
@@ -160,16 +181,70 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
     }
 
     /**
+     * Convert a ranged document search attribute field into a form field.
+     * This means:
+     * 0) the attribute field has been identified as a ranged attribute
+     * 1) we need to parse the attribute search expression to find upper and lower bounds
+     * 2) set upper and lower bounds in distinct form fields
+     * @param attrKey the attribute key
+     * @param attrValues the attribute value
+     */
+    protected static void convertAttributeRangeField(String attrKey, List<String> attrValues, Map<String, String[]> values) {
+        String value = "";
+        if (attrValues != null && !attrValues.isEmpty()) {
+            value = attrValues.get(0);
+            // can ranged attributes be multi-valued?
+            if (attrValues.size() > 1) {
+                LOG.warn("Encountered multi-valued ranged document search attribute '" + attrKey + "': " + attrValues);
+            }
+        }
+        Range range = SearchExpressionUtils.parseRange(value);
+        String lower;
+        String upper;
+        if (range != null) {
+            lower = range.getLowerBoundValue();
+            upper = range.getUpperBoundValue();
+        } else {
+            lower = null;
+            upper = value;
+        }
+        values.put(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + attrKey, new String[] { lower });
+        values.put(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX + attrKey, new String[] { upper });
+    }
+
+    /**
+     * Convenience method for converting a set of doc search criteria range fields into form fields
+     * @param criteria the dsc
+     * @param property the abstract property name
+     * @param values the form field values
+     */
+    protected static void convertCriteriaRangeField(DocumentSearchCriteria criteria, String property, Map<String, String[]> values) {
+        convertCriteriaPropertyToField(criteria, property + "From", KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + property, values);
+        convertCriteriaPropertyToField(criteria, property + "To", property, values);
+    }
+
+    /**
      * Looks up a property on the criteria object and sets it as a key/value pair in the values Map
      * @param criteria the DocumentSearchCriteria
-     * @param property the DocumentSearchCriteria property name
+     * @param property the DocumentSearchCriteria property name and destination field name
      * @param values the map of values to update
      */
     protected static void convertCriteriaPropertyToField(DocumentSearchCriteria criteria, String property, Map<String, String[]> values) {
+        convertCriteriaPropertyToField(criteria, property, property, values);
+    }
+
+    /**
+     * Looks up a property on the criteria object and sets it as a key/value pair in the values Map
+     * @param criteria the DocumentSearchCriteria
+     * @param property the DocumentSearchCriteria property name
+     * @param fieldName the destination field name
+     * @param values the map of values to update
+     */
+    protected static void convertCriteriaPropertyToField(DocumentSearchCriteria criteria, String property, String fieldName, Map<String, String[]> values) {
         try {
             Object val = PropertyUtils.getProperty(criteria, property);
             if (val != null) {
-                values.put(property, new String[] { ObjectUtils.toString(val) });
+                values.put(fieldName, new String[] { ObjectUtils.toString(val) });
             }
         } catch (NoSuchMethodException nsme) {
             LOG.error("Error reading property '" + property + "' of criteria", nsme);
@@ -189,6 +264,69 @@ public class DocumentSearchCriteriaTranslatorImpl implements DocumentSearchCrite
         }
         if (upperDateTime != null) {
             PropertyUtils.setNestedProperty(criteria, fieldName + "To", upperDateTime);
+        }
+    }
+
+    /**
+     * Returns a map of attributelookupsettings for the custom search attributes of the document if specified in the criteria
+     * @param criteria the doc search criteria
+     * @return a map of attributelookupsettings for the custom search attributes of the document if specified in the criteria, empty otherwise
+     */
+    protected Map<String, AttributeLookupSettings> getAttributeLookupSettings(DocumentSearchCriteriaContract criteria) {
+        String documentTypeName = criteria.getDocumentTypeName();
+        Map<String, AttributeLookupSettings> attributeLookupSettingsMap = new HashMap<java.lang.String, AttributeLookupSettings>();
+
+        if (StringUtils.isNotEmpty(documentTypeName)) {
+            DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByNameCaseInsensitive(documentTypeName);
+            if (documentType != null) {
+                DocumentSearchCriteriaConfiguration configuration = KEWServiceLocator.getDocumentSearchCustomizationMediator().getDocumentSearchCriteriaConfiguration(
+                        documentType);
+                if (configuration != null) {
+                    List<RemotableAttributeField> remotableAttributeFields = configuration.getFlattenedSearchAttributeFields();
+                    for (RemotableAttributeField raf: remotableAttributeFields) {
+                        attributeLookupSettingsMap.put(raf.getName(), raf.getAttributeLookupSettings());
+                    }
+                }
+            } else {
+                LOG.error("Searching against unknown document type '" + documentTypeName + "'; searchable attribute ranges will not work.");
+            }
+        }
+
+        return attributeLookupSettingsMap;
+    }
+
+    protected String translateRangePropertyToExpression(Map<String, String> fieldValues, String property, String prefix, AttributeLookupSettings settings) {
+        String lowerBoundValue = fieldValues.get(prefix + KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + property);
+        String upperBoundValue = fieldValues.get(prefix + property);
+
+        Range range = new Range();
+        // defaults for general lookup/search
+        range.setLowerBoundInclusive(settings.isLowerBoundInclusive());
+        range.setUpperBoundInclusive(settings.isUpperBoundInclusive());
+        range.setLowerBoundValue(lowerBoundValue);
+        range.setUpperBoundValue(upperBoundValue);
+
+        String expr = range.toString();
+        if (StringUtils.isEmpty(expr)) {
+            expr = upperBoundValue;
+        }
+        return expr;
+    }
+
+    protected void translateDocumentAttributeFieldsToCriteria(Map<String, String> fieldValues, List<String> fields, DocumentSearchCriteria.Builder criteria) {
+        Map<String, AttributeLookupSettings> attributeLookupSettingsMap = getAttributeLookupSettings(criteria);
+        for (String field: fields) {
+            String documentAttributeName = field.substring(KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX.length());
+            // omit the synthetic lower bound field, don't set back into doc attrib values
+            if (documentAttributeName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
+                continue;
+            }
+            String value = fieldValues.get(field);
+            AttributeLookupSettings lookupSettings = attributeLookupSettingsMap.get(documentAttributeName);
+            if (lookupSettings != null && lookupSettings.isRanged()) {
+                value = translateRangePropertyToExpression(fieldValues, documentAttributeName, KewApiConstants.DOCUMENT_ATTRIBUTE_FIELD_PREFIX, lookupSettings);
+            }
+            applyDocumentAttribute(criteria, documentAttributeName, value);
         }
     }
 

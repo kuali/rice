@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.component;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
@@ -56,12 +57,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private boolean render;
     private boolean refresh;
 
+    @KeepExpression
     private String progressiveRender;
     private boolean progressiveRenderViaAJAX;
     private boolean progressiveRenderAndRefresh;
     private List<String> progressiveDisclosureControlNames;
     private String progressiveDisclosureConditionJs;
 
+    @KeepExpression
     private String conditionalRefresh;
     private String conditionalRefreshConditionJs;
     private List<String> conditionalRefreshControlNames;
@@ -158,38 +161,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     public void performInitialization(View view, Object model) {
-        if (StringUtils.isNotEmpty(progressiveRender)) {
-            // progressive anded with conditional render, will not render at
-            // least one of the two are false
-            String conditionalRender = getPropertyExpression("render");
-            if (StringUtils.isNotEmpty(conditionalRender)) {
-                // TODO: does conditional render have the el placeholder? if so this will not work
-                conditionalRender = "(" + conditionalRender + ") and (" + progressiveRender + ")";
-            } else {
-                conditionalRender = progressiveRender;
-            }
-            getPropertyExpressions().put("render", conditionalRender);
 
-            // TODO: setting of the control names should probably be done in finalize, and we need KeepExpression
-            // on progressiveRender and conditionalRefresh
-            progressiveDisclosureControlNames = new ArrayList<String>();
-            progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
-                    progressiveDisclosureControlNames);
-        }
-
-        if (StringUtils.isNotEmpty(conditionalRefresh)) {
-            conditionalRefreshControlNames = new ArrayList<String>();
-            conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
-                    conditionalRefreshControlNames);
-        }
-
-        if (StringUtils.isNotEmpty(refreshWhenChanged)) {
-            refreshWhenChangedControlNames = new ArrayList<String>();
-            String[] names = StringUtils.split(refreshWhenChanged, ",");
-            for (String name : names) {
-                refreshWhenChangedControlNames.add(name.trim());
-            }
-        }
     }
 
     /**
@@ -200,7 +172,14 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * </ul>
      */
     public void performApplyModel(View view, Object model, Component parent) {
+        if (StringUtils.isNotEmpty(progressiveRender)) {
+            // progressive anded with conditional render, will not render at
+            // least one of the two are false
+            Boolean progRenderEval = (Boolean) KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpression(model, context,
+                        progressiveRender);
 
+            this.setRender(progRenderEval && this.render);
+        }
     }
 
     /**
@@ -218,6 +197,30 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
+
+        if (StringUtils.isNotEmpty(progressiveRender)) {
+            progressiveRender = ExpressionUtils.replaceBindingPrefixes(view, this, progressiveRender);
+            progressiveDisclosureControlNames = new ArrayList<String>();
+            progressiveDisclosureConditionJs = ExpressionUtils.parseExpression(progressiveRender,
+                    progressiveDisclosureControlNames);
+        }
+
+        if (StringUtils.isNotEmpty(conditionalRefresh)) {
+            conditionalRefresh = ExpressionUtils.replaceBindingPrefixes(view, this, conditionalRefresh);
+            conditionalRefreshControlNames = new ArrayList<String>();
+            conditionalRefreshConditionJs = ExpressionUtils.parseExpression(conditionalRefresh,
+                    conditionalRefreshControlNames);
+        }
+
+        if (StringUtils.isNotEmpty(refreshWhenChanged)) {
+            refreshWhenChanged = ExpressionUtils.replaceBindingPrefixes(view, this, refreshWhenChanged);
+            refreshWhenChangedControlNames = new ArrayList<String>();
+            String[] names = StringUtils.split(refreshWhenChanged, ",");
+            for (String name : names) {
+                refreshWhenChangedControlNames.add(name.trim());
+            }
+        }
+
         if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
             // add the align, valign, and width settings to style
             if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {

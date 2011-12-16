@@ -47,12 +47,12 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Field 1"
-					p:progressiveRender="field34 eq 'show1'" p:propertyName="field35" />
+					p:progressiveRender="@{#dp.field34 eq 'show1'}" p:propertyName="field35" />
 				<bean parent="GenericTextField" p:label="Field 2"
 					p:progressiveRenderViaAJAX="true" p:progressiveRender="field34 eq 'show2'"
 					p:propertyName="field36" />
 				<bean parent="GenericTextField" p:label="Field 3"
-					p:progressiveRenderAndRefresh="true" p:progressiveRender="field34 eq 'show3'"
+					p:progressiveRenderAndRefresh="true" p:progressiveRender="@{#form.field34 eq 'show3'}"
 					p:propertyName="field37" />
 				<bean parent="GenericTextField" p:label="Show Field through matching"
 					p:progressiveRenderAndRefresh="true" p:maxLength="1"
@@ -143,9 +143,9 @@
 					</property>
 				</bean>
 				<bean parent="GenericTextField" p:label="Field 1"
-					p:conditionalRefresh="field44 eq 'show1'" p:propertyName="field45" />
+					p:conditionalRefresh="#dp.field44 eq 'show1'" p:propertyName="field45" />
 				<bean parent="GenericTextField" p:label="Field 2"
-					p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="field44"
+					p:progressiveRenderViaAJAX="true" p:refreshWhenChanged="#form.field44"
 					p:readOnly="@{field44 eq 'show2'}" p:propertyName="field46" />
         <bean parent="GenericHorizontalFieldGroup" p:label="Conditonal Options"
               p:group.instructionalText="Choose an option from the first select control which will change the options available in the second select control">

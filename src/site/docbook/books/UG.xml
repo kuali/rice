@@ -26,6 +26,7 @@
     </info>
     
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_Global.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_FeaturesGuide.xml" />    
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KEN.xml" />
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KEW.xml" />
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KIM.xml" />

@@ -743,4 +743,5 @@ div.blockPage{
     background-color: white;
     cursor: wait;
     z-index: 10101 !important;
+    text-align: center;
 }

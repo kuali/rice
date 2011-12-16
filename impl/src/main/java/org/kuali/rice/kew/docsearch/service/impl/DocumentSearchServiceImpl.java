@@ -286,6 +286,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         builder.setSaveName(criteria.getSaveName());
         builder.setStartAtIndex(criteria.getStartAtIndex());
         builder.setMaxResults(criteria.getMaxResults());
+        builder.setIsAdvancedSearch(criteria.getIsAdvancedSearch());
         return builder;
     }
 

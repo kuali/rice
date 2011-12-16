@@ -174,15 +174,14 @@ function retrieveComponent(id, actualId, methodToCall){
 		}
 
 		elementToBlock.unblock({onUnblock: function(){
-				component.effect("highlight",{}, 6000);
 				// replace component
 				if(jq("#" + id + "_refreshWrapper").length){
 					jq("#" + id + "_refreshWrapper").replaceWith(component);
 				}
 				runHiddenScripts(id + "_refreshWrapper");
-
-
+                component.effect("highlight",{}, 6000);
                 jq(".displayWith-" + actualId).effect("highlight",{}, 6000);
+
 			}
 		});
 
@@ -346,8 +345,9 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
+						jq(".displayWith-" + baseId).effect("highlight",{}, 6000);
 						jq(".displayWith-" + baseId).show();
-                        jq(".displayWith-" + baseId).effect("highlight",{}, 6000);
+
 					}
 				}
 				else{

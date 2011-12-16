@@ -956,12 +956,8 @@ public final class KewApiConstants {
         public static final String DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME = DATA_TYPE_STRING;
         public static final String DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL = "From";
         public static final String DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL = "To";
-        public static final String RANGE_LOWER_BOUND_PROPERTY_PREFIX = "rangeLowerBoundKeyPrefix_";
-        public static final String RANGE_UPPER_BOUND_PROPERTY_PREFIX = "rangeUpperBoundKeyPrefix_";
 
         private SearchableAttributeConstants() {}
-
-
     }
 
     /**

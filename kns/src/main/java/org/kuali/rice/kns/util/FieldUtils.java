@@ -1485,7 +1485,7 @@ public final class FieldUtils {
             AttributeLookupSettings lookupSettings = remotableAttributeField.getAttributeLookupSettings();
             // Create a pair of range input fields for a ranged attribute
             // the lower bound is prefixed to distinguish it from the upper bound, which retains the original field name
-            Field lowerField = new Field(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + remotableAttributeField.getName(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+            Field lowerField = new Field(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + remotableAttributeField.getName(), remotableAttributeField.getLongLabel() + " " + KewApiConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
             lowerField.setMemberOfRange(true);
             lowerField.setAllowInlineRange(false);
             lowerField.setRangeFieldInclusive(lookupSettings.isLowerBoundInclusive());

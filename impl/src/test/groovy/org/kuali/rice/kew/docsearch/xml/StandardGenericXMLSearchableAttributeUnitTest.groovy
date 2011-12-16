@@ -30,6 +30,7 @@ import org.kuali.rice.kns.util.FieldUtils
 import org.kuali.rice.kns.web.ui.Row
 import org.apache.commons.lang.ObjectUtils
 import org.apache.commons.lang.StringUtils
+import org.kuali.rice.krad.util.KRADConstants
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute class in isolation
@@ -233,7 +234,7 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         // ranged search generates 2 fields, from and to
         List<Row> rows = FieldUtils.convertRemotableAttributeFields(fields);
         assertEquals(2, rows.size());
-        assertEquals(KewApiConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + "givenname", rows[0].fields[0].propertyName);
+        assertEquals(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "givenname", rows[0].fields[0].propertyName);
         assertEquals("givenname", rows[1].fields[0].propertyName);
     }
 

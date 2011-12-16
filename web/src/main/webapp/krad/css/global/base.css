@@ -745,3 +745,7 @@ div.blockPage{
     z-index: 10101 !important;
     text-align: center;
 }
+
+.uif-progressiveDisclosure-highlight{
+    background-color: #FFF8C6;
+}

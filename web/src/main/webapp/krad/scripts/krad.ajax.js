@@ -174,13 +174,19 @@ function retrieveComponent(id, actualId, methodToCall){
 		}
 
 		elementToBlock.unblock({onUnblock: function(){
+
+                var origColor = jq(component).css("background-color");
+                jq(component).css("background-color", "");
+                jq(component).addClass("uif-progressiveDisclosure-highlight");
 				// replace component
 				if(jq("#" + id + "_refreshWrapper").length){
 					jq("#" + id + "_refreshWrapper").replaceWith(component);
 				}
 				runHiddenScripts(id + "_refreshWrapper");
-                component.effect("highlight",{}, 6000);
-                jq(".displayWith-" + actualId).effect("highlight",{}, 6000);
+                if(origColor == ""){
+                    origColor = "transparent";
+                }
+                jq("#" + id + "_refreshWrapper").animate({backgroundColor: origColor}, 5000);
 
 			}
 		});
@@ -340,12 +346,17 @@ function setupProgressiveCheck(controlName, disclosureId, baseId, condition, alw
 						retrieveComponent(disclosureId, baseId, methodToCall);
 					}
 					else{
-						refreshDisclosure.fadeIn("slow");
-                        refreshDisclosure.effect("highlight",{}, 6000);
+                        var origColor = refreshDisclosure.css("background-color");
+                        refreshDisclosure.css("background-color", "");
+                        refreshDisclosure.addClass("uif-progressiveDisclosure-highlight");
+						refreshDisclosure.show();
+                        if(origColor == ""){
+                           origColor = "transparent";
+                        }
+                        refreshDisclosure.animate({backgroundColor: origColor}, 5000);
 
 						//re-enable validation on now shown inputs
 						hiddenInputValidationToggle(disclosureId + "_refreshWrapper");
-						jq(".displayWith-" + baseId).effect("highlight",{}, 6000);
 						jq(".displayWith-" + baseId).show();
 
 					}

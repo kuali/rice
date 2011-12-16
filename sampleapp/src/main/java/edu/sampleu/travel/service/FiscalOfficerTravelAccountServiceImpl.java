@@ -37,7 +37,7 @@ import edu.sampleu.travel.dto.TravelAccountInfo;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FiscalOfficerServiceImpl implements FiscalOfficerService {
+public class FiscalOfficerTravelAccountServiceImpl implements FiscalOfficerService, TravelAccountService {
 
     protected static String[] FOI_SKIP = { "accounts" };
     
@@ -86,6 +86,14 @@ public class FiscalOfficerServiceImpl implements FiscalOfficerService {
         }
         
         return toFiscalOfficerInfo(fiscalOfficer);
+    }
+
+    @Override
+    public TravelAccountInfo retrieveTravelAccount(String number) {
+        TravelAccount temp = getBusinessObjectService().findBySinglePrimaryKey(TravelAccount.class, number);
+        TravelAccountInfo result = toTravelAccountInfo(temp);
+
+        return result;
     }
     
     /**

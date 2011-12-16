@@ -407,7 +407,7 @@ public class DataDictionary  {
     }
 
     /**
-     * @param clazz
+     * @param targetClass
      * @param propertyName
      * @return true if the given propertyName names a property of the given class
      * @throws CompletionException if there is a problem accessing the named property on the given class
@@ -427,7 +427,7 @@ public class DataDictionary  {
     }
 
     /**
-     * @param clazz
+     * @param targetClass
      * @param propertyName
      * @return true if the given propertyName names a Collection property of the given class
      * @throws CompletionException if there is a problem accessing the named property on the given class
@@ -463,7 +463,7 @@ public class DataDictionary  {
      * This method determines the Class of the attributeName passed in. Null will be returned if the member is not available, or if
      * a reflection exception is thrown.
      * 
-     * @param rootClass - Class that the attributeName property exists in.
+     * @param boClass - Class that the attributeName property exists in.
      * @param attributeName - Name of the attribute you want a class for.
      * @return The Class of the attributeName, if the attribute exists on the rootClass. Null otherwise.
      */
@@ -493,11 +493,11 @@ public class DataDictionary  {
      * @return
      */
     private static Class getAttributeClassWhenBOIsClass(Class boClass, String attributeName){
-    	BusinessObject boInstance;
+    	Object boInstance;
         try {
-            boInstance = (BusinessObject) boClass.newInstance();
+            boInstance = boClass.newInstance();
         } catch (Exception e) {
-        	throw new RuntimeException("Unable to instantiate BO: " + boClass, e);
+        	throw new RuntimeException("Unable to instantiate Data Object: " + boClass, e);
         }
 
         // attempt to retrieve the class of the property

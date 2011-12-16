@@ -35,6 +35,18 @@ public class TravelAccountInfo implements Serializable {
     private Long foId;
     private String objectId;
     private Long versionNumber;
+
+    // this is just for testing relationshipDefinitions until a nested object
+    // is no longer required
+    private FiscalOfficerInfo fiscalOfficerInfo;
+
+     public FiscalOfficerInfo getFiscalOfficerInfo() {
+        return fiscalOfficerInfo;
+    }
+
+    public void setFiscalOfficerInfo(FiscalOfficerInfo fiscalOfficerInfo) {
+        this.fiscalOfficerInfo = fiscalOfficerInfo;
+    }
     
     
     public String getNumber() {

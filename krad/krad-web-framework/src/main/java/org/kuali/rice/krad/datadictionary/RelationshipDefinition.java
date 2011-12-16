@@ -54,7 +54,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      * For 1:1 relationships, this class represents the type of the reference class.  For 1:n references, this class represents the type of the element
      * of the collection
      */
-    protected Class<? extends BusinessObject> targetClass; //relatedClass
+    protected Class<?> targetClass; //relatedClass
 
 	protected List<PrimitiveAttributeDefinition> primitiveAttributes = new ArrayList<PrimitiveAttributeDefinition>(); //parentToChildReferences
     protected List<SupportAttributeDefinition> supportAttributes = new ArrayList<SupportAttributeDefinition>(); //parentToChildReferences
@@ -72,19 +72,13 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
 
     /**
      * Returns the {@link #targetClass}
-     * 
-     * @param targetClass
      */
-    public Class<? extends BusinessObject> getTargetClass() {
+    public Class<?> getTargetClass() {
         if (targetClass == null) {
 	        Class propertyClass = DataDictionary.getAttributeClass(sourceClass, objectAttributeName);
 	        if (propertyClass == null) {
 	            throw new AttributeValidationException("cannot get valid class for property '" + objectAttributeName + "' as an attribute of '" + sourceClass + "'");
 	        }
-	        if (!BusinessObject.class.isAssignableFrom(propertyClass)) {
-                throw new AttributeValidationException("property '" + objectAttributeName + "' is not a BusinessObject (" + propertyClass.getName() + ") on sourceClass (" + sourceClass +")");
-	        }
-	
 	
 	        targetClass = propertyClass;
         }
@@ -96,7 +90,7 @@ public class RelationshipDefinition extends DataDictionaryDefinitionBase {
      * 
      * @param targetClass
      */
-    public void setTargetClass(Class<? extends BusinessObject> targetClass) {
+    public void setTargetClass(Class<?> targetClass) {
 		this.targetClass = targetClass;
 	}
 

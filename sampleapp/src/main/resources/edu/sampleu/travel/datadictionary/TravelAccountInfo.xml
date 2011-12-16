@@ -32,12 +32,28 @@
         <ref bean="TravelAccountInfo-number"/>
         <ref bean="TravelAccountInfo-name"/>
         <ref bean="TravelAccountInfo-createDate"/>
+        <ref bean="TravelAccountInfo-foId"/>
+        <ref bean="TravelAccountInfo-subAccount"/>
+        <ref bean="TravelAccountInfo-subAccountName"/>
+        <ref bean="TravelAccountInfo-subsidizedPercent"/>
       </list>
     </property>
     <property name="objectLabel" value="Travel Account"/>
     <property name="primaryKeys">
       <list>
         <value>number</value>
+      </list>
+    </property>
+    <property name="relationships">
+      <list>
+        <bean parent="RelationshipDefinition">
+          <property name="objectAttributeName" value="fiscalOfficerInfo"/>
+          <property name="primitiveAttributes">
+            <list>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="foId" p:targetName="id"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>
@@ -87,6 +103,66 @@
     <property name="controlField">
       <bean parent="DateControl"/>
     </property>     
+  </bean>
+
+  <bean id="TravelAccountInfo-foId" parent="TravelAccountInfo-foId-parentBean"/>
+  <bean id="TravelAccountInfo-foId-parentBean" abstract="true" parent="FiscalOfficerInfo-id">
+    <property name="name" value="foId"/>
+  </bean>
+
+  <bean id="TravelAccountInfo-subAccount" parent="TravelAccountInfo-number-parentBean">
+    <property name="name" value="subAccount"/>
+    <property name="shortLabel" value="Travel Sub Account Number"/>
+    <property name="label" value="Travel Sub Account Number"/>
+    <property name="description" value="Travel Sub Account Number"/>
+    <property name="summary" value=""/>
+  </bean>
+
+  <bean id="TravelAccountInfo-subAccountName" parent="TravelAccountInfo-name-parentBean">
+    <property name="name" value="subAccountName"/>
+    <property name="shortLabel" value="Sub Account Name"/>
+    <property name="label" value="Sub Account Name"/>
+    <property name="description" value="Sub Account Name"/>
+  </bean>
+
+  <bean id="TravelAccountInfo-subsidizedPercent" parent="AttributeReferenceDummy-percent">
+    <property name="name" value="subsidizedPercent"/>
+    <property name="shortLabel" value="Subsidized Percent"/>
+    <property name="label" value="Subsidized Percent"/>
+    <property name="description" value="Subsidized Percent"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="6" p:watermarkText="##.##"/>
+    </property>
+    <property name="validationPattern">
+      <bean parent="FixedPointValidationPattern" p:precision="5" p:allowNegative="false" p:scale="2"/>
+    </property>
+  </bean>
+
+  <!-- views -->
+
+  <bean id="TravelAccountInfo-InquiryView" parent="InquiryView">
+    <property name="title" value="Travel Account Inquiry"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
+    <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.TravelAccountInfoInquiryViewHelperServiceImpl" />
+    <property name="items">
+      <list>
+        <bean parent="GroupSectionGridLayout">
+             <property name="layoutManager.numberOfColumns" value="2"/>
+             <property name="items">
+               <list>
+                <bean parent="DataField" p:propertyName="number"/>
+                <bean parent="DataField" p:propertyName="name"/>
+                <bean parent="DataField" p:propertyName="subAccount"/>
+                <bean parent="DataField" p:propertyName="subAccountName"/>
+                <bean parent="DataField" p:propertyName="createDate"/>
+                <bean parent="DataField" p:propertyName="subsidizedPercent"/>
+                <bean parent="DataField" p:propertyName="foId"/>
+               </list>
+             </property>
+             <property name="title" value="Account Information"/>
+           </bean>
+      </list>
+    </property>
   </bean>
   
 </beans>

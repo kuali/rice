@@ -40,6 +40,8 @@
     <br/>
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (New)" url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=start&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
     <li><portal:portalLink displayTitle="true" title="FiscalOfficerInfo Maintenance (Edit)" url="${ConfigProperties.application.url}/kr-krad/maintenance?methodToCall=maintenanceEdit&id=2&dataObjectClassName=edu.sampleu.travel.dto.FiscalOfficerInfo"/></li>
+    <br>
+    <li><portal:portalLink displayTitle="true" title="TravelAccountInfo Inquiry" url="${ConfigProperties.application.url}/kr-krad/inquiry?methodToCall=start&number=a2&dataObjectClassName=edu.sampleu.travel.dto.TravelAccountInfo&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true"/></li>
   </ul>
 
 </div>

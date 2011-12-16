@@ -76,6 +76,7 @@
 		<property name="moduleName" value="KSB" />
 		<property name="validRunModes">
 			<list>
+        <value>REMOTE</value>
 				<value>LOCAL</value>
 			</list>
 		</property>

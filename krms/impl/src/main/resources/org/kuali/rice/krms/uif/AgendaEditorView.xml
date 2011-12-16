@@ -495,7 +495,7 @@
         <bean parent="AgendaEditorView-barButton" p:methodToCall="refresh" p:actionLabel="refresh">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/refresh.png"
-                  p:altText="Delete"/>
+                  p:altText="Refresh"/>
           </property>
         </bean>
 

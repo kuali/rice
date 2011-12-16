@@ -86,6 +86,7 @@ function markNodeAsSelected(parentLiNode) {
         jq(parentLiNode).addClass('ruleBlockSelected');
     }
     ;
+    enableTreeButtons(); // disableButtons.js
     // show hidden edit image link
     jq(parentLiNode).find(".actionReveal").first().show();
 }

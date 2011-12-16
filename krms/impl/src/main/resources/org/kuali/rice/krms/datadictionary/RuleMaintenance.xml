@@ -275,7 +275,13 @@
       
     <property name="items">
       <list>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');" p:actionLabel="Add">
+
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('370');
+          if (enabled) {
+              ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');
+          }
+          "
+            p:actionLabel="Add">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/node-insert-next.png"
               p:altText="Add Proposition"/>
@@ -291,7 +297,11 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('356');
+          if (enabled) {
+              ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');
+          }
+          "
               p:actionLabel="Edit">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
@@ -300,28 +310,44 @@
         </bean>
 
         <bean parent="MessageField" p:messageText="Move: [" p:style="display: inline;"/>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('391');
+          if (enabled) {
+              ajaxCallPropositionTree('movePropositionLeft', 'RuleEditorView-TreeGroup');
+          }
+          "
               p:actionLabel="Left">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-left.png"
                   p:altText="Left"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('397');
+          if (enabled) {
+              ajaxCallPropositionTree('movePropositionRight', 'RuleEditorView-TreeGroup');
+          }
+          "
               p:actionLabel="Right">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-right.png"
                   p:altText="Right"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('403');
+          if (enabled) {
+              ajaxCallPropositionTree('movePropositionUp', 'RuleEditorView-TreeGroup');
+          }
+          "
               p:actionLabel="Up">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-up.png"
                   p:altText="Up"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('409');
+          if (enabled) {
+              ajaxCallPropositionTree('movePropositionDown', 'RuleEditorView-TreeGroup');
+          }
+          "
               p:actionLabel="Down">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/arrow-down.png"
@@ -330,28 +356,49 @@
         </bean>
         <bean parent="MessageField" p:messageText="]" p:style="display: inline;"/>
         
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCutPropositionTree('cutProposition', 'RuleEditorView-Tree');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('418');
+          if (enabled) {
+              ajaxCutPropositionTree('cutProposition', 'RuleEditorView-Tree');
+          }
+          "
               p:actionLabel="Cut" p:style="margin-left: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/cut.png"
                   p:altText="Cut"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('424');
+          if (enabled) {
+              ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');
+          }
+          "
               p:actionLabel="Paste">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/paste.png"
                   p:altText="Paste"/>
           </property>
         </bean>
-        <bean parent="AgendaEditorView-barButton" p:clientSideJs="ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-TreeGroup');"
+        <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('430');
+          if (enabled) {
+              ajaxCallPropositionTree('deleteProposition', 'RuleEditorView-TreeGroup');
+          }
+          "
               p:actionLabel="Delete" p:style="margin-right: 15pt;"> <!-- Horiz whitespace -->
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/delete.png"
                   p:altText="Delete"/>
           </property>
         </bean>
-        <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses-ref="buttonClasses"/>
+        <!-- refresh is always allowed, but enabledCheck will disable others if they are not -->
+        <bean parent="ActionField" p:methodToCall="refresh" p:actionLabel="refresh" p:clientSideJs="var enabled = enabledCheck('430');
+            submitForm();
+            "
+          p:styleClasses="kr-button-primary tree-bar-button">
+          <property name="actionImage">
+            <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/refresh.png"
+                  p:altText="Refresh"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

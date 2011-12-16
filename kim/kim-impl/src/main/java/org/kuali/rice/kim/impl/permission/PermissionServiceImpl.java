@@ -102,7 +102,6 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
 
         return isAuthorized( principalId, namespaceCode, permissionName, permissionDetails, Collections.<String, String>emptyMap() );
     }
@@ -114,7 +113,6 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
         incomingParamCheck(qualification, "qualification");
 
         List<String> roleIds = getRoleIdsForPermission( namespaceCode, permissionName, permissionDetails );
@@ -131,7 +129,6 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
 
         return isAuthorizedByTemplateName( principalId, namespaceCode, permissionTemplateName, permissionDetails, Collections.<String, String>emptyMap() );
     }
@@ -142,7 +139,6 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
         incomingParamCheck(qualification, "qualification");
 
         List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails );
@@ -158,7 +154,6 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
         incomingParamCheck(qualification, "qualification");
 
         // get all the permission objects whose name match that requested
@@ -174,7 +169,6 @@ public class PermissionServiceImpl implements PermissionService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
         incomingParamCheck(qualification, "qualification");
 
         // get all the permission objects whose name match that requested
@@ -262,7 +256,6 @@ public class PermissionServiceImpl implements PermissionService {
             Map<String, String> permissionDetails, Map<String, String> qualification ) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
         incomingParamCheck(qualification, "qualification");
 
 
@@ -293,7 +286,6 @@ public class PermissionServiceImpl implements PermissionService {
             Map<String, String> permissionDetails, Map<String, String> qualification) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
         incomingParamCheck(qualification, "qualification");
 
     	List<String> roleIds = getRoleIdsForPermissionTemplate( namespaceCode, permissionTemplateName, permissionDetails);
@@ -323,7 +315,6 @@ public class PermissionServiceImpl implements PermissionService {
              Map<String, String> permissionDetails ) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
 
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByName( namespaceCode, permissionName );
@@ -337,7 +328,6 @@ public class PermissionServiceImpl implements PermissionService {
 
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionTemplateName, "permissionTemplateName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
 
     	// get all the permission objects whose name match that requested
     	List<PermissionBo> permissions = getPermissionImplsByTemplateName( namespaceCode, permissionTemplateName );
@@ -350,7 +340,6 @@ public class PermissionServiceImpl implements PermissionService {
             Map<String, String> permissionDetails) throws RiceIllegalArgumentException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(permissionName, "permissionName");
-        incomingParamCheck(permissionDetails, "permissionDetails");
 
         // get all the permission objects whose name match that requested
         List<PermissionBo> permissions = getPermissionImplsByName(namespaceCode, permissionName);

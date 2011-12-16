@@ -211,7 +211,8 @@ jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn 
 		if(input.length != 0){
 			aData.push( input.val() );	
 		}else{
-			var input1 = jq(this).find('.kr-data-fld');
+            //match DataField or InputField CSS classes - respectively
+			var input1 = jq(this).find('.kr-data-fld, .kr-field-attribute');
 			if(input1.length != 0){
 				aData.push(jq.trim(input1.find("span:first").text()));
 			}else{

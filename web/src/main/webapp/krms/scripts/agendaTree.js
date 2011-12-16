@@ -77,9 +77,12 @@ function initAgendaTree(componentId) {
             if (selectedItemTracker.val() == agendaItemId) {
                 // if this item is already selected, deselect it
                 selectedItemTracker.val('');
+                disableTreeButtons();
+                enableAddButton();
             } else { // select it, both with the custom class and with the selectedItemTracker
                 selectedItemTracker.val(agendaItemId);
                 jq(this.parentNode).addClass('ruleBlockSelected');
+                enableTreeButtons();
             }
         });
 

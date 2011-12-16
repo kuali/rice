@@ -49,15 +49,20 @@
   <bean id="krms-css" class="org.apache.commons.collections.ListUtils" factory-method="union">
       <constructor-arg>
           <ref bean="kns-css" />
-      </constructor-arg> 
-      <constructor-arg><list><value>/krms/css/agendaTree.css</value></list></constructor-arg>
+      </constructor-arg>
+      <constructor-arg>
+          <list>
+              <value>/krms/css/agendaTree.css</value>
+              <value>/krms/css/disableButtons.css</value>
+        </list>
+      </constructor-arg>
   </bean>
 
   <bean id="AgendaTreeWidget" parent="Tree">
     <property name="template" value="/krad/WEB-INF/jsp/templates/widget/agendaTree.jsp"/>
   </bean>
 
-  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js">
+  <bean id="Editor-MaintenanceView" parent="MaintenanceView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js,../krms/scripts/disableButtons.js">
     <property name="additionalCssFiles" ref="krms-css" />
     <property name="title" value="Agenda Editor"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
@@ -334,19 +339,7 @@
     <property name="items">
       <list>
         <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="View Rule"
-              p:clientSideJs="var requiredMessage = requiredsSet();
-              if (getSelectedItemInput() != null) {
-                if (getSelectedItemInput().val() == '') {
-                  requiredMessage = requiredMessage + 'Please select the rule to view, then click view rule.';
-                }
-              }
-              if (requiredMessage.length > 0) {
-                alert(requiredMessage);
-                return false;
-              }
-              submitForm();
-              "
-              p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+              p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
       </list>
     </property>
   </bean>
@@ -373,18 +366,8 @@
         </bean>
         -->
 
-        <!-- this is horrible this clientSideJs it appears to fix the required properties code, at least the first time
-             through, after the first time, the alert pops -->
         <bean parent="NavigationActionField" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
-              p:clientSideJs="var requiredMessage = requiredsSet();
-              if (requiredMessage.length > 0) {
-                alert(requiredMessage);
-                return false;
-              }
-              submitForm();
-              "
-
-          p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+          p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
 <!--
         <bean parent="AgendaEditorView-barButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"  p:style="margin-right: 15pt;">
           <property name="actionImage">
@@ -393,21 +376,8 @@
           </property>
         </bean>
 -->
-        <!-- ugly alert that should be replaced with a disabled button when no rule is selected -->
         <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
-              p:clientSideJs="var requiredMessage = requiredsSet();
-              if (getSelectedItemInput() != null) {
-                if (getSelectedItemInput().val() == '') {
-                  requiredMessage = requiredMessage + 'Please select the rule to edit, then click edit rule.';
-                }
-              }
-              if (requiredMessage.length > 0) {
-                alert(requiredMessage);
-                return false;
-              }
-              submitForm();
-              "
-              p:styleClasses-ref="buttonClasses" p:style="margin-right: 15pt;"/>
+              p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
 <!--               p:disabled="@{document.newMaintainableObject.dataObject.selectedAgendaItemId == null}"
                    p:refreshWhenChanged="document.newMaintainableObject.dataObject.selectedAgendaItemId"
 -->

@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.search.Range;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -1092,7 +1093,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KRADConstants.DOC_FORM_KEY));
         Collection displayList;
 
-        preProcessRangeFields(lookupFormFields);
+        LookupUtils.preProcessRangeFields(lookupFormFields);
 
         Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
         // call search method to get results
@@ -1221,36 +1222,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return propClass;
     }
 
-    /**
-     * Changes ranged search fields like from/to dates into the range operators the lookupable dao expects
-     * ("..",">" etc) this method modifies the passed in map and returns a list containing only the modified fields
-     */
-    protected Map<String, String> preProcessRangeFields(Map<String, String> lookupFormFields) {
-        Map<String, String> fieldsToUpdate = new HashMap<String, String>();
-        Set<String> fieldsForLookup = lookupFormFields.keySet();
-        for (String propName : fieldsForLookup) {
-            if (propName.startsWith(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX)) {
-                String rangedLowerBoundValue = lookupFormFields.get(propName);
-                String rangedFieldName = StringUtils.remove(propName, KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX);
-                String rangedValue = lookupFormFields.get(rangedFieldName);
-                String newPropValue = rangedValue;
-                if (StringUtils.isNotEmpty(rangedLowerBoundValue) && StringUtils.isNotEmpty(rangedValue)) {
-                    newPropValue = rangedLowerBoundValue + SearchOperator.BETWEEN + rangedValue;
-                } else if (StringUtils.isNotEmpty(rangedLowerBoundValue) && StringUtils.isEmpty(rangedValue)) {
-                    newPropValue = ">=" + rangedLowerBoundValue;
-                } else if (StringUtils.isNotEmpty(rangedValue) && StringUtils.isEmpty(rangedLowerBoundValue)) {
-                    newPropValue = "<=" + rangedValue;
-                }
-                fieldsToUpdate.put(rangedFieldName, newPropValue);
-            }
-        }
-        //update lookup values from found ranged values to update
-        Set<String> keysToUpdate = fieldsToUpdate.keySet();
-        for (String updateKey : keysToUpdate) {
-            lookupFormFields.put(updateKey, fieldsToUpdate.get(updateKey));
-        }
-        return fieldsToUpdate;
-    }
+
 
     protected String maskValueIfNecessary(Class businessObjectClass, String propertyName, String propertyValue, BusinessObjectRestrictions businessObjectRestrictions) {
         String maskedPropertyValue = propertyValue;

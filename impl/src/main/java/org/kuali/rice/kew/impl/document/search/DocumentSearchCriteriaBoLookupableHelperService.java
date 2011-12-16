@@ -50,6 +50,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
@@ -200,7 +201,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             }
         }
         // if any of the document attributes are range values, process them
-        documentAttributeFieldValues.putAll(preProcessRangeFields(documentAttributeFieldValues));
+        documentAttributeFieldValues.putAll(LookupUtils.preProcessRangeFields(documentAttributeFieldValues));
         cleanedUpFieldValues.putAll(documentAttributeFieldValues);
         return cleanedUpFieldValues;
     }

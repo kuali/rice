@@ -86,7 +86,7 @@ function enabledCheck(id) {
 }
 
 function selectedCheck() {
-    if (getSelectedItemInput().val() != "") {
+    if (getSelectedItemInput().val() != "" && getSelectedItemInput().val() != undefined) {
         enableTreeButtons();
     }
 }

@@ -338,7 +338,18 @@
 
     <property name="items">
       <list>
+        <!-- javascript to work around required issue -->
         <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="View Rule"
+              p:clientSideJs="var requiredMessage = requiredsSet();
+              if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
+                requiredMessage = requiredMessage + 'Please select the rule to edit (or add a rule), then click edit rule.';
+              }
+              if (requiredMessage.length > 0) {
+                alert(requiredMessage);
+                return false;
+              }
+              submitForm();
+              "
               p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
       </list>
     </property>
@@ -357,7 +368,7 @@
     <property name="items">
       <list>
 
-        <!--
+        <!-- infinite loading bug
         <bean parent="AgendaEditorView-barButton" p:methodToCall="goToAddRule" p:actionLabel="Add Rule">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/node-insert-next.png"
@@ -366,9 +377,17 @@
         </bean>
         -->
 
+        <!-- javascript to work around required issue -->
         <bean parent="NavigationActionField" p:methodToCall="goToAddRule" p:actionLabel="Add Rule"
+              p:clientSideJs="var requiredMessage = requiredsSet();
+              if (requiredMessage.length > 0) {
+                alert(requiredMessage);
+                return false;
+              }
+              submitForm();
+              "
           p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
-<!--
+<!-- infinite loading bug
         <bean parent="AgendaEditorView-barButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"  p:style="margin-right: 15pt;">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/edit.png"
@@ -376,7 +395,18 @@
           </property>
         </bean>
 -->
+        <!-- javascript to work around required issue -->
         <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"
+              p:clientSideJs="var requiredMessage = requiredsSet();
+              if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
+                requiredMessage = requiredMessage + 'Please select the rule to edit (or add a rule), then click edit rule.';
+              }
+              if (requiredMessage.length > 0) {
+                alert(requiredMessage);
+                return false;
+              }
+              submitForm();
+              "
               p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
 <!--               p:disabled="@{document.newMaintainableObject.dataObject.selectedAgendaItemId == null}"
                    p:refreshWhenChanged="document.newMaintainableObject.dataObject.selectedAgendaItemId"

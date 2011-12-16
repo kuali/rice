@@ -298,7 +298,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             Map<String, String> qualification) throws RiceIllegalStateException  {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(roleIds, "roleIds");
-        incomingParamCheck(qualification, "qualification");
 
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
@@ -352,7 +351,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
-        incomingParamCheck(qualification, "qualification");
 
         String roleId = getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
         if (roleId == null) {
@@ -368,7 +366,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
-        incomingParamCheck(qualification, "qualification");
 
         String roleId = getRoleIdByNameAndNamespaceCode(namespaceCode, roleName);
         if (roleId == null) {
@@ -383,7 +380,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             List<String> roleIds, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(roleIds, "roleIds");
-        incomingParamCheck(qualification, "qualification");
 
 
         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
@@ -463,7 +459,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @Override
     public List<RoleMembership> getRoleMembers(List<String> roleIds, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(roleIds, "roleIds");
-        incomingParamCheck(qualification, "qualification");
 
         Set<String> foundRoleTypeMembers = new HashSet<String>();
         return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
@@ -473,7 +468,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(namespaceCode, "namespaceCode");
         incomingParamCheck(roleName, "roleName");
-        incomingParamCheck(qualification, "qualification");
 
         Set<String> principalIds = new HashSet<String>();
         Set<String> foundRoleTypeMembers = new HashSet<String>();
@@ -492,7 +486,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     public boolean principalHasRole(String principalId, List<String> roleIds, Map<String, String> qualification) throws RiceIllegalStateException {
         incomingParamCheck(principalId, "principalId");
         incomingParamCheck(roleIds, "roleIds");
-        incomingParamCheck(qualification, "qualification");
 
         return principalHasRole(principalId, roleIds, qualification, true);
     }
@@ -503,7 +496,6 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         incomingParamCheck(principalIds, "principalIds");
         incomingParamCheck(roleNamespaceCode, "roleNamespaceCode");
         incomingParamCheck(roleName, "roleName");
-        incomingParamCheck(qualification, "qualification");
 
         List<String> subList = new ArrayList<String>();
         RoleBo role = getRoleBoByName(roleNamespaceCode, roleName);

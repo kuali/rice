@@ -437,14 +437,14 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     @Override
     public boolean performCustomAction(boolean ignoreErrors) {
         //boolean isConfigAction = isAdvancedSearch() || isSuperUserSearch() || isClearSavedSearch();
-        if (getSavedSearchName() != null) {
+        if (isClearSavedSearch()) {
+            KEWServiceLocator.getDocumentSearchService().clearNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
+            return false;
+        }
+        else if (getSavedSearchName() != null) {
             return loadSavedSearch(ignoreErrors);
         } else {
-            if (isClearSavedSearch()) {
-                KEWServiceLocator.getDocumentSearchService().clearNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
-            } else {
-                toggleFormView();
-            }
+            toggleFormView();
             // Finally, return false to prevent the search from being performed and to skip the other custom processing below.
             return false;
         }

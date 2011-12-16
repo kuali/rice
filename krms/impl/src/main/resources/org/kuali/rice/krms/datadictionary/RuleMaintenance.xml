@@ -750,7 +750,11 @@
     <property name="collectionLookup.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="name" p:label="Name" p:required="true"/>
+        <bean parent="InputField" p:propertyName="name" p:label="Name" p:required="true">
+          <property name="control">
+            <bean parent="TextControl" p:size="40" p:watermarkText="action name"/>
+          </property>
+        </bean>
         <bean parent="InputField" p:propertyName="typeId" p:label="Type" p:required="true">
           <property name="control">
             <bean parent="SelectControl"/>
@@ -779,10 +783,16 @@
         <bean parent="RemoteFieldsHolder" p:propertyName="customRuleActionAttributesMap"
               p:fetchingMethodToCall="retrieveRuleActionCustomAttributes"/>
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.name" p:label="Name" p:required="true"
-              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"/>
+              p:constraintText="size 40"
+              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}">
+          <property name="control">
+            <bean parent="TextControl" p:size="40" p:watermarkText="action name"/>
+          </property>
+        </bean>
+
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="false"
               p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"
-              p:instructionalText="instructional text" p:constraintText="constraint text"/>
+              p:instructionalText="instructional text" p:constraintText="size 4000"/>
       </list>
     </property>
   </bean>

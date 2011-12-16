@@ -85,7 +85,19 @@
       <artifactId>rice-impl</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-ksb-server-impl</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-ksb-server-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>

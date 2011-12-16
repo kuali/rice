@@ -110,6 +110,7 @@
         <bean id="UifCompView-Page7" parent="Page" p:title="Collections" p:instructionalText="Lists of Data Objects">
           <property name="items">
             <list>
+              <bean parent="AjaxActionField" p:actionLabel="Cause Server Messages" p:methodToCall="genCollectionServerMessages"/>
               <ref bean="collection1"/>
               <ref bean="collection2"/>
               <ref bean="collection6"/>

@@ -108,4 +108,21 @@ public class UifComponentsTestController extends UifControllerBase {
         GlobalVariables.getMessageMap().putInfo("field45", "serverTestInfo");
 		return updateComponent(uiTestForm, result, request, response);
 	}
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=genCollectionServerMessages")
+	public ModelAndView genCollectionServerMessages(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) throws Exception{
+        GlobalVariables.getMessageMap().putError("list2[0].field1", "serverTestError");
+        GlobalVariables.getMessageMap().putWarning("list2[0].field1", "serverTestWarning");
+        GlobalVariables.getMessageMap().putInfo("list2[0].field1", "serverTestInfo");
+
+        GlobalVariables.getMessageMap().putError("list3[0].field1", "serverTestError");
+        GlobalVariables.getMessageMap().putWarning("list3[0].field1", "serverTestWarning");
+        GlobalVariables.getMessageMap().putInfo("list3[0].field1", "serverTestInfo");
+
+        GlobalVariables.getMessageMap().putError("list5[0].subList[0].field1", "serverTestError");
+        GlobalVariables.getMessageMap().putWarning("list5[0].subList[0].field1", "serverTestWarning");
+        GlobalVariables.getMessageMap().putInfo("list5[0].subList[0].field1", "serverTestInfo");
+		return refresh(uiTestForm, result, request, response);
+	}
 }

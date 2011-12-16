@@ -96,7 +96,8 @@ class RuleDefinitionTest {
 			<id>RULEID001</id>
 			<name>Rule1</name>
 			<namespace>KRMS_TEST</namespace>
-			<proposition>
+			<proposition/>
+       		<active>Y</active>
 			<actions>
 				<action></action>
 				<action></action>

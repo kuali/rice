@@ -143,6 +143,11 @@
             <bean parent="TextAreaControl" p:rows="2" p:cols="60" p:textExpand="true"/>
           </property>
         </bean>
+        <bean parent="InputField" p:propertyName="agendaItemLine.rule.active" p:label="Active">
+          <property name="control">
+            <bean parent="CheckboxControl"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

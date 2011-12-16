@@ -42,7 +42,7 @@
 		<field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
 		<field-descriptor name="label" column="LBL" jdbc-type="VARCHAR" />
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
-        <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
+    <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
 		<field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR"
 			conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
@@ -249,6 +249,7 @@
 		<field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
 		<field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
 		<field-descriptor name="propId" column="PROP_ID" jdbc-type="VARCHAR"  />
+    <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
 		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     	<reference-descriptor name="proposition" class-ref="org.kuali.rice.krms.impl.repository.PropositionBo" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       		<foreignkey field-ref="propId" />

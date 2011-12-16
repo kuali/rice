@@ -21,10 +21,11 @@ import java.util.Set;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 
-public interface RuleDefinitionContract extends Identifiable, Versioned {
+public interface RuleDefinitionContract extends Identifiable, Inactivatable, Versioned {
     /**
      * This is the name of the Rule 
      * <p>

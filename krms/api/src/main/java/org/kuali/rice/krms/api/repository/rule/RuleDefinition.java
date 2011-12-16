@@ -56,6 +56,7 @@ import java.util.Map;
         RuleDefinition.Elements.NAMESPACE,
         RuleDefinition.Elements.DESCRIPTION,
 		RuleDefinition.Elements.TYPE_ID,
+        RuleDefinition.Elements.ACTIVE,
 		RuleDefinition.Elements.PROPOSITION,
 		RuleDefinition.Elements.ACTIONS,
 		RuleDefinition.Elements.ATTRIBUTES,
@@ -77,7 +78,9 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 	private final String typeId;
 	@XmlElement(name = Elements.PROPOSITION, required=true)
 	private final PropositionDefinition proposition;
-	
+    @XmlElement(name = Elements.ACTIVE, required = false)
+    private final boolean active;
+
 	@XmlElementWrapper(name = Elements.ACTIONS)
 	@XmlElement(name = Elements.ACTION, required=false)
 	private final List<ActionDefinition> actions;
@@ -107,6 +110,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         this.description = null;
     	this.typeId = null;
     	this.propId = null;
+        this.active = true;
     	this.proposition = null;
     	this.actions = null;
     	this.attributes = null;
@@ -126,7 +130,8 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         this.typeId = builder.getTypeId();
         this.propId = builder.getPropId();
         this.description = builder.getDescription();
-        
+        this.active = builder.isActive();
+
         if (builder.getProposition() != null) {
             this.proposition = builder.getProposition().build();
         } else {
@@ -179,6 +184,11 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 		return this.propId;
 	}
 
+    @Override
+    public boolean isActive() {
+        return this.active;
+    }
+
 	@Override
 	public PropositionDefinition getProposition(){
 		return this.proposition;
@@ -211,6 +221,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
         private String namespace;
         private String typeId;
         private String propId;
+        private boolean active;
         private PropositionDefinition.Builder proposition;
         private List<ActionDefinition.Builder> actions;
         private Map<String, String> attributes;
@@ -225,6 +236,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
             setNamespace(namespace);
             setTypeId(typeId);
             setPropId(propId);
+            setActive(true);
             setAttributes(new HashMap<String, String>());
         }
         
@@ -262,6 +274,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
             builder.setActions(actionList);
             builder.setVersionNumber(contract.getVersionNumber());
             builder.setDescription(contract.getDescription());
+            builder.setActive(contract.isActive());
             return builder;
         }
 
@@ -301,6 +314,10 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 			this.typeId = typeId;
 		}
 		
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
 		public void setPropId(String propId) {
 		    if (propId != null && StringUtils.isBlank(propId)) {
 		        throw new IllegalArgumentException("propId must be null or non-blank");
@@ -362,6 +379,11 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 			return propId;
 		}
 
+        @Override
+        public boolean isActive() {
+            return active;
+        }
+
 		@Override
 		public PropositionDefinition.Builder getProposition() {
 			return proposition;
@@ -414,6 +436,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 		final static String PROPOSITION = "proposition";
 		final static String ACTIONS = "actions";
 		final static String ACTION = "action";
+        final static String ACTIVE = "active";
 		final static String ATTRIBUTES = "attributes";
 	}
 

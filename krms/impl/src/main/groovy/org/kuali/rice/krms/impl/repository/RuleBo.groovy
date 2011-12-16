@@ -38,12 +38,13 @@ import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 
 public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinitionContract {
    
-   String id;
-   String namespace;
-   String description;
-   String name;
-   String typeId;
-   String propId;
+   def String id;
+   def String namespace;
+   def String description;
+   def String name;
+   def String typeId;
+   def String propId;
+   def boolean active = true;
 
    PropositionBo proposition;
    List<ActionBo> actions;
@@ -273,6 +274,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
       bo.description = im.getDescription();
       bo.typeId = im.getTypeId();
       bo.propId = im.getPropId();
+      bo.active = im.isActive();
       bo.proposition = PropositionBo.from(im.getProposition());
       bo.versionNumber = im.getVersionNumber();
       
@@ -311,6 +313,7 @@ public class RuleBo extends PersistableBusinessObjectBase implements RuleDefinit
         newRule.setNamespace( existing.getNamespace() );
         newRule.setDescription( existing.getDescription() );
         newRule.setTypeId( existing.getTypeId() );
+        newRule.setActive(true);
 
         // copy proposition(s)
         PropositionBo newProp = PropositionBo.copyProposition(existing.getProposition());

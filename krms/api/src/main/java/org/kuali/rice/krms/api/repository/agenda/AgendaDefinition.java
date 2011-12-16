@@ -96,7 +96,7 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
     	this.name = null;
     	this.typeId = null;
     	this.contextId = null;
-        this.active = false;
+        this.active = true;
     	this.firstItemId = null;
     	this.attributes = null;
         this.versionNumber = null;
@@ -333,7 +333,7 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
 	public static class Constants {
 		final static String ROOT_ELEMENT_NAME = "agenda";
 		final static String TYPE_NAME = "AgendaType";
-		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_furutreElements" };
+		final static String[] HASH_CODE_EQUALS_EXCLUDE = { "_futureElements" };
         public final static String EVENT = "Event";   // key for event attribute
 	}
 	

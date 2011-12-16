@@ -35,6 +35,7 @@
         <ref bean="RuleBo-description"/>
         <ref bean="RuleBo-typeId"/>
         <ref bean="RuleBo-propId"/>
+        <ref bean="RuleBo-active"/>
       </list>
     </property>
     <property name="objectLabel" value="Rule"/>
@@ -109,6 +110,11 @@
     <property name="label" value="Proposition Id"/>
   </bean>
    
+  <bean id="RuleBo-active" parent="RuleBo-active-parentBean"/>
+  <bean id="RuleBo-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator"  p:label="Active?">
+    <property name="name" value="active"/>
+  </bean>
+
   <bean id="RuleBo-LookupView" parent="LookupView">
     <property name="title" value="Rule Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
@@ -119,6 +125,7 @@
         <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
         <bean parent="LookupCriteriaInputField" p:propertyName="description" />
         <bean parent="LookupCriteriaInputField" p:propertyName="typeId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">

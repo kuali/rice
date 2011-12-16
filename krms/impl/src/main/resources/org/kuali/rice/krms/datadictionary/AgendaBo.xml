@@ -33,6 +33,7 @@
         <ref bean="AgendaBo-name"/>
         <ref bean="AgendaBo-typeId"/>
         <ref bean="AgendaBo-contextId"/>
+        <ref bean="AgendaBo-active"/>
       </list>
     </property>
     <property name="objectLabel" value="Agenda Definition"/>
@@ -85,6 +86,11 @@
     <property name="label" value="Agenda contextId"/>
   </bean>
     
+  <bean id="AgendaBo-active" parent="AgendaBo-active-parentBean"/>
+  <bean id="AgendaBo-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator"  p:label="Active?">
+    <property name="name" value="active"/>
+  </bean>
+
   <bean id="AgendaBo-LookupView" parent="LookupView">
     <property name="title" value="Agenda Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
@@ -95,6 +101,7 @@
         <bean parent="LookupCriteriaInputField" p:propertyName="name" />
         <bean parent="LookupCriteriaInputField" p:propertyName="typeId" />
         <bean parent="LookupCriteriaInputField" p:propertyName="contextId" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">

@@ -49,6 +49,7 @@ import java.util.Set;
 		TermResolverDefinition.Elements.NAME,
         TermResolverDefinition.Elements.NAMESPACE,
 		TermResolverDefinition.Elements.TYPE_ID,
+        TermResolverDefinition.Elements.ACTIVE,
 		TermResolverDefinition.Elements.OUTPUT,
 		TermResolverDefinition.Elements.PREREQUISITES,
 		TermResolverDefinition.Elements.ATTRIBUTES,
@@ -70,6 +71,8 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
     private final String typeId;
 	@XmlElement(name = Elements.OUTPUT, required=false)
 	private final TermSpecificationDefinition output;
+    @XmlElement(name = Elements.ACTIVE, required = false)
+    private final boolean active;
 
 	@XmlElement(name = "termSpecificationDefinition", required=false)
 	@XmlElementWrapper(name = Elements.PREREQUISITES, required=false)
@@ -98,6 +101,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		namespace = null;
 		name = null;
 		typeId = null;
+        active = true;
 		output = null;
 		prerequisites = null;
 		attributes = null;
@@ -110,6 +114,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		this.namespace = builder.getNamespace();
 		this.name = builder.getName();
 		this.typeId = builder.getTypeId();
+        this.active = builder.isActive();
 		this.output = builder.getOutput().build();
 		this.prerequisites = BuilderUtils.convertFromBuilderSet(builder.getPrerequisites());
 		this.parameterNames = Collections.unmodifiableSet(builder.getParameterNames());
@@ -130,6 +135,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		private String namespace;
 		private String name;
         private String typeId;
+        private boolean active;
 		private TermSpecificationDefinition.Builder output;
 		private Set<TermSpecificationDefinition.Builder> prerequisites;
         private Map<String, String> attributes;
@@ -142,6 +148,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 			setNamespace(namespaceCode);
 			setName(name);
 			setTypeId(typeId);
+            setActive(true);
 			setOutput(output);
 			setPrerequisites(prerequisites);
 			setAttributes(attributes);
@@ -155,6 +162,7 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 			setNamespace(termResolver.getNamespace());
 			setName(termResolver.getName());
 			setTypeId(termResolver.getTypeId());
+            setActive(termResolver.isActive());
 			setOutput(TermSpecificationDefinition.Builder.create(termResolver.getOutput()));
 			setPrerequisites(BuilderUtils.transform(termResolver.getPrerequisites(), TermSpecificationDefinition.Builder.toBuilder));
 			setAttributes(termResolver.getAttributes());
@@ -214,6 +222,13 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 			}
 			this.typeId = typeId;
 		}
+
+        /**
+         * @param active the active indicator
+         */
+        public void setActive(boolean active) {
+            this.active = active;
+        }
 
 		/**
 		 * @param output the output to set
@@ -285,6 +300,12 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		public String getTypeId() {
 			return this.typeId;
 		}
+        /**
+         * @return the active indicator
+         */
+        public boolean isActive() {
+            return this.active;
+        }
 		/**
 		 * @return the output
 		 */
@@ -361,7 +382,15 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 	public String getTypeId() {
 		return this.typeId;
 	}
-	
+
+    /**
+     * @return the active indicator
+     */
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
 	/**
 	 * @return the specification
 	 */
@@ -418,5 +447,6 @@ public final class TermResolverDefinition extends AbstractDataTransferObject imp
 		public static final String PREREQUISITES = "prerequisites";
 		public static final String ATTRIBUTES = "attributes";
 		public static final String PARAMETER_NAMES = "parameterNames";
+        public static final String ACTIVE = "active";
 	}
 }

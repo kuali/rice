@@ -36,6 +36,7 @@
               <bean parent="InputField" p:propertyName="namespace" p:label="Namespace"/>
               <bean parent="InputField" p:propertyName="typeId" p:label="Type"/>
               <bean parent="InputField" p:propertyName="description" p:label="Description"/>
+              <bean parent="InputField" p:propertyName="active" p:label="Active"/>
             </list>
           </property>
           <property name="title" value="Context"/>

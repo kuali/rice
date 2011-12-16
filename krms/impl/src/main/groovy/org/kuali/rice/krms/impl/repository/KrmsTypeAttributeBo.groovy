@@ -26,7 +26,7 @@ public class KrmsTypeAttributeBo extends PersistableBusinessObjectBase implement
 	def String typeId
 	def String attributeDefinitionId
 	def Integer sequenceNumber
-	def boolean active
+	def boolean active = true;
 
 	/**
 	 * Converts a mutable bo to it's immutable counterpart

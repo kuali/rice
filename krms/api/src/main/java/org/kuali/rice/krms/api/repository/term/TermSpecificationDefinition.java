@@ -52,6 +52,7 @@ import org.kuali.rice.krms.api.repository.category.CategoryDefinitionContract;
         TermSpecificationDefinition.Elements.NAMESPACE,
         TermSpecificationDefinition.Elements.TYPE,
         TermSpecificationDefinition.Elements.DESCRIPTION,
+        TermSpecificationDefinition.Elements.ACTIVE,
         CoreConstants.CommonElements.VERSION_NUMBER,
         TermSpecificationDefinition.Elements.CATEGORIES,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS
@@ -70,6 +71,8 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 	private final String type;
     @XmlElement(name = Elements.DESCRIPTION, required=false)
     private final String description;
+    @XmlElement(name = Elements.ACTIVE, required = false)
+    private final boolean active;
     @XmlElement(name = CoreConstants.CommonElements.VERSION_NUMBER, required = false)
     private final Long versionNumber;
 
@@ -91,6 +94,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         namespace = null;
 		type = null;
         description = null;
+        active = true;
         versionNumber = null;
         this.categories = null;
 	}
@@ -106,6 +110,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         namespace = b.getNamespace();
 		type = b.getType();
         description = b.getDescription();
+        active = b.isActive();
 		versionNumber = b.getVersionNumber();
         this.categories = constructCategories(b.getCategories());
 	}
@@ -134,6 +139,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         private String namespace;
 		private String type;
         private String description;
+        private boolean active;
         private Long versionNumber;
         private List<CategoryDefinition.Builder> categories;
 
@@ -155,6 +161,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 			setNamespace(namespace);
 			setName(name);
 			setType(type);
+            setActive(true);
             setCategories(new ArrayList<CategoryDefinition.Builder>());
 		}
 		
@@ -185,6 +192,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
 			Builder builder =new Builder(termSpecification.getId(), termSpecification.getName(), termSpecification.getNamespace(),
                     termSpecification.getType());
             builder.setDescription(termSpecification.getDescription());
+            builder.setActive(termSpecification.isActive());
 			builder.setVersionNumber(termSpecification.getVersionNumber());
             for (CategoryDefinitionContract category : termSpecification.getCategories()) {
                 builder.getCategories().add(CategoryDefinition.Builder.create(category));
@@ -246,6 +254,10 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
             this.versionNumber = versionNumber;
         }
 
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
         /**
          * @param categories the categories to set.  May not be null but can be an empty set.
          */
@@ -303,6 +315,11 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
             return this.versionNumber;
         }
 
+        @Override
+        public boolean isActive() {
+            return active;
+        }
+
         /**
          * @return the categories
          */
@@ -357,6 +374,11 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         return description;
     }
 
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
     /**
 	 * @see org.kuali.rice.core.api.mo.common.Versioned#getVersionNumber()
 	 */
@@ -387,6 +409,7 @@ public final class TermSpecificationDefinition extends AbstractDataTransferObjec
         public final static String NAMESPACE = "namespace";
         public static final String TYPE = "type";
         public static final String DESCRIPTION = "description";
+        public static final String ACTIVE = "active";
         public final static String CATEGORIES = "categories";
         public final static String CATEGORY = "category";
     }

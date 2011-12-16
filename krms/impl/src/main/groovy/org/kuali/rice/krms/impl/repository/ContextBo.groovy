@@ -24,11 +24,12 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
 
 public class ContextBo extends PersistableBusinessObjectBase implements ContextDefinitionContract {
 
-	String id
-	String name
-	String namespace
-	String typeId
-    String description
+	def String id
+	def String name
+	def String namespace
+	def String typeId
+    def String description
+    def boolean active = true
 
 	List<AgendaBo> agendas = new ArrayList<AgendaBo>()
 
@@ -77,6 +78,7 @@ public class ContextBo extends PersistableBusinessObjectBase implements ContextD
 		bo.name = im.name
 		bo.typeId = im.typeId
         bo.description = im.description
+        bo.active = im.active
 		bo.agendas = new ArrayList<AgendaBo>()
 		for (agenda in im.agendas){
 			bo.agendas.add( AgendaBo.from(agenda) )

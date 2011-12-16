@@ -30,6 +30,7 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
     def String contextId
     def String typeId
     def String outputId
+    def boolean active = true
 
     def TermSpecificationBo output
     def Set<TermSpecificationBo> prerequisites
@@ -119,6 +120,7 @@ public class TermResolverBo extends PersistableBusinessObjectBase implements Ter
 			attrs.add( attributeBo );
 		}
 		bo.setAttributeBos(attrs);
+        bo.active = im.active
 		bo.versionNumber = im.versionNumber
 		return bo
 	}

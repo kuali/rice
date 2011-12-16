@@ -81,7 +81,7 @@ public final class KrmsTypeDefinition extends AbstractDataTransferObject impleme
     	this.name = null;
     	this.namespace = null;
     	this.serviceName = null;
-    	this.active = false;
+    	this.active = true;
     	this.attributes = null;
         this.versionNumber = null;
     }

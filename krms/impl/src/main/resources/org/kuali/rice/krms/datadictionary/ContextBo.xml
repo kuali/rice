@@ -34,6 +34,7 @@
         <ref bean="ContextBo-namespace"/>
         <ref bean="ContextBo-typeId"/>
         <ref bean="ContextBo-description"/>
+        <ref bean="ContextBo-active"/>
       </list>
     </property>
     <property name="objectLabel" value="Context"/>
@@ -107,6 +108,12 @@
     <property name="label" value="Description"/>
   </bean>
 
+  <bean id="ContextBo-active" parent="ContextBo-active-parentBean"/>
+  <bean id="ContextBo-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator"  p:label="Active?">
+    <property name="name" value="active"/>
+  </bean>
+
+
   <bean id="ContextBo-LookupView" parent="LookupView">
     <property name="title" value="Context Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
@@ -116,6 +123,7 @@
         <bean parent="LookupCriteriaInputField" p:propertyName="name" />
         <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
         <bean parent="LookupCriteriaInputField" p:propertyName="typeId" p:label="Context Type" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">

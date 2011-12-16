@@ -17,6 +17,7 @@ package org.kuali.rice.krms.api.repository.term;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +28,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface TermResolverDefinitionContract extends Identifiable, Versioned {
+public interface TermResolverDefinitionContract extends Identifiable, Inactivatable, Versioned {
 
 	String getNamespace();
 	String getName();

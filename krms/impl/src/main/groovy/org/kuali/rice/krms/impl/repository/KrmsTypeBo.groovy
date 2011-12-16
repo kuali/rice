@@ -25,7 +25,7 @@ public class KrmsTypeBo extends PersistableBusinessObjectBase implements Mutable
 	def String name
 	def String namespace
 	def String serviceName
-	def boolean active
+	def boolean active = true
 	def List<KrmsTypeAttributeBo> attributes
 	/**
 	* Converts a mutable bo to it's immutable counterpart

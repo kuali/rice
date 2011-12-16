@@ -111,7 +111,7 @@ public class FunctionDefinition extends AbstractDataTransferObject implements Fu
     	this.description = null;
     	this.returnType = null;
     	this.typeId = null;
-    	this.active = false;
+    	this.active = true;
     	this.versionNumber = null;
     	this.parameters = null;
         this.categories = null;

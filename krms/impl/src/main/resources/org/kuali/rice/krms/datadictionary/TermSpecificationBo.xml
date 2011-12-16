@@ -31,6 +31,7 @@
         <ref bean="TermSpecificationBo-namespace"/>
         <ref bean="TermSpecificationBo-type"/>
         <ref bean="TermSpecificationBo-description"/>
+        <ref bean="TermSpecificationBo-active"/>
       </list>
     </property>
     <property name="objectLabel" value="Term Specification"/>
@@ -95,6 +96,11 @@
     <property name="label" value="Data Type"/>
   </bean>
 
+  <bean id="TermSpecificationBo-active" parent="TermSpecificationBo-active-parentBean"/>
+  <bean id="TermSpecificationBo-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator"  p:label="Active?">
+    <property name="name" value="active"/>
+  </bean>
+
 
   <!-- Maintenance View -->
 
@@ -133,6 +139,7 @@
               <bean parent="InputField" p:propertyName="name" />
               <bean parent="InputField" p:propertyName="type" />
               <bean parent="InputField" p:propertyName="description" />
+              <bean parent="InputField" p:propertyName="active" />
               <ref bean="TermSpec-Contexts" />
               <ref bean="TermSpec-Categories" />
             </list>
@@ -308,6 +315,7 @@
         <bean parent="LookupCriteriaInputField" p:propertyName="namespace"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
         <bean parent="LookupCriteriaInputField" p:propertyName="type"/>
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">

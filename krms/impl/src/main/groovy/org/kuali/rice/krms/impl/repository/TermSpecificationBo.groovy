@@ -28,6 +28,7 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
     def String namespace
 	def String type
     def String description
+    def boolean active = true
 
     def List<CategoryBo> categories = new ArrayList<CategoryBo>()
     def List<ContextBo> contexts = new ArrayList<ContextBo>()
@@ -60,6 +61,7 @@ public class TermSpecificationBo extends PersistableBusinessObjectBase implement
        for (category in im.categories) {
            bo.categories.add(CategoryBo.from(category))
        }
+       bo.active = im.active
 	   bo.versionNumber = im.versionNumber
 	   
 	   return bo

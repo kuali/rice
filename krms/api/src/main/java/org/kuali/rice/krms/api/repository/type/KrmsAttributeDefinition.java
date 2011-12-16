@@ -83,7 +83,7 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
     	this.namespace = null;
     	this.label = null;
         this.description = null;
-    	this.active = false;
+    	this.active = true;       // default to true
     	this.componentName = null;
         this.versionNumber = null;
     }

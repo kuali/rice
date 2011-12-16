@@ -59,6 +59,7 @@ import java.util.Map;
 		ContextDefinition.Elements.NAME,
         ContextDefinition.Elements.TYPE_ID,
         ContextDefinition.Elements.DESCRIPTION,
+        ContextDefinition.Elements.ACTIVE,
 		ContextDefinition.Elements.AGENDAS,
 		ContextDefinition.Elements.ATTRIBUTES,
         CoreConstants.CommonElements.VERSION_NUMBER,
@@ -83,6 +84,9 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     @XmlElement(name = Elements.DESCRIPTION, required = false)
     private final String description;
     
+    @XmlElement(name = Elements.ACTIVE, required = false)
+    private final boolean active;
+
 	@XmlElementWrapper(name = Elements.AGENDAS)
 	@XmlElement(name = Elements.AGENDA, required = false)
 	private final List<AgendaDefinition> agendas;
@@ -107,6 +111,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     	this.namespace = null;
     	this.typeId = null;
     	this.description = null;
+        this.active = true;
     	this.agendas = null;
     	this.versionNumber = null;
     	this.attributes = null;
@@ -116,7 +121,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     	this.id = builder.getId();
     	this.name = builder.getName();
     	this.namespace = builder.getNamespace();
-
+        this.active = builder.isActive();
     	this.description = builder.getDescription();
 
     	this.typeId = builder.getTypeId();
@@ -164,6 +169,11 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         return description;
     }
 	
+    @Override
+    public boolean isActive() {
+        return this.active;
+    }
+
 	@Override
 	public List<AgendaDefinition> getAgendas() {
 		return Collections.unmodifiableList(this.agendas);
@@ -196,6 +206,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         private String name;
         private String typeId;
         private String description;
+        private boolean active;
         private List<AgendaDefinition.Builder> agendas;
         private Map<String, String> attributes;
         private Long versionNumber;
@@ -203,6 +214,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         private Builder(String namespace, String name) {
         	setNamespace(namespace);
         	setName(name);
+            setActive(true);
         	setAgendas(new ArrayList<AgendaDefinition.Builder>());
             setAttributes(new HashMap<String, String>());
         }
@@ -241,6 +253,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         	builder.setId(contract.getId());
         	builder.setTypeId(contract.getTypeId());
             builder.setDescription(contract.getDescription());
+            builder.setActive(contract.isActive());
         	builder.setVersionNumber(contract.getVersionNumber());
         	builder.setAgendas(contract.getAgendas());
             if (contract.getAttributes() != null) {
@@ -282,6 +295,11 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         @Override
         public String getDescription() {
             return description;
+        }
+
+        @Override
+        public boolean isActive() {
+            return active;
         }
 
         @Override
@@ -358,6 +376,10 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
             this.description = description;
         }
 
+        public void setActive(boolean active) {
+            this.active = active;
+        }
+
 		public void setAgendas(List<? extends AgendaDefinitionContract> agendaContracts) {
 			this.agendas = new ArrayList<AgendaDefinition.Builder>();
 			if (agendaContracts != null) for (AgendaDefinitionContract agendaContract : agendaContracts) {
@@ -406,6 +428,7 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
         final static String NAME = "name";
         final static String TYPE_ID = "typeId";
         final static String DESCRIPTION = "description";
+        final static String ACTIVE = "active";
         final static String AGENDA = "agenda";
         final static String AGENDAS = "agendas";
 		final static String ATTRIBUTES = "attributes";

@@ -72,7 +72,7 @@ public final class KrmsTypeAttribute extends AbstractDataTransferObject implemen
     	this.typeId = null;
     	this.attributeDefinitionId = null;
     	this.sequenceNumber = null;
-    	this.active = false;
+    	this.active = true;
     }
     
     /**

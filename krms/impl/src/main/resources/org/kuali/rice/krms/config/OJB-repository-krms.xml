@@ -77,6 +77,7 @@
         <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
+        <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"/>
         <collection-descriptor name="attributeBos" element-class-ref="org.kuali.rice.krms.impl.repository.ContextAttributeBo" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
             <inverse-foreignkey field-ref="contextId" />
@@ -279,10 +280,11 @@
   	<class-descriptor class="org.kuali.rice.krms.impl.repository.TermSpecificationBo" table="KRMS_TERM_SPEC_T">
   	    <field-descriptor name="id" column="TERM_SPEC_ID" jdbc-type="VARCHAR" primarykey="true" autoincrement="true" sequence-name="KRMS_TERM_SPEC_S"/>
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
-      <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
+        <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="type" column="TYP" jdbc-type="VARCHAR" />
         <field-descriptor name="description" column="DESC_TXT" jdbc-type="VARCHAR" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
+        <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
         <collection-descriptor name="categories" element-class-ref="org.kuali.rice.krms.impl.repository.CategoryBo"
               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
               indirection-table="KRMS_TERM_SPEC_CTGRY_T"
@@ -336,6 +338,7 @@
         <field-descriptor name="name" column="NM" jdbc-type="VARCHAR" />
         <field-descriptor name="namespace" column="NMSPC_CD" jdbc-type="VARCHAR" />
         <field-descriptor name="typeId" column="TYP_ID" jdbc-type="VARCHAR"  />
+        <field-descriptor name="active" column="ACTV" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion" />
         <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
         <field-descriptor name="outputId" column="OUTPUT_TERM_SPEC_ID" jdbc-type="VARCHAR"  />
         <reference-descriptor name="output" class-ref="org.kuali.rice.krms.impl.repository.TermSpecificationBo" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="false">

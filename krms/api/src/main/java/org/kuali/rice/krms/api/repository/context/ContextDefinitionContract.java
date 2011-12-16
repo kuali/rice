@@ -17,8 +17,10 @@ package org.kuali.rice.krms.api.repository.context;
 
 import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 
+import java.rmi.activation.Activatable;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public interface ContextDefinitionContract extends Versioned, Identifiable {
+public interface ContextDefinitionContract extends Versioned, Identifiable, Inactivatable {
 
 	/**
 	 * Returns the namespace of the context definition.  The combination of

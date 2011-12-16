@@ -34,6 +34,7 @@
         <ref bean="KrmsAttributeDefinitionBo-namespace"/>
         <ref bean="KrmsAttributeDefinitionBo-label"/>
         <ref bean="KrmsAttributeDefinitionBo-componentName"/>
+        <ref bean="KrmsAttributeDefinitionBo-active"/>
       </list>
     </property>
     <property name="objectLabel" value="KrmsAttributeDefinition"/>
@@ -97,7 +98,11 @@
     <property name="label" value="Attribute Component Name"/>
   </bean>  
   
-    
+  <bean id="KrmsAttributeDefinitionBo-active" parent="KrmsAttributeDefinitionBo-active-parentBean"/>
+  <bean id="KrmsAttributeDefinitionBo-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator"  p:label="Active?">
+    <property name="name" value="active"/>
+  </bean>
+
   <bean id="KrmsAttributeDefinitionBo-LookupView" parent="LookupView">
     <property name="title" value="Attribute Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo" />
@@ -108,6 +113,7 @@
         <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
         <bean parent="LookupCriteriaInputField" p:propertyName="label" />
         <bean parent="LookupCriteriaInputField" p:propertyName="componentName" />
+        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">

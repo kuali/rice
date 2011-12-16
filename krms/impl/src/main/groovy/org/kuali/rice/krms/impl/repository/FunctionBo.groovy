@@ -28,7 +28,7 @@ public class FunctionBo extends PersistableBusinessObjectBase implements Mutable
 	def String description
 	def String returnType
 	def String typeId
-	def boolean active	
+	def boolean active = true
 
 	def List<FunctionParameterBo> parameters
     def List<CategoryBo> categories

@@ -44,6 +44,8 @@ import java.util.List;
  */
 public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 
+    private static final String SERVICE_REGISTRY_SECURITY_CONFIG = "rice.ksb.serviceRegistry.security";
+
 	private final Object initLock = new Object();
 	private volatile ServiceRegistry delegate;
 	
@@ -157,10 +159,12 @@ public class LazyRemoteServiceRegistryConnector implements ServiceRegistry {
 		clientFactory.setServiceClass(ServiceRegistry.class);
 		clientFactory.setBus(cxfBus);
 		clientFactory.setAddress(registryBootstrapUrl);
-		
+
+        boolean registrySecurity = ConfigContext.getCurrentContextConfig().getBooleanProperty(SERVICE_REGISTRY_SECURITY_CONFIG, true);
+
 		// Set security interceptors
-		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(true));
-		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(true));
+		clientFactory.getOutInterceptors().add(new CXFWSS4JOutInterceptor(registrySecurity));
+		clientFactory.getInInterceptors().add(new CXFWSS4JInInterceptor(registrySecurity));
 
         //Set transformation interceptors
         clientFactory.getInInterceptors().add(new ImmutableCollectionsInInterceptor());

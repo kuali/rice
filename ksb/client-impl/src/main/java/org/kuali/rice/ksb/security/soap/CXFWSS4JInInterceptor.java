@@ -46,10 +46,12 @@ public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
 	
 	public CXFWSS4JInInterceptor(boolean busSecurity) {
 		this.busSecurity = busSecurity;
-		this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
-		this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
-		this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
-		this.setProperty(WSHandlerConstants.USER, ConfigContext.getCurrentContextConfig().getKeystoreAlias());
+        if (busSecurity) {
+		    this.setProperty(WSHandlerConstants.ACTION, WSHandlerConstants.SIGNATURE);
+		    this.setProperty(WSHandlerConstants.PW_CALLBACK_CLASS, CryptoPasswordCallbackHandler.class.getName());
+		    this.setProperty(WSHandlerConstants.SIG_KEY_ID, "IssuerSerial");
+		    this.setProperty(WSHandlerConstants.USER, ConfigContext.getCurrentContextConfig().getKeystoreAlias());
+        }
 	}
 
 	@Override

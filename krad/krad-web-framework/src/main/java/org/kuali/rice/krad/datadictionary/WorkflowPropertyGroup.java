@@ -18,6 +18,7 @@ package org.kuali.rice.krad.datadictionary;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,9 @@ import java.util.List;
                 
                 If blank/missing, the base path will be assumed to be the property path to the document
  */
-public class WorkflowPropertyGroup {
+public class WorkflowPropertyGroup implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     protected String basePath = KRADConstants.EMPTY_STRING;
     protected List<WorkflowProperty> workflowProperties = new ArrayList<WorkflowProperty>();
         

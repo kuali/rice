@@ -17,12 +17,16 @@ package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 
+import java.io.Serializable;
+
 /**
  * This class represents an serializable property when generating workflow routing XML.  The path contained within this object
  * is relative to the basePath in the {@link WorkflowPropertyGroup} that contains this object.  The semantics of the path are determined
  * by the {@link PropertySerializabilityEvaluator} that evaluates whether a property is serializable. 
  */
-public class WorkflowProperty {
+public class WorkflowProperty implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     protected String path = null;
     
     /**

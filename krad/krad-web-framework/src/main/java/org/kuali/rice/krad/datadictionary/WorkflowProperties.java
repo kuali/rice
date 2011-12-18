@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,9 @@ import java.util.List;
             specify which document properties should be serialized during the document serialization
             process.
  */
-public class WorkflowProperties {
+public class WorkflowProperties implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     protected List<WorkflowPropertyGroup> workflowPropertyGroups;
     
     public WorkflowProperties() {

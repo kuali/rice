@@ -64,13 +64,6 @@ class ResponsibilityActionTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    void test_null_qualifier() {
-        def r = createValidBuilder();
-        r.qualifier = null
-        r.build();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     void test_null_responsibilityNamespaceCode() {
         def r = createValidBuilder();
         r.responsibilityNamespaceCode = null

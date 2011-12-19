@@ -634,7 +634,12 @@ public class CollectionGroupBuilder implements Serializable {
 	 */
 	protected List<ActionField> getLineActions(View view, Object model, CollectionGroup collectionGroup,
 			Object collectionLine, int lineIndex) {
-		List<ActionField> lineActions = ComponentUtils.copyFieldList(collectionGroup.getActionFields(), Integer.toString(lineIndex));
+        String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
+        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
+            lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
+        }
+        List<ActionField> lineActions = ComponentUtils.copyFieldList(collectionGroup.getActionFields(), lineSuffix);
+
 		for (ActionField actionField : lineActions) {
 			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
 					.getBindingPath());
@@ -665,11 +670,16 @@ public class CollectionGroupBuilder implements Serializable {
 	 *            - collection group component for the collection
 	 */
 	protected List<ActionField> getAddLineActions(View view, Object model, CollectionGroup collectionGroup) {
-		List<ActionField> lineActions = ComponentUtils.copyFieldList(collectionGroup.getAddLineActionFields(), "_add");
+        String lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
+        if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
+            lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
+        }
+        List<ActionField> lineActions = ComponentUtils.copyFieldList(collectionGroup.getAddLineActionFields(),
+                lineSuffix);
+
 		for (ActionField actionField : lineActions) {
 			actionField.addActionParameter(UifParameters.SELLECTED_COLLECTION_PATH, collectionGroup.getBindingInfo()
 					.getBindingPath());
-			//actionField.addActionParameter(UifParameters.COLLECTION_ID, collectionGroup.getId());
 			actionField.setJumpToIdAfterSubmit(collectionGroup.getId() + "_div");
 			actionField.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 

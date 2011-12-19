@@ -62,7 +62,7 @@
     <property name="exportIf" value="countryService.expose"/>
   </bean>
 
-    <bean  id="rice.location.campusService.exporter"parent="locationServiceExporter">
+    <bean id="rice.location.campusService.exporter" parent="locationServiceExporter">
     <property name="serviceDefinition">
       <bean parent="locationService"
             p:service-ref="campusService"

@@ -20,7 +20,10 @@ import org.kuali.rice.core.api.CoreConstants.Versions;
 
 public final class KimApiConstants {
     public static final class Namespaces {
-    	public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/kim";
+
+        public static final String MODULE_NAME = "kim";
+
+    	public static final String KIM_NAMESPACE_PREFIX = CoreConstants.Namespaces.ROOT_NAMESPACE_PREFIX + "/" + MODULE_NAME;
 
     	/**
     	 * Namespace for the core module which is compatible with Kuali Rice 2.0.x.

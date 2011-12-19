@@ -126,7 +126,7 @@
                   </map>
                 </property>
                 <property name="control">
-                  <bean parent="TextControl" p:size="40"
+                  <bean parent="TextControl" p:size="40" p:maxLength="40" 
                     p:watermarkText="Existing Rule Name" />
                   </property>
               </bean>
@@ -539,10 +539,10 @@
                 <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
               </property>
             </bean>
-            <bean parent="InputField" p:propertyName="proposition.description"
+            <bean parent="InputField" p:propertyName="proposition.description" p:constraintText="size 100"
                   p:style="margin-left: 1pt;" p:showLabel="false" p:label="id" p:maxLength="255">
               <property name="control">
-                <bean parent="TextControl" p:size="93" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;"
+                <bean parent="TextControl" p:size="93" p:maxLength="100" p:watermarkText="Enter a Proposition Description" p:style="margin-left: 12pt;"
                         p:styleClasses="editDescription"/>
               </property>
             </bean>
@@ -658,10 +658,10 @@
                 <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
               </property>
             </bean>
-            <bean parent="InputField" p:propertyName="proposition.description"
+            <bean parent="InputField" p:propertyName="proposition.description" p:constraintText="size 100"
                     p:showLabel="false" p:label="description" p:maxLength="255" p:style="margin-left: 12pt">
               <property name="control">
-                <bean parent="TextControl" p:size="100" p:watermarkText="Enter a Compound Proposition Description"
+                <bean parent="TextControl" p:size="100" p:maxLength="100" p:watermarkText="Enter a Compound Proposition Description"
                       p:styleClasses="editDescription"/>
               </property>
             </bean>
@@ -750,9 +750,9 @@
     <property name="collectionLookup.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="name" p:label="Name" p:required="true">
+        <bean parent="InputField" p:propertyName="name" p:label="Name" p:required="true" p:constraintText="size 40">
           <property name="control">
-            <bean parent="TextControl" p:size="40" p:watermarkText="action name"/>
+            <bean parent="TextControl" p:size="40" p:maxLength="40" p:watermarkText="Enter a Action Name"/>
           </property>
         </bean>
         <bean parent="InputField" p:propertyName="typeId" p:label="Type" p:required="true">
@@ -786,13 +786,17 @@
               p:constraintText="size 40"
               p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}">
           <property name="control">
-            <bean parent="TextControl" p:size="40" p:watermarkText="action name"/>
+            <bean parent="TextControl" p:size="40" p:maxLength="40" p:watermarkText="Enter a Action Name"/>
           </property>
         </bean>
-
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="false"
               p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"
-              p:instructionalText="instructional text" p:constraintText="size 4000"/>
+              p:instructionalText="instructional text" p:constraintText="size 4000">
+          <property name="control">
+            <bean parent="TextControl" p:size="40" p:maxLength="4000" p:watermarkText="Enter a Action Description"/>
+          </property>
+        </bean>
+              
       </list>
     </property>
   </bean>

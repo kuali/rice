@@ -89,7 +89,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "getOnlineServiceByName")
 	@WebResult(name = "serviceInfos")
-	@XmlElementWrapper(name = "serviceInfos", required = true)
+	@XmlElementWrapper(name = "serviceInfos", required = false)
 	@XmlElement(name = "serviceInfo", required = false)
 	List<ServiceInfo> getOnlineServicesByName(
 			@XmlJavaTypeAdapter(QNameAsStringAdapter.class)
@@ -108,7 +108,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "getAllOnlineServices")
 	@WebResult(name = "serviceInfo")
-	@XmlElementWrapper(name = "serviceInfos", required = true)
+	@XmlElementWrapper(name = "serviceInfos", required = false)
 	@XmlElement(name = "serviceInfo", required = false)
 	List<ServiceInfo> getAllOnlineServices();
 	
@@ -123,7 +123,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "getAllServices")
 	@WebResult(name = "serviceInfo")
-	@XmlElementWrapper(name = "serviceInfos", required = true)
+	@XmlElementWrapper(name = "serviceInfos", required = false)
 	@XmlElement(name = "serviceInfo", required = false)
 	List<ServiceInfo> getAllServices();
 	
@@ -142,7 +142,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "getAllServicesForInstance")
 	@WebResult(name = "serviceInfos")
-	@XmlElementWrapper(name = "serviceInfos", required = true)
+	@XmlElementWrapper(name = "serviceInfos", required = false)
 	@XmlElement(name = "serviceInfo", required = false)
 	List<ServiceInfo> getAllServicesForInstance(@WebParam(name = "instanceId") String instanceId) throws RiceIllegalArgumentException;
 	
@@ -180,7 +180,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "getServiceDescriptors")
 	@WebResult(name = "serviceDescriptors")
-	@XmlElementWrapper(name = "serviceDescriptors", required = true)
+	@XmlElementWrapper(name = "serviceDescriptors", required = false)
 	@XmlElement(name = "serviceDescriptor", required = false)
 	List<ServiceDescriptor> getServiceDescriptors(@WebParam(name = "serviceDescriptorId") List<String> serviceDescriptorIds) throws RiceIllegalArgumentException;
 	
@@ -223,7 +223,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "publishServices")
 	@WebResult(name = "serviceEndpoints")
-	@XmlElementWrapper(name = "serviceEndpoints", required = true)
+	@XmlElementWrapper(name = "serviceEndpoints", required = false)
 	@XmlElement(name = "serviceEndpoint", required = false)
 	List<ServiceEndpoint> publishServices(@WebParam(name = "serviceEndpoint") List<ServiceEndpoint> serviceEndpoints) throws RiceIllegalArgumentException;
 	
@@ -265,7 +265,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "removeServiceEndpoints")
 	@WebResult(name = "serviceEndpoints")
-	@XmlElementWrapper(name = "serviceEndpoints", required = true)
+	@XmlElementWrapper(name = "serviceEndpoints", required = false)
 	@XmlElement(name = "serviceEndpoint", required = false)
 	List<ServiceEndpoint> removeServiceEndpoints(@WebParam(name = "serviceId") List<String> serviceIds) throws RiceIllegalArgumentException;
 	
@@ -345,7 +345,7 @@ public interface ServiceRegistry {
 	 */
 	@WebMethod(operationName = "updateStatuses")
 	@WebResult(name = "serviceIds")
-	@XmlElementWrapper(name = "serviceIds", required = true)
+	@XmlElementWrapper(name = "serviceIds", required = false)
 	@XmlElement(name = "serviceId", required = false)
 	List<String> updateStatuses(@WebParam(name = "serviceId") List<String> serviceIds, @WebParam(name = "status") ServiceEndpointStatus status) throws RiceIllegalArgumentException;
 	

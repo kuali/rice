@@ -217,7 +217,7 @@
 
               <bean parent="InputField" p:propertyName="agenda.typeId" p:label="Type" p:required="false"
                     p:progressiveRenderViaAJAX="true"
-                    p:progressiveRender="!#empty(#dp.agenda.contextId)">
+                    p:progressiveRender="@{!#empty(#dp.agenda.contextId)}">
 
                 <property name="control">
                   <bean parent="SelectControl"/>
@@ -259,14 +259,14 @@
 -->
           <property name="items">
             <list>
-              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="#form.viewTypeName.toString() != 'MAINTENANCE'">
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="@{#form.viewTypeName.toString() != 'MAINTENANCE'}">
                 <property name="items">
                   <list>
                     <ref bean="AgendaEditorView-TreeViewControls" />
                   </list>
                 </property>
               </bean>
-              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="#form.viewTypeName.toString() == 'MAINTENANCE'">
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}">
                 <property name="items">
                   <list>
                     <ref bean="AgendaEditorView-TreeEditControls" />

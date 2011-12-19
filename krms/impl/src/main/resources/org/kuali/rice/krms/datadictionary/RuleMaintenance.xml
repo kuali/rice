@@ -102,7 +102,7 @@
 
         <bean parent="FieldGroup" p:label="Copy from Existing Rule"
               p:progressiveRenderViaAJAX="true"
-              p:progressiveRender="document.newMaintainableObject.dataObject.addRuleInProgress == true">
+              p:progressiveRender="@{#dp.addRuleInProgress == true}">
           <property name="group.layoutManager">
             <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
           </property>

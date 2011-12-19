@@ -693,7 +693,7 @@ class ResponsibilityServiceImplTest {
     public void testGetResponsibilityActionsByTemplateNameSucceeds() {
         mockBoService.demand.findMatching(1..1) {
             Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
-                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
+                if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
                     && responsibilityBo.template.name.equals(map.get("template.name")))
                 {
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
@@ -742,7 +742,7 @@ class ResponsibilityServiceImplTest {
         injectCriteriaLookupServiceIntoResponsibilityService();
         injectRoleServiceIntoResponsibilityService();
 
-        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("namespacecodeone", "resptemplateone", new HashMap<String, String>(), new HashMap<String, String>());
+        List<ResponsibilityAction> responsibilityActions = responsibilityService.getResponsibilityActionsByTemplateName("respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), new HashMap<String, String>());
 
         Assert.assertEquals("memberidone", responsibilityActions[0].principalId);
         Assert.assertEquals("rolerespactionidone", responsibilityActions[0].roleResponsibilityActionId);

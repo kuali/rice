@@ -16,14 +16,11 @@
 package org.kuali.rice.location.api.services;
 
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.location.api.LocationConstants;
 import org.kuali.rice.location.api.campus.CampusService;
 import org.kuali.rice.location.api.country.CountryService;
 import org.kuali.rice.location.api.county.CountyService;
 import org.kuali.rice.location.api.postalcode.PostalCodeService;
 import org.kuali.rice.location.api.state.StateService;
-
-import javax.xml.namespace.QName;
 
 /**
  * <p>LocationApiServiceLocator class.</p>
@@ -32,55 +29,36 @@ import javax.xml.namespace.QName;
  */
 public class LocationApiServiceLocator {
 
-    public static final QName COUNTRY_SERVICE = buildName("countryService");
+    public static final String COUNTRY_SERVICE = "countryService";
 
-    public static final QName CAMPUS_SERVICE = buildName("campusService");
+    public static final String CAMPUS_SERVICE = "campusService";
 
-    public static final QName STATE_SERVICE = buildName("stateService");
+    public static final String STATE_SERVICE = "stateService";
 
-    public static final QName COUNTY_SERVICE = buildName("countyService");
+    public static final String COUNTY_SERVICE = "countyService";
 
-    public static final QName POSTAL_CODE_SERVICE = buildName("postalCodeService");
+    public static final String POSTAL_CODE_SERVICE = "postalCodeService";
 
-    private static QName buildName(String serviceName) {
-        return new QName(LocationConstants.Namespaces.LOCATION_NAMESPACE_2_0, serviceName);
-    }
-
-    static <T> T getService(QName serviceName) {
+    static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
-    /**
-     * <p>getCountryService.</p>
-     */
     public static CountryService getCountryService() {
         return getService(COUNTRY_SERVICE);
     }
 
-    /**
-     * <p>getCampusService.</p>
-     */
     public static CampusService getCampusService() {
         return getService(CAMPUS_SERVICE);
     }
 
-    /**
-     * <p>getStateService.</p>
-     */
     public static StateService getStateService() {
         return getService(STATE_SERVICE);
     }
 
-    /**
-     * <p>getCountyService.</p>
-     */
     public static CountyService getCountyService() {
         return (CountyService) getService(COUNTY_SERVICE);
     }
 
-    /**
-     * <p>getPostalCodeService.</p>
-     */
     public static PostalCodeService getPostalCodeService() {
         return (PostalCodeService) getService(POSTAL_CODE_SERVICE);
     }

@@ -517,7 +517,7 @@ class ResponsibilityServiceImplTest {
     public void testHasResponsibilityByTemplateNameSucceeds() {
         mockBoService.demand.findMatching(1..1) {
             Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
-                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
+                if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
                     && responsibilityBo.template.name.equals(map.get("template.name")))
                 {
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();
@@ -693,7 +693,7 @@ class ResponsibilityServiceImplTest {
     public void testGetResponsibilityActionsByTemplateNameSucceeds() {
         mockBoService.demand.findMatching(1..1) {
             Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
-                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
+                if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
                     && responsibilityBo.template.name.equals(map.get("template.name")))
                 {
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();

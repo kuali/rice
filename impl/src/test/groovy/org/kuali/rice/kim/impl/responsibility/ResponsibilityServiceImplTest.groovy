@@ -562,7 +562,7 @@ class ResponsibilityServiceImplTest {
 
         Map<String, String> responsibilityDetails = new HashMap<String, String>();
         responsibilityDetails.put("test", "test");
-        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("principalid", "namespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
+        boolean hasResponsibility = responsibilityService.hasResponsibilityByTemplateName("principalid", "respnamespacecodeone", "resptemplateone", new HashMap<String, String>(), responsibilityDetails);
 
         Assert.assertEquals(true, hasResponsibility);
     }
@@ -693,7 +693,7 @@ class ResponsibilityServiceImplTest {
     public void testGetResponsibilityActionsByTemplateNameSucceeds() {
         mockBoService.demand.findMatching(1..1) {
             Class clazz, Map map -> for (ResponsibilityBo responsibilityBo in sampleResponsibilities.values()) {
-                if (responsibilityBo.template.namespaceCode.equals(map.get("template.namespaceCode"))
+                if (responsibilityBo.namespaceCode.equals(map.get("namespaceCode"))
                     && responsibilityBo.template.name.equals(map.get("template.name")))
                 {
                     Collection<ResponsibilityBo> responsibilities = new ArrayList<ResponsibilityBo>();

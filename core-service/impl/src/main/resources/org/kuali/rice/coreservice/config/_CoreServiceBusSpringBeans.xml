@@ -83,4 +83,13 @@
     </property>
   </bean>
 
+  <bean id="styleRepositoryService.exporter" parent="coreServiceExporter">
+    <property name="serviceDefinition">
+      <bean parent="coreService"
+            p:service-ref="styleRepositoryService"
+            p:localServiceName="styleRepositoryService"
+            p:serviceInterface="org.kuali.rice.coreservice.api.style.StyleRepositoryService"/>
+    </property>
+  </bean>
+
 </beans>

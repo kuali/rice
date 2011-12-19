@@ -16,26 +16,33 @@
 package org.kuali.rice.coreservice.api;
 
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.coreservice.api.component.ComponentService;
 import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.coreservice.api.parameter.ParameterRepositoryService;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.coreservice.api.style.StyleRepositoryService;
 import org.kuali.rice.coreservice.api.style.StyleService;
 
 import javax.xml.namespace.QName;
 
 public class CoreServiceApiServiceLocator {
 
-	public static final String NAMESPACE_SERVICE = "namespaceService";
-    public static final QName PARAMETER_REPOSITORY_SERVICE = new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, "parameterRepositoryService");
-    public static final QName COMPONENT_SERVICE = new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, "componentService");
+	public static final QName NAMESPACE_SERVICE = buildName("namespaceService");
+    public static final QName PARAMETER_REPOSITORY_SERVICE = buildName("parameterRepositoryService");
+    public static final QName COMPONENT_SERVICE = buildName("componentService");
+    public static final QName STYLE_REPOSITORY_SERVICE = buildName("styleRepositoryService");
+
     public static final String STYLE_SERVICE = "styleService";
-	
-    static <T> T getService(String serviceName) {
-        return GlobalResourceLoader.<T>getService(serviceName);
+
+    private static QName buildName(String serviceName) {
+        return new QName(CoreConstants.Namespaces.CORE_NAMESPACE_2_0, serviceName);
     }
 
     static <T> T getService(QName serviceName) {
+        return GlobalResourceLoader.<T>getService(serviceName);
+    }
+
+    static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
@@ -54,4 +61,9 @@ public class CoreServiceApiServiceLocator {
     public static StyleService getStyleService() {
     	return getService(STYLE_SERVICE);
     }
+
+    public static StyleRepositoryService getStyleRepositoryService() {
+        return getService(STYLE_REPOSITORY_SERVICE);
+    }
+    
 }

@@ -24,6 +24,10 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
+  <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl">
+    <property name="styleRepositoryService" ref="styleRepositoryService" />
+  </bean>
+
   <util:constant id="rice.coreService.serviceNamespace" static-field="org.kuali.rice.core.api.CoreConstants$Namespaces.CORE_NAMESPACE_2_0"/>
 
   <bean id="rice.location.propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

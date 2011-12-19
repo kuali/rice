@@ -84,10 +84,6 @@
     <property name="serviceName" value="persistenceServiceOjb" />
   </bean>
 
-  <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl">
-    <property name="styleRepositoryService" ref="styleRepositoryService" />
-  </bean>
-
   <bean id="styleRepositoryService" class="org.kuali.rice.coreservice.impl.style.StyleRepositoryServiceImpl">
     <property name="styleXmlParser" ref="styleXmlLoader" />
     <property name="styleDao" ref="styleDao" />

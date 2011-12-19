@@ -65,5 +65,8 @@
   <!-- coreservice -->
   <param name="coreservice.mode">LOCAL</param>
 
+  <!-- ken -->
+  <param name="ken.mode">LOCAL</param>
+
 
 </config>

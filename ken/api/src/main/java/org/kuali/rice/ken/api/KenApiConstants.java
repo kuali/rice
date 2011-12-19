@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.ken.api.service;
+package org.kuali.rice.ken.api;
 
 import org.kuali.rice.core.api.CoreConstants;
 
@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.CoreConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public final class KENServiceConstants {
+public final class KenApiConstants {
     public static final String KENAPI_SERVICE = "KEN-KENAPIService";
 
     public final static String SERVICE_PATH_SOAP = "soap/" + Namespaces.MODULE_NAME + "/" + CoreConstants.Versions.VERSION_2_0;
@@ -48,7 +48,7 @@ public final class KENServiceConstants {
     }
 
 
-    private KENServiceConstants() {
+    private KenApiConstants() {
         throw new UnsupportedOperationException("do not call");
     }
 }

@@ -402,7 +402,7 @@
 	<!-- KEN -->
 	<param name="rice.ken.struts.config.files" override="false">/ken/WEB-INF/struts-config.xml</param>
 	<param name="ken.url" override="false">${application.url}/ken</param>
-	<param name="ken.mode" override="false">LOCAL</param>
+	<param name="ken.mode" override="false">REMOTE</param>
 	<param name="rice.ken.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.ken.expose.services.on.bus" override="false">true</param>
 
@@ -412,6 +412,7 @@
 	<param name="kew.mode" override="false">LOCAL</param>
 	<param name="client.protocol" override="false">LOCAL</param>
 	<param name="org.kuali.workflow.datasource.jndi.location" override="false"></param>
+  <param name="ken.soapExposedService.jaxws.security" override="false">true</param>
 	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
 

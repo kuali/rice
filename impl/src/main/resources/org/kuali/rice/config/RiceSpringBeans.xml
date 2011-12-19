@@ -65,7 +65,7 @@
 	<import resource="classpath:org/kuali/rice/kim/impl/config/KIMConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
-	<import resource="classpath:org/kuali/rice/ken/config/KENConfigSpringBeans.xml"/>
+	<bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer"/>
 	<import resource="classpath:org/kuali/rice/edl/impl/config/EDLConfigSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/krms/config/KRMSConfigSpringBeans.xml"/>
   

@@ -16,6 +16,7 @@
 package org.kuali.rice.ken.api.service;
 
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.ken.api.KenApiConstants;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -24,7 +25,7 @@ import javax.jws.soap.SOAPBinding;
 /**
  * Service that enables publishing a KEN notification document.
  */
-@WebService(name=KENServiceConstants.ServiceNames.SEND_NOTIFICATION_SERVICE, targetNamespace = KENServiceConstants.Namespaces.KEN_NAMESPACE_2_0)
+@WebService(name= KenApiConstants.ServiceNames.SEND_NOTIFICATION_SERVICE, targetNamespace = KenApiConstants.Namespaces.KEN_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public interface SendNotificationService {
     @WebMethod

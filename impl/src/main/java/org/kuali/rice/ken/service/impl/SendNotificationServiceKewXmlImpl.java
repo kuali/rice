@@ -17,19 +17,10 @@ package org.kuali.rice.ken.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
-import org.kuali.rice.ken.api.service.KENServiceConstants;
 import org.kuali.rice.ken.api.service.SendNotificationService;
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.service.NotificationService;
-import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
-import org.kuali.rice.kim.api.KimApiConstants;
-import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 /**
  * This class allows the NotificationService.sendNotification(XML) service 

@@ -40,8 +40,10 @@ import java.util.List;
  */
 public class CoreServiceConfigurer extends ModuleConfigurer {
 
+    private static final String MODULE_NAME = "coreservice";
+
     public CoreServiceConfigurer() {
-        super(CoreConstants.Namespaces.MODULE_NAME);
+        super(MODULE_NAME);
         setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
     }
 
@@ -55,10 +57,5 @@ public class CoreServiceConfigurer extends ModuleConfigurer {
         }
 		return springFileLocations;
 	}
-
-    // TODO coreservice module name is a bit inconsistent, still listed as "core"
-    protected String getDefaultConfigPackagePath() {
-    	return "classpath:org/kuali/rice/coreservice/config/";
-    }
 
 }

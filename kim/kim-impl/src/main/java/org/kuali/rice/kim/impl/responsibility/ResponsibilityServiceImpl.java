@@ -461,9 +461,9 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         }
 
         final Map<String, String> crit = new HashMap<String, String>();
-        crit.put("namespaceCode", namespaceCode);
-        crit.put("template.name", templateName);
-        crit.put("active", "Y");
+        crit.put("template.namespaceCode", namespaceCode); 
+        crit.put("template.name", templateName); 
+        crit.put("active", "Y"); 
 
         final Collection<ResponsibilityBo> bos = businessObjectService.findMatching(ResponsibilityBo.class, Collections.unmodifiableMap(crit));
         final List<Responsibility> ims = new ArrayList<Responsibility>();

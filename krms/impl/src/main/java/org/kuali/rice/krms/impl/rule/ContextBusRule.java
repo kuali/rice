@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.impl.rule;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.ContextBo;

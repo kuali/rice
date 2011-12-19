@@ -28,7 +28,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentBase;
-import org.kuali.rice.krad.document.MaintenanceDocumentBase;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import org.kuali.rice.krad.impls.RiceTestTransactionalDocument2;
 import org.kuali.rice.krad.impls.RiceTestTransactionalDocument2Parent;

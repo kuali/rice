@@ -79,7 +79,7 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 			Map<String,String> roleDetails = new HashMap<String,String>();
 			roleDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getGroupNamespace());
 			roleDetails.put(KimConstants.AttributeConstants.GROUP_NAME, document.getGroupName());
-			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+			if (!getDocumentDictionaryService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, 
 					KimConstants.NAMESPACE_CODE, 
 					KimConstants.PermissionTemplateNames.POPULATE_GROUP,

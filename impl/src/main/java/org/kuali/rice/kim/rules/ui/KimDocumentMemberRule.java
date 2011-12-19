@@ -109,7 +109,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 			Map<String,String> roleDetails = new HashMap<String,String>();
 			roleDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getRoleNamespace());
 			roleDetails.put(KimConstants.AttributeConstants.ROLE_NAME, document.getRoleName());
-			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+			if (!getDocumentDictionaryService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, 
 					KimConstants.NAMESPACE_CODE, 
 					KimConstants.PermissionTemplateNames.ASSIGN_ROLE,

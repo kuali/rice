@@ -693,6 +693,20 @@ public interface Component extends Configurable, Serializable, Ordered, ScriptEv
     public void setRenderOutput(String renderOutput);
 
     /**
+     * Security object that indicates what authorization (permissions) exist for the component
+     *
+     * @return ComponentSecurity instance
+     */
+    public ComponentSecurity getComponentSecurity();
+
+    /**
+     * Setter for the components security object
+     *
+     * @param componentSecurity
+     */
+    public void setComponentSecurity(ComponentSecurity componentSecurity);
+
+    /**
      * @return the progressiveRender
      */
     public String getProgressiveRender();

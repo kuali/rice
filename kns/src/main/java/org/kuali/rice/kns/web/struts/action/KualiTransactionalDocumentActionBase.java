@@ -20,12 +20,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationController;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 import org.kuali.rice.krad.document.Copyable;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.TransactionalDocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.TransactionalDocumentPresentationController;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -69,7 +70,7 @@ public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBas
         	Person user = GlobalVariables.getUserSession().getPerson();
         	
         	TransactionalDocumentPresentationController documentPresentationController = (TransactionalDocumentPresentationController) getDocumentHelperService().getDocumentPresentationController(document);
-            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KRADServiceLocatorWeb
+            TransactionalDocumentAuthorizer documentAuthorizer = (TransactionalDocumentAuthorizer) KNSServiceLocator
                     .getDocumentHelperService().getDocumentAuthorizer(document);
             Set<String> editModes = documentAuthorizer.getEditModes(document, user, documentPresentationController.getEditModes(document));
             editMode = this.convertSetToMap(editModes);

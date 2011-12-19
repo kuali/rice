@@ -22,7 +22,7 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
@@ -236,7 +236,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * This method creates a new {@link PessimisticLock} when Workflow processing requires one
      *
      * @param document - the document to create the lock against and add the lock to
-     * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizer#establishWorkflowPessimisticLocking(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#establishWorkflowPessimisticLocking(org.kuali.rice.krad.document.Document)
      */
     public void establishWorkflowPessimisticLocking(Document document) {
         PessimisticLock lock = createNewPessimisticLock(document, new HashMap(), getWorkflowPessimisticLockOwnerUser());
@@ -247,7 +247,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * This method releases locks created via the {@link #establishWorkflowPessimisticLocking(Document)} method for the given document
      *
      * @param document - document to release locks from
-     * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizer#releaseWorkflowPessimisticLocking(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#releaseWorkflowPessimisticLocking(org.kuali.rice.krad.document.Document)
      */
     public void releaseWorkflowPessimisticLocking(Document document) {
         releaseAllLocksForUser(document.getPessimisticLocks(), getWorkflowPessimisticLockOwnerUser());
@@ -278,7 +278,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * <br>
      * NOTE: This method is only called if the document uses pessimistic locking as described in the data dictionary file.
      *
-     * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizer#establishLocks(org.kuali.rice.krad.document.Document,
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizer#establishLocks(org.kuali.rice.krad.document.Document,
      *      java.util.Map, org.kuali.rice.kim.api.identity.Person)
      */
     public Map establishLocks(Document document, Map editMode, Person user) {

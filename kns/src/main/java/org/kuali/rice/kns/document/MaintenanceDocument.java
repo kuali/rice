@@ -21,7 +21,7 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 /**
  * Common interface for all maintenance documents.
  */
-public interface MaintenanceDocument extends org.kuali.rice.krad.document.MaintenanceDocument {
+public interface MaintenanceDocument extends org.kuali.rice.krad.maintenance.MaintenanceDocument {
 
     /**
      * @return Maintainable which holds the new maintenance record

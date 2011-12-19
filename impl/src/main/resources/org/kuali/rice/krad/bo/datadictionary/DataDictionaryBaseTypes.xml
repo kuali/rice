@@ -84,7 +84,7 @@
 		class="org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry"
 		abstract="true">
         <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
-        <property name="dataObjectClass" value="org.kuali.rice.krad.document.MaintenanceDocumentBase"/>
+        <property name="dataObjectClass" value="org.kuali.rice.krad.maintenance.MaintenanceDocumentBase"/>
     </bean>
 
 	<bean id="InactivationBlockingDefinition"

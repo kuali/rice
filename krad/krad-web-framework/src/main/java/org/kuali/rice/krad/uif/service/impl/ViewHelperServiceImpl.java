@@ -26,8 +26,11 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.authorization.Authorizer;
-import org.kuali.rice.krad.uif.authorization.ViewPresentationController;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
+import org.kuali.rice.krad.uif.container.Group;
+import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.view.ViewAuthorizer;
+import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
@@ -57,6 +60,7 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
+import org.kuali.rice.krad.uif.widget.Widget;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -519,9 +523,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void performApplyModel(View view, Object model) {
-        // get action flag and edit modes from authorizer/presentation
-        // controller
-        invokeAuthorizerPresentationController(view, (UifFormBase) model);
+        // get action flag and edit modes from authorizer/presentation controller
+        retrieveEditModesAndActionFlags(view, (UifFormBase) model);
 
         // set view context for conditional expressions
         setViewContext(view, model);
@@ -534,23 +537,22 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * </code>Authorizer</code> for the view to get the exported action flags
      * and edit modes that can be used in conditional logic
      *
-     * @param view - view instance that is being built and
-     * presentation/authorizer pulled for
+     * @param view - view instance that is being built and presentation/authorizer pulled for
      * @param model - Object that contains the model data
      */
-    protected void invokeAuthorizerPresentationController(View view, UifFormBase model) {
+    protected void retrieveEditModesAndActionFlags(View view, UifFormBase model) {
         ViewPresentationController presentationController = ObjectUtils.newInstance(view.getPresentationControllerClass());
-        Authorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
-        Set<String> actionFlags = presentationController.getActionFlags(model);
-        actionFlags = authorizer.getActionFlags(model, user, actionFlags);
+        Set<String> actionFlags = presentationController.getActionFlags(view, model);
+        actionFlags = authorizer.getActionFlags(view, model, user, actionFlags);
 
         view.setActionFlags(new BooleanMap(actionFlags));
 
-        Set<String> editModes = presentationController.getEditModes(model);
-        editModes = authorizer.getEditModes(model, user, editModes);
+        Set<String> editModes = presentationController.getEditModes(view, model);
+        editModes = authorizer.getEditModes(view, model, user, editModes);
 
         view.setEditModes(new BooleanMap(editModes));
     }
@@ -614,11 +616,24 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             return;
         }
 
-        // evaluate expressions on properties
+        // evaluate expressions on component properties
         component.pushAllToContext(getCommonContext(view, component));
         ExpressionUtils.adjustPropertyExpressions(view, component);
         getExpressionEvaluatorService().evaluateObjectExpressions(component, model, component.getContext());
 
+        // evaluate expressions on component security
+        ComponentSecurity componentSecurity = component.getComponentSecurity();
+        ExpressionUtils.adjustPropertyExpressions(view, componentSecurity);
+        getExpressionEvaluatorService().evaluateObjectExpressions(componentSecurity, model, component.getContext());
+
+        // evaluate expressions on the binding info object
+        if (component instanceof DataBinding) {
+            BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
+            ExpressionUtils.adjustPropertyExpressions(view, bindingInfo);
+            getExpressionEvaluatorService().evaluateObjectExpressions(bindingInfo, model, component.getContext());
+        }
+
+        // evaluate expressions on the layout manager
         if (component instanceof Container) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
 
@@ -633,14 +648,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
         }
 
-        if (component instanceof DataBinding) {
-            BindingInfo bindingInfo = ((DataBinding) component).getBindingInfo();
-            ExpressionUtils.adjustPropertyExpressions(view, bindingInfo);
-            getExpressionEvaluatorService().evaluateObjectExpressions(bindingInfo, model, component.getContext());
-        }
-
         // sync the component with previous client side state
-        syncClientSideStateForComponent(component, ((UifFormBase) model).getClientStateForSyncing());
+        syncClientSideStateForComponent(component, ((ViewModel) model).getClientStateForSyncing());
+
+        // invoke authorizer and presentation controller to set component state
+        // TODO: in progress-put back in
+        //applyAuthorizationAndPresentationLogic(view, component, (ViewModel) model);
 
         // invoke component to perform its conditional logic
         Component parent = (Component) component.getContext().get(UifConstants.ContextVariableNames.PARENT);
@@ -659,6 +672,150 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             }
 
             performComponentApplyModel(view, nestedComponent, model);
+        }
+    }
+
+    /**
+     * Invokes the view's configured {@link ViewAuthorizer} and {@link ViewPresentationController} to set state of
+     * the component
+     *
+     * <p>
+     * The following authorization is done here:
+     *   Fields: edit, view, required, mask, and partial mask
+     *   Groups: edit and view
+     *   Actions: take action
+     * </p>
+     *
+     * <p>
+     * Note additional checks are also done for fields that are part of a collection group. This authorization is
+     * found in {@link org.kuali.rice.krad.uif.container.CollectionGroupBuilder}
+     * </p>
+     *
+     * @param view - view instance the component belongs to and from which the authorizer and presentation controller
+     * will be pulled
+     * @param component - component instance to authorize
+     * @param model - model object containing the data for the view
+     */
+    protected void applyAuthorizationAndPresentationLogic(View view, Component component, ViewModel model) {
+        ViewPresentationController presentationController = ObjectUtils.newInstance(
+                view.getPresentationControllerClass());
+        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        // perform group authorization and presentation logic
+        if (component instanceof Group) {
+            Group group = (Group) component;
+
+            // if group is not hidden, do authorization for viewing the group
+            if (!group.isHidden()) {
+                boolean canViewGroup = authorizer.canViewGroup(view, model, group, group.getId(), user);
+                if (canViewGroup) {
+                    canViewGroup = presentationController.canViewGroup(view, model, group, group.getId());
+                }
+                group.setHidden(!canViewGroup);
+            }
+
+            // if group is editable, do authorization for editing the group
+            if (!group.isReadOnly()) {
+                boolean canEditGroup = authorizer.canEditGroup(view, model, group, group.getId(), user);
+                if (canEditGroup) {
+                    canEditGroup = presentationController.canEditGroup(view, model, group, group.getId());
+                }
+                group.setReadOnly(!canEditGroup);
+            }
+        }
+
+        // perform field authorization and presentation logic
+        else if (component instanceof Field) {
+            Field field = (Field) component;
+
+            String propertyName = null;
+            if (field instanceof DataBinding) {
+                propertyName = ((DataBinding) field).getPropertyName();
+            }
+
+            // if field is not hidden, do authorization for viewing the field
+            if (!field.isHidden()) {
+                boolean canViewField = authorizer.canViewField(view, model, field, propertyName, user);
+                if (canViewField) {
+                    canViewField = presentationController.canViewField(view, model, field, propertyName);
+                }
+                field.setHidden(!canViewField);
+            }
+
+            // if field is not readOnly, check edit authorization
+            if (!field.isReadOnly()) {
+                // check field edit authorization
+                boolean canEditField = authorizer.canEditField(view, model, field, propertyName, user);
+                if (canEditField) {
+                    canEditField = presentationController.canEditField(view, model, field, propertyName);
+                }
+                field.setReadOnly(!canEditField);
+            }
+
+            // if field is not already required, invoke presentation logic to determine if it should be
+            if ((field.getRequired() == null) || !field.getRequired().booleanValue()) {
+                boolean fieldIsRequired = presentationController.fieldIsRequired(view, model, field, propertyName);
+            }
+
+            if (field instanceof DataField) {
+                DataField dataField = (DataField) field;
+
+                // check mask authorization
+                boolean canUnmaskValue = authorizer.canUnmaskField(view, model, dataField, dataField.getPropertyName(),
+                        user);
+                if (!canUnmaskValue) {
+                    dataField.setApplyValueMask(true);
+                    dataField.setMaskFormatter(dataField.getComponentSecurity().getAttributeSecurity().
+                            getMaskFormatter());
+                } else {
+                    // check partial mask authorization
+                    boolean canPartiallyUnmaskValue = authorizer.canPartialUnmaskField(view, model, dataField,
+                            dataField.getPropertyName(), user);
+                    if (!canPartiallyUnmaskValue) {
+                        dataField.setApplyValueMask(true);
+                        dataField.setMaskFormatter(
+                                dataField.getComponentSecurity().getAttributeSecurity().getPartialMaskFormatter());
+                    }
+                }
+            }
+
+            // check authorization for actions
+            if (field instanceof ActionField) {
+                ActionField actionField = (ActionField) field;
+
+                boolean canTakeAction = authorizer.canTakeAction(view, model, actionField, actionField.getActionEvent(),
+                        actionField.getId(), user);
+                if (canTakeAction) {
+                    canTakeAction = presentationController.canTakeAction(view, model, actionField,
+                            actionField.getActionEvent(), actionField.getId());
+                }
+                actionField.setRender(canTakeAction);
+            }
+        }
+
+        // perform widget authorization and presentation logic
+        else if (component instanceof Widget) {
+            Widget widget = (Widget) component;
+
+            // if widget is not hidden, do authorization for viewing the widget
+            if (!widget.isHidden()) {
+                boolean canViewWidget = authorizer.canViewWidget(view, model, widget, widget.getId(), user);
+                if (canViewWidget) {
+                    canViewWidget = presentationController.canViewWidget(view, model, widget, widget.getId());
+                }
+                widget.setHidden(!canViewWidget);
+            }
+
+            // if widget is not readOnly, check edit authorization
+            if (!widget.isReadOnly()) {
+                boolean canEditWidget = authorizer.canEditWidget(view, model, widget, widget.getId(), user);
+                if (canEditWidget) {
+                    canEditWidget = presentationController.canEditWidget(view, model, widget, widget.getId());
+                }
+                widget.setReadOnly(!canEditWidget);
+            }
         }
     }
 

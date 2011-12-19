@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.question.Question;
 
 /**
  * Service locator for the KRAD Web module
@@ -34,6 +35,7 @@ public class KNSServiceLocator {
     public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
     public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
     public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
+    public static final String DOCUMENT_HELPER_SERVICE = "documentHelperService";
     public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
     public static final String KUALI_INQUIRABLE = "kualiInquirable";
     public static final String KUALI_LOOKUPABLE = "kualiLookupable";
@@ -91,5 +93,13 @@ public class KNSServiceLocator {
 
     public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
         return getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
+    }
+
+    public static DocumentHelperService getDocumentHelperService() {
+        return getService(DOCUMENT_HELPER_SERVICE);
+    }
+
+    public static Question getQuestion(String questionName) {
+        return (Question) getService(questionName);
     }
 }

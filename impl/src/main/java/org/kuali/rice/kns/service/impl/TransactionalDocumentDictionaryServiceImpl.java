@@ -23,7 +23,7 @@ import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.krad.document.TransactionalDocument;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.service.DataDictionaryService;
 
 /**

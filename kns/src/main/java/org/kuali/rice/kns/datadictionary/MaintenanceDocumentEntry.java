@@ -15,19 +15,14 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.datadictionary.ReferenceDefinition;
-import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocumentBase;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.maintenance.Maintainable;
 
 import java.util.ArrayList;
@@ -62,7 +57,6 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
     protected List<String> webScriptFiles = new ArrayList<String>(3);
     protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
 
-    protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
     protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
 
     protected boolean sessionDocument = false;
@@ -282,15 +276,6 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
         this.translateCodes = translateCodes;
     }
 
-      /**
-     * The documentAuthorizerClass element is the full class name of the
-     * java class which will determine what features are available to the
-     * user based on the user role and document state.
-     */
-    public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
-        this.documentAuthorizerClass = documentAuthorizerClass;
-    }
-
     /**
      * Returns the document authorizer class for the document.  Only framework code should be calling this method.
      * Client devs should use {@link DocumentTypeService#getDocumentAuthorizer(org.kuali.rice.krad.document.Document)}
@@ -299,8 +284,23 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
      *
      * @return a document authorizer class
      */
+    @Override
     public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
-        return documentAuthorizerClass;
+        return (Class<? extends DocumentAuthorizer>) super.getDocumentAuthorizerClass();
+    }
+
+    /**
+     * Returns the document presentation controller class for the document.  Only framework code should be calling this
+     * method.
+     * Client devs should use {@link DocumentTypeService#getDocumentPresentationController(org.kuali.rice.krad.document.Document)}
+     * or
+     * {@link DocumentTypeService#getDocumentPresentationController(String)}
+     *
+     * @return the documentPresentationControllerClass
+     */
+    @Override
+    public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {
+        return (Class<? extends DocumentPresentationController>)  super.getDocumentPresentationControllerClass();
     }
 
     public List<HeaderNavigation> getHeaderNavigationList() {
@@ -334,27 +334,6 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
 
     public void setSessionDocument(boolean sessionDocument) {
         this.sessionDocument = sessionDocument;
-    }
-
-    /**
-     * Returns the document presentation controller class for the document.  Only framework code should be calling this
-     * method.
-     * Client devs should use {@link DocumentTypeService#getDocumentPresentationController(org.kuali.rice.krad.document.Document)}
-     * or
-     * {@link DocumentTypeService#getDocumentPresentationController(String)}
-     *
-     * @return the documentPresentationControllerClass
-     */
-    public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {
-        return this.documentPresentationControllerClass;
-    }
-
-    /**
-     * @param documentPresentationControllerClass the documentPresentationControllerClass to set
-     */
-    public void setDocumentPresentationControllerClass(
-            Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
-        this.documentPresentationControllerClass = documentPresentationControllerClass;
     }
 
     /**

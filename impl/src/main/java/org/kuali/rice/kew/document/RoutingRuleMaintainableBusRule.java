@@ -47,7 +47,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase#processCustomSaveDocumentBusinessRules(org.kuali.rice.krad.document.MaintenanceDocument)
+	 * @see org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase#processCustomSaveDocumentBusinessRules(org.kuali.rice.krad.maintenance.MaintenanceDocument)
 	 */
 	@Override
 	protected boolean processCustomSaveDocumentBusinessRules(
@@ -82,7 +82,7 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase#processCustomAddCollectionLineBusinessRules(org.kuali.rice.krad.document.MaintenanceDocument, java.lang.String, org.kuali.rice.krad.bo.PersistableBusinessObject)
+	 * @see org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase#processCustomAddCollectionLineBusinessRules(org.kuali.rice.krad.maintenance.MaintenanceDocument, java.lang.String, org.kuali.rice.krad.bo.PersistableBusinessObject)
 	 */
 	@Override
 	public boolean processCustomAddCollectionLineBusinessRules(

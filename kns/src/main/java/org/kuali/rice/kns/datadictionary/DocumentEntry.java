@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,4 +111,32 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
     public void setDerivedValuesSetterClass(Class<? extends DerivedValuesSetter> derivedValuesSetter) {
         this.derivedValuesSetterClass = derivedValuesSetter;
     }
+
+    /**
+     * Returns the document authorizer class for the document.  Only framework code should be calling this method.
+     * Client devs should use {@link DocumentTypeService#getDocumentAuthorizer(org.kuali.rice.krad.document.Document)}
+     * or
+     * {@link DocumentTypeService#getDocumentAuthorizer(String)}
+     *
+     * @return a document authorizer class
+     */
+    @Override
+    public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
+        return (Class<? extends DocumentAuthorizer>) super.getDocumentAuthorizerClass();
+    }
+
+    /**
+     * Returns the document presentation controller class for the document.  Only framework code should be calling this
+     * method.
+     * Client devs should use {@link DocumentTypeService#getDocumentPresentationController(org.kuali.rice.krad.document.Document)}
+     * or
+     * {@link DocumentTypeService#getDocumentPresentationController(String)}
+     *
+     * @return the documentPresentationControllerClass
+     */
+    @Override
+    public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {
+        return (Class<? extends DocumentPresentationController>)  super.getDocumentPresentationControllerClass();
+    }
+
 }

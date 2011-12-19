@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.rules.PromptBeforeValidationBase;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.kns.rules.PromptBeforeValidationBase.ContextSession;
 
 import static org.junit.Assert.assertEquals;

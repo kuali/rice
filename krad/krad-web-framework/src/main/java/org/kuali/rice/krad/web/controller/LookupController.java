@@ -65,24 +65,26 @@ public class LookupController extends UifControllerBase {
     }
 
     protected void suppressActionsIfNeeded(LookupForm lookupForm) {
-        try {
-            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
-            Person user = GlobalVariables.getUserSession().getPerson();
-            // check if creating documents is allowed
-            String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
-                    .getMaintenanceDocumentTypeName(dataObjectClass);
-            if ((documentTypeName != null) &&
-                    !KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName)
-                            .canInitiate(documentTypeName, user)) {
-                ((LookupView) lookupForm.getView()).setSuppressActions(true);
-            }
-        } catch (ClassNotFoundException e) {
-            LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
-        }
+//        try {
+//            // TODO; move to authorizer for lookup view
+//            Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
+//            Person user = GlobalVariables.getUserSession().getPerson();
+//            // check if creating documents is allowed
+//            String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
+//                    .getMaintenanceDocumentTypeName(dataObjectClass);
+//            if ((documentTypeName != null) &&
+//                    !KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName)
+//                            .canInitiate(documentTypeName, user)) {
+//                ((LookupView) lookupForm.getView()).setSuppressActions(true);
+//            }
+//        } catch (ClassNotFoundException e) {
+//            LOG.warn("Unable to load Data Object Class: " + lookupForm.getDataObjectClassName(), e);
+//        }
     }
 
     /**
      * @see UifControllerBase#checkAuthorization(org.kuali.rice.krad.web.form.UifFormBase, java.lang.String)
+     * TODO: this should be moved to authorizer class for lookup view
      */
     @Override
     public void checkAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
@@ -114,7 +116,7 @@ public class LookupController extends UifControllerBase {
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         LookupForm lookupForm = (LookupForm) form;
-//		checkAuthorization(lookupForm, request.getParameter("methodToCall"));
+
         suppressActionsIfNeeded(lookupForm);
 
         return super.start(lookupForm, result, request, response);

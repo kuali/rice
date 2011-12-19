@@ -27,7 +27,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.web.ui.Section;
-import org.kuali.rice.krad.document.MaintenanceLock;
+import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.kns.maintenance.Maintainable;
 
 /**

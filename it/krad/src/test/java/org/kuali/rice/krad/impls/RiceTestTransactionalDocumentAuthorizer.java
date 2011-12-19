@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.impls;
 
-import org.kuali.rice.krad.document.authorization.TransactionalDocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
 
 public class RiceTestTransactionalDocumentAuthorizer extends TransactionalDocumentAuthorizerBase {
 

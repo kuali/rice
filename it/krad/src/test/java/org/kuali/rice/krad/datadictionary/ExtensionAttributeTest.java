@@ -30,7 +30,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.krad.rule.event.RouteDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.bo.Account;

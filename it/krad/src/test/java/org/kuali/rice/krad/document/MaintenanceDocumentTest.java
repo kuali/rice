@@ -17,6 +17,7 @@ package org.kuali.rice.krad.document;
 
 import org.junit.Test;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.test.document.bo.AccountManager;
 import org.kuali.rice.krad.util.GlobalVariables;

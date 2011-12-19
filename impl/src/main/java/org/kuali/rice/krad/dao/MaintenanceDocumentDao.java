@@ -17,7 +17,7 @@ package org.kuali.rice.krad.dao;
 
 import java.util.List;
 
-import org.kuali.rice.krad.document.MaintenanceLock;
+import org.kuali.rice.krad.maintenance.MaintenanceLock;
 
 /**
  * This interface defines basic methods that MaintenanceDocument Dao's must provide

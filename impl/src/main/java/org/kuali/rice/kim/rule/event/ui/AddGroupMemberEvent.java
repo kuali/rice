@@ -19,8 +19,8 @@ import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.rule.BusinessRule;
-import org.kuali.rice.krad.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 /**

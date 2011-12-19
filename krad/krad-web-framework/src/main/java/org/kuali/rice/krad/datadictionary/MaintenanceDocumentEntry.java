@@ -18,8 +18,8 @@ package org.kuali.rice.krad.datadictionary;
 import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocumentBase;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.maintenance.Maintainable;
 
 import java.util.ArrayList;

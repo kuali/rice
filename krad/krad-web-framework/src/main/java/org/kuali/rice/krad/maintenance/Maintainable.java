@@ -18,8 +18,6 @@ package org.kuali.rice.krad.maintenance;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.MaintenanceLock;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 
 import java.util.List;

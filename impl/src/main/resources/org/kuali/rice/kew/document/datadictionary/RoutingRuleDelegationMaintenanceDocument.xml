@@ -33,7 +33,7 @@
     </property>
     <property name="allowsNewOrCopy" value="true"/>
     <property name="documentTypeName" value="RoutingRuleDelegationMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
         <value>delegationRuleBaseValues.id</value>

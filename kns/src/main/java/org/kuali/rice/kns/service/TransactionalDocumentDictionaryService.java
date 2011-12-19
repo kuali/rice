@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.service;
 
 import org.kuali.rice.krad.document.TransactionalDocument;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 
 import java.util.Collection;
 

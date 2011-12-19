@@ -26,7 +26,7 @@ import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
@@ -40,6 +40,8 @@ import java.util.Map;
  * This is the Document interface. All entities that are regarded as "eDocs" in the system, including Maintenance documents and
  * Transaction Processing documents should implement this interface as it defines methods that are necessary to interact with the
  * underlying frameworks and components (i.e. notes, attachments, workflow, etc).
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Document extends PersistableBusinessObject {
 	

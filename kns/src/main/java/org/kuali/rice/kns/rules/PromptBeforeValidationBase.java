@@ -22,7 +22,7 @@ import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.question.ConfirmationQuestion;
+import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;

@@ -28,7 +28,7 @@ import java.io.IOException;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MaintenanceDocumentBase extends org.kuali.rice.krad.document.MaintenanceDocumentBase implements MaintenanceDocument {
+public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.MaintenanceDocumentBase implements MaintenanceDocument {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
 
     @Transient

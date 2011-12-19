@@ -55,7 +55,8 @@ public class LookupInputField extends InputField {
      * search criteria
      *
      * @param attributeDefinition - AttributeDefinition instance the property values should be copied from
-     * @see InputField#copyFromAttributeDefinition(org.kuali.rice.krad.datadictionary.AttributeDefinition)
+     * @see DataField#copyFromAttributeDefinition(org.kuali.rice.krad.uif.view.View,
+     * org.kuali.rice.krad.datadictionary.AttributeDefinition)
      */
     @Override
     public void copyFromAttributeDefinition(View view, AttributeDefinition attributeDefinition) {
@@ -70,8 +71,8 @@ public class LookupInputField extends InputField {
         }
 
         // security
-        if (getAttributeSecurity() == null) {
-            setAttributeSecurity(attributeDefinition.getAttributeSecurity());
+        if (getComponentSecurity().getAttributeSecurity() == null) {
+            getComponentSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
         // options

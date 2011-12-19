@@ -224,10 +224,7 @@ public class UifWebUtils {
      * Prepares the <code>View</code> instance contained on the form for
      * rendering
      *
-     * <p>
-     * First
-     * </p>
-     *
+     * @param request - request object
      * @param form - form instance containing the data and view instance
      */
     public static void prepareViewForRendering(HttpServletRequest request, UifFormBase form) {

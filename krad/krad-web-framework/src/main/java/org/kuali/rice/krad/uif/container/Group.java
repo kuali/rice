@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.View;
@@ -237,7 +238,7 @@ public class Group extends ContainerBase {
 		this.disclosure = disclosure;
 	}
 
-	/**
+    /**
 	 * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
 	 */
 	@Override

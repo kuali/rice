@@ -18,12 +18,14 @@ package org.kuali.rice.krad.uif.container;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
@@ -38,6 +40,10 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewAuthorizer;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.uif.view.ViewPresentationController;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -232,11 +238,14 @@ public class CollectionGroupBuilder implements Serializable {
         // copy fields for line and adjust binding to match collection line path
         lineFields = (List<Field>) ComponentUtils.copyFieldList(lineFields, bindingPath, lineSuffix);
 
-        if (lineIndex == -1 && !lineFields.isEmpty()) {
+        boolean readOnlyLine = collectionGroup.isReadOnly();
+
+        // add special css styles to identify the add line client side
+        if (lineIndex == -1) {
             for (Field f : lineFields) {
                 if (f instanceof InputField) {
-                    //sets up - skipping these fields in add area during standard form validation calls
-                    //custom addLineToCollection js call will validate these fields manually on an add
+                    // sets up - skipping these fields in add area during standard form validation calls
+                    // custom addLineToCollection js call will validate these fields manually on an add
                     Control control = ((InputField) f).getControl();
                     if (control != null) {
                         control.addStyleClass(collectionGroup.getFactoryId() + "-addField");
@@ -244,14 +253,43 @@ public class CollectionGroupBuilder implements Serializable {
                     }
                 }
             }
+
+            // set focus on after the add line submit to first field of add line
             for (ActionField action : actions) {
                 if (action.getActionParameter(UifParameters.ACTION_TYPE).equals(UifParameters.ADD_LINE)) {
                     action.setFocusOnAfterSubmit(lineFields.get(0).getId());
                 }
             }
+        } else {
+            // for existing lines, check view line auth
+            boolean canViewLine = true;
+            // TODO: in progress-put back in
+//            boolean canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model,
+//                    collectionGroup, currentLine);
+
+            // if line is not viewable, just return without calling the layout manager to add the line
+            if (!canViewLine) {
+                return;
+            }
+
+            // check edit line authorization if collection is not read only
+            // TODO: in progress-put back in
+//            if (!collectionGroup.isReadOnly()) {
+//                readOnlyLine = !checkEditLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
+//                        currentLine);
+//            }
+
+            ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,
+                    readOnlyLine);
+            ComponentUtils.pushObjectToContext(actions, UifConstants.ContextVariableNames.READONLY_LINE, readOnlyLine);
         }
-		
-		ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
+
+        ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
+
+        // check authorization for line fields
+        // TODO: in progress-put back in
+//        applyLineFieldAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup, currentLine,
+//                readOnlyLine, lineFields, actions);
 
 		if (bindToForm) {
 			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
@@ -360,13 +398,7 @@ public class CollectionGroupBuilder implements Serializable {
 
             // evaluate conditional render string if set
             if (StringUtils.isNotBlank(conditionalRender)) {
-                Map<String, Object> context = new HashMap<String, Object>();
-                context.putAll(view.getContext());
-                context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
-                context.put(UifConstants.ContextVariableNames.COMPONENT, lineField);
-                context.put(UifConstants.ContextVariableNames.LINE, currentLine);
-                context.put(UifConstants.ContextVariableNames.INDEX, new Integer(lineIndex));
-                context.put(UifConstants.ContextVariableNames.IS_ADD_LINE, new Boolean(lineIndex == -1));
+                Map<String, Object> context = getContextForField(view, collectionGroup, lineField);
 
                 // Adjust the condition as ExpressionUtils.adjustPropertyExpressions will only be
                 // executed after the collection is built.
@@ -384,6 +416,165 @@ public class CollectionGroupBuilder implements Serializable {
         }
 
         return fields;
+    }
+
+    /**
+     * Invokes the view's configured authorizer and presentation controller to determine if the user has permission
+     * to view the line (if a permission has been established)
+     *
+     * @param view - view instance the collection belongs to and from which the authorizer/presentation controller will
+     * be pulled
+     * @param model - object containing the view's data
+     * @param collectionGroup - collection group containing the line
+     * @param line - object containing the lines data
+     * @return boolean true if the user can view the line, false if not
+     */
+    protected boolean checkViewLineAuthorizationAndPresentationLogic(View view, ViewModel model,
+            CollectionGroup collectionGroup, Object line) {
+        ViewPresentationController presentationController = ObjectUtils.newInstance(
+                view.getPresentationControllerClass());
+        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        // check view line auth
+        boolean canViewLine = authorizer.canViewLine(view, model, collectionGroup, collectionGroup.getPropertyName(),
+                line, user);
+        if (canViewLine) {
+            canViewLine = presentationController.canViewLine(view, model, collectionGroup,
+                    collectionGroup.getPropertyName(), line);
+        }
+
+        return canViewLine;
+    }
+
+    /**
+     * Invokes the view's configured authorizer and presentation controller to determine if the user has permission
+     * to edit the line (if a permission has been established)
+     *
+     * @param view - view instance the collection belongs to and from which the authorizer/presentation controller will
+     * be pulled
+     * @param model - object containing the view's data
+     * @param collectionGroup - collection group containing the line
+     * @param line - object containing the lines data
+     * @return boolean true if the user can edit the line, false if not
+     */
+    protected boolean checkEditLineAuthorizationAndPresentationLogic(View view, ViewModel model,
+            CollectionGroup collectionGroup, Object line) {
+        ViewPresentationController presentationController = ObjectUtils.newInstance(
+                view.getPresentationControllerClass());
+        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        // check edit line auth
+        boolean canEditLine = authorizer.canEditLine(view, model, collectionGroup, collectionGroup.getPropertyName(),
+                line, user);
+        if (canEditLine) {
+            canEditLine = presentationController.canEditLine(view, model, collectionGroup,
+                    collectionGroup.getPropertyName(), line);
+        }
+
+        return canEditLine;
+    }
+
+    /**
+     * Iterates through the line fields and checks the view field authorization using the view's configured authorizer
+     * and presentation controller. If the field is viewable, then sets the edit field authorization. Finally iterates
+     * through the line actions invoking the authorizer and presentation controller to authorizer the action
+     *
+     * @param view - view instance the collection belongs to and from which the authorizer/presentation controller will
+     * be pulled
+     * @param model - object containing the view's data
+     * @param collectionGroup - collection group containing the line
+     * @param line - object containing the lines data
+     * @param readOnlyLine - flag indicating whether the line has been marked as read only (which will force the fields
+     * to be read only)
+     * @param lineFields - list of fields instances for the line
+     * @param actions - list of action field instances for the line
+     */
+    protected void applyLineFieldAuthorizationAndPresentationLogic(View view, ViewModel model,
+            CollectionGroup collectionGroup, Object line, boolean readOnlyLine, List<Field> lineFields,
+            List<ActionField> actions) {
+        ViewPresentationController presentationController = ObjectUtils.newInstance(
+                view.getPresentationControllerClass());
+        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        for (Field lineField : lineFields) {
+            String propertyName = null;
+            if (lineField instanceof DataBinding) {
+                propertyName = ((DataBinding) lineField).getPropertyName();
+            }
+
+            // evaluate expression on fields component security (since apply model phase has not been invoked on
+            // them yet
+            ComponentSecurity componentSecurity = lineField.getComponentSecurity();
+            ExpressionUtils.adjustPropertyExpressions(view, componentSecurity);
+
+            Map<String, Object> context = getContextForField(view, collectionGroup, lineField);
+            getExpressionEvaluatorService().evaluateObjectExpressions(componentSecurity, model, context);
+
+            // check view field auth
+            if (lineField.isRender() && !lineField.isHidden()) {
+                boolean canViewField = authorizer.canViewField(view, model, lineField, propertyName, user);
+                if (canViewField) {
+                    canViewField = presentationController.canViewField(view, model, lineField, propertyName);
+                }
+
+                if (!canViewField) {
+                    // since removing can impact layout, set to hidden
+                    // TODO: check into encryption setting
+                    lineField.setHidden(true);
+
+                    if (lineField.getPropertyExpressions().containsKey("hidden")) {
+                        lineField.getPropertyExpressions().remove("hidden");
+                    }
+
+                    continue;
+                }
+
+                // check edit field auth
+                boolean canEditField = !readOnlyLine;
+                if (!readOnlyLine) {
+                    canEditField = authorizer.canEditField(view, model, lineField, propertyName, user);
+                    if (canEditField) {
+                        canEditField = presentationController.canEditField(view, model, lineField, propertyName);
+                    }
+                }
+
+                if (readOnlyLine || !canEditField) {
+                    lineField.setReadOnly(true);
+
+                    if (lineField.getPropertyExpressions().containsKey("readOnly")) {
+                        lineField.getPropertyExpressions().remove("readOnly");
+                    }
+                }
+            }
+        }
+
+        // check auth on line actions
+        for (ActionField actionField : actions) {
+            if (actionField.isRender()) {
+                boolean canPerformAction = authorizer.canTakeLineAction(view, model, collectionGroup,
+                        collectionGroup.getPropertyName(), line, actionField, actionField.getActionEvent(),
+                        actionField.getId(), user);
+                if (canPerformAction) {
+                    canPerformAction = presentationController.canTakeLineAction(view, model, collectionGroup,
+                            collectionGroup.getPropertyName(), line, actionField, actionField.getActionEvent(),
+                            actionField.getId());
+                }
+
+                if (!canPerformAction) {
+                    actionField.setRender(false);
+
+                    if (actionField.getPropertyExpressions().containsKey("render")) {
+                        actionField.getPropertyExpressions().remove("render");
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -404,6 +595,8 @@ public class CollectionGroupBuilder implements Serializable {
     protected boolean checkSubCollectionRender(View view, Object model, CollectionGroup collectionGroup,
             CollectionGroup subCollectionGroup) {
         String conditionalRender = subCollectionGroup.getPropertyExpression("render");
+
+        // TODO: check authorizer
 
         // evaluate conditional render string if set
         if (StringUtils.isNotBlank(conditionalRender)) {
@@ -496,6 +689,26 @@ public class CollectionGroupBuilder implements Serializable {
 
 		return lineActions;
 	}
+
+    /**
+     * Helper method to build the context for a field (needed because the apply model phase for line fields has
+     * not been applied yet and their full context not set)
+     *
+     * @param view - view instance the field belongs to
+     * @param collectionGroup - collection group instance the field belongs to
+     * @param field - field instance to build context for
+     * @return Map<String, Object> context for field
+     */
+    protected Map<String, Object> getContextForField(View view, CollectionGroup collectionGroup, Field field) {
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        context.putAll(view.getContext());
+        context.putAll(field.getContext());
+        context.put(UifConstants.ContextVariableNames.PARENT, collectionGroup);
+        context.put(UifConstants.ContextVariableNames.COMPONENT, field);
+
+        return context;
+    }
 
     /**
      * Initializes a new instance of the collection class

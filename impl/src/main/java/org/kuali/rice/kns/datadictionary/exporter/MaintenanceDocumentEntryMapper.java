@@ -25,8 +25,9 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSubSectionHeaderDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -66,7 +67,7 @@ public class MaintenanceDocumentEntryMapper extends DocumentEntryMapper {
             entryMap.set("description", docType.getDescription());
         }
 
-        DocumentHelperService documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+        DocumentHelperService documentHelperService = KNSServiceLocator.getDocumentHelperService();
         entryMap.set("documentAuthorizerClass", documentHelperService.getDocumentAuthorizer(entry.getDocumentTypeName()).getClass().getName());
         entryMap.set("documentPresentationControllerClass", documentHelperService.getDocumentPresentationController(entry.getDocumentTypeName()).getClass().getName());
 

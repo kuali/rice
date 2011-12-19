@@ -100,7 +100,7 @@ public final class KimConstants {
 	public static final class PermissionTemplateNames {
         public static final String FULL_UNMASK_FIELD = "Full Unmask Field";
     	public static final String PARTIAL_UNMASK_FIELD = "Partial Unmask Field";
-    	public static final String VIEW_FIELD = "View Inquiry or Maintenance Document Field";
+    	public static final String VIEW_MAINTENANCE_INQUIRY_FIELD = "View Inquiry or Maintenance Document Field";
     	public static final String MODIFY_FIELD = "Modify Maintenance Document Field";
     	public static final String VIEW_SECTION = "View Inquiry or Maintenance Document Section";
     	public static final String MODIFY_SECTION = "Modify Maintenance Document Section";
@@ -137,7 +137,21 @@ public final class KimConstants {
     	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
     	public static final String MAINTAIN_SYSTEM_PARAMETER = "Maintain System Parameter";
     	public static final String SEND_AD_HOC_REQUEST ="Send Ad Hoc Request";
-    	
+
+        public static final String EDIT_VIEW = "Edit View";
+    	public static final String OPEN_VIEW = "Open View";
+        public static final String EDIT_FIELD = "Edit Field";
+        public static final String VIEW_FIELD = "View Field";
+        public static final String EDIT_GROUP = "Edit Group";
+        public static final String VIEW_GROUP = "View Group";
+        public static final String EDIT_WIDGET = "Edit Widget";
+        public static final String VIEW_WIDGET = "View Widget";
+        public static final String PERFORM_ACTION = "Perform Action";
+        public static final String EDIT_LINE = "Edit Line";
+        public static final String VIEW_LINE = "View Line";
+        public static final String EDIT_LINE_FIELD = "Edit Line Field";
+        public static final String VIEW_LINE_FIELD = "View Line Field";
+
 		private PermissionTemplateNames() {
 			throw new UnsupportedOperationException("do not call");
 		}
@@ -297,11 +311,11 @@ public final class KimConstants {
 	}
 
     public final static class AttributeConstants {
-
         public static final String PRINCIPAL_ID = "principalId";
         public static final String BUTTON_NAME = "buttonName";
         public static final String BEAN_NAME = "beanName";
         public static final String ACTION_CLASS = "actionClass";
+        public static final String NAME = "name";
         public static final String NAMESPACE_CODE = "namespaceCode";
         public static final String COMPONENT_NAME = "componentName";
         public static final String PROPERTY_NAME = "propertyName";
@@ -326,6 +340,12 @@ public final class KimConstants {
         public static final String SECTION_ID = "sectionId";
         public static final String KIM_TYPE_ID = PrimaryKeyConstants.KIM_TYPE_ID;
         public static final String QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER = "qualifierResolverProvidedIdentifier";
+        public static final String VIEW_ID = "viewId";
+        public static final String ACTION_EVENT = "actionEvent";
+        public static final String COLLECTION_PROPERTY_NAME = "collectionPropertyName";
+        public static final String FIELD_ID = "fieldId";
+        public static final String GROUP_ID = "groupId";
+        public static final String WIDGET_ID = "widgetId";
     }
 
 	/**

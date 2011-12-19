@@ -606,7 +606,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
-			authorizer = (IdentityManagementKimDocumentAuthorizer) KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(document);
+			authorizer = (IdentityManagementKimDocumentAuthorizer) KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentAuthorizer(document);
 		}
 		return authorizer;
 	}

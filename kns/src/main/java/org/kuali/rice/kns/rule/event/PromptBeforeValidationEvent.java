@@ -18,8 +18,8 @@ package org.kuali.rice.kns.rule.event;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.rule.BusinessRule;
-import org.kuali.rice.krad.rule.event.KualiDocumentEventBase;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.event.KualiDocumentEventBase;
 
 /**
  * Event for handling warnings/questions before rules are called.
@@ -153,7 +153,7 @@ public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
+     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return PromptBeforeValidation.class;
@@ -161,7 +161,7 @@ public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
 
 
     /**
-     * @see org.kuali.rice.krad.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rule.BusinessRule)
+     * @see org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent#invokeRuleMethod(org.kuali.rice.krad.rules.rule.BusinessRule)
      */
     public boolean invokeRuleMethod(BusinessRule rule) {
         return true;

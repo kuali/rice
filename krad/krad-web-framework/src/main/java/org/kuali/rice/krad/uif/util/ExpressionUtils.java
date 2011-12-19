@@ -36,17 +36,17 @@ import java.util.Map;
 public class ExpressionUtils {
 
     /**
-     *  Adjusts the property expressions for a given object. Any nested properties are moved to the parent
-     *  object. Binding adjust prefixes are replaced with the correct values.
+     * Adjusts the property expressions for a given object. Any nested properties are moved to the parent
+     * object. Binding adjust prefixes are replaced with the correct values.
      *
-     *  <p>
-     *  The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
-     *  as this is a placeholder indicating that the property is directly on the form.
-     *  The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
-     *  the object's field path - this is only applicable to DataFields. The
-     *  org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
-     *  by the view's default path if it is set.
-     *  </p>
+     * <p>
+     * The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
+     * as this is a placeholder indicating that the property is directly on the form.
+     * The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
+     * the object's field path - this is only applicable to DataFields. The
+     * org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
+     * by the view's default path if it is set.
+     * </p>
      *
      * @param view - the parent view of the object
      * @param object - Object to adjust property expressions on
@@ -92,17 +92,17 @@ public class ExpressionUtils {
                 adjustedPropertyExpressions);
     }
 
-     /**
-     *  Adjusts the property expressions for a given object.
+    /**
+     * Adjusts the property expressions for a given object.
      *
-     *  <p>
-     *  The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
-     *  as this is a placeholder indicating that the property is directly on the form.
-     *  The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
-     *  the object's field path - this is only applicable to DataFields. The
-     *  org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
-     *  by the view's default path if it is set.
-     *  </p>
+     * <p>
+     * The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
+     * as this is a placeholder indicating that the property is directly on the form.
+     * The org.kuali.rice.krad.uif.UifConstants#FIELD_PATH_BIND_ADJUST_PREFIX prefix will be replaced by
+     * the object's field path - this is only applicable to DataFields. The
+     * org.kuali.rice.krad.uif.UifConstants#DEFAULT_PATH_BIND_ADJUST_PREFIX prefix will be replaced
+     * by the view's default path if it is set.
+     * </p>
      *
      * @param view - the parent view of the object
      * @param object - Object to adjust property expressions on
@@ -116,29 +116,33 @@ public class ExpressionUtils {
         if (object instanceof DataField) {
 
             // Get the binding path from the object
-            BindingInfo bindingInfo = ((DataField)object).getBindingInfo();
+            BindingInfo bindingInfo = ((DataField) object).getBindingInfo();
             String fieldPath = bindingInfo.getBindingPath();
 
             // Remove the property name from the binding path
-            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName() );
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX, fieldPath + ".");
-        }else{
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX, "");
+            fieldPath = StringUtils.removeEnd(fieldPath, "." + bindingInfo.getBindingName());
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                    fieldPath + ".");
+        } else {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.FIELD_PATH_BIND_ADJUST_PREFIX,
+                    "");
         }
 
         // Replace the default path prefix if there is one set on the view
         if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX, view.getDefaultBindingObjectPath() + ".");
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
+                    view.getDefaultBindingObjectPath() + ".");
 
-        }else{
-            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX, "");
+        } else {
+            adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
+                    "");
         }
+
         return adjustedExpression;
     }
 
     /**
      * Moves any nested property expressions to the parent object
-     *
      *
      * @param object - the object containing the expression
      * @param propertyName - the property the expression is on
@@ -194,10 +198,10 @@ public class ExpressionUtils {
     public static String parseExpression(String exp, List<String> controlNames) {
         // clean up expression to ease parsing
         exp = exp.trim();
-        if(exp.startsWith("@{")){
+        if (exp.startsWith("@{")) {
             exp = StringUtils.removeStart(exp, "@{");
-            if(exp.endsWith("}")){
-                exp = StringUtils.removeEnd(exp,"}");
+            if (exp.endsWith("}")) {
+                exp = StringUtils.removeEnd(exp, "}");
             }
         }
 
@@ -207,7 +211,6 @@ public class ExpressionUtils {
         exp = StringUtils.replace(exp, "<", " < ");
         exp = StringUtils.replace(exp, "<=", " <= ");
         exp = StringUtils.replace(exp, ">=", " >= ");
-
 
         String conditionJs = exp;
         String stack = "";
@@ -233,8 +236,8 @@ public class ExpressionUtils {
             }
         }
 
-        if(StringUtils.isNotEmpty(stack)){
-           evaluateCurrentStack(stack.trim(), controlNames);
+        if (StringUtils.isNotEmpty(stack)) {
+            evaluateCurrentStack(stack.trim(), controlNames);
         }
 
         conditionJs = conditionJs.replaceAll("\\s(?i:ne)\\s", " != ").replaceAll("\\s(?i:eq)\\s", " == ").replaceAll(

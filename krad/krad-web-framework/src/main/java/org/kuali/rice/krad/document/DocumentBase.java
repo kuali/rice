@@ -37,7 +37,7 @@ import org.kuali.rice.krad.datadictionary.WorkflowProperties;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -465,7 +465,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * Override this method with implementation specific prepareForSave logic
      * 
-     * @see org.kuali.rice.krad.document.Document#prepareForSave(org.kuali.rice.krad.rule.event.KualiDocumentEvent)
+     * @see org.kuali.rice.krad.document.Document#prepareForSave(org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent)
      */
     public void prepareForSave(KualiDocumentEvent event) {
     	// do nothing by default

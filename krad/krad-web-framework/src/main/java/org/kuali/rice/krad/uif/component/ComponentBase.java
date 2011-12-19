@@ -100,6 +100,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     private boolean selfRendered;
     private String renderOutput;
 
+    private ComponentSecurity componentSecurity;
+
     private String onLoadScript;
     private String onUnloadScript;
     private String onCloseScript;
@@ -142,6 +144,8 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         progressiveRenderAndRefresh = false;
         refreshedByAction = false;
         resetDataOnRefresh = false;
+
+        componentSecurity = new ComponentSecurity();
 
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
@@ -682,6 +686,20 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setRenderOutput(String renderOutput) {
         this.renderOutput = renderOutput;
+    }
+
+    /**
+     * @see Component#getComponentSecurity()
+     */
+    public ComponentSecurity getComponentSecurity() {
+        return componentSecurity;
+    }
+
+    /**
+     * @see Component#setComponentSecurity(org.kuali.rice.krad.uif.component.ComponentSecurity)
+     */
+    public void setComponentSecurity(ComponentSecurity componentSecurity) {
+        this.componentSecurity = componentSecurity;
     }
 
     /**

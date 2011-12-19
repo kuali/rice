@@ -28,8 +28,8 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.MaintenanceLock;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
@@ -367,7 +367,7 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
     }
 
     /**
-     * @see org.kuali.rice.krad.service.MaintenanceDocumentService#getLockingDocumentId(org.kuali.rice.krad.document.MaintenanceDocument)
+     * @see org.kuali.rice.krad.service.MaintenanceDocumentService#getLockingDocumentId(org.kuali.rice.krad.maintenance.MaintenanceDocument)
      */
     public String getLockingDocumentId(MaintenanceDocument document) {
         return getLockingDocumentId(document.getNewMaintainableObject(), document.getDocumentNumber());

@@ -16,21 +16,21 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
+import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.datadictionary.DocumentEntry;
-import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
-import org.kuali.rice.krad.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationControllerBase;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationControllerBase;
-import org.kuali.rice.krad.document.authorization.TransactionalDocumentAuthorizerBase;
-import org.kuali.rice.krad.document.authorization.TransactionalDocumentPresentationControllerBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -44,7 +44,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
     private DataDictionaryService dataDictionaryService;
 
     /**
-     * @see org.kuali.rice.krad.service.DocumentHelperService#getDocumentAuthorizer(java.lang.String)
+     * @see org.kuali.rice.kns.service.DocumentHelperService#getDocumentAuthorizer(java.lang.String)
      * // TODO: in krad documents could have multiple views and multiple authorizer classes
      */
     public DocumentAuthorizer getDocumentAuthorizer(String documentType) {
@@ -54,7 +54,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
             throw new IllegalArgumentException("invalid (blank) documentType");
         }
 
-        DocumentEntry documentEntry = dataDictionary.getDocumentEntry(documentType);
+        KNSDocumentEntry documentEntry = (KNSDocumentEntry) dataDictionary.getDocumentEntry(documentType);
         if (documentEntry == null) {
             throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
         }
@@ -84,7 +84,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DocumentHelperService#getDocumentAuthorizer(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.kns.service.DocumentHelperService#getDocumentAuthorizer(org.kuali.rice.krad.document.Document)
      */
     public DocumentAuthorizer getDocumentAuthorizer(Document document) {
         if (document == null) {
@@ -104,7 +104,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DocumentHelperService#getDocumentPresentationController(java.lang.String)
+     * @see org.kuali.rice.kns.service.DocumentHelperService#getDocumentPresentationController(java.lang.String)
      * // TODO: in krad documents could have multiple views and multiple presentation controller
      */
     public DocumentPresentationController getDocumentPresentationController(String documentType) {
@@ -115,7 +115,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
             throw new IllegalArgumentException("invalid (blank) documentType");
         }
 
-        DocumentEntry documentEntry = dataDictionary.getDocumentEntry(documentType);
+        KNSDocumentEntry documentEntry = (KNSDocumentEntry) dataDictionary.getDocumentEntry(documentType);
         if (documentEntry == null) {
             throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
         }
@@ -125,8 +125,8 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
             if(documentPresentationControllerClass != null){
                 documentPresentationController = documentPresentationControllerClass.newInstance();
             } else {
-                DocumentEntry doc = dataDictionary.getDocumentEntry(documentType);
-                if ( doc instanceof TransactionalDocumentEntry ) {
+                KNSDocumentEntry doc = (KNSDocumentEntry) dataDictionary.getDocumentEntry(documentType);
+                if ( doc instanceof TransactionalDocumentEntry) {
                     documentPresentationController = new TransactionalDocumentPresentationControllerBase();
                 } else if(doc instanceof MaintenanceDocumentEntry) {
                     documentPresentationController = new MaintenanceDocumentPresentationControllerBase();
@@ -143,7 +143,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DocumentHelperService#getDocumentPresentationController(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.kns.service.DocumentHelperService#getDocumentPresentationController(org.kuali.rice.krad.document.Document)
      */
     public DocumentPresentationController getDocumentPresentationController(Document document) {
         if (document == null) {

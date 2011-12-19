@@ -17,13 +17,13 @@ package org.kuali.rice.krad.service.impl;
 
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationController;
+import org.kuali.rice.krad.document.DocumentAuthorizer;
+import org.kuali.rice.krad.document.DocumentPresentationController;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationController;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
-import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -36,7 +36,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 public class DataObjectAuthorizationServiceImpl implements DataObjectAuthorizationService {
 
     private DataDictionaryService dataDictionaryService;
-    private DocumentHelperService documentHelperService;
+    private DocumentDictionaryService documentDictionaryService;
 
     /**
      * @see org.kuali.rice.krad.service.impl.DataObjectAuthorizationServiceImpl#attributeValueNeedsToBeEncryptedOnFormsAndLinks
@@ -55,11 +55,11 @@ public class DataObjectAuthorizationServiceImpl implements DataObjectAuthorizati
     @Override
     public boolean canCreate(Class<?> dataObjectClass, Person user, String docTypeName) {
         DocumentPresentationController documentPresentationController =
-                getDocumentHelperService().getDocumentPresentationController(docTypeName);
+                getDocumentDictionaryService().getDocumentPresentationController(docTypeName);
         boolean canCreate =
                 ((MaintenanceDocumentPresentationController) documentPresentationController).canCreate(dataObjectClass);
         if (canCreate) {
-            DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(docTypeName);
+            DocumentAuthorizer documentAuthorizer = getDocumentDictionaryService().getDocumentAuthorizer(docTypeName);
             canCreate = ((MaintenanceDocumentAuthorizer) documentAuthorizer).canCreate(dataObjectClass, user);
         }
         return canCreate;
@@ -70,7 +70,7 @@ public class DataObjectAuthorizationServiceImpl implements DataObjectAuthorizati
      */
     @Override
     public boolean canMaintain(Object dataObject, Person user, String docTypeName) {
-        return ((MaintenanceDocumentAuthorizer) getDocumentHelperService().getDocumentAuthorizer(docTypeName))
+        return ((MaintenanceDocumentAuthorizer) getDocumentDictionaryService().getDocumentAuthorizer(docTypeName))
                 .canMaintain(dataObject, user);
     }
 
@@ -85,14 +85,14 @@ public class DataObjectAuthorizationServiceImpl implements DataObjectAuthorizati
         this.dataDictionaryService = dataDictionaryService;
     }
 
-    protected DocumentHelperService getDocumentHelperService() {
-        if (documentHelperService == null) {
-            documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+    protected DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
         }
-        return documentHelperService;
+        return documentDictionaryService;
     }
 
-    public void setDocumentHelperService(DocumentHelperService documentHelperService) {
-        this.documentHelperService = documentHelperService;
+    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        this.documentDictionaryService = documentDictionaryService;
     }
 }

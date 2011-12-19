@@ -17,7 +17,7 @@ package org.kuali.rice.kns.rule;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 
 @Deprecated
 public interface AddCollectionLineRule extends BusinessRule {

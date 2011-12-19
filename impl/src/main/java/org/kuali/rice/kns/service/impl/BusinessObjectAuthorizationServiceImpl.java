@@ -22,6 +22,9 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
+import org.kuali.rice.kns.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
+import org.kuali.rice.kns.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.InquiryCollectionDefinition;
@@ -35,6 +38,8 @@ import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.document.authorization.BusinessObjectRestrictionsBase;
 import org.kuali.rice.kns.document.authorization.InquiryOrMaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.document.authorization.InquiryOrMaintenanceDocumentRestrictionsBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictionsBase;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
@@ -42,21 +47,15 @@ import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.krad.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.krad.bo.BusinessObject;
-import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentAuthorizer;
-import org.kuali.rice.krad.bo.authorization.InquiryOrMaintenanceDocumentPresentationController;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.impl.DataObjectAuthorizationServiceImpl;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -228,7 +227,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 							.isAuthorizedByTemplate(
 									primaryDataObject,
 									KRADConstants.KRAD_NAMESPACE,
-									KimConstants.PermissionTemplateNames.VIEW_FIELD,
+									KimConstants.PermissionTemplateNames.VIEW_MAINTENANCE_INQUIRY_FIELD,
 									user.getPrincipalId(),
 									collectionItemPermissionDetails,
 									collectionItemRoleQualifications)) {
@@ -607,6 +606,7 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
 //								+ businessObject.getClass() + " : "
 //								+ attributeName, e);
 //			}
+
 //			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName
 //					.substring(attributeName.indexOf(".") + 1));
 //		} else {
@@ -665,5 +665,9 @@ public class BusinessObjectAuthorizationServiceImpl extends DataObjectAuthorizat
                         getKualiConfigurationService().getPropertyValueAsString(KRADConstants.ENVIRONMENT_KEY)) &&
 				!getKualiConfigurationService().getPropertyValueAsBoolean(KRADConstants.ENABLE_NONPRODUCTION_UNMASKING);
 	}
+
+    protected DocumentHelperService getDocumentHelperService() {
+        return KNSServiceLocator.getDocumentHelperService();
+    }
 
 }

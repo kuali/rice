@@ -91,12 +91,11 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             dataField = model.getPreviousView().getViewIndex().getDataFieldByPath(propertyName);
         }
 
+        // determine if the field value should be secured
         boolean requiresEncryption = false;
         if (dataField != null) {
-            if (dataField.getAttributeSecurity() != null) {
-                if (dataField.getAttributeSecurity().hasRestrictionThatRemovesValueFromUI()) {
-                    requiresEncryption = true;
-                }
+            if (dataField.hasSecureValue()) {
+                requiresEncryption = true;
             }
 
             propertyEditor = dataField.getPropertyEditor();

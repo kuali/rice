@@ -22,7 +22,7 @@ import groovy.mock.interceptor.MockFor
 import org.kuali.rice.krms.impl.repository.RuleBoService
 import org.kuali.rice.krms.impl.repository.RuleBo
 import org.junit.Assert
-import org.kuali.rice.krad.document.MaintenanceDocument
+import org.kuali.rice.krad.maintenance.MaintenanceDocument
 import org.kuali.rice.krms.impl.ui.AgendaEditor
 import org.kuali.rice.krms.impl.ui.AgendaEditorMaintainable
 import org.kuali.rice.krms.impl.repository.ActionBo

@@ -19,14 +19,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.authorization.Authorizer;
-import org.kuali.rice.krad.uif.authorization.ViewPresentationController;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.NavigationGroup;
 import org.kuali.rice.krad.uif.container.PageGroup;
-import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.component.RequestParameter;
@@ -77,6 +74,7 @@ import java.util.Set;
 public class View extends ContainerBase {
     private static final long serialVersionUID = -1220009725554576953L;
 
+    private String viewNamespaceCode;
     private String viewName;
 
     private int idSequence;
@@ -117,7 +115,7 @@ public class View extends ContainerBase {
     private Map<String, String> viewRequestParameters;
 
     private Class<? extends ViewPresentationController> presentationControllerClass;
-    private Class<? extends Authorizer> authorizerClass;
+    private Class<? extends ViewAuthorizer> authorizerClass;
 
     private BooleanMap actionFlags;
     private BooleanMap editModes;
@@ -357,6 +355,29 @@ public class View extends ContainerBase {
     }
 
     /**
+     * Namespace code the view should be associated with
+     *
+     * <p>
+     * The namespace code is used within the framework in such places as permission checks and parameter
+     * retrieval
+     * </p>
+     *
+     * @return String namespace code
+     */
+    public String getViewNamespaceCode() {
+        return viewNamespaceCode;
+    }
+
+    /**
+     * Setter for the view's namespace code
+     *
+     * @param viewNamespaceCode
+     */
+    public void setViewNamespaceCode(String viewNamespaceCode) {
+        this.viewNamespaceCode = viewNamespaceCode;
+    }
+
+    /**
      * View name provides an identifier for a view within a type. That is if a
      * set of <code>View</code> instances have the same values for the
      * properties that are used to retrieve them by their type, the name can be
@@ -546,7 +567,6 @@ public class View extends ContainerBase {
      * the default
      *
      * @return String binding path to the object from the form
-     * @see org.kuali.rice.krad.uif.BindingInfo.getBindingObjectPath()
      */
     public String getDefaultBindingObjectPath() {
         return this.defaultBindingObjectPath;
@@ -700,7 +720,7 @@ public class View extends ContainerBase {
     /**
      * Setter for the <code>ViewHelperService</code> class name
      *
-     * @param viewLifecycleService
+     * @param viewHelperServiceClassName
      */
     public void setViewHelperServiceClassName(Class<? extends ViewHelperService> viewHelperServiceClassName) {
         this.viewHelperServiceClassName = viewHelperServiceClassName;
@@ -772,6 +792,7 @@ public class View extends ContainerBase {
     /**
      * PresentationController class that should be used for the
      * <code>View</code> instance
+     *
      * <p>
      * The presentation controller is consulted to determine component (group,
      * field) state such as required, read-only, and hidden. The presentation
@@ -781,8 +802,6 @@ public class View extends ContainerBase {
      * </p>
      *
      * @return Class<? extends PresentationController>
-     * @see View.getActionFlags()
-     * @see View.getEditModes()
      */
     public Class<? extends ViewPresentationController> getPresentationControllerClass() {
         return this.presentationControllerClass;
@@ -799,6 +818,7 @@ public class View extends ContainerBase {
 
     /**
      * Authorizer class that should be used for the <code>View</code> instance
+     *
      * <p>
      * The authorizer class is consulted to determine component (group, field)
      * state such as required, read-only, and hidden based on the users
@@ -811,10 +831,8 @@ public class View extends ContainerBase {
      * </p>
      *
      * @return Class<? extends Authorizer>
-     * @see View.getActionFlags()
-     * @see View.getEditModes()
      */
-    public Class<? extends Authorizer> getAuthorizerClass() {
+    public Class<? extends ViewAuthorizer> getAuthorizerClass() {
         return this.authorizerClass;
     }
 
@@ -823,7 +841,7 @@ public class View extends ContainerBase {
      *
      * @param authorizerClass
      */
-    public void setAuthorizerClass(Class<? extends Authorizer> authorizerClass) {
+    public void setAuthorizerClass(Class<? extends ViewAuthorizer> authorizerClass) {
         this.authorizerClass = authorizerClass;
     }
 
@@ -1247,8 +1265,6 @@ public class View extends ContainerBase {
      * Setter for the append option
      *
      * @param appendOption the appendOption to set
-     * @see View#setViewLabelFieldPropertyName(String)
-     * @see View#setViewLabelFieldBindingInfo(BindingInfo)
      */
     public void setAppendOption(String appendOption) {
         this.appendOption = appendOption;

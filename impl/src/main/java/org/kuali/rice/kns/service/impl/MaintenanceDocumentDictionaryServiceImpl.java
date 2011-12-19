@@ -30,7 +30,7 @@ import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -498,7 +498,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     }
 
     /**
-     * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#validateMaintenanceRequiredFields(org.kuali.rice.krad.document.MaintenanceDocument)
+     * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#validateMaintenanceRequiredFields(org.kuali.rice.krad.maintenance.MaintenanceDocument)
      */
     public void validateMaintenanceRequiredFields(MaintenanceDocument document) {
         Maintainable newMaintainableObject = document.getNewMaintainableObject();
@@ -684,7 +684,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     /**
      * default implementation checks for duplicats based on keys of objects only
      * 
-     * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#validateMaintainableCollectionsForDuplicateEntries(org.kuali.rice.krad.document.MaintenanceDocument)
+     * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#validateMaintainableCollectionsForDuplicateEntries(org.kuali.rice.krad.maintenance.MaintenanceDocument)
      */
     public void validateMaintainableCollectionsForDuplicateEntries(MaintenanceDocument document) {
         Maintainable newMaintainableObject = document.getNewMaintainableObject();
@@ -784,7 +784,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
 	/**
 	 *  for issue KULRice3070, see if need delete button
 	 * 
-	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsRecordDeletion(org.kuali.rice.krad.document.MaintenanceDocument)
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getAllowsRecordDeletion(org.kuali.rice.krad.maintenance.MaintenanceDocument)
 	 */
 	public Boolean getAllowsRecordDeletion(MaintenanceDocument document) {
         return document != null ? this.getAllowsRecordDeletion(document.getNewMaintainableObject().getBoClass()) : Boolean.FALSE;

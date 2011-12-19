@@ -15,10 +15,9 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationControllerBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
 
-public class ReviewResponsibilityMaintenanceDocumentPresentationController extends
-        MaintenanceDocumentPresentationControllerBase {
+public class ReviewResponsibilityMaintenanceDocumentPresentationController extends MaintenanceDocumentPresentationControllerBase {
 
     @Override
     public boolean canCreate(Class boClass) {

@@ -24,8 +24,6 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
@@ -476,37 +474,5 @@ public final class KRADUtils {
                 .equalsIgnoreCase(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                         KRADConstants.ENVIRONMENT_KEY));
     }
-    
-    
-    
-    /**
-     * Checks if the user is allowed to delete note attachment
-     * 
-     * @param document
-     * @param attachmentTypeCode
-     * @param authorUniversalIdentifier
-     * @return boolean flag indicating if the delete is allowed
-     */
-    public static boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode,
-            String authorUniversalIdentifier) {
-        boolean canDeleteNoteAttachment = false;
-        DocumentAuthorizer documentAuthorizer = KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(
-                document);
-        canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "false",
-                GlobalVariables.getUserSession().getPerson());
-        if (canDeleteNoteAttachment) {
-            return canDeleteNoteAttachment;
-        }
-        else {
-            canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "true",
-                    GlobalVariables.getUserSession().getPerson());
-            if (canDeleteNoteAttachment
-                    && !authorUniversalIdentifier.equals(GlobalVariables.getUserSession().getPerson().getPrincipalId())) {
-                canDeleteNoteAttachment = false;
-            }
-        }
-        return canDeleteNoteAttachment;
-    }    
-    
-    
+
 }

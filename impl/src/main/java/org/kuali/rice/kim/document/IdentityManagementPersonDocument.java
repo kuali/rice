@@ -45,7 +45,8 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
-import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -540,7 +541,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}

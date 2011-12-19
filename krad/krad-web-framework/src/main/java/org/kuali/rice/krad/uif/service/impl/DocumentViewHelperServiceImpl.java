@@ -17,8 +17,8 @@ package org.kuali.rice.krad.uif.service.impl;
 
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
-import org.kuali.rice.krad.rule.event.AddAdHocRoutePersonEvent;
-import org.kuali.rice.krad.rule.event.AddAdHocRouteWorkgroupEvent;
+import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
+import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiRuleService;
 import org.kuali.rice.krad.uif.container.CollectionGroup;

@@ -28,6 +28,7 @@ import org.kuali.rice.kim.api.identity.PersonService;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.AddCollectionLineRule;
 import org.kuali.rice.kns.rules.MaintenanceDocumentRule;
@@ -35,6 +36,7 @@ import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -42,14 +44,12 @@ import org.kuali.rice.krad.bo.GlobalBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.rule.event.ApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.rules.DocumentRuleBase;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectMetaDataService;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.InactivationBlockingDetectionService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -130,7 +130,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             this.setBoDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
             this.setDictionaryValidationService(KNSServiceLocator.getDictionaryValidationService());
             this.setConfigService(KRADServiceLocator.getKualiConfigurationService());
-            this.setDocumentHelperService(KRADServiceLocatorWeb.getDocumentHelperService());
+            this.setDocumentHelperService(KNSServiceLocator.getDocumentHelperService());
             this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());
             this.setWorkflowDocumentService(KRADServiceLocatorWeb.getWorkflowDocumentService());
             this.setPersonService(KimApiServiceLocator.getPersonService());
@@ -380,7 +380,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     /**
-     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#processApproveDocument(org.kuali.rice.krad.rule.event.ApproveDocumentEvent)
+     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#processApproveDocument(org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent)
      */
     @Override
     public boolean processApproveDocument(ApproveDocumentEvent approveEvent) {
@@ -1161,7 +1161,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
     }
 
     /**
-     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#setupBaseConvenienceObjects(org.kuali.rice.krad.document.MaintenanceDocument)
+     * @see org.kuali.rice.krad.maintenance.rules.MaintenanceDocumentRule#setupBaseConvenienceObjects(org.kuali.rice.krad.maintenance.MaintenanceDocument)
      */
     public void setupBaseConvenienceObjects(MaintenanceDocument document) {
 

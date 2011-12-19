@@ -44,7 +44,7 @@
     </property>
 
     <property name="documentTypeName" value="CountyMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     
     <property name="workflowProperties">
       <ref bean="CountyMaintenanceDocument-workflowProperties"/>

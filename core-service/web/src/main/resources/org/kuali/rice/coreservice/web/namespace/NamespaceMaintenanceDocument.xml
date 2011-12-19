@@ -32,13 +32,9 @@
         <value>code</value>
       </list>
     </property>
-    
-    
-    
     <property name="documentTypeName" value="NamespaceMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
-    
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="workflowProperties">
       <ref bean="NamespaceMaintenanceDocument-workflowProperties"/>
     </property>

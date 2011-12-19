@@ -24,8 +24,6 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.MaintenanceLock;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;

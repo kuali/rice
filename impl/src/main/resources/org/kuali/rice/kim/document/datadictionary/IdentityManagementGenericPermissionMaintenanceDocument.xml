@@ -36,7 +36,7 @@
     <property name="allowsNewOrCopy" value="true"/>
     <property name="documentTypeName" value="IdentityManagementGenericPermissionMaintenanceDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.GenericPermissionMaintenanceDocumentRule"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="documentPresentationControllerClass" value="org.kuali.rice.kim.document.authorization.GenericPermissionMaintenanceDocumentPresentationController" />
     <property name="workflowProperties">
       <ref bean="GenericPermissionMaintenanceDocument-workflowProperties"/>

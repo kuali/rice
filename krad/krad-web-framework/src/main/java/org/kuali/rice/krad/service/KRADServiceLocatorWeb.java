@@ -18,7 +18,6 @@ package org.kuali.rice.krad.service;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.lookup.Lookupable;
-import org.kuali.rice.krad.question.Question;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.service.ExpressionEvaluatorService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
@@ -55,7 +54,6 @@ public class KRADServiceLocatorWeb {
     public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
     public static final String PERSISTENCE_SERVICE_OJB = "persistenceServiceOjb";
     public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
-    public static final String DOCUMENT_HELPER_SERVICE = "documentHelperService";
     public static final String KUALI_RULE_SERVICE = "kualiRuleService";
     public static final String DOCUMENT_SERVICE = "documentService";
     public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";
@@ -120,10 +118,6 @@ public class KRADServiceLocatorWeb {
         return getService(KUALI_MODULE_SERVICE);
     }
 
-    public static DocumentHelperService getDocumentHelperService() {
-        return getService(DOCUMENT_HELPER_SERVICE);
-    }
-
     public static KualiRuleService getKualiRuleService() {
         return getService(KUALI_RULE_SERVICE);
     }
@@ -147,10 +141,6 @@ public class KRADServiceLocatorWeb {
     public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
         return (InactivationBlockingDetectionService) getService(serviceName);
     }
-
-	public static Question getQuestion(String questionName) {
-		return (Question) getService(questionName);
-	}
 
 	public static DataObjectMetaDataService getDataObjectMetaDataService() {
 		return (DataObjectMetaDataService) getService(DATA_OBJECT_METADATA_SERVICE);

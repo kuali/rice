@@ -75,7 +75,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, newGroup.getNamespaceCode());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_NAME, newGroup.getGroupName());
-		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+		if(!getDocumentDictionaryService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP,
 				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
     		GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, 

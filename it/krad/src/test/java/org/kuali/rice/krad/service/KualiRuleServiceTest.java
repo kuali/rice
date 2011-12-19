@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.service;
 
 import org.junit.Test;
-import org.kuali.rice.krad.rule.event.ApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.test.KRADTestCase;
 
 import static org.junit.Assert.assertTrue;

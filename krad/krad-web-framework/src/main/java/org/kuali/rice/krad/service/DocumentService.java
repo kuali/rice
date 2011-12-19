@@ -20,8 +20,8 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.AdHocRouteRecipient;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
-import org.kuali.rice.krad.rule.event.SaveEvent;
+import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 
 import java.util.List;
 

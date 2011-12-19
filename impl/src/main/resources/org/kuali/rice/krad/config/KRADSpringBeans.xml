@@ -719,7 +719,7 @@
     </constructor-arg>
   </bean>
 
-  <bean id="confirmationQuestion" class="org.kuali.rice.krad.question.ConfirmationQuestion" scope="prototype"/>
+  <bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
 
   <bean id="documentAdHocService" class="org.kuali.rice.krad.service.impl.DocumentAdHocServiceImpl"/>
 
@@ -873,9 +873,9 @@
     <property name="kualiModuleService" ref="kualiModuleService"/>
     <property name="businessObjects">
       <list>
-        <value>org.kuali.rice.krad.document.MaintenanceDocumentBase</value>
+        <value>org.kuali.rice.krad.maintenance.MaintenanceDocumentBase</value>
         <value>org.kuali.rice.krad.bo.DocumentAttachment</value>
-        <value>org.kuali.rice.krad.document.MaintenanceLock</value>
+        <value>org.kuali.rice.krad.maintenance.MaintenanceLock</value>
         <value>org.kuali.rice.krad.bo.DocumentHeader</value>
         <value>org.kuali.rice.krad.document.authorization.PessimisticLock</value>
         <value>org.kuali.rice.krad.bo.Note</value>
@@ -1063,7 +1063,7 @@
   </bean>
 
   <bean id="AuthorizationConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
-    <property name="constantClass" value="org.kuali.rice.krad.authorization.AuthorizationConstants"/>
+    <property name="constantClass" value="org.kuali.rice.kns.authorization.AuthorizationConstants"/>
   </bean>
 
   <bean id="UifConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">

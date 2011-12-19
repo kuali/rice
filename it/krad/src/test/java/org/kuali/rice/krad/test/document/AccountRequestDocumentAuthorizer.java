@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.test.document;
 
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 
 public class AccountRequestDocumentAuthorizer extends DocumentAuthorizerBase {
 

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
 
 /**
  * This class is used to allow a mock {@link Document} object to specify whether or not to use pessimistic locking without

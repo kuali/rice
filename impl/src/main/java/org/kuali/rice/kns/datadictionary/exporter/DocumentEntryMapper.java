@@ -18,8 +18,9 @@ package org.kuali.rice.kns.datadictionary.exporter;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.datadictionary.exporter.ExportMap;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -61,7 +62,7 @@ public abstract class DocumentEntryMapper {
             entryMap.set("description", docType.getDescription());
         }
 
-        DocumentHelperService documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+        DocumentHelperService documentHelperService = KNSServiceLocator.getDocumentHelperService();
         entryMap.set("documentAuthorizerClass", documentHelperService.getDocumentAuthorizer(entry.getDocumentTypeName()).getClass().getName());
         entryMap.set("documentPresentationControllerClass", documentHelperService.getDocumentPresentationController(entry.getDocumentTypeName()).getClass().getName());
 

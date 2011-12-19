@@ -130,6 +130,7 @@
   <bean id="QuickFinder" parent="QuickFinder-parentBean"/>
   <bean id="QuickFinder-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.QuickFinder" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/templates/widget/quickFinder.jsp"/>
+      <!-- TODO: change to use config krad.url -->
       <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
       <property name="multipleValuesSelect" value="false"/>
       <property name="quickfinderActionField">
@@ -143,7 +144,7 @@
       	</bean>        
       </property>
       <property name="render" value="@{!#parent.readOnly}"/>
-  </bean>  
+  </bean>
 
   <bean id="QuickFinderByScript" parent="QuickFinder-parentBean" p:quickfinderActionField.lightBoxLookup.lookupReturnByScript="true"/>
 

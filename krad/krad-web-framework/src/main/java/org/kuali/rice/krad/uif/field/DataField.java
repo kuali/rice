@@ -21,10 +21,12 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
+import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
+import org.kuali.rice.krad.uif.container.CollectionGroupSecurity;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -57,7 +59,7 @@ public class DataField extends FieldBase implements DataBinding {
     private Class<? extends ValueFinder> defaultValueFinderClass;
 
     private PropertyEditor propertyEditor;
-    private AttributeSecurity attributeSecurity;
+    private DataFieldSecurity dataFieldSecurity;
 
     private boolean readOnlyHidden;
 
@@ -67,6 +69,9 @@ public class DataField extends FieldBase implements DataBinding {
 
     private String alternateDisplayValue;
     private String additionalDisplayValue;
+
+    private boolean applyValueMask;
+    private MaskFormatter maskFormatter;
 
     private List<String> hiddenPropertyNames;
     private List<String> informationalDisplayPropertyNames;
@@ -83,6 +88,10 @@ public class DataField extends FieldBase implements DataBinding {
         super();
 
         readOnlyHidden = false;
+        applyValueMask = false;
+
+        dataFieldSecurity = new DataFieldSecurity();
+
         hiddenPropertyNames = new ArrayList<String>();
         informationalDisplayPropertyNames = new ArrayList<String>();
     }
@@ -176,9 +185,8 @@ public class DataField extends FieldBase implements DataBinding {
      * <code>additionalDisplayPropertyName</code> present. If not present, check whether this field is a
      * <code>KualiCode</code> and get the relationship configured in the datadictionary file and set the name
      * additional display value which will be displayed along with the code. If additional display property not
-     * present,
-     * check whether this field is has <code>MultiValueControlBase</code>. If yes, get the Label for the value and
-     * set it as additional display value.
+     * present, check whether this field is has <code>MultiValueControlBase</code>. If yes, get the Label
+     * for the value and set it as additional display value.
      * </p>
      *
      * @param view - the current view instance
@@ -191,12 +199,11 @@ public class DataField extends FieldBase implements DataBinding {
         }
 
         // check whether field value needs to be masked, and if so apply masking as alternateDisplayValue
-        if (getAttributeSecurity() != null) {
-            //TODO: Check authorization
-            // if (attributeSecurity.isMask() && !boAuthzService.canFullyUnmaskField(user,dataObjectClass, field.getPropertyName(), null)) {
+        if (isApplyValueMask()) {
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
-            alternateDisplayValue = getSecuredFieldValue(attributeSecurity, fieldValue);
+            alternateDisplayValue = getMaskFormatter().maskValue(fieldValue);
 
+            // mask values are forced to be readonly
             setReadOnly(true);
             return;
         }
@@ -248,23 +255,6 @@ public class DataField extends FieldBase implements DataBinding {
     }
 
     /**
-     * Helper method which returns the masked value based on the <code>AttributeSecurity</code>
-     *
-     * @param attributeSecurity attribute security to check
-     * @param fieldValue field value
-     * @return masked value
-     */
-    protected String getSecuredFieldValue(AttributeSecurity attributeSecurity, Object fieldValue) {
-        if (attributeSecurity.isMask()) {
-            return attributeSecurity.getMaskFormatter().maskValue(fieldValue);
-        } else if (getAttributeSecurity().isPartialMask()) {
-            return attributeSecurity.getPartialMaskFormatter().maskValue(fieldValue);
-        } else {
-            return String.valueOf(fieldValue);
-        }
-    }
-
-    /**
      * Defaults the properties of the <code>DataField</code> to the
      * corresponding properties of its <code>AttributeDefinition</code>
      * retrieved from the dictionary (if such an entry exists). If the field
@@ -297,8 +287,8 @@ public class DataField extends FieldBase implements DataBinding {
         }
 
         // security
-        if (getAttributeSecurity() == null) {
-            attributeSecurity = attributeDefinition.getAttributeSecurity();
+        if (getComponentSecurity().getAttributeSecurity() == null) {
+            getComponentSecurity().setAttributeSecurity(attributeDefinition.getAttributeSecurity());
         }
 
         // alternate property name
@@ -554,25 +544,22 @@ public class DataField extends FieldBase implements DataBinding {
     }
 
     /**
-     * Holds security configuration for the attribute field. This triggers
-     * corresponding permission checks in KIM and can result in an update to the
-     * field state (such as read-only or hidden) and masking of the value
+     * Data Field Security object that indicates what authorization (permissions) exist for the field
      *
-     * @return AttributeSecurity instance configured for field or Null if no
-     *         restrictions are defined
+     * @return DataFieldSecurity instance
      */
-    public AttributeSecurity getAttributeSecurity() {
-        return this.attributeSecurity;
+    @Override
+    public DataFieldSecurity getComponentSecurity() {
+        return dataFieldSecurity;
     }
 
     /**
-     * Setter for the AttributeSecurity instance that defines restrictions for
-     * the field
+     * Setter for the data field security object
      *
-     * @param attributeSecurity
+     * @param dataFieldSecurity
      */
-    public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
-        this.attributeSecurity = attributeSecurity;
+    public void setComponentSecurity(DataFieldSecurity dataFieldSecurity) {
+        this.dataFieldSecurity = dataFieldSecurity;
     }
 
     /**
@@ -698,6 +685,59 @@ public class DataField extends FieldBase implements DataBinding {
     }
 
     /**
+     * Indicates whether the value for the field should be masked (or partially masked) on display
+     *
+     * <p>
+     * If set to true, the field value will be masked by applying the configured {@link #getMaskFormatter()}
+     * </p>
+     *
+     * <p>
+     * If a KIM permission exists that should be checked to determine whether the value should be masked or not,
+     * this value should not be set but instead the mask or partialMask property on {@link #getComponentSecurity()}
+     * should be set to true. This indicates there is a mask permission that should be consulted. If the user
+     * does not have the permission, this flag will be set to true by the framework and the value masked using
+     * the mask formatter configured on the security object
+     * </p>
+     *
+     * @return boolean true if the field value should be masked, false if not
+     */
+    public boolean isApplyValueMask() {
+        return applyValueMask;
+    }
+
+    /**
+     * Setter for the apply value mask flag
+     *
+     * @param applyValueMask
+     */
+    public void setApplyValueMask(boolean applyValueMask) {
+        this.applyValueMask = applyValueMask;
+    }
+
+    /**
+     * MaskFormatter instance that will be used to mask the field value when {@link #isApplyValueMask()} is true
+     *
+     * <p>
+     * Note in cases where the mask is applied due to security (KIM permissions), the mask or partial mask formatter
+     * configured on {@link #getComponentSecurity()} will be used instead of this mask formatter
+     * </p>
+     *
+     * @return MaskFormatter instance
+     */
+    public MaskFormatter getMaskFormatter() {
+        return maskFormatter;
+    }
+
+    /**
+     * Setter for the MaskFormatter instance to apply when the value is masked
+     *
+     * @param maskFormatter
+     */
+    public void setMaskFormatter(MaskFormatter maskFormatter) {
+        this.maskFormatter = maskFormatter;
+    }
+
+    /**
      * Allows specifying hidden property names without having to specify as a
      * field in the group config (that might impact layout)
      *
@@ -762,6 +802,23 @@ public class DataField extends FieldBase implements DataBinding {
      */
     public boolean isEscapeHtmlInPropertyValue() {
         return this.escapeHtmlInPropertyValue;
+    }
+
+    /**
+     * Indicates whether the value for the field is secure
+     *
+     * <p>
+     * A value will be secured if masking has been applied (by configuration or a failed KIM permission) or the field
+     * has been marked as hidden due to an authorization check
+     * </p>
+     *
+     * @return boolean true if value is secure, false if not
+     */
+    public boolean hasSecureValue() {
+        return isApplyValueMask() || ((getComponentSecurity().isViewAuthz()
+                || getComponentSecurity().isViewInLineAuthz()
+                || ((getComponentSecurity().getAttributeSecurity() != null) && getComponentSecurity()
+                .getAttributeSecurity().isHide())) && isHidden());
     }
 
 }

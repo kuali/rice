@@ -39,9 +39,9 @@ import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -52,7 +52,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
@@ -366,7 +365,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
     
 	public DocumentHelperService getDocumentHelperService() {
 		if(documentHelperService == null){
-			documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+			documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}

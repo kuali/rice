@@ -22,7 +22,7 @@ import edu.sampleu.bookstore.bo.Book;
 import edu.sampleu.bookstore.bo.BookstoreKimAttributes;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.workflow.attribute.QualifierResolverBase;
 

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 
 /**
@@ -30,7 +30,7 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     public static final String USER_SESSION_OBJECT_KEY = "TEST_AUTHORIZER_OBJECT_KEY";
 
     /**
-     * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.krad.document.Document, java.util.Map, org.kuali.rice.kim.api.identity.Person)
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#getCustomLockDescriptor(org.kuali.rice.krad.document.Document, java.util.Map, org.kuali.rice.kim.api.identity.Person)
      */
     //@Override
     //protected String getCustomLockDescriptor(Document document, Map editMode, Person user) {
@@ -38,7 +38,7 @@ public class TestDocumentAuthorizerBase extends DocumentAuthorizerBase {
     //}
 
     /**
-     * @see org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase#useCustomLockDescriptors()
+     * @see org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase#useCustomLockDescriptors()
      */
     //@Override
    // protected boolean useCustomLockDescriptors() {

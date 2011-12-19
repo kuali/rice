@@ -25,9 +25,15 @@ import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.document.DocumentAuthorizer;
+import org.kuali.rice.krad.document.DocumentAuthorizerBase;
+import org.kuali.rice.krad.document.DocumentPresentationController;
+import org.kuali.rice.krad.document.DocumentPresentationControllerBase;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationControllerBase;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -291,6 +297,119 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
         }
 
         return preserveLockingKeysOnCopy;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentAuthorizer(java.lang.String)
+     */
+    public DocumentAuthorizer getDocumentAuthorizer(String documentType) {
+        DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
+
+        if (StringUtils.isBlank(documentType)) {
+            throw new IllegalArgumentException("invalid (blank) documentType");
+        }
+
+        DocumentEntry documentEntry = dataDictionary.getDocumentEntry(documentType);
+        if (documentEntry == null) {
+            throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
+        }
+
+        Class<? extends DocumentAuthorizer> documentAuthorizerClass = documentEntry.getDocumentAuthorizerClass();
+
+        DocumentAuthorizer documentAuthorizer = null;
+        try {
+            if (documentAuthorizerClass != null) {
+                documentAuthorizer = documentAuthorizerClass.newInstance();
+            } else if (documentEntry instanceof MaintenanceDocumentEntry) {
+                documentAuthorizer = new MaintenanceDocumentAuthorizerBase();
+            } else {
+                documentAuthorizer = new DocumentAuthorizerBase();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("unable to instantiate documentAuthorizer '"
+                    + documentAuthorizerClass.getName()
+                    + "' for doctype '"
+                    + documentType
+                    + "'", e);
+        }
+
+        return documentAuthorizer;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentAuthorizer(java.lang.String)
+     */
+    public DocumentAuthorizer getDocumentAuthorizer(Document document) {
+        if (document == null) {
+            throw new IllegalArgumentException("invalid (null) document");
+        } else if (document.getDocumentHeader() == null) {
+            throw new IllegalArgumentException("invalid (null) document.documentHeader");
+        } else if (!document.getDocumentHeader().hasWorkflowDocument()) {
+            throw new IllegalArgumentException("invalid (null) document.documentHeader.workflowDocument");
+        }
+
+        String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+
+        DocumentAuthorizer documentAuthorizer = getDocumentAuthorizer(documentType);
+
+        return documentAuthorizer;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentPresentationController(java.lang.String)
+     */
+    public DocumentPresentationController getDocumentPresentationController(String documentType) {
+        DataDictionary dataDictionary = getDataDictionaryService().getDataDictionary();
+
+        if (StringUtils.isBlank(documentType)) {
+            throw new IllegalArgumentException("invalid (blank) documentType");
+        }
+
+        DocumentEntry documentEntry = dataDictionary.getDocumentEntry(documentType);
+        if (documentEntry == null) {
+            throw new IllegalArgumentException("unknown documentType '" + documentType + "'");
+        }
+
+        Class<? extends DocumentPresentationController> documentPresentationControllerClass =
+                documentEntry.getDocumentPresentationControllerClass();
+
+        DocumentPresentationController documentPresentationController = null;
+        try {
+            if (documentPresentationControllerClass != null) {
+                documentPresentationController = documentPresentationControllerClass.newInstance();
+            } else if (documentEntry instanceof MaintenanceDocumentEntry) {
+                documentPresentationController = new MaintenanceDocumentPresentationControllerBase();
+            } else {
+                documentPresentationController = new DocumentPresentationControllerBase();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("unable to instantiate documentAuthorizer '"
+                    + documentPresentationControllerClass.getName()
+                    + "' for doctype '"
+                    + documentType
+                    + "'", e);
+        }
+
+        return documentPresentationController;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentPresentationController(java.lang.String)
+     */
+    public DocumentPresentationController getDocumentPresentationController(Document document) {
+        if (document == null) {
+            throw new IllegalArgumentException("invalid (null) document");
+        } else if (document.getDocumentHeader() == null) {
+            throw new IllegalArgumentException("invalid (null) document.documentHeader");
+        } else if (!document.getDocumentHeader().hasWorkflowDocument()) {
+            throw new IllegalArgumentException("invalid (null) document.documentHeader.workflowDocument");
+        }
+
+        String documentType = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+
+        DocumentPresentationController documentPresentationController = getDocumentPresentationController(documentType);
+
+        return documentPresentationController;
     }
 
     /**

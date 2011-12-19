@@ -32,19 +32,19 @@ import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.document.TransactionalDocument;
-import org.kuali.rice.krad.rule.AddAdHocRoutePersonRule;
-import org.kuali.rice.krad.rule.AddAdHocRouteWorkgroupRule;
-import org.kuali.rice.krad.rule.AddNoteRule;
-import org.kuali.rice.krad.rule.ApproveDocumentRule;
-import org.kuali.rice.krad.rule.RouteDocumentRule;
-import org.kuali.rice.krad.rule.SaveDocumentRule;
-import org.kuali.rice.krad.rule.SendAdHocRequestsRule;
-import org.kuali.rice.krad.rule.event.ApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.AddAdHocRoutePersonRule;
+import org.kuali.rice.krad.rules.rule.AddAdHocRouteWorkgroupRule;
+import org.kuali.rice.krad.rules.rule.AddNoteRule;
+import org.kuali.rice.krad.rules.rule.ApproveDocumentRule;
+import org.kuali.rice.krad.rules.rule.RouteDocumentRule;
+import org.kuali.rice.krad.rules.rule.SaveDocumentRule;
+import org.kuali.rice.krad.rules.rule.SendAdHocRequestsRule;
+import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
-import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -53,29 +53,29 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 
-
 /**
  * Contains all of the business rules that are common to all documents
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumentRule, ApproveDocumentRule, AddNoteRule, AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule, SendAdHocRequestsRule {
+public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumentRule, ApproveDocumentRule, AddNoteRule,
+        AddAdHocRoutePersonRule, AddAdHocRouteWorkgroupRule, SendAdHocRequestsRule {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentRuleBase.class);
 
     private static PersonService personService;
     private static DictionaryValidationService dictionaryValidationService;
+    private static DocumentDictionaryService documentDictionaryService;
     private static ConfigurationService kualiConfigurationService;
-    private static DocumentHelperService documentHelperService;
     private static GroupService groupService;
     private static PermissionService permissionService;
     private static DataDictionaryService dataDictionaryService;
-    
+
     // just some arbitrarily high max depth that's unlikely to occur in real life to prevent recursion problems
     private int maxDictionaryValidationDepth = 100;
 
     /**
      * Verifies that the document's overview fields are valid - it does required and format checks.
-     * 
+     *
      * @param document
      * @return boolean True if the document description is valid, false otherwise.
      */
@@ -87,7 +87,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         // check the document header for fields like the description
         getDictionaryValidationService().validateBusinessObject(document.getDocumentHeader());
         validateSensitiveDataValue(KRADPropertyConstants.EXPLANATION, document.getDocumentHeader().getExplanation(),
-        		getDataDictionaryService().getAttributeLabel(DocumentHeader.class, KRADPropertyConstants.EXPLANATION));
+                getDataDictionaryService().getAttributeLabel(DocumentHeader.class, KRADPropertyConstants.EXPLANATION));
 
         // drop the error path keys off now
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_HEADER_PROPERTY_NAME);
@@ -98,10 +98,11 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
      * Validates the document attributes against the data dictionary.
-     * 
+     *
      * @param document
-     * @param validateRequired if true, then an error will be retruned if a DD required field is empty. if false, no required
-     *        checking is done
+     * @param validateRequired if true, then an error will be retruned if a DD required field is empty. if false, no
+     * required
+     * checking is done
      * @return True if the document attributes are valid, false otherwise.
      */
     public boolean isDocumentAttributesValid(Document document, boolean validateRequired) {
@@ -109,7 +110,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
 
         // check the document for fields like explanation and org doc #
-        getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), validateRequired);
+        getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document,
+                getMaxDictionaryValidationDepth(), validateRequired);
 
         // drop the error path keys off now
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
@@ -118,18 +120,22 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * Runs all business rules needed prior to saving. This includes both common rules for all documents, plus class-specific
-     * business rules. This method will only return false if it fails the isValidForSave() test. Otherwise, it will always return
-     * positive regardless of the outcome of the business rules. However, any error messages resulting from the business rules will
+     * Runs all business rules needed prior to saving. This includes both common rules for all documents, plus
+     * class-specific
+     * business rules. This method will only return false if it fails the isValidForSave() test. Otherwise, it will
+     * always return
+     * positive regardless of the outcome of the business rules. However, any error messages resulting from the business
+     * rules will
      * still be populated, for display to the consumer of this service.
-     * 
-     * @see org.kuali.rice.krad.rule.SaveDocumentRule#processSaveDocument(org.kuali.rice.krad.document.Document)
+     *
+     * @see org.kuali.rice.krad.rules.rule.SaveDocumentRule#processSaveDocument(org.kuali.rice.krad.document.Document)
      */
     public boolean processSaveDocument(Document document) {
         boolean isValid = true;
         isValid = isDocumentOverviewValid(document);
         GlobalVariables.getMessageMap().addToErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
-        getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), false);
+        getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document,
+                getMaxDictionaryValidationDepth(), false);
         getDictionaryValidationService().validateDefaultExistenceChecksForTransDoc((TransactionalDocument) document);
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.DOCUMENT_PROPERTY_NAME);
         isValid &= GlobalVariables.getMessageMap().hasNoErrors();
@@ -139,9 +145,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * This method should be overridden by children rule classes as a hook to implement document specific business rule checks for
+     * This method should be overridden by children rule classes as a hook to implement document specific business rule
+     * checks for
      * the "save document" event.
-     * 
+     *
      * @param document
      * @return boolean True if the rules checks passed, false otherwise.
      */
@@ -150,11 +157,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * Runs all business rules needed prior to routing. This includes both common rules for all maintenance documents, plus
-     * class-specific business rules. This method will return false if any business rule fails, or if the document is in an invalid
+     * Runs all business rules needed prior to routing. This includes both common rules for all maintenance documents,
+     * plus
+     * class-specific business rules. This method will return false if any business rule fails, or if the document is in
+     * an invalid
      * state, and not routable (see isDocumentValidForRouting()).
-     * 
-     * @see org.kuali.rice.krad.rule.RouteDocumentRule#processRouteDocument(org.kuali.rice.krad.document.Document)
+     *
+     * @see org.kuali.rice.krad.rules.rule.RouteDocumentRule#processRouteDocument(org.kuali.rice.krad.document.Document)
      */
     public boolean processRouteDocument(Document document) {
         boolean isValid = true;
@@ -169,9 +178,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * This method should be overridden by children rule classes as a hook to implement document specific business rule checks for
+     * This method should be overridden by children rule classes as a hook to implement document specific business rule
+     * checks for
      * the "route document" event.
-     * 
+     *
      * @param document
      * @return boolean True if the rules checks passed, false otherwise.
      */
@@ -180,11 +190,13 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * Runs all business rules needed prior to approving. This includes both common rules for all documents, plus class-specific
-     * business rules. This method will return false if any business rule fails, or if the document is in an invalid state, and not
+     * Runs all business rules needed prior to approving. This includes both common rules for all documents, plus
+     * class-specific
+     * business rules. This method will return false if any business rule fails, or if the document is in an invalid
+     * state, and not
      * approveble.
-     * 
-     * @see org.kuali.rice.krad.rule.ApproveDocumentRule#processApproveDocument(org.kuali.rice.krad.rule.event.ApproveDocumentEvent)
+     *
+     * @see org.kuali.rice.krad.rules.rule.ApproveDocumentRule#processApproveDocument(org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent)
      */
     public boolean processApproveDocument(ApproveDocumentEvent approveEvent) {
         boolean isValid = true;
@@ -195,9 +207,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * This method should be overridden by children rule classes as a hook to implement document specific business rule checks for
+     * This method should be overridden by children rule classes as a hook to implement document specific business rule
+     * checks for
      * the "approve document" event.
-     * 
+     *
      * @param approveEvent
      * @return boolean True if the rules checks passed, false otherwise.
      */
@@ -206,10 +219,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * Runs all business rules needed prior to adding a document note. This method will return false if any business rule fails.
-     * 
-     * @see org.kuali.rice.krad.rule.AddDocumentNoteRule#processAddDocumentNote(org.kuali.rice.krad.document.Document,
-     *      org.kuali.rice.krad.document.DocumentNote)
+     * Runs all business rules needed prior to adding a document note. This method will return false if any business
+     * rule fails
      */
     public boolean processAddNote(Document document, Note note) {
         boolean isValid = true;
@@ -222,7 +233,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
      * Verifies that the note's fields are valid - it does required and format checks.
-     * 
+     *
      * @param note
      * @return boolean True if the document description is valid, false otherwise.
      */
@@ -234,8 +245,8 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         getDictionaryValidationService().validateBusinessObject(note);
 
         validateSensitiveDataValue(KRADConstants.NOTE_TEXT_PROPERTY_NAME, note.getNoteText(),
-        		getDataDictionaryService().getAttributeLabel(Note.class, KRADConstants.NOTE_TEXT_PROPERTY_NAME));
-        
+                getDataDictionaryService().getAttributeLabel(Note.class, KRADConstants.NOTE_TEXT_PROPERTY_NAME));
+
         // drop the error path keys off now
         GlobalVariables.getMessageMap().removeFromErrorPath(KRADConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
 
@@ -243,9 +254,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * This method should be overridden by children rule classes as a hook to implement document specific business rule checks for
+     * This method should be overridden by children rule classes as a hook to implement document specific business rule
+     * checks for
      * the "add document note" event.
-     * 
+     *
      * @param document
      * @param note
      * @return boolean True if the rules checks passed, false otherwise.
@@ -255,7 +267,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * @see org.kuali.rice.krad.rule.AddAdHocRoutePersonRule#processAddAdHocRoutePerson(org.kuali.rice.krad.document.Document,
+     * @see org.kuali.rice.krad.rules.rule.AddAdHocRoutePersonRule#processAddAdHocRoutePerson(org.kuali.rice.krad.document.Document,
      *      org.kuali.rice.krad.bo.AdHocRoutePerson)
      */
     public boolean processAddAdHocRoutePerson(Document document, AdHocRoutePerson adHocRoutePerson) {
@@ -267,56 +279,54 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         return isValid;
     }
 
-    
     /**
-	 * @see org.kuali.rice.krad.rule.SendAdHocRequestsRule#processSendAdHocRequests(org.kuali.rice.krad.document.Document)
-	 */
-	public boolean processSendAdHocRequests(Document document) {
-		boolean isValid = true;
+     * @see org.kuali.rice.krad.rules.rule.SendAdHocRequestsRule#processSendAdHocRequests(org.kuali.rice.krad.document.Document)
+     */
+    public boolean processSendAdHocRequests(Document document) {
+        boolean isValid = true;
 
-		isValid &= isAdHocRouteRecipientsValid(document);
-		isValid &= processCustomSendAdHocRequests(document);
-		
-		return isValid;
-	}
+        isValid &= isAdHocRouteRecipientsValid(document);
+        isValid &= processCustomSendAdHocRequests(document);
 
-	protected boolean processCustomSendAdHocRequests(Document document) {
-		return true;
-	}
+        return isValid;
+    }
 
-	/**
-	 * Checks the adhoc route recipient list to ensure there are recipients or
-	 * else throws an error that at least one recipient is required.
-	 * 
-	 * @param document
-	 * @return
-	 */
-	protected boolean isAdHocRouteRecipientsValid(Document document) {
-		boolean isValid = true;
-		MessageMap errorMap = GlobalVariables.getMessageMap();
+    protected boolean processCustomSendAdHocRequests(Document document) {
+        return true;
+    }
 
-		if (errorMap.getErrorPath().size() == 0) {
-			// add the error path keys on the stack
-			errorMap.addToErrorPath(KRADConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
-		}
+    /**
+     * Checks the adhoc route recipient list to ensure there are recipients or
+     * else throws an error that at least one recipient is required.
+     *
+     * @param document
+     * @return
+     */
+    protected boolean isAdHocRouteRecipientsValid(Document document) {
+        boolean isValid = true;
+        MessageMap errorMap = GlobalVariables.getMessageMap();
 
-		if ((document.getAdHocRoutePersons() == null || document
-				.getAdHocRoutePersons().isEmpty())
-				&& (document.getAdHocRouteWorkgroups() == null || document
-						.getAdHocRouteWorkgroups().isEmpty())) {
+        if (errorMap.getErrorPath().size() == 0) {
+            // add the error path keys on the stack
+            errorMap.addToErrorPath(KRADConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
+        }
 
-			GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, "error.adhoc.missing.recipients");
-			isValid = false;
-		}
+        if ((document.getAdHocRoutePersons() == null || document.getAdHocRoutePersons().isEmpty()) && (document
+                .getAdHocRouteWorkgroups() == null || document.getAdHocRouteWorkgroups().isEmpty())) {
 
-		// drop the error path keys off now
-		errorMap.removeFromErrorPath(KRADConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
+            GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, "error.adhoc.missing.recipients");
+            isValid = false;
+        }
 
-		return isValid;
-	}	
-	/**
+        // drop the error path keys off now
+        errorMap.removeFromErrorPath(KRADConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
+
+        return isValid;
+    }
+
+    /**
      * Verifies that the adHocRoutePerson's fields are valid - it does required and format checks.
-     * 
+     *
      * @param person
      * @return boolean True if valid, false otherwise.
      */
@@ -328,32 +338,34 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
             // add the error path keys on the stack
             errorMap.addToErrorPath(KRADConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
         }
-        
+
         if (StringUtils.isNotBlank(person.getId())) {
             Person user = getPersonService().getPersonByPrincipalName(person.getId());
-            
+
             if (user == null) {
-                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INVALID_ADHOC_PERSON_ID);
-            }
-            else if ( !getPermissionService().hasPermission(user.getPrincipalId(), KimConstants.KIM_TYPE_DEFAULT_NAMESPACE,
-                    KimConstants.PermissionNames.LOG_IN, null) ) {
-                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INACTIVE_ADHOC_PERSON_ID);
-            }
-            else {
+                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                        RiceKeyConstants.ERROR_INVALID_ADHOC_PERSON_ID);
+            } else if (!getPermissionService().hasPermission(user.getPrincipalId(),
+                    KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.PermissionNames.LOG_IN, null)) {
+                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                        RiceKeyConstants.ERROR_INACTIVE_ADHOC_PERSON_ID);
+            } else {
                 Class docOrBoClass = null;
                 if (document instanceof MaintenanceDocument) {
                     docOrBoClass = ((MaintenanceDocument) document).getNewMaintainableObject().getDataObjectClass();
-                }
-                else {
+                } else {
                     docOrBoClass = document.getClass();
                 }
-                if (!getDocumentHelperService().getDocumentAuthorizer(document).canReceiveAdHoc(document, user, person.getActionRequested())) {
-                    GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_PERSON_ID);
+
+                if (!getDocumentDictionaryService().getDocumentAuthorizer(document).canReceiveAdHoc(document, user,
+                        person.getActionRequested())) {
+                    GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                            RiceKeyConstants.ERROR_UNAUTHORIZED_ADHOC_PERSON_ID);
                 }
             }
-        }
-        else {
-            GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_MISSING_ADHOC_PERSON_ID);
+        } else {
+            GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                    RiceKeyConstants.ERROR_MISSING_ADHOC_PERSON_ID);
         }
 
         // drop the error path keys off now
@@ -363,9 +375,10 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * This method should be overridden by children rule classes as a hook to implement document specific business rule checks for
+     * This method should be overridden by children rule classes as a hook to implement document specific business rule
+     * checks for
      * the "add ad hoc route person" event.
-     * 
+     *
      * @param document
      * @param person
      * @return boolean True if the rules checks passed, false otherwise.
@@ -375,7 +388,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * @see org.kuali.rice.krad.rule.AddAdHocRouteWorkgroupRule#processAddAdHocRouteWorkgroup(org.kuali.rice.krad.document.Document,
+     * @see org.kuali.rice.krad.rules.rule.AddAdHocRouteWorkgroupRule#processAddAdHocRouteWorkgroup(org.kuali.rice.krad.document.Document,
      *      org.kuali.rice.krad.bo.AdHocRouteWorkgroup)
      */
     public boolean processAddAdHocRouteWorkgroup(Document document, AdHocRouteWorkgroup adHocRouteWorkgroup) {
@@ -389,7 +402,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     /**
      * Verifies that the adHocRouteWorkgroup's fields are valid - it does required and format checks.
-     * 
+     *
      * @param workgroup
      * @return boolean True if valid, false otherwise.
      */
@@ -408,17 +421,18 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
                 Group group = getGroupService().getGroupByNameAndNamespaceCode(workgroup.getRecipientNamespaceCode(),
                         workgroup.getRecipientName());
                 if (group == null || !group.isActive()) {
-                    GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+                    GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                            RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LOG.error("isAddHocRouteWorkgroupValid(AdHocRouteWorkgroup)", e);
 
-                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
+                GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                        RiceKeyConstants.ERROR_INVALID_ADHOC_WORKGROUP_ID);
             }
-        }
-        else {
-            GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID, RiceKeyConstants.ERROR_MISSING_ADHOC_WORKGROUP_ID);
+        } else {
+            GlobalVariables.getMessageMap().putError(KRADPropertyConstants.ID,
+                    RiceKeyConstants.ERROR_MISSING_ADHOC_WORKGROUP_ID);
         }
 
         // drop the error path keys off now
@@ -428,14 +442,16 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     /**
-     * This method should be overridden by children rule classes as a hook to implement document specific business rule checks for
+     * This method should be overridden by children rule classes as a hook to implement document specific business rule
+     * checks for
      * the "add ad hoc route workgroup" event.
-     * 
+     *
      * @param document
      * @param workgroup
      * @return boolean True if the rules checks passed, false otherwise.
      */
-    protected boolean processCustomAddAdHocRouteWorkgroupBusinessRules(Document document, AdHocRouteWorkgroup workgroup) {
+    protected boolean processCustomAddAdHocRouteWorkgroupBusinessRules(Document document,
+            AdHocRouteWorkgroup workgroup) {
         return true;
     }
 
@@ -451,78 +467,85 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      */
     public void setMaxDictionaryValidationDepth(int maxDictionaryValidationDepth) {
         if (maxDictionaryValidationDepth < 0) {
-            LOG.error("Dictionary validation depth should be greater than or equal to 0.  Value received was: " + maxDictionaryValidationDepth);
-            throw new RuntimeException("Dictionary validation depth should be greater than or equal to 0.  Value received was: " + maxDictionaryValidationDepth);
+            LOG.error("Dictionary validation depth should be greater than or equal to 0.  Value received was: "
+                    + maxDictionaryValidationDepth);
+            throw new RuntimeException(
+                    "Dictionary validation depth should be greater than or equal to 0.  Value received was: "
+                            + maxDictionaryValidationDepth);
         }
         this.maxDictionaryValidationDepth = maxDictionaryValidationDepth;
     }
 
     protected boolean validateSensitiveDataValue(String fieldName, String fieldValue, String fieldLabel) {
-    	boolean dataValid = true;
-    	
-    	if (fieldValue == null) {
-    		return dataValid;
-    	}
-    	
-    	boolean patternFound = KRADUtils.containsSensitiveDataPatternMatch(fieldValue);
-		boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+        boolean dataValid = true;
+
+        if (fieldValue == null) {
+            return dataValid;
+        }
+
+        boolean patternFound = KRADUtils.containsSensitiveDataPatternMatch(fieldValue);
+        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                 KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
-    	if (patternFound && !warnForSensitiveData) {
-    		dataValid = false;
-    		GlobalVariables.getMessageMap().putError(fieldName,
-    					RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA, fieldLabel);
-    	}
-    	
-    	return dataValid;
+        if (patternFound && !warnForSensitiveData) {
+            dataValid = false;
+            GlobalVariables.getMessageMap().putError(fieldName,
+                    RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA, fieldLabel);
+        }
+
+        return dataValid;
     }
-    
+
     protected DataDictionaryService getDataDictionaryService() {
-    	if (dataDictionaryService == null) {
-    		dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-    	}
-    	return dataDictionaryService;
+        if (dataDictionaryService == null) {
+            dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+        }
+        return dataDictionaryService;
     }
 
     protected PersonService getPersonService() {
-        if ( personService == null ) {
+        if (personService == null) {
             personService = KimApiServiceLocator.getPersonService();
         }
         return personService;
     }
 
     public static GroupService getGroupService() {
-        if ( groupService == null ) {
+        if (groupService == null) {
             groupService = KimApiServiceLocator.getGroupService();
         }
         return groupService;
     }
 
     public static PermissionService getPermissionService() {
-        if ( permissionService == null ) {
+        if (permissionService == null) {
             permissionService = KimApiServiceLocator.getPermissionService();
         }
         return permissionService;
     }
 
-    protected DocumentHelperService getDocumentHelperService() {
-        if ( documentHelperService == null ) {
-            documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
-        }
-        return documentHelperService;
-    }
-
     protected DictionaryValidationService getDictionaryValidationService() {
-        if ( dictionaryValidationService == null ) {
+        if (dictionaryValidationService == null) {
             dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
         }
         return dictionaryValidationService;
     }
 
     protected ConfigurationService getKualiConfigurationService() {
-        if ( kualiConfigurationService == null ) {
+        if (kualiConfigurationService == null) {
             kualiConfigurationService = KRADServiceLocator.getKualiConfigurationService();
         }
         return kualiConfigurationService;
+    }
+
+    protected static DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
+        }
+        return documentDictionaryService;
+    }
+
+    public static void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        DocumentRuleBase.documentDictionaryService = documentDictionaryService;
     }
 }

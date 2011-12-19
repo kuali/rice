@@ -115,7 +115,7 @@
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:propertyName="mField1" p:label="Masked Field">
-          <property name="attributeSecurity">
+          <property name="componentSecurity.attributeSecurity">
             <bean parent="AttributeSecurity">
               <property name="mask" value="true"/>
               <property name="maskFormatter">
@@ -126,7 +126,7 @@
         </bean>
         <bean parent="GenericTextField" p:propertyName="mField2" p:label="Partial Masked Field"
               p:instructionalText="maskLength 5">
-          <property name="attributeSecurity">
+          <property name="componentSecurity.attributeSecurity">
             <bean parent="AttributeSecurity">
               <property name="partialMask" value="true"/>
               <property name="partialMaskFormatter">

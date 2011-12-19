@@ -17,9 +17,11 @@ package org.kuali.rice.krad.service;
 
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.document.DocumentAuthorizer;
+import org.kuali.rice.krad.document.DocumentPresentationController;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.Maintainable;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 
 import java.util.Collection;
 import java.util.List;
@@ -123,7 +125,7 @@ public interface DocumentDictionaryService {
      * Returns whether or not this document's data dictionary file has flagged it to allow maintenance new
      * or copy actions
      *
-     * @param document - maintenance document instance to check new or copy flag for
+     * @param docTypeName - document type name to retrieve maintenance document entry for
      * @return boolean true if new or copy maintenance actions are allowed
      */
     public Boolean getAllowsNewOrCopy(String docTypeName);
@@ -178,4 +180,40 @@ public interface DocumentDictionaryService {
      * @return boolean true if locking keys should be copied, false if they should be cleared
      */
     public boolean getPreserveLockingKeysOnCopy(Class dataObjectClass);
+
+    /**
+     * Retrieves the {@link DocumentAuthorizer} configured on the document entry with the given document type
+     * name
+     *
+     * @param documentType - document type name to retrieve document entry and associated authorizer for
+     * @return DocumentAuthorizer authorizer instance
+     */
+    public DocumentAuthorizer getDocumentAuthorizer(String documentType);
+
+    /**
+     * Retrieves the {@link DocumentAuthorizer} configured on the document entry for the document type associated
+     * with the document instance
+     *
+     * @param document - document instance to retrieve document entry and associated authorizer for
+     * @return DocumentAuthorizer authorizer instance
+     */
+    public DocumentAuthorizer getDocumentAuthorizer(Document document);
+
+    /**
+     * Retrieves the {@link DocumentPresentationController} configured on the document entry with the given document
+     * type name
+     *
+     * @param documentType - document type name to retrieve document entry and associated presentation controller for
+     * @return DocumentPresentationController instance
+     */
+    public DocumentPresentationController getDocumentPresentationController(String documentType);
+
+    /**
+     * Retrieves the {@link DocumentPresentationController} configured on the document entry for the document type
+     * associated with the document instance
+     *
+     * @param document - document instance to retrieve document entry and associated presentation controller for
+     * @return DocumentPresentationController instance
+     */
+    public DocumentPresentationController getDocumentPresentationController(Document document);
 }

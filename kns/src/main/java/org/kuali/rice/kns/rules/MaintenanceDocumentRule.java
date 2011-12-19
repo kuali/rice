@@ -17,7 +17,7 @@ package org.kuali.rice.kns.rules;
 
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.krad.rule.event.ApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
 
 /**
  * Rule event interface for implementing business rules against a <code>MaintenanceDocument</code>
@@ -34,7 +34,7 @@ public interface MaintenanceDocumentRule {
      * regardless of the outcome of the business rules. However, any error messages resulting from the business rules
      * will still be populated, for display to the consumer of this service.
      *
-     * @see org.kuali.rice.krad.rule.SaveDocumentRule#processSaveDocument(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.krad.rules.rule.SaveDocumentRule#processSaveDocument(org.kuali.rice.krad.document.Document)
      */
     public abstract boolean processSaveDocument(Document document);
 
@@ -45,7 +45,7 @@ public interface MaintenanceDocumentRule {
      * Will return false if any business rule fails, or if the document is in an invalid state, and not routable (see
      * isDocumentValidForRouting()).
      *
-     * @see org.kuali.rice.krad.rule.RouteDocumentRule#processRouteDocument(org.kuali.rice.krad.document.Document)
+     * @see org.kuali.rice.krad.rules.rule.RouteDocumentRule#processRouteDocument(org.kuali.rice.krad.document.Document)
      */
     public abstract boolean processRouteDocument(Document document);
 
@@ -56,7 +56,7 @@ public interface MaintenanceDocumentRule {
      * Will return false if any business rule fails, or if the document is in an invalid state, and not approvable (see
      * isDocumentValidForApproving()).
      *
-     * @see org.kuali.rice.krad.rule.ApproveDocumentRule#processApproveDocument(org.kuali.rice.krad.rule.event.ApproveDocumentEvent)
+     * @see org.kuali.rice.krad.rules.rule.ApproveDocumentRule#processApproveDocument(org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent)
      */
     public abstract boolean processApproveDocument(ApproveDocumentEvent approveEvent);
 

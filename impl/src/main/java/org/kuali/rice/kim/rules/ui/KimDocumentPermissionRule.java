@@ -79,7 +79,7 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 		Map<String,String> permissionDetails = new HashMap<String,String>();
 		permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
 		permissionDetails.put(KimConstants.AttributeConstants.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+		if (!getDocumentDictionaryService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
 				KimConstants.PermissionTemplateNames.GRANT_PERMISSION,

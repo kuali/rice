@@ -31,6 +31,7 @@ import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -43,7 +44,6 @@ import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -644,7 +644,7 @@ public class WebUtils {
 
 	public static boolean canAddNoteAttachment(Document document) {
 		boolean canViewNoteAttachment = false;
-		DocumentAuthorizer documentAuthorizer = KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(
+		DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(
 				document);
 		canViewNoteAttachment = documentAuthorizer.canAddNoteAttachment(document, null, GlobalVariables
 				.getUserSession().getPerson());
@@ -653,7 +653,7 @@ public class WebUtils {
 
 	public static boolean canViewNoteAttachment(Document document, String attachmentTypeCode) {
 		boolean canViewNoteAttachment = false;
-		DocumentAuthorizer documentAuthorizer = KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(
+		DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(
 				document);
 		canViewNoteAttachment = documentAuthorizer.canViewNoteAttachment(document, attachmentTypeCode, GlobalVariables
 				.getUserSession().getPerson());
@@ -663,7 +663,7 @@ public class WebUtils {
 	public static boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode,
 			String authorUniversalIdentifier) {
 		boolean canDeleteNoteAttachment = false;
-		DocumentAuthorizer documentAuthorizer = KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(
+		DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(
 				document);
 		canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "false",
 				GlobalVariables.getUserSession().getPerson());

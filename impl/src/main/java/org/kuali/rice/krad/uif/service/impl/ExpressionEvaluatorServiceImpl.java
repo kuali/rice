@@ -135,6 +135,16 @@ public class ExpressionEvaluatorServiceImpl implements ExpressionEvaluatorServic
                     new Class[]{Object.class}));
             context.registerFunction("getName", ExpressionFunctions.class.getDeclaredMethod("getName",
                     new Class[]{Class.class}));
+            context.registerFunction("getParm", ExpressionFunctions.class.getDeclaredMethod("getParm",
+                    new Class[]{String.class, String.class, String.class}));
+            context.registerFunction("getParmInd", ExpressionFunctions.class.getDeclaredMethod("getParmInd",
+                    new Class[]{String.class, String.class, String.class}));
+            context.registerFunction("hasPerm", ExpressionFunctions.class.getDeclaredMethod("hasPerm",
+                    new Class[]{String.class, String.class}));
+            context.registerFunction("hasPermDtls", ExpressionFunctions.class.getDeclaredMethod("hasPermDtls",
+                    new Class[]{String.class, String.class, Map.class, Map.class}));
+            context.registerFunction("hasPermTmpl", ExpressionFunctions.class.getDeclaredMethod("hasPermTmpl",
+                    new Class[]{String.class, String.class, Map.class, Map.class}));
         } catch (NoSuchMethodException e) {
             LOG.error("Custom function for el expressions not found: " + e.getMessage());
             throw new RuntimeException("Custom function for el expressions not found: " + e.getMessage(), e);

@@ -27,7 +27,6 @@
       </list>
     </property>
     <property name="documentTypeName" value="RiceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
   </bean>
 
 <!-- Maintenance Section Definitions -->

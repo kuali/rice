@@ -78,7 +78,7 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 		Map<String,String> responsibilityDetails = new HashMap<String,String>();
 		responsibilityDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, kimResponsibilityInfo.getNamespaceCode());
 		responsibilityDetails.put(KimConstants.AttributeConstants.RESPONSIBILITY_NAME, kimResponsibilityInfo.getName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+		if (!getDocumentDictionaryService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 
 				KimConstants.PermissionTemplateNames.GRANT_RESPONSIBILITY,

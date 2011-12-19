@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import edu.sampleu.bookstore.bo.Account;
 import edu.sampleu.bookstore.bo.Author;

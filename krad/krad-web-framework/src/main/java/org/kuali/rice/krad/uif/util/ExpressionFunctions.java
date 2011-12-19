@@ -16,6 +16,14 @@
 package org.kuali.rice.krad.uif.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Defines functions that can be used in el expressions within
@@ -59,5 +67,83 @@ public class ExpressionFunctions {
         } else {
             return clazz.getName();
         }
+    }
+
+    /**
+     * Retrieves the value of the parameter identified with the given namespace, component, and name
+     *
+     * @param namespaceCode - namespace code for the parameter to retrieve
+     * @param componentCode - component code for the parameter to retrieve
+     * @param parameterName - name of the parameter to retrieve
+     * @return String value of parameter as a string or null if parameter does not exist
+     */
+    public static String getParm(String namespaceCode, String componentCode, String parameterName) {
+        return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(namespaceCode, componentCode,
+                parameterName);
+    }
+
+    /**
+     * Retrieves the value of the parameter identified with the given namespace, component, and name and converts
+     * to a Boolean
+     *
+     * @param namespaceCode - namespace code for the parameter to retrieve
+     * @param componentCode - component code for the parameter to retrieve
+     * @param parameterName - name of the parameter to retrieve
+     * @return Boolean value of parameter as a boolean or null if parameter does not exist
+     */
+    public static Boolean getParmInd(String namespaceCode, String componentCode, String parameterName) {
+        return CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(namespaceCode,
+                componentCode, parameterName);
+    }
+
+    /**
+     * Indicates whether the current user has the permission identified by the given namespace and permission name
+     *
+     * @param namespaceCode - namespace code for the permission to check
+     * @param permissionName - name of the permission to check
+     * @return boolean true if the current user has the permission, false if not or the permission does not exist
+     */
+    public static boolean hasPerm(String namespaceCode, String permissionName) {
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        return KimApiServiceLocator.getPermissionService().hasPermission(user.getPrincipalId(), namespaceCode,
+                permissionName, new HashMap<String, String>());
+    }
+
+    /**
+     * Indicates whether the current user has the permission identified by the given namespace and permission name
+     * and with the given details and role qualification
+     *
+     * @param namespaceCode - namespace code for the permission to check
+     * @param permissionName - name of the permission to check
+     * @param permissionDetails - details for the permission check
+     * @param roleQualifiers - qualification for assigned roles
+     * @return boolean true if the current user has the permission, false if not or the permission does not exist
+     */
+    public static boolean hasPermDtls(String namespaceCode, String permissionName, Map<String, String> permissionDetails,
+            Map<String, String> roleQualifiers) {
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        return KimApiServiceLocator.getPermissionService().isAuthorized(user.getPrincipalId(), namespaceCode,
+                permissionName, permissionDetails, roleQualifiers);
+    }
+
+    /**
+     * Indicates whether the current user has the permission identified by the given namespace and template name
+     * and with the given details and role qualification
+     *
+     * @param namespaceCode - namespace code for the permission to check
+     * @param templateName - name of the permission template to find permissions for
+     * @param permissionDetails - details for the permission check
+     * @param roleQualifiers - qualification for assigned roles
+     * @return boolean true if the current user has a permission with the given template, false if not or
+     * the permission does not exist
+     */
+    public static boolean hasPermTmpl(String namespaceCode, String templateName, Map<String, String> permissionDetails,
+            Map<String, String> roleQualifiers) {
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        return KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(user.getPrincipalId(),
+                namespaceCode, templateName, permissionDetails, roleQualifiers);
     }
 }

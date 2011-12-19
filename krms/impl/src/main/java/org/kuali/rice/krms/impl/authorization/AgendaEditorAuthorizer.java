@@ -17,9 +17,9 @@ package org.kuali.rice.krms.impl.authorization;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.krad.document.DocumentAuthorizerBase;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.ui.AgendaEditor;
@@ -52,16 +52,6 @@ public class AgendaEditorAuthorizer extends DocumentAuthorizerBase implements Ma
         } else {
             return getAgendaAuthorizationService().isAuthorized(KrmsConstants.MAINTAIN_KRMS_AGENDA, agendaEditor.getAgenda().getContextId());
         }
-    }
-
-    @Override
-    public Set<String> getSecurePotentiallyReadOnlySectionIds() {
-        return new HashSet<String>();
-    }
-
-    @Override
-    public Set<String> getSecurePotentiallyHiddenSectionIds() {
-        return new HashSet<String>();
     }
 
     private AgendaAuthorizationService getAgendaAuthorizationService() {

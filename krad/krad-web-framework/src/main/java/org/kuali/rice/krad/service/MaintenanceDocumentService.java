@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.krad.service;
 
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.MaintenanceLock;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.maintenance.Maintainable;
 
 import java.util.List;

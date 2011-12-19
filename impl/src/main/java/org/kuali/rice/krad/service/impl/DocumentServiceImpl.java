@@ -39,22 +39,22 @@ import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.MaintenanceDocumentBase;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
+import org.kuali.rice.krad.document.DocumentAuthorizer;
+import org.kuali.rice.krad.document.DocumentPresentationController;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.rule.event.ApproveDocumentEvent;
-import org.kuali.rice.krad.rule.event.BlanketApproveDocumentEvent;
-import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
-import org.kuali.rice.krad.rule.event.RouteDocumentEvent;
-import org.kuali.rice.krad.rule.event.SaveDocumentEvent;
-import org.kuali.rice.krad.rule.event.SaveEvent;
+import org.kuali.rice.krad.rules.rule.event.ApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.BlanketApproveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.SaveEvent;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentHeaderService;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
@@ -77,37 +77,26 @@ import java.util.Map;
 
 
 /**
- * This class is the service implementation for the Document structure. It contains all of the document level type of
- * processing and
- * calling back into documents for various centralization of functionality. This is the default, Kuali delivered
- * implementation
- * which utilizes Workflow.
+ * Service implementation for the Document structure. It contains all of the document level type of
+ * processing and calling back into documents for various centralization of functionality. This is the default,
+ * Kuali delivered implementation which utilizes Workflow.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @TransactionalNoValidationExceptionRollback
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
 
-    private DateTimeService dateTimeService;
-
-    private NoteService noteService;
-
-    protected WorkflowDocumentService workflowDocumentService;
-
-    protected BusinessObjectService businessObjectService;
-
-    /**
-     * Don't access directly, use synchronized getter and setter to access
-     */
     private DocumentDao documentDao;
 
+    private DateTimeService dateTimeService;
+    private NoteService noteService;
+    private WorkflowDocumentService workflowDocumentService;
+    private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
-
     private DocumentHeaderService documentHeaderService;
-
+    private DocumentDictionaryService documentDictionaryService;
     private PersonService personService;
-
-    private DocumentHelperService documentHelperService;
-
     private ConfigurationService kualiConfigurationService;
 
     /**
@@ -487,7 +476,6 @@ public class DocumentServiceImpl implements DocumentService {
      */
     @Override
     public Document getNewDocument(String documentTypeName) throws WorkflowException {
-
         // argument validation
         String watchName = "DocumentServiceImpl.getNewDocument";
         StopWatch watch = new StopWatch();
@@ -510,9 +498,9 @@ public class DocumentServiceImpl implements DocumentService {
         Person currentUser = GlobalVariables.getUserSession().getPerson();
 
         // get the authorization
-        DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(documentTypeName);
+        DocumentAuthorizer documentAuthorizer = getDocumentDictionaryService().getDocumentAuthorizer(documentTypeName);
         DocumentPresentationController documentPresentationController =
-                getDocumentHelperService().getDocumentPresentationController(documentTypeName);
+                getDocumentDictionaryService().getDocumentPresentationController(documentTypeName);
         // make sure this person is authorized to initiate
         LOG.debug("calling canInitiate from getNewDocument()");
         if (!documentPresentationController.canInitiate(documentTypeName) ||
@@ -578,6 +566,7 @@ public class DocumentServiceImpl implements DocumentService {
         if (LOG.isDebugEnabled()) {
             LOG.debug(watchName + ": " + watch.toString());
         }
+
         return document;
     }
 
@@ -894,231 +883,6 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * Determines if the given document's note target is ready for notes to be
-     * attached and persisted against it.  This method verifies that the document's
-     * note target is non-null as well as checking that it has a non-empty object id.
-     *
-     * @param document the document on which to check for note target readiness
-     * @return true if the note target is ready, false otherwise
-     */
-    protected boolean isNoteTargetReady(Document document) {
-        PersistableBusinessObject noteTarget = document.getNoteTarget();
-        if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
-            return false;
-        }
-        return true;
-    }
-
-    private void linkNoteRemoteObjectId(Note note, PersistableBusinessObject noteTarget) {
-        String objectId = noteTarget.getObjectId();
-        if (StringUtils.isBlank(objectId)) {
-            throw new IllegalStateException(
-                    "Attempted to link a Note with a PersistableBusinessObject with no object id");
-        }
-        note.setRemoteObjectIdentifier(noteTarget.getObjectId());
-    }
-
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.service.DocumentService#sendAdHocRequests(org.kuali.rice.krad.document.Document, String, java.util.List)
-     */
-    @Override
-    public void sendAdHocRequests(Document document, String annotation,
-            List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService()
-                .sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), annotation,
-                        adHocRecipients);
-        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
-                document.getDocumentHeader().getWorkflowDocument());
-        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
-        removeAdHocPersonsAndWorkgroups(document);
-    }
-
-    /**
-     * spring injected date time service
-     *
-     * @param dateTimeService
-     */
-    public synchronized void setDateTimeService(DateTimeService dateTimeService) {
-        this.dateTimeService = dateTimeService;
-    }
-
-    /**
-     * Gets the DateTimeService, lazily initializing if necessary
-     *
-     * @return the DateTimeService
-     */
-    private synchronized DateTimeService getDateTimeService() {
-        if (this.dateTimeService == null) {
-            this.dateTimeService = CoreApiServiceLocator.getDateTimeService();
-        }
-        return this.dateTimeService;
-    }
-
-    /**
-     * Sets the noteService attribute value.
-     *
-     * @param noteService The noteService to set.
-     */
-    public synchronized void setNoteService(NoteService noteService) {
-        this.noteService = noteService;
-    }
-
-    /**
-     * Gets the NoteService, lazily initializing if necessary
-     *
-     * @return the NoteService
-     */
-    protected synchronized NoteService getNoteService() {
-        if (this.noteService == null) {
-            this.noteService = KRADServiceLocator.getNoteService();
-        }
-        return this.noteService;
-    }
-
-    /**
-     * Sets the businessObjectService attribute value.
-     *
-     * @param businessObjectService The businessObjectService to set.
-     */
-    public synchronized void setBusinessObjectService(BusinessObjectService businessObjectService) {
-        this.businessObjectService = businessObjectService;
-    }
-
-    /**
-     * Gets the {@link BusinessObjectService}, lazily initializing if necessary
-     *
-     * @return the {@link BusinessObjectService}
-     */
-    protected synchronized BusinessObjectService getBusinessObjectService() {
-        if (this.businessObjectService == null) {
-            this.businessObjectService = KRADServiceLocator.getBusinessObjectService();
-        }
-        return this.businessObjectService;
-    }
-
-    /**
-     * Sets the workflowDocumentService attribute value.
-     *
-     * @param workflowDocumentService The workflowDocumentService to set.
-     */
-    public synchronized void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
-        this.workflowDocumentService = workflowDocumentService;
-    }
-
-    /**
-     * Gets the {@link WorkflowDocumentService}, lazily initializing if necessary
-     *
-     * @return the {@link WorkflowDocumentService}
-     */
-    protected synchronized WorkflowDocumentService getWorkflowDocumentService() {
-        if (this.workflowDocumentService == null) {
-            this.workflowDocumentService = KRADServiceLocatorWeb.getWorkflowDocumentService();
-        }
-        return this.workflowDocumentService;
-    }
-
-    /**
-     * Sets the documentDao attribute value.
-     *
-     * @param documentDao The documentDao to set.
-     */
-    public synchronized void setDocumentDao(DocumentDao documentDao) {
-        this.documentDao = documentDao;
-    }
-
-    /**
-     * Gets the {@link DocumentDao}, lazily initializing if necessary
-     *
-     * @return the {@link DocumentDao}
-     */
-    protected synchronized DocumentDao getDocumentDao() {
-        if (this.documentDao == null) {
-            this.documentDao = KRADServiceLocatorInternal.getDocumentDao();
-        }
-        return documentDao;
-    }
-
-    /**
-     * Sets the dataDictionaryService attribute value.
-     *
-     * @param dataDictionaryService
-     */
-    public synchronized void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-        this.dataDictionaryService = dataDictionaryService;
-    }
-
-    /**
-     * Gets the {@link DataDictionaryService}, lazily initializing if necessary
-     *
-     * @return the {@link DataDictionaryService}
-     */
-    protected synchronized DataDictionaryService getDataDictionaryService() {
-        if (this.dataDictionaryService == null) {
-            this.dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
-        }
-        return this.dataDictionaryService;
-    }
-
-    /**
-     * @param documentHeaderService the documentHeaderService to set
-     */
-    public synchronized void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
-        this.documentHeaderService = documentHeaderService;
-    }
-
-    /**
-     * Gets the {@link DocumentHeaderService}, lazily initializing if necessary
-     *
-     * @return the {@link DocumentHeaderService}
-     */
-    protected synchronized DocumentHeaderService getDocumentHeaderService() {
-        if (this.documentHeaderService == null) {
-            this.documentHeaderService = KRADServiceLocatorWeb.getDocumentHeaderService();
-        }
-        return this.documentHeaderService;
-    }
-
-    /**
-     * @return the personService
-     */
-    public PersonService getPersonService() {
-        if (personService == null) {
-            personService = KimApiServiceLocator.getPersonService();
-        }
-        return personService;
-    }
-
-    /**
-     * @return the documentHelperService
-     */
-    public DocumentHelperService getDocumentHelperService() {
-        if (documentHelperService == null) {
-            this.documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
-        }
-        return this.documentHelperService;
-    }
-
-    /**
-     * @param documentHelperService the documentHelperService to set
-     */
-    public void setDocumentHelperService(DocumentHelperService documentHelperService) {
-        this.documentHelperService = documentHelperService;
-    }
-
-    private void removeAdHocPersonsAndWorkgroups(Document document) {
-        List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
-        List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
-        getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
-        document.setAdHocRoutePersons(adHocRoutePersons);
-        document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
-    }
-
-    /**
      * @see org.kuali.rice.krad.service.DocumentService
      */
     @Override
@@ -1153,9 +917,156 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     /**
-     * @param kualiConfigurationService the kualiConfigurationService to set
+     * Determines if the given document's note target is ready for notes to be
+     * attached and persisted against it.  This method verifies that the document's
+     * note target is non-null as well as checking that it has a non-empty object id.
+     *
+     * @param document the document on which to check for note target readiness
+     * @return true if the note target is ready, false otherwise
      */
+    protected boolean isNoteTargetReady(Document document) {
+        PersistableBusinessObject noteTarget = document.getNoteTarget();
+        if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
+            return false;
+        }
+        return true;
+    }
+
+    private void linkNoteRemoteObjectId(Note note, PersistableBusinessObject noteTarget) {
+        String objectId = noteTarget.getObjectId();
+        if (StringUtils.isBlank(objectId)) {
+            throw new IllegalStateException(
+                    "Attempted to link a Note with a PersistableBusinessObject with no object id");
+        }
+        note.setRemoteObjectIdentifier(noteTarget.getObjectId());
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentService#sendAdHocRequests(org.kuali.rice.krad.document.Document, String, java.util.List)
+     */
+    @Override
+    public void sendAdHocRequests(Document document, String annotation,
+            List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
+        prepareWorkflowDocument(document);
+        getWorkflowDocumentService()
+                .sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), annotation,
+                        adHocRecipients);
+        KRADServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),
+                document.getDocumentHeader().getWorkflowDocument());
+        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        removeAdHocPersonsAndWorkgroups(document);
+    }
+
+    private void removeAdHocPersonsAndWorkgroups(Document document) {
+        List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
+        List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
+        getBusinessObjectService().delete(document.getAdHocRoutePersons());
+        getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
+        document.setAdHocRoutePersons(adHocRoutePersons);
+        document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
+    }
+
+    public void setDateTimeService(DateTimeService dateTimeService) {
+        this.dateTimeService = dateTimeService;
+    }
+
+    protected DateTimeService getDateTimeService() {
+        if (this.dateTimeService == null) {
+            this.dateTimeService = CoreApiServiceLocator.getDateTimeService();
+        }
+        return this.dateTimeService;
+    }
+
+    public void setNoteService(NoteService noteService) {
+        this.noteService = noteService;
+    }
+
+    protected NoteService getNoteService() {
+        if (this.noteService == null) {
+            this.noteService = KRADServiceLocator.getNoteService();
+        }
+        return this.noteService;
+    }
+
+    public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+        this.businessObjectService = businessObjectService;
+    }
+
+    protected BusinessObjectService getBusinessObjectService() {
+        if (this.businessObjectService == null) {
+            this.businessObjectService = KRADServiceLocator.getBusinessObjectService();
+        }
+        return this.businessObjectService;
+    }
+
+    public void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
+        this.workflowDocumentService = workflowDocumentService;
+    }
+
+    protected WorkflowDocumentService getWorkflowDocumentService() {
+        if (this.workflowDocumentService == null) {
+            this.workflowDocumentService = KRADServiceLocatorWeb.getWorkflowDocumentService();
+        }
+        return this.workflowDocumentService;
+    }
+
+    public void setDocumentDao(DocumentDao documentDao) {
+        this.documentDao = documentDao;
+    }
+
+    protected DocumentDao getDocumentDao() {
+        if (this.documentDao == null) {
+            this.documentDao = KRADServiceLocatorInternal.getDocumentDao();
+        }
+        return documentDao;
+    }
+
+    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+        this.dataDictionaryService = dataDictionaryService;
+    }
+
+    protected DataDictionaryService getDataDictionaryService() {
+        if (this.dataDictionaryService == null) {
+            this.dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+        }
+        return this.dataDictionaryService;
+    }
+
+    public void setDocumentHeaderService(DocumentHeaderService documentHeaderService) {
+        this.documentHeaderService = documentHeaderService;
+    }
+
+    protected DocumentHeaderService getDocumentHeaderService() {
+        if (this.documentHeaderService == null) {
+            this.documentHeaderService = KRADServiceLocatorWeb.getDocumentHeaderService();
+        }
+        return this.documentHeaderService;
+    }
+
+    protected DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
+        }
+        return documentDictionaryService;
+    }
+
+    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        this.documentDictionaryService = documentDictionaryService;
+    }
+
+    public PersonService getPersonService() {
+        if (personService == null) {
+            personService = KimApiServiceLocator.getPersonService();
+        }
+        return personService;
+    }
+
     public void setKualiConfigurationService(ConfigurationService kualiConfigurationService) {
         this.kualiConfigurationService = kualiConfigurationService;
+    }
+
+    protected ConfigurationService getKualiConfigurationService() {
+        return kualiConfigurationService;
     }
 }

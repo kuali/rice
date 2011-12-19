@@ -88,7 +88,6 @@
     <property name="dataObjectClass" value="edu.sampleu.travel.dto.FiscalOfficerInfo"/>
     <property name="maintainableClass" value="edu.sampleu.travel.service.FiscalOfficerInfoMaintainableImpl"/>
     <property name="documentTypeName" value="FiscalOfficerInfoMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
     <property name="lockingKeys">
       <list>
         <value>userName</value>

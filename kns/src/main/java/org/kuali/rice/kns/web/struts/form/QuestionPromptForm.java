@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.krad.question.Question;
+import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -148,7 +149,7 @@ public class QuestionPromptForm extends KualiForm {
         }
 
         if (getMethodToCall().equals(KRADConstants.START_METHOD)) { // don't do this for the processAnswer action otherwise it blows up
-            Question kualiQuestion = KRADServiceLocatorWeb.getQuestion(questionType);
+            Question kualiQuestion = KNSServiceLocator.getQuestion(questionType);
             if (kualiQuestion == null) {
                 throw new RuntimeException("question implementation not found: " + request.getParameter(KRADConstants.QUESTION_IMPL_ATTRIBUTE_NAME));
             }

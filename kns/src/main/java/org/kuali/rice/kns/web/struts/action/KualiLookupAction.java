@@ -24,6 +24,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -32,7 +33,6 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -90,7 +90,7 @@ public class KualiLookupAction extends KualiAction {
     }
     private static DocumentHelperService getDocumentHelperService() {
         if (documentHelperService == null) {
-            documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+            documentHelperService = KNSServiceLocator.getDocumentHelperService();
         }
         return documentHelperService;
     }

@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.krad.dao.MaintenanceDocumentDao;
-import org.kuali.rice.krad.document.MaintenanceLock;
+import org.kuali.rice.krad.maintenance.MaintenanceLock;
 
 public class MaintenanceDocumentDaoProxy implements MaintenanceDocumentDao {
 

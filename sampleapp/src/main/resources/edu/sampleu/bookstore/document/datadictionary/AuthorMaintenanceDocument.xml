@@ -86,6 +86,6 @@
     <property name="maintainableClass" value="edu.sampleu.bookstore.maintenance.AuthorMaintainable"/>
     <property name="businessRulesClass" value="edu.sampleu.bookstore.rule.AuthorMaintenanceDocumentRule"/>
     <property name="documentTypeName" value="AuthorMaintenanceDocument"/>
-    <property name="documentAuthorizerClass" value="org.kuali.rice.krad.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+    <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
   </bean>
 </beans>

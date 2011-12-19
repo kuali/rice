@@ -16,10 +16,10 @@
 package org.kuali.rice.krad.service;
 
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.rule.BusinessRule;
-import org.kuali.rice.krad.rule.event.AddAdHocRoutePersonEvent;
-import org.kuali.rice.krad.rule.event.AddAdHocRouteWorkgroupEvent;
-import org.kuali.rice.krad.rule.event.KualiDocumentEvent;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
+import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
+import org.kuali.rice.krad.rules.rule.event.KualiDocumentEvent;
 
 import java.util.List;
 

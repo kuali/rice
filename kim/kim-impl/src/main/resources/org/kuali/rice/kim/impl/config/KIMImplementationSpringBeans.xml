@@ -228,17 +228,17 @@
   <bean id="groupInternalService" class="org.kuali.rice.kim.impl.group.GroupInternalServiceImpl" />
   <bean id="responsibilityInternalService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalServiceImpl" />
 
-  <bean id="documentInitiatorRoleTypeService" class="org.kuali.rice.krad.authorization.PermissionDerivedRoleTypeServiceImpl">
+  <bean id="documentInitiatorRoleTypeService" class="org.kuali.rice.krad.kim.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-SYS" />
 	<property name="permissionTemplateName" value="Initiate Document" />
   </bean>
 
-  <bean id="documentEditorRoleTypeService" class="org.kuali.rice.krad.authorization.PermissionDerivedRoleTypeServiceImpl">
+  <bean id="documentEditorRoleTypeService" class="org.kuali.rice.krad.kim.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Edit Document" />
   </bean>
 
-  <bean id="documentOpenerRoleTypeService" class="org.kuali.rice.krad.authorization.PermissionDerivedRoleTypeServiceImpl">
+  <bean id="documentOpenerRoleTypeService" class="org.kuali.rice.krad.kim.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Open Document" />
   </bean>

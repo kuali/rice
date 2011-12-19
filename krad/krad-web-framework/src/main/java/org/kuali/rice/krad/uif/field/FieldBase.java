@@ -43,16 +43,19 @@ public class FieldBase extends ComponentBase implements Field {
     private static final long serialVersionUID = -5888414844802862760L;
 
     private String shortLabel;
-
     private LabelField labelField;
 
     private Position labelPlacement;
+
     private boolean labelFieldRendered;
+
+    private FieldSecurity fieldSecurity;
 
     public FieldBase() {
         labelFieldRendered = false;
-
         labelPlacement = Position.LEFT;
+
+        fieldSecurity = new FieldSecurity();
     }
 
     /**
@@ -228,5 +231,24 @@ public class FieldBase extends ComponentBase implements Field {
      */
     public void setLabelFieldRendered(boolean labelFieldRendered) {
         this.labelFieldRendered = labelFieldRendered;
+    }
+
+    /**
+     * Field Security object that indicates what authorization (permissions) exist for the field
+     *
+     * @return FieldSecurity instance
+     */
+    @Override
+    public FieldSecurity getComponentSecurity() {
+        return fieldSecurity;
+    }
+
+    /**
+     * Setter for the field security object
+     *
+     * @param fieldSecurity
+     */
+    public void setComponentSecurity(FieldSecurity fieldSecurity) {
+        this.fieldSecurity = fieldSecurity;
     }
 }

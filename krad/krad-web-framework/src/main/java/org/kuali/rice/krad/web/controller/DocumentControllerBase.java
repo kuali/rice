@@ -20,8 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -31,17 +29,16 @@ import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocument;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.krad.document.DocumentAuthorizer;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
 import org.kuali.rice.krad.exception.ValidationException;
-import org.kuali.rice.krad.question.ConfirmationQuestion;
-import org.kuali.rice.krad.rule.event.AddNoteEvent;
+import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DocumentHelperService;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -53,10 +50,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADPropertyConstants;
-import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.NoteType;
-import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.util.FileCopyUtils;
@@ -74,9 +68,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -102,11 +94,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
     private DocumentService documentService;
-    private DocumentHelperService documentHelperService;
+    private DocumentDictionaryService documentDictionaryService;
     private AttachmentService attachmentService;
     private NoteService noteService;
 
-    
     /**
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
@@ -165,7 +156,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         }
 
         WorkflowDocument workflowDocument = doc.getDocumentHeader().getWorkflowDocument();
-        if (!getDocumentHelperService().getDocumentAuthorizer(doc).canOpen(doc,
+        if (!getDocumentDictionaryService().getDocumentAuthorizer(doc).canOpen(doc,
                 GlobalVariables.getUserSession().getPerson())) {
             throw buildAuthorizationException("open", doc);
         }
@@ -447,7 +438,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
      * Called by the add note action for adding a note. Method validates, saves attachment and adds the
      * time stamp and author. Calls the UifControllerBase.addLine method to handle generic actions.
      *
-     * @param form - document form base containing the note instance that will be inserted into the document
+     * @param uifForm - document form base containing the note instance that will be inserted into the document
      * @return ModelAndView
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=insertNote")
@@ -482,23 +473,24 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                     attachmentTypeCode = newNote.getAttachment().getAttachmentTypeCode();
                 }
 
-                DocumentAuthorizer documentAuthorizer =
-                        KRADServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(document);
+                DocumentAuthorizer documentAuthorizer = getDocumentDictionaryService().getDocumentAuthorizer(document);
                 if (!documentAuthorizer.canAddNoteAttachment(document, attachmentTypeCode,
                         GlobalVariables.getUserSession().getPerson())) {
                     throw buildAuthorizationException("annotate", document);
                 }
+
                 try {
                     String attachmentType = null;
                     Attachment newAttachment = newNote.getAttachment();
                     if (newAttachment != null) {
                         attachmentType = newAttachment.getAttachmentTypeCode();
                     }
+
                     attachment = getAttachmentService().createAttachment(document.getNoteTarget(),
                             attachmentFile.getOriginalFilename(), attachmentFile.getContentType(),
                             (int) attachmentFile.getSize(), attachmentFile.getInputStream(), attachmentType);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RiceRuntimeException("Unable to store attachment", e);
                 }
             }
         }
@@ -558,8 +550,11 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             attachmentTypeCode = attachment.getAttachmentTypeCode();
         }
 
+        // check delete note authorization
+        Person user = GlobalVariables.getUserSession().getPerson();
         String authorUniversalIdentifier = note.getAuthorUniversalIdentifier();
-        if (!KRADUtils.canDeleteNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier)) {
+        if (!getDocumentDictionaryService().getDocumentAuthorizer(document).canDeleteNoteAttachment(document,
+                attachmentTypeCode, authorUniversalIdentifier, user)) {
             throw buildAuthorizationException("annotate", document);
         }
 
@@ -647,56 +642,56 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         Document document = form.getDocument();
 
         // TODO: need to move containsSensitiveDataPatternMatch to util class in krad
-        boolean containsSensitiveData = false;
-        //boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
-
-        // check if warning is configured in which case we will prompt, or if
-        // not business rules will thrown an error
-        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
-                KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
-
-        // determine if the question has been asked yet
-        Map<String, String> ticketContext = new HashMap<String, String>();
-        ticketContext.put(KRADPropertyConstants.DOCUMENT_NUMBER, document.getDocumentNumber());
-        ticketContext.put(KRADConstants.CALLING_METHOD, caller);
-        ticketContext.put(KRADPropertyConstants.NAME, fieldName);
-
-        boolean questionAsked = GlobalVariables.getUserSession().hasMatchingSessionTicket(
-                KRADConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET, ticketContext);
-
-        // start in logic for confirming the sensitive data
-        if (containsSensitiveData && warnForSensitiveData && !questionAsked) {
-            Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
-            if (question == null || !KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION.equals(question)) {
-
-                // TODO not ready for question framework yet
-                /*
-                     * // question hasn't been asked, prompt to continue return
-                     * this.performQuestionWithoutInput(mapping, form, request,
-                     * response, KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION,
-                     * getKualiConfigurationService()
-                     * .getPropertyValueAsString(RiceKeyConstants
-                     * .QUESTION_SENSITIVE_DATA_DOCUMENT),
-                     * KRADConstants.CONFIRMATION_QUESTION, caller, context);
-                     */
-                viewName = "ask_user_questions";
-            } else {
-                Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
-
-                // if no button clicked just reload the doc
-                if (ConfirmationQuestion.NO.equals(buttonClicked)) {
-                    // TODO figure out what to return
-                    viewName = "user_says_no";
-                }
-
-                // answered yes, create session ticket so we not to ask question
-                // again if there are further question requests
-                SessionTicket ticket = new SessionTicket(KRADConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET);
-                ticket.setTicketContext(ticketContext);
-                GlobalVariables.getUserSession().putSessionTicket(ticket);
-            }
-        }
+//        boolean containsSensitiveData = false;
+//        //boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
+//
+//        // check if warning is configured in which case we will prompt, or if
+//        // not business rules will thrown an error
+//        boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+//                KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+//                KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
+//
+//        // determine if the question has been asked yet
+//        Map<String, String> ticketContext = new HashMap<String, String>();
+//        ticketContext.put(KRADPropertyConstants.DOCUMENT_NUMBER, document.getDocumentNumber());
+//        ticketContext.put(KRADConstants.CALLING_METHOD, caller);
+//        ticketContext.put(KRADPropertyConstants.NAME, fieldName);
+//
+//        boolean questionAsked = GlobalVariables.getUserSession().hasMatchingSessionTicket(
+//                KRADConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET, ticketContext);
+//
+//        // start in logic for confirming the sensitive data
+//        if (containsSensitiveData && warnForSensitiveData && !questionAsked) {
+//            Object question = request.getParameter(KRADConstants.QUESTION_INST_ATTRIBUTE_NAME);
+//            if (question == null || !KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION.equals(question)) {
+//
+//                // TODO not ready for question framework yet
+//                /*
+//                     * // question hasn't been asked, prompt to continue return
+//                     * this.performQuestionWithoutInput(mapping, form, request,
+//                     * response, KRADConstants.DOCUMENT_SENSITIVE_DATA_QUESTION,
+//                     * getKualiConfigurationService()
+//                     * .getPropertyValueAsString(RiceKeyConstants
+//                     * .QUESTION_SENSITIVE_DATA_DOCUMENT),
+//                     * KRADConstants.CONFIRMATION_QUESTION, caller, context);
+//                     */
+//                viewName = "ask_user_questions";
+//            } else {
+//                Object buttonClicked = request.getParameter(KRADConstants.QUESTION_CLICKED_BUTTON);
+//
+//                // if no button clicked just reload the doc
+//                if (ConfirmationQuestion.NO.equals(buttonClicked)) {
+//                    // TODO figure out what to return
+//                    viewName = "user_says_no";
+//                }
+//
+//                // answered yes, create session ticket so we not to ask question
+//                // again if there are further question requests
+//                SessionTicket ticket = new SessionTicket(KRADConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET);
+//                ticket.setTicketContext(ticketContext);
+//                GlobalVariables.getUserSession().putSessionTicket(ticket);
+//            }
+//        }
 
         // returning null will indicate processing should continue (no redirect)
         return viewName;
@@ -763,15 +758,15 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         this.documentService = documentService;
     }
 
-    public DocumentHelperService getDocumentHelperService() {
-        if (this.documentHelperService == null) {
-            this.documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+    public DocumentDictionaryService getDocumentDictionaryService() {
+        if (this.documentDictionaryService == null) {
+            this.documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
         }
-        return this.documentHelperService;
+        return this.documentDictionaryService;
     }
 
-    public void setDocumentHelperService(DocumentHelperService documentHelperService) {
-        this.documentHelperService = documentHelperService;
+    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        this.documentDictionaryService = documentDictionaryService;
     }
 
     public AttachmentService getAttachmentService() {
@@ -785,6 +780,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         if (noteService == null) {
             noteService = KRADServiceLocator.getNoteService();
         }
+
         return this.noteService;
     }
 

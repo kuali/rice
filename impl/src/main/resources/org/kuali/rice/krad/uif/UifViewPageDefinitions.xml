@@ -32,10 +32,8 @@
 		<property name="viewHelperServiceClassName"
 			value="org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl" />
 		<!--<property name="styleClasses" value="workarea" />-->
-		<property name="presentationControllerClass"
-			value="org.kuali.rice.krad.uif.authorization.ViewPresentationControllerBase" />
-		<property name="authorizerClass"
-			value="org.kuali.rice.krad.uif.authorization.AuthorizerBase" />
+		<property name="presentationControllerClass" value="org.kuali.rice.krad.uif.view.ViewPresentationControllerBase"/>
+		<property name="authorizerClass" value="org.kuali.rice.krad.uif.view.ViewAuthorizerBase"/>
 		<property name="breadcrumbs">
 			<bean parent="Breadcrumbs" />
 		</property>
@@ -56,7 +54,6 @@
 				<entry key="actionFlags" value="#view.actionFlags" />
 			</map>
 		</property>
-		<property name="readOnly" value="@{!#actionFlags['canEdit']}" />
 	</bean>
 
 	<bean id="FormView" abstract="true" parent="FormView-parentBean" />
@@ -81,8 +78,8 @@
     <property name="viewTypeName" value="INQUIRY"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.inquiry.InquirableImpl"/>
     <property name="presentationControllerClass"
-              value="org.kuali.rice.krad.uif.authorization.InquiryPresentationControllerBase"/>
-    <property name="authorizerClass" value="org.kuali.rice.krad.uif.authorization.InquiryAuthorizerBase"/>
+              value="org.kuali.rice.krad.inquiry.InquiryViewPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.inquiry.InquiryViewAuthorizerBase"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.InquiryForm"/>
     <property name="defaultBindingObjectPath" value="dataObject"/>
     <property name="readOnly" value="true"/>
@@ -127,6 +124,9 @@
         class="org.kuali.rice.krad.uif.view.LookupView" parent="KNSFormView">
     <property name="viewTypeName" value="LOOKUP"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.lookup.LookupableImpl"/>
+    <property name="presentationControllerClass"
+              value="org.kuali.rice.krad.lookup.LookupViewPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.lookup.LookupViewAuthorizerBase"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.LookupForm"/>
     <property name="singlePageView" value="true"/>
     <property name="maintenanceUrlMapping" value="maintenance"/>
@@ -202,8 +202,8 @@
     <property name="formClass" value="org.kuali.rice.krad.web.form.DocumentFormBase"/>
     <property name="defaultBindingObjectPath" value="document"/>
     <property name="presentationControllerClass"
-              value="org.kuali.rice.krad.uif.authorization.DocumentPresentationControllerBase"/>
-    <property name="authorizerClass" value="org.kuali.rice.krad.uif.authorization.DocumentAuthorizerBase"/>
+              value="org.kuali.rice.krad.document.DocumentViewPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.document.DocumentViewAuthorizerBase"/>
     <property name="viewHelperServiceClassName"
               value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl"/>
     <property name="singlePageView" value="true"/>
@@ -234,8 +234,8 @@
     <property name="viewName" value="default"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
     <property name="presentationControllerClass"
-              value="org.kuali.rice.krad.uif.authorization.MaintenanceDocumentPresentationControllerBase"/>
-    <property name="authorizerClass" value="org.kuali.rice.krad.uif.authorization.MaintenanceDocumentAuthorizerBase"/>
+              value="org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.maintenance.MaintenanceViewAuthorizerBase"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.MaintenanceForm"/>
     <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
     <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>

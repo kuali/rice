@@ -19,10 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
+import org.kuali.rice.krad.document.DocumentAuthorizer;
+import org.kuali.rice.krad.document.DocumentPresentationController;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -31,16 +31,18 @@ import java.util.Map;
 
 /**
  * A single Document entry in the DataDictionary, which contains information relating to the display, validation, and
- * general
- * maintenance of a Document (transactional or maintenance) and its attributes.
- * <p/>
+ * general maintenance of a Document (transactional or maintenance) and its attributes
+ *
+ * <p>
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process
+ * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-abstract public class DocumentEntry extends DataDictionaryEntryBase {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentEntry.class);
+public abstract class DocumentEntry extends DataDictionaryEntryBase {
     private static final long serialVersionUID = 8231730871830055356L;
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentEntry.class);
 
     protected String documentTypeName;
 
@@ -60,12 +62,12 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     protected WorkflowProperties workflowProperties;
     protected WorkflowAttributes workflowAttributes;
 
+    protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
+    protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
+
     protected List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
     protected Map<String, ReferenceDefinition> defaultExistenceCheckMap =
             new LinkedHashMap<String, ReferenceDefinition>();
-
-    protected Class<? extends DocumentAuthorizer> documentAuthorizerClass;
-    protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
 
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getJstlKey()
@@ -316,6 +318,44 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     }
 
     /**
+     * Full class name for the {@link DocumentAuthorizer} that will authorize actions for this document
+     *
+     * @return class name for document authorizer
+     */
+    public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
+        return documentAuthorizerClass;
+    }
+
+    /**
+     * Setter for the document authorizer class name
+     *
+     * @param documentAuthorizerClass
+     */
+    public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
+        this.documentAuthorizerClass = documentAuthorizerClass;
+    }
+
+    /**
+     * Full class name for the {@link DocumentPresentationController} that will be invoked to implement presentation
+     * logic for the document
+     *
+     * @return class name for document presentation controller
+     */
+    public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {
+        return documentPresentationControllerClass;
+    }
+
+    /**
+     * Setter for the document presentation controller class name
+     *
+     * @param documentPresentationControllerClass
+     */
+    public void setDocumentPresentationControllerClass(
+            Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
+        this.documentPresentationControllerClass = documentPresentationControllerClass;
+    }
+
+    /**
      * @return List of all defaultExistenceCheck ReferenceDefinitions associated with this MaintenanceDocument, in the
      *         order in
      *         which they were added
@@ -355,48 +395,6 @@ abstract public class DocumentEntry extends DataDictionaryEntryBase {
     public void setEncryptDocumentDataInPersistentSessionStorage(
             boolean encryptDocumentDataInPersistentSessionStorage) {
         this.encryptDocumentDataInPersistentSessionStorage = encryptDocumentDataInPersistentSessionStorage;
-    }
-
-    /**
-     * The documentAuthorizerClass element is the full class name of the
-     * java class which will determine what features are available to the
-     * user based on the user role and document state.
-     */
-    public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
-        this.documentAuthorizerClass = documentAuthorizerClass;
-    }
-
-    /**
-     * Returns the document authorizer class for the document.  Only framework code should be calling this method.
-     * Client devs should use {@link DocumentTypeService#getDocumentAuthorizer(org.kuali.rice.krad.document.Document)}
-     * or
-     * {@link DocumentTypeService#getDocumentAuthorizer(String)}
-     *
-     * @return a document authorizer class
-     */
-    public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass() {
-        return documentAuthorizerClass;
-    }
-
-    /**
-     * Returns the document presentation controller class for the document.  Only framework code should be calling this
-     * method.
-     * Client devs should use {@link DocumentTypeService#getDocumentPresentationController(org.kuali.rice.krad.document.Document)}
-     * or
-     * {@link DocumentTypeService#getDocumentPresentationController(String)}
-     *
-     * @return the documentPresentationControllerClass
-     */
-    public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass() {
-        return this.documentPresentationControllerClass;
-    }
-
-    /**
-     * @param documentPresentationControllerClass the documentPresentationControllerClass to set
-     */
-    public void setDocumentPresentationControllerClass(
-            Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
-        this.documentPresentationControllerClass = documentPresentationControllerClass;
     }
 
     /**

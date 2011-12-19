@@ -157,7 +157,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         additionalPermissionDetails.put(KimConstants.AttributeConstants.ROLE_NAME, document.getRoleName());
 		if((document.getMembers()!=null && document.getMembers().size()>0) ||
 				(document.getDelegationMembers()!=null && document.getDelegationMembers().size()>0)){
-			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+			if(!getDocumentDictionaryService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE,
 					GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
 	            rulePassed = false;

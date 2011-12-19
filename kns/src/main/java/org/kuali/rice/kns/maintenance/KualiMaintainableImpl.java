@@ -27,11 +27,13 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.FieldRestriction;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -44,11 +46,9 @@ import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
-import org.kuali.rice.krad.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
@@ -116,7 +116,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	/**
 	 * @see Maintainable#populateBusinessObject(java.util.Map,
-	 *      org.kuali.rice.krad.document.MaintenanceDocument, String)
+	 *      org.kuali.rice.krad.maintenance.MaintenanceDocument, String)
 	 */
 	@SuppressWarnings("unchecked")
 	public Map populateBusinessObject(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument,
@@ -607,7 +607,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
     @Override
     public String getDocumentTitle(MaintenanceDocument document) {
-        return super.getDocumentTitle((org.kuali.rice.krad.document.MaintenanceDocument) document);
+        return super.getDocumentTitle((org.kuali.rice.krad.maintenance.MaintenanceDocument) document);
     }
 
     /**
@@ -1446,7 +1446,7 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 
 	protected DocumentHelperService getDocumentHelperService() {
 		if (documentHelperService == null) {
-			documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+			documentHelperService = KNSServiceLocator.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}

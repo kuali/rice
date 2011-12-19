@@ -1,0 +1,44 @@
+package org.kuali.rice.krad.uif.field;
+
+import org.kuali.rice.krad.datadictionary.AttributeSecurity;
+
+/**
+ * Data field security adds attribute security to the standard component security
+ *
+ * <p>
+ * The {@link AttributeSecurity} can be configured for the field to indicate there is security at the data layer
+ * (configured by component (class) and property). If the field is backed by a data dictionary
+ * {@link org.kuali.rice.krad.datadictionary.AttributeDefinition} the attribute security can be configured there and
+ * will be picked up and inserted into the field security
+ * </p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
+public class DataFieldSecurity extends FieldSecurity {
+    private static final long serialVersionUID = 585138507596582667L;
+
+    private AttributeSecurity attributeSecurity;
+
+    public DataFieldSecurity() {
+        super();
+    }
+
+    /**
+     * Attribute security instance configured or picked up for the field
+     *
+     * @return AttributeSecurity instance
+     */
+    public AttributeSecurity getAttributeSecurity() {
+        return attributeSecurity;
+    }
+
+    /**
+     * Setter for the fields attribute security
+     *
+     * @param attributeSecurity
+     */
+    public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
+        this.attributeSecurity = attributeSecurity;
+    }
+
+}

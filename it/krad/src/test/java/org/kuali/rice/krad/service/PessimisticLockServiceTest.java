@@ -21,10 +21,10 @@ import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.KimConstants.PermissionNames;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.authorization.AuthorizationConstants;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.impl.PessimisticLockServiceImpl;
@@ -510,7 +510,8 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     	// Ensure that the last user to attempt to establish locks has the expected finalModes entry (or lack of it).
     	if (finalModes != null) {
     		assertEquals("The last user that tried to establish locks does not have the expected status on their full entry privileges",
-    				latestUserHasFullEntry, StringUtils.equalsIgnoreCase(KRADConstants.KUALI_DEFAULT_TRUE_VALUE, (String)(finalModes.get(AuthorizationConstants.EditMode.FULL_ENTRY))));
+    				latestUserHasFullEntry, StringUtils.equalsIgnoreCase(KRADConstants.KUALI_DEFAULT_TRUE_VALUE, (String)(finalModes.get(
+                    AuthorizationConstants.EditMode.FULL_ENTRY))));
     	}
     	// Ensure that the expected number of locks are present.
     	assertEquals("The wrong number of pessimistic locks are in place", expectedLockQuantity, pessimisticLocks.size());

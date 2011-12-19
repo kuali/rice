@@ -84,6 +84,7 @@ public class CollectionGroup extends Group implements DataBinding {
     private String subCollectionSuffix;
 
     private CollectionGroupBuilder collectionGroupBuilder;
+    private CollectionGroupSecurity collectionGroupSecurity;
 
     public CollectionGroup() {
         renderAddLine = true;
@@ -91,6 +92,8 @@ public class CollectionGroup extends Group implements DataBinding {
         showInactive = false;
         showHideInactiveButton = true;
         renderSelectField = false;
+
+        collectionGroupSecurity = new CollectionGroupSecurity();
 
         filters = new ArrayList<CollectionFilter>();
         actionFields = new ArrayList<ActionField>();
@@ -200,7 +203,10 @@ public class CollectionGroup extends Group implements DataBinding {
 
         pushCollectionGroupToReference();
 
-        getCollectionGroupBuilder().build(view, model, this);
+        // if rendering the collection group, build out the lines
+        if (isRender()) {
+            getCollectionGroupBuilder().build(view, model, this);
+        }
 
         // TODO: is this necessary to call again?
         pushCollectionGroupToReference();
@@ -711,6 +717,25 @@ public class CollectionGroup extends Group implements DataBinding {
     }
 
     /**
+     * Collection Security object that indicates what authorization (permissions) exist for the collection
+     *
+     * @return CollectionGroupSecurity instance
+     */
+    @Override
+    public CollectionGroupSecurity getComponentSecurity() {
+        return collectionGroupSecurity;
+    }
+
+    /**
+     * Setter for the collection groups security object
+     *
+     * @param collectionGroupSecurity
+     */
+    public void setComponentSecurity(CollectionGroupSecurity collectionGroupSecurity) {
+        this.collectionGroupSecurity = collectionGroupSecurity;
+    }
+
+    /**
      * <code>CollectionGroupBuilder</code> instance that will build the
      * components dynamically for the collection instance
      *
@@ -731,15 +756,6 @@ public class CollectionGroup extends Group implements DataBinding {
     public void setCollectionGroupBuilder(CollectionGroupBuilder collectionGroupBuilder) {
         this.collectionGroupBuilder = collectionGroupBuilder;
     }
-
-    /**
-     * @see org.kuali.rice.krad.uif.container.ContainerBase#getItems()
-     */
-//    @SuppressWarnings("unchecked")
-//    @Override
-//    public List<? extends Field> getItems() {
-//        return (List<? extends Field>) super.getItems();
-//    }
 
     /**
      * @param showHideInactiveButton the showHideInactiveButton to set

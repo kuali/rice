@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.krad.datadictionary.DataDictionaryEntry;
@@ -47,4 +49,10 @@ public interface KNSDocumentEntry extends DataDictionaryEntry, Serializable, Ini
     Class<? extends DerivedValuesSetter> getDerivedValuesSetterClass();
 
     void setDerivedValuesSetterClass(Class<? extends DerivedValuesSetter> derivedValuesSetter);
+
+    public Class<? extends DocumentAuthorizer> getDocumentAuthorizerClass();
+
+    public Class<? extends DocumentPresentationController> getDocumentPresentationControllerClass();
+
+
 }

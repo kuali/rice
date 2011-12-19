@@ -40,11 +40,15 @@ import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.util.WebUtils;
@@ -62,21 +66,17 @@ import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.krad.document.authorization.DocumentAuthorizerBase;
-import org.kuali.rice.krad.document.authorization.DocumentPresentationController;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.exception.DocumentAuthorizationException;
 import org.kuali.rice.krad.exception.UnknownDocumentIdException;
-import org.kuali.rice.krad.question.ConfirmationQuestion;
-import org.kuali.rice.krad.rule.event.AddAdHocRoutePersonEvent;
-import org.kuali.rice.krad.rule.event.AddAdHocRouteWorkgroupEvent;
-import org.kuali.rice.krad.rule.event.AddNoteEvent;
-import org.kuali.rice.krad.rule.event.SendAdHocRequestsEvent;
+import org.kuali.rice.kns.question.ConfirmationQuestion;
+import org.kuali.rice.krad.rules.rule.event.AddAdHocRoutePersonEvent;
+import org.kuali.rice.krad.rules.rule.event.AddAdHocRouteWorkgroupEvent;
+import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
+import org.kuali.rice.krad.rules.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.BusinessObjectService;
-import org.kuali.rice.krad.service.DocumentHelperService;
 import org.kuali.rice.krad.service.DocumentService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -1693,7 +1693,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if (formBase.isFormDocumentInitialized()) {
             Document document = formBase.getDocument();
             Person user = GlobalVariables.getUserSession().getPerson();
-            DocumentPresentationController documentPresentationController = KRADServiceLocatorWeb
+            DocumentPresentationController documentPresentationController = KNSServiceLocator
                     .getDocumentHelperService().getDocumentPresentationController(document);
             DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
             Set<String> documentActions = documentPresentationController.getDocumentActions(document);
@@ -1752,7 +1752,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected DocumentHelperService getDocumentHelperService() {
         if (documentHelperService == null) {
-            documentHelperService = KRADServiceLocatorWeb.getDocumentHelperService();
+            documentHelperService = KNSServiceLocator.getDocumentHelperService();
         }
         return this.documentHelperService;
     }

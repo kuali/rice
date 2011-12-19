@@ -17,7 +17,7 @@ package org.kuali.rice.kns.rule;
 
 import org.apache.struts.action.ActionForm;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
-import org.kuali.rice.krad.rule.BusinessRule;
+import org.kuali.rice.krad.rules.rule.BusinessRule;
 
 import javax.servlet.http.HttpServletRequest;
 

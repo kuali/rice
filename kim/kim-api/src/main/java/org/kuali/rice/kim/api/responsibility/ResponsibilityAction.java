@@ -290,7 +290,6 @@ public final class ResponsibilityAction extends AbstractDataTransferObject
                             responsibilityName != null &&
                             responsibilityId != null &&
                             responsibilityNamespaceCode != null &&
-                            qualifier != null &&
                             delegates != null &&
                             roleId != null;
 
@@ -439,10 +438,7 @@ public final class ResponsibilityAction extends AbstractDataTransferObject
         }
 
         public void setQualifier(Map<String, String> qualifier) {
-            if (qualifier == null) {
-                throw new IllegalArgumentException("qualifier is null");
-            }
-            this.qualifier = Collections.unmodifiableMap(Maps.newHashMap(qualifier));
+            this.qualifier = (qualifier != null) ? Collections.unmodifiableMap(Maps.newHashMap(qualifier)) : qualifier;
         }
 
         public void setDelegates(List<DelegateType.Builder> delegates) {

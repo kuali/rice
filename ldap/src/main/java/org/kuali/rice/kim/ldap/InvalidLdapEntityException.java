@@ -21,7 +21,10 @@ package org.kuali.rice.kim.ldap;
  * @author Leo Przybylski
  */
 public class InvalidLdapEntityException extends RuntimeException { 
-    public InvalidLdapEntityException(String message) {
+
+	private static final long serialVersionUID = 1831295133453011336L;
+
+	public InvalidLdapEntityException(String message) {
         super(message);
     }
 }

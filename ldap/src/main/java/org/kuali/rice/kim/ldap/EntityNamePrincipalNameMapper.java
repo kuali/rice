@@ -15,52 +15,31 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.ContextMapper;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
-import org.kuali.rice.kim.util.Constants;
+import org.springframework.ldap.core.ContextMapper;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityNamePrincipalNameMapper extends AbstractContextMapper {
-    private Constants constants;
+public class EntityNamePrincipalNameMapper extends BaseMapper<EntityNamePrincipalName> {
 
     private ContextMapper defaultNameMapper;
     
-    public EntityNamePrincipalName mapFromContext(DirContextOperations context) {
-        return ((EntityNamePrincipalName.Builder) doMapFromContext(context)).build();
+    @Override
+    EntityNamePrincipalName mapDtoFromContext(DirContextOperations context) {
+        EntityNamePrincipalName.Builder builder = mapBuilderFromContext(context);
+        return builder != null ? builder.build() : null;
     }
     
-    public Object doMapFromContext(DirContextOperations context) {
+    EntityNamePrincipalName.Builder mapBuilderFromContext(DirContextOperations context) {
         final EntityNamePrincipalName.Builder person = EntityNamePrincipalName.Builder.create();
         person.setDefaultName((EntityName.Builder) getDefaultNameMapper().mapFromContext(context));
         person.setPrincipalName(context.getStringAttribute(getConstants().getKimLdapNameProperty()));
         return person;
     }
-    
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
-
 
     /**
      * Gets the value of defaultNameMapper

@@ -15,37 +15,35 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.kuali.rice.core.util.BufferedLogger.debug;
 
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
-import org.kuali.rice.kim.util.Constants;
-
-import static org.kuali.rice.core.util.BufferedLogger.*;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityPhoneMapper extends AbstractContextMapper {
-    private Constants constants;
+public class EntityPhoneMapper extends BaseMapper<EntityPhone> {
+
+	@Override
+    EntityPhone mapDtoFromContext(DirContextOperations context) {
+        return mapDtoFromContext(context, true);
+    }
     
-    public EntityPhone.Builder mapFromContext(DirContextOperations context, boolean isdefault) {
-        return (EntityPhone.Builder) doMapFromContext(context, isdefault);
+    EntityPhone mapDtoFromContext(DirContextOperations context, boolean isdefault) {
+    	EntityPhone.Builder builder = mapBuilderFromContext(context, isdefault);
+        return builder != null ? builder.build() : null;
     }
 
-    public EntityPhone.Builder mapFromContext(DirContextOperations context) {
-        return mapFromContext(context, true);
+    EntityPhone.Builder mapBuilderFromContext(DirContextOperations context) {
+        return mapBuilderFromContext(context, true);
     }
 
-    public Object doMapFromContext(DirContextOperations context) {
-        return doMapFromContext(context, true);
-    }
-
-    protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+    EntityPhone.Builder mapBuilderFromContext(DirContextOperations context, boolean isdefault) {        
         final EntityPhone.Builder builder = EntityPhone.Builder.create();
         debug("Looking up attribute from context ", getConstants().getEmployeePhoneLdapProperty());
         final String pn = context.getStringAttribute(getConstants().getEmployeePhoneLdapProperty());
@@ -71,22 +69,5 @@ public class EntityPhoneMapper extends AbstractContextMapper {
 
         return builder;
     }
-    
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
 
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 }

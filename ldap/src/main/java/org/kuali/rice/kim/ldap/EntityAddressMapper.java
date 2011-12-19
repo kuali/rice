@@ -15,33 +15,31 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
-import org.kuali.rice.kim.util.Constants;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityAddressMapper extends AbstractContextMapper {
-    private Constants constants;
-
-    public EntityAddress.Builder mapFromContext(DirContextOperations context, boolean isdefault) {
-        return (EntityAddress.Builder) doMapFromContext(context, isdefault);
+public class EntityAddressMapper extends BaseMapper<EntityAddress> {
+	
+	@Override
+	EntityAddress mapDtoFromContext(DirContextOperations context) {
+		return mapDtoFromContext(context, false);
+	}
+	
+    EntityAddress mapDtoFromContext(DirContextOperations context, boolean isdefault) {
+    	EntityAddress.Builder builder = mapBuilderFromContext(context, isdefault);
+        return builder != null ? builder.build() : null;
     }
 
-    public EntityAddress.Builder mapFromContext(DirContextOperations context) {
-        return mapFromContext(context, false);
+    EntityAddress.Builder mapBuilderFromContext(DirContextOperations context) {
+        return mapBuilderFromContext(context, false);
     }
 
-    public Object doMapFromContext(DirContextOperations context) {
-        return doMapFromContext(context, false);
-    }
-
-    protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+    EntityAddress.Builder mapBuilderFromContext(DirContextOperations context, boolean isdefault) {        
         final EntityAddress.Builder builder = EntityAddress.Builder.create();
         final String line1              = context.getStringAttribute("employeePrimaryDeptName");
         final String line2              = context.getStringAttribute("employeePoBox");
@@ -60,22 +58,4 @@ public class EntityAddressMapper extends AbstractContextMapper {
         return builder;
     }
     
-    
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 }

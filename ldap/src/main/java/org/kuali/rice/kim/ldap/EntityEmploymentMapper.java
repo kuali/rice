@@ -15,28 +15,24 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.util.Constants;
-
-import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityEmploymentMapper extends AbstractContextMapper {
-    private Constants constants;
-    
-    
-    public EntityEmployment.Builder mapFromContext(DirContextOperations context) {
-        return (EntityEmployment.Builder) doMapFromContext(context);
+public class EntityEmploymentMapper extends BaseMapper<EntityEmployment> {
+
+    @Override
+    EntityEmployment mapDtoFromContext(DirContextOperations context) {
+    	EntityEmployment.Builder builder = mapBuilderFromContext(context);
+        return builder != null ? builder.build() : null;
     }
 
-    public Object doMapFromContext(DirContextOperations context) {
+    EntityEmployment.Builder mapBuilderFromContext(DirContextOperations context) {
         final String departmentCode = context.getStringAttribute(getConstants().getDepartmentLdapProperty());
         
         if (departmentCode == null) {
@@ -55,21 +51,4 @@ public class EntityEmploymentMapper extends AbstractContextMapper {
         return employee;
     }
     
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 }

@@ -15,20 +15,22 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.util.Constants;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityPrivacyPreferencesMapper extends AbstractContextMapper {
-    private Constants constants;
+public class EntityPrivacyPreferencesMapper extends BaseMapper<EntityPrivacyPreferences> {
+
+    @Override
+    EntityPrivacyPreferences mapDtoFromContext(DirContextOperations context) {
+    	EntityPrivacyPreferences.Builder builder = mapBuilderFromContext(context);
+    	return builder != null ? builder.build() : null;
+    }
     
-    public Object doMapFromContext(DirContextOperations context) {
+    EntityPrivacyPreferences.Builder mapBuilderFromContext(DirContextOperations context) {
         final String entityId      = context.getStringAttribute(getConstants().getKimLdapIdProperty());
         final EntityPrivacyPreferences.Builder person = EntityPrivacyPreferences.Builder.create(entityId);
         person.setSuppressName(false);
@@ -39,21 +41,5 @@ public class EntityPrivacyPreferencesMapper extends AbstractContextMapper {
         return person;
     }
     
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
 
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 }

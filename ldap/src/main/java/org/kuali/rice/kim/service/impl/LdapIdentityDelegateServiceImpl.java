@@ -15,22 +15,28 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.Collections;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
+import org.kuali.rice.core.api.criteria.CriteriaValue;
+import org.kuali.rice.core.api.criteria.EqualPredicate;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
+import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-import org.kuali.rice.kim.api.identity.IdentityService;
-import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
-
 import org.kuali.rice.kim.dao.LdapPrincipalDao;
+import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
+import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 
 /**
  * Implementation of {@link IdentityService} that communicates with and serves information
@@ -131,7 +137,16 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
             return super.getEntityDefaultByPrincipalName(principalName);
         }
 	}
+    
 	
+    private static <U extends CriteriaValue<?>> Object getVal(U toConv) {
+        Object o = toConv.getValue();
+        if (o instanceof DateTime) {
+            return new Timestamp(((DateTime) o).getMillis());
+        }
+        return o;
+    }
+    
     /**
      * Password lookups not supported by EDS. Use Natural Authentication strategies instead
      * of this if that's what you need.

@@ -18,15 +18,13 @@ package org.kuali.rice.kim.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.entity.Entity;
-import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
-
+import org.kuali.rice.kim.util.Constants;
 import org.springframework.ldap.core.ContextMapper;
-import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.LdapTemplate;
 
 
@@ -84,4 +82,6 @@ public interface LdapPrincipalDao {
     Map<String, EntityNamePrincipalName> getDefaultNamesForEntityIds(List<String> entityIds);
 
     Map<String, ContextMapper> getContextMappers();
+    
+    Constants getKimConstants();
 }

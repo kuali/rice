@@ -15,60 +15,38 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.ContextMapper;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
-import org.kuali.rice.kim.api.identity.address.EntityAddress;
-import org.kuali.rice.kim.api.identity.email.EntityEmail;
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.util.Constants;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityTypeContactInfoDefaultMapper extends AbstractContextMapper {
-    private Constants constants;
-    
+public class EntityTypeContactInfoDefaultMapper extends BaseMapper<EntityTypeContactInfoDefault> {
+
     private EntityAddressMapper addressMapper;
     private EntityPhoneMapper phoneMapper;
     private EntityEmailMapper emailMapper;
 
-    public EntityTypeContactInfoDefault.Builder mapFromContext(DirContextOperations context) {
-        return (EntityTypeContactInfoDefault.Builder) doMapFromContext(context);
+    @Override
+    EntityTypeContactInfoDefault mapDtoFromContext(DirContextOperations context) {
+        EntityTypeContactInfoDefault.Builder builder = mapBuilderFromContext(context);
+        return builder != null ? builder.build() : null;
     }
 
-    public Object doMapFromContext(DirContextOperations context) {
+    EntityTypeContactInfoDefault.Builder mapBuilderFromContext(DirContextOperations context) {
         final EntityTypeContactInfoDefault.Builder retval = EntityTypeContactInfoDefault.Builder.create(); 
         
-        retval.setDefaultAddress(getAddressMapper().mapFromContext(context));
-        retval.setDefaultPhoneNumber(getPhoneMapper().mapFromContext(context));
-        retval.setDefaultEmailAddress(getEmailMapper().mapFromContext(context));
+        retval.setDefaultAddress(getAddressMapper().mapBuilderFromContext(context));
+        retval.setDefaultPhoneNumber(getPhoneMapper().mapBuilderFromContext(context));
+        retval.setDefaultEmailAddress(getEmailMapper().mapBuilderFromContext(context));
         retval.setEntityTypeCode(getConstants().getPersonEntityTypeCode());
         // debug("Created Entity Type with code ", retval.getEntityTypeCode());
         
         return retval;
     }
-    
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
 
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
     /**
      * Gets the value of addressMapper
      *

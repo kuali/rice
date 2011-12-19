@@ -16,33 +16,32 @@
 package org.kuali.rice.kim.ldap;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.ldap.core.ContextMapper;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
 
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
-import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.util.Constants;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityDefaultMapper extends AbstractContextMapper {
-    private Constants constants;
-    private EntityAffiliationMapper affiliationMapper;
-    private EntityTypeContactInfoMapper entityTypeMapper;
+public class EntityDefaultMapper extends BaseMapper<EntityDefault> {
+
+	private EntityAffiliationMapper affiliationMapper;
+    private EntityTypeContactInfoDefaultMapper entityTypeContactInfoDefaultMapper;
     private EntityNameMapper defaultNameMapper;
     private EntityEmploymentMapper employmentMapper;
     
-    public Object doMapFromContext(DirContextOperations context) {
+    @Override
+    EntityDefault mapDtoFromContext(DirContextOperations context) {
+    	EntityDefault.Builder builder = mapBuilderFromContext(context);
+        return builder != null ? builder.build() : null;
+    }
+    
+    EntityDefault.Builder mapBuilderFromContext(DirContextOperations context) {
         
         final String entityId = context.getStringAttribute(getConstants().getKimLdapIdProperty());
         final String principalName = context.getStringAttribute(getConstants().getKimLdapNameProperty());
@@ -62,15 +61,15 @@ public class EntityDefaultMapper extends AbstractContextMapper {
         externalId.setExternalId(entityId);
         person.getExternalIdentifiers().add(externalId);
         
-        person.setAffiliations((List<EntityAffiliation.Builder>) getAffiliationMapper().mapFromContext(context));
+        person.setAffiliations(getAffiliationMapper().mapBuilderFromContext(context));
         
         person.setEntityTypeContactInfos(new ArrayList<EntityTypeContactInfoDefault.Builder>());
-        person.getEntityTypeContactInfos().add((EntityTypeContactInfoDefault.Builder) getEntityTypeMapper().mapFromContext(context));
+        person.getEntityTypeContactInfos().add(getEntityTypeContactInfoDefaultMapper().mapBuilderFromContext(context));
         
-        person.setName(getDefaultNameMapper().mapFromContext(context));
+        person.setName(getDefaultNameMapper().mapBuilderFromContext(context));
         person.setEntityId(entityId);
         
-        person.setEmployment((EntityEmployment.Builder) getEmploymentMapper().mapFromContext(context));
+        person.setEmployment(getEmploymentMapper().mapBuilderFromContext(context));
 
         person.setEntityId(entityId);
         person.setPrincipals(new ArrayList<Principal.Builder>()); 
@@ -85,25 +84,6 @@ public class EntityDefaultMapper extends AbstractContextMapper {
         
         return person;
     }
-    
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
-
     
     /**
      * Gets the value of affiliationMapper
@@ -128,8 +108,8 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @return the value of entityTypeMapper
      */
-    public final EntityTypeContactInfoMapper getEntityTypeMapper() {
-        return this.entityTypeMapper;
+    public final EntityTypeContactInfoDefaultMapper getEntityTypeContactInfoDefaultMapper() {
+        return this.entityTypeContactInfoDefaultMapper;
     }
 
     /**
@@ -137,8 +117,8 @@ public class EntityDefaultMapper extends AbstractContextMapper {
      *
      * @param argEntityTypeMapper Value to assign to this.entityTypeMapper
      */
-    public final void setEntityTypeMapper(final EntityTypeContactInfoMapper argEntityTypeMapper) {
-        this.entityTypeMapper = argEntityTypeMapper;
+    public final void setEntityTypeContactInfoDefaultMapper(final EntityTypeContactInfoDefaultMapper argEntityTypeMapper) {
+        this.entityTypeContactInfoDefaultMapper = argEntityTypeMapper;
     }
 
     /**

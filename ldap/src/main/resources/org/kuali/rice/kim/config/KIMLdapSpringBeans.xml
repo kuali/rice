@@ -50,122 +50,122 @@
     <!-- //////////////////////////////////////////////////////////////// -->
     <!-- // Start of Mappings                                          // -->
     <!-- //////////////////////////////////////////////////////////////// -->
-    <bean id="ContextMapper-kimEntityAddressInfo" 
-          parent="ContextMapper-kimEntityAddressInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityAddressInfo-parentBean" 
+    <bean id="ContextMapper-EntityAddress" 
+          parent="ContextMapper-EntityAddress-parentBean" />
+    <bean id="ContextMapper-EntityAddress-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityAddressInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityAddressMapper" >
       <property name="constants" ref="kimConstants" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityAffiliationInfo" 
-          parent="ContextMapper-kimEntityAffiliationInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityAffiliationInfo-parentBean" 
+    <bean id="ContextMapper-EntityAffiliation" 
+          parent="ContextMapper-EntityAffiliation-parentBean" />
+    <bean id="ContextMapper-EntityAffiliation-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityAffiliationInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityAffiliationMapper" >
       <property name="constants" ref="kimConstants" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityDefaultInfo" 
-          parent="ContextMapper-kimEntityDefaultInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityDefaultInfo-parentBean" 
+    <bean id="ContextMapper-EntityDefault" 
+          parent="ContextMapper-EntityDefault-parentBean" />
+    <bean id="ContextMapper-EntityDefault-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityDefaultInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityDefaultMapper" >
       <property name="constants" ref="kimConstants" />
-      <property name="affiliationMapper" ref="ContextMapper-kimEntityAffiliationInfo" />
-      <property name="defaultNameMapper" ref="ContextMapper-kimEntityNameInfo" />
-      <property name="employmentMapper"  ref="ContextMapper-kimEntityEmploymentInformationInfo" />
-      <property name="entityTypeMapper"  ref="ContextMapper-kimEntityEntityTypeDefaultInfo" />
+      <property name="affiliationMapper" ref="ContextMapper-EntityAffiliation" />
+      <property name="defaultNameMapper" ref="ContextMapper-EntityName" />
+      <property name="employmentMapper"  ref="ContextMapper-EntityEmployment" />
+      <property name="entityTypeContactInfoDefaultMapper"  ref="ContextMapper-EntityTypeContactInfoDefault" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityEmailInfo" 
-          parent="ContextMapper-kimEntityEmailInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityEmailInfo-parentBean" 
+    <bean id="ContextMapper-EntityEmail" 
+          parent="ContextMapper-EntityEmail-parentBean" />
+    <bean id="ContextMapper-EntityEmail-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityEmailInfoMapper" >
-      <property name="constants" ref="kimConstants" />
-    </bean>
-
-    <bean id="ContextMapper-kimEntityEmploymentInformationInfo" 
-          parent="ContextMapper-kimEntityEmploymentInformationInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityEmploymentInformationInfo-parentBean" 
-          abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityEmploymentInformationInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityEmailMapper" >
       <property name="constants" ref="kimConstants" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityEntityTypeDefaultInfo" 
-          parent="ContextMapper-kimEntityEntityTypeDefaultInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityEntityTypeDefaultInfo-parentBean" 
+    <bean id="ContextMapper-EntityEmployment" 
+          parent="ContextMapper-EntityEmployment-parentBean" />
+    <bean id="ContextMapper-EntityEmployment-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityEntityTypeDefaultInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityEmploymentMapper" >
       <property name="constants" ref="kimConstants" />
-      <property name="addressMapper" ref="ContextMapper-kimEntityAddressInfo"  />
-      <property name="phoneMapper"   ref="ContextMapper-kimEntityPhoneInfo" />
-      <property name="emailMapper"   ref="ContextMapper-kimEntityEmailInfo" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityEntityTypeInfo" 
-          parent="ContextMapper-kimEntityEntityTypeInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityEntityTypeInfo-parentBean" 
+    <bean id="ContextMapper-EntityTypeContactInfoDefault" 
+          parent="ContextMapper-EntityTypeContactInfoDefault-parentBean" />
+    <bean id="ContextMapper-EntityTypeContactInfoDefault-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityEntityTypeInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityTypeContactInfoDefaultMapper" >
+      <property name="constants" ref="kimConstants" />
+      <property name="addressMapper" ref="ContextMapper-EntityAddress"  />
+      <property name="phoneMapper"   ref="ContextMapper-EntityPhone" />
+      <property name="emailMapper"   ref="ContextMapper-EntityEmail" />
+    </bean>
+
+    <bean id="ContextMapper-EntityTypeContactInfo" 
+          parent="ContextMapper-EntityTypeContactInfo-parentBean" />
+    <bean id="ContextMapper-EntityTypeContactInfo-parentBean" 
+          abstract="true" 
+          class="org.kuali.rice.kim.ldap.EntityTypeContactInfoMapper" >
       <property name="constants" ref="kimConstants" /> 
-      <property name="addressMapper" ref="ContextMapper-kimEntityAddressInfo"  />
-      <property name="phoneMapper"   ref="ContextMapper-kimEntityPhoneInfo" />
-      <property name="emailMapper"   ref="ContextMapper-kimEntityEmailInfo" />
+      <property name="addressMapper" ref="ContextMapper-EntityAddress"  />
+      <property name="phoneMapper"   ref="ContextMapper-EntityPhone" />
+      <property name="emailMapper"   ref="ContextMapper-EntityEmail" />
    </bean>
 
-    <bean id="ContextMapper-kimEntityInfo" 
-          parent="ContextMapper-kimEntityInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityInfo-parentBean" 
+    <bean id="ContextMapper-Entity" 
+          parent="ContextMapper-Entity-parentBean" />
+    <bean id="ContextMapper-Entity-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityMapper" >
       <property name="constants" ref="kimConstants" /> 
-      <property name="affiliationMapper" ref="ContextMapper-kimEntityAffiliationInfo" />
-      <property name="defaultNameMapper" ref="ContextMapper-kimEntityNameInfo" />
-      <property name="employmentMapper"  ref="ContextMapper-kimEntityEmploymentInformationInfo" />
-      <property name="entityTypeMapper"  ref="ContextMapper-kimEntityEntityTypeInfo" />
+      <property name="affiliationMapper" ref="ContextMapper-EntityAffiliation" />
+      <property name="defaultNameMapper" ref="ContextMapper-EntityName" />
+      <property name="employmentMapper"  ref="ContextMapper-EntityEmployment" />
+      <property name="entityTypeContactInfoMapper"  ref="ContextMapper-EntityTypeContactInfo" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityNameInfo" 
-          parent="ContextMapper-kimEntityNameInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityNameInfo-parentBean" 
+    <bean id="ContextMapper-EntityName" 
+          parent="ContextMapper-EntityName-parentBean" />
+    <bean id="ContextMapper-EntityName-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityNameInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityNameMapper" >
       <property name="constants" ref="kimConstants" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityNamePrincipalNameInfo" 
-          parent="ContextMapper-kimEntityNamePrincipalNameInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityNamePrincipalNameInfo-parentBean" 
+    <bean id="ContextMapper-EntityNamePrincipalName" 
+          parent="ContextMapper-EntityNamePrincipalName-parentBean" />
+    <bean id="ContextMapper-EntityNamePrincipalName-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityNamePrincipalNameInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityNamePrincipalNameMapper" >
       <property name="constants" ref="kimConstants" />
-      <property name="defaultNameMapper" ref="ContextMapper-kimEntityNameInfo" />
+      <property name="defaultNameMapper" ref="ContextMapper-EntityName" />
     </bean>
 
-    <bean id="ContextMapper-kimEntityPhoneInfo" 
-          parent="ContextMapper-kimEntityPhoneInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityPhoneInfo-parentBean" 
+    <bean id="ContextMapper-EntityPhone" 
+          parent="ContextMapper-EntityPhone-parentBean" />
+    <bean id="ContextMapper-EntityPhone-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityPhoneInfoMapper" >
-      <property name="constants" ref="kimConstants" />
-    </bean>
-
-    <bean id="ContextMapper-kimEntityPrivacyPreferencesInfo" 
-          parent="ContextMapper-kimEntityPrivacyPreferencesInfo-parentBean" />
-    <bean id="ContextMapper-kimEntityPrivacyPreferencesInfo-parentBean" 
-          abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimEntityPrivacyPreferencesInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityPhoneMapper" >
       <property name="constants" ref="kimConstants" />
     </bean>
 
-    <bean id="ContextMapper-kimPrincipalInfo" 
-          parent="ContextMapper-kimPrincipalInfo-parentBean" />
-    <bean id="ContextMapper-kimPrincipalInfo-parentBean" 
+    <bean id="ContextMapper-EntityPrivacyPreferences" 
+          parent="ContextMapper-EntityPrivacyPreferences-parentBean" />
+    <bean id="ContextMapper-EntityPrivacyPreferences-parentBean" 
           abstract="true" 
-          class="org.kuali.rice.kim.ldap.KimPrincipalInfoMapper" >
+          class="org.kuali.rice.kim.ldap.EntityPrivacyPreferencesMapper" >
+      <property name="constants" ref="kimConstants" />
+    </bean>
+
+    <bean id="ContextMapper-Principal" 
+          parent="ContextMapper-Principal-parentBean" />
+    <bean id="ContextMapper-Principal-parentBean" 
+          abstract="true" 
+          class="org.kuali.rice.kim.ldap.PrincipalMapper" >
       <property name="constants"        ref="kimConstants" />
       <property name="parameterService" ref="parameterService" />
     </bean>
@@ -209,31 +209,29 @@
 
       <property name="contextMappers">
         <map>
-          <entry key="KimPrincipalInfo"         value-ref="ContextMapper-kimPrincipalInfo" />
-          <entry key="KimEntityAddressInfo"     value-ref="ContextMapper-kimEntityAddressInfo" />
-          <entry key="KimEntityAffiliationInfo" value-ref="ContextMapper-kimEntityAffiliationInfo" />
-          <entry key="KimEntityDefaultInfo"     value-ref="ContextMapper-kimEntityDefaultInfo" />
-          <entry key="KimEntityEmailInfo"       value-ref="ContextMapper-kimEntityEmailInfo" />
-          <entry key="KimEntityEmploymentInformationInfo"
-                 value-ref="ContextMapper-kimEntityEmploymentInformationInfo" />
-          <entry key="KimEntityEntityTypeDefaultInfo" 
-                 value-ref="ContextMapper-kimEntityEntityTypeDefaultInfo" />
-          <entry key="KimEntityEntityTypeInfo"  value-ref="ContextMapper-kimEntityEntityTypeInfo" />
-          <entry key="KimEntityInfo"            value-ref="ContextMapper-kimEntityInfo" />
-          <entry key="KimEntityNameInfo"        value-ref="ContextMapper-kimEntityNameInfo" />
-          <entry key="KimEntityNamePrincipalNameInfo"
-                 value-ref="ContextMapper-kimEntityNamePrincipalNameInfo" />
-          <entry key="KimEntityPhoneInfo"       value-ref="ContextMapper-kimEntityPhoneInfo" />
-          <entry key="KimEntityPrivacyPreferencesInfo" 
-                 value-ref="ContextMapper-kimEntityPrivacyPreferencesInfo" />
+			<entry key="Principal" value-ref="ContextMapper-Principal" />
+			<entry key="EntityAddress" value-ref="ContextMapper-EntityAddress" />
+			<entry key="EntityAffiliation" value-ref="ContextMapper-EntityAffiliation" />
+			<entry key="EntityDefault" value-ref="ContextMapper-EntityDefault" />
+			<entry key="EntityEmail" value-ref="ContextMapper-EntityEmail" />
+			<entry key="EntityEmploymentInformation" value-ref="ContextMapper-EntityEmployment" />
+			<entry key="EntityTypeContactInfo" value-ref="ContextMapper-EntityTypeContactInfo" />
+			<entry key="EntityTypeContactInfoDefault" value-ref="ContextMapper-EntityTypeContactInfoDefault" />
+			<entry key="Entity" value-ref="ContextMapper-Entity" />
+			<entry key="EntityName" value-ref="ContextMapper-EntityName" />
+			<entry key="EntityNamePrincipalName" value-ref="ContextMapper-EntityNamePrincipalName" />
+			<entry key="EntityPhone" value-ref="ContextMapper-EntityPhone" />
+			<entry key="EntityPrivacyPreferences" value-ref="ContextMapper-EntityPrivacyPreferences" />
         </map>
       </property>
     </bean>
 
-    <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl">
+    <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl"
+    	p:businessObjectService-ref="businessObjectService"
+        p:criteriaLookupService-ref="criteriaLookupService">
       <property name="principalDao" ref="ldapPrincipalDao" />
     </bean>
 
-    <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" />
+<!--     <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" /> -->
     
 </beans>

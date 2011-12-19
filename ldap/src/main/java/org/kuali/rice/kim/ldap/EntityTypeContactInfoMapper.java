@@ -15,70 +15,52 @@
  */
 package org.kuali.rice.kim.ldap;
 
+import static org.kuali.rice.core.util.BufferedLogger.debug;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.ldap.core.ContextMapper;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
-import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
-import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
+import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.util.Constants;
-
-import static org.kuali.rice.core.util.BufferedLogger.*;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityTypeContactInfoMapper extends AbstractContextMapper {
-    private Constants constants;
+public class EntityTypeContactInfoMapper extends BaseMapper<EntityTypeContactInfo> {
 
     private EntityAddressMapper addressMapper;
     private EntityPhoneMapper phoneMapper;
     private EntityEmailMapper emailMapper;;
 
+    @Override
+    EntityTypeContactInfo mapDtoFromContext(DirContextOperations context) {
+    	EntityTypeContactInfo.Builder builder = mapBuilderFromContext(context);
+    	return builder != null ? builder.build() : null;
+    }
     
-    public Object doMapFromContext(DirContextOperations context) {
+    EntityTypeContactInfo.Builder mapBuilderFromContext(DirContextOperations context) {
         final String entityId       = (String) context.getStringAttribute(getConstants().getKimLdapIdProperty());
         final String entityTypeCode = (String ) getConstants().getPersonEntityTypeCode();
 
         final EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create(entityId, entityTypeCode); 
-        final EntityAddress.Builder address = getAddressMapper().mapFromContext(context);
+        final EntityAddress.Builder address = getAddressMapper().mapBuilderFromContext(context);
         final List<EntityAddress.Builder> addresses = new ArrayList<EntityAddress.Builder>();
         addresses.add(address);
         final List<EntityEmail.Builder> email = new ArrayList<EntityEmail.Builder>();
-        email.add(getEmailMapper().mapFromContext(context));
+        email.add(getEmailMapper().mapBuilderFromContext(context));
         final List<EntityPhone.Builder> phone = new ArrayList<EntityPhone.Builder>();
-        phone.add(getPhoneMapper().mapFromContext(context));
+        phone.add(getPhoneMapper().mapBuilderFromContext(context));
         builder.setAddresses(addresses);
         builder.setEmailAddresses(email);
         builder.setPhoneNumbers(phone);
         debug("Created Entity Type with code ", builder.getEntityTypeCode());                
 
         return builder;
-    }
-    
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
     }
 
     /**

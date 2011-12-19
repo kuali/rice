@@ -15,34 +15,31 @@
  */
 package org.kuali.rice.kim.ldap;
 
+import static java.util.Arrays.asList;
+import static org.kuali.rice.core.util.BufferedLogger.debug;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
-import org.kuali.rice.kim.util.Constants;
-
-import static java.util.Arrays.asList;
-import static org.kuali.rice.core.util.BufferedLogger.*;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  */
-public class PrincipalMapper extends AbstractContextMapper {
-    private Constants constants;
+public class PrincipalMapper extends BaseMapper<Principal> {
     private ParameterService parameterService;
     
-    public Principal.Builder mapFromContext(DirContextOperations context) {
-        return (Principal.Builder) doMapFromContext(context);
+    @Override
+    Principal mapDtoFromContext(DirContextOperations context) {
+    	Principal.Builder builder = mapBuilderFromContext(context);
+    	return builder != null ? builder.build() : null;
     }
 
-    public Object doMapFromContext(DirContextOperations context) {
+    Principal.Builder mapBuilderFromContext(DirContextOperations context) {
         final String entityId      = context.getStringAttribute(getConstants().getKimLdapIdProperty());
         final String principalName = context.getStringAttribute(getConstants().getKimLdapNameProperty());
         final Principal.Builder person = Principal.Builder.create(principalName);
@@ -124,23 +121,6 @@ public class PrincipalMapper extends AbstractContextMapper {
         return retval;
     }
 
-   /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 
     public ParameterService getParameterService() {
         return this.parameterService;

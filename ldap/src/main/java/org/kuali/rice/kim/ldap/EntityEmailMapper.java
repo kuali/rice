@@ -15,29 +15,27 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
-import org.kuali.rice.kim.util.Constants;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityEmailMapper extends AbstractContextMapper {
-    private Constants constants;
-    
-    public EntityEmail.Builder mapFromContext(DirContextOperations context) {
-        return (EntityEmail.Builder) doMapFromContext(context);
+public class EntityEmailMapper extends BaseMapper<EntityEmail> {
+
+	@Override
+    EntityEmail mapDtoFromContext(DirContextOperations context) {
+    	EntityEmail.Builder builder = mapBuilderFromContext(context);
+        return builder != null ? builder.build() : null;
     }
 
-    public Object doMapFromContext(DirContextOperations context) {        
-        return doMapFromContext(context, true);
+    EntityEmail.Builder mapBuilderFromContext(DirContextOperations context) {        
+        return mapBuilderFromContext(context, true);
     }
 
-    public Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+    EntityEmail.Builder mapBuilderFromContext(DirContextOperations context, boolean isdefault) {        
         final EntityEmail.Builder retval = EntityEmail.Builder.create();
         final String emailAddress = context.getStringAttribute(getConstants().getEmployeeMailLdapProperty());
         retval.setEmailAddress(emailAddress);
@@ -47,21 +45,4 @@ public class EntityEmailMapper extends AbstractContextMapper {
         return retval;
     }
     
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 }

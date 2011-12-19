@@ -17,30 +17,29 @@ package org.kuali.rice.kim.ldap;
 
 import org.kuali.rice.kim.api.identity.CodedAttribute;
 import org.kuali.rice.kim.api.identity.name.EntityName;
-import org.kuali.rice.kim.util.Constants;
 import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
 
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityNameMapper extends AbstractContextMapper {
-    private Constants constants;
+public class EntityNameMapper extends BaseMapper<EntityName> {
+
+	@Override
+    EntityName mapDtoFromContext(DirContextOperations context) {
+        return mapDtoFromContext(context, true);
+    }
+	
+    EntityName mapDtoFromContext(DirContextOperations context, boolean isdefault) {
+        EntityName.Builder builder = mapBuilderFromContext(context, isdefault);
+        return builder != null ? builder.build() : null;
+    }
+
+    EntityName.Builder mapBuilderFromContext(DirContextOperations context) {
+    	return mapBuilderFromContext(context, true);
+    }
     
-    public EntityName.Builder mapFromContext(DirContextOperations context, boolean isdefault) {
-        return (EntityName.Builder) doMapFromContext(context, isdefault);
-    }
-
-    public EntityName.Builder mapFromContext(DirContextOperations context) {
-        return mapFromContext(context, true);
-    }
-
-    public Object doMapFromContext(DirContextOperations context) {
-        return doMapFromContext(context, true);
-    }
-
-    protected Object doMapFromContext(DirContextOperations context, boolean isdefault) {        
+    EntityName.Builder mapBuilderFromContext(DirContextOperations context, boolean isdefault) {        
         final EntityName.Builder person = EntityName.Builder.create();
         person.setEntityId(context.getStringAttribute(getConstants().getKimLdapIdProperty()));
         person.setId(context.getStringAttribute(getConstants().getKimLdapIdProperty()));
@@ -66,21 +65,4 @@ public class EntityNameMapper extends AbstractContextMapper {
         return person;
     }
     
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 }

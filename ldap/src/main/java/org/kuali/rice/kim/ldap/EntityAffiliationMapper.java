@@ -15,32 +15,39 @@
  */
 package org.kuali.rice.kim.ldap;
 
+import static org.apache.commons.lang.StringUtils.contains;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.kuali.rice.core.util.BufferedLogger.debug;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.ldap.core.support.AbstractContextMapper;
-
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliationType;
-import org.kuali.rice.kim.util.Constants;
-
-import static org.kuali.rice.core.util.BufferedLogger.*;
-import static org.apache.commons.lang.StringUtils.contains;
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import org.springframework.ldap.core.DirContextOperations;
 
 /**
  * Maps LDAP Information to KIM Entity Affiliation
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityAffiliationMapper extends AbstractContextMapper {
-    private Constants constants;
+public class EntityAffiliationMapper extends BaseMapper<List<EntityAffiliation>> {
+
+	@Override
+    List<EntityAffiliation> mapDtoFromContext(DirContextOperations context) {
+    	List<EntityAffiliation.Builder> builders = mapBuilderFromContext(context);
+    	List<EntityAffiliation> affiliations = new ArrayList<EntityAffiliation>();
+    	if (builders != null) {
+	    	for (EntityAffiliation.Builder builder : builders) {
+	    		affiliations.add(builder.build());
+	    	}
+    	}
+    	return affiliations;
+    }
     
-    public Object doMapFromContext(DirContextOperations context) {
-        List<EntityAffiliation.Builder> retval = new ArrayList();
+    List<EntityAffiliation.Builder> mapBuilderFromContext(DirContextOperations context) {
+        List<EntityAffiliation.Builder> retval = new ArrayList<EntityAffiliation.Builder>();
         final String primaryAffiliationProperty = getConstants().getPrimaryAffiliationLdapProperty();
         final String affiliationProperty = getConstants().getAffiliationLdapProperty();
         debug("Got affiliation ", context.getStringAttribute(primaryAffiliationProperty));
@@ -108,21 +115,4 @@ public class EntityAffiliationMapper extends AbstractContextMapper {
         return false;
     }
 
-    /**
-     * Gets the value of constants
-     *
-     * @return the value of constants
-     */
-    public final Constants getConstants() {
-        return this.constants;
-    }
-
-    /**
-     * Sets the value of constants
-     *
-     * @param argConstants Value to assign to this.constants
-     */
-    public final void setConstants(final Constants argConstants) {
-        this.constants = argConstants;
-    }
 }

@@ -47,12 +47,22 @@ public class ServiceRegistryDiffCalculatorImpl implements ServiceRegistryDiffCal
 	
 	@Override
 	public CompleteServiceDiff diffServices(String instanceId, List<LocalService> localServices, List<RemoteService> clientRegistryCache) {
-		List<ServiceInfo> allRegistryServicesForInstance = serviceRegistry.getAllServicesForInstance(instanceId);
+        List<ServiceInfo> allRegistryServices = serviceRegistry.getAllOnlineServices();
+        List<ServiceInfo> allRegistryServicesForInstance = getAllServicesForInstance(instanceId, allRegistryServices);
 		LocalServicesDiff localServicesDiff = calculateLocalServicesDiff(allRegistryServicesForInstance, instanceId, localServices);
-		List<ServiceInfo> allRegistryServices = serviceRegistry.getAllOnlineServices();
 		RemoteServicesDiff remoteServicesDiff = calculateRemoteServicesDiff(allRegistryServices, clientRegistryCache);
 		return new CompleteServiceDiff(localServicesDiff, remoteServicesDiff);
 	}
+
+    protected List<ServiceInfo> getAllServicesForInstance(String instanceId, List<ServiceInfo> allRegistryServices) {
+        List<ServiceInfo> allRegistryServicesForInstance = new ArrayList<ServiceInfo>();
+        for (ServiceInfo serviceInfo : allRegistryServices) {
+            if (serviceInfo.getInstanceId().equals(instanceId)) {
+                allRegistryServicesForInstance.add(serviceInfo);
+            }
+        }
+        return allRegistryServicesForInstance;
+    }
 	
 	protected LocalServicesDiff calculateLocalServicesDiff(List<ServiceInfo> allRegistryServicesForInstance, String instanceId, List<LocalService> localServices) {
 		

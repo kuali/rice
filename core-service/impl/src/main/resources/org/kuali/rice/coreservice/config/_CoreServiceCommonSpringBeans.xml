@@ -24,6 +24,8 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
+  <util:constant id="rice.coreService.serviceNamespace" static-field="org.kuali.rice.core.api.CoreConstants$Namespaces.CORE_NAMESPACE_2_0"/>
+
   <bean id="rice.location.propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties" value="#{T(org.kuali.rice.core.api.config.property.ConfigContext).getCurrentContextConfig().getProperties()}" />
 	</bean>
@@ -49,7 +51,7 @@
   </bean>
 
   <bean id="coreService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true">
-    <property name="serviceNameSpaceURI" value="#{ T(org.kuali.rice.core.api.CoreConstants$Namespaces).CORE_NAMESPACE_2_0 }"/>
+    <property name="serviceNameSpaceURI" ref="rice.coreService.serviceNamespace"/>
     <property name="jaxWsService" value="true"/>
     <property name="priority" value="3"/>
     <property name="retryAttempts" value="0"/>

@@ -179,6 +179,12 @@
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
+    <!-- ASM as an explicit dependency, see KULRICE-6353 -->
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>

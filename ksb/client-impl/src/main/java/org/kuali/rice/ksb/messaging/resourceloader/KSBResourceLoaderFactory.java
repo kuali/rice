@@ -62,16 +62,6 @@ public class KSBResourceLoaderFactory {
 		return rootResourceLoader;
 	}
 
-//	public static ResourceLoader createThinClientKSBResourceLoader() {
-//		ResourceLoader resourceLoader = new SpringResourceLoader(new QName("", "KSB_THIN_CLIENT_RESOURCE_LOADER"), "classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml", null);
-//		GlobalResourceLoader.addResourceLoader(resourceLoader);
-//		return resourceLoader;
-//	}
-//
-//	public static BaseResourceLoader getRootResourceLoader() {
-//		return (BaseResourceLoader)GlobalResourceLoader.getResourceLoader(getRootResourceLoaderName());
-//	}
-
 	public static QName getRootResourceLoaderName() {
 		return (QName)ConfigContext.getCurrentContextConfig().getObject(KSB_ROOT_RESOURCE_LOACER_NAME);
 	}

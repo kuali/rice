@@ -62,7 +62,6 @@
 				<value>LOCAL</value>
 				<value>EMBEDDED</value>
 				<value>REMOTE</value>
-				<value>THIN</value>
 			</list>
 		</property>
 	</bean>	

@@ -41,7 +41,6 @@ public class RunModeServiceExporter extends PropertyConditionalServiceBusExporte
     private RunMode validRunMode;
     private static final List<RunMode> runModeHierarchy = new ArrayList<RunMode>();
     static {
-    	runModeHierarchy.add(RunMode.THIN);
     	runModeHierarchy.add(RunMode.REMOTE);
     	runModeHierarchy.add(RunMode.EMBEDDED);
     	runModeHierarchy.add(RunMode.LOCAL);

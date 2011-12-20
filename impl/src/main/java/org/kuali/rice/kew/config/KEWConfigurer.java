@@ -63,8 +63,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	public List<String> getPrimarySpringFiles() {
 		final List<String> springFileLocations;
-		if (RunMode.REMOTE.equals(getRunMode()) || RunMode.THIN.equals(getRunMode()) ||
-				ClientProtocol.WEBSERVICE.equals(getClientProtocol())) {
+		if (RunMode.REMOTE.equals(getRunMode()) || ClientProtocol.WEBSERVICE.equals(getClientProtocol())) {
 			springFileLocations = Collections.emptyList();
 		} else {
 			springFileLocations = getEmbeddedSpringFileLocation();
@@ -90,9 +89,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public List<Lifecycle> loadLifecycles() throws Exception {
 		
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if ( getRunMode().equals( RunMode.THIN ) ) {
-			lifecycles.add(createThinClientLifecycle());
-		} else if ( !getRunMode().equals( RunMode.REMOTE ) ) { // local or embedded
+        if ( !getRunMode().equals( RunMode.REMOTE ) ) { // local or embedded
 			lifecycles.add(createEmbeddedLifeCycle());
 		}
 		return lifecycles;
@@ -106,10 +103,6 @@ public class KEWConfigurer extends ModuleConfigurer {
      */
 	private Lifecycle createEmbeddedLifeCycle() throws Exception {
 		return new EmbeddedLifeCycle();
-	}
-
-	private Lifecycle createThinClientLifecycle() throws Exception {
-		return new ThinClientLifecycle();
 	}
 
 	@Override

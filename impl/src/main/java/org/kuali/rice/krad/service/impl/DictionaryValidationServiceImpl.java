@@ -932,9 +932,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             for (Constrainable definition : definitions) {
                 String attributeName = definition.getName();
                 attributeValueReader.setAttributeName(attributeName);
-                Object value = attributeValueReader.getValue(attributeName);
-    
-                processElementConstraints(result, value, definition, attributeValueReader, doOptionalProcessing);
+
+                if (attributeValueReader.isReadable()) {
+                    Object value = attributeValueReader.getValue(attributeName);
+
+                    processElementConstraints(result, value, definition, attributeValueReader, doOptionalProcessing);
+                }
             }
         }
 
@@ -947,20 +950,22 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 for (ComplexAttributeDefinition complexAttrDefinition : complexAttrDefinitions) {
                     String attributeName = complexAttrDefinition.getName();
                     attributeValueReader.setAttributeName(attributeName);
-                    Object value = attributeValueReader.getValue();
-                    
-                    DataDictionaryEntry childEntry = complexAttrDefinition.getDataObjectEntry();
-                    if (value != null) {
-                        AttributeValueReader nestedAttributeValueReader =
-                                new DictionaryObjectAttributeValueReader(value, childEntry.getFullClassName(),
-                                        childEntry, attributeValueReader.getPath());
-                        //Validate nested object, however skip attribute definition porcessing on 
-                        //nested object entry, since they have already been processed above.
-                        validateObject(result, nestedAttributeValueReader, doOptionalProcessing, false);
+
+                    if (attributeValueReader.isReadable()) {
+                        Object value = attributeValueReader.getValue();
+
+                        DataDictionaryEntry childEntry = complexAttrDefinition.getDataObjectEntry();
+                        if (value != null) {
+                            AttributeValueReader nestedAttributeValueReader = new DictionaryObjectAttributeValueReader(
+                                    value, childEntry.getFullClassName(), childEntry, attributeValueReader.getPath());
+                            //Validate nested object, however skip attribute definition porcessing on
+                            //nested object entry, since they have already been processed above.
+                            validateObject(result, nestedAttributeValueReader, doOptionalProcessing, false);
+                        }
+
+                        processElementConstraints(result, value, complexAttrDefinition, attributeValueReader,
+                                doOptionalProcessing);
                     }
-                    
-                    processElementConstraints(result, value, complexAttrDefinition, attributeValueReader,
-                            doOptionalProcessing);
                 }
             }
         }
@@ -975,26 +980,29 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                 String childEntryName = collectionDefinition.getDataObjectClass();
                 String attributeName = collectionDefinition.getName();
                 attributeValueReader.setAttributeName(attributeName);
-                Collection<?> collectionObject = attributeValueReader.getValue();
-                DataDictionaryEntry childEntry = childEntryName != null ?
-                        getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) : null;
-                if (collectionObject != null) {
-                    int index = 0;
-                    for (Object value : collectionObject) {                                               
-                        //NOTE: This path is only correct for collections that guarantee order
-                        String objectAttributePath =  attributeValueReader.getPath() + "["+ index + "]";
 
-                        //FIXME: It's inefficient to be creating new attribute reader for each item in collection
-                        AttributeValueReader nestedAttributeValueReader =
-                                new DictionaryObjectAttributeValueReader(value, childEntryName, childEntry,
-                                        objectAttributePath);
-                        validateObject(result, nestedAttributeValueReader, doOptionalProcessing, true);
-                        index++;
+                if (attributeValueReader.isReadable()) {
+                    Collection<?> collectionObject = attributeValueReader.getValue();
+                    DataDictionaryEntry childEntry = childEntryName != null ?
+                            getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(childEntryName) :
+                            null;
+                    if (collectionObject != null) {
+                        int index = 0;
+                        for (Object value : collectionObject) {
+                            //NOTE: This path is only correct for collections that guarantee order
+                            String objectAttributePath = attributeValueReader.getPath() + "[" + index + "]";
+
+                            //FIXME: It's inefficient to be creating new attribute reader for each item in collection
+                            AttributeValueReader nestedAttributeValueReader = new DictionaryObjectAttributeValueReader(
+                                    value, childEntryName, childEntry, objectAttributePath);
+                            validateObject(result, nestedAttributeValueReader, doOptionalProcessing, true);
+                            index++;
+                        }
                     }
-                }
 
-                processCollectionConstraints(result, collectionObject, collectionDefinition, attributeValueReader,
-                        doOptionalProcessing);
+                    processCollectionConstraints(result, collectionObject, collectionDefinition, attributeValueReader,
+                            doOptionalProcessing);
+                }
             }
         }
     }

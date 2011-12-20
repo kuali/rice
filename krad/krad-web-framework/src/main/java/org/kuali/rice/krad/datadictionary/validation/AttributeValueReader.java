@@ -111,6 +111,13 @@ public interface AttributeValueReader {
 	 * @return the type of the attribute referenced by the passed name, or null if no attribute exists of that name
 	 */
 	public Class<?> getType(String attributeName);
+
+    /**
+     * Indicates whether the configured attribute name is readable for the object
+     *
+     * @return boolean if attribute is readable, false if not
+     */
+    public boolean isReadable();
 	
 	/**
 	 * A convenience method for looking up the attribute value that is currently being processed. 

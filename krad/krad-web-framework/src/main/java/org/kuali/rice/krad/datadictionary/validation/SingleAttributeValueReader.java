@@ -96,7 +96,12 @@ public class SingleAttributeValueReader extends BaseAttributeValueReader {
 		return value != null ? value.getClass() : null;
 	}
 
-	@Override
+    @Override
+    public boolean isReadable() {
+        return true;
+    }
+
+    @Override
 	public <X> X getValue() throws AttributeValidationException {
 		return (X) value;
 	}

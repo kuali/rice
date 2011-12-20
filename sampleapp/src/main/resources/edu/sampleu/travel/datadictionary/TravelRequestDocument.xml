@@ -19,17 +19,13 @@
   <bean id="TravelRequest" parent="TravelRequest-parentBean"/>
 
   <bean id="TravelRequest-parentBean" abstract="true" parent="TransactionalDocumentEntry">
-    
-    
     <property name="documentTypeName" value="TravelRequest"/>
     <property name="documentClass" value="edu.sampleu.travel.document.TravelDocument2"/>
     <property name="businessRulesClass" value="edu.sampleu.travel.document.rule.TravelDocumentRule"/>
     <property name="documentAuthorizerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentAuthorizer"/>
     <property name="documentPresentationControllerClass" value="edu.sampleu.travel.document.authorizer.TravelDocumentPresentationController"/>
-    
     <property name="allowsNoteFYI" value="true"/>
     <property name="usePessimisticLocking" value="true"/>
-    
     <property name="attributes">
       <list>
         <ref bean="TravelRequest-traveler"/>
@@ -37,6 +33,7 @@
         <ref bean="TravelRequest-destination"/>
         <ref bean="TravelRequest-requestType"/>
         <ref bean="TravelRequest-accountType"/>
+        <ref bean="TravelRequest-travelAccounts.number"/>
       </list>
     </property>
   </bean>
@@ -124,5 +121,10 @@
     </property>
     <property name="name" value="accountType"/>
     <property name="required" value="false"/>
+  </bean>
+
+  <bean id="TravelRequest-travelAccounts.number" parent="TravelRequest-travelAccounts.number-parentBean"/>
+  <bean id="TravelRequest-travelAccounts.number-parentBean" abstract="true" parent="TravelAccount-number">
+    <property name="name" value="travelAccounts.number"/>
   </bean>
 </beans>

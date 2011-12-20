@@ -51,7 +51,8 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 
 		if (object != null){
 			beanWrapper = new BeanWrapperImpl(object);
-		}		
+            beanWrapper.setAutoGrowNestedPaths(true);
+		}
 	}
 	
 	public DictionaryObjectAttributeValueReader(Object object, String entryName, DataDictionaryEntry entry, String attributePath) {
@@ -108,8 +109,13 @@ public class DictionaryObjectAttributeValueReader extends BaseAttributeValueRead
 		
 		return propertyDescriptor.getPropertyType();
 	}
-	
-	@SuppressWarnings("unchecked")
+
+    @Override
+    public boolean isReadable() {
+        return beanWrapper.isReadableProperty(attributeName);
+    }
+
+    @SuppressWarnings("unchecked")
 	@Override
 	public <X> X getValue() throws AttributeValidationException {
 		Object value = getValue(attributeName);

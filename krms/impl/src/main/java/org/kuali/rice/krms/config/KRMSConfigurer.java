@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.krms.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
+import org.kuali.rice.krms.api.KrmsConstants;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class handles the Spring based KRMS configuration that is part of the Rice Configurer that must 
@@ -28,20 +31,22 @@ import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
  */
 public class KRMSConfigurer extends ModuleConfigurer {
 
-	private static final String KRMS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSSpringBeans.xml";
-    private static final String KRMS_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSServiceBusSpringBeans.xml";
+    private static final String KRMS_SPRING_LOCAL_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSLocalSpringBeans.xml";
+    private static final String KRMS_SPRING_REMOTE_BEANS_PATH = "classpath:org/kuali/rice/krms/config/KRMSRemoteSpringBeans.xml";
 
-	
-	@Override
+	public KRMSConfigurer() {
+        super(KrmsConstants.Namespaces.MODULE_NAME);
+        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.LOCAL));
+    }
+
+    @Override
 	public List<String> getPrimarySpringFiles() {
-		final List<String> springFileLocations = new ArrayList<String>();
-		springFileLocations.add( KRMS_SPRING_BEANS_PATH );
-
-        if ( isExposeServicesOnBus() ) {
-		    springFileLocations.add(KRMS_KSB_SPRING_BEANS_PATH);
-		}
-
+        List<String> springFileLocations = new ArrayList<String>();
+        if (RunMode.REMOTE == getRunMode()) {
+            springFileLocations.add(KRMS_SPRING_REMOTE_BEANS_PATH);
+        } else if (RunMode.LOCAL == getRunMode()) {
+            springFileLocations.add(KRMS_SPRING_LOCAL_BEANS_PATH);
+        }
 		return springFileLocations;
 	}
-	
 }

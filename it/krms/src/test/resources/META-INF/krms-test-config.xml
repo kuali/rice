@@ -37,7 +37,7 @@
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
 
-	<param name="rice.KRMS.additionalSpringFiles">classpath:KRMSSpringBeans-test.xml</param>
+	<param name="rice.krms.additionalSpringFiles">classpath:KRMSSpringBeans-test.xml</param>
 
 <!-- 	
 	

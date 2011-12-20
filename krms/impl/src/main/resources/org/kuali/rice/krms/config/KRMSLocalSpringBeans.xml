@@ -17,14 +17,41 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/context
-                        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
 
+	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/krms/config/_KRMSCommonSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/krms/config/_KRMSOjbSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/krms/config/_KRMSLocalServiceBusSpringBeans.xml" />
+
+  <!-- caching start -->
+  <!-- uncomment when caching setup
+  <bean id="rice.krms.import.globalCacheManager"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="globalCacheManager" />
+  </bean>
+
+  <cache:annotation-driven cache-manager="rice.krms.import.globalCacheManager" />
+  -->
+  <!-- the distributed cache manager that calls into the locationCacheService on the ksb -->
+  <!--<bean id="krmsDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator">
+    <property name="cacheManager" ref="krmsLocalCacheManager" />
+    <property name="serviceName" value="{http://rice.kuali.org/krms/v2_0}krmsCacheService" />
+  </bean>
+
+  <bean id="cacheManagerRegistry" class="org.kuali.rice.core.impl.cache.CacheManagerRegistryImpl">
+    <property name="cacheManager" ref="krmsDistributedCacheManager" />
+  </bean>-->
+
+  <!-- caching end -->
 
   <!-- TODO: there is one of these in krad-servlet.xml, remove that one or this one -->
   <context:component-scan base-package="org.kuali.rice.krms.impl" />
@@ -45,9 +72,22 @@
     <property name="serviceName" value="criteriaLookupService" />
   </bean>
 
+  <bean id="dataDictionaryService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="dataDictionaryService" />
+  </bean>
+
+  <bean id="persistenceServiceOjb"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="persistenceServiceOjb" />
+  </bean>
+
   <bean id="krmsModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="krms"/>
+    <property name="dataSourceName" value="krmsDataSource"/>
     <property name="initializeDataDictionary" value="true"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="persistenceService" ref="persistenceServiceOjb"/>
     <property name="dataDictionaryPackages">
       <list>
         <value>classpath:org/kuali/rice/krms/datadictionary/ActionBo.xml</value>
@@ -68,11 +108,6 @@
         <value>classpath:org/kuali/rice/krms/datadictionary/PropositionParameterBo.xml</value>
         <value>classpath:org/kuali/rice/krms/uif/AgendaEditorView.xml</value>
         <value>classpath:org/kuali/rice/krms/uif/ContextMaintenanceView.xml</value>
-      </list>
-    </property>
-    <property name="databaseRepositoryFilePaths">
-      <list>
-        <value>org/kuali/rice/krms/config/OJB-repository-krms.xml</value>
       </list>
     </property>
     <property name="packagePrefixes">

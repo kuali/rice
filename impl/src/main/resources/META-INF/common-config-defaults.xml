@@ -432,7 +432,8 @@
   <param name="kim.ehcache.config.location" override="false">classpath:org/kuali/rice/kim/impl/config/kim.ehcache.xml</param>
 
   <!-- KRMS -->
-  <param name="krms.mode" override="false">LOCAL</param>
+  <param name="krms.mode" override="false">REMOTE</param>
+  <param name="krms.soapExposedService.jaxws.security" override="false">true</param>
   <param name="rice.krms.ruleRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.krmsTypeRepositoryService.secure" override="false">true</param>
   <param name="rice.krms.notificationPeopleFlowActionTypeService.secure" override="false">true</param>

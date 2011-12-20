@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="maven-antrun-" default="main"  >
-<target name="main">
-  <delete quiet="true">
-    <fileset dir="/Users/candacesoderston/ricecode/api/target/site/reference/pdf" includes="**/*.fo"/>
-  </delete>
-</target>
-</project>

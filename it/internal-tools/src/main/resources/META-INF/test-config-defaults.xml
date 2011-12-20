@@ -17,12 +17,10 @@
 -->
 <!-- config file loaded by the TestHarness root test case. -->
 <config>
+
   <!-- add all the common defaults -->
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
 
-  <!--
-  <param name="message.persistence">false</param>
-  -->
   <param name="message.delivery">synchronous</param>
   <param name="dev.mode">true</param>
   <param name="rice.ken.testMode">true</param>

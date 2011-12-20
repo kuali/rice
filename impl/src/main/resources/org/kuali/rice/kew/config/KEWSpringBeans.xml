@@ -62,8 +62,6 @@
   <!-- caching start -->
   <cache:annotation-driven cache-manager="globalCacheManager" />
 
-  <!-- DAO's are located in KEWOJBSpringBeans.xml and KEWJPASpringBeans.xml -->
-
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
   <bean id="mailer"

@@ -81,12 +81,7 @@ public class KEWConfigurer extends ModuleConfigurer {
             springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml");
         }
         
-        if (OrmUtils.isJpaEnabled("rice.kew")) {
-        	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWJPASpringBeans.xml");
-        }
-        else {
-        	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWOJBSpringBeans.xml");
-        }
+        springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWOJBSpringBeans.xml");
 
     	return springFileLocations;
     }

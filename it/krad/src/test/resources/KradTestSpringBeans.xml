@@ -143,7 +143,7 @@
 	<bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
 	<bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
 	<bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer"/>
-	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
+	<bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
 		
 	<bean id="lookupResultsDDBoLookupableHelperService" class="org.kuali.rice.krad.lookup.LookupResultsDDBoLookupableHelperServiceImpl" />
 

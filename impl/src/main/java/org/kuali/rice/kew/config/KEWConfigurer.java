@@ -21,9 +21,11 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.resourceloader.ResourceLoader;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
+import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
 import org.kuali.rice.core.framework.persistence.jpa.OrmUtils;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
@@ -32,6 +34,7 @@ import org.kuali.rice.kew.api.KewApiConstants.ClientProtocol;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -59,32 +62,25 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
 
 	private DataSource dataSource;
-	
+
+    public KEWConfigurer() {
+        super(KewApiConstants.Namespaces.MODULE_NAME);
+        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
+    }
+
 	@Override
 	public List<String> getPrimarySpringFiles() {
-		final List<String> springFileLocations;
-		if (RunMode.REMOTE.equals(getRunMode()) || ClientProtocol.WEBSERVICE.equals(getClientProtocol())) {
-			springFileLocations = Collections.emptyList();
-		} else {
-			springFileLocations = getEmbeddedSpringFileLocation();
-		}
-
+        List<String> springFileLocations = new ArrayList<String>();
+        if (RunMode.REMOTE == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KewRemoteSpringBeans.xml");
+        } else if (RunMode.EMBEDDED == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KewEmbeddedSpringBeans.xml");
+        } else if (RunMode.LOCAL == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KewLocalSpringBeans.xml");
+        }
 		return springFileLocations;
 	}
 	
-    private List<String> getEmbeddedSpringFileLocation(){
-    	final List<String> springFileLocations = new ArrayList<String>();
-    	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml");
-
-        if ( isExposeServicesOnBus() ) {
-            springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml");
-        }
-        
-        springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWOJBSpringBeans.xml");
-
-    	return springFileLocations;
-    }
-
 	@Override
 	public List<Lifecycle> loadLifecycles() throws Exception {
 		
@@ -149,10 +145,6 @@ public class KEWConfigurer extends ModuleConfigurer {
 		return rls;
 	}
 
-	private ClientProtocol getClientProtocol() {
-		return ClientProtocol.valueOf(ConfigContext.getCurrentContextConfig().getProperty("client.protocol"));
-	}
-
 	public DataSource getDataSource() {
 		return dataSource;
 	}
@@ -164,5 +156,12 @@ public class KEWConfigurer extends ModuleConfigurer {
     @Override
     public boolean hasWebInterface() {
         return true;
+    }
+
+    @Override
+    protected WebModuleConfiguration loadWebModule() {
+        WebModuleConfiguration configuration = super.loadWebModule();
+        configuration.setWebSpringFiles(Arrays.asList(getDefaultConfigPackagePath() + "KewWebSpringBeans.xml"));
+        return configuration;
     }
 }

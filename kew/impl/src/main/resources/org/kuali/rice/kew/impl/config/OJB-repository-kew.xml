@@ -24,7 +24,7 @@
 <descriptor-repository version="1.0">
 
 <jdbc-connection-descriptor
-  jcd-alias="enWorkflowDataSource"
+  jcd-alias="kewDataSource"
   default-connection="false"
   jdbc-level="3.0"
   eager-release="false"

@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.core.mail;
 
+import org.kuali.rice.core.api.mail.EmailBcList;
+import org.kuali.rice.core.api.mail.EmailBody;
+import org.kuali.rice.core.api.mail.EmailCcList;
+import org.kuali.rice.core.api.mail.EmailFrom;
+import org.kuali.rice.core.api.mail.EmailSubject;
+import org.kuali.rice.core.api.mail.EmailTo;
+import org.kuali.rice.core.api.mail.EmailToList;
+import org.kuali.rice.core.api.mail.MailMessage;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -35,9 +44,9 @@ import java.io.IOException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class Mailer {
+public class MailerImpl implements Mailer {
 
-	    protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Mailer.class);
+	    protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MailerImpl.class);
 
 	    private JavaMailSenderImpl mailSender;	  
 	    
@@ -55,7 +64,8 @@ public class Mailer {
 	     *            the Mail Message
 		 * @throws MessagingException 
 	     */
-		@SuppressWarnings("unchecked")
+		@Override
+        @SuppressWarnings("unchecked")
 		public void sendEmail(MailMessage message) throws MessagingException {
 	        
 	        // Construct a simple mail message from the Mail Message
@@ -92,7 +102,8 @@ public class Mailer {
 	     * @param body
 	     *            body of the message
 	     */
-		public void sendEmail(EmailFrom from, EmailTo to, EmailSubject subject, EmailBody body, boolean htmlMessage) {
+		@Override
+        public void sendEmail(EmailFrom from, EmailTo to, EmailSubject subject, EmailBody body, boolean htmlMessage) {
 	        if (to.getToAddress() == null) {
 	            LOG.warn("No To address specified. Refraining from sending mail.");
 	            return;
@@ -128,7 +139,9 @@ public class Mailer {
 	     * @param bc
 	     *            list of addresses which are to be bcc'd on the message
 	     */
-		public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc, boolean htmlMessage) {
+		@Override
+        public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc,
+                EmailBcList bc, boolean htmlMessage) {
 		    if (to.getToAddresses().isEmpty()) {
 				LOG.error("List of To addresses must contain at least one entry. Refraining from sending mail.");
 				return;

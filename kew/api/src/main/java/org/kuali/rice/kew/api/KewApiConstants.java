@@ -52,7 +52,7 @@ public final class KewApiConstants {
 
     public static final String MESSAGING_MEMORY = "memory";
 
-    public static final String CORE_WORKFLOW_DATASOURCE = "enWorkflowDataSource";
+    public static final String CORE_WORKFLOW_DATASOURCE = "kewDataSource";
     // not strictly necessary to specify if connection descriptor is configured as default
     public static final String CORE_WORKFLOW_DATASOURCE_JCD_ALIAS = CORE_WORKFLOW_DATASOURCE;
 

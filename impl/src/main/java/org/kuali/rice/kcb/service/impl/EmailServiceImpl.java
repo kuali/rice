@@ -20,16 +20,15 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.mail.EmailBody;
-import org.kuali.rice.core.mail.EmailFrom;
-import org.kuali.rice.core.mail.EmailSubject;
-import org.kuali.rice.core.mail.EmailTo;
-import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.core.api.mail.EmailBody;
+import org.kuali.rice.core.api.mail.EmailFrom;
+import org.kuali.rice.core.api.mail.EmailSubject;
+import org.kuali.rice.core.api.mail.EmailTo;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.EmailService;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.springframework.beans.factory.annotation.Required;
 
 /**

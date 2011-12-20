@@ -16,8 +16,8 @@
 package org.kuali.rice.krad.service.impl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.mail.MailMessage;
-import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.core.api.mail.MailMessage;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.exception.ExceptionIncident;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;

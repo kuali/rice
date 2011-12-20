@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.kuali.rice.core.mail.EmailContent;
+import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;

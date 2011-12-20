@@ -17,8 +17,8 @@ package org.kuali.rice.krad.service.impl;
 
 import javax.mail.MessagingException;
 
-import org.kuali.rice.core.mail.MailMessage;
-import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.core.api.mail.MailMessage;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.krad.exception.InvalidAddressException;
 import org.kuali.rice.krad.service.MailService;
 
@@ -61,7 +61,7 @@ public class MailServiceImpl implements MailService {
 	 * This overridden method ...
 	 * @throws MessagingException 
 	 * 
-	 * @see org.kuali.rice.krad.service.MailService#sendMessage(org.kuali.rice.core.mail.MailMessage)
+	 * @see org.kuali.rice.krad.service.MailService#sendMessage(org.kuali.rice.core.api.mail.MailMessage)
 	 */
 	@Override
 	public void sendMessage(MailMessage message) throws InvalidAddressException, MessagingException {

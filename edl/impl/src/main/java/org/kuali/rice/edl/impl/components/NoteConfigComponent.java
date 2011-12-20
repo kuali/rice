@@ -18,17 +18,18 @@ package org.kuali.rice.edl.impl.components;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.mail.EmailBcList;
+import org.kuali.rice.core.api.mail.EmailBody;
+import org.kuali.rice.core.api.mail.EmailCcList;
+import org.kuali.rice.core.api.mail.EmailContent;
+import org.kuali.rice.core.api.mail.EmailFrom;
+import org.kuali.rice.core.api.mail.EmailSubject;
+import org.kuali.rice.core.api.mail.EmailToList;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
-import org.kuali.rice.core.mail.EmailBcList;
-import org.kuali.rice.core.mail.EmailBody;
-import org.kuali.rice.core.mail.EmailCcList;
-import org.kuali.rice.core.mail.EmailContent;
-import org.kuali.rice.core.mail.EmailFrom;
-import org.kuali.rice.core.mail.EmailSubject;
-import org.kuali.rice.core.mail.EmailToList;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.edl.impl.EDLContext;
@@ -381,7 +382,7 @@ public class NoteConfigComponent implements EDLModelComponent {
                 EmailContent emailContent = emailStyleHelper
                         .generateEmailContent(style, document);
                 if (!this.to.isEmpty()) {
-                    KEWServiceLocator.getMailer().sendEmail(
+                    CoreApiServiceLocator.getMailer().sendEmail(
                             new EmailFrom(from), new EmailToList(this.to),
                             new EmailSubject(emailContent.getSubject()),
                             new EmailBody(emailContent.getBody()),

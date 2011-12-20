@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.impex.xml.XmlExporterService;
 import org.kuali.rice.core.api.impex.xml.XmlIngesterService;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 
 import javax.xml.namespace.QName;
@@ -51,5 +52,9 @@ public class CoreApiServiceLocator {
 	public static DateTimeService getDateTimeService() {
 	    return getService(CoreConstants.Services.DATETIME_SERVICE);
 	}
+
+    public static Mailer getMailer() {
+        return getService(CoreConstants.Services.MAILER);
+    }
     
 }

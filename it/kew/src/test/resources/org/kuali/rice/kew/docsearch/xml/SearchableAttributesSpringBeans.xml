@@ -64,7 +64,7 @@
 	</bean>
 	<bean id="enRouteQueueDAO" class="org.kuali.rice.kew.routequeue.dao.RouteQueueDAOOjbImpl">
 		<property name="dataSource">
-			<ref bean="enWorkflowDataSource" />
+			<ref bean="kewDataSource" />
 		</property>
   </bean>
 

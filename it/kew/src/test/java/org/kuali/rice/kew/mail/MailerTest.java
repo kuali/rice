@@ -19,11 +19,12 @@ import static org.junit.Assert.assertNotNull;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.kuali.rice.core.mail.EmailBody;
-import org.kuali.rice.core.mail.EmailFrom;
-import org.kuali.rice.core.mail.EmailSubject;
-import org.kuali.rice.core.mail.EmailTo;
-import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.mail.EmailBody;
+import org.kuali.rice.core.api.mail.EmailFrom;
+import org.kuali.rice.core.api.mail.EmailSubject;
+import org.kuali.rice.core.api.mail.EmailTo;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.subethamail.wiser.Wiser;
@@ -52,7 +53,7 @@ public class MailerTest extends KEWTestCase {
 		
 		// Test that a Mailer can be retrieved via the KEWServiceLocator
 		Mailer mailer = null;
-		mailer = KEWServiceLocator.getMailer();
+		mailer = CoreApiServiceLocator.getMailer();
 		assertNotNull(mailer);
 		
 		// Test that an e-mail message gets sent to the SMTP server

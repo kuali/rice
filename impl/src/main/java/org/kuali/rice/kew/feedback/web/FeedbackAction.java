@@ -24,11 +24,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.mail.EmailBody;
-import org.kuali.rice.core.mail.EmailContent;
-import org.kuali.rice.core.mail.EmailFrom;
-import org.kuali.rice.core.mail.EmailSubject;
-import org.kuali.rice.core.mail.EmailTo;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.mail.EmailBody;
+import org.kuali.rice.core.api.mail.EmailContent;
+import org.kuali.rice.core.api.mail.EmailFrom;
+import org.kuali.rice.core.api.mail.EmailSubject;
+import org.kuali.rice.core.api.mail.EmailTo;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -114,7 +115,7 @@ public class FeedbackAction extends KewKualiAction {
         String fromAddress = determineFromAddress(emailContentService, feedbackForm);
     	String toAddress = emailContentService.getApplicationEmailAddress();
         EmailContent content = emailContentService.generateFeedback(feedbackForm);
-        KEWServiceLocator.getMailer().sendEmail(new EmailFrom(fromAddress), new EmailTo(toAddress), new EmailSubject(content.getSubject()), new EmailBody(content.getBody()), content.isHtml());
+        CoreApiServiceLocator.getMailer().sendEmail(new EmailFrom(fromAddress), new EmailTo(toAddress), new EmailSubject(content.getSubject()), new EmailBody(content.getBody()), content.isHtml());
     	return mapping.findForward("sent");
     }
 

@@ -416,7 +416,7 @@
 	<!-- KEW -->
 	<param name="rice.kew.struts.config.files" override="false">/kew/WEB-INF/struts-config.xml</param>
 	<param name="kew.url" override="false">${application.url}/kew</param>
-	<param name="kew.mode" override="false">LOCAL</param>
+	<param name="kew.mode" override="false">REMOTE</param>
 	<param name="client.protocol" override="false">LOCAL</param>
 	<param name="org.kuali.workflow.datasource.jndi.location" override="false"></param>
   <param name="ken.soapExposedService.jaxws.security" override="false">true</param>
@@ -514,7 +514,7 @@
       userTransaction,
       jtaTransactionManager,
       transactionManager,
-      enWorkflowDataSource,
+      kewDataSource,
       enRuleAttributeService,
       enRuleTemplateService,
       enRuleServiceInternal,

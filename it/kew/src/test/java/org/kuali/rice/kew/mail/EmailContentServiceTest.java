@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.mail.EmailContent;
+import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.api.WorkflowDocument;

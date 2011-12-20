@@ -254,7 +254,7 @@
   <bean id="kradExceptionIncidentService" class="org.kuali.rice.krad.service.impl.KualiExceptionIncidentServiceImpl">
     <property name="mailer" ref="mailer"/>
     <property name="messageTemplate">
-      <bean class="org.kuali.rice.core.mail.MailMessage">
+      <bean class="org.kuali.rice.core.api.mail.MailMessage">
         <!-- The property place holder below must be specified in          -->
         <!-- common-config-default.xml or any other KNS configuration file -->
         <property name="fromAddress">

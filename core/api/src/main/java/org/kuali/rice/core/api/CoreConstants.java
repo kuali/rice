@@ -27,6 +27,7 @@ public final class CoreConstants {
     public static final class Services {
         public static final String DATETIME_SERVICE = "dateTimeService";
         public static final String ENCRYPTION_SERVICE = "encryptionService";
+        public static final String MAILER = "mailer";
 
         private Services() {
     		throw new UnsupportedOperationException("do not call");

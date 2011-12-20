@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.mail.EmailBody;
-import org.kuali.rice.core.mail.EmailContent;
-import org.kuali.rice.core.mail.EmailSubject;
+import org.kuali.rice.core.api.mail.EmailBody;
+import org.kuali.rice.core.api.mail.EmailContent;
+import org.kuali.rice.core.api.mail.EmailSubject;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;

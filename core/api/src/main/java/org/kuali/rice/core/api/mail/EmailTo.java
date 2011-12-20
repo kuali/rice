@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.mail;
+package org.kuali.rice.core.api.mail;
 
 /**
- * The from address of an email message.
+ * The to address of an email message.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EmailFrom {
+public class EmailTo {
 
-    private String fromAddress;
-
-    public EmailFrom(String fromAddress) {
-        this.fromAddress = fromAddress;
+    private String toAddress;
+    
+    public EmailTo(String toAddress) {
+        this.toAddress = toAddress;
     }
 
-    public String getFromAddress() {
-        return fromAddress;
+    public String getToAddress() {
+        return toAddress;
     }
 
-    public void setFromAddress(String fromAddress) {
-        this.fromAddress = fromAddress;
+    public void setToAddress(String toAddress) {
+        this.toAddress = toAddress;
     }
 
 }

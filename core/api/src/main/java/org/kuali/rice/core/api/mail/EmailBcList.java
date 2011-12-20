@@ -13,39 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.mail;
-import java.util.List;
+package org.kuali.rice.core.api.mail;
+
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import java.util.List;
 
 /**
- * The cc addresses of an email message.
+ * The bc addresses of an email message.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EmailCcList {
+public class EmailBcList {
 
-    private List<String> ccAddresses;
-    
-    public EmailCcList(List<String> ccAddresses) {
-        this.ccAddresses = ccAddresses;
+    private List<String> bcAddresses;
+
+    public EmailBcList(List<String> bcAddresses) {
+        this.bcAddresses = bcAddresses;
     }
 
-    public List<String> getCcAddresses() {
-        return ccAddresses;
+    public List<String> getBcAddresses() {
+        return bcAddresses;
     }
 
     public Address[] getToAddressesAsAddressArray() throws AddressException {
-	Address[] recipientAddresses = new Address[this.ccAddresses.size()];
-	for (int i = 0; i < recipientAddresses.length; i++) {
-	    recipientAddresses[i] = new InternetAddress((String) this.ccAddresses.get(i));
-	 }
+        Address[] recipientAddresses = new Address[this.bcAddresses.size()];
+        for (int i = 0; i < recipientAddresses.length; i++) {
+            recipientAddresses[i] = new InternetAddress((String) this.bcAddresses.get(i));
+        }
         return recipientAddresses;
     }
-    
-    public void setCcAddress(List<String> ccAddresses) {
-        this.ccAddresses = ccAddresses;
+
+    public void setBcAddress(List<String> bcAddresses) {
+        this.bcAddresses = bcAddresses;
     }
 
 }

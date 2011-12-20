@@ -63,7 +63,7 @@
   <bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
 	<bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
 
-	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
+  <bean id="kewConfigurer" class="org.kuali.rice.kew.config.KEWConfigurer"/>
 	<bean id="kenConfigurer" class="org.kuali.rice.ken.impl.config.KENConfigurer"/>
   <bean id="edlConfigurer" class="org.kuali.rice.edl.impl.config.EDLConfigurer"/>
 	<!--<import resource="classpath:org/kuali/rice/edl/impl/config/EDLConfigSpringBeans.xml"/>-->

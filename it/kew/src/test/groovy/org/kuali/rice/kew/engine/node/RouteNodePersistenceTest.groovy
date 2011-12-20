@@ -35,7 +35,7 @@ class RouteNodePersistenceTest extends KEWTestCase {
 
     @Before
     void init() {
-        helper = new PersistenceTestHelper("enWorkflowDataSource")
+        helper = new PersistenceTestHelper("kewDataSource")
         dao = KEWServiceLocator.getService("enRouteNodeDAO")
     }
 

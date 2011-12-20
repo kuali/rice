@@ -19,8 +19,8 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -82,7 +82,7 @@ public final class KEWServiceLocator {
 
 	public static final String KEW_RUN_MODE_PROPERTY = "kew.mode";
 	
-	public static final String DATASOURCE = "enWorkflowDataSource";
+	public static final String DATASOURCE = "kewDataSource";
 
 	public static final String QUICK_LINKS_SERVICE = "enQuickLinksService";
 
@@ -373,11 +373,7 @@ public final class KEWServiceLocator {
     public static DocumentLinkService getDocumentLinkService(){
     	return (DocumentLinkService) getBean(DOCUMENT_LINK_SERVICE);
     }
-    
-    public static Mailer getMailer(){
-    	return (Mailer) getBean(MAILER);
-    }
-    
+
     /**
      * For the following methods, we go directly to the SpringLoader because we do NOT want them to
      * be wrapped in any sort of proxy.

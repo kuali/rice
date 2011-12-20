@@ -26,7 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.mail.Mailer;
+import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.mail.DailyEmailJob;
 import org.kuali.rice.kew.mail.WeeklyEmailJob;

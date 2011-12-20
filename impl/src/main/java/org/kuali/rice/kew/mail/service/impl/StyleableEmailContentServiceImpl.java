@@ -33,11 +33,11 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.mail.EmailContent;
 import org.kuali.rice.coreservice.api.style.StyleService;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.xml.XmlHelper;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
-import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.api.util.CodeTranslator;

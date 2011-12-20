@@ -153,6 +153,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         agendaEditor.setCustomRuleActionAttributesMap(agendaEditor.getAgendaItemLineRuleAction().getAttributes());
+        agendaEditor.setCustomRuleAttributesMap(agendaEditor.getAgendaItemLine().getRule().getAttributes());
     }
 
     /**

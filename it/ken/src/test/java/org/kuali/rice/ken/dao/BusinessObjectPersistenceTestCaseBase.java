@@ -32,12 +32,12 @@ public abstract class BusinessObjectPersistenceTestCaseBase extends BusinessObje
      */
     @Test
     public void testBasicPersistence() {
-	setup();
-	assertTrue(insert());
-	assertTrue(retrieve());
-	assertTrue(update());
-	assertTrue(validateChanges());
-	assertTrue(delete());
+        setup();
+        assertTrue(insert());
+        assertTrue(retrieve());
+        assertTrue(update());
+        assertTrue(validateChanges());
+        assertTrue(delete());
     }
     
     /**

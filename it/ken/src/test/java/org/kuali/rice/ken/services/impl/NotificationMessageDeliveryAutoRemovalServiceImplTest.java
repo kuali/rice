@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.ken.services.impl;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,6 +37,7 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
+@Ignore
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTestCase {
 	// NOTE: this value is highly dependent on test data 
 	private static final int EXPECTED_SUCCESSES = 6;

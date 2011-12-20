@@ -21,6 +21,7 @@ import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.Collection;
 
@@ -30,6 +31,7 @@ import static org.junit.Assert.*;
  * This class tests the message delivery service implementation
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class NotificationMessageDeliveryServiceImplTest extends KENTestCase {
 
     @Test

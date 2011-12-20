@@ -17,6 +17,7 @@ package org.kuali.rice.ken.dao;
 
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.ken.test.KENTestCase;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -25,7 +26,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
  * in a protected member field for ease of use
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
+@BaselineTestCase.BaselineMode(Mode.CLEAR_DB)
 public abstract class BusinessObjectDaoTestCaseBase extends KENTestCase {
     protected GenericDao businessObjectDao;
 

@@ -20,10 +20,12 @@ import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
+import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.CompositeBeanFactory;
+import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.quartz.Scheduler;
@@ -40,7 +42,7 @@ import java.util.List;
  * Base test case for KEN that extends RiceTestCase
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@BaselineMode(Mode.CLEAR_DB)
+@BaselineMode(Mode.ROLLBACK_CLEAR_DB)
 public abstract class KENTestCase extends BaselineTestCase {
     private static final String KEN_MODULE_NAME = "ken";
     private static final String TX_MGR_BEAN_NAME = "transactionManager";
@@ -115,24 +117,57 @@ public abstract class KENTestCase extends BaselineTestCase {
         });
 
         // load the default SQL
-        lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultPerTestData.sql", ";"));
+        //lifecycles.add(new SQLDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultPerTestData.sql", ";"));
         
-        lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultPerTestData.xml"));
+        //lifecycles.add(new KEWXmlDataLoaderLifecycle("classpath:org/kuali/rice/ken/test/DefaultPerTestData.xml"));
         
 
         return lifecycles;
 
     }
-    
+
+    /**
+	 * By default this loads the "default" data set from the DefaultTestData.sql
+	 * and DefaultTestData.xml files. Subclasses can override this to change
+	 * this behaviour
+	 */
+	protected void loadDefaultTestData() throws Exception {
+		// at this point this is constants. loading these through xml import is
+		// problematic because of cache notification
+		// issues in certain low level constants.
+		new SQLDataLoader(
+				"classpath:org/kuali/rice/ken/test/DefaultPerTestData.sql", ";")
+				.runSql();
+
+		KEWXmlDataLoader.loadXmlClassLoaderResource(KENTestCase.class, "DefaultPerTestData.xml");
+	}
     /**
 	 * Returns the List of tables that should be cleared on every test run.
 	 */
+    @Override
 	protected List<String> getPerTestTablesToClear() {
 		List<String> tablesToClear = new ArrayList<String>();
 		tablesToClear.add("KREW_.*");
 		tablesToClear.add("KRSB_.*");
 		tablesToClear.add("KREN_.*");
 		return tablesToClear;
+	}
+
+    protected void setUpAfterDataLoad() throws Exception {
+		// override this to load your own test data
+	}
+
+    /**
+	 * Initiates loading of per-test data
+	 */
+	@Override
+	protected void loadPerTestData() throws Exception {
+        loadDefaultTestData();
+
+
+		setUpAfterDataLoad();
+
+		final long t4 = System.currentTimeMillis();
 	}
 
     /**

@@ -30,6 +30,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 import org.quartz.SchedulerException;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ import static org.junit.Assert.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 // this whole test case is suspect
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class NotificationServiceImplTest extends KENTestCase {
 
     public NotificationServiceImplTest() {

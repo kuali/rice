@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ken.services.impl;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.framework.persistence.dao.GenericDao;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
@@ -62,6 +63,7 @@ import static org.junit.Assert.*;
 				}
 		)
 )
+@Ignore
 public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestCase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data

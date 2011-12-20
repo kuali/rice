@@ -42,7 +42,7 @@ public class BusinessObjectDaoTest extends BusinessObjectDaoTestCaseBase {
 	Map primaryKeys = new HashMap();
 	primaryKeys.put("id", TestConstants.PRODUCER_2.getId());
 	NotificationProducer notificationProducer = (NotificationProducer)businessObjectDao.findByPrimaryKey(NotificationProducer.class, primaryKeys);
-	assertEquals(TestConstants.PRODUCER_2.getId().longValue(), notificationProducer.getId().longValue());
+   	assertEquals(TestConstants.PRODUCER_2.getId().longValue(), notificationProducer.getId().longValue());
 	assertEquals(TestConstants.PRODUCER_2.getName(), notificationProducer.getName());
 	assertEquals(TestConstants.PRODUCER_2.getDescription(), notificationProducer.getDescription());
 	assertEquals(TestConstants.PRODUCER_2.getContactInfo(), notificationProducer.getContactInfo());

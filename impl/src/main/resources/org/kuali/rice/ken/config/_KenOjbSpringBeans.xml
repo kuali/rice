@@ -26,7 +26,7 @@
   <bean id="kenOjbConfigurer" class="org.kuali.rice.core.framework.persistence.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
-				<value>locationDataSource</value>
+				<value>kenDataSource</value>
 			</list>
 		</property>
 		<property name="metadataLocation" value="classpath:org/kuali/rice/ken/config/OJB-repository-ken.xml" />

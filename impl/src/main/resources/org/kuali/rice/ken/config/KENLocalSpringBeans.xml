@@ -27,6 +27,7 @@
   <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/ken/config/_KenCommonSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/ken/config/_KenOjbSpringBeans.xml" />
+  <import resource="classpath:org/kuali/rice/kcb/config/_KcbOjbSpringBeans.xml" />
   <import resource="classpath:org/kuali/rice/ken/config/_KenLocalServiceBusSpringBeans.xml" />
 
   <!-- SERVICES -->
@@ -209,4 +210,127 @@
   <!-- END JPA CONFIGURATION -->
 
 
+
+
+
+
+
+  <!-- KCB stuff (Always loaded with local KEN)-->
+      <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
+        <bean id="initializer" class="org.kuali.rice.kcb.config.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">
+            <property name="messageProcessingTrigger" ref="periodicMessageProcessingTrigger"/>
+            <property name="messageProcessingJobDetail" ref="messageProcessingJobDetail"/>
+        <property name="scheduler" ref="rice.ksb.scheduler"></property>
+        </bean>
+
+        <!-- All of the beans listed in the beanNames/list section are considered transactional -->
+        <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+            <property name="interceptorNames">
+                <list>
+                    <idref bean="matchAllTxInterceptor" />
+                </list>
+            </property>
+            <property name="beanNames">
+                <list>
+                    <value>messagingService</value>
+                    <value>messageService</value>
+                    <value>messageDeliveryService</value>
+                    <value>messageDelivererRegistryService</value>
+                    <value>recipientPreferenceService</value>
+                    <value>emailService</value>
+                    <value>kenIntegrationService</value>
+                    <value>kcbGenericDao</value>
+                </list>
+            </property>
+        </bean>
+        <!--  END PROPAGATION REQUIRED TX DECLARATIONS -->
+
+        <!-- SERVICES -->
+
+        <bean id="messagingService" class="org.kuali.rice.kcb.service.impl.MessagingServiceImpl">
+            <property name="jobName"><value>${kcb.quartz.job.name}</value></property>
+            <property name="jobGroup"><value>${kcb.quartz.group}</value></property>
+            <property name="messageService"><ref local="messageService"/></property>
+            <property name="messageDeliveryService"><ref local="messageDeliveryService"/></property>
+            <property name="recipientPreferenceService"><ref local="recipientPreferenceService"/></property>
+            <property name="synchronous"><value>${kcb.messaging.synchronous}</value></property>
+        </bean>
+
+        <bean id="messageService" class="org.kuali.rice.kcb.service.impl.MessageServiceImpl">
+            <property name="genericDao"><ref local="kcbGenericDao"/></property>
+        </bean>
+
+        <bean id="messageDeliveryService" class="org.kuali.rice.kcb.service.impl.MessageDeliveryServiceImpl">
+            <property name="genericDao"><ref local="kcbGenericDao"/></property>
+            <property name="maxProcessAttempts"><value>${kcb.maxProcessAttempts}</value></property>
+        </bean>
+
+        <bean id="messageDelivererRegistryService" class="org.kuali.rice.kcb.service.impl.MessageDelivererRegistryServiceImpl"/>
+
+        <bean id="recipientPreferenceService" class="org.kuali.rice.kcb.service.impl.RecipientPreferenceServiceImpl">
+            <property name="genericDao"><ref local="kcbGenericDao"/></property>
+        </bean>
+
+        <bean id="mailer" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        <property name="serviceName" value="mailer" />
+        </bean>
+
+        <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
+            <property name="weburl" value="${ken.url}"/>
+            <property name="mailer" ref="mailer" />
+        </bean>
+
+        <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceDirectImpl">
+            <property name="dataSource" ref="kcbDataSource"/>
+        </bean>
+
+        <!-- END SERVICES -->
+
+        <!-- DAOS -->
+
+        <bean id="kcbGenericDao" class="org.kuali.rice.core.impl.persistence.dao.GenericDaoOjb">
+            <property name="jcdAlias">
+                <value>kcbDataSource</value>
+            </property>
+        </bean>
+
+        <!-- END DAOS -->
+
+        <!-- Quartz jobs -->
+
+        <bean id="messageProcessingJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+            <property name="group" value="${kcb.quartz.group}"/>
+            <property name="name" value="${kcb.quartz.job.name}"/>
+            <property name="description">
+                <value>
+                    Job that handles asynchronous delivery and dismissal of MessageDeliveries
+                </value>
+            </property>
+            <property name="jobClass" value="org.kuali.rice.kcb.quartz.MessageProcessingJob" />
+            <property name="durability" value="true"/>
+            <!-- this should result in the job being run after startup if there were any pending triggers -->
+            <property name="requestsRecovery" value="true"/>
+        </bean>
+
+        <bean id="periodicMessageProcessingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+            <property name="name" value="PeriodicMessageProcessingTrigger"/>
+            <property name="group" value="${kcb.quartz.group}"/>
+            <property name="jobName" value="${kcb.quartz.job.name}"/>
+            <property name="jobGroup" value="${kcb.quartz.group}"/>
+            <property name="description">
+                <value>
+                    Trigger that periodically runs the KCB message processing job
+                </value>
+            </property>
+            <property name="startDelay"><value>${kcb.messageprocessing.startDelayMS}</value></property>
+            <property name="repeatInterval"><value>${kcb.messageprocessing.repeatIntervalMS}</value></property>
+        </bean>
+
+    <!-- END KCB -->
+
+
+  <bean id="rice.ksb.scheduler"
+		class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="rice.ksb.scheduler" />
+	</bean>
 </beans>

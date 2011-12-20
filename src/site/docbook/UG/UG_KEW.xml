@@ -222,7 +222,41 @@
     </sect1>
     <sect1>
         <title>PeopleFlow - a new KEW feature</title>
-        <para>(more coming here)</para>
+        <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept included in the
+            original Coeus. For all intents and purposes it's a prioritized list of people to send
+            requests to.   Essentially, it's like a mini people-based workflow that doesn't require
+            you to specify a KEW node in the document type for each individual who might need to
+            approve or be notified. You can define "Stops" in a PeopleFlow, where everything in the
+            same stop proceeds in parallel, but all must be done within the stop before proceeding
+            to the next stop. </para>
+        <para>You can call/execute a PeopleFlow from within a KEW workflow node directly, or you can
+            invoke the Kuali Rules Managment System (KRMS) engine from an application and any
+            PeopleFlows that get selected during rule execution, defined in a KRMS agenda, will be
+            called. In this way, you can integrate business rules across applications and workflows. </para>
+        <para>The same PeopleFlow that defines a routing order among a set of persons, groups or
+            roles can be called by KRMS rules, with the KRMS rules defining which type of  request
+            to pass to the PeopleFlow (for example, an "approval" routing action or a
+            "notification").   </para>
+        <para>KRMS is also a new feature in Rice 2.0.  See the KRMS Users' Guide for more
+            information on KRMS.  </para>
+        <para>You can define a PeopleFlow (simple workflow) via a maintenance document.  In the
+            Kuali Rice portal on the main tab there is a Workflow category, and PeopleFlow is in
+            that category.  Select it:  </para>
+        <para><inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KEW---PeopleFlow-on-main-tab-in-portal.png"
+                        scalefit="1"/>
+                </imageobject>
+            </inlinemediaobject></para>
+        <para>You can search for a PeopleFlow to copy from and modify (be sure to give it a new
+            unique name) or can create a new one (see the top right of the lookup screen).</para>
+        <para><inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/KEW-PeopleFlow-lookup.png" scalefit="1"/>
+                </imageobject>
+            </inlinemediaobject></para>
+        <para>(We will add screen captures of the PeopleFlow creation screens, in early January -
+            doing styling refinements now.)</para>
     </sect1>    
     <sect1>
         <title>Actions</title>

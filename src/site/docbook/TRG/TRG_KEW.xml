@@ -5276,32 +5276,33 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
         </sect2>
     </sect1>
     <sect1  >
-        <title>PeopleFlow - a new feature in KEW</title>
-        <para>Calling a KRMS set of rules (an agenda) from your application can result in a call to
-            a full-blown KEW workflow or to a lighter-weight PeopleFlow, which is a new feature in
-            KEW in Rice 2.0, or to any other action you define in KRMS. </para>
-        <para>PeopleFlow gives you a new type of request activation strategy called
+        <title>Defining Workflow Processes Using PeopleFlow - a new feature in KEW</title>
+        <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept included in the
+            original Coeus. For all intents and purposes it's a prioritized list of people to send
+            requests to. PeopleFlow gives you a new type of request activation strategy called
             "priority-parallel" to activate requests generated from a PeopleFlow in the appropriate
-            order.  Essentially, it's like a mini people-based workflow that doesn't require you to
+            order. Essentially, it's like a mini people-based workflow that doesn't require you to
             specify a KEW node in the document type for each individual who might need to approve or
             be notified. You can define "Stops" in a PeopleFlow, where everything in the same stop
             proceeds in parallel, but all must be done within the stop before proceeding to the next
             stop. </para>
+        <para>You can call/execute a PeopleFlow from within a KEW workflow node directly, or you can
+            invoke the Kuali Rules Managment System (KRMS) engine from an application and any
+            PeopleFlows that get selected during rule execution, defined in a KRMS agenda, will be
+            called. In this way, you can integrate business rules across applications and workflows. </para>
         <para>The same PeopleFlow that defines a routing order among a set of persons, groups or
-            roles can be called by KRMS rules, with the KRMS rules defining which type of action
-            request to pass to the PeopleFlow (for example, an "approval" or a "notification"
-            action). </para>
-        <para>You can define a PeopleFlow (simple workflow) via a simple maintenance document. You
-            can call/execute a PeopleFlow from a KEW workflow node directly, or you can invoke the
-            KRMS rule engine from an application and any PeopleFlows that get selected during rule
-            execution will be called. In this way, you can integrate business rules across your
-            applications and workflows. </para>
-        <para>PeopleFlow is our Kuali Rice instantiation of the "maps" concept in Coeus. For all
-            intents and purposes it's a prioritized list of people to send action requests to. You
-            can use a new type of request activitation strategy called "priority-parallel" to
-            activate requests generated from a PeopleFlow in the appropriate order, so essentially
-            it's like a mini people-based workflow that doesn't require you to specify a KEW node in
-            the document type for each individual who might need to approve.</para>
+            roles can be called by KRMS rules, with the KRMS rules defining which type of  request
+            to pass to the PeopleFlow (for example, an "approval" routing action or a
+            "notification").   </para>
+        <para>KRMS is also a new feature in Rice 2.0.  See the KRMS Technical Guide for more
+            information on KRMS.    </para>
+        <para>You can define a PeopleFlow (simple workflow) via a maintenance document.  See the KEW
+            Users' Guide for additional details on defining a PeopleFlow.</para>
+        <sect2>
+            <title>Technical Information about PeopleFlow</title>
+            <para>(decide what needs to go here -- architecture, data model, api, troubleshooting,
+                etc.?)</para>
+        </sect2>
     </sect1>
     <sect1>
         <title>KEW Routing Components and Configuration Guide</title>

@@ -332,6 +332,14 @@
 	  <param name="rice.ken.jpa.GenerateDdl" override="false">true</param>
 	  <!-- End KEN-specific JPA parameters -->
 
+    <!-- EDL specific -->
+    <param name="rice.resourceloader.servicesToCache" override="false">enEDocLiteService</param>
+
+    <param name="edl.config.loc" override="false">classpath:META-INF/EDLConfig.xml</param>
+    <param name="edl.style.widgets" override="false">classpath:org/kuali/rice/edl/impl/default-widgets.xml</param>
+    <param name="edl.mode" override="false">LOCAL</param>
+    <!-- end EDL specific parameters -->
+
 	  <param name="title.inquiry.url.value.prependtext" override="false"></param>
 
 	  <param name="bus.refresh.rate" override="false">60</param>
@@ -395,7 +403,6 @@
 	<!-- KCB -->
 	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>
 	<param name="kcb.url" override="false">${application.url}/kcb</param>
-	<param name="kcb.mode" override="false">LOCAL</param>
 	<param name="rice.kcb.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kcb.expose.services.on.bus" override="false">true</param>
 

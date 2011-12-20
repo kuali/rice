@@ -15,20 +15,12 @@
  */
 package org.kuali.rice.edl.impl.config;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.resourceloader.ResourceLoader;
+import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.framework.resourceloader.RiceResourceLoaderFactory;
-import org.kuali.rice.kew.plugin.PluginRegistry;
-import org.kuali.rice.kew.plugin.PluginRegistryFactory;
-import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
-import org.kuali.rice.kew.api.KewApiConstants.ClientProtocol;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -39,41 +31,44 @@ import java.util.List;
  */
 public class EDLConfigurer extends ModuleConfigurer {
 
-	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
-
+	//public static final String EDL_DATASOURCE_OBJ = "edl.datasource";
+    public static final String EDL_LOCAL_SPRING_FILE = "classpath:org/kuali/rice/edl/impl/config/EDLLocalSpringBeans.xml";
 	private DataSource dataSource;
-	
+
+    public EDLConfigurer() {
+        super("EDL");
+        setValidRunModes(Arrays.asList(RunMode.LOCAL));
+    }
+
 	@Override
 	public List<String> getPrimarySpringFiles() {
-		final List<String> springFileLocations;
-//		if (RunMode.REMOTE.equals(getRunMode()) || RunMode.THIN.equals(getRunMode()) ||
-//				ClientProtocol.WEBSERVICE.equals(getClientProtocol())) {
-//			springFileLocations = Collections.emptyList();
-//		} else {
-			springFileLocations = getEmbeddedSpringFileLocation();
-//		}
+		final List<String> springFileLocations = new ArrayList<String>();
+		if (RunMode.LOCAL.equals(getRunMode())) {
+			springFileLocations.add(EDL_LOCAL_SPRING_FILE);
+		}
 
 		return springFileLocations;
 	}
 	
-    private List<String> getEmbeddedSpringFileLocation(){
+    /*private List<String> getEmbeddedSpringFileLocation(){
     	final List<String> springFileLocations = new ArrayList<String>();
     	springFileLocations.add("classpath:org/kuali/rice/edl/impl/config/EDLSpringBeans.xml");
       	springFileLocations.add("classpath:org/kuali/rice/edl/impl/config/EDLOJBSpringBeans.xml");
     	return springFileLocations;
-    }
+    }*/
 
-	@Override
+	/*@Override
 	public void addAdditonalToConfig() {
 		configureDataSource();
-	}
+	}*/
 
-	private void configureDataSource() {
+	/*private void configureDataSource() {
 		if (getDataSource() != null) {
 			ConfigContext.getCurrentContextConfig().putObject(KEW_DATASOURCE_OBJ, getDataSource());
 		}
-	}
+	}*/
 
+	/*
 	@Override
 	public Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception {
 		// create the plugin registry
@@ -85,7 +80,7 @@ public class EDLConfigurer extends ModuleConfigurer {
 
 		final Collection<ResourceLoader> rls = new ArrayList<ResourceLoader>();
 		for (ResourceLoader rl : RiceResourceLoaderFactory.getSpringResourceLoaders()) {
-			CoreResourceLoader coreResourceLoader = 
+			CoreResourceLoader coreResourceLoader =
 				new CoreResourceLoader(rl, registry);
 			coreResourceLoader.start();
 
@@ -118,4 +113,5 @@ public class EDLConfigurer extends ModuleConfigurer {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+	*/
 }

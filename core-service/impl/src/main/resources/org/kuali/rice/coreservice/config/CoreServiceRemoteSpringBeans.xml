@@ -39,4 +39,13 @@
   <bean id="styleRepositoryService" parent="rice.coreService.remote.import"
             p:serviceName="styleRepositoryService"/>
 
+  <bean id="parameterService" class="org.kuali.rice.coreservice.impl.parameter.ParameterServiceImpl" lazy-init="true">
+    <property name="parameterRepositoryService" ref="parameterRepositoryService"/>
+    <property name="kualiModuleService" ref="rice.coreService.import.kualiModuleService"/>
+    <property name="applicationId" value="${application.id}"/>
+  </bean>
+
+  <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl" lazy-init="true">
+    <property name="styleRepositoryService" ref="styleRepositoryService" />
+  </bean>
 </beans>

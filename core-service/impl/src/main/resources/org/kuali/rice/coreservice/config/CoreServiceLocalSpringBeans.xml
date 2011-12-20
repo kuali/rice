@@ -67,6 +67,10 @@
     <property name="applicationId" value="${application.id}"/>
   </bean>
 
+  <bean id="styleService" class="org.kuali.rice.coreservice.impl.style.StyleServiceImpl">
+    <property name="styleRepositoryService" ref="styleRepositoryService" />
+  </bean>
+
   <bean id="dataDictionaryComponentPublisherService" class="org.kuali.rice.krad.service.impl.DataDictionaryComponentPublisherServiceImpl">
     <property name="dataDictionaryService" ref="rice.coreService.import.dataDictionaryService"/>
     <property name="kualiModuleService" ref="rice.coreService.import.kualiModuleService"/>
@@ -87,10 +91,6 @@
   <bean id="styleRepositoryService" class="org.kuali.rice.coreservice.impl.style.StyleRepositoryServiceImpl">
     <property name="styleXmlParser" ref="styleXmlLoader" />
     <property name="styleDao" ref="styleDao" />
-  </bean>
-
-  <bean id="styleDao" class="org.kuali.rice.coreservice.impl.style.StyleDaoOjb">
-    <property name="jcdAlias" value="coreServiceDataSource" />
   </bean>
 
   <bean id="styleXmlLoader" class="org.kuali.rice.coreservice.impl.style.StyleXmlParserImpl">
@@ -157,10 +157,6 @@
   <bean id="rice.coreService.import.businessObjectService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="businessObjectService"/>
   </bean>
-
-  <bean id="rice.coreService.import.kualiModuleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
-		<property name="serviceName" value="kualiModuleService" />
-	</bean>
 
   <bean id="rice.coreService.import.criteriaLookupService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="criteriaLookupService" />

@@ -129,7 +129,9 @@ function counterInit() {
     if (inited) return;
     
     inited = true;
+    if (jq('input.agenda-name') == null) return; 
     agendaNameId=jq('input.agenda-name').prop('id');
+    if (document.getElementById(agendaNameId+'_constraint_span') == null) return;
     agendaNameOldText = document.getElementById(agendaNameId+'_constraint_span').innerHTML;
 
     // Update counter text if text is present during init

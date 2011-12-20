@@ -54,6 +54,7 @@
           <list>
               <value>/krms/css/agendaTree.css</value>
               <value>/krms/css/disableButtons.css</value>
+              <value>/krms/css/requiredSets.css</value>
         </list>
       </constructor-arg>
   </bean>
@@ -68,7 +69,7 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditorMaintainable"/>
     <property name="items">
-      <list> 
+      <list>
         <ref bean="AgendaEditorView-Agenda-Page"/>
         <ref bean="AgendaEditorView-AddRule-Page"/>
         <ref bean="AgendaEditorView-EditRule-Page"/>
@@ -147,7 +148,7 @@
 
               <bean parent="InputField" p:propertyName="namespace" p:label="Namespace" p:required="true">
                 <property name="control">
-                  <bean parent="SelectControl"/>
+                  <bean parent="SelectControl" p:styleClasses="agenda-namespace"/>
                 </property>
                 <property name="optionsFinder">
                   <bean class="org.kuali.rice.krms.impl.repository.AgendaNamespaceValuesFinder" />
@@ -156,13 +157,13 @@
 
               <bean parent="InputField" p:propertyName="agenda.name" p:label="Name" p:required="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30" p:watermarkText="The Agenda`s name"/>
+                  <bean parent="TextControl" p:size="30" p:watermarkText="The Agenda`s name" p:styleClasses="agenda-name"/>
                 </property>
               </bean>
 
               <bean parent="InputField" p:propertyName="contextName" p:label="Context" p:required="true">
                 <property name="control">
-                  <bean parent="TextControl" p:size="30" p:watermarkText="context name"/>
+                  <bean parent="TextControl" p:size="30" p:watermarkText="context name" p:styleClasses="agenda-context"/>
                 </property>
 
                 <!-- add a hidden sub-field to hold the context id -->

@@ -54,7 +54,6 @@
           <list>
               <value>/krms/css/agendaTree.css</value>
               <value>/krms/css/disableButtons.css</value>
-              <value>/krms/css/requiredSets.css</value>
         </list>
       </constructor-arg>
   </bean>
@@ -146,7 +145,7 @@
           <property name="items">
             <list>
 
-              <bean parent="InputField" p:propertyName="namespace" p:label="Namespace" p:required="true" p:styleClasses="agenda-namespace">
+              <bean parent="InputField" p:propertyName="namespace" p:label="Namespace" p:required="true">
                 <property name="control">
                   <bean parent="SelectControl"/>
                 </property>
@@ -155,13 +154,13 @@
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="agenda.name" p:label="Name" p:required="true" p:styleClasses="agenda-name">
+              <bean parent="InputField" p:propertyName="agenda.name" p:label="Name" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30" p:watermarkText="The Agenda`s name"/>
                 </property>
               </bean>
 
-              <bean parent="InputField" p:propertyName="contextName" p:label="Context" p:required="true" p:styleClasses="agenda-context">
+              <bean parent="InputField" p:propertyName="contextName" p:label="Context" p:required="true">
                 <property name="control">
                   <bean parent="TextControl" p:size="30" p:watermarkText="context name"/>
                 </property>

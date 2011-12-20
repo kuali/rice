@@ -15,16 +15,20 @@
  */
 function requiredsSet() {
     var message = '';
-    if (jq('.agenda-namespace') != null &&
-        jq('.agenda-namespace').val() == '') {
-            message =  message + 'Please select a Namespace.\n';
+    // 178_attribute is Namespace
+    if (document.getElementById('178_attribute') != null &&
+        document.getElementById('178_attribute').selectedIndex != null &&
+        document.getElementById('178_attribute').options[document.getElementById('178_attribute').selectedIndex].value == '') {
+      message =  message + 'Please select a Namespace.\n';
     }
-    if (jq('.agenda-name') != null &&
-        jq('.agenda-name').val() == '') {
+    // 204 is Agenda Name
+    if (document.getElementById('204') != null &&
+        document.getElementById('204').value == '') {
       message = message + 'Please enter the Agenda Name.\n';
     }
-    if (jq('.agenda-context') != null &&
-        jq('.agenda-context').val() == '') {
+    // 230 is Agenda Context
+    if (document.getElementById('230') != null &&
+        document.getElementById('230').value == '') {
       message = message + 'Please Lookup (click the magnifying glass icon) the Agenda Context.\n';
     }
     return message;

@@ -77,7 +77,7 @@ public final class DataDictionaryTypeServiceHelper {
             ControlDefinition control = attr.getControl();
 
             if (control.isCheckbox()) {
-                 return RemotableCheckboxGroup.Builder.create(getValues(attr));
+                 return RemotableCheckbox.Builder.create();
             } else if (control.isHidden()) {
                 return RemotableHiddenInput.Builder.create();
             } else if (control.isMultiselect()) {

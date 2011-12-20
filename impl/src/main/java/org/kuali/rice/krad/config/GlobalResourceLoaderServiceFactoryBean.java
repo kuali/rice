@@ -54,7 +54,7 @@ public class GlobalResourceLoaderServiceFactoryBean implements FactoryBean<Objec
                 service = GlobalResourceLoader.getService(new QName(getServiceNamespace(), getServiceName()));
             }
 			if (mustExist && service == null) {
-				throw new IllegalStateException("Service must exist and no service could be located with name: " + this.getServiceName());
+				throw new IllegalStateException("Service must exist and no service could be located with serviceNamespace='" + getServiceNamespace() + "' and name='" + this.getServiceName() + "'");
 			}
 			return service;
 		} finally {

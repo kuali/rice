@@ -68,5 +68,6 @@
   <param name="location.mode">LOCAL</param>
   <param name="coreservice.mode">LOCAL</param>
   <param name="ken.mode">LOCAL</param>
+  <param name="kim.mode">LOCAL</param>
 
 </config>

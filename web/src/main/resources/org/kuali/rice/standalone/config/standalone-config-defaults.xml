@@ -59,14 +59,12 @@
   <param name="notification.quartz.autostartup">true</param>
   <param name="notification.concurrent.jobs">true</param>
 
-  <!-- location -->
+
+  <!-- Change Configurer Modes to LOCAL -->
+
   <param name="location.mode">LOCAL</param>
-
-  <!-- coreservice -->
   <param name="coreservice.mode">LOCAL</param>
-
-  <!-- ken -->
   <param name="ken.mode">LOCAL</param>
-
+  <param name="kim.mode">LOCAL</param>
 
 </config>

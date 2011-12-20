@@ -419,7 +419,7 @@
 	<!-- KIM -->
 	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 	<param name="kim.url" override="false">${application.url}/kim</param>
-	<param name="kim.mode" override="false">LOCAL</param>
+	<param name="kim.mode" override="false">REMOTE</param>
 	<param name="rice.kim.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kim.expose.services.on.bus" override="false">true</param>
   <param name="kim.ehcache.config.location" override="false">classpath:org/kuali/rice/kim/impl/config/kim.ehcache.xml</param>

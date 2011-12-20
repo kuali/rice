@@ -19,7 +19,7 @@ import org.kuali.rice.kns.bo.authorization.InquiryOrMaintenanceDocumentAuthorize
 
 import java.util.Set;
 
-public interface MaintenanceDocumentAuthorizer extends DocumentAuthorizer, InquiryOrMaintenanceDocumentAuthorizer,
+public interface MaintenanceDocumentAuthorizer extends InquiryOrMaintenanceDocumentAuthorizer,
         org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer {
 
 	public Set<String> getSecurePotentiallyReadOnlySectionIds();

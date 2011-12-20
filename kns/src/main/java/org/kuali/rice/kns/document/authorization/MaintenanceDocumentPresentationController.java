@@ -20,8 +20,8 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 
 import java.util.Set;
 
-public interface MaintenanceDocumentPresentationController extends
-        DocumentPresentationController, InquiryOrMaintenanceDocumentPresentationController {
+public interface MaintenanceDocumentPresentationController extends InquiryOrMaintenanceDocumentPresentationController,
+        org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationController {
 	public boolean canCreate(Class boClass);
 
 	public Set<String> getConditionallyReadOnlyPropertyNames(

@@ -33,6 +33,10 @@ public class MaintenanceDocumentPresentationControllerBase extends DocumentPrese
                 KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(boClass));
     }
 
+    public boolean canMaintain(Object dataObject) {
+        return true;
+    }
+
     public Set<String> getConditionallyHiddenPropertyNames(BusinessObject businessObject) {
         return new HashSet<String>();
     }

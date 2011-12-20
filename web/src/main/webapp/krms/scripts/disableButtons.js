@@ -120,7 +120,32 @@ function selectedPropCheck() {
     }
 }
 
+var inited = false;
+var AGENDA_NAME_MAX = 100;
+var agendaNameOldText;
+var agendaNameNewText;
+var agendaNameId;
+function counterInit() {
+    if (inited) return;
+    
+    inited = true;
+    agendaNameId=jq('input.agenda-name').prop('id');
+    agendaNameOldText = document.getElementById(agendaNameId+'_constraint_span').innerHTML;
+
+    // Update counter text if text is present during init
+    if (jq('input.agenda-name').val().length > 0) {
+        agendaNameNewText = agendaNameOldText + ' (' + (AGENDA_NAME_MAX - jq('input.agenda-name').val().length) + ' characters remaining)';
+        document.getElementById(agendaNameId+'_constraint_span').innerHTML = agendaNameNewText;
+    }
+    // KEYUP
+    jq('input.agenda-name').keyup(function() {
+        agendaNameNewText = agendaNameOldText + ' (' + (AGENDA_NAME_MAX - jq('input.agenda-name').val().length) + ' characters remaining)';
+        document.getElementById(agendaNameId+'_constraint_span').innerHTML = agendaNameNewText;
+    });
+}
+
 jq(document).ready(function() {
+    counterInit();
     if (ENABLED) {
         disableTreeButtons();
         enableAddButton();

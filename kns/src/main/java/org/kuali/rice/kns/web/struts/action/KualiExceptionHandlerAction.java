@@ -179,7 +179,7 @@ public class KualiExceptionHandlerAction extends Action {
 				exception, properties);
 		// Set full exception properties in Http Request and forward to JSP
 		request.setAttribute(KualiExceptionHandlerAction.class
-				.getName(), ei.toProperties());
+				.getSimpleName(), ei.toProperties());
 		return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	}
 }

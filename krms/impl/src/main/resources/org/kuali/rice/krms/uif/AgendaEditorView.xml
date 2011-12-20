@@ -106,7 +106,7 @@
       <bean parent="Footer">
         <property name="items">
           <list>
-            <bean parent="NavigationActionField" p:methodToCall="addRule" p:actionLabel="Add Rule"/>
+            <bean parent="NavigationActionField" p:methodToCall="addRule" p:actionLabel="Add Rule" p:styleClasses="tree-bar-button kr-button-primary kr-add-button"/>
             <bean parent="NavigationActionField" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="Cancel"/>
           </list>
         </property>
@@ -386,7 +386,7 @@
               }
               submitForm();
               "
-          p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
+          p:styleClasses="kr-button-primary tree-bar-button kr-add-button" p:style="margin-right: 15pt;"/>
 <!-- infinite loading bug
         <bean parent="AgendaEditorView-barButton" p:methodToCall="goToEditRule" p:actionLabel="Edit Rule"  p:style="margin-right: 15pt;">
           <property name="actionImage">
@@ -492,7 +492,7 @@
           </property>
         </bean>
 
-        <bean parent="AgendaEditorView-barButton" p:methodToCall="refresh" p:actionLabel="refresh">
+        <bean parent="AgendaEditorView-barButton" p:methodToCall="refresh" p:actionLabel="refresh" p:styleClasses="tree-bar-button kr-button-primary kr-refresh-button">
           <property name="actionImage">
             <bean parent="ImageField" p:source="@{#ConfigProperties['application.url']}/krms/images/refresh.png"
                   p:altText="Refresh"/>

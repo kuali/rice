@@ -79,6 +79,7 @@ function initAgendaTree(componentId) {
                 selectedItemTracker.val('');
                 disableTreeButtons(); // disableButtons.js
                 enableAddButton(); // disableButtons.js
+                enableRefreshButton(); // disableButtons.js
             } else { // select it, both with the custom class and with the selectedItemTracker
                 selectedItemTracker.val(agendaItemId);
                 jq(this.parentNode).addClass('ruleBlockSelected');

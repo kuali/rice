@@ -13,24 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// Add Rule 368
-// Edit Rule 371
-// Left 377
-// Right 383
-// Up 389
-// Down 395
-// Cut 404
-// Paste 410
-// Delete 416
-// refresh 422
-var TREE_BUTTONS = '.tree-bar-button';
-var RULE_ADD = '#368';
-var RULE_REFRESH='#422';
-
-var PROP_ADD = '#370';
-var PROP_ADD_PARENT = '#376';
-var PROP_REFRESH='#436';
-//var EDIT_RULE = '#371';
+var TREE = '.tree-bar-button';
+var ADD = '.kr-add-button';
+var REFRESH='.kr-refresh-button';
 
 var ENABLED = false;
 
@@ -57,22 +42,19 @@ function enableButton(id) {
 }
 
 function enableAddButton() {
-    enableButton(RULE_ADD);
-    enableButton(PROP_ADD);
-    enableButton(PROP_ADD_PARENT);
+    enableButton(ADD);
 }
 
 function enableRefreshButton() {
-    enableButton(RULE_REFRESH);
-    enableButton(PROP_REFRESH);
+    enableButton(REFRESH);
 }
 
 function enableTreeButtons() {
-    enableButton(TREE_BUTTONS)
+    enableButton(TREE)
 }
 
 function disableTreeButtons() {
-    disableButton(TREE_BUTTONS)
+    disableButton(TREE)
 }
 
 function propButtonsInit() {
@@ -83,16 +65,15 @@ function propButtonsInit() {
 }
 
 var onProp = false;
+// hack to disable buttons on Proposition Page when they are clicked (since document ready isn't called).
+// these ID numbers are not really ids, they are parameters hardcoded and passed in from calling javascript 
 function enabledCheck(id) {
     if (onProp) return true;
 
     if (id == '356') { // 356 edit
         onProp = true;
         propButtonsInit();
-    } else if (id == '370') { // 370 add
-        onProp = true;
-        propButtonsInit();
-    } else if (id == '376') { // 376 add parent
+    } else if (id == 'add') {
         onProp = true;
         propButtonsInit();
     } else if (id == '391') { // 391 left
@@ -113,10 +94,10 @@ function enabledCheck(id) {
     } else if (id == '424') { // 424 paste
         onProp = true;
         propButtonsInit();
-    } else if (id == '430') { // 430 delete
+    } else if (id == 'refresh') { 
         onProp = true;
         propButtonsInit();
-    } else if (id == '436') { // 436 refresh
+    } else if (id == '430') {
         onProp = true;
         propButtonsInit();
     }

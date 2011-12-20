@@ -32,3 +32,6 @@
     padding-top: 0em;
 }
 
+.kr-refresh-button {} /* marker css for not disabling refresh buttons */
+.kr-add-button {} /* marker css for not disabling add buttons */
+

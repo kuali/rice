@@ -20,7 +20,7 @@ var REFRESH='.kr-refresh-button';
 var ENABLED = false;
 
 function disableButton(id) {
-    if (ENABLED) {
+    if (ENABLED && jq(id) != null) {
         jq(id).attr('disabled', true);
 //        not using grayed out images yet..
 //        jq(id + ' > img').attr('src', 'yourdisabledimg.jpg');
@@ -34,7 +34,7 @@ function disableButton(id) {
 }
 
 function enableButton(id) {
-    if (ENABLED) {
+    if (ENABLED && jq(id) != null) {
         jq(id).removeAttr('disabled');
         jq(id).removeClass('kr-button-primary-disabled');
         jq(id).addClass('kr-button-primary');

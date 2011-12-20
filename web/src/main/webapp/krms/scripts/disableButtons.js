@@ -32,22 +32,28 @@ var PROP_ADD_PARENT = '#376';
 var PROP_REFRESH='#436';
 //var EDIT_RULE = '#371';
 
+var ENABLED = false;
+
 function disableButton(id) {
-    jq(id).attr('disabled', true);
-// not using grayed out images yet..
-//  jq(id + ' > img').attr('src', 'yourdisabledimg.jpg');
-// did the css stuff in a new css-class
-//  jq(id).css('cursor', 'default');
-//  jq(id).css('color', 'gray');
-    jq(id).removeClass('kr-button-primary');
-    jq(id).removeClass('kr-button-secondary1');
-    jq(id).addClass('kr-button-primary-disabled');
+    if (ENABLED) {
+        jq(id).attr('disabled', true);
+//        not using grayed out images yet..
+//        jq(id + ' > img').attr('src', 'yourdisabledimg.jpg');
+//        did the css stuff in a new css-class
+//        jq(id).css('cursor', 'default');
+//        jq(id).css('color', 'gray');
+        jq(id).removeClass('kr-button-primary');
+        jq(id).removeClass('kr-button-secondary1');
+        jq(id).addClass('kr-button-primary-disabled');
+    }    
 }
 
 function enableButton(id) {
-    jq(id).removeAttr('disabled');
-    jq(id).removeClass('kr-button-primary-disabled');
-    jq(id).addClass('kr-button-primary');
+    if (ENABLED) {
+        jq(id).removeAttr('disabled');
+        jq(id).removeClass('kr-button-primary-disabled');
+        jq(id).addClass('kr-button-primary');
+    }
 }
 
 function enableAddButton() {
@@ -134,8 +140,10 @@ function selectedPropCheck() {
 }
 
 jq(document).ready(function() {
-    disableTreeButtons();
-    enableAddButton();
-    enableRefreshButton();
-    selectedCheck();
+    if (ENABLED) {
+        disableTreeButtons();
+        enableAddButton();
+        enableRefreshButton();
+        selectedCheck();
+    }
 });

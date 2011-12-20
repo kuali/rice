@@ -29,5 +29,7 @@
   <bean id="rice.kew.workflowDocumentService" parent="rice.kew.remote.import"
               p:serviceName="workflowDocumentService"/>
 
+  <bean id="rice.kew.actionListService" parent="rice.kew.remote.import"
+              p:serviceName="actionListService"/>
 
 </beans>

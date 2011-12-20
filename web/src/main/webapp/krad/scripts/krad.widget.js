@@ -632,9 +632,10 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
                         }
 
                         // check for regular fields
-                        var infoFieldSpan = jq("#[name='" + returnField + "']");
+                        var infoFieldSpan = jq("[name='" + returnField + "']");
                         if (infoFieldSpan.length > 0) {
                             infoFieldSpan.val(fieldValue);
+                            infoFieldSpan.change();
                         }
 
                         // check for info spans

@@ -74,6 +74,23 @@
             <bean parent="TextControl"/>
           </property>
         </bean>
+
+        <bean parent="GenericTextField" p:label="Field Query w Progressive"
+              p:instructionalText="Progressively renders a field when a hidden field is populated by a field query"
+              p:propertyName="field72" p:defaultValue="a3">
+          <property name="hiddenPropertyNames" value="field73,field74"/>
+          <property name="fieldAttributeQuery">
+            <bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+                  p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74"/>
+          </property>
+        </bean>
+
+        <bean parent="InputField" p:propertyName="bField1" p:label="See This?"
+              p:progressiveRender="@{!#empty(field73)}">
+          <property name="control">
+            <bean parent="CheckboxControl"/>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

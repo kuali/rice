@@ -422,6 +422,7 @@
 	<param name="kim.mode" override="false">LOCAL</param>
 	<param name="rice.kim.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.kim.expose.services.on.bus" override="false">true</param>
+  <param name="kim.ehcache.config.location" override="false">classpath:org/kuali/rice/kim/impl/config/kim.ehcache.xml</param>
 
   <!-- KRMS -->
   <param name="krms.mode" override="false">LOCAL</param>

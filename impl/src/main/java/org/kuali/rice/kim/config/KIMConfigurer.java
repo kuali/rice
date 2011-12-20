@@ -18,6 +18,7 @@ package org.kuali.rice.kim.config;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
 import org.kuali.rice.core.framework.config.module.WebModuleConfiguration;
+import org.kuali.rice.kim.api.KimApiConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,21 +31,29 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KIMConfigurer extends ModuleConfigurer {
-	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMInterfaceSpringBeans.xml";
-	private static final String KIM_IMPL_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMImplementationSpringBeans.xml";
-	private static final String KIM_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMServiceBusSpringBeans.xml";
-	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KIMUserInterfaceSpringBeans.xml";
-	
-	@Override
+
+	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml";
+
+    public KIMConfigurer() {
+        super(KimApiConstants.Namespaces.MODULE_NAME);
+        setValidRunModes(Arrays.asList(RunMode.REMOTE, RunMode.EMBEDDED, RunMode.LOCAL));
+    }
+
+    @Override
+    protected String getDefaultConfigPackagePath() {
+        return "classpath:org/kuali/rice/kim/impl/config/";
+    }
+
+    @Override
 	public List<String> getPrimarySpringFiles() {
-		final List<String> springFileLocations = new ArrayList<String>();
-		springFileLocations.add( KIM_INTERFACE_SPRING_BEANS_PATH );
-		if ( getRunMode().equals( RunMode.LOCAL ) || getRunMode().equals( RunMode.EMBEDDED ) ) {
-			springFileLocations.add(KIM_IMPL_SPRING_BEANS_PATH);
-		}
-		if ( isExposeServicesOnBus() ) {
-		    springFileLocations.add(KIM_KSB_SPRING_BEANS_PATH);
-		}
+        List<String> springFileLocations = new ArrayList<String>();
+        if (RunMode.REMOTE == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KimRemoteSpringBeans.xml");
+        } else if (RunMode.EMBEDDED == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KimEmbeddedSpringBeans.xml");
+        } else if (RunMode.LOCAL == getRunMode()) {
+            springFileLocations.add(getDefaultConfigPackagePath() + "KimLocalSpringBeans.xml");
+        }
 		return springFileLocations;
 	}
 

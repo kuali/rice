@@ -141,7 +141,7 @@
   <import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/krad/config/KRADConfigSpringBeans.xml"/>
 	<bean id="coreServiceConfigurer" class="org.kuali.rice.coreservice.impl.config.CoreServiceConfigurer"/>
-	<import resource="classpath:org/kuali/rice/kim/impl/config/KIMConfigSpringBeans.xml"/>
+	<bean id="kimConfigurer" class="org.kuali.rice.kim.config.KIMConfigurer"/>
 	<import resource="classpath:org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/ken/config/KENConfigSpringBeans.xml"/>

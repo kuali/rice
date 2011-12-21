@@ -59,7 +59,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <import resource="classpath:org/kuali/rice/kew/config/KewLocalSpringBeans.xml.xml"/>
+  <!--<import resource="classpath:org/kuali/rice/kew/config/KewLocalSpringBeans.xml"/>-->
   <import resource="classpath:org/kuali/rice/kew/config/OverrideTestSpringBeans.xml"/>
 
 </beans>

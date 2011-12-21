@@ -58,7 +58,7 @@
 	<param name="attachment.dir.location">/tmp/en_attachments</param>
 	<param name="transaction.timeout">300000</param>
 
-	<param name="rice.KEW.additionalSpringFiles">classpath:org/kuali/rice/kew/config/TestSpring.xml</param>
+	<param name="rice.kew.additionalSpringFiles">classpath:org/kuali/rice/kew/config/TestSpring.xml</param>
 
     <param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
     <param name="filtermapping.login.1">/*</param>

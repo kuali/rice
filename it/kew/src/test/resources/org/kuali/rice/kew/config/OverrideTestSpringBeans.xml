@@ -75,7 +75,7 @@
   -->
   <bean id="fakeService" class="org.kuali.rice.kew.test.FakeServiceImpl"/>
 
-  <bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
+  <!--<bean class="org.kuali.rice.ksb.api.bus.support.ServiceBusExporter">
 	<property name="serviceBus" ref="rice.ksb.serviceBus"/>  
     <property name="serviceDefinition">
       <bean class="org.kuali.rice.ksb.api.bus.support.JavaServiceDefinition">
@@ -87,6 +87,15 @@
         <property name="serviceNameSpaceURI" value="fake"/>
         <property name="retryAttempts" value="0"/>
       </bean>
+    </property>
+  </bean>-->
+
+  <bean id="fakeService.exporter" parent="kewServiceExporter">
+    <property name="serviceDefinition">
+      <bean parent="kewService"
+            p:service-ref="fakeService"
+            p:localServiceName="fakeService-remote"
+            p:serviceInterface="org.kuali.rice.kew.test.FakeService"/>
     </property>
   </bean>
 </beans>

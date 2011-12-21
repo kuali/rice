@@ -291,12 +291,12 @@
     <property name="serviceName" value="kualiModuleService"/>
   </bean>
 
-  <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService" lazy-init="true">
+  <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService">
     <property name="moduleConfiguration" ref="kewModuleConfiguration"/>
     <property name="kualiModuleService" ref="rice.kew.import.kualiModuleService"/>
   </bean>
 
-  <bean id="kewModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration" lazy-init="true">
+  <bean id="kewModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
     <property name="namespaceCode" value="KR-WKFLW"/>
     <property name="dataSourceName" value="kewDataSource"/>
     <property name="initializeDataDictionary" value="true"/>

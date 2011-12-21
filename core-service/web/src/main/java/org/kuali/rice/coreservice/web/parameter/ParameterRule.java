@@ -18,14 +18,17 @@ package org.kuali.rice.coreservice.web.parameter;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+
+import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-
+import org.apache.commons.lang.StringUtils;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +41,7 @@ import java.util.Map;
  */
 public class ParameterRule extends MaintenanceDocumentRuleBase {
 
-	/**
+    /**
 	 * This overridden method ...
 	 *
 	 * @see org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase#processCustomRouteDocumentBusinessRules(org.kuali.rice.krad.maintenance.MaintenanceDocument)
@@ -48,10 +51,12 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 		boolean result = super.processCustomRouteDocumentBusinessRules( document );
 
 		result &= checkAllowsMaintenanceEdit( document.getDocumentHeader().getWorkflowDocument()
-				.getInitiatorPrincipalId(), (ParameterBo)getNewBo() );
+				.getInitiatorPrincipalId(), (ParameterBo) document.getNewMaintainableObject().getDataObject() );
 
-		result &= checkComponent((ParameterBo) getNewBo());
-		
+		result &= checkComponent((ParameterBo) document.getNewMaintainableObject().getDataObject());
+
+
+
 		return result;
 	}
 
@@ -79,14 +84,16 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
         String componentCode = param.getComponentCode();
         String namespace = param.getNamespaceCode();
         boolean result = false;
-        Component component = CoreServiceApiServiceLocator.getComponentService().getComponentByCode(namespace, componentCode);
-        if (component != null) {
-            result = true;
-        }
-        if (!result) {
-            putFieldError("code", "error.document.parameter.detailType.invalid", componentCode);
+        if(StringUtils.isNotBlank(componentCode) && StringUtils.isNotBlank(namespace)){
+            Component component = CoreServiceApiServiceLocator.getComponentService().getComponentByCode(namespace, componentCode);
+            if (component != null) {
+                result = true;
+            }
+            if (!result) {
+                putFieldError("componentCode", "error.document.parameter.detailType.invalid", componentCode);
+            }
         }
         return result;
     }
-}
 
+}

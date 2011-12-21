@@ -115,8 +115,9 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
         bo.value = im.value
         bo.description = im.description
         bo.parameterTypeCode = im.parameterType.code
-        bo.evaluationOperatorCode = im.evaluationOperator.code
-
+        if(null != im.evaluationOperator){
+            bo.evaluationOperatorCode = im.evaluationOperator.code
+        }
         bo.parameterType = ParameterTypeBo.from(im.parameterType)
         bo.versionNumber = im.versionNumber
 		bo.objectId = im.objectId;

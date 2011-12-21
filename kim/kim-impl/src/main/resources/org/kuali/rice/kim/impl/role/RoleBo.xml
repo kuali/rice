@@ -101,7 +101,7 @@
 
   <bean id="RoleBo-name" parent="RoleBo-name-parentBean"/>
   <bean id="RoleBo-name-parentBean" parent="AttributeDefinition" abstract="true" p:name="name" p:forceUppercase="false"
-        p:label="Role Name" p:shortLabel="Role Name" p:maxLength="80" p:required="false">
+        p:label="Role Name" p:shortLabel="Role Name" p:maxLength="80" p:required="true">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>

@@ -17,9 +17,10 @@ package org.kuali.rice.krad.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.coreservice.api.component.ComponentService;
-import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
@@ -181,6 +182,9 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
     }
 
     public ComponentService getComponentService() {
+        if (componentService == null) {
+            componentService = CoreServiceApiServiceLocator.getComponentService();
+        }
         return componentService;
     }
 

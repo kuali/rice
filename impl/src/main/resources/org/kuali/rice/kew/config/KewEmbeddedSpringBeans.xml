@@ -67,10 +67,9 @@
 
   <bean id="workflowEngineFactory"
         class="org.kuali.rice.kew.engine.WorkflowEngineFactoryImpl"
-        lazy-init="true"
+
         p:routeHeaderService-ref="enDocumentRouteHeaderService"
-        p:routeNodeService-ref="enRouteNodeService"
-        p:parameterService-ref="rice.kew.import.parameterService"/>
+        p:routeNodeService-ref="enRouteNodeService"/>
 
   <!-- WorkflowDocument -->
   <bean id="enWorkflowDocumentService"
@@ -274,7 +273,7 @@
   <bean id="rice.kew.documentProcessingQueue"
         class="org.kuali.rice.kew.impl.document.DocumentProcessingQueueImpl"
         p:workflowEngineFactory-ref="workflowEngineFactory"
-        p:documentAttributeIndexingQueue-ref="rice.kew.documentAttributeIndexingQueue" lazy-init="true"/>
+        p:documentAttributeIndexingQueue-ref="rice.kew.documentAttributeIndexingQueue"/>
 
   <bean id="rice.kew.import.dataDictionaryService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean" lazy-init="true">

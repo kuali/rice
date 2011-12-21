@@ -16,6 +16,7 @@
 package org.kuali.rice.kew.engine;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.doctype.IllegalDocumentTypeException;
@@ -734,6 +735,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	}
 
     protected ParameterService getParameterService() {
+        if (parameterService == null) {
+            parameterService = CoreFrameworkServiceLocator.getParameterService();
+        }
 		return parameterService;
 	}
 

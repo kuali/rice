@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.engine;
 
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.simulation.SimulationEngine;
@@ -47,9 +48,9 @@ public class WorkflowEngineFactoryImpl implements WorkflowEngineFactory, Initial
         if (routeHeaderService == null) {
             throw new IllegalStateException("routeHeaderService not properly injected, was null.");
         }
-        if (parameterService == null) {
-            throw new IllegalStateException("parameterService not properly injected, was null.");
-        }
+        //if (parameterService == null) {
+        //    throw new IllegalStateException("parameterService not properly injected, was null.");
+        //}
     }
     
     /**
@@ -106,6 +107,9 @@ public class WorkflowEngineFactoryImpl implements WorkflowEngineFactory, Initial
      * @return the parameterService
      */
     public ParameterService getParameterService() {
+        if (this.parameterService == null) {
+            this.parameterService = CoreFrameworkServiceLocator.getParameterService();
+        }
         return this.parameterService;
     }
 

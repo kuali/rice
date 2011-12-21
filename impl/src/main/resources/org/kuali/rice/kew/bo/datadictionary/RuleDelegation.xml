@@ -71,13 +71,13 @@
             </list>
           </property>
         </bean>
-        <bean parent="RelationshipDefinition">
+        <!--<bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="documentType"/>
           <property name="primitiveAttributes">
-            <list>
+            <list>-->
     		  <!-- FIXME: RICE MODULARITY -->
     		  <!-- after configurer work app fails to start up with this relationship across modules -->
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="delegationRuleBaseValues.documentType.documentTypeId" p:targetName="documentTypeId"/>
+             <!-- <bean parent="PrimitiveAttributeDefinition" p:sourceName="delegationRuleBaseValues.documentType.documentTypeId" p:targetName="documentTypeId"/>
             </list>
           </property>
           <property name="supportAttributes">
@@ -85,7 +85,7 @@
               <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="delegationRuleBaseValues.documentType.name" p:targetName="name"/>
             </list>
           </property>
-        </bean>
+        </bean>-->
         <bean parent="RelationshipDefinition">
           <property name="objectAttributeName" value="delegationRuleBaseValues.ruleTemplate"/>
           <property name="primitiveAttributes">

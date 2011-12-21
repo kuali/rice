@@ -51,11 +51,6 @@ public class KRADConfigurer extends ModuleConfigurer {
         final List<String> springFileLocations = new ArrayList<String>();
         springFileLocations.add(KRAD_SPRING_BEANS_PATH);
 
-        /*if (isExposeServicesOnBus()) {
-            //TODO FIXME hack!  KRAD should not be loading core!  (needed for now to publish core services)
-            springFileLocations.add("classpath:org/kuali/rice/core/config/COREServiceBusSpringBeans.xml");
-        }*/
-
         if (isIncludeKnsSpringBeans()) {
             springFileLocations.add(KNS_SPRING_BEANS_PATH);
         }
@@ -104,7 +99,7 @@ public class KRADConfigurer extends ModuleConfigurer {
                 scheduler.schedule(new Runnable() {
                     @Override
                     public void run() {
-                        long s = System.currentTimeMillis();
+                        long start = System.currentTimeMillis();
                         LOG.info("Executing scheduled Data Dictionary component publishing...");
                         try {
                             KRADServiceLocatorInternal.getDataDictionaryComponentPublisherService().publishAllComponents();
@@ -112,8 +107,8 @@ public class KRADConfigurer extends ModuleConfigurer {
                             LOG.error("Failed to publish data dictionary components.", e);
                             throw e;
                         } finally {
-                            long e = System.currentTimeMillis();
-                            LOG.info("... finished scheduled execution of Data Dictionary component publishing.  Took " + (e-s) + " milliseconds");
+                            long end = System.currentTimeMillis();
+                            LOG.info("... finished scheduled execution of Data Dictionary component publishing.  Took " + (end-start) + " milliseconds");
                         }
                     }
                 }, delay, TimeUnit.MILLISECONDS);

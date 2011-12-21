@@ -17,7 +17,7 @@ var TREE = '.tree-bar-button';
 var ADD = '.kr-add-button';
 var REFRESH='.kr-refresh-button';
 
-var ENABLED = false;
+var ENABLED = true;
 
 function disableButton(id) {
     if (ENABLED && jq(id) != null) {

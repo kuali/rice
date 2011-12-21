@@ -38,7 +38,9 @@ public class RadioButtonTypeServiceUtil {
         builder.setName(krmsAttributeDefinition.getName());
         builder.setRequired(true);
         List<String> defaultValue = new ArrayList<String>();
-        defaultValue.add(keyLabels.get(keyLabels.keySet().toArray()[0]));
+        defaultValue.add((String)keyLabels.keySet().toArray()[0]); // First value
+//        defaultValue.add(keyLabels.get(keyLabels.keySet().toArray()[0])); // First label
+//        defaultValue.add("1"); // index
         builder.setDefaultValues(defaultValue);
         builder.setControl(controlBuilder);
 

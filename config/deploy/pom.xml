@@ -61,6 +61,7 @@
     <impex.password>${db.instance}</impex.password>
     <deploy.server.1>deploy1.rice.kuali.org</deploy.server.1>
     <deploy.server.2>deploy2.rice.kuali.org</deploy.server.2>
+    <deploy.server.3>deploy3.rice.kuali.org</deploy.server.3>
     <impex.oracle.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.oracle.url>
     <impex.mysql.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.mysql.dba.url>
     <impex.mysql.url>${impex.mysql.dba.url}/${impex.database}</impex.mysql.url>

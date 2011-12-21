@@ -34,6 +34,7 @@
         <ref bean="Component-code"/>
         <ref bean="Component-name"/>
         <ref bean="Component-active"/>
+        <ref bean="Component-namespace-name"/>
       </list>
     </property>
   </bean>
@@ -48,6 +49,8 @@
     <property name="control">
       <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder" p:includeKeyInLabel="false"/>
     </property>
+    <property name="label" value="Namespace Name"/>
+    <property name="shortLabel" value="Namespace Nm"/>
   </bean>
   <bean id="Component-code" parent="Component-code-parentBean"/>
 
@@ -90,6 +93,16 @@
   <bean id="Component-active-parentBean" abstract="true" parent="AttributeReferenceDummy-activeIndicator">
     <property name="name" value="active"/>
   </bean>
+  <bean id="Component-namespace-name" parent="Component-namespace-name-parentBean"/>
+
+  <bean id="Component-namespace-name-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="namespace.name"/>
+    <property name="label" value="Namespace Name"/>
+    <property name="shortLabel" value="Namespace Name"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="50"/>
+    </property>
+  </bean>
 <!-- Business Object Inquiry Definition -->
 
 
@@ -106,6 +119,7 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="code"/>
               <bean parent="FieldDefinition" p:attributeName="name"/>
+              <bean parent="FieldDefinition" p:attributeName="namespace.name"/>
               <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
           </property>
@@ -144,6 +158,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="code"/>
         <bean parent="FieldDefinition" p:attributeName="name"/><!-- p:noInquiry="true" -->
+        <bean parent="FieldDefinition" p:attributeName="namespace.name"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
     </property>

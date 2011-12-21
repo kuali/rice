@@ -1097,11 +1097,25 @@
             <para>Highlights of the Beta 4 release include:<itemizedlist>
                     <listitem>
                         <para>Configuration changes made to more easily configure client
-                            applications with rice modules in LOCAL, EMBEDDED, or REMOTE
-                            modes</para>
-                    </listitem>
-                    <listitem>
-                        <para>Spring Bean modularity improvements</para>
+                            applications with rice modules in LOCAL, EMBEDDED, or REMOTE modes<itemizedlist>
+                                <listitem>
+                                    <para>Spring Bean modularity improvement</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Removal of many *ConfigSpringBeans.xml files</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Easier configuration setup by simply specifying run mode
+                                        of each module as configuration parameter</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Default to remote run mode for many modules (KEW, KIM,
+                                        KRMS, Core-Service, Location)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>New Core-Service module</para>
+                                </listitem>
+                            </itemizedlist></para>
                     </listitem>
                     <listitem>
                         <para>Upgrade Spring Framework to 3.1.RELEASE</para>

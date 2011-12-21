@@ -84,7 +84,7 @@
   <bean id="peopleFlowRequestGenerator"
         class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRequestGeneratorImpl"
         p:typeRepositoryService-ref="rice.kew.kewTypeRepositoryService"
-        p:roleService-ref="rice.kew.import.kimRoleService"/>
+        p:roleService-ref="rice.kew.import.kimRoleService" lazy-init="true"/>
 
   <bean id="peopleFlowRouteModule"
         class="org.kuali.rice.kew.impl.peopleflow.PeopleFlowRouteModule"
@@ -177,7 +177,7 @@
   </bean>
 
   <bean id="rice.kew.workflowDocumentActionsService"
-        class="org.kuali.rice.kew.impl.action.WorkflowDocumentActionsServiceImpl">
+        class="org.kuali.rice.kew.impl.action.WorkflowDocumentActionsServiceImpl" lazy-init="true">
     <property name="documentTypeService" ref="rice.kew.documentTypeService"/>
   </bean>
 
@@ -189,7 +189,7 @@
         class="org.kuali.rice.kew.doctype.service.impl.DocumentTypePermissionServiceImpl" lazy-init="true"/>
 
   <!--  DocumentSecurityService -->
-  <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl">
+  <bean id="enDocumentSecurityService" class="org.kuali.rice.kew.doctype.service.impl.DocumentSecurityServiceImpl" lazy-init="true">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
   </bean>
 
@@ -236,27 +236,27 @@
         class="org.kuali.rice.kew.service.impl.ReviewResponsibilityTypeServiceImpl"/>
 
   <bean id="rice.kew.actionListCustomizationHandlerService"
-        class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationHandlerServiceImpl">
+        class="org.kuali.rice.kew.impl.actionlist.ActionListCustomizationHandlerServiceImpl" lazy-init="true">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
   </bean>
 
   <bean id="rice.kew.documentSearchCustomizationHandlerService"
-        class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl">
+        class="org.kuali.rice.kew.docsearch.DocumentSearchCustomizationHandlerServiceImpl" lazy-init="true">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
   </bean>
 
   <bean id="rice.kew.documentSecurityHandlerService"
-        class="org.kuali.rice.kew.impl.document.security.DocumentSecurityHandlerServiceImpl">
+        class="org.kuali.rice.kew.impl.document.security.DocumentSecurityHandlerServiceImpl" lazy-init="true">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
   </bean>
 
   <bean id="rice.kew.ruleValidationAttributeExporterService"
-        class="org.kuali.rice.kew.validation.RuleValidationAttributeExporterServiceImpl">
+        class="org.kuali.rice.kew.validation.RuleValidationAttributeExporterServiceImpl" lazy-init="true">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
   </bean>
 
   <bean id="rice.kew.workflowRuleAttributeHandlerService"
-        class="org.kuali.rice.kew.impl.rule.attribute.WorkflowRuleAttributeHandlerServiceImpl">
+        class="org.kuali.rice.kew.impl.rule.attribute.WorkflowRuleAttributeHandlerServiceImpl" lazy-init="true">
     <property name="extensionRepositoryService" ref="rice.kew.extensionRepositoryService"/>
   </bean>
 
@@ -274,10 +274,10 @@
   <bean id="rice.kew.documentProcessingQueue"
         class="org.kuali.rice.kew.impl.document.DocumentProcessingQueueImpl"
         p:workflowEngineFactory-ref="workflowEngineFactory"
-        p:documentAttributeIndexingQueue-ref="rice.kew.documentAttributeIndexingQueue"/>
+        p:documentAttributeIndexingQueue-ref="rice.kew.documentAttributeIndexingQueue" lazy-init="true"/>
 
   <bean id="rice.kew.import.dataDictionaryService"
-        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean" lazy-init="true">
     <property name="serviceName" value="dataDictionaryService"/>
   </bean>
 
@@ -291,12 +291,12 @@
     <property name="serviceName" value="kualiModuleService"/>
   </bean>
 
-  <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService">
+  <bean id="kewModule" class="org.kuali.rice.kew.service.impl.KEWModuleService" lazy-init="true">
     <property name="moduleConfiguration" ref="kewModuleConfiguration"/>
     <property name="kualiModuleService" ref="rice.kew.import.kualiModuleService"/>
   </bean>
 
-  <bean id="kewModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration">
+  <bean id="kewModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration" lazy-init="true">
     <property name="namespaceCode" value="KR-WKFLW"/>
     <property name="dataSourceName" value="kewDataSource"/>
     <property name="initializeDataDictionary" value="true"/>

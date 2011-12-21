@@ -37,7 +37,7 @@ public class GenericPermissionBo extends PersistableBusinessObjectBase {
     protected String templateId;
     protected String detailValues;
     protected Map<String,String> details;
-    PermissionTemplateBo template;
+    PermissionTemplateBo template = new PermissionTemplateBo();
     List<PermissionAttributeBo> attributeDetails
     
     /**

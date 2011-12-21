@@ -21,7 +21,6 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.UberPermissionBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
@@ -47,13 +46,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 
 	private transient LookupService lookupService;
 	private transient RoleService roleService;
-	private volatile String genericPermissionDocumentTypeName;
+	private volatile String uberPermissionDocumentTypeName;
 
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
-    	// convert the PermissionImpl class into a GenericPermission object
-    	businessObject = new GenericPermissionBo ( (UberPermissionBo)businessObject);
+    	// convert the PermissionBo class into an UberPermission object
+    	businessObject = (UberPermissionBo)businessObject;
         if (allowsMaintenanceEditAction(businessObject)) {
         	htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }
@@ -80,13 +79,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	protected String getMaintenanceDocumentTypeName() {
 		//using DCL idiom to cache genericPermissionDocumentTypeName.
         //see effective java 2nd ed. pg. 71
-        String g = genericPermissionDocumentTypeName;
+        String g = uberPermissionDocumentTypeName;
         if (g == null) {
             synchronized (this) {
-                g = genericPermissionDocumentTypeName;
+                g = uberPermissionDocumentTypeName;
                 if (g == null) {
-                    genericPermissionDocumentTypeName = g = getMaintenanceDocumentDictionaryService().getDocumentTypeName(
-                            GenericPermissionBo.class);
+                    uberPermissionDocumentTypeName = g = getMaintenanceDocumentDictionaryService().getDocumentTypeName(
+                            UberPermissionBo.class);
                 }
             }
         }
@@ -229,7 +228,8 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 
             try {
                 PropertyUtils.copyProperties(permissionCopy, permissionBo);
-
+                //Hack for tomcat 7 KULRICE-5927
+                permissionCopy.setTemplate(permissionBo.getTemplate());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException("unable to copy properties");
             } catch (InvocationTargetException e) {

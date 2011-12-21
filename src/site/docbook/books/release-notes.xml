@@ -1092,5 +1092,70 @@
                         >https://wiki.kuali.org/x/EwO1Eg</link></para>
             </sect3>
         </sect2>
+        <sect2>
+            <title>Beta 4 - December 21, 2011</title>
+            <para>Highlights of the Beta 4 release include:<itemizedlist>
+                    <listitem>
+                        <para>Configuration changes made to more easily configure client
+                            applications with rice modules in LOCAL, EMBEDDED, or REMOTE
+                            modes</para>
+                    </listitem>
+                    <listitem>
+                        <para>Spring Bean modularity improvements</para>
+                    </listitem>
+                    <listitem>
+                        <para>Upgrade Spring Framework to 3.1.RELEASE</para>
+                    </listitem>
+                    <listitem>
+                        <para>Apache CXF upgraded to from 2.3.6 to 2.3.7</para>
+                    </listitem>
+                    <listitem>
+                        <para>Numerous bug fixes</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>The full list of JIRA tickets that were resolved for Kuali Rice 2.0.0-b4 can be
+                found here: <link xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b4-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b4-jiras</link></para>
+            <sect3>
+                <title>Impacting Changes</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>Creation of WebModule concept -  Created WebModule class and use that
+                            from ModuleConfigurer to load web modules as part of a special
+                            WebModuleLoaderListener class </para>
+                    </listitem>
+                    <listitem>
+                        <para>StandardGenericXMLSearchableAttribute internal changes -  refactored
+                            internally which resulted in a slight (and temporary) change to the
+                            internal class api. </para>
+                    </listitem>
+                    <listitem>
+                        <para>Removed the use of the rice.ksb.loadModuleConfiguration configuration
+                            variable</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removed datasource.pool.size config variable</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removed Various *ConfigSpringBeans.xml files </para>
+                    </listitem>
+                    <listitem>
+                        <para>Database changes in 2011-11-29.sql/mysql-2011-11-29.sql and
+                            2011-12-07.sql/mysql-2011-12-07.sql scripts found in the database
+                            updates directory inside the source code in order to perform a database
+                            upgrade from b3 to b4.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Xml Ingestion changes
+                            12-06-2011-ComponentMaintenanceDocument-doctype.xml found in the xml
+                            ingestion directory inside the source code provides a document type that
+                            previous database updates may have removed.</para>
+                    </listitem>
+                </itemizedlist>
+                <para>Additional details on impacting changes in this release can be found here:
+                        <link xlink:href="https://wiki.kuali.org/x/EwO1Eg"
+                        >https://wiki.kuali.org/x/EwO1Eg</link></para>
+            </sect3>
+        </sect2>
          </sect1>
 </article>

@@ -53,8 +53,6 @@ public class ActionField extends FieldBase {
     private String actionEvent;
     private Map<String, String> actionParameters;
 
-    private ActionFieldSecurity actionFieldSecurity;
-
     private LightBox lightBoxLookup;
     private LightBox lightBoxDirectInquiry;
 
@@ -66,7 +64,8 @@ public class ActionField extends FieldBase {
         super();
 
         disabled = false;
-        actionFieldSecurity = new ActionFieldSecurity();
+        setComponentSecurity(new ActionFieldSecurity());
+
         actionParameters = new HashMap<String, String>();
     }
 
@@ -431,16 +430,7 @@ public class ActionField extends FieldBase {
      */
     @Override
     public ActionFieldSecurity getComponentSecurity() {
-        return actionFieldSecurity;
-    }
-
-    /**
-     * Setter for the action field security object
-     *
-     * @param actionFieldSecurity
-     */
-    public void setComponentSecurity(ActionFieldSecurity actionFieldSecurity) {
-        this.actionFieldSecurity = actionFieldSecurity;
+        return (ActionFieldSecurity) super.getComponentSecurity();
     }
 
     /**

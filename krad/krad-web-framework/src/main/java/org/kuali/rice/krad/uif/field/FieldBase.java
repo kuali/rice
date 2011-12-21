@@ -49,13 +49,11 @@ public class FieldBase extends ComponentBase implements Field {
 
     private boolean labelFieldRendered;
 
-    private FieldSecurity fieldSecurity;
-
     public FieldBase() {
         labelFieldRendered = false;
         labelPlacement = Position.LEFT;
 
-        fieldSecurity = new FieldSecurity();
+        setComponentSecurity(new FieldSecurity());
     }
 
     /**
@@ -240,15 +238,7 @@ public class FieldBase extends ComponentBase implements Field {
      */
     @Override
     public FieldSecurity getComponentSecurity() {
-        return fieldSecurity;
+        return (FieldSecurity) super.getComponentSecurity();
     }
 
-    /**
-     * Setter for the field security object
-     *
-     * @param fieldSecurity
-     */
-    public void setComponentSecurity(FieldSecurity fieldSecurity) {
-        this.fieldSecurity = fieldSecurity;
-    }
 }

@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.DataFieldSecurity;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.LabelField;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -84,7 +85,6 @@ public class CollectionGroup extends Group implements DataBinding {
     private String subCollectionSuffix;
 
     private CollectionGroupBuilder collectionGroupBuilder;
-    private CollectionGroupSecurity collectionGroupSecurity;
 
     public CollectionGroup() {
         renderAddLine = true;
@@ -93,7 +93,7 @@ public class CollectionGroup extends Group implements DataBinding {
         showHideInactiveButton = true;
         renderSelectField = false;
 
-        collectionGroupSecurity = new CollectionGroupSecurity();
+        setComponentSecurity(new CollectionGroupSecurity());
 
         filters = new ArrayList<CollectionFilter>();
         actionFields = new ArrayList<ActionField>();
@@ -723,16 +723,7 @@ public class CollectionGroup extends Group implements DataBinding {
      */
     @Override
     public CollectionGroupSecurity getComponentSecurity() {
-        return collectionGroupSecurity;
-    }
-
-    /**
-     * Setter for the collection groups security object
-     *
-     * @param collectionGroupSecurity
-     */
-    public void setComponentSecurity(CollectionGroupSecurity collectionGroupSecurity) {
-        this.collectionGroupSecurity = collectionGroupSecurity;
+        return (CollectionGroupSecurity) super.getComponentSecurity();
     }
 
     /**

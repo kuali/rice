@@ -59,7 +59,6 @@ public class DataField extends FieldBase implements DataBinding {
     private Class<? extends ValueFinder> defaultValueFinderClass;
 
     private PropertyEditor propertyEditor;
-    private DataFieldSecurity dataFieldSecurity;
 
     private boolean readOnlyHidden;
 
@@ -90,7 +89,7 @@ public class DataField extends FieldBase implements DataBinding {
         readOnlyHidden = false;
         applyValueMask = false;
 
-        dataFieldSecurity = new DataFieldSecurity();
+        setComponentSecurity(new DataFieldSecurity());
 
         hiddenPropertyNames = new ArrayList<String>();
         informationalDisplayPropertyNames = new ArrayList<String>();
@@ -550,16 +549,7 @@ public class DataField extends FieldBase implements DataBinding {
      */
     @Override
     public DataFieldSecurity getComponentSecurity() {
-        return dataFieldSecurity;
-    }
-
-    /**
-     * Setter for the data field security object
-     *
-     * @param dataFieldSecurity
-     */
-    public void setComponentSecurity(DataFieldSecurity dataFieldSecurity) {
-        this.dataFieldSecurity = dataFieldSecurity;
+        return (DataFieldSecurity) super.getComponentSecurity();
     }
 
     /**

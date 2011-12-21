@@ -186,6 +186,24 @@
       </properties>
     </profile>
     <profile>
+      <id>env7</id>
+      <properties>
+        <deploy.env.number>7</deploy.env.number>
+        <deploy.server>${deploy.server.3}</deploy.server>
+        <public.url>http://env7.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat1</tomcat.instance>
+      </properties>
+    </profile>
+    <profile>
+      <id>env8</id>
+      <properties>
+        <deploy.env.number>8</deploy.env.number>
+        <deploy.server>${deploy.server.3}</deploy.server>
+        <public.url>http://env8.rice.kuali.org</public.url>
+        <tomcat.instance>tomcat2</tomcat.instance>
+      </properties>
+    </profile>
+    <profile>
       <id>deploy</id>
       <properties>
         <!-- Override for JDK6 and to match up with Amazon RDS -->

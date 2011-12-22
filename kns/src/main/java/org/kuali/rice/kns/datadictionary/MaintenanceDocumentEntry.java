@@ -59,8 +59,6 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
     protected List<String> webScriptFiles = new ArrayList<String>(3);
     protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
 
-    protected Class<? extends DocumentPresentationController> documentPresentationControllerClass;
-
     protected boolean sessionDocument = false;
 
     public MaintenanceDocumentEntry() {

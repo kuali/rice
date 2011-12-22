@@ -70,7 +70,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
 
     @OneToOne(targetEntity=ResponsibilityTemplateBo.class,cascade=[],fetch=FetchType.EAGER)
     @JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
-    ResponsibilityTemplateBo template
+    ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
 
     @OneToMany(targetEntity=ResponsibilityAttributeBo.class,cascade=[CascadeType.ALL],fetch=FetchType.EAGER,mappedBy="id")
     @Fetch(value = FetchMode.SELECT)
@@ -125,10 +125,7 @@ public class ResponsibilityBo extends PersistableBusinessObjectBase implements R
     }
 
     ResponsibilityTemplateBo getTemplate() {
-        if(null == template) {
-            template = new ResponsibilityTemplateBo();
-        }
-        return template;
+       return template;
     }
 
     //FIXME: temporary methods

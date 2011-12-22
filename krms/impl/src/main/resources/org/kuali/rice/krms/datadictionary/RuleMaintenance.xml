@@ -625,6 +625,7 @@
   </bean>
 
   <bean id="selectedNodeQuickActions" parent="FieldGroup" p:styleClasses="actionReveal"
+        p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}"
         p:group.layoutManager.orientation="HORIZONTAL">
     <property name="items">
       <list>

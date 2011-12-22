@@ -218,6 +218,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         builder.setShortLabel("PeopleFlow ID");
         builder.setMinLength(Integer.valueOf(1));
         builder.setMaxLength(Integer.valueOf(40));
+        builder.setConstraintText("size 40");
         builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
 
         return builder.build();
@@ -254,6 +255,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         builder.setShortLabel("PeopleFlow Name");
         builder.setMinLength(Integer.valueOf(1));
         builder.setMaxLength(Integer.valueOf(40));
+        builder.setConstraintText("size 40");
         builder.setWidgets(Collections.<RemotableAbstractWidget.Builder>singletonList(quickFinderBuilder));
 
         return builder.build();

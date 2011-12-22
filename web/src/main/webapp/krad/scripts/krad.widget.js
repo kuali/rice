@@ -248,6 +248,9 @@ function returnLookupResultByScript(fieldName, value) {
     returnField.focus();
     returnField.blur();
     returnField.focus();
+
+    // trigger change event
+    returnField.change();
 }
 
 /*

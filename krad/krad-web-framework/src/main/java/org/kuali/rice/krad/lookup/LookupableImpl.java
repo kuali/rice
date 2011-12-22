@@ -594,7 +594,6 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 if (lookupView.isReturnByScript()) {
                     Properties props = getReturnUrlParameters(lookupView, lookupForm, dataObject);
 
-//                    StringBuilder script = new StringBuilder("e.preventDefault();");
                     StringBuilder script = new StringBuilder("e.preventDefault();");
                     for (String returnField : lookupForm.getFieldConversions().values()) {
                         if (props.containsKey(returnField)) {

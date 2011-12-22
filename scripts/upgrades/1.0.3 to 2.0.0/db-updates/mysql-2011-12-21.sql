@@ -1,0 +1,1 @@
+update KRCR_NMSPC_T set APPL_ID = 'RICE' where nmspc_cd = 'KUALI';

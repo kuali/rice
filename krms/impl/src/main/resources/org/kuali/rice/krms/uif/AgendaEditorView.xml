@@ -338,20 +338,18 @@
       <list>
         <!-- javascript to work around required issue -->
         <bean parent="NavigationActionField" p:methodToCall="viewRule" p:actionLabel="View Rule"
-              p:clientSideJs="var requiredMessage = requiredsSet();
-              // TODO: uncomment next lines once selectedAgendaItemId works
-              //if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
-              //  requiredMessage = requiredMessage + 'Please select the rule to view, then click view rule.';
-              //}
+              p:clientSideJs="var requiredMessage = '';
+              if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
+                requiredMessage = requiredMessage + 'Please select the rule to view, then click view rule.';
+                requiredMessage = '';
+              }
               if (requiredMessage.length > 0) {
                 alert(requiredMessage);
                 return false;
               }
               submitForm();
               "
-              p:styleClasses="buttonClasses" p:style="margin-right: 15pt;"/>
-              <!--  use this styling as well once selectedAgendaItemId works
-              p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>-->
+              p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
       </list>
     </property>
   </bean>

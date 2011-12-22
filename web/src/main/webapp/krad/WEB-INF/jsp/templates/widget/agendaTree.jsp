@@ -30,7 +30,7 @@
 
 <%-- KRAD doesn't support hidden input fields at present.  This is a workaround for it. --%>
 <c:if test="${KualiForm.viewTypeName != 'MAINTENANCE'}">
-  <input type="hidden" id="blah" name="dataObject.selectedAgendaItemId" value="${KualiForm.dataObject.selectedAgendaItemId}" class="selectedAgendaItemId" />
+  <input type="hidden" name="dataObject.selectedAgendaItemId" value="${KualiForm.dataObject.selectedAgendaItemId}" class="selectedAgendaItemId" />
 </c:if>
 
 <%--

@@ -185,10 +185,17 @@
         <bean parent="GroupBodyOnly" p:style="border: 1px solid #999999; padding: 5px; margin: 5px; background: white; margin-top: " >
           <property name="items">
             <list>
-              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt; margin-top: 0em;">
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt; margin-top: 0em;" p:progressiveRender="@{#form.viewTypeName.toString() != 'MAINTENANCE'}">
                 <property name="items">
                   <list>
-                    <bean parent="RuleEditorView-RuleTreeControls" />
+                    <bean parent="RuleEditorView-RuleTreeViewControls" />
+                  </list>
+                </property>
+              </bean>
+              <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt; margin-top: 0em;" p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}">
+                <property name="items">
+                  <list>
+                    <bean parent="RuleEditorView-RuleTreeEditControls" />
                   </list>
                 </property>
               </bean>
@@ -267,7 +274,23 @@
     </property>
   </bean>
 
-  <bean id="RuleEditorView-RuleTreeControls" parent="Group"
+  <bean id="RuleEditorView-RuleTreeViewControls" parent="Group"
+      p:style="text-align: left; margin-top: 3px;"
+      p:styleClasses="kr-footer">
+
+    <property name="renderHeader" value="true"/>
+    <property name="title" value="Propositions"/>
+    <property name="layoutManager">
+      <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL" p:style="padding: 5px;"/>
+    </property>
+
+    <property name="items">
+      <list>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="RuleEditorView-RuleTreeEditControls" parent="Group"
       p:style="text-align: left; margin-top: 3px;"
       p:styleClasses="kr-footer">
 
@@ -279,7 +302,6 @@
       
     <property name="items">
       <list>
-
         <bean parent="AgendaEditorView-barButton" p:clientSideJs="var enabled = enabledCheck('add');
           if (enabled) {
               ajaxCallPropositionTree('addProposition', 'RuleEditorView-Tree');

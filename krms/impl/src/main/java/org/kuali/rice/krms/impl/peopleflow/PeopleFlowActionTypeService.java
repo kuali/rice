@@ -47,6 +47,7 @@ import javax.jws.WebParam;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.text.MessageFormat;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -192,6 +193,9 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create(baseLookupUrl, PEOPLE_FLOW_BO_CLASS_NAME);
+        Map<String, String> lookup = new HashMap<String, String>();
+        lookup.put(ATTRIBUTE_FIELD_NAME, "id");
+        quickFinderBuilder.setLookupParameters(lookup);
 
         quickFinderBuilder.setFieldConversions(Collections.singletonMap("id", ATTRIBUTE_FIELD_NAME));
 
@@ -225,6 +229,9 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
 
         RemotableQuickFinder.Builder quickFinderBuilder =
                 RemotableQuickFinder.Builder.create(baseLookupUrl, PEOPLE_FLOW_BO_CLASS_NAME);
+        Map<String, String> lookup = new HashMap<String, String>();
+        lookup.put(NAME_ATTRIBUTE_FIELD, "name");
+        quickFinderBuilder.setLookupParameters(lookup);
 
         quickFinderBuilder.setFieldConversions(Collections.singletonMap("name", NAME_ATTRIBUTE_FIELD));
 

@@ -97,7 +97,7 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
      */
     @Override
     public Collection getDefaultExistenceChecks(Class dataObjectClass) {
-        return getDefaultExistenceChecks(getDocumentTypeName(dataObjectClass));
+        return getDefaultExistenceChecks(getMaintenanceDocumentTypeName(dataObjectClass));
     }
 
     /**
@@ -216,6 +216,36 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
     }
 
     /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentEntry(java.lang.String)
+     */
+    @Override
+    public DocumentEntry getDocumentEntry(String documentTypeName) {
+        if (documentTypeName == null) {
+            throw new IllegalArgumentException("invalid (null) document type name");
+        }
+
+        DocumentEntry entry = getDataDictionary().getDocumentEntry(documentTypeName);
+
+        return entry;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentEntryByClass(java.lang.Class<? extends
+     *      org.kuali.rice.krad.document.Document>)
+     */
+    @Override
+    public DocumentEntry getDocumentEntryByClass(Class<? extends Document> documentClass) {
+        DocumentEntry entry = null;
+
+        String documentTypeName = getDocumentTypeByClass(documentClass);
+        if (StringUtils.isNotBlank(documentTypeName)) {
+            entry = getDocumentEntry(documentTypeName);
+        }
+
+        return entry;
+    }
+
+    /**
      * @see org.kuali.rice.krad.service.DocumentDictionaryService#getMaintenanceDocumentEntry
      */
     @Override
@@ -241,6 +271,23 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
         }
 
         return documentClass;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.service.DocumentDictionaryService#getDocumentTypeByClass(java.lang.Class<? extends org.kuali.rice.krad.document.Document>)
+     */
+    @Override
+    public String getDocumentTypeByClass(Class<? extends Document> documentClass) {
+        if (documentClass == null) {
+            throw new IllegalArgumentException("invalid (null) document class");
+        }
+
+        DocumentEntry entry = getDataDictionary().getDocumentEntry(documentClass.getName());
+        if (entry != null) {
+            return entry.getDocumentTypeName();
+        }
+
+        return null;
     }
 
     /**
@@ -445,22 +492,6 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
     }
 
     /**
-     * Retrieves the document entry for the given document type
-     *
-     * @param documentTypeName - document type name to retrieve document entry for
-     * @return DocumentEntry instance found for document type
-     */
-    protected DocumentEntry getDocumentEntry(String documentTypeName) {
-        if (documentTypeName == null) {
-            throw new IllegalArgumentException("invalid (null) document type name");
-        }
-
-        DocumentEntry entry = getDataDictionary().getDocumentEntry(documentTypeName);
-
-        return entry;
-    }
-
-    /**
      * Gets the workflow document type dto for the given documentTypeName
      *
      * @param documentTypeName - document type name to retrieve document type dto
@@ -468,24 +499,6 @@ public class DocumentDictionaryServiceImpl implements DocumentDictionaryService 
      */
     protected DocumentType getDocumentType(String documentTypeName) {
         return KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(documentTypeName);
-    }
-
-    /**
-     * Retrieves the document type name for the maintenance document that is associated with
-     * the given data object class
-     *
-     * @param dataObjectClass - data object class to retrieve document type name for
-     * @return String document type name
-     */
-    protected String getDocumentTypeName(Class dataObjectClass) {
-        String documentTypeName = null;
-
-        MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(dataObjectClass);
-        if (entry != null) {
-            documentTypeName = entry.getDocumentTypeName();
-        }
-
-        return documentTypeName;
     }
 
     protected DataDictionary getDataDictionary() {

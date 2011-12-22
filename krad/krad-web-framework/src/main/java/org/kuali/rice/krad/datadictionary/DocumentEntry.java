@@ -20,7 +20,9 @@ import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.datadictionary.exception.DuplicateEntryException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
+import org.kuali.rice.krad.document.DocumentAuthorizerBase;
 import org.kuali.rice.krad.document.DocumentPresentationController;
+import org.kuali.rice.krad.document.DocumentPresentationControllerBase;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 
@@ -68,6 +70,13 @@ public abstract class DocumentEntry extends DataDictionaryEntryBase {
     protected List<ReferenceDefinition> defaultExistenceChecks = new ArrayList<ReferenceDefinition>();
     protected Map<String, ReferenceDefinition> defaultExistenceCheckMap =
             new LinkedHashMap<String, ReferenceDefinition>();
+
+    public DocumentEntry() {
+        super();
+
+        documentAuthorizerClass = DocumentAuthorizerBase.class;
+        documentPresentationControllerClass = DocumentPresentationControllerBase.class;
+    }
 
     /**
      * @see org.kuali.rice.krad.datadictionary.DataDictionaryEntry#getJstlKey()

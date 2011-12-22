@@ -17,6 +17,8 @@ package org.kuali.rice.kns.datadictionary;
 
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationControllerBase;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -63,6 +65,9 @@ public class MaintenanceDocumentEntry extends org.kuali.rice.krad.datadictionary
 
     public MaintenanceDocumentEntry() {
         super();
+
+        documentAuthorizerClass = MaintenanceDocumentAuthorizerBase.class;
+        documentPresentationControllerClass = MaintenanceDocumentPresentationControllerBase.class;
     }
 
      /**

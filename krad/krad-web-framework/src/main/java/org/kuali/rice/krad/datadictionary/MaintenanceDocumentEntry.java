@@ -19,8 +19,10 @@ import org.kuali.rice.krad.datadictionary.exception.AttributeValidationException
 import org.kuali.rice.krad.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizer;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.maintenance.Maintainable;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentPresentationControllerBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +46,10 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 
     public MaintenanceDocumentEntry() {
         super();
+
         setDocumentClass(getStandardDocumentBaseClass());
+        documentAuthorizerClass = MaintenanceDocumentAuthorizerBase.class;
+        documentPresentationControllerClass = MaintenanceDocumentPresentationControllerBase.class;
     }
 
     public Class<? extends Document> getStandardDocumentBaseClass() {

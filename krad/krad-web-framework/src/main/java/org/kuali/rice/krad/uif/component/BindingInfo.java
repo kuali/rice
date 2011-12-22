@@ -114,7 +114,7 @@ public class BindingInfo extends ConfigurableBase implements Serializable {
         }
 
         if (bindToMap) {
-            formedBindingPath += "['" + bindingName + "']";
+            formedBindingPath += "[" + bindingName + "]";
         } else {
             if (StringUtils.isNotBlank(formedBindingPath)) {
                 formedBindingPath += ".";

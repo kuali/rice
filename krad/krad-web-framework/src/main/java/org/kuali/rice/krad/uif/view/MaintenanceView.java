@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.view;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -69,7 +70,6 @@ public class MaintenanceView extends DocumentView {
      * The following initialization is performed:
      *
      * <ul>
-     * <li>Retrieve the maintenance document entry for defaults and context</li>
      * <li>Set the abstractTypeClasses map for the maintenance object path</li>
      * </ul>
      *
@@ -79,26 +79,32 @@ public class MaintenanceView extends DocumentView {
     public void performInitialization(View view, Object model) {
         super.performInitialization(view, model);
 
-        // get maintenance document entry
-        MaintenanceDocumentEntry documentEntry = null;
-        String docTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService()
-                .getMaintenanceDocumentTypeName(getDataObjectClassName());
-        if (StringUtils.isNotBlank(docTypeName)) {
-            documentEntry =
-                    KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
-        }
-
-        if (documentEntry != null) {
-            pushObjectToContext(UifConstants.ContextVariableNames.DOCUMENT_ENTRY, documentEntry);
-        } else {
-            LOG.error("Unable to find maintenance document entry for data object class: " +
-                    getDataObjectClassName().getName());
-            throw new RuntimeException("Unable to find maintenance document entry for data object class: " +
-                    getDataObjectClassName().getName());
-        }
-
         getAbstractTypeClasses().put(getDefaultBindingObjectPath(), getDataObjectClassName());
         getAbstractTypeClasses().put(getOldObjectBindingPath(), getDataObjectClassName());
+    }
+
+    /**
+     * Overrides to retrieve the a {@link MaintenanceDocumentEntry} based on the configured data object class
+     *
+     * @return MaintenanceDocumentEntry document entry (exception thrown if not found)
+     */
+    @Override
+    protected MaintenanceDocumentEntry getDocumentEntryForView() {
+        MaintenanceDocumentEntry documentEntry = null;
+        String docTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(
+                getDataObjectClassName());
+        if (StringUtils.isNotBlank(docTypeName)) {
+            documentEntry = KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentEntry(
+                    docTypeName);
+        }
+
+        if (documentEntry == null) {
+            throw new RuntimeException(
+                    "Unable to find maintenance document entry for data object class: " + getDataObjectClassName()
+                            .getName());
+        }
+
+        return documentEntry;
     }
 
     /**

@@ -19,10 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
@@ -92,8 +94,6 @@ public class CollectionGroup extends Group implements DataBinding {
         showInactive = false;
         showHideInactiveButton = true;
         renderSelectField = false;
-
-        setComponentSecurity(new CollectionGroupSecurity());
 
         filters = new ArrayList<CollectionFilter>();
         actionFields = new ArrayList<ActionField>();
@@ -724,6 +724,26 @@ public class CollectionGroup extends Group implements DataBinding {
     @Override
     public CollectionGroupSecurity getComponentSecurity() {
         return (CollectionGroupSecurity) super.getComponentSecurity();
+    }
+
+    /**
+     * Override to assert a {@link CollectionGroupSecurity} instance is set
+     *
+     * @param componentSecurity - instance of CollectionGroupSecurity
+     */
+    @Override
+    public void setComponentSecurity(ComponentSecurity componentSecurity) {
+        if (!(componentSecurity instanceof CollectionGroupSecurity)) {
+            throw new RiceRuntimeException(
+                    "Component security for CollectionGroup should be instance of CollectionGroupSecurity");
+        }
+
+        super.setComponentSecurity(componentSecurity);
+    }
+
+    @Override
+    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
+        return CollectionGroupSecurity.class;
     }
 
     /**

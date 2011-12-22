@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -145,7 +146,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
         refreshedByAction = false;
         resetDataOnRefresh = false;
 
-        componentSecurity = new ComponentSecurity();
+        componentSecurity = ObjectUtils.newInstance(getComponentSecurityClass());
 
         finalizeMethodAdditionalArguments = new ArrayList<Object>();
         styleClasses = new ArrayList<String>();
@@ -700,6 +701,15 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      */
     public void setComponentSecurity(ComponentSecurity componentSecurity) {
         this.componentSecurity = componentSecurity;
+    }
+
+    /**
+     * Returns the security class that is associated with the component (used for initialization and validation)
+     *
+     * @return Class<? extends ComponentSecurity>
+     */
+    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
+        return ComponentSecurity.class;
     }
 
     /**

@@ -16,17 +16,16 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.web.format.Formatter;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.KualiCode;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
-import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.component.DataBinding;
-import org.kuali.rice.krad.uif.container.CollectionGroupSecurity;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -88,8 +87,6 @@ public class DataField extends FieldBase implements DataBinding {
 
         readOnlyHidden = false;
         applyValueMask = false;
-
-        setComponentSecurity(new DataFieldSecurity());
 
         hiddenPropertyNames = new ArrayList<String>();
         informationalDisplayPropertyNames = new ArrayList<String>();
@@ -550,6 +547,25 @@ public class DataField extends FieldBase implements DataBinding {
     @Override
     public DataFieldSecurity getComponentSecurity() {
         return (DataFieldSecurity) super.getComponentSecurity();
+    }
+
+    /**
+     * Override to assert a {@link DataFieldSecurity} instance is set
+     *
+     * @param componentSecurity - instance of DataFieldSecurity
+     */
+    @Override
+    public void setComponentSecurity(ComponentSecurity componentSecurity) {
+        if (!(componentSecurity instanceof DataFieldSecurity)) {
+            throw new RiceRuntimeException("Component security for DataField should be instance of DataFieldSecurity");
+        }
+
+        super.setComponentSecurity(componentSecurity);
+    }
+
+    @Override
+    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
+        return DataFieldSecurity.class;
     }
 
     /**

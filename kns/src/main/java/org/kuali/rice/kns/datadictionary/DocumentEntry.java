@@ -16,7 +16,9 @@
 package org.kuali.rice.kns.datadictionary;
 
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
+import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
+import org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.web.derivedvaluesetter.DerivedValuesSetter;
 
@@ -35,6 +37,13 @@ public class DocumentEntry extends org.kuali.rice.krad.datadictionary.DocumentEn
     protected List<HeaderNavigation> headerNavigationList = new ArrayList<HeaderNavigation>();
 
     protected boolean sessionDocument = false;
+
+    public DocumentEntry() {
+        super();
+
+        documentAuthorizerClass = DocumentAuthorizerBase.class;
+        documentPresentationControllerClass = DocumentPresentationControllerBase.class;
+    }
 
     @Override
     public List<HeaderNavigation> getHeaderNavigationList() {

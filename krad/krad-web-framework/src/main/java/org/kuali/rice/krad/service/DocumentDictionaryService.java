@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.service;
 
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentAuthorizer;
@@ -131,6 +132,22 @@ public interface DocumentDictionaryService {
     public Boolean getAllowsNewOrCopy(String docTypeName);
 
     /**
+     * Retrieves the document entry that is associated with the given document type name
+     *
+     * @param docTypeName - document type name to retrieve document entry for
+     * @return DocumentEntry instance associated with document type
+     */
+    public DocumentEntry getDocumentEntry(String docTypeName);
+
+    /**
+     * Retrieves the document entry that is associated with the given document class
+     *
+     * @param documentClass - document class to retrieve document entry for
+     * @return DocumentEntry instance associated with document class
+     */
+    public DocumentEntry getDocumentEntryByClass(Class<? extends Document> documentClass);
+
+    /**
      * Retrieves the maintenance document entry that is associated with the given document type name
      *
      * @param docTypeName - document type name to retrieve maintenance document entry for
@@ -146,6 +163,15 @@ public interface DocumentDictionaryService {
      * @return Class<?> document class associated with document type name
      */
     public Class<?> getDocumentClassByName(String documentTypeName);
+
+    /**
+     * Retrieves the document type configured on the document entry associated with the
+     * given document class
+     *
+     * @param documentClass - class for document to retrieve the document type for
+     * @return String document type associated with document type name
+     */
+    public String getDocumentTypeByClass(Class<? extends Document> documentClass);
 
     /**
      * Indicates whether the given data object class is configured to allow record deletions

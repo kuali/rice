@@ -16,7 +16,10 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.UifConstants.Position;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
@@ -52,8 +55,6 @@ public class FieldBase extends ComponentBase implements Field {
     public FieldBase() {
         labelFieldRendered = false;
         labelPlacement = Position.LEFT;
-
-        setComponentSecurity(new FieldSecurity());
     }
 
     /**
@@ -241,4 +242,22 @@ public class FieldBase extends ComponentBase implements Field {
         return (FieldSecurity) super.getComponentSecurity();
     }
 
+    /**
+     * Override to assert a {@link FieldSecurity} instance is set
+     *
+     * @param componentSecurity - instance of FieldSecurity
+     */
+    @Override
+    public void setComponentSecurity(ComponentSecurity componentSecurity) {
+        if (!(componentSecurity instanceof FieldSecurity)) {
+            throw new RiceRuntimeException("Component security for Field should be instance of FieldSecurity");
+        }
+
+        super.setComponentSecurity(componentSecurity);
+    }
+
+    @Override
+    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
+        return FieldSecurity.class;
+    }
 }

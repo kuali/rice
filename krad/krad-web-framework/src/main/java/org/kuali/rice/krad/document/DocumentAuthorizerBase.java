@@ -40,7 +40,6 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
 
     public static final String PRE_ROUTING_ROUTE_NAME = "PreRoute";
 
-
     public final boolean canInitiate(String documentTypeName, Person user) {
         String nameSpaceCode = KRADConstants.KUALI_RICE_SYSTEM_NAMESPACE;
         Map<String, String> permissionDetails = new HashMap<String, String>();

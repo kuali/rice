@@ -541,8 +541,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param model - Object that contains the model data
      */
     protected void retrieveEditModesAndActionFlags(View view, UifFormBase model) {
-        ViewPresentationController presentationController = ObjectUtils.newInstance(view.getPresentationControllerClass());
-        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+        ViewPresentationController presentationController = view.getPresentationController();
+        ViewAuthorizer authorizer = view.getAuthorizer();
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
@@ -697,9 +697,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param model - model object containing the data for the view
      */
     protected void applyAuthorizationAndPresentationLogic(View view, Component component, ViewModel model) {
-        ViewPresentationController presentationController = ObjectUtils.newInstance(
-                view.getPresentationControllerClass());
-        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+        ViewPresentationController presentationController = view.getPresentationController();
+        ViewAuthorizer authorizer = view.getAuthorizer();
 
         Person user = GlobalVariables.getUserSession().getPerson();
 

@@ -23,13 +23,11 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.field.ActionField;
-import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -431,9 +429,8 @@ public class CollectionGroupBuilder implements Serializable {
      */
     protected boolean checkViewLineAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line) {
-        ViewPresentationController presentationController = ObjectUtils.newInstance(
-                view.getPresentationControllerClass());
-        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+        ViewPresentationController presentationController = view.getPresentationController();
+        ViewAuthorizer authorizer = view.getAuthorizer();
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
@@ -461,9 +458,8 @@ public class CollectionGroupBuilder implements Serializable {
      */
     protected boolean checkEditLineAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line) {
-        ViewPresentationController presentationController = ObjectUtils.newInstance(
-                view.getPresentationControllerClass());
-        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+        ViewPresentationController presentationController = view.getPresentationController();
+        ViewAuthorizer authorizer = view.getAuthorizer();
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
@@ -496,9 +492,8 @@ public class CollectionGroupBuilder implements Serializable {
     protected void applyLineFieldAuthorizationAndPresentationLogic(View view, ViewModel model,
             CollectionGroup collectionGroup, Object line, boolean readOnlyLine, List<Field> lineFields,
             List<ActionField> actions) {
-        ViewPresentationController presentationController = ObjectUtils.newInstance(
-                view.getPresentationControllerClass());
-        ViewAuthorizer authorizer = ObjectUtils.newInstance(view.getAuthorizerClass());
+        ViewPresentationController presentationController = view.getPresentationController();
+        ViewAuthorizer authorizer = view.getAuthorizer();
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
@@ -762,7 +757,7 @@ public class CollectionGroupBuilder implements Serializable {
             // set binding path for add line
             String newCollectionLineKey = KRADUtils
                     .translateToMapSafeKey(collectionGroup.getBindingInfo().getBindingPath());
-            String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "['" + newCollectionLineKey + "']";
+            String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "[" + newCollectionLineKey + "]";
             collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
 
             // if there is not an instance available or we need to clear create

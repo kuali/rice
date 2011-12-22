@@ -234,10 +234,7 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
     }
 
-    protected DocumentAuthorizer getDocumentAuthorizer() {
-        if (documentAuthorizer == null) {
-            documentAuthorizer = new DocumentAuthorizerBase();
-        }
+    public DocumentAuthorizer getDocumentAuthorizer() {
         return documentAuthorizer;
     }
 

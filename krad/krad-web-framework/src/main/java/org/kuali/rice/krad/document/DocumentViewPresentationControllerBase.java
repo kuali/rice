@@ -197,10 +197,7 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
         return getDocumentPresentationController().canAcknowledge(document);
     }
 
-    protected DocumentPresentationController getDocumentPresentationController() {
-        if (documentPresentationController == null) {
-            documentPresentationController = new DocumentPresentationControllerBase();
-        }
+    public DocumentPresentationController getDocumentPresentationController() {
         return documentPresentationController;
     }
 

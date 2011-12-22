@@ -15,8 +15,14 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.DocumentViewAuthorizerBase;
+import org.kuali.rice.krad.document.DocumentViewPresentationControllerBase;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 
 /**
  * View type for KRAD documents
@@ -42,6 +48,68 @@ public class DocumentView extends FormView {
 	public DocumentView() {
 		super();
 	}
+
+    /**
+     * The following initialization is performed:
+     *
+     * <ul>
+     * <li>Retrieve the document entry</li>
+     * <li>Set up the document view authorizer and presentation controller</li>
+     * </ul>
+     *
+     * @see org.kuali.rice.krad.uif.container.ContainerBase#performInitialization(org.kuali.rice.krad.uif.view.View,
+     *      java.lang.Object)
+     */
+    @Override
+    public void performInitialization(View view, Object model) {
+        super.performInitialization(view, model);
+
+        // get document entry
+        DocumentEntry documentEntry = getDocumentEntryForView();
+        pushObjectToContext(UifConstants.ContextVariableNames.DOCUMENT_ENTRY, documentEntry);
+
+        // setup authorizer and presentation controller using the configured authorizer and pc for document
+        if (getAuthorizer() == null) {
+            setAuthorizer(new DocumentViewAuthorizerBase());
+        }
+
+        if (getAuthorizer() instanceof DocumentViewAuthorizerBase) {
+            DocumentViewAuthorizerBase documentViewAuthorizerBase = (DocumentViewAuthorizerBase) getAuthorizer();
+            if (documentViewAuthorizerBase.getDocumentAuthorizer() == null) {
+                documentViewAuthorizerBase.setDocumentAuthorizerClass(documentEntry.getDocumentAuthorizerClass());
+            }
+        }
+
+        if (getPresentationController() == null) {
+            setPresentationController(new DocumentViewPresentationControllerBase());
+        }
+
+        if (getPresentationController() instanceof DocumentViewPresentationControllerBase) {
+            DocumentViewPresentationControllerBase documentViewPresentationControllerBase =
+                    (DocumentViewPresentationControllerBase) getPresentationController();
+            if (documentViewPresentationControllerBase.getDocumentPresentationController() == null) {
+                documentViewPresentationControllerBase.setDocumentPresentationControllerClass(
+                        documentEntry.getDocumentPresentationControllerClass());
+            }
+        }
+    }
+
+    /**
+     * Retrieves the associated {@link DocumentEntry} for the document view
+     *
+     * @return DocumentEntry entry (exception thrown if one is not found)
+     */
+    protected DocumentEntry getDocumentEntryForView() {
+        DocumentEntry documentEntry = KRADServiceLocatorWeb.getDocumentDictionaryService().getDocumentEntryByClass(
+                getDocumentClass());
+
+        if (documentEntry == null) {
+            throw new RuntimeException(
+                    "Unable to find document entry for document class: " + getDocumentClass().getName());
+        }
+
+        return documentEntry;
+    }
 
 	public Class<? extends Document> getDocumentClass() {
 		return this.documentClass;

@@ -16,9 +16,11 @@
 package org.kuali.rice.krad.uif.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.Component;
@@ -64,7 +66,6 @@ public class ActionField extends FieldBase {
         super();
 
         disabled = false;
-        setComponentSecurity(new ActionFieldSecurity());
 
         actionParameters = new HashMap<String, String>();
     }
@@ -431,6 +432,26 @@ public class ActionField extends FieldBase {
     @Override
     public ActionFieldSecurity getComponentSecurity() {
         return (ActionFieldSecurity) super.getComponentSecurity();
+    }
+
+    /**
+     * Override to assert a {@link ActionFieldSecurity} instance is set
+     *
+     * @param componentSecurity - instance of ActionFieldSecurity
+     */
+    @Override
+    public void setComponentSecurity(ComponentSecurity componentSecurity) {
+        if (!(componentSecurity instanceof ActionFieldSecurity)) {
+            throw new RiceRuntimeException(
+                    "Component security for ActionField should be instance of ActionFieldSecurity");
+        }
+
+        super.setComponentSecurity(componentSecurity);
+    }
+
+    @Override
+    protected Class<? extends ComponentSecurity> getComponentSecurityClass() {
+        return ActionFieldSecurity.class;
     }
 
     /**

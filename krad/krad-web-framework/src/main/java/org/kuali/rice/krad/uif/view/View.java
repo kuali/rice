@@ -114,8 +114,8 @@ public class View extends ContainerBase {
     private ViewIndex viewIndex;
     private Map<String, String> viewRequestParameters;
 
-    private Class<? extends ViewPresentationController> presentationControllerClass;
-    private Class<? extends ViewAuthorizer> authorizerClass;
+    private ViewPresentationController presentationController;
+    private ViewAuthorizer authorizer;
 
     private BooleanMap actionFlags;
     private BooleanMap editModes;
@@ -790,8 +790,7 @@ public class View extends ContainerBase {
     }
 
     /**
-     * PresentationController class that should be used for the
-     * <code>View</code> instance
+     * PresentationController that should be used for the <code>View</code> instance
      *
      * <p>
      * The presentation controller is consulted to determine component (group,
@@ -801,23 +800,33 @@ public class View extends ContainerBase {
      * onto the view instance and can be referred to by conditional expressions
      * </p>
      *
-     * @return Class<? extends PresentationController>
+     * @return PresentationController
      */
-    public Class<? extends ViewPresentationController> getPresentationControllerClass() {
-        return this.presentationControllerClass;
+    public ViewPresentationController getPresentationController() {
+        return this.presentationController;
     }
 
     /**
      * Setter for the view's presentation controller
      *
-     * @param presentationControllerClass
+     * @param presentationController
      */
-    public void setPresentationControllerClass(Class<? extends ViewPresentationController> presentationControllerClass) {
-        this.presentationControllerClass = presentationControllerClass;
+    public void setPresentationController(ViewPresentationController presentationController) {
+        this.presentationController = presentationController;
     }
 
     /**
-     * Authorizer class that should be used for the <code>View</code> instance
+     * Setter for the view's presentation controller by class
+     *
+     * @param presentationControllerClass
+     */
+    public void setPresentationControllerClass(
+            Class<? extends ViewPresentationController> presentationControllerClass) {
+        this.presentationController = ObjectUtils.newInstance(presentationControllerClass);
+    }
+
+    /**
+     * Authorizer that should be used for the <code>View</code> instance
      *
      * <p>
      * The authorizer class is consulted to determine component (group, field)
@@ -830,19 +839,28 @@ public class View extends ContainerBase {
      * by conditional expressions
      * </p>
      *
-     * @return Class<? extends Authorizer>
+     * @return Authorizer
      */
-    public Class<? extends ViewAuthorizer> getAuthorizerClass() {
-        return this.authorizerClass;
+    public ViewAuthorizer getAuthorizer() {
+        return this.authorizer;
     }
 
     /**
      * Setter for the view's authorizer
      *
+     * @param authorizer
+     */
+    public void setAuthorizer(ViewAuthorizer authorizer) {
+        this.authorizer = authorizer;
+    }
+
+    /**
+     * Setter for the view's authorizer by class
+     *
      * @param authorizerClass
      */
     public void setAuthorizerClass(Class<? extends ViewAuthorizer> authorizerClass) {
-        this.authorizerClass = authorizerClass;
+        this.authorizer = ObjectUtils.newInstance(authorizerClass);
     }
 
     /**

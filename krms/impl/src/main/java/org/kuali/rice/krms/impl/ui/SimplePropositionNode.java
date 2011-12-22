@@ -37,6 +37,10 @@ public class SimplePropositionNode extends RuleTreeNode {
     public static final String NODE_TYPE = "ruleTreeNode simplePropositionNode";
     protected String parameterDisplayString;
 
+    // needed for inquiry view
+    public SimplePropositionNode() {
+    }
+
     public SimplePropositionNode(PropositionBo proposition){
         super(proposition);
         setupParameterDisplayString();

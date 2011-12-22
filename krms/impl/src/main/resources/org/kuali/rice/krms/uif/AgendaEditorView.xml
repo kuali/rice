@@ -69,10 +69,10 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditor"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.ui.AgendaEditorMaintainable"/>
     <property name="items">
-      <list>
-        <ref bean="AgendaEditorView-Agenda-Page"/>
-        <ref bean="AgendaEditorView-AddRule-Page"/>
-        <ref bean="AgendaEditorView-EditRule-Page"/>
+      <list> 
+        <bean id="AgendaEditorView-Agenda-Page" parent="AgendaEditorView-Agenda-Page-Parent"/>
+        <bean id="AgendaEditorView-AddRule-Page" parent="AgendaEditorView-AddRule-Page-Parent"/>
+        <bean id="AgendaEditorView-EditRule-Page" parent="AgendaEditorView-EditRule-Page-Parent"/>
       </list>
     </property>
     <property name="singlePageView" value="false"/>
@@ -83,11 +83,10 @@
     </property>
   </bean>
 
-  <bean id="AgendaEditorView-Agenda-Page" parent="AgendaEditorView-Agenda-Page-Parent"/>
   <bean id="AgendaEditorView-Agenda-Page-Parent" parent="Page">
     <property name="items">
       <list>
-        <ref bean="AgendaEditorView-AgendaSection" />
+        <bean parent="AgendaEditorView-AgendaSection" />
       </list>
     </property>
     <property name="footer">
@@ -95,7 +94,6 @@
     </property>
   </bean>
 
-  <bean id="AgendaEditorView-AddRule-Page" parent="AgendaEditorView-AddRule-Page-Parent"/>
   <bean id="AgendaEditorView-AddRule-Page-Parent" parent="Page">
     <property name="items">
       <list>
@@ -115,7 +113,6 @@
    </property>
   </bean>
 
-  <bean id="AgendaEditorView-EditRule-Page" parent="AgendaEditorView-EditRule-Page-Parent"/>
   <bean id="AgendaEditorView-EditRule-Page-Parent" parent="Page">
     <!-- property name="title" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
     <property name="items">
@@ -263,19 +260,19 @@
               <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="@{#form.viewTypeName.toString() != 'MAINTENANCE'}">
                 <property name="items">
                   <list>
-                    <ref bean="AgendaEditorView-TreeViewControls" />
+                    <bean parent="AgendaEditorView-TreeViewControls" />
                   </list>
                 </property>
               </bean>
               <bean parent="GroupGridBodyOnly" p:style="margin-bottom: 5pt;" p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}">
                 <property name="items">
                   <list>
-                    <ref bean="AgendaEditorView-TreeEditControls" />
+                    <bean parent="AgendaEditorView-TreeEditControls" />
                   </list>
                 </property>
               </bean>
-              <ref bean="AgendaEditorView-TreeExpandCollapse" />
-              <ref bean="AgendaEditorView-Tree" />
+              <bean parent="AgendaEditorView-TreeExpandCollapse" />
+              <bean parent="AgendaEditorView-Tree" />
             </list>
           </property>
         </bean>
@@ -297,7 +294,7 @@
           p:actionLabel="[-] collapse all" p:style="font-size: smaller; margin-right: 15pt;">
           <property name="actionImage"><null/></property>
         </bean>
-        <bean parent="InputField" p:propertyName="selectedAgendaItemId" p:showLabel="false">
+        <bean parent="InputField" p:propertyName="selectedAgendaItemId" p:showLabel="false" p:render="true">
           <property name="control">
             <bean parent="HiddenControl" p:styleClasses="selectedAgendaItemId"/>
           </property>
@@ -340,18 +337,21 @@
     <property name="items">
       <list>
         <!-- javascript to work around required issue -->
-        <bean parent="NavigationActionField" p:methodToCall="goToEditRule" p:actionLabel="View Rule"
+        <bean parent="NavigationActionField" p:methodToCall="viewRule" p:actionLabel="View Rule"
               p:clientSideJs="var requiredMessage = requiredsSet();
-              if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
-                requiredMessage = requiredMessage + 'Please select the rule to edit (or add a rule), then click edit rule.';
-              }
+              // TODO: uncomment next lines once selectedAgendaItemId works
+              //if (getSelectedItemInput() == null || getSelectedItemInput().val() == undefined || getSelectedItemInput().val() == '') {
+              //  requiredMessage = requiredMessage + 'Please select the rule to view, then click view rule.';
+              //}
               if (requiredMessage.length > 0) {
                 alert(requiredMessage);
                 return false;
               }
               submitForm();
               "
-              p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>
+              p:styleClasses="buttonClasses" p:style="margin-right: 15pt;"/>
+              <!--  use this styling as well once selectedAgendaItemId works
+              p:styleClasses="kr-button-primary tree-bar-button" p:style="margin-right: 15pt;"/>-->
       </list>
     </property>
   </bean>

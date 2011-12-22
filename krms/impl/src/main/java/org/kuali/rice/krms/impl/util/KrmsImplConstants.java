@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.krms.impl.util;
 
-/**
- * Created by IntelliJ IDEA.
- * User: gilesp
- * Date: 8/24/11
- * Time: 12:34 PM
- * To change this template use File | Settings | File Templates.
- */
 public class KrmsImplConstants {
 
 
     public final static class WebPaths {
+        public static final String AGENDA_INQUIRY_PATH = "krmsAgendaInquiry";
         public static final String AGENDA_EDITOR_PATH = "krmsAgendaEditor";
     }
 

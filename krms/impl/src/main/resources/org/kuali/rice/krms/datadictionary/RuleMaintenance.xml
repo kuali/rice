@@ -44,7 +44,7 @@
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.RuleBo" />
     <property name="items">
       <list merge="false">
-        <ref bean="ruleEditorBody" />
+        <bean parent="ruleEditorBody" />
       </list>
     </property>
   </bean>
@@ -791,13 +791,13 @@
               p:fetchingMethodToCall="retrieveRuleActionCustomAttributes"/>
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.name" p:label="Name" p:required="true"
               p:constraintText="size 40"
-              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}">
+              p:render="@{#dp.agendaItemLineRuleAction.typeId != ''}">
           <property name="control">
             <bean parent="TextControl" p:size="40" p:maxLength="40" p:watermarkText="Enter a Action Name" p:styleClasses="countdown"/>
           </property>
         </bean>
         <bean parent="InputField" p:propertyName="agendaItemLineRuleAction.description" p:label="Description" p:required="false"
-              p:render="@{document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId != ''}"
+              p:render="@{#dp.agendaItemLineRuleAction.typeId != ''}"
               p:instructionalText="instructional text" p:constraintText="size 4000">
           <property name="control">
             <bean parent="TextControl" p:size="40" p:maxLength="4000" p:watermarkText="Enter a Action Description" p:styleClasses="countdown"/>

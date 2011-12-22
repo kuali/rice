@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.document;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -25,6 +26,7 @@ import org.kuali.rice.kim.impl.responsibility.ReviewResponsibilityBo;
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.HashMap;
 
@@ -42,7 +44,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * Saves the responsibility via the responsibility update service
 	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#saveBusinessObject()
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#saveBusinessObject()
 	 */
 	@Override
 	public void saveBusinessObject() {
@@ -85,6 +87,15 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
             if (permissionExists) {
                 KimApiServiceLocator.getPermissionService().updatePermission(PermissionBo.to(perm));
             } else {
+                //if its a copy the objectId should be empty and versionNumber should be null
+                if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
+                    if(org.apache.commons.lang.StringUtils.isNotBlank(perm.getObjectId())){
+                        perm.setObjectId("");
+                    }
+                    if(null!= perm.getVersionNumber()){
+                        perm.setVersionNumber(null);
+                    }
+                }
                 KimApiServiceLocator.getPermissionService().createPermission(PermissionBo.to(perm));
             }
             //getBusinessObjectService().linkAndSave((PersistableBusinessObject) dataObject);
@@ -97,7 +108,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#getBoClass()
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getBoClass()
 	 */
 	@Override
 	public Class<? extends PersistableBusinessObject> getBoClass() {
@@ -107,7 +118,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
 	 */
 	@Override
 	public boolean isExternalBusinessObject() {
@@ -117,7 +128,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	/**
 	 * This overridden method ...
 	 * 
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#prepareBusinessObject(org.kuali.rice.krad.bo.BusinessObject)
 	 */
 	@Override
 	public void prepareBusinessObject(BusinessObject businessObject) {

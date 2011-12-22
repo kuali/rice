@@ -222,6 +222,14 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     @Override
     public void saveDataObject() {
         if (dataObject instanceof PersistableBusinessObject) {
+            if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
+               if(org.apache.commons.lang.StringUtils.isNotBlank(((PersistableBusinessObject) dataObject).getObjectId())){
+                    ((PersistableBusinessObject) dataObject).setObjectId("");
+                }
+                 if(null!= ((PersistableBusinessObject) dataObject).getVersionNumber()){
+                    ((PersistableBusinessObject) dataObject).setVersionNumber(null);
+                }
+            }
             getBusinessObjectService().linkAndSave((PersistableBusinessObject) dataObject);
         } else {
             throw new RuntimeException(

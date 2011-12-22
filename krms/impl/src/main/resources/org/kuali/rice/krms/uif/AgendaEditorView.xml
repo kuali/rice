@@ -118,7 +118,7 @@
     <property name="items">
       <list>
         <!-- work around for title issues above, though apparently new agenda's don't have the name set so this doesn't get displayed -->
-        <bean id="agendaName" parent="MessageField" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
+        <bean parent="MessageField" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
         <bean parent="ruleEditorBody">
         </bean>
       </list>
@@ -129,6 +129,27 @@
           <list>
             <bean parent="NavigationActionField" p:methodToCall="editRule" p:actionLabel="Update Rule"/>
             <bean parent="NavigationActionField" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="Cancel"/>
+          </list>
+        </property>
+      </bean>
+   </property>
+  </bean>
+
+  <bean id="AgendaEditorView-ViewRule-Page-Parent" parent="Page">
+    <!-- property name="title" value="Agenda: @{#dp.agenda.name}" see KULRICE-6301 and KULRICE-6296 / -->
+    <property name="items">
+      <list>
+        <!-- work around for title issues above, though apparently new agenda's don't have the name set so this doesn't get displayed -->
+        <bean parent="MessageField" p:messageText="Agenda: @{#dp.agenda.name}" p:style="font-size: 1.6em; font-weight:bold;" p:styleClasses="kr-page-title-header"/>
+        <bean parent="ruleEditorBody">
+        </bean>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Footer">
+        <property name="items">
+          <list>
+            <bean parent="NavigationActionField" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="return to agenda"/>
           </list>
         </property>
       </bean>

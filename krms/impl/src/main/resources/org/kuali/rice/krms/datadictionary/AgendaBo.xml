@@ -122,7 +122,7 @@
     <property name="items">
       <list>
         <bean id="AgendaEditorView-Agenda-Page" parent="AgendaEditorView-Agenda-Page-Parent"/>
-        <bean id="AgendaEditorView-EditRule-Page" parent="AgendaEditorView-EditRule-Page-Parent"/>
+        <bean id="AgendaEditorView-ViewRule-Page" parent="AgendaEditorView-ViewRule-Page-Parent"/>
       </list>
     </property>
     <property name="singlePageView" value="false"/>

@@ -60,7 +60,7 @@ public class AgendaInquiryController  extends InquiryController {
 
         setAgendaItemLine(form, node);
 
-        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
+        form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-ViewRule-Page");
         return super.navigate(form, result, request, response);
     }
 

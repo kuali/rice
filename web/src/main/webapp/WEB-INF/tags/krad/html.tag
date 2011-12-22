@@ -19,8 +19,8 @@
               description="The view instance the html page is being rendered for."
               type="org.kuali.rice.krad.uif.view.View"%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE HTML>
+<html lang="en">
 
   <!----------------------------------- #BEGIN HEAD --------------------------------------->
   <head>

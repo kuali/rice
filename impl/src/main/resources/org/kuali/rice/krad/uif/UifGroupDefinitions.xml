@@ -246,7 +246,7 @@
     <property name="collectionLookup">
       <bean parent="QuickFinder" p:multipleValuesSelect="true"
             p:quickfinderActionField.styleClasses="kr-mvQuickfinder-cntr"
-            p:quickfinderActionField.label="Look Up/Add Multiple Account Lines"/>
+            p:quickfinderActionField.label="Look Up/Add Multiple Items"/>
     </property>
     <property name="layoutManager">
       <bean parent="StackedLayoutManager"/>

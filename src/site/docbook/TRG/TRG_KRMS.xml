@@ -648,17 +648,24 @@
                     <para>After creating your term specifications (your categories of terms), you
                         can use the Term Lookup screen to add or create new terms.  See the example
                         Term Lookup screen below:</para>
-                    <para><inlinemediaobject>
+                    <para>
+                        <figure>
+                            <title>Term Lookup screen example</title>
+                        <mediaobject>
                             <imageobject>
                                 <imagedata fileref="../images/KRMS-term-lookup-screen.png"
                                     scalefit="1"/>
                             </imageobject>
-                        </inlinemediaobject></para>
+                    </mediaobject>
+                    </figure>
+                    </para>
                     <para>If you copy an existing term, be sure to change the name to a new and
                         unique term before you save or submit it.  Below is a view of the term
                         specification screen showing the types of attributes you can associate with
                         it.</para>
+                    <para>
                     <figure>
+                        <title>Term specification screen example</title>
                         <mediaobject>
                             <imageobject>
                                 <imagedata
@@ -667,6 +674,7 @@
                             </imageobject>
                         </mediaobject>
                     </figure>
+                    </para>
                 </sect4>
                 <sect4>
                     <title>Create Term Resolvers</title>
@@ -893,7 +901,7 @@
             <para>The UML diagram below shows the KRMS data model:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms%20ruleModel-20.png" scalefit="1"/>
+                        <imagedata fileref="../images/krms ruleModel-20.png" scalefit="1"/>
                     </imageobject>
                 </inlinemediaobject></para>
         </section>
@@ -904,7 +912,7 @@
             <para><inlinemediaobject>
                     <imageobject>
                         <imagedata
-                            fileref="../../../../../Documents/Kuali%20Business%20Rules/krms-architecture.png"
+                            fileref="../images/krms-architecture.png"
                             scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
                 </inlinemediaobject></para>

@@ -1829,7 +1829,8 @@ String returnParam = remotedOjb.invoke("call1");</programlisting>
                         <figure><title>Global Resource Loader</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/global_resource_loader.png"/>
+                                    <imagedata fileref="../images/global_resource_loader.png" scalefit="1">  
+                                    </imagedata>
                                 </imageobject>
                             </mediaobject>
                         </figure>

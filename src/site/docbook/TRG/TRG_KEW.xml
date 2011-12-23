@@ -930,13 +930,15 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                 <title>Embedded Deployment Diagram</title>
                 <para>Here is a diagram illustrating what a sample embedded deployment might look
                     look.</para>
-                <para><figure>
-                    <title>Sample KEW embedded deployment</title>
-                    <mediaobject>
-                        <imageobject>
-                            <imagedata fileref="../images/kew_embedded_deployment.png"/>
-                        </imageobject>
-                    </mediaobject>
+                <para>
+                    <figure>
+                        <title>Embedded Deployment Diagram example</title>
+                        <Mediaobject>
+                                <imageobject>
+                                    <imagedata fileref="../images/kew_embedded_deployment2.png"
+                                        scalefit="1"/>
+                                </imageobject>
+                            </Mediaobject>
                     </figure>
                 </para>
             </sect3>
@@ -5539,7 +5541,7 @@ document.routeDocument("user inputted annotation");
                     <title>Parallel and Sequential Activation Types</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/activation_type.png"/>
+                                <imagedata fileref="../images/activation_type2.png"/>
                             </imageobject>
                         </mediaobject>
                     </figure>
@@ -5549,7 +5551,7 @@ document.routeDocument("user inputted annotation");
                         <title>Parallel-Priority Activation Type</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/pp_activation_type.png"/>
+                                <imagedata fileref="../images/pp_activation_type2.png"/>
                             </imageobject>
                         </mediaobject>
                     </figure>

@@ -126,14 +126,16 @@
                 and includes a place for error messages associated with the field to appear. This
                 could be considered the most complex of all fields, and additional information on
                 this field can be found in the Developers' Guide.</para>
+            <para>
             <figure>
+                <title>Input Field Group</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRAD%20-%20Input%20Field.png"
-                            contentdepth="400"/>
+                        <imagedata fileref="../images/KRAD - Input Field.png"/>
                     </imageobject>
                 </mediaobject>
             </figure>
+            </para>
             <para>The information below provides additional conceptual and relational information on
                 the KRAD architecture, classes and user interface patterns that are supported
                 "out-of-the-box.</para>
@@ -143,7 +145,7 @@
         <title>KRAD Conceptual view</title>
         <para><inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KRAD%20classes%201.png" scalefit="1"/>
+                    <imagedata fileref="../images/KRAD classes 1.png" align="left" scalefit="1"/>
                 </imageobject>
             </inlinemediaobject></para>
         <para>For additional high-level views of information on the layout managers and fields, see
@@ -153,8 +155,7 @@
         <title>KRAD Relational View</title>
         <mediaobject>
             <imageobject>
-                <imagedata fileref="../../../../../Documents/KRAD/KRAD%20image%20test%201.png"
-                    scalefit="1"/>
+                <imagedata fileref="../images/KRAD image test 1.png" align="left" scalefit="1"/>
             </imageobject>
         </mediaobject>
     </section>

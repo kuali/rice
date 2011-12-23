@@ -281,13 +281,16 @@
             <para>Your institution may have KEW links inside other applications, such as Kuali
                 Financial Systems (KFS). KFS may display an Action List button at the top left
                 of the KFS page like this:</para>
-            <figure><title>Kuali Portal: Action List Button</title>
+            <para>
+            <figure>
+                <title>Kuali Portal: Action List Button</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/kfs_kew.png" scale="75"/>
+                        <imagedata fileref="../images/kfs_kew.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
+            </para>
             <para>Clicking an Action List link or button displays your <emphasis role="bold"
                     >Action List</emphasis> page. This is a sample KEW Action List; your
                 institution’s may look somewhat different:</para>
@@ -484,13 +487,16 @@
                             You can use this menu to agree that you’ve received the document for
                             information purposes: Select FYI, then click the Take Actions button
                             at the bottom of the page. </para>
-                        <figure><title>Action List</title>
+                        <para>
+                        <figure>
+                            <title>Action List</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/action_list.png" scale="85"/>
+                                    <imagedata fileref="../images/action_list.png" scalefit="1"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
+                        </para>
                     </listitem>
                     <listitem>
                         <para><emphasis role="bold">Log</emphasis>: (also known as the Route
@@ -498,13 +504,16 @@
                             display the Route Log page. This page has details about the routing
                             path and Actions Taken on this document. Learn more about this
                             information in the Route Log Guide. A sample Route Log page:</para>
-                        <figure><title>Route Log</title>
+                        <para>
+                        <figure>
+                            <title>Route Log</title>
                             <mediaobject>
                                 <imageobject>
-                                    <imagedata fileref="../images/route_log.png"/>
+                                    <imagedata fileref="../images/route_log.png" scalefit="1"/>
                                 </imageobject>
                             </mediaobject>
                         </figure>
+                        </para>
                     </listitem>
                 </itemizedlist></para>
                 <para>If enabled for a particular document, messages can also be logged through

@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.permission.GenericPermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.UberPermissionBo;
 import org.kuali.rice.kim.impl.role.RoleBo;
@@ -46,13 +47,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 
 	private transient LookupService lookupService;
 	private transient RoleService roleService;
-	private volatile String uberPermissionDocumentTypeName;
+	private volatile String genericPermissionDocumentTypeName;
 
 	@Override
 	public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
     	List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
     	// convert the PermissionBo class into an UberPermission object
-    	businessObject = (UberPermissionBo)businessObject;
+    	businessObject = new GenericPermissionBo((UberPermissionBo)businessObject);
         if (allowsMaintenanceEditAction(businessObject)) {
         	htmlDataList.add(getUrlData(businessObject, KRADConstants.MAINTENANCE_EDIT_METHOD_TO_CALL, pkNames));
         }
@@ -79,13 +80,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	protected String getMaintenanceDocumentTypeName() {
 		//using DCL idiom to cache genericPermissionDocumentTypeName.
         //see effective java 2nd ed. pg. 71
-        String g = uberPermissionDocumentTypeName;
+        String g = genericPermissionDocumentTypeName;
         if (g == null) {
             synchronized (this) {
-                g = uberPermissionDocumentTypeName;
+                g = genericPermissionDocumentTypeName;
                 if (g == null) {
-                    uberPermissionDocumentTypeName = g = getMaintenanceDocumentDictionaryService().getDocumentTypeName(
-                            UberPermissionBo.class);
+                    genericPermissionDocumentTypeName = g = getMaintenanceDocumentDictionaryService().getDocumentTypeName(
+                            GenericPermissionBo.class);
                 }
             }
         }

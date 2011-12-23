@@ -127,14 +127,15 @@
                 could be considered the most complex of all fields, and additional information on
                 this field can be found in the Developers' Guide.</para>
             <para>
-            <figure>
-                <title>Input Field Group</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/KRAD - Input Field.png"/>
-                    </imageobject>
-                </mediaobject>
-            </figure>
+                <figure>
+                    <title>Input Field - Grouped</title>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata 
+                                fileref="../images/KRAD Input Field2.png" align="left" scalefit="1" contentwidth="640"/>
+                        </imageobject>
+                    </mediaobject>
+                </figure>
             </para>
             <para>The information below provides additional conceptual and relational information on
                 the KRAD architecture, classes and user interface patterns that are supported
@@ -143,21 +144,31 @@
     </section>
     <section>
         <title>KRAD Conceptual view</title>
-        <para><inlinemediaobject>
-                <imageobject>
-                    <imagedata fileref="../images/KRAD classes 1.png" align="left" scalefit="1"/>
+        <para>
+            <figure>
+                <title>KRAD Conceptual View</title>
+                <mediaobject>
+                    <imageobject>
+                    <imagedata fileref="../images/KRAD classes 2.png" align="left" scalefit="1"/>
                 </imageobject>
-            </inlinemediaobject></para>
+                </mediaobject>
+            </figure>    
+        </para>
         <para>For additional high-level views of information on the layout managers and fields, see
             the KRAD Users' Guide.  </para>
     </section>
     <section>
         <title>KRAD Relational View</title>
-        <mediaobject>
-            <imageobject>
-                <imagedata fileref="../images/KRAD image test 1.png" align="left" scalefit="1"/>
-            </imageobject>
-        </mediaobject>
+        <para>
+            <figure>
+                <title>KRAD Relational View</title> 
+                <mediaobject>
+                  <imageobject>
+                    <imagedata fileref="../images/KRAD-Relational-View.png"/>
+                  </imageobject>
+               </mediaobject>
+            </figure>
+         </para>
     </section>
     <section>
         <title>KRAD Data Dictionary</title>
@@ -855,167 +866,171 @@
             <section>
                 <title>Available KRAD Templates</title>
                 <para>
-                    <table frame="border">
-                        <caption>Available KRAD Templates</caption>
+                    <table frame="none">
+                        <title>Available KRAD Templates</title>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                            <colspec colname="c3" colnum="3" colwidth="4.0*"/>
                         <thead>
-                            <tr>
-                                <th> Abbreviation </th>
-                                <th> Description </th>
-                                <th> Code </th>
-                            </tr>
+                            <row>
+                                <entry> Abbreviation </entry>
+                                <entry> Description </entry>
+                                <entry> Code </entry>
+                            </row>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>@</td>
-                                <td>Inserts the expression placeholders</td>
-                                <td>@{$END}</td>
-                            </tr>
-                            <tr>
-                                <td>action  </td>
-                                <td>Generates an action field</td>
-                                <td>&lt;bean parent="ActionField" p:actionLabel="$END$"
-                                    p:methodToCall=""/></td>
-                            </tr>
-                            <tr>
-                                <td>alink</td>
-                                <td>Generates an action link field</td>
-                                <td>&lt;bean parent="ActionLinkField" p:actionLabel="$END$"
-                                    p:methodToCall=""/></td>
-                            </tr>
-                            <tr>
-                                <td>be</td>
-                                <td>Generates a bean tag</td>
-                                <td>&lt;bean parent="$END$"/></td>
-                            </tr>
-                            <tr>
-                                <td>cc</td>
-                                <td>Generates a checkbox control</td>
-                                <td>&lt;bean parent="CheckboxControl"/></td>
-                            </tr>
-                            <tr>
-                                <td>cgc</td>
-                                <td>Generate a checkbox group control</td>
-                                <td>&lt;property name="control"> &lt;bean
+                            <row>
+                                <entry>@</entry>
+                                <entry>Inserts the expression placeholders</entry>
+                                <entry>@{$END}</entry>
+                            </row>
+                            <row>
+                                <entry>action  </entry>
+                                <entry>Generates an action field</entry>
+                                <entry>&lt;bean parent="ActionField" p:actionLabel="$END$"
+                                    p:methodToCall=""/></entry>
+                            </row>
+                            <row>
+                                <entry>alink</entry>
+                                    <entry>Generates an action link field</entry>
+                                <entry>&lt;bean parent="ActionLinkField" p:actionLabel="$END$"
+                                    p:methodToCall=""/></entry>
+                            </row>
+                            <row>
+                                <entry>be</entry>
+                                <entry>Generates a bean tag</entry>
+                                <entry>&lt;bean parent="$END$"/></entry>
+                            </row>
+                            <row>
+                                <entry>cc</entry>
+                                <entry>Generates a checkbox control</entry>
+                                <entry>&lt;bean parent="CheckboxControl"/></entry>
+                            </row>
+                            <row>
+                                <entry>cgc</entry>
+                                    <entry>Generate a checkbox group control</entry>
+                                <entry>&lt;property name="control"> &lt;bean
                                     parent="CheckboxGroupControl"/> &lt;/property> &lt;property
                                     name="optionsFinder"> &lt;bean class="$END$"/>
-                                    &lt;/property></td>
-                            </tr>
-                            <tr>
-                                <td>dc</td>
-                                <td>Generates a date control</td>
-                                <td>&lt;bean parent="DateControl" p:size="$END$"/></td>
-                            </tr>
-                            <tr>
-                                <td>fc</td>
-                                <td>Generates a file control</td>
-                                <td>&lt;bean parent="FileControl" p:size="$END$"/></td>
-                            </tr>
-                            <tr>
-                                <td>fg</td>
-                                <td>Generates a field group</td>
-                                <td>&lt;bean parent="FieldGroup" p:label="$END$"> &lt;property
+                                    &lt;/property></entry>
+                            </row>
+                            <row>
+                                <entry>dc</entry>
+                                <entry>Generates a date control</entry>
+                                <entry>&lt;bean parent="DateControl" p:size="$END$"/></entry>
+                            </row>
+                            <row>
+                                <entry>fc</entry>
+                                <entry>Generates a file control</entry>
+                                <entry>&lt;bean parent="FileControl" p:size="$END$"/></entry>
+                            </row>
+                            <row>
+                                <entry>fg</entry>
+                                <entry>Generates a field group</entry>
+                                <entry>&lt;bean parent="FieldGroup" p:label="$END$"> &lt;property
                                     name="items"> &lt;list> &lt;/list> &lt;/property>
-                                    &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>fi</td>
-                                <td>Generates a field inquiry</td>
-                                <td>&lt;property name="fieldInquiry.dataObjectClassName"
+                                    &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>fi</entry>
+                                <entry>Generates a field inquiry</entry>
+                                <entry>&lt;property name="fieldInquiry.dataObjectClassName"
                                     value="$END$ $CLASS$"/> &lt;property
-                                    name="fieldInquiry.inquiryParameters" value=""/></td>
-                            </tr>
-                            <tr>
-                                <td>fl</td>
-                                <td>Generates a field lookup</td>
-                                <td>&lt;property name="fieldLookup.dataObjectClassName" value="$END$
+                                    name="fieldInquiry.inquiryParameters" value=""/></entry>
+                            </row>
+                            <row>
+                                <entry>fl</entry>
+                                <entry>Generates a field lookup</entry>
+                                <entry>&lt;property name="fieldLookup.dataObjectClassName" value="$END$
                                     $CLASS$"/> &lt;property name="fieldLookup.fieldConversions"
                                     value=""/> &lt;property name="fieldLookup.lookupParameters"
-                                    value=""/></td>
-                            </tr>
-                            <tr>
-                                <td>fs</td>
-                                <td>Generates a field suggest</td>
-                                <td>&lt;property name="fieldSuggest.render" value="true"/>
+                                    value=""/></entry>
+                            </row>
+                            <row>
+                                <entry>fs</entry>
+                                <entry>Generates a field suggest</entry>
+                                <entry>&lt;property name="fieldSuggest.render" value="true"/>
                                     &lt;property
                                     name="fieldSuggest.suggestQuery.dataObjectClassName"
                                     value="$END$ $CLASS$"/> &lt;property
-                                    name="fieldSuggest.sourcePropertyName" value=""/></td>
-                            </tr>
-                            <tr>
-                                <td>group</td>
-                                <td>Generates a group</td>
-                                <td>&lt;bean id="$END$" parent="Group" p:title=""
+                                    name="fieldSuggest.sourcePropertyName" value=""/></entry>
+                            </row>
+                            <row>
+                                <entry>group</entry>
+                                <entry>Generates a group</entry>
+                                <entry>&lt;bean id="$END$" parent="Group" p:title=""
                                     p:instructionalText=""> &lt;property name="items"> &lt;list>
-                                    &lt;/list> &lt;/property> &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>hfg</td>
-                                <td>Generates a field group with horizontal layout</td>
-                                <td>&lt;bean parent="HorizontalFieldGroup" p:label="$END$">
+                                    &lt;/list> &lt;/property> &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>hfg</entry>
+                                <entry>Generates a field group with horizontal layout</entry>
+                                <entry>&lt;bean parent="HorizontalFieldGroup" p:label="$END$">
                                     &lt;property name="items"> &lt;list> &lt;/list> &lt;/property>
-                                    &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>image</td>
-                                <td>Generates an image field</td>
-                                <td>&lt;bean parent="ImageField" p:label="$END$" p:altText=""
-                                    p:source="@#ConfigProperties['krad.externalizable.images.url']"/></td>
-                            </tr>
-                            <tr>
-                                <td>input</td>
-                                <td>Generates an input field</td>
-                                <td>&lt;bean parent="InputField" p:propertyName="$END$" p:label="">
-                                    &lt;property name="control"> &lt;/property> &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>link</td>
-                                <td>Generates a link field</td>
-                                <td>&lt;bean parent="LinkField" p:linkLabel="$END$"
-                                    p:hrefText=""/></td>
-                            </tr>
-                            <tr>
-                                <td>mess</td>
-                                <td>Generates a message field</td>
-                                <td>&lt;bean parent="MessageField" p:messageText="$END$"/></td>
-                            </tr>
-                            <tr>
-                                <td>page</td>
-                                <td>Generates a page</td>
-                                <td>&lt;bean id="$END$" parent="Page" p:title=""> &lt;property
+                                    &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>image</entry>
+                                <entry>Generates an image field</entry>
+                                <entry>&lt;bean parent="ImageField" p:label="$END$" p:altText=""
+                                    p:source="@#ConfigProperties['krad.externalizable.images.url']"/></entry>
+                            </row>
+                            <row>
+                                <entry>input</entry>
+                                <entry>Generates an input field</entry>
+                                <entry>&lt;bean parent="InputField" p:propertyName="$END$" p:label="">
+                                    &lt;property name="control"> &lt;/property> &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>link</entry>
+                                <entry>Generates a link field</entry>
+                                <entry>&lt;bean parent="LinkField" p:linkLabel="$END$"
+                                    p:hrefText=""/></entry>
+                            </row>
+                            <row>
+                                <entry>mess</entry>
+                                <entry>Generates a message field</entry>
+                                <entry>&lt;bean parent="MessageField" p:messageText="$END$"/></entry>
+                            </row>
+                            <row>
+                                <entry>page</entry>
+                                <entry>Generates a page</entry>
+                                <entry>&lt;bean id="$END$" parent="Page" p:title=""> &lt;property
                                     name="items"> &lt;list> &lt;/list> &lt;/property>
-                                    &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>prop</td>
-                                <td>Inserts a property tag </td>
-                                <td>&lt;property name="$END$" value=""/> </td>
-                            </tr>
-                            <tr>
-                                <td>rc</td>
-                                <td>Generates a radio group control</td>
-                                <td>&lt;property name="control"> &lt;bean
+                                    &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>prop</entry>
+                                <entry>Inserts a property tag </entry>
+                                <entry>&lt;property name="$END$" value=""/> </entry>
+                            </row>
+                            <row>
+                                <entry>rc</entry>
+                                <entry>Generates a radio group control</entry>
+                                <entry>&lt;property name="control"> &lt;bean
                                     parent="RadioGroupControl"/> &lt;/property> &lt;property
                                     name="optionsFinder"> &lt;bean class="$END$"/>
-                                    &lt;/property></td>
-                            </tr>
-                            <tr>
-                                <td>sc</td>
-                                <td>Generates a select control</td>
-                                <td>&lt;property name="control"> &lt;bean parent="SelectControl"/>
+                                    &lt;/property></entry>
+                            </row>
+                            <row>
+                                <entry>sc</entry>
+                                <entry>Generates a select control</entry>
+                                <entry>&lt;property name="control"> &lt;bean parent="SelectControl"/>
                                     &lt;/property> &lt;property name="optionsFinder"> &lt;bean
-                                    class="$END$"/> &lt;/property></td>
-                            </tr>
-                            <tr>
-                                <td>section</td>
-                                <td>Generates a section group</td>
-                                <td>&lt;bean id="$END$" parent="GroupSection" p:title=""
+                                    class="$END$"/> &lt;/property></entry>
+                            </row>
+                            <row>
+                                <entry>section</entry>
+                                <entry>Generates a section group</entry>
+                                <entry>&lt;bean id="$END$" parent="GroupSection" p:title=""
                                     p:instructionalText=""> &lt;property name="items"> &lt;list>
-                                    &lt;/list> &lt;/property> &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>sstack</td>
-                                <td>Generates a collection group section with stacked layout</td>
-                                <td>&lt;bean id="$END$" parent="CollectionGroupSection"
+                                    &lt;/list> &lt;/property> &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>sstack</entry>
+                                <entry>Generates a collection group section with stacked layout</entry>
+                                <entry>&lt;bean id="$END$" parent="CollectionGroupSection"
                                     p:layoutManager.numberOfColumns="" p:title=""
                                     p:instructionalText=""> &lt;property
                                     name="collectionObjectClass" value="$CLASS$"/> &lt;property
@@ -1023,24 +1038,24 @@
                                     name="layoutManager.summaryTitle" value="" /> &lt;property
                                     name="layoutManager.summaryFields" value="" /> &lt;property
                                     name="items"> &lt;list> &lt;/list> &lt;/property>
-                                    &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>stable</td>
-                                <td>Generates a collection group section with table layout</td>
-                                <td>&lt;bean id="$END$" parent="CollectionGroupSectionTableLayout"
+                                    &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>stable</entry>
+                                <entry>Generates a collection group section with table layout</entry>
+                                <entry>&lt;bean id="$END$" parent="CollectionGroupSectionTableLayout"
                                     p:layoutManager.numberOfColumns="" p:title=""
                                     p:instructionalText=""> &lt;property
                                     name="collectionObjectClass" value="$CLASS$"/> &lt;property
                                     name="propertyName" value=""/> &lt;property
                                     name="layoutManager.sequencePropertyName" value=""/>
                                     &lt;property name="items"> &lt;list> &lt;/list> &lt;/property>
-                                    &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>stack</td>
-                                <td>Generates a collection group with stacked layout</td>
-                                <td>&lt;bean id="$END$" parent="CollectionGroup"
+                                    &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>stack</entry>
+                                <entry>Generates a collection group with stacked layout</entry>
+                                <entry>&lt;bean id="$END$" parent="CollectionGroup"
                                     p:layoutManager.numberOfColumns="" p:title=""
                                     p:instructionalText=""> &lt;property
                                     name="collectionObjectClass" value="$CLASS$"/> &lt;property
@@ -1048,49 +1063,50 @@
                                     name="layoutManager.summaryTitle" value="" /> &lt;property
                                     name="layoutManager.summaryFields" value="" /> &lt;property
                                     name="items"> &lt;list> &lt;/list> &lt;/property>
-                                    &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>table</td>
-                                <td>Generates a collection group with table layout</td>
-                                <td>&lt;bean id="$END$" parent="CollectionGroupTableLayout"
+                                    &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>table</entry>
+                                <entry>Generates a collection group with table layout</entry>
+                                <entry>&lt;bean id="$END$" parent="CollectionGroupTableLayout"
                                     p:layoutManager.numberOfColumns="" p:title=""
                                     p:instructionalText=""> &lt;property
                                     name="collectionObjectClass" value="$CLASS$"/> &lt;property
                                     name="propertyName" value=""/> &lt;property
                                     name="layoutManager.sequencePropertyName" value=""/>
                                     &lt;property name="items"> &lt;list> &lt;/list> &lt;/property>
-                                    &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td>tac</td>
-                                <td>Generates a text area control</td>
-                                <td>&lt;bean parent="TextAreaControl" p:rows="$END$"
-                                    p:cols=""/></td>
-                            </tr>
-                            <tr>
-                                <td>tc</td>
-                                <td>Generates a text control</td>
-                                <td>&lt;bean parent="TextControl" p:size="$END$"/></td>
-                            </tr>
-                            <tr>
-                                <td>view</td>
-                                <td>Generates a view</td>
-                                <td>&lt;bean id="$END$" parent="FormView"> &lt;property name="title"
+                                    &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry>tac</entry>
+                                <entry>Generates a text area control</entry>
+                                <entry>&lt;bean parent="TextAreaControl" p:rows="$END$"
+                                    p:cols=""/></entry>
+                            </row>
+                            <row>
+                                <entry>tc</entry>
+                                <entry>Generates a text control</entry>
+                                <entry>&lt;bean parent="TextControl" p:size="$END$"/></entry>
+                            </row>
+                            <row>
+                                <entry>view</entry>
+                                <entry>Generates a view</entry>
+                                <entry>&lt;bean id="$END$" parent="FormView"> &lt;property name="title"
                                     value=""/> &lt;property name="navigation"> &lt;ref bean=""/>
                                     &lt;/property> &lt;property name="items"> &lt;list> &lt;/list>
                                     &lt;/property> &lt;property name="additionalCssFiles" ref=""/>
                                     &lt;property name="additionalJsFiles" ref=""/> &lt;property
                                     name="viewHelperServiceClassName" value=""/> &lt;property
                                     name="defaultBindingObjectPath" vaue=""/> &lt;property
-                                    name="formClass" value=""/> &lt;/bean></td>
-                            </tr>
-                            <tr>
-                                <td/>
-                                <td/>
-                                <td/>
-                            </tr>
+                                    name="formClass" value=""/> &lt;/bean></entry>
+                            </row>
+                            <row>
+                                <entry/>
+                                <entry/>
+                                <tentry/>
+                            </row>
                         </tbody>
+                      </tgroup>
                     </table>
                 </para>
             </section>

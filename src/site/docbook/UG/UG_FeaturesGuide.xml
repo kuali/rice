@@ -73,6 +73,16 @@
                     </listitem>
                 </itemizedlist>
             </sect2>
+            
+            <sect2>
+                <title>Important Features of PeopleFlow</title>
+                <para>PeopleFlow is a new feature in Rice 2.0, that enables simple routing of
+                actions and notifications based on business rules.  PeopleFlow can be integrated
+                with enterprise-wide workflow management in KEW, or can be used without KEW, with
+                the Kuali Rules Management System (KRMS) engine that is also new in Rice 2.0.  This
+                offers a light-weight way to manage business rules and routing across applications.  </para>
+            </sect2>
+            
         </sect1>
         <sect1>
             <title>Notification (KEN)</title>

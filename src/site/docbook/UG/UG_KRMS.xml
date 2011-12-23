@@ -57,20 +57,31 @@
                 context hierarchy, that is, agendas and rules can't be inherited across contexts
                 within any sort of hierarchy. </para>
             <para>See below for a view of the Agenda Editor in KRMS.</para>
-            <para><inlinemediaobject>
+            <para>
+                <figure>
+                    <title>KRMS Agenda Editor</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS%20Agenda%20Editor%201.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRMS Agenda Editor.png" align="left" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+                </figure>
+            </para>
             <para>And see below for an example of how attributes can be progressively rendered in
-                KRMS.  In this example, the type of "CampusAgendaType" requires some additional
-                attributes, that are not required by all types.  These are shown to the end user
-                only when required.  This is an example of KRAD's progressive disclosure capability: </para>
-            <para><inlinemediaobject>
+                KRMS. In this example, the selected context, "Context 1", requires the selection of
+                a type, and the selected type, "CampusAgendaType", requires some additional
+                attributes, that are not required by all types. These are shown to the end user only
+                when required. This is an example of KRAD's progressive disclosure capability: </para>
+            <para>
+                <figure>
+                    <title>KRMS Agenda Editor with additional attributes displayed</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS%20Agenda%20Editor%202.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRMS Agenda editor with attributes.png" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+                </figure>
+            </para>
         </sect2>
         <sect2>
             <title>KRMS Rules Editor</title>
@@ -79,27 +90,34 @@
                 aren't shared across contexts. There is no context hierarchy, that is, agendas and
                 rules can't be inherited across contexts within any sort of hierarchy. </para>
             <para>See below for a view of the Rules Editor in KRMS.</para>
-            <para><inlinemediaobject>
+            <para>
+                <figure>
+                    <title>KRMS Rules Editor</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS%20Rules%20Editor%201.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRMS Rules Editor 1.png" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+                </figure>
+            </para>
             <para>And below is a simple proposition with the action type expanded to show how you
                 can associate an action with the rule you are creating.  In this example, when the
                 conditions for this rule are satisfied (when they are true), the rule will call a
-                PeopleFlow to route a request to it.  (Peter, we need to check on this example and
-                delete if outdated!!!)</para>
-            <para><inlinemediaobject>
+                PeopleFlow to route a request to it.</para>
+            <para>
+                <figure>
+                <title>KRMS proposition and PeopleFlow Action</title>
+                <mediaobject>
                     <imageobject>
                         <imagedata fileref="../images/KRMS-proposition-and-PeopleFlow-action.png"
-                            scalefit="1"/>
+                            scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
-                </inlinemediaobject>You can create a rule based on simple and compound propositions
-                and add parameters to the propositions.  See the KRMS Technical Guide (TRG) for
+                </mediaobject>
+                </figure>
+            </para>
+                <para>You can create a rule based on simple and compound propositions
+                and add parameters to the propositions.  See the KRMS Technical Reference Guide (TRG) for
                 additional information about these constructs.</para>
         </sect2>
-    </sect1>
-    <sect1 xmlns:xlink="http://www.w3.org/1999/xlink">
-        <title>tbd </title>
     </sect1>
 </chapter>

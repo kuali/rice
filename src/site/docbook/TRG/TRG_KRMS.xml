@@ -140,19 +140,19 @@
         <sect2>
             <title>What problems does KRMS not address?</title>
             <para>(Work in progress)</para>
-            <para/>
+            
         </sect2>
         <sect2>
             <title>With which types of applications can KRMS integrate?</title>
             <para>(Work in progress) Include integration with KEW and KIM at a high level (&amp;
                 with KEN &amp; KOM?) And clarify how any application can include KRMS.  (High level
                 only - lower level under the developer tasks section later in this document)</para>
-            <para/>
+            
         </sect2>
         <sect2>
             <title>Can I use KRMS without building an entire application?</title>
             <para>Work in progress) </para>
-            <para/>
+            
         </sect2>
     </sect1>
     <sect1>
@@ -209,13 +209,20 @@
                         compound propositions). Propositions are never re-used across multiple
                         rules.</para>
                     <para>Here is a summary of the non-common data elements in this proposition
-                        table:</para>
-                    <informaltable class="confluenceTable">
+                        table:
+                    </para>
+                    <table frame="none">
+                        <title>Non-common data elements in the proposition table</title>
+                        <tgroup cols="3">
+                            <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                            <colspec colname="c2" colnum="2" colwidth="4.0*"/>
+                         <thead>
+                            <row>
+                                <th>Column</th>
+                                <th>Description</th>
+                            </row> 
+                         </thead>
                         <tbody>
-                            <tr>
-                                <th rowspan="1" colspan="1"> Column </th>
-                                <th rowspan="1" colspan="1"> Description </th>
-                            </tr>
                             <tr>
                                 <td rowspan="1" colspan="1"> prop_id </td>
                                 <td rowspan="1" colspan="1"> A generated primary key identifier for
@@ -238,7 +245,8 @@
                                     S. </td>
                             </tr>
                         </tbody>
-                    </informaltable>
+                        </tgroup>
+                    </table>
                 </sect4>
                 <sect4>
                     <title>Proposition Parameters - krms_prop_parm_t</title>
@@ -385,39 +393,50 @@
                     </itemizedlist>
                     <para>Here is a summary of the non-common data elements in this proposition
                         parameter table:</para>
-                    <informaltable class="confluenceTable">
+                
+                 
+                        <table frame="none">
+                            <title>Non-common data elements in the proposition parameter table</title>
+                            <tgroup cols="3">
+                                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                                <colspec colname="c2" colnum="2" colwidth="4.0*"/>
+                                <thead>
+                                    <row>
+                                        <th>Column</th>
+                                        <th>Description</th>
+                                    </row> 
+                                </thead>
+                               
                         <tbody>
-                            <tr>
-                                <th rowspan="1" colspan="1"> Column </th>
-                                <th rowspan="1" colspan="1"> Description </th>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> prop_parm_id </td>
-                                <td rowspan="1" colspan="1"> A generated primary key identifier for
-                                    the proposition parameter </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> prop_id </td>
-                                <td rowspan="1" colspan="1"> The proposition which this parameter
-                                    applies to </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> parm_val </td>
-                                <td rowspan="1" colspan="1"> the value of the parameter </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> parm_typ_cd </td>
-                                <td rowspan="1" colspan="1"> Indicates whether the parameter value
+                            <row>
+                                <entry rowspan="1" colspan="1"> prop_parm_id </entry>
+                                <entry rowspan="1" colspan="1"> A generated primary key identifier for
+                                    the proposition parameter </entry>
+                            </row>
+                            <row>
+                                <entry rowspan="1" colspan="1"> prop_id </entry>
+                                <entry rowspan="1" colspan="1"> The proposition which this parameter
+                                    applies to </entry>
+                            </row>
+                            <row>
+                                <entry rowspan="1" colspan="1"> parm_val </entry>
+                                <entry rowspan="1" colspan="1"> the value of the parameter </entry>
+                            </row>
+                            <row>
+                                <entry rowspan="1" colspan="1"> parm_typ_cd </entry>
+                                <entry rowspan="1" colspan="1"> Indicates whether the parameter value
                                     represents a constant, term, or function. Valid values are C, T,
-                                    F, O </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> seq_no </td>
-                                <td rowspan="1" colspan="1"> Defines the order of the parameter
-                                    within the larger parameter list. </td>
-                            </tr>
+                                    F, O </entry>
+                            </row>
+                            <row>
+                                <entry rowspan="1" colspan="1"> seq_no </entry>
+                                <entry rowspan="1" colspan="1"> Defines the order of the parameter
+                                    within the larger parameter list. </entry>
+                            </row>
                         </tbody>
-                    </informaltable>
+                   </tgroup>
+                 </table> 
+                
                 </sect4>
             </sect3>
         </sect2>
@@ -901,7 +920,7 @@
             <para>The UML diagram below shows the KRMS data model:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms ruleModel-20.png" scalefit="1"/>
+                        <imagedata fileref="../images/krms-ruleModel-20b.png" scalefit="1"/>/>
                     </imageobject>
                 </inlinemediaobject></para>
         </section>

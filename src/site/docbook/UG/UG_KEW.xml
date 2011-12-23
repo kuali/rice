@@ -238,25 +238,84 @@
             to pass to the PeopleFlow (for example, an "approval" routing action or a
             "notification").   </para>
         <para>KRMS is also a new feature in Rice 2.0.  See the KRMS Users' Guide for more
-            information on KRMS.  </para>
+        information on KRMS.  </para>
+        
+        <sect2>
+            <title>Creating a new PeopleFlow</title>
         <para>You can define a PeopleFlow (simple workflow) via a maintenance document.  In the
             Kuali Rice portal on the main tab there is a Workflow category, and PeopleFlow is in
             that category.  Select it:  </para>
-        <para><inlinemediaobject>
+        <para>
+            <figure>
+                <title>PeopleFlow selection on the Main tab in the Kuali Portal</title>
+            <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW---PeopleFlow-on-main-tab-in-portal.png"
+                    <imagedata fileref="../images/KEW-PeopleFlow on main tab in portal.png"
                         scalefit="1"/>
                 </imageobject>
-            </inlinemediaobject></para>
+            </mediaobject>
+            </figure>
+        </para>
         <para>You can search for a PeopleFlow to copy from and modify (be sure to give it a new
             unique name) or can create a new one (see the top right of the lookup screen).</para>
-        <para><inlinemediaobject>
+        <para>
+            <figure>
+                <title>PeopleFlow Lookup</title>
+            <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW-PeopleFlow-lookup.png" scalefit="1"/>
+                    <imagedata fileref="../images/KEW-PeopleFlow lookup.png" scalefit="1" scale="" width="" contentwidth="640"/>
                 </imageobject>
-            </inlinemediaobject></para>
-        <para>(We will add screen captures of the PeopleFlow creation screens, in early January -
-            doing styling refinements now.)</para>
+            </mediaobject>
+            </figure>
+        </para>
+        <para> </para>
+        
+        <para>Below is a view of the user interface to create a new PeopleFlow:</para>
+        <para>
+            <figure>
+                <title>PeopleFlow - Create New</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KEW-PeopleFlow create new.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+        <para>The view below shows that some sections are collapsed, and also shows additional
+            attributes that are required based on the user's selection of a type. This is an example
+            of the Kuali Rapid Application Development (KRAD) framework's support of progressive
+            disclosure, only showing these additional type attribute fields if/when they are
+            required:</para>
+        <para>
+            <figure>
+                <title>PeopleFlow - Create New (with additional type attributes)</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KEW-PeopleFlow create new with type.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+        <para> And below is a view of just the PeopleFlow Members section - expanded - after adding two
+            stops:</para>
+        <para>
+            <figure>
+                <title>PeopleFlow - Create New - with 2 stops added</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KEW-PeopleFlow adding stops.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>   
+        </para>
+            <para>PeopleFlows that you create can be called by rules, with the rules determining
+                whether the PeopleFlow will be called for an action (such as approvals) or for
+                notifications.  These PeopleFlows (similar to the Coeus concept of "maps") can be
+                integrated with the new Kuali Rules Management System (KRMS), with KEW workflows, or
+                with other custom-built applications.</para>
+       
+        </sect2>
+        
     </sect1>    
     <sect1>
         <title>Actions</title>

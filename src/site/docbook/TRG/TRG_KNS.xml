@@ -1496,13 +1496,17 @@ public void setActiveAsOfDate(Date activeAsOfDate);
                         for each of these columns indicated. The label for the total row will
                         display in the first lookup column. By default this label is set to 'TOTALS'
                         and can be changed in KR-ApplicationResources.properties.</para>
-                    <figure><title>Totals</title>
+                    <para>
+                    <figure>
+                        <title>Totals</title>
                         <mediaobject>
                             <imageobject>
-                                <imagedata fileref="../images/totals.png"/>
-                            </imageobject>
+                                    <imagedata fileref="../images/totals.png" scalefit="1"
+                                        contentwidth="700"/>
+                                </imageobject>
                         </mediaobject>
                     </figure>
+                    </para>
                     <para>The total line will not be displayed for the column if the column values
                         are masked.</para>
                     <para>One limitation of the totaling functionality is it will not work with a

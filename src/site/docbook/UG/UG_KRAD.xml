@@ -47,25 +47,31 @@
         </sect2>
         <sect2>
             <title>KRAD Conceptual View</title>
-            <para><inlinemediaobject>
+            <para>
+                <figure>
+                    <title>KRAD Conceptual View</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRAD%20classes%201.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRAD classes 2.png" scalefit="1"/>
                     </imageobject>
-                </inlinemediaobject></para>
+                </mediaobject>
+                </figure>
+            </para>
             <para>(more in progress here) </para>
         </sect2>
         <sect2>
             <title>KRAD Relational View</title>
+            <para>
             <figure>
                 <title>KRAD: Relational View</title>
                 <mediaobject>
                     <imageobject>
                         <imagedata
-                            fileref="../../../../../Documents/KRAD/KRAD%20image%20test%201.png"
-                            scalefit="1"/>
+                            fileref="../images/KRAD-Relational-View.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
+            </para>
             <para>(more in progress here)</para>
         </sect2>
     </sect1>
@@ -98,13 +104,17 @@
                 container's content - the body rendering attributes which define the semantics -
                 enabling you to architect applications so they can more easily be ready for
                 different view windows and devices.</para>
-            <para><inlinemediaobject>
+            <para>
+                <figure>
+                 <title>KRAD Conceptual Groupings</title>
+                <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRAD%20ConceptualGroupings.png" scalefit="1"
+                        <imagedata fileref="../images/KRAD ConceptualGroupings2.png" scalefit="1"
                             contentdepth="480"/>
                     </imageobject>
-                </inlinemediaobject></para>
-            <para/>
+                </mediaobject>
+                </figure>
+            </para>
         </section>
     </section>
     <section>
@@ -134,15 +144,16 @@
                     original business object's labels and controls and two columns for the copied
                     object's labels and controls. In KRAD, GridLayoutManager can be used to provide
                     this type of layout.</para>
-                <para/>
+                <para>
                 <figure>
+                    <title>Grid Layout</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD%20grid%20layout.png" scalefit="1"
-                                width="1" contentdepth="400"/>
+                            <imagedata fileref="../images/KRAD grid layout.png" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
+                </para>
             </section>
             <section>
                 <title>Box Layout Manager</title>
@@ -151,12 +162,16 @@
                     a simple yet flexible way to arrange sub-Components. The BoxLayoutManager also
                     provides the ability to set the padding in between sub-Components.</para>
                 <para>
-                    <inlinemediaobject>
+                    <figure>
+                        <title>Box Layout</title>
+                    <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD%20Box%20Layout.png"
+                            <imagedata fileref="../images/KRAD Box Layout.png"
                                 contentdepth="400"/>
                         </imageobject>
-                    </inlinemediaobject></para>
+                    </mediaobject>
+                    </figure>
+                </para>
             </section>
             <section>
                 <title>Table Layout Manager</title>
@@ -173,14 +188,17 @@
                     actionFieldPrototype, which will show up in the rightmost cell of a line of
                     Fields, which contains actions that can be performed on that specific row of the
                     collection.</para>
+                <para>
                 <figure>
+                    <title>Table Layout</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD%20Table%20layout.png" scalefit="1"
+                            <imagedata fileref="../images/KRAD Table layout.png" scalefit="1"
                                 contentdepth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
+                </para>
             </section>
             <section>
                 <title>Stack Layout Manager</title>
@@ -197,14 +215,17 @@
                     prominently in rendering so each row line can be quickly recognized for what
                     data it holds. There's also a lineGroupPrototype property which can be used to
                     override the Groups that each line will render as.</para>
+                <para>
                 <figure>
+                    <title>Stacked layout</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD%20stacked%20layout.png"
+                            <imagedata fileref="../images/KRAD stacked layout.png"
                                 contentdepth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
+                </para>
             </section>
         </section>
         <section>
@@ -229,15 +250,17 @@
                     to appear. This could arguably be considered the most complex of all fields, and
                     additional information on this field can be found in the  Developers'
                     Guide.</para>
+                <para>
                 <figure>
+                    <title>KRAD Input field - grouped</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD%20-%20Input%20Field.png"
+                            <imagedata fileref="../images/KRAD Input Field2.png"
                                 contentdepth="400"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
-                <para/>
+                </para>
             </section>
             <section>
                 <title>Other KRAD Fields </title>

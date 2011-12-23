@@ -32,6 +32,7 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -88,7 +89,8 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
             resp.setTemplateId(REVIEW_TEMPLATE.getId());
             resp.setTemplate(ResponsibilityTemplateBo.from(REVIEW_TEMPLATE));
         }
-        if (resp.getTemplateId() != null && resp.getTemplate() == null) {
+
+        else {
                 resp.setTemplate(
                         ResponsibilityTemplateBo.from(KimApiServiceLocator.getResponsibilityService().getResponsibilityTemplate(
                                 resp.getTemplateId())));
@@ -105,6 +107,15 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
         if (responsibilityExists) {
             KimApiServiceLocator.getResponsibilityService().updateResponsibility(ResponsibilityBo.to(resp));
         } else {
+            //if its a copy action the objectId should be  empty and versionNumber should be null.
+            if(getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
+                if(org.apache.commons.lang.StringUtils.isNotBlank(resp.getObjectId())){
+                    resp.setObjectId("");
+                }
+                if(null!= resp.getVersionNumber()){
+                    resp.setVersionNumber(null);
+                }
+            }
             KimApiServiceLocator.getResponsibilityService().createResponsibility(ResponsibilityBo.to(resp));
         }
 	}
@@ -138,7 +149,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
     /**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.krad.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
+	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#isExternalBusinessObject()
 	 */
 	@Override
 	public boolean isExternalBusinessObject() {

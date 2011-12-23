@@ -762,8 +762,8 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         ExtensionDefinition ed = createExtensionDefinition("XMLSearchableAttribute");
         assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack", false);
         assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "jack.jack", true);
-        // FIXME: KULRICE-5630 SQLUtils.getCleanedSearchableValues(val, fieldDataType) removes * for String types
-        //assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,  "jack*jack", false);
+        // NOTE: the original intent of this particular test is unclear. it currently passes since the wildcard character is stripped
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,  "jack*jack", false);
 
         searchAttribute = getAttribute("XMLSearchableAttributeStdLong");
         ed = createExtensionDefinition("XMLSearchableAttributeStdLong");
@@ -799,8 +799,6 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
         error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "01/02/20*", true);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
-
-        fail("See FIXME in this test");
     }
 
     /**

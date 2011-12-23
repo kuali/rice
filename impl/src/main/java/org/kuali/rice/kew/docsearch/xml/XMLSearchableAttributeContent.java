@@ -70,6 +70,13 @@ class XMLSearchableAttributeContent {
         this.attributeConfig = XmlHelper.readXml(configXML).getDocumentElement();
     }
 
+    XMLSearchableAttributeContent(Element configXML) {
+        if (configXML == null) {
+            throw new IllegalArgumentException("Configuration element must not be nil");
+        }
+        this.attributeConfig = configXML;
+    }
+
     Node getSearchingConfig() throws XPathExpressionException, ParserConfigurationException {
         if (searchingConfig == null) {
             XPath xpath = XPathHelper.newXPath();

@@ -45,7 +45,7 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.documentLookupCustomizationHandlerService.exporter" parent="kewServiceExporter" lazy-init="true">
+  <bean id="rice.kew.documentSearchCustomizationHandlerService.exporter" parent="kewServiceExporter" lazy-init="true">
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">

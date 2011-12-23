@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
+import com.google.common.base.Function;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.search.Range;
@@ -130,7 +131,6 @@ import java.util.regex.Pattern;
  *         <conclusion>Happily ever val2.</conclusion>
  *     </myGeneratedContent>
  * </pre>
- * TODO: ensure sublcasses work after refactoring
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StandardGenericXMLSearchableAttribute implements SearchableAttribute {
@@ -142,7 +142,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     public String generateSearchContent(ExtensionDefinition extensionDefinition, String documentTypeName, WorkflowAttributeDefinition attributeDefinition) {
         Map<String, String> propertyDefinitionMap = attributeDefinition.getPropertyDefinitionsAsMap();
         try {
-            XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(extensionDefinition);
+            XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(getConfigXML(extensionDefinition));
             return content.generateSearchContent(propertyDefinitionMap);
         } catch (XPathExpressionException e) {
             LOG.error("error in getSearchContent ", e);
@@ -168,7 +168,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
             LOG.error("error parsing docContent: "+documentWithContent.getDocumentContent(), e);
             throw new RuntimeException("Error trying to parse docContent: "+documentWithContent.getDocumentContent(), e);
         }
-        XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(extensionDefinition);
+        XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(getConfigXML(extensionDefinition));
         List<XMLSearchableAttributeContent.FieldDef> fields;
         try {
             fields = content.getFieldDefList();
@@ -248,7 +248,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         List<RemotableAttributeField> searchFields = new ArrayList<RemotableAttributeField>();
         List<SearchableAttributeValue> searchableAttributeValues = DocumentSearchInternalUtils.getSearchableAttributeValueObjectTypes();
 
-        XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(extensionDefinition);
+        XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(getConfigXML(extensionDefinition));
         List<XMLSearchableAttributeContent.FieldDef> fields;
         try {
             fields = content.getFieldDefList();
@@ -297,7 +297,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
         // SearchDefinition
         // data type operations
-        DataType dataType = convertValueToDataType(field.searchDefinition.dataType);
+        DataType dataType = DocumentSearchInternalUtils.convertValueToDataType(field.searchDefinition.dataType);
         fieldBuilder.setDataType(dataType);
         if (DataType.DATE == fieldBuilder.getDataType()) {
             fieldBuilder.getWidgets().add(RemotableDatepicker.Builder.create());
@@ -350,25 +350,6 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         return fieldBuilder.build();
     }
 
-    /**
-     * Converts a searchable attribute field data type into a UI data type
-     * @param dataTypeValue the {@link SearchableAttributeValue} data type
-     * @return the corresponding {@link DataType}
-     */
-    private DataType convertValueToDataType(String dataTypeValue) {
-        if (StringUtils.isBlank(dataTypeValue)) {
-            return DataType.STRING;
-        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_STRING.equals(dataTypeValue)) {
-            return DataType.STRING;
-        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_DATE.equals(dataTypeValue)) {
-            return DataType.DATE;
-        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_LONG.equals(dataTypeValue)) {
-            return DataType.LONG;
-        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT.equals(dataTypeValue)) {
-            return DataType.FLOAT;
-        }
-        throw new IllegalArgumentException("Invalid dataTypeValue was given: " + dataTypeValue);
-    }
 
     /**
      * Determines whether the searchable field definition is a ranged search
@@ -379,7 +360,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
     private boolean isRangeSearchField(Collection<SearchableAttributeValue> searchableAttributeValues, DataType dataType, XMLSearchableAttributeContent.FieldDef field) {
         for (SearchableAttributeValue attValue : searchableAttributeValues)
         {
-            DataType attributeValueDataType = convertValueToDataType(attValue.getAttributeDataType());
+            DataType attributeValueDataType = DocumentSearchInternalUtils.convertValueToDataType(attValue.getAttributeDataType());
             if (attributeValueDataType == dataType) {
                 return isRangeSearchField(attValue, field);
             }
@@ -464,7 +445,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
             return errors;
         }
 
-        XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(extensionDefinition);
+        XMLSearchableAttributeContent content = new XMLSearchableAttributeContent(getConfigXML(extensionDefinition));
         List<XMLSearchableAttributeContent.FieldDef> fields;
         try {
             fields = content.getFieldDefList();
@@ -530,7 +511,6 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     } else {
                         // only check bounds if range search is specified
                         // XXX: FIXME: disabling these pedantic checks as they are causing annoying test breakages
-                        /*
                         if (!attributeValue.allowsCaseInsensitivity() && Boolean.FALSE.equals(field.searchDefinition.getRangeBoundOptions().caseSensitive)) {
                             errs = true;
                             errors.add(RemotableAttributeError.Builder.create(field.name, "attribute data type does not support case insensitivity but case-insensitivity specified in attribute definition").build());
@@ -542,7 +522,7 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                         if (r.isUpperBoundInclusive() != field.searchDefinition.upperBound.inclusive) {
                             errs = true;
                             errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on upper bound inclusivity.  Range is: " + r.isUpperBoundInclusive() + " Attrib is: " + field.searchDefinition.upperBound.inclusive).build());
-                        }*/
+                        }
                     }
 
                     if (!errs) {
@@ -611,42 +591,32 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
         return null;
     }
 
-    private List<RemotableAttributeError> performValidation(SearchableAttributeValue attributeValue, XMLSearchableAttributeContent.FieldDef field, String enteredValue, String errorMessagePrefix, List<String> resultingValues) {
-        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
-
-        if (enteredValue == null) {
-            return errors;
-        }
-
-        // TODO: this also parses compound expressions and therefore produces a list of strings
-        //       how does this relate to DocumentSearchInternalUtils.parseRange... which should consume which?
-        List<String> parsedValues = SQLUtils.getCleanedSearchableValues(enteredValue, field.searchDefinition.dataType);
-        for (String value: parsedValues) {
-            if (attributeValue.allowsWildcards()) { // TODO: how is this supposed to work in relation to criteria expressions?? clean above removes *
-                value = value.replaceAll(KewApiConstants.SearchableAttributeConstants.SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED, "");
-            }
-            resultingValues.add(value);
-
-            if (!attributeValue.isPassesDefaultValidation(enteredValue)) {
-                errorMessagePrefix = (StringUtils.isNotBlank(errorMessagePrefix)) ? errorMessagePrefix : "Field";
-                String errorMsg = errorMessagePrefix + " with value '" + enteredValue + "' does not conform to standard validation for field type.";
-                LOG.debug("validateUserSearchInputs() " + errorMsg + " :: field type '" + attributeValue.getAttributeDataType() + "'");
-                errors.add(RemotableAttributeError.Builder.create(field.name, errorMsg).build());
-            } else {
+    /**
+     * Performs validation on a single DSC attribute value, running any defined custom validation regex after basic validation
+     * @param attributeValue the searchable attribute value type
+     * @param field the XMLSearchableAttributeContent field
+     * @param enteredValue the value to validate
+     * @param errorMessagePrefix a prefix for error messages
+     * @param resultingValues optional list of accumulated parsed values
+     * @return a (possibly empty) list of errors
+     */
+    private List<RemotableAttributeError> performValidation(SearchableAttributeValue attributeValue, final XMLSearchableAttributeContent.FieldDef field, String enteredValue, String errorMessagePrefix, List<String> resultingValues) {
+        return DocumentSearchInternalUtils.validateSearchFieldValue(field.name, attributeValue, enteredValue, errorMessagePrefix, resultingValues, new Function<String, Collection<RemotableAttributeError>>() {
+            @Override
+            public Collection<RemotableAttributeError> apply(String value) {
                 if (StringUtils.isNotEmpty(field.validation.regex)) {
                     Pattern pattern = Pattern.compile(field.validation.regex);
                     Matcher matcher = pattern.matcher(value);
                     if (!matcher.matches()) {
-                        errors.add(RemotableAttributeError.Builder.create(field.name, field.validation.message).build());
+                        return Collections.singletonList(RemotableAttributeError.Builder.create(field.name, field.validation.message).build());
                     }
                 }
+                return Collections.emptyList();
             }
-        }
-        return errors;
+        });
     }
 
     // preserved only for subclasses
-    // TODO: ensure sublcasses work after refactoring
     protected Element getConfigXML(ExtensionDefinition extensionDefinition) {
         try {
             String xmlConfigData = extensionDefinition.getConfiguration().get(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA);

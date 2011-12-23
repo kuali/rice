@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import com.google.common.base.Function;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -25,13 +27,15 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.reflect.ObjectDefinition;
 import org.kuali.rice.core.api.search.Range;
 import org.kuali.rice.core.api.search.SearchExpressionUtils;
-import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.uif.AttributeLookupSettings;
 import org.kuali.rice.core.api.uif.DataType;
+import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 
 import java.io.IOException;
@@ -39,6 +43,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -259,4 +265,94 @@ public class DocumentSearchInternalUtils {
         // mapper.getSerializationConfig().setAnnotationIntrospector(introspector);
         return jsonMapper.writeValueAsString(criteria);
     }
+
+    public static List<RemotableAttributeError> validateSearchFieldValues(String fieldName, SearchableAttributeValue attributeValue, List<String> searchValues, String errorMessagePrefix, List<String> resultingValues, Function<String, Collection<RemotableAttributeError>> customValidator) {
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+        // nothing to validate
+        if (CollectionUtils.isEmpty(searchValues)) {
+            return errors;
+        }
+        for (String searchValue: searchValues) {
+            errors.addAll(validateSearchFieldValue(fieldName, attributeValue, searchValue, errorMessagePrefix, resultingValues, customValidator));
+        }
+        return Collections.unmodifiableList(errors);
+    }
+
+    /**
+     * Validates a single DocumentSearchCriteria searchable attribute field value (of the list of possibly multiple values)
+     * @param attributeValue the searchable attribute value type
+     * @param enteredValue the incoming DSC field value
+     * @param fieldName the name of the searchable attribute field/key
+     * @param errorMessagePrefix error message prefix
+     * @param resultingValues optional list of accumulated parsed values
+     * @param customValidator custom value validator to invoke on default validation success
+     * @return (possibly empty) list of validation error
+     */
+    public static List<RemotableAttributeError> validateSearchFieldValue(String fieldName, SearchableAttributeValue attributeValue, String enteredValue, String errorMessagePrefix, List<String> resultingValues, Function<String, Collection<RemotableAttributeError>> customValidator) {
+        List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
+        if (enteredValue == null) {
+            return errors;
+        }
+        // TODO: this also parses compound expressions and therefore produces a list of strings
+        //       how does this relate to DocumentSearchInternalUtils.parseRange... which should consume which?
+        List<String> parsedValues = SQLUtils.getCleanedSearchableValues(enteredValue, attributeValue.getAttributeDataType());
+        for (String value: parsedValues) {
+            errors.addAll(validateParsedSearchFieldValue(fieldName, attributeValue, value, errorMessagePrefix, resultingValues, customValidator));
+        }
+        return errors;
+    }
+
+    /**
+     * Validates a single terminal value from a single search field (list of values); calls a custom validator if default validation passes and
+     * custom validator is given
+     * @param attributeValue the searchable value type
+     * @param parsedValue the parsed value to validate
+     * @param fieldName the field name for error message
+     * @param errorMessagePrefix the prefix for error message
+     * @param resultingValues parsed value is appended to this list if present (non-null)
+     * @return immutable collection of errors (possibly empty)
+     */
+    public static Collection<RemotableAttributeError> validateParsedSearchFieldValue(String fieldName, SearchableAttributeValue attributeValue, String parsedValue, String errorMessagePrefix, List<String> resultingValues, Function<String, Collection<RemotableAttributeError>> customValidator) {
+        Collection<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>(1);
+        String value = parsedValue;
+        if (attributeValue.allowsWildcards()) { // TODO: how should this work in relation to criteria expressions?? clean above removes *
+            value = value.replaceAll(KewApiConstants.SearchableAttributeConstants.SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED, "");
+        }
+
+        if (resultingValues != null) {
+            resultingValues.add(value);
+        }
+
+        if (!attributeValue.isPassesDefaultValidation(value)) {
+            errorMessagePrefix = (StringUtils.isNotBlank(errorMessagePrefix)) ? errorMessagePrefix : "Field";
+            String errorMsg = errorMessagePrefix + " with value '" + value + "' does not conform to standard validation for field type.";
+            LOG.debug("validateSimpleSearchFieldValue: " + errorMsg + " :: field type '" + attributeValue.getAttributeDataType() + "'");
+            errors.add(RemotableAttributeError.Builder.create(fieldName, errorMsg).build());
+        } else if (customValidator != null) {
+            errors.addAll(customValidator.apply(value));
+        }
+
+        return Collections.unmodifiableCollection(errors);
+    }
+
+    /**
+     * Converts a searchable attribute field data type into a UI data type
+     * @param dataTypeValue the {@link SearchableAttributeValue} data type
+     * @return the corresponding {@link DataType}
+     */
+    public static DataType convertValueToDataType(String dataTypeValue) {
+        if (StringUtils.isBlank(dataTypeValue)) {
+            return DataType.STRING;
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_STRING.equals(dataTypeValue)) {
+            return DataType.STRING;
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_DATE.equals(dataTypeValue)) {
+            return DataType.DATE;
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_LONG.equals(dataTypeValue)) {
+            return DataType.LONG;
+        } else if (KewApiConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT.equals(dataTypeValue)) {
+            return DataType.FLOAT;
+        }
+        throw new IllegalArgumentException("Invalid dataTypeValue was given: " + dataTypeValue);
+    }
+
 }

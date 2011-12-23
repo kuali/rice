@@ -15,27 +15,35 @@
  */
 package org.kuali.rice.kew.docsearch.xml
 
+import org.apache.commons.lang.StringUtils
 import org.junit.Test
-import org.kuali.rice.kew.api.extension.ExtensionDefinition
 import org.kuali.rice.kew.api.KewApiConstants
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
-import org.junit.Ignore
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.assertFalse
-import org.kuali.rice.kew.framework.document.search.AttributeFields
+import org.kuali.rice.kew.api.extension.ExtensionDefinition
 import org.kuali.rice.kns.util.FieldUtils
 import org.kuali.rice.kns.web.ui.Row
-import org.apache.commons.lang.ObjectUtils
-import org.apache.commons.lang.StringUtils
 import org.kuali.rice.krad.util.KRADConstants
+import org.w3c.dom.Element
+import org.w3c.dom.Text
+import static org.junit.Assert.*
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute class in isolation
  */
 class StandardGenericXMLSearchableAttributeUnitTest {
+    private static class SGXSASubclass extends StandardGenericXMLSearchableAttribute {
+        @Override
+        protected Element getConfigXML(ExtensionDefinition extensionDefinition) {
+            Element e = super.getConfigXML(extensionDefinition);
+            Element xc = e.ownerDocument.createElement("xmlSearchContent")
+            Text t = e.ownerDocument.createTextNode("dynamically added search content");
+            xc.appendChild(t);
+            e.appendChild(xc);
+            e.setAttribute("customized", "true");
+            return e;
+        }
+    }
 
     // this is sort of a crummy assertion, but describes the current behavior until we decide
     // to handle this error case more gracefully
@@ -175,11 +183,23 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         assertEquals("unexpected validation errors", 0, errors.size())
     }
 
+    @Test void testValidateBoundsInclusivityDiscrepancy() {
+        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, RANGE_FIELD_SEARCH_CONFIG)
+        def c = DocumentSearchCriteria.Builder.create();
+        // ">= jack" will fail due to discrepancy between attrib and range upper bound inclusivity
+        c.documentAttributeValues.put("givenname", [ ">= jack" ] as List<String>)
+        def errors = new StandardGenericXMLSearchableAttribute().validateDocumentAttributeCriteria(edb.build(), c.build())
+        println errors
+        assertEquals("expected range upper bound inclusivity discrepancy between Range default and Attribute configuration", 1, errors.size())
+    }
+
     @Test void testValidateDocumentAttributeCriteriaExpression() {
         def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
         edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, RANGE_FIELD_SEARCH_CONFIG)
         def c = DocumentSearchCriteria.Builder.create();
-        c.documentAttributeValues.put("givenname", [ ">= jack" ] as List<String>)
+        // use "< jack", ">= jack" will fail due to discrepancy between attrib and range upper bound inclusivity
+        c.documentAttributeValues.put("givenname", [ "< jack" ] as List<String>)
         def errors = new StandardGenericXMLSearchableAttribute().validateDocumentAttributeCriteria(edb.build(), c.build())
         println errors
         assertEquals("unexpected validation errors", 0, errors.size())
@@ -236,6 +256,17 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         assertEquals(2, rows.size());
         assertEquals(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + "givenname", rows[0].fields[0].propertyName);
         assertEquals("givenname", rows[1].fields[0].propertyName);
+    }
+
+    @Test void testSubclassCanOverrideConfigXML() {
+        def edb = ExtensionDefinition.Builder.create("test", KewApiConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE, StandardGenericXMLSearchableAttribute.class.getName())
+        edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA,
+        """<searchingConfig>
+             <fieldDef name="def1"/> <!-- add a single param so content is generated -->
+           </searchingConfig>""")
+        String content = new SGXSASubclass().generateSearchContent(edb.build(), "no document type", WorkflowAttributeDefinition.Builder.create("test_attr").build())
+        // test subclass-generated content is found
+        assertEquals("dynamically added search content", content);
     }
 
     protected void testXmlConfigValidity(String xmlConfig) {

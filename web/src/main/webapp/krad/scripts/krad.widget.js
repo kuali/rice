@@ -348,6 +348,29 @@ function createDatePicker(controlId, options) {
     jq(function() {
         jq("#" + controlId).datepicker(options);
     });
+
+    // in order to compensate for jQuery's "Today" functionality (which does not actually return the date to the input box), alter the functionality
+    jq.datepicker._gotoToday = function(id) {
+        var target = jq(id);
+        var inst = this._getInst(target[0]);
+        if (this._get(inst, 'gotoCurrent') && inst.currentDay) {
+            inst.selectedDay = inst.currentDay;
+        inst.drawMonth = inst.selectedMonth = inst.currentMonth;
+        inst.drawYear = inst.selectedYear = inst.currentYear;
+        }
+        else {
+            var date = new Date();
+            inst.selectedDay = date.getDate();
+            inst.drawMonth = inst.selectedMonth = date.getMonth();
+            inst.drawYear = inst.selectedYear = date.getFullYear();
+        }
+        this._notifyChange(inst);
+        this._adjustDate(target);
+
+        // The following two lines are additions to the original jQuery code
+        this._setDateDatepicker(target, new Date());
+        this._selectDate(id, this._getDateDatepicker(target));
+    }
 }
 
 /**

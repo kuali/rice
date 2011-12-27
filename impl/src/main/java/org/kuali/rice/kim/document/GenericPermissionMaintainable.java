@@ -78,7 +78,8 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
             if (genericPermissionBo.getId() != null) {
                 permissionExists = KimApiServiceLocator.getPermissionService().getPermission(genericPermissionBo.getId()) != null;
             }
-            if (genericPermissionBo.getTemplateId() != null && genericPermissionBo.getTemplate() == null) {
+
+            if (genericPermissionBo.getTemplateId() != null) {
                 genericPermissionBo.setTemplate(
                         PermissionTemplateBo.from(
                                 KimApiServiceLocator.getPermissionService().getPermissionTemplate(genericPermissionBo.getTemplateId())));

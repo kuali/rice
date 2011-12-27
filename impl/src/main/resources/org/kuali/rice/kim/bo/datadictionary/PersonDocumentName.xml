@@ -33,7 +33,7 @@
   </bean>
 
   <bean id="DocName-firstName" parent="DocName-firstName-parentBean"/>
-  <bean id="DocName-firstName-parentBean" parent="AttributeDefinition" abstract="true" p:name="firstName" p:forceUppercase="true" p:label="First Name" p:shortLabel="First Name" p:maxLength="40" p:required="false">
+  <bean id="DocName-firstName-parentBean" parent="AttributeDefinition" abstract="true" p:name="firstName" p:forceUppercase="true" p:label="First Name" p:shortLabel="First Name" p:maxLength="40" p:required="true">
     <property name="validationPattern">
 
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="40" />
@@ -45,7 +45,7 @@
   </bean>
 
   <bean id="DocName-lastName" parent="DocName-lastName-parentBean"/>
-  <bean id="DocName-lastName-parentBean" parent="AttributeDefinition" abstract="true" p:name="lastName" p:forceUppercase="true" p:label="Last Name" p:shortLabel="Last Name" p:maxLength="80" p:required="false">
+  <bean id="DocName-lastName-parentBean" parent="AttributeDefinition" abstract="true" p:name="lastName" p:forceUppercase="true" p:label="Last Name" p:shortLabel="Last Name" p:maxLength="80" p:required="true">
     <property name="validationPattern">
 
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true" p:maxLength="80" />

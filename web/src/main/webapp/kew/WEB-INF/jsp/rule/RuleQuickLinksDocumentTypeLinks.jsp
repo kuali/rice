@@ -73,7 +73,7 @@
 	                        <c:param name="methodToCall" value="start" />
 	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
 	                        <c:param name="ruleCreationValues.ruleTemplateId" value="${routeLevel.ruleTemplate.id}"/>
-	                        <c:param name="ruleCreationValues.ruleTemplateName" value="${routeLevel.ruleTemplate.name}"/>
+	                        <c:param name="ruleCreationValues.rulemplateName" value="${routeLevel.ruleTemplate.name}"/>
 	                        <c:param name="ruleCreationValues.docTypeName" value="${documentType.name}"/>
 	                      </c:url>" target="_blank">Add Rule</a>&nbsp;
 	                    <a href="<c:url value="${ConfigProperties.kr.url}/${Constants.LOOKUP_ACTION}">
@@ -83,7 +83,7 @@
 	                        <c:param name="methodToCall" value="start"/>
 	                        <c:param name="docFormKey" value="88888888"/>
 	                        <c:param name="documentType.name" value="${documentType.name}"/>
-	                        <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
+	                        <c:param name="template.name" value="${routeLevel.ruleTemplate.name}"/>
 	                      </c:url>" target="_blank">Search</a>
 	                    <c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
 	                      &nbsp;
@@ -155,7 +155,7 @@
                         <c:param name="methodToCall" value="start"/>
                         <c:param name="docFormKey" value="88888888"/>
                         <c:param name="documentType.name" value="${documentType.name}"/>
-                        <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
+                        <c:param name="template.name" value="${routeLevel.ruleTemplate.name}"/>
                       </c:url>" target="_blank">Search</a>
                     <c:if test="${routeLevel.ruleTemplate.delegationTemplate != null}">
                       &nbsp;

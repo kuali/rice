@@ -59,7 +59,7 @@ public final class DelegateType extends AbstractDataTransferObject implements De
     @XmlElement(name = Elements.ROLE_ID)
     private final String roleId;
 
-    @XmlElement(name = Elements.DELEGATION_ID)
+    @XmlElement(name = Elements.DELEGATION_ID, required = false)
     private final String delegationId;
 
     @XmlElement(name = Elements.DELEGATION_TYPE_CODE)
@@ -162,10 +162,9 @@ public final class DelegateType extends AbstractDataTransferObject implements De
             return b;
         }
 
-        public static Builder create(String roleId, String delegationId, DelegationType delegationType, List<DelegateMember.Builder> members) {
+        public static Builder create(String roleId, DelegationType delegationType, List<DelegateMember.Builder> members) {
             Builder b = new Builder();
             b.setRoleId(roleId);
-            b.setDelegationId(delegationId);
             b.setDelegationType(delegationType);
             b.setMembers(members);
             b.setActive(true);
@@ -196,10 +195,6 @@ public final class DelegateType extends AbstractDataTransferObject implements De
         }
 
         public void setDelegationId(String delegationId) {
-            if (StringUtils.isBlank(delegationId)) {
-                throw new IllegalArgumentException("delegationId cannot be null or blank");
-            }
-
             this.delegationId = delegationId;
         }
 

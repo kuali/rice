@@ -43,10 +43,10 @@ public class RoleMembershipTest {
     private static DelegateType.Builder create_delegate_type() {
         DelegateType.Builder builder =  DelegateType.Builder.create(
             DelegateTypeTest.ROLE_ID,
-            DelegateTypeTest.DELEGATION_ID,
             DelegateTypeTest.DELEGATION_TYPE,
             DelegateTypeTest.DELEGATE_MEMBERS)
         builder.kimTypeId = DelegateTypeTest.KIM_TYPE_ID
+        builder.delegationId = DelegateTypeTest.DELEGATION_ID
         builder.active = true
 
 

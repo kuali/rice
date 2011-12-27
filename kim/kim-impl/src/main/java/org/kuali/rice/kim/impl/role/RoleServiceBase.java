@@ -339,7 +339,7 @@ abstract class RoleServiceBase {
         if (secondaryDelegate == null) {
             secondaryDelegate = new DelegateTypeBo();
             secondaryDelegate.setRoleId(roleId);
-            secondaryDelegate.setDelegationType(DelegationType.PRIMARY);
+            secondaryDelegate.setDelegationType(DelegationType.SECONDARY);
             secondaryDelegate.setKimTypeId(roleBo.getKimTypeId());
         }
         return secondaryDelegate;

@@ -118,7 +118,8 @@ class DelegateTypeTest {
         Marshaller marshaller = jc.createMarshaller()
         StringWriter sw = new StringWriter()
 
-        DelegateType.Builder builder = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS);
+        DelegateType.Builder builder = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS);
+        builder.delegationId = DELEGATION_ID
         builder.kimTypeId = KIM_TYPE_ID
         marshaller.marshal(builder.build(), sw)
         String xml = sw.toString()
@@ -132,12 +133,12 @@ class DelegateTypeTest {
 
     @Test
     void test_builder() {
-        DelegateType dt = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS).build()
+        DelegateType dt = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS).build()
     }
 
     @Test
     void test_immutableListOfDelegates() {
-        DelegateType dt = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS).build()
+        DelegateType dt = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS).build()
         List<Delegate> delegates = dt.members;
         shouldFail(UnsupportedOperationException) {
             delegates.add(null)
@@ -146,14 +147,14 @@ class DelegateTypeTest {
 
     @Test
     void test_builderForContract() {
-        DelegateType dt = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS).build()
+        DelegateType dt = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS).build()
         DelegateType clone = DelegateType.Builder.create(dt).build();
         Assert.assertEquals(dt, clone)
     }
 
     @Test
     void test_setRoleId_blank() {
-        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
+        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
         shouldFail(IllegalArgumentException) {
             b.roleId = " "
         }
@@ -161,31 +162,15 @@ class DelegateTypeTest {
 
     @Test
     void test_setRoleId_null() {
-        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
+        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
         shouldFail(IllegalArgumentException) {
             b.roleId = null
         }
     }
 
     @Test
-    void test_setDelegationId_blank() {
-        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
-        shouldFail(IllegalArgumentException) {
-            b.delegationId = ""
-        }
-    }
-
-    @Test
-    void test_setDelegationId_null() {
-        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
-        shouldFail(IllegalArgumentException) {
-            b.delegationId = null
-        }
-    }
-
-    @Test
     void test_setDelegationTypeCode_blank() {
-        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
+        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
         shouldFail(IllegalArgumentException) {
             b.delegationType = null
         }
@@ -193,7 +178,7 @@ class DelegateTypeTest {
 
     @Test
     void test_setDelegationTypeCode_null() {
-        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
+        DelegateType.Builder b = DelegateType.Builder.create(ROLE_ID, DELEGATION_TYPE, DELEGATE_MEMBERS)
         shouldFail(IllegalArgumentException) {
             b.delegationType = null
         }

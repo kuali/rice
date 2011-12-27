@@ -71,7 +71,7 @@
 
   <bean id="rice.kew.remote.import" abstract="true" lazy-init="true"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
-        p:serviceNamespace-ref="rice.kew.serviceNamespace"/>
+        p:serviceNamespace-ref="rice.kew.serviceNamespace" p:mustExist="false"/>
 
   <bean id="rice.kew.workflowDocumentPrototype" class="org.kuali.rice.kew.impl.document.WorkflowDocumentImpl" scope="prototype"
         p:workflowDocumentActionsService-ref="rice.kew.workflowDocumentActionsService"

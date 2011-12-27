@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-  <bean id="rice.kew.workflowDocumentActionService.exporter" parent="kewServiceExporter" lazy-init="true">
+  <bean id="rice.kew.workflowDocumentActionService.exporter" parent="kewServiceExporter" lazy-init="false">
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
@@ -33,7 +33,7 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.actionListCustomizationHandlerService.exporter" parent="kewServiceExporter" lazy-init="true">
+  <bean id="rice.kew.actionListCustomizationHandlerService.exporter" parent="kewServiceExporter" lazy-init="false">
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
@@ -45,7 +45,7 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.documentSearchCustomizationHandlerService.exporter" parent="kewServiceExporter" lazy-init="true">
+  <bean id="rice.kew.documentSearchCustomizationHandlerService.exporter" parent="kewServiceExporter" lazy-init="false">
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
@@ -57,7 +57,7 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.documentSecurityHandlerService.exporter" parent="kewServiceExporter" lazy-init="true">
+  <bean id="rice.kew.documentSecurityHandlerService.exporter" parent="kewServiceExporter" lazy-init="false">
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
@@ -69,7 +69,7 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.ruleValidationAttributeExporterService.exporter" parent="kewServiceExporter" lazy-init="true">
+  <bean id="rice.kew.ruleValidationAttributeExporterService.exporter" parent="kewServiceExporter" lazy-init="false">
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">
@@ -81,7 +81,7 @@
     </property>
   </bean>
 
-  <bean id="rice.kew.workflowRuleAttributeHandlerService.exporter" parent="kewServiceExporter" lazy-init="true">
+  <bean id="rice.kew.workflowRuleAttributeHandlerService.exporter" parent="kewServiceExporter" lazy-init="false">
     <property name="serviceDefinition">
       <bean parent="kewService">
         <property name="service">

@@ -119,8 +119,7 @@
         lazy-init="true"/>
 
   <!--  DocumentSearchService -->
-  <bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl"
-        lazy-init="true">
+  <bean id="enDocumentSearchService" class="org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl">
     <property name="documentSearchDAO" ref="enDocumentSearchDAO"/>
     <property name="userOptionsService" ref="enUserOptionsService"/>
     <property name="documentSearchCustomizationMediator" ref="rice.kew.documentSearchCustomizationMediator"/>
@@ -131,8 +130,7 @@
   </bean>
 
   <!--  DocumentTypeService -->
-  <bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl"
-        lazy-init="true">
+  <bean id="enDocumentTypeService" class="org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl">
     <property name="documentTypeDAO" ref="enDocumentTypeDAO"/>
   </bean>
 
@@ -147,8 +145,7 @@
     <property name="documentTypeDao" ref="enDocumentTypeDAO"/>
   </bean>
 
-  <bean id="rice.kew.preferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl"
-        lazy-init="true"/>
+  <bean id="rice.kew.preferencesService" class="org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl" />
 
   <!--  NoteService -->
   <bean id="enNoteService" class="org.kuali.rice.kew.notes.service.impl.NoteServiceImpl">

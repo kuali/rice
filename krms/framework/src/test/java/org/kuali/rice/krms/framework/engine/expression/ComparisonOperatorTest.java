@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.krms.framework.engine.expression;
 
-import org.junit.Test;
+import java.math.BigInteger;
 
+import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -32,6 +33,13 @@ public class ComparisonOperatorTest {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.EQUALS.toString());
         assertTrue(op.compare("StringOne", "StringOne"));
         assertTrue(op.compare(123, "123"));
+        assertTrue(op.compare(BigInteger.TEN, "10"));
+
+//        assertFalse(op.compare(11, "elf"));  // throws:
+// org.kuali.rice.krms.api.engine.IncompatibleTypeException: Could not coerce String to Integer = -> Type should have been one of [java.lang.Integer] but was java.lang.String
+//        at org.kuali.rice.krms.framework.engine.expression.ComparisonOperator.coerceRhsHelper
+//        at org.kuali.rice.krms.framework.engine.expression.ComparisonOperator.coerceRhs
+//        at org.kuali.rice.krms.framework.engine.expression.ComparisonOperator.compare
     }
 
     @Test

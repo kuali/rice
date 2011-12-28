@@ -413,6 +413,29 @@
       </properties>
     </profile>
     <profile>
+      <id>rds_mysql</id>
+      <properties>
+        <db.vendor>mysql</db.vendor>
+        <impex.driver>com.mysql.jdbc.Driver</impex.driver>
+        <impex.database>rice</impex.database>
+        <impex.dba.username>master</impex.dba.username>
+        <impex.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.dba.url>
+        <impex.url>${impex.dba.url}/${impex.database}</impex.url>
+        <jdbc.groupId>mysql</jdbc.groupId>
+        <jdbc.artifactId>${mysql.jdbc.artifactId}</jdbc.artifactId>
+        <jdbc.version>${mysql.jdbc.version}</jdbc.version>
+        <impex.sql.validate>${impex.mysql.sql.validate}</impex.sql.validate>
+        <impex.sql.drop>${impex.mysql.sql.drop}</impex.sql.drop>
+        <impex.sql.pre.export>${impex.mysql.sql.pre.export}</impex.sql.pre.export>
+        <impex.sql.initialize>
+          ${impex.mysql.sql.create}
+          ${impex.mysql.sql.grants}
+        </impex.sql.initialize>
+        <impex.generate.sql.oracle.phase>none</impex.generate.sql.oracle.phase>
+        <impex.sql.UNITTEST.create>CREATE TABLE IF NOT EXISTS RICEUNT.EN_UNITTEST_T(COL VARCHAR(1) NULL);</impex.sql.UNITTEST.create>
+      </properties>
+    </profile>
+    <profile>
       <id>oracle</id>
       <properties>
         <db.vendor>oracle</db.vendor>

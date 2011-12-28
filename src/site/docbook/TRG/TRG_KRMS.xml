@@ -218,32 +218,32 @@
                             <colspec colname="c2" colnum="2" colwidth="4.0*"/>
                          <thead>
                             <row>
-                                <th>Column</th>
-                                <th>Description</th>
+                                <entry>Column</entry>
+                                <entry>Description</entry>
                             </row> 
                          </thead>
                         <tbody>
-                            <tr>
-                                <td rowspan="1" colspan="1"> prop_id </td>
-                                <td rowspan="1" colspan="1"> A generated primary key identifier for
-                                    the proposition </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> desc_txt </td>
-                                <td rowspan="1" colspan="1"> A plain-text description of the
-                                    proposition </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> typ_id </td>
-                                <td rowspan="1" colspan="1"> Defines the PropositionType for the
-                                    proposition. Defined in the krms_typ_t table. </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="1" colspan="1"> dscrm_typ_cd </td>
-                                <td rowspan="1" colspan="1"> Discriminator type code which defines
+                            <row>
+                                <entry> prop_id </entry>
+                                <entry> A generated primary key identifier for
+                                    the proposition </entry>
+                            </row>
+                            <row>
+                                <entry> desc_txt </entry>
+                                <entry> A plain-text description of the
+                                    proposition </entry>
+                            </row>
+                            <row>
+                                <entry> typ_id </entry>
+                                <entry> Defines the PropositionType for the
+                                    proposition. Defined in the krms_typ_t table. </entry>
+                            </row>
+                            <row>
+                                <entry> dscrm_typ_cd </entry>
+                                <entry> Discriminator type code which defines
                                     if the proposition is compound or simple. Valid values are C and
-                                    S. </td>
-                            </tr>
+                                    S. </entry>
+                            </row>
                         </tbody>
                         </tgroup>
                     </table>
@@ -402,35 +402,35 @@
                                 <colspec colname="c2" colnum="2" colwidth="4.0*"/>
                                 <thead>
                                     <row>
-                                        <th>Column</th>
-                                        <th>Description</th>
+                                        <entry>Column</entry>
+                                        <entry>Description</entry>
                                     </row> 
                                 </thead>
                                
                         <tbody>
                             <row>
-                                <entry rowspan="1" colspan="1"> prop_parm_id </entry>
-                                <entry rowspan="1" colspan="1"> A generated primary key identifier for
+                                <entry> prop_parm_id </entry>
+                                <entry> A generated primary key identifier for
                                     the proposition parameter </entry>
                             </row>
                             <row>
-                                <entry rowspan="1" colspan="1"> prop_id </entry>
-                                <entry rowspan="1" colspan="1"> The proposition which this parameter
+                                <entry> prop_id </entry>
+                                <entry> The proposition which this parameter
                                     applies to </entry>
                             </row>
                             <row>
-                                <entry rowspan="1" colspan="1"> parm_val </entry>
-                                <entry rowspan="1" colspan="1"> the value of the parameter </entry>
+                                <entry> parm_val </entry>
+                                <entry> the value of the parameter </entry>
                             </row>
                             <row>
-                                <entry rowspan="1" colspan="1"> parm_typ_cd </entry>
-                                <entry rowspan="1" colspan="1"> Indicates whether the parameter value
+                                <entry> parm_typ_cd </entry>
+                                <entry> Indicates whether the parameter value
                                     represents a constant, term, or function. Valid values are C, T,
                                     F, O </entry>
                             </row>
                             <row>
-                                <entry rowspan="1" colspan="1"> seq_no </entry>
-                                <entry rowspan="1" colspan="1"> Defines the order of the parameter
+                                <entry> seq_no </entry>
+                                <entry> Defines the order of the parameter
                                     within the larger parameter list. </entry>
                             </row>
                         </tbody>
@@ -612,23 +612,27 @@
                             <listitem>
                                 <para>Example - Generic Workflow Properties</para>
                             </listitem>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
-                                        values (<emphasis role="italic">'CAT02', 'Workflow Document
-                                            Properties', 'KR-SAP', '1'</emphasis>);</para>
-                                </listitem>
-                            </itemizedlist>
+                            <listitem>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
+                                            values (<emphasis role="italic">'CAT02', 'Workflow Document
+                                                Properties', 'KR-SAP', '1'</emphasis>);</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>    
                             <listitem>
                                 <para>Example - Travel Account Properties</para>
                             </listitem>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
-                                        values (<emphasis role="italic">'CAT03', 'Travel Account
-                                            Properties', 'KR-SAP', '1'</emphasis>);</para>
-                                </listitem>
-                            </itemizedlist>
+                            <listitem>
+                                <itemizedlist>
+                                    <listitem>
+                                        <para>insert into krms_ctgry_t (ctgry_id, nm, nmspc_cd, ver_nbr)
+                                            values (<emphasis role="italic">'CAT03', 'Travel Account
+                                                Properties', 'KR-SAP', '1'</emphasis>);</para>
+                                    </listitem>
+                                </itemizedlist>
+                            </listitem>    
                         </itemizedlist>
                     </para>
                     <para>And next, you can use existing Terms or configure new Terms for KRMS.
@@ -859,10 +863,11 @@
             <para/>
         </sect2>
     </sect1>
-    <section>
+
+    <sect1>
         <title>KRMS reference information</title>
         <para/>
-        <section>
+        <sect2>
             <title>KRMS Data model</title>
             <para>There are many data elements which are common across many of the tables in the
                 KRMS data model. They include the following:</para>
@@ -920,11 +925,11 @@
             <para>The UML diagram below shows the KRMS data model:</para>
             <para><inlinemediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/krms-ruleModel-20b.png" scalefit="1"/>/>
+                        <imagedata fileref="../images/krms-ruleModel-20b.png" scalefit="1"/>
                     </imageobject>
                 </inlinemediaobject></para>
-        </section>
-        <section>
+        </sect2>
+        <sect2>
             <title>KRMS Architecture diagrams</title>
             <para>Below is a high-level view of how KRMS fits within Rice and applications'
                 architecture:</para>
@@ -932,15 +937,15 @@
                     <imageobject>
                         <imagedata
                             fileref="../images/krms-architecture.png"
-                            scalefit="1" scale="" width="" contentwidth="640"/>
+                            scalefit="1" width="" contentwidth="640"/>
                     </imageobject>
                 </inlinemediaobject></para>
-        </section>
-        <section>
+        </sect2>
+        <sect2>
             <title>KRMS API</title>
             <para>(add information here)</para>
-        </section>
-        <section>
+        </sect2>
+        <sect2>
             <title>KRMS Execution log</title>
             <para>Below is a diagram of the KRMS execution log.  (Add how this could be
                 used?)</para>
@@ -950,10 +955,10 @@
                             scalefit="1"/>
                     </imageobject>
                 </inlinemediaobject></para>
-        </section>
-        <section>
+        </sect2>
+        <sect2>
             <title>(Other?)</title>
             <para/>
-        </section>
-    </section>
+        </sect2>
+    </sect1>
 </chapter>

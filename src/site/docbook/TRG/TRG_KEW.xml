@@ -933,12 +933,12 @@ WorkflowDocument document = new WorkflowDocument(principalId, docId);
                 <para>
                     <figure>
                         <title>Embedded Deployment Diagram example</title>
-                        <Mediaobject>
+                        <mediaobject>
                                 <imageobject>
                                     <imagedata fileref="../images/kew_embedded_deployment2.png"
                                         scalefit="1"/>
                                 </imageobject>
-                            </Mediaobject>
+                            </mediaobject>
                     </figure>
                 </para>
             </sect3>

@@ -40,6 +40,7 @@ class NonSerializableSessionListenerTest {
     void listenerIsExecutedInNonProductionEnvironment() {
         def config = new SimpleConfig()
         config.putProperty(Config.ENVIRONMENT, "dev")
+        config.putProperty("enableSerializationCheck", "true");
         ConfigContext.init(config)
 
         def listener = new TestNonSerializableSessionListener()
@@ -52,6 +53,7 @@ class NonSerializableSessionListenerTest {
         def config = new SimpleConfig()
         config.putProperty(Config.PROD_ENVIRONMENT_CODE, "prod")
         config.putProperty(Config.ENVIRONMENT, "prod")
+        config.putProperty("enableSerializationCheck", "true");
         ConfigContext.init(config)
 
         def listener = new TestNonSerializableSessionListener()

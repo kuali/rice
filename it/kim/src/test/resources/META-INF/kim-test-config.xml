@@ -34,4 +34,6 @@
 	<param name="kim.test.port">9912</param>
 	<param name="kim.test.host">localhost</param>
 
+  <param name="rice.kim.additionalSpringFiles">classpath:org/kuali/rice/kim/impl/config/KimWebSpringBeans.xml</param>
+
 </config>

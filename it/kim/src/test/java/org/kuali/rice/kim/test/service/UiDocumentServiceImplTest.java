@@ -77,6 +77,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	private UiDocumentService uiDocumentService;
 
+    @Override
 	public void setUp() throws Exception {
 		super.setUp();
 		uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();

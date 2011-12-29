@@ -18,7 +18,7 @@ function getSelectedItemInput() {
 }
 
 function getRuleIdFromParentLi(parentLiNode) {
-    return jq(parentLiNode).find('input.hiddenId').first().attr('value');
+    return jq(parentLiNode).find('span.agendaItemId').find('input').first().attr('value');
 }
 
 function ajaxCall(controllerMethod, collectionGroupId, requireSelected) {

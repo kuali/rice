@@ -577,12 +577,7 @@
               <bean parent="GroupBodyOnly" p:hidden="true" p:style="float: right;">
                 <property name="items">
                   <list>
-                    <bean parent="InputField" p:propertyName="agendaItem.id"
-                            p:showLabel="false" p:label="id" p:maxLength="255">
-                      <property name="control">
-                        <bean parent="HiddenControl" p:styleClasses="hiddenId"/>
-                      </property>
-                    </bean>
+                    <bean parent="DataField" p:propertyName="agendaItem.id" p:styleClasses="agendaItemId" p:hiddenPropertyNames="agendaItem.id" />
                   </list>
                 </property>
               </bean>

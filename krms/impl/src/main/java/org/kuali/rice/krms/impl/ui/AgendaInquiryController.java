@@ -54,7 +54,7 @@ public class AgendaInquiryController  extends InquiryController {
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         //TODO: remove the hardcoded item number ... its used only for testing until the selectedAgendaItemId stuff works
-        String selectedItemId = "AGENDA301ITEM1"; //agendaEditor.getSelectedAgendaItemId();
+        String selectedItemId = agendaEditor.getSelectedAgendaItemId();
         AgendaItemBo node = getAgendaItemById(firstItem, selectedItemId);
 
         setAgendaItemLine(form, node);

@@ -80,10 +80,10 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/state/State.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/county/County.xml");
         dd.addConfigFileLocation("file:" + getBaseDir() + "/../../location/web/src/main/resources/org/kuali/rice/location/web/postalcode/PostalCode.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/Parameter.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/parameter/ParameterType.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/namespace/Namespace.xml");
-        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core/web/src/main/resources/org/kuali/rice/core/web/component/Component.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core-service/web/src/main/resources/org/kuali/rice/coreservice/web/parameter/Parameter.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core-service/web/src/main/resources/org/kuali/rice/coreservice/web/parameter/ParameterType.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core-service/web/src/main/resources/org/kuali/rice/coreservice/web/namespace/Namespace.xml");
+        dd.addConfigFileLocation("file:" + getBaseDir() + "/../../core-service/web/src/main/resources/org/kuali/rice/coreservice/web/component/Component.xml");
         dd.parseDataDictionaryConfigurationFiles( false );
 	}
 

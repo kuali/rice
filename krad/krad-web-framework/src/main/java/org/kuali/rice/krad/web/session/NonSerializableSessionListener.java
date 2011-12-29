@@ -33,6 +33,8 @@ import java.io.Serializable;
 /** A session listener that detects when a non-serializable attributes is added to session. **/
 public class NonSerializableSessionListener implements HttpSessionAttributeListener {
     private static final Log LOG = LogFactory.getLog(NonSerializableSessionListener.class);
+    private static final String ENABLE_SERIALIZATION_CHECK = "enableSerializationCheck";
+    private Boolean serializationCheckEnabled;
 
     @Override
     public void attributeAdded(HttpSessionBindingEvent se) {
@@ -53,7 +55,7 @@ public class NonSerializableSessionListener implements HttpSessionAttributeListe
      * Tests and logs serialization violations in non-production environments
      */
     private void logSerializationViolations(HttpSessionBindingEvent se, String action) {
-        if (!productionEnvironmentDetected()) {
+        if (!productionEnvironmentDetected() && isSerializationCheckEnabled()) {
             checkSerialization(se, action);
         }
     }
@@ -65,6 +67,19 @@ public class NonSerializableSessionListener implements HttpSessionAttributeListe
         Config c = ConfigContext.getCurrentContextConfig();
         return c != null && c.isProductionEnvironment();
     }
+
+    /**
+     * Determines whether we are running in a production environment.  Factored out for testability.
+     */
+    private Boolean isSerializationCheckEnabled() {
+        if (serializationCheckEnabled == null) {
+            Config c = ConfigContext.getCurrentContextConfig();
+            serializationCheckEnabled = c != null && c.getBooleanProperty(ENABLE_SERIALIZATION_CHECK);
+        }
+        return serializationCheckEnabled;
+    }
+
+
 
     /**
      * Tests whether the attribute value is serializable and logs an error if it isn't.  Note, this can be expensive

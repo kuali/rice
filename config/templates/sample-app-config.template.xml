@@ -46,6 +46,10 @@
 	<param name="memory.monitor.threshold">.85</param>
 	<param name="production.environment.code">prd</param>
 
+  <!-- developer use only, if set to true, will serialize everything in memory on startup to quickly find objects that aren't serializable -->
+  <!-- this parameter doesn't matter in a prod environment, as the serialization won't occur in prod environment -->
+  <param name="enableSerializationCheck">false</param>
+
 	<param name="log4j.settings.reloadInterval">5</param>
 	<param name="log4j.settings.path">classpath:log4j.properties</param>
 

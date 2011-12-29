@@ -55,7 +55,7 @@ public class KrmsApiServiceLocator {
         return getService(KRMS_TYPE_REPOSITORY_SERVICE);
     }
 
-    public static ComparisonOperatorService getComparisonOperatorRegistration() {
+    public static ComparisonOperatorService getComparisonOperatorService() {
         return getService(COMPARISON_SERVICE);
     }
 }

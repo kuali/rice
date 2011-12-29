@@ -82,7 +82,7 @@ public enum ComparisonOperator implements Coded {
         try {
             // If instance is of a registered type, use configured ComparisonOperator
             // KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("comparisonOperatorRegistration"); // lotta moves
-            ComparisonOperatorService service = KrmsApiServiceLocator.getComparisonOperatorRegistration();
+            ComparisonOperatorService service = KrmsApiServiceLocator.getComparisonOperatorService();
             if (service.canCompare(lhs, rhs)) {
                 extension = service.comparatorExtension(lhs, rhs); // maybe better to get result from service?
             }

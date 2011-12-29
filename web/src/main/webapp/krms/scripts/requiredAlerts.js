@@ -25,7 +25,7 @@ function requiredsSet() {
     }
     if (jq('.agenda-context') != null &&
         jq('.agenda-context').val() == '') {
-      message = message + 'Please Lookup (click the magnifying glass icon) the Agenda Context.\n';
+      message = message + 'Please Enter or Lookup (click the magnifying glass icon) the Agenda Context.\n';
     }
     return message;
 }

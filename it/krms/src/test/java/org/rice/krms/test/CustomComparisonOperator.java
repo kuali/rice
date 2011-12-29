@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krms.framework.engine.expression;
+package org.rice.krms.test;
+
+import org.kuali.rice.krms.framework.engine.expression.EngineComparatorExtension;
 
 /**
+ *
+ * Used for testing the ComparisonOperatorService
+ * 
+ * @link ComparisonOperatorService
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CustomComparisonOperator implements EngineComparatorExtension {

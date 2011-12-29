@@ -17,7 +17,6 @@ package org.rice.krms.test;
 
 import org.junit.Test;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
-import org.kuali.rice.krms.framework.engine.expression.CustomComparisonOperator;
 import org.kuali.rice.test.BaselineTestCase;
 
 import static org.junit.Assert.assertFalse;
@@ -44,5 +43,6 @@ public class ComparisonOperatorIntegrationTest extends AbstractBoTest {
         ComparisonOperator equalsOp = ComparisonOperator.fromCode(ComparisonOperator.EQUALS.toString());
         assertTrue(equalsOp.compare(one, one));
         assertFalse(equalsOp.compare(one, two));
+        assertFalse(equalsOp.compare("one", one));
     }
 }

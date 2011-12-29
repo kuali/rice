@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Operators enumeration for comparing objects.  EQUALS NOT_EQUALS GREATER_THAN GREATER_THAN_EQUAL LESS_THAN LESS_THAN_EQUAL
+ */
 public enum ComparisonOperator implements Coded {
 
 	EQUALS("="),
@@ -34,15 +37,24 @@ public enum ComparisonOperator implements Coded {
 	LESS_THAN_EQUAL("<=");
 	
 	private final String code;
-	
 	private ComparisonOperator(String code) {
 		this.code = code;
 	}
-	
+
+    /**
+     *
+     * @return code representing the type of operator
+     */
 	public String getCode() {
 		return code;
 	}
-	
+
+    /**
+     *
+     * @param code
+     * @return a ComparisonOperator created with the given code.
+     * @throws IllegalArgumentException if the given code does not exist
+     */
 	public static ComparisonOperator fromCode(String code) {
 		if (code == null) {
 			return null;
@@ -55,7 +67,12 @@ public enum ComparisonOperator implements Coded {
 		throw new IllegalArgumentException("Failed to locate the ComparisionOperator with the given code: " + code);
 	}
 
-
+    /**
+     *
+     * @param lhs
+     * @param rhs
+     * @return boolean value of comparison results based on the type of operator.
+     */
 	public boolean compare(Object lhs, Object rhs) {
         EngineComparatorExtension extension = determineComparatorOperator(lhs, rhs);
 
@@ -84,7 +101,7 @@ public enum ComparisonOperator implements Coded {
             // KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("comparisonOperatorRegistration"); // lotta moves
             ComparisonOperatorService service = KrmsApiServiceLocator.getComparisonOperatorService();
             if (service.canCompare(lhs, rhs)) {
-                extension = service.comparatorExtension(lhs, rhs); // maybe better to get result from service?
+                extension = service.findComparatorExtension(lhs, rhs); // maybe better to get result from service?
             }
         } catch (Exception e) {
             e.printStackTrace();   // TODO EGHM
@@ -95,14 +112,24 @@ public enum ComparisonOperator implements Coded {
         return extension;
     }
 
+    /**
+     * Operator codes
+     */
     public static final Collection<String> OPERATOR_CODES =
         Collections.unmodifiableCollection(Arrays.asList(EQUALS.getCode(), NOT_EQUALS.getCode(), GREATER_THAN.getCode(),
                 GREATER_THAN_EQUAL.getCode(), LESS_THAN.getCode(), LESS_THAN_EQUAL.getCode()));
 
+    /**
+     * Operator names
+     */
     public static final Collection<String> OPERATOR_NAMES =
         Collections.unmodifiableCollection(Arrays.asList(EQUALS.name(), NOT_EQUALS.name(), GREATER_THAN.name(),
                 GREATER_THAN_EQUAL.name(), LESS_THAN.name(), LESS_THAN_EQUAL.name()));
 
+    /**
+     *
+     * @return type code
+     */
     @Override
     public String toString(){
         return code;

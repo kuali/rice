@@ -20,16 +20,39 @@ import org.kuali.rice.krms.framework.engine.expression.EngineComparatorExtension
 import java.util.List;
 
 /**
- *
+ * Service for registering EngineComparatorExtension to use as a
+ * @link ComparisonOperator
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ComparisonOperatorService {
+
+    /**
+     *
+     * @return registered EngineComparatorExtensions
+     */
     public List<EngineComparatorExtension> getOperators();
 
+    /**
+     *
+     * @param operators
+     */
     public void setOperators(List<EngineComparatorExtension> operators);
 
+    /**
+     * Does the service have an Extension that can compare the given objects.
+     *
+     * @param lhs
+     * @param rhs
+     * @return
+     */
     public boolean canCompare(Object lhs, Object rhs);
 
-    public EngineComparatorExtension comparatorExtension(Object lhs, Object rhs);
+    /**
+     *
+     * @param lhs
+     * @param rhs
+     * @return the EngineComparatorExtension that can compare the given objects
+     */
+    public EngineComparatorExtension findComparatorExtension(Object lhs, Object rhs);
 }

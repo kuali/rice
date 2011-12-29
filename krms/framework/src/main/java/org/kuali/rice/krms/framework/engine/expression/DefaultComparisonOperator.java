@@ -34,9 +34,9 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
         if (lhs == null && rhs == null) {
             return 0;
         } else if (lhs == null) {
-            return 1;
-        } else if (rhs == null) {
             return -1;
+        } else if (rhs == null) {
+            return 1;
         }
 
         rhs = coerceRhs(lhs, rhs);
@@ -45,15 +45,12 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
         }
 
         if (lhs instanceof Comparable && rhs instanceof Comparable) {
-            // TODO not sure what to do about this cast and whether or not it will safe,
-            // be sure to hit this in unit testing!
             int result = ((Comparable)lhs).compareTo(rhs);
             return result;
         }
-//        else {
-//            throw new IncompatibleTypeException("Could not compare values, they are not comparable for operator " + this, lhs, rhs.getClass());
-//        }
-        return -1;
+        else {
+            throw new IncompatibleTypeException("Could not compare values, they are not comparable for operator " + this, lhs, rhs.getClass());
+        }
     }
 
     @Override
@@ -93,6 +90,13 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
         return rhs;
     }
 
+    /**
+     *
+     * @param lhs
+     * @param rhs
+     * @param clazzes
+     * @return The object of one of the given types, whose value rhs
+     */
     private Object coerceRhsHelper(Object lhs, String rhs, Class<?> ... clazzes) {
         for (Class clazz : clazzes) {
             if (clazz.isInstance(lhs)) {

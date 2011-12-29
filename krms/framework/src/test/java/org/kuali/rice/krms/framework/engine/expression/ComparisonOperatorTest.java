@@ -47,6 +47,8 @@ public class ComparisonOperatorTest {
         assertTrue(op.compare("StringOne", "StringTwo"));
         assertTrue(op.compare(122, "123"));
         assertTrue(op.compare(BigInteger.TEN, "11"));
+        assertTrue(op.compare(null, "124"));
+        assertFalse(op.compare(null, null));
     }
 
     @Test
@@ -54,6 +56,9 @@ public class ComparisonOperatorTest {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.LESS_THAN.toString());
         assertTrue(op.compare(123, "124"));
         assertTrue(op.compare(new Double(123.2), "124"));
+        assertTrue(op.compare(null, "124"));
+        assertFalse(op.compare(124, null));
+        assertFalse(op.compare(null, null));
         assertFalse(op.compare(123, "123"));
         assertFalse(op.compare(new Integer(123), "122"));
         assertFalse(op.compare(122.1, "122"));
@@ -64,7 +69,20 @@ public class ComparisonOperatorTest {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.LESS_THAN_EQUAL.toString());
         assertTrue(op.compare(123, "124"));
         assertTrue(op.compare(123.1, "123.1"));
+        assertTrue(op.compare(null, null));
         assertFalse(op.compare(new Double(123.1), "123.01"));
         assertFalse(op.compare(123, "122"));
+    }
+
+    @Test
+    public void testGreaterThanEqual() {
+        ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.GREATER_THAN_EQUAL.toString());
+        assertFalse(op.compare(123, "124"));
+        assertTrue(op.compare(123.1, "123.1"));
+        assertFalse(op.compare(null, "124"));
+        assertTrue(op.compare(124, null));
+        assertTrue(op.compare(null, null));
+        assertTrue(op.compare(new Double(123.1), "123.01"));
+        assertTrue(op.compare(123, "122"));
     }
 }

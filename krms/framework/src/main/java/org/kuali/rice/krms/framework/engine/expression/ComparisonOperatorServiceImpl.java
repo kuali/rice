@@ -39,7 +39,7 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
     }
 
     @Override
-    public EngineComparatorExtension comparatorExtension(Object lhs, Object rhs) {
+    public EngineComparatorExtension findComparatorExtension(Object lhs, Object rhs) {
         EngineComparatorExtension extension;
         Iterator<EngineComparatorExtension> opIter = operators.iterator();
         while (opIter.hasNext()) {
@@ -53,7 +53,7 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
 
     @Override
     public boolean canCompare(Object lhs, Object rhs) {
-        return comparatorExtension(lhs, rhs) != null;
+        return findComparatorExtension(lhs, rhs) != null;
     }
 
 }

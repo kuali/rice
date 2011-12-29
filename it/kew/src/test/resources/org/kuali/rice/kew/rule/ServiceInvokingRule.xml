@@ -49,10 +49,11 @@
                 import org.kuali.rice.core.api.resourceloader.*
                 import org.kuali.rice.kew.test.FakeService
                 import javax.xml.namespace.QName
+                import org.kuali.rice.kew.api.KewApiConstants
 
                 println 'ServiceInvocationRule invoking FakeService...'
 
-                FakeService fakeService = (FakeService) GlobalResourceLoader.getResourceLoader().getService(new QName("fake", "fakeService-remote"))
+                FakeService fakeService = (FakeService) GlobalResourceLoader.getResourceLoader().getService(new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "fakeService-remote"))
 
                 println 'Found FakeService implementation on bus: ' + fakeService
 

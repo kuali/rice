@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -42,7 +43,7 @@ public class ServiceInvocationRuleTest extends KEWTestCase {
 
     @Test public void testServiceInvokingRule() throws WorkflowException {
         // test that we can get the service to start with
-        FakeService fakeService = (FakeService) GlobalResourceLoader.getService(new QName("fake", "fakeService-remote"));
+        FakeService fakeService = (FakeService) GlobalResourceLoader.getService(new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "fakeService-remote"));
         assertNotNull(fakeService);
         
         
@@ -52,7 +53,7 @@ public class ServiceInvocationRuleTest extends KEWTestCase {
         // no requests whatsoever were sent...we're done
         assertTrue(doc.isFinal());
         
-        fakeService = (FakeService) GlobalResourceLoader.getService(new QName("fake", "fakeService-remote"));
+        fakeService = (FakeService) GlobalResourceLoader.getService(new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0, "fakeService-remote"));
         
         assertEquals(1, fakeService.getInvocations().size());
         Invocation invocation = fakeService.getInvocations().get(0);

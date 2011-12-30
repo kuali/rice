@@ -293,7 +293,8 @@
                 </property>
               </bean>
               <bean parent="AgendaEditorView-TreeExpandCollapse" />
-              <bean parent="AgendaEditorView-Tree" />
+              <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
+              <bean id="AgendaEditorView-Tree" parent="AgendaEditorView-Tree-parent" />
             </list>
           </property>
         </bean>
@@ -523,7 +524,7 @@
     </property> 
   </bean>
 
-  <bean id="AgendaEditorView-Tree" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+  <bean id="AgendaEditorView-Tree-parent" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="propertyName" value="agendaRuleTree"/>
     <property name="tree">
       <bean parent="AgendaTreeWidget">

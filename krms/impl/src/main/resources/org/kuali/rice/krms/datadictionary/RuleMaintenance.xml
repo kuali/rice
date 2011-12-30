@@ -199,13 +199,16 @@
                   </list>
                 </property>
               </bean>
+              <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
               <bean id="RuleEditorView-TreeGroup" parent="GroupBodyOnly" p:style="margin-bottom: 5pt; margin-top: 0em;">
                 <property name="layoutManager.orientation" value="VERTICAL"/>
                 <property name="items">
                   <list>
-                    <bean parent="RuleEditorView-PropositionSummary"/>
+                    <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
+                    <bean id="RuleEditorView-PropositionSummary" parent="RuleEditorView-PropositionSummary-parent"/>
                     <bean parent="RuleEditorView-TreeExpandCollapse" />
-                    <bean parent="RuleEditorView-Tree" />
+                    <!-- Note: this bean id is important, it is used for component matching in an ajax refresh -->
+                    <bean id="RuleEditorView-Tree" parent="RuleEditorView-Tree-parent" />
                   </list>
                 </property>
               </bean>
@@ -234,7 +237,7 @@
   </bean>
 -->
 
-  <bean id="RuleEditorView-PropositionSummary" parent="GroupBodyOnly" p:renderHeader="false"
+  <bean id="RuleEditorView-PropositionSummary-parent" parent="GroupBodyOnly" p:renderHeader="false"
         p:layoutManager.orientation="HORIZONTAL">
     <property name="disclosure.render" value="false" />
     <property name="items">
@@ -432,8 +435,7 @@
     </property>
   </bean>
         
-  <bean id="RuleEditorView-Tree" parent="ruleTree"/>        
-  <bean id="ruleTree" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
+  <bean id="RuleEditorView-Tree-parent" parent="TreeGroup" p:disclosure.render="false" p:header.render="false" p:style="float:left; margin-left: 2em;">
     <property name="propertyName" value="agendaItemLine.rule.propositionTree"/>
     <property name="tree">
       <bean parent="RuleTreeWidget">

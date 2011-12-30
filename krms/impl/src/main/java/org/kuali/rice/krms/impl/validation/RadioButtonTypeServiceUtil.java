@@ -24,22 +24,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Utility for creating RemotableRadioButtonGroups given a {@link KrmsAttributeDefinition} and a Map<String, String> of (Radio Button) Values and Labels
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RadioButtonTypeServiceUtil {
 
-    RemotableAttributeField translateTypeAttribute(KrmsAttributeDefinition krmsAttributeDefinition, Map<String, String> keyLabels) {
+    /**
+     * RemotableRadioButtonGroups given a {@link KrmsAttributeDefinition} and a Map<String, String> of (Radio Button) Values and Labels.
+     * @param krmsAttributeDefinition
+     * @param valueLabels
+     * @return RemotableAttributeField
+     */
+    RemotableAttributeField translateTypeAttribute(KrmsAttributeDefinition krmsAttributeDefinition, Map<String, String> valueLabels) {
 
         RemotableAttributeField.Builder builder = RemotableAttributeField.Builder.create(krmsAttributeDefinition.getName());
 
-        RemotableRadioButtonGroup.Builder controlBuilder = RemotableRadioButtonGroup.Builder.create(keyLabels);
+        RemotableRadioButtonGroup.Builder controlBuilder = RemotableRadioButtonGroup.Builder.create(valueLabels);
 
         builder.setLongLabel(krmsAttributeDefinition.getLabel());
         builder.setName(krmsAttributeDefinition.getName());
         builder.setRequired(true);
         List<String> defaultValue = new ArrayList<String>();
-        defaultValue.add((String)keyLabels.keySet().toArray()[0]); // First value
-//        defaultValue.add(keyLabels.get(keyLabels.keySet().toArray()[0])); // First label
+        defaultValue.add((String) valueLabels.keySet().toArray()[0]); // First value
+//        defaultValue.add(valueLabels.get(valueLabels.keySet().toArray()[0])); // First label
 //        defaultValue.add("1"); // index
         builder.setDefaultValues(defaultValue);
         builder.setControl(controlBuilder);

@@ -21,14 +21,26 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.ResultEvent;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
+/**
+ * A {@link org.kuali.rice.krms.framework.engine.Rule} that executes a {@link org.kuali.rice.krms.framework.engine.Action} when the {@link Proposition} is true.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class BasicRule implements Rule {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 
 	private String name;
 	private Proposition proposition;
 	private List<Action> actions;
-	
-	public BasicRule(String name, Proposition proposition, List<Action> actions) {
+
+    /**
+     *
+     * @param name Rule name
+     * @param proposition cannot be null
+     * @param actions Rule Actions
+     * @throws IllegalArgumentException if the Proposition is null
+     */
+    public BasicRule(String name, Proposition proposition, List<Action> actions) {
 		if (proposition == null) {
 			throw new IllegalArgumentException("Proposition cannot be null.");
 		}
@@ -36,7 +48,13 @@ public class BasicRule implements Rule {
 		this.proposition = proposition;
 		this.actions = actions;
 	}
-	
+
+    /**
+     *
+     * @param proposition cannot be null
+     * @param actions Rule Actions
+     * @throws IllegalArgumentException if the Proposition is null
+     */
 	public BasicRule(Proposition proposition, List<Action> actions) {
 		this(null, proposition, actions);
 	}
@@ -56,15 +74,25 @@ public class BasicRule implements Rule {
 		}
 		return result;
 	}
-	
+
+    /**
+     * overridden
+     * @param ruleExecutionResult the result of the engines evaluation method.
+     * @return should the action execute
+     */
 	protected boolean shouldExecuteAction(boolean ruleExecutionResult) {
 		return ruleExecutionResult;
 	}
 
+    /**
+     *
+     * @return name Rule name
+     */
 	public String getName() {
 		return name;
 	}
 	
+    @Override
 	public String toString(){
 		return name;
 	}

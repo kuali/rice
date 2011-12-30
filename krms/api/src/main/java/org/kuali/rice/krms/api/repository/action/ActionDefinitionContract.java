@@ -20,6 +20,11 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 
 import java.util.Map;
 
+/**
+ * Action Definition Contract
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface ActionDefinitionContract extends Identifiable, Versioned {
 
 	/**

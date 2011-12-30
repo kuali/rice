@@ -40,6 +40,8 @@ import java.util.Map;
  * Instances of Action can be (un)marshalled to and from XML.
  *
  * @see ActionDefinitionContract
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = ActionDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)

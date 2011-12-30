@@ -17,8 +17,17 @@ package org.kuali.rice.krms.framework.engine;
 
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
+/**
+ * An Action executes on a given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment}
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface Action {
 
+    /**
+     * execute on a given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment}
+     * @param environment
+     */
 	public void execute(ExecutionEnvironment environment);
 
 	/**

@@ -21,6 +21,8 @@ import org.kuali.rice.krms.framework.type.ValidationActionType;
 import org.kuali.rice.krms.framework.type.ValidationActionTypeService;
 
 /**
+ * An action that when executed appends it's type and message to the results
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ValidationAction implements Action {
@@ -29,6 +31,11 @@ public class ValidationAction implements Action {
     private final ValidationActionType type;
     private final String message;
 
+    /**
+     * create a Validation action of the given type with the given message
+     * @param type {@link ValidationActionType}
+     * @param message for when action executes
+     */
     public ValidationAction(ValidationActionType type, String message) {
         if (type == null) throw new IllegalArgumentException("type must not be null");
 

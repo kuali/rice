@@ -32,12 +32,26 @@ import java.util.List;
 public class ValidationRule extends BasicRule {
     private ValidationRuleType type = null;
 
+    /**
+     *
+     * @param type ValidationRuleType
+     * @param name Rule name
+     * @param proposition Proposition
+     * @param actions Rule Actions
+     * @throws IllegalArgumentException if type is null
+     */
     public ValidationRule(ValidationRuleType type, String name, Proposition proposition, List<Action> actions) {
         super(name, proposition, actions);
         if (type == null) throw new IllegalArgumentException("type must not be null");
         this.type = type;
     }
 
+    /**
+     * Valid Validation Rules execute when the ruleExecutionResult is false.
+     * Invalid Validation Rules execute when the ruleExecutionResult is true.
+     * @param ruleExecutionResult result of the rules execution
+     * @return should the actions be executed
+     */
     @Override
     protected boolean shouldExecuteAction(boolean ruleExecutionResult) {
         if (type == null || type.equals(ValidationRuleType.VALID)) {

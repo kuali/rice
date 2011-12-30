@@ -22,8 +22,8 @@ import org.kuali.rice.krms.framework.type.RuleTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
- * TODO... 
- * 
+ * A rule which doesn't load it's members until evaluation.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -36,7 +36,12 @@ final class LazyRule implements Rule {
 	
 	// volatile for double-checked locking idiom
 	private volatile Rule rule;
-	
+
+    /**
+     *
+     * @param ruleDefinition
+     * @param typeResolver
+     */
 	LazyRule(RuleDefinition ruleDefinition, KrmsTypeResolver typeResolver) {
 		this.ruleDefinition = ruleDefinition;
 		this.typeResolver = typeResolver;
@@ -63,7 +68,11 @@ final class LazyRule implements Rule {
 		}
 		return localRule;
 	}
-	
+
+    /**
+     * builder method
+     * @return Rule
+     */
 	private Rule constructRule() {
 		RuleTypeService ruleTypeService = typeResolver.getRuleTypeService(ruleDefinition);
 		Rule rule = ruleTypeService.loadRule(ruleDefinition);

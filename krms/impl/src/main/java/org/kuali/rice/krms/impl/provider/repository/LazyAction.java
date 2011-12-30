@@ -22,8 +22,8 @@ import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeResolver;
 
 /**
- * TODO... 
- * 
+ * An Action that doesn't load its members until execution.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -36,7 +36,12 @@ final class LazyAction implements Action {
 	
 	// volatile for double-checked locking idiom
 	private volatile Action action;
-	
+
+    /**
+     *
+     * @param actionDefinition ActionDefinition
+     * @param typeResolver KrmsTypeResolver
+     */
 	LazyAction(ActionDefinition actionDefinition, KrmsTypeResolver typeResolver) {
 		this.actionDefinition = actionDefinition;
 		this.typeResolver = typeResolver;
@@ -55,6 +60,7 @@ final class LazyAction implements Action {
 	
 	/**
 	 * Gets the action using a lazy double-checked locking mechanism as documented in Effective Java Item 71.
+     * @return Action
 	 */
 	private Action getAction() {
 		Action localAction = action;
@@ -68,7 +74,11 @@ final class LazyAction implements Action {
 		}
 		return localAction;
 	}
-	
+
+    /**
+     * builder method
+     * @return Action
+     */
 	private Action constructAction() {
 		ActionTypeService actionTypeService = typeResolver.getActionTypeService(actionDefinition);
 		Action action = actionTypeService.loadAction(actionDefinition);

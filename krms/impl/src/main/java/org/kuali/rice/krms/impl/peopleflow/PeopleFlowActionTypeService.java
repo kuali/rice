@@ -30,7 +30,6 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.LookupInquiryUtils;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
@@ -39,8 +38,6 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.framework.engine.Action;
 import org.kuali.rice.krms.framework.type.ActionTypeService;
 import org.kuali.rice.krms.impl.type.KrmsTypeServiceBase;
-import org.kuali.rice.krms.impl.util.KRMSServiceLocatorInternal;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.ObjectRetrievalFailureException;
 
 import javax.jws.WebParam;
@@ -96,6 +93,10 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
             return this.name().toLowerCase();
         }
 
+        /**
+         * 
+         * @return {@link ActionRequestType}
+         */
         public ActionRequestType getActionRequestType() {
             return this.actionRequestType;
         }
@@ -137,17 +138,29 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
     /**
      * private constructor to enforce use of static factory
      * @param type
+     * @throws IllegalArgumentException if type is null
      */
     private PeopleFlowActionTypeService(Type type) {
         if (type == null) { throw new IllegalArgumentException("type must not be null"); }
         this.type = type;
     }
 
-    @Required
+    /**
+     * inject the {@link ConfigurationService} to use internally.
+     * @param configurationService
+     */
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }
 
+    /**
+     * 
+     * @param actionDefinition
+     * @return {@link Action} as defined by the given {@link ActionDefinition}
+     * @throws RiceIllegalArgumentException is actionDefinition is null, attributes do not contain the ATTRIBUTE_FIELD_NAME key,
+     * or the NAME_ATTRIBUTE_FIELD key.
+     *
+     */
     @Override
     public Action loadAction(ActionDefinition actionDefinition) {
         if (actionDefinition == null) { throw new RiceIllegalArgumentException("actionDefinition must not be null"); }
@@ -178,7 +191,7 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
             KrmsAttributeDefinition attributeDefinition) {
 
         if (ATTRIBUTE_FIELD_NAME.equals(attributeDefinition.getName())) {
-            return createPeopleFlowField();
+            return createPeopleFlowIdField();
         } else if (NAME_ATTRIBUTE_FIELD.equals(attributeDefinition.getName())) {
             return createPeopleFlowNameField();
         } else {
@@ -187,7 +200,11 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         }
     }
 
-    public RemotableAttributeField createPeopleFlowField() {
+    /**
+     * Create the PeopleFlow Id input field
+     * @return RemotableAttributeField
+     */
+    private RemotableAttributeField createPeopleFlowIdField() {
 
         String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
 
@@ -224,7 +241,11 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         return builder.build();
     }
 
-    public RemotableAttributeField createPeopleFlowNameField() {
+    /**
+     * Create the PeopleFlow Name input field
+     * @return RemotableAttributeField
+     */
+    private RemotableAttributeField createPeopleFlowNameField() {
 
         String baseLookupUrl = LookupInquiryUtils.getBaseLookupUrl();
 
@@ -261,13 +282,24 @@ public class PeopleFlowActionTypeService extends KrmsTypeServiceBase implements 
         return builder.build();
     }
 
-
+    /**
+     * Validate that the krmsTypeId is not null or blank
+     * @param krmsTypeId to validate
+     * @throws RiceIllegalArgumentException if krmsTypeId is null or blank
+     */
     private void validateNonBlankKrmsTypeId(String krmsTypeId) {
         if (StringUtils.isEmpty(krmsTypeId)) {
             throw new RiceIllegalArgumentException("krmsTypeId may not be null or blank");
         }
     }
 
+    /**
+     * Attributes must include a ATTRIBUTE_FIELD_NAME
+     * @param krmsTypeId the people flow type identifier.  Must not be null or blank.
+     * @param attributes the attributes to validate. Cannot be null.
+     * @return
+     * @throws RiceIllegalArgumentException
+     */
     @Override
     public List<RemotableAttributeError> validateAttributes(
 

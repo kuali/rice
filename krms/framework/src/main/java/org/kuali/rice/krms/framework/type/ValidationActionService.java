@@ -27,6 +27,9 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 /**
+ *
+ * Service for Validation Actions
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @WebService(name = "validationActionService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
@@ -46,7 +49,6 @@ public interface ValidationActionService {
         throws RiceIllegalArgumentException;
 
     /**
-     * TODO...
      *
      * @param validation
      *

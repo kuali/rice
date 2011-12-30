@@ -25,6 +25,9 @@ import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
 
+/**
+ * Rule Definition Contract
+ */
 public interface RuleDefinitionContract extends Identifiable, Inactivatable, Versioned {
     /**
      * This is the name of the Rule 

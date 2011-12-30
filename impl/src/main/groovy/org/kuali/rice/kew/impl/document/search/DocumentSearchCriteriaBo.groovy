@@ -26,6 +26,8 @@ import org.kuali.rice.kew.api.document.Document
 
 import org.kuali.rice.kew.api.document.DocumentStatus
 import java.sql.Timestamp
+import org.kuali.rice.kim.api.group.Group
+import org.kuali.rice.kim.impl.group.GroupBo
 
 /**
  * Defines the business object that specifies the criteria used on document searches.
@@ -86,7 +88,17 @@ class DocumentSearchCriteriaBo implements BusinessObject {
         return KimApiServiceLocator.getPersonService().getPersonByPrincipalName(viewerPrincipalName)
     }
 
-
+    GroupBo getGroupViewer() {
+        if (groupViewerId == null) {
+            return null
+        }
+        Group grp = KimApiServiceLocator.getGroupService().getGroup(groupViewerId)
+        if(null!= grp){
+            return GroupBo.from(grp);
+        }  else{
+            return null;
+        }
+    }
     String getStatusLabel() {
         if (statusCode == null) {
             return ""

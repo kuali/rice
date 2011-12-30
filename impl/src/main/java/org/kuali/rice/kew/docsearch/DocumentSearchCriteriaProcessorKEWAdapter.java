@@ -92,6 +92,7 @@ public class DocumentSearchCriteriaProcessorKEWAdapter implements DocumentSearch
             "documentTypeName",
             "initiatorPrincipalName",
             "documentId",
+            "groupViewerName",
             "dateCreated",
             DOCUMENT_ATTRIBUTE_FIELD_MARKER,
             "saveName"

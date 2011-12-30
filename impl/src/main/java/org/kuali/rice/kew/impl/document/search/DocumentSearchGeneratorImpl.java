@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.Criteria;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SqlBuilder;
 import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
@@ -47,6 +48,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
 
 import java.sql.ResultSet;
@@ -102,7 +104,13 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
     @Override
     public List<RemotableAttributeError> validateSearchableAttributes(DocumentSearchCriteria.Builder criteria) {
         List<RemotableAttributeError> errors = new ArrayList<RemotableAttributeError>();
-        DocumentType documentType = getValidDocumentType(criteria.getDocumentTypeName());
+        DocumentType documentType = null;
+        try{
+              documentType = getValidDocumentType(criteria.getDocumentTypeName());
+        }catch(RuntimeException re){
+            errors.add(RemotableAttributeError.Builder.create("documentTypeName", re.getMessage()).build());
+        }
+
         if (documentType != null) {
             errors = KEWServiceLocator.getDocumentSearchCustomizationMediator().validateLookupFieldParameters(documentType, criteria.build());
         }

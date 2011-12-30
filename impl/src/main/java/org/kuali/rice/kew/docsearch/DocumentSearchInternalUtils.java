@@ -33,10 +33,12 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.framework.persistence.jdbc.sql.SQLUtils;
 import org.kuali.rice.core.framework.resourceloader.ObjectDefinitionResolver;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
+import org.kuali.rice.krad.util.GlobalVariables;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -181,7 +183,12 @@ public class DocumentSearchInternalUtils {
             throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
         }
         if (range.getLowerBoundValue() != null) {
-            java.util.Date lowerRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getLowerBoundValue());
+            java.util.Date lowerRangeDate = null;
+            try{
+                lowerRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getLowerBoundValue());
+            }catch(ParseException pe){
+                GlobalVariables.getMessageMap().putError("dateFrom", RiceKeyConstants.ERROR_CUSTOM, pe.getMessage());
+            }
             MutableDateTime dateTime = new MutableDateTime(lowerRangeDate);
             dateTime.setMillisOfDay(0);
             return dateTime.toDateTime();
@@ -195,7 +202,12 @@ public class DocumentSearchInternalUtils {
             throw new IllegalArgumentException("Failed to parse date range from given string: " + dateRange);
         }
         if (range.getUpperBoundValue() != null) {
-            java.util.Date upperRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getUpperBoundValue());
+            java.util.Date upperRangeDate = null;
+            try{
+                upperRangeDate = CoreApiServiceLocator.getDateTimeService().convertToDate(range.getUpperBoundValue());
+            }catch(ParseException pe){
+                GlobalVariables.getMessageMap().putError("dateCreated", RiceKeyConstants.ERROR_CUSTOM, pe.getMessage());
+            }
             MutableDateTime dateTime = new MutableDateTime(upperRangeDate);
             // set it to the last millisecond of the day
             dateTime.setMillisOfDay((24 * 60 * 60 * 1000) - 1);

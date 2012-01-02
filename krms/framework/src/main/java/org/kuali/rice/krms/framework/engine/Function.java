@@ -16,13 +16,17 @@
 package org.kuali.rice.krms.framework.engine;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface Function {
 
+    /**
+     * Invoke with the given arguments
+     * @param arguments
+     * @return Object
+     */
 	Object invoke(Object... arguments);
 	
 }

@@ -37,8 +37,16 @@ import org.kuali.rice.krms.api.engine.TermResolver;
  */
 public interface Context {
 
+    /**
+     * Execute with the given {@link ExecutionEnvironment}
+     * @param environment
+     */
 	void execute(ExecutionEnvironment environment);
-	
+
+    /**
+     * Return a list of the {@link TermResolver}s
+     * @return List<TermResolver<?>>
+     */
 	List<TermResolver<?>> getTermResolvers();
 	
 }

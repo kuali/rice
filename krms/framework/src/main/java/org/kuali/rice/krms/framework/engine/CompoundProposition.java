@@ -26,13 +26,22 @@ import org.kuali.rice.krms.api.engine.ExecutionFlag;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
+/**
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class CompoundProposition implements Proposition {
 	
     private static final ResultLogger LOG = ResultLogger.getInstance();
     
 	private final LogicalOperator logicalOperator;
 	private final List<Proposition> propositions;
-	
+
+    /**
+     * Create a CompoundProposition with the given values
+     * @param logicalOperator
+     * @param propositions
+     */
 	public CompoundProposition(LogicalOperator logicalOperator, List<Proposition> propositions) {
 				
 		if (propositions == null || propositions.isEmpty()) {
@@ -62,7 +71,8 @@ public final class CompoundProposition implements Proposition {
      * This method handles the evaluation logic
      * 
      * @param environment
-     * @return
+     * @return PropositionResult
+     * @throws IllegalStateException if the logicalOperator is invalid.
      */
 	
     private PropositionResult evaluateInner(ExecutionEnvironment environment) {

@@ -41,6 +41,10 @@ public enum ValidationRuleType implements Coded {
 
     private final String code;
 
+    /**
+     * Create a ValdationRuleTye of the given code
+     * @param code
+     */
     private ValidationRuleType(String code) {
         this.code = code;
     }

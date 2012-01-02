@@ -31,7 +31,11 @@ import org.kuali.rice.krms.framework.engine.PropositionResult;
 public class ExpressionBasedProposition implements Proposition {
 
 	private final Expression<Boolean> expression;
-	
+
+    /**
+     * Create an ExpressionBasedProposition with the given value
+     * @param expression
+     */
 	public ExpressionBasedProposition(Expression<Boolean> expression) {
 		this.expression = expression;
 	}

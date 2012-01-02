@@ -32,6 +32,11 @@ public final class FunctionExpression implements Expression<Object> {
 	private final Function function;
 	private final List<Expression<? extends Object>> arguments;
 
+    /**
+     * Creata a FunctionExpression with the given values
+     * @param function
+     * @param arguments
+     */
 	public FunctionExpression(Function function,
 			List<Expression<? extends Object>> arguments) {
 		this.function = function;

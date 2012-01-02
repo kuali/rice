@@ -35,26 +35,54 @@ public class KrmsApiServiceLocator {
     public static final QName KRMS_TYPE_REPOSITORY_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "krmsTypeRepositoryService");
     public static final QName COMPARISON_SERVICE = new QName(KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0, "comparisonOperatorRegistration");
 
+    /**
+     * Get the named service
+     * @param serviceName
+     * @param <T>
+     * @return  <T> T
+     */
     static <T> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
+    /**
+     * Get the qnamed service
+     * @param serviceName
+     * @param <T>
+     * @return <T> T
+     */
     static <T> T getService(QName serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
     }
 
+    /**
+     * Return the {@link Engine}
+     * @return {@link Engine}
+     */
     public static Engine getEngine() {
         return getService(ENGINE);
     }
-    
+
+    /**
+     * Return the {@link RuleRepositoryService}
+     * @return {@link RuleRepositoryService}
+     */
     public static RuleRepositoryService getRuleRepositoryService() {
     	return getService(RULE_REPOSITORY_SERVICE);
     }
 
+    /**
+     * Return the {@link KrmsTypeRepositoryService}
+     * @return {@link KrmsTypeRepositoryService}
+     */
     public static KrmsTypeRepositoryService getKrmsTypeRepositoryService() {
         return getService(KRMS_TYPE_REPOSITORY_SERVICE);
     }
 
+    /**
+     * Return the {@link ComparisonOperatorService}
+     * @return {@link ComparisonOperatorService}
+     */
     public static ComparisonOperatorService getComparisonOperatorService() {
         return getService(COMPARISON_SERVICE);
     }

@@ -29,6 +29,10 @@ public final class TermExpression implements Expression<Object> {
 
 	private final Term term;
 
+    /**
+     * Create a TermExpression with the given value
+     * @param term
+     */
 	public TermExpression(Term term) {
 		this.term = term;
 	}

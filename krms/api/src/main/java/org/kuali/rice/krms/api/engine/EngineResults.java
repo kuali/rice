@@ -17,14 +17,51 @@ package org.kuali.rice.krms.api.engine;
 
 import java.util.List;
 
+/**
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public interface EngineResults {
 
 	// TODO - need to determine what goes here...
+
+    /**
+     * Return the ResultEvent for the given index
+     * @param index
+     * @return {@link ResultEvent}
+     */
 	public ResultEvent getResultEvent(int index);
+
+    /**
+     * Return the list of ResultEvents
+     * @return List<ResultEvent>
+     */
 	public List<ResultEvent> getAllResults();
+
+    /**
+     * Return the ResultEvents of the given type
+     * @param type
+     * @return List<ResultEvent>
+     */
 	public List<ResultEvent> getResultsOfType(String type);
+
+    /**
+     * Return the attribute of the given key
+     * @param key
+     * @return Object
+     */
 	public Object getAttribute(String key);
-	public void setAttribute(String key, Object attr);
-	
+
+    /**
+     * Set the attribute of the given values
+     * @param key
+     * @param attribute
+     */
+	public void setAttribute(String key, Object attribute);
+
+    /**
+     * Add the given result
+     * @param result
+     */
 	public void addResult(ResultEvent result);
 }

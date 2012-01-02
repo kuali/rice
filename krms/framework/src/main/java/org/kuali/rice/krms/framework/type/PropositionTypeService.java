@@ -19,13 +19,17 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.framework.engine.Proposition;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface PropositionTypeService {
 
+    /**
+     * Load the Proposition given the propositionDefinition
+     * @param propositionDefinition
+     * @return {@link Proposition}
+     */
 	public Proposition loadProposition(PropositionDefinition propositionDefinition);
 	
 }

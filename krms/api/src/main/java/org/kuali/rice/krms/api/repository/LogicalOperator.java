@@ -22,13 +22,29 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Representations of the Logical Operator's AND OR
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public enum LogicalOperator implements Coded {
-	
+
+    /**
+     * use this flag with the static factory to get a {@link LogicalOperator} AND
+     */
 	AND("&"),
+
+    /**
+     * use this flag with the static factory to get a {@link LogicalOperator} OR
+     */
 	OR("|");
 
 	private final String code;
-	
+
+    /**
+     * Create the LogicalOperator from the given code
+     * @param code
+     */
 	private LogicalOperator(String code){
 		this.code = code;
 	}
@@ -43,7 +59,13 @@ public enum LogicalOperator implements Coded {
 		
     public static final Collection<String> OP_CODE_NAMES =
         Collections.unmodifiableCollection(Arrays.asList(AND.name(), OR.name()));
-        
+
+    /**
+     * Create a LogicalOperator from the given code
+     * @param code
+     * @return LogicalOperator
+     * @throws IllegalArgumentException if the code does not exist
+     */
 	public static LogicalOperator fromCode(String code) {
 		if (code == null) {
 			return null;
@@ -62,7 +84,7 @@ public enum LogicalOperator implements Coded {
 	}
 	
 	static final class Adapter extends EnumStringAdapter<LogicalOperator> {
-		
+		@Override
 		protected Class<LogicalOperator> getEnumClass() {
 			return LogicalOperator.class;
 		}

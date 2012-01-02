@@ -21,24 +21,43 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO... 
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public enum PropositionParameterType implements Coded {
 
+    /**
+     * use this flag with the static factory to get a {@link PropositionParameterType} Constant
+     */
 	CONSTANT("C"),
+
+    /**
+     * use this flag with the static factory to get a {@link PropositionParameterType} Term
+     */
 	TERM("T"),
+
+    /**
+     * use this flag with the static factory to get a {@link PropositionParameterType} Function
+     */
 	FUNCTION("F"),
+
+    /**
+     * use this flag with the static factory to get a {@link PropositionParameterType} Operator
+     */
 	OPERATOR("O");
 	
 	private final String code;
-	
+
+    /**
+     * Create a PropositionParameterType of the given code
+     * @param code
+     */
 	private PropositionParameterType(String code) {
 		this.code = code;
 	}
-	
+
+    @Override
 	public String getCode() {
 		return code;
 	}
@@ -49,7 +68,13 @@ public enum PropositionParameterType implements Coded {
 			VALID_TYPE_CODES.add(propositionParameterType.getCode());
 		}
 	}
-	
+
+    /**
+     * Create a PropositionParameterType from the given code
+     * @param code
+     * @return PropositionParameterType
+     * @throws IllegalArgumentException if the type code does not exist
+     */
 	public static PropositionParameterType fromCode(String code) {
 		if (code == null) {
 			return null;

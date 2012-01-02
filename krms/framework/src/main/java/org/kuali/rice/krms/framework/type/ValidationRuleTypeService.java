@@ -33,13 +33,20 @@ import java.util.Map;
 public interface ValidationRuleTypeService extends RuleTypeService {
     static public final String VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE = "ruleTypeCode";
 
+    @Override
     public Rule loadRule(RuleDefinition validationRuleDefinition);
+
+    @Override
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId)
             throws RiceIllegalArgumentException;
+
+    @Override
     public List<RemotableAttributeError> validateAttributesAgainstExisting(
             @WebParam(name = "krmsTypeId") String krmsTypeId, @WebParam(name = "newAttributes") @XmlJavaTypeAdapter(
             value = MapStringStringAdapter.class) Map<String, String> newAttributes, @WebParam(name = "oldAttributes") @XmlJavaTypeAdapter(
             value = MapStringStringAdapter.class) Map<String, String> oldAttributes) throws RiceIllegalArgumentException;
+
+    @Override
     public List<RemotableAttributeError> validateAttributes(@WebParam(name = "krmsTypeId") String krmsTypeId, @WebParam(name = "attributes") @XmlJavaTypeAdapter(
             value = MapStringStringAdapter.class) Map<String, String> attributes) throws RiceIllegalArgumentException;
 }

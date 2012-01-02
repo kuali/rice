@@ -198,7 +198,17 @@ public final class ActionDefinition extends AbstractDataTransferObject implement
             setSequenceNumber(sequenceNumber);
             setAttributes(new HashMap<String, String>());
         }
-        
+
+        /**
+         * Create a builder with the given parameters
+         * @param actionId
+         * @param name
+         * @param namespace
+         * @param typeId
+         * @param ruleId
+         * @param sequenceNumber
+         * @return Builder
+         */
         public static Builder create(String actionId, String name, String namespace, String typeId, String ruleId, Integer sequenceNumber){
         	return new Builder(actionId, name, namespace, typeId, ruleId, sequenceNumber);
         }
@@ -226,10 +236,9 @@ public final class ActionDefinition extends AbstractDataTransferObject implement
 		/**
 		 * Sets the value of the id on this builder to the given value.
 		 * 
-		 * @param id the id value to set, must be null or non-blank
-		 * @throws IllegalArgumentException if the id is non-null and blank
+		 * @param actionId
+		 * @throws IllegalArgumentException if the actionId is non-null and blank
 		 */
-
         public void setId(String actionId) {
             if (actionId != null && StringUtils.isBlank(actionId)) {
                 throw new IllegalArgumentException("action ID must be null or non-blank");
@@ -237,53 +246,98 @@ public final class ActionDefinition extends AbstractDataTransferObject implement
 			this.id = actionId;
 		}
 
-     
+
+        /**
+         * Sets the value of the name on this builder to the given value.
+         *
+         * @param name
+         * @throws IllegalArgumentException if the name is non-null and blank
+         */
         public void setName(String name) {
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
             }
 			this.name = name;
 		}
-     
+
+        /**
+         * Sets the value of the namespace on this builder to the given value.
+         *
+         * @param namespace
+         * @throws IllegalArgumentException if the namespace is non-null and blank
+         */
         public void setNamespace(String namespace) {
             if (StringUtils.isBlank(namespace)) {
                 throw new IllegalArgumentException("namespace is blank");
             }
 			this.namespace = namespace;
 		}
-     
+
+        /**
+         * Sets the value of the description on this builder to the given value.
+         *
+         * @param desc
+         */
 		public void setDescription(String desc) {
 			this.description = desc;
 		}
-		
+
+        /**
+         * Sets the value of the typeId on this builder to the given value.
+         *
+         * @param typeId
+         * @throws IllegalArgumentException if the typeId is non-null and blank
+         */
 		public void setTypeId(String typeId) {
 			if (StringUtils.isBlank(typeId)) {
 	                throw new IllegalArgumentException("KRMS type id is blank");
 			}
 			this.typeId = typeId;
 		}
-		
+
+        /**
+         * Sets the value of the ruleId on this builder to the given value.
+         *
+         * @param ruleId
+         * @throws IllegalArgumentException if the ruleId is non-null and blank
+         */
 		public void setRuleId(String ruleId) {
 			if (StringUtils.isBlank(ruleId)) {
 	                throw new IllegalArgumentException("rule id is blank");
 			}
 			this.ruleId = ruleId;
 		}
-		
+
+        /**
+         * Sets the value of the sequenceNumber on this builder to the given value.
+         *
+         * @param sequenceNumber
+         * @throws IllegalArgumentException if the sequenceNumber is non-null and blank
+         */
 		public void setSequenceNumber(Integer sequenceNumber) {
 			if (sequenceNumber == null) {
 	                throw new IllegalArgumentException("sequence number is null");
 			}
 			this.sequenceNumber = sequenceNumber;
 		}
-		
+
+        /**
+         * Sets the value of the attributes on this builder to the given value.
+         *
+         * @param attributes
+         */
 		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null){
 				this.attributes = Collections.emptyMap();
 			}
 			this.attributes = Collections.unmodifiableMap(attributes);
 		}
-		
+
+        /**
+         * Sets the value of the versionNumber on this builder to the given value.
+         *
+         * @param versionNumber
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }

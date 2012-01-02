@@ -229,17 +229,36 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			setTypeId(typeId);
 			setParameters(parameters);
         }
-        
+
+        /**
+         * Set the value of the opCode to the given value.
+         * @param opCode
+         * @return Builder
+         */
         public Builder compoundOpCode(String opCode){
         	setCompoundOpCode(opCode);
         	return this;
         }
-        
+
+        /**
+         * Set the value of the components to the given value.
+         * @param components
+         * @return Builder
+         */
         public Builder compoundComponents (List<PropositionDefinition.Builder> components){
         	setCompoundComponents(components);
         	return this;
         }
- 
+
+        /**
+         * Create a Builder with the given values
+         * @param propId
+         * @param propTypeCode
+         * @param ruleId
+         * @param typeId
+         * @param parameters
+         * @return Builder
+         */
         public static Builder create(String propId, String propTypeCode, String ruleId, String typeId, List<PropositionParameter.Builder> parameters){
         	return new Builder(propId, propTypeCode, ruleId, typeId, parameters);
         }
@@ -278,11 +297,11 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
         }
 
 		/**
-		 * Sets the value of the id on this builder to the given value.
+		 * Sets the value of the propId on this builder to the given value.
 		 * 
-		 * @param id the id value to set
+		 * @param propId the propId value to set
+         * @throws IllegalArgumentException if the propId is null or blank
 		 */
-
         public void setId(String propId) {
             if (propId != null && StringUtils.isBlank(propId)) {
                 throw new IllegalArgumentException("proposition id must not be blank");            	
@@ -290,25 +309,51 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			this.id = propId;
 		}
 
-		public void setDescription(String desc) {
-			this.description = desc;
+        /**
+         * Sets the value of the description on this builder to the given value.
+         *
+         * @param description the description value to set
+         */
+		public void setDescription(String description) {
+			this.description = description;
 		}
-		
+
+        /**
+         * Sets the value of the typeId on this builder to the given value.
+         *
+         * @param typeId the typeId value to set
+         */
         public void setTypeId(String typeId) {
             this.typeId = typeId;
         }
-        
+
+        /**
+         * Sets the value of the ruleId on this builder to the given value.
+         *
+         * @param ruleId the ruleId value to set
+         */
         public void setRuleId(String ruleId) {
             this.ruleId = ruleId;
         }
-        
+
+        /**
+         * Sets the value of the rule on this builder to the given value.
+         *
+         * @param rule the rule value to set
+         */
         public void setRule(RuleDefinition.Builder rule) {
             if (rule != null && !StringUtils.isBlank(rule.getId())) {
                 setRuleId(rule.getId());
             }
             this.rule = rule;
         }
-        
+
+        /**
+         * Sets the value of the propTypeCode on this builder to the given value.
+         *
+         * @param propTypeCode the propTypeCode value to set
+         * @throws IllegalArgumentException if the propTypeCode is null, blank or invalid
+         */
 		public void setPropositionTypeCode(String propTypeCode) {
 			if (StringUtils.isBlank(propTypeCode)) {
                 throw new IllegalArgumentException("proposition type code is blank");
@@ -318,7 +363,12 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			}
 			this.propositionTypeCode = propTypeCode;
 		}
-		
+
+        /**
+         * Sets the value of the parameters on this builder to the given value.
+         *
+         * @param parameters the parameters value to set
+         */
 		public void setParameters(List<PropositionParameter.Builder> parameters) {
 			// compound propositions have empty parameter lists
 			// Simple propositions must have a non-empty parameter list
@@ -328,7 +378,13 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			    this.parameters = Collections.unmodifiableList(parameters);
 			}
 		}
-		
+
+        /**
+         * Sets the value of the opCode on this builder to the given value.
+         *
+         * @param opCode the opCode value to set
+         * @throws IllegalArgumentException if the opCode invalid
+         */
 		public void setCompoundOpCode(String opCode){
 			if (StringUtils.isBlank(opCode)){ return; }
 			if (!LogicalOperator.OP_CODES.contains(opCode)){
@@ -337,6 +393,11 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			this.compoundOpCode = opCode;
 		}
 
+        /**
+         * Sets the value of the components on this builder to the given value.
+         *
+         * @param components the components value to set
+         */
 		public void setCompoundComponents(List<PropositionDefinition.Builder> components){
 			if (components == null || components.isEmpty()){
 				this.compoundComponents = Collections.unmodifiableList(new ArrayList<PropositionDefinition.Builder>());
@@ -344,7 +405,12 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			}
 			this.compoundComponents = Collections.unmodifiableList(components);
 		}
-		
+
+        /**
+         * Sets the value of the versionNumber on this builder to the given value.
+         *
+         * @param versionNumber the versionNumber value to set
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }

@@ -25,6 +25,11 @@ import org.kuali.rice.krms.framework.engine.Rule;
  */
 public interface RuleTypeService extends RemotableAttributeOwner {
 
+    /**
+     * Load the Rule given the ruleDefinition
+     * @param ruleDefinition
+     * @return {@link Rule}
+     */
 	public Rule loadRule(RuleDefinition ruleDefinition);
 
 }

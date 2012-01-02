@@ -28,13 +28,20 @@ public final class BinaryOperatorExpression implements Expression<Boolean> {
 	private final ComparisonOperator operator;
 	private final Expression<? extends Object> lhs;
 	private final Expression<? extends Object> rhs;
-	
+
+    /**
+     * Create a BinaryOperatorExpression with the given values
+     * @param operator
+     * @param lhs
+     * @param rhs
+     */
 	public BinaryOperatorExpression(ComparisonOperator operator, Expression<? extends Object> lhs, Expression<? extends Object> rhs) {
 		this.operator = operator;
 		this.lhs = lhs;
 		this.rhs = rhs;
 	}
-	
+
+    @Override
 	public Boolean invoke(ExecutionEnvironment environment) {
 		Object lhsValue = lhs.invoke(environment);
 		Object rhsValue = rhs.invoke(environment);

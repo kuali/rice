@@ -27,6 +27,10 @@ public final class ConstantExpression<T> implements Expression<T> {
 
 	private final T value;
 
+    /**
+     * Create a ConstantExpression with the given value
+     * @param value
+     */
 	public ConstantExpression(T value) {
 		this.value = value;
 	}

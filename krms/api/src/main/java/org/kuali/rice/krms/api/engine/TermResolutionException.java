@@ -25,6 +25,11 @@ import java.util.Set;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.springframework.util.CollectionUtils;
 
+/**
+ * An Exception for {@link TermResolver} exceptions.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class TermResolutionException extends RiceRuntimeException {
 
 	private static final long serialVersionUID = 1L;
@@ -34,7 +39,13 @@ public class TermResolutionException extends RiceRuntimeException {
 	public final Set<String> prereqs;
 	public final Set<String> parameterNames;
 	public final Map<String, String> parameters;
-	
+
+    /**
+     * build the resolution info string from the given values
+     * @param tr
+     * @param parameters
+     * @return String
+     */
 	private static String buildResolutionInfoString(TermResolver<?> tr, Map<String, String> parameters) {
 		StringBuilder result = new StringBuilder();
 		
@@ -70,6 +81,13 @@ public class TermResolutionException extends RiceRuntimeException {
 		return result.toString();
 	}
 
+    /**
+     * Create a TermResolutionException with the given values
+     * @param message
+     * @param tr
+     * @param parameters
+     * @param cause
+     */
 	public TermResolutionException(String message, TermResolver<?> tr, Map<String, String> parameters, Throwable cause) {
 		super(message + " " + buildResolutionInfoString(tr, parameters), cause);
 		if (tr == null) {
@@ -90,6 +108,12 @@ public class TermResolutionException extends RiceRuntimeException {
 		}
 	}
 
+    /**
+     * Create a TermResolutionException with the given values
+     * @param message
+     * @param tr {@link TermResolver}
+     * @param parameters
+     */
 	public TermResolutionException(String message, TermResolver<?> tr, Map<String, String> parameters) {
 		super(message + " " + buildResolutionInfoString(tr, parameters));
 		if (tr == null) {

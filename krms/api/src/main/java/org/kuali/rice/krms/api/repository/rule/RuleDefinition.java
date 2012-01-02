@@ -165,6 +165,10 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 		return this.name;
 	}
 
+    /**
+     *
+     * @return description
+     */
     public String getDescription() {
         return this.description;
     }
@@ -239,7 +243,17 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
             setActive(true);
             setAttributes(new HashMap<String, String>());
         }
-        
+
+        /**
+         * Create a builder with the given parameters.
+         *
+         * @param ruleId
+         * @param name
+         * @param namespace
+         * @param typeId
+         * @param propId
+         * @return Builder
+         */
         public static Builder create(String ruleId, String name, String namespace, String typeId, String propId){
         	return new Builder(ruleId, name, namespace, typeId, propId);
         }
@@ -291,45 +305,80 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
             }
 			this.id = ruleId;
 		}
-     
+
+        /**
+         * Sets the value of the name on this builder to the given value
+         * @param name
+         * @throws IllegalArgumentException if the name is null or blank
+         */
         public void setName(String name) {
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
             }
             this.name = name;
         }
-     
+
+        /**
+         * Sets the value of the description on this builder to the given value
+         * @param description
+         */
         public void setDescription(String description) {
             this.description = description;
         }
-     
+
+        /**
+         * Sets the value of the namespace on this builder to the given value
+         * @param namespace
+         * @throws IllegalArgumentException if the namespace is null or blank
+         */
         public void setNamespace(String namespace) {
             if (StringUtils.isBlank(namespace)) {
                 throw new IllegalArgumentException("namespace is blank");
             }
 			this.namespace = namespace;
 		}
-     
+
+        /**
+         * Sets the value of the typeId on this builder to the given value
+         * @param typeId
+         */
 		public void setTypeId(String typeId) {
 			this.typeId = typeId;
 		}
-		
+
+        /**
+         * Sets the value of the active on this builder to the given value
+         * @param active
+         */
         public void setActive(boolean active) {
             this.active = active;
         }
 
+        /**
+         * Sets the value of the propId on this builder to the given value
+         * @param propId
+         * @throws IllegalArgumentException if the propId is null or blank
+         */
 		public void setPropId(String propId) {
 		    if (propId != null && StringUtils.isBlank(propId)) {
 		        throw new IllegalArgumentException("propId must be null or non-blank");
 		    }
 			this.propId = propId;
 		}
-		
+
+        /**
+         * Sets the value of the proposition on this builder to the given value
+         * @param prop
+         */
 		public void setProposition(PropositionDefinition.Builder prop) {
 			this.proposition = prop;
 			this.setPropId(prop.getId());
 		}
-		
+
+        /**
+         * Sets the value of the actions on this builder to the given value
+         * @param actions
+         */
 		public void setActions(List<ActionDefinition.Builder> actions) {
 			if (actions == null){
 				this.actions = Collections.unmodifiableList(new ArrayList<ActionDefinition.Builder>());
@@ -337,14 +386,22 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 			}
 			this.actions = Collections.unmodifiableList(actions);
 		}
-		
+
+        /**
+         * Sets the value of the attributes on this builder to the given value
+         * @param attributes
+         */
 		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null){
 				this.attributes = Collections.emptyMap();
 			}
 			this.attributes = Collections.unmodifiableMap(attributes);
 		}
-		
+
+        /**
+         * Sets the value of the versionNumber on this builder to the given value
+         * @param versionNumber
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }

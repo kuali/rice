@@ -19,13 +19,17 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.framework.engine.Action;
 
 /**
- * This is a description of what this class does - ewestfal don't forget to fill this in. 
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface ActionTypeService extends RemotableAttributeOwner {
 
+    /**
+     * Load the Action given the actionDefinition
+     * @param actionDefinition
+     * @return {@link Action}
+     */
 	public Action loadAction(ActionDefinition actionDefinition);
 
 }

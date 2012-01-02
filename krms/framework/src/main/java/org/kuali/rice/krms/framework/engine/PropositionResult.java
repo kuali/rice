@@ -18,15 +18,28 @@ package org.kuali.rice.krms.framework.engine;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class PropositionResult {
 
 	final boolean result;
 	Map<String,?> executionDetails;
 
+    /**
+     * Create a PropositionResult with the given result
+     * @param result
+     */
 	public PropositionResult(boolean result) {
 	    this(result, null);
 	}
 
+    /**
+     * Create a PropositionResult with the given values
+     * @param result
+     * @param executionDetails
+     */
 	public PropositionResult(boolean result, Map<String,?> executionDetails) {
 		this.result = result;
 		
@@ -37,10 +50,18 @@ public class PropositionResult {
 		}
 	}
 
+    /**
+     *
+     * @return the result
+     */
 	public boolean getResult() {
 		return result;
 	}
-	
+
+    /**
+     *
+     * @return the executionDetails
+     */
 	public Map<String,?> getExecutionDetails() {
 		return executionDetails;
 	}

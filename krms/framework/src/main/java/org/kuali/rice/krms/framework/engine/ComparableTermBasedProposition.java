@@ -25,6 +25,12 @@ import org.kuali.rice.krms.api.engine.TermResolutionException;
 import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
+/**
+ *
+ * @param <T>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ComparableTermBasedProposition<T> implements Proposition {
 	private static final ResultLogger LOG = ResultLogger.getInstance();
 
@@ -32,7 +38,12 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 	private final Term term;
 	private final T expectedValue;
 
-
+    /**
+     * Create a ComparableTermBasedProposition with the given values
+     * @param operator
+     * @param term
+     * @param expectedValue
+     */
 	public ComparableTermBasedProposition(ComparisonOperator operator, Term term, T expectedValue) {
 		this.operator = operator;
 		this.term = term;
@@ -86,6 +97,7 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 		return this.expectedValue;
 	}
 
+    @Override
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		sb.append(term.toString());

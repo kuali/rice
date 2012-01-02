@@ -31,10 +31,10 @@ public class CustomComparisonOperator implements EngineComparatorExtension {
         return lhs.toString().compareTo(rhs.toString());
     }
 
-    @Override
-    public Object coerce(String s) {
-        return new CustomComparisonOperator();
-    }
+//    @Override
+//    public Object coerce(String s) {
+//        return new CustomComparisonOperator();
+//    }
 
     @Override
     public boolean canCompare(Object lhs, Object rhs) {

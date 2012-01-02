@@ -27,14 +27,11 @@ import org.kuali.rice.krms.framework.engine.expression.EngineComparatorExtension
 public class CustomComparisonOperator implements EngineComparatorExtension {
     @Override
     public int compare(Object lhs, Object rhs) {
-        if (lhs.equals(rhs)) return 0;
+        if (lhs.equals(rhs)) {
+            return 0;
+        }
         return lhs.toString().compareTo(rhs.toString());
     }
-
-//    @Override
-//    public Object coerce(String s) {
-//        return new CustomComparisonOperator();
-//    }
 
     @Override
     public boolean canCompare(Object lhs, Object rhs) {

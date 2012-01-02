@@ -15,39 +15,15 @@
  */
 package org.kuali.rice.krms.framework.engine.expression;
 
-import java.util.Comparator;
-
 /**
- *
- * For creating custom ComparisonOperator.
- *
- * @link ComparisonOperator
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface EngineComparatorExtension<A> extends Comparator<A> {
-
-    /**
-     *
-     * @param lhs
-     * @param rhs
-     * @return int where 0 is equals - is less than and + is greater than
-     */
-    public int compare(A lhs, A rhs);
-
+public interface StringCoercionExtension {
     /**
      * Return Object created from the value passed in.
      *
      * @param s
      * @return
      */
-//    A coerce(String s);
-
-    /**
-     *
-     * @param lhs
-     * @param rhs
-     * @return able to compare lhs and rhs
-     */
-    boolean canCompare(Object lhs, Object rhs);
+    Object coerce(String s);
 }

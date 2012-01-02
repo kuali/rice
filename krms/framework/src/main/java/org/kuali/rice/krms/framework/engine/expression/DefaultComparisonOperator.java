@@ -49,18 +49,22 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
             return result;
         }
         else {
-            throw new IncompatibleTypeException("Could not compare values, they are not comparable for operator " + this, lhs, rhs.getClass());
+            throw new IncompatibleTypeException("DefaultComparisonOperator could not compare values", lhs, rhs.getClass());
         }
     }
 
-    @Override
-    public Object coerce(String s) {
-        return null;
-    }
+    //    @Override
+    //    public Object coerce(String s) {
+    //        return null;
+    //    }
 
-    @Override
     public boolean canCompare(Object lhs, Object rhs) {
-        return false;
+        try {
+            compare(lhs, rhs);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private Object coerceRhs(Object lhs, Object rhs) {
@@ -95,7 +99,7 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
      * @param lhs
      * @param rhs
      * @param clazzes
-     * @return The object of one of the given types, whose value rhs
+     * @return The object of one of the given types, whose value is rhs
      */
     private Object coerceRhsHelper(Object lhs, String rhs, Class<?> ... clazzes) {
         for (Class clazz : clazzes) {

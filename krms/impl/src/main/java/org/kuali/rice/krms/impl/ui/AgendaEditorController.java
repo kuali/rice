@@ -21,6 +21,7 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.SequenceAccessorService;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
@@ -47,6 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -220,6 +222,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = agendaEditor.getAgenda();
         AgendaItemBo newAgendaItem = agendaEditor.getAgendaItemLine();
 
+        //        if (!validateProposition(newAgendaItem.getRule().getProposition())) {
+        if (false) {
+            String propConstant = newAgendaItem.getRule().getProposition().getParameters().get(1).getValue();
+            String propType = newAgendaItem.getRule().getProposition().getParameters().get(0).getValue();
+            GlobalVariables.getMessageMap().putError("Proposition Type Creation Error", "Unable to create proposition type " + propType + " using the value " + propConstant + ".");
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
+            return super.navigate(form, result, request, response);
+        }
+
         newAgendaItem.getRule().setAttributes(agendaEditor.getCustomRuleAttributesMap());
         updateRuleAction(agendaEditor);
 
@@ -266,6 +277,29 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
         return super.navigate(form, result, request, response);
     }
+
+    /**
+     *
+     * @param proposition
+     * @return if the proposition constant was successfully used to create the proposition type
+     */
+    private boolean validateProposition(PropositionBo proposition) {
+        // TODO EGHM lookup registered coercion extensions
+        // TODO EGHM also wire up to proposition for faster feedback to the user
+        String propConstant = proposition.getParameters().get(1).getValue();
+        String propType = proposition.getParameters().get(0).getValue();
+        try {
+            Class propClass = Class.forName(propType);
+            // Constructor that takes string
+            // TODO EGHM more generic than the coerceRhsHelper.  If that doesn't work then try this?
+            Constructor constructor = propClass.getConstructor(new Class[]{String.class});
+            Object propObject = constructor.newInstance(propConstant);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
     /**
      * This method returns the agendaId of the given agenda.  If the agendaId is null a new id will be created.

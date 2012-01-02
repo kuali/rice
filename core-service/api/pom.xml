@@ -117,6 +117,18 @@
 						</goals>
 					</execution>
           <execution>
+						<id>componentService-wsdl</id>
+						<phase>${rice.java2ws.phase}</phase>
+						<configuration>
+							<className>org.kuali.rice.coreservice.api.component.ComponentService</className>
+							<outputFile>${project.build.outputDirectory}/wsdl/ComponentService.wsdl</outputFile>
+							<serviceName>ComponentService</serviceName>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+          <execution>
             <id>styleRepositoryService-wsdl</id>
             <phase>${rice.java2ws.phase}</phase>
             <configuration>

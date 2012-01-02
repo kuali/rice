@@ -15,26 +15,19 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.ksb.api.KsbApiServiceLocator;
-import org.kuali.rice.ksb.api.bus.Endpoint;
-import org.kuali.rice.ksb.api.bus.ServiceBus;
-import org.kuali.rice.ksb.messaging.service.BusAdminService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 /**
@@ -48,53 +41,6 @@ public class ThreadPoolAction extends KSBAction {
 
     public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, ServletException {
-	return mapping.findForward("basic");
-    }
-
-    public ActionForward update(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request,
-	    HttpServletResponse response) throws Exception {
-	ThreadPoolForm form = (ThreadPoolForm)actionForm;
-	if (form.getTimeIncrement() != null && form.getTimeIncrement().longValue() <= 0) {
-	    form.setTimeIncrement(null);
-	}
-	if (form.getMaxRetryAttempts() != null && form.getMaxRetryAttempts().longValue() < 0) {
-	    form.setMaxRetryAttempts(null);
-	}
-	if (form.isAllServers()) {
-	    // if it's all servers, we need to find all of the BusAdmin services
-	    QName serviceName = new QName(form.getApplicationId(), "busAdminService");
-	    ServiceBus serviceBus = KsbApiServiceLocator.getServiceBus();
-	    List<Endpoint> adminServices = serviceBus.getEndpoints(serviceName);
-	    for (Endpoint adminEndpoint : adminServices) {
-		try {
-		    BusAdminService adminService = (BusAdminService)adminEndpoint.getService();
-		    adminService.setCorePoolSize(form.getCorePoolSize());
-		    adminService.setMaximumPoolSize(form.getMaximumPoolSize());
-		    adminService.setConfigProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, (form.getTimeIncrement() == null ? null : form.getTimeIncrement().toString()));
-		    adminService.setConfigProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, (form.getMaxRetryAttempts() == null ? null : form.getMaxRetryAttempts().toString()));
-		} catch (Exception e) {
-		    LOG.error("Failed to set thread pool sizes for busAdminService at " + adminEndpoint.getServiceConfiguration().getEndpointUrl());
-		}
-	    }
-	} else {
-	    form.getThreadPool().setCorePoolSize(form.getCorePoolSize());
-	    if (form.getMaximumPoolSize() < form.getCorePoolSize()) {
-		form.setMaximumPoolSize(form.getCorePoolSize());
-	    }
-	    form.getThreadPool().setMaximumPoolSize(form.getMaximumPoolSize());
-
-	    if (form.getTimeIncrement() == null) {
-		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY);
-	    } else {
-		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, form.getTimeIncrement().toString());
-	    }
-
-	    if (form.getMaxRetryAttempts() == null) {
-		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
-	    } else {
-		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, form.getMaxRetryAttempts().toString());
-	    }
-	}
 	return mapping.findForward("basic");
     }
 

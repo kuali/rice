@@ -44,9 +44,6 @@
   </tr>
 </table>
 
-<html-el:form action="/ThreadPool.do">
-<html-el:hidden property="methodToCall" />
-
   <table width="100%" border=0 cellspacing=0 cellpadding=0>
   <tr>
         <td width="20" height="20">&nbsp;</td>
@@ -56,19 +53,17 @@
   	  <jsp:include page="../Messages.jsp"/>
       <br>
 
-Core Pool Size: <html-el:text property="corePoolSize"/><br>
-Maximum Pool Size: <html-el:text property="maximumPoolSize"/><br>
+Core Pool Size: <c:out value="${ThreadPoolForm.corePoolSize}"/><br>
+Maximum Pool Size: <c:out value="${ThreadPoolForm.maximumPoolSize}"/><br>
 Pool Size: <c:out value="${ThreadPoolForm.threadPool.poolSize}"/><br>
 Active Count: <c:out value="${ThreadPoolForm.threadPool.activeCount}"/><br>
 Largest Pool Size: <c:out value="${ThreadPoolForm.threadPool.largestPoolSize}"/><br>
 Keep Alive Time: <c:out value="${ThreadPoolForm.threadPool.keepAliveTime}"/><br>
 Task Count: <c:out value="${ThreadPoolForm.threadPool.taskCount}"/><br>
 Completed Task Count: <c:out value="${ThreadPoolForm.threadPool.completedTaskCount}"/><br>
-RouteQueue.TimeIncrement: <html-el:text property="timeIncrement"/><br>
-RouteQueue.maxRetryAttempts: <html-el:text property="maxRetryAttempts"/><br>
+RouteQueue.TimeIncrement: <c:out value="${ThreadPoolForm.timeIncrement}"/><br>
+RouteQueue.maxRetryAttempts: <c:out value="${ThreadPoolForm.maxRetryAttempts}"/><br>
 <br>
-<html-el:checkbox property="allServers"/> Execute Across All Servers with Application ID <c:out value="${ThreadPoolForm.applicationId}"/><br/>
-<input type="button" value="Update" onclick="setMethodToCallAndSubmit('update')"/>
 </td>
 </tr>
   <tr>
@@ -76,7 +71,6 @@ RouteQueue.maxRetryAttempts: <html-el:text property="maxRetryAttempts"/><br>
   </tr>
 
 </table>
-</html-el:form>
 <br>
 <jsp:include page="../Footer.jsp"/>
 

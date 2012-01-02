@@ -168,27 +168,6 @@ public class MessageQueueAction extends KSBAction {
 	return existingMessage;
     }
 
-//    private ForwardedCallHandler getAdminServiceToForwardTo(PersistedMessageBO message, MessageQueueForm form) {
-//	String ip = form.getIpAddress();
-//	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
-//	for (ServiceInfo service : services) {
-//	    if (service.getQname().getLocalPart().equals(
-//		    QName.valueOf(message.getServiceName()).getLocalPart() + "-forwardHandler")
-//		    && service.getServerIp().equals(ip)) {
-//		// retrieve a reference to the remote service
-//		RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-//		ForwardedCallHandler handler = (ForwardedCallHandler) remoteResourceLocator.getService(service.getQname(), service.getEndpointUrl());
-//		if (handler != null) {
-//		    return handler;
-//		} else {
-//		    LOG.warn("Failed to find forwarded call handler for service: " + service.getQname().toString() + " and endpoint URL: " + service.getEndpointUrl());
-//		}
-//	    }
-//	}
-//	throw new RuntimeException("Could not locate the BusAdminService for ip " + ip
-//		+ " in order to forward the message.");
-//    }
-
     /**
          * Performs a quick ReQueue of the indicated persisted message.
          *

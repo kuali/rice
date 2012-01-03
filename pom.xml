@@ -245,6 +245,7 @@
                 <exclude>**/*.tmp</exclude>
                 <exclude>**/ChangeLog</exclude>
                 <exclude>**/org.apache.cxf.Logger</exclude>
+                <exclude>**/jquery*.js</exclude>
               </excludes>
             </configuration>
           </plugin>

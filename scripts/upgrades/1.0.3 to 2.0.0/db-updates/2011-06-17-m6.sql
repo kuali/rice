@@ -22,13 +22,49 @@
 -- KREW_DOC_TYP_T
 -----------------------------------------------------------------------------
 
-ALTER TABLE KREW_DOC_TYP_T DROP CONSTRAINT KREW_DOC_TYP_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_T DROP CONSTRAINT KREW_DOC_TYP_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
-ALTER TABLE KREW_DOC_TYP_T DROP CONSTRAINT KREW_DOC_TYP_TI1
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
-DROP INDEX KREW_DOC_TYP_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_TI1' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_T DROP CONSTRAINT KREW_DOC_TYP_TI1';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_TI1 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
-DROP INDEX KREW_DOC_TYP_TI1
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_TI1' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_TI1';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_TI1 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
 ALTER TABLE KREW_DOC_TYP_T RENAME TO OLD_KREW_DOC_TYP_T
 /
@@ -169,9 +205,27 @@ CREATE INDEX KREW_DOC_TYP_TI6
 -- KREW_DOC_HDR_T
 -----------------------------------------------------------------------------
 
-ALTER TABLE KREW_DOC_HDR_T DROP CONSTRAINT KREW_DOC_HDR_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_HDR_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_HDR_T DROP CONSTRAINT KREW_DOC_HDR_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_HDR_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
-DROP INDEX KREW_DOC_HDR_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_HDR_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_HDR_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_HDR_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
 ALTER TABLE KREW_DOC_HDR_T RENAME TO OLD_KREW_DOC_HDR_T
 /
@@ -274,9 +328,27 @@ CREATE INDEX KREW_DOC_HDR_TI9
 -- KREW_DOC_TYP_PLCY_RELN_T
 -----------------------------------------------------------------------------
 
-ALTER TABLE KREW_DOC_TYP_PLCY_RELN_T DROP CONSTRAINT KREW_DOC_TYP_PLCY_RELN_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_PLCY_RELN_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_PLCY_RELN_T DROP CONSTRAINT KREW_DOC_TYP_PLCY_RELN_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_PLCY_RELN_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
-DROP INDEX KREW_DOC_TYP_PLCY_RELN_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_PLCY_RELN_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_PLCY_RELN_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_PLCY_RELN_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
 ALTER TABLE KREW_DOC_TYP_PLCY_RELN_T RENAME TO OLD_KREW_DOC_TYP_PLCY_RELN_T
 /
@@ -326,9 +398,27 @@ PRIMARY KEY (DOC_TYP_ID,DOC_PLCY_NM)
 -- KREW_DOC_TYP_APP_DOC_STAT_T
 -----------------------------------------------------------------------------
 
-ALTER TABLE KREW_DOC_TYP_APP_DOC_STAT_T DROP CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_constraints where CONSTRAINT_NAME = 'KREW_DOC_TYP_APP_DOC_STAT_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'ALTER TABLE KREW_DOC_TYP_APP_DOC_STAT_T DROP CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_APP_DOC_STAT_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
-DROP INDEX KREW_DOC_TYP_APP_DOC_STAT_TC0
+DECLARE
+c NUMBER;
+BEGIN
+select count into c from all_indexes where INDEX_NAME = 'KREW_DOC_TYP_APP_DOC_STAT_TC0' ;
+IF c>0 THEN
+EXECUTE IMMEDIATE 'DROP INDEX KREW_DOC_TYP_APP_DOC_STAT_TC0';
+ELSE
+DBMS_OUTPUT.PUT_LINE('KREW_DOC_TYP_APP_DOC_STAT_TC0 does not exist, so not running statement to change/drop it.');
+END IF;
+END;
 /
 ALTER TABLE KREW_DOC_TYP_APP_DOC_STAT_T RENAME TO O_KREW_DOC_TYP_APP_DOC_STAT_T
 /

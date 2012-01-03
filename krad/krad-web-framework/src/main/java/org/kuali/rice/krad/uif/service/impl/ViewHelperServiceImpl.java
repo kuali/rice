@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.field.ActionField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewPresentationController;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -178,7 +179,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * performComponentInitialization, performComponentApplyModel, and performComponentFinalize.
      *
      * @see {@link org.kuali.rice.krad.uif.service.ViewHelperService#performComponentLifecycle(
-     * org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component, java.lang.String)
+     *org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component,
+     *      java.lang.String)
      * @see {@link #performComponentInitialization(org.kuali.rice.krad.uif.view.View, Object,
      *      org.kuali.rice.krad.uif.component.Component)}
      * @see {@link #performComponentApplyModel(View, Component, Object)}
@@ -196,7 +198,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         if (suffix.endsWith(UifConstants.IdSuffixes.ATTRIBUTE)) {
             suffix = StringUtils.removeEnd(suffix, UifConstants.IdSuffixes.ATTRIBUTE);
         }
-        ComponentUtils.updateIdsWithSuffix(component, suffix);
+        ComponentUtils.updateIdWithSuffix(component, suffix);
 
         // binding path should stay the same
         if (component instanceof DataBinding) {
@@ -228,30 +230,42 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         performComponentInitialization(view, model, component);
         performComponentApplyModel(view, component, model);
 
+        // make sure id, binding, and label settings stay the same as initial
+        if (component instanceof Group || component instanceof FieldGroup) {
+            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
+            for (Component nestedComponent : nestedComponents) {
+                Component origNestedComponent = null;
+                if (nestedComponent instanceof DataField) {
+                    origNestedComponent = view.getViewIndex().getComponentById(
+                            nestedComponent.getId() + suffix + UifConstants.IdSuffixes.ATTRIBUTE);
+                } else {
+                    origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId() + suffix);
+                }
+
+                if (origNestedComponent != null) {
+                    // update binding
+                    if (nestedComponent instanceof DataBinding) {
+                        ((DataBinding) nestedComponent).setBindingInfo(
+                                ((DataBinding) origNestedComponent).getBindingInfo());
+                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
+                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
+                    }
+
+                    // update label rendered flag
+                    if (nestedComponent instanceof Field) {
+                        ((Field) nestedComponent).setLabelFieldRendered(
+                                ((Field) origNestedComponent).isLabelFieldRendered());
+                    }
+
+                    // update id
+                    ComponentUtils.updateIdWithSuffix(nestedComponent, suffix);
+                }
+            }
+        }
+
         // TODO: need to handle updating client state for component refresh
         Map<String, Object> clientState = new HashMap<String, Object>();
         performComponentFinalize(view, component, model, parent, clientState);
-
-        // make sure binding and label settings stay the same as initial
-//        if (component instanceof Group || component instanceof FieldGroup) {
-//            List<Component> nestedComponents = ComponentUtils.getAllNestedComponents(component);
-//            for (Component nestedComponent : nestedComponents) {
-//                Component origNestedComponent = view.getViewIndex().getComponentById(nestedComponent.getId());
-//                if (origNestedComponent != null) {
-//                    if (component instanceof DataBinding) {
-//                        ((DataBinding) nestedComponent).setBindingInfo(
-//                                ((DataBinding) origNestedComponent).getBindingInfo());
-//                        ((DataBinding) nestedComponent).getBindingInfo().setBindingPath(
-//                                ((DataBinding) origNestedComponent).getBindingInfo().getBindingPath());
-//                    }
-//
-//                    if (component instanceof Field) {
-//                        ((Field) nestedComponent).setLabelFieldRendered(
-//                                ((Field) origNestedComponent).isLabelFieldRendered());
-//                    }
-//                }
-//            }
-//        }
 
         // get client state for component and build update script for on load
         String clientStateScript = buildClientSideStateScript(view, clientState, true);
@@ -681,9 +695,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * <p>
      * The following authorization is done here:
-     *   Fields: edit, view, required, mask, and partial mask
-     *   Groups: edit and view
-     *   Actions: take action
+     * Fields: edit, view, required, mask, and partial mask
+     * Groups: edit and view
+     * Actions: take action
      * </p>
      *
      * <p>
@@ -1379,8 +1393,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     public void applyDefaultValuesForCollectionLine(View view, Object model, CollectionGroup collectionGroup,
             Object line) {
         // retrieve all data fields for the collection line
-        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(
-                collectionGroup.getAddLineFields(), DataField.class);
+        List<DataField> dataFields = ComponentUtils.getComponentsOfTypeDeep(collectionGroup.getAddLineFields(),
+                DataField.class);
         for (DataField dataField : dataFields) {
             String bindingPath = "";
             if (StringUtils.isNotBlank(dataField.getBindingInfo().getBindByNamePrefix())) {
@@ -1442,8 +1456,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param dataField - field to check for configured default value
      * @param bindingPath - path to the property on the object that should be populated
      */
-    protected void populateDefaultValueForField(View view, Object object, DataField dataField,
-            String bindingPath) {
+    protected void populateDefaultValueForField(View view, Object object, DataField dataField, String bindingPath) {
         // check for configured default value
         String defaultValue = dataField.getDefaultValue();
         if (StringUtils.isBlank(defaultValue) && (dataField.getDefaultValueFinderClass() != null)) {

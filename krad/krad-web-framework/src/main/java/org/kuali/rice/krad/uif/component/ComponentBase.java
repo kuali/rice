@@ -18,12 +18,9 @@ package org.kuali.rice.krad.uif.component;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -31,7 +28,6 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 /**
@@ -157,13 +153,13 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
     }
 
     /**
-     * The following initialization is performed:
+     * The following updates are done here:
      *
      * <ul>
-     *     <li>progressiveRender and conditionalRefresh variables are processed if set</li>
+     * <li></li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
+     * @see Component#performInitialization(org.kuali.rice.krad.uif.view.View, java.lang.Object)
      */
     public void performInitialization(View view, Object model) {
 
@@ -173,15 +169,17 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * The following updates are done here:
      *
      * <ul>
-     * <li></li>
+     * <li>Evaluate the progressive render condition (if set) and combine with the current render status to set the
+     * render status</li>
      * </ul>
+     *
+     * @see Component#performApplyModel(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performApplyModel(View view, Object model, Component parent) {
         if (StringUtils.isNotEmpty(progressiveRender)) {
-            // progressive anded with conditional render, will not render at
-            // least one of the two are false
-            Boolean progRenderEval = (Boolean) KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpression(model, context,
-                        progressiveRender);
+            // progressive anded with conditional render, will not render at least one of the two are false
+            Boolean progRenderEval = (Boolean) KRADServiceLocatorWeb.getExpressionEvaluatorService().evaluateExpression(
+                    model, context, progressiveRender);
 
             this.setRender(progRenderEval && this.render);
         }
@@ -191,18 +189,15 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
      * The following finalization is done here:
      *
      * <ul>
+     * <li>progressiveRender and conditionalRefresh variables are processed if set</li>
      * <li>If any of the style properties were given, sets the style string on
      * the style property</li>
-     * <li>Setup the decorator chain (if component has decorators) for rendering
-     * </li>
      * <li>Set the skipInTabOrder flag for nested components</li>
      * </ul>
      *
-     * @see org.kuali.rice.krad.uif.component.Component#performFinalize(org.kuali.rice.krad.uif.view.View,
-     *      java.lang.Object, org.kuali.rice.krad.uif.component.Component)
+     * @see Component#performFinalize(org.kuali.rice.krad.uif.view.View, java.lang.Object, org.kuali.rice.krad.uif.component.Component)
      */
     public void performFinalize(View view, Object model, Component parent) {
-
         if (StringUtils.isNotEmpty(progressiveRender)) {
             progressiveRender = ExpressionUtils.replaceBindingPrefixes(view, this, progressiveRender);
             progressiveDisclosureControlNames = new ArrayList<String>();
@@ -226,6 +221,7 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
             }
         }
 
+        // TODO: does this check on final status need to be here?
         if (!ViewStatus.FINAL.equals(view.getViewStatus())) {
             // add the align, valign, and width settings to style
             if (StringUtils.isNotBlank(getAlign()) && !StringUtils.contains(getStyle(), CssConstants.TEXT_ALIGN)) {
@@ -248,48 +244,6 @@ public abstract class ComponentBase extends ConfigurableBase implements Componen
                 ((ComponentBase) component).setSkipInTabOrder(skipInTabOrder);
                 if (component instanceof ControlBase) {
                     ((ControlBase) component).setTabIndex(-1);
-                }
-            }
-        }
-
-        // replace the #line? collections place holder with the correct binding
-        // path
-        CollectionGroup collectionGroup = (CollectionGroup) (this.getContext().get(
-                UifConstants.ContextVariableNames.COLLECTION_GROUP));
-        String linePath = "";
-        if (collectionGroup != null) {
-            linePath = ComponentUtils.getLinePathValue(this);
-
-            //ProgressiveRender conditions
-            if (StringUtils.isNotEmpty(progressiveRender) && StringUtils.isNotEmpty(linePath)) {
-                progressiveDisclosureConditionJs = ComponentUtils.replaceLineAttr(progressiveDisclosureConditionJs,
-                        linePath);
-                ListIterator<String> listIterator = progressiveDisclosureControlNames.listIterator();
-                while (listIterator.hasNext()) {
-                    String name = listIterator.next();
-                    name = ComponentUtils.replaceLineAttr(name, linePath);
-                    listIterator.set(name);
-                }
-            }
-
-            // refresh conditions
-            String conditionalRefresh = getPropertyExpression("refresh");
-            if (StringUtils.isNotEmpty(conditionalRefresh) && StringUtils.isNotEmpty(linePath)) {
-                conditionalRefreshConditionJs = ComponentUtils.replaceLineAttr(conditionalRefreshConditionJs, linePath);
-                ListIterator<String> listIterator = conditionalRefreshControlNames.listIterator();
-                while (listIterator.hasNext()) {
-                    String name = listIterator.next();
-                    name = ComponentUtils.replaceLineAttr(name, linePath);
-                    listIterator.set(name);
-                }
-            }
-
-            if (StringUtils.isNotEmpty(refreshWhenChanged)) {
-                ListIterator<String> listIterator = refreshWhenChangedControlNames.listIterator();
-                while (listIterator.hasNext()) {
-                    String name = listIterator.next();
-                    name = ComponentUtils.replaceLineAttr(name, linePath);
-                    listIterator.set(name);
                 }
             }
         }

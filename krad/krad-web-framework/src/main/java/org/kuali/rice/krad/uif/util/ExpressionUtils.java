@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -81,7 +82,7 @@ public class ExpressionUtils {
                 }
             }
 
-            // Replace the binding prefixes
+            // replace the binding prefixes
             String adjustedExpression = replaceBindingPrefixes(view, object, expression);
 
             adjustedPropertyExpressions.put(propertyName, adjustedExpression);
@@ -93,7 +94,7 @@ public class ExpressionUtils {
     }
 
     /**
-     * Adjusts the property expressions for a given object.
+     * Adjusts the property expressions for a given object
      *
      * <p>
      * The org.kuali.rice.krad.uif.UifConstants#NO_BIND_ADJUST_PREFIX prefix will be removed
@@ -112,7 +113,7 @@ public class ExpressionUtils {
     public static String replaceBindingPrefixes(View view, Object object, String expression) {
         String adjustedExpression = StringUtils.replace(expression, UifConstants.NO_BIND_ADJUST_PREFIX, "");
 
-        // Replace the field path prefix for DataFields
+        // replace the field path prefix for DataFields
         if (object instanceof DataField) {
 
             // Get the binding path from the object
@@ -128,7 +129,7 @@ public class ExpressionUtils {
                     "");
         }
 
-        // Replace the default path prefix if there is one set on the view
+        // replace the default path prefix if there is one set on the view
         if (StringUtils.isNotBlank(view.getDefaultBindingObjectPath())) {
             adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
                     view.getDefaultBindingObjectPath() + ".");
@@ -138,7 +139,53 @@ public class ExpressionUtils {
                     "");
         }
 
+        // replace line path binding prefix with the actual line path
+        if (object instanceof Component) {
+            String linePath = getLinePathPrefixValue((Component) object);
+
+            if (StringUtils.isNotEmpty(linePath)) {
+                adjustedExpression = StringUtils.replace(adjustedExpression, UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
+                        linePath + ".");
+            }
+        }
+
         return adjustedExpression;
+    }
+
+    /**
+     * Determines the value for the org.kuali.rice.krad.uif.UifConstants#LINE_PATH_BIND_ADJUST_PREFIX binding prefix
+     * based on collection group found in the component context
+     *
+     * @param component - component instance for which the prefix is configured on
+     * @return String line binding path or empty string if path not found
+     */
+    protected static String getLinePathPrefixValue(Component component) {
+        String linePath = "";
+
+        CollectionGroup collectionGroup = (CollectionGroup) (component.getContext().get(
+                UifConstants.ContextVariableNames.COLLECTION_GROUP));
+        if (collectionGroup == null) {
+            return linePath;
+        }
+
+        Object indexObj = component.getContext().get(UifConstants.ContextVariableNames.INDEX);
+        if (indexObj != null) {
+            int index = (Integer) indexObj;
+            boolean addLine = false;
+            Object addLineObj = component.getContext().get(UifConstants.ContextVariableNames.IS_ADD_LINE);
+
+            if (addLineObj != null) {
+                addLine = (Boolean) addLineObj;
+            }
+
+            if (addLine) {
+                linePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+            } else {
+                linePath = collectionGroup.getBindingInfo().getBindingPath() + "[" + index + "]";
+            }
+        }
+
+        return linePath;
     }
 
     /**

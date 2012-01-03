@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.util;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
@@ -206,8 +205,10 @@ public class ComponentUtils {
         }
 
         for (Component nested : component.getComponentsForLifecycle()) {
-            components.add(nested);
-            components.addAll(getAllNestedComponents(nested));
+            if (nested != null) {
+                components.add(nested);
+                components.addAll(getAllNestedComponents(nested));
+            }
         }
 
         return components;
@@ -255,7 +256,7 @@ public class ComponentUtils {
     }
 
     public static void updateIdsWithSuffixNested(Component component, String idSuffix) {
-        updateIdsWithSuffix(component, idSuffix);
+        updateIdWithSuffix(component, idSuffix);
 
         if (Container.class.isAssignableFrom(component.getClass())) {
             LayoutManager layoutManager = ((Container) component).getLayoutManager();
@@ -275,7 +276,7 @@ public class ComponentUtils {
         }        
     }
 
-    public static void updateIdsWithSuffix(Component component, String idSuffix) {
+    public static void updateIdWithSuffix(Component component, String idSuffix) {
         component.setId(component.getId() + idSuffix);
     }
 
@@ -418,35 +419,4 @@ public class ComponentUtils {
         return orderedItems;
     }
 
-    public static String getLinePathValue(Component component) {
-        CollectionGroup collectionGroup =
-                (CollectionGroup) (component.getContext().get(UifConstants.ContextVariableNames.COLLECTION_GROUP));
-        String linePath = "";
-        if (collectionGroup != null) {
-            Object indexObj = component.getContext().get(UifConstants.ContextVariableNames.INDEX);
-            if (indexObj != null) {
-                int index = (Integer) indexObj;
-                boolean addLine = false;
-                Object addLineObj = component.getContext().get(UifConstants.ContextVariableNames.IS_ADD_LINE);
-
-                if (addLineObj != null) {
-                    addLine = (Boolean) addLineObj;
-                }
-                if (addLine) {
-                    linePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
-                } else {
-                    linePath = collectionGroup.getBindingInfo().getBindingPath() + "[" + index + "]";
-                }
-            }
-        }
-        return linePath;
-    }
-    
-    public static String replaceLineAttr(String statement, String replacement){
-        if (statement.contains("#line") && StringUtils.isNotEmpty(replacement)) {
-            statement = statement.replace("#line?", replacement);
-            statement = statement.replace("#line", replacement);
-        }
-        return statement;
-    }
 }

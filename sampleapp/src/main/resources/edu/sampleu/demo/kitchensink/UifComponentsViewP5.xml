@@ -190,4 +190,57 @@
 		</property>
 	</bean>
 
+  <bean id="Uif-CollectionRefresh" parent="CollectionGroupSection">
+    <property name="title" value="Collection Group With Refresh"/>
+    <property name="instructionalText" value="This demonstrates refreshes fields and groups within a collection"/>
+    <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="propertyName" value="list5"/>
+    <property name="layoutManager.summaryTitle" value="Line Summary"/>
+    <property name="layoutManager.summaryFields" value="field1"/>
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="field1" p:label="Field 1" p:required="true"/>
+        <bean parent="InputField" p:propertyName="field2" p:label="Field 2" p:required="true"/>
+        <bean parent="FieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
+          <property name="items">
+            <list>
+              <bean parent="InputField" p:propertyName="field3" p:label="Field 3" p:required="true"/>
+              <bean parent="InputField" p:propertyName="field4" p:label="Field 4" p:required="true"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="subCollections">
+      <list>
+        <bean parent="Uif-SubCollectionRefresh" p:refreshWhenChanged="#lp.field2"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-SubCollectionRefresh" parent="CollectionGroup">
+    <property name="title" value="SubCollection With Refresh"/>
+    <property name="instructionalText" value="This demonstrates refreshes within a sub-collection"/>
+    <property name="disclosure.render" value="false"/>
+    <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
+    <property name="propertyName" value="subList"/>
+    <property name="layoutManager.summaryTitle" value="Line Summary"/>
+    <property name="layoutManager.summaryFields" value="field1"/>
+    <property name="items">
+      <list>
+        <bean parent="InputField" p:propertyName="field1" p:label="SubField 1" p:required="true"/>
+        <bean parent="InputField" p:propertyName="field2" p:label="SubField 2" p:required="true"
+              p:progressiveRender="@{#lp.field1 eq 'show2'}"/>
+        <bean parent="FieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
+          <property name="items">
+            <list>
+              <bean parent="InputField" p:propertyName="field3" p:label="SubField 3" p:required="true"/>
+              <bean parent="InputField" p:propertyName="field4" p:label="SubField 4" p:required="true"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

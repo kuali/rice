@@ -220,12 +220,16 @@ public class CollectionGroupBuilder implements Serializable {
 		CollectionLayoutManager layoutManager = (CollectionLayoutManager) collectionGroup.getLayoutManager();
 
 		// copy group items for new line
-        List<? extends Component> lineItems = ComponentUtils.copyComponentList(collectionGroup.getItems(), null);
-        String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
+        List<? extends Component> lineItems = null;
+        String lineSuffix = null;
         if (lineIndex == -1) {
             lineItems = ComponentUtils.copyComponentList(collectionGroup.getAddLineFields(), null);
             lineSuffix = UifConstants.IdSuffixes.ADD_LINE;
+        } else {
+            lineItems = ComponentUtils.copyComponentList(collectionGroup.getItems(), null);
+            lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
         }
+
         if (StringUtils.isNotBlank(collectionGroup.getSubCollectionSuffix())) {
             lineSuffix = collectionGroup.getSubCollectionSuffix() + lineSuffix;
         }
@@ -326,6 +330,8 @@ public class CollectionGroupBuilder implements Serializable {
                 FieldGroup subCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype,
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
+
+                ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex);
 
                 subCollectionFields.add(subCollectionFieldGroup);
             }
@@ -757,7 +763,7 @@ public class CollectionGroupBuilder implements Serializable {
             // set binding path for add line
             String newCollectionLineKey = KRADUtils
                     .translateToMapSafeKey(collectionGroup.getBindingInfo().getBindingPath());
-            String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "[" + newCollectionLineKey + "]";
+            String addLineBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "['" + newCollectionLineKey + "']";
             collectionGroup.getAddLineBindingInfo().setBindingPath(addLineBindingPath);
 
             // if there is not an instance available or we need to clear create

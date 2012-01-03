@@ -94,6 +94,7 @@
               <ref bean="prog1"/>
               <ref bean="prog2"/>
               <ref bean="prog3"/>
+              <ref bean="Uif-CollectionRefresh"/>
             </list>
           </property>
         </bean>

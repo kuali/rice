@@ -16,6 +16,7 @@
 package org.kuali.rice.devtools.pdle;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.log4j.Logger;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversionDefaultImpl;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -28,7 +29,15 @@ import org.kuali.rice.krad.service.impl.PersistenceServiceImplBase;
 import java.util.Collections;
 import java.util.Set;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBase implements PostDataLoadEncryptionService {
+    protected Logger LOG = Logger.getLogger(PostDataLoadEncryptionServiceImpl.class);
+
     private BusinessObjectService businessObjectService;
     private EncryptionService encryptionService;
     private PostDataLoadEncryptionDao postDataLoadEncryptionDao;
@@ -128,6 +137,67 @@ public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBas
 	postDataLoadEncryptionDao.dropBackupTable(getClassDescriptor(businessObjectClass).getFullTableName());
     }
 
+    @Override
+    public boolean doesBackupTableExist(String tableName){
+        return postDataLoadEncryptionDao.doesBackupTableExist(tableName);
+    }
+    
+    @Override
+    public void createBackupTable(String tableName) {
+        postDataLoadEncryptionDao.createBackupTable(tableName);
+        postDataLoadEncryptionDao.addEncryptionIndicatorToBackupTable(tableName);
+    }
+    
+    @Override
+    public void truncateTable(String tableName) {
+        postDataLoadEncryptionDao.truncateTable(tableName);
+    }
+
+    @Override
+    public List<Map<String, String>> retrieveUnencryptedColumnValuesFromBackupTable(String tableName, final List<String> columnNames, int numberOfRowsToCommitAfter) {
+        return postDataLoadEncryptionDao.retrieveUnencryptedColumnValuesFromBackupTable(tableName, columnNames, numberOfRowsToCommitAfter);
+    }
+
+    @Override
+    public boolean performEncryption(final String tableName, final List<Map<String, String>> rowsToEncryptColumnsNameValueMap) throws Exception {
+        List<Map<String, List<String>>> rowsToEncryptColumnNameOldNewValuesMap = new ArrayList<Map<String, List<String>>>();
+        for(Map<String, String> columnsNameValueMap: rowsToEncryptColumnsNameValueMap){
+            rowsToEncryptColumnNameOldNewValuesMap.add(getColumnNamesEncryptedValues(tableName, columnsNameValueMap));
+        }
+        return postDataLoadEncryptionDao.performEncryption(tableName, rowsToEncryptColumnNameOldNewValuesMap); 
+    }
+
+    public Map<String, List<String>> getColumnNamesEncryptedValues(String tableName, final Map<String, String> columnNamesValues) {
+        List<String> oldNewValues = new ArrayList<String>();
+        String columnOldValue;
+        Map<String, List<String>> columnNameOldNewValuesMap = new HashMap<String, List<String>>();
+        for (String columnName: columnNamesValues.keySet()) {
+            try {
+                oldNewValues = new ArrayList<String>();
+                columnOldValue = columnNamesValues.get(columnName);
+                //List chosen over a java object (for old and new value) for better performance
+                oldNewValues.add(PostDataLoadEncryptionDao.UNENCRYPTED_VALUE_INDEX, columnOldValue);
+                oldNewValues.add(PostDataLoadEncryptionDao.ENCRYPTED_VALUE_INDEX, encryptionService.encrypt(columnOldValue));
+                columnNameOldNewValuesMap.put(columnName, oldNewValues);
+            } catch (Exception e) {
+                throw new RuntimeException(new StringBuffer(
+                "PostDataLoadEncryptionServiceImpl caught exception while attempting to encrypt Column ").append(
+                columnName).append(" of Table ").append(tableName).toString(), e);
+            }
+        }
+        return columnNameOldNewValuesMap;
+    }
+
+    @Override
+    public void restoreTableFromBackup(String tableName) {
+        postDataLoadEncryptionDao.dropEncryptionIndicatorFromBackupTable(tableName);
+        postDataLoadEncryptionDao.restoreTableFromBackup(tableName);
+    }
+
+    @Override
+    public void dropBackupTable(String tableName) {
+        postDataLoadEncryptionDao.dropBackupTable(tableName);
+    }    
 
     public void setPostDataLoadEncryptionDao(PostDataLoadEncryptionDao postDataLoadEncryptionDao) {
 	this.postDataLoadEncryptionDao = postDataLoadEncryptionDao;

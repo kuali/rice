@@ -40,6 +40,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * {@link ValidationRuleTypeService} implementation
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase implements ValidationRuleTypeService {
@@ -110,7 +112,13 @@ public final class ValidationRuleTypeServiceImpl extends KrmsTypeServiceBase imp
         return getAttributeFields(krmsTypeId, keyLabels);
     }
 
-
+    /**
+     *
+     * @param krmsTypeId
+     * @param keyLabels Map<String, String> where the key is the VallidationRuleType code with the value being the UI Label.
+     * @return List<RemotableAttributeField> for Validation Rules
+     * @throws RiceIllegalArgumentException if krmsType is null (krmsTypeId lookup returns null)
+     */
     private List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId, Map<String, String> keyLabels) throws RiceIllegalArgumentException {
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
 

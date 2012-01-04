@@ -42,6 +42,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * {@link ValidationActionTypeService} implementation
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org).
  */
 public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase implements ValidationActionTypeService {
@@ -95,8 +97,8 @@ public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase impleme
 
     /**
      *
-     * @return List<RemotableAttributeField>
-     * @throws RiceIllegalArgumentException
+     * @return List<RemotableAttributeField> for Validation Actions
+     * @throws RiceIllegalArgumentException if krmsType is null (krmsTypeId lookup returns null)
      */
     @Override
     public List<RemotableAttributeField> getAttributeFields(@WebParam(name = "krmsTypeId") String krmsTypeId) throws RiceIllegalArgumentException {
@@ -141,6 +143,11 @@ public class ValidationActionTypeServiceImpl extends KrmsTypeServiceBase impleme
         return results;
     }
 
+    /**
+     * Create the Message RemotableAttributeField
+     * @param krmsAttributeDefinition of the Message field
+     * @return RemotableAttributeField for the Message field
+     */
     private RemotableAttributeField createMessageField(KrmsAttributeDefinition krmsAttributeDefinition) {
 
         RemotableTextInput.Builder controlBuilder = RemotableTextInput.Builder.create();

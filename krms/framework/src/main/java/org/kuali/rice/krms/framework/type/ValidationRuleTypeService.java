@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Validation Rule Service
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ValidationRuleTypeService extends RuleTypeService {

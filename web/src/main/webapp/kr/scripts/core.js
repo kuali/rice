@@ -298,7 +298,13 @@ function resizeTheRouteLogFrame() {
   idx1=url.indexOf(pathname);
   idx2=url.indexOf("/",idx1+1);
   baseUrl=url.substr(0,idx2)
-  window.open(baseUrl+"/kr/directInquiry.do?"+queryString, "_blank", "width=640, height=600, scrollbars=yes");
+
+  if (baseUrl.length > 3 && baseUrl.substr(baseUrl.length - 3)=="/kr") {
+    window.open(baseUrl+"/directInquiry.do?"+queryString, "_blank", "width=640, height=600, scrollbars=yes");
+  }
+  else {
+    window.open(baseUrl+"/kr/directInquiry.do?"+queryString, "_blank", "width=640, height=600, scrollbars=yes");
+  }
 }
  
 function textAreaPop(textAreaName, htmlFormAction, textAreaLabel, docFormKey, textAreaReadOnly, textAreaMaxLength) {

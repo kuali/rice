@@ -19,11 +19,29 @@ package org.kuali.rice.krms.framework.engine.expression;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface StringCoercionExtension {
+
+    /**
+     * Can this StringCoercionExtension coerce the given type and value into an Object?
+     * @param type of Object to coerce to.
+     * @param value value to use for coerced type
+     * @return boolean true if this StringCoercionExtension can coerce this type and value
+     */
+    boolean canCoerce(String type, String value);
+
+    /**
+     *
+     * @param type to coerce Object to
+     * @param value to coerce
+     * @return Object of given type with given value
+     */
+    Object coerce(String type, String value);
+
     /**
      * Return Object created from the value passed in.
      *
-     * @param s
-     * @return
+     * @param string to coerce Object from
+     * @return Object coerced from given {@link String}
      */
-    Object coerce(String s);
+    Object coerce(String string);
+    
 }

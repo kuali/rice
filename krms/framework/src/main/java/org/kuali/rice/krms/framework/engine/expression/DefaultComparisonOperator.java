@@ -18,6 +18,7 @@ package org.kuali.rice.krms.framework.engine.expression;
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,7 +27,7 @@ import java.math.BigInteger;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public class DefaultComparisonOperator implements EngineComparatorExtension {
+public class DefaultComparisonOperator implements EngineComparatorExtension, StringCoercionExtension {
 
     @Override
     public int compare(Object lhs, Object rhs) {
@@ -52,11 +53,6 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
             throw new IncompatibleTypeException("DefaultComparisonOperator could not compare values", lhs, rhs.getClass());
         }
     }
-
-    //    @Override
-    //    public Object coerce(String s) {
-    //        return null;
-    //    }
 
     public boolean canCompare(Object lhs, Object rhs) {
         try {
@@ -122,5 +118,39 @@ public class DefaultComparisonOperator implements EngineComparatorExtension {
             }
         }
         return rhs;
+    }
+
+    @Override
+    public Object coerce(String type, String value) {
+        try {
+            Class clazz = Class.forName(type);
+            // Constructor that takes string  a bit more generic than the coerceRhs
+            Constructor constructor = clazz.getConstructor(new Class[]{String.class});
+            Object propObject = constructor.newInstance(type);
+            return propObject;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * This isn't called, but required from interface... always return false.
+     * @param string to coerce Object from
+     * @return
+     */
+    @Override
+    public Object coerce(String string) {
+        return null;  //TODO EGHM
+    }
+
+    /**
+     * This isn't called but required from interface... always returns false.
+     * @param type of Object to coerce to.
+     * @param value value to use for coerced type
+     * @return
+     */
+    @Override
+    public boolean canCoerce(String type, String value) {
+        return false;  //TODO EGHM
     }
 }

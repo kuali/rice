@@ -129,6 +129,7 @@ public enum ComparisonOperator implements Coded {
      * @param rhs
      * @return EngineComparatorExtension
      */
+    // TODO EGHM move to utility class, or service if new possible breakage is okay. AgendaEditorController has similar code with different extension
     private EngineComparatorExtension determineComparatorOperator(Object lhs, Object rhs) {
         EngineComparatorExtension extension = null;
         try {
@@ -139,9 +140,11 @@ public enum ComparisonOperator implements Coded {
                 extension = service.findComparatorExtension(lhs, rhs); // maybe better to get result from service?
             }
         } catch (Exception e) {
-            e.printStackTrace();   // TODO EGHM
+            e.printStackTrace();   // TODO EGHM log
         }
         if (extension == null) {
+            // It's tempting to have findStringCoercionExtension return this default, but if the Service lookup fails we
+            // will be broken in a new way.  Would that be okay? - EGHM
             extension = new DefaultComparisonOperator();
         }
         return extension;

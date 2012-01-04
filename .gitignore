@@ -1,3 +1,7 @@
 target/
 overlays/
+config/ide/
+.svn/
+.settings/
 .gitignore
+.DS_Store

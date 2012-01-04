@@ -76,7 +76,12 @@
       <artifactId>servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
-  </dependencies>
+    <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>rice-development-tools</artifactId>
+          <version>${project.version}</version>
+        </dependency>
+      </dependencies> 
 
   <build>
     <plugins>

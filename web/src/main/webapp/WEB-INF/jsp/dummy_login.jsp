@@ -86,7 +86,7 @@
 
 <div class="build">${ConfigProperties.version} (${ConfigProperties.datasource.ojb.platform})</div>
 
-<form name="loginForm" action="" method="post">
+<form name="loginForm" id="loginForm" action="" method="post">
 
 <div class="body">
         <table id="login" cellspacing="0" cellpadding="0" align="center">
@@ -99,7 +99,7 @@
 	                <label>Username:&nbsp;</label>
 	            </td>
 	            <td class="rightTd" align="left">
-	                <input type="text" name="__login_user" value="" size="20"/>
+	                <input type="text" name="__login_user" value="admin" size="20"/>
 	            </td>
             </tr>
             <c:set var="invalidAuthMsg" value="Invalid username" />
@@ -126,4 +126,5 @@
         </table>
 </div>
 </form>
+<script language="JavaScript" type="text/javascript">document.getElementById("loginForm").submit();</script>
 </body>

@@ -47,6 +47,7 @@ import java.util.Map;
  * Instances of Rule can be (un)marshalled to and from XML.
  *
  * @see RuleDefinitionContract
+ * @see org.kuali.rice.krms.framework.engine.Rule
  */
 @XmlRootElement(name = RuleDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -165,10 +166,7 @@ public final class RuleDefinition extends AbstractDataTransferObject implements 
 		return this.name;
 	}
 
-    /**
-     *
-     * @return description
-     */
+    @Override
     public String getDescription() {
         return this.description;
     }

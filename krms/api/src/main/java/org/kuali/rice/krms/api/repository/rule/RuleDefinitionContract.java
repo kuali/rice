@@ -27,6 +27,11 @@ import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContr
 
 /**
  * Rule Definition Contract
+ *
+ * @see RuleDefinition
+ * @see org.kuali.rice.krms.framework.engine.Rule
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface RuleDefinitionContract extends Identifiable, Inactivatable, Versioned {
     /**

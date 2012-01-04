@@ -83,7 +83,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 			return "principalId:member.memberId,principalName:member.memberName";
         }
 		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
-			return "roleId:member.memberId,roleName:member.memberName";
+			return "id:member.memberId,name:member.memberName";
         }
 		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return "id:member.memberId,name:member.memberName,namespaceCode:member.memberNamespaceCode";

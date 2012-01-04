@@ -166,7 +166,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 			return "principalId:delegationMember.memberId,principalName:delegationMember.memberName";
         }
 		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
-			return "roleId:delegationMember.memberId,roleName:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
+			return "id:delegationMember.memberId,name:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
         }
 		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return "id:delegationMember.memberId,name:delegationMember.memberName,namespaceCode:delegationMember.memberNamespaceCode";
@@ -186,7 +186,7 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 			return "principalId:member.memberId,principalName:member.memberName";
         }
 		else if(MemberType.ROLE.getCode().equals(memberTypeCode)) {
-			return "roleId:member.memberId,roleName:member.memberName,namespaceCode:member.memberNamespaceCode";
+			return "id:member.memberId,name:member.memberName,namespaceCode:member.memberNamespaceCode";
         }
 		else if(MemberType.GROUP.getCode().equals(memberTypeCode)) {
 			return "id:member.memberId,name:member.memberName,namespaceCode:member.memberNamespaceCode";

@@ -316,7 +316,7 @@ public interface RoleService {
     @XmlElementWrapper(name = "memberIds", required = true)
     @XmlElement(name = "memberId", required = false)
     @WebResult(name = "memberIds")
-    @Cacheable(value=RoleMember.Cache.NAME, key="'{getRoleTypeRoleMemberIds} + 'roleId=' + #p0")
+    @Cacheable(value=RoleMember.Cache.NAME, key="'{getRoleTypeRoleMemberIds}' + 'roleId=' + #p0")
     Set<String> getRoleTypeRoleMemberIds(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
 
     @WebMethod(operationName = "findDelegateMembers")

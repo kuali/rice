@@ -229,12 +229,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = agendaEditor.getAgenda();
         AgendaItemBo newAgendaItem = agendaEditor.getAgendaItemLine();
 
-//        if (!validateProposition(newAgendaItem.getRule().getProposition())) {
-        if (false) {
+        if (!validateProposition(newAgendaItem.getRule().getProposition())) {
             String propConstant = newAgendaItem.getRule().getProposition().getParameters().get(1).getValue();
             String propType = newAgendaItem.getRule().getProposition().getParameters().get(0).getValue();
             GlobalVariables.getMessageMap().putError("Proposition Type Creation Error", "Unable to create proposition type " + propType + " using the value " + propConstant + ".");
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
+            // NOTICE short circuit method on invalid proposition
             return super.navigate(form, result, request, response);
         }
 

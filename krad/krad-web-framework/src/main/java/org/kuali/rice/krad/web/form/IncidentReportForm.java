@@ -149,8 +149,7 @@ public class IncidentReportForm extends UifFormBase {
      * @return the exceptionStackTrace
      */
     public String getExceptionStackTrace() {
-        //return this.exceptionStackTrace;
-        return this.exceptionStackTrace.replaceAll("Caused by:", "<BR><BR><B><FONT color=red>Caused by:</FONT></B>").replaceAll("org.kuali.rice", "<B><U><FONT color=green>org.kuali.rice</FONT></U></B>");
+        return this.exceptionStackTrace;
     }
 
     /**

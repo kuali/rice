@@ -1,9 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="rice sampleapp (jetty 7)" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 7.5.1.v20110908">
+  <configuration default="false" name="rice sampleapp (jetty 7)" type="JettyConfiguration" factoryName="Local">
     <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/" />
+    <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/kr-dev/" />
     <option name="COMMON_VM_ARGUMENTS" value="-Xms512m -Xmx1024m -XX:PermSize=256m  -XX:MaxPermSize=512m -Dweb.bootstrap.spring.file=classpath:SampleAppBeans.xml" />
-    <option name="UPDATING_POLICY" value="update-resources" />
     <deployment>
       <artifact name="rice-sampleapp:war exploded">
         <settings DEPLOYMENT_METHOD="contexts">
@@ -154,9 +153,6 @@
             </JettyConfigFile>
             <JettyConfigFile>
               <option name="path" value="etc\jetty-annotations.xml" />
-            </JettyConfigFile>
-            <JettyConfigFile>
-              <option name="path" value="etc/jetty-monitor.xml" />
             </JettyConfigFile>
           </list>
         </option>

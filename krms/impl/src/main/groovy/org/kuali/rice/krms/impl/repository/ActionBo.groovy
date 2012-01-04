@@ -25,7 +25,15 @@ import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.action.ActionDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 
-
+/**
+ * The Action Business Object is the Action mutable class.
+ *
+ * @see ActionDefinition
+ * @see ActionDefinitionContract
+ * @see org.kuali.rice.krms.framework.engine.Action
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ActionBo extends PersistableBusinessObjectBase implements ActionDefinitionContract {
 
 	def String id
@@ -37,7 +45,8 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 	def Integer sequenceNumber
 	
 	def Set<ActionAttributeBo> attributeBos
-	
+
+    @Override
 	public Map<String, String> getAttributes() {
 		HashMap<String, String> attributes = new HashMap<String, String>();
 		for (attr in attributeBos) {
@@ -50,6 +59,10 @@ public class ActionBo extends PersistableBusinessObjectBase implements ActionDef
 		return attributes;
 	}
 
+    /**
+     * Set the Action Attributes
+     * @param attributes to add to this Action
+     */
     public void setAttributes(Map<String, String> attributes) {
         this.attributeBos  = new ArrayList<ActionAttributeBo>();
 

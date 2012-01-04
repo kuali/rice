@@ -39,6 +39,7 @@ import java.util.Map;
  * immutable. 
  * Instances of Action can be (un)marshalled to and from XML.
  *
+ * @see org.kuali.rice.krms.framework.engine.Action
  * @see ActionDefinitionContract
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -207,7 +208,7 @@ public final class ActionDefinition extends AbstractDataTransferObject implement
          * @param typeId
          * @param ruleId
          * @param sequenceNumber
-         * @return Builder
+         * @return an instance of the builder populated with given data
          */
         public static Builder create(String actionId, String name, String namespace, String typeId, String ruleId, Integer sequenceNumber){
         	return new Builder(actionId, name, namespace, typeId, ruleId, sequenceNumber);

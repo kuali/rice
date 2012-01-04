@@ -24,6 +24,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
+ * The default {@link ComparisonOperator}.  If no other {@link EngineComparatorExtension} have been configured to handle
+ * a type, the DefaultComparisonOperator will be used.  At the moment the DefaultComparisonOperator is also the default
+ * {@link StringCoercionExtension} for coercing types.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
@@ -54,6 +58,7 @@ public class DefaultComparisonOperator implements EngineComparatorExtension, Str
         }
     }
 
+    @Override
     public boolean canCompare(Object lhs, Object rhs) {
         try {
             compare(lhs, rhs);
@@ -63,6 +68,13 @@ public class DefaultComparisonOperator implements EngineComparatorExtension, Str
         }
     }
 
+    /**
+     * 
+     * @param lhs
+     * @param rhs
+     * @return Object
+     * @throws IncompatibleTypeException
+     */
     private Object coerceRhs(Object lhs, Object rhs) {
         if (lhs != null && rhs != null) {
             if  (!lhs.getClass().equals(rhs.getClass()) && rhs instanceof String) {
@@ -129,28 +141,12 @@ public class DefaultComparisonOperator implements EngineComparatorExtension, Str
             Object propObject = constructor.newInstance(type);
             return propObject;
         } catch (Exception e) {
-            return null;
+            return null; // TODO EGHM dev log?
         }
     }
 
-    /**
-     * This isn't called, but required from interface... always return false.
-     * @param string to coerce Object from
-     * @return
-     */
-    @Override
-    public Object coerce(String string) {
-        return null;  //TODO EGHM
-    }
-
-    /**
-     * This isn't called but required from interface... always returns false.
-     * @param type of Object to coerce to.
-     * @param value value to use for coerced type
-     * @return
-     */
     @Override
     public boolean canCoerce(String type, String value) {
-        return false;  //TODO EGHM
+        return coerce(type, value) != null;
     }
 }

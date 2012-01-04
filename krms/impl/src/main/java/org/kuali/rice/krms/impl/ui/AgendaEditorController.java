@@ -26,8 +26,12 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krms.api.KrmsApiServiceLocator;
+import org.kuali.rice.krms.api.engine.expression.ComparisonOperatorService;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import org.kuali.rice.krms.framework.engine.expression.DefaultComparisonOperator;
+import org.kuali.rice.krms.framework.engine.expression.StringCoercionExtension;
 import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionType;
@@ -39,7 +43,10 @@ import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
+import org.kuali.rice.krms.impl.repository.TermBo;
+import org.kuali.rice.krms.impl.repository.TermSpecificationBo;
 import org.kuali.rice.krms.impl.rule.AgendaEditorBusRule;
+import org.kuali.rice.krms.impl.util.KRMSPropertyConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -222,7 +229,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaBo agenda = agendaEditor.getAgenda();
         AgendaItemBo newAgendaItem = agendaEditor.getAgendaItemLine();
 
-        //        if (!validateProposition(newAgendaItem.getRule().getProposition())) {
+//        if (!validateProposition(newAgendaItem.getRule().getProposition())) {
         if (false) {
             String propConstant = newAgendaItem.getRule().getProposition().getParameters().get(1).getValue();
             String propType = newAgendaItem.getRule().getProposition().getParameters().get(0).getValue();
@@ -283,23 +290,56 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @param proposition
      * @return if the proposition constant was successfully used to create the proposition type
      */
+    // TODO also wire up to proposition for faster feedback to the user
     private boolean validateProposition(PropositionBo proposition) {
-        // TODO EGHM lookup registered coercion extensions
-        // TODO EGHM also wire up to proposition for faster feedback to the user
         String propConstant = proposition.getParameters().get(1).getValue();
-        String propType = proposition.getParameters().get(0).getValue();
-        try {
-            Class propClass = Class.forName(propType);
-            // Constructor that takes string
-            // TODO EGHM more generic than the coerceRhsHelper.  If that doesn't work then try this?
-            Constructor constructor = propClass.getConstructor(new Class[]{String.class});
-            Object propObject = constructor.newInstance(propConstant);
+        String propTypeKey = proposition.getParameters().get(0).getValue();
+        String propType = lookupPropType(propTypeKey);
+
+        StringCoercionExtension coercionExtension = determineStringCoercionExtension(propType, propConstant);
+        if (coercionExtension.coerce(propType, propConstant) != null) {
             return true;
-        } catch (Exception e) {
-            return false;
         }
+        return false;
     }
 
+    /**
+     * Lookup the {@link org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract} type.
+     * @param key krms_term_t key
+     * @return String the krms_term_spec_t TYP for the given krms_term_t key given
+     */
+    private String lookupPropType(String key) {
+        TermBo term = KRADServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(TermBo.class, key);
+        return term.getSpecification().getType();
+    }
+
+    /**
+     * Return registered {@link org.kuali.rice.krms.framework.engine.expression.StringCoercionExtension} for the given objects
+     * or the {@link org.kuali.rice.krms.framework.engine.expression.DefaultComparisonOperator}. // or StringCoer...
+     * @param type
+     * @param value
+     * @return StringCoercionExtension
+     */
+    // TODO EGHM move to utility class, or service if new possible breakage is okay.  ComparisonOperator has similar code with different extension
+    private StringCoercionExtension determineStringCoercionExtension(String type, String value) {
+        StringCoercionExtension extension = null;
+        try {
+            // If instance is of a registered type, use configured ComparisonOperator
+            // KrmsAttributeDefinitionService service = KRMSServiceLocatorInternal.getService("comparisonOperatorRegistration"); // lotta moves
+            ComparisonOperatorService service = KrmsApiServiceLocator.getComparisonOperatorService();
+            if (service.canCompare(type, value)) {
+                extension = service.findStringCoercionExtension(type, value); // maybe better to get result from service?
+            }
+        } catch (Exception e) {
+            e.printStackTrace();   // TODO EGHM log
+        }
+        if (extension == null) {
+            // It's tempting to have findStringCoercionExtension return this default, but if the Service lookup fails we
+            // will be broken in a new way.  Would that be okay? - EGHM
+            extension = new DefaultComparisonOperator(); // or DefaultStringCoer....?
+        }
+        return extension;
+    }
 
     /**
      * This method returns the agendaId of the given agenda.  If the agendaId is null a new id will be created.

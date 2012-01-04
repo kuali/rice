@@ -21,7 +21,9 @@ import org.kuali.rice.krms.framework.engine.expression.StringCoercionExtension;
 import java.util.List;
 
 /**
- * Service for registering {@link EngineComparatorExtension} for use as a {@link org.kuali.rice.krms.framework.engine.expression.ComparisonOperator}
+ * Interface for registering {@link EngineComparatorExtension} for use as a
+ * {@link org.kuali.rice.krms.framework.engine.expression.ComparisonOperator} when comparing
+ * {@link org.kuali.rice.krms.framework.engine.Proposition} {@link Term}s
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

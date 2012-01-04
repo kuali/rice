@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * {@link ComparisonOperator} Implementation.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ComparisonOperatorServiceImpl implements ComparisonOperatorService {
@@ -88,11 +89,6 @@ public class ComparisonOperatorServiceImpl implements ComparisonOperatorService 
 
     @Override
     public Object coerce(String type, String value) {
-        return null;  //TODO EGHM
-    }
-
-    @Override
-    public Object coerce(String string) {
-        return null;  //TODO EGHM
+        return findStringCoercionExtension(type, value).coerce(type, value);
     }
 }

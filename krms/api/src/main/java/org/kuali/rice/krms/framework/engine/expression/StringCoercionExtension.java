@@ -16,6 +16,9 @@
 package org.kuali.rice.krms.framework.engine.expression;
 
 /**
+ * Interface to extend to implement custom coerce of {@link String}s to an instance of the given type, when when validating
+ * {@link org.kuali.rice.krms.framework.engine.Proposition} {@link org.kuali.rice.krms.api.engine.Term}s
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface StringCoercionExtension {
@@ -35,13 +38,4 @@ public interface StringCoercionExtension {
      * @return Object of given type with given value
      */
     Object coerce(String type, String value);
-
-    /**
-     * Return Object created from the value passed in.
-     *
-     * @param string to coerce Object from
-     * @return Object coerced from given {@link String}
-     */
-    Object coerce(String string);
-    
 }

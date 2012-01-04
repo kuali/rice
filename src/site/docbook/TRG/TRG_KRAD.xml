@@ -132,7 +132,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata 
-                                fileref="../images/KRAD Input Field2.png" align="left" scalefit="1" contentwidth="640"/>
+                                fileref="../images/KRAD-InputField2.png" align="left" scalefit="1" contentwidth="640"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -149,7 +149,7 @@
                 <title>KRAD Conceptual View</title>
                 <mediaobject>
                     <imageobject>
-                    <imagedata fileref="../images/KRAD classes 2.png" align="left" scalefit="1"/>
+                    <imagedata fileref="../images/KRAD-classes2.png" align="left" scalefit="1"/>
                 </imageobject>
                 </mediaobject>
             </figure>    

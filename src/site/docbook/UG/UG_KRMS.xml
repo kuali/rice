@@ -62,7 +62,7 @@
                     <title>KRMS Agenda Editor</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS Agenda Editor.png" align="left" scalefit="1" scale="" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/KRMS-AgendaEditor.png" align="left" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
                 </mediaobject>
                 </figure>
@@ -77,7 +77,7 @@
                     <title>KRMS Agenda Editor with additional attributes displayed</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS Agenda editor with attributes.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/KRMS-AgendaEditorWithAttributes.png" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
                 </mediaobject>
                 </figure>
@@ -95,7 +95,7 @@
                     <title>KRMS Rules Editor</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRMS Rules Editor 1.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/KRMS-RulesEditor1.png" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
                 </mediaobject>
                 </figure>

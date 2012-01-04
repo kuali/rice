@@ -250,7 +250,7 @@
                 <title>PeopleFlow selection on the Main tab in the Kuali Portal</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW-PeopleFlow on main tab in portal.png"
+                    <imagedata fileref="../images/KEW-PeopleFlowOnMainTabInPortal.png"
                         scalefit="1"/>
                 </imageobject>
             </mediaobject>
@@ -263,7 +263,7 @@
                 <title>PeopleFlow Lookup</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/KEW-PeopleFlow lookup.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                    <imagedata fileref="../images/KEW-PeopleFlowLookup.png" scalefit="1" scale="" width="" contentwidth="640"/>
                 </imageobject>
             </mediaobject>
             </figure>
@@ -276,7 +276,7 @@
                 <title>PeopleFlow - Create New</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlow create new.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowCreateNew.png" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -291,7 +291,7 @@
                 <title>PeopleFlow - Create New (with additional type attributes)</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlow create new with type.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowCreateNewWithType.png" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -303,7 +303,7 @@
                 <title>PeopleFlow - Create New - with 2 stops added</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KEW-PeopleFlow adding stops.png" scalefit="1" scale="" width="" contentwidth="640"/>
+                        <imagedata fileref="../images/KEW-PeopleFlowAddingStops.png" scalefit="1" scale="" width="" contentwidth="640"/>
                     </imageobject>
                 </mediaobject>
             </figure>   

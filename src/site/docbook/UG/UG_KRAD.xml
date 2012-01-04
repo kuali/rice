@@ -52,7 +52,7 @@
                     <title>KRAD Conceptual View</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRAD classes 2.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRAD-classes2.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
                 </figure>
@@ -66,8 +66,7 @@
                 <title>KRAD: Relational View</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata
-                            fileref="../images/KRAD-Relational-View.png" scalefit="1"/>
+                        <imagedata fileref="../images/KRAD-Relational-View.png" scalefit="1"/>
                     </imageobject>
                 </mediaobject>
             </figure>
@@ -109,7 +108,7 @@
                  <title>KRAD Conceptual Groupings</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/KRAD ConceptualGroupings2.png" scalefit="1"
+                        <imagedata fileref="../images/KRAD-ConceptualGroupings2.png" scalefit="1"
                             contentdepth="480"/>
                     </imageobject>
                 </mediaobject>
@@ -149,7 +148,7 @@
                     <title>Grid Layout</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD grid layout.png" scalefit="1"/>
+                            <imagedata fileref="../images/KRAD-GridLayout.png" scalefit="1"/>
                         </imageobject>
                     </mediaobject>
                 </figure>
@@ -166,7 +165,7 @@
                         <title>Box Layout</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD Box Layout.png"
+                            <imagedata fileref="../images/KRAD-BoxLayout.png"
                                 contentdepth="400"/>
                         </imageobject>
                     </mediaobject>
@@ -193,7 +192,7 @@
                     <title>Table Layout</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD Table layout.png" scalefit="1"
+                            <imagedata fileref="../images/KRAD-TableLayout.png" scalefit="1"
                                 contentdepth="400"/>
                         </imageobject>
                     </mediaobject>
@@ -220,7 +219,7 @@
                     <title>Stacked layout</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD stacked layout.png"
+                            <imagedata fileref="../images/KRAD-StackedLayout.png"
                                 contentdepth="400"/>
                         </imageobject>
                     </mediaobject>
@@ -255,7 +254,7 @@
                     <title>KRAD Input field - grouped</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/KRAD Input Field2.png"
+                            <imagedata fileref="../images/KRAD-InputField2.png"
                                 contentdepth="400"/>
                         </imageobject>
                     </mediaobject>

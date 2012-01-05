@@ -34,6 +34,7 @@
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KRAD.xml" />
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KRMS.xml" />
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KSB.xml" />
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../UG/UG_KEW_AG.xml" />
     
     <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"  href="../common/glossary.xml" />
 </book>

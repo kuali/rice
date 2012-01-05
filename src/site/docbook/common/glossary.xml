@@ -354,7 +354,7 @@
         <glossentry xml:id="glossary.blanket.approval">
             <glossterm>Blanket Approval</glossterm>
             <glossdef>
-                <para>Authority that is given to designated <glossterm linkend="glossary.reviewers"
+                <para>Authority that is given to designated <glossterm linkend="glossary.reviewer"
                         >Reviewers</glossterm> who can approve a document to a chosen route point. A
                     Blanket Approval bypasses approvals that would otherwise be required in the
                         <glossterm linkend="glossary.routing">Routing</glossterm> For an authorized
@@ -374,7 +374,7 @@
             <glossterm>Branch</glossterm>
             <glossdef>
                 <para>A path containing one or more Route Nodes that a document traverses during
-                    routing. When a document enters a <glossterm linkend="glossary.aplit.node">Split
+                    routing. When a document enters a <glossterm linkend="glossary.split.node">Split
                         Node</glossterm> multiple branches can be created. A <glossterm
                         linkend="glossary.join.node">Join Node</glossterm> joins multiple branches
                     together.</para>
@@ -923,14 +923,14 @@
             <glossterm>Group</glossterm>
             <glossdef>
                 <para>A Group has members that can be either <glossterm
-                        linkend="glossary.principals">Principals</glossterm> or other Groups
+                        linkend="glossary.principal">Principals</glossterm> or other Groups
                     (nested). Groups essentially become a way to organize Entities (via Principal
                     relationships) and other Groups within logical categories.</para>
                 <para>Groups can be given authorization to perform actions within applications by
-                    assigning them as members of <glossterm linkend="glossary.roles"
+                    assigning them as members of <glossterm linkend="glossary.role"
                         >Roles</glossterm>.</para>
                 <para>Groups can also have arbitrary identity information (i.e., <glossterm
-                        linkend="glossary.group.attributes">Group Attributes</glossterm> hanging
+                        linkend="glossary.group.attribute">Group Attributes</glossterm> hanging
                     from them. Group Attributes might be values for "Office Address," "Group
                     Leader," etc.</para>
                 <para>Groups can be maintained at runtime through a user interface that is capable
@@ -1245,8 +1245,8 @@
         <glossentry xml:id="glossary.namespace">
             <glossterm>Namespace</glossterm>
             <glossdef>
-                <para>A Namespace is a way to scope both <glossterm linkend="glossary.permissions"
-                        >Permissions</glossterm> and <glossterm linkend="glossary.entity.attributes"
+                <para>A Namespace is a way to scope both <glossterm linkend="glossary.permission"
+                        >Permissions</glossterm> and <glossterm linkend="glossary.entity.attribute"
                         >Entity Attributes</glossterm> Each Namespace instance is one level of
                     scoping and is one record in the system. For example, "KRA" or "KC" or "KFS"
                     could be a Namespace. Or you could further break those up into finer-grained
@@ -1398,7 +1398,7 @@
                 <para>A developer would code authorization checks in their application against these
                     permissions.</para>
                 <para>Some examples would be: "canSave", "canView", "canEdit", etc.</para>
-                <para>Permissions are aggregated by <glossterm linkend="glossary.roles"
+                <para>Permissions are aggregated by <glossterm linkend="glossary.role"
                         >Roles</glossterm>.</para>
                 <para>Permissions can be maintained at runtime through a user interface that is
                     capable of workflow; however, developers still need to code authorization checks
@@ -1599,10 +1599,10 @@
         <glossentry xml:id="glossary.role">
             <glossterm>Role</glossterm>
             <glossdef>
-                <para>Roles aggregate <glossterm linkend="glossary.permissions"
+                <para>Roles aggregate <glossterm linkend="glossary.permission"
                         >Permissions</glossterm> When Roles are given to <glossterm
-                        linkend="glossary.entities">Entities</glossterm> (via their relationship
-                    with Principals) or <glossterm linkend="glossary.groups">Groups</glossterm> an
+                        linkend="glossary.entity">Entities</glossterm> (via their relationship
+                    with Principals) or <glossterm linkend="glossary.group">Groups</glossterm> an
                     authorization for all associated Permissions is granted.</para>
             </glossdef>
         </glossentry>
@@ -1756,7 +1756,7 @@
             <glossterm>Routing Rule</glossterm>
             <glossdef>
                 <para>A record that contains the data for the <glossterm
-                        linkend="glossary.rule.attributes">Rule Attributes</glossterm> specified in
+                        linkend="glossary.rule.attribute">Rule Attributes</glossterm> specified in
                     a <glossterm linkend="glossary.rule.template">Rule Template</glossterm> It is an
                     instance of a Rule Template populated to determine the appropriate Routing. The
                     Rule includes the Base Attributes, Required Extension Attributes, Responsible

@@ -29,7 +29,7 @@
                 </listitem>
             </itemizedlist>
         </para>
-        <para>Your institution and Kulai Rice based application may use some or all of these KEW features.</para>
+        <para>Your institution and Kuali Rice based application may use some or all of these KEW features.</para>
     </sect1>
     <sect1>
        <title>Document Operation</title>
@@ -39,6 +39,14 @@
             state of the document in the KEW system is consistent with that of the integrating application. It may also be 
             necessary to make modifications to the XML content of a document if, for example, there is a bug in the application 
             integrating with KEW which results in incomplete or insufficient XML content to allow for proper routing.</para>
+        <figure>
+            <title>Initial Screen</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/DocOp_Ex9.png" scalefit="1"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
         <para>The initial screen prompts for the ID of a document to load. The administrator is then presented with a view of 
         the document and can perform various operations on it. The screen is divided into various sections, including:
         <itemizedlist>
@@ -46,22 +54,30 @@
             <listitem><para>Document - simple data associated with the document</para></listitem>
             <listitem><para>Action Requests - the Action Requests associated with the document, includes requests for action 
                 which have already been satisfied</para></listitem>
-            <listitem><para>Actions Taken - The actions which have been taken against this document (i.e. Approved by user X)
+            <listitem><para>Actions Taken - The actions that have been taken against this document (i.e. Approved by user X)
             </para></listitem>
-            <listitem><para>Action Items - Items related to this document which are in users' Action Lists</para></listitem>
-            <listitem><para>Route Node Instances - The node instances which form the document's instantiated route path</para>
+            <listitem><para>Action Items - Items related to this document that are in users' Action Lists</para></listitem>
+            <listitem><para>Route Node Instances - The node instances that form the document's instantiated route path</para>
             </listitem>
             <listitem><para>Branch States - The branches on this document and the state of those branches</para></listitem>
-            <listitem><para>Annotation - An annotation which will show up on the Route Log when the operation is performed.</para>
+            <listitem><para>Annotation - An annotation that will show up on the Route Log when the operation is performed.</para>
             </listitem>
         </itemizedlist></para>
-        <para>Each of the pieces of data within the aforementioned sections has a set of radio buttons at the top which indicates 
+        <para>Each of the pieces of data within the aforementioned sections has a set of radio buttons at the top that indicates 
             Update, Delete, or No Operation. No Operation is the default. If it is desired to change or delete one of these pieces 
             of data then the appropriate button should be selected. This is to guard against unintended or accidental changes 
             to the document.</para>
         <para>Each of the different sections is described in detail below.</para>
         <sect2>
             <title>Document Actions</title>
+            <figure>
+                <title>Document Actions</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_DocumentActions.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>Several functional buttons are added under the Document Action section:
                 <itemizedlist>
                     <listitem><para>Queue Document - Requeuing and reprocessing the document by the engine</para></listitem>
@@ -89,6 +105,14 @@
         </sect2>
         <sect2>
             <title>Document</title>
+            <figure>
+                <title>Document</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_Ex8.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>
                 <itemizedlist>
                     <listitem><para>Document Version - A legacy field indicating whether the document was upgraded from version 2.0 to 2.1</para>
@@ -106,7 +130,7 @@
                     <listitem><para>Route Level Modification Date - Legacy value, no longer used</para></listitem>
                     <listitem><para>Doc Type ID - The ID of the DocumentType definition for this document</para></listitem>
                     <listitem><para>Doc Title - The title of the document</para></listitem>
-                    <listitem><para>Application Doc ID - A special id which can be set by client applications to associate the document to an ID in 
+                    <listitem><para>Application Doc ID - A special id that can be set by client applications to associate the document to an ID in 
                         their system</para></listitem>
                     <listitem><para>Override Indicator - Legacy value, no longer use</para></listitem>
                     <listitem><para>Lock Code - Legacy value, no longer used</para></listitem>
@@ -116,13 +140,21 @@
         </sect2>
         <sect2>
             <title>Action Requests</title>
+            <figure>
+                <title>Action Requests</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_ActionRequest.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>
                 <itemizedlist>
                     <listitem><para>Document Version - A legacy field indicating whether the request was upgraded from version 2.0 to 2.1</para>
                         </listitem>
                     <listitem><para>Document ID - The ID of the associated document</para></listitem>
-                    <listitem><para>Route Node Instance ID - The ID of the node instance which this request is attached to</para></listitem>
-                    <listitem><para>Action Request - The type of action which is requested</para></listitem>
+                    <listitem><para>Route Node Instance ID - The ID of the node instance that this request is attached to</para></listitem>
+                    <listitem><para>Action Request - The type of action that is requested</para></listitem>
                     <listitem><para>Create Date - The date the request was created</para></listitem>
                     <listitem><para>Status - The current status of the request</para></listitem>
                     <listitem><para>Priority - The activation priority of the request</para></listitem>
@@ -139,7 +171,7 @@
                     <listitem><para>Role Name - If the recipient type is "role", the name of the role</para></listitem>
                     <listitem><para>Qualified Role Name - If the recipient type is "role", the value of the qualified role</para></listitem>
                     <listitem><para>Qualified Role Label - If the recipient type is "role", the label for the qualified role</para></listitem>
-                    <listitem><para>Action Taken ID - If this request has been satisfied, the id of the ActionTaken which satisfied the request
+                    <listitem><para>Action Taken ID - If this request has been satisfied, the id of the ActionTaken that satisfied the request
                         </para></listitem>
                     <listitem><para>Ignore Previous - The ignore previous indicator of the request</para></listitem>
                     <listitem><para>Approve Policy - The approve policy of the request (only used by role requests)</para></listitem>
@@ -152,6 +184,14 @@
         </sect2>
         <sect2>
             <title>Actions Taken</title>
+            <figure>
+                <title>Actions Taken</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_ActionsTaken.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>
                 <itemizedlist>
                     <listitem><para>Document ID - The ID of the associated document</para></listitem>
@@ -160,9 +200,9 @@
                     <listitem><para>Action Taken - the type of the action that was taken</para></listitem>
                     <listitem><para>Action Date - the date at which the action was taken</para></listitem>
                     <listitem><para>Action Taken Person ID - the workflow id of the user or delegate who took action</para></listitem>
-                    <listitem><para>Delegator Person ID - if this action was performed by a delegate, the workflow id of the person who's authority was 
+                    <listitem><para>Delegator Person ID - if this action was performed by a delegate, the workflow id of the person whose authority was 
                         delegated</para></listitem>
-                    <listitem><para>Delegator Workgroup ID - if this action was performed by a delegate, the workflow id of the Workgroup who's authority 
+                    <listitem><para>Delegator Workgroup ID - if this action was performed by a delegate, the workflow id of the Workgroup whose authority 
                         was delegated</para></listitem>
                     <listitem><para>Current Indicator - Indicates if the Action Taken is "Current" or not, non-current actions have been revoked by an 
                         action such as ReturnToPreviousNode</para></listitem>
@@ -172,6 +212,14 @@
         </sect2>
         <sect2>
             <title>Action Items</title>
+            <figure>
+                <title>Action Items</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_ActionItems.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>
                 <itemizedlist>
                     <listitem><para>Document ID - The ID of the associated document</para></listitem>
@@ -190,11 +238,19 @@
                     <listitem><para>Document Title - The title of the document</para></listitem>
                 </itemizedlist>
             </para>
-            <para>It is important to note that the ActionItem is a de-normalized representation of an Action Request on the document which is used to render 
+            <para>It is important to note that the ActionItem is a de-normalized representation of an Action Request on the document that is used to render 
                 the Action List in an efficient matter. Therefore, it contains some copies of data from both the document and the request itself.</para>
         </sect2>
         <sect2>
             <title>Route Node Instances</title>
+            <figure>
+                <title>Route Node Instances</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_RouteNode.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>
                 <itemizedlist>
                     <listitem><para>Instance Name - The name of the node</para></listitem>
@@ -209,11 +265,19 @@
                 </itemizedlist>
             </para>
             <para>The Route Node Instances are modeled as a Directed Acyclic Graph starting at the node instance pointed to by the Initial Route Node Instances 
-                field in the Document section. Therefore, if you delete a route node instance, it will follow all links through it's set of Next Route Node 
+                field in the Document section. Therefore, if you delete a route node instance, it will follow all links through its set of Next Route Node 
                 Instances and delete those as well.</para>
         </sect2>
         <sect2>
             <title>Branch States</title>
+            <figure>
+                <title>Branch States</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_Ex6.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>
                 <itemizedlist>
                     <listitem><para>Branch Name - The name of the branch</para></listitem>
@@ -222,15 +286,46 @@
                     <listitem><para>Branch State Value - The value of the branch state</para></listitem>
                 </itemizedlist>
             </para>
-            <para>All documents are required to have at least one branch which is named PRIMARY. Therefore, it is advisable to not rename the PRIMARY branch.
+            <para>All documents are required to have at least one branch that is named PRIMARY. Therefore, it is advisable to not rename the PRIMARY branch.
             </para>
         </sect2>
         <sect2>
             <title>Annotation</title>
+            <figure>
+                <title>Annotation</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/DocOp_Ex7.png" scalefit="1"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
             <para>Here you can enter an annotation explaining the changes being made. This will be logged on the Route Log so that it can be preserved as part 
                 of the audit trail for the document.</para>
             <para>Once the changes have been made on the document operation screen, hit the Save button and the changes will be executed on the server. Remember 
-                that in order for a change to take place the appropriate radio button must be selected on the data which requires modification.</para>
+                that in order for a change to take place the appropriate radio button must be selected on the data that requires modification.</para>
+        </sect2>
+        <sect2>
+            <title>Practical Uses of Document Operation</title>
+            <para>
+                <itemizedlist>
+                    <listitem><para>Requeuing a document that was stuck</para></listitem>
+                    <listitem><para>Moving a document to FINAL</para></listitem>
+                    <listitem><para>Rolling a document back to a previous point in the route path</para></listitem>
+                </itemizedlist>
+            </para>
+            <para>Examples of each are outlined below</para>
+            <sect3>
+                <title>Requeuing a document that was stuck</title>
+                <para></para>
+            </sect3>
+            <sect3>
+                <title>Moving a document to FINAL</title>
+                <para></para>
+            </sect3>
+            <sect3>
+                <title>Rolling a document back to a previous point in the route path</title>
+                <para></para>
+            </sect3>
         </sect2>
     </sect1>
 </chapter>

@@ -20,9 +20,16 @@ import org.kuali.rice.core.api.CoreConstants;
 import javax.xml.ws.WebFault;
 
 /**
- * Subclass of IllegalArgumentException that has been annotated properly to be (un)marshalled as SOAP fault.
- * This class should be used in place of IllegalArgumentException for all services to be exposed remotely
+ * Subclass of IllegalArgumentException that has been annotated properly using JAX-WS to be (un)marshalled as SOAP
+ * fault.  This class should be used in place of IllegalArgumentException for all services to be exposed remotely
  * within Rice.
+ *
+ * <p>Note that even though this is a {@code RuntimeException}, in places where it is used it needs to be explicitly
+ * declared in the {@code throws} declaration of the method.  This ensures that the JAX-WS annotation properly
+ * marshals and unmarshals the exception to and from the appropriate SOAP fault.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 2.0
  */
 @WebFault(name = "IllegalArgumentFault", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 public class RiceIllegalArgumentException extends IllegalArgumentException {

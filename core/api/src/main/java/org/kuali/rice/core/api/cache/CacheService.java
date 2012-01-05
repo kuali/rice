@@ -25,18 +25,28 @@ import javax.jws.soap.SOAPBinding;
 import java.util.Collection;
 
 /**
- * A service that enables executes various tasks on rice's caching infrastructure.
+ * A service which facilitates remote operations against a cache which is deployed using Kuali Rice's core caching
+ * infrastructure.  The only operation currently supported by this service allows for flushing of cache entries based on
+ * a specified collection of {@link CacheTarget} objects.  These cache targets specify information about which cache
+ * entries should be flushed.
+ *
+ * <p>This service exists primarily to support client-side caching of data provided by remote services.  It allows the
+ * host of the service to notify the client application about flush events, which typically result whenever changes
+ * have been made to data such that it would be stale if cached within the client.</p>
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 2.0
  */
-//Specifically leaving off the @WebService annotation because this should be set manually when the service is exported.
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface CacheService {
 
     /**
-     * Flushes an object from the cache based on a cache target.
+     * Flushes an object or group of objects from the cache based on a cache target.
      *
-     * @param cacheTargets the targets to flush. cannot be null or contain null items
-     * @throws IllegalArgumentException if the cacheTargets is null contains a null item.
+     * @param cacheTargets a collection of targets to flush. cannot be null or contain null items
+     * @throws RiceIllegalArgumentException if {@code cacheTargets} is null or contains any null items.
      */
-    @WebMethod(operationName="flush")
+    @WebMethod(operationName = "flush")
     void flush(@WebParam(name = "cacheTargets") Collection<CacheTarget> cacheTargets) throws RiceIllegalArgumentException;
+    
 }

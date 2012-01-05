@@ -20,11 +20,16 @@ import org.springframework.cache.CacheManager;
 import java.util.List;
 
 /**
+ * Allows access to a registry of {@link CacheManager} instances that are identified by name.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since 2.0
  */
 public interface CacheManagerRegistry {
+    
     /**
-     * Will return a list of registered cache managers.  Will not return null.
+     * Will return a list of registered cache managers.  Will not return null but may return an empty list.
+     * 
      * @return a list of cache managers
      */
     List<CacheManager> getCacheManagers();

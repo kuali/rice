@@ -96,10 +96,34 @@
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="67" NM="Namespace"
         NMSPC_CD="KR-NS" OBJ_ID="67F145466E8F9160E0404F8189D86771"
         SRVC_NM="namespacePermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="69" NM="View"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547200326EE0404F8189D87F9A"
+        SRVC_NM="viewPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="7"
         NM="Document Type, Routing Node &amp; Action Information"
         NMSPC_CD="KR-WKFLW" OBJ_ID="5ADF18B6D4C07954E0404F8189D85002"
         SRVC_NM="reviewResponsibilityTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="70" NM="View Edit Mode"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547201326EE0404F8189D87F9A"
+        SRVC_NM="viewEditModePermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="71" NM="View Field"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547202326EE0404F8189D87F9A"
+        SRVC_NM="viewFieldPermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="72" NM="View Group"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547203326EE0404F8189D87F9A"
+        SRVC_NM="viewGroupPermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="73" NM="View Widget"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547204326EE0404F8189D87F9A"
+        SRVC_NM="viewWidgetPermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="74" NM="View Action"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547205326EE0404F8189D87F9A"
+        SRVC_NM="viewActionPermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="75" NM="View Line Field"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547206326EE0404F8189D87F9A"
+        SRVC_NM="viewLineFieldPermissionTypeService" VER_NBR="1"/>
+    <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="76" NM="View Line Action"
+        NMSPC_CD="KR-KRAD" OBJ_ID="B5BA06547207326EE0404F8189D87F9A"
+        SRVC_NM="viewLineActionPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="8"
         NM="Document Type &amp; Routing Node or State" NMSPC_CD="KR-SYS"
         OBJ_ID="5ADF18B6D4C67954E0404F8189D85002"

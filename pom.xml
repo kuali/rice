@@ -91,14 +91,14 @@
     <commons-pool.version>1.5.7</commons-pool.version>
     <commons-validator.version>1.3.1</commons-validator.version>
     <connector-api.version>1.5</connector-api.version>
-    <cxf.version>2.3.7</cxf.version>
+    <cxf.version>2.3.8</cxf.version>
     <db-ojb.version>1.0.4-patch7</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
     <ehcache.version>2.4.7</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
-    <groovy.version>1.8.1</groovy.version>
+    <groovy.version>1.8.5</groovy.version>
     <guava.version>11.0</guava.version>
     <hibernate.version>3.6.7.Final</hibernate.version>
     <mail.version>1.4.4</mail.version>

@@ -118,6 +118,7 @@
     <property name="title" value="Agenda Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />
+    <property name="additionalCssFiles" ref="krms-css" />
     <property name="formPostUrl" value="krmsAgendaInquiry" />
     <property name="items">
       <list>

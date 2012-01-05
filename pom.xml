@@ -58,7 +58,7 @@
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
-    <mysql.jdbc.version>5.1.17</mysql.jdbc.version>
+    <mysql.jdbc.version>5.1.18</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
     <maven.skip.packaging>false</maven.skip.packaging>
     <maven.failsafe.forkmode>once</maven.failsafe.forkmode>

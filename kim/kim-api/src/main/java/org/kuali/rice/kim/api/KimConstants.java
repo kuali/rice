@@ -151,6 +151,7 @@ public final class KimConstants {
         public static final String VIEW_LINE = "View Line";
         public static final String EDIT_LINE_FIELD = "Edit Line Field";
         public static final String VIEW_LINE_FIELD = "View Line Field";
+        public static final String PERFORM_LINE_ACTION = "Perform Line Action";
 
 		private PermissionTemplateNames() {
 			throw new UnsupportedOperationException("do not call");

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.service.impl;
+package org.kuali.rice.krad.kim;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.krad.kim.NamespacePermissionTypeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;

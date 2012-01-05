@@ -24,7 +24,7 @@ import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.permission.PermissionAttributeBo;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.kim.impl.permission.PermissionTemplateBo;
-import org.kuali.rice.krad.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
+import org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
 import org.kuali.test.KRADTestCase;
 
 import java.util.ArrayList;

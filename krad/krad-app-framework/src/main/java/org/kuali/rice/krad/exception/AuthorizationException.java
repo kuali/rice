@@ -22,11 +22,14 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * This class represents an exception that is thrown when a given user is not authorized to take the given action on the given
- * target type.
+ * Represents an exception that is thrown when a given user is not authorized to take the given action on the given
+ * target type
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AuthorizationException extends KualiException {
     private static final long serialVersionUID = -3874239711783179351L;
+
     protected final String userId;
     protected final String action;
     protected final String targetType;
@@ -35,33 +38,35 @@ public class AuthorizationException extends KualiException {
     public AuthorizationException(String userId, String action, String targetType) {
         this(userId, action, targetType, Collections.<String, Object>emptyMap());
     }
-    
+
     /**
      * Constructs a exception with a message from the passed in information.
-     * 
+     *
      * @param userId the userid of the user who failed authorization
      * @param action the action the user was trying to take
      * @param targetType what the user was trying to take action on
-     * @param additionalDetails additional details about the authorization failure to be passed in and added to the exception message (ex: permission name, qualifiers, etc.)
+     * @param additionalDetails additional details about the authorization failure to be passed in and added to the
+     * exception message (ex: permission name, qualifiers, etc.)
      */
-    public AuthorizationException(String userId, String action, String targetType, Map<String, Object> additionalDetails) {
-        this(userId, action, targetType,
-        		"user '" + userId + "' is not authorized to take action '" + action + "' on targets of type '" + targetType + "'" + (additionalDetails != null && !additionalDetails.isEmpty() ? " Additional Details : " + additionalDetails : ""),
-        		additionalDetails);
+    public AuthorizationException(String userId, String action, String targetType,
+            Map<String, Object> additionalDetails) {
+        this(userId, action, targetType, "user '" + userId + "' is not authorized to take action '" + action
+                + "' on targets of type '" + targetType + "'"
+                + (additionalDetails != null && !additionalDetails.isEmpty() ?
+                " Additional Details : " + additionalDetails : ""), additionalDetails);
     }
 
-    /** allows you to construct the exception message manually. */
-    public AuthorizationException(String userId, String action, String targetType, String message, Map<String, Object> additionalDetails) {
+    /**
+     * Allows you to construct the exception message manually
+     */
+    public AuthorizationException(String userId, String action, String targetType, String message,
+            Map<String, Object> additionalDetails) {
         super(message);
 
         this.userId = userId;
         this.action = action;
         this.targetType = targetType;
         this.additionalDetails = additionalDetails;
-    }
-
-    public Map<String, Object> getAdditionalDetails() {
-        return additionalDetails;
     }
 
     public String getUserId() {
@@ -76,9 +81,15 @@ public class AuthorizationException extends KualiException {
         return targetType;
     }
 
+    public Map<String, Object> getAdditionalDetails() {
+        return additionalDetails;
+    }
+
     /**
      * @return message key used by Struts to select the error message to be displayed
+     * @deprecated
      */
+    @Deprecated
     public String getErrorMessageKey() {
         return RiceKeyConstants.AUTHORIZATION_ERROR_GENERAL;
     }

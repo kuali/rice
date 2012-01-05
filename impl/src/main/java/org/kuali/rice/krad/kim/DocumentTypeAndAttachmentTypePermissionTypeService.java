@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.service.impl;
+package org.kuali.rice.krad.kim;
 
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.krad.kim.DocumentTypePermissionTypeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,7 @@ import java.util.Map;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentTypeAndAttachmentTypePermissionTypeService extends
-		DocumentTypePermissionTypeServiceImpl {
+public class DocumentTypeAndAttachmentTypePermissionTypeService extends DocumentTypePermissionTypeServiceImpl {
 
 	@Override
 	protected List<Permission> performPermissionMatches(

@@ -137,4 +137,9 @@
   <bean id="kualiModuleService" class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="kualiModuleService" />
   </bean>
+
+  <bean id="campusGroupTypeService" class="org.kuali.rice.location.service.impl.CampusGroupTypeServiceImpl"/>
+
+  <bean id="campusRoleService" class="org.kuali.rice.location.service.impl.CampusRoleTypeServiceImpl"/>
+
 </beans>

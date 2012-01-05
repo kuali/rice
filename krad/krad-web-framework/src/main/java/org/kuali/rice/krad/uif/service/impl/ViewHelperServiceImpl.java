@@ -716,8 +716,19 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
+        // check top level view edit authorization
+        if (component instanceof View) {
+            if (!view.isReadOnly()) {
+                boolean canEditView = authorizer.canEditView(view, model, user);
+                if (canEditView) {
+                    canEditView = presentationController.canEditView(view, model);
+                }
+                view.setReadOnly(!canEditView);
+            }
+        }
+
         // perform group authorization and presentation logic
-        if (component instanceof Group) {
+        else if (component instanceof Group) {
             Group group = (Group) component;
 
             // if group is not hidden, do authorization for viewing the group
@@ -798,10 +809,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             if (field instanceof ActionField) {
                 ActionField actionField = (ActionField) field;
 
-                boolean canTakeAction = authorizer.canTakeAction(view, model, actionField, actionField.getActionEvent(),
-                        actionField.getId(), user);
+                boolean canTakeAction = authorizer.canPerformAction(view, model, actionField,
+                        actionField.getActionEvent(), actionField.getId(), user);
                 if (canTakeAction) {
-                    canTakeAction = presentationController.canTakeAction(view, model, actionField,
+                    canTakeAction = presentationController.canPerformAction(view, model, actionField,
                             actionField.getActionEvent(), actionField.getId());
                 }
                 actionField.setRender(canTakeAction);

@@ -558,11 +558,11 @@ public class CollectionGroupBuilder implements Serializable {
         // check auth on line actions
         for (ActionField actionField : actions) {
             if (actionField.isRender()) {
-                boolean canPerformAction = authorizer.canTakeLineAction(view, model, collectionGroup,
+                boolean canPerformAction = authorizer.canPerformLineAction(view, model, collectionGroup,
                         collectionGroup.getPropertyName(), line, actionField, actionField.getActionEvent(),
                         actionField.getId(), user);
                 if (canPerformAction) {
-                    canPerformAction = presentationController.canTakeLineAction(view, model, collectionGroup,
+                    canPerformAction = presentationController.canPerformLineAction(view, model, collectionGroup,
                             collectionGroup.getPropertyName(), line, actionField, actionField.getActionEvent(),
                             actionField.getId());
                 }

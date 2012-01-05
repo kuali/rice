@@ -15,7 +15,17 @@
  */
 package org.kuali.rice.krad.lookup;
 
+import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.LookupForm;
+
+import java.util.Map;
 
 /**
  * Implementation of {@link org.kuali.rice.krad.uif.view.ViewAuthorizer} for
@@ -26,4 +36,34 @@ import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
 public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
     private static final long serialVersionUID = 3755133641536256283L;
 
+    /**
+     * Override to check the for permissions of type 'Look Up Records' in addition to the open view check
+     * done in super
+     */
+    @Override
+    public boolean canOpenView(View view, ViewModel model, Person user) {
+        boolean canOpen = super.canOpenView(view, model, user);
+
+        if (canOpen) {
+            LookupForm lookupForm = (LookupForm) model;
+
+            Map<String, String> additionalPermissionDetails;
+            try {
+                additionalPermissionDetails = KRADUtils.getNamespaceAndComponentSimpleName(Class.forName(
+                        lookupForm.getDataObjectClassName()));
+            } catch (ClassNotFoundException e) {
+                throw new RiceRuntimeException(
+                        "Unable to create class for lookup class name: " + lookupForm.getDataObjectClassName());
+            }
+
+            if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+                    KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, additionalPermissionDetails)) {
+                canOpen = isAuthorizedByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+                        KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, user.getPrincipalId(),
+                        additionalPermissionDetails, null);
+            }
+        }
+
+        return canOpen;
+    }
 }

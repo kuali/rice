@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.web.controller;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
@@ -24,20 +23,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.lookup.CollectionIncomplete;
 import org.kuali.rice.krad.lookup.Lookupable;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
-import org.kuali.rice.krad.uif.view.LookupView;
-import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.LookupForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -82,35 +73,6 @@ public class LookupController extends UifControllerBase {
 //        }
     }
 
-    /**
-     * @see UifControllerBase#checkAuthorization(org.kuali.rice.krad.web.form.UifFormBase, java.lang.String)
-     * TODO: this should be moved to authorizer class for lookup view
-     */
-    @Override
-    public void checkAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
-        if (!(form instanceof LookupForm)) {
-            super.checkAuthorization(form, methodToCall);
-        } else {
-            LookupForm lookupForm = (LookupForm) form;
-            try {
-                Class<?> dataObjectClass = Class.forName(lookupForm.getDataObjectClassName());
-                Person user = GlobalVariables.getUserSession().getPerson();
-                // check if user is allowed to lookup object
-                if (!KimApiServiceLocator.getPermissionService()
-                        .isAuthorizedByTemplateName(user.getPrincipalId(), KRADConstants.KRAD_NAMESPACE,
-                                KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
-                                KRADUtils.getNamespaceAndComponentSimpleName(dataObjectClass),
-                                Collections.<String, String>emptyMap())) {
-                    throw new AuthorizationException(user.getPrincipalName(),
-                            KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, dataObjectClass.getSimpleName());
-                }
-            } catch (ClassNotFoundException e) {
-                LOG.warn("Unable to load Data Object Class class: " + lookupForm.getDataObjectClassName(), e);
-                super.checkAuthorization(lookupForm, methodToCall);
-            }
-        }
-    }
-
     @RequestMapping(params = "methodToCall=start")
     @Override
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -123,7 +85,7 @@ public class LookupController extends UifControllerBase {
     }
 
     /**
-     * Just returns as if return with no value was selected.
+     * Just returns as if return with no value was selected
      */
     @Override
     @RequestMapping(params = "methodToCall=cancel")

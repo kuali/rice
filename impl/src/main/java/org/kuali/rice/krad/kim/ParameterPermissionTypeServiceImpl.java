@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.service.impl;
+package org.kuali.rice.krad.kim;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
+import org.kuali.rice.krad.kim.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,8 +29,7 @@ import java.util.Map;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ParameterPermissionTypeServiceImpl extends
-		NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl {
+public class ParameterPermissionTypeServiceImpl extends NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl {
 
     @Override
     protected List<String> getRequiredAttributes() {

@@ -142,45 +142,12 @@ public class UifWebUtils {
                                 request.getRemoteAddr());
                     }
 
-                    // perform authorization of controller method
-                    checkMethodToCallAuthorization(request, controller, form);
-
                     // prepare view instance
                     prepareViewForRendering(request, form);
 
                     // update history for view
                     prepareHistory(request, form);
                 }
-            }
-        }
-    }
-
-    /**
-     * Verify the user is authorized to invoke the controller method according
-     * to the module that owns the functionality. This is done post handle to be
-     * able to access the form and whatever processing was done TODO: should
-     * this be throwing some exception?
-     *
-     * @param request - current HTTP request containing method to call parameter
-     * @param controller - controller that was invoked
-     * @param form - form instance containing the data
-     */
-    public static void checkMethodToCallAuthorization(HttpServletRequest request, UifControllerBase controller,
-            UifFormBase form) {
-        // currently methodToCall must be a regularly parseable request
-        // parameter, so just get from request
-        String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
-
-        if (!controller.getMethodToCallsToNotCheckAuthorization().contains(methodToCall)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("'" + methodToCall + "' not in set of excempt methods: " + controller
-                        .getMethodToCallsToNotCheckAuthorization());
-            }
-
-            controller.checkAuthorization(form, methodToCall);
-        } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("'" + methodToCall + "' is exempt from auth checks.");
             }
         }
     }

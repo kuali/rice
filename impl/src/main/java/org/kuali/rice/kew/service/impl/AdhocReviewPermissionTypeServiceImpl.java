@@ -21,7 +21,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.framework.permission.PermissionTypeService;
 import org.kuali.rice.kim.impl.permission.PermissionBo;
-import org.kuali.rice.krad.service.impl.DocumentTypePermissionTypeServiceImpl;
+import org.kuali.rice.krad.kim.DocumentTypePermissionTypeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;

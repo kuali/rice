@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -124,68 +125,43 @@ public abstract class UifControllerBase {
      */
     protected abstract UifFormBase createInitialForm(HttpServletRequest request);
 
-    private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
-
-    {
-        methodToCallsToNotCheckAuthorization.add("performLookup");
-        methodToCallsToNotCheckAuthorization.add("performQuestion");
-        methodToCallsToNotCheckAuthorization.add("performQuestionWithInput");
-        methodToCallsToNotCheckAuthorization.add("performQuestionWithInputAgainBecauseOfErrors");
-        methodToCallsToNotCheckAuthorization.add("performQuestionWithoutInput");
-        methodToCallsToNotCheckAuthorization.add("performWorkgroupLookup");
-    }
-
     /**
-     * Use to add a methodToCall to the a list which will not have authorization
-     * checks. This assumes that the call will be redirected (as in the case of
-     * a lookup) that will perform the authorization.
-     */
-    protected final void addMethodToCallToUncheckedList(String methodToCall) {
-        methodToCallsToNotCheckAuthorization.add(methodToCall);
-    }
-
-    /**
-     * Returns an immutable Set of methodToCall parameters that should not be
-     * checked for authorization.
-     */
-    public Set<String> getMethodToCallsToNotCheckAuthorization() {
-        return Collections.unmodifiableSet(methodToCallsToNotCheckAuthorization);
-    }
-
-    /**
-     * Override this method to provide controller class-level access controls to
-     * the application.
-     */
-    public void checkAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
-        String principalId = GlobalVariables.getUserSession().getPrincipalId();
-        Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
-        Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
-
-        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId,
-                KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails,
-                roleQualifier)) {
-            throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
-                    methodToCall, this.getClass().getSimpleName());
-        }
-    }
-
-    /**
-     * Override this method to add data from the form for role qualification in
-     * the authorization check
-     */
-    protected Map<String, String> getRoleQualification(UifFormBase form, String methodToCall) {
-        return new HashMap<String, String>();
-    }
-
-    /**
-     * Initial method called when requesting a new view instance which forwards
+     * Initial method called when requesting a new view instance which checks authorization and forwards
      * the view for rendering
      */
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
+        // check view authorization
+        // TODO: this needs to be invoked for each request
+        String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
+        checkViewAuthorization(form, methodToCall);
+
         return getUIFModelAndView(form);
+    }
+
+    /**
+     * Invokes the configured {@link org.kuali.rice.krad.uif.view.ViewAuthorizer} to verify the user has access to
+     * open the view. An exception is thrown if access has not been granted
+     *
+     * <p>
+     * Note this method is invoked automatically by the controller interceptor for each request
+     * </p>
+     *
+     * @param form - form instance containing the request data
+     * @param methodToCall - the request parameter 'methodToCall' which is used to determine the controller
+     * method invoked
+     */
+    public void checkViewAuthorization(UifFormBase form, String methodToCall) throws AuthorizationException {
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        boolean canOpenView = form.getView().getAuthorizer().canOpenView(form.getView(), form, user);
+        if (!canOpenView) {
+            throw new AuthorizationException(user.getPrincipalName(), "open", form.getView().getId(),
+                    "User '" + user.getPrincipalName() + "' is not authorized to open view ID: " + form.getView()
+                            .getId(), null);
+        }
     }
 
     /**

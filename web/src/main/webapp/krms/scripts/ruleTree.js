@@ -146,13 +146,13 @@ function initRuleTree(componentId){
             var selectedItemTracker = getSelectedPropositionInput();
             var selectedItemId = selectedItemTracker.val();
 
-            if (selectedItemId == propositionId) {
+            if ((typeof selectedItemId !== "undefined") && (selectedItemId == propositionId)) {
                 markNodeAsSelected(this.parentNode);
             }
 
             var cutItemTracker = getCutPropositionInput();
             var cutItemId = cutItemTracker.val();
-            if (cutItemId == propositionId) {
+            if ((typeof cutItemId !== "undefined") && (cutItemId == propositionId)) {
                 jq(this.parentNode).addClass('ruleCutSelected');
                 cutItemTracker.val(cutItemId);
             } else {

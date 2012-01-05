@@ -20,7 +20,7 @@
     <info>
         <title>Permission</title>
     </info>
-    <para>Administration > System > Identity > Permission > Inquiry</para>
+    <para>Administration > Identity > Identity > Permission</para>
     <para>The Permission document allows you to create new permissions or edit existing ones. The
         Permission Lookup allows you to search for and view existing permissions. You can view
         summarized information about the permission detail values as well as the roles that are

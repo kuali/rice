@@ -20,7 +20,7 @@
     <info>
         <title>Group</title>
     </info>
-    <para>Administration > System > Identity > Person > Person Lookup > Person</para>
+    <para>Administration > Identity > Identity > Group</para>
     <para>The Group document allows you to associate persons, roles or other groups with each other
         in order to assign the same role to all group members.</para>
     <para>Groups have no inherent permissions or responsibilities of their own. Only by associating

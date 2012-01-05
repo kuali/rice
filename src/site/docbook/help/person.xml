@@ -22,7 +22,7 @@
     </info>
     <sect1>
         <title>Overview</title>
-        <para>Administration > System > Identity > Person > Person Lookup > Person</para>
+        <para>Administration > Identity > Identity > Person</para>
         <para>The Person document allows you to identify each user to KIM (and, by extension, to
             KFS). Each Person document includes data about a user's relationship with your
             institution as well as the roles and groups to which this person belongs.</para>

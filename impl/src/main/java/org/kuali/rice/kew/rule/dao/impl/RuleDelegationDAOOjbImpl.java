@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -164,7 +165,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
         crit.addEqualTo("delegateRule", 1);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleBaseValues.class, crit);
-        query.setAttributes(new String[] { "ruleBaseValuesId" });
+        query.setAttributes(new String[] { "id" });
         return query;
     }
 
@@ -202,10 +203,12 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             }
             workgroupIds = KimApiServiceLocator.getGroupService().getGroupIdsByPrincipalId(principalId);
         }
-        crit.addIn("ruleResponsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups));
+        if (CollectionUtils.isNotEmpty(workgroupIds) || StringUtils.isNotBlank(principalId)) {
+            crit.addIn("ruleResponsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups));
+        }
         crit.addEqualTo("delegateRule", 1);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleBaseValues.class, crit);
-        query.setAttributes(new String[] { "ruleBaseValuesId" });
+        query.setAttributes(new String[] { "id" });
         return query;
         //return (List<RuleDelegation>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
     }

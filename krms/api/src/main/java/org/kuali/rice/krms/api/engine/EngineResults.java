@@ -18,7 +18,8 @@ package org.kuali.rice.krms.api.engine;
 import java.util.List;
 
 /**
- * 
+ * Results of an @{link Engine}'s execution
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface EngineResults {

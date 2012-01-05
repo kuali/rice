@@ -43,7 +43,7 @@ public enum LogicalOperator implements Coded {
 
     /**
      * Create the LogicalOperator from the given code
-     * @param code
+     * @param code to type LogicalOperator as
      */
 	private LogicalOperator(String code){
 		this.code = code;
@@ -62,8 +62,8 @@ public enum LogicalOperator implements Coded {
 
     /**
      * Create a LogicalOperator from the given code
-     * @param code
-     * @return LogicalOperator
+     * @param code used to type LogicalOperator
+     * @return LogicalOperator whose code is given
      * @throws IllegalArgumentException if the code does not exist
      */
 	public static LogicalOperator fromCode(String code) {

@@ -28,18 +28,31 @@ public class RepositoryDataException extends RiceRuntimeException {
 
 	private static final long serialVersionUID = 5856714188298264469L;
 
+    /**
+     * Default constructor
+     */
 	public RepositoryDataException() {
 		super();
 	}
 
+    /**
+     * @param message the exception message
+     * @param cause the root Throwable cause.
+     */
 	public RepositoryDataException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
+    /**
+     * @param message the exception message
+     */
 	public RepositoryDataException(String message) {
 		super(message);
 	}
 
+    /**
+     * @param cause the root Throwable cause.
+     */
 	public RepositoryDataException(Throwable cause) {
 		super(cause);
 	}

@@ -37,13 +37,16 @@ public class EngineResourceUnavailableException extends RiceRuntimeException {
 
 	/**
 	 * @see RiceRuntimeException#RiceRuntimeException(String, Throwable)
-	 */
+     * @param message the exception message
+     * @param cause the root Throwable cause.
+     */
 	public EngineResourceUnavailableException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
 	/**
 	 * @see RiceRuntimeException#RiceRuntimeException(String)
+     * @param message the exception message
 	 */
 	public EngineResourceUnavailableException(String message) {
 		super(message);
@@ -51,6 +54,7 @@ public class EngineResourceUnavailableException extends RiceRuntimeException {
 
 	/**
 	 * @see RiceRuntimeException#RiceRuntimeException(Throwable)
+     * @param cause the root Throwable cause.
 	 */
 	public EngineResourceUnavailableException(Throwable cause) {
 		super(cause);

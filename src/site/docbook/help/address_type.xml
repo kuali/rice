@@ -18,7 +18,7 @@
 -->
 <chapter xml:id="address_type" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
     <title>Address Type</title>
-    <para>Administration > System > Reference > Address Type > Address Type Lookup </para>
+    <para>Administration > Identity > Reference > Address Type </para>
     <para>The Address Type Lookup displays the types of addresses that may be associated with Person
         records in KIM.   </para>
     <note><para>Address types cannot be edited via the interface. Technical assistance is required to add
@@ -45,11 +45,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td> Address Type Code </td>
+                    <td>Address Type Code </td>
                     <td>Display-only. The unique code for this type of address.</td>
                 </tr>
                 <tr>
-                    <td> Address Type Name </td>
+                    <td>Address Type Name </td>
                     <td>Display-only. The familiar title of this address type.</td>
                 </tr>
                 <tr>

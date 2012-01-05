@@ -20,8 +20,7 @@
     <info>
         <title>Country</title>
     </info>
-    <para>Administration > System > Locations > Country > Country Lookup >
-        CountryMaintenanceDocument</para>
+    <para>Administration > Identity > Locations > Country</para>
     <para>The Country Maintenance document is used to assign specific identifying codes to country
         names.</para>
     <para>When the user chooses the <emphasis role="bold">Country</emphasis> option from the menu,

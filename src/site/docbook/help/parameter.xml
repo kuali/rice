@@ -20,24 +20,24 @@
     <info>
         <title>Parameter</title>
     </info>
-    <para>Administration > Configuration > Functional > Parameter > Parameter Lookup >
-        Parameter</para>
-    <para>The Parameter document is used to define parameters and business rules in the KFS. A
-        specific value of a parameter can vary based on what the parameter is used to define. Some
-        parameters create business rules. These rules create restrictions and enforce valid values
-        and combinations on various document types or batch processes. Other parameters simply
-        define institution-specific values not defined elsewhere in KFS. The value may, for example,
-        be text that the KFS is to display in a given location or it may be a simple yes or no value
-        to turn an option on or off.</para>
-    <para>Only members of the KR-SYS Technical Administrator or KFS-SYS Manager role can create or
-        edit Parameter documents.</para>
+    <para>Administration > Configuration > Parameter</para>
+    <para>The Parameter document is used to define parameters and business rules in  Rice and Rice
+        Applications. A specific value of a parameter can vary based on what the parameter is used
+        to define. Some parameters create business rules. These rules create restrictions and
+        enforce valid values and combinations on various document types or batch processes. Other
+        parameters simply define institution-specific values not defined elsewhere in Rice and Rice
+        Applications. The value may, for example, be text that Rice and Rice Applications are to
+        display in a given location or it may be a simple yes or no value to turn an option on or
+        off.</para>
+    <para>Only members of the KR-SYS Technical Administrator or suitable application roles can
+        create or edit Parameter documents.</para>
     <para>The Parameter document does not route for approval.</para>
     <sect1>
         <title>Document Layout</title>
         <para><figure><title>Parameter document</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/parameter_document.jpg"/>
+                    <imagedata fileref="../images/help/parameter_document.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
@@ -63,12 +63,12 @@
                             it from the lookup.</td>
                     </tr>
                     <tr>
-                        <td>Parameter Component </td>
+                        <td>Component </td>
                         <td>Required. Enter the parameter component code or search for it from the
                                 <emphasis role="bold">Parameter Component</emphasis> lookup.</td>
                     </tr>
                     <tr>
-                        <td>Application Namespace</td>
+                        <td>Application ID</td>
                         <td>Required. Enter the application namespace to identify the application to
                             which this parameter applies. Note that the same parameter can have
                             different values for different applications.</td>
@@ -81,8 +81,8 @@
                         <td>Parameter Value</td>
                         <td>Required. Enter the value for the parameter. The nature of a given
                             parameter determines what form the parameter value should take. In some
-                            cases it is text for a KFS user to view or it could be a value such as
-                            an account number or an object code. In cases where multiple values are
+                            cases it is text for a  user to view or it could be a value such as an
+                            account number or an object code. In cases where multiple values are
                             allowed they should be separated by a semi-colon. Consult with technical
                             resources if you are unsure what format a specific parameter value
                             should take.</td>
@@ -100,11 +100,11 @@
                     <tr>
                         <td>Parameter Constraint Code</td>
                         <td>Required. Select <emphasis role="bold">Allowed</emphasis> if the
-                            parameter is to allow the defined parameter value within the KFS
-                            application. Select <emphasis role="bold">Denied </emphasis>if the
-                            parameter is to deny the defined parameter value within the KFS
-                            application. Consult with technical resources if you are unsure of the
-                            appropriate constraint code for a given parameter.</td>
+                            parameter is to allow the defined parameter value within an application.
+                            Select <emphasis role="bold">Denied </emphasis>if the parameter is to
+                            deny the defined parameter value within the application. Consult with
+                            technical resources if you are unsure of the appropriate constraint code
+                            for a given parameter.</td>
                     </tr>
                 </tbody>
             </table>

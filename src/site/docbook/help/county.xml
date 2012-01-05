@@ -20,8 +20,7 @@
     <info>
         <title>County</title>
     </info>
-    <para>Administration > System > Locations > County > County Code Lookup >
-        CountyMaintenanceDocument</para>
+    <para>Administration > Identity > Locations > County</para>
     <para>The County Maintenance document is used to assign specific identifying codes to county
         names.</para>
     <para>When the user chooses the <emphasis role="bold">County</emphasis> option from the
@@ -72,7 +71,8 @@
                     </tr>
                     <tr>
                         <td>Active Indicator</td>
-                        <td>Indicates whether the county code is active or inactive in the KFS. Remove the check mark to deactivate this county code. </td>
+                        <td>Indicates whether the county code is active or inactive. Remove the
+                            check mark to deactivate this county code. </td>
                     </tr>
                 </tbody>
             </table>

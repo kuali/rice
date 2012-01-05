@@ -18,24 +18,23 @@
 -->
 <chapter xml:id="campus" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">
     <title>Campus</title>
-    <para>Administration > System > Locations > Campus > Campus Lookup >
-        CampusMaintenanceDocument</para>
+    <para>Administration > Identity > Locations > Campus</para>
     <para>The CampusMaintenanceDocument is used to identify the different fiscal and physical
-        operating entities of an institution for use in the KFS. A campus may be identified as a
-        fiscal entity, a physical entity, or both.</para>
+        operating entities of an institution. A campus may be identified as a fiscal entity, a
+        physical entity, or both.</para>
     <para>When the user chooses the Campus option, the system displays the Campus Lookup screen.
         After the user selects a campus or clicks the <emphasis role="bold">create new</emphasis>
         button, the system presents the CampusMaintenanceDocument.</para>
     <sect1>
         <title>Document Layout</title>
-        <para><figure><title>CampusMaintenancedocument, create mode</title>
+        <para><figure><title>Campus Maintenance Document, create mode</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/CampusMaintenanceDocument.jpg"/>
+                    <imagedata fileref="../images/help/CampusMaintenanceDocument.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
-        <para>The CampusMaintenanceDocument includes the <emphasis role="bold">Edit
+        <para>The Campus Maintenance Document includes the <emphasis role="bold">Edit
                 Campus</emphasis> tab.</para>
         <para>In edit mode, the<emphasis role="bold"> Edit Campus tab</emphasis> presents a
             display-only set of fields on the left and editable fields on the right in which the
@@ -69,6 +68,10 @@
                         <td>Campus Type Code</td>
                         <td><para>Required. Indicates the type of campus. Valid values are:</para>
                             <para>B - Both</para><para>F - Fiscal</para><para>P - Physical</para></td>
+                    </tr>
+                    <tr>
+                        <td>Active Indicator</td>
+                        <td><para>Check box for showing the Campus as an active one for use.</para></td>
                     </tr>
                 </tbody>
             </table>

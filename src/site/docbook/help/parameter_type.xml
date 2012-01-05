@@ -20,16 +20,15 @@
     <info>
         <title>Parameter Type</title>
     </info>
-    <para>Administration > Configuration > Functional > Parameter Type > Parameter Type Lookup >
-        Parameter Type</para>
-    <para>The parameter type broadly defines what a parameter is used for. In the KFS base data
-        there are only two parameter types: parameters used for document validation  (such as
-        business rules) and parameters used for System Configuration (customizing KFS for your
-        institution).</para>
+    <para>Administration > Configuration > Parameter Type</para>
+    <para>The parameter type broadly defines what a parameter is used for. In an application's base
+        data there may be only two parameter types: parameters used for document validation  (such
+        as business rules) and parameters used for System Configuration (customizing applications
+        for your institution).</para>
     <para>The Parameter Type document allows you to create new or edit existing parameter types.
         Code must be developed to support any additional types or changes to existing types.</para>
-    <para>Only members of the KR-SYS Technical Administrator or KFS-SYS Manager role can create or
-        edit Parameter Type documents and they do not route for approval.</para>
+    <para>Only members of the KR-SYS Technical Administrator or suitable application role can create
+        or edit Parameter Type documents and they do not route for approval.</para>
     <sect1>
         <title>Document Layout</title>
         <para><figure><title>Parameter Type document</title>

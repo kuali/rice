@@ -98,8 +98,8 @@ public enum ComparisonOperator implements Coded {
 
     /**
      * Compare the given objects
-     * @param lhs
-     * @param rhs
+     * @param lhs left hand side object
+     * @param rhs right hand side object
      * @return boolean value of comparison results based on the type of operator.
      */
 	public boolean compare(Object lhs, Object rhs) {
@@ -125,8 +125,8 @@ public enum ComparisonOperator implements Coded {
 
     /**
      * Return registered {@link EngineComparatorExtension} for the given objects or the {@link DefaultComparisonOperator}.
-     * @param lhs
-     * @param rhs
+     * @param lhs left hand side object
+     * @param rhs right hand side object
      * @return EngineComparatorExtension
      */
     // TODO EGHM move to utility class, or service if new possible breakage is okay. AgendaEditorController has similar code with different extension

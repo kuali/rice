@@ -71,8 +71,8 @@ public enum PropositionParameterType implements Coded {
 
     /**
      * Create a PropositionParameterType from the given code
-     * @param code
-     * @return PropositionParameterType
+     * @param code to type the PropositionParameter
+     * @return PropositionParameterType of the given code
      * @throws IllegalArgumentException if the type code does not exist
      */
 	public static PropositionParameterType fromCode(String code) {

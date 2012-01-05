@@ -22,8 +22,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * TODO... 
- * 
+ * Enumeration for PropositionTypes.  SIMPLE or COMPOUND.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -68,8 +68,8 @@ public enum PropositionType implements Coded {
 
     /**
      * Create a PropositionType for the given code
-     * @param code
-     * @return PropositionType
+     * @param code to type the PropositionType
+     * @return PropositionType of the given code
      * @throws IllegalArgumentException if the given code does not exist
      */
 	public static PropositionType fromCode(String code) {

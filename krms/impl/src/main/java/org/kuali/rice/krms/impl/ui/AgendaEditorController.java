@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.lang.StringUtils;
+import org.hsqldb.lib.StringUtil;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.KRADServiceLocator;
@@ -232,7 +233,13 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (!validateProposition(newAgendaItem.getRule().getProposition())) {
             String propConstant = newAgendaItem.getRule().getProposition().getParameters().get(1).getValue();
             String propType = newAgendaItem.getRule().getProposition().getParameters().get(0).getValue();
-            GlobalVariables.getMessageMap().putError("Proposition Type Creation Error", "Unable to create proposition type " + propType + " using the value " + propConstant + ".");
+            if (StringUtils.isBlank(propType)) {
+                propType = "blank";
+            }
+            if (StringUtils.isBlank(propConstant)) {
+                propConstant = "blank";
+            }
+            GlobalVariables.getMessageMap().putError("Proposition Type Creation Error", "Unable to create proposition type: " + propType + " using the value: " + propConstant + ".");
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
             // NOTICE short circuit method on invalid proposition
             return super.navigate(form, result, request, response);
@@ -292,8 +299,25 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     // TODO also wire up to proposition for faster feedback to the user
     private boolean validateProposition(PropositionBo proposition) {
-        String propConstant = proposition.getParameters().get(1).getValue();
-        String propTypeKey = proposition.getParameters().get(0).getValue();
+        if (proposition == null || proposition.getParameters() == null) { // Null props are allowed.
+            return true;
+        }
+
+        String propConstant = null;
+        if (proposition.getParameters().get(1) != null) {
+            propConstant = proposition.getParameters().get(1).getValue();
+        }
+        String propTypeKey = null;
+        if (proposition.getParameters().get(0) != null) {
+           propTypeKey = proposition.getParameters().get(0).getValue();
+        }
+
+        // Both constant and type must be blank/null, or neither
+        if (StringUtils.isBlank(propConstant) && !StringUtils.isBlank(propTypeKey)
+                || !StringUtils.isBlank(propConstant) && StringUtils.isBlank(propTypeKey)) {
+            return false;
+        }
+
         String propType = lookupPropType(propTypeKey);
 
         StringCoercionExtension coercionExtension = determineStringCoercionExtension(propType, propConstant);
@@ -392,6 +416,21 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
         AgendaItemBo node = getAgendaItemById(firstItem, getSelectedAgendaItemId(form));
         AgendaItemBo agendaItemLine = agendaEditor.getAgendaItemLine();
+
+        if (!validateProposition(agendaItemLine.getRule().getProposition())) {
+            String propConstant = agendaItemLine.getRule().getProposition().getParameters().get(1).getValue();
+            String propType = agendaItemLine.getRule().getProposition().getParameters().get(0).getValue();
+            if (StringUtils.isBlank(propType)) {
+                propType = "blank";
+            }
+            if (StringUtils.isBlank(propConstant)) {
+                propConstant = "blank";
+            }
+            GlobalVariables.getMessageMap().putError("Proposition Type Creation Error", "Unable to create proposition type: " + propType + " using the value: " + propConstant + ".");
+            form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
+            // NOTICE short circuit method on invalid proposition
+            return super.navigate(form, result, request, response);
+        }
 
         agendaItemLine.getRule().setAttributes(agendaEditor.getCustomRuleAttributesMap());
         updateRuleAction(agendaEditor);

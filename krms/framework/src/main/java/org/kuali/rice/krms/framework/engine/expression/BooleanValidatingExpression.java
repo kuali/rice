@@ -19,19 +19,24 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.api.engine.IncompatibleTypeException;
 
 /**
- * TODO... 
- * 
+ * The {@link Expression} used in construction, will be invoked with the given {@link ExecutionEnvironment}.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public final class BooleanValidatingExpression implements Expression<Boolean> {
 
 	private final Expression<? extends Object> expression;
-	
+
+    /**
+     * Constructor
+     * @param expression {@link Expression}
+     */
 	public BooleanValidatingExpression(Expression<? extends Object> expression) {
 		this.expression = expression;
 	}
-	
+
+    @Override
 	public Boolean invoke(ExecutionEnvironment environment) {
 		Object result = expression.invoke(environment);
 		if (result instanceof Boolean) {

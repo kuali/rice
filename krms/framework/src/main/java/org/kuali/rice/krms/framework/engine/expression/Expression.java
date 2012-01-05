@@ -18,13 +18,16 @@ package org.kuali.rice.krms.framework.engine.expression;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
- * TODO... 
- * 
+ * Interface for implementing Expressions, invoked on a {@link ExecutionEnvironment}
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public interface Expression<T> {
 
+    /**
+     * @param environment {@link ExecutionEnvironment}
+     * @return T
+     */
 	T invoke(ExecutionEnvironment environment);
 	
 }

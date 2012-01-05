@@ -20,8 +20,8 @@ import org.kuali.rice.krms.api.engine.Term;
 import org.kuali.rice.krms.api.engine.TermResolutionException;
 
 /**
- * TODO...
- *
+ * An implementation of {@link Expression} which resolves the given {@link Term}.
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -31,7 +31,7 @@ public final class TermExpression implements Expression<Object> {
 
     /**
      * Create a TermExpression with the given value
-     * @param term
+     * @param term {@link Term} to invoke upon.
      */
 	public TermExpression(Term term) {
 		this.term = term;

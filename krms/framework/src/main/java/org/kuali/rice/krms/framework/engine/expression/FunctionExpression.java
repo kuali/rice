@@ -22,8 +22,8 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 import org.kuali.rice.krms.framework.engine.Function;
 
 /**
- * TODO...
- * 
+ * An implementation of {@link Expression} which invokes a {@link Function} with the results of the invocation of the given
+ * List of {@link Expression}s (of the given {@link ExecutionEnvironment}).
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
@@ -33,9 +33,10 @@ public final class FunctionExpression implements Expression<Object> {
 	private final List<Expression<? extends Object>> arguments;
 
     /**
-     * Creata a FunctionExpression with the given values
-     * @param function
-     * @param arguments
+     * Create a FunctionExpression with the given values.
+     * @param function {@link Function} to be invoked using the invoked results of the given List of {@link Expression}s
+     * @param arguments List of {@link Expression}s to be invoked whose results (of the given {@link ExecutionEnvironment})
+     * will be used to invoke the given {@link Function}.
      */
 	public FunctionExpression(Function function,
 			List<Expression<? extends Object>> arguments) {

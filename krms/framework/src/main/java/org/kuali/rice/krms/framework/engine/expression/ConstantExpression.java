@@ -18,8 +18,7 @@ package org.kuali.rice.krms.framework.engine.expression;
 import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
- * TODO...
- * 
+ * The {@link Expression} used in Construction will be returned when invoked with any given {@link ExecutionEnvironment}
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */

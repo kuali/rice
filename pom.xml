@@ -116,7 +116,7 @@
     <jsr311-api.version>1.1.1</jsr311-api.version>
     <jstl.version>1.2</jstl.version>
     <jta.version>1.1</jta.version>
-    <junit.version>4.9</junit.version>
+    <junit.version>4.10</junit.version>
     <log4j.version>1.2.16</log4j.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!--

@@ -74,9 +74,9 @@
             <para>(more in progress here)</para>
         </sect2>
     </sect1>
-    <section>
+    <sect1>
         <title>KRAD's User Interface Framework</title>
-        <section>
+        <sect2>
             <title>UIF Overview</title>
             <para>KRAD introduces the concept of a "View" and a hierarchy of pieces which can be
                 added to a view.  A view can represent a whole page or even, in some cases, multiple
@@ -114,16 +114,17 @@
                 </mediaobject>
                 </figure>
             </para>
-        </section>
-    </section>
-    <section>
+        </sect2>
+    </sect1>
+    <sect1>
         <title>KRAD Design Components</title>
-        <section>
+        <sect2>
             <title>Overview of Design Components built into KRAD</title>
-        </section>
-        <section>
+            <para></para>
+        </sect2>
+        <sect2>
             <title>KRAD Layout Managers</title>
-            <section>
+            <sect3>
                 <title>Overview of Layout Managers</title>
                 <para>Controls, Fields, and Widgets - and even other Groups - can be encapsulated in
                     a Container. The question then becomes how KRAD will lay out those
@@ -134,8 +135,8 @@
                     with a certain algorithm.  In this first version of KRAD, there are 4 layout
                     managers for collections (and developers can create additional ones):  Grid,
                     Box, Table, and Stack.  See material below for additional details. </para>
-            </section>
-            <section>
+            </sect3>
+            <sect3>
                 <title>Grid Layout Manager</title>
                 <para>The GridLayoutManager places sub-Components into a set of side-by-side
                     columns. For those familiar with KNS, when a maintenance document copies a
@@ -153,8 +154,8 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </section>
-            <section>
+            </sect3>
+            <sect3>
                 <title>Box Layout Manager</title>
                 <para>There's also the BoxLayoutManager, which works just like the BoxLayoutManager
                     in the Java AWT. Nesting Groups with different BoxLayoutManager aspects provides
@@ -171,8 +172,8 @@
                     </mediaobject>
                     </figure>
                 </para>
-            </section>
-            <section>
+            </sect3>
+            <sect3>
                 <title>Table Layout Manager</title>
                 <para>When laying out the rendering of collections, TableLayoutManager provides a
                     lot of power for rendering that data in a tabular fashion. The
@@ -198,8 +199,8 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </section>
-            <section>
+            </sect3>
+            <sect3>
                 <title>Stack Layout Manager</title>
                 <para>When rendering a Collection, maybe a TableLayoutManager is too much of a
                     straight jacket for each row. Perhaps, for each row in a Collection, a whole
@@ -225,9 +226,9 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </section>
-        </section>
-        <section>
+            </sect3>
+        </sect2>
+        <sect2>
             <title>KRAD  Fields</title>
             <para>Developers need ways to interact with the users, to put up text and images, to
                 create interactive and informative web pages in their applications. To accomplish
@@ -240,7 +241,7 @@
             <para>Think of all the different kinds of visual elements on a page: images, buttons,
                 messages, even blank space. Each of these elements can be encapsulated in different
                 kinds of fields.  </para>
-            <section>
+            <sect3>
                 <title>KRAD Input Fields</title>
                 <para>An Input field enables user input. This means that this "grouped" field
                     control will display an entry field for user input, and can optionally include
@@ -260,25 +261,28 @@
                     </mediaobject>
                 </figure>
                 </para>
-            </section>
-            <section>
+            </sect3>
+            <sect3>
                 <title>Other KRAD Fields </title>
                 <para>There are many other field types provided by KRAD, but none are as complex and
                     rich as the input field.  For a full list, see the "KRAD Conceptual View - KRAD
                     classes" in the Architecture Overview section above.</para>
-            </section>
-        </section>
-        <section>
+            </sect3>
+        </sect2>
+        <sect2>
             <title>Some key KRAD extensions beyond KNS concepts</title>
-            <section>
+            <sect3>
                 <title>Progressive Disclosure</title>
-            </section>
-            <section>
+                <para></para>
+            </sect3>
+            <sect3>
                 <title>Multi-value Lookups</title>
-            </section>
-            <section>
+                <para></para>
+            </sect3>
+            <sect3>
                 <title>(other...)</title>
-            </section>
-        </section>
-    </section>
+                <para></para>
+            </sect3>
+        </sect2>
+    </sect1>
 </chapter>

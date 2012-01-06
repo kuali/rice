@@ -28,6 +28,8 @@ import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
 /**
  *
+ * An implementation of {@link Proposition} which holds other Propositions and a {@link LogicalOperator}.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class CompoundProposition implements Proposition {

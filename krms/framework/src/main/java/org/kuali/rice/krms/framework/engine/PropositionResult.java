@@ -19,7 +19,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- *
+ * PropositionResults are returned by {@link Proposition}'s evaluate method.
+ * @see Proposition evaluate
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PropositionResult {

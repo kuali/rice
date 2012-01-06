@@ -26,7 +26,7 @@ import org.kuali.rice.krms.framework.engine.expression.ComparisonOperator;
 import org.kuali.rice.krms.framework.engine.result.BasicResult;
 
 /**
- *
+ * An implementation of {@link Proposition} which uses a {@link ComparisonOperator} and {@link Term}
  * @param <T>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -40,8 +40,8 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 
     /**
      * Create a ComparableTermBasedProposition with the given values
-     * @param operator
-     * @param term
+     * @param operator {@link ComparisonOperator}
+     * @param term {@link Term}
      * @param expectedValue
      */
 	public ComparableTermBasedProposition(ComparisonOperator operator, Term term, T expectedValue) {
@@ -71,7 +71,7 @@ public class ComparableTermBasedProposition<T> implements Proposition {
 	/**
 	 * This method does the actual comparison of the term value w/ the expected value
 	 *
-	 * @param termValue
+	 * @param termValue Comparable which makes up the {@link ComparisonOperator}.compare() left hand side object
 	 * @return the boolean result of the comparison
 	 */
 	protected boolean compare(Comparable<T> termValue) {

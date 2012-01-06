@@ -23,8 +23,7 @@ import org.kuali.rice.krms.framework.engine.Proposition;
 import org.kuali.rice.krms.framework.engine.PropositionResult;
 
 /**
- * TODO... 
- * 
+ * An implementation of {@link Proposition} which uses a given {@link Expression}<Boolean>
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */

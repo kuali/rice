@@ -22,7 +22,7 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 
 /**
  * Interface for logical propositions that may be executed in the {@link Engine}.
- * 
+ * @see PropositionResult
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Proposition {

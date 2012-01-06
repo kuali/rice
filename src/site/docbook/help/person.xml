@@ -24,26 +24,25 @@
         <title>Overview</title>
         <para>Administration > Identity > Identity > Person</para>
         <para>The Person document allows you to identify each user to KIM (and, by extension, to
-            KFS). Each Person document includes data about a user's relationship with your
-            institution as well as the roles and groups to which this person belongs.</para>
+            Rice applications). Each Person document includes data about a user's relationship with
+            your institution as well as the roles and groups to which this person belongs.</para>
         <para>In KIM a person is a unique combination of an 'entity ID' and a 'principal ID.' The
             entity ID represents a person with a unique number, and the document associates the
             entity ID with the user's principal ID number and principal name (often referred to as a
             user name or user ID). When searching for or working with users in KIM, you usually
             reference either the principal ID or the principal name. A single entity ID can have
-            multiple principals associated with it, but the base KFS implementation of KIM assumes
-            that each entity ID has only a single principal.</para>
+            multiple principals associated with it</para>
         <para>Note that initiation of the Person document is restricted to members of the KR-SYS
-            Technical Administrator or KFS-SYS Manager role.</para>
+            Technical Administrator or similar application specific role.</para>
         <para><note>
             <title>Note: Person and HRIS System</title>
             <para>Many institutions choose to override parts of the Person document (especially
-                affiliations and contact information) with data from an HR system. Therefore,
-                editing entity data (such as entity ID, principal name, principal ID, password and
-                Tax ID Number ), contact and affiliation data is not available for any role in the
-                default role configuration. If you wish to allow users to edit this data via the
-                interface you will need to assign the 'Modify Entity' permission to the appropriate
-                role.</para>
+                    affiliations and contact information) with data from an HR system. Therefore,
+                    editing entity data (such as entity ID, principal name, principal ID, and
+                    password), contact and affiliation data is not available for any role in the
+                    default role configuration. If you wish to allow users to edit this data via the
+                    interface you will need to assign the 'Modify Entity' permission to the
+                    appropriate role.</para>
         </note></para>
         
     </sect1>
@@ -55,7 +54,7 @@
         <figure><title>Person Document</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/person_document.jpg"/>
+                    <imagedata fileref="../images/help/person_document.png" scalefit="1" contentwidth="800"/>
                 </imageobject>
              </mediaobject>
         </figure>
@@ -79,11 +78,8 @@
                             <tbody>
                                 <tr>
                                     <td>Entity Id</td>
-                                    <td><para>Display-only. The unique ID number identifying this
-                                        person in your database. An individual may have multiple
-                                        principal IDs but only one entity ID. The base KFS
-                                        implementation assumes that each user will have only one
-                                        entity ID and one principal ID.</para>
+                                    <td><para>Display-only. The unique ID number identifying this person in your database. An individual may
+                                        have multiple principal IDs but only one entity ID. </para>
                                         <para>The system completes this entry automatically when you
                                             save or submit the document.</para>
                                     </td>
@@ -101,11 +97,6 @@
                                         to be identified.</td>
                                 </tr>
                                 <tr>
-                                    <td>Tax Identification Number</td>
-                                    <td>Required. Enter the Individual Tax Identification Number
-                                        (ITIN) for this principal ID.</td>
-                                </tr>
-                                <tr>
                                     <td>Principal Password</td>
                                     <td>Optional. Enter the password for this principal
                                         ID.</td>
@@ -115,10 +106,6 @@
                                     <td>Check the box to indicate that this principal ID is
                                         active. Uncheck the box to indicate that this principal ID
                                         is inactive.</td>
-                                </tr>
-                                <tr>
-                                    <td>Actions</td>
-                                    <td>Click the 'Add' button to add the information.</td>
                                 </tr>
                             </tbody>
                     </table></para>
@@ -189,7 +176,7 @@
                     <title>Faculty and staff Employment Information</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/help/employment_information.png"/>
+                            <imagedata fileref="../images/help/employment_information.png" scalefit="1" contentwidth="800"/>
                         </imageobject>
                     </mediaobject>
                     </figure></para>
@@ -206,7 +193,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Employment ID</td>
+                                    <td>Employee ID</td>
                                     <td>Optional. Enter the Employment ID number associated with
                                         this faculty or staff affiliation. Ordinarily this entry is
                                         the ID number identifying this principal in your HR
@@ -269,11 +256,8 @@
                                 </tr>
                                 <tr>
                                     <td>Primary Department Code</td>
-                                    <td>Optional. Enter the code for the department associated
-                                        with this faculty or staff affiliation. The KFS-SYS User
-                                        role parses this field to determine the default chart and
-                                        organization for a user if it is formatted as
-                                        'Chart-Organization Code' such as BL-PSY or BA-PARK.</td>
+                                    <td>Optional. Enter the code for the department associated with
+                                    this faculty or staff affiliation.</td>
                                 </tr>
                                 <tr>
                                     <td>Add</td>
@@ -295,7 +279,7 @@
             <para><figure><title>Contact tab</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/help/contact_tab.png"/>
+                        <imagedata fileref="../images/help/contact_tab.png" scalefit="1" contentwidth="800"/>
                     </imageobject>
                 </mediaobject>
             </figure></para>
@@ -304,7 +288,7 @@
                 <para><figure><title>Names section</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/help/contact_names.png"/>
+                            <imagedata fileref="../images/help/contact_names.png" scalefit="1" contentwidth="800"/>
                         </imageobject>
                     </mediaobject>
                 </figure></para>
@@ -321,7 +305,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Name Type</td>
+                                <td>Name Code</td>
                                 <td><para>Optional. Select the type of name to be added in this row.
                                     Options include:<itemizedlist>
                                         <listitem>
@@ -336,7 +320,7 @@
                                     </itemizedlist></para></td>
                             </tr>
                             <tr>
-                                <td>Title</td>
+                                <td>Name Prefix</td>
                                 <td><para>Optional. Select the appropriate title for the name being added
                                     in this row. Options include:<itemizedlist>
                                         <listitem>
@@ -362,7 +346,7 @@
                                 <td>Optional. Enter the last name for this record.</td>
                             </tr>
                             <tr>
-                                <td>Suffix</td>
+                                <td>Name Suffix</td>
                                 <td><para>Optional. Select a suffix for this name record. Options include:<itemizedlist>
                                         <listitem>
                                             <para>Jr</para>
@@ -404,7 +388,7 @@
                 <para><figure><title>Addresses section</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/help/contact_addresses.png"/>
+                            <imagedata fileref="../images/help/contact_addresses.png" scalefit="1" contentwidth="800"/>
                         </imageobject>
                     </mediaobject>
                 </figure></para>
@@ -445,7 +429,7 @@
                                 <td>Optional. Enter the city associated with this address.</td>
                             </tr>
                             <tr>
-                                <td>State</td>
+                                <td>State / Province</td>
                                 <td>Optional. Select the state associated with this address from the
                                     list.</td>
                             </tr>
@@ -483,7 +467,7 @@
                 <para><figure><title>Phone Numbers section</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/help/contact_email_addresses.png"/>
+                            <imagedata fileref="../images/help/contact_phone_numbers.png" scalefit="1" contentwidth="800"/>
                         </imageobject>
                     </mediaobject>
                 </figure></para>
@@ -555,7 +539,7 @@
                 <title>Email Addresses Section</title>
                 <para><figure><title>Email Addresses section</title><mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/help/contact_email_addresses.png"/>
+                            <imagedata fileref="../images/help/contact_email_addresses.png" scalefit="1" contentwidth="800"/>
                         </imageobject>
                     </mediaobject>
                 </figure></para>
@@ -624,7 +608,7 @@
                 role. </para></caution>
             <figure><title>Privacy Preferences tab</title><mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/help/privacy_preferences_tab.png"/>
+                            <imagedata fileref="../images/help/privacy_preferences_tab.png" scalefit="1" contentwidth="800"/>
                         </imageobject>
                     </mediaobject>
             </figure>
@@ -647,8 +631,7 @@
                         </tr>
                         <tr>
                             <td>Suppress Personal</td>
-                            <td>Optional. Do not display this person's personal data. This selection
-                                currently performs no function in KFS.</td>
+                            <td>Optional. Do not display this person's personal data.</td>
                         </tr>
                         <tr>
                             <td>Suppress Phone</td>
@@ -678,7 +661,7 @@
                 responsibilities.</emphasis></para>
             <para><figure><title>Membership tab</title><mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/help/membership_tab.jpg"/>
+                        <imagedata fileref="../images/help/membership_tab.png" scalefit="1" contentwidth="800"/>
                     </imageobject>
                 </mediaobject>
             </figure></para>
@@ -893,9 +876,9 @@
         </sect2>
         <sect2>
             <title>Routing</title>
-            <para>Only members of the KFS-SYS Manager or KR-SYS Technical Administrator roles can
-                initiate Person documents. In the KFS base data configuration, the KIM Person
-                document does not route for approval.</para>
+            <para>Only members of the KR-SYS Technical Administrator or similar application specific
+                roles can initiate Person documents.  In base Rice, person documents do not route
+                for approval.</para>
         </sect2>
     </sect1>
 </chapter>

@@ -25,8 +25,8 @@
         ones. The Responsibility Lookup allows you to search for and view existing responsibilities.
         You can view summarized information about the responsibility detail values as well as the
         roles with which the responsibility is currently associated.</para>
-    <para>Only members of the KFS-SYS Technical Administrator or KFS-SYS Manager role can create or
-        modify a Responsibility document and it does not route for approval. Information about the
+    <para>Only members of a qualified, application specific role can create or modify a
+        Responsibility document and it does not route for approval. Information about the
         Responsibility document follows detailed information about the Responsibility Lookup
         below.</para>
     <warning><para>Caution should be exercised when modifying existing responsibilities or adding new ones.
@@ -101,9 +101,14 @@
                         appropriate group name.</td>
                 </tr>
                 <tr>
-                    <td>Attributes</td>
+                    <td>Attribute Value</td>
                     <td>Optional. To find a responsibility based on a specific responsibility detail
                         value associated with it, enter the value.</td>
+                </tr>
+                <tr>
+                    <td>Active Indicatior</td>
+                    <td>Defaults to Yes. Opiton to search for Responsibilities that are active, not ative,
+                        or across both.</td>
                 </tr>
             </tbody>
         </table>
@@ -111,7 +116,7 @@
     <para><figure><title>Responsibility Lookup results</title>
         <mediaobject>
             <imageobject>
-                <imagedata fileref="../images/help/responsibility_lookup_results.jpg"/>
+                <imagedata fileref="../images/help/responsibility_lookup_results.png"/>
             </imageobject>
         </mediaobject></figure></para>
     <para>The Responsibility results display contains the fields described in the table
@@ -155,8 +160,7 @@
                 <tr>
                     <td>Responsibility Name</td>
                     <td><para>The name of this responsibility. In most cases the responsibility name will be the same as the
-                            associated template name ('Review').</para><para>Like permission names, responsibility names are not unique. Most KFS responsibilities have a
-                            name of 'Review.</para></td>
+                            associated template name ('Review').</para><para>Like permission names, responsibility names are not unique.</para></td>
                 </tr>
                 <tr>
                     <td>Responsibility Detail Values</td>
@@ -199,7 +203,7 @@
         different format.</para>
     <para><figure><title>Responsibility Inquiry</title><mediaobject>
             <imageobject>
-                <imagedata fileref="../images/help/responsibility_inquiry.jpg"/>
+                <imagedata fileref="../images/help/responsibility_inquiry.png"/>
             </imageobject>
         </mediaobject>
     </figure></para>
@@ -211,7 +215,7 @@
         <para><figure><title>Responsibility document</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/responsibility_document.jpg"/>
+                    <imagedata fileref="../images/help/responsibility_document.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
@@ -324,11 +328,7 @@
                             <td><para>Optional. In most cases this field should be blank. It can be used as an additional identifier
                                     KIM will use to choose the correct responsibility information
                                     for a given doc type. The document type must pass the provided
-                                    identifier to KIM.</para>
-                            <para>This is only used in the KFS based data for the routing of group
-                                    documents. The group type ID is populated here and determines
-                                    how the document routes (Chart and Organization type groups do
-                                    organization review routing and default group types do not). </para></td>
+                                    identifier to KIM.</para></td>
                         </tr>
                     </tbody>
                 </table>

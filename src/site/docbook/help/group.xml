@@ -35,7 +35,7 @@
         <para><figure><title>Group document</title>
             <mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/group_layout.jpg"/>
+                    <imagedata fileref="../images/help/group_layout.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
@@ -47,7 +47,7 @@
             require.</para>
         <para><figure><title>Group Overview tab</title><mediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/group_overview.jpg"/>
+                    <imagedata fileref="../images/help/group_overview.png"/>
                 </imageobject>
             </mediaobject>
         </figure></para>
@@ -91,82 +91,14 @@
                             choice for assigning to roles. Uncheck the box to indicate that this
                             group is inactive (no longer valid when making role assignments).</td>
                     </tr>
+                    <tr>
+                        <td>Group Description</td>
+                        <td>An optional explaination of the group's need and use.</td>
+                    </tr>
                 </tbody>
             </table>
         </para>
-        <sect2>
-            <title>Creating New Groups</title>
-            <para>When you click the Create New button the system displays the KIM Type Lookup
-                screen. You must search for and select an existing Type in order for the system to
-                generate a new Group document.</para>
-            <para><figure><title>KIM Type Lookup</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/help/kim_type_lookup.jpg"/>
-                    </imageobject>
-                </mediaobject>
-            </figure></para>
-            <para>This lookup is used whenever you create a new group or role. The search attributes
-                are explained below.</para>
-            <para>
-                <table frame="border">
-                    <caption>KIM Type Lookup definition</caption>
-                    <col width="50%"/>
-                    <col width="50%"/>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Namespace Code</td>
-                            <td>Optional. Select the code identifying the application and module
-                                this KIM type pertains to. </td>
-                        </tr>
-                        <tr>
-                            <td>Type Name</td>
-                            <td>Optional. Enter the name identifying this KIM type. </td>
-                        </tr>
-                        <tr>
-                            <td>Type Identifier</td>
-                            <td>Optional. Enter the unique system-assigned identifying number for
-                                this KIM type.</td>
-                        </tr>
-                        <tr>
-                            <td>Active Indicator</td>
-                            <td>Required (defaults to 'Yes'). Change the default selection to view
-                                KIM types that are inactive or are both active and inactive. </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </para>
-            <para>The display of search results includes the same fields as the Lookup screen. To
-                select the type you want to use for your new group, click the <emphasis role="bold"
-                    >return value</emphasis> link for it.</para>
-            <para><figure><title>KIM Type Lookup search results</title>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata fileref="../images/help/kim_type_lookup_search_results.jpg"/>
-                    </imageobject>
-                </mediaobject>
-            </figure></para>
-        </sect2>
-    </sect1>
-    <sect1>
-        <title>Attributes Tab</title>
-        <para>This tab contains any attributes specific to this group's type. For example, if a
-            group has a type of Chart and Organization, this tab will record the Chart and
-            Organization values that are specific to this group. In the example below a Chart Code
-            and Organization Code are required for establishing groups of this type.</para>
-        <para><figure><title>Attributes tab</title>
-            <mediaobject>
-                <imageobject>
-                    <imagedata fileref="../images/help/group_attributes.jpg"/>
-                </imageobject>
-            </mediaobject>
-        </figure></para>
+
     </sect1>
     <sect1>
         <title>Assignees Tab</title>
@@ -174,7 +106,7 @@
             members or edit the values associated with existing members.</para>
         <para><inlinemediaobject>
                 <imageobject>
-                    <imagedata fileref="../images/help/group_assignees.jpg"/>
+                    <imagedata fileref="../images/help/group_assignees.png"/>
                 </imageobject>
             </inlinemediaobject></para>
         <para>
@@ -190,7 +122,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Member Type Code</td>
+                        <td>Type Code</td>
                         <td>Required. Select the type of member you are adding to this group. Group
                             members can be principals (as defined on the Person document), roles or
                             other groups. </td>
@@ -205,7 +137,7 @@
                             selection.</td>
                     </tr>
                     <tr>
-                        <td>Member Name</td>
+                        <td>Name</td>
                         <td>Display only. Displays the name of the member you've selected.</td>
                     </tr>
                     <tr>

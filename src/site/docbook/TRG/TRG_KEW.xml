@@ -6853,11 +6853,11 @@ EDL EDoclite Example
         <sect2>
             <title>Custom Search Screen</title>
             <para>As an example of customizing a Document Search screen, we’ll use a customized
-                    <emphasis role="bold">Delete Course Request</emphasis> screen:</para>
-            <figure><title>Custom Search Screen: Delet Course Request Example</title>
+                    <emphasis role="bold">Offer Request</emphasis> screen:</para>
+            <figure><title>Custom Search Screen:Offer Request Example</title>
                 <mediaobject>
                     <imageobject>
-                        <imagedata fileref="../images/delete_course_request.png"/>
+                        <imagedata fileref="../images/offer_request_search.png" scalefit="1" contentwidth="800"/>
                     </imageobject>
                 </mediaobject>
             </figure>

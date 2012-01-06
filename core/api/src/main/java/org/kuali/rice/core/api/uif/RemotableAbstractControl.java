@@ -17,7 +17,6 @@ package org.kuali.rice.core.api.uif;
 
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.kuali.rice.core.api.mo.ModelObjectComplete;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -28,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RemotableAbstractControl.Constants.TYPE_NAME)
-public abstract class RemotableAbstractControl extends AbstractDataTransferObject implements Control {
+public abstract class RemotableAbstractControl extends AbstractDataTransferObject implements RemotableControlContract {
 
     /**
      * Should only be invoked by JAXB.
@@ -38,7 +37,7 @@ public abstract class RemotableAbstractControl extends AbstractDataTransferObjec
 
     }
 
-    public abstract static class Builder implements Control, ModelBuilder {
+    public abstract static class Builder implements RemotableControlContract, ModelBuilder {
         protected Builder() {
             super();
         }

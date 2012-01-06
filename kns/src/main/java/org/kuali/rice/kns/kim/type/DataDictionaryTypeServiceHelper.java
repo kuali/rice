@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.kim.type;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.uif.Control;
+import org.kuali.rice.core.api.uif.RemotableControlContract;
 import org.kuali.rice.core.api.uif.RemotableAbstractControl;
 import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
@@ -199,7 +199,7 @@ public final class DataDictionaryTypeServiceHelper {
         }
         ad.setRequired(attr.isRequired());
 
-        final Control control = field.getAttributeField().getControl();
+        final RemotableControlContract control = field.getAttributeField().getControl();
 
         if (control != null) {
             ControlDefinition d = toControlDefinition(control, ad);
@@ -221,7 +221,7 @@ public final class DataDictionaryTypeServiceHelper {
     }
 
     /** WARNING HACK! this may set the OptionsFinder instance on the passed in KimAttributeDefinition! */
-    private static ControlDefinition toControlDefinition(Control control, KimAttributeDefinition containingAttribute) {
+    private static ControlDefinition toControlDefinition(RemotableControlContract control, KimAttributeDefinition containingAttribute) {
         if (control instanceof RemotableCheckboxGroup) {
             containingAttribute.setOptionsFinder(KeyValuesFinderFactory.fromMap(((RemotableCheckboxGroup) control).getKeyLabels()));
             CheckboxControlDefinition checkbox = new CheckboxControlDefinition();

@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.uif.RemotableAbstractWidget;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableCheckbox;
 import org.kuali.rice.core.api.uif.RemotableCheckboxGroup;
+import org.kuali.rice.core.api.uif.RemotableControlContract;
 import org.kuali.rice.core.api.uif.RemotableDatepicker;
 import org.kuali.rice.core.api.uif.RemotableHiddenInput;
 import org.kuali.rice.core.api.uif.RemotableQuickFinder;
@@ -382,7 +383,7 @@ public class ComponentFactory {
         if (remotableField.getControl() != null) {
             Control control = null;
 
-            org.kuali.rice.core.api.uif.Control remotableControl = remotableField.getControl();
+            RemotableControlContract remotableControl = remotableField.getControl();
             if (remotableControl instanceof RemotableHiddenInput) {
                 control = getHiddenControl();
             } else if (remotableControl instanceof RemotableRadioButtonGroup) {

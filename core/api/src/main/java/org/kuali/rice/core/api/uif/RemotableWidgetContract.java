@@ -16,12 +16,7 @@
 package org.kuali.rice.core.api.uif;
 
 /**
- * A Select Group for a Select Control.
+ * An interface that all Widgets implement.
  */
-public interface SelectGroup extends KeyLabeled {
-    /**
-     * The label for the select group select group. Cannot be null or blank.
-     * @return the label
-     */
-    String getLabel();
+public interface RemotableWidgetContract {
 }

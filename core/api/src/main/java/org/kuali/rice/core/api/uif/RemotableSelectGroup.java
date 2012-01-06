@@ -46,7 +46,7 @@ import java.util.Map;
         RemotableSelectGroup.Elements.KEY_LABELS,
         RemotableSelectGroup.Elements.LABEL,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class RemotableSelectGroup implements SelectGroup, ModelObjectComplete {
+public final class RemotableSelectGroup implements RemotableSelectGroupContract, ModelObjectComplete {
 
     @XmlElement(name = Elements.KEY_LABELS, required = true)
     @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
@@ -98,7 +98,7 @@ public final class RemotableSelectGroup implements SelectGroup, ModelObjectCompl
         return ToStringBuilder.reflectionToString(this);
     }
 
-    public static final class Builder implements SelectGroup, ModelBuilder {
+    public static final class Builder implements RemotableSelectGroupContract, ModelBuilder {
         private String label;
         private Map<String, String> keyLabels;
 

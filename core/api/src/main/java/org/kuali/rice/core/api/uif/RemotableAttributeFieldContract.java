@@ -22,7 +22,7 @@ import java.util.Collection;
  * It also contains preferred rendering instructions for an attribute. ie when rendering an attribute
  * in a user interface use this control with these widgets.
  */
-public interface AttributeField {
+public interface RemotableAttributeFieldContract {
 
     /**
      * The name of the attribute.  Cannot be null or blank.
@@ -141,14 +141,14 @@ public interface AttributeField {
      * The control associated with the attribute.  Can be null.
      * @return the control.
      */
-    Control getControl();
+    RemotableControlContract getControl();
 
     /**
      * The widgets for the attribute. Will always return an immutable list.
      *
      * @return collection of widgets
      */
-    Collection<? extends Widget> getWidgets();
+    Collection<? extends RemotableWidgetContract> getWidgets();
 
     /**
      * If this method returns a non-null value, it defines various settings for this attribute whenever

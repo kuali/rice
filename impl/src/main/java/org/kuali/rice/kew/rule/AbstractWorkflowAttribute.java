@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kns.web.ui.Row;
 
 import java.util.Collections;
@@ -48,11 +48,11 @@ public abstract class AbstractWorkflowAttribute implements WorkflowRuleAttribute
         return Collections.EMPTY_LIST;
     }
 
-    public List<? extends AttributeError> validateRoutingData(Map paramMap) {
+    public List<? extends RemotableAttributeErrorContract> validateRoutingData(Map paramMap) {
         return Collections.EMPTY_LIST;
     }
 
-    public List<? extends AttributeError> validateRuleData(Map paramMap) {
+    public List<? extends RemotableAttributeErrorContract> validateRuleData(Map paramMap) {
         return Collections.EMPTY_LIST;
     }
 

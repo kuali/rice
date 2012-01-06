@@ -16,7 +16,7 @@
 package org.kuali.rice.core.api.uif;
 
 /**
- * An interface that all Widgets implement.
+ * An interface that all Controls implement.
  */
-public interface Widget {
+public interface RemotableControlContract {
 }

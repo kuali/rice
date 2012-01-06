@@ -36,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @see AttributeField for more info.
+ * @see RemotableAttributeFieldContract for more info.
  */
 @XmlRootElement(name = RemotableAttributeField.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -61,7 +61,7 @@ import java.util.List;
 		RemotableAttributeField.Elements.CONTROL,
 		RemotableAttributeField.Elements.WIDGETS,
 		CoreConstants.CommonElements.FUTURE_ELEMENTS })
-public final class RemotableAttributeField extends AbstractDataTransferObject implements AttributeField {
+public final class RemotableAttributeField extends AbstractDataTransferObject implements RemotableAttributeFieldContract {
 
     @XmlElement(name = Elements.NAME, required = true)
     private final String name;
@@ -298,7 +298,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
     }
 
     @Override
-    public Control getControl() {
+    public RemotableControlContract getControl() {
         return control;
     }
 
@@ -338,7 +338,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
         return null;
     }
     
-    public static final class Builder implements AttributeField, ModelBuilder {
+    public static final class Builder implements RemotableAttributeFieldContract, ModelBuilder {
         private String name;
         private DataType dataType;
         private String shortLabel;
@@ -374,7 +374,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
             return new Builder(name);
         }
 
-        public static Builder create(AttributeField field) {
+        public static Builder create(RemotableAttributeFieldContract field) {
             if (field == null) {
                 throw new IllegalArgumentException("field was null");
             }
@@ -405,7 +405,7 @@ public final class RemotableAttributeField extends AbstractDataTransferObject im
 
             final List<RemotableAbstractWidget.Builder> temp = new ArrayList<RemotableAbstractWidget.Builder>();
             if (field.getWidgets() != null) {
-                for (Widget w : field.getWidgets()) {
+                for (RemotableWidgetContract w : field.getWidgets()) {
                     temp.add(WidgetCopy.toBuilder(w));
                 }
             }

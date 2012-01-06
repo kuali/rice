@@ -18,7 +18,7 @@ package org.kuali.rice.core.api.uif;
 import java.util.List;
 
 /** A select control. */
-public interface Select extends Sized, KeyLabeled {
+public interface RemotableSelectContract extends Sized, KeyLabeled {
 
     /**
      * Gets an immutable list of Grouped keyLabel pairs.  When this list is non-empty,
@@ -26,7 +26,7 @@ public interface Select extends Sized, KeyLabeled {
      *
      * @return the list of groups.
      */
-    List<? extends SelectGroup> getGroups();
+    List<? extends RemotableSelectGroupContract> getGroups();
 
     /**
      * Whether the select control allows selection of multiple values.  defaults to false.

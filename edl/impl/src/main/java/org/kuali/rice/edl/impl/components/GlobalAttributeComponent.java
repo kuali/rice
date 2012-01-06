@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.edl.impl.components;
 
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
 import org.kuali.rice.edl.impl.RequestParser;
@@ -90,13 +90,13 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 				// validate if they are taking an action on the document (i.e. it's annotatable)
 				boolean curAttrValid = true;
 				if (edlContext.getUserAction().isValidatableAction()) {
-				    List<? extends AttributeError> errors = document.validateAttributeDefinition(attributeDefBuilder.build());
+				    List<? extends RemotableAttributeErrorContract> errors = document.validateAttributeDefinition(attributeDefBuilder.build());
 					if (!errors.isEmpty()) {
 						edlContext.setInError(true);
 						curAttrValid = false;
 					}
 					Map<String, String> fieldErrors = (Map<String, String>)edlContext.getRequestParser().getAttribute(RequestParser.GLOBAL_FIELD_ERRORS_KEY);
-					for (AttributeError error : errors) {
+					for (RemotableAttributeErrorContract error : errors) {
 					    fieldErrors.put(error.getAttributeName(), error.getMessage());
 					}
 				}

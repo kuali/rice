@@ -32,7 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -44,7 +43,7 @@ import org.w3c.dom.Element;
 @XmlType(name = RemotableAttributeError.Constants.TYPE_NAME,
         propOrder = {RemotableAttributeError.Elements.ATTRIBUTE_NAME, RemotableAttributeError.Elements.ERRORS,
                 CoreConstants.CommonElements.FUTURE_ELEMENTS})
-public final class RemotableAttributeError extends AbstractDataTransferObject implements AttributeError {
+public final class RemotableAttributeError extends AbstractDataTransferObject implements RemotableAttributeErrorContract {
 
     @XmlElement(name = Elements.ATTRIBUTE_NAME, required = false)
     private final String attributeName;
@@ -105,7 +104,7 @@ public final class RemotableAttributeError extends AbstractDataTransferObject im
             throw new IllegalArgumentException("errors is null");
         }
 
-        for (AttributeError error : errors) {
+        for (RemotableAttributeErrorContract error : errors) {
             if (attributeName.equals(error.getAttributeName())) {
                 return true;
             }
@@ -146,9 +145,9 @@ public final class RemotableAttributeError extends AbstractDataTransferObject im
 
     /**
      * A builder which can be used to construct {@link RemotableAttributeError} instances.  Enforces the constraints of
-     * the {@link AttributeError}.
+     * the {@link RemotableAttributeErrorContract}.
      */
-    public static final class Builder implements Serializable, ModelBuilder, AttributeError {
+    public static final class Builder implements Serializable, ModelBuilder, RemotableAttributeErrorContract {
 
         private String attributeName;
         private List<String> errors = new ArrayList<String>();
@@ -176,7 +175,7 @@ public final class RemotableAttributeError extends AbstractDataTransferObject im
             return b;
         }
 
-        public static Builder create(AttributeError contract) {
+        public static Builder create(RemotableAttributeErrorContract contract) {
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }

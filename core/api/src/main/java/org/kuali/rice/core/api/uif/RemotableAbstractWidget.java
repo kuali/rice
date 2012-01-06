@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = RemotableAbstractWidget.Constants.TYPE_NAME)
-public abstract class RemotableAbstractWidget extends AbstractDataTransferObject implements Widget {
+public abstract class RemotableAbstractWidget extends AbstractDataTransferObject implements RemotableWidgetContract {
 
     /**
      * Should only be invoked by JAXB.
@@ -37,7 +37,7 @@ public abstract class RemotableAbstractWidget extends AbstractDataTransferObject
 
     }
 
-    public abstract static class Builder implements Widget, ModelBuilder {
+    public abstract static class Builder implements RemotableWidgetContract, ModelBuilder {
         Builder() {
             super();
         }

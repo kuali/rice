@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Defines a list of one or more errors for an attribute.
  */
-public interface AttributeError {
+public interface RemotableAttributeErrorContract {
 
     /**
      * The name of the attribute.  Will never be a blank or null string.

@@ -18,7 +18,7 @@ package org.kuali.rice.edl.impl.components;
 import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -68,11 +68,11 @@ public class AttributeEDLConfigComponent extends SimpleWorkflowEDLConfigComponen
 
             // validate if they are taking an action on the document (i.e. it's annotatable)
             if (edlContext.getUserAction().isValidatableAction()) {
-                List<? extends AttributeError> errors = document.validateAttributeDefinition(attributeDef);
+                List<? extends RemotableAttributeErrorContract> errors = document.validateAttributeDefinition(attributeDef);
                 if (!errors.isEmpty()) {
                     getEdlContext().setInError(true);
                 }
-                for (AttributeError error : errors) {
+                for (RemotableAttributeErrorContract error : errors) {
                     MatchingParam param = getMatchingParam(matchingParams, error.getAttributeName());
                     // if it doesn't match a param, then this is a global error
                     if (param == null) {

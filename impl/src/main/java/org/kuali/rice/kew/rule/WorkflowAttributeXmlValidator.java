@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 
 import java.util.List;
 
@@ -33,6 +33,6 @@ public interface WorkflowAttributeXmlValidator {
      * called after client has set properties on the attribute for 'xmlizing'.  Returns 
      * @return List<? extends AttributeError> objects
      */
-    public List<? extends AttributeError> validateClientRoutingData();
+    public List<? extends RemotableAttributeErrorContract> validateClientRoutingData();
     
 }

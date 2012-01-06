@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.api.uif.AttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.kew.rule.GenericWorkflowAttribute;
 import org.kuali.rice.kns.web.ui.Field;
@@ -104,15 +104,15 @@ public class DestinationRuleAttribute extends GenericWorkflowAttribute {
         return props;
     }
 
-	public List<? extends AttributeError> validateRoutingData(Map paramMap) {
+	public List<? extends RemotableAttributeErrorContract> validateRoutingData(Map paramMap) {
 		return validateInputMap(paramMap);
 	}
 
-	public List<? extends AttributeError> validateRuleData(Map paramMap) {
+	public List<? extends RemotableAttributeErrorContract> validateRuleData(Map paramMap) {
 		return validateInputMap(paramMap);
 	}
 
-    private List<? extends AttributeError> validateInputMap(Map paramMap) {
+    private List<? extends RemotableAttributeErrorContract> validateInputMap(Map paramMap) {
     	List errors = new ArrayList();
     	this.destination = (String) paramMap.get(DEST_FIELD_KEY);
     	if (this.destination == null  && required) {

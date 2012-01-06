@@ -20,8 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.api.uif.AttributeError;
-import org.kuali.rice.core.api.uif.RemotableAttributeError;
+import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kew.api.identity.Id;
 import org.kuali.rice.kew.api.identity.PrincipalId;
 import org.kuali.rice.kew.api.rule.RoleName;
@@ -170,8 +169,8 @@ public class TestRuleAttribute implements WorkflowRuleAttribute, RoleAttribute, 
 		return (List<String>)qualifiedRoles.get(qualifiedRoleName);
 	}
 
-	public List<AttributeError> validateClientRoutingData() {
-		return new ArrayList<AttributeError>();
+	public List<RemotableAttributeErrorContract> validateClientRoutingData() {
+		return new ArrayList<RemotableAttributeErrorContract>();
 	}
 
 }

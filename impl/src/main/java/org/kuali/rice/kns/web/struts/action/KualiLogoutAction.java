@@ -41,14 +41,10 @@ public class KualiLogoutAction extends Action {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String redirectString = null;
-        
-        // can't check for the existence of a simple parameter, so catch exception and
-        // defualt to config parameter
-        try {
-            redirectString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.LOGOFF_REDIRECT_URL_PARAMETER);
-        }
-        catch(IllegalArgumentException ex) {
+
+        String redirectString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.LOGOFF_REDIRECT_URL_PARAMETER);
+
+        if(redirectString == null) {
             redirectString = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.LOGOFF_REDIRECT_URL_PROPERTY);
         }
         

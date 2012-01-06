@@ -27,8 +27,10 @@
   <c:set var="style" value="style=\"${field.headerStyle}\""/>
 </c:if>
 
-<c:set var="headerOpenTag" value="<${field.headerLevel} ${style} ${styleClass}>"/>
-<c:set var="headerCloseTag" value="</${field.headerLevel}>"/>
+<c:if test="${!empty field.headerLevel}">
+  <c:set var="headerOpenTag" value="<${field.headerLevel} ${style} ${styleClass}>"/>
+  <c:set var="headerCloseTag" value="</${field.headerLevel}>"/>
+</c:if>
 
 <c:if test="${!empty field.headerDivStyleClasses}">
   <c:set var="divStyleClass" value="class=\"${field.headerDivStyleClasses}\""/>
@@ -39,10 +41,8 @@
 </c:if>
 
 <krad:div component="${field}">
-  <c:if test="${!empty field.headerText}">
-    <div id="${field.id}_header" ${divStyleClass} ${divStyle}>
+  <c:if test="${!empty field.headerLevel && !empty field.headerText && field.headerText != '&nbsp;'}">
         ${headerOpenTag}${field.headerText}${headerCloseTag}
-    </div>
   </c:if>
   
   <%-- render header group --%>

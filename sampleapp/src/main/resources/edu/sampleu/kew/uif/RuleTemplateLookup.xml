@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="RuleTemplate-LookupView" parent="LookupView">
+  <bean id="RuleTemplate-LookupView" parent="Uif-LookupView">
     <property name="title" value="Rule Template Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplateBo" />
     <property name="defaultSortAttributeNames">
@@ -31,17 +31,17 @@
     </property>  
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="description" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="description" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="description" />
-        <bean parent="InputField" p:propertyName="delegationTemplate.name" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="description" />
+        <bean parent="Uif-InputField" p:propertyName="delegationTemplate.name" />
       </list>
     </property>
   </bean>

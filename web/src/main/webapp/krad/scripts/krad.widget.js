@@ -407,7 +407,7 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
         var groupAccordionSpanId = groupId + "_group";
 
         // perform initial open/close and insert toggle link and image
-        var headerText = jq("#" + headerId + "_header > :header").html();
+        var headerText = jq("#" + headerId + "_div > :header").html();
         if (defaultOpen) {
             jq("#" + groupAccordionSpanId).slideDown(000)
             headerText = expandImage + headerText;
@@ -417,8 +417,8 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
             headerText = collapseImage + headerText;
         }
 
-        jq("#" + headerId + "_header > :header").html(headerText);
-        jq("#" + headerId + "_header > :header").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
+        jq("#" + headerId + "_div > :header").html(headerText);
+        jq("#" + headerId + "_div > :header").wrap("<a href='#' id='" + groupToggleLinkId + "'>");
 
         // perform slide and switch image
         if (defaultOpen) {
@@ -453,14 +453,14 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapseImgS
 /**
  * Expands all the disclosure divs on the page
  */
-function expandDisclosure() {
+function expandDisclosures() {
     jq('img[alt="collapse"]').click();
 }
 
 /**
  * Collapses all the disclosure divs on the page
  */
-function collapseDisclosure() {
+function collapseDisclosures() {
     jq('img[alt="expand"]').click();
 }
 

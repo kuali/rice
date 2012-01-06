@@ -23,7 +23,7 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="FiscalOfficer-InquiryView" parent="FormView">
+  <bean id="FiscalOfficer-InquiryView" parent="Uif-FormView">
     <property name="id" value="FiscalOfficer-InquiryView" />
     <property name="title" value="Fiscal Officer Inquiry" />
     <property name="navigation">
@@ -32,7 +32,7 @@
     <property name="entryPageId" value="page1" />
     <property name="items">
       <list>
-        <bean parent="Page_Disclosure" p:id="page1">
+        <bean parent="Uif-Disclosure-Page" p:id="page1">
           <property name="items">
             <list>
               <ref bean="FiscalOfficer-InquiryView-Section1" />
@@ -45,15 +45,15 @@
       value="org.kuali.rice.kns.web.struts.form.InquiryForm" />
   </bean>
 
-  <bean id="FiscalOfficer-InquiryView-Section1" parent="GroupSectionGridLayout">
+  <bean id="FiscalOfficer-InquiryView-Section1" parent="Uif-Disclosure-GridSection">
     <property name="id" value="FiscalOfficer-InquiryView-Section1" />
     <property name="title" value="Fiscal Officer" />
     <property name="instructionalText" value="A Fiscal Officer." />
     <property name="fieldBindByNamePrefix" value="dataObject" />
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="userName" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="userName" />
       </list>
     </property>
   </bean> 

@@ -151,19 +151,19 @@
   
   <!-- KRAD Inquiry Definition -->   
   
-  <bean id="State-InquiryView" parent="InquiryView">
+  <bean id="State-InquiryView" parent="Uif-InquiryView">
      <property name="title" value="State Inquiry"/>
      <property name="dataObjectClassName" value="org.kuali.rice.location.impl.state.StateBo"/>
      <property name="Items">
          <list>
-           <bean parent="GroupSectionGridLayout">
+           <bean parent="Uif-Disclosure-GridSection">
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="InputField" p:propertyName="countryCode"/>
-                <bean parent="InputField" p:propertyName="code"/>
-                <bean parent="InputField" p:propertyName="name"/>
-                <bean parent="InputField" p:propertyName="active"/>
+                <bean parent="Uif-InputField" p:propertyName="countryCode"/>
+                <bean parent="Uif-InputField" p:propertyName="code"/>
+                <bean parent="Uif-InputField" p:propertyName="name"/>
+                <bean parent="Uif-InputField" p:propertyName="active"/>
                </list>
              </property>
              <property name="title" value="State Information"/>

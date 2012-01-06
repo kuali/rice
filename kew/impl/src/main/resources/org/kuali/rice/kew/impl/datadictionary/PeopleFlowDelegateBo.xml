@@ -104,7 +104,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="optionsFinderClass" value="org.kuali.rice.kew.impl.peopleflow.DelegationTypeValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="Uif-DropdownControl"/>
     </property>
     <property name="summary" value="Delegation type (primary or secondary) for the delegate"/>
     <property name="description" value="Delegation type (primary or secondary) for the delegate"/>

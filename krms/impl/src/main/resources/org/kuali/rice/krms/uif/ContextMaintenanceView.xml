@@ -23,20 +23,20 @@
   
 
   <bean id="Context-MaintenanceView" parent="Context-MaintenanceView-parentBean"/>
-  <bean id="Context-MaintenanceView-parentBean" abstract="true" parent="MaintenanceView">
+  <bean id="Context-MaintenanceView-parentBean" abstract="true" parent="Uif-MaintenanceView">
     <property name="title" value="Context Maintenance"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
     <property name="items">
       <list merge="true">
-        <bean parent="MaintenanceGroupSectionGridLayout">
+        <bean parent="Uif-MaintenanceGridSection">
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="id" p:label="Id"/>
-              <bean parent="InputField" p:propertyName="name" p:label="Name"/>
-              <bean parent="InputField" p:propertyName="namespace" p:label="Namespace"/>
-              <bean parent="InputField" p:propertyName="typeId" p:label="Type"/>
-              <bean parent="InputField" p:propertyName="description" p:label="Description"/>
-              <bean parent="InputField" p:propertyName="active" p:label="Active"/>
+              <bean parent="Uif-InputField" p:propertyName="id" p:label="Id"/>
+              <bean parent="Uif-InputField" p:propertyName="name" p:label="Name"/>
+              <bean parent="Uif-InputField" p:propertyName="namespace" p:label="Namespace"/>
+              <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Type"/>
+              <bean parent="Uif-InputField" p:propertyName="description" p:label="Description"/>
+              <bean parent="Uif-InputField" p:propertyName="active" p:label="Active"/>
             </list>
           </property>
           <property name="title" value="Context"/>

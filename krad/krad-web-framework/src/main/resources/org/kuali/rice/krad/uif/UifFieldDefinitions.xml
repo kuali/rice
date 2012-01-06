@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+  <!-- Base Fields -->
+
+  <bean id="Uif-FieldBase" abstract="true" parent="Uif-FieldBase-parentBean"/>
+  <bean id="Uif-FieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldBase">
+    <property name="styleClasses">
+      <list>
+        <value>uif-field</value>
+      </list>
+    </property>
+    <property name="readOnly" value="@{#parent.readOnly}"/>
+  </bean>
+
+  <bean id="Uif-FieldBase-withLabel" abstract="true" parent="Uif-FieldBase-withLabel-parentBean"/>
+  <bean id="Uif-FieldBase-withLabel-parentBean" abstract="true" parent="Uif-FieldBase">
+    <property name="labelField">
+      <bean parent="Uif-Label"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-DataField" parent="Uif-DataField-parentBean"/>
+  <bean id="Uif-DataField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
+        parent="Uif-FieldBase-withLabel">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
+    <property name="readOnly" value="true"/>
+    <property name="bindingInfo">
+      <ref bean="Uif-BindingInfo"/>
+    </property>
+    <property name="fieldInquiry">
+      <bean parent="Uif-Inquiry"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-DataField-withoutLabel" abstract="true" parent="Uif-DataField-withoutLabel-parentBean"/>
+  <bean id="Uif-DataField-withoutLabel-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.DataField"
+        parent="Uif-DataField">
+    <property name="labelField">
+      <null/>
+    </property>
+  </bean>
+
+  <bean id="Uif-InputField" parent="Uif-InputField-parentBean"/>
+  <bean id="Uif-InputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.InputField" parent="Uif-DataField"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/dataInputField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-inputField</value>
+      </list>
+    </property>
+    <property name="readOnly" value="@{#parent.readOnly}"/>
+    <property name="errorsField">
+      <bean parent="Uif-FieldValidationMessages"/>
+    </property>
+    <property name="fieldLookup">
+      <bean parent="Uif-QuickFinder"/>
+    </property>
+    <property name="fieldDirectInquiry">
+      <bean parent="Uif-DirectInquiry"/>
+    </property>
+    <property name="fieldSuggest">
+      <bean parent="Uif-Suggest" p:render="false"/>
+    </property>
+    <property name="instructionalMessageField">
+      <bean parent="Uif-InstructionalMessage"/>
+    </property>
+    <property name="constraintMessageField">
+      <bean parent="Uif-ConstraintMessage"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-InstructionalMessage" parent="Uif-InstructionalMessage-parentBean"/>
+  <bean id="Uif-InstructionalMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
+        p:messageType="INSTRUCTIONAL">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-instructionalMessage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ConstraintMessage" parent="Uif-ConstraintMessage-parentBean"/>
+  <bean id="Uif-ConstraintMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
+        p:messageType="CONSTRAINT">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-constraintMessage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-RequiredMessage" parent="Uif-RequiredMessage-parentBean"/>
+  <bean id="Uif-RequiredMessage-parentBean" abstract="true" parent="Uif-MessageField" scope="prototype"
+        p:messageText="*" p:messageType="REQUIRED">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-requiredMessage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-InputField-LabelTop" parent="Uif-InputField-LabelTop-parentBean"/>
+  <bean id="Uif-InputField-LabelTop-parentBean" abstract="true" parent="Uif-InputField" p:labelPlacement="TOP"
+        p:labelField.renderColon="false" p:labelField.requiredMessagePlacement="RIGHT">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-inputField-labelTop</value>
+      </list>
+    </property>
+    <property name="labelField.styleClasses">
+      <list merge="true">
+        <value>uif-labelTop</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-LookupCriteriaInputField" parent="Uif-LookupCriteriaInputField-parentBean"/>
+  <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LookupInputField"
+        parent="Uif-InputField">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-lookupCriteriaInputField</value>
+      </list>
+    </property>
+    <property name="bindingInfo.bindToMap" value="true"/>
+  </bean>
+
+  <bean id="Uif-Label" parent="Uif-Label-parentBean"/>
+  <bean id="Uif-Label-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LabelField" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/labelField.jsp"/>
+    <property name="styleClasses">
+      <list>
+        <value>uif-label</value>
+      </list>
+    </property>
+    <property name="requiredMessageField">
+      <bean parent="Uif-RequiredMessage"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-ValidationMessagesBase" parent="Uif-ValidationMessagesBase-parentBean"/>
+  <bean id="Uif-ValidationMessagesBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ErrorsField"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/errorsField.jsp"/>
+    <property name="styleClasses">
+      <list>
+        <value>uif-validationMessages</value>
+      </list>
+    </property>
+    <property name="displayErrorTitle" value="false"/>
+    <property name="displayWarningTitle" value="false"/>
+    <property name="displayInfoTitle" value="false"/>
+    <property name="displayFieldLabelWithMessages" value="true"/>
+    <property name="displayNestedMessages" value="false"/>
+    <property name="displayFieldErrorIcon" value="false"/>
+    <property name="highlightOnError" value="true"/>
+    <property name="combineMessages" value="true"/>
+    <property name="allowMessageRepeat" value="true"/>
+    <property name="displayMessages" value="true"/>
+    <property name="displayErrorMessages" value="true"/>
+    <property name="displayWarningMessages" value="true"/>
+    <!-- Note that we are not displaying Info messages because they are shown through growls by default
+     if Growls are turned off, info messages needs to be turned back on
+     (optional for fields, but should be true at least on the page level) -->
+    <property name="displayInfoMessages" value="false"/>
+    <property name="displayCounts" value="false"/>
+  </bean>
+
+  <bean id="Uif-FieldValidationMessages" parent="Uif-FieldValidationMessages-parentBean"/>
+  <bean id="Uif-FieldValidationMessages-parentBean" parent="Uif-ValidationMessagesBase">
+  </bean>
+
+  <bean id="Uif-GroupValidationMessages" parent="Uif-GroupValidationMessages-parentBean"/>
+  <bean id="Uif-GroupValidationMessages-parentBean" parent="Uif-ValidationMessagesBase">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-groupValidationMessages</value>
+      </list>
+    </property>
+    <property name="displayNestedMessages" value="true"/>
+    <property name="highlightOnError" value="false"/>
+    <property name="combineMessages" value="false"/>
+    <!--note global display flag is false by default for groups, but others are true by default,
+     no messages will be displayed by default in groups, but all can easily be turned on-->
+    <property name="displayMessages" value="false"/>
+    <property name="displayCounts" value="true"/>
+  </bean>
+
+  <bean id="Uif-PageValidationMessages" parent="Uif-PageValidationMessages-parentBean"/>
+  <bean id="Uif-PageValidationMessages-parentBean" parent="Uif-GroupValidationMessages">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-pageValidationMessages</value>
+      </list>
+    </property>
+    <property name="additionalKeysToMatch">
+      <list>
+        <value>GLOBAL_ERRORS</value>
+        <value>GLOBAL_WARNINGS</value>
+        <value>GLOBAL_INFO</value>
+      </list>
+    </property>
+    <property name="fireGrowlsForMessages" value="true"/>
+    <property name="displayErrorTitle" value="true"/>
+    <property name="displayWarningTitle" value="true"/>
+    <property name="displayInfoTitle" value="true"/>
+    <property name="displayNestedMessages" value="true"/>
+    <property name="highlightOnError" value="false"/>
+    <property name="combineMessages" value="false"/>
+    <property name="displayMessages" value="true"/>
+    <property name="displayCounts" value="true"/>
+  </bean>
+
+  <bean id="Uif-ActionFieldBase" parent="Uif-ActionFieldBase-parentBean"/>
+  <bean id="Uif-ActionFieldBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ActionField"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-action</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>
+  <bean id="Uif-ActionImage-parentBean" abstract="true" parent="Uif-ActionFieldBase">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-actionImage</value>
+      </list>
+    </property>
+    <property name="actionImageLocation" value="IMAGE_ONLY"/>
+  </bean>
+
+  <bean id="Uif-PrimaryActionButton" parent="Uif-PrimaryActionButton-parentBean"/>
+  <bean id="Uif-PrimaryActionButton-parentBean" abstract="true" parent="Uif-ActionFieldBase">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-primaryActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-SecondaryActionButton" parent="Uif-SecondaryActionButton-parentBean"/>
+  <bean id="Uif-SecondaryActionButton-parentBean" abstract="true" parent="Uif-ActionFieldBase">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-secondaryActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-PrimaryActionButton-Small" parent="Uif-PrimaryActionButton-Small-parentBean"/>
+  <bean id="Uif-PrimaryActionButton-Small-parentBean" abstract="true" parent="Uif-PrimaryActionButton">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-smallActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-SecondaryActionButton-Small" parent="Uif-SecondaryActionButton-Small-parentBean"/>
+  <bean id="Uif-SecondaryActionButton-Small-parentBean" abstract="true" parent="Uif-SecondaryActionButton">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-smallActionButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ActionLink" parent="Uif-ActionLink-parentBean"/>
+  <bean id="Uif-ActionLink-parentBean" abstract="true" parent="Uif-ActionFieldBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/actionLinkField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-actionLink</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-AjaxActionButton" parent="Uif-AjaxActionButton-parentBean"/>
+  <bean id="Uif-AjaxActionButton-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.AjaxActionField"
+        parent="Uif-PrimaryActionButton" scope="prototype">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-ajaxAction</value>
+      </list>
+    </property>
+  </bean>
+
+  <!-- RECOMMENDED: Use the navigation action fields to scroll to the top of the page when a navigation completes
+rather than to the element that initiated the navigation, for general use in Navigation menus and actions which
+perform page navigation-->
+  <bean id="Uif-NavigationActionLink" parent="Uif-NavigationActionLink-parentBean"/>
+  <bean id="Uif-NavigationActionLink-parentBean" abstract="true" parent="Uif-ActionLink" scope="prototype">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-navigationActionLink</value>
+      </list>
+    </property>
+    <property name="jumpToIdAfterSubmit" value="TOP"/>
+    <property name="focusOnAfterSubmit" value="FIRST"/>
+    <property name="clientSideJs" value="submitForm();"/>
+  </bean>
+
+  <bean id="Uif-NavigationActionButton" parent="Uif-NavigationActionButton-parentBean"/>
+  <bean id="Uif-NavigationActionButton-parentBean" abstract="true" parent="Uif-PrimaryActionButton" scope="prototype">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-navigationActionButton</value>
+      </list>
+    </property>
+    <property name="jumpToIdAfterSubmit" value="TOP"/>
+    <property name="focusOnAfterSubmit" value="FIRST"/>
+    <property name="clientSideJs" value="submitForm();"/>
+  </bean>
+
+  <bean id="Uif-SecondaryNavigationActionButton" parent="Uif-SecondaryNavigationActionButton-parentBean"/>
+  <bean id="Uif-SecondaryNavigationActionButton-parentBean" abstract="true" parent="Uif-SecondaryActionButton"
+        scope="prototype">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-navigationActionButton</value>
+      </list>
+    </property>
+    <property name="jumpToIdAfterSubmit" value="TOP"/>
+    <property name="focusOnAfterSubmit" value="FIRST"/>
+    <property name="clientSideJs" value="submitForm();"/>
+  </bean>
+
+  <bean id="Uif-Link" parent="Uif-Link-parentBean"/>
+  <bean id="Uif-Link-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.LinkField"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/linkField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-link</value>
+      </list>
+    </property>
+    <property name="target" value="_self"/>
+  </bean>
+
+  <bean id="Uif-MessageField" parent="Uif-MessageField-parentBean"/>
+  <bean id="Uif-MessageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.MessageField"
+        parent="Uif-FieldBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/messageField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-messageField</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-IframeField" parent="Uif-IframeField-parentBean"/>
+  <bean id="Uif-IframeField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.IframeField"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/iframeField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-iFrameField</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ImageField" parent="Uif-ImageField-parentBean"/>
+  <bean id="Uif-ImageField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.ImageField"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/imageField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-imageField</value>
+      </list>
+    </property>
+    <property name="captionHeaderAboveImage" value="true"/>
+    <property name="captionHeader">
+      <bean parent="Uif-HeaderField-Four"/>
+    </property>
+    <property name="cutline">
+      <bean parent="Uif-MessageField" p:messageType="CUTLINE" p:styleClasses="kr-cutline"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-EmptyField" parent="Uif-EmptyField-parentBean"/>
+  <bean id="Uif-EmptyField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.BlankField"
+        parent="Uif-FieldBase" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/blankField.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-emptyField</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-CustomTemplateField" parent="Uif-CustomTemplateField-parentBean"/>
+  <bean id="Uif-CustomTemplateField-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.GenericField"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-customTemplateField</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-FieldGroupBase" parent="Uif-FieldGroupBase-parentBean"/>
+  <bean id="Uif-FieldGroupBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.field.FieldGroup"
+        parent="Uif-FieldBase-withLabel" scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/field/fieldGroup.jsp"/>
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-fieldGroup</value>
+      </list>
+    </property>
+    <property name="group">
+      <bean parent="Uif-BoxGroup" p:fieldContainer="true"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-VerticalFieldGroup" parent="Uif-VerticalFieldGroup-parentBean"/>
+  <bean id="Uif-VerticalFieldGroup-parentBean" parent="Uif-FieldGroupBase" p:group.layoutManager.orientation="VERTICAL">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-verticalFieldGroup</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-HorizontalFieldGroup" parent="Uif-HorizontalFieldGroup-parentBean"/>
+  <bean id="Uif-HorizontalFieldGroup-parentBean" parent="Uif-FieldGroupBase" p:group.layoutManager.orientation="HORIZONTAL">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-horizontalFieldGroup</value>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Common Fields -->
+
+  <bean id="Uif-RequiredInstructionsMessage" parent="Uif-MessageField" p:messageText="* indicates required field"
+        p:messageType="REQUIRED">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-requiredInstructionsMessage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-JumpToTopLink" parent="Uif-ActionLink" p:clientSideJs="jumpToTop();"
+        p:actionLabel="Top">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-jumpToTopLink</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-JumpToBottomLink" parent="Uif-ActionLink" p:clientSideJs="jumpToBottom();"
+        p:actionLabel="Bottom">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-jumpToBottomLink</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ExpandDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:clientSideJs="expandDisclosures();"
+        p:actionLabel="Expand All">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-expandDisclosuresButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-CollapseDisclosuresButton" parent="Uif-SecondaryActionButton-Small" p:clientSideJs="collapseDisclosures();"
+        p:actionLabel="Collapse All">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-collapseDisclosuresButton</value>
+      </list>
+    </property>
+  </bean>
+
+
+  <bean id="Uif-QuickLookupImage" parent="Uif-ImageField"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}searchicon.gif"
+        p:altText="Search Field" p:title="Search Field">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-quickFinderImage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-DirectInquiryImage" parent="Uif-ImageField"
+        p:source="@{#ConfigProperties['krad.externalizable.images.url']}book_open.png"
+        p:altText="Direct Inquiry" p:title="Direct Inquiry">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-directInquiryImage</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-CreateNewLink" parent="Uif-Link"
+        p:linkLabel="Create New"
+        p:render="@{!#view.suppressActions and #view.showMaintenanceLinks and #ViewHelper.allowsMaintenanceNewOrCopyAction()}">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-createNewLink</value>
+      </list>
+    </property>
+    <property name="finalizeMethodToCall" value="getMaintenanceActionLink"/>
+    <property name="finalizeMethodAdditionalArguments">
+      <list>
+        <value>start</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-ShowInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small" p:methodToCall="toggleInactiveRecordDisplay"
+        p:actionLabel="show inactive"
+        p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', true);">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-showInactiveCollectionItemsButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-HideInactiveCollectionItemsButton" parent="Uif-SecondaryActionButton-Small" p:methodToCall="toggleInactiveRecordDisplay"
+        p:actionLabel="hide inactive"
+        p:clientSideJs="toggleInactiveRecordDisplay('@{#component.context['collectionGroup'].id}', false);">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-hideInactiveCollectionItemsButton</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-CheckboxInputField" parent="Uif-InputField" p:labelPlacement="RIGHT">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-checkboxInputField</value>
+      </list>
+    </property>
+    <property name="control">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+  </bean>
+
+</beans>

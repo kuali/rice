@@ -28,7 +28,7 @@
     <property name="title" value="@{registrationTerm}, @{registrationYear}"/>
     <property name="header.items">
       <list>
-        <bean parent="LinkField" p:linkLabel="Change" p:target="foo"/>
+        <bean parent="Uif-Link" p:linkLabel="Change" p:target="foo"/>
       </list>
     </property>
     <property name="items">
@@ -37,10 +37,10 @@
       </list>
     </property>
     <property name="footer">
-      <bean parent="Footer"/>
+      <bean parent="Uif-FooterBase"/>
     </property>
     <property name="additionalCssFiles">
-      <list merge="true">
+      <list>
         <value>/css/registration.css</value>
       </list>
     </property>
@@ -52,10 +52,10 @@
                                            Registration Page
   ********************************************************************************************************************
   -->
-  <bean id="RegistrationPage" parent="PageGroup" p:layoutManager.orientation="HORIZONTAL" p:disclosure.render="false">
+  <bean id="RegistrationPage" parent="Uif-Page" p:layoutManager.orientation="HORIZONTAL" p:disclosure.render="false">
     <property name="items">
       <list>
-        <bean id="Registration-FindTabGroup" parent="TabGroup" p:styleClasses="registration-tabgroup">
+        <bean id="Registration-FindTabGroup" parent="Uif-TabSection" p:styleClasses="registration-tabgroup">
           <property name="items">
             <list>
               <ref bean="Registration-FindGroup"/>
@@ -76,7 +76,7 @@
   <bean id="Registration-ScheduleCartGroup" parent="GenericGroup">
     <property name="items">
       <list>
-        <bean parent="ImageField"
+        <bean parent="Uif-ImageField"
               p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/registration_cal_cart.jpg"/>
       </list>
     </property>
@@ -113,7 +113,7 @@
                         p:dataObjectClassName="org.kuali.rice.kim.bo.impl.PersonImpl"/>
                 </property>
               </bean>
-              <bean parent="ActionField_Small" p:actionLabel="Go" p:methodToCall="go"/>
+              <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Go" p:methodToCall="go"/>
             </list>
           </property>
         </bean>
@@ -127,7 +127,7 @@
                                            Class Listing
   ********************************************************************************************************************
   -->
-  <bean id="Registration-CourseListing" parent="ListGroup" p:readOnly="true"
+  <bean id="Registration-CourseListing" parent="Uif-ListCollectionSection" p:readOnly="true"
         p:instructionalMessageField.styleClasses="instructionalText-bold" p:disclosure.render="false">
     <property name="instructionalText" value="Click a class to view details"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.course.Course"/>
@@ -135,7 +135,7 @@
     <property name="layoutManager.summaryTitle"
               value="@{#line.subjectId} @{#line.number}: @{#line.title} (@{#line.maxCredits} units)"/>
     <property name="subCollections">
-      <bean parent="ListGroup" p:header.render="false"
+      <bean parent="Uif-ListCollectionSection" p:header.render="false"
             p:layoutManager.lineGroupPrototype.layoutManager.orientation="HORIZONTAL"
             p:layoutManager.lineGroupPrototype.styleClasses="kr-coursesection-line">
         <property name="collectionObjectClass" value="edu.sampleu.demo.course.CourseSection"/>
@@ -145,7 +145,7 @@
             <bean parent="GenericFieldGroup" p:labelField.render="false" p:style="width: 10px;">
               <property name="items">
                 <list>
-                  <bean parent="ImageField"
+                  <bean parent="Uif-ImageField"
                         p:source="@{#ConfigProperties['krad.externalizable.images.url']}ks/star.png"/>
                 </list>
               </property>
@@ -156,22 +156,22 @@
                   <bean parent="GenericTextFieldMedium" p:propertyName="registrationId" p:label=""/>
                   <bean parent="GenericTextFieldMedium" p:propertyName="standardMeetingTime" p:label=""
                         p:styleClasses="kr-emphasis"/>
-                  <bean parent="ActionField_Small" p:actionLabel="Waitlist" p:methodToCall="waitlist"/>
+                  <bean parent="Uif-PrimaryActionButton-Small" p:actionLabel="Waitlist" p:methodToCall="waitlist"/>
                 </list>
               </property>
             </bean>
             <bean parent="GenericFieldGroup" p:labelField.render="false">
               <property name="items">
                 <list>
-                  <bean parent="MessageField" p:label="Seats Left" p:labelField.render="true"
+                  <bean parent="Uif-MessageField" p:label="Seats Left" p:labelField.render="true"
                         p:messageText="@{#line.registeredNumber} (of @{#line.totalMaxEnrollment}) &lt;span class='kr-highlight-red'&gt;@{#line.waitlistNumber} on waitlist&lt;/span&gt;"
                         p:labelField.styleClasses="labelLeft" p:labelField.renderColon="false"/>
                   <bean parent="GenericTextFieldMedium" p:propertyName="instructor" p:label="Instructor"
                         p:labelField.styleClasses="labelLeft" p:labelPlacement="LEFT"/>
-                  <bean parent="MessageField" p:label="Location" p:labelField.render="true"
+                  <bean parent="Uif-MessageField" p:label="Location" p:labelField.render="true"
                         p:messageText="&lt;span class='kr-highlight-blue'&gt;@{#line.location}&lt;/span&gt;"
                         p:labelField.styleClasses="labelLeft" p:labelField.renderColon="false"/>
-                  <bean parent="LinkField" p:label="Syllabus" p:linkLabel="Download" p:target="foo"
+                  <bean parent="Uif-Link" p:label="Syllabus" p:linkLabel="Download" p:target="foo"
                         p:labelField.styleClasses="labelLeft" p:labelField.renderColon="false"/>
                 </list>
               </property>
@@ -187,7 +187,7 @@
                                            Favorites Group
   ********************************************************************************************************************
   -->
-  <bean id="Registration-FavoriteGroup" parent="Group" p:title="Favorites">
+  <bean id="Registration-FavoriteGroup" parent="Uif-BoxSection" p:title="Favorites">
     <property name="items">
       <list>
       </list>
@@ -202,23 +202,23 @@
   -->
 
   <util:list id="program-options">
-    <bean parent="KeyLabelPair" p:key="-- A --" p:value="-- A --"/>
-    <bean parent="KeyLabelPair" p:key="AEST" p:value="Aerospace Studies (AEST)"/>
-    <bean parent="KeyLabelPair" p:key="AMST" p:value="American Studies and Ethnicity (AMST)"/>
-    <bean parent="KeyLabelPair" p:key="-- B --" p:value="-- B --"/>
-    <bean parent="KeyLabelPair" p:key="Biokinesiology and Physical Therapy"
+    <bean parent="Uif-KeyLabelPair" p:key="-- A --" p:value="-- A --"/>
+    <bean parent="Uif-KeyLabelPair" p:key="AEST" p:value="Aerospace Studies (AEST)"/>
+    <bean parent="Uif-KeyLabelPair" p:key="AMST" p:value="American Studies and Ethnicity (AMST)"/>
+    <bean parent="Uif-KeyLabelPair" p:key="-- B --" p:value="-- B --"/>
+    <bean parent="Uif-KeyLabelPair" p:key="Biokinesiology and Physical Therapy"
           p:value="Biokinesiology and Physical Therapy"/>
-    <bean parent="KeyLabelPair" p:key="BKN" p:value="- Biokinesiology (BKN)"/>
-    <bean parent="KeyLabelPair" p:key="PT" p:value="- Physical Therapy (PT)"/>
-    <bean parent="KeyLabelPair" p:key="Biological Sciences" p:value="Biological Sciences"/>
-    <bean parent="KeyLabelPair" p:key="-- C --" p:value="-- C --"/>
+    <bean parent="Uif-KeyLabelPair" p:key="BKN" p:value="- Biokinesiology (BKN)"/>
+    <bean parent="Uif-KeyLabelPair" p:key="PT" p:value="- Physical Therapy (PT)"/>
+    <bean parent="Uif-KeyLabelPair" p:key="Biological Sciences" p:value="Biological Sciences"/>
+    <bean parent="Uif-KeyLabelPair" p:key="-- C --" p:value="-- C --"/>
   </util:list>
 
   <util:list id="requirement-options">
-    <bean parent="KeyLabelPair" p:key="Select General Education (Core) Reuqirment"
+    <bean parent="Uif-KeyLabelPair" p:key="Select General Education (Core) Reuqirment"
           p:value="Select General Education (Core) Reuqirment"/>
-    <bean parent="KeyLabelPair" p:key="Arts and Letters" p:value="Arts and Letters"/>
-    <bean parent="KeyLabelPair" p:key="Diversity RequirementGlobal Cultures and Traditions"
+    <bean parent="Uif-KeyLabelPair" p:key="Arts and Letters" p:value="Arts and Letters"/>
+    <bean parent="Uif-KeyLabelPair" p:key="Diversity RequirementGlobal Cultures and Traditions"
           p:value="Diversity RequirementGlobal Cultures and Traditions"/>
   </util:list>
 

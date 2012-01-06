@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="Style-LookupView" parent="LookupView">
+  <bean id="Style-LookupView" parent="Uif-LookupView">
     <property name="title" value="Style Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.style.StyleBo" />
     <!-- <property name="defaultSortAttributeNames">
@@ -31,16 +31,16 @@
     </property>   -->
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="styleId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="styleId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="styleId" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="active" />
+        <bean parent="Uif-InputField" p:propertyName="styleId" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="active" />
       </list>
     </property>
   </bean>

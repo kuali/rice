@@ -327,9 +327,12 @@ public class CollectionGroupBuilder implements Serializable {
                 subCollectionGroup.setSubCollectionSuffix(subCollectionSuffix);
 
                 FieldGroup fieldGroupPrototype = layoutManager.getSubCollectionFieldGroupPrototype();
+
                 FieldGroup subCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype,
                         lineSuffix + UifConstants.IdSuffixes.SUB + subLineIndex);
                 subCollectionFieldGroup.setGroup(subCollectionGroup);
+                //subCollectionFieldGroup.setLabel(subCollectionGroup.getTitle());
+                //subCollectionFieldGroup.getLabelField().setRender(true);
 
                 ComponentUtils.updateContextForLine(subCollectionFieldGroup, currentLine, lineIndex);
 

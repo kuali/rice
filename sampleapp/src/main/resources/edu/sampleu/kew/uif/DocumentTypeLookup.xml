@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="DocumentType-LookupView" parent="LookupView">
+  <bean id="DocumentType-LookupView" parent="Uif-LookupView">
     <property name="title" value="Document Type" />
     <property name="dataObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType" />
     <property name="defaultSortAttributeNames">
@@ -31,21 +31,21 @@
     </property>  
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="parentDocType.name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="label" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="documentTypeId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="parentDocType.name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="label" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="documentTypeId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" />
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="documentTypeId" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="parentDocType.name" />
-        <bean parent="InputField" p:propertyName="label" />
-        <bean parent="InputField" p:propertyName="active" />
-        <bean parent="InputField" p:propertyName="displayableApplicationId" />
+        <bean parent="Uif-InputField" p:propertyName="documentTypeId" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="parentDocType.name" />
+        <bean parent="Uif-InputField" p:propertyName="label" />
+        <bean parent="Uif-InputField" p:propertyName="active" />
+        <bean parent="Uif-InputField" p:propertyName="displayableApplicationId" />
       </list>
     </property>
   </bean>

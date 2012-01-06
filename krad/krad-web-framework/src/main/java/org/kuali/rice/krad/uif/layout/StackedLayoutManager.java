@@ -164,7 +164,7 @@ public class StackedLayoutManager extends LayoutManagerBase implements Collectio
         }
 
         // don't set header if text is blank (could already be set by other means)
-        if (StringUtils.isNotBlank(headerText)) {
+        if (StringUtils.isNotBlank(headerText) && lineGroup.getHeader() != null) {
             lineGroup.getHeader().setHeaderText(headerText);
         }
 

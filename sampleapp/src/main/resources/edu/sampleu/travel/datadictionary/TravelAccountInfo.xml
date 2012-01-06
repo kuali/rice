@@ -68,7 +68,7 @@
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>    
     <property name="summary" value="Travel Account Number"/>
     <property name="name" value="number"/>
@@ -85,7 +85,7 @@
       <bean parent="AnyCharacterValidationPattern"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>     
     <property name="summary" value="Account Name"/>
     <property name="name" value="name"/>
@@ -101,7 +101,7 @@
     <property name="label" value="Date Created"/>
     <property name="description" value="Date Created"/>
     <property name="controlField">
-      <bean parent="DateControl"/>
+      <bean parent="Uif-DateControl"/>
     </property>     
   </bean>
 
@@ -131,7 +131,7 @@
     <property name="label" value="Subsidized Percent"/>
     <property name="description" value="Subsidized Percent"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="6" p:watermarkText="##.##"/>
+      <bean parent="Uif-TextControl" p:size="6" p:watermarkText="##.##"/>
     </property>
     <property name="validationPattern">
       <bean parent="FixedPointValidationPattern" p:precision="5" p:allowNegative="false" p:scale="2"/>
@@ -140,23 +140,23 @@
 
   <!-- views -->
 
-  <bean id="TravelAccountInfo-InquiryView" parent="InquiryView">
+  <bean id="TravelAccountInfo-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Travel Account Inquiry"/>
     <property name="dataObjectClassName" value="edu.sampleu.travel.dto.TravelAccountInfo"/>
     <property name="viewHelperServiceClassName" value="edu.sampleu.travel.service.TravelAccountInfoInquiryViewHelperServiceImpl" />
     <property name="items">
       <list>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="DataField" p:propertyName="number"/>
-                <bean parent="DataField" p:propertyName="name"/>
-                <bean parent="DataField" p:propertyName="subAccount"/>
-                <bean parent="DataField" p:propertyName="subAccountName"/>
-                <bean parent="DataField" p:propertyName="createDate"/>
-                <bean parent="DataField" p:propertyName="subsidizedPercent"/>
-                <bean parent="DataField" p:propertyName="foId"/>
+                <bean parent="Uif-DataField" p:propertyName="number"/>
+                <bean parent="Uif-DataField" p:propertyName="name"/>
+                <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+                <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
+                <bean parent="Uif-DataField" p:propertyName="createDate"/>
+                <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
+                <bean parent="Uif-DataField" p:propertyName="foId"/>
                </list>
              </property>
              <property name="title" value="Account Information"/>

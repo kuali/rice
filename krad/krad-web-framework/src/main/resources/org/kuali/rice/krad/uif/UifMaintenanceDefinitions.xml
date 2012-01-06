@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright 2006-2011 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="Uif-MaintenanceView" abstract="true" parent="Uif-MaintenanceView-parentBean"/>
+  <bean id="Uif-MaintenanceView-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.view.MaintenanceView" parent="Uif-DocumentView">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-maintenanceView</value>
+      </list>
+    </property>
+    <property name="viewTypeName" value="MAINTENANCE"/>
+    <property name="viewName" value="default"/>
+    <property name="viewHelperServiceClassName" value="org.kuali.rice.krad.maintenance.MaintainableImpl"/>
+    <property name="presentationControllerClass"
+              value="org.kuali.rice.krad.maintenance.MaintenanceViewPresentationControllerBase"/>
+    <property name="authorizerClass" value="org.kuali.rice.krad.maintenance.MaintenanceViewAuthorizerBase"/>
+    <property name="formClass" value="org.kuali.rice.krad.web.form.MaintenanceForm"/>
+    <property name="defaultBindingObjectPath" value="document.newMaintainableObject.dataObject"/>
+    <property name="oldObjectBindingPath" value="document.oldMaintainableObject.dataObject"/>
+    <property name="page">
+      <bean parent="Uif-MaintenancePage"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-MaintenancePage" abstract="true" parent="Uif-MaintenancePage-parentBean"/>
+  <bean id="Uif-MaintenancePage-parentBean" parent="Uif-Disclosure-Page">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-maintenancePage</value>
+      </list>
+    </property>
+  </bean>
+
+
+  <bean id="Uif-MaintenanceGridSection" abstract="true" parent="Uif-MaintenanceGridSection-parentBean"/>
+  <bean id="Uif-MaintenanceGridSection-parentBean" parent="Uif-Disclosure-GridSection">
+    <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
+    <property name="componentModifiers">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+              p:runCondition="maintenanceAction eq 'Edit'"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-MaintenanceSection" abstract="true" parent="Uif-MaintenanceSection-parentBean"/>
+  <bean id="Uif-MaintenanceSection-parentBean" parent="Uif-Disclosure-BoxSection"/>
+
+  <bean id="Uif-MaintenanceStackedCollectionSection" abstract="true" parent="Uif-MaintenanceStackedCollectionSection-parentBean"/>
+  <bean id="Uif-MaintenanceStackedCollectionSection-parentBean" parent="Uif-Disclosure-StackedCollectionSection">
+    <property name="layoutManager.lineGroupPrototype">
+      <bean parent="Uif-CollectionGridItem">
+        <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
+        <property name="componentModifiers">
+          <list merge="true">
+            <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+                  p:runCondition="maintenanceAction eq 'Edit'"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="activeCollectionFilter">
+      <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
+            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection" abstract="true" parent="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean"/>
+  <bean id="Uif-MaintenanceStackedSubCollection-WithinSection-parentBean" parent="Uif-StackedSubCollection-WithinSection">
+    <property name="layoutManager.lineGroupPrototype">
+      <bean parent="Uif-CollectionGridItem">
+        <property name="layoutManager.numberOfColumns" value="@{maintenanceAction eq 'Edit' ? 4 : 2}"/>
+        <property name="componentModifiers">
+          <list merge="true">
+            <bean parent="Uif-MaintenanceCompare-Modifier" p:runPhase="APPLY_MODEL"
+                  p:runCondition="maintenanceAction eq 'Edit'"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="activeCollectionFilter">
+      <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
+            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-MaintenanceTableCollectionSection" abstract="true" parent="Uif-MaintenanceTableCollectionSection-parentBean"/>
+  <bean id="Uif-MaintenanceTableCollectionSection-parentBean" parent="Uif-Disclosure-TableCollectionSection">
+    <property name="activeCollectionFilter">
+      <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
+            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-MaintenanceTableSubCollection-withinSection" abstract="true" parent="Uif-MaintenanceTableSubCollection-withinSection-parentBean"/>
+  <bean id="Uif-MaintenanceTableSubCollection-withinSection-parentBean" parent="Uif-TableSubCollection-WithinSection">
+    <property name="activeCollectionFilter">
+      <bean class="org.kuali.rice.krad.uif.container.MaintenanceActiveCollectionFilter"
+            p:oldBindingObjectPath="document.oldMaintainableObject.dataObject"/>
+    </property>
+  </bean>
+
+</beans>

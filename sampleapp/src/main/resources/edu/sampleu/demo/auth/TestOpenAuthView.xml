@@ -30,28 +30,28 @@
                                            Test Open Auth View
   ********************************************************************************************************************
   -->
-  <bean id="TestOpenAuthView" parent="FormView">
+  <bean id="TestOpenAuthView" parent="Uif-FormView">
     <property name="title" value="Test Open Authorization View"/>
     <property name="instructionalText" value="Editing of this view is controlled by a KIM permission."/>
     <property name="singlePageView" value="true"/>
     <property name="page">
-      <bean parent="Page"/>
+      <bean parent="Uif-Page"/>
     </property>
     <property name="items">
       <list>
-        <bean parent="GroupSection">
+        <bean parent="Uif-Disclosure-BoxSection">
           <property name="title" value="Group"/>
           <property name="items">
             <list>
-              <bean parent="InputField_Form" p:propertyName="field1" p:label="Field 1">
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1">
                 <property name="control">
-                  <bean parent="TextControl" p:size="5"/>
+                  <bean parent="Uif-TextControl" p:size="5"/>
                 </property>
               </bean>
 
-              <bean parent="InputField_Form" p:propertyName="field2" p:label="Field 2">
+              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2">
                 <property name="control">
-                  <bean parent="TextControl" p:size="21"/>
+                  <bean parent="Uif-TextControl" p:size="21"/>
                 </property>
               </bean>
             </list>

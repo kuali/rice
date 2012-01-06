@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  	<bean id="minMaxSection" parent="Group"
+  	<bean id="minMaxSection" parent="Uif-BoxSection"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="disclosure.render" value="false" />
 		<property name="title" value="MinMax length and value" />
@@ -31,7 +31,7 @@
 			characters only through a ValidCharactersConstraint on the field.
 			These can be set directly through InputField's properties or through its SimpleConstraint bean.
 			Note that min value is exclusive and max value is inclusive (as stated by their property names)." />
-		<property name="styleClasses" value="group_header" />
+		
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:label="MinMax Length test"
@@ -48,13 +48,13 @@
 		</property>
 	</bean>
 
-  	<bean id="requiredSection" parent="Group"
+  	<bean id="requiredSection" parent="Uif-BoxSection"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="disclosure.render" value="false" />
 		<property name="title" value="Required constraint" />
 		<property name="instructionalText"
 			value="An input field can be defined as required by setting its required property to true.  Note required fields are marked with an asterisk." />
-		<property name="styleClasses" value="group_header" />
+		
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:required="true"
@@ -70,7 +70,7 @@
 		</property>
 	</bean>
 
-	<bean id="preReqSection" parent="Group"
+	<bean id="preReqSection" parent="Uif-BoxSection"
 		p:layoutManager.orientation="HORIZONTAL">
 		<property name="disclosure.render" value="false" />
 		<property name="title" value="PreRequisite constraint" />
@@ -83,7 +83,7 @@
 		field within the overall page flow.  A useful and common technique is to put a prerequisite constraint on both fields requiring eachother
 		(example case: a measurement requires both a value and a unit, neither make sense without the other).
 		A field can have any number of PrerequisiteConstraints in their dependencyConstraints property." />
-		<property name="styleClasses" value="group_header" />
+		
 		<property name="items">
 			<list>
 				<bean parent="GenericTextField" p:label="Field A"
@@ -112,7 +112,7 @@
 	</bean>
 
 
-  <bean id="mustOccursSection" parent="Group"
+  <bean id="mustOccursSection" parent="Uif-BoxSection"
     p:layoutManager.orientation="HORIZONTAL">
     <property name="disclosure.render" value="false" />
     <property name="title" value="MustOccursConstraint" />
@@ -120,7 +120,7 @@
       value="Must Occurs constraint is used to identify fields that are required before this field can be filled out.
         This is different from prerequisite constraints because the number of fields required from a set of fields can be set, as
         well as alternative groups of fields that will satisfy the must occurs constraint.  See examples below:" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <ref bean="moGroup1" />
@@ -130,9 +130,9 @@
     </property>
   </bean>
 
-  <bean id="moGroup1" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="moGroup1" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
     <property name="disclosure.render" value="false" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 1A"
@@ -182,9 +182,9 @@
     </property>
   </bean>
 
-  <bean id="moGroup2" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="moGroup2" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
     <property name="disclosure.render" value="false" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 3A"
@@ -228,9 +228,9 @@
     </property>
   </bean>
 
-  <bean id="moGroup3" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="moGroup3" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
     <property name="disclosure.render" value="false" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 5A"
@@ -281,28 +281,28 @@
     </property>
   </bean>
 
-  <bean id="caseConstraintSection" parent="Group"
+  <bean id="caseConstraintSection" parent="Uif-BoxSection"
     p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false" />
     <property name="title" value="CaseConstraint" />
     <property name="instructionalText"
       value="A case constraint can make a constraint applicable only when a certain case is satisfied." />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
-        <bean parent="InputField_Form" p:label="Case Radio"
+        <bean parent="Uif-InputField" p:label="Case Radio"
           p:instructionalText="Chose an option to apply that constraint to the field, this is controlled by that field's CaseConstraint"
           p:width="auto" p:propertyName="field24">
           <property name="control">
-            <bean parent="RadioGroupControl">
+            <bean parent="Uif-VerticalRadioControl">
               <property name="options">
                 <list>
-                  <bean parent="KeyLabelPair" p:key="case1" p:value="Make Field X Required" />
-                  <bean parent="KeyLabelPair" p:key="case2"
+                  <bean parent="Uif-KeyLabelPair" p:key="case1" p:value="Make Field X Required" />
+                  <bean parent="Uif-KeyLabelPair" p:key="case2"
                     p:value="Make Field X Required and Allow only AlphaNumeric characters" />
-                  <bean parent="KeyLabelPair" p:key="case3"
+                  <bean parent="Uif-KeyLabelPair" p:key="case3"
                     p:value="Make Field Y allow values no greater than 500 and no more than 3 characters" />
-                  <bean parent="KeyLabelPair" p:key="case4"
+                  <bean parent="Uif-KeyLabelPair" p:key="case4"
                     p:value="Make Field Z1 require Field Z2" />
                 </list>
               </property>
@@ -317,9 +317,9 @@
     </property>
   </bean>
 
-  <bean id="ccSection1" parent="Group" p:layoutManager.orientation="VERTICAL">
+  <bean id="ccSection1" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field X"
@@ -356,9 +356,9 @@
     </property>
   </bean>
 
-  <bean id="ccSection2" parent="Group" p:layoutManager.orientation="VERTICAL">
+  <bean id="ccSection2" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL">
     <property name="disclosure.render" value="false" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field Y"
@@ -387,9 +387,9 @@
     </property>
   </bean>
 
-  <bean id="ccSection3" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="ccSection3" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
     <property name="disclosure.render" value="false" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field Z1"
@@ -417,9 +417,9 @@
     </property>
   </bean>
 
-  <bean id="ccSection4" parent="Group" p:layoutManager.orientation="HORIZONTAL">
+  <bean id="ccSection4" parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL">
     <property name="disclosure.render" value="false" />
-    <property name="styleClasses" value="group_header" />
+    
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 1"

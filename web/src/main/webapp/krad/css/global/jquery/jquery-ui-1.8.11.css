@@ -27,7 +27,7 @@
 .ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
 
 
-/* Interaction Cues
+/* Inte.uif-actionLink Cues
 ----------------------------------*/
 .ui-state-disabled { cursor: default !important; }
 
@@ -69,7 +69,7 @@
 .ui-widget-header { border: 1px solid #1e8f4d; background: #67bf57 url(/kr-dev/krad/images/jquery/ui-bg_gloss-wave_75_67bf57_500x100.png) 50% 50% repeat-x; color: #004b2a; font-weight: bold; }
 .ui-widget-header a { color: #004b2a; }
 
-/* Interaction states
+/* Inte.uif-actionLink states
 ----------------------------------*/
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { border: 1px solid #1e8f4d; background: #67bf57 url(/kr-dev/krad/images/jquery/ui-bg_highlight-hard_60_67bf57_1x100.png) 50% 50% repeat-x; font-weight: normal; color: #004b2a; }
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #004b2a; text-decoration: none; }
@@ -79,7 +79,7 @@
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #212121; text-decoration: none; }
 .ui-widget :active { outline: none; }
 
-/* Interaction Cues
+/* Inte.uif-actionLink Cues
 ----------------------------------*/
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {border: 1px solid #fcefa1; background: #fbf9ee url(/kr-dev/krad/images/jquery/ui-bg_glass_55_fbf9ee_1x400.png) 50% 50% repeat-x; color: #363636; }
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636; }

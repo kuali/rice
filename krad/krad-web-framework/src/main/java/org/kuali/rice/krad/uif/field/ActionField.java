@@ -658,9 +658,9 @@ public class ActionField extends FieldBase {
 
     /**
      * Set to TOP, BOTTOM, LEFT, RIGHT to position image at that location within the button.
-     * For the subclass ActionLinkField only LEFT and RIGHT are allowed.  When set to blank/null, the image
+     * For the subclass ActionLinkField only LEFT and RIGHT are allowed.  When set to blank/null/IMAGE_ONLY, the image
      * itself will be the ActionField, if no value is set the default is ALWAYS LEFT, you must explicitly set
-     * blank/null to use ONLY the image as the ActionField.
+     * blank/null/IMAGE_ONLY to use ONLY the image as the ActionField.
      * @return
      */
     public void setActionImageLocation(String actionImageLocation) {

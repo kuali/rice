@@ -22,27 +22,27 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="Permission-InquiryView" parent="InquiryView">
+  <bean id="Permission-InquiryView" parent="Uif-InquiryView">
 	<property name="title" value="Permission Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.permission.PermissionBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.PermissionInquirableImpl"/>
     <property name="Items">
         <list>
-          <bean parent="GroupSectionGridLayout">
+          <bean parent="Uif-Disclosure-GridSection">
             <property name="layoutManager.numberOfColumns" value="2"/>
             <!-- <property name="layoutManager.summaryTitle" value="Permission Attributes"/> -->
             <property name="items">
               <list>
-               <bean parent="InputField" p:propertyName="template.namespaceCode"/>
-               <bean parent="InputField" p:propertyName="template.name"/>
-               <bean parent="InputField" p:propertyName="namespaceCode"/>
-               <bean parent="InputField" p:propertyName="name"/>
-               <bean parent="InputField" p:propertyName="description"/>
+               <bean parent="Uif-InputField" p:propertyName="template.namespaceCode"/>
+               <bean parent="Uif-InputField" p:propertyName="template.name"/>
+               <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+               <bean parent="Uif-InputField" p:propertyName="name"/>
+               <bean parent="Uif-InputField" p:propertyName="description"/>
               </list>
             </property>
             <property name="title" value="Permission Attributes"/>
           </bean>
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Permission Detail Values"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.permission.PermissionAttributeBo"/>
              <property name="propertyName" value="detailObjects"/>
@@ -55,12 +55,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="kimAttribute.attributeName"/>
-                 <bean parent="InputField" p:propertyName="attributeValue"/>
+                 <bean parent="Uif-InputField" p:propertyName="kimAttribute.attributeName"/>
+                 <bean parent="Uif-InputField" p:propertyName="attributeValue"/>
                </list>
              </property>      
           </bean>
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Permission Assigned Roles"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.RoleBo"/>
              <property name="propertyName" value="assignedToRoles"/>
@@ -74,9 +74,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="namespaceCode"/>
-                 <bean parent="InputField" p:propertyName="roleName"/>
-                 <bean parent="InputField" p:propertyName="kimRoleType.name"/>
+                 <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+                 <bean parent="Uif-InputField" p:propertyName="roleName"/>
+                 <bean parent="Uif-InputField" p:propertyName="kimRoleType.name"/>
                </list>
              </property>      
           </bean>
@@ -85,26 +85,26 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   </bean>
 	
-  <bean id="Responsibility-InquiryView" parent="InquiryView">
+  <bean id="Responsibility-InquiryView" parent="Uif-InquiryView">
 	<property name="title" value="Responsibility Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityInquirableImpl"/>
     <property name="Items">
         <list>
-          <bean parent="GroupSectionGridLayout">
+          <bean parent="Uif-Disclosure-GridSection">
             <property name="layoutManager.numberOfColumns" value="2"/>
             <!-- <property name="layoutManager.summaryTitle" value="Responsibility Attributes"/> -->
             <property name="items">
               <list>
-               <bean parent="InputField" p:propertyName="template.namespaceCode"/>
-               <bean parent="InputField" p:propertyName="template.name"/>
-               <bean parent="InputField" p:propertyName="namespaceCode"/>
-               <bean parent="InputField" p:propertyName="name"/>
+               <bean parent="Uif-InputField" p:propertyName="template.namespaceCode"/>
+               <bean parent="Uif-InputField" p:propertyName="template.name"/>
+               <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+               <bean parent="Uif-InputField" p:propertyName="name"/>
               </list>
             </property>
             <property name="title" value="Responsibility Attributes"/>
           </bean>
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Responsibility Detail Values"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.responsibility.ResponsibilityAttributeBo"/>
              <property name="propertyName" value="detailObjects"/>
@@ -117,12 +117,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="kimAttribute.attributeName"/>
-                 <bean parent="InputField" p:propertyName="attributeValue"/>
+                 <bean parent="Uif-InputField" p:propertyName="kimAttribute.attributeName"/>
+                 <bean parent="Uif-InputField" p:propertyName="attributeValue"/>
                </list>
              </property>      
           </bean>
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Permission Assigned Roles"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.role.RoleBo"/>
              <property name="propertyName" value="assignedToRoles"/>
@@ -136,9 +136,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="namespaceCode"/>
-                 <bean parent="InputField" p:propertyName="roleName"/>
-                 <bean parent="InputField" p:propertyName="kimRoleType.name"/>
+                 <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+                 <bean parent="Uif-InputField" p:propertyName="roleName"/>
+                 <bean parent="Uif-InputField" p:propertyName="kimRoleType.name"/>
                </list>
              </property>      
           </bean>
@@ -146,19 +146,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>  
   </bean>
   
-  <bean id="Component-InquiryView" parent="InquiryView">
+  <bean id="Component-InquiryView" parent="Uif-InquiryView">
 	<property name="title" value="Component Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.component.ComponentBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.coreservice.web.component.ComponentInquirableImpl"/>
     <property name="Items">
         <list>
-          <bean parent="GroupSectionGridLayout">
+          <bean parent="Uif-Disclosure-GridSection">
             <property name="layoutManager.numberOfColumns" value="2"/>
             <property name="items">
               <list>
-               <bean parent="InputField" p:propertyName="code"/>
-               <bean parent="InputField" p:propertyName="name"/>
-               <bean parent="InputField" p:propertyName="active"/>
+               <bean parent="Uif-InputField" p:propertyName="code"/>
+               <bean parent="Uif-InputField" p:propertyName="name"/>
+               <bean parent="Uif-InputField" p:propertyName="active"/>
               </list>
             </property>
           </bean>
@@ -166,19 +166,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>  
   </bean>
 
-  <bean id="Namespace-InquiryView" parent="InquiryView">
+  <bean id="Namespace-InquiryView" parent="Uif-InquiryView">
 	<property name="title" value="Namespace Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.namespace.NamespaceBo"/>
     <property name="Items">
         <list>
-          <bean parent="GroupSectionGridLayout">
+          <bean parent="Uif-Disclosure-GridSection">
             <property name="layoutManager.numberOfColumns" value="2"/>
             <property name="items">
               <list>
-               <bean parent="InputField" p:propertyName="code"/>
-               <bean parent="InputField" p:propertyName="name"/>
-               <bean parent="InputField" p:propertyName="applicationId"/>
-               <bean parent="InputField" p:propertyName="active"/>
+               <bean parent="Uif-InputField" p:propertyName="code"/>
+               <bean parent="Uif-InputField" p:propertyName="name"/>
+               <bean parent="Uif-InputField" p:propertyName="applicationId"/>
+               <bean parent="Uif-InputField" p:propertyName="active"/>
               </list>
             </property>
           </bean>
@@ -186,21 +186,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>  
   </bean>
   
-  <bean id="KimType-InquiryView" parent="InquiryView">
+  <bean id="KimType-InquiryView" parent="Uif-InquiryView">
 	<property name="title" value="Kim Type"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.type.KimTypeBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.type.KimTypeInquirableImpl"/>
     <property name="Items">
         <list>
-          <bean parent="GroupSectionGridLayout">
+          <bean parent="Uif-Disclosure-GridSection">
             <property name="layoutManager.numberOfColumns" value="2"/>
             <property name="items">
               <list>
-               <bean parent="InputField" p:propertyName="id"/>
-               <bean parent="InputField" p:propertyName="name"/>
-               <bean parent="InputField" p:propertyName="serviceName"/>
-               <bean parent="InputField" p:propertyName="active"/>
-               <bean parent="InputField" p:propertyName="namespaceCode"/>
+               <bean parent="Uif-InputField" p:propertyName="id"/>
+               <bean parent="Uif-InputField" p:propertyName="name"/>
+               <bean parent="Uif-InputField" p:propertyName="serviceName"/>
+               <bean parent="Uif-InputField" p:propertyName="active"/>
+               <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
               </list>
             </property>
           </bean>
@@ -208,39 +208,39 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </property>  
   </bean>
   	
-  <bean id="RuleInquiryView" abstract="true" parent="InquiryView-parentBean"/> 	
-  <bean id="RuleBaseValues-InquiryView" parent="InquiryView">
+  <bean id="RuleInquiryView" abstract="true" parent="Uif-InquiryView-parentBean"/> 	
+  <bean id="RuleBaseValues-InquiryView" parent="Uif-InquiryView">
 	<property name="title" value="Rule"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleBaseValuesInquirableImpl"/>
     <property name="Items">
         <list>
-          <bean parent="GroupSectionGridLayout">
+          <bean parent="Uif-Disclosure-GridSection">
             <property name="layoutManager.numberOfColumns" value="2"/>
             <property name="title" value="Rule"/>
             <property name="items">
               <list>
-               <bean parent="InputField" p:propertyName="id"/>
-               <bean parent="InputField" p:propertyName="previousRuleId"/>
-               <bean parent="InputField" p:propertyName="documentId"/>
-               <bean parent="InputField" p:propertyName="documentType.name"/>
-               <bean parent="InputField" p:propertyName="ruleTemplate.name"/>
-               <bean parent="InputField" p:propertyName="description"/>
-               <bean parent="InputField" p:propertyName="fromDateValue"/>
-               <bean parent="InputField" p:propertyName="toDateValue"/>
-               <bean parent="InputField" p:propertyName="forceAction"/>
-               <bean parent="InputField" p:propertyName="active"/>
+               <bean parent="Uif-InputField" p:propertyName="id"/>
+               <bean parent="Uif-InputField" p:propertyName="previousRuleId"/>
+               <bean parent="Uif-InputField" p:propertyName="documentId"/>
+               <bean parent="Uif-InputField" p:propertyName="documentType.name"/>
+               <bean parent="Uif-InputField" p:propertyName="ruleTemplate.name"/>
+               <bean parent="Uif-InputField" p:propertyName="description"/>
+               <bean parent="Uif-InputField" p:propertyName="fromDateValue"/>
+               <bean parent="Uif-InputField" p:propertyName="toDateValue"/>
+               <bean parent="Uif-InputField" p:propertyName="forceAction"/>
+               <bean parent="Uif-InputField" p:propertyName="active"/>
               </list>
             </property>
           </bean>
           
-          <!-- <bean parent="CollectionGroup">
+          <!-- <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Rule Attributes"/>  
              <property name="propertyName" value="fieldValues"/>
           </bean> -->
           
           
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Person Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
              <property name="propertyName" value="personResponsibilities"/>
@@ -252,13 +252,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="principalName"/>
-                 <bean parent="InputField" p:propertyName="actionRequestedCd"/>
-                 <bean parent="InputField" p:propertyName="priority"/>
+                 <bean parent="Uif-InputField" p:propertyName="principalName"/>
+                 <bean parent="Uif-InputField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="Uif-InputField" p:propertyName="priority"/>
                </list>
              </property>      
           </bean>
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Group Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility"/>
              <property name="propertyName" value="groupResponsibilities"/>
@@ -271,14 +271,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="namespaceCode"/>
-                 <bean parent="InputField" p:propertyName="name"/>
-                 <bean parent="InputField" p:propertyName="actionRequestedCd"/>
-                 <bean parent="InputField" p:propertyName="priority"/>
+                 <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+                 <bean parent="Uif-InputField" p:propertyName="name"/>
+                 <bean parent="Uif-InputField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="Uif-InputField" p:propertyName="priority"/>
                </list>
              </property>      
           </bean>
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Role Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
              <property name="propertyName" value="roleResponsibilities"/>
@@ -290,10 +290,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="approvePolicy"/>
-                 <bean parent="InputField" p:propertyName="roleName"/>
-                 <bean parent="InputField" p:propertyName="actionRequestedCd"/>
-                 <bean parent="InputField" p:propertyName="priority"/>
+                 <bean parent="Uif-InputField" p:propertyName="approvePolicy"/>
+                 <bean parent="Uif-InputField" p:propertyName="roleName"/>
+                 <bean parent="Uif-InputField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="Uif-InputField" p:propertyName="priority"/>
                </list>
              </property>      
           </bean>
@@ -302,32 +302,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   </bean>
   
-  <bean id="RuleDelegation-InquiryView" parent="InquiryView">
+  <bean id="RuleDelegation-InquiryView" parent="Uif-InquiryView">
     <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegationBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kew.rule.bo.RuleDelegationInquirableImpl"/>
     <property name="Items">
         <list>
-          <bean parent="GroupSectionGridLayout">
+          <bean parent="Uif-Disclosure-GridSection">
             <property name="layoutManager.numberOfColumns" value="2"/>
             <property name="title" value="Delegation Rule"/>
             <!-- <property name="layoutManager.summaryTitle" value="Permission Attributes"/> -->
             <property name="items">
               <list>
-	              <bean parent="InputField" p:propertyName="ruleDelegationId"/>
-	              <bean parent="InputField" p:propertyName="ruleResponsibility.ruleBaseValues.id"/>
-	              <bean parent="InputField" p:propertyName="id"/>
-	              <bean parent="InputField" p:propertyName="delegationRuleBaseValues.documentType.name"/>
-	              <bean parent="InputField" p:propertyName="delegationRuleBaseValues.ruleTemplate.name"/>
-	              <bean parent="InputField" p:propertyName="delegationRuleBaseValues.description"/>
-	              <bean parent="InputField" p:propertyName="delegationRuleBaseValues.fromDateValue"/>
-	              <bean parent="InputField" p:propertyName="delegationRuleBaseValues.toDateValue"/>
-	              <bean parent="InputField" p:propertyName="delegationRuleBaseValues.forceAction"/>
-	              <bean parent="InputField" p:propertyName="delegationRuleBaseValues.active"/>
-	              <bean parent="InputField" p:propertyName="delegationTypeCode"/>
+	              <bean parent="Uif-InputField" p:propertyName="ruleDelegationId"/>
+	              <bean parent="Uif-InputField" p:propertyName="ruleResponsibility.ruleBaseValues.id"/>
+	              <bean parent="Uif-InputField" p:propertyName="id"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationRuleBaseValues.documentType.name"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationRuleBaseValues.ruleTemplate.name"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationRuleBaseValues.description"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationRuleBaseValues.fromDateValue"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationRuleBaseValues.toDateValue"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationRuleBaseValues.forceAction"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationRuleBaseValues.active"/>
+	              <bean parent="Uif-InputField" p:propertyName="delegationTypeCode"/>
               </list>
             </property>
           </bean>
-           <!-- <bean parent="CollectionGroup">
+           <!-- <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Rule Attributes"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kim.impl.permission.PermissionAttributeBo"/>
              <property name="propertyName" value="detailObjects"/>
@@ -340,12 +340,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="kimAttribute.attributeName"/>
-                 <bean parent="InputField" p:propertyName="attributeValue"/>
+                 <bean parent="Uif-InputField" p:propertyName="kimAttribute.attributeName"/>
+                 <bean parent="Uif-InputField" p:propertyName="attributeValue"/>
                </list>
              </property>      
           </bean> -->
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Person Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
              <property name="propertyName" value="delegationRuleBaseValues.personResponsibilities"/>
@@ -356,14 +356,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property> -->
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="principalName"/>
-                 <bean parent="InputField" p:propertyName="actionRequestedCd"/>
-                 <bean parent="InputField" p:propertyName="priority"/>
+                 <bean parent="Uif-InputField" p:propertyName="principalName"/>
+                 <bean parent="Uif-InputField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="Uif-InputField" p:propertyName="priority"/>
                </list>
              </property>      
           </bean>
           
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Group Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility"/>
              <property name="propertyName" value="delegationRuleBaseValues.groupResponsibilities"/>
@@ -375,15 +375,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property> -->
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="namespaceCode"/>
-                 <bean parent="InputField" p:propertyName="name"/>
-                 <bean parent="InputField" p:propertyName="actionRequestedCd"/>
-                 <bean parent="InputField" p:propertyName="priority"/>
+                 <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+                 <bean parent="Uif-InputField" p:propertyName="name"/>
+                 <bean parent="Uif-InputField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="Uif-InputField" p:propertyName="priority"/>
                </list>
              </property>      
           </bean>
           
-          <bean parent="CollectionGroup">
+          <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Role Responsibilities"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.RoleRuleResponsibility"/>
              <property name="propertyName" value="delegationRuleBaseValues.roleResponsibilities"/>
@@ -394,10 +394,10 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property> -->
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="approvePolicy"/>
-                 <bean parent="InputField" p:propertyName="roleName"/>
-                 <bean parent="InputField" p:propertyName="actionRequestedCd"/>
-                 <bean parent="InputField" p:propertyName="priority"/>
+                 <bean parent="Uif-InputField" p:propertyName="approvePolicy"/>
+                 <bean parent="Uif-InputField" p:propertyName="roleName"/>
+                 <bean parent="Uif-InputField" p:propertyName="actionRequestedCd"/>
+                 <bean parent="Uif-InputField" p:propertyName="priority"/>
                </list>
              </property>      
           </bean>

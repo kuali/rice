@@ -16,23 +16,23 @@
     limitations under the License.
 
 -->
-<bean id="RuleTemplate-InquiryView" parent="InquiryView">
+<bean id="RuleTemplate-InquiryView" parent="Uif-InquiryView">
    <property name="title" value="Rule Template"/>
    <property name="dataObjectClassName" value="org.kuali.rice.kew.rule.bo.RuleTemplateBo"/>
    <property name="Items">
        <list>
-         <bean parent="GroupSectionGridLayout">
+         <bean parent="Uif-Disclosure-GridSection">
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="items">
              <list>
-              <bean parent="InputField" p:propertyName="id"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="description"/>
-              <bean parent="InputField" p:propertyName="delegationTemplate.name"/>
+              <bean parent="Uif-InputField" p:propertyName="id"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
+              <bean parent="Uif-InputField" p:propertyName="delegationTemplate.name"/>
              </list>
            </property>
          </bean>
-          <!-- <bean parent="CollectionGroup">
+          <!-- <bean parent="Uif-StackedCollectionSection">
              <property name="title" value="Rule Attributes"/>  
              <property name="collectionObjectClass" value="org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo"/>
              <property name="propertyName" value="activeRuleTemplateAttributes"/>
@@ -44,9 +44,9 @@
              </property>
              <property name="items">
                <list>
-                 <bean parent="InputField" p:propertyName="ruleAttribute.name"/>
-                 <bean parent="InputField" p:propertyName="ruleAttribute.type"/>
-                 <bean parent="InputField" p:propertyName="required"/>
+                 <bean parent="Uif-InputField" p:propertyName="ruleAttribute.name"/>
+                 <bean parent="Uif-InputField" p:propertyName="ruleAttribute.type"/>
+                 <bean parent="Uif-InputField" p:propertyName="required"/>
                </list>
              </property>      
           </bean> -->

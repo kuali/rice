@@ -47,7 +47,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Agenda Id"/>
@@ -58,7 +58,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="100"/>
+      <bean parent="Uif-TextControl" p:size="100"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Agenda Name"/>
@@ -69,7 +69,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="typeId"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="typeId"/>
     <property name="label" value="Agenda typeId"/>
@@ -80,7 +80,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="contextId"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="contextId"/>
     <property name="label" value="Agenda contextId"/>
@@ -91,30 +91,30 @@
     <property name="name" value="active"/>
   </bean>
 
-  <bean id="AgendaBo-LookupView" parent="LookupView">
+  <bean id="AgendaBo-LookupView" parent="Uif-LookupView">
     <property name="title" value="Agenda Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo" />
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaLookupableHelperServiceImpl" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="typeId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="contextId" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="contextId" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="typeId" />
-        <bean parent="InputField" p:propertyName="contextId"/>
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="typeId" />
+        <bean parent="Uif-InputField" p:propertyName="contextId"/>
       </list>
     </property>
   </bean>
 
-  <bean id="AgendaBo-InquiryView" parent="InquiryView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js,../krms/scripts/disableButtons.js">
+  <bean id="AgendaBo-InquiryView" parent="Uif-InquiryView" p:additionalScriptFiles="/krms/scripts/ruleTree.js,../krms/scripts/agendaTree.js,../krms/scripts/requiredAlerts.js,../krms/scripts/disableButtons.js">
     <property name="title" value="Agenda Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.krms.impl.repository.AgendaInquiryHelperServiceImpl" />

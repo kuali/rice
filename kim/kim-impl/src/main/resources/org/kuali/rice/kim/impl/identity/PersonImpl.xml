@@ -100,7 +100,7 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -111,7 +111,7 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -122,7 +122,7 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -133,7 +133,7 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -147,7 +147,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>
   </bean>
 
@@ -159,7 +159,7 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="20"/>
+      <bean parent="Uif-TextControl" p:size="20"/>
     </property>
   </bean>
 
@@ -178,7 +178,7 @@
       <bean parent="TextControlDefinition" p:size="12"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="12"/>
+      <bean parent="Uif-TextControl" p:size="12"/>
     </property>
   </bean>
 
@@ -200,7 +200,7 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 
@@ -210,7 +210,7 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
   </bean>
 
@@ -293,29 +293,29 @@
 
   <!-- KRAD Conversion -->
 
-  <bean id="PersonImpl-InquiryView" parent="InquiryView">
+  <bean id="PersonImpl-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Person Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.inquiry.PersonInquirableImpl"/>
     <property name="Items">
       <list>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="principalName"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="firstName"/>
-              <bean parent="InputField" p:propertyName="middleName"/>
-              <bean parent="InputField" p:propertyName="lastName"/>
-              <bean parent="InputField" p:propertyName="principalId"/>
-              <bean parent="InputField" p:propertyName="entityId"/>
-              <bean parent="InputField" p:propertyName="campusCode"/>
-              <bean parent="InputField" p:propertyName="emailAddress"/>
-              <bean parent="InputField" p:propertyName="phoneNumber"/>
-              <bean parent="InputField" p:propertyName="primaryDepartmentCode"/>
-              <bean parent="InputField" p:propertyName="employeeStatusCode"/>
-              <bean parent="InputField" p:propertyName="employeeTypeCode"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="principalName"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="firstName"/>
+              <bean parent="Uif-InputField" p:propertyName="middleName"/>
+              <bean parent="Uif-InputField" p:propertyName="lastName"/>
+              <bean parent="Uif-InputField" p:propertyName="principalId"/>
+              <bean parent="Uif-InputField" p:propertyName="entityId"/>
+              <bean parent="Uif-InputField" p:propertyName="campusCode"/>
+              <bean parent="Uif-InputField" p:propertyName="emailAddress"/>
+              <bean parent="Uif-InputField" p:propertyName="phoneNumber"/>
+              <bean parent="Uif-InputField" p:propertyName="primaryDepartmentCode"/>
+              <bean parent="Uif-InputField" p:propertyName="employeeStatusCode"/>
+              <bean parent="Uif-InputField" p:propertyName="employeeTypeCode"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
           <property name="title" value="Person Attributes"/>
@@ -324,40 +324,40 @@
     </property>
   </bean>
 
-  <bean id="PersonImpl-LookupView" parent="LookupView">
+  <bean id="PersonImpl-LookupView" parent="Uif-LookupView">
     <property name="title" value="Person Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
     <property name="viewHelperServiceClassName" value="org.kuali.rice.kim.impl.identity.PersonLookupableImpl" />
     <property name="defaultSortAttributeNames" value="principalName"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="principalName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="principalId"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="entityId"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="firstName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="middleName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="lastName"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="emailAddress"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="phoneNumber"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="employeeId"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="campusCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="primaryDepartmentCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="employeeStatusCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="employeeTypeCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="lookupRoleNamespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="lookupRoleName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="principalName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="principalId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="entityId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="firstName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="middleName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="lastName"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="emailAddress"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="phoneNumber"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="employeeId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="campusCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="primaryDepartmentCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="employeeStatusCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="employeeTypeCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="lookupRoleNamespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="lookupRoleName"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="principalId"/>
-        <bean parent="InputField" p:propertyName="principalName"/>
-        <bean parent="InputField" p:propertyName="name"/>
-        <bean parent="InputField" p:propertyName="entityId"/>
-        <bean parent="InputField" p:propertyName="campusCode"/>
-        <bean parent="InputField" p:propertyName="primaryDepartmentCode"/>
-        <bean parent="InputField" p:propertyName="employeeId"/>
+        <bean parent="Uif-InputField" p:propertyName="principalId"/>
+        <bean parent="Uif-InputField" p:propertyName="principalName"/>
+        <bean parent="Uif-InputField" p:propertyName="name"/>
+        <bean parent="Uif-InputField" p:propertyName="entityId"/>
+        <bean parent="Uif-InputField" p:propertyName="campusCode"/>
+        <bean parent="Uif-InputField" p:propertyName="primaryDepartmentCode"/>
+        <bean parent="Uif-InputField" p:propertyName="employeeId"/>
       </list>
     </property>
   </bean>

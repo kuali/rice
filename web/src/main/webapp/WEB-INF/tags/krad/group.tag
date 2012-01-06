@@ -29,7 +29,9 @@
 <krad:div component="${group}">
 
   <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
-  <krad:template component="${group.header}"/>
+  <c:if test="${!empty group.header}">
+    <krad:template component="${group.header}"/>
+  </c:if>
 
   <div id="${group.id}${groupBodyIdSuffix}">
     <krad:template component="${group.instructionalMessageField}"/>
@@ -38,7 +40,9 @@
     <jsp:doBody/>
 
     <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
-    <krad:template component="${group.footer}"/>
+    <c:if test="${!empty group.footer}">
+      <krad:template component="${group.footer}"/>
+    </c:if>
   </div>
 
 </krad:div>

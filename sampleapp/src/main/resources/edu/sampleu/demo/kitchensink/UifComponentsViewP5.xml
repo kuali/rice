@@ -22,24 +22,24 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="prog1" parent="Group" p:layoutManager.orientation="VERTICAL"
+  <bean id="prog1" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL"
 		p:title="Progressive Disclosure of Fields">
 		<property name="disclosure.render" value="false" />
-		<property name="styleClasses" value="group_header" />
+		
 		<property name="items">
 			<list>
-				<bean parent="InputField_Form" p:label="Progressive Disclose options"
+				<bean parent="Uif-InputField" p:label="Progressive Disclose options"
 					p:instructionalText="Chose an option to display the corresponding fields"
 					p:width="auto" p:propertyName="field34">
 					<property name="control">
-						<bean parent="RadioGroupControl">
+						<bean parent="Uif-VerticalRadioControl">
 							<property name="options">
 								<list>
-									<bean parent="KeyLabelPair" p:key="show1"
+									<bean parent="Uif-KeyLabelPair" p:key="show1"
 										p:value="Show Field 1 - no ajax request, the content is already on the page but hidden" />
-									<bean parent="KeyLabelPair" p:key="show2"
+									<bean parent="Uif-KeyLabelPair" p:key="show2"
 										p:value="Show Field 2 - this will do an ajax request for the field the first time, then hide and show it locally" />
-									<bean parent="KeyLabelPair" p:key="show3"
+									<bean parent="Uif-KeyLabelPair" p:key="show3"
 										p:value="Show Field 3 - this will do an ajax request for the field each time the condition is met" />
 								</list>
 							</property>
@@ -68,29 +68,29 @@
 		</property>
 	</bean>
 
-	<bean id="prog2" parent="Group" p:layoutManager.orientation="VERTICAL"
+	<bean id="prog2" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL"
 		p:title="Progressive Disclosure of Groups">
 		<property name="disclosure.render" value="false" />
-		<property name="styleClasses" value="group_header" />
+		
 		<property name="items">
 			<list>
-				<bean parent="InputField_Form" p:label="Progressive Disclose options"
+				<bean parent="Uif-InputField" p:label="Progressive Disclose options"
 					p:instructionalText="Progressive Disclosure also works on displaying entire groups"
 					p:width="auto" p:propertyName="field38">
 					<property name="control">
-						<bean parent="RadioGroupControl">
+						<bean parent="Uif-VerticalRadioControl">
 							<property name="options">
 								<list>
-									<bean parent="KeyLabelPair" p:key="show1"
+									<bean parent="Uif-KeyLabelPair" p:key="show1"
 										p:value="Show Group 1 - no ajax request" />
-									<bean parent="KeyLabelPair" p:key="show2"
+									<bean parent="Uif-KeyLabelPair" p:key="show2"
 										p:value="Show Group 2 - ajax request for group" />
 								</list>
 							</property>
 						</bean>
 					</property>
 				</bean>
-				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
+				<bean parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL"
 					p:progressiveRender="field38 eq 'show1'" p:title="Group 1"
 					p:disclosure.render="false">
 					<property name="items">
@@ -104,7 +104,7 @@
 						</list>
 					</property>
 				</bean>
-				<bean parent="Group" p:layoutManager.orientation="HORIZONTAL"
+				<bean parent="Uif-BoxSection" p:layoutManager.orientation="HORIZONTAL"
 					p:progressiveRenderViaAJAX="true" p:progressiveRender="field38 eq 'show2'"
 					p:title="Group 2" p:disclosure.render="false">
 					<property name="items">
@@ -120,22 +120,22 @@
 		</property>
 	</bean>
 
-	<bean id="prog3" parent="Group" p:layoutManager.orientation="VERTICAL"
+	<bean id="prog3" parent="Uif-BoxSection" p:layoutManager.orientation="VERTICAL"
 		p:title="Conditional Refresh">
 		<property name="disclosure.render" value="false" />
-		<property name="styleClasses" value="group_header" />
+		
 		<property name="items">
 			<list>
-				<bean parent="InputField_Form" p:label="Conditional Refresh"
+				<bean parent="Uif-InputField" p:label="Conditional Refresh"
 					p:instructionalText="Chose an option cause a conditional refresh on a field"
 					p:width="auto" p:propertyName="field44">
 					<property name="control">
-						<bean parent="RadioGroupControl">
+						<bean parent="Uif-VerticalRadioControl">
 							<property name="options">
 								<list>
-									<bean parent="KeyLabelPair" p:key="show1"
+									<bean parent="Uif-KeyLabelPair" p:key="show1"
 										p:value="Refresh Field 1 - refreshes when this option is selected, conditionalRefresh statement option" />
-									<bean parent="KeyLabelPair" p:key="show2"
+									<bean parent="Uif-KeyLabelPair" p:key="show2"
 										p:value="Refresh Field 2, make it read only if this is selected, otherwise editable by using refreshWhenChanged pointing to this field" />
 								</list>
 							</property>
@@ -153,11 +153,11 @@
             <list>
               <bean parent="GenericTextField" p:propertyName="field88" p:label="Field 1">
                 <property name="control">
-                  <bean parent="SelectControl">
+                  <bean parent="Uif-DropdownControl">
                     <property name="options">
                       <list>
-                        <bean parent="KeyLabelPair" p:key="Fruits" p:value="Fruits"/>
-                        <bean parent="KeyLabelPair" p:key="Vegetables" p:value="Vegetables"/>
+                        <bean parent="Uif-KeyLabelPair" p:key="Fruits" p:value="Fruits"/>
+                        <bean parent="Uif-KeyLabelPair" p:key="Vegetables" p:value="Vegetables"/>
                       </list>
                     </property>
                   </bean>
@@ -167,7 +167,7 @@
                     p:optionsFinderClass="edu.sampleu.travel.options.FoodKeyValuesFinder"
                     p:refreshWhenChanged="field88">
                 <property name="control">
-                  <bean parent="SelectControl"/>
+                  <bean parent="Uif-DropdownControl"/>
                 </property>
               </bean>
             </list>
@@ -176,13 +176,13 @@
         <bean parent="GenericHorizontalFieldGroup" p:label="Refresh Buttons">
           <property name="items">
             <list>
-              <bean parent="AjaxActionField" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
+              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Group" p:methodToCall="refreshProgGroup"
                     p:refreshId="prog3"/>
-              <bean parent="AjaxActionField" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
+              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field" p:methodToCall="refreshProgGroup"
                     p:refreshPropertyName="field45"/>
-              <bean parent="AjaxActionField" p:actionLabel="Refresh Field but with Server Errors" p:methodToCall="refreshWithServerMessages"
+              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Field but with Server Errors" p:methodToCall="refreshWithServerMessages"
                     p:refreshPropertyName="field45"/>
-              <bean parent="AjaxActionField" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
+              <bean parent="Uif-AjaxActionButton" p:actionLabel="Refresh Page" p:methodToCall="refresh"/>
             </list>
           </property>
         </bean>
@@ -190,7 +190,7 @@
 		</property>
 	</bean>
 
-  <bean id="Uif-CollectionRefresh" parent="CollectionGroupSection">
+  <bean id="Uif-CollectionRefresh" parent="Uif-Disclosure-StackedCollectionSection">
     <property name="title" value="Collection Group With Refresh"/>
     <property name="instructionalText" value="This demonstrates refreshes fields and groups within a collection"/>
     <property name="collectionObjectClass" value="edu.sampleu.demo.kitchensink.UITestObject"/>
@@ -199,13 +199,13 @@
     <property name="layoutManager.summaryFields" value="field1"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="field1" p:label="Field 1" p:required="true"/>
-        <bean parent="InputField" p:propertyName="field2" p:label="Field 2" p:required="true"/>
-        <bean parent="FieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2" p:required="true"/>
+        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="field3" p:label="Field 3" p:required="true"/>
-              <bean parent="InputField" p:propertyName="field4" p:label="Field 4" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4" p:required="true"/>
             </list>
           </property>
         </bean>
@@ -218,7 +218,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-SubCollectionRefresh" parent="CollectionGroup">
+  <bean id="Uif-SubCollectionRefresh" parent="Uif-StackedCollectionSection">
     <property name="title" value="SubCollection With Refresh"/>
     <property name="instructionalText" value="This demonstrates refreshes within a sub-collection"/>
     <property name="disclosure.render" value="false"/>
@@ -228,14 +228,14 @@
     <property name="layoutManager.summaryFields" value="field1"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="field1" p:label="SubField 1" p:required="true"/>
-        <bean parent="InputField" p:propertyName="field2" p:label="SubField 2" p:required="true"
+        <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2" p:required="true"
               p:progressiveRender="@{#lp.field1 eq 'show2'}"/>
-        <bean parent="FieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
+        <bean parent="Uif-VerticalFieldGroup" p:label="Field Group" p:conditionalRefresh="@{#lp.field2 eq 'ref'}">
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="field3" p:label="SubField 3" p:required="true"/>
-              <bean parent="InputField" p:propertyName="field4" p:label="SubField 4" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4" p:required="true"/>
             </list>
           </property>
         </bean>

@@ -16,19 +16,19 @@
     limitations under the License.
 
 -->
-<bean id="Style-InquiryView" parent="InquiryView">
+<bean id="Style-InquiryView" parent="Uif-InquiryView">
    <property name="title" value="Rule Attribute"/>
    <property name="dataObjectClassName" value="org.kuali.rice.coreservice.impl.style.StyleBo"/>
    <property name="Items">
        <list>
-         <bean parent="GroupSectionGridLayout">
+         <bean parent="Uif-Disclosure-GridSection">
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="instructionalText" value="Style"/>
            <property name="items">
              <list>
-              <bean parent="InputField" p:propertyName="styleId"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="styleId"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
              </list>
            </property>
          </bean>

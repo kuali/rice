@@ -98,7 +98,7 @@
       <bean parent="TextControlDefinition" p:size="12"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="12"/>
+      <bean parent="Uif-TextControl" p:size="12"/>
     </property>      
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="genericSystemId"/>
@@ -166,7 +166,7 @@
       <bean parent="CheckboxControlDefinition"/>
     </property>
     <property name="controlField">
-      <bean parent="CheckboxControl"/>
+      <bean parent="Uif-CheckboxControl"/>
     </property>
     <property name="summary" value="Active Indicator"/>
     <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/>
@@ -221,7 +221,7 @@
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="summary" value="&amp;nbsp;"/>
     <property name="name" value="emailAddress"/>
@@ -341,7 +341,7 @@
       <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
     </property>
     <property name="controlField">
-      <bean parent="DateControl" p:size="10"/>
+      <bean parent="Uif-DateControl" p:size="10"/>
     </property>
     <property name="formatterClass" value="org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter"/>  
     <property name="summary" value="Start Date"/>
@@ -358,7 +358,7 @@
       <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
     </property>
     <property name="controlField">
-      <bean parent="DateControl" p:size="10"/>
+      <bean parent="Uif-DateControl" p:size="10"/>
     </property>
     <property name="formatterClass" value="org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter"/>  
     <property name="summary" value="End Date"/>

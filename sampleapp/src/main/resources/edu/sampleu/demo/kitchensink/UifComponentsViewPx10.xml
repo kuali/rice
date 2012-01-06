@@ -21,16 +21,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="remotableFieldsGroup" parent="Group" p:disclosure.render="false">
+  <bean id="remotableFieldsGroup" parent="Uif-BoxSection" p:disclosure.render="false">
     <property name="title" value="Fields created by Fetching Remotable Fields"/>
     <property name="items">
       <list>
-        <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
+        <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="remoteFieldValuesMap"
               p:fetchingMethodToCall="retrieveRemoteFields"/>
 
-        <bean parent="HorizontalFieldGroup" p:group.instructionalText="Remote fields pulled into a Field Group">
+        <bean parent="Uif-HorizontalFieldGroup" p:group.instructionalText="Remote fields pulled into a Field Group">
           <property name="items">
-            <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap2"
+            <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="remoteFieldValuesMap2"
                   p:fetchingMethodToCall="retrieveRemoteFields"/>
           </property>
         </bean>
@@ -38,7 +38,7 @@
     </property>
   </bean>
 
-  <bean id="remotableFieldsCollection" parent="CollectionGroupSectionTableLayout"
+  <bean id="remotableFieldsCollection" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.suppressLineWrapping="true">
     <property name="title" value="Collection Group Remote Fields"/>
     <property name="instructionalText" value="A collection group that has remote fields."/>
@@ -48,22 +48,22 @@
     <property name="layoutManager.richTable.render" value="false" />
     <property name="items">
       <list>
-        <bean parent="InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
-        <bean parent="RemoteFieldsHolder" p:propertyName="remoteFieldValuesMap"
+        <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"/>
+        <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="remoteFieldValuesMap"
               p:fetchingMethodToCall="retrieveRemoteFields"/>
-        <bean parent="InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
+        <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
   </bean>
 
-  <bean id="miscGroup" parent="Group" p:disclosure.render="false">
+  <bean id="miscGroup" parent="Uif-BoxSection" p:disclosure.render="false">
     <property name="title" value="Various configuration and feature examples"/>
     <property name="items">
       <list>
         <bean parent="GenericTextField" p:label="Field 1" p:required="true" p:propertyName="field91" p:readOnly="false"
               p:instructionalText="Field that is being set to read only by request">
           <property name="control">
-            <bean parent="TextControl"/>
+            <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
@@ -71,7 +71,7 @@
               p:instructionalText="Field using a custom property editor"
               p:propertyEditorClass="edu.sampleu.demo.kitchensink.UITestPropertyEditor">
           <property name="control">
-            <bean parent="TextControl"/>
+            <bean parent="Uif-TextControl"/>
           </property>
         </bean>
 
@@ -80,15 +80,15 @@
               p:propertyName="field72" p:defaultValue="a3">
           <property name="hiddenPropertyNames" value="field73,field74"/>
           <property name="fieldAttributeQuery">
-            <bean parent="FieldAttributeQuery" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
+            <bean parent="Uif-AttributeQueryConfig" p:dataObjectClassName="edu.sampleu.travel.bo.TravelAccount"
                   p:queryFieldMapping="field72:number" p:returnFieldMapping="name:field73,subAccountName:field74"/>
           </property>
         </bean>
 
-        <bean parent="InputField" p:propertyName="bField1" p:label="See This?"
+        <bean parent="Uif-InputField" p:propertyName="bField1" p:label="See This?"
               p:progressiveRender="@{!#empty(field73)}">
           <property name="control">
-            <bean parent="CheckboxControl"/>
+            <bean parent="Uif-CheckboxControl"/>
           </property>
         </bean>
       </list>

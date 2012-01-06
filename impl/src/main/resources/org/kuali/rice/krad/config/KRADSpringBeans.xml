@@ -115,13 +115,20 @@
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/Note.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/NoteType.xml</value>
         <value>classpath:org/kuali/rice/krad/bo/datadictionary/PessimisticLock.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
-        <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
         <value>classpath:org/kuali/rice/krad/uif/UifViewPageDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifHeaderFooterDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifGroupDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifLayoutManagerDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifMaintenanceDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifDocumentDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifInquiryDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifLookupDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifIncidentReportDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifFieldDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifControlDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifWidgetDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifConfigurationDefinitions.xml</value>
+        <value>classpath:org/kuali/rice/krad/uif/UifRiceDefinitions.xml</value>
       </list>
     </property>
     <property name="packagePrefixes">

@@ -73,7 +73,7 @@
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="10"/>
+      <bean parent="Uif-TextControl" p:size="10"/>
     </property>    
     <property name="summary" value="Unique identifier for account"/>
     <property name="name" value="number"/>
@@ -102,7 +102,7 @@
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="30"/>
+      <bean parent="Uif-TextControl" p:size="30"/>
     </property>     
     <property name="name" value="name"/>
     <property name="label" value="Account Name"/>
@@ -130,7 +130,7 @@
     <property name="label" value="Subsidized Percent"/>
     <property name="description" value="Subsidized Percent"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="6" p:watermarkText="##.##"/>
+      <bean parent="Uif-TextControl" p:size="6" p:watermarkText="##.##"/>
     </property>
     <property name="validationPattern">
       <bean parent="FixedPointValidationPattern" p:precision="5" p:allowNegative="false" p:scale="2"/>
@@ -143,7 +143,7 @@
     <property name="label" value="Date Created"/>
     <property name="description" value="Date Created"/>
     <property name="controlField">
-      <bean parent="DateControl"/>
+      <bean parent="Uif-DateControl"/>
     </property>     
     <property name="attributeSecurity">
 	            <bean parent="AttributeSecurity">
@@ -162,7 +162,7 @@
       <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
     </property>
     <property name="controlField">
-      <bean parent="TextControl" p:size="2"/>
+      <bean parent="Uif-TextControl" p:size="2"/>
     </property>      
     <property name="name" value="extension.accountTypeCode"/>
     <property name="summary" value="Type code grouping for account"/>
@@ -179,7 +179,7 @@
     <property name="name" value="foId"/>
     <property name="additionalDisplayAttributeName" value="fiscalOfficer.userName"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="5"/>
+      <bean parent="Uif-TextControl" p:size="5"/>
     </property>
     <property name="summary" value="Responsbile for aproving account expenses"/>
   </bean>

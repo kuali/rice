@@ -22,36 +22,36 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="TravelAccount-InquiryView" parent="InquiryView">
+  <bean id="TravelAccount-InquiryView" parent="Uif-InquiryView">
      <property name="title" value="Travel Account Inquiry"/>
      <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
      <property name="Items">
          <list>
-           <bean parent="GroupSectionGridLayout">
+           <bean parent="Uif-Disclosure-GridSection">
              <property name="layoutManager.numberOfColumns" value="2"/>
              <property name="items">
                <list>
-                <bean parent="DataField" p:propertyName="number"/>
-                <bean parent="DataField" p:propertyName="name"/>
-                <bean parent="DataField" p:propertyName="extension.accountType.codeAndDescription"/>
-                <bean parent="DataField" p:propertyName="subAccount"/>
-                <bean parent="DataField" p:propertyName="subAccountName"/>
-                <bean parent="DataField" p:propertyName="createDate"/>
-                <bean parent="DataField" p:propertyName="subsidizedPercent"/>
-                <bean parent="DataField" p:propertyName="foId"/>
+                <bean parent="Uif-DataField" p:propertyName="number"/>
+                <bean parent="Uif-DataField" p:propertyName="name"/>
+                <bean parent="Uif-DataField" p:propertyName="extension.accountType.codeAndDescription"/>
+                <bean parent="Uif-DataField" p:propertyName="subAccount"/>
+                <bean parent="Uif-DataField" p:propertyName="subAccountName"/>
+                <bean parent="Uif-DataField" p:propertyName="createDate"/>
+                <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
+                <bean parent="Uif-DataField" p:propertyName="foId"/>
                </list>
              </property>
              <property name="title" value="Account Information"/>
            </bean>
-           <bean parent="CollectionGroupSection">
+           <bean parent="Uif-Disclosure-StackedCollectionSection">
               <property name="title" value="Fiscal Officer Accounts"/>  
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="items">
                 <list>
-                  <bean parent="DataField" p:propertyName="number"/>
-                  <bean parent="DataField" p:propertyName="name"/>
-                  <bean parent="DataField" p:propertyName="foId"/>
+                  <bean parent="Uif-DataField" p:propertyName="number"/>
+                  <bean parent="Uif-DataField" p:propertyName="name"/>
+                  <bean parent="Uif-DataField" p:propertyName="foId"/>
                 </list>
               </property>      
               <property name="layoutManager.summaryTitle" value="Travel Account"/> 
@@ -61,18 +61,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 </list>
               </property>
            </bean>
-           <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="5">
+           <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="5">
               <property name="title" value="Fiscal Officer Accounts - Default (No Column Options set)"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="layoutManager.renderSequenceField" value="false"/>
               <property name="items">
                 <list>
-                  <bean parent="DataField" p:propertyName="number"/>
-                  <bean parent="DataField" p:propertyName="name"/>
-                  <bean parent="DataField" p:propertyName="foId"/>
-                  <bean parent="DataField" p:propertyName="subsidizedPercent"/>
-                  <bean parent="DataField" p:propertyName="createDate"/>
+                  <bean parent="Uif-DataField" p:propertyName="number"/>
+                  <bean parent="Uif-DataField" p:propertyName="name"/>
+                  <bean parent="Uif-DataField" p:propertyName="foId"/>
+                  <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
+                  <bean parent="Uif-DataField" p:propertyName="createDate"/>
                  </list>
               </property>
              <!-- TODO: appears to interfere with rich table resizing after window resize
@@ -93,18 +93,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                  -->
            </bean>
 
-           <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="5">
+           <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="5">
               <property name="title" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on rich table"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="layoutManager.renderSequenceField" value="false"/>
               <property name="items">
                 <list>
-                  <bean parent="DataField" p:propertyName="number"/>
-                  <bean parent="DataField" p:propertyName="name"/>
-                  <bean parent="DataField" p:propertyName="foId"/>
-                  <bean parent="DataField" p:propertyName="subsidizedPercent"/>
-                  <bean parent="DataField" p:propertyName="createDate"/>
+                  <bean parent="Uif-DataField" p:propertyName="number"/>
+                  <bean parent="Uif-DataField" p:propertyName="name"/>
+                  <bean parent="Uif-DataField" p:propertyName="foId"/>
+                  <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
+                  <bean parent="Uif-DataField" p:propertyName="createDate"/>
                  </list>
               </property>
              <property name="layoutManager.richTable.hiddenColumns">
@@ -119,18 +119,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </set>
              </property>
            </bean>
-           <bean parent="CollectionGroupSectionTableLayout" p:layoutManager.numberOfColumns="5">
+           <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="5">
               <property name="title" value="Fiscal Officer Accounts - using hiddenColumns and sortableColumns properties on layout manager"/>
               <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
               <property name="propertyName" value="fiscalOfficer.accounts"/>
               <property name="layoutManager.renderSequenceField" value="false"/>
               <property name="items">
                 <list>
-                  <bean parent="DataField" p:propertyName="number"/>
-                  <bean parent="DataField" p:propertyName="name"/>
-                  <bean parent="DataField" p:propertyName="foId"/>
-                  <bean parent="DataField" p:propertyName="subsidizedPercent"/>
-                  <bean parent="DataField" p:propertyName="createDate"/>
+                  <bean parent="Uif-DataField" p:propertyName="number"/>
+                  <bean parent="Uif-DataField" p:propertyName="name"/>
+                  <bean parent="Uif-DataField" p:propertyName="foId"/>
+                  <bean parent="Uif-DataField" p:propertyName="subsidizedPercent"/>
+                  <bean parent="Uif-DataField" p:propertyName="createDate"/>
                  </list>
               </property>
              <property name="layoutManager.hiddenColumns">

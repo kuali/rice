@@ -27,25 +27,25 @@
                                            PeopleFlow Lookup
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-LookupView" parent="LookupView" p:maintenanceUrlMapping="peopleFlowMaintenance">
+  <bean id="PeopleFlow-LookupView" parent="Uif-LookupView" p:maintenanceUrlMapping="peopleFlowMaintenance">
     <property name="title" value="People Flow Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="namespaceCode"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" p:fieldDirectInquiry.render="false"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="typeId"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="active"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" p:fieldDirectInquiry.render="false"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id"/>
-        <bean parent="InputField" p:propertyName="namespaceCode"/>
-        <bean parent="InputField" p:propertyName="name"/>
-        <bean parent="InputField" p:propertyName="typeId"/>
-        <bean parent="InputField" p:propertyName="active"/>
+        <bean parent="Uif-InputField" p:propertyName="id"/>
+        <bean parent="Uif-InputField" p:propertyName="namespaceCode"/>
+        <bean parent="Uif-InputField" p:propertyName="name"/>
+        <bean parent="Uif-InputField" p:propertyName="typeId"/>
+        <bean parent="Uif-InputField" p:propertyName="active"/>
       </list>
     </property>
   </bean>
@@ -55,21 +55,21 @@
                                            PeopleFlow Inquiry
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-InquiryView" parent="InquiryView">
+  <bean id="PeopleFlow-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="People Flow Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
     <property name="Items">
       <list>
-        <bean parent="GroupSectionGridLayout">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="layoutManager.numberOfColumns" value="2"/>
           <property name="items">
             <list>
-              <bean parent="DataField" p:propertyName="id"/>
-              <bean parent="DataField" p:propertyName="namespaceCode"/>
-              <bean parent="DataField" p:propertyName="name"/>
-              <bean parent="DataField" p:propertyName="typeId"/>
-              <bean parent="DataField" p:propertyName="description"/>
-              <bean parent="DataField" p:propertyName="active"/>
+              <bean parent="Uif-DataField" p:propertyName="id"/>
+              <bean parent="Uif-DataField" p:propertyName="namespaceCode"/>
+              <bean parent="Uif-DataField" p:propertyName="name"/>
+              <bean parent="Uif-DataField" p:propertyName="typeId"/>
+              <bean parent="Uif-DataField" p:propertyName="description"/>
+              <bean parent="Uif-DataField" p:propertyName="active"/>
             </list>
           </property>
           <property name="title" value="PeopleFlow Summary"/>
@@ -88,7 +88,7 @@
   ********************************************************************************************************************
   -->
 
-  <bean id="PeopleFlow-MaintenanceView" parent="MaintenanceView">
+  <bean id="PeopleFlow-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="title" value="People Flow Maintenance"/>
     <property name="dataObjectClassName" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo"/>
     <property name="items">
@@ -107,27 +107,27 @@
                                            PeopleFlow Summary Group
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-Summary" parent="GroupSectionGridLayout">
+  <bean id="PeopleFlow-Summary" parent="Uif-Disclosure-GridSection">
     <property name="layoutManager.numberOfColumns" value="4"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="namespaceCode" p:required="true"/>
-        <bean parent="InputField" p:propertyName="description" p:required="true" p:rowSpan="2"
+        <bean parent="Uif-InputField" p:propertyName="namespaceCode" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="description" p:required="true" p:rowSpan="2"
               p:labelField.rowSpan="2"/>
-        <bean parent="InputField" p:propertyName="name" p:required="true"/>
-        <bean parent="InputField" p:propertyName="typeId" p:required="true"/>
-        <bean parent="InputField" p:propertyName="active" p:defaultValue="true"/>
+        <bean parent="Uif-InputField" p:propertyName="name" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="typeId" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="active" p:defaultValue="true"/>
       </list>
     </property>
     <property name="title" value="PeopleFlow Summary"/>
   </bean>
 
-  <bean id="PeopleFlow-TypeAttributes" parent="GroupGridLayout"
+  <bean id="PeopleFlow-TypeAttributes" parent="Uif-GridSection"
         p:refreshWhenChanged="document.newMaintainableObject.dataObject.typeId"
         p:refreshDiscloseMethodToCall="prepareTypeAttributes" p:disclosure.render="false">
     <property name="items">
       <list>
-        <bean parent="RemoteFieldsHolder" p:propertyName="attributeValues"
+        <bean parent="Uif-RemotableFieldsPlaceholderConfig" p:propertyName="attributeValues"
               p:fetchingMethodToCall="retrieveTypeAttributes"/>
       </list>
     </property>
@@ -138,7 +138,7 @@
                                            PeopleFlow Detail Group
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-Detail" abstract="true" parent="CollectionGroupSectionTableLayout"
+  <bean id="PeopleFlow-Detail" abstract="true" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.numberOfColumns="4">
     <property name="title" value="PeopleFlow Members"/>
     <property name="collectionObjectClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo"/>
@@ -148,10 +148,10 @@
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="priority" p:required="true"/>
-        <bean parent="InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="priority" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean parent="PeopleFlow-Member" p:required="true"/>
-        <bean parent="InputField" p:propertyName="actionRequestPolicyCode"
+        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
@@ -167,7 +167,7 @@
                                            PeopleFlow Delegates Group
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-Delegates" abstract="true" parent="CollectionGroupTableLayout"
+  <bean id="PeopleFlow-Delegates" abstract="true" parent="Uif-TableCollectionSection"
         p:layoutManager.numberOfColumns="4" p:style="margin-left: 25%;">
     <property name="title" value="Member Delegates"/>
     <property name="collectionObjectClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowDelegateBo"/>
@@ -176,10 +176,10 @@
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
-        <bean parent="InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="memberTypeCode" p:defaultValue="P" p:required="true"/>
         <bean id="PeopleFlow-MemberDelegate" parent="PeopleFlow-Member" p:required="true"/>
-        <bean parent="InputField" p:propertyName="delegationTypeCode" p:required="true"/>
-        <bean parent="InputField" p:propertyName="actionRequestPolicyCode"
+        <bean parent="Uif-InputField" p:propertyName="delegationTypeCode" p:required="true"/>
+        <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode"
               p:progressiveRender="#line.memberTypeCode eq 'R'" p:defaultValue="F" p:required="true"/>
       </list>
     </property>
@@ -190,28 +190,28 @@
                                            PeopleFlow Member Field
   ********************************************************************************************************************
   -->
-  <bean id="PeopleFlow-Member" parent="InputField" p:propertyName="memberName" p:label="Member"
+  <bean id="PeopleFlow-Member" parent="Uif-InputField" p:propertyName="memberName" p:label="Member"
         p:refreshWhenChanged="#line.memberTypeCode" p:readOnly="@{(#line.memberTypeCode ne 'P') or #view.readOnly}"
         p:fieldLookup.render="@{!view.readOnly}" p:resetDataOnRefresh="true">
     <property name="control">
-      <bean parent="UserControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name"/>
+      <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name"/>
     </property>
     <property name="propertyReplacers">
       <list>
-        <bean parent="PropertyReplacer" p:propertyName="control" p:condition="#line.memberTypeCode ne 'P'">
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="control" p:condition="#line.memberTypeCode ne 'P'">
           <property name="replacement">
-            <bean parent="TextControl" p:size="40"/>
+            <bean parent="Uif-TextControl" p:size="40"/>
           </property>
         </bean>
-        <bean parent="PropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'R'">
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'R'">
           <property name="replacement">
-            <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo"
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo"
                   p:fieldConversions="id:memberId" p:render="@{!view.readOnly}"/>
           </property>
         </bean>
-        <bean parent="PropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'G'">
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="fieldLookup" p:condition="#line.memberTypeCode eq 'G'">
           <property name="replacement">
-            <bean parent="QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
                   p:fieldConversions="id:memberId" p:render="@{!view.readOnly}"/>
           </property>
         </bean>

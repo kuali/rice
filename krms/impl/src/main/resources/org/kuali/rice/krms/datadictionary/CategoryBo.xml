@@ -42,7 +42,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="ID"/>
@@ -53,7 +53,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="128"/>
+      <bean parent="Uif-TextControl" p:size="128"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Name"/>
@@ -64,26 +64,26 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="namespace"/>
     <property name="label" value="Namespace"/>
   </bean>
 
   <bean id="CategoryBo-LookupView" parent="CategoryBo-LookupView-parentBean" />
-  <bean id="CategoryBo-LookupView-parentBean" abstract="true" parent="LookupView">
+  <bean id="CategoryBo-LookupView-parentBean" abstract="true" parent="Uif-LookupView">
     <property name="title" value="Category Lookup"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.CategoryBo"/>
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="namespace"/>
-        <bean parent="LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="namespace"/>
-        <bean parent="InputField" p:propertyName="name"/>
+        <bean parent="Uif-InputField" p:propertyName="namespace"/>
+        <bean parent="Uif-InputField" p:propertyName="name"/>
       </list>
     </property>
   </bean>

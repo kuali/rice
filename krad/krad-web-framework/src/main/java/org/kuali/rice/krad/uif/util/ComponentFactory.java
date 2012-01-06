@@ -82,51 +82,51 @@ import java.util.Map;
  */
 public class ComponentFactory {
 
-    protected static final String TEXT_CONTROL = "TextControl";
-    protected static final String CHECKBOX_CONTROL = "CheckboxControl";
-    protected static final String HIDDEN_CONTROL = "HiddenControl";
-    protected static final String TEXTAREA_CONTROL = "TextAreaControl";
-    protected static final String SELECT_CONTROL = "SelectControl";
-    protected static final String CHECKBOX_GROUP_CONTROL = "CheckboxGroupControl";
-    protected static final String CHECKBOX_GROUP_CONTROL_HORIZONTAL = "CheckboxGroupControlHorizontal";
-    protected static final String RADIO_GROUP_CONTROL = "RadioGroupControl";
-    protected static final String RADIO_GROUP_CONTROL_HORIZONTAL = "RadioGroupControlHorizontal";
-    protected static final String FILE_CONTROL = "FileControl";
-    protected static final String DATE_CONTROL = "DateControl";
-    protected static final String USER_CONTROL = "UserControl";
-    protected static final String GROUP_CONTROL = "GroupControl";
+    protected static final String TEXT_CONTROL = "Uif-TextControl";
+    protected static final String CHECKBOX_CONTROL = "Uif-CheckboxControl";
+    protected static final String HIDDEN_CONTROL = "Uif-HiddenControl";
+    protected static final String TEXTAREA_CONTROL = "Uif-TextAreaControl";
+    protected static final String SELECT_CONTROL = "Uif-DropdownControl";
+    protected static final String CHECKBOX_GROUP_CONTROL = "Uif-VerticalCheckboxesControl";
+    protected static final String CHECKBOX_GROUP_CONTROL_HORIZONTAL = "Uif-HorizontalCheckboxesControl";
+    protected static final String RADIO_GROUP_CONTROL = "Uif-VerticalRadioControl";
+    protected static final String RADIO_GROUP_CONTROL_HORIZONTAL = "Uif-HorizontalRadioControl";
+    protected static final String FILE_CONTROL = "Uif-FileControl";
+    protected static final String DATE_CONTROL = "Uif-DateControl";
+    protected static final String USER_CONTROL = "Uif-KimPersonControl";
+    protected static final String GROUP_CONTROL = "Uif-KimGroupControl";
 
-    protected static final String DATA_FIELD = "DataField";
-    protected static final String INPUT_FIELD = "InputField";
-    protected static final String ERRORS_FIELD = "ErrorsField";
-    protected static final String ACTION_FIELD = "ActionField";
-    protected static final String ACTION_LINK_FIELD = "ActionLinkField";
-    protected static final String LINK_FIELD = "LinkField";
-    protected static final String IFRAME_FIELD = "IframeField";
-    protected static final String IMAGE_FIELD = "ImageField";
-    protected static final String BLANK_FIELD = "BlankField";
-    protected static final String GENERIC_FIELD = "GenericField";
-    protected static final String LABEL_FIELD = "LabelField";
-    protected static final String MESSAGE_FIELD = "MessageField";
-    protected static final String FIELD_GROUP = "FieldGroup";
-    protected static final String HORIZONTAL_FIELD_GROUP = "HorizontalFieldGroup";
+    protected static final String DATA_FIELD = "Uif-DataField";
+    protected static final String INPUT_FIELD = "Uif-InputField";
+    protected static final String ERRORS_FIELD = "Uif-FieldValidationMessages";
+    protected static final String ACTION_FIELD = "Uif-PrimaryActionButton";
+    protected static final String ACTION_LINK_FIELD = "Uif-ActionLink";
+    protected static final String LINK_FIELD = "Uif-Link";
+    protected static final String IFRAME_FIELD = "Uif-IframeField";
+    protected static final String IMAGE_FIELD = "Uif-ImageField";
+    protected static final String BLANK_FIELD = "Uif-EmptyField";
+    protected static final String GENERIC_FIELD = "Uif-CustomTemplateField";
+    protected static final String LABEL_FIELD = "Uif-Label";
+    protected static final String MESSAGE_FIELD = "Uif-MessageField";
+    protected static final String FIELD_GROUP = "Uif-VerticalFieldGroup";
+    protected static final String HORIZONTAL_FIELD_GROUP = "Uif-HorizontalFieldGroup";
 
-    protected static final String GROUP = "Group";
-    protected static final String PAGE_GROUP = "PageGroup";
-    protected static final String GROUP_GRID_LAYOUT = "GroupGridLayout";
-    protected static final String GROUP_BODY_ONLY = "GroupBodyOnly";
-    protected static final String GROUP_GRID_BODY_ONLY = "GroupGridBodyOnly";
-    protected static final String TAB_GROUP = "TabGroup";
-    protected static final String NAVIGATION_GROUP = "NavigationGroup";
-    protected static final String TREE_GROUP = "TreeGroup";
-    protected static final String LINK_GROUP = "LinkGroup";
-    protected static final String COLLECTION_GROUP = "CollectionGroup";
-    protected static final String COLLECTION_GROUP_TABLE_LAYOUT = "CollectionGroupTableLayout";
-    protected static final String LIST_GROUP = "ListGroup";
+    protected static final String GROUP = "Uif-BoxSection";
+    protected static final String PAGE_GROUP = "Uif-Page";
+    protected static final String GROUP_GRID_LAYOUT = "Uif-GridSection";
+    protected static final String GROUP_BODY_ONLY = "Uif-BoxGroup";
+    protected static final String GROUP_GRID_BODY_ONLY = "Uif-GridGroup";
+    protected static final String TAB_GROUP = "Uif-TabSection";
+    protected static final String NAVIGATION_GROUP = "Uif-NavigationGroupBase";
+    protected static final String TREE_GROUP = "Uif-TreeSection";
+    protected static final String LINK_GROUP = "Uif-LinkGroup";
+    protected static final String COLLECTION_GROUP = "Uif-StackedCollectionSection";
+    protected static final String COLLECTION_GROUP_TABLE_LAYOUT = "Uif-TableCollectionSection";
+    protected static final String LIST_GROUP = "Uif-ListCollectionSection";
 
-    protected static final String HEADER = "Header";
-    protected static final String FOOTER = "Footer";
-    protected static final String FOOTER_SAVECLOSECANCEL = "Footer_SaveCloseCancel";
+    protected static final String HEADER = "Uif-HeaderFieldBase";
+    protected static final String FOOTER = "Uif-FooterBase";
+    protected static final String FOOTER_SAVECLOSECANCEL = "Uif-FormFooter";
 
     /**
      * Gets a fresh copy of the component by the id passed in which used to look up the component in

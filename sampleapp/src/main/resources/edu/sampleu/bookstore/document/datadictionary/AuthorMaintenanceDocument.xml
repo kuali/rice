@@ -31,44 +31,44 @@
       </list>
     </property>
   </bean>
-  <bean id="Author-MaintenanceView" parent="MaintenanceView">
+  <bean id="Author-MaintenanceView" parent="Uif-MaintenanceView">
     <property name="dataObjectClassName" value="edu.sampleu.bookstore.bo.Author"/>
     <property name="items">
       <list merge="true">
-        <bean parent="MaintenanceGroupSectionGridLayout">
+        <bean parent="Uif-MaintenanceGridSection">
           <property name="title" value="Add/Edit Author"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="authorName"/>
-              <bean parent="InputField" p:propertyName="email"/>
-              <bean parent="InputField" p:propertyName="phoneNbr"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="authorName"/>
+              <bean parent="Uif-InputField" p:propertyName="email"/>
+              <bean parent="Uif-InputField" p:propertyName="phoneNbr"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
         </bean>
-        <bean parent="MaintenanceGroupSectionGridLayout">
+        <bean parent="Uif-MaintenanceGridSection">
           <property name="title" value="Account Information"/>
           <property name="items">
             <list>
-              <bean parent="InputField" p:propertyName="extension.accountNumber"/>
-              <bean parent="InputField" p:propertyName="extension.bankName"/>
+              <bean parent="Uif-InputField" p:propertyName="extension.accountNumber"/>
+              <bean parent="Uif-InputField" p:propertyName="extension.bankName"/>
             </list>
           </property>
         </bean>
-        <bean parent="MaintenanceCollectionGroupSection">
+        <bean parent="Uif-MaintenanceStackedCollectionSection">
           <property name="title" value="Addresses"/>
           <property name="collectionObjectClass" value="edu.sampleu.bookstore.bo.Address"/>
           <property name="propertyName" value="addresses"/>
           <property name="items">
             <list>
               
-              <bean parent="InputField" p:propertyName="type"/>
-              <bean parent="InputField" p:propertyName="street1"/>
-              <bean parent="InputField" p:propertyName="street2"/>
-              <bean parent="InputField" p:propertyName="city"/>
-              <bean parent="InputField" p:propertyName="province"/>
-              <bean parent="InputField" p:propertyName="country"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="type"/>
+              <bean parent="Uif-InputField" p:propertyName="street1"/>
+              <bean parent="Uif-InputField" p:propertyName="street2"/>
+              <bean parent="Uif-InputField" p:propertyName="city"/>
+              <bean parent="Uif-InputField" p:propertyName="province"/>
+              <bean parent="Uif-InputField" p:propertyName="country"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
             </list>
           </property>
           <property name="layoutManager.summaryTitle" value="Address"/>

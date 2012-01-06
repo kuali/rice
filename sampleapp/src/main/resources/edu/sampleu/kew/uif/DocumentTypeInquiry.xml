@@ -16,28 +16,28 @@
     limitations under the License.
 
 -->
-<bean id="DocumentType-InquiryView" parent="InquiryView">
+<bean id="DocumentType-InquiryView" parent="Uif-InquiryView">
    <property name="title" value="Document Type"/>
    <property name="dataObjectClassName" value="org.kuali.rice.kew.doctype.bo.DocumentType"/>
    <property name="Items">
        <list>
-         <bean parent="GroupSectionGridLayout">
+         <bean parent="Uif-Disclosure-GridSection">
            <property name="layoutManager.numberOfColumns" value="2"/>
            <property name="items">
              <list>
-              <bean parent="InputField" p:propertyName="docTypeParentId"/>
-              <bean parent="InputField" p:propertyName="parentDocType.name"/>
-              <bean parent="InputField" p:propertyName="documentTypeId"/>
-              <bean parent="InputField" p:propertyName="name"/>
-              <bean parent="InputField" p:propertyName="label"/>
-              <bean parent="InputField" p:propertyName="description"/>
-              <bean parent="InputField" p:propertyName="displayableUnresolvedDocHandlerUrl"/>
-              <bean parent="InputField" p:propertyName="unresolvedHelpDefinitionUrl"/>
-              <bean parent="InputField" p:propertyName="unresolvedDocSearchHelpUrl"/>
-              <bean parent="InputField" p:propertyName="displayablePostProcessorName"/>
-              <bean parent="InputField" p:propertyName="displayableNotificationFromAddress"/>
-              <bean parent="InputField" p:propertyName="displayableApplicationId"/>
-              <bean parent="InputField" p:propertyName="active"/>
+              <bean parent="Uif-InputField" p:propertyName="docTypeParentId"/>
+              <bean parent="Uif-InputField" p:propertyName="parentDocType.name"/>
+              <bean parent="Uif-InputField" p:propertyName="documentTypeId"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="label"/>
+              <bean parent="Uif-InputField" p:propertyName="description"/>
+              <bean parent="Uif-InputField" p:propertyName="displayableUnresolvedDocHandlerUrl"/>
+              <bean parent="Uif-InputField" p:propertyName="unresolvedHelpDefinitionUrl"/>
+              <bean parent="Uif-InputField" p:propertyName="unresolvedDocSearchHelpUrl"/>
+              <bean parent="Uif-InputField" p:propertyName="displayablePostProcessorName"/>
+              <bean parent="Uif-InputField" p:propertyName="displayableNotificationFromAddress"/>
+              <bean parent="Uif-InputField" p:propertyName="displayableApplicationId"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
              </list>
            </property>
          </bean>

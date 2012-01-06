@@ -21,22 +21,22 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-  <bean id="TravelAccount-LookupView" parent="LookupView">
+  <bean id="TravelAccount-LookupView" parent="Uif-LookupView">
     <property name="title" value="Travel Account Lookup" />
     <property name="dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount" />
     <property name="criteriaFields">
       <list>
 <!-- p:dictionaryObjectEntry=edu.sampleu.travel.bo.TravelAccount -->
-        <bean parent="LookupCriteriaInputField" p:propertyName="number" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="subAccount" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="subAccountName" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="createDate" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="subsidizedPercent" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="foId" /> <!-- p:forceLookup="true" -->
-        <bean parent="LookupCriteriaInputField" p:propertyName="extension.accountTypeCode">
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccount" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subAccountName" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="createDate" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="subsidizedPercent" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="foId" /> <!-- p:forceLookup="true" -->
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="extension.accountTypeCode">
           <property name="control">
-            <bean parent="SelectControl" />
+            <bean parent="Uif-DropdownControl" />
           </property>
           <property name="optionsFinder">
             <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues" />
@@ -46,13 +46,13 @@
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="DataField" p:propertyName="number" />
-        <bean parent="DataField" p:propertyName="name" />
-        <bean parent="DataField" p:propertyName="subAccount" />
-        <bean parent="DataField" p:propertyName="subAccountName" />
-        <bean parent="DataField" p:propertyName="subsidizedPercent" />
-        <bean parent="DataField" p:propertyName="createDate" />
-        <bean parent="DataField" p:propertyName="foId" />
+        <bean parent="Uif-DataField" p:propertyName="number" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="subAccount" />
+        <bean parent="Uif-DataField" p:propertyName="subAccountName" />
+        <bean parent="Uif-DataField" p:propertyName="subsidizedPercent" />
+        <bean parent="Uif-DataField" p:propertyName="createDate" />
+        <bean parent="Uif-DataField" p:propertyName="foId" />
       </list>
     </property>
   </bean>

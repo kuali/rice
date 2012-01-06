@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2011 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  
+
+  <!-- Box Layout Managers -->
+
+  <bean id="Uif-BoxLayoutBase" parent="Uif-BoxLayoutBase-parentBean"/>
+  <bean id="Uif-BoxLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.BoxLayoutManager"
+        scope="prototype">
+    <property name="styleClasses">
+      <list>
+        <value>uif-boxLayout</value>
+      </list>
+    </property>
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/box.jsp"/>
+    <property name="orientation" value="HORIZONTAL"/>
+  </bean>
+
+  <bean id="Uif-HorizontalBoxLayout" parent="Uif-HorizontalBoxLayout-parentBean"/>
+  <bean id="Uif-HorizontalBoxLayout-parentBean" abstract="true" parent="Uif-BoxLayoutBase">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-horizontalBoxLayout</value>
+      </list>
+    </property>
+    <property name="orientation" value="HORIZONTAL"/>
+  </bean>
+
+  <bean id="Uif-VerticalBoxLayout" parent="Uif-VerticalBoxLayout-parentBean"/>
+  <bean id="Uif-VerticalBoxLayout-parentBean" abstract="true" parent="Uif-BoxLayoutBase">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-verticalBoxLayout</value>
+      </list>
+    </property>
+    <property name="orientation" value="VERTICAL"/>
+  </bean>
+
+  <!--Grid Layout Managers-->
+
+  <bean id="Uif-GridLayoutBase" parent="Uif-GridLayoutBase-parentBean"/>
+  <bean id="Uif-GridLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.GridLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/grid.jsp"/>
+    <property name="styleClasses">
+      <list>
+        <value>uif-gridLayout</value>
+      </list>
+    </property>
+    <property name="numberOfColumns" value="2"/>
+    <property name="suppressLineWrapping" value="false"/>
+    <property name="applyAlternatingRowStyles" value="false"/>
+    <property name="applyDefaultCellWidths" value="true"/>
+    <property name="renderAlternatingHeaderColumns" value="true"/>
+  </bean>
+
+  <bean id="Uif-TwoColumnGridLayout" parent="Uif-TwoColumnGridLayout-parentBean"/>
+  <bean id="Uif-TwoColumnGridLayout-parentBean" abstract="true" parent="Uif-GridLayoutBase">
+    <property name="numberOfColumns" value="2"/>
+  </bean>
+
+  <bean id="Uif-FourColumnGridLayout" parent="Uif-TwoColumnGridLayout-parentBean"/>
+  <bean id="Uif-FourColumnGridLayout-parentBean" abstract="true" parent="Uif-GridLayoutBase">
+    <property name="numberOfColumns" value="4"/>
+  </bean>
+
+  <bean id="Uif-SixColumnGridLayout" parent="Uif-SixColumnGridLayout-parentBean"/>
+  <bean id="Uif-SixColumnGridLayout-parentBean" abstract="true" parent="Uif-GridLayoutBase">
+    <property name="numberOfColumns" value="6"/>
+  </bean>
+
+  <!--Collection Layout Managers-->
+
+  <!--Table Collection Layout Managers-->
+
+  <bean id="Uif-TableCollectionLayout" parent="Uif-TableCollectionLayout-parentBean"/>
+  <bean id="Uif-TableCollectionLayout-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.TableLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/table.jsp"/>
+    <property name="styleClasses">
+      <list>
+        <value>uif-tableCollectionLayout</value>
+      </list>
+    </property>
+    <property name="applyAlternatingRowStyles" value="true"/>
+    <property name="applyDefaultCellWidths" value="true"/>
+    <property name="renderAlternatingHeaderColumns" value="false"/>
+    <property name="headerFieldPrototype">
+      <bean parent="Uif-Label" p:renderColon="false" p:styleClasses="infoline"/>
+    </property>
+    <property name="sequenceFieldPrototype">
+      <bean parent="Uif-InputField" p:readOnly="true" p:label=" " p:shortLabel=" "/>
+    </property>
+    <property name="actionFieldPrototype">
+      <bean parent="Uif-VerticalFieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
+    </property>
+    <property name="addLineGroup">
+      <bean parent="Uif-CollectionGridItem" p:styleClasses="uif-collectionItem,uif-tableCollectionItem,uif-collectionAddItem"/>
+    </property>
+    <property name="subCollectionFieldGroupPrototype">
+      <bean parent="Uif-VerticalFieldGroup"
+            p:labelField.render="false"
+            p:styleClasses="uif-subCollection"/>
+    </property>
+    <property name="selectFieldPrototype">
+      <bean parent="Uif-SelectCollectionItemField"/>
+    </property>
+    <property name="richTable">
+      <bean parent="Uif-PagedRichTable"/>
+    </property>
+  </bean>
+
+  <!--Stacked Collection Layout Managers-->
+
+  <bean id="Uif-StackedCollectionLayoutBase" parent="Uif-StackedCollectionLayoutBase-parentBean"/>
+  <bean id="Uif-StackedCollectionLayoutBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.layout.StackedLayoutManager"
+        scope="prototype">
+    <property name="template" value="/krad/WEB-INF/jsp/templates/layout/stacked.jsp"/>
+    <property name="styleClasses">
+      <list>
+        <value>uif-stackedCollectionLayout</value>
+      </list>
+    </property>
+    <property name="subCollectionFieldGroupPrototype">
+      <bean parent="Uif-VerticalFieldGroup" p:labelField.render="false"
+            p:colSpan="@{#parent.layoutManager.numberOfColumns}"
+            p:styleClasses="uif-subCollection"/>
+    </property>
+    <property name="selectFieldPrototype">
+      <bean parent="Uif-SelectCollectionItemField"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-StackedCollectionLayout-WithGridItems" parent="Uif-StackedCollectionLayout-WithGridItems-parentBean"/>
+  <bean id="Uif-StackedCollectionLayout-WithGridItems-parentBean" abstract="true" parent="Uif-StackedCollectionLayoutBase">
+    <property name="addLineGroup">
+      <bean parent="Uif-CollectionGridItem">
+        <property name="styleClasses">
+          <list merge="true">
+            <value>uif-collectionAddItem</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="lineGroupPrototype">
+      <bean parent="Uif-CollectionGridItem"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-StackedCollectionLayout-WithBoxItems" parent="Uif-StackedCollectionLayout-WithBoxItems-parentBean"/>
+  <bean id="Uif-StackedCollectionLayout-WithBoxItems-parentBean" abstract="true" parent="Uif-StackedCollectionLayoutBase">
+    <property name="addLineGroup">
+      <bean parent="Uif-CollectionHorizontalBoxItem">
+        <property name="styleClasses">
+          <list merge="true">
+            <value>uif-collectionAddItem</value>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="lineGroupPrototype">
+      <bean parent="Uif-CollectionHorizontalBoxItem"/>
+    </property>
+  </bean>
+
+  <!-- Stacked collection item prototypes -->
+
+  <bean id="Uif-CollectionGridItem" parent="Uif-CollectionGridItem-parentBean"/>
+  <bean id="Uif-CollectionGridItem-parentBean" abstract="true" parent="Uif-GridGroup">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-collectionItem</value>
+        <value>uif-gridCollectionItem</value>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CollectionVerticalBoxItem" parent="Uif-CollectionVerticalBoxItem-parentBean"/>
+  <bean id="Uif-CollectionVerticalBoxItem-parentBean" abstract="true" parent="Uif-BoxGroup"
+          p:layoutManager.orientation="VERTICAL">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-collectionItem</value>
+        <value>uif-boxCollectionItem</value>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-CollectionHorizontalBoxItem" parent="Uif-CollectionHorizontalBoxItem-parentBean"/>
+  <bean id="Uif-CollectionHorizontalBoxItem-parentBean" abstract="true" parent="Uif-BoxGroup"
+          p:layoutManager.orientation="HORIZONTAL">
+    <property name="styleClasses">
+      <list merge="true">
+        <value>uif-collectionItem</value>
+        <value>uif-boxCollectionItem</value>
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-SelectCollectionItemField" parent="Uif-InputField" p:readOnly="false"
+        p:label="Select?" p:shortLabel="Select?">
+    <property name="control">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+  </bean>
+
+</beans>  

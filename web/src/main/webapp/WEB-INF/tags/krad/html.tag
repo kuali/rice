@@ -44,6 +44,13 @@
         <link href="${pageContext.request.contextPath}/${cssFile}" rel="stylesheet" type="text/css" />
       </c:if>
     </c:forEach>
+
+    <c:forEach items="${view.theme.stylesheets}" var="cssFile" >
+      <c:if test="${fn:startsWith(cssFile, '/')}">
+        <c:set var="cssFile" value="${pageContext.request.contextPath}/${fn:substringAfter(cssFile,'/')}"/>
+      </c:if>
+      <link href="${cssFile}" rel="stylesheet" type="text/css" />
+    </c:forEach>
     
     <c:forEach items="${view.additionalCssFiles}" var="cssFile" >
       <c:if test="${fn:startsWith(cssFile, '/')}">

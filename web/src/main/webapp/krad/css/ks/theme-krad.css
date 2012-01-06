@@ -97,7 +97,9 @@ h7 {
 	text-transform: uppercase;
 }
 td.col2, td.col4, th.col1, th.col3 {
-    padding:  .5em;
+    padding-bottom:0.5em;
+    padding-left:0.5em;
+    padding-right:0.5em;
 }
 
 .watermark {
@@ -110,7 +112,7 @@ td.col2, td.col4, th.col1, th.col3 {
     float:left;
 		_float:none;   /* ie hack - should be removed once the collapsable left nav issue resolved. */
 }
-.group_expandclose{
+.uif-rightAligned-headerFieldGroup{
     float:right;
 }
 .kr-collection-header h2 {			/* was .collection-header h2  */ /* renamed in xml and/or jsp */
@@ -120,7 +122,7 @@ td.col2, td.col4, th.col1, th.col3 {
 /* collections styles */
 
 
-th .kr-collection-cntr .summary {
+th .uif-collectionGroup .uif-instructionalMessage {
     font-weight:normal;
 }
 
@@ -177,17 +179,17 @@ input[type="radio"]+label, input[type="checkbox"]+label {     /* when label is s
 input[disabled="disabled"]+label{
     color:#999999;
 }
-.labelTop label {
+.uif-labelTop label {
     margin-right:0em;      /* was 1em */
 }
-th.labelTop span.labelTop {
+th.uif-labelTop span.uif-labelTop {
     padding-right:0;
 }
 
-.kr-field-attribute .kr-labelTop {
+.uif-inputField .uif-labelTop {
     font-weight:bold;
 }
-.kr-field-attribute>span:nth-child(1) label {
+.uif-inputField>span:nth-child(1) label {
     margin-right:.3em;
 }
 
@@ -200,10 +202,10 @@ h1.kr-header-object-title {			/* was h1.header-object-title*/  /* NOT FOUND in x
 }
 /*headers*/
 
-h2.kr-header-page-title {		/* was h2.header-page-title */  /* NOT FOUND in xml and/or jsp */
+.uif-pageHeaderField h2.uif-header{		/* was h2.header-page-title */  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.42em;
-	border-bottom: 1px solid #000;
+	border-bottom: 2px solid #000;
 	padding-bottom: 0.3em;
 	font-weight: normal;
 }
@@ -212,9 +214,18 @@ h3.kr-header-page-action {		/* was h3.header-page-action*/  /* NOT FOUND in xml 
 	font-size: 2.1em;
 	font-weight: normal;
 }
-h3.kr-page-section-title {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
-	border-bottom: 2px solid #000;
+.uif-sectionHeaderField h3.uif-header {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
+	border-bottom: 1px solid #000;
 }
+
+.uif-sectionHeaderField h4.uif-header {		/* was h2.page-section-title */ /* renamed in xml and/or jsp */
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 1.26em;
+	border-bottom: 1px dotted #000;
+	padding-bottom: 0.3em;
+	font-weight: bold;
+}
+
 h4.kr-header-page-subsection {		/* was h4.header-page-subsection  */  /* NOT FOUND in xml and/or jsp */
 	font-family:Arial, Helvetica, sans-serif;
 	font-size: 1.26em;
@@ -240,7 +251,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
 /*buttons*/
 
 
-.kr-button-primary, .button-primary {			/* was .button-primary */ /* renamed in xml and/or jsp */
+.uif-primaryActionButton, .button-primary {			/* was .button-primary */ /* renamed in xml and/or jsp */
 	border: 1px solid #62D255;
 	/*defines gradient background*/
 	background: #99de80; /* Old browsers */
@@ -269,7 +280,7 @@ h5.kr-header-page-subhead {		/* was h5.header-page-subhead*/ /* NOT FOUND in xml
    text-shadow: 0px 1px 0px #83d485;
    filter: dropshadow(color=#83d485, offX=0, offY=1);
    }
-button.kr-button-primary[disabled="true"], button.kr-button-primary[disabled="disabled"] {
+button.uif-primaryActionButton[disabled="true"], button.uif-primaryActionButton[disabled="disabled"] {
 		background-color:#C8EABC;
 		border: 1px solid #abdea5;
 		color:#7FA393;
@@ -294,7 +305,7 @@ button.kr-button-primary[disabled="true"], button.kr-button-primary[disabled="di
 
 
 
-.kr-button-secondary1, .kr-button-secondary2, .fg-button.button-secondary1 {				/* was .button-secondary2 */ /* NOT FOUND in xml and/or jsp */
+.uif-secondaryActionButton, .kr-button-secondary2, .fg-button.button-secondary1 {				/* was .button-secondary2 */ /* NOT FOUND in xml and/or jsp */
 	border:1px solid #3F7826;
 	background: #ffffff; /* Old browsers */
 
@@ -324,7 +335,7 @@ button.kr-button-primary[disabled="true"], button.kr-button-primary[disabled="di
 }
 
 
-.kr-button-secondary1:hover, .kr-button-secondary2:hover, .fg-button.button-secondary1:hover { /* was .button-secondary2:hover */ /* NOT FOUND in xml and/or jsp */
+.uif-secondaryActionButton:hover, .kr-button-secondary2:hover, .fg-button.button-secondary1:hover { /* was .button-secondary2:hover */ /* NOT FOUND in xml and/or jsp */
     background: rgb(153,153,153);
 	background: #999999; /* Old browsers */
 
@@ -347,11 +358,11 @@ button.kr-button-primary[disabled="true"], button.kr-button-primary[disabled="di
 	border: 1px solid #999;
 }
 
-.kr-button-primary a, .kr-button-primary a:link, .kr-button-primary a:visited {		/* was .button-primary a, .button-primary a:link, .button-primary a:visited */ /* renamed in xml and/or jsp */
+.uif-primaryActionButton a, .uif-primaryActionButton a:link, .uif-primaryActionButton a:visited {		/* was .button-primary a, .button-primary a:link, .button-primary a:visited */ /* renamed in xml and/or jsp */
 	color: #eeeeee;
 }
 
-.kr-button-primary:hover, .button-primary:hover {		/* was .button-primary:hover, .button-secondary1:hover */ /* renamed in xml and/or jsp */
+.uif-primaryActionButton:hover, .button-primary:hover {		/* was .button-primary:hover, .button-secondary1:hover */ /* renamed in xml and/or jsp */
 	border-color:#07662a;
 	/*defines gradient background*/
 	background: #07662a; /* Old browsers */
@@ -822,7 +833,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	text-shadow: none;
 }
 
-.ui-priority-secondary-sm {
+.uif-smallActionButton {
 	-moz-border-radius:3px;
 	-o-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -847,9 +858,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	color: #3F7826;
 	border: 1px solid #999;
     cursor:pointer;
-    height:24px;
+    padding: .2em .5em .1em .5em;
 }
-.ui-priority-secondary-sm:hover {
+.uif-smallActionButton:hover {
 	background: #999999; /* Old browsers */
 
 background: -moz-linear-gradient(top,  #999999 0%, #333333 100%); /* FF3.6+ */
@@ -945,212 +956,10 @@ table.display tbody tr {
 .display tr.odd td.sorting_1, .display tr.even td.sorting_1, table.display tr.odd, table.display tr.even {		/* cell colors for sortable table should be white */
 	background-color:#ffffff;
 }
-/* navigation */
 
 
-/* Navigation Menu (basic)*/
-ul.basic-navigation {
-	
-	font-size: .95em;
-}
-ul.basic-navigation li {
-	
-	border-bottom: 1px solid #bebebe;
-}
-ul.basic-navigation li.basic-element h3, ul.basic-navigation li.basic-element h2 {
-	border-top: 1px solid black;
-	color: black;
-	font-weight: bold;
-	font-weight:0.9em;
-	text-transform: uppercase;
-	font-size: .9em;
-}
 
-ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
-	background: none repeat scroll 0 0 #64a142;
-	color: white;
-	text-decoration: none;
-}
-ul.basic-navigation li.basic-element a.current {
-	background-color:#004b2a;
-	color:white;
-}
-ul.basic-navigation li.basic-element a:hover, ul.basic-navigation li.basic-element a:focus {
-	background: #07662a; /* Old browsers */
-
-background: -moz-linear-gradient(top,  #07662a 0%, #044d1f 100%); /* FF3.6+ */
-
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#07662a), color-stop(100%,#044d1f)); /* Chrome,Safari4+ */
-
-background: -webkit-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Chrome10+,Safari5.1+ */
-
-background: -o-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Opera 11.10+ */
-
-background: -ms-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* IE10+ */
-
-background: linear-gradient(top,  #07662a 0%,#044d1f 100%); /* W3C */
-
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07662a', endColorstr='#044d1f',GradientType=0 ); /* IE6-9 */
-
-
-	background-color:#060;
-	color: white;
-	text-decoration: none;
-}
-ul.basic-navigation li.basic-element a.current, ul.basic-navigation li.basic-element a.current:hover {
-	background-color:#000;
-	color: white;
-}
-
-/* Navigation Menu (animated)*/
-
-.slideLink {
-	
-	font-size: .9em;
-	
-}
-.collapseLink {
-	
-	font-size: .9em;
-	color: #666;
-}
-ul.animated-navigation {
-	list-style: none outside none;
-	padding: 0;
-	margin-top: 0px;
-    margin-left:15px;
-}
-ul.animated-navigation li {
-	padding: 0;
-}
-li.animated-element span.action, li.animated-element a.action {
-    margin-bottom:0;
-}
-ul.animated-navigation li.animated-element h3, ul.animated-navigation li.animated-element h2 {
-	color: #333333;
-	display: inline-block;
-	margin-bottom: 0;
-	padding: 0 20px 0 3px;
-	width: 170px;
-	font-weight: bold;
-	font-family:arial, sans-serif;
-	text-transform:uppercase;
-	border-top: 2px solid #000;
-	border-bottom: 1px solid #bbb;
-    border-left: none;
-    border-right: none;
-}
-li.animated-element h2 {
-    font-size: 0.923077em !important;
-}
-ul.animated-navigation li.animated-element a {
-	background-color: #fff;
-	display: inline-block;
-    height: 1%;
-	/*
-	Changing the padding here will require updating the script to correct return padding (pad_in)
-	*/
-    padding: 5px 20px 5px 3px;
-	width: 170px;
-	color: #3F7826;
-	text-decoration: none;
-	border-bottom: 1px solid #bbb;
-	font-size:.92307692em;
-}
-* html ul.animated-navigation li.animated-element a {
-    \width: 193px; /* for IE5 and IE6 in quirks mode */
-    w\idth: 170px; /* for IE6 in standards mode */
-  }
-ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
-	background: #07662a; /* Old browsers */
-
-background: -moz-linear-gradient(top,  #07662a 0%, #044d1f 100%); /* FF3.6+ */
-
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#07662a), color-stop(100%,#044d1f)); /* Chrome,Safari4+ */
-
-background: -webkit-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Chrome10+,Safari5.1+ */
-
-background: -o-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Opera 11.10+ */
-
-background: -ms-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* IE10+ */
-
-background: linear-gradient(top,  #07662a 0%,#044d1f 100%); /* W3C */
-
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07662a', endColorstr='#044d1f',GradientType=0 ); /* IE6-9 */
-
-
-	color: white;
-}
-ul.animated-navigation li.animated-element a.current {
-	background-color:#636D05;
-	padding-left: 25px !important;
-	color: white;
-}
-.slideLink{
-	padding-left: .5em;
-	font-size: .9em;
-	float: left;
-}
-
-.collapseLink{
-	float: right;
-	font-size: .9em;
-	padding-bottom: 5px;
-}
-
-a#controlbtn {
-	text-decoration: none;
-	display: inline-block;
-	padding-left: 5px;
-}
-
-#controlbtn.slideLink {
-	/*background:  url(../../images/icon_navCollapse.jpg) left no-repeat;  Leaving out until IE text visibility is resolved */
-	color: #666;
-}
-#controlbtn.closed {
-	/*background: url(../../images/icon_navExpand.jpg) right no-repeat;   Leaving out until IE text visibility is resolved */
-}
-.animated-navigation h2.fl-font-serif {
-	font-family:arial, sans-serif; /* overrides the h2 to a sans-serif */
-}
-
-ul.animated-navigation li.animated-element a {
-	background-color: #fff;
-	width: 170px;
-	color: #3F7826;
-    border: none;
-	border-bottom: 1px solid #bbb;
-}
-ul.animated-navigation li.animated-element a:hover, ul.animated-navigation li.animated-element a:focus {
-	background: #07662a; /* Old browsers */
-
-background: -moz-linear-gradient(top,  #07662a 0%, #044d1f 100%); /* FF3.6+ */
-
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#07662a), color-stop(100%,#044d1f)); /* Chrome,Safari4+ */
-
-background: -webkit-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Chrome10+,Safari5.1+ */
-
-background: -o-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* Opera 11.10+ */
-
-background: -ms-linear-gradient(top,  #07662a 0%,#044d1f 100%); /* IE10+ */
-
-background: linear-gradient(top,  #07662a 0%,#044d1f 100%); /* W3C */
-
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#07662a', endColorstr='#044d1f',GradientType=0 ); /* IE6-9 */
-
-
-	background-color:#060;
-	color: white;
-}
-ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.animated-element a.current:hover {
-	background-color:#000;
-	background-image:none;
-	padding-left: 3px !important;
-	color: white;
-}
-
-.summary {           /* fixing a pixel specification in kuali-stacked.css */  /* not sure if this belongs in this section */
+.uif-instructionalMessage {           /* fixing a pixel specification in kuali-stacked.css */  /* not sure if this belongs in this section */
 	font-size:0.92307692em;     /* 12px divided by 13px */
     display:block;
     margin-bottom:10px;
@@ -1161,8 +970,8 @@ ul.animated-navigation li.animated-element a.current, ul.animated-navigation li.
 										 }
 
 /* Messing with disclosure bar */
-.kr-collection-cntr a h3.kr-collectionGroup-header,
-.kr-collection-cntr a .kr-section-subhead,
+.uif-collectionGroup a h3.uif-collectionGroup .uif-sectionHeaderField,
+.uif-collectionGroup a .kr-section-subhead,
 .kr-collection-header a h3.kr-page-section-title,
 .grouping-header-expandable a h4.kr-section-subhead,
 .group_header a h4.kr-section-subhead,
@@ -1172,7 +981,7 @@ a.h4.kr-section-subhead {
     margin-top:0;
 }
 
-.kr-collection-cntr a .kr-section-subhead:hover,
+.uif-collectionGroup a .kr-section-subhead:hover,
 .kr-collection-header a h3.kr-page-section-title:hover,
 .grouping-header-expandable a h4.kr-section-subhead:hover,
 .group_header a h4.kr-section-subhead:hover,
@@ -1183,71 +992,71 @@ a.h4.kr-section-subhead {
 
 /* messing with collections */
 
-.kr-collectionStacked a h3.kr-collectionGroup-header:hover{
+.uif-stackedCollectionGroup a h3.uif-collectionGroup .uif-sectionHeaderField:hover{
     background-color:#ECFCE8;
     color: #07662a
 }
-.kr-collectionStacked h3.kr-collectionGroup-header {
+.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeaderField {
     color:#fff;
     background-color: #000;
     font-family: Arial, Helvetica, sans-serif ;
     margin:  0;
     padding: 0.5em;
 }
-.kr-collectionStacked h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeaderField img.expand_collapse-buttons[alt="expand"] {
     background: url("../../images/h3_expand-back-white-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-collectionStacked h3.kr-collectionGroup-header:hover img.expand_collapse-buttons[alt="expand"] {
+.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeaderField:hover img.expand_collapse-buttons[alt="expand"] {
     background: url("../../images/h3_expand-back-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-collectionStacked h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeaderField img.expand_collapse-buttons[alt="collapse"] {
     background: url("../../images/h3_collapse-back-white-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-collectionStacked h3.kr-collectionGroup-header:hover img.expand_collapse-buttons[alt="collapse"] {
+.uif-stackedCollectionGroup h3.uif-collectionGroup .uif-sectionHeaderField:hover img.expand_collapse-buttons[alt="collapse"] {
     background: url("../../images/h3_collapse-back-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-collection-cntr.kr-collectionStacked{
+.uif-collectionGroup.uif-stackedCollectionGroup{
     background: url(../../images/pattern_dotted.png) repeat;
     border: 1px solid #ccc;
 }
-.kr-collection-item.kr-addLine h4.kr-section-subhead.kr-collection-item-header{
+.uif-collectionItem.uif-collectionAddItem h4.kr-section-subhead.uif-collectionItem-header{
     padding:0.25em 0.5em;
     border-bottom: 1px solid #ccc;
 }
-.kr-collection-item.kr-addLine>div:nth-child(2) {
+.uif-collectionItem.uif-collectionAddItem>div:nth-child(2) {
     padding:1em 0.5em 0 0.5em;
     overflow-x:auto;
     overflow-y:hidden;
 }
-/*.kr-collection-cntr > div {
+/*.uif-collectionGroup > div {
     background-color:#fff;
     margin: 0.5em;
 }          */
-.kr-collection-cntr>div:nth-child(2) {
+.uif-collectionGroup>div:nth-child(2) {
   background-color:#fff;
   margin: 0.5em;
   padding: 0.5em;
     overflow-x:auto;
     overflow-y:hidden;
 }
-.kr-collection-cntr .kr-collection-cntr>div:nth-child(2){
+.uif-collectionGroup .uif-collectionGroup>div:nth-child(2){
     padding: 0;
     margin: 0;
 }
-.kr-subCollection>.kr-collection-cntr {
+.kr-subCollection>.uif-collectionGroup {
     background: #fff;
     margin-top:1em;
     border: none;
 }
-.kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header, .kr-subCollection>.kr-collection-cntr h3.kr-collectionGroup-header {
+.kr-subCollection>.uif-collectionGroup a h3.uif-collectionGroup .uif-sectionHeaderField, .kr-subCollection>.uif-collectionGroup h3.uif-collectionGroup .uif-sectionHeaderField {
     background-color:#eee;
     color:#000;
     border-bottom: 0 solid #000;
 }
-.kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+.kr-subCollection>.uif-collectionGroup a h3.uif-collectionGroup .uif-sectionHeaderField img.expand_collapse-buttons[alt="expand"] {
     background: url("../../images/h3_expand-back-black-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-subCollection>.kr-collection-cntr a h3.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+.kr-subCollection>.uif-collectionGroup a h3.uif-collectionGroup .uif-sectionHeaderField img.expand_collapse-buttons[alt="collapse"] {
     background: url("../../images/h3_collapse-back-black-ks.png") no-repeat scroll 0 0 transparent;
 }
 table[role="presentation"] th {
@@ -1255,10 +1064,10 @@ table[role="presentation"] th {
     padding-right:1em;
     padding-bottom:1em;
 }
-table[role="presentation"] th h4, table[role="presentation"] th .summary, table[role="presentation"] th.kr-subCollection h3.kr-collectionGroup-header {
+table[role="presentation"] th h4, table[role="presentation"] th .uif-instructionalMessage, table[role="presentation"] th.kr-subCollection h3.uif-collectionGroup .uif-sectionHeaderField {
     text-align:left;
 }
-.kr-subCollection .kr-collection-cntr h4.kr-collectionGroup-header {
+.kr-subCollection .uif-collectionGroup h4.uif-collectionGroup .uif-sectionHeaderField {
     background-color:#ffffff;
     color: #000;
     border: 1px solid rgba(255,255,255,0);
@@ -1267,17 +1076,17 @@ table[role="presentation"] th h4, table[role="presentation"] th .summary, table[
     margin-bottom:.5em;
     margin-top:0;
 }
-.kr-subCollection .kr-collection-cntr a h4.kr-collectionGroup-header {
+.kr-subCollection .uif-collectionGroup a h4.uif-collectionGroup .uif-sectionHeaderField {
     color: #3F7826;
 }
-.kr-subCollection a h4.kr-collectionGroup-header:hover {
+.kr-subCollection a h4.uif-collectionGroup .uif-sectionHeaderField:hover {
     background-color:#ECFCE8;
     border: 1px solid #3F7826;
     border-bottom: 2px solid #3F7826;
 }
-.kr-subCollection a h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="expand"] {
+.kr-subCollection a h4.uif-collectionGroup .uif-sectionHeaderField img.expand_collapse-buttons[alt="expand"] {
     background: url("../../images/h3_expand-back-ks.png") no-repeat scroll 0 0 transparent;
 }
-.kr-subCollection a h4.kr-collectionGroup-header img.expand_collapse-buttons[alt="collapse"] {
+.kr-subCollection a h4.uif-collectionGroup .uif-sectionHeaderField img.expand_collapse-buttons[alt="collapse"] {
     background: url("../../images/h3_collapse-back-ks.png") no-repeat scroll 0 0 transparent;
 }

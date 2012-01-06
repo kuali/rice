@@ -49,7 +49,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Context Id"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Context Id"/>
@@ -61,7 +61,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="TextControl" p:size="100"/>
+      <bean parent="Uif-TextControl" p:size="100"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Context Name"/>
@@ -73,7 +73,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="Uif-DropdownControl"/>
     </property>
     <property name="optionsFinder">
       <bean class="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
@@ -87,7 +87,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Type Id"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="Uif-DropdownControl"/>
     </property>
     <property name="optionsFinder">
       <bean class="org.kuali.rice.krms.impl.repository.ContextTypeValuesFinder" p:blankOption="true"/>
@@ -102,7 +102,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Description"/>
     <property name="controlField">
-      <bean parent="TextAreaControl" p:rows="4" p:cols="60" />
+      <bean parent="Uif-TextAreaControl" p:rows="4" p:cols="60" />
     </property>
     <property name="name" value="description"/>
     <property name="label" value="Description"/>
@@ -114,60 +114,60 @@
   </bean>
 
 
-  <bean id="ContextBo-LookupView" parent="LookupView">
+  <bean id="ContextBo-LookupView" parent="Uif-LookupView">
     <property name="title" value="Context Lookup" />
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo" />
     <property name="criteriaFields">
       <list>
-        <bean parent="LookupCriteriaInputField" p:propertyName="id" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="name" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="namespace" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="typeId" p:label="Context Type" />
-        <bean parent="LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="id" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="namespace" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="typeId" p:label="Context Type" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">
       <list>
-        <bean parent="InputField" p:propertyName="id" />
-        <bean parent="InputField" p:propertyName="name" />
-        <bean parent="InputField" p:propertyName="namespace" />
-        <bean parent="InputField" p:propertyName="typeId" p:label="Context Type" />
+        <bean parent="Uif-InputField" p:propertyName="id" />
+        <bean parent="Uif-InputField" p:propertyName="name" />
+        <bean parent="Uif-InputField" p:propertyName="namespace" />
+        <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Context Type" />
       </list>
     </property>
   </bean>
   
-  <bean id="ContextBo-InquiryView" parent="InquiryView">
+  <bean id="ContextBo-InquiryView" parent="Uif-InquiryView">
     <property name="title" value="Context Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
     <property name="singlePageView" value="true"/>
     <property name="items">
       <list>
-        <bean parent="Page" p:id="page1">
+        <bean parent="Uif-Page" p:id="page1">
           <property name="items">
             <list>
-      			  <bean parent="GroupSectionGridLayout">
+      			  <bean parent="Uif-Disclosure-GridSection">
 					      <property name="layoutManager.numberOfColumns" value="2"/>
 					      <property name="items">
 					        <list>
-					          <bean parent="InputField" p:propertyName="id"/>
-					          <bean parent="InputField" p:propertyName="name"/>
-					          <bean parent="InputField" p:propertyName="namespace"/>
-                    <bean parent="InputField" p:propertyName="typeId" p:label="Context Type"/>
-                    <bean parent="InputField" p:propertyName="description"/>
+					          <bean parent="Uif-InputField" p:propertyName="id"/>
+					          <bean parent="Uif-InputField" p:propertyName="name"/>
+					          <bean parent="Uif-InputField" p:propertyName="namespace"/>
+                    <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Context Type"/>
+                    <bean parent="Uif-InputField" p:propertyName="description"/>
 					        </list>
 					      </property>
 					      <property name="title" value="Context Attributes"/>
 					    </bean>
-              <bean parent="CollectionGroupSectionTableLayout"  p:layoutManager.numberOfColumns="3">
+              <bean parent="Uif-Disclosure-TableCollectionSection"  p:layoutManager.numberOfColumns="3">
                 <property name="title" value="Agendas"/>
                 <property name="collectionObjectClass" value="org.kuali.rice.krms.impl.repository.AgendaBo"/>
                 <property name="propertyName" value="agendas"/>
                 <property name="layoutManager.renderSequenceField" value="false"/>
                 <property name="items">
                   <list>
-                    <bean parent="InputField" p:propertyName="id"/>
-                    <bean parent="InputField" p:propertyName="name"/>
-                    <bean parent="InputField" p:propertyName="typeId" p:label="Agenda Type"/>
+                    <bean parent="Uif-InputField" p:propertyName="id"/>
+                    <bean parent="Uif-InputField" p:propertyName="name"/>
+                    <bean parent="Uif-InputField" p:propertyName="typeId" p:label="Agenda Type"/>
                    </list>
                 </property>
               </bean>

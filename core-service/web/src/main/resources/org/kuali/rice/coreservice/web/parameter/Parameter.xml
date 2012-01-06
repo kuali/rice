@@ -78,7 +78,7 @@
 		</property>
     <property name="optionsFinderClass" value="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
     <property name="controlField">
-      <bean parent="SelectControl"/>
+      <bean parent="Uif-DropdownControl"/>
     </property>
 		<property name="summary" value="The namespace that the parameter is associated with."/>
 		<property name="description" value="This value is used to categorize parameters by namespace."/>

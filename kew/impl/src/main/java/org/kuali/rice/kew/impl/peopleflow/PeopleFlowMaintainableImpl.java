@@ -23,11 +23,16 @@ import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.repository.type.KewTypeDefinition;
 import org.kuali.rice.kew.framework.peopleflow.PeopleFlowTypeService;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
+import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.MaintenanceForm;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -78,5 +83,56 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
         } else {
             KewApiServiceLocator.getPeopleFlowService().createPeopleFlow(peopleFlowDefinition);
         }
+    }
+
+    @Override
+    public void processCollectionAddLine(View view, Object model, String collectionPath) {
+        // =======================================================================================
+        // COPIED FROM ViewHelperServiceImpl processCollectionAddLine to add sorting of collection
+        // =======================================================================================
+        // get the collection group from the view
+        CollectionGroup collectionGroup = view.getViewIndex().getCollectionGroupByPath(collectionPath);
+        if (collectionGroup == null) {
+            logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
+        }
+
+        // get the collection instance for adding the new line
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
+        if (collection == null) {
+            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
+        }
+
+        // now get the new line we need to add
+        String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+        Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
+        if (addLine == null) {
+            logAndThrowRuntime("Add line instance not found for path: " + addLinePath);
+        }
+
+        processBeforeAddLine(view, collectionGroup, model, addLine);
+
+        // validate the line to make sure it is ok to add
+        boolean isValidLine = performAddLineValidation(view, collectionGroup, model, addLine);
+        if (isValidLine) {
+            // TODO: should check to see if there is an add line method on the
+            // collection parent and if so call that instead of just adding to
+            // the collection (so that sequence can be set)
+            if (collection instanceof List) {
+                ((List) collection).add(0, addLine);
+                // ADDED sorting
+                Collections.sort((List) collection, new Comparator<PeopleFlowMemberBo>() {
+                    public int compare(PeopleFlowMemberBo o1, PeopleFlowMemberBo o2) {
+                        return o1.getPriority() - o2.getPriority();
+                    }
+                });
+            } else {
+                collection.add(addLine);
+            }
+
+            // make a new instance for the add line
+            collectionGroup.initializeNewCollectionLine(view, model, collectionGroup, true);
+        }
+
+        processAfterAddLine(view, collectionGroup, model, addLine);
     }
 }

@@ -138,13 +138,19 @@
                                            PeopleFlow Detail Group
   ********************************************************************************************************************
   -->
+  <!-- the outer table -->
   <bean id="PeopleFlow-Detail" abstract="true" parent="Uif-Disclosure-TableCollectionSection"
         p:layoutManager.numberOfColumns="4">
     <property name="title" value="PeopleFlow Members"/>
     <property name="collectionObjectClass" value="org.kuali.rice.kew.impl.peopleflow.PeopleFlowMemberBo"/>
     <property name="propertyName" value="members"/>
+    <!-- This doesn't sort, sorting is done in PeopleFlowMaintainableImpl
+        <property name="layoutManager.sequencePropertyName" value="priority"/>
+    -->
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="layoutManager.separateAddLine" value="true"/>
+    <!-- enabling the richTable.render results in a sData not found in jquery.dataTables.js 711
+         fixing that you get s null on 5580 then missing node on 3757 -->
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
@@ -167,6 +173,7 @@
                                            PeopleFlow Delegates Group
   ********************************************************************************************************************
   -->
+  <!-- the inner table -->
   <bean id="PeopleFlow-Delegates" abstract="true" parent="Uif-TableCollectionSection"
         p:layoutManager.numberOfColumns="4" p:style="margin-left: 25%;">
     <property name="title" value="Member Delegates"/>
@@ -194,7 +201,7 @@
         p:refreshWhenChanged="#line.memberTypeCode" p:readOnly="@{(#line.memberTypeCode ne 'P') or #view.readOnly}"
         p:fieldLookup.render="@{!view.readOnly}" p:resetDataOnRefresh="true">
     <property name="control">
-      <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name"/>
+      <bean parent="Uif-KimPersonControl" p:principalIdPropertyName="memberId" p:personNamePropertyName="person.name" p:watermarkText="Name"/>
     </property>
     <property name="propertyReplacers">
       <list>

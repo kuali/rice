@@ -271,7 +271,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     		documentActions.add(KRADConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
     	}
     	if(this.canEditDocumentOverview(document)){
-    		documentActions.add(KRADConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW);
+    		documentActions.add(KRADConstants.KUALI_ACTION_CAN_EDIT_DOCUMENT_OVERVIEW);
     	}
     	if (canFyi(document)) {
     		documentActions.add(KRADConstants.KUALI_ACTION_CAN_FYI);

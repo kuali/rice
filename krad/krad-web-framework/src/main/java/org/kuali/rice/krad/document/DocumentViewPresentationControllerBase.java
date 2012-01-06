@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.document;
 
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
@@ -31,6 +32,10 @@ import java.util.Set;
  *
  * <p>
  * Adds flags for various document actions like save, route, cancel
+ * </p>
+ *
+ * <p>
+ * By default delegates to the {@link DocumentPresentationController} configured for the document in the data dictionary
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -107,7 +112,7 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
         }
 
         if (this.canEditDocumentOverview(document)) {
-            documentActions.add(KRADConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW);
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_EDIT_DOCUMENT_OVERVIEW);
         }
 
         if (canFyi(document)) {
@@ -127,6 +132,16 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
 
     public boolean canEdit(Document document) {
         return getDocumentPresentationController().canEdit(document);
+    }
+
+    /**
+     * Verify the document can be edited in addition to the view
+     */
+    @Override
+    public boolean canEditView(View view, ViewModel model) {
+        DocumentFormBase documentForm = (DocumentFormBase) model;
+
+        return super.canEditView(view, model) && canEdit(documentForm.getDocument());
     }
 
     public boolean canAnnotate(Document document) {

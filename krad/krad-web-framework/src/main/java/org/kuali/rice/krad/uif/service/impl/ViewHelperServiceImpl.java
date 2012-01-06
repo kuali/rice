@@ -666,8 +666,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         syncClientSideStateForComponent(component, ((ViewModel) model).getClientStateForSyncing());
 
         // invoke authorizer and presentation controller to set component state
-        // TODO: in progress-put back in
-        //applyAuthorizationAndPresentationLogic(view, component, (ViewModel) model);
+        applyAuthorizationAndPresentationLogic(view, component, (ViewModel) model);
 
         // invoke component to perform its conditional logic
         Component parent = (Component) component.getContext().get(UifConstants.ContextVariableNames.PARENT);
@@ -716,6 +715,11 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
+        // if component not flagged for render no need to check auth and controller logic
+        if (!component.isRender()) {
+            return;
+        }
+
         // check top level view edit authorization
         if (component instanceof View) {
             if (!view.isReadOnly()) {
@@ -738,6 +742,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     canViewGroup = presentationController.canViewGroup(view, model, group, group.getId());
                 }
                 group.setHidden(!canViewGroup);
+                group.setRender(canViewGroup);
             }
 
             // if group is editable, do authorization for editing the group
@@ -766,6 +771,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     canViewField = presentationController.canViewField(view, model, field, propertyName);
                 }
                 field.setHidden(!canViewField);
+                field.setRender(canViewField);
             }
 
             // if field is not readOnly, check edit authorization
@@ -830,6 +836,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                     canViewWidget = presentationController.canViewWidget(view, model, widget, widget.getId());
                 }
                 widget.setHidden(!canViewWidget);
+                widget.setRender(canViewWidget);
             }
 
             // if widget is not readOnly, check edit authorization

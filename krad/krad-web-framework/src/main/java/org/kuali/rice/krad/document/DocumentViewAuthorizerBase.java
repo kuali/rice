@@ -17,11 +17,7 @@ package org.kuali.rice.krad.document;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
-import org.kuali.rice.kew.api.doctype.ProcessDefinition;
-import org.kuali.rice.kew.api.doctype.RoutePath;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -32,8 +28,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +37,10 @@ import java.util.Set;
  *
  * <p>
  * Performs KIM permission checks for the various document actions such as save, approve, cancel
+ * </p>
+ *
+ * <p>
+ * By default delegates to the {@link DocumentAuthorizer} configured for the document in the data dictionary
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -73,58 +71,52 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
                     + "'");
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_EDIT) && !isAuthorizedByTemplate(document,
-                KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.EDIT_DOCUMENT,
-                user.getPrincipalId())) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_EDIT) && !canEdit(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_EDIT);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_COPY) && !isAuthorizedByTemplate(document,
-                KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.COPY_DOCUMENT,
-                user.getPrincipalId())) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_COPY) && !canCopy(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_COPY);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_BLANKET_APPROVE) && !isAuthorizedByTemplate(document,
-                KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
-                KimConstants.PermissionTemplateNames.BLANKET_APPROVE_DOCUMENT, user.getPrincipalId())) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_CLOSE) && !canClose(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_CLOSE);
+        }
+
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_RELOAD) && !canReload(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_RELOAD);
+        }
+
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_BLANKET_APPROVE) && !canBlanketApprove(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_BLANKET_APPROVE);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_CANCEL) && !isAuthorizedByTemplate(document,
-                KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PermissionTemplateNames.CANCEL_DOCUMENT,
-                user.getPrincipalId())) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_CANCEL) && !canCancel(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_CANCEL);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SAVE) && !isAuthorizedByTemplate(document,
-                KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PermissionTemplateNames.SAVE_DOCUMENT,
-                user.getPrincipalId())) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SAVE) && !canSave(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_SAVE);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_ROUTE) && !isAuthorizedByTemplate(document,
-                KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KimConstants.PermissionTemplateNames.ROUTE_DOCUMENT,
-                user.getPrincipalId())) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_ROUTE) && !canRoute(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_ROUTE);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_ACKNOWLEDGE) && !canTakeRequestedAction(document,
-                KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user)) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_ACKNOWLEDGE) && !canAcknowledge(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_ACKNOWLEDGE);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_FYI) && !canTakeRequestedAction(document,
-                KewApiConstants.ACTION_REQUEST_FYI_REQ, user)) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_FYI) && !canFyi(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_FYI);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_APPROVE) || actions.contains(
-                KRADConstants.KUALI_ACTION_CAN_DISAPPROVE)) {
-            if (!canTakeRequestedAction(document, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, user)) {
-                actions.remove(KRADConstants.KUALI_ACTION_CAN_APPROVE);
-                actions.remove(KRADConstants.KUALI_ACTION_CAN_DISAPPROVE);
-            }
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_APPROVE) && !canApprove(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_APPROVE);
+        }
+
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_DISAPPROVE) && !canDisapprove(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_DISAPPROVE);
         }
 
         if (!canSendAnyTypeAdHocRequests(document, user)) {
@@ -133,19 +125,22 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
             actions.remove(KRADConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI) && !canSendAdHocRequests(document,
-                KewApiConstants.ACTION_REQUEST_FYI_REQ, user)) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI) && !canSendNoteFyi(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_SEND_NOTE_FYI);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_ANNOTATE) && !actions.contains(
-                KRADConstants.KUALI_ACTION_CAN_EDIT)) {
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_ANNOTATE) && !canAnnotate(document, user)) {
             actions.remove(KRADConstants.KUALI_ACTION_CAN_ANNOTATE);
         }
 
-        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW) && !canEditDocumentOverview(
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_EDIT_DOCUMENT_OVERVIEW) && !canEditDocumentOverview(
                 document, user)) {
-            actions.remove(KRADConstants.KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW);
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_EDIT_DOCUMENT_OVERVIEW);
+        }
+
+        if (actions.contains(KRADConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT) && !canPerformRouteReport(document,
+                user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT);
         }
 
         return actions;
@@ -155,12 +150,86 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         return getDocumentAuthorizer().canInitiate(documentTypeName, user);
     }
 
-    public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode) {
-        return getDocumentAuthorizer().canReceiveAdHoc(document, user, actionRequestCode);
-    }
-
     public final boolean canOpen(Document document, Person user) {
         return getDocumentAuthorizer().canOpen(document, user);
+    }
+
+    @Override
+    public boolean canOpenView(View view, ViewModel model, Person user) {
+        DocumentFormBase documentForm = (DocumentFormBase) model;
+
+        return super.canOpenView(view, model, user) && canOpen(documentForm.getDocument(), user);
+    }
+
+    public boolean canEdit(Document document, Person user) {
+        return getDocumentAuthorizer().canEdit(document, user);
+    }
+
+    @Override
+    public boolean canEditView(View view, ViewModel model, Person user) {
+        DocumentFormBase documentForm = (DocumentFormBase) model;
+
+        return super.canEditView(view, model, user) && canEdit(documentForm.getDocument(), user);
+    }
+
+    public boolean canAnnotate(Document document, Person user) {
+        return getDocumentAuthorizer().canAnnotate(document, user);
+    }
+
+    public boolean canReload(Document document, Person user) {
+        return getDocumentAuthorizer().canReload(document, user);
+    }
+
+    public boolean canClose(Document document, Person user) {
+        return getDocumentAuthorizer().canClose(document, user);
+    }
+
+    public boolean canSave(Document document, Person user) {
+        return getDocumentAuthorizer().canSave(document, user);
+    }
+
+    public boolean canRoute(Document document, Person user) {
+        return getDocumentAuthorizer().canRoute(document, user);
+    }
+
+    public boolean canCancel(Document document, Person user) {
+        return getDocumentAuthorizer().canCancel(document, user);
+    }
+
+    public boolean canCopy(Document document, Person user) {
+        return getDocumentAuthorizer().canCopy(document, user);
+    }
+
+    public boolean canPerformRouteReport(Document document, Person user) {
+        return getDocumentAuthorizer().canPerformRouteReport(document, user);
+    }
+
+    public boolean canBlanketApprove(Document document, Person user) {
+        return getDocumentAuthorizer().canBlanketApprove(document, user);
+    }
+
+    public boolean canApprove(Document document, Person user) {
+        return getDocumentAuthorizer().canApprove(document, user);
+    }
+
+    public boolean canDisapprove(Document document, Person user) {
+        return getDocumentAuthorizer().canDisapprove(document, user);
+    }
+
+    public boolean canSendNoteFyi(Document document, Person user) {
+        return getDocumentAuthorizer().canSendNoteFyi(document, user);
+    }
+
+    public boolean canFyi(Document document, Person user) {
+        return getDocumentAuthorizer().canFyi(document, user);
+    }
+
+    public boolean canAcknowledge(Document document, Person user) {
+        return getDocumentAuthorizer().canAcknowledge(document, user);
+    }
+
+    public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode) {
+        return getDocumentAuthorizer().canReceiveAdHoc(document, user, actionRequestCode);
     }
 
     public final boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user) {

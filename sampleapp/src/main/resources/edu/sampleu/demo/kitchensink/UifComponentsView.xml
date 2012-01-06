@@ -137,7 +137,26 @@
           </property>
         </bean>
 
-        <bean id="UifCompView-Page9" parent="Page" p:title="Other Examples"
+        <bean id="UifCompView-Page9" parent="Page" p:title="Authorization"
+              p:instructionalText="Examples of view authorization checks">
+          <property name="items">
+            <list>
+              <ref bean="UifCompView-SecureGroupView"/>
+              <ref bean="UifCompView-SecureGroupEdit"/>
+              <ref bean="UifCompView-SecureFields"/>
+              <ref bean="UifCompView-SecureGroupView"/>
+              <ref bean="UifCompView-SecureFieldGroups"/>
+              <ref bean="UifCompView-SecureActions"/>
+              <ref bean="UifCompView-SecureWidgets"/>
+              <ref bean="UifCompView-SecureLineView"/>
+              <ref bean="UifCompView-SecureLineEdit"/>
+              <ref bean="UifCompView-SecureLineFields"/>
+              <ref bean="UifCompView-SecureLineActions"/>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="UifCompView-Page10" parent="Page" p:title="Other Examples"
               p:instructionalText="Other examples for developer reference">
           <property name="items">
             <list>
@@ -185,6 +204,8 @@
         <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page8"
               p:actionLabel="Error Layout"/>
         <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page9"
+              p:actionLabel="Authorization"/>
+        <bean parent="NavigationActionLinkField" p:navigateToPageId="UifCompView-Page10"
               p:actionLabel="Other Examples"/>
       </list>
     </property>

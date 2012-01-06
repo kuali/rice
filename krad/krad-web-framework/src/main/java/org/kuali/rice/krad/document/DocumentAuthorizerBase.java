@@ -50,7 +50,78 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
                 Collections.<String, String>emptyMap());
     }
 
-    public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode) {
+    public boolean canOpen(Document document, Person user) {
+        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+                KimConstants.PermissionTemplateNames.OPEN_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canEdit(Document document, Person user) {
+        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+                KimConstants.PermissionTemplateNames.EDIT_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canAnnotate(Document document, Person user) {
+        return canEdit(document, user);
+    }
+
+    public boolean canReload(Document document, Person user) {
+        return true;
+    }
+
+    public boolean canClose(Document document, Person user) {
+        return true;
+    }
+
+    public boolean canSave(Document document, Person user) {
+        return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
+                KimConstants.PermissionTemplateNames.SAVE_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canRoute(Document document, Person user) {
+        return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
+                KimConstants.PermissionTemplateNames.ROUTE_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canCancel(Document document, Person user) {
+        return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
+                KimConstants.PermissionTemplateNames.CANCEL_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canCopy(Document document, Person user) {
+        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+                KimConstants.PermissionTemplateNames.COPY_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canPerformRouteReport(Document document, Person user) {
+        return true;
+    }
+
+    public boolean canBlanketApprove(Document document, Person user) {
+        return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
+                KimConstants.PermissionTemplateNames.BLANKET_APPROVE_DOCUMENT, user.getPrincipalId());
+    }
+
+    public boolean canApprove(Document document, Person user) {
+        return canTakeRequestedAction(document, KewApiConstants.ACTION_REQUEST_APPROVE_REQ, user);
+    }
+
+    public boolean canDisapprove(Document document, Person user) {
+        return canApprove(document, user);
+    }
+
+    public boolean canSendNoteFyi(Document document, Person user) {
+        return canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, user);
+    }
+
+    public boolean canFyi(Document document, Person user) {
+        return canTakeRequestedAction(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, user);
+    }
+
+    public boolean canAcknowledge(Document document, Person user) {
+        return canTakeRequestedAction(document, KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, user);
+    }
+
+    public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_REQUEST_CD, actionRequestCode);
 
@@ -59,12 +130,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
                 additionalPermissionDetails, null);
     }
 
-    public final boolean canOpen(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
-                KimConstants.PermissionTemplateNames.OPEN_DOCUMENT, user.getPrincipalId());
-    }
-
-    public final boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user) {
+    public boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (attachmentTypeCode != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
@@ -75,7 +141,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
                 additionalPermissionDetails, null);
     }
 
-    public final boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode,
+    public boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode,
             String authorUniversalIdentifier, Person user) {
         boolean canDeleteNoteAttachment = false;
 
@@ -106,8 +172,8 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
         return canDeleteNoteAttachment;
     }
 
-    public final boolean canViewNoteAttachment(Document document, String attachmentTypeCode,
-            String authorUniversalIdentifier, Person user) {
+    public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, String authorUniversalIdentifier,
+            Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (attachmentTypeCode != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
@@ -118,7 +184,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
                 additionalPermissionDetails, null);
     }
 
-    public final boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user) {
+    public boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (actionRequestCd != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_REQUEST_CD, actionRequestCd);
@@ -135,7 +201,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
                 document, user);
     }
 
-    public final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
+    public boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
         if (canSendAdHocRequests(document, KewApiConstants.ACTION_REQUEST_FYI_REQ, user)) {
             RoutePath routePath = KewApiServiceLocator.getDocumentTypeService().getRoutePathForDocumentTypeName(
                     document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName());

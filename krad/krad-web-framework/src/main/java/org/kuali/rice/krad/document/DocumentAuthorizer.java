@@ -39,6 +39,38 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
 
     public boolean canOpen(Document document, Person user);
 
+    public boolean canEdit(Document document, Person user);
+
+    public boolean canAnnotate(Document document, Person user);
+
+    public boolean canReload(Document document, Person user);
+
+    public boolean canClose(Document document, Person user);
+
+    public boolean canSave(Document document, Person user);
+
+    public boolean canRoute(Document document, Person user);
+
+    public boolean canCancel(Document document, Person user);
+
+    public boolean canCopy(Document document, Person user);
+
+    public boolean canPerformRouteReport(Document document, Person user);
+
+    public boolean canBlanketApprove(Document document, Person user);
+
+    public boolean canApprove(Document document, Person user);
+
+    public boolean canDisapprove(Document document, Person user);
+
+    public boolean canSendNoteFyi(Document document, Person user);
+
+    public boolean canEditDocumentOverview(Document document, Person user);
+
+    public boolean canFyi(Document document, Person user);
+
+    public boolean canAcknowledge(Document document, Person user);
+
     public boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode);
 
     public boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user);
@@ -50,8 +82,6 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
             Person user);
 
     public boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user);
-
-    public boolean canEditDocumentOverview(Document document, Person user);
 
     public boolean canSendAnyTypeAdHocRequests(Document document, Person user);
 

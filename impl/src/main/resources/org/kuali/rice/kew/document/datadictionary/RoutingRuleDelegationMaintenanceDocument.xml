@@ -99,7 +99,7 @@
     <property name="maintainableItems">
       <list>
     	<bean parent="MaintainableCollectionDefinition">
-          <property name="name" value="delegationRuleBaseValues.personResponsibilities"/>
+          <property name="name" value="delegationRule.personResponsibilities"/>
           <property name="businessObjectClass" value="org.kuali.rice.kew.rule.PersonRuleResponsibility"/>
           <property name="summaryTitle" value="Person"/>
           <property name="alwaysAllowCollectionDeletion" value="true"/>
@@ -126,7 +126,7 @@
     <property name="maintainableItems">
       <list>
         <bean parent="MaintainableCollectionDefinition">
-          <property name="name" value="delegationRuleBaseValues.groupResponsibilities"/>
+          <property name="name" value="delegationRule.groupResponsibilities"/>
           <property name="businessObjectClass" value="org.kuali.rice.kew.rule.GroupRuleResponsibility"/>
           <property name="summaryTitle" value="Group"/>
           <property name="alwaysAllowCollectionDeletion" value="true"/>

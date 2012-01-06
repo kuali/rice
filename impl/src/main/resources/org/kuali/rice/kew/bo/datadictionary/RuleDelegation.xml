@@ -240,7 +240,7 @@
     </property>
     <property name="name" value="delegationTypeCode"/>
     <property name="label" value="Delegation Type"/>
-    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DelegationTypeFormatter"/>
+    <!-- <property name="formatterClass" value="org.kuali.rice.kns.web.format.DelegationTypeFormatter"/> -->
   </bean>
 
   <bean id="RuleDelegation-documentTypeName" parent="RuleDelegation-documentTypeName-parentBean"/>

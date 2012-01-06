@@ -49,8 +49,10 @@ function setupValidator(){
 		onsubmit: false,
 		ignore: ".ignoreValid",
 		onclick: function(element) {
-			var valid = jq(element).valid();
-			dependsOnCheck(element, new Array());
+            if(element.type != "select-one") {
+			    var valid = jq(element).valid();
+			    dependsOnCheck(element, new Array());
+            }
 		},
 		onfocusout: function(element) {
 			var valid = jq(element).valid();

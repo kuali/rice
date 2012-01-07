@@ -104,9 +104,13 @@ function handlePropositionNodeClick(parentLiNode) {
     if (selectedItemTracker.val() == propositionId) {
         // if this item is already selected, deselect it
         selectedItemTracker.val('');
+        disableTreeButtons(); // disableButtons.js
+        enableAddButton(); // disableButtons.js
+        enableRefreshButton(); // disableButtons.js
     } else {
         selectedItemTracker.val(propositionId);
         markNodeAsSelected(parentLiNode);
+        enableTreeButtons(); // disableButtons.js
     }
 }
 function initRuleTree(componentId){

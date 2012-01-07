@@ -19,45 +19,57 @@ import org.kuali.rice.core.api.mo.common.Identifiable;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
 
+/**
+ * Defines the contract for a KRMS Attribute Definition. An attribute definition contract
+ * describes an attribute and how to find the attribute for krad purposes.
+ * It has a name, namespace, label, description and associated ui component.
+ */
 public interface KrmsAttributeDefinitionContract extends Identifiable, Inactivatable, Versioned {
 
 	/**
-	 * This is the name for the KrmsAttributeDefinition
+	 * Returns the name of this attribute definition.
 	 *
 	 * <p>
-	 * It is a name of a KrmsAttributeDefinition.
+	 * All attribute definitions have a name and namespace, so this value can
+     * not be null or blank. The combination of name and namespace must be unique within the
+     * entire KRMS system.
 	 * </p>
-	 * @return name for KrmsAttributeDefinition.
+	 * @return name for this attribute definition
 	 */
 	public String getName();
 
 	/**
-	 * This is the namespace code. 
+	 * Returns the namespace of this attribute definition.
 	 *
 	 * <p>
-	 * It provides scope of the KrmsAttributeDefinition.
+	 * The namespace provides scope of the the attribute definition. All attribute definition
+     * have a name and namespace, so this field may not be null or blank. The combination
+     * of name and namespace must be unique within the entire KRMS system.
 	 * </p>
-	 * @return the namespace code of the KrmsAttributeDefinition.
+	 * @return the namespace of this attribute definition
 	 */
 	public String getNamespace();
 
 	/**
-	 * This is the label of the KrmsAttributeDefinition
+	 * Returns the label of this attribute definition.
+     * <p>This is an optional
+     * field and may be null or blank.</p>
 	 * 
-	 * @return the label of the KrmsAttributeDefinition
+	 * @return the label to be used when displaying the attribute
 	 */
 	public String getLabel();
 
     /**
-     * this is the optional description for the {@link KrmsAttributeDefinition}
-     * @return the description text
+     * Returns the description of the attribute.
+     * <p>This is an option field and may be null or blank.</p>
+     * @return a text description of the attribute
      */
     public String getDescription();
 	
 	/**
-	 * This is the component name of the KrmsAttributeDefinition
+	 * Returns the name of the component used to display the attribute.
 	 * 
-	 * @return the component name of the KrmsAttributeDefinition
+	 * @return the component name of the of the attribute
 	 */
 	public String getComponentName();
 }

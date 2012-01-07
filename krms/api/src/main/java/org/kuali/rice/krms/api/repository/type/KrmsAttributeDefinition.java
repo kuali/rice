@@ -32,10 +32,12 @@ import org.kuali.rice.core.api.mo.ModelBuilder;
 
 /**
  * Concrete model object implementation of KRMS KrmsAttributeDefinition. 
- * immutable. 
- * Instances of KrmsAttributeDefinition can be (un)marshalled to and from XML.
+ * <p>immutable. To construct an instance of a KrmsTypeAttribute, use the {@link KrmsTypeAttribute.Builder} class.
+ * Instances of KrmsAttributeDefinition can be (un)marshalled to and from XML. </p>
  *
  * @see KrmsAttributeDefinitionContract
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @XmlRootElement(name = KrmsAttributeDefinition.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -105,30 +107,37 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
         this.versionNumber = builder.getVersionNumber();
     }
     
+    @Override
 	public String getId() {
 		return this.id;
 	}
 	
+    @Override
 	public String getName() {
 		return this.name;
 	}
 
+    @Override
 	public String getNamespace() {
 		return this.namespace;
 	}
 
+    @Override
 	public String getLabel() {
 		return this.label;
 	}
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public boolean isActive() {
 		return this.active; 
 	}
 
+    @Override
 	public String getComponentName() {
 		return this.componentName;
 	}
@@ -163,10 +172,23 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
 			setActive(true);
         }
 
+        /**
+         * fluent interface that sets the label of the KrmsAttributeDefinition.
+         *
+         * @param label the label used when the attribute is displayed; may be null or blank
+         * @return a Builder object with the label attribute set
+         */
         public Builder label(String label){
         	setLabel(label);
         	return this;
         }
+
+        /**
+         * fluent interface that sets the componentName of the KrmsAttributeDefinition.
+         * @param componentName the name of the component used to display the attribute;
+         * can be null or blank
+         * @return a Builder object with the componentName set
+         */
         public Builder componentName(String componentName){
         	setComponentName(componentName);
         	return this;
@@ -178,7 +200,7 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
          * @param name the KrmsAttributeDefinition name
          * @param namespace the KrmsAttributeDefinition namespace
          * @return an instance of the builder with the fields already populated
-         * @throws IllegalArgumentException if the either the id, name or namespace is null or blank
+         * @throws IllegalArgumentException if either the id, name or namespace is null or blank
          */
         public static Builder create(String id, String name, String namespace) {
             return new Builder(id, name, namespace);
@@ -189,6 +211,7 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
          * 
          * @param contract the contract from which to populate this builder
          * @return an instance of the builder populated with data from the contract
+         * @throws IllegalArgumentException if the contract is null or blank
          */
         public static Builder create(KrmsAttributeDefinitionContract contract) {
         	if (contract == null) {
@@ -216,6 +239,11 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
             this.id = id;
         }
 
+        /**
+         * sets the name of the attribute. must not be null or blank.
+         * @param name the name of the attribute;
+         * @throws IllegalArgumentException if the name is non-null and blank
+         */
 		public void setName(String name) {
             if (StringUtils.isBlank(name)) {
                 throw new IllegalArgumentException("name is blank");
@@ -223,30 +251,56 @@ public final class KrmsAttributeDefinition extends AbstractDataTransferObject im
 			this.name = name;
 		}
 
+        /**
+         * sets the namespace of the attribute. must not be null or blank.
+         * @param namespace the namespace of the attribute;
+         * @throws IllegalArgumentException if the namespace is non-null and blank
+         */
 		public void setNamespace(String namespace) {
             if (StringUtils.isBlank(namespace)) {
                 throw new IllegalArgumentException("namespace is blank");
             }
 			this.namespace = namespace;
 		}
-		
+
+        /**
+         * sets the label to be displayed with the attribute.
+         * @param label string to display as label; May be null or empty
+         */
 		public void setLabel(String label) {
 			this.label = label;
 		}
 
+        /**
+         * sets the description of the attribute
+         * @param description string; Optional, may be null or empty
+         */
         public void setDescription(String description) {
             this.description = description;
         }
 
-
+        /**
+         * sets the name of the component used to display the attribute
+         * @param componentName; May be null or empty
+         */
 		public void setComponentName(String componentName) {
 			this.componentName = componentName;
 		}
 		
+        /**
+         * sets the active indicator value
+         * @param active boolean value to set
+         */
 		public void setActive(boolean active) {
 			this.active = active;
 		}
 
+        /**
+         * Sets the version number for this object.  In general, this value should only
+         * be null if the object has not yet been stored to a persistent data store.
+         * This version number is generally used for the purposes of optimistic locking.
+         * @param versionNumber the version number, or null if one has not been assigned yet.
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }

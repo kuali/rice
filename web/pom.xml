@@ -26,6 +26,12 @@
   <artifactId>rice-web</artifactId>
   <packaging>war</packaging>
 
+  <properties>
+    <monitoring.filter></monitoring.filter>
+    <monitoring.mapping></monitoring.mapping>
+    <monitoring.listener></monitoring.listener>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -82,6 +88,19 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <webResources>
+            <resource>
+              <filtering>true</filtering>
+              <!-- this is relative to the pom.xml directory -->
+              <directory>src/filtered/webapp</directory>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
@@ -100,5 +119,66 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>monitoring</id>
+      <properties>
+        <monitoring.filter>
+          <![CDATA[
+<filter>
+    <filter-name>monitoring</filter-name>
+    <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+</filter>
+          ]]>
+        </monitoring.filter>
+        <monitoring.mapping>
+          <![CDATA[
+<filter-mapping>
+    <filter-name>monitoring</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+          ]]>
+        </monitoring.mapping>
+        <monitoring.listener>
+          <![CDATA[
+<listener>
+    <listener-class>net.bull.javamelody.SessionListener</listener-class>
+</listener>
+          ]]>
+        </monitoring.listener>
+      </properties>
+      <build>
+      </build>
+      <dependencies>
+        <!-- javamelody-core -->
+        <dependency>
+          <groupId>net.bull.javamelody</groupId>
+          <artifactId>javamelody-core</artifactId>
+          <version>1.31.0</version>
+        </dependency>
+        <!-- itext, option to add PDF export -->
+        <dependency>
+          <groupId>com.lowagie</groupId>
+          <artifactId>itext</artifactId>
+          <version>2.1.7</version>
+          <exclusions>
+            <exclusion>
+              <artifactId>bcmail-jdk14</artifactId>
+              <groupId>bouncycastle</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>bcprov-jdk14</artifactId>
+              <groupId>bouncycastle</groupId>
+            </exclusion>
+            <exclusion>
+              <artifactId>bctsp-jdk14</artifactId>
+              <groupId>bouncycastle</groupId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 
 </project>

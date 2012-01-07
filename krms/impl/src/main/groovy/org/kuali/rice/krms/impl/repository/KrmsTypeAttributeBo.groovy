@@ -54,6 +54,7 @@ public class KrmsTypeAttributeBo extends PersistableBusinessObjectBase implement
 		bo.attributeDefinitionId = im.attributeDefinitionId
 		bo.sequenceNumber = im.sequenceNumber
 		bo.active = im.active
+        bo.versionNumber = im.versionNumber
 		return bo
 	}
 	

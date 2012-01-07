@@ -47,7 +47,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Id"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40" p:watermarkText="Search by Agenda Id" p:maxLength="40"/>
     </property>
     <property name="name" value="id"/>
     <property name="label" value="Agenda Id"/>
@@ -58,7 +58,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Name"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="100"/>
+      <bean parent="Uif-TextControl" p:size="40" p:watermarkText="Search by Agenda Name" p:maxLength="100"/>
     </property>
     <property name="name" value="name"/>
     <property name="label" value="Agenda Name"/>
@@ -69,7 +69,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="typeId"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40" p:watermarkText="Search by Agenda typeId" p:maxLength="40"/>
     </property>
     <property name="name" value="typeId"/>
     <property name="label" value="Agenda typeId"/>
@@ -80,7 +80,7 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="contextId"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="40"/>
+      <bean parent="Uif-TextControl" p:size="40" p:watermarkText="Search by Context Id" p:maxLength="40"/>
     </property>
     <property name="name" value="contextId"/>
     <property name="label" value="Agenda contextId"/>

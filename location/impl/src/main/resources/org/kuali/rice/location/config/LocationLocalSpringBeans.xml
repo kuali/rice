@@ -138,8 +138,8 @@
     <property name="serviceName" value="kualiModuleService" />
   </bean>
 
-  <bean id="campusGroupTypeService" class="org.kuali.rice.location.service.impl.CampusGroupTypeServiceImpl"/>
+  <bean id="campusGroupTypeService" class="org.kuali.rice.location.impl.campus.CampusGroupTypeServiceImpl"/>
 
-  <bean id="campusRoleService" class="org.kuali.rice.location.service.impl.CampusRoleTypeServiceImpl"/>
+  <bean id="campusRoleService" class="org.kuali.rice.location.impl.campus.CampusRoleTypeServiceImpl"/>
 
 </beans>

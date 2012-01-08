@@ -473,6 +473,11 @@
             <index-column name="DLGN_TYP"/>
             <index-column name="DOC_HDR_ID"/>
         </index>
+        <index name="KREW_ACTN_ITM_TI6">
+            <index-column name="DLGN_TYP"/>
+            <index-column name="DLGN_PRNCPL_ID"/>
+            <index-column name="DLGN_GRP_ID"/>
+        </index>
     </table>
     <table name="KREW_ACTN_RQST_T">
         <column name="ACTN_RQST_ID" primaryKey="true" size="40" type="VARCHAR"/>

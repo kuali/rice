@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.datadictionary;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -702,38 +704,26 @@ public class DataDictionary  {
             }
         }
 
-        String prefix = StringUtils.capitalize(propertyName);
-        String getName = "get" + prefix;
-        String isName = "is" + prefix;
+        // Use PropertyUtils.getPropertyDescriptors instead of manually constructing PropertyDescriptor because of
+        // issues with introspection and generic/co-variant return types
+        // See https://issues.apache.org/jira/browse/BEANUTILS-340 for more details
 
-        try {
-
-            p = new PropertyDescriptor(propertyName, propertyClass, getName, null);
-
-        }
-        catch (IntrospectionException e) {
-            try {
-
-                p = new PropertyDescriptor(propertyName, propertyClass, isName, null);
-
-            }
-            catch (IntrospectionException f) {
-                // ignore it
+        PropertyDescriptor[] descriptors = PropertyUtils.getPropertyDescriptors(propertyClass);
+        if (ArrayUtils.isNotEmpty(descriptors)) {
+            for (PropertyDescriptor descriptor : descriptors) {
+                if (descriptor.getName().equals(propertyName)) {
+                    p = descriptor;
+                }
             }
         }
 
         // cache the property descriptor if we found it.
-        if (null != p) {
-
-            if (null == m) {
-
+        if (p != null) {
+            if (m == null) {
                 m = new TreeMap<String, PropertyDescriptor>();
                 cache.put(propertyClassName, m);
-
             }
-
             m.put(propertyName, p);
-
         }
 
         return p;

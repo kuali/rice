@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.kew.api.rule.RuleDelegationContract;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,15 +33,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.kew.api.rule.RuleDelegationContract;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.impl.identity.PersonImpl;
-import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 
 
 /**

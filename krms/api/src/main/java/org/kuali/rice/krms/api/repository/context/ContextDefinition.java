@@ -47,7 +47,8 @@ import java.util.Map;
  * A context definition includes a list of agendas which are valid within the
  * context.  Typically, during rule engine execution, one or more of these
  * agendas is selected for execution based on a given set of selection criteria.
- * 
+ *
+ * @see ContextDefinitionContract
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -116,7 +117,13 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
     	this.versionNumber = null;
     	this.attributes = null;
     }
-    
+
+    /**
+     * Constructs a ContextDefinition from the given builder. This constructor is private
+     * and should only be called by the builder
+     *
+     * @param builder the Builder from which to construct the context definition.
+     */
     private ContextDefinition(Builder builder) {
     	this.id = builder.getId();
     	this.name = builder.getName();
@@ -376,10 +383,24 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
             this.description = description;
         }
 
+        /**
+         * Sets the active flag for the context that will be
+         * returned by this builder.
+         *
+         * @param active the active flag to set
+         */
         public void setActive(boolean active) {
             this.active = active;
         }
 
+        /**
+         * Sets the agendas property of this context definition.
+         * <p>For each of the {@link AgendaDefinitionContract} provided in the parameter list,
+         * construct an AgendaDefinition from the builder of the provided contract, and save the agenda definitions
+         * in a List of {@link AgendaDefinition}</p>
+         *
+         * @param agendaContracts a list of agenda definition contracts
+         */
 		public void setAgendas(List<? extends AgendaDefinitionContract> agendaContracts) {
 			this.agendas = new ArrayList<AgendaDefinition.Builder>();
 			if (agendaContracts != null) for (AgendaDefinitionContract agendaContract : agendaContracts) {
@@ -387,6 +408,12 @@ public final class ContextDefinition extends AbstractDataTransferObject implemen
 			}
 		}
 
+        /**
+         * Sets the Map of attributes as name / value pairs.
+         *
+         * @param attributes a Map of name value String pairs respresenting the attributes
+         * associated with this context
+         */
 		public void setAttributes(Map<String, String> attributes){
 			if (attributes == null){
 				this.attributes = Collections.emptyMap();

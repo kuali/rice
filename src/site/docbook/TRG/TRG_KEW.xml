@@ -2074,22 +2074,23 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                         </imageobject>
                     </mediaobject>
                     </figure>
-                <para>Examining this sample screen, we see there are five entries in the route
+                <para>Examining this sample screen, we see there are 20 entries in the message
                     queue, one on each row. The columns display information about each entry:<itemizedlist>
                         <listitem>
                             <para><emphasis role="bold">Message Queue Id</emphasis> - The primary
                                 key of this route queue entry in the data store </para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold">Route Header Id</emphasis> - The identifier
-                                of the document that is being processed by this entry. If this value
-                                is -1, it means the entry doesn't pertain to a specific document.
-                            </para>
+                            <para><emphasis role="bold">Service Name</emphasis></para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold">Queue Priority</emphasis> - The priority of
-                                the entry in the queue, where entries with the lowest number are
-                                processed first </para>
+                            <para><emphasis role="bold">Service Namespace</emphasis></para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">IP Number</emphasis> - The IP address of the
+                                machine on which the entry was created. In the environment pictured,
+                                we have three machines in our cluster. The IP number shows from
+                                which machine each entry was queued up. </para>
                         </listitem>
                         <listitem>
                             <para><emphasis role="bold">Queue Status</emphasis> – The entry can be
@@ -2111,50 +2112,39 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                 </itemizedlist></para>
                         </listitem>
                         <listitem>
+                            <para><emphasis role="bold">Queue Priority</emphasis> - The priority of
+                                the entry in the queue, where entries with the lowest number are
+                                processed first </para>
+                        </listitem>
+                        <listitem>
                             <para><emphasis role="bold">Queue Date</emphasis> - The date that KEW
                                 should process this queue entry. If the queue checker runs and
                                 discovers the queue date for an entry is equal to or earlier than
                                 the current time, it processes that entry. </para>
                         </listitem>
                         <listitem>
+                            <para><emphasis role="bold">Expiration Date</emphasis></para>
+                        </listitem>
+                        <listitem>
                             <para><emphasis role="bold">Retry Count</emphasis> - The number of times
                                 KEW has attempted to process the entry </para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold">IP Number</emphasis> - The IP address of the
-                                machine on which the entry was created. In the environment pictured,
-                                we have three machines in our cluster. The IP number shows from
-                                which machine each entry was queued up. </para>
+                            <para><emphasis role="bold">App Specific Value 1</emphasis> - The
+                                parameters to be passed to the Route Queue processor such as
+                                document ID </para>
                         </listitem>
                         <listitem>
-                            <para><emphasis role="bold">Processor Class Name</emphasis> - The name
-                                of the Route Queue processor with which this entry will be
-                                processed. If empty, this defaults to the Route Queue processor that
-                                submits the document to the Routing Engine for processing. </para>
-                        </listitem>
-                        <listitem>
-                            <para><emphasis role="bold">Processor Value</emphasis> - The parameters
-                                to be passed to the Route Queue processor </para>
+                            <para><emphasis role="bold">App Specific Value 2</emphasis> - The
+                                parameters to be passed to the Route Queue processor </para>
                         </listitem>
                         <listitem>
                             <para><emphasis role="bold">Action</emphasis> - The Edit link in the
                                 Action column allows you to edit the route queue entry. </para>
                         </listitem>
                     </itemizedlist></para>
-                <para>Once a queue entry has been successfully processed, it is deleted from the
+                <para>Once a message entry has been successfully processed, it is deleted from the
                     queue.</para>
-                <para>In the screen shot above, we see two entries with special Processors. One of
-                    these special Processors is sending daily email reminders. The other one is
-                    sending weekly email reminders. When these entries are picked up from the queue,
-                    they do their work and then queue themselves back up for a day (or a week)
-                    later. Therefore, these entries never really leave the queue.</para>
-                <para>Of the other three entries, we can see that two have a status of <emphasis
-                        role="bold">ROUTING</emphasis> while one has a status of <emphasis
-                        role="bold">QUEUED</emphasis>. What this means is that, at the instant that
-                    this screen shot was taken, the two that are <emphasis role="bold"
-                        >ROUTING</emphasis> have been picked up by the route manager and are being
-                    processed. The one that is <emphasis role="bold">QUEUED</emphasis> will be
-                    picked up the next time that the route manager checks the queue.</para>
             </sect3>
             <sect3>
                 <title>Diagnosing and Fixing Problems</title>

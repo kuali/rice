@@ -1103,7 +1103,6 @@
                             <row>
                                 <entry/>
                                 <entry/>
-                                <tentry/>
                             </row>
                         </tbody>
                       </tgroup>
@@ -1112,7 +1111,8 @@
             </section>
             <section>
                 <title>Creating your own Templates</title>
-                <para>See <link>http://www.jetbrains.com/idea/webhelp/live-templates.html</link>
+                <para>See <link xlink:href="http://www.jetbrains.com/idea/webhelp/live-templates.html">
+                    http://www.jetbrains.com/idea/webhelp/live-templates.html</link>
                 </para>
                 <para>Please post back and share!</para>
             </section>

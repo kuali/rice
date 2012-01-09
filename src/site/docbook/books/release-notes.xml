@@ -749,14 +749,13 @@
             <para>
                 <itemizedlist>
                     <listitem>
-                        <para>Removal of DateUtils and NumberUtils (KRDOC-232)</para>
+                        <para>Removal of DateUtils and NumberUtils </para>
                     </listitem>
                     <listitem>
-                        <para>Changes in how unit tests and integration tests are run
-                            (KRDOC-367)</para>
+                        <para>Changes in how unit tests and integration tests are run </para>
                     </listitem>
                     <listitem>
-                        <para>Addition of Priority parallel activation type (KRDOC-380)</para>
+                        <para>Addition of Priority parallel activation type </para>
                     </listitem>
                     <listitem>
                         <para>Use of immutable objects and the builder pattern for various
@@ -770,8 +769,7 @@
                             in KEW</para>
                     </listitem>
                     <listitem>
-                        <para>Changes to PersistableBusinessObjectBase and notes
-                            (KULRICE-4862)</para>
+                        <para>Changes to PersistableBusinessObjectBase and notes </para>
                     </listitem>
                     <listitem>
                         <para>Normalization on a single concept of "application id"</para>
@@ -781,12 +779,11 @@
                             namespace:name</para>
                     </listitem>
                     <listitem>
-                        <para>Clean up of multiple "key-value-pair" style classes
-                            (KULRICE-4854)</para>
+                        <para>Clean up of multiple "key-value-pair" style classes </para>
                     </listitem>
                     <listitem>
                         <para>Transition from custom-written email services to standardizing on the
-                            spring mailer (KULRICE-4863)</para>
+                            spring mailer </para>
                     </listitem>
                     <listitem>
                         <para>Move to Maven version 3</para>
@@ -810,7 +807,7 @@
                     </listitem>
                     <listitem>
                         <para>Renaming of various data elements in KIM to more closely align with
-                            PESC standards (KULRICE-5360)</para>
+                            PESC standards </para>
                     </listitem>
                     <listitem>
                         <para>Ability for a RouteModule to be called back into multiple times in
@@ -818,7 +815,7 @@
                             feature</para>
                     </listitem>
                     <listitem>
-                        <para>Hours of availability awareness (KULRICE-5695)</para>
+                        <para>Hours of availability awareness </para>
                     </listitem>
                     <listitem>
                         <para>Change from WorkflowFunctions to EDLFunctions (and package name
@@ -826,7 +823,7 @@
                     </listitem>
                     <listitem>
                         <para>Ability to define finer-grained Action List notification preferences
-                            for KEW (KULRICE-5848)</para>
+                            for KEW </para>
                     </listitem>
                 </itemizedlist>
             </para>
@@ -870,13 +867,7 @@
                             fields</para>
                     </listitem>
                     <listitem>
-                        <para>Ability to customize help link on document search</para>
-                    </listitem>
-                    <listitem>
                         <para>Ability to pass query parameters via the document search URL</para>
-                    </listitem>
-                    <listitem>
-                        <para>General cleanup and documentation</para>
                     </listitem>
                 </itemizedlist></para>
         </sect2>
@@ -1165,6 +1156,91 @@
                 <para>Additional details on impacting changes in this release can be found here:
                         <link xlink:href="https://wiki.kuali.org/x/EwO1Eg"
                         >https://wiki.kuali.org/x/EwO1Eg</link></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Beta 5 - January 9, 2012</title>
+            <para>Highlights of the Beta 5 release:<itemizedlist>
+                    <listitem>
+                        <para>Logout button issues have been fixed</para>
+                    </listitem>
+                    <listitem>
+                        <para>Document search works with document types with searchable
+                            attribute</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to customize help link on document search</para>
+                    </listitem>
+                    <listitem>
+                        <para>Customized Post Data-load Encryption</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD DocType updated to HTML 5</para>
+                    </listitem>
+                    <listitem>
+                        <para>Many bug fixes</para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>The full list of JIRA tickets that were resolved for Kuali Rice 2.0.0-b4 can be
+                found here: <link xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b5-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b5-jiras</link></para>
+            <sect3>
+                <title>Impacting Changes</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>KRAD bean and css refactor. In addition to the bean rename, there are
+                            significant changes to bean hierarchy, css names for ALL beans, and
+                            changes to how style sheets are being pulled into a view (we are now
+                            using a theme object). additionalCssFiles still is fine for adding
+                            additional css files (you no longer have to merge anything) and if you
+                            want to override or extend the theme in some way you can now do that
+                            easily as well.</para>
+                        <para>You <emphasis role="bold">must</emphasis> use the new names for all
+                            KRAD work going forward as the old beans do not exist. Every file that
+                            contained old bean names has been updated if they were committed before
+                            today. A groovy script is included to rename any files using the old
+                            bean names in scripts/bean-rename-b4tob5. If you need to, easiest way to
+                            use this script is to place it in the directory containing your xml
+                            files along with it's beanReplacements.txt and run it.</para>
+                    </listitem>
+                    <listitem>
+                        <para>LDAP module moved under KIM - What was the <emphasis role="bold"
+                                >rice-ldap</emphasis> module is now under the <emphasis role="bold"
+                                >rice-kim</emphasis> module. Its new artifact ID is <emphasis
+                                role="bold">rice-kim-ldap</emphasis>.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Final update of library dependencies, see <link
+                                xlink:href="https://jira.kuali.org/browse/KULRICE-4931"
+                                >KULRICE-4931</link> for details</para>
+                    </listitem>
+                    <listitem>
+                        <para>Database changes to refactor KRMS context join table names - As part
+                            of this work, <itemizedlist>
+                                <listitem>
+                                    <para>three KRMS tables and the related indexes, constraints and
+                                        sequences were renamed</para>
+                                </listitem>
+                                <listitem>
+                                    <para>a column name was changed</para>
+                                </listitem>
+                                <listitem>
+                                    <para>some data was updated</para>
+                                </listitem>
+                            </itemizedlist></para>
+                        <para>To apply this change, run the SQL DDL in
+                            scripts/upgrades/1.0.3 to 2.0.0/db-updates/2012-01-05.sql
+                            (for Oracle) or scripts/upgrades/1.0.3 to
+                            2.0.0/db-updates/mysql-2012-01-05.sql (for MySQL).</para>
+                    </listitem>
+                    <listitem>
+                        <para>Database change to add new DB index for improving action list
+                            performance. To apply this change, run the SQL in scripts/upgrades/1.0.3
+                            to 2.0.0/db-updates/2012-01-06.sql (for Oracle) or
+                            scripts/upgrades/1.0.3 to 2.0.0/db-updates/mysql-2012-01-06.sql (for
+                            MySQL).</para>
+                    </listitem>
+                </itemizedlist>
             </sect3>
         </sect2>
          </sect1>

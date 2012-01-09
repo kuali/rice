@@ -96,6 +96,12 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
             logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
         }
 
+        if (!"PeopleFlow-Detail".equals(collectionGroup)) {
+            super.processCollectionAddLine(view, model, collectionPath);
+
+            return;
+        }
+
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {

@@ -1,0 +1,77 @@
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="true" monitoring="autodetect"
+         dynamicConfig="true">
+
+  <cache name="http://rice.kuali.org/kim/v2_0/KimTypeType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/ResponsibilityType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Responsibility}" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityType" eternal="false" overflowToDisk="false" copyOnRead="false"
+         copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/PrincipalType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityPrivacyPreferencesType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EntityType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AddressType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AffiliationType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{CitizenshipStatus}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentStatus}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{ExternalIdentifierType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{NameType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{PhoneType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmailType}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/PermissionType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Permission}" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMembershipType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleResponsibilityType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateTypeType" eternal="false" overflowToDisk="false" copyOnRead="false"
+       copyOnWrite="false"/>
+</ehcache>

@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2005-2012 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>Kuali Rice ${project.version} Release Notes</title>
+        <edition>${project.version}</edition>
+        <pubdate>Released: ${docbook.build.timestamp}</pubdate>
+        <releaseinfo>This document contains information on work completed as part of the Kuali Rice Version 2.0 Beta.</releaseinfo>
+    </info>
+    <sect1 xml:id="overview" xreflabel="Overview">
+        <title>Kuali Rice 2.0 Beta Overview</title>
+        <note><para>For a list of changes between the different Kuali Rice 2.0 beta releases, see the
+            <link linkend="changelog">Changelog</link> section at the end of the release notes.</para></note>
+        <para>Welcome to the Kuali Rice version 2.0 Beta!</para>
+        <para>This is the first major release of the Kuali Rice software since version 1.0 which was
+            released in August of 2009. This release brings many new and exciting features and
+            improvements to the Kuali Rice middlware and application development platforms. This
+            document provides early information on the work that has been done as part of 2.0
+            development and how one can get started working with the software during the beta test
+            phase of the project.</para>
+        <para>The primary architectural goal for this release of Rice was to position the platform
+            for cross-version service compatibility moving forward. With the increase in the number
+            of applications (both internal and external to Kuali) that are integrating with the
+            Kuali Rice middleware platform, the ability to provide for compatibility across
+            different versions of Kuali Rice has risen to the forefront within the community as a
+            critical need. The end result is intended to be a platform on which institutions can
+            build applications without worrying about major forced upgrade paths for all integrated
+            applications whenever they deploy a new release of Kuali Rice.</para>
+        <para>Another major effort that was undertaken in support of compatibility work was an
+            effort to improve the modularity of the various components of Kuali Rice. In version
+            1.0.x of Rice, a high degree of coupling was present in numerous places. Work was done
+            as part of this release to help improve upon that situation.</para>
+        <para>In addition to the architectural efforts supporting compatibility and modularity,
+            Kuali Rice 2.0 sees the introduction of two new major modules.</para>
+        <para>The first of these is the Kuali Rapid Application Development (KRAD) module. KRAD is
+            meant to provide the next generation of application development capabilities to those
+            who are building applications based on Kuali software. KRAD provides a platform that can
+            be utilized to build enterprise applications in a way that provides a more rich and
+            flexible user experience than could be provided with the existing Kuali Nervous System
+            (KNS). In fact, KRAD is intended to be the eventual replacement for the KNS which is the
+            platform upon which much of the existing Kuali application software has been written.
+            Note, however, that KNS is not being removed as of Rice 2.0. Work will continue on KRAD
+            past the 2.0 release of Kuali Rice.</para>
+        <para>The final major piece of functionality that was undertaken for this release was the
+            introduction of the Kuali Rule Management System (KRMS).  KRMS is a business rule
+            management system which can be used to author and maintain business rules that can be
+            utilized during decision making processes within an application.  This includes the
+            ability to use business rules defined in KRMS to define rules for workflow routing,
+            notification, validation, and other custom scenarios.</para>
+        <para>More details on each of the major efforts can be found in later sections of this
+            document.</para>
+        <sect2>
+            <title>Release Highlights</title>
+            <itemizedlist>
+                <title>Highlights of this release include:</title>
+                    <listitem>
+                    <simpara>Refactoring of all remotely accessible services to position them for
+                        cross-version compatibility with future versions of Kuali Rice.  This
+                        includes a migration from Java serialization-based services to SOAP-based
+                        web services.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Reduction in the number of places where a Kuali Rice client application
+                        will interact directly with the Kuali Rice standalone server database (when
+                        using integration models like embedded KEW).</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Improvements to the Kuali Service Bus to allow it to support
+                        requirements for version compatibility.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Introduction of a new approach to server and client-side caching use
+                        the Spring caching abstraction coupled with Ehcache. This includes a new
+                        user interface for managing caches.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Breakdown of the codebase into smaller modules to increase modularity
+                        and flexibility of the software.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Numerous improvements to the design and documentation of Kuali Rice
+                        apis.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Integration of an out-of-the-box LDAP connector for Kuali Identity
+                        Management.</simpara>
+                </listitem>
+                    <listitem>
+                    <simpara>Introduction of the Kuali Rules Management System (KRMS) module for
+                        creation and execution of business rules.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Introduction of the concept of PeopleFlows in Kuali Enterprise
+                        Workflow.</simpara>
+                </listitem>
+                    <listitem>
+                    <simpara>Introduction of the  Kuali Rapid Application Development (KRAD) module,
+                        the next revision of the KNS which includes rich UI features and is based on
+                        Spring MVC instead of Struts.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Ability to configure <link xlink:href="http://docs.codehaus.org/display/BTM/Home">Bitronix</link> as a JTA alternative to JOTM
+                        and XAPool.</simpara>
+                </listitem>
+                <listitem>
+                    <simpara>Many of the Kuali Rice library dependencies have been
+                        updated.</simpara>
+                </listitem>
+                </itemizedlist>
+        </sect2>
+        <sect2>
+            <title>Download</title>
+            <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download/beta">http://kuali.org/rice/download/beta</link>.</para>
+            <para>There are three different distributions of Rice available: source, binary and
+                server. Please read the Installation Guide for more details on each of these
+                distributions.</para>
+        </sect2>
+        <sect2>
+            <title>Documentation</title>
+            <para>JavaDocs can be found at <link xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
+            <para>For the beta test, we have a <link xlink:href="https://wiki.kuali.org/x/xSaREg">wiki space to collect and maintain for beta testers</link>.</para>
+            <para>Formal documentation for this release is under review. Other than KRMS and KRAD
+                Chapters, the documentation found at <link
+                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html"
+                    >http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link> has not yet been updated
+                for Rice 2.0.</para>
+        </sect2>
+        <sect2>
+            <title>Contact</title>
+            <para>If you encounter any difficulty, please don't hesitate to contact the Rice team on
+                our public collaboration mailing list at <email>rice.collab@kuali.org</email>.
+                Please indicate that you are using the ${project.version} version of Rice.</para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="major-changes" xreflabel="Major Changes">
+        <title>Major Changes</title>
+        <para>As mentioned in the overview and highlights, there were many major changes that were
+            made in support of the goals of the Rice 2.0 release. During the implementation of
+            modularity and version compatibility changes, there were many structural improvements
+            and refactoring changes to Rice that are intended to help set a stronger foundation for
+            future releases. Additionally, the KRMS and KRAD modules brought a large amount of new
+            functionality to the Kuali Rice platform. These next sections dive into these changes in
+            more detail.</para>
+        <sect2>
+            <title>Middleware Version Compatibility</title>
+            <para>In Rice 2.0, we are providing what we call "middleware" or "service"
+                compatibility.  This type of compatibility is mainly concerned with compatibility
+                between a client application and the version of the Kuali Rice standalone server
+                with which it is integrated.  The basic requirement here is that if the Kuali Rice
+                standalone server (which hosts all of the Kuali Rice services) is upgraded to a new
+                version, that should not force any applications that integrate with those services
+                to also upgrade (unless the server has been upgraded to a new "major" version such
+                as Rice 3.0, 4.0, etc.).  It should be able to continue to interoperate with the new
+                set of services without having to pull in new Kuali Rice client libraries or (in the
+                case of manual web-service integration) it should not have to modify the way in
+                which it invokes and handles remote service calls.</para>
+            <para>The image below shows what the target is for version compatibility from the
+                perspective of major, minor, and patch releases of Kuali Rice.</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/ReleaseCycle1.png" scalefit="1" width="100%" contentdepth="100%"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>The type of compatibility being implemented for version 2.0 is in contrast to what
+                we call "framework" compatibility, or the ability to upgrade a client application to
+                a new version of the Kuali Rice client libraries or development framework without
+                having to make any forced changes to that client application. Those who use Java are
+                familiar with this type of compatibility because that is the level of compatibility
+                that is generally provided between releases of the JDK (this is sometimes called a
+                "drop-in" replacement). Working toward a goal of framework compatibility is on the
+                roadmap for the Kuali Rice project, however the Rice 2.0 release makes no guarantees
+                that it will provide such a level of compatibility moving forward.</para>
+            <para>More info on this and also Framework Version Compatibility can be found in our
+                    <link xlink:href="https://wiki.kuali.org/x/OABHC">Kuali Rice Version
+                    Compatibility Statement</link>.</para>
+            <para>The following sub-sections will delve into some specific work that was done in
+                support of version compatibility.</para>
+            <sect3>
+                <title>Migration to SOAP web services</title>
+                <para>In Kuali Rice 1.0.x, services based on Java serialization were the primary
+                    services used for integration between Kuali Rice and client applications.  The
+                    mechanism by which serialization was performed used Spring's HTTP invoker
+                    remoting framework.  Java serialization is convenient for Java-to-Java
+                    application interaction.  However, a SOAP web service approach allows for a
+                    greater level of interoperability between applications, including those not
+                    written in Java.  Additionally, serialization can sometimes inherently cause
+                    compatibility issues when attempting to communicate between applications which
+                    might be running different versions of Java or different versions of
+                    libraries.</para>
+                <para>To this end, the services in Rice 2.0 have all been reimplemented as
+                    SOAP-based web services. There will be no Java-serialization based service
+                    distributed with Kuali Rice 2.0. However, the Kuali Service Bus will still
+                    support publishing of services that use Java. As part of this effort, the team
+                    has taken care to carefully design the message formats such that:<itemizedlist>
+                        <listitem>
+                            <para>The "required" portions of the message format are
+                                well-defined</para>
+                        </listitem>
+                        <listitem>
+                            <para>The proper format of data in the messages in well-defined</para>
+                        </listitem>
+                        <listitem>
+                            <para>Error and exception cases are well-defined</para>
+                        </listitem>
+                        <listitem>
+                            <para>The services are designed to allow for safe evolution over
+                                time</para>
+                        </listitem>
+                        <listitem>
+                            <para>The services are namespaced and named appropriately</para>
+                        </listitem>
+                        <listitem>
+                            <para>The services are versioned appropriately</para>
+                        </listitem>
+                        <listitem>
+                            <para>There is consistency in how services are designed and
+                                documented</para>
+                        </listitem>
+                    </itemizedlist>Much of the above information can be found in the WSDL's which
+                    are generated for each of the services. The WSDL defines the message formats,
+                    operations, and error conditions of the numerous Kuali Rice services. This
+                    effort of service refactoring is at the heart of what we are calling "version
+                    compatibility" for the Kuali Rice 2.0 release.</para>
+                <para>Note that while SOAP is being used as the primary way in which services are
+                    exposed in Rice 2.0, there will likely be work in the future to make services
+                    available using the REST architectural style.</para>
+            </sect3>
+            <sect3>
+                <title>Kuali Service Bus</title>
+                <para>In order to support requirements for version compatibility, there were
+                    numerous changes that needed to be made to the Kuali Service Bus. This
+                    ultimately resulted in a reworking of much of the internals of the KSB (with the
+                    exception of it's messaging functionality). The major changes made to the KSB
+                    for Kuali Rice 2.0 were:<orderedlist>
+                        <listitem>
+                            <para>Client applications now connect to the service registry through a
+                                SOAP web service, rather than through direct connections to the
+                                KRSB_SVC_DEF_T and related tables.</para>
+                        </listitem>
+                        <listitem>
+                            <para>There is a new API for the ServiceBus which is well documented and
+                                acts as the client application interface point with the KSB.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The practice of storing a java serialized form of the service
+                                configuration in the database was altered to store an XML-serialized
+                                service descriptor. This allows for more portability and greater
+                                access for non-Java applications to interact with the service
+                                bus.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Removed the faulty "dead service" indicator from the
+                                registry.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Added the concept of a service status to the registry.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Added service version number information to the registry.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Replaced the concept of the "service namespace" with the concept
+                                of an "application id".</para>
+                        </listitem>
+                        <listitem>
+                            <para>Introduced the concept of an "instance id" which identifies an
+                                instance of an application. This allows the KSB to better handle
+                                applications that are clustered with multiple deployments all
+                                publishing the same set of services.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Much more flexibility in how a client application can configure
+                                and use the KSB. For example, a client application could just
+                                configure the KSB client to act as a publisher of a service, or it
+                                could just connect to the KSB as a consumer of services. As well as
+                                additional configuration permutations related to support for
+                                reliable messaging and "development" mode (where services are not
+                                actually published).</para>
+                        </listitem>
+                        <listitem>
+                            <para>A general refactoring of the internal architecture of the KSB
+                                related to handle it handles the publishing lifecycle of services as
+                                well as synchronization with the shared service registry.</para>
+                        </listitem>
+                    </orderedlist>As can be seen from the list above, much work was done to the
+                    service bus for Kuali Rice version 2.0. For more details, read the following
+                    page <link xlink:href="https://wiki.kuali.org/x/T3dyEg"
+                        >https://wiki.kuali.org/x/T3dyEg</link></para>
+            </sect3>
+            <sect3>
+                <title>Parameter Service, Namespace Service, and Component Service</title>
+                <para>In Rice 1.0.x, parameters, namespaces, and components were part of the KNS
+                    module of Rice.  Client applications would access tables in the Kuali Rice
+                    server database directory in order to read and write values from these tables.
+                    As part of the general effort to modularize the Rice platform, it was decided
+                    that these three concepts were core concepts since they were used outside of the
+                    pure application development domain of the KNS (parameters in particular are
+                    used all over the Kuali Rice codebase).  To this end they were moved to the
+                    newly established "core" module of Rice (see more information on modularity work
+                    in later sections).</para>
+                <para>Additionally, SOAP services were created for each of these to eliminate the
+                    need for a client application to directly communicate with the related database
+                    tables, instead using a service-oriented approach to interacting with these
+                    different information sources.  This resulted in the creation of the following services:<itemizedlist>
+                        <listitem>
+                            <para><emphasis role="bold">org.kuali.rice.core.api.parameter.ParameterRepositoryService</emphasis>
+                                - remote service which provides operations related to system
+                                parameters</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold"
+                                    >org.kuali.rice.core.api.namespace.NamespaceService</emphasis> -
+                                remote service which provides operations related to
+                                namespaces</para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">org.kuali.rice.core.api.component.ComponentService</emphasis> -
+                                remote service which provides operations related to components, as
+                                well as implementing a new model for publication of "derived"
+                                components</para>
+                        </listitem>
+                    </itemizedlist>For working with parameters, there is still a ParameterService
+                    this is provided as part of the client-side API.  This service is configured
+                    with the application id of the application and delegates calls down to the
+                    remote ParameterRepositoryService.</para>
+                <para>For the ComponentService, it provides a new mechanism for publication of
+                    "derived" components, which can include components that are derived from an
+                    application's data dictionary configuration.  This is a replacement for the
+                    "getNonDatabaseComponents" method which was part of the
+                    RiceApplicationConfigurationService in Rice 1.0.x.  It uses a push model in
+                    contrast to the pull model which was used in Rice 1.0.x.</para>
+                <para>More information about these individual services and their available
+                    operations can be found in the javadocs.  Also see the following page for more
+                    details on the work that was done with these services, including a description
+                    of the new model used for publication of derived components: <link xlink:href="https://wiki.kuali.org/x/tg5yEg">https://wiki.kuali.org/x/tg5yEg</link></para>
+            </sect3>
+            <sect3>
+                <title>RiceApplicationConfigurationService</title>
+                <para>In Rice 1.0.x, the RiceApplicationConfigurationService was a service published
+                    by all KNS applications which provided callbacks into the application from the
+                    Kuali Rice standalone server.  This service was removed in Rice 2.0 for various
+                    reasons.  The reasons for it's removal and information on it's effective
+                    replacements can be found on the following page: <link xlink:href="https://wiki.kuali.org/x/vA6tEg">https://wiki.kuali.org/x/vA6tEg</link></para>
+            </sect3>
+            <sect3>
+                <title>General Purpose Lookup APIs</title>
+                <para>In Rice 1.0.x, may of the services (particularly the KIM services) had
+                    general-purpose lookup methods which took a <code>Map&lt;String, String></code>.
+                    In this map, the key was intended to represent the property name on the data
+                    element being looked up and the value was intended to be the value to search
+                    for. The value itself could contain various wild card characters and other
+                    operators to allow for the construction of more complex searches. However, there
+                    were a few inadequacies with this approach:<orderedlist>
+                        <listitem>
+                            <para>If an institution wanted to implement their own version of the
+                                service, they would effectively need to implement a complex
+                                interpreter which would take the incoming String value and determine
+                                how to implement the lookup according to the values passed
+                                in.</para>
+                        </listitem>
+                        <listitem>
+                            <para>There was no way to preform cross-property "ors" with this
+                                model.</para>
+                        </listitem>
+                        <listitem>
+                            <para>There was no support for "paging" of query results.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The contract itself tended to be weakly defined, resulting in
+                                service methods that would be hard to maintain from a service
+                                compatibility perspective.</para>
+                        </listitem>
+                    </orderedlist>To this end, some work was done to design a general purpose lookup
+                    API that could be applied in a standard fashion across the various Rice services
+                    which needed it. The following page describes more about the various
+                    possibilities for implementing this as well as the solution which was chosen:
+                        <link xlink:href="https://wiki.kuali.org/x/PR9yEg"
+                        >https://wiki.kuali.org/x/PR9yEg</link>.</para>
+                <para>The implementation of this api can be found on the core-api module under the
+                    package <code>org.kuali.rice.core.api.criteria</code>.</para>
+            </sect3>
+            <sect3>
+                <title>Kuali Enterprise Workflow Services</title>
+                <para>The Kuali Enterprise Workflow services have been refactored for version
+                    compatibility in a similar fashion to the rest of the services in Rice.  As part
+                    of this effort, a bit of a rearchitecture of the service layer and APIs for
+                    workflow were performed as well.  The major changes made to the workflow
+                    services and apis are as follows:<itemizedlist>
+                        <listitem>
+                            <para>The <code>WorkflowDocument</code> class is now an interface and is
+                                created using <code>WorkflowDocumentFactory.createDocument</code> or
+                                    <code>WorkflowDocumentFactory.loadDocument</code> instead of
+                                creating new instances through the <code>WorkflowDocument</code>
+                                constructor.</para>
+                        </listitem>
+                        <listitem>
+                            <para><code>SimpleDocumentActionsWebService</code> was combined with
+                                    <code>WorkflowDocumentActions</code> to create the new
+                                    <code>WorkflowDocumentActionsService</code> remotable
+                                service.</para>
+                        </listitem>
+                        <listitem>
+                            <para><code>WorkflowInfo</code> and <code>WorkflowUtility</code> was
+                                removed and replaced with the following services:<itemizedlist>
+                                    <listitem>
+                                        <para><code>WorkflowDocumentService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>ActionListService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentTypeService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>NoteService</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>RuleService</code></para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>The various KEW framework services were refactored to conform to
+                                service version compatibility standards.  This includes services for
+                                document search customization, action list customization, workflow
+                                notes, document security, rule validation, and workflow rule
+                                attributes.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The various KEW message queues were refactored to conform to
+                                service version compatibility standards. This includes queues for
+                                document routing, blanket approval, immediate email reminders,
+                                searchable attribute indexing, document requeuing, etc.</para>
+                        </listitem>
+                        <listitem>
+                            <para>In the KNS, both <code>KualiWorkflowInfo</code> and
+                                    <code>KualiWorkflowDocument</code> were removed as it was deemed
+                                this duplicate level of abstraction was unnecessary.  In the case of
+                                    <code>KualiWorkflowDocument</code>, existing references were
+                                changed to just <code>WorkflowDocument</code>.  In the case of
+                                    <code>KualiWorkflowInfo</code>, code was changed to call one of
+                                the new KEW services that was added in Rice 2.0.</para>
+                        </listitem>
+                    </itemizedlist>Some rough notes with more details on the work that was done in
+                    KEW can be found here: <link xlink:href="https://wiki.kuali.org/x/fwuREg">https://wiki.kuali.org/x/fwuREg</link></para>
+            </sect3>
+            <sect3>
+                <title>Document Search</title>
+                <para>One of the major KEW framework refactorings that was undertaken for Rice 2.0
+                    was a reimplementation of the various components that support Document Search
+                    customization.  Full documentation on these changes and how to utilize them is
+                    still in progress, but a summary is as follows:<itemizedlist>
+                        <listitem>
+                            <para><code>SearchableAttribute</code> - class still named the same but
+                                moved to a different package, method names changed, returns
+                                    <code>RemotableAttributeField</code> instead of
+                                    <code>List&lt;Row></code></para>
+                        </listitem>
+                        <listitem>
+                            <para>Client applications no longer allowed to override or use these attributes:<itemizedlist>
+                                    <listitem>
+                                        <para><code>DocumentSearchCriteriaProcessorAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchGeneratorAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchResultProcessorAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchXMLResultProcessorAttribute</code></para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>The only valid document search-related attributes are now:<itemizedlist>
+                                    <listitem>
+                                        <para><code>SearchableAttribute</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSearchCustomizer</code></para>
+                                    </listitem>
+                                    <listitem>
+                                        <para><code>DocumentSecurityAttribute</code></para>
+                                    </listitem>
+                                </itemizedlist></para>
+                        </listitem>
+                        <listitem>
+                            <para>The <code>DocumentSearchCustomizer</code> replaces most of the
+                                original document search-related attributes. It is a single
+                                attribute which allows for customization of criteria, results, and
+                                various other aspects of the Document Search operation.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The customizer itself is not remoted, instead a
+                                    <code>DocumentSearchCustomizationHandlerService</code> is
+                                published by each KEW client application.  This allows for a client
+                                application to implement as many customizers as they want and map
+                                them to the document types they should apply to via
+                                    <code>DocumentType</code> configuration.  The Document Search
+                                functionality itself will then callback into the client application
+                                when it needs to via the published
+                                    <code>DocumentSearchCustomizationHandlerService</code>.</para>
+                        </listitem>
+                        <listitem>
+                            <para>The new document search framework uses the
+                                    <code>RemotableAttributeField</code> abstraction for defining
+                                fields that should be displayed as extra search criteria.  This is
+                                in contrast to Rice 1.0.x where KNS <code>Row</code> and
+                                    <code>Field</code> objects were transmitted using Java
+                                serialization.  This old model did not translate well to SOAP-based
+                                services and had numerous other problems as well (namely that not
+                                all of <code>Field</code> and <code>Row</code> was properly
+                                serializable or could be interpreted correctly by the Rice
+                                standalone service, such as custom formatters, values finders,
+                                etc.).</para>
+                        </listitem>
+                    </itemizedlist>Further documentation on how to migrate from the old document
+                    search framework to the new document search framework is forthcoming.  For the
+                    time-being, the best resource is to look at the javadocs for the
+                        <code>org.kuali.rice.kew.framework.document.search</code> package.  All of
+                    the framework apis should have fairly thorough javadocs.  Additional, some rough
+                    notes on the document search work and architectural service approach for the
+                    customization handler service can be found near the bottom of this page: <link xlink:href="https://wiki.kuali.org/x/fwuREg">https://wiki.kuali.org/x/fwuREg</link></para>
+            </sect3>
+            <sect3>
+                <title>Caching Architecture</title>
+                <para>In Rice 1.0.x, caching was implemented using a framework called OSCache along
+                    with distributed caching flushing behavior across the KSB. This worked well in
+                    general, however this setup was plagued by issues of far too many cache-related
+                    message events getting generated and sent. Additionally, OSCache is a long-dead
+                    project which has not had any activity in a long time. In order to ensure that
+                    Kuali Rice was positioned for service compatibility moving forward, an effort
+                    was undertaken to revamp and update the caching architecture utilized by the
+                    Rice platform and find a better and more sustainable solution.</para>
+                <para>The result is a solution based on the caching abstraction provided with the
+                    core Spring framework version 3.1. The backend caching implementation being used
+                    is Ehcache (which is the default recommended by Spring). There is a also
+                    integration with the Kuali Service Bus for sending cache eviction messages out
+                    to interested listeners. This allows us to keep our caching consistent across
+                    different applications in an enterprise architecture which has been integrated
+                    with Kuali Rice.</para>
+                <para>More details on the specific work that was done to rearchitect the Kuali Rice
+                    caching infrastructure can be found here: <link xlink:href="https://wiki.kuali.org/x/XgmWEg">https://wiki.kuali.org/x/XgmWEg</link></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Modularity</title>
+            <para>In version 1.0.x of Kuali Rice, the software was divided into 3 main modules: api,
+                impl, and web. While this was convenient from the development perspective, it
+                resulted in a high level of coupling between the various "logical" modules of Rice
+                (the core, kew, kim, ksb, etc.). Attempts were made to rectify some of these issues
+                in Kuali Rice 2.0. Since the full vision for modularity in Kuali Rice was not in
+                scope for the 2.0 release, as much work was done on modularity as could be permitted
+                in order help reach version compatibility goals for the release.</para>
+            <para>Primarily, this included the creation of numerous "api" and "framework" modules
+                and the partitioning of Kuali Rice into various sub-project modules.  This structure
+                can be seen when looking at the source code for Rice 2.0.  The overall vision for
+                modularity in Kuali Rice as well as some notes on specific changes that were made in
+                pursuit of it can be found at the following links:</para>
+            <itemizedlist>
+                <listitem>
+                    <para><link xlink:href="https://wiki.kuali.org/x/fYD8E">Modularity Use Case Analysis</link></para>
+                </listitem>
+                <listitem>
+                    <para><link xlink:href="https://wiki.kuali.org/x/SoD8E">Modularity
+                            Design</link></para>
+                </listitem>
+                <listitem>
+                    <para>the running <link xlink:href="https://docs.google.com/a/kuali.org/document/pub?id=1kBvZXMU4jCsLv-OJAbeMjIPXimB_F0Z_ar4s9vpBqKw">list of modularity changes</link>.</para>
+                </listitem>
+                <listitem>
+                    <para><link xlink:href="https://docs.google.com/document/pub?id=1YVyQZQlqqVKCEZbFmyhSAsnjNxbvl55n3iXeut1ems8">KEW Refactoring Notes</link></para>
+                </listitem>
+            </itemizedlist>
+        </sect2>
+        <sect2>
+            <title>PeopleFlows</title>
+            <sect3>
+                <title>Core PeopleFlow concept</title>
+                <para>A new concept was added to Kuali Enterprise Workflow as part of workflow
+                    routing requirements for Kuali Coeus.  The requirement was essentially to
+                    replicate the functionality of "Maps" in the existing Coeus system upon which
+                    Kuali Coeus is based.  These maps are simply lists of people or roles who can
+                    approve in a particular order.  This order is defined by a series of "stops".
+                    At each stop there can be a number of possible approvers which may have
+                    delegates.</para>
+                <para>There was not really an equivalent concept in KEW today, this is essentially
+                    like a mini-workflow itself.  So the concept of PeopleFlows were added along
+                    with a new activation type called "Priority-Parallel" activation.  This
+                    priority-parallel activation allows for action requests to be activated at a
+                    node in parallel if they have the same priority, but in sequence if they have
+                    different priority values.</para>
+                <para>Further details on the implementation of PeopleFlows, their lineage in Coeus,
+                    as well as some screenshots of the maintenance user interface can be found here:
+                        <link xlink:href="https://wiki.kuali.org/x/3R6REg"
+                        >https://wiki.kuali.org/x/3R6REg</link></para>
+            </sect3>
+            <sect3>
+                <title>PeopleFlow integration with KRMS</title>
+                <para>The previous section introduced the concept of PeopleFlows.  The KRMS module
+                    will have integration with PeopleFlows built in through the use of a custom type
+                    of "Action".  This action will allow a rule author to build a business rule and
+                    then indicate that the action that should be executed if the rule succeeds would
+                    be to route to the specified PeopleFlow.</para>
+                <para>Details on the way this integration is implemented can be found here: <link
+                        xlink:href="https://wiki.kuali.org/x/3R6REg"
+                        >https://wiki.kuali.org/x/3R6REg</link></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>New Modules: KRMS and KRAD</title>
+            <sect3>   
+                <title>Kuali Rapid Application Development Framework (KRAD)</title> 
+                <para>KRAD (Kuali Rapid Application Development) is a framework that eases the
+                    development of enterprise web applications by providing reusable solutions and
+                    tooling that enable developers to build in a rapid and agile fashion. KRAD is a
+                    complete framework for web development that provides infrastructure in all major
+                    areas of an application (client, business, and data) and integrates with other
+                    modules of the Rice middleware project. KRAD is the next generation of the Rice
+                    Kuali Nervous System (KNS) and Kuali Student development frameworks. It expands
+                    on the ability to rapidly create user interfaces with XML while providing more
+                    flexibility with layouts and user experience. In addition, KRAD allows for the
+                    creation of modern, rich user interfaces using the jQuery and Fluid frameworks. </para>
+               <para><emphasis role="bold">How does KRAD improve on the KNS?</emphasis> See <link xlink:href="https://wiki.kuali.org/download/attachments/284033363/kradflier.pdf">Benefits of KRAD</link>. </para>
+                <para>To learn more about KRAD, please visit the following pages:<itemizedlist>
+                        <listitem>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/KRAD+in+a+nutshell">KRAD in a nutshell</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+Architecture#UIFArchitecture-Views">UIF Architecture</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/UIF+View+Tutorial#UIFViewTutorial-CommonCases">View Tutorial</link></para>
+                        </listitem>
+                        <listitem>
+                            <para><link xlink:href="https://wiki.kuali.org/display/KULRICE/Uif+Component+Tutorial">Creating a component</link></para>
+                        </listitem>
+                    </itemizedlist></para>
+              <para>In addition, see various analysis pages here (Note: some of the
+                information might be incomplete or out of date): <link xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+2.0+-+KRAD+Analysis">KRAD Analysis</link>
+              </para>
+            </sect3>
+            <sect3>
+                <title>Kuali Rule Management System (KRMS)</title>
+                <para>KRMS (Kuali Rule Management System) is a new module in Rice that enables the externalization of
+                  pieces of business logic (rules) from an application such that it is customizable without need for
+                  additional client programming.  Agendas containing custom business rules can be defined, edited and
+                  stored in the repository, and then executed by the application against some set of information (facts).</para>
+                <para>There is also integration between KRMS and KEW's new PeopleFlow concept that enables invocation of
+                  the rule execution engine from within a workflow.  Rules can be configured with PeopleFlow actions
+                  that specify PeopleFlows to route to or to notify.</para>
+                  <para>View the following analysis page for some additional information on KRMS:<link xlink:href="https://wiki.kuali.org/x/egHuE">KRMS
+                      Analysis</link></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Configuration Changes</title>
+            <para>For Rice 2.0, we now support: <itemizedlist>
+                    <listitem>
+                        <para>Tomcat 6 (Servlet API 2.5, JSP 2.1) </para>
+                    </listitem>
+                    <listitem>
+                        <para>Tomcat 7 (Servlet API 3.0, JSP 2.2) </para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>With this change, we have dropped support for Tomcat 5.5 (Servlet API 2.4, JSP
+                2.0). </para>
+            <!-- TODO: Document the following
+    - XAPool/Bitronix Configuration Changes (KRDOC-382 )
+    - New configuration Parameters related to component publishing (KRDOC-386)
+    - Changes to configurers and run modes (KRDOC-389)-->
+        </sect2>
+        <sect2>
+            <title>Library Changes and Additions</title>
+            <para>There were many changes made to the various direct and transitive dependencies for
+                Kuali Rice. Additional documentation is forthcoming on what these specific changes
+                were, but the following is a summary of some of the highlights:<itemizedlist>
+                    <listitem>
+                        <para>Spring 3.1</para>
+                    </listitem>
+                    <listitem>
+                        <para>Apache CXF 2.3.6</para>
+                    </listitem>
+                    <listitem>
+                        <para>OJB 1.0.4-patch7<itemizedlist>
+                                <listitem>
+                                    <para> includes various patches from the Kuali community</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para>Direct Web Remoting (DWR) 3.0.RC2</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ehcache 2.4.6</para>
+                    </listitem>
+                    <listitem>
+                        <para>Groovy 1.8.1</para>
+                    </listitem>
+                    <listitem>
+                        <para>joda-time 2.0</para>
+                    </listitem>
+                    <listitem>
+                        <para>JOTM 2.1.9</para>
+                    </listitem>
+                    <listitem>
+                        <para>Bitronix 2.1.1</para>
+                    </listitem>
+                    <listitem>
+                        <para>Quartz 1.8.4</para>
+                    </listitem>
+                    <listitem>
+                        <para>Spring Security 3.0.7</para>
+                    </listitem>
+                    <listitem>
+                        <para>Struts 1.3.10</para>
+                    </listitem>
+                    <listitem>
+                        <para>Tiles 2.2.2</para>
+                    </listitem>
+                    <listitem>
+                        <para>jQuery 1.6.3</para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        <sect2>
+            <title>Other Changes</title>
+            <para>There were many other changes made in Kuali Rice 2.0 which are not included in the
+                previous section.  The following list is a highlight of some of these.  For a
+                comprehensive list of changes that were performed, the Jira issues are the best
+                place to look.</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Removal of DateUtils and NumberUtils </para>
+                    </listitem>
+                    <listitem>
+                        <para>Changes in how unit tests and integration tests are run </para>
+                    </listitem>
+                    <listitem>
+                        <para>Addition of Priority parallel activation type </para>
+                    </listitem>
+                    <listitem>
+                        <para>Use of immutable objects and the builder pattern for various
+                            APIs</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removal of "object remoting" functionality from the KSB</para>
+                    </listitem>
+                    <listitem>
+                        <para>Conversion of identifiers from numeric to character-based data types
+                            in KEW</para>
+                    </listitem>
+                    <listitem>
+                        <para>Changes to PersistableBusinessObjectBase and notes </para>
+                    </listitem>
+                    <listitem>
+                        <para>Normalization on a single concept of "application id"</para>
+                    </listitem>
+                    <listitem>
+                        <para>Unique constraint on kim permission namespace:name and responsibility
+                            namespace:name</para>
+                    </listitem>
+                    <listitem>
+                        <para>Clean up of multiple "key-value-pair" style classes </para>
+                    </listitem>
+                    <listitem>
+                        <para>Transition from custom-written email services to standardizing on the
+                            spring mailer </para>
+                    </listitem>
+                    <listitem>
+                        <para>Move to Maven version 3</para>
+                    </listitem>
+                    <listitem>
+                        <para>DateTimeService converted to use configuration parameters instead of
+                            system parameters, allowing for it to be used through more of the system
+                            without the need for database dependencies</para>
+                    </listitem>
+                    <listitem>
+                        <para>Kuali Communication Broker (KCB) integration turned off by
+                            default</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removal of IdentityManagementService, replaced with individual service
+                            calls in KIM</para>
+                    </listitem>
+                    <listitem>
+                        <para>Replacement of AttributeSet in KIM service apis with simple
+                            Map&lt;String, String></para>
+                    </listitem>
+                    <listitem>
+                        <para>Renaming of various data elements in KIM to more closely align with
+                            PESC standards </para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability for a RouteModule to be called back into multiple times in
+                            order to generate more requests in support of new PeopleFlow
+                            feature</para>
+                    </listitem>
+                    <listitem>
+                        <para>Hours of availability awareness </para>
+                    </listitem>
+                    <listitem>
+                        <para>Change from WorkflowFunctions to EDLFunctions (and package name
+                            changes) in eDocLites</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to define finer-grained Action List notification preferences
+                            for KEW </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect2>
+    </sect1>
+    <sect1>
+        <title>Rice 2.0 Work Remaining</title>
+        <para>For the first beta release of Rice 2.0, the goal was to ensure that approximately 95%
+            of the functionality was complete prior to the public beta test. The following sections
+            summarize major work items that still need to be completed prior to the generally
+            available release of Kuali Rice 2.0. Work will continue to try and resolve these issues
+            as soon as possible for future beta releases.</para>
+        <sect2>
+            <title>Caching</title>
+            <para>There is still work outstanding on the caching infrastructure for Kuali Rice.
+                Remaining work primarily revolves around how client-side caching is managed and
+                performed.  Much of this work relates to the outstanding issues resulting in the
+                inability of configuring remote and embedded client-side integration
+                patterns.</para>
+        </sect2>
+        <sect2>
+            <title>Document Search</title>
+            <para>As a result of heaving refactoring of the document search frameworks for version
+                compatibility in Rice 2.0, there is still work remaining before this framework will
+                have parity with the implementation that was in place in Kuali Rice 1.0.x.  Specific
+                outstanding work that remains here includes:<itemizedlist>
+                    <listitem>
+                        <para>Support for range-based searches on search attribute values</para>
+                    </listitem>
+                    <listitem>
+                        <para>Proper data formatting in result set</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to indicate column visibility on searchable attribute
+                            fields</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to pass query parameters via the document search URL</para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        <sect2>
+            <title>createproject.groovy</title>
+            <para>The createproject.groovy script has not yet been converted over to produce a valid
+                Rice 2.0-based project.</para>
+        </sect2>
+        <sect2>
+            <title>Documentation</title>
+            <para>Document is still in a rudimentary state.  During the course of the beta releases,
+                it will be reviewed and augmented.</para>
+        </sect2>
+        <sect2>
+            <title>Upgrade Guides and Upgrade Scripts</title>
+            <para>These guides and scripts are not yet fully complete.  However, final documentation
+                and scripts will be provided prior to the final release.  To access rough versions
+                of scripts and some contributed by other members of the community, please visit the
+                    <link xlink:href="https://wiki.kuali.org/x/xSaREg">beta test site</link>.</para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="upgrade-guide" xreflabel="Upgrade Guide">
+        <title>Upgrade Guide</title>
+        <sect2>
+            <title>Database Changes</title>
+            <para>The scripts to upgrade from a 1.0.3.3 version of Kuali Rice to version
+                ${project.version} can be found in the following directory inside of the source
+                distribution:</para>
+            <para><code>scripts/upgrades/1.0.3 to 2.0.0</code></para>
+            <para>Within this directory, are the following sub-directories:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">db-updates</emphasis> - contains the SQL needed
+                            to upgrade from a Kuali Rice 1.0.3.3 standalone server service database
+                            to ${project.version}.  Each of these scripts is dated and that
+                            indicates the order in which they should be run.  SQL scripts for MySql
+                            are prefixed by "mysql".  Scripts for oracle have no prefix on their
+                            name.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">db-updates-client</emphasis> - contains the SQL
+                            needed to upgrade a Kuali Rice client application's Rice-related tables
+                            to ${project.version}.  At this point in time, the only update required
+                            is to the KRNS_SESN_DOC_T table.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">demo-data</emphasis> - this directory contains
+                            updates to the various pieces of Kuali Rice demo data.  Chances are that
+                            most people performing an upgrade will not have demo data in their local
+                            database and will, therefore, not need to execute the scripts located
+                            within this directory.</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">support</emphasis> - this directory contains a
+                            groovy script which helps deal with the fact that unique constraints
+                            were added to the database for the combination of namespace code and
+                            name in both the KIM permission and responsibility tables</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">xml-ingest-updates</emphasis> - contains XML
+                            that needs to be ingested after the database upgrade is completed</para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+    </sect1>
+        <sect1 xml:id="changelog" xreflabel="Changelog">
+            <title>Changelog</title>
+        <sect2>
+            <title>Beta 1 - November 7, 2011</title>
+            <para>There were nearly 800 Jira issues addressed in Rice 2.0. Below are links to Jira
+                filters for the items addressed.</para>
+            <itemizedlist>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+order+by+priority"
+                            >All Rice 2.0 Jiras</link></para>
+                </listitem>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Bug+Fix%22+order+by+priority"
+                            >Bug Fixes</link></para>
+                </listitem>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+%222.0%22+AND+status+IN+%28%27Resolved%27%2C%27Closed%27%29+AND+type%3D%22Improvement%22+order+by+priority"
+                            >Improvements</link></para>
+                </listitem>
+                <listitem>
+                    <para><link
+                            xlink:href="https://jira.kuali.org/secure/IssueNavigator.jspa?reset=true&amp;jqlQuery=project+%3D+KULRICE+AND+fixVersion+%3D+&quot;2.0&quot;+AND+status+IN+('Resolved'%2C'Closed')+AND+type+IN+(&quot;Task&quot;%2C&quot;Sub+Task&quot;)+order+by+priority"
+                            >Tasks &amp; SubTasks</link></para>
+                </listitem>
+            </itemizedlist>
+        </sect2>
+            <sect2>
+                <title>Beta 2 - November 21, 2011</title>
+                <para>Highlights of the Beta 2 release include:<itemizedlist>
+                    <listitem>
+                        <para>KEN and KCB services converted to standard SOAP services.</para>
+                    </listitem>
+                    <listitem>
+                        <para><code>WorkflowAttributeValidationError</code> replaced by new
+                                <code>AttributeError</code> implementation.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Type IDs made optional on various pieces of the KRMS data model</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD sample application views moved to their own tab in the
+                            portal.</para>
+                    </listitem>
+                    <listitem>
+                        <para>New DocumentType policy for ENROUTE error suppression</para>
+                    </listitem>
+                    <listitem>
+                        <para>Added missing qualifiers to service model of delegate members in
+                            KIM</para>
+                    </listitem>
+                    <listitem>
+                        <para>Additional documentation of KEW apis in the javadocs</para>
+                    </listitem>
+                    <listitem>
+                        <para>Various improvements to the KRMS user interface functionality</para>
+                    </listitem>
+                    <listitem>
+                        <para>Numerous bug fixes throughout the project</para>
+                    </listitem>
+                </itemizedlist>The full list of JIRA tickets that were resolved for Kuali Rice
+                2.0.0-b2 can be found here: <link
+                    xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b2-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b2-jiras</link></para>
+            <para>Additional details on impacting changes in this release can be found here:
+                <link xlink:href="https://wiki.kuali.org/x/EwO1Eg">https://wiki.kuali.org/x/EwO1Eg</link></para>
+            <para>Database changes for this beta release were minimal, see the mysql-2011-11-14.sql
+                or 2011-11-14.sql scripts in the database updates directory inside the source code
+                in order to perform a database upgrade from b1 to b2.</para>
+            </sect2>
+        <sect2>
+            <title>Beta 3 - December 5, 2011</title>
+            <para>Highlights of the Beta 3 release include:<itemizedlist>
+                    <listitem>
+                        <para>Some configuration work was completed, but full configuration for Rice
+                            standalone server not yet available. See impacting changes below.</para>
+                    </listitem>
+                    <listitem>
+                        <para>RiceConfigurer refactored so that is doesn't depend on all the
+                            modules</para>
+                    </listitem>
+                    <listitem>
+                        <para>KSB modularity improvements, see impacting changes below</para>
+                    </listitem>
+                    <listitem>
+                        <para>CustomActionListAttribute converted to a remotable SOAP service</para>
+                    </listitem>
+                    <listitem>
+                        <para>Bitronix upgraded to version 2.1.2</para>
+                    </listitem>
+                    <listitem>
+                        <para>Application Document Status code for Doc Search re-enabled</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD fixes for iFrames in Internet Explorer, Chrome</para>
+                    </listitem>
+                    <listitem>
+                        <para>Remotable fields can be added to a collection</para>
+                    </listitem>
+                    <listitem>
+                        <para>'Copy rule' functionality implemented</para>
+                    </listitem>
+                    <listitem>
+                        <para>Agenda Permission Authorization enhancements</para>
+                    </listitem>
+                    <listitem>
+                        <para>Numerous bug fixes</para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>The full list of JIRA tickets that were resolved for Kuali Rice 2.0.0-b3 can be
+                found here: <link xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b3-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b3-jiras</link></para>
+            <sect3>
+                <title>Impacting Changes</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>Created a new rice-ksb-server-impl module and moved ksb classes from
+                            rice-impl into there in preparation for remaining configuration
+                            work</para>
+                    </listitem>
+                    <listitem>
+                        <para>Created a new rice-ksb-client-impl module and moved ksb classes from
+                            rice-ksb-server-impl to that module</para>
+                    </listitem>
+                    <listitem>
+                        <para>Created a new rice-ksb-web module and moved web application related
+                            files into there</para>
+                    </listitem>
+                    <listitem>
+                        <para>Moved org.kuali.rice.core.cxf.interceptors package from core-impl
+                            module to package org.kuali.rice.ksb.impl.cxf.interceptors in the
+                            ksb-client-impl module</para>
+                    </listitem>
+                    <listitem>
+                        <para>Database changes in 2011-11-23.sql/mysql-2011-11-23.sql and
+                            2011-11-28.sql/mysql-2011-11-28.sql scripts found in the database
+                            updates directory inside the source code in order to perform a database
+                            upgrade from b2 to b3.</para>
+                    </listitem>
+                </itemizedlist>
+                <para>Additional details on impacting changes in this release can be found here:
+                        <link xlink:href="https://wiki.kuali.org/x/EwO1Eg"
+                        >https://wiki.kuali.org/x/EwO1Eg</link></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Beta 4 - December 21, 2011</title>
+            <para>Highlights of the Beta 4 release include:<itemizedlist>
+                    <listitem>
+                        <para>Configuration changes made to more easily configure client
+                            applications with rice modules in LOCAL, EMBEDDED, or REMOTE modes<itemizedlist>
+                                <listitem>
+                                    <para>Spring Bean modularity improvement</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Removal of many *ConfigSpringBeans.xml files</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Easier configuration setup by simply specifying run mode
+                                        of each module as configuration parameter</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Default to remote run mode for many modules (KEW, KIM,
+                                        KRMS, Core-Service, Location)</para>
+                                </listitem>
+                                <listitem>
+                                    <para>New Core-Service module</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                    <listitem>
+                        <para>Upgrade Spring Framework to 3.1.RELEASE</para>
+                    </listitem>
+                    <listitem>
+                        <para>Apache CXF upgraded to from 2.3.6 to 2.3.7</para>
+                    </listitem>
+                    <listitem>
+                        <para>Numerous bug fixes</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>The full list of JIRA tickets that were resolved for Kuali Rice 2.0.0-b4 can be
+                found here: <link xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b4-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b4-jiras</link></para>
+            <sect3>
+                <title>Impacting Changes</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>Creation of WebModule concept -  Created WebModule class and use that
+                            from ModuleConfigurer to load web modules as part of a special
+                            WebModuleLoaderListener class </para>
+                    </listitem>
+                    <listitem>
+                        <para>StandardGenericXMLSearchableAttribute internal changes -  refactored
+                            internally which resulted in a slight (and temporary) change to the
+                            internal class api. </para>
+                    </listitem>
+                    <listitem>
+                        <para>Removed the use of the rice.ksb.loadModuleConfiguration configuration
+                            variable</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removed datasource.pool.size config variable</para>
+                    </listitem>
+                    <listitem>
+                        <para>Removed Various *ConfigSpringBeans.xml files </para>
+                    </listitem>
+                    <listitem>
+                        <para>Database changes in 2011-11-29.sql/mysql-2011-11-29.sql and
+                            2011-12-07.sql/mysql-2011-12-07.sql scripts found in the database
+                            updates directory inside the source code in order to perform a database
+                            upgrade from b3 to b4.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Xml Ingestion changes
+                            12-06-2011-ComponentMaintenanceDocument-doctype.xml found in the xml
+                            ingestion directory inside the source code provides a document type that
+                            previous database updates may have removed.</para>
+                    </listitem>
+                </itemizedlist>
+                <para>Additional details on impacting changes in this release can be found here:
+                        <link xlink:href="https://wiki.kuali.org/x/EwO1Eg"
+                        >https://wiki.kuali.org/x/EwO1Eg</link></para>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>Beta 5 - January 9, 2012</title>
+            <para>Highlights of the Beta 5 release:<itemizedlist>
+                    <listitem>
+                        <para>Logout button issues have been fixed</para>
+                    </listitem>
+                    <listitem>
+                        <para>Document search works with document types with searchable
+                            attribute</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ability to customize help link on document search</para>
+                    </listitem>
+                    <listitem>
+                        <para>Application document status search support</para>
+                    </listitem>
+                    <listitem>
+                        <para>Route Node Name and Route Node Logic search support</para>
+                    </listitem>
+                    <listitem>
+                        <para>Customized Post Data-load Encryption</para>
+                    </listitem>
+                    <listitem>
+                        <para>KRAD DocType updated to HTML 5</para>
+                    </listitem>
+                    <listitem>
+                        <para>Many bug fixes</para>
+                    </listitem>
+            </itemizedlist></para>
+            <para>The full list of JIRA tickets that were resolved for Kuali Rice 2.0.0-b4 can be
+                found here: <link xlink:href="http://links.kuali.org/kuali-rice-2.0.0-b5-jiras"
+                    >http://links.kuali.org/kuali-rice-2.0.0-b5-jiras</link></para>
+            <sect3>
+                <title>Impacting Changes</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>KRAD bean and css refactor. In addition to the bean rename, there are
+                            significant changes to bean hierarchy, css names for ALL beans, and
+                            changes to how style sheets are being pulled into a view (we are now
+                            using a theme object). additionalCssFiles still is fine for adding
+                            additional css files (you no longer have to merge anything) and if you
+                            want to override or extend the theme in some way you can now do that
+                            easily as well.</para>
+                        <para>You <emphasis role="bold">must</emphasis> use the new names for all
+                            KRAD work going forward as the old beans do not exist. Every file that
+                            contained old bean names has been updated if they were committed before
+                            today. A groovy script is included to rename any files using the old
+                            bean names in scripts/bean-rename-b4tob5. If you need to, easiest way to
+                            use this script is to place it in the directory containing your xml
+                            files along with it's beanReplacements.txt and run it.</para>
+                    </listitem>
+                    <listitem>
+                        <para>LDAP module moved under KIM - What was the <emphasis role="bold"
+                                >rice-ldap</emphasis> module is now under the <emphasis role="bold"
+                                >rice-kim</emphasis> module. Its new artifact ID is <emphasis
+                                role="bold">rice-kim-ldap</emphasis>.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Final update of library dependencies, see <link
+                                xlink:href="https://jira.kuali.org/browse/KULRICE-4931"
+                                >KULRICE-4931</link> for details</para>
+                    </listitem>
+                    <listitem>
+                        <para>Database changes to refactor KRMS context join table names - As part
+                            of this work, <itemizedlist>
+                                <listitem>
+                                    <para>three KRMS tables and the related indexes, constraints and
+                                        sequences were renamed</para>
+                                </listitem>
+                                <listitem>
+                                    <para>a column name was changed</para>
+                                </listitem>
+                                <listitem>
+                                    <para>some data was updated</para>
+                                </listitem>
+                            </itemizedlist></para>
+                        <para>To apply this change, run the SQL DDL in
+                            scripts/upgrades/1.0.3 to 2.0.0/db-updates/2012-01-05.sql
+                            (for Oracle) or scripts/upgrades/1.0.3 to
+                            2.0.0/db-updates/mysql-2012-01-05.sql (for MySQL).</para>
+                    </listitem>
+                    <listitem>
+                        <para>Database change to add new DB index for improving action list
+                            performance. To apply this change, run the SQL in scripts/upgrades/1.0.3
+                            to 2.0.0/db-updates/2012-01-06.sql (for Oracle) or
+                            scripts/upgrades/1.0.3 to 2.0.0/db-updates/mysql-2012-01-06.sql (for
+                            MySQL).</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+        </sect2>
+         </sect1>
+</article>

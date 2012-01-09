@@ -2057,30 +2057,28 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </sect3>
         </sect2>
         <sect2>
-            <title>Route Queue Administration</title>
-            <para>The Route Queue is the main scheduling mechanism in KEW. You use it to schedule
-                documents for asynchronous routing and to queue arbitrary units of work. The
-                database polls for new entries depending on the value set for the <emphasis
-                    role="italic">RouteQueue.waitTime</emphasis> constant. When KEW places a
-                document into exception routing, it may become stuck after a series of failed
-                attempts. You can use the Route Queue UI to resolve this issue, as well as to fix
-                new entries, if needed.</para>
+            <title>Message Queue Administration</title>
+            <para>The Message Queue is the main scheduling mechanism in KEW. You use it to schedule
+                documents for asynchronous routing and to queue arbitrary units of work. When KEW
+                places a document into exception routing, it may become stuck after a series of
+                failed attempts. You can use the Route Queue UI to resolve this issue, as well as to
+                fix new entries, if needed.</para>
             <sect3>
-                <title>Examining the Route Queue</title>
-                <para>The main Route Queue screen:</para>
+                <title>Examining the Message Queue</title>
+                <para>The main Message Queue screen:</para>
                 <figure>
-                    <title>Route Queue Screen</title>
+                    <title>Message Queue Screen</title>
                     <mediaobject>
                         <imageobject>
-                            <imagedata fileref="../images/route_queue_screen.png"/>
+                            <imagedata fileref="../images/route_queue_screen2.png"/>
                         </imageobject>
                     </mediaobject>
                     </figure>
                 <para>Examining this sample screen, we see there are five entries in the route
                     queue, one on each row. The columns display information about each entry:<itemizedlist>
                         <listitem>
-                            <para><emphasis role="bold">Route Queue Id</emphasis> - The primary key
-                                of this route queue entry in the data store </para>
+                            <para><emphasis role="bold">Message Queue Id</emphasis> - The primary
+                                key of this route queue entry in the data store </para>
                         </listitem>
                         <listitem>
                             <para><emphasis role="bold">Route Header Id</emphasis> - The identifier

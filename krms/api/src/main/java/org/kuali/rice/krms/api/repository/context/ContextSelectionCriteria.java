@@ -70,8 +70,11 @@ public final class ContextSelectionCriteria extends AbstractDataTransferObject {
 		this.name = null;
 		this.contextQualifiers = null;
 	}
-	
-	private ContextSelectionCriteria(String namespaceCode, String name, Map<String, String> contextQualifiers) {
+
+    /**
+     * Private constructor used by factory methods
+     */
+    private ContextSelectionCriteria(String namespaceCode, String name, Map<String, String> contextQualifiers) {
 		this.namespaceCode = namespaceCode;
 		this.name = name;
 		this.contextQualifiers = new HashMap<String, String>();
@@ -80,26 +83,59 @@ public final class ContextSelectionCriteria extends AbstractDataTransferObject {
 		}
 	}
 	
+    /**
+     * Factory method returns a new context selection criteria object with the fields set to
+     * the parameters provided.
+     * @param namespaceCode the namespace of the context
+     * @param name the name of the context
+     * @param contextQualifiers a Map of name value pair strings representing the list of qualifiers
+     * to use as selection criteria.
+     */
 	public static ContextSelectionCriteria newCriteria(String namespaceCode, String name, Map<String, String> contextQualifiers) {
 		return new ContextSelectionCriteria(namespaceCode, name, contextQualifiers);
 	}
 	
+    /**
+     * Factory method returns a new context selection criteria object with the namespace and contextQualifiers fields
+     * set to the parameters provided. The name field is set to null.
+     * @param namespaceCode the namespace of the context
+     * @param contextQualifiers a Map of name value pair strings representing the list of qualifiers
+     * to use as selection criteria.
+     */
 	public static ContextSelectionCriteria newCriteria(String namespaceCode, Map<String, String> contextQualifiers) {
 		return newCriteria(namespaceCode, null, contextQualifiers);
 	}
 	
+    /**
+    * Factory method returns a new context selection criteria object with the contextQualifiers property
+    * set to the parameter provided. The name and namespace properties are set to null.
+    * @param contextQualifiers a Map of name value pair strings representing the list of qualifiers
+    * to use as selection criteria.
+    */
 	public static ContextSelectionCriteria newCriteria(Map<String, String> contextQualifiers) {
 		return newCriteria(null, contextQualifiers);
 	}
-	
+
+    /**
+     * Returns the namespace of the context.
+     * @return the namespace code of the context
+     */
 	public String getNamespaceCode() {
 		return this.namespaceCode;
 	}
 
+    /**
+     * Returns the name of the context
+     * @return the name of the context
+     */
 	public String getName() {
 		return this.name;
 	}
 
+    /**
+     * Returns the list of qualifiers as a map to name, value pair strings.
+     * @return a map containing the qualifier name, value pairs.
+     */
 	public Map<String, String> getContextQualifiers() {
 		return this.contextQualifiers;
 	}

@@ -854,12 +854,6 @@
                         <para>Support for range-based searches on search attribute values</para>
                     </listitem>
                     <listitem>
-                        <para>Application document status search support</para>
-                    </listitem>
-                    <listitem>
-                        <para>Route Node Name and Route Node Logic search support</para>
-                    </listitem>
-                    <listitem>
                         <para>Proper data formatting in result set</para>
                     </listitem>
                     <listitem>
@@ -1170,6 +1164,12 @@
                     </listitem>
                     <listitem>
                         <para>Ability to customize help link on document search</para>
+                    </listitem>
+                    <listitem>
+                        <para>Application document status search support</para>
+                    </listitem>
+                    <listitem>
+                        <para>Route Node Name and Route Node Logic search support</para>
                     </listitem>
                     <listitem>
                         <para>Customized Post Data-load Encryption</para>

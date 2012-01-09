@@ -18,8 +18,6 @@ package org.kuali.rice.coreservice.web.parameter;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.coreservice.api.parameter.Parameter;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -71,7 +69,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getName());
 	        allowsEdit = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
-	        				KRADConstants.KRAD_NAMESPACE,
+	        				KRADConstants.KNS_NAMESPACE,
 	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
 	        				permissionDetails, Collections.<String, String>emptyMap());
 	        if(!allowsEdit){

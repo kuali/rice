@@ -264,10 +264,8 @@ public class CollectionGroupBuilder implements Serializable {
             }
         } else {
             // for existing lines, check view line auth
-            boolean canViewLine = true;
-            // TODO: in progress-put back in
-//            boolean canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model,
-//                    collectionGroup, currentLine);
+            boolean canViewLine = checkViewLineAuthorizationAndPresentationLogic(view, (ViewModel) model,
+                    collectionGroup, currentLine);
 
             // if line is not viewable, just return without calling the layout manager to add the line
             if (!canViewLine) {
@@ -275,11 +273,10 @@ public class CollectionGroupBuilder implements Serializable {
             }
 
             // check edit line authorization if collection is not read only
-            // TODO: in progress-put back in
-//            if (!collectionGroup.isReadOnly()) {
-//                readOnlyLine = !checkEditLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
-//                        currentLine);
-//            }
+            if (!collectionGroup.isReadOnly()) {
+                readOnlyLine = !checkEditLineAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup,
+                        currentLine);
+            }
 
             ComponentUtils.pushObjectToContext(lineFields, UifConstants.ContextVariableNames.READONLY_LINE,
                     readOnlyLine);
@@ -289,9 +286,8 @@ public class CollectionGroupBuilder implements Serializable {
         ComponentUtils.updateContextsForLine(lineFields, currentLine, lineIndex);
 
         // check authorization for line fields
-        // TODO: in progress-put back in
-//        applyLineFieldAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup, currentLine,
-//                readOnlyLine, lineFields, actions);
+        applyLineFieldAuthorizationAndPresentationLogic(view, (ViewModel) model, collectionGroup, currentLine,
+                readOnlyLine, lineFields, actions);
 
 		if (bindToForm) {
 			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
@@ -522,9 +518,11 @@ public class CollectionGroupBuilder implements Serializable {
 
             // check view field auth
             if (lineField.isRender() && !lineField.isHidden()) {
-                boolean canViewField = authorizer.canViewField(view, model, lineField, propertyName, user);
+                boolean canViewField = authorizer.canViewLineField(view, model, collectionGroup,
+                        collectionGroup.getPropertyName(), line, lineField, propertyName, user);
                 if (canViewField) {
-                    canViewField = presentationController.canViewField(view, model, lineField, propertyName);
+                    canViewField = presentationController.canViewLineField(view, model, collectionGroup,
+                            collectionGroup.getPropertyName(), line, lineField, propertyName);
                 }
 
                 if (!canViewField) {
@@ -542,9 +540,11 @@ public class CollectionGroupBuilder implements Serializable {
                 // check edit field auth
                 boolean canEditField = !readOnlyLine;
                 if (!readOnlyLine) {
-                    canEditField = authorizer.canEditField(view, model, lineField, propertyName, user);
+                    canEditField = authorizer.canEditLineField(view, model, collectionGroup,
+                            collectionGroup.getPropertyName(), line, lineField, propertyName, user);
                     if (canEditField) {
-                        canEditField = presentationController.canEditField(view, model, lineField, propertyName);
+                        canEditField = presentationController.canEditLineField(view, model, collectionGroup,
+                                collectionGroup.getPropertyName(), line, lineField, propertyName);
                     }
                 }
 

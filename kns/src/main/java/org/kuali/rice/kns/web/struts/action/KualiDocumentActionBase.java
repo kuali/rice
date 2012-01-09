@@ -251,7 +251,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
                 setupPessimisticLockMessages(document, request);
                 if (!document.getPessimisticLocks().isEmpty()) {
-                    String warningMinutes = getParameterService().getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KRADConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
+                    String warningMinutes = getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KRADConstants.SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM);
                     request.setAttribute(KRADConstants.SESSION_TIMEOUT_WARNING_MINUTES, warningMinutes);
                     request.setAttribute(KRADConstants.SESSION_TIMEOUT_WARNING_MILLISECONDS, (request.getSession().getMaxInactiveInterval() - (Integer.valueOf(warningMinutes) * 60)) * 1000);
                 }
@@ -625,7 +625,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // check if warning is configured in which case we will prompt, or if not business rules will thrown an error
         boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
 
         // determine if the question has been asked yet
@@ -906,7 +906,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // check for sensitive data in note
         boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
         if (warnForSensitiveData) {
             String context = KRADConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=" + reason;
@@ -1510,7 +1510,7 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return a value from {@link KewApiConstants}
      */
     protected String determineNoteWorkflowNotificationAction(HttpServletRequest request, KualiDocumentFormBase kualiDocumentFormBase, Note note) {
-        return getParameterService().getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KRADConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
+        return getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KRADConstants.SEND_NOTE_WORKFLOW_NOTIFICATION_ACTIONS_PARM_NM);
     }
 
     public ActionForward sendNoteWorkflowNotification(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

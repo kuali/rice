@@ -89,7 +89,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canPerformRouteReport(Document document) {
-        return getParameterService().getParameterValueAsBoolean(KRADConstants.KRAD_NAMESPACE,
+        return getParameterService().getParameterValueAsBoolean(KRADConstants.KNS_NAMESPACE,
                 KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE,
                 KRADConstants.SystemGroupParameterNames.DEFAULT_CAN_PERFORM_ROUTE_REPORT_IND);
     }
@@ -102,7 +102,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
         // check system parameter - if Y, use default workflow behavior: allow a user with the permission
         // to perform the blanket approve action at any time
         Boolean allowBlanketApproveNoRequest = getParameterService().getParameterValueAsBoolean(
-                KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE,
+                KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.DOCUMENT_DETAIL_TYPE,
                 KRADConstants.SystemGroupParameterNames.ALLOW_ENROUTE_BLANKET_APPROVE_WITHOUT_APPROVAL_REQUEST_IND);
         if (allowBlanketApproveNoRequest != null && allowBlanketApproveNoRequest.booleanValue()) {
             return canEdit(document);

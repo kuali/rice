@@ -56,9 +56,9 @@ public class LookupViewAuthorizerBase extends ViewAuthorizerBase {
                         "Unable to create class for lookup class name: " + lookupForm.getDataObjectClassName());
             }
 
-            if (permissionExistsByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+            if (permissionExistsByTemplate(model, KRADConstants.KNS_NAMESPACE,
                     KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, additionalPermissionDetails)) {
-                canOpen = isAuthorizedByTemplate(model, KRADConstants.KRAD_NAMESPACE,
+                canOpen = isAuthorizedByTemplate(model, KRADConstants.KNS_NAMESPACE,
                         KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, user.getPrincipalId(),
                         additionalPermissionDetails, null);
             }

@@ -42,7 +42,7 @@ public class KualiLogoutAction extends Action {
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String redirectString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.LOGOFF_REDIRECT_URL_PARAMETER);
+        String redirectString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.LOGOFF_REDIRECT_URL_PARAMETER);
 
         if(redirectString == null) {
             redirectString = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.LOGOFF_REDIRECT_URL_PROPERTY);

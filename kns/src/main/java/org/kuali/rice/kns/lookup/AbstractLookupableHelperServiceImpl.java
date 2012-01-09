@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.lookup;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.search.Range;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -712,7 +711,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
             if (RESULTS_DEFAULT_MAX_COLUMN_LENGTH == null) {
                 try {
                     RESULTS_DEFAULT_MAX_COLUMN_LENGTH = Integer.valueOf(getParameterService().getParameterValueAsString(
-                            KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KRADConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH));
+                            KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KRADConstants.RESULTS_DEFAULT_MAX_COLUMN_LENGTH));
                 } catch (NumberFormatException ex) {
                     LOG.error("Lookup field max length parameter not found and unable to parse default set in system parameters (RESULTS_DEFAULT_MAX_COLUMN_LENGTH).");
                 }

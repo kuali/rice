@@ -38,12 +38,12 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase
 			additionalPermissionDetails.put(KimConstants.AttributeConstants.EDIT_MODE, editMode);
 			if (permissionExistsByTemplate(
 					document,
-					KRADConstants.KRAD_NAMESPACE,
+					KRADConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT,
 					additionalPermissionDetails)
 					&& !isAuthorizedByTemplate(
 							document,
-							KRADConstants.KRAD_NAMESPACE,
+							KRADConstants.KNS_NAMESPACE,
 							KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT,
 							user.getPrincipalId(), additionalPermissionDetails,
 							null)) {

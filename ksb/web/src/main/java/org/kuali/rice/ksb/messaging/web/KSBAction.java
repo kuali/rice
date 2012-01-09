@@ -127,7 +127,7 @@ public abstract class KSBAction extends DispatchAction {
     	Map<String, String> roleQualifier = new HashMap<String, String>(getRoleQualification(form, methodToCall));
     	Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
+        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
         {
         	throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(), 
@@ -202,7 +202,7 @@ public abstract class KSBAction extends DispatchAction {
                 
                 if(StringUtils.isBlank(lockoutMessage)) {
                     String defaultMessageParamName = KRADConstants.SystemGroupParameterNames.OLTP_LOCKOUT_DEFAULT_MESSAGE;
-                    lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KRAD_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
+                    lockoutMessage = parameterSerivce.getParameterValueAsString(KRADConstants.KNS_NAMESPACE, messageParamComponentCode, defaultMessageParamName);
                 }
                 request.setAttribute(KualiAction.MODULE_LOCKED_MESSAGE, lockoutMessage);
                 return true;

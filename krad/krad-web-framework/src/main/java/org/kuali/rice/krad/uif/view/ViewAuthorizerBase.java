@@ -83,9 +83,9 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         for (String editMode : editModes) {
             Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
             additionalPermissionDetails.put(KimConstants.AttributeConstants.EDIT_MODE, editMode);
-            if (permissionExistsByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+            if (permissionExistsByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                     KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, additionalPermissionDetails)
-                    && !isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+                    && !isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                     KimConstants.PermissionTemplateNames.USE_TRANSACTIONAL_DOCUMENT, user.getPrincipalId(),
                     additionalPermissionDetails, null)) {
                 unauthorizedEditModes.add(editMode);
@@ -169,7 +169,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             roleQualifications.putAll(field.getComponentSecurity().getAdditionalRoleQualifiers());
         }
 
-        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.FULL_UNMASK_FIELD, user.getPrincipalId(), permissionDetails,
                 roleQualifications);
     }
@@ -207,7 +207,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
             roleQualifications.putAll(field.getComponentSecurity().getAdditionalRoleQualifiers());
         }
 
-        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(dataObjectForContext, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.PARTIAL_UNMASK_FIELD, user.getPrincipalId(), permissionDetails,
                 roleQualifications);
     }
@@ -382,6 +382,9 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
         additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, collectionGroup.getId());
         additionalPermissionDetails.put(KimConstants.AttributeConstants.COLLECTION_PROPERTY_NAME,
                 collectionGroup.getPropertyName());
+        if (StringUtils.isNotBlank(actionEvent)) {
+            additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_EVENT, actionEvent);
+        }
 
         return isAuthorizedByTemplate(view, actionField, model,
                 KimConstants.PermissionTemplateNames.PERFORM_LINE_ACTION, user, additionalPermissionDetails, null,
@@ -450,7 +453,7 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
         permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, view.getViewNamespaceCode());
         permissionDetails.put(KimConstants.AttributeConstants.VIEW_ID, view.getId());
-        permissionDetails.put(KimConstants.AttributeConstants.FIELD_ID, group.getId());
+        permissionDetails.put(KimConstants.AttributeConstants.GROUP_ID, group.getId());
 
         if (group instanceof CollectionGroup) {
             permissionDetails.put(KimConstants.AttributeConstants.COLLECTION_PROPERTY_NAME,

@@ -442,7 +442,7 @@ public final class KRADUtils {
         }
         ParameterService parameterService = CoreFrameworkServiceLocator.getParameterService();
         Collection<String> sensitiveDataPatterns = parameterService
-                .getParameterValuesAsString(KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                .getParameterValuesAsString(KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                         KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
         for (String pattern : sensitiveDataPatterns) {
             if (Pattern.compile(pattern).matcher(fieldValue).find()) {

@@ -146,7 +146,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
     }
 
     public boolean canEdit(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.EDIT_DOCUMENT, user.getPrincipalId());
     }
 
@@ -178,7 +178,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
     }
 
     public boolean canCopy(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.COPY_DOCUMENT, user.getPrincipalId());
     }
 
@@ -220,7 +220,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
     }
 
     public final boolean canOpen(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.OPEN_DOCUMENT, user.getPrincipalId());
     }
 
@@ -229,7 +229,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         if (attachmentTypeCode != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
         }
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.ADD_NOTE_ATTACHMENT, user.getPrincipalId(),
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }
@@ -241,7 +241,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
         }
         additionalPermissionDetails.put(KimConstants.AttributeConstants.CREATED_BY_SELF, createdBySelfOnly);
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.DELETE_NOTE_ATTACHMENT, user.getPrincipalId(),
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }
@@ -251,7 +251,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         if (attachmentTypeCode != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
         }
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.VIEW_NOTE_ATTACHMENT, user.getPrincipalId(),
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }
@@ -266,13 +266,13 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         if (actionRequestCd != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_REQUEST_CD, actionRequestCd);
         }
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.SEND_AD_HOC_REQUEST, user.getPrincipalId(),
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }
 
     public boolean canEditDocumentOverview(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.EDIT_DOCUMENT, user.getPrincipalId()) && this.isDocumentInitiator(
                 document, user);
     }
@@ -299,7 +299,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
     public boolean canTakeRequestedAction(Document document, String actionRequestCode, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         additionalPermissionDetails.put(KimConstants.AttributeConstants.ACTION_REQUEST_CD, actionRequestCode);
-        return isAuthorizedByTemplate(document, KRADConstants.KRAD_NAMESPACE,
+        return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.TAKE_REQUESTED_ACTION, user.getPrincipalId(),
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
     }

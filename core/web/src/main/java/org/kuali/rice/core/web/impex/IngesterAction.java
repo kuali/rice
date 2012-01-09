@@ -216,7 +216,7 @@ public class IngesterAction extends KualiAction {
     	Map<String, String> roleQualifier = new HashMap<String, String>();
     	Map<String, String> permissionDetails = KRADUtils.getNamespaceAndActionClass(this.getClass());
 
-        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KRAD_NAMESPACE,
+        if (!KimApiServiceLocator.getPermissionService().isAuthorizedByTemplateName(principalId, KRADConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier))
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(),

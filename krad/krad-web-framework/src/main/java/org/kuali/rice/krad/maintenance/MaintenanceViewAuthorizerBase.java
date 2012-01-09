@@ -41,10 +41,10 @@ public class MaintenanceViewAuthorizerBase extends DocumentViewAuthorizerBase {
                 KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(boClass));
         permissionDetails.put(KRADConstants.MAINTENANCE_ACTN, KRADConstants.MAINTENANCE_NEW_ACTION);
 
-        return !permissionExistsByTemplate(KRADConstants.KRAD_NAMESPACE,
+        return !permissionExistsByTemplate(KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS, permissionDetails)
                 || getPermissionService().isAuthorizedByTemplateName(user.getPrincipalId(),
-                KRADConstants.KRAD_NAMESPACE, KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
+                KRADConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS,
                 permissionDetails, new HashMap<String, String>());
     }
 
@@ -56,17 +56,17 @@ public class MaintenanceViewAuthorizerBase extends DocumentViewAuthorizerBase {
                         dataObject.getClass()));
         permissionDetails.put(KRADConstants.MAINTENANCE_ACTN, KRADConstants.MAINTENANCE_EDIT_ACTION);
 
-        return !permissionExistsByTemplate(KRADConstants.KRAD_NAMESPACE,
+        return !permissionExistsByTemplate(KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS, permissionDetails)
-                || isAuthorizedByTemplate(dataObject, KRADConstants.KRAD_NAMESPACE,
+                || isAuthorizedByTemplate(dataObject, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS, user.getPrincipalId(), permissionDetails,
                 null);
     }
 
     public final boolean canCreateOrMaintain(MaintenanceDocument maintenanceDocument, Person user) {
-        return !permissionExistsByTemplate(maintenanceDocument, KRADConstants.KRAD_NAMESPACE,
+        return !permissionExistsByTemplate(maintenanceDocument, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS) || isAuthorizedByTemplate(
-                maintenanceDocument, KRADConstants.KRAD_NAMESPACE,
+                maintenanceDocument, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CREATE_MAINTAIN_RECORDS, user.getPrincipalId());
     }
 

@@ -56,7 +56,8 @@ public final class KRADConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
     
-    public static final String KRAD_NAMESPACE = "KR-NS";
+    public static final String KNS_NAMESPACE = "KR-NS";
+    public static final String KRAD_NAMESPACE = "KR-KRAD";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
     public static final String KUALI_RICE_SERVICE_BUS_NAMESPACE = "KR-BUS";

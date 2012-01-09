@@ -115,7 +115,7 @@
           </property>
         </bean>
 
-        <bean parent="Uif-HorizontalFieldGroup">
+        <bean id="UifCompView-SecureFieldGroup1" parent="Uif-HorizontalFieldGroup">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field10" p:label="Field 3">
@@ -134,7 +134,7 @@
           <property name="componentSecurity.viewAuthz" value="true"/>
         </bean>
 
-        <bean parent="Uif-HorizontalFieldGroup">
+        <bean id="UifCompView-SecureFieldGroup2" parent="Uif-HorizontalFieldGroup">
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field12" p:label="Field 5">
@@ -162,7 +162,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="close" p:actionLabel="Close"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save">
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save" p:actionEvent="save">
           <property name="componentSecurity.performActionAuthz" value="true"/>
         </bean>
       </list>
@@ -175,6 +175,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field14">
+          <property name="fieldLookup.id" value="UifCompView-SecureWidget"/>
           <property name="fieldLookup.dataObjectClassName" value="edu.sampleu.travel.bo.TravelAccount"/>
           <property name="fieldLookup.fieldConversions" value="number:field60"/>
           <property name="fieldLookup.componentSecurity.viewAuthz" value="true"/>
@@ -232,9 +233,9 @@
       <list>
         <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2" p:required="true"
-              p:componentSecurity.viewAuthz="true"/>
+              p:componentSecurity.viewInLineAuthz="true"/>
         <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3" p:required="true"
-              p:componentSecurity.editAuthz="true"/>
+              p:componentSecurity.editInLineAuthz="true"/>
         <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4" p:required="true"/>
       </list>
     </property>
@@ -260,7 +261,7 @@
     <property name="actionFields">
       <list>
         <bean parent="Uif-SecondaryActionButton-Small" p:methodToCall="deleteLine" p:actionLabel="delete"
-              p:componentSecurity.performActionAuthz="true"/>
+              p:actionEvent="delete" p:componentSecurity.performLineActionAuthz="true"/>
       </list>
     </property>
   </bean>

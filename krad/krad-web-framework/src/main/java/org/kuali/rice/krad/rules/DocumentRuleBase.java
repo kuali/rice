@@ -485,7 +485,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
         boolean patternFound = KRADUtils.containsSensitiveDataPatternMatch(fieldValue);
         boolean warnForSensitiveData = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KRADConstants.KRAD_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+                KRADConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
                 KRADConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
         if (patternFound && !warnForSensitiveData) {
             dataValid = false;

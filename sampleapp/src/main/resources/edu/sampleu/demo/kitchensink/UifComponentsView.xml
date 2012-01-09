@@ -138,13 +138,12 @@
         </bean>
 
         <bean id="UifCompView-Page9" parent="Uif-Page" p:title="Authorization"
-              p:instructionalText="Examples of view authorization checks">
+              p:instructionalText="Examples of view authorization checks. Login as 'admin' to view this page. Login as 'dev1' for additional permissions.">
           <property name="items">
             <list>
               <ref bean="UifCompView-SecureGroupView"/>
               <ref bean="UifCompView-SecureGroupEdit"/>
               <ref bean="UifCompView-SecureFields"/>
-              <ref bean="UifCompView-SecureGroupView"/>
               <ref bean="UifCompView-SecureFieldGroups"/>
               <ref bean="UifCompView-SecureActions"/>
               <ref bean="UifCompView-SecureWidgets"/>
@@ -154,6 +153,7 @@
               <ref bean="UifCompView-SecureLineActions"/>
             </list>
           </property>
+          <property name="componentSecurity.viewAuthz" value="true"/>
         </bean>
 
         <bean id="UifCompView-Page10" parent="Uif-Page" p:title="Other Examples"

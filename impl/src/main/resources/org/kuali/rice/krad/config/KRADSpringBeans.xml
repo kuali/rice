@@ -864,25 +864,25 @@
 
   <bean id="viewPermissionTypeService" class="org.kuali.rice.krad.kim.ViewPermissionTypeServiceImpl"/>
 
-  <bean id="viewEditModePermissionTypeServiceImpl"
+  <bean id="viewEditModePermissionTypeService"
         class="org.kuali.rice.krad.kim.ViewEditModePermissionTypeServiceImpl"/>
 
-  <bean id="viewFieldPermissionTypeServiceImpl"
+  <bean id="viewFieldPermissionTypeService"
         class="org.kuali.rice.krad.kim.ViewFieldPermissionTypeServiceImpl"/>
 
-  <bean id="viewGroupPermissionTypeServiceImpl"
+  <bean id="viewGroupPermissionTypeService"
         class="org.kuali.rice.krad.kim.ViewGroupPermissionTypeServiceImpl"/>
 
-  <bean id="viewWidgetPermissionTypeServiceImpl"
+  <bean id="viewWidgetPermissionTypeService"
         class="org.kuali.rice.krad.kim.ViewWidgetPermissionTypeServiceImpl"/>
 
-  <bean id="viewActionPermissionTypeServiceImpl"
+  <bean id="viewActionPermissionTypeService"
         class="org.kuali.rice.krad.kim.ViewActionPermissionTypeServiceImpl"/>
 
-  <bean id="viewLineFieldPermissionTypeServiceImpl"
+  <bean id="viewLineFieldPermissionTypeService"
         class="org.kuali.rice.krad.kim.ViewLineFieldPermissionTypeServiceImpl"/>
 
-  <bean id="viewLineActionPermissionTypeServiceImpl"
+  <bean id="viewLineActionPermissionTypeService"
         class="org.kuali.rice.krad.kim.ViewLineActionPermissionTypeServiceImpl"/>
 
   <bean id="dataObjectAuthorizationService"

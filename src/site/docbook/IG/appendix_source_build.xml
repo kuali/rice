@@ -309,7 +309,7 @@ maven.home.directory=/usr/local/maven</programlisting></para>
                                     <para>An Apache Ant script called install-oracle-jar installs
                                         this dependency; however, due to licensing restrictions you
                                         must download the driver from the Oracle website. Please
-                                        refer to the <link linkend="sources_for_required_software">Sources for Required Software</link> section to find
+                                        refer to the Sources for Required Software section to find
                                         the download location for this software. </para>
                                     <para>Once you have downloaded the JDBC driver, copy it to the
                                         /java/drivers directory. The Apache Ant script, located in

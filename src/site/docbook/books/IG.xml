@@ -27,14 +27,14 @@
     </author>
   </info>
 
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/overview.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/developer_setup.xml"/> 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/standalone_server.xml"/>
-
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/installation_steps.xml"/>
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/keystore.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/database_install.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/common_setup.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/build_database.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/tuning_rice.xml"/>
 
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/appendix_dbms.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/appendix_server_configs.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/appendix_source_build.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../IG/appendix_load_balanced.xml"/>

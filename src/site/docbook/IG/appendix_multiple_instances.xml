@@ -273,7 +273,7 @@ Using CATALINA_TMPDIR:	/usr/local/tomcat/temp
 Using JRE_HOME:	 	/usr/java/jdk1.6.0_16</programlisting></para>
                     </listitem>
                     <listitem>
-                        <para><link linkend="set_up_impex_process">Set Up the ImpEx Process to Build
+                        <para><link linkend="build_database">Set Up the ImpEx Process to Build
                                 the Database</link> for the process to create the <emphasis
                                 role="bold">riceprd1</emphasis> and <emphasis role="bold"
                                 >riceprd2</emphasis> databases. </para>

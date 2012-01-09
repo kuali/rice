@@ -16,191 +16,220 @@
     limitations under the License.
 
 -->
-<chapter xml:id="quick_start" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+<chapter xml:id="developer_setup" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Developer Install and Setup</title>
-    <para>This section is designed to provide simple step-by-step instructions on how to set up a
+    <para>This chapter is designed to provide simple step-by-step instructions on how to set up a
         development machine to begin working with Kuali Rice on Mac OS X or Windows platforms with a
         MySQL database.</para>
+    <para>The steps to install and setup a developer machine with Kuali Rice are:<orderedlist>
+            <listitem>
+                <para><emphasis role="bold">Database setup</emphasis> - Please refer to the <link
+                        linkend="database_setup">Installing and Configuring the Database Management
+                        System</link> section of this guide to install and configure your
+                    database.</para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">Install &amp; configure required software</emphasis> -
+                    Please refer to the <link linkend="common_setup">Common Setup</link> section of
+                    this guide to install and configure software required by both development and
+                    standalone server environments.</para>
+            </listitem>
+            <listitem>
+                <para>Set up your Development Environment</para>
+            </listitem>
+            <listitem>
+                <para>Install and Configure Rice</para>
+            </listitem>
+            <listitem>
+                <para>Launch the Sample Application</para>
+            </listitem>
+        </orderedlist></para>
     <section>
-        <title/>
-    </section>
-    <section xml:id="environment_variables">
-        <title>Environment Variables</title>
+        <title>Development Environment</title>
+        <para>Eclipse is the open source Java Integrated Development Environment (IDE) that most
+            Kuali application developers use and setup for Eclipse is outlined here. Another popular
+            IDE used by some Kuali developers is <link
+                xlink:href="http://www.jetbrains.com/idea/download/">IntelliJ IDEA</link>.
+            Instructions here will be for Eclipse.</para>
         <section>
-            <title>Mac OS X</title>
-            <para>Environment variables in Mac OS X can be set in a number of ways, but here we will
-                show how to modify or create the .profile files in your user home directory. On OS X
-                your user home directory is typically located at /Users/&lt;username>,</para>
-            <para>An example .profile can be found below:</para>
-            <programlisting>ANT_HOME=/usr/local/ant
-ANT_OPTS="-Xmx512m -XX:MaxPermSize=192m"
-M2_HOME=/usr/local/maven
-MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"
-GROOVY_HOME=/usr/local/groovy
-JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
-CATALINA_HOME=/usr/local/tomcat
-MYSQL_HOME=/usr/local/mysql
-
-PATH="$ANT_HOME/bin:$M2_HOME/bin:$GROOVY_HOME/bin:$CATALINA_HOME:$MYSQL_HOME/bin:$PATH"
-export PATH ANT_HOME ANT_OPTS M2_HOME MAVEN_OPTS GROOVY_HOME JAVA_HOME CATALINA_HOME MYSQL_HOME</programlisting>
-            <note><para>It is important to export your environment variables once they are defined as the
-                file above does.</para></note>
+            <title>Eclipse installation</title>
+            <para>Download the latest version of Eclipse from the eclipse.org download page:</para>
+            <para><link xlink:href="http://www.eclipse.org/downloads"
+                    >http://www.eclipse.org/downloads</link></para>
+            <para>Once you have downloaded the zip file, unzip it to a location of your choosing.
+                Inside of that directory will be an executable named "eclipse" that you can use to
+                start Eclipse.</para>
         </section>
         <section>
-            <title>Windows XP</title>
-            <para>To get to the screen where you can define environment variables on Windows XP
-                follow these steps:<orderedlist>
+            <title>Defining a Workspace</title>
+            <para>When Eclipse starts up for the first time it will ask you to identify a workspace
+                to use. Enter a location of your choosing for your workspace. All of the projects
+                that you check out from source control will be imported into that workspace.</para>
+        </section>
+        <section>
+            <title>Verify that Eclipse is Using Java 6</title>
+            <para>To verify that Eclipse is using Java 6, you will need to open the Eclipse
+                "Preferences" pane. You do this on Windows by going to "Edit -> Preferences". On Mac
+                OS X you nativate to "Eclipse -> Preferences".</para>
+            <para>Once on the Preferences pane, navigate to "Java -> Installed JREs". Ensure that
+                Java 6 (or 1.6) is selected. See screenshot below:</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/eclipse_installed_jres.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+        </section>
+        <section>
+            <title>Disable DTD, JSP, TagLib, and XML Validators</title>
+            <para>The Kuali Rice code has some XML and Tag libraries with schemas and DTDs that do
+                not validate well when being built inside of Eclipse. To eliminate Eclipse build
+                errors, please disable these.<orderedlist>
                     <listitem>
-                        <para>Click on the "Start" button in the bottom left-hand corner.</para>
+                        <para>Open the Eclipse "Preferences" window.</para>
                     </listitem>
                     <listitem>
-                        <para>On the resulting screen, right click on "My Computer".</para>
+                        <para>Navigate to "Validation".</para>
                     </listitem>
                     <listitem>
-                        <para>In the context menu, click on "Properties".</para>
+                        <para>Deselect the following checkboxes under "Build".
+                            <itemizedlist>
+                                <listitem>
+                                    <para>DTD Validator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>JSP Content Validator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>JSP Syntax Validator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Tag Library Descriptor Validator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>XML Schema Validator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>XML Validator</para>
+                                </listitem>
+                                <listitem>
+                                    <para>XSL Validator</para>
+                                </listitem>
+                            </itemizedlist>
+                        </para>
                     </listitem>
                     <listitem>
-                        <para>This will open up the "System Properties" dialog window.</para>
+                        <para>Click "OK. </para>
                     </listitem>
                     <listitem>
-                        <para>Click on the "Advanced" tab.</para>
-                    </listitem>
-                    <listitem>
-                        <para>Click on the "Environment Variables" button.</para>
-                    </listitem>
-                    <listitem>
-                        <para>You will see the screen below where you can edit existing environment
-                            variables or define new ones:</para>
-                        <para>&lt;TODO: Insert screen shot here></para>
+                        <para>When prompted to do a full rebuild, click "Yes".</para>
                     </listitem>
                 </orderedlist></para>
         </section>
         <section>
-            <title>Windows Vista and Windows 7</title>
-            <para>To get to the screen where you can define environment variables on Windows Vista
-                or Windows 7 follow these steps:<orderedlist>
+            <title>Install Subclipse</title>
+            <para>Subclipse is a Subversion plugin for Eclipse. If you plan on checking out the
+                Kuali Rice source code or any example code from the Kuali subversion repository,
+                then it would be useful to install subclipse to manage this within Eclipse.</para>
+            <para>Subclipse is installed within Eclipse using Eclipse's update site feature with the
+                following steps:<orderedlist>
                     <listitem>
-                        <para>Click on the "Start" button in the bottom left-hand corner.</para>
+                        <para>Click on the "Help" menu and select "Install New Software...".</para>
+                        <para><inlinemediaobject>
+                                <imageobject>
+                                    <imagedata fileref="../images/eclipse_install_new_software.png"
+                                    />
+                                </imageobject>
+                            </inlinemediaobject></para>
                     </listitem>
                     <listitem>
-                        <para>On the resulting screen, right click on "Computer".</para>
-                    </listitem>
-                    <listitem>
-                        <para>This will open up the Control Panel "System" dialog.</para>
-                    </listitem>
-                    <listitem>
-                        <para>Click on the "Advanced system settings".</para>
-                    </listitem>
-                    <listitem>
-                        <para>In the resulting window, click on the "Environment Variables..."
+                        <para>This will open up the "Install" screen. Click on the "Add..."
                             button.</para>
                     </listitem>
                     <listitem>
-                        <para>You will see the screen below where you can edit existing environment
-                            variables or define new ones:</para>
-                        <para>&lt;TODO: Insert screen shot here></para>
+                        <para>This should bring up a dialog that allows you to add the Subclipse
+                            update site.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Type a name of "Subclipse" and a location like
+                            "http://subclipse.tigris.org/update_1.6.x" and click the "OK"
+                            button.</para>
+                    </listitem>
+                    <listitem>
+                        <para>This will populate the Install screen with 3 different components that
+                            can be installed.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Check all three check boxes:</para>
+                        <para><inlinemediaobject>
+                                <imageobject>
+                                    <imagedata fileref="../images/subclipse_components.png"/>
+                                </imageobject>
+                            </inlinemediaobject></para>
+                    </listitem>
+                    <listitem>
+                        <para>Click the "Next" button.</para>
+                    </listitem>
+                    <listitem>
+                        <para>You should see the list of items that will be installed, click "Next"
+                            again.</para>
+                    </listitem>
+                    <listitem>
+                        <para>On the "Review Licenses" screen, select "I accept the terms of the
+                            license agreements" and click the "Finish" button.</para>
+                    </listitem>
+                    <listitem>
+                        <para>At this point Eclipse will begin downloading and installing
+                            Subclipse.</para>
+                    </listitem>
+                    <listitem>
+                        <para>If you see a message that says "Warning: You are installing software
+                            that contains unsigned content", click "OK".</para>
+                    </listitem>
+                    <listitem>
+                        <para>When asked to restart Eclipse, click "Restart Now".</para>
+                    </listitem>
+                </orderedlist></para>
+        </section>
+        <section>
+            <title>Set up Eclipse for Maven</title>
+            <para>In order to ensure that Eclipse can read from the Maven repository, we have to define
+                the <emphasis role="bold">M2_REPO</emphasis> classpath variable:<orderedlist>
+                    <listitem>
+                        <para>Open your Eclipse "Preferences" screen.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Navigate to "Java -> Build Path -> Classpath Variables".</para>
+                    </listitem>
+                    <listitem>
+                        <para>Click the "New..." button.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Create a new Classpath variable with the name of <emphasis role="bold"
+                            >M2_REPO</emphasis> and a value pointing to your Maven repository
+                            directory (&lt;user home/.m2/repository).</para>
+                    </listitem>
+                    <listitem>
+                        <para>Click "Ok".</para>
+                    </listitem>
+                    <listitem>
+                        <para>When prompted about a full rebuild, click "Yes".</para>
                     </listitem>
                 </orderedlist></para>
         </section>
     </section>
     <section>
-        <title>Java SDK</title>
+        <title>Install &amp; Configure Rice</title>
         <section>
-            <title>Installation</title>
-            <para>You should download and install the latest version of JDK 6. If you are on
-                Windows, you can download it from the following URL: <link
-                    xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
-                    >http://www.oracle.com/technetwork/java/javase/downloads/index.html</link>.</para>
-            <para>If you are on a Mac, then Java 6 should alredy be installed if you are up to date
-                with the latest updates from Apple.</para>
-        </section>
-        <section>
-            <title>Configuration</title>
-            <para>You will also want to set up your <emphasis role="bold">JAVA_HOME</emphasis>
-                environment variable to point to the installation directory of your JDK. In both
-                Windows and Mac environments, the <emphasis role="bold">java</emphasis> executable
-                program should already be on your path. But if it is not, you will want to include
-                    <emphasis role="bold">JAVA_HOME/bin</emphasis> in your <emphasis role="bold"
-                    >PATH</emphasis> environment variable.</para>
-            <para>If you do not know how to do this, see the <command
-                    linkend="environment_variables">Environment Variables</command> section above
-                for your platform.</para>
-        </section>
-        <section>
-            <title>Verification</title>
-            <para>In order to verify that your JDK has been installed successfully, open a command
-                prompt and type the following:</para>
-            <programlisting>java -version</programlisting>
-            <para>You should see output similar to the following:</para>
-            <programlisting>java version "1.6.0_26"
-Java(TM) SE Runtime Environment (build 1.6.0_26-b03-383-11A511)
-Java HotSpot(TM) 64-Bit Server VM (build 20.1-b02-383, mixed mode)</programlisting>
-            <para>If you receive an error indicating that the "java" command could not be found,
-                please ensure that the java command is on your machine's <emphasis role="bold"
-                    >PATH</emphasis> environment variable.</para>
-        </section>
-    </section>
-    <!-- TODO: Determine if we need to add a section for ant or if we're done here -->
-    <section>
-        <title>Maven</title>
-        <para>Maven is the primary build tool used by the Kuali Rice project. Maven is based on a
-            project object model (POM) that defines various standards and conventions surrounding
-            the organization of a project. This faciliates a set of standard build goals and
-            lifecycle phases (such as compile, test, package, etc.)</para>
-        <section>
-            <title>Installation</title>
-            <para>To download version 3 of Maven, use the following link: <link
-                    xlink:href="http://maven.apache.org/download.html"
-                    >http://maven.apache.org/download.html</link></para>
-            <para>Once you have downloaded the zip file, unzip it to a location of your
-                choosing.</para>
-        </section>
-        <section>
-            <title>Configuration</title>
-            <para>You will want to set your <emphasis role="bold">M2_HOME</emphasis> environement
-                variable to point to the location where you unzipped Maven. You will additionally
-                want to include <emphasis role="bold">M2_HOME/bin</emphasis> in your <emphasis
-                    role="bold">PATH</emphasis> environment variable so that maven can be executed
-                from the command line without having to specify the full path.</para>
-            <para>Finally, to prevent potential out of memory errors when compiling Rice with Maven,
-                you should set your <emphasis role="bold">MAVEN_OPTS</emphasis> environment to a
-                value like the following:</para>
-            <programlisting>MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=768m"</programlisting>
-            <para>If you do not know how to do this, see the <command
-                    linkend="environment_variables">Environment Variables</command> section above
-                for your platform.</para>
-        </section>
-        <section>
-            <title>Verification</title>
-            <para>In order to verify that Maven has been installed successfully and is available on
-                the path, open a command prompt and type the following:</para>
-            <programlisting>mvn -version</programlisting>
-            <para>You should see output like the following:</para>
-            <programlisting>Apache Maven 3.0.3 (r1075438; 2011-02-28 10:31:09-0700)
-Maven home: /usr/local/maven
-Java version: 1.6.0_26, vendor: Apple Inc.
-Java home: /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
-Default locale: en_US, platform encoding: MacRoman
-OS name: "mac os x", version: "10.7.2", arch: "x86_64", family: "mac"</programlisting>
-            <para>If you receive an error indicating hat the "mvn" command could not be found,
-                please ensure that the directory that includes the mvn executable (<emphasis
-                    role="bold">M2_HOME/bin</emphasis>) is on your machine's <emphasis role="bold"
-                    >PATH</emphasis> environment variable.</para>
+            <title>Validate that the Kuali Rice project is compiling in Eclipse</title>
+            <para></para>
         </section>
     </section>
     <section>
-        <title>MySQL</title>
-        <para>Kuali Rice supports both MySQL and Oracle databases. However, MySQL is easier to
-            install than Oracle and uses less machine resources so many developers prefer to use
-            that when getting started with Rice.</para>
-        <section>
-            <title>Installation</title>
-        </section>
-        <section>
-            <title>Configuration</title>
-        </section>
-        <section>
-            <title>Verification</title>
-        </section>
+        <title>Creating the Database</title>
+        <para></para>
+    </section>
+    <section>
+        <title>Launching the Sample Application</title>
+        <para></para>
     </section>
 </chapter>

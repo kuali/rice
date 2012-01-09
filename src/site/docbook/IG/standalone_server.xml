@@ -18,14 +18,46 @@
 -->
 <chapter xml:id="standalone_server" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
     <title>Standalone Server Setup</title>
+    <para>This chapter is designed to provide simple step-by-step instructions on how to set up a
+        Kuali Rice standalone server intended for enterprise deployment.</para>
+    <para>The steps to install and setup a standalone server with Kuali Rice are:</para>
+    <para>First, <emphasis role="bold">set up the database server</emphasis>. Kuali Rice is
+        typically deployed as a Standalone Server with the database server separate from the
+        application server.Please refer to the <link linkend="database_setup">Installing and
+            Configuring the Database Management System</link> section of this guide to install and
+        configure your database on the database server.</para>
+    <para>Next, set up your standalone Rice server with the following steps:<orderedlist>
+            <listitem>
+                <para>Determine your expected load and storage needs and consult the Suggested
+                    Server Hardware section for guidance. Install OS.</para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">Install &amp; configure required software</emphasis> -
+                    Please refer to the <link linkend="common_setup">Common Setup</link> section of
+                    this guide to install and configure software required by both development and
+                    standalone server environments.</para>
+            </listitem>
+            <listitem>
+                <para>Install and configure Tomcat.</para>
+            </listitem>
+            <listitem>
+                <para>Install and Configure Rice</para>
+            </listitem>
+            <listitem>
+                <para>Launch the Sample Application</para>
+            </listitem>
+        </orderedlist>
+    </para>
+    <note><para>Rather than install and setup as the root user on systems designed for production, you may
+            want to create a non-privilieged user named something like 'rice' to use for this
+            purpose.</para></note>
     <section>
         <title>Suggested Server Hardware</title>
         <para>Note that hardware needs may vary depending on the amount of expected load, the
             operating system being used, and the number of applications that are integrated with
-            Kuali Rice.</para>
-        <para>Kuali Rice is typically deployed with the database server separate from the
-            application server. Requirements below are for the Rice Standalone application
-            server.</para>
+            Kuali Rice. Kuali Rice is typically deployed as a Standalone Server with the database
+            server separate from the application server. Suggested requirements below are for the
+            Rice Standalone application server.</para>
         <para>The recommended minimum requirements are as follows:<itemizedlist>
             <listitem>
                 <para>Processor 1.5 GHz or faster (2 GHz preferred)</para>
@@ -37,161 +69,540 @@
                 <para>100 Mbit/s network card (gigabit preferred)</para>
             </listitem>
             <listitem>
-                <para>200 MB of hard disk space (for Tomcat server and web application)<itemizedlist>
+                <para>200 MB of hard disk space (for Tomcat server and web application)</para>
+                    <note><para>Additional space needed if storing attachments.</para></note>
+            </listitem>
+        </itemizedlist></para>
+    </section>
+    <section>
+        <title>Distribution</title>
+        <para>To begin installation with a Kuali Rice provided distribution, just uncompress the
+            software you retrieved from download location at the Rice web site. For the purposes of
+            this guide, we will be focusing on installation of the server distribution.</para>
+        <!-- Quick Start Best Practice -->
+        <para>Uncompress the server distribution downloaded from the Rice site:<orderedlist>
+                <listitem>
+                    <para>Verify that you are logged in as the <emphasis role="bold">root</emphasis>
+                        user</para>
+                </listitem>
+                <listitem>
+                    <para>Change directory to where the distributions are located</para>
+                    <programlisting># cd /opt/software/distribution</programlisting>
+                </listitem>
+                <listitem>
+                    <para>Uncompress the distribution<orderedlist>
+                            <listitem>
+                                <para>Follow the steps below to uncompress the Binary
+                                    distribution:</para>
+                                <programlisting># mkdir binary
+# unzip rice-1.0.3-bin.zip -d binary
+# chmod -R 777 /opt/software                                                  </programlisting>
+                            </listitem>
+                            <listitem>
+                                <para>Follow the steps below to uncompress the Server
+                                    distribution:</para>
+                                <programlisting># mkdir server
+# unzip rice-1.0.3-server.zip -d server
+# chmod -R 777 /opt/software                                                 </programlisting>
+                            </listitem>
+                        </orderedlist></para>
+                </listitem>
+            </orderedlist></para>
+        <!-- End Quick Start Best Practice -->
+    </section>
+    <section>
+        <title>Setting Up Apache Tomcat</title>
+<!-- Quick Start Best Practice --> 
+        <para>Once you have downloaded Tomcat , please install it using these steps:<itemizedlist>
+                <listitem>
+                    <para>Log in as root</para>
+                </listitem>
+                <listitem>
+                    <para>Copy or download the file <emphasis role="bold"
+                            >apache-tomcat-5.5.27.zip</emphasis> to <emphasis role="bold"
+                            >/opt/software/tomcat</emphasis> using this code:</para>
+                    <para><programlisting>cd /opt/software/Tomcat
+unzip apache-tomcat-5.5.27.zip -d /usr/local
+ln -s /usr/local/apache-tomcat-5.5.27 /usr/local/tomcat
+chown -R rice:rice /usr/local/apache-tomcat-5.5.27
+cd /usr/local/tomcat/bin
+chmod -R 755 *.sh
+su - rice
+cd /usr/local/tomcat/bin
+./startup.sh               </programlisting></para>
+                </listitem>
+                <listitem>
+                    <para>You should see something like this:</para>
+                    <para><programlisting>Using CATALINA_BASE:	/usr/local/tomcat
+Using CATALINA_HOME:	/usr/local/tomcat
+Using CATALINA_TMPDIR:	/usr/local/tomcat/temp
+Using JRE_HOME:		/usr/java/jdk1.6.0_16                            </programlisting></para>
+                </listitem>
+        </itemizedlist></para>
+        <para>Now that Tomcat is running:<orderedlist>
+                <listitem>
+                    <para>To test that Tomcat came up successfully, try to browse
+                            to<emphasis role="bold"> http:// yourlocalip:8080</emphasis>.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>If you successfully browsed to http://yourlocalip:8080, then
+                        execute this command as the rice user:</para>
+                    <para><programlisting>./shutdown.sh
+Using CATALINA_BASE:	/usr/local/tomcat
+Using CATALINA_HOME:   	/usr/local/tomcat
+Using CATALINA_TMPDIR:	/usr/local/tomcat/temp
+Using JRE_HOME:	 	    /usr/java/jdk1.6.0_16</programlisting></para>
+                </listitem>
+        </orderedlist></para>
+        <warning>
+            <para>At times, Tomcat can have a session related problem with OJB where if you stop the server it won’t start again.  This can be fixed by deleting the SESSIONS.ser file in the  %TOMCAT_HOME%/work/Catalina/%host name%/%webapp% directory</para>
+            <para>This can be prevented by setting the saveOnRestart property to be false in
+                the web application’s context.xml file as documented here: <link
+                    xlink:href="http://tomcat.apache.org/tomcat-5.5-doc/config/manager.html"
+                    >http://tomcat.apache.org/tomcat-5.5-doc/config/manager.html</link>.</para>
+        </warning>
+<!-- End Quick Start Best Practice -->
+    </section>
+    <section>
+        <title>Setting Up the Rice Application</title>
+        <section>
+            <title>Deploying the WAR file</title>
+            <para>Copy the kr-dev.war file from the base directory of the server distribution to the
+                directory that contains web applications in your servlet container. For Apache
+                Tomcat 5.5.x, this is <emphasis role="bold"
+                    >[Tomcat-root-directory]/webapps</emphasis>.</para>
+            <section>
+                <title>Setting Up the Database JDBC Drivers for Tomcat</title>
+                <para>Copy the database-specific JDBC driver to the
+                [Tomcat-root-directory]/common/lib.</para>
+<!-- Quick Start Best Practice --> 
+                <itemizedlist>
                     <listitem>
-                        <para>Additional space needed if storing attachments</para>
+                        <para>Login as the root user:</para>
+                        <para><programlisting>su – rice</programlisting></para>
                     </listitem>
-                </itemizedlist></para>
-            </listitem>
-        </itemizedlist></para>
-    </section>
-    <section>
-        <title>Suggested Operating Systems</title>
-        <para>Since Kuali Rice is written in Java, it should in theory be able to run on any
-            operating system that supports the required version of the Java runtime. However, it
-            has been most actively tested on: <itemizedlist>
-                <listitem>
-                    <para>Windows (XP and 7)</para>
-                </listitem>
-                <listitem>
-                    <para>Mac OS X (10.6)</para>
-                </listitem>
-                <listitem>
-                    <para>Linux (Ubuntu)</para>
-                </listitem>
-            </itemizedlist></para>
-        <para>Note that while Ubuntu Linux is the distribution most frequently used for testing,
-            other Linux distributions such as Fedora, Red Hat Enterprise Linux, CentOS, Gentoo,
-            and others should also be able to run Kuali Rice.</para>
-        <para>Additionally, Kuali Rice will likely work on these operating systems, although the
-            software has not been tested here:<itemizedlist>
-                <listitem>
-                    <para>Sun Microsystems Solaris</para>
-                </listitem>
-                <listitem>
-                    <para>IBM AIX</para>
-                </listitem>
-            </itemizedlist></para>
-    </section>
-    <section>
-        <title>Required Software</title>
-        <para>All of these packages are required on the server with Rice:<itemizedlist>
-            <listitem>
-                <para>Sun Microsystems Java Development Kit (JDK 1.6.x)</para>
-                <warning><para>You must use a JDK and not a Java runtime environment (JRE); the JDK
-                    you use must be version 1.6.x. Additionally, Rice has not been tested on
-                    JDKs other than Sun. So alternative implementations like OpenJDK should
-                    be used at your own risk.</para></warning>
-            </listitem>
-            <listitem><para>Servlet container (Apache Tomcat 5.5+, or Jetty 6.1.1)</para></listitem>
-            <listitem>
-                <para>Apache Ant 1.8.1</para>
-            </listitem>
-            <listitem>
-                <para>Maven 3</para>
-            </listitem>
-        </itemizedlist></para>
-    </section>
-    <section>
-        <title>Required Database</title>
-        <para>Ensure that the Oracle database you intend to use encodes character data in a UTF
-            variant by default. For Oracle XE, this entails downloading the "Universal" flavor
-            of the binary, which uses AL32UTF8.</para>
-        <para>Rice runs, and has been tested with the following products:<itemizedlist>
-            <listitem>
-                <para><emphasis role="bold">Oracle 10g</emphasis>
-                    <itemizedlist>
+                    <listitem>
+                        <para>MySQL</para>
+                        <para><programlisting>cp -p /java/drivers/mysql-connector-java-5.1.5-bin.jar /usr/local/tomcat/common/lib</programlisting></para>
+                    </listitem>
+                    <listitem>
+                        <para>Oracle</para>
+                        <para><programlisting>cp -p /java/drivers/ojdbc14.jar /usr/local/tomcat/common/lib</programlisting></para>
+                    </listitem>
+                </itemizedlist>
+<!-- End Quick Start Best Practice -->                
+            </section>
+            <section>
+                <title>Configuring the rice-config.xml File</title>
+                <para>By default when it starts, Rice attempts to read the <emphasis role="bold"
+                        >rice-config.xml</emphasis> configuration file from the paths in this order:<orderedlist>
                         <listitem>
-                            <para>Oracle Database 10g Release 2 (10.2.0.4)</para>
+                            <para>/usr/local/rice/rice-config.xml </para>
                         </listitem>
                         <listitem>
-                            <para>Oracle Database 10g Release 2 (10.2.0.4) JDBC
-                                Driver</para>
+                            <para>${rice.base}../../../conf/rice-config.xml </para>
                         </listitem>
-                    </itemizedlist></para>
-            </listitem>
-            <listitem>
-                <para><emphasis role="bold">MySQL</emphasis><itemizedlist>
-                    <listitem>
-                        <para>MySQL 5.1.+</para>
-                    </listitem>
-                    <listitem>
-                        <para>MySQL Connector/J (5.1.+)</para>
-                    </listitem>
-                </itemizedlist></para>
-            </listitem>
-        </itemizedlist></para>
-        <para>You can adapt Rice to other standard relational databases (e.g., Sybase, Microsoft
-            SQL Server, DB2, etc.). However, this Installation Guide does not provide
-            information for running Rice with these products.</para>
+                        <listitem>
+                            <para>${rice.base}../../conf/rice-config.xml </para>
+                        </listitem>
+                        <listitem>
+                            <para>${additional.config.locations} </para>
+                        </listitem>
+                    </orderedlist></para>
+                <para>The value for <emphasis role="bold">rice.base</emphasis> is calculated using
+                    different locations until a valid location is found. Kuali calculates it using
+                    these locations in this sequence:<orderedlist>
+                        <listitem>
+                            <para>ServletContext.getRealPath("/") </para>
+                        </listitem>
+                        <listitem>
+                            <para><emphasis role="bold">catalina.base</emphasis> system property
+                            </para>
+                        </listitem>
+                        <listitem>
+                            <para>The current working directory</para>
+                        </listitem>
+                    </orderedlist></para>
+                <para>An example <emphasis role="bold">rice-config.xml</emphasis> file is included
+                    in the server distribution under <emphasis role="bold"
+                        >web/src/main/config/example-config</emphasis></para>
+<!-- Quick Start Best Practice -->  
+                <para>To get the <emphasis role="bold">rice-config.xml</emphasis> and other Rice
+                    configuration files into their correct locations, follow these steps:<itemizedlist>
+                        <listitem>
+                            <para>Login as root:</para>
+                            <para><programlisting>mkdir /usr/local/rice
+chown rice:rice /usr/local/rice
+chmod 755 /usr/local/rice
+cd /opt/software/kuali/src/rice-release-1-0-2-br/web/src/main/config/example-config/
+cp -p rice-config.xml /usr/local/rice
+cp -p log4j.properties /usr/local/rice
+cd /usr/local/rice
+chown rice:rice log4j.properties
+chown rice:rice rice-config.xml
+su - rice 
+cd /usr/local/rice</programlisting></para>
+                            <para>Modify the database parameters in the <emphasis role="bold"
+                                    >rice-config.xml</emphasis> file. The values should conform to
+                                the values you used with the ImpEx tool (listed in the <emphasis
+                                    role="bold">impex-build.properties</emphasis> file). </para>
+                            <para><programlisting>datasource.url=jdbc:mysql://localhost:3306/rice
+datasource.username=rice
+datasource.password=kualirice
+datasource.url=jdbc:mysql://remoteMySQLServerComputerName:3306/rice
+datasource.username=rice
+datasource.password=kualirice</programlisting></para>
+                            <para>If you are using Oracle, the JDBC URL will have this general
+                                form:</para>
+                            <para><programlisting>datasource.url=jdbc:oracle:thin:@remoteMySQLServerComputerName:1521:ORACLE_SID</programlisting></para>
+                            <para>At this point, you are ready to try to bring up the Tomcat server
+                                with the Rice web application:</para>
+                            <para><programlisting>cd /usr/local/tomcat/bin
+./startup.sh</programlisting></para>
+                        </listitem>
+                        <listitem>
+                            <para>Check if Tomcat and Rice started successfully:</para>
+                            <para><programlisting>cd /usr/local/tomcat/logs
+tail -n 500 -f catalina.out</programlisting></para>
+                            <para>If your Rice server started up successfully, browse to the site
+                                    <emphasis role="bold">http://yourlocalip:8080/kr-dev</emphasis>.
+                                You should see the Rice portal screen which will look something like this:
+                            </para>
+                            <figure>
+                                <title>Rice Portal Main Menu</title>
+                                <mediaobject>
+                                    <imageobject>
+                                        <imagedata fileref="../images/rice_portal_main_menu.png"/>
+                                    </imageobject>
+                                    </mediaobject>
+                            </figure>    
+                        </listitem>
+                    </itemizedlist></para>    
+<!-- End Quick Start Best Practice -->
+                <section>
+                    <title>Parameters</title>
+                <para>The tables below have the basic set of parameters for rice-config.xml that you
+                    need to get an instance of Rice running. Please use these tables as a beginning
+                    reference to modify your rice-config.xml file. </para>
+                <warning>
+                    <para>Make sure the <emphasis role="bold">application.url</emphasis> and
+                        database user name and password are set correctly.</para>
+                </warning>  
+                <table frame="none">
+                    <title>Core </title>
+                    <tgroup cols="3">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.56*"/>
+                        <colspec colname="c3" colnum="3" colwidth="1.39*"/>
+                        <thead>
+                            <row>
+                                <entry>Parameter</entry>
+                                <entry>Description</entry>
+                                <entry>Examples or Values</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>application.url </entry>
+                                <entry>The external URL used to access the Rice web
+                                    interface; edit only the fully-qualified domain name and
+                                    port of the server </entry>
+                                <entry>http://yourlocalip:8080/kuali-rice-url</entry>
+                            </row>
+                            <row>
+                                <entry>app.context.name</entry>
+                                <entry><para>Context name of the web application</para>
+                                    <itemizedlist>
+                                        <listitem>
+                                          <para>Essentially, the name of the WAR file</para>
+                                        </listitem>
+                                        <listitem>
+                                          <para>Used to build the path for images and help
+                                          URLs</para>
+                                        </listitem>
+                                    </itemizedlist></entry>
+                                <entry>kuali-rice-url
+                                    (This value should not be changed)
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>log4j.settings.path </entry>
+                                <entry>Path to log4j.properties file. If the file does not
+                                    exist, you must create it.</entry>
+                                <entry>/usr/local/rice/log4j.properties</entry>
+                            </row>
+                            <row>
+                                <entry>log4j.settings.reloadInterval</entry>
+                                <entry>interval (in minutes) to check for changes to the
+                                    log4j.properties file</entry>
+                                <entry>5</entry>
+                            </row>
+                            <row>
+                                <entry>mail.smtp.host</entry>
+                                <entry>SMTP host name or IP (This param is not in the
+                                    default config.) </entry>
+                                <entry>localhost</entry>
+                            </row>
+                            <row>
+                                <entry>config.location</entry>
+                                <entry>Location of configuration file to load
+                                    environment-specific configuration parameters (This
+                                    param is not in the default config.) </entry>
+                                <entry>/usr/local/rice/rice-config-${environment}.xml</entry>
+                            </row>
+                            <row>
+                                <entry>sample.enabled</entry>
+                                <entry>Enable the sample application</entry>
+                                <entry>boolean</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+            <table frame="none">
+                <title>Database</title>
+                <tgroup cols="3">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.55*"/>
+                    <colspec colname="c3" colnum="3" colwidth="2.34*"/>
+                    <thead>
+                        <row>
+                            <entry>Parameter</entry>
+                            <entry>Description</entry>
+                            <entry>Examples or Values</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                            <row>
+                                <entry>datasource.ojb.platform </entry>
+                                <entry>Name of OJB platform to use for the database </entry>
+                                <entry>Oracle9i or MySQL</entry>
+                            </row>
+                            <row>
+                                <entry>datasource.platform </entry>
+                                <entry>Rice platform implementation for the database </entry>
+                                <entry>
+                                    <itemizedlist>
+                                        <listitem>
+                                          <para>org.kuali.rice.core.database.platform.DerbyPlatform</para>
+                                        </listitem>
+                                        <listitem>
+                                          <para>org.kuali.rice.core.database.platform.OraclePlatform</para>
+                                        </listitem>
+                                        <listitem>
+                                          <para>org.kuali.rice.core.database.platform.MySQLPlatform
+                                          </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>datasource.driver.name </entry>
+                                <entry>JDBC driver for the database </entry>
+                                <entry>
+                                    <itemizedlist>
+                                        <listitem>
+                                          <para>org.apache.derby.jdbc.EmbeddedDriver,</para>
+                                        </listitem>
+                                        <listitem>
+                                          <para>oracle.jdbc.driver.OracleDriver</para>
+                                        </listitem>
+                                        <listitem>
+                                          <para>com.mysql.jdbc.Driver </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>datasource.username </entry>
+                                <entry>User name for connecting to the server database </entry>
+                                <entry>rice</entry>
+                            </row>
+                            <row>
+                                <entry>datasource.password </entry>
+                                <entry>Password for connecting to the server database </entry>
+                                <entry/>
+                            </row>
+                            <row>
+                                <entry>datasource.url </entry>
+                                <entry>JDBC URL of database to connect to </entry>
+                                <entry>
+                                    <itemizedlist>
+                                        <listitem>
+                                            <para>jdbc:oracle:thin:@localhost:1521:XE</para>
+                                        </listitem>
+                                        <listitem>
+                                            <para>jdbc:mysql://localhost:3306/kuldemo </para>
+                                        </listitem>
+                                    </itemizedlist>
+                                </entry>
+                            </row>
+                            <row>
+                                <entry>datasource.pool.minSize </entry>
+                                <entry>Minimum number of connections to hold in the pool </entry>
+                                <entry>an integer value suitable for your environment</entry>
+                            </row>
+                            <row>
+                                <entry>datasource.pool.maxSize </entry>
+                                <entry>Maximum number of connections to allocate in the pool </entry>
+                                <entry>an integer value suitable for your environment</entry>
+                            </row>
+                            <row>
+                                <entry>datasource.pool.maxWait </entry>
+                                <entry>Maximum amount of time (in ms) to wait for a connection from
+                                    the pool </entry>
+                                <entry>10000</entry>
+                            </row>
+                            <row>
+                                <entry>datasource.pool.validationQuery </entry>
+                                <entry>Query to validate connections from the database </entry>
+                                <entry>select 1 from dual</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>
+                <table frame="none">
+                    <title>KSB</title>
+                    <tgroup cols="3">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.55*"/>
+                        <colspec colname="c3" colnum="3" colwidth="2.34*"/>
+                        <thead>
+                            <row>
+                                <entry>Parameter</entry>
+                                <entry>Description</entry>
+                                <entry>Examples or Values</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>serviceServletUrl </entry>
+                                <entry>URL that maps to the KSBDispatcherServlet (include a trailing
+                                    slash); This param is not in the default config. </entry>
+                                <entry></entry>
+                            </row>
+                            <row>
+                                <entry>keystore.file </entry>
+                                <entry>Path to the keystore file to use for security </entry>
+                                <entry>/usr/local/rice/rice.keystore</entry>
+                            </row>
+                            <row>
+                                <entry>keystore.alias </entry>
+                                <entry>Alias of the standalone server's key </entry>
+                                <entry>see section entitled Generating the Keystore</entry>
+                            </row>
+                            <row>
+                                <entry>keystore.password </entry>
+                                <entry>Password to access the keystore and the server's key </entry>
+                                <entry>see section entitled Generating the Keystore</entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table> 
+                <table frame="none">
+                    <title>KEN</title>
+                    <tgroup cols="3">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.55*"/>
+                        <colspec colname="c3" colnum="3" colwidth="2.34*"/>
+                        <thead>
+                            <row>
+                                <entry>Parameter</entry>
+                                <entry>Description</entry>
+                                <entry>Examples or Values</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>notification.basewebappurl </entry>
+                                <entry>Base URL of the KEN web application (This param is not in the
+                                    default config.) </entry>
+                                <entry></entry>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table> 
+                <table frame="none">
+                    <title>KEW</title>
+                    <tgroup cols="3">
+                        <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                        <colspec colname="c2" colnum="2" colwidth="1.55*"/>
+                        <colspec colname="c3" colnum="3" colwidth="2.34*"/>
+                        <thead>
+                            <row>
+                                <entry>Parameter</entry>
+                                <entry>Description</entry>
+                                <entry>Examples or Values</entry>
+                            </row>
+                        </thead>
+                        <tbody>
+                            <row>
+                                <entry>workflow.url </entry>
+                                <entry>URL to the KEW web module</entry>
+                                <entry>${application.url}/kew</entry>
+                            </row>
+                            <row>
+                                <entry>plugin.dir </entry>
+                                <entry>Directory from which plugins will be loaded </entry>
+                                <entry>/usr/local/rice/plugins</entry>
+                            </row>
+                            <row>
+                                <entry>attachment.dir.location </entry>
+                                <entry>Directory where attachments will be stored (This param is not
+                                    in the default config.) </entry>
+                                <entry/>
+                            </row>
+                        </tbody>
+                    </tgroup>
+                </table>   
+              </section>     
+            </section>
+        </section>
     </section>
-    <section>
-        <title>Other Required Software</title>
-        <para>Subversion 1.5 or greater if checking out projects from Kuali source
-            control</para>
-    </section>
-    <section xml:id="sources_for_required_software">
-        <title>Sources for Required Software</title>
-        <table frame="none">
-            <title/>
-            <tgroup cols="2">
-                <colspec colname="c1" colnum="1" colwidth="1.0*"/>
-                <colspec colname="c2" colnum="2" colwidth="4.11*"/>
-                <thead>
-                    <row>
-                        <entry>Software</entry>
-                        <entry>Download Location</entry>
-                    </row>
-                </thead>
-                <tbody>
-                    <row>
-                        <entry>Sun Java JDK 1.6.x</entry>
-                        <entry><link xlink:href="http://java.sun.com/javase/downloads/index.jsp">http://java.sun.com/javase/downloads/index.jsp</link></entry>
-                    </row>
-                    <row>
-                        <entry>Apache Ant 1.7.1</entry>
-                        <entry>
-                            <link xlink:href="http://mirror.olnevhost.net/pub/apache/ant/binaries/apache-ant-1.7.1-bin.tar.gz">http://mirror.olnevhost.net/pub/apache/ant/binaries/apache-ant-1.7.1-bin.tar.gz
-                            </link></entry>
-                    </row>
-                    <row>
-                        <entry>Maven 2.0.9</entry>
-                        <entry><link
-                            xlink:href="http://archive.apache.org/dist/maven/binaries/apache-maven-2.0.9-bin.tar.gz"
-                            >http://archive.apache.org/dist/maven/binaries/apache-maven-2.0.9-bin.tar.gz</link></entry>
-                    </row>
-                    <row>
-                        <entry>MySQL Connector/J JDBC Driver</entry>
-                        <entry><link xlink:href="http://www.mysql.com/products/connector/j/"
-                            >http://www.mysql.com/products/connector/j/</link></entry>
-                    </row>
-                    <row>
-                        <entry>Oracle 10g XPress</entry>
-                        <entry><link
-                            xlink:href="http://www.oracle.com/technology/products/database/xe/index.html
-                            "
-                            >http://www.oracle.com/technology/products/database/xe/index.html
-                        </link></entry>
-                    </row>
-                    <row>
-                        <entry>Oracle JDBC DB Driver</entry>
-                        <entry><link
-                            xlink:href="http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/htdocs/jdbc_10201.html"
-                            >http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/htdocs/jdbc_10201.html</link></entry>
-                    </row>
-                    <row>
-                        <entry>Squirrel SQL client</entry>
-                        <entry><link xlink:href="http://squirrel-sql.sourceforge.net/"
-                            >http://squirrel-sql.sourceforge.net/</link></entry>
-                    </row>
-                    <row>
-                        <entry>Tomcat 5.5.27</entry>
-                        <entry><link
-                            xlink:href="http://mirrors.homepagle.com/apache/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.zip"
-                            >http://mirrors.homepagle.com/apache/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.zip</link></entry>
-                    </row>
-                </tbody>
-            </tgroup>
-        </table>
+    <section xml:id="keystore">
+        <title>Generating the Keystore</title>
+        <para>For client applications to consume secured services hosted from a Rice server, you must
+            generate a keystore. As an initial setup, you can use the keystore provided by Rice. There
+            are three ways to get this keystore:<orderedlist>
+                <listitem>
+                    <para>If you are doing a source code build of Rice, it is in the directory <emphasis
+                        role="bold">&lt;source root>/security</emphasis> and it has a file name of
+                        <emphasis role="bold">rice.keystore</emphasis></para>
+                    <para><note><para>r1c3pw is the password used for the example provided.</para></note></para>
+                </listitem>
+                <listitem>
+                    <para>The keystore is also located in the server distribution under the security
+                        directory. </para>
+                    <para><note><para>keypass and storepass should be the same. r1c3pw is the password used for the
+                        example provided</para></note></para>
+                </listitem>
+                <listitem>
+                    <para>You can generate the keystore yourself. Please refer to the KSB Technical
+                        Reference Guide for the steps to accomplish this.</para>
+                </listitem>
+            </orderedlist></para>
+        <section>
+            <title>Configure KSB to use the keystore</title>
+            <para>You must have these params in the xml config to allow KSB to use the keystore:</para>
+            <para>
+                <programlisting>
+                    &lt;param name="keystore.file">/usr/local/rice/rice.keystore&lt;/param>
+                    &lt;param name="keystore.alias">rice&lt;/param>
+                    &lt;param name="keystore.password">r1c3pw&lt;/param>
+            </programlisting>
+            </para>    
+            <itemizedlist>
+                <listitem>
+                    <para>keystore.file - The location of the keystore</para>
+                </listitem>
+                <listitem>
+                    <para>keystore.alias - The alias used in creating the keystore above</para>
+                </listitem>
+                <listitem>
+                    <para>keystore.password - This is the password of the alias AND the keystore. This
+                        assumes that the keystore is set up so that these are the same. </para>
+                </listitem>
+            </itemizedlist>
+        </section>
     </section>
 </chapter>

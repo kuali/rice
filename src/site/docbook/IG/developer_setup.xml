@@ -190,6 +190,201 @@
                     </listitem>
                 </orderedlist></para>
         </section>
+    </section>
+    <section>
+        <title>Install &amp; Configure Rice</title>
+        <section>
+            <title>Checkout the Kuali Rice Project</title>
+        <para>First, you will need to add the Kuali Rice Subversion repository to your
+            Subclipse so that you can check out the project. Follow the steps below to do this:<orderedlist>
+                <listitem>
+                    <para>In Eclipse, navigate to "Window -> Open Perspective -> Other..."
+                        and the select "SVN Repository Exploring" on the following
+                        window:</para>
+                    <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/svn_repository_exploring.png"
+                            />
+                        </imageobject>
+                    </inlinemediaobject></para>
+                </listitem>
+                <listitem>
+                    <para>This will open up the SVN perspective in Eclipse.</para>
+                </listitem>
+                <listitem>
+                    <para>From the "SVN Repositories" view, click the button to add a new
+                        repository.</para>
+                </listitem>
+                <listitem>
+                    <para>On the subsequent screen, enter the following for the URL: <link
+                        xlink:href="https://test.kuali.org/svn/rice"
+                        >https://test.kuali.org/svn/rice</link></para>
+                    <para><inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/add_svn_repository.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                </listitem>
+                <listitem>
+                    <para>Click the "Finish" button.</para>
+                </listitem>
+                <listitem>
+                    <para>If you are prompted to accept the digital certificate, select
+                        "Accept Permananently". Since Kuali Rice is licensed under the open
+                        source ECL 2.0 license, you should not be asked for a password to
+                        access the source code.</para>
+                </listitem>
+                <listitem>
+                    <para>The Rice repository should now be added to your "SVN Repositories"
+                        view.</para>
+                </listitem>
+                <listitem>
+                    <para>Navigate to <emphasis role="bold"
+                        >tags/rice-${project.version}</emphasis> in the "SVN
+                        Repositories" view and right client on <emphasis role="bold"
+                            >rice-${project.version}</emphasis>.</para>
+                </listitem>
+                <listitem>
+                    <para>Select "Checkout..."</para>
+                </listitem>
+                <listitem>
+                    <para>On the resulting "Checkout from SVN" dialog leave the defaults and
+                        click "Finish".</para>
+                </listitem>
+                <listitem>
+                    <para>This will begin checking out Kuali Rice ${project.version} from
+                        Subversion.</para>
+                </listitem>
+            </orderedlist></para>         
+        </section>
+        <section>
+            <title>Compile Rice and Populate Maven Repository</title>
+            <para>At this point, the Kuali Rice project may note compile in Eclipse yet. We will
+                work on resolving this and getting everything to compile properly next. In order to
+                accomplish this, we will do the following:<orderedlist>
+                    <listitem>
+                        <para>Populate your local maven repository with all Kuali Rice required
+                            jars.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Compile your copy of the the Kuali Rice project.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Ensure that the Kuali Rice project is compiling properly in
+                            Eclipse.</para>
+                    </listitem>
+                </orderedlist></para>
+            <section>
+                <title>Populating the Maven Repository</title>
+                <para>To populate the maven repository, execute the following steps:<orderedlist>
+                        <listitem>
+                            <para>Open a Terminal or Command prompt.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Change directory to your copy of the Kuali Rice project.</para>
+                        </listitem>
+                        <listitem>
+                            <para>Type the following at the command line:</para>
+                            <programlisting>mvn test-compile</programlisting>
+                            <para>This will begin a process which will download all Kuali Rice
+                                dependencies as well as compiling the source code within. Depending
+                                on the speed of your Internet connection, this could take ten
+                                minutes or more than 20 minutes as all of the dependencies are
+                                downloaded, so please be patient.</para>
+                            <para>When it has completed successfully, you will see something like
+                                the following:</para>
+                            <programlisting>...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] Rice .............................................. SUCCESS [5.144s]
+[INFO] Rice DB ........................................... SUCCESS [0.000s]
+[INFO] Rice Sql .......................................... SUCCESS [1.435s]
+[INFO] Rice Impex ........................................ SUCCESS [0.003s]
+[INFO] Rice Impex Master ................................. SUCCESS [0.795s]
+[INFO] Rice Impex Server ................................. SUCCESS [0.000s]
+[INFO] Rice Impex Server Demo ............................ SUCCESS [0.594s]
+[INFO] Rice Impex Server Bootstrap ....................... SUCCESS [0.048s]
+[INFO] Rice Impex Client ................................. SUCCESS [0.001s]
+[INFO] Rice Impex Client Demo ............................ SUCCESS [1.694s]
+[INFO] Rice Impex Client Bootstrap ....................... SUCCESS [0.220s]
+[INFO] Rice Core ......................................... SUCCESS [0.050s]
+[INFO] Rice Core API ..................................... SUCCESS [41.616s]
+[INFO] Rice Core Framework ............................... SUCCESS [24.810s]
+[INFO] Rice KIM .......................................... SUCCESS [0.057s]
+[INFO] Rice KIM API ...................................... SUCCESS [34.090s]
+[INFO] Rice KSB .......................................... SUCCESS [0.135s]
+[INFO] Rice KSB API ...................................... SUCCESS [8.904s]
+[INFO] Rice KEW .......................................... SUCCESS [0.086s]
+[INFO] Rice KEW API ...................................... SUCCESS [25.617s]
+[INFO] Rice Location ..................................... SUCCESS [0.256s]
+[INFO] Rice Location API ................................. SUCCESS [7.383s]
+[INFO] Rice KRAD ......................................... SUCCESS [0.066s]
+[INFO] Rice KRAD Application Framework ................... SUCCESS [7.466s]
+[INFO] Rice Client Service ............................... SUCCESS [0.118s]
+[INFO] Rice Core Service API ............................. SUCCESS [8.845s]
+[INFO] Rice Core Service Framework ....................... SUCCESS [2.476s]
+[INFO] Rice KEW Framework ................................ SUCCESS [11.733s]
+[INFO] Rice KIM Framework ................................ SUCCESS [5.688s]
+[INFO] Rice KRAD Web Framework ........................... SUCCESS [28.015s]
+[INFO] Rice KNS .......................................... SUCCESS [18.399s]
+[INFO] Rice Core Impl .................................... SUCCESS [8.760s]
+[INFO] Rice Core Web ..................................... SUCCESS [4.553s]
+[INFO] Rice Core Service Impl ............................ SUCCESS [12.300s]
+[INFO] Rice Core Service Web ............................. SUCCESS [5.768s]
+[INFO] Rice KIM Impl ..................................... SUCCESS [30.672s]
+[INFO] Rice Location Framework ........................... SUCCESS [4.084s]
+[INFO] Rice Location Impl ................................ SUCCESS [6.633s]
+[INFO] Rice Location Web ................................. SUCCESS [0.379s]
+[INFO] Rice EDL .......................................... SUCCESS [0.095s]
+[INFO] Rice EDL Framework ................................ SUCCESS [3.479s]
+[INFO] Rice KEN .......................................... SUCCESS [0.099s]
+[INFO] Rice KEN API ...................................... SUCCESS [3.050s]
+[INFO] Rice KEW Impl ..................................... SUCCESS [5.151s]
+[INFO] Rice KSB Client Implementation .................... SUCCESS [11.725s]
+[INFO] Rice KSB Server Implementation .................... SUCCESS [2.217s]
+[INFO] Rice KRMS ......................................... SUCCESS [0.061s]
+[INFO] Rice KRMS API ..................................... SUCCESS [10.671s]
+[INFO] Rice Implementation ............................... SUCCESS [1:36.630s]
+[INFO] Rice LDAP Connector ............................... SUCCESS [5.596s]
+[INFO] Rice KSB Web Application .......................... SUCCESS [3.737s]
+[INFO] Rice EDL Impl ..................................... SUCCESS [6.190s]
+[INFO] Rice KRMS Framework ............................... SUCCESS [6.080s]
+[INFO] Rice KRMS Impl .................................... SUCCESS [18.770s]
+[INFO] Rice Web .......................................... SUCCESS [5.720s]
+[INFO] Rice Development Tools ............................ SUCCESS [5.201s]
+[INFO] Rice Sample App ................................... SUCCESS [12.824s]
+[INFO] Rice Standalone Server ............................ SUCCESS [0.412s]
+[INFO] Rice Integration Test ............................. SUCCESS [0.105s]
+[INFO] Rice Integration Test Internal Tools .............. SUCCESS [1.783s]
+[INFO] Rice Integration Test Core ........................ SUCCESS [2.200s]
+[INFO] Rice Integration Test KRAD ........................ SUCCESS [8.092s]
+[INFO] Rice Integration Test KSB ......................... SUCCESS [1.211s]
+[INFO] Rice Integration Test KIM ......................... SUCCESS [4.706s]
+[INFO] Rice Integration Test KEW ......................... SUCCESS [15.173s]
+[INFO] Rice Integration Test KEN ......................... SUCCESS [8.709s]
+[INFO] Rice Integration Test KCB ......................... SUCCESS [1.592s]
+[INFO] Rice Integration Test Impl ........................ SUCCESS [0.393s]
+[INFO] Rice Integration Test EDL ......................... SUCCESS [0.441s]
+[INFO] Rice Integration Test Location .................... SUCCESS [0.575s]
+[INFO] Rice Integration Test KRMS ........................ SUCCESS [4.148s]
+[INFO] Rice Integration Test Remote ...................... SUCCESS [3.342s]
+[INFO] Rice Client Contrib ............................... SUCCESS [9.952s]
+[INFO] Rice Distributions ................................ SUCCESS [0.001s]
+[INFO] Rice CM ........................................... SUCCESS [0.109s]
+[INFO] Rice Checkstyle ................................... SUCCESS [0.166s]
+[INFO] Rice Deploy ....................................... SUCCESS [0.500s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 9:37.400s
+[INFO] Finished at: Sun Jan 08 21:33:32 MST 2012
+[INFO] Final Memory: 107M/203M
+[INFO] ------------------------------------------------------------------------</programlisting>
+                        </listitem>
+                    </orderedlist></para>
+            </section>
+        </section>
         <section>
             <title>Set up Eclipse for Maven</title>
             <para>In order to ensure that Eclipse can read from the Maven repository, we have to define
@@ -216,20 +411,157 @@
                     </listitem>
                 </orderedlist></para>
         </section>
-    </section>
-    <section>
-        <title>Install &amp; Configure Rice</title>
         <section>
             <title>Validate that the Kuali Rice project is compiling in Eclipse</title>
-            <para></para>
+            <para>Now that our Maven repository has been populated and weve set Eclipse up to be
+                able to read from that Maven repository, let's ensure that the Kuali Rice project is
+                compiling properly in Eclipse.<orderedlist>
+                    <listitem>
+                        <para>Navigate back to Eclipse.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Find the <emphasis role="bold">rice-${project.version}</emphasis>
+                            project and right click on it; select "Refresh". Eclipse should attempt
+                            to build the project at this point and (once it has completed) all
+                            errors on the Rice ${project.version} project should be gone.</para>
+                    </listitem>
+                    <listitem>
+                        <para>If the errors on <emphasis role="bold"
+                                >rice-${project.version}</emphasis> aew not gone after performing
+                            the above steps, do the following:<itemizedlist>
+                                <listitem>
+                                    <para>Right-click on the <emphasis role="bold"
+                                            >rice-${project.version}</emphasis> project and select
+                                        "Close Project".</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Right-click on the <emphasis role="bold"
+                                            >rice-${project.version}</emphasis> project and select
+                                        "Open Project".</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Click on the <emphasis role="bold"
+                                            >rice-${project.version}</emphasis> and the open the
+                                        "Project" menu at the top of the screen.</para>
+                                </listitem>
+                                <listitem>
+                                    <para>Select "Clean..." and ensure that only
+                                        rice-${project.version} is checked in the list on the
+                                        resulting screen; click "OK".</para>
+                                </listitem>
+                                <listitem>
+                                    <para>After the clean is executed, the <emphasis role="bold"
+                                            >rice-${project.version}</emphasis> project in Eclipse
+                                        should be error free.</para>
+                                </listitem>
+                            </itemizedlist></para>
+                    </listitem>
+                </orderedlist></para>
         </section>
     </section>
     <section>
         <title>Creating the Database</title>
-        <para></para>
+        <para>To install the database using mave, complete the following steps:<orderedlist>
+                <listitem>
+                    <para>Open a Terminal or Command prompt.</para>
+                </listitem>
+                <listitem>
+                    <para>Change directory to your copy of the Kuali Rice project.</para>
+                </listitem>
+                <listitem>
+                    <para>Change into the directory for the "master" data set:</para>
+                    <programlisting>cd db/impex/master</programlisting>
+                </listitem>
+                <listitem>
+                    <para>Verify that Maven can connect to your database instance running locally: </para>
+                    <para><emphasis role="bold">MySQL:</emphasis></para>
+                    <programlisting> mvn validate -Pdb,mysql -Dimpex.dba.password=[dbapassword] </programlisting>
+                    <note><para>If the 'root' user does not have a password (which is the default on a new MySQL install),
+                            drop the '-Dimpex.dba.password' parameter from all MySQL commands or use
+                            'NONE' for the password: </para>
+                        <programlisting>mvn validate -Pdb,mysql </programlisting>
+                        <para>or </para>
+                        <programlisting>mvn validate -Pdb,mysql -Dimpex.dba.password=NONE</programlisting></note>
+                    <para><emphasis role="bold">Oracle:</emphasis></para>
+                    <programlisting> mvn validate -Pdb,oracle -Dimpex.dba.password=[dbapassword] </programlisting>
+                    <note><para>If you are using Oracle and validation fails with an error about
+                            "com.oracle:ojdbc14:jar:10.2.0.3.0", follow the instructions <link
+                                linkend="database_setup">Installing and Configuring the Database
+                                Management System</link> section of this guide to install Oracle's
+                            JDBC driver into your local maven repository.</para></note>
+                </listitem>
+                <listitem>
+                    <para>Load the Data Set for your database running locally:</para>
+                    <para><emphasis role="bold">MySQL:</emphasis></para>
+                    <programlisting> mvn clean install -Pdb,mysql -Dimpex.dba.password=[dbapassword] </programlisting>
+                    <para><emphasis role="bold">Oracle:</emphasis></para>
+                    <programlisting> mvn clean install -Pdb,oracle -Dimpex.dba.password=[dbapassword] </programlisting>
+                </listitem>
+                <listitem>
+                    <para>You should get the following message at the end of the process </para>
+                    <programlisting>[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------ </programlisting>
+                </listitem>
+                <listitem>
+                    <para>You will have a database called 'rice' that you can access with username
+                        'RICE', password 'RICE'</para>
+                </listitem>
+            </orderedlist></para>
     </section>
     <section>
         <title>Launching the Sample Application</title>
-        <para></para>
+        <para>An Eclipse launch script is provided in the project that you can use to launch a Jetty
+            server that will load the web application. To luanch the application and access the
+            initial portal for the application, do the following:<orderedlist>
+                <listitem>
+                    <para>Navigate back to Eclipse.</para>
+                </listitem>
+                <listitem>
+                    <para>Find the <emphasis role="bold">rice-${project.version}</emphasis>
+                        project</para>
+                </listitem>
+                <listitem>
+                    <para>Expand the project in the "Project Explorer" so that you can see the files
+                        contained within.</para>
+                </listitem>
+                <listitem>
+                    <para>Navigate to rice-sample-app -> </para>
+                </listitem>
+                <listitem>
+                    <para>Right-click on the "Jetty 7 [sampleapp].launch" file and select "Run As ->
+                        1 Jetty 7 [sampleapp]".</para>
+                </listitem>
+                <listitem>
+                    <para>If you have configured everything successfully, this should start up your
+                        client web application without any errors.</para>
+                </listitem>
+                <listitem>
+                    <para>You can verify that your application started successfuly by going to the
+                    following url:</para>
+                    <para><link xlink:href="http://localhost:8080/kr-dev"
+                            >http://localhost:8080/kr-dev</link></para>                
+                </listitem>
+                <listitem>
+                    <para>You should see a login screen. Enter the username "admin" and then click
+                        the "login" button.</para>
+                </listitem>
+                <listitem>
+                    <para>After you login, you should see a screen like the following:</para>
+                    <para><inlinemediaobject>
+                            <imageobject>
+                                <imagedata fileref="../images/rice_portal_main_menu.png"/>
+                            </imageobject>
+                        </inlinemediaobject></para>
+                </listitem>
+            </orderedlist></para>
+            <para><emphasis role="bold">Congratulations! You have now installed and configured Kuali
+                Rice ${project.version} correctly.</emphasis></para>
+        <para>If you are still having problems, please review the instructions again and see if a
+            step was missed. If not, you can review the archives of our collaboration/user's group
+            list at <link xlink:href="http://kuali.org/kis/projectTeams/team/111"
+                >http://kuali.org/kis/projectTeams/team/111</link> and post your question to the
+            list (you'll need to join first) for community support if the answer is not found in the
+            archives.</para>
     </section>
 </chapter>

@@ -81,6 +81,7 @@
     <bcprov.version>1.46</bcprov.version>
     <cas-client-core.version>3.2.1</cas-client-core.version>
     <cglib.version>2.2.2</cglib.version>
+    <aspectj.version>1.6.8</aspectj.version>
     <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
     <commons-codec.version>1.6</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
@@ -1027,6 +1028,17 @@
         <!-- using nodep to resolve a problem with the asm dependency -->
         <artifactId>cglib-nodep</artifactId>
         <version>${cglib.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjrt</artifactId>
+        <version>${aspectj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>${aspectj.version}</version>
       </dependency>
 
       <dependency>

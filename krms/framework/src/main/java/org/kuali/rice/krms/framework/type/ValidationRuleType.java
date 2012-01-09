@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * enum used to specify the validationRule type to be specified in the vended validationRules.
+ * enum used to specify the validationRule type to be specified in the vended {@link ValidationRule}s. INVALID VALID
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -86,6 +86,9 @@ public enum ValidationRuleType implements Coded {
     }
 
 
+    /**
+     * Set of valid type codes
+     */
     public static final Set<String> VALID_TYPE_CODES = new HashSet<String>();
     static {
         for (ValidationRuleType type : values()) {

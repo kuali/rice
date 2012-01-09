@@ -43,7 +43,7 @@ public enum PropositionType implements Coded {
 
     /**
      * Create a PropositionType of the given code
-     * @param code
+     * @param code code the PropositionType should be of.
      */
 	private PropositionType(String code) {
 		this.code = code;
@@ -58,7 +58,10 @@ public enum PropositionType implements Coded {
 	public String getCode() {
 		return code;
 	}
-	
+
+    /**
+     * Set of valid type codes
+     */
 	public static final Set<String> VALID_TYPE_CODES = new HashSet<String>();
 	static {
 		for (PropositionType propositionType : values()) {

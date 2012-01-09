@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * enum used to specify the action type to be specified in the vended actions.
+ * enum used to specify the action type to be specified in the vended {@link ValidationAction}s. WARNING ERROR
  */
 public enum ValidationActionType implements Coded {
 
@@ -40,8 +40,8 @@ public enum ValidationActionType implements Coded {
     private final String code;
 
     /**
-     * Create a ValidaitonAction of the given typeCode
-     * @param typeCode
+     * Create a ValidationActionType of the given typeCode
+     * @param typeCode - typeCode created ValidationActionType should be of.
      */
     private ValidationActionType(String typeCode) {
         this.code = typeCode;
@@ -83,7 +83,9 @@ public enum ValidationActionType implements Coded {
         throw new IllegalArgumentException("Failed to locate the ValidationActionType with the given code: " + code);
     }
 
-
+    /**
+     * Set of valid type codes
+     */
     public static final Set<String> VALID_TYPE_CODES = new HashSet<String>();
     static {
         for (ValidationActionType type : values()) {

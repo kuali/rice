@@ -64,7 +64,7 @@ public enum ComparisonOperator implements Coded {
 
     /**
      * Create a ComparisonOperator from the given code
-     * @param code
+     * @param code code the ComparisonOperator should be of.
      */
 	private ComparisonOperator(String code) {
 		this.code = code;

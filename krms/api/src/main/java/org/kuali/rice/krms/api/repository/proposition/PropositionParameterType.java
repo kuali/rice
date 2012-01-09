@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * enum used to specify the PropositionParameterType CONSTANT TERM FUNCTION OPERATOR
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -51,7 +52,7 @@ public enum PropositionParameterType implements Coded {
 
     /**
      * Create a PropositionParameterType of the given code
-     * @param code
+     * @param code code the PropositionParameterType should be of
      */
 	private PropositionParameterType(String code) {
 		this.code = code;
@@ -61,7 +62,10 @@ public enum PropositionParameterType implements Coded {
 	public String getCode() {
 		return code;
 	}
-	
+
+    /**
+     * Set of valid type codes
+     */
 	public static final Set<String> VALID_TYPE_CODES = new HashSet<String>();
 	static {
 		for (PropositionParameterType propositionParameterType : values()) {

@@ -96,12 +96,6 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
             logAndThrowRuntime("Unable to get collection group component for path: " + collectionPath);
         }
 
-        if (!"PeopleFlow-Detail".equals(collectionGroup)) {
-            super.processCollectionAddLine(view, model, collectionPath);
-
-            return;
-        }
-
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
@@ -125,12 +119,17 @@ public class PeopleFlowMaintainableImpl extends MaintainableImpl {
             // the collection (so that sequence can be set)
             if (collection instanceof List) {
                 ((List) collection).add(0, addLine);
-                // ADDED sorting
-                Collections.sort((List) collection, new Comparator<PeopleFlowMemberBo>() {
-                    public int compare(PeopleFlowMemberBo o1, PeopleFlowMemberBo o2) {
-                        return o1.getPriority() - o2.getPriority();
-                    }
-                });
+                // ADDED sorting for PeopleFlowMemberBo
+                if (addLine instanceof PeopleFlowMemberBo) {
+                    Collections.sort((List) collection, new Comparator<Object>() {
+                        public int compare(Object o1, Object o2) {
+                            if ((o1 instanceof PeopleFlowMemberBo) && (o1 instanceof PeopleFlowMemberBo)) {
+                                return ((PeopleFlowMemberBo)o1).getPriority() - ((PeopleFlowMemberBo)o2).getPriority();
+                            }
+                            return 0; // if not both PeopleFlowMemberBo something strange is going on.  Use equals as doing nothing.
+                        }
+                    });
+                }
             } else {
                 collection.add(addLine);
             }

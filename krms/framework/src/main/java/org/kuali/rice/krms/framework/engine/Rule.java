@@ -28,7 +28,7 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 public interface Rule {
 
     /**
-     *
+     * Evaluate a given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment}, returning true if the rules conditions pass, false if they do not.
      * @param environment ExecutionEnvironment
      * @return true if given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment} the rule's conditions pass, false if they do not
      */

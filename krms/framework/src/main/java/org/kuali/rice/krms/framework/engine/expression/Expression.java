@@ -25,7 +25,8 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 public interface Expression<T> {
 
     /**
-     * @param environment {@link ExecutionEnvironment}
+     * Invoke on the given {@link ExecutionEnvironment}.
+     * @param environment {@link ExecutionEnvironment} to invoke on.
      * @return T
      */
 	T invoke(ExecutionEnvironment environment);

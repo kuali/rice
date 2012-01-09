@@ -28,8 +28,8 @@ import org.kuali.rice.krms.api.engine.ExecutionEnvironment;
 public interface Action {
 
     /**
-     * execute on a given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment}
-     * @param environment
+     * Execute on a given {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment}.
+     * @param environment {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment} to execute.
      */
 	public void execute(ExecutionEnvironment environment);
 
@@ -38,6 +38,7 @@ public interface Action {
 	 * most actions should not be executed.  However, if part or all of 
 	 * an action needs to be run in order for proper rule evaluation to 
 	 * proceed, it should be called herein.
+     * @param environment {@link org.kuali.rice.krms.api.engine.ExecutionEnvironment} to simulate execution on.
 	 */
 	public void executeSimulation(ExecutionEnvironment environment);
 }

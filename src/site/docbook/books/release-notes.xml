@@ -672,24 +672,20 @@
         </sect2>
         <sect2>
             <title>Configuration Changes</title>
-            <para>
-                <itemizedlist>
+            <para>For Rice 2.0, we now support: <itemizedlist>
                     <listitem>
-                        <para>XAPool/Bitronix Configuration Changes (KRDOC-382 )</para>
+                        <para>Tomcat 6 (Servlet API 2.5, JSP 2.1) </para>
                     </listitem>
                     <listitem>
-                        <para>New configuration Parameters related to component publishing
-                            (KRDOC-386)</para>
+                        <para>Tomcat 7 (Servlet API 3.0, JSP 2.2) </para>
                     </listitem>
-                    <listitem>
-                        <para>Drop support of Tomcat 5.5, servlet spec 2.4,jsp 2.0) -
-                            KRDOC-223</para>
-                    </listitem>
-                    <listitem>
-                        <para>Changes to configurers and run modes (KRDOC-389)</para>
-                    </listitem>
-                </itemizedlist>
-            </para>
+            </itemizedlist></para>
+            <para>With this change, we have dropped support for Tomcat 5.5 (Servlet API 2.4, JSP
+                2.0). </para>
+            <!-- TODO: Document the following
+    - XAPool/Bitronix Configuration Changes (KRDOC-382 )
+    - New configuration Parameters related to component publishing (KRDOC-386)
+    - Changes to configurers and run modes (KRDOC-389)-->
         </sect2>
         <sect2>
             <title>Library Changes and Additions</title>

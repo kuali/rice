@@ -111,7 +111,15 @@
         <!-- End Quick Start Best Practice -->
     </section>
     <section>
-        <title>Setting Up Apache Tomcat</title>
+        <title>Install and Setup Apache Tomcat</title>
+        <para>Kuali Rice ${project.version} supports the following Tomcat versions:<itemizedlist>
+                <listitem>
+                    <para>Tomcat 6 (Servlet API 2.5, JSP 2.1) </para>
+                </listitem>
+                <listitem>
+                    <para>Tomcat 7 (Servlet API 3.0, JSP 2.2) </para>
+                </listitem>
+            </itemizedlist></para>
 <!-- Quick Start Best Practice --> 
         <para>Once you have downloaded Tomcat , please install it using these steps:<itemizedlist>
                 <listitem>

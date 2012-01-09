@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
+import com.google.common.base.Function;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -41,9 +43,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -184,58 +188,74 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     */
     /*
      * Test method for 'org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute.validateUserSearchInputs(Map)'
+     * This tests search value validation as well as bounds inclusivity; if lower/upper bound is specified, inclusivity of range vs. attribute definition is tested.
      */
     @Test  public void testValidateUserSearchRangeInputs() {
-    	// upper bound and lower bound fields should be using same validation... we just altername which formKey we use here
+        // <searchDefinition rangeSearch="true"/>
         StandardGenericXMLSearchableAttribute searchAttribute = getAttribute("XMLSearchableAttributeStringRange");
         ExtensionDefinition ed = createExtensionDefinition("XMLSearchableAttributeStringRange");
 
-        String documentTypeName = "SearchDocType";
+        RemotableAttributeError error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, ">= jack", null);
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "<= jack.jack", "differ on upper bound inclusivity");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "< jack.jack", "Invalid first name");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, ">= jack*jack", null);
+         // TODO: * gets stripped from value
 
-        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, ">= jack", false);
-
-        RemotableAttributeError error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, "<= jack.jack", true);
-        assertEquals("Validation error should match xml attribute message", "Invalid first name", error.getMessage());
-
-        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, ">= jack*jack", false); // TODO: * gets stripped from value
-
+        // <searchDefinition dataType="long" rangeSearch="true"/>
         searchAttribute = getAttribute("XMLSearchableAttributeStdLongRange");
         ed = createExtensionDefinition("XMLSearchableAttributeStdLongRange");
-        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "<= " + TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString(), false);
-        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, ">= " + TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString() + ".33", true);
-        assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
-        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "<= jack*jack", true);
-        assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
 
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "<= " + TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString(), "differ on upper bound inclusivity");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "< " + TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString(), null);
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, ">= " + TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString() + ".33","does not conform to standard validation for field type.");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "<= jack*jack", "differ on upper bound inclusivity");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "< jack*jack", "does not conform to standard validation for field type.");
+
+        // <searchDefinition dataType="float">
+        //   <rangeDefinition inclusive="false">
+        //     <lower label="starting"/>
+        //     <upper label="ending"/>
+        //   </rangeDefinition>
+        // </searchDefinition>
         searchAttribute = getAttribute("XMLSearchableAttributeStdFloatRange");
         ed = createExtensionDefinition("XMLSearchableAttributeStdFloatRange");
-        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, ">= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString(), false);
-        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "<= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a", true);
-        assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
-        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, ">= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "*", true);
-        assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, ">= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString(), "differ on lower bound inclusivity");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "> " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString(), null);
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "<= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a", "differ on upper bound inclusivity");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "< " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "a", "does not conform to standard validation for field type.");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, ">= " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "*", "differ on lower bound inclusivity");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "> " + TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString() + "*", "does not conform to standard validation for field type.");
 
+        // <searchDefinition dataType="datetime" datePicker="false">
+        //   <rangeDefinition inclusive="false">
+        //     <lower/>
+        //     <upper inclusive="true" datePicker="true"/>
+        //   </rangeDefinition>
+        // </searchDefinition>
         searchAttribute = getAttribute("XMLSearchableAttributeStdDateTimeRange");
         ed = createExtensionDefinition("XMLSearchableAttributeStdDateTimeRange");
-        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "<= " + DocumentSearchInternalUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE), false);
-        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, ">= 001/5/08", false);
-        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, ">= 41/5/08", true);
-        assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
-        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "<= 01/02/20*", true);
-        assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "<= " + DocumentSearchInternalUtils.getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE), null);
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, ">= 001/5/08", "differ on lower bound inclusivity");
+        assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "> 001/5/08", null);
+        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, ">= 41/5/08", "differ on lower bound inclusivity");
+        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "> 41/5/08", "does not conform to standard validation for field type.");
+        error = assertDocumentSearchCriteriaValidation(searchAttribute, ed, TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "<= 01/02/20*", "does not conform to standard validation for field type.");
     }
 
     /**
      * Helper to assert document search criteria validation
      */
-    protected RemotableAttributeError assertDocumentSearchCriteriaValidation(StandardGenericXMLSearchableAttribute attribute, ExtensionDefinition ed, String attrkey, String attrvalue, boolean expectError) {
+    protected RemotableAttributeError assertDocumentSearchCriteriaValidation(StandardGenericXMLSearchableAttribute attribute, ExtensionDefinition ed, String attrkey, String attrvalue, String expectedErrorMessage) {
         DocumentSearchCriteria.Builder dscb = DocumentSearchCriteria.Builder.create();
         dscb.addDocumentAttributeValue(attrkey, attrvalue);
 
         List<RemotableAttributeError> errors = attribute.validateDocumentAttributeCriteria(ed, dscb.build());
 
-        if (expectError) {
+        if (expectedErrorMessage != null) {
             assertEquals("Validation should return a single error message.", 1, errors.size());
+            if (StringUtils.isNotEmpty(expectedErrorMessage)) {
+                assertTrue("Validation error is incorrect", errors.get(0).getMessage().contains(expectedErrorMessage));
+            }
             return errors.get(0);
         } else {
             assertEquals("Validation should not have returned an error.", 0, errors.size());
@@ -270,15 +290,15 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         stringXMLDef.addPropertyDefinition(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
         workflowDocument.addSearchableDefinition(stringXMLDef.build());
         // adding long searchable attribute
-        WorkflowAttributeDefinition.Builder longXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdLongRange");
+        WorkflowAttributeDefinition.Builder longXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdLongRangeInclusive");
         longXMLDef.addPropertyDefinition(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
         workflowDocument.addSearchableDefinition(longXMLDef.build());
         // adding float searchable attribute
-        WorkflowAttributeDefinition.Builder floatXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdFloatRange");
+        WorkflowAttributeDefinition.Builder floatXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdFloatRangeInclusive");
         floatXMLDef.addPropertyDefinition(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
         workflowDocument.addSearchableDefinition(floatXMLDef.build());
         // adding string searchable attribute
-        WorkflowAttributeDefinition.Builder dateXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdDateTimeRange");
+        WorkflowAttributeDefinition.Builder dateXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdDateTimeRangeInclusive");
         dateXMLDef.addPropertyDefinition(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocumentSearchInternalUtils
                 .getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
         workflowDocument.addSearchableDefinition(dateXMLDef.build());
@@ -301,7 +321,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         DocumentSearchCriteria.Builder criteria = DocumentSearchCriteria.Builder.create();
         criteria.setDocumentTypeName(docType);
 
-        addSearchableAttributeRange(criteria, attrKey, lowerBound, upperBound, upperBoundInclusive);
+        addSearchableAttribute(criteria, attrKey, createSearchableAttributeRange(lowerBound, upperBound, upperBoundInclusive));
 
         DocumentSearchResults results;
         try {
@@ -312,7 +332,8 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
             else throw e;
         }
 
-        assertEquals("Search results should have " + expected + " document(s).", expected, results.getSearchResults().size());
+        assertEquals("Search results should have " + expected + " document(s).", expected,
+                results.getSearchResults().size());
     }
 
     @Test public void testStringRanges() throws Exception {
@@ -527,371 +548,6 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
                                  DocumentSearchInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true, EXPECT_EXCEPTION);
     }
 
-    /**
-     * Test searching by searchable attributes that use ranges
-     */
-    @Ignore // TODO: KULRICE-5630 delete this old test after search behavior in test*Ranges tests above has been verified/approved
-    @Test public void testSearchableAttributeRanges() throws Exception {
-        String documentTypeName = "SearchDocTypeRangeSearchDataType";
-    	DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
-        String userNetworkId = "rkirkend";
-        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(userNetworkId), documentTypeName);
-
-        /*
-         *   Below we are using the keys and values from the custom searchable attribute classes' static constants but
-         *   this is only for convenience as those should always be valid values to test for.
-         */
-        // adding string searchable attribute
-        WorkflowAttributeDefinition.Builder stringXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStringRange");
-        stringXMLDef.addPropertyDefinition(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE);
-        workflowDocument.addSearchableDefinition(stringXMLDef.build());
-        // adding long searchable attribute
-        WorkflowAttributeDefinition.Builder longXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdLongRange");
-        longXMLDef.addPropertyDefinition(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString());
-        workflowDocument.addSearchableDefinition(longXMLDef.build());
-        // adding float searchable attribute
-        WorkflowAttributeDefinition.Builder floatXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdFloatRange");
-        floatXMLDef.addPropertyDefinition(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString());
-        workflowDocument.addSearchableDefinition(floatXMLDef.build());
-        // adding string searchable attribute
-        WorkflowAttributeDefinition.Builder dateXMLDef = WorkflowAttributeDefinition.Builder.create("XMLSearchableAttributeStdDateTimeRange");
-        dateXMLDef.addPropertyDefinition(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE));
-        workflowDocument.addSearchableDefinition(dateXMLDef.build());
-
-        workflowDocument.setTitle("Routing style");
-        workflowDocument.route("routing this document.");
-
-        workflowDocument = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName(userNetworkId), workflowDocument.getDocumentId());
-
-        DocumentSearchService docSearchService = (DocumentSearchService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
-        Person user = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(userNetworkId);
-
-        // begin string attribute value testing
-        DocumentSearchCriteria.Builder criteria = null;
-        DocumentSearchResults results = null;
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        addSearchableAttributeRange(criteria, TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE, null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        int size = results.getSearchResults().size();
-        assertTrue("Searching for a lower bound of 'jack'. case insensitive, inclusive.  so searching for something >= 'JACK'. Should Return 1, but got" + size, 1 == size);
-
-        // begin long attribute value testing
-        // inclusive = true
-        String searchAttributeLongKey = TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY;
-        Long searchAttributeLongValue = TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.longValue();
-        Long longValueToUse = null;
-
-        // test lower bound only
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        longValueToUse = searchAttributeLongValue; // lowerbound == value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, longValueToUse.toString(), null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() - 1); // lowerbound below value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, longValueToUse.toString(), null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() + 1); // lowerbound is above value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, longValueToUse.toString(), null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        // test upper bound only
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        longValueToUse = searchAttributeLongValue; // upper bound == value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, null, longValueToUse.toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName); // upper bound < value
-        longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() - 1);
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, null, longValueToUse.toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName); // upper bound > value
-        longValueToUse = Long.valueOf(searchAttributeLongValue.longValue() + 1);
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, null, longValueToUse.toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        // test both bounds
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // lowerbound == upperbound == value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(searchAttributeLongValue.longValue())
-                .toString(), Long.valueOf(searchAttributeLongValue.longValue()).toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // lower and upper bound > value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(
-                searchAttributeLongValue.longValue() + 2).toString(), Long.valueOf(
-                searchAttributeLongValue.longValue() + 4).toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // lower and upper bound < value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(
-                searchAttributeLongValue.longValue() - 2).toString(), Long.valueOf(
-                searchAttributeLongValue.longValue() - 4).toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // lower bound < value, upper bound > value
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(
-                searchAttributeLongValue.longValue() - 2).toString(), Long.valueOf(
-                searchAttributeLongValue.longValue() + 2).toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // upper < lower
-        addSearchableAttributeRange(criteria, searchAttributeLongKey, Long.valueOf(searchAttributeLongValue.longValue() + 2).toString(), Long.valueOf(searchAttributeLongValue.longValue() - 2).toString(), true);
-        try {
-            // KULRICE-5630 fails because SGXSearchableAttribute does detect ranges correctly yet
-            docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-            //fail("Error should have been thrown for invalid range");
-        } catch (WorkflowServiceErrorException e) {}
-
-        // begin float attribute value testing
-        String searchAttributeFloatKey = TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY;
-        BigDecimal searchAttributeFloatValue = TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE;
-
-        BigDecimal floatValueToUse = null;
-        // test lower bound only
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        floatValueToUse = searchAttributeFloatValue; // lower bound == value (does not match float)
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, floatValueToUse.toString(), null, false);
-        // FIXME: KULRICE-5630 SGXSA does not interpret >= correctly, compares null lower to upper bound and fails validation of the range
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        floatValueToUse = searchAttributeFloatValue.subtract(BigDecimal.ONE); // lowerbound < value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, floatValueToUse.toString(), null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        floatValueToUse = searchAttributeFloatValue.add(BigDecimal.ONE); // lowerbound > value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, floatValueToUse.toString(), null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        // test upper bound only
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        floatValueToUse = searchAttributeFloatValue; // upperbound == value (does not match float)
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, null, floatValueToUse.toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        floatValueToUse = searchAttributeFloatValue.subtract(BigDecimal.ONE); // upperbound < value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, null, floatValueToUse.toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        floatValueToUse = searchAttributeFloatValue.add(BigDecimal.ONE); // upperbound > value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, null, floatValueToUse.toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        // test both bounds
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName); // upper == lower == value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, searchAttributeFloatValue.toString(),
-                searchAttributeFloatValue.toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // upper and lower > value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(
-                2))).toString(), (searchAttributeFloatValue.add(new BigDecimal(4))).toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // upper and lower < value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.subtract(
-                new BigDecimal(4))).toString(), (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(),
-                true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // lower < value, upper > value
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(), (searchAttributeFloatValue.add(new BigDecimal(2))).toString(), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        // upper < lower
-        addSearchableAttributeRange(criteria, searchAttributeFloatKey, (searchAttributeFloatValue.add(new BigDecimal(
-                2))).toString(), (searchAttributeFloatValue.subtract(new BigDecimal(2))).toString(), true);
-        try {
-            docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-            //fail("Error should have been thrown for invalid range");
-        } catch (WorkflowServiceErrorException e) {}
-
-        // begin datetime attribute value testing
-        // inclusive = ?
-        String searchAttributeDateTimeKey = TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY;
-        Calendar searchAttributeDateTimeValue = TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE.toGregorianCalendar();
-
-        Calendar calendarValueToUse = null;
-        // test lower bound only
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
-        String valueToSearch = DocumentSearchInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(
-                calendarValueToUse));
-        // lower == value (TODO: no match? because inclusivity false?)
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
-        calendarValueToUse.add(Calendar.DATE, -1); // lower < value
-        valueToSearch = DocumentSearchInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(
-                calendarValueToUse));
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
-        calendarValueToUse.add(Calendar.DATE, 1); // lower > value
-        valueToSearch = DocumentSearchInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(
-                calendarValueToUse));
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, valueToSearch, null, false);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        // test upper bound only
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone(); // upper == value (inclusivity true)
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null,
-                DocumentSearchInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
-        calendarValueToUse.add(Calendar.DATE, -1); // upper < value
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null, DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        calendarValueToUse = (Calendar) searchAttributeDateTimeValue.clone();
-        calendarValueToUse.add(Calendar.DATE, 1); // upper > value
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, null,
-                DocumentSearchInternalUtils.getDisplayValueWithDateOnly(SQLUtils.convertCalendar(calendarValueToUse)), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        // test both bounds
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        Calendar lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        Calendar upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone(); // upper == lower == value (inclusivity true)
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zer documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        lowerBoundValue.add(Calendar.DATE, 2);
-        upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        upperBoundValue.add(Calendar.DATE, 4);  // upper and lower > value
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        lowerBoundValue.add(Calendar.DATE, -4);
-        upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        upperBoundValue.add(Calendar.DATE, -2); // upper and lower < value
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have zero documents.", 0, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        lowerBoundValue.add(Calendar.DATE, -2);
-        upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        upperBoundValue.add(Calendar.DATE, 2);  // lower < value, upper > value
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-        assertEquals("Search results should have one document.", 1, results.getSearchResults().size());
-
-        criteria = DocumentSearchCriteria.Builder.create();
-        criteria.setDocumentTypeName(documentTypeName);
-        lowerBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        lowerBoundValue.add(Calendar.DATE, 2);
-        upperBoundValue = (Calendar) searchAttributeDateTimeValue.clone();
-        upperBoundValue.add(Calendar.DATE, -2); // lower > upper == error
-        addSearchableAttributeRange(criteria, searchAttributeDateTimeKey, DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(lowerBoundValue)), DocumentSearchInternalUtils
-                .getDisplayValueWithDateOnly(SQLUtils.convertCalendar(upperBoundValue)), true);
-        try {
-            docSearchService.lookupDocuments(user.getPrincipalId(), criteria.build());
-            //fail("Error should have been thrown for invalid range");
-        } catch (WorkflowServiceErrorException e) {}
-    }
-
     /*
      * Tests the XML string attributes on range definitions, using a technique similar to that of the testSearchableAttributeRanges() unit test.
      */
@@ -921,7 +577,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         workflowDocument = WorkflowDocumentFactory.loadDocument(principalId, workflowDocument.getDocumentId());
 
         // Verify that the "TextFieldWithInclusiveLower" attribute behaves as expected (lower-bound-inclusive and (by default) case-insensitive).
-        /* upper bound is set to inclusive in assertSearchBehavesAsExpected, second case should match */
+        // both upper and lower bounds set to inclusive in attr definition
         assertSearchBehavesAsExpected(docType, principalId, "textFieldWithInclusiveLower",
                 new String[] { "newvalue", ""        , ""        , "NEWVALUD", "newValuf", "newValuj", "newvaluf"},
                 new String[] { ""        , "newvalue", "Newvaluf", "NEWVALUF", "newValud", "NEWVALUK", ""        },
@@ -934,12 +590,10 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
         		new int[]    { 1         , 1         , 0         , 0         , -1        , 0         , 1         });
 
         // Verify that the "TextFieldWithOverrides" attribute behaves as expected
-        // FIXME: KULRICE-5630 need to update these tests to specify expressions instead of using addSearchableAttribute range, which does not
-        // support exclusive lower
         assertSearchBehavesAsExpected(docType, principalId, "textFieldWithOverrides",
-        		new String[] { "someval", "SomeVal", ""       , ""       , "SOMEVAK", "SomeVam", "SOMEVAM", "somevak", ""       },
-        		new String[] { ""       , ""       , "SOMEVAL", "SomeVal", "SomeVam", "SOMEVAK", "SomeVak", ""       , "SomeVak"},
-        		new int[]    { 0        , 0        , 0        , 1        , 1        , 0       , 0        , 1        , 0        });
+        		new String[] { "> someval", "> SomeVal", "<= SOMEVAL", "<= SomeVal", "SOMEVAK>..SomeVam", "SomeVam>..SOMEVAK", "SOMEVAM>..SomeVak", "> somevak", "<= SomeVak" },
+              //new String[] { ""         , ""         ,    "SOMEVAL",    "SomeVal", "SomeVam"          ,           "SOMEVAK",           "SomeVak", ""         ,    "SomeVak"},
+        		new int[]    { 0          , 0          , 1           , 1           , 1                  , -1                 , -1                 , 1          , 0        });
     }
 
     /*
@@ -953,29 +607,55 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
      * @param resultSizes The expected number of documents to be returned by the search; use -1 to indicate that an exception should have occurred.
      * @throws Exception
      */
-    private void assertSearchBehavesAsExpected(DocumentType docType, String principalId, String fieldDefKey, String[] lowBounds, String[] upBounds,
-    		int[] resultSizes) throws Exception {
+    private void assertSearchBehavesAsExpected(DocumentType docType, String principalId, String fieldDefKey, final String[] lowBounds, final String[] upBounds, int[] resultSizes) throws Exception {
+        assertSearchResults(KEWServiceLocator.getDocumentSearchService(), docType, principalId, fieldDefKey, resultSizes, new Function<Integer, String>() {
+            @Override public String apply(@Nullable Integer index) {
+                return createSearchableAttributeRange(lowBounds[index], upBounds[index], true);
+            }
+        });
+    }
+
+    /*
+    * A convenience method for performing document-searching operations involving range definitions. The array parameters must all be the same length,
+    * since this method will perform tests with the values given by entries located at the same indices.
+    * @param docType The document type to search for.
+    * @param principalId The ID of the user that will perform the search.
+    * @param fieldDefKey The name of the field given by the field definition on the searchable attribute.
+    * @param expr array of search expressions
+    * @param resultSizes The expected number of documents to be returned by the search; use -1 to indicate that an exception should have occurred.
+    * @throws Exception
+    */
+    private void assertSearchBehavesAsExpected(DocumentType docType, String principalId, String fieldDefKey, final String[] expr, int[] resultSizes) throws Exception {
+        assertSearchResults(KEWServiceLocator.getDocumentSearchService(), docType, principalId, fieldDefKey, resultSizes, new Function<Integer, String>() {
+            @Override public String apply(@Nullable Integer index) {
+                return expr[index];
+            }
+        });
+    }
+
+    private void assertSearchResults(DocumentSearchService docSearchService, DocumentType docType, String principalId, String fieldDefKey, int[] resultSizes, Function<Integer, String> closure) {
         DocumentSearchCriteria.Builder criteria = null;
         DocumentSearchResults results = null;
-        DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
         for (int i = 0; i < resultSizes.length; i++) {
-        	criteria = DocumentSearchCriteria.Builder.create();
-        	criteria.setDocumentTypeName(docType.getName());
-            addSearchableAttributeRange(criteria, fieldDefKey, lowBounds[i], upBounds[i], true);
-        	try {
-        		results = docSearchService.lookupDocuments(principalId, criteria.build());
-        		if (resultSizes[i] < 0) {
-        			fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
-        		}
-        		assertEquals(fieldDefKey
+            criteria = DocumentSearchCriteria.Builder.create();
+            criteria.setDocumentTypeName(docType.getName());
+
+            addSearchableAttribute(criteria, fieldDefKey, closure.apply(i));
+
+            try {
+                results = docSearchService.lookupDocuments(principalId, criteria.build());
+                if (resultSizes[i] < 0) {
+                    fail(fieldDefKey + "'s search at loop index " + i + " should have thrown an exception");
+                }
+                assertEquals(fieldDefKey
                         + "'s search results at loop index "
                         + i
                         + " returned the wrong number of documents.", resultSizes[i], results.getSearchResults().size());
-        	} catch (Exception ex) {
-        		if (resultSizes[i] >= 0) {
-        			fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");
-        		}
-        	}
+            } catch (Exception ex) {
+                if (resultSizes[i] >= 0) {
+                    fail(fieldDefKey + "'s search at loop index " + i + " should not have thrown an exception");
+                }
+            }
         }
     }
 }

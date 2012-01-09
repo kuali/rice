@@ -290,6 +290,96 @@
 				</xmlSearchContent>
 			</searchingConfig>
 		</ruleAttribute>
+
+    <!-- search attributes with inclusive bounds -->
+    <ruleAttribute>
+      <name>XMLSearchableAttributeStdLongRangeInclusive</name>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <label>XML Searchable attribute</label>
+      <description>XML Searchable attribute</description>
+      <type>SearchableXmlAttribute</type>
+      <searchingConfig>
+        <fieldDef name="testLongKey" title="Certain Long Value">
+          <display>
+            <type>text</type>
+          </display>
+          <searchDefinition dataType="long" rangeSearch="true">
+            <rangeDefinition inclusive="true"/>
+          </searchDefinition>
+          <fieldEvaluation>
+            <xpathexpression>//putWhateverWordsIwantInsideThisTag/testLongKey/value</xpathexpression>
+          </fieldEvaluation>
+        </fieldDef>
+        <xmlSearchContent>
+          <putWhateverWordsIwantInsideThisTag>
+            <testLongKey>
+              <value>%testLongKey%</value>
+            </testLongKey>
+          </putWhateverWordsIwantInsideThisTag>
+        </xmlSearchContent>
+      </searchingConfig>
+    </ruleAttribute>
+    <ruleAttribute>
+      <name>XMLSearchableAttributeStdFloatRangeInclusive</name>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <label>XML Searchable attribute</label>
+      <description>XML Searchable attribute</description>
+      <type>SearchableXmlAttribute</type>
+      <searchingConfig>
+        <fieldDef name="testFloatKey" title="Float in the Water">
+          <display>
+            <type>text</type>
+          </display>
+          <searchDefinition dataType="float">
+            <rangeDefinition inclusive="true">
+              <lower label="starting"/>
+              <upper label="ending"/>
+            </rangeDefinition>
+          </searchDefinition>
+          <fieldEvaluation>
+            <xpathexpression>//putWhateverWordsIwantInsideThisTag/testFloatKey/value</xpathexpression>
+          </fieldEvaluation>
+        </fieldDef>
+        <xmlSearchContent>
+          <putWhateverWordsIwantInsideThisTag>
+            <testFloatKey>
+              <value>%testFloatKey%</value>
+            </testFloatKey>
+          </putWhateverWordsIwantInsideThisTag>
+        </xmlSearchContent>
+      </searchingConfig>
+    </ruleAttribute>
+    <ruleAttribute>
+      <name>XMLSearchableAttributeStdDateTimeRangeInclusive</name>
+      <className>org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute</className>
+      <label>XML Searchable attribute</label>
+      <description>XML Searchable attribute</description>
+      <type>SearchableXmlAttribute</type>
+      <searchingConfig>
+        <fieldDef name="testDateTimeKey" title="Searchable Date Field">
+          <display>
+            <type>text</type>
+          </display>
+          <searchDefinition dataType="datetime" datePicker="false">
+            <rangeDefinition inclusive="true">
+              <lower/>
+              <upper datePicker="true"/>
+            </rangeDefinition>
+          </searchDefinition>
+          <fieldEvaluation>
+            <xpathexpression>//putWhateverWordsIwantInsideThisTag/testDateTimeKey/value</xpathexpression>
+          </fieldEvaluation>
+        </fieldDef>
+        <xmlSearchContent>
+          <putWhateverWordsIwantInsideThisTag>
+            <testDateTimeKey>
+              <value>%testDateTimeKey%</value>
+            </testDateTimeKey>
+          </putWhateverWordsIwantInsideThisTag>
+        </xmlSearchContent>
+      </searchingConfig>
+    </ruleAttribute>
+
 <!--  Ends attributes for range search testing -->
 		<ruleAttribute>
 			<name>BlankDropDownSearchAttribute</name>
@@ -498,10 +588,7 @@
 						<type>text</type>
 					</display>
 					<searchDefinition>
-						<rangeDefinition inclusive="false" datePicker="false">
-							<lower inclusive="true"/>
-							<upper/>
-						</rangeDefinition>
+						<rangeDefinition inclusive="true" datePicker="false"/>
 					</searchDefinition>
 					<fieldEvaluation>
 						<xpathexpression>//putWhateverWordsIwantInsideThisTag/textFieldWithInclusiveLower/value</xpathexpression>
@@ -786,13 +873,13 @@
 					<name>XMLSearchableAttributeStringRange</name>
 				</attribute>
 				<attribute>
-					<name>XMLSearchableAttributeStdLongRange</name>
+					<name>XMLSearchableAttributeStdLongRangeInclusive</name>
 				</attribute>
 				<attribute>
-					<name>XMLSearchableAttributeStdFloatRange</name>
+					<name>XMLSearchableAttributeStdFloatRangeInclusive</name>
 				</attribute>
 				<attribute>
-					<name>XMLSearchableAttributeStdDateTimeRange</name>
+					<name>XMLSearchableAttributeStdDateTimeRangeInclusive</name>
 				</attribute>
 			</attributes>
 			<routePaths>

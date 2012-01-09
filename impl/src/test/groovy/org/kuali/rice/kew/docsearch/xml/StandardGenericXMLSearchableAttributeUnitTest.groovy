@@ -188,7 +188,7 @@ class StandardGenericXMLSearchableAttributeUnitTest {
         edb.configuration.put(KewApiConstants.ATTRIBUTE_XML_CONFIG_DATA, RANGE_FIELD_SEARCH_CONFIG)
         def c = DocumentSearchCriteria.Builder.create();
         // ">= jack" will fail due to discrepancy between attrib and range upper bound inclusivity
-        c.documentAttributeValues.put("givenname", [ ">= jack" ] as List<String>)
+        c.documentAttributeValues.put("givenname", [ "jack..jill" ] as List<String>)
         def errors = new StandardGenericXMLSearchableAttribute().validateDocumentAttributeCriteria(edb.build(), c.build())
         println errors
         assertEquals("expected range upper bound inclusivity discrepancy between Range default and Attribute configuration", 1, errors.size())

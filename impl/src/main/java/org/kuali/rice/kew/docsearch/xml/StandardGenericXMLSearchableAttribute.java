@@ -137,6 +137,11 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(StandardGenericXMLSearchableAttribute.class);
     private static final String FIELD_DEF_E = "fieldDef";
+    /**
+     * Compile-time option that controls whether we check and return errors for field bounds options that conflict with searchable attribute configuration.
+     */
+    private static final boolean PEDANTIC_BOUNDS_VALIDATION = true;
+
 
     @Override
     public String generateSearchContent(ExtensionDefinition extensionDefinition, String documentTypeName, WorkflowAttributeDefinition attributeDefinition) {
@@ -511,17 +516,20 @@ public class StandardGenericXMLSearchableAttribute implements SearchableAttribut
                     } else {
                         // only check bounds if range search is specified
                         // XXX: FIXME: disabling these pedantic checks as they are causing annoying test breakages
-                        if (!attributeValue.allowsCaseInsensitivity() && Boolean.FALSE.equals(field.searchDefinition.getRangeBoundOptions().caseSensitive)) {
-                            errs = true;
-                            errors.add(RemotableAttributeError.Builder.create(field.name, "attribute data type does not support case insensitivity but case-insensitivity specified in attribute definition").build());
-                        }
-                        if (r.isLowerBoundInclusive() != field.searchDefinition.lowerBound.inclusive) {
-                            errs = true;
-                            errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on lower bound inclusivity.  Range is: " + r.isLowerBoundInclusive() + " Attrib is: " + field.searchDefinition.lowerBound.inclusive).build());
-                        }
-                        if (r.isUpperBoundInclusive() != field.searchDefinition.upperBound.inclusive) {
-                            errs = true;
-                            errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on upper bound inclusivity.  Range is: " + r.isUpperBoundInclusive() + " Attrib is: " + field.searchDefinition.upperBound.inclusive).build());
+                        if (PEDANTIC_BOUNDS_VALIDATION) {
+                            // this is not actually an error. just disregard case-sensitivity for data types that don't support it
+                            /*if (!attributeValue.allowsCaseInsensitivity() && Boolean.FALSE.equals(field.searchDefinition.getRangeBoundOptions().caseSensitive)) {
+                                errs = true;
+                                errors.add(RemotableAttributeError.Builder.create(field.name, "attribute data type does not support case insensitivity but case-insensitivity specified in attribute definition").build());
+                            }*/
+                            if (r.getLowerBoundValue() != null && r.isLowerBoundInclusive() != field.searchDefinition.lowerBound.inclusive) {
+                                errs = true;
+                                errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on lower bound inclusivity.  Range is: " + r.isLowerBoundInclusive() + " Attrib is: " + field.searchDefinition.lowerBound.inclusive).build());
+                            }
+                            if (r.getUpperBoundValue() != null && r.isUpperBoundInclusive() != field.searchDefinition.upperBound.inclusive) {
+                                errs = true;
+                                errors.add(RemotableAttributeError.Builder.create(field.name, "range expression ('" + value + "') and attribute definition differ on upper bound inclusivity.  Range is: " + r.isUpperBoundInclusive() + " Attrib is: " + field.searchDefinition.upperBound.inclusive).build());
+                            }
                         }
                     }
 

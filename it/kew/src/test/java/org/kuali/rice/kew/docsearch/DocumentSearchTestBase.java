@@ -55,7 +55,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
         }
     }
 
-    protected void addSearchableAttributeRange(DocumentSearchCriteria.Builder criteria, String name, String lowerBound, String upperBound, boolean upperBoundInclusive) {
+    protected String createSearchableAttributeRange(String lowerBound, String upperBound, boolean upperBoundInclusive) {
         StringBuilder value = new StringBuilder();
         if (StringUtils.isNotBlank(lowerBound) && StringUtils.isNotBlank(upperBound)) {
             value.append(lowerBound);
@@ -74,7 +74,7 @@ public class DocumentSearchTestBase extends KEWTestCase {
             }
             value.append(" ").append(upperBound);
         }
-        addSearchableAttribute(criteria, name, value.toString());
+        return value.toString();
     }
 
 //    protected SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,DocumentType docType) {

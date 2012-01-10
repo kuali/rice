@@ -59,7 +59,7 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
             @XmlElement(name = Elements.RULE, type = AgendaTreeRuleEntry.class, required = false),
             @XmlElement(name = Elements.SUB_AGENDA, type = AgendaTreeSubAgendaEntry.class, required = false)
 	})
-	private final List<AgendaTreeEntryDefinition> entries;
+	private final List<AgendaTreeEntryDefinitionContract> entries;
 		
 	@SuppressWarnings("unused")
     @XmlAnyElement
@@ -83,7 +83,7 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
     	return agendaId;
     }
     
-	public List<AgendaTreeEntryDefinition> getEntries() {
+	public List<AgendaTreeEntryDefinitionContract> getEntries() {
 		if (entries == null){
 			return Collections.emptyList();
 		}
@@ -95,13 +95,13 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
 		private static final long serialVersionUID = 7981215392039022620L;
 		
 		private String agendaId;
-		private List<AgendaTreeEntryDefinition> entries;
+		private List<AgendaTreeEntryDefinitionContract> entries;
 
 		/**
 		 * Private constructor for creating a builder with all of it's required attributes.
 		 */
         private Builder() {
-        	this.entries = new ArrayList<AgendaTreeEntryDefinition>();
+        	this.entries = new ArrayList<AgendaTreeEntryDefinitionContract>();
         }
         
         public static Builder create(){
@@ -133,7 +133,7 @@ public final class AgendaTreeDefinition extends AbstractDataTransferObject {
         	return this.agendaId;
         }
         
-        public List<AgendaTreeEntryDefinition> getEntries() {
+        public List<AgendaTreeEntryDefinitionContract> getEntries() {
         	return this.entries;
         }
 

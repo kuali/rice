@@ -188,6 +188,11 @@ public class CategoryDefinition extends AbstractDataTransferObject implements Ca
             this.namespace = namespace;
         }
 
+        /**
+         * Sets the version number on this builder to the given value.
+         *
+         * @param versionNumber the version number to set
+         */
         public void setVersionNumber(Long versionNumber){
             this.versionNumber = versionNumber;
         }

@@ -26,7 +26,7 @@ import org.kuali.rice.krms.api.repository.RuleRepositoryService;
 import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaTreeEntryDefinitionContract;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeRuleEntry;
 import org.kuali.rice.krms.api.repository.agenda.AgendaTreeSubAgendaEntry;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
@@ -126,7 +126,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 	
 		List<String> ruleIds = new ArrayList<String>();
 		List<String> subAgendaIds = new ArrayList<String>();
-		for (AgendaTreeEntryDefinition entryDefinition : agendaTreeDefinition.getEntries()) {
+		for (AgendaTreeEntryDefinitionContract entryDefinition : agendaTreeDefinition.getEntries()) {
 			if (entryDefinition instanceof AgendaTreeRuleEntry) {
 				ruleIds.add(((AgendaTreeRuleEntry)entryDefinition).getRuleId());
 			} else if (entryDefinition instanceof AgendaTreeSubAgendaEntry) {
@@ -141,7 +141,7 @@ public class RepositoryToEngineTranslatorImpl implements RepositoryToEngineTrans
 		
 		List<AgendaTreeEntry> entries = new ArrayList<AgendaTreeEntry>();
 	
-		for (AgendaTreeEntryDefinition entryDefinition : agendaTreeDefinition.getEntries()) {
+		for (AgendaTreeEntryDefinitionContract entryDefinition : agendaTreeDefinition.getEntries()) {
 			if (entryDefinition instanceof AgendaTreeRuleEntry) {
 				AgendaTreeRuleEntry ruleEntry = (AgendaTreeRuleEntry)entryDefinition;
 				AgendaTree ifTrue = null;

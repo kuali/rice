@@ -17,12 +17,15 @@ package org.kuali.rice.coreservice.api.namespace;
 
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
+import org.kuali.rice.coreservice.api.parameter.Parameter;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+import java.util.List;
 
 @WebService(name = "namespaceService", targetNamespace = CoreConstants.Namespaces.CORE_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
@@ -41,5 +44,16 @@ public interface NamespaceService {
      */
     @WebMethod(operationName="getNamespace")
     @WebResult(name = "namespace")
+    @Cacheable(value= Namespace.Cache.NAME, key="'key=' + #p0")
 	Namespace getNamespace(@WebParam(name = "code") String code) throws RiceIllegalArgumentException;
+
+    /**
+     * Returns all Namespaces.
+     *
+     * @return all namespaces
+     */
+    @WebMethod(operationName = "findAllNamespaces")
+    @WebResult(name = "namespaces")
+    @Cacheable(value=Namespace.Cache.NAME, key="'all'")
+    List<Namespace> findAllNamespaces();
 }

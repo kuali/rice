@@ -17,14 +17,18 @@
 -->
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-         updateCheck="true" monitoring="autodetect"
-         dynamicConfig="true">
+         monitoring="autodetect"
+         updateCheck="false"
+         Name="coreServiceCacheManager"
+         dynamicConfig="true" >
 
   <defaultCache eternal="false"
          overflowToDisk="false"
          copyOnRead="false"
          copyOnWrite="false"/>
 
-  <cache name="http://rice.kuali.org/core/v2_0/ParameterType"/>
+  <cache name="http://rice.kuali.org/core/v2_0/ParameterType" maxEntriesLocalHeap="300"/>
+  <cache name="http://rice.kuali.org/core/v2_0/NamespaceType" maxEntriesLocalHeap="100"/>
+  <cache name="http://rice.kuali.org/core/v2_0/ComponentType" maxEntriesLocalHeap="100"/>
 
 </ehcache>

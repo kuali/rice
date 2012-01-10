@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.coreservice.impl.config;
 
-import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
-import org.kuali.rice.location.api.LocationConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;

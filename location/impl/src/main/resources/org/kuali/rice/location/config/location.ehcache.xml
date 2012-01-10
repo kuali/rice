@@ -17,7 +17,9 @@
 -->
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-         updateCheck="true" monitoring="autodetect"
+         monitoring="autodetect"
+         updateCheck="false"
+         Name="locationCacheManager"
          dynamicConfig="true">
 
   <defaultCache eternal="false"
@@ -25,11 +27,11 @@
          copyOnRead="false"
          copyOnWrite="false"/>
 
-  <cache name="http://rice.kuali.org/location/v2_0/CampusType"/>
-  <cache name="http://rice.kuali.org/location/v2_0/CampusTypeType"/>
-  <cache name="http://rice.kuali.org/location/v2_0/CountryType"/>
-  <cache name="http://rice.kuali.org/location/v2_0/CountyType"/>
-  <cache name="http://rice.kuali.org/location/v2_0/PostalCodeType"/>
-  <cache name="http://rice.kuali.org/location/v2_0/StateType"/>
+  <cache name="http://rice.kuali.org/location/v2_0/CampusType" maxEntriesLocalHeap="50"/>
+  <cache name="http://rice.kuali.org/location/v2_0/CampusTypeType" maxEntriesLocalHeap="20"/>
+  <cache name="http://rice.kuali.org/location/v2_0/CountryType" maxEntriesLocalHeap="300"/>
+  <cache name="http://rice.kuali.org/location/v2_0/CountyType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/location/v2_0/PostalCodeType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/location/v2_0/StateType" maxEntriesLocalHeap="100"/>
 
 </ehcache>

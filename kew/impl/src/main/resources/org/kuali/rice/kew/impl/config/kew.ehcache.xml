@@ -17,20 +17,21 @@
 -->
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-         updateCheck="true" monitoring="autodetect"
+         updateCheck="false"
+         Name="kewCacheManager"
+         monitoring="autodetect"
          dynamicConfig="true">
 
   <defaultCache eternal="false"
          overflowToDisk="false"
-         timeToLiveSeconds="600"
          copyOnRead="false"
          copyOnWrite="false"/>
 
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleType"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleTemplateType"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleDelegationType"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleTemplateType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleDelegationType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType" maxEntriesLocalHeap="500"/>
 
 </ehcache>

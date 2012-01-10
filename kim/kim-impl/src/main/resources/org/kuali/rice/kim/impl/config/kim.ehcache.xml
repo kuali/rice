@@ -17,61 +17,42 @@
 -->
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
-         updateCheck="true" monitoring="autodetect"
+         updateCheck="false"
+         monitoring="autodetect"
+         Name="kimCacheManager"
          dynamicConfig="true">
 
-  <cache name="http://rice.kuali.org/kim/v2_0/KimTypeType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/ResponsibilityType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Responsibility}" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/GroupType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/GroupMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityType" eternal="false" overflowToDisk="false" copyOnRead="false"
-         copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/PrincipalType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityPrivacyPreferencesType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EntityType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AddressType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AffiliationType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{CitizenshipStatus}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentStatus}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{ExternalIdentifierType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{NameType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{PhoneType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmailType}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/PermissionType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Permission}" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleMembershipType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/DelegateMemberType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleResponsibilityType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/DelegateTypeType" eternal="false" overflowToDisk="false" copyOnRead="false"
-       copyOnWrite="false"/>
+  <defaultCache eternal="false"
+                overflowToDisk="false"
+                timeToLiveSeconds="1800"
+                copyOnRead="false"
+                copyOnWrite="false"/>
+
+  <cache name="http://rice.kuali.org/kim/v2_0/KimTypeType" maxEntriesLocalHeap="300"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/ResponsibilityType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Responsibility}" maxEntriesLocalHeap="200"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupType" maxEntriesLocalHeap="1000"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupMemberType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType" maxEntriesLocalHeap="2000"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityType" maxEntriesLocalHeap="2000"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/PrincipalType" maxEntriesLocalHeap="2000"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityPrivacyPreferencesType" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EntityType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AddressType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AffiliationType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{CitizenshipStatus}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentStatus}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{ExternalIdentifierType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{NameType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{PhoneType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmailType}" maxEntriesLocalHeap="30"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/PermissionType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Permission}" maxEntriesLocalHeap="200"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleType" maxEntriesLocalHeap="300"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMembershipType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMemberType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateMemberType" maxEntriesLocalHeap="500"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleResponsibilityType" maxEntriesLocalHeap="300"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateTypeType" maxEntriesLocalHeap="30"/>
 </ehcache>

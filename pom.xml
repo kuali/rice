@@ -97,7 +97,7 @@
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
-    <ehcache.version>2.4.7</ehcache.version>
+    <ehcache.version>2.5.0</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <groovy.version>1.8.5</groovy.version>
     <guava.version>11.0</guava.version>

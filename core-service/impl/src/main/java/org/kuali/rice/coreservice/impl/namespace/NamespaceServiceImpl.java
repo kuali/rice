@@ -21,6 +21,10 @@ import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.krad.service.BusinessObjectService;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static java.util.Collections.singletonMap;
 
 public class NamespaceServiceImpl implements NamespaceService {
@@ -35,6 +39,17 @@ public class NamespaceServiceImpl implements NamespaceService {
 
         return NamespaceBo.to(boService.findByPrimaryKey(NamespaceBo.class, singletonMap("code", code)));
 	}
+
+    @Override
+    public List<Namespace> findAllNamespaces() {
+        List<NamespaceBo> namespaceBos = (List<NamespaceBo>) boService.findAll(NamespaceBo.class);
+        List<Namespace> namespaces = new ArrayList<Namespace>();
+        
+        for (NamespaceBo bo : namespaceBos) {
+            namespaces.add(NamespaceBo.to(bo));
+        }
+        return Collections.unmodifiableList(namespaces);
+    }
 
     public void setBusinessObjectService(BusinessObjectService boService) {
         this.boService = boService;
